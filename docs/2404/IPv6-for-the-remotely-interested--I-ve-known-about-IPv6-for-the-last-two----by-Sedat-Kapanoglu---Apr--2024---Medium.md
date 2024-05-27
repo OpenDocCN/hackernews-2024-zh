@@ -1,0 +1,151 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:15:24
+-->
+
+# IPv6 for the remotely interested. I’ve known about IPv6 for the last two… | by Sedat Kapanoglu | Apr, 2024 | Medium
+
+> 来源：[https://ssg.dev/ipv6-for-the-remotely-interested-af214dd06aa7?gi=79f1ddf22e27](https://ssg.dev/ipv6-for-the-remotely-interested-af214dd06aa7?gi=79f1ddf22e27)
+
+# IPv6 for the remotely interested
+
+I’ve known about IPv6 for the last two decades or so, but I’ve never gone beyond “an overengineered solution to the IPv4 address space problem”. IPv6 was even presented as “*every atom could get its own IP address, no IP address shortages anymore*”, but I didn’t know how true that was either. I occasionally saw an IPv6 address here and there because almost every device supports IPv6 today. I believe cellular network operators even default to it, so you’re probably reading this on a device that uses IPv6.
+
+Last week, I decided to learn about how IPv6 works under the hood, and I’ve learned quite a few interesting facts about it.
+
+*Disclaimer: I’m not an expert on IPv6 or network engineering in general. This is the outcome of my personal reading journey over the last few weeks, and I’d love to be corrected if I made any mistakes. Read on :)*
+
+# IPv6 vs IPv4
+
+The name IPv6 used to confuse me because I thought IPv4 took its name from the four octets it used to represent 32-bits, so, IPv6 should have been called IP16\. But I learned that it was really the version of the protocol. There were apparently IPv1, IPv2, and IPv3 before IPv4 came out. They were used to research the IP protocol internally, and later got replaced with IPv4 we use today. There was even a proposal for *IPv5* in the 80’s that was intended to optimize realtime communications, but got discarded in favor of IPv6 which additionally solved the address space problem. That’s why IPv6 is called IPv6\. It’s literally *IP Version 6*. There have even been attempts at creating IPv7, IPv8 and more, but all have been either obsoleted or shelved.
+
+Like IPv4, IPv6 protocol has an addressing scheme. IPv6 uses 128-bits for addresses instead of 32-bit IPv4 addresses. But, the difference in protocols are greater than address space sizes. Actually, IPv6 feels like an alien tech if you’ve only worked with IPv4 so far when you look at its quirky features such as:
+
+## IPv6 has no subnet masks
+
+IPv6 supports [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) addressing like IPv4, but from a user’s perspective, IPv6 addresses are way simpler: first half is Internet (global), the second half is local. That’s the suggested way to use IPv6 addresses anyway. So, when you visit a whatismyipwhatever web site, it shows your IP address like this:
+
+`1111:2222:3333:4444:5555:6666:7777:8888`
+
+But, your ISP only knows you as `1111:2222:3333:4444` and assigns that portion (`/64`) to you. The remaining half of the address is unique for every device on your network. ISP just forwards any packet that starts with `1111:2222:3333:4444` to your router, and your router transfers the packet to the device. So, the second half of the address, `5555:6666:7777:8888`, let’s call that part `INTERFACE_ID` from now on, is unique to your device. That means, every device you have has a unique IPv6 address, and can be accessed individually from anywhere in the world, because:
+
+## IPv6 has no NAT
+
+I used to think that you could do NAT with IPv6, but nobody did it because of potential backlash from HackerNews community. Apparently, that’s not the case. There’s apparently no published standard for NAT for IPv6\. There is a draft proposal called NAT66, but it hasn’t materialized.
+
+NAT isn’t needed with IPv6 because it’s possible to have a separate globally accessible address for every device on Earth. That felt weird to me because NAT, despite how much you hate it when you want to play games online, gives you that warm feeling that your local devices are never accessible from outside unless you explicitly allow it using UPnP or port forwarding. It has that false sense of security which is really hard to shake off.
+
+The bitter truth is, [NAT isn’t a security barrier](https://security.stackexchange.com/a/8773/3273). It’s just an alternative packet forwarding mechanism. Your IPv6 router should never forward connection attempts from outside to your local devices by default anyway. So, you get the same security without having NAT at all. As a matter of fact, it’s fascinating that you’re able to access every device on your local network with their IPv6 address without having to go through your router, or a separate VPN configuration if you wish to do so: just authenticate, that’s it. Hypothetically, a smart toothbrush in Istanbul, Turkey can connect directly to a temperature sensor in Ontario, Canada, and create one of the most diverse botnets on the planet.
+
+There is a security related catch with IPv6 though that comes with the luxury of having a separate IPv6 address per device: your devices can be fingerprinted and tracked individually. That’s bad for privacy. So, modern OS’s invented the concept of *temporary IPv6 addresses* that change `INTERFACE_ID` periodically. You can use your permanent IPv6 address for listening to connections from outside, but when establishing connections, your IPv6 address is shown with that secondary temporary address that changes frequently.
+
+Now, having mentioned not needing to go through hoops for access, another interesting feature of IPv6 is:
+
+## IPv6 addresses are self-configured
+
+IPv6 protocol doesn’t need a DHCP server, or manual network configuration to determine IP address, subnet mask, and gateway address. A device can get an IP address without asking a centralized server. That is accomplished by a protocol called [SLAAC](https://en.wikipedia.org/wiki/IPv6#Stateless_address_autoconfiguration_(SLAAC)). It gradually builds a device’s IPv6 address by following these steps:
+
+1.  The operating system (specifically, the IPv6 stack of the OS) generates a 64-bit device identifier, usually random, let’s say `5555:6666:7777:8888` ([chosen by a fair dice roll](https://xkcd.com/221/)), and that makes up the `INTERFACE_ID` portion of your IPv6 address.
+2.  The OS prefixes the `INTERFACE_ID` with `fe80`, the local only IPv6 network prefix. So, your IPv6 address is now: `fe80::5555:6666:7777:8888`. *(Notice the “*`*a::b*`*” syntax; it means “there are all zero valued segments between ‘a’ and ‘b’”. More on that later)*
+3.  Your device now sends a packet to its designated neighbor multicast group on the local network to make sure that nobody else is using the same IPv6 address. That’s called Duplicate Address Detection (DAD). The chances of a duplicate address getting assigned is less than universe suddenly imploding due to a cataclysmic event, but that’s exactly when you don’t want to deal with duplicate IPv6 addresses and miss all the fun.
+4.  Finally, the device sends the router (which, unlike IPv4, can always be reached with the multicast group address on IPv6 `ff02::2`) its acquired local address and asks for the actual prefix the router uses by sending a RS (Router Solicitation) ICMPv6 packet. After router responds with an RA (Router Advertisement) packet, it replaces `fe80` with the actual prefix the router replies with, and starts using that as its permanent address. That’s now your IPv6 internet address.
+
+The advantage of stateless configuration is the reduced overhead on your router: it doesn’t have to maintain the IP configuration of every device on the network individually. That means better performance, especially in larger networks.
+
+This just happened. Explain this coincidence, atheists!
+
+# IPv6 myths
+
+IPv6 comes with bold claims too. Let’s debunk them:
+
+## Your device has one IPv6 address for every purpose
+
+I mean, yes, you use the same IPv6 address for both local and remote connections. But no, the “*one IP address to rule them all, one IP address to find them*” claim isn’t true. As I mentioned before, your device claims the ownership of multiple IPv6 addresses for different scopes like link-local (Remember `fe80::`) and Internet. Additionally, your device might acquire two different Internet IPv6 addresses too: permanent and temporary. Temporary IPv6 addresses are intended to preserve your privacy as they are rotated periodically. Permanent IPv6 addresses are primarily for servers which must have static IPv6 addresses.
+
+## An IP address for every atom in the universe
+
+Not even close. There are about 2²⁷² atoms in the universe. Even Earth has 2¹⁶⁶ atoms, so we need at least 168-bits (octet-aligned) address space for them. The actual IPv6 address space is slightly smaller than 128-bits too: the first 16-bits are IANA reserved. You only have the remaining 112-bits to identify devices. That’s still a lot, way more than probably all devices we can produce on Earth in the next millenia, but no, we can’t give every atom its own IP address. But, we can give IPv6 addresses to every grain of sand on Earth. We can even fit them all inside a single /64 prefix.
+
+All in all, yes, IPv6 address space is vast regardless of how many arbitrary particles we can address with it.
+
+## Universal connectivity of every device
+
+Yes, IPv6 has no NAT. So, that means no more port forwarding or address space to maintain. But, you still have to have a mechanism to open your device to connections from a remote host if you want to establish a direct connection. Remember, your router/firewall by default will prevent any connection attempt. What are you going to do?
+
+As with UPnP/IGD days, apps today still need to work with a protocol like PCP (Port Control Protocol) in order to open access to a port programmatically. So, it’s not like you suddenly have universal connectivity with global+local IPv6 addresses. You don’t have to set up manual port forwarding, but apps still need to work with the router in order to make themselves accessible.
+
+It’s not just the benefits of IPv6 being exaggerated, but there are cases where IPv6 turns out worse than IPv4 too:
+
+# Downsides of IPv6
+
+There are several things that we take for granted in IPv4 world that IPv6 might make you nostalgic about, such as:
+
+## You are at the mercy of your ISP to have subnets
+
+Since IPv6 has no NAT, many ISPs in United States default to forwarding only a single 64-bit prefix (usually called a “`/64`”) to your router. That means your router has no space left to put the subnet information into an IPv6 address. Remember: IPv6 addresses are auto-configured by devices, so, there is no way for a router to dictate those devices to use less than 64-bit local addresses. That means, your router would have no way to know which subnet to forward a packet to.
+
+Essentially, you’re in the mercy of ISPs to receive prefixes shorter than 64-bit so that your router can use the remaining bits to identify which subnet they need to go to. ISPs can actually afford giving home users at least 16 subnets by simply assigning 60-bit prefixes, but ISPs don’t do that for reasons unknown to me. Maybe the PTSD they had from IPv4 address space shortage made them greedy bastards? Or, they just want to make money by extorting customers. “Hey, if you want a shorter prefix, pay us more”. As far as I know, both Comcast Xfinity and AT&T give their home users a mere `/64` prefix: one subnet.
+
+You might say that a home user may not need subnets at all, but, with the prevalence of IoT devices and our greater reliance of the security of our networks, isolating your untrusted devices is getting more important. RIPE, the European authority on IP address assignments, [recommends a 56-bit prefix for residential ISP customers](https://www.ripe.net/publications/docs/ripe-690/#4-2-3--prefixes--longer-than--56). That gives every customer 256 subnets, and that’s the greediest, the most conservative option that Europeans could come up with which an American can only dream of.
+
+Of course, you can configure IPv6 address of every device manually, and give them subnet identifiers this way, but that would be a huge undertaking, especially considering the overhead of adding new devices. Do you want to spend your retirement as a human DHCP server?
+
+## IPv6 addresses need extra encoding in URIs
+
+Remember typing “`http://192.168.0.1`” on your browser and accessing your router settings? I do. Because “`:`” character is reserved for port numbers in the URI specification, it’s impossible to do the same using IPv6 addresses without additional encoding. In case you want to access a web page hosted on a device by its IPv6 address, you have to use the syntax: “`http://[aaaa:bbbb:cccc:dddd:eeee:ffff:1111:2222]/path/?query`”, notice the brackets around the address. But, that’s not even the worst part because:
+
+## It’s impossible to memorize IPv6 addresses
+
+We’ve never been supposed to memorize IP addresses, but the reality is different. I’m still not sure about which address I can use reliably and consistenly to access my router on IPv6\. I can’t memorize its full IP address, that’s for sure. [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS) helps, but it doesn’t always reliably work either.
+
+Hexadecimal is harder than regular numbers too. It’s like trying to memorize a Windows XP product activation code. What was that famous one? `FCKGW-RHQQ2-??`eh, whatever.
+
+Memorizing an IPv4 address is a transferable skill; “cross-platform” if you will. It’s even universal due to pervasive NAT: 192.168.1.1 most of the time. I didn’t have to look that up. Figuring out the IPv6 address of your router on an arbitrary device you have requires different skills.
+
+On the bright side, you now know that the rightmost 64-bit portion of an IPv6 address is always random, so, you can at least avoid assuming that it’s going to stay forever or supposed to make sense. You can even call that part `BLABLA` instead of `INTERFACE_ID`. You can memorize your /64 prefix and at least find out your router address, which is usually something like `1111:2222:3333:4444::1`.
+
+## IPv6 addresses are complicated
+
+Make no mistake, IPv4 addresses are complicated too. Did you know that `2130706433` is a valid IPv4 address? Or, `0x7F000001`, `0177.0000.0000.0001` and `127.1` for that matter? Try pinging them on a shell if you don’t believe me. It’s hard to believe but, they’re all equivalent to `127.0.0.1`.
+
+IPv6 addresses have a similar level of variety in representation. Here are some of their characteristics:
+
+*   The representation of an IPv6 address consists of 8 *hextets*: sixteen bit hexadecimal groups canonically called *segments*. (“Hextet” is a misnomer for *hexadectet*, but too late now). Anyway, now hex tricks like this are possible:
+
+“face:b00c” I see what you did there.
+
+*   Prefixing zeroes in hextets are not displayed. So, `2600:00ab` is actually shown as `2600:ab`.
+*   As I mentioned before, hextets with zero values can completely be removed from the address and replaced with double colons. So, `2600:ab:0:0:1234:5678:90ab:cdef` would be displayed as `2600:ab**::**1234:5678:90ab:cdef`. See the double colons? That can only be done with the first batch of zero hextets though. So, `2600:ab:0:0:1234:0:0:cdef` would still render like `2600:ab**::**1234:**0:0**:cdef`. Also, you can’t compact just a single zero hextet. So, the zero in `2600:**0**:1234:5678:abcd:ef01:2345:6789` remains as is.
+*   You can specifiy *zone id*: the network interface that you want to reach that address through with “`%`” suffix and a zone id. For example, you can be connected to a network over both WiFi and Ethernet, but may want to ping your router from LAN. In that case you append “`%`” to the address and add your zone id (network adapter identifier). Such as `fe80::1%eth0` or `fe80::1%3`. The problem is, in addition to the brackets you need to use in IPv6 URIs, you must escape “`%`” to “`%25`” in your browser address bar or any other place where you need to use zone id in a URI.
+*   IPv6 addresses can also be used to represent IPv4 addresses. So, you can ping `127.0.0.1` using IPv6 address syntax by prepending it with IPv4 translation prefix, and it’ll be regarded as an IPv4 address: `::ffff:127.0.0.1`. But, that doesn’t mean your IPv4 requests will go through IPv6 network. That just tells the underlying networking stack to use an IPv4 connection instead. If you choose another prefix than `::ffff`, the IPv4 portion will be made part of the last two hextets and you’ll connect that IP over IPv6 network. For example, `2600:1000:2000:3000::192.168.1.1` will be treated as `2600:1000:2000:3000::c0a8:101`, the last two hextets being the hexadecimal equivalent of `192.168.1.1`.
+
+These are all valid IPv6 addresses:
+
+*   `::` That’s all zeroes`0:0:0:0:0:0:0:0`.
+*   `2600::` That’s an equivalent to `2600:0:0:0:0:0:0:0`.
+*   `::ffff:1.1.1.1` is an equivalent to `1.1.1.1` IPv4 address.
+*   `2607:f8b0:4005:80f::200e` is the address I get when I ping google.com. You know the drill; it’s equivalent to `2607:f8b0:4005:80f:0:0:0:200e`. As you can see, Like Facebook, Google also took the hard road and decided to assign manually designated `INTERFACE_ID` ‘s to its IPv6 addresses. Godspeed.
+
+In the end, an IPv6 address you write on your address bar might look like this as a contrived example:
+
+`https://[542b:b2ae:ed5c:cb5a:e38b:2c49:123:192.168.1.1%25eth3]`
+
+No way I’m memorizing that.
+
+That all said, I loved learning about IPv6! The learning experience clarified a few things for me. For example, I didn’t know IPv6 addresses were self-configured with a stateless protocol. I didn’t know it had no NAT. I didn’t know the address space was just conveniently split in half.
+
+I wish we had a shortcut IPv6 address for our default gateway. I propose `fe80::1`. IETF, take note! :)
+
+I remember that IPv6 support in Windows 2000 was a big step when announced, and we all thought IPv6 would get adopted in a decade or so. Could we be more wrong? Yet, learning about it made me understood why it hasn’t caught on fast.
+
+## IPv6 provides no benefit to end-users
+
+Despite how technologically advanced IPv6 is, IPv4 just works. It works even behind NAT, [even behind multiple layers of NATs](https://en.wikipedia.org/wiki/Carrier-grade_NAT), even with its extremely cramped address space, cumbersome DHCP, and port forwarding. It keeps working. When people find a way that it doesn’t work, and can never work, [somebody comes up and makes that work too](https://en.wikipedia.org/wiki/Hole_punching_(networking)).
+
+There’s probably a latency advantage of IPv6 not having NAT, but that’s not good enough to make a dent in user experience.
+
+Because IPv6 doesn’t provide any tangible benefit, users will never demand it, and they’ll just be pushed to it without them even knowing, like how we almost always [use IPv6 on cellular internet](https://www.arin.net/blog/2020/01/16/mobile-edge-of-the-internet-is-rapidly-moving-to-ipv6/) nowadays.
+
+That means, when ISPs feel enough pressure from the limitations of IPv4, they’ll switch to IPv6 in an instant. No question about it.
+
+I wish IPv6 enabled some features that enabled a few distinct scenarios not possible with IPv4, so people could demand IPv6 to use them. Yet, I love the alienesque nature of IPv6 networks, and look forward to the time we fully abandon IPv4 and build everything around IPv6 instead.

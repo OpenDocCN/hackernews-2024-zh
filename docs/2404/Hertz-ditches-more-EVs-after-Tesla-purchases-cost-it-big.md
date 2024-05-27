@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:34:47
+-->
+
+# Hertz ditches more EVs after Tesla purchases cost it big
+
+> 来源：[https://qz.com/hertz-ev-sales-tesla-rental-cars-1851438100](https://qz.com/hertz-ev-sales-tesla-rental-cars-1851438100)
+
+Hertz is ditching more of its fleet of electric vehicles, which it says are unreliable and more expensive than gas-guzzlers, as it reports a $392 million loss for the first quarter of 2024.
+
+Nvidia earnings stun the street and the stock is soaring
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22546.vtt" srclang="en">
+
+The Estero, Florida-based rental car company said it plans to get rid of 10,000 more EVs than it [initially planned this year](https://qz.com/hertz-rental-car-electric-vehicle-ev-reduce-fleet-cost-1851230776). Now Hertz intends to sell off 30,000 EVs in 2024, after [taking a $195 million charge](https://ir.hertz.com/news-releases/news-release-details/hertz-reports-first-quarter-2024-results) last quarter because of the depreciation of its fleet. That hit, when combined with a $245 million write-down in the last quarter of 2024, means Hertz has lost $440 million on its [failed bet on electric cars led by former CEO Stephen Sherr.](https://qz.com/hertz-ceo-stephen-scherr-resigns-ev-electric-vehicles-1851341889)
+
+The new round of sell-offs leaves Hertz with just 30,000 EVs in its fleet.
+
+“Fleet and direct operating costs weighed on this quarter’s performance,” [CEO Gil West](https://newsroom.hertz.com/news-releases/news-release-details/hertz-announces-appointment-gil-west-chief-executive-officer), a former executive at Delta and General Motors’ [Cruise unit](https://qz.com/gm-cruise-general-motors-autonomous-driving-vehicles-1851397984) who joined Hertz on April 1, said in a statement. “We’re tackling both issues - getting to the right supply of vehicles at an acceptable capital cost while at the same time driving productivity up and operating costs down.”
+
+Hertz stock fell more than 3% in Friday morning trading. The stock has dropped almost 56% this year, bringing its market capitalization down to $1.38 billion.
+
+The rental firm said its EV fleet turned out to be not just a financial drain, but a burden on consumers. Many renters were unfamiliar with how to charge or otherwise properly use an EV, but chose to do so anyway because of what was available, West told analysts on an earnings call Thursday.
+
+Hertz’s EV troubles come just a few years after it moved to purchase [100,000 electric cars](https://www.bloomberg.com/news/articles/2021-10-25/hertz-said-to-order-100-000-teslas-in-car-rental-market-shake-up?sref=P6Q0mxvj) from Tesla and [inked a since-paused agreement with Polestar](https://qz.com/hertz-electric-vehicle-pause-polestar-1851226693) to buy new electrics. It had also partnered with [Uber to add up to 50,000 EVs](https://www.uber.com/newsroom/hertz-update/) to the ride-share company’s network. By the end of 2024, Hertz wanted a quarter of its fleet to be electric.
+
+But by the end of last year, the company was taking big hits because of EVs. Tesla’s rapid price cuts — designed to combat slowing sales growth — hurt the value of Hertz’s fleet. And Hertz said the cost to repair Teslas was [twice the cost of comparable gas-powered cars](https://www.usatoday.com/story/money/cars/2024/01/11/hertz-selling-ev-fleet/72194050007/#:~:text=Repairs%20strain%20the%20bottom%20line&text=According%20to%20Johann%20Rawlinson%2C%20Hertz,weighed%20significantly%20on%20Q3%20earnings.).

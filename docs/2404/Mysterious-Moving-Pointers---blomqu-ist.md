@@ -1,0 +1,35 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:11:10
+-->
+
+# Mysterious Moving Pointers - blomqu.ist
+
+> 来源：[https://blomqu.ist/posts/2024/move/](https://blomqu.ist/posts/2024/move/)
+
+At work, we have started the process of modernizing our codebase. We currently work with Visual Studio 2013 and are upgrading to Visual Studio 2022\. Like any modernization effort, changes in the language are likely to break existing software as certain things are deprecated and new features are added. One piece of software was built exclusively for Windows and after upgrading the project, an important class consistently caused segmentation faults.
+
+ Here is a minimal example that describes the problem code:
+
+```
+struct Node {
+ std::vector<Connection> connections; };   struct Connection {
+ Node *from, *to; };   struct Graph {
+ std::vector<std::list<Node>> nodes; }; 
+```
+
+In this graph, a node stores its connection to other nodes. When a connection is made, the pointer is known to be valid. And the node within a `std::list` is stable, a pointer to it should stay valid as long as the list and the node itself exists. But at some point, that pointer is invalidated and attempting to access it causes the segmentation fault.
+
+First question: Why is this broken?
+
+Second Question: How did this ever work in the first place?
+
+The answer to the first question is a classic C++ footgun. When a `std::vector` grows larger than its capacity, it reallocates its backing store and has to put the existing elements into that store. The best way to do this would be to *move* the elements, which in the best case is effectively a `memcpy`. Unfortunately, `std::vector` will only move elements if the class has the trait `is_nothrow_move_constructible` which is typically denoted by declaring the move constructor as `noexcept`. In MSVC, `std::list` is not marked as such so when the vector reallocates, the list is *copied* instead of moved. When the list is copied, its elements are copied and our pointers are invalidated.
+
+Now that we know why it's broken, we ask how it was able to work in the first place. How did the pointers stay valid if `std::vector` couldn't move its elements?
+
+While MSVC is considered one of the most complete implementations of the standard as of 2022, this wasn't always the case. It wasn't until 2015 that Microsoft had a mostly complete implementation of C++11\. C++11 was a huge change to the language; having introduced lambdas, move construction, and `noexcept` among other things. The MSVC of 2013 had move construction, but not `noexcept`. Since `noexcept` didn't exist, the reallocation behavior of `std::vector` couldn't change depending on the traits of the element type. It would unconditionally use the move constructor of the element.
+
+And so the second mystery is solved. Because of Microsoft's partial implementation of the standard pre-2015, we could rely on our nodes staying in the same spot because our vector would move the lists it contained. When we upgraded, the "correct" behavior broke our code. The simplest solution in our case was to change the `std::vector` to a `std::list` which keeps everything stable.
+
+Personally, I found this to be a pretty interesting puzzle. That said, it should not take a detailed understanding of the standard and the history of its various implementations to find the source of a bug. Most languages are designed for writing software. Apparently, C++ was designed for solving riddles.

@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:22:26
+-->
+
+# Innovative Low-Carbon Cement From Sublime Systems Used in First Project | Engineering News-Record
+
+> 来源：[https://www.enr.com/articles/58381-innovative-low-carbon-cement-from-sublime-systems-used-in-first-project](https://www.enr.com/articles/58381-innovative-low-carbon-cement-from-sublime-systems-used-in-first-project)
+
+[Turner](https://www.turnerconstruction.com/international) Construction Co. and local ready-mix producer [Boston Sand & Gravel](https://www.bostonsand.com/) report they are the first to place concrete with Sublime Systems' zero-carbon cement in a mud mat for a building. Turner would not disclose the specific site due to the client's desired confidentiality, but said it is in the greater Boston area and within ready-mix truck distance from the BS&G facilities. 
+
+"It's going to be in that building for decades to come," says Leah Ellis, Sublime Systems' CEO. "It really was the culmination of a lot of effort to see it not just being done for testing's sake, but actually, replacing cement that would otherwise have been the carbon intensive variety."
+
+Sublime's cement is produced through a process developed at the Massachusetts Institute of Technology and pioneered by Ellis, with co-founder Yet-Ming Chiang, an MIT professor also involved in a similar technology startup, [the iron-air battery producer Form Energy.](https://www.enr.com/articles/56478-novel-w-va-iron-air-battery-plant-building-team-is-named)
+
+The cement is produced using electrochemical processes to make cement powder. Sublime's cement-making technology can be fueled by renewable electricity and its processes allow electrons to break the ingredients down at room temperature, rather than the traditional way of producing portland cement by heating limestone and clay, mixed with iron ore or fly ash, in a kiln up to 2,700°F.  
+
+"That shift in how you define cement really lets you adopt innovative products that may not be made in a fossil-fueled kiln that gives you a certain crystalline composition," Ellis says. 
+
+David Robb, a Turner estimator and the preconstruction manager on the Boston-area project, says there was nothing out of the ordinary about the concrete placement on the project and that the material provided by BS&G using Sublime's cement was tested for temperature and slump when it arrived in ready-mix trucks just as it would have been on any other project. 
+
+The placement is being used by Sublime to validate several key aspects of the performance of its cement in concrete in a commercial project. While only a small quantity of Sublime's cement was used on the project, it was mixed into a ready-mix concrete truck, maintained workability during transit, was poured out of the concrete truck into a boom pump and pumped through the boom and a series of rubber hoses and finally placed and finished in its final location on-site to set as hardened concrete. All firsts for the material. 
+
+"In the grand scheme of things, it was, really, very boring for construction," Robb says. "But it's it's a huge step in terms of our embodied carbon reduction goals that we're striving toward in the future here at Turner."
+
+He says the seven-day breaks on the mud mat placement came back in line with planned design strength. A mud mat is a layer of concrete beneath a structural concrete floor or footing over softer, wetter soil.
+
+Robb, who [heard about the Sublime in mid-2023](https://www.enr.com/articles/54809-new-technologies-for-reduced-carbon-concrete-are-on-the-horizon), was looking for new technologies as a part of Turner's embodied carbon corporate commitment . 
+
+Turner has a self-perform concrete group and Robb asked local project managers to inform him of any good opportunities to pilot a product with Sublime cement. In late January, a mud mat placement on a job with Turner self-performing as concrete contractor and Boston Sand & Gravel as the vendor came together. 
+
+Ellis says Sublime provided its cement products to Boston Sand & Gravel who mixed it to required tolerances and sent the material out in trucks where it was pumped 200 ft.
+
+"We had an opportunity for low-risk placement," says Robb. "These guys were thrown into the the gauntlet on a cold day in January pumping their material."
+
+Sublime Systems received Department of Energy award of up to $87 million to catalyze its commercial-scale, zero cement manufacturing technology March 25\. The award [from the department’s Office of Clean Energy Demonstrations (OCED)](https://www.energy.gov/articles/biden-harris-administration-announces-6-billion-transform-americas-industrial-sector) will be used for the construction of Sublime’s first commercial manufacturing plant in Holyoke, Mass., the company said.

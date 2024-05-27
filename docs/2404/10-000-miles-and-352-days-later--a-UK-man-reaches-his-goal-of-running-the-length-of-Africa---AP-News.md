@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:02:19
+-->
+
+# 10,000 miles and 352 days later, a UK man reaches his goal of running the length of Africa | AP News
+
+> 来源：[https://apnews.com/article/russ-cook-africa-10000-mile-run-dd53f51d3cb9a90fc431e007e58c2af0](https://apnews.com/article/russ-cook-africa-10000-mile-run-dd53f51d3cb9a90fc431e007e58c2af0)
+
+RAS ANGELA, Tunisia (AP) — Sore and sandblasted but triumphant, runner Russ Cook reached the northernmost point of Africa on Sunday, almost a year after he set off from its southern tip on a quest to run the length of the continent.
+
+Dozens of supporters gathered on a rocky outcrop beside the Mediterranean in northern Tunisia, cheering on the British charity fundraiser, who has run more than 16,000 kilometers (10,000 miles) across 16 countries in 352 days.
+
+“I’m a little bit tired,” Cook said — likely an understatement.
+
+In the course of his journey the 27-year-old endurance athlete from Worthing in southern England crossed jungle and desert, swerved conflict zones and was delayed by theft, injury and visa problems.
+
+Cook — known on social media by his nickname, Hardest Geezer — set off on April 22, 2023 from Cape Agulhas in South Africa, the continent’s southernmost point. He hoped to complete the journey in 240 days, running the equivalent of more than a marathon every day.
+
+He and his team had money, passports and equipment stolen in a gunpoint robbery in Angola. He was temporarily halted by back pain in Nigeria. And he was almost stopped in his tracks by the lack of a visa to enter Algeria, before diplomatic intervention from the Algerian embassy in Britain managed to secure the required documents.
+
+Cook, who has spoken about how running helped him deal with his own mental health struggles, previously ran about 3,000 kilometers (2,000 miles) from Istanbul to Worthing in 68 days.
+
+His African run has raised more than 690,000 pounds ($870,000) for the Running Charity, which works with homeless young people, and Sandblast, a charity that helps displaced people from Western Sahara.
+
+“It’s quite hard to put into words, 352 days on the road, long time without seeing family, my girlfriend,” Cook told Sky News [as he started running Sunday, accompanied by supporters](https://apnews.com/video/africa-tunisia-russ-cook-7fc90c3cffb6486e8907ce566084b75f) who’d come from far and wide to run the final stretch with him. “My body is in a lot of pain. But one more day, I’m not about to complain.”
+
+Cook said he planned to celebrate with a party, where British band Soft Play was due to perform.
+
+“We’re going to have strawberry daiquiris on the beach tonight,” he said. “It’s going to be unreal.”

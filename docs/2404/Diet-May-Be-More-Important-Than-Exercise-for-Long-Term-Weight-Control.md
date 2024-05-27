@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:27:23
+-->
+
+# Diet May Be More Important Than Exercise for Long-Term Weight Control
+
+> 来源：[https://www.businessinsider.com/why-exercise-may-not-help-you-lose-weight-diet-healthy-2021-4](https://www.businessinsider.com/why-exercise-may-not-help-you-lose-weight-diet-healthy-2021-4)
+
+Pontzer's research suggests that exercising more doesn't necessarily help you burn more calories, as the body finds sneaky ways to adapt by cutting energy use elsewhere. But what makes exercise ineffective for weight loss might explain why it's so good for our health — working out could divert excess energy from potentially harmful bodily processes like inflammation and stress, according to Pontzer.  
+
+"Exercise isn't changing how many calories you spend, but how you spend them," he told Insider. 
+
+"Diet and exercise are two different tools for two different jobs. Diet is the tool for weight loss. Exercise is your tool for everything else."
+
+## You can't outrun your metabolic budget, research suggests
+
+Working out to lose weight is based on the assumption that we burn calories at a constant rate. In this theory, if walking one mile burns 50 calories, then walking 100 miles over the course of a month would burn 5,000 calories. Theoretically, this could help you spend more energy than you consume, and prompt your body to dip into stored energy by burning fat. 
+
+That theory falls apart in the face of new data Pontzer obtained from working with the Hadza, a group of indigenous inhabitants of Tanzania, who walk miles each day as part of a traditional hunter gatherer lifestyle. 
+
+Pontzer and his team were stunned to find that they burn only slightly more calories each day than the average sedentary American adult, far fewer than expected given their very high activity levels. 
+
+This observation suggests that the exercise-metabolism equation is more of a curve, meaning that the more you exercise, the more carefully your body budgets energy.
+
+## Burning off excess energy is good for you, regardless of weight loss
+
+According to Pontzer's data from the Hadza and other groups, your body wants to stick to the same calorie budget whether you're training for a marathon or chilling on the couch — what he calls "the constrained energy framework."
+
+But while it might stall fat burning, it could also explain why [exercise is so good for us](https://www.businessinsider.com/study-high-intensity-workouts-boost-health-in-people-over-70-2020-10). After weeks or months of exercise, your body starts to reallocate calories from other activities to compensate, Pontzer's evidence suggests. 
+
+He theorizes that this includes activities that do more harm than good. Your immune system, for instance, is important for keeping you alive, but can cause damage if it's overactive, leading to issues from [allergies to autoimmune disorders](https://www.hopkinsmedicine.org/health/conditions-and-diseases/disorders-of-the-immune-system).  
+
+The constrained energy framework suggests exercise helps our body expend excess energy to keep our immune system and stress reponses more balanced. 
+
+The next step in his research is testing how this theory works, to see if we can actually measure how exercise affects every system and cell in the body beyond fat and muscle. 
+
+If it pans out, the theory could also help explain why modern, [sedentary lifestyles](https://www.businessinsider.com/sedentary-lifestyle-associated-with-increased-risk-of-cancer-study-finds-2020-6) and [processed diets](https://www.businessinsider.com/evidence-processed-food-leads-to-heart-disease-early-death-2021-1) are terrible for health and help us find a solution. 
+
+"We take it for granted that chronic diseases are part of being human, but humans in the Western world are actually quite weird," Pontzer said. "I think there's a lot more we could learn from other cultures about how the human body works."

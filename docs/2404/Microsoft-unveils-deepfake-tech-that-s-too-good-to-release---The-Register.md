@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:21:39
+-->
+
+# Microsoft unveils deepfake tech that's too good to release • The Register
+
+> 来源：[https://www.theregister.com/2024/04/20/microsoft_deepfake_vasa/](https://www.theregister.com/2024/04/20/microsoft_deepfake_vasa/)
+
+Microsoft this week demoed VASA–1, a framework for creating videos of people talking from a still image, audio sample, and text script, and claims – rightly – it's too dangerous to be released to the public.
+
+These AI-generated videos, in which people can be convincingly animated to speak scripted words in a cloned voice, are just the sort of thing the US Federal Trade Commission [warned about](https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale) last month, after previously [proposing a rule](https://www.ftc.gov/news-events/news/press-releases/2024/02/ftc-proposes-new-protections-combat-ai-impersonation-individuals) to prevent AI technology from being used for impersonation fraud.
+
+Microsoft's team acknowledge as much in their [announcement](https://www.microsoft.com/en-us/research/project/vasa-1/), which explains the technology is not being released due to ethical considerations. They insist that they're presenting research for generating virtual interactive characters and not for impersonating anyone. As such, there's no product or API planned.
+
+"Our research focuses on generating visual affective skills for virtual AI avatars, aiming for positive applications," the Redmond boffins state. "It is not intended to create content that is used to mislead or deceive.
+
+"However, like other related content generation techniques, it could still potentially be misused for impersonating humans. We are opposed to any behavior to create misleading or harmful contents of real persons, and are interested in applying our technique for advancing forgery detection."
+
+Kevin Surace, Chair of Token, a biometric authentication biz, and frequent speaker on generative AI, told *The Register* in an email that while there have been prior technology demonstrations of faces animated from a still frame and cloned voice file, Microsoft's demonstration reflects the state of the art.
+
+"The implications for personalizing emails and other business mass communication is fabulous," he opined. "Even animating older pictures as well. To some extent this is just fun and to another it has solid business applications we will all use in the coming months and years."
+
+The "fun" of deepfakes was 96 percent nonconsensual porn, when [assessed](https://regmedia.co.uk/2019/10/08/deepfake_report.pdf) [PDF] in 2019 by cybersecurity firm Deeptrace.
+
+Nonetheless, Microsoft's researchers suggest that being able to create realistic looking people and put words in their mouths has positive uses.
+
+"Such technology holds the promise of enriching digital communication, increasing accessibility for those with communicative impairments, transforming education, methods with interactive AI tutoring, and providing therapeutic support and social interaction in healthcare," they propose in a [research paper](https://arxiv.org/abs/2404.10667) that does not contain the words "porn" or "misinformation."
+
+While it's arguable AI generated video is not quite the same as a deepfake, the latter [defined](https://www.oed.com/dictionary/deepfake_n) by digital manipulation as opposed to a generative method, the distinction becomes immaterial when a convincing fake can be conjured without cut-and-paste grafting.
+
+Asked what he makes of the fact that Microsoft is not releasing this technology to the public for fear of misuse, Surace expressed doubt about the viability of restrictions.
+
+"Microsoft and others have held back for now until they work out the privacy and usage issues," he said. "How will anyone regulate who uses this for the right reasons?"
+
+Surace added that there are already open source models that are similarly sophisticated, pointing to [EMO](https://humanaigc.github.io/emote-portrait-alive/). "One can pull the source code from GitHub and build a service around it that arguably would rival Microsoft's output," he observed. "Because of the open source nature of the space, regulating it will be impossible in any case."
+
+That said, countries around the world are trying to regulate AI-fabricated people. [Canada](https://www.justice.gc.ca/eng/rp-pr/other-autre/cndii-cdncii/p6.html), [China](https://www.nature.com/articles/s42256-022-00513-4), and the [UK](https://www.legislation.gov.uk/ukpga/2023/50/enacted), among other nations, all have regulations that can be applied to deepfakes, some of which fulfill broader political goals. Britain just this week [made it illegal](https://www.gov.uk/government/news/government-cracks-down-on-deepfakes-creation) to create a sexually explicit deepfake image without consent. The sharing of such images was already disallowed under the UK's Online Safety Act of 2023.
+
+In January, a bipartisan group of US lawmakers [introduced](https://www.theregister.com/2024/01/31/ai_defiance_act/) the Disrupt Explicit Forged Images and Non-Consensual Edits Act of 2024 (DEFIANCE Act), a bill that creates a way for victims of non-consensual deepfake images to file a civil claim in court.
+
+And on Tuesday, April 16, the US Senate Committee on the Judiciary, Subcommittee on Privacy, Technology, and the Law held [a hearing](https://www.judiciary.senate.gov/committee-activity/hearings/oversight-of-ai-election-deepfakes) titled "Oversight of AI: Election Deepfakes."
+
+In prepared remarks, Rijul Gupta, CEO of DeepMedia, a deepfake detection biz, said:
+
+But think of the marketing applications. ®

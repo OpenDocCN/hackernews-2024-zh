@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:38:56
+-->
+
+# Nix: The Breaking Point — kilo.bytesize
+
+> 来源：[https://kilo.bytesize.xyz/nix-the-breaking-point](https://kilo.bytesize.xyz/nix-the-breaking-point)
+
+A torrent of emotions and frustration have engulfed the Nix Community, however one may define it. Tensions between contributors are high, tensions between non-contributors are high. There is no joy in such an environment. Within the last calendar year, problems bubbling beneath the surface have boiled over, breaching the previously restricted confines of individual conversations or one-off occurrences in chat rooms. Something needs to change, or so it would seem, unless the current dismal state of affairs is intended to persist. What, then, should change? Who will drive this change forward? And, perhaps most importantly, how can history be stopped from repeating itself.
+
+## Landscape
+
+Nix, for the longest time, has operated organically. That is to say, rules and direction have only been constructed or provided once absolutely necessary. The growth of the project is beyond what one, two, or ten could manage on their own. As such, a bureaucratic body, the NixOS Foundation, was enshrined as the entity which would oversee legal requirements for the project as well as provide direction. This north star, however, was dim at best and misleading at worst. The lacking power, or described more bluntly, backbone, of the foundation has left it appealing to few. The entity is intended to provide oversight of Nix and its related projects, but has appeared to mostly be a vehicle for advertisement or legitimization of the businesses its members operate.
+
+NixPkgs has operated in much the same way as previously described. Natural growth is difficult and, throughout the accumulation of hundreds of thousands of packages, the project certainly has its share of scars. Importantly, the package repository sees a much larger pool of contributors and interaction than Nix itself does. The ad-hoc structure of maintainers here better represent the goals of Nix users and their methods of success. Yet, these contributors are beginning to flee.
+
+The work being done for Nix and its surrounding official projects is difficult to map. A series of “teams”, ranging from security to moderation exist to compartmentalize the many processes and fulfill the requirements of Nix projects. Paradoxically, these teams are hardly more empowered than any other individual contributor, only benefiting from more direct modes of communication and name recognition. The management of projects and features is still wildly ad-hoc and limited significantly by the volunteer nature of these contributors. Frequent re-litigation of well-discussed issues for one's ego, rejection of reasonable contributions in rejection of a healthy ecosystem, and thinly-veiled hostility is a staple of the Nix landscape despite many refusing to admit such.
+
+## Leadership
+
+Put simply and plainly, Nix has none. The only entity asserting its official status as the central figure of Nix refuses to fulfill this position. Frequent inaction, unsatisfactory action, and a general disconnection from the entirety of the Nix community and ecosystem seem to be pervasive within the NixOS Foundation. Lacking the conviction to decide, fully, the direction of Nix for the entire ecosystem leaves the many corners of the community to construct their own interpretations. This model is not compatible with the current structure of Nix projects. Rather, the current boys-club of a foundation continues to stifle any natural ownership that contributors would develop for the many projects they provide value to.
+
+The figures at the helm deserve assessment and scrutiny for, without their decisions, this current set of circumstances would not have precipitated. Yet, malice should not be attributed directly to these individuals, if only for naivety. The NixOS Foundation was not created to become a body of inaction or divisiveness, and, its members do not participate for want of division within the community. Building Nix, NixOS, and all of the related tooling is still the fundamental desire of everyone involved. For fear of detracting any further, it must be said that these people are just that: people. Treat them as such.
+
+Should Nix survive its current cataclysm, a democratic future may present itself. Many of the troubles of today arise from a disconnect between the foundation members and the many Nix teams, contributors, and users. Providing these groups with methods for action may allow for the avoidance of such a problem recurring.
+
+Communities are comprised of the many. The Nix community is no exception. There is no single archetype which overlays cleanly upon every member. The myriad members express different beliefs and values, many of which are diametrically opposed. Many of these can be avoided or understood as unnecessary territory, but it is inevitable for disagreements to form and tensions with them. The actions within the Nix sphere have invoked such a disagreement, proving it had been put off for far too long. One subset of said community believes in valuing the impact their actions have upon others. Another subset believes willful ignorance towards the effects of their actions is acceptable. One cannot compromise the two views.
+
+The solution, however, is not one of compromise, but one of direction. Fundamentally, the community must be provided clear direction of Nix and its projects. Either it will be a project of conscientious action or one of ignorance. The limbo within which the issue currently sits is not sustainable. Such a decision must be made and must be done so clearly and directly. Refusing to do so has and will continue to allow malicious bodies to incite more significant harm. A community devoid of people is no community.
+
+Much of the frustration has risen from inaction by authoritative figures. Whether inconsiderate sponsorship, conflicts of interest, harmful conduct, or a refusal to collaborate, these actions have repeatedly affirmed such positions of authority as the effective owners of Nix with no consequence. Attempts at resolving any of these issues are to be deemed personal attacks with little to no validity. No action is capable of overruling this imbalance of power. With little to no recourse, the community is expected to accept every outcome.
+
+## Resolution
+
+One must now decide, what kind of project is Nix? One that does good in the world seems like a hard statement to argue with. Mindful creation is no new feat, but clearly one that must be reiterated and practiced regularly in a cooperative manner. Still, there is no simple answer for Nix; rather, three outcomes appear possible.
+
+1.  The internet moves on, people forget. Despite the current attrition Nix will continue, if only slowed briefly. The only lesson learned will be to explicitly refuse any acknowledgement of non-technical Nix topics. Nix will continue on its journey to becoming a product.
+
+2.  The NixOS Foundation acknowledges its shortcomings and, in doing so, extend governance to contributors in a democratic fashion. Some will still leave, some will refuse to return, but cooperation will be the future of Nix. The events spoken of today will provide useful reference for management of contentious issues. Nix will be created by and for the Nix Community.
+
+3.  The NixOS Foundation refuses to admit its failures and instead asserts certain undesirable actions as acceptable. In doing so, those who disagree will have no choice but to remove themselves from the now permanently hostile environment. Nix will retain only contributors accepting of these actions. All other contributors will either leave Nix entirely or collaborate on a fork. Nix will have competition by way of those who care.
+
+## Inevitably
+
+No member of the Nix Community enjoys its current state of affairs. The desire for a more peaceful, collaborative environment is shared. Yet, some do not see the incongruity of their views and actions with those opposing them. This piece is not likely to sway any of these parties, but still the reader is encouraged to reflect on these events and their forthcoming effects. The actions taken today will disturb the sobriety of tomorrow unless due care is taken. Perhaps we can all do better for each other.

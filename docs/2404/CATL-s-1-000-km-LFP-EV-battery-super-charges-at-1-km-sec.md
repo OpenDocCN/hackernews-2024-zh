@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:36:01
+-->
+
+# CATL's 1,000-km LFP EV battery super-charges at 1 km/sec
+
+> 来源：[https://newatlas.com/automotive/catl-shenxing-plus-1000-km-lfp-battery/](https://newatlas.com/automotive/catl-shenxing-plus-1000-km-lfp-battery/)
+
+CATL made headlines around the globe last August when it presented the [Shenxing battery](https://newatlas.com/automotive/catl-4c-lfp-superfast-charging-battery/), an LFP pack capable of adding 400 kilometers (249 miles) of range in a mere 10 minutes at the charger. Not a year later, and that pack's powering actual cars. This year, the company has rolled the tech into an even more impressive pack it calls the Shenxing Plus, a battery that not only pushes into four-figure range territory but also charges in 600 km (373 miles) of range in the time it takes for a bathroom-and-snacks run.
+
+If CATL's claim of a 1,000-km (620-mile) battery pack with 10-minute charging sounds familiar, that's because the battery-maker had the same specs for the Qilin battery it [introduced in 2022](https://newatlas.com/automotive/zeekr-001-1000km-catl/). So what's the big deal? The Qilin uses nickel-manganese-cobalt (NMC) chemistry, whereas the new Shenxing Plus becomes the first lithium-iron-phosphate (LFP) battery to push past the 1,000-km mark.
+
+Both NMC and LFP chemistries are versions of the well-known lithium-ion battery, but NMC offers superior weight-based energy density versus LFP. Still, LFPs have gained momentum in EV design because of their more easily sourced materials, thermal stability and longer lifespans.
+
+A rendering of the Shenxing Plus battery sitting below the floor of a passenger car
+
+CATL
+
+Typical LFP packs have an energy density ranging between 90 and 160 Wh/kg, but CATL claims that the Shenxing Plus surpasses the 200 Wh/kg threshold for the first time, topping out at 205 Wh/kg. That's still short of NMC densities, including the 255 Wh/kg of CATL's Qilin, meaning the 1,000-km Plus pack will weigh more for the same capacity, but it's a brilliant achievement that promises to bring together some best-of-both-worlds attributes.
+
+CATL explains that it achieves its superior energy density with a mix of new materials and structure, relying on a 3D honeycomb-shaped material for the anode and granular gradation technology for the cathode. In addition to improving energy density, the 3D honeycomb material controls volume expansion during charge and discharge cycles. A single-piece cell casing the company calls an industry first optimizes internal space utilization to help achieve the new energy density high.
+
+Even 1,000-km battery packs need to be recharged eventually, and the Shenxing Plus shines there, too. It offers even faster charging than the original Shenxing, zapping in 600 km of range in an estimated 10 minutes – in other words, that's 1 km per second of charge time.
+
+CATL credits that groundbreaking charging speed to a fast lithium-ion conductive coating, addition of transition metal elements, and a new nanometer encapsulation for creating smoother, more efficient transmission between anode and cathode materials. Expansion of the overcurrent area ensures the heat of high-current charging dissipates rapidly and safely.
+
+CATL CTO Gao Huan introduces the extra-long-range, ultra-fast-charging Shenxing Plus battery at Auto China 2024
+
+CATL
+
+CATL doesn't say when the Shenxing Plus batteries might find their way to production, but it's worth noting the company launched the original Shenxing battery just eight months after first showing it last August. In today's [Auto China show presentation](https://www.youtube.com/live/_PA7RqDfTRQ?si=f2NLodhjTORPYYsF), it described crunching a year's worth of work into four months in order to make the Shenxing a production reality for cars like the [Zeekr 01](https://zeekrglobal.com/article/article-20/) and GAC Aion Y Plus.
+
+Source: [CATL](https://www.catl.com/en/news/)

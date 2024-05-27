@@ -1,0 +1,52 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:29:41
+-->
+
+# Snowflake releases a flagship generative AI model of its own | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/04/24/snowflake-releases-a-flagship-generative-ai-model-of-its-own/](https://techcrunch.com/2024/04/24/snowflake-releases-a-flagship-generative-ai-model-of-its-own/)
+
+All-around, highly generalizable generative AI models were the name of the game once, and they arguably still are. But increasingly, as cloud vendors large and small join the generative AI fray, we’re seeing a new crop of models focused on the deepest-pocketed potential customers: the enterprise.
+
+Case in point: [Snowflake](https://www.snowflake.com/en/), the cloud computing company, today unveiled Arctic LLM, a generative AI model that’s described as “enterprise-grade.” Available under an Apache 2.0 license, Arctic LLM is optimized for “enterprise workloads,” including generating database code, Snowflake says, and is free for research and commercial use.
+
+“I think this is going to be the foundation that’s going to let us — Snowflake — and our customers build enterprise-grade products and actually begin to realize the promise and value of AI,” CEO Sridhar Ramaswamy said in press briefing. “You should think of this very much as our first, but big, step in the world of generative AI, with lots more to come.”
+
+## An enterprise model
+
+My colleague Devin Coldewey recently wrote about how there’s no end in sight to the onslaught of generative AI models. I recommend you [read his piece](https://techcrunch.com/2024/04/19/too-many-models/#:~:text=How%20many%20AI%20models%20is,ever%20possible%20to%20begin%20with.), but the gist is: Models are an easy way for vendors to drum up excitement for their R&D and they also serve as a funnel to their product ecosystems (e.g. model hosting, fine-tuning and so on).
+
+Arctic LLM is no different. Snowflake’s flagship model in a [family of generative AI models called Arctic](https://www.snowflake.com/blog/introducing-snowflake-arctic-embed-snowflakes-state-of-the-art-text-embedding-family-of-models/), Arctic LLM — which took around three months, 1,000 GPUs and $2 million to train — arrives on the heels of Databricks’ [DBRX](https://techcrunch.com/2024/03/27/databricks-spent-10m-on-a-generative-ai-model-that-still-cant-beat-gpt-4/), a generative AI model also marketed as optimized for the enterprise space.
+
+Snowflake draws a direct comparison between Arctic LLM and DBRX in its press materials, saying Arctic LLM outperforms DBRX on the two tasks of coding (Snowflake didn’t specify which programming languages) and [SQL](https://en.wikipedia.org/wiki/SQL) generation. The company said Arctic LLM is also better at those tasks than Meta’s Llama 2 70B (but not the more recent [Llama 3 70B](https://techcrunch.com/2024/04/18/meta-releases-llama-3-claims-its-among-the-best-open-models-available/)) and Mistral’s Mixtral-8x7B.
+
+Snowflake also claims that Arctic LLM achieves “leading performance” on a popular general language understanding benchmark, MMLU. I’ll note, though, that while MMLU purports to evaluate generative models’ ability to reason through logic problems, it includes tests that can be [solved through rote memorization](https://techcrunch.com/2024/03/07/heres-why-most-ai-benchmarks-tell-us-so-little/), so take that bullet point with a grain of salt.
+
+“Arctic LLM addresses specific needs within the enterprise sector,” Baris Gultekin, head of AI at Snowflake, told TechCrunch in an interview, “diverging from generic AI applications like composing poetry to focus on enterprise-oriented challenges, such as developing SQL co-pilots and high-quality chatbots.”
+
+Arctic LLM, like DBRX and Google’s top-performing generative model of the moment, Gemini 1.5 Pro, is a mixture of experts (MoE) architecture. MoE architectures basically break down data processing tasks into subtasks and then delegate them to smaller, specialized “expert” models. So, while Arctic LLM contains 480 billion parameters, it only activates 17 billion at a time — enough to drive the 128 separate expert models. (Parameters essentially define the skill of an AI model on a problem, like analyzing and generating text.)
+
+Snowflake claims that this efficient design enabled it to train Arctic LLM on open public web data sets (including [RefinedWeb](https://arxiv.org/abs/2306.01116), [C4](https://paperswithcode.com/dataset/c4), [RedPajama](https://github.com/togethercomputer/RedPajama-Data) and [StarCoder](https://huggingface.co/datasets/bigcode/starcoderdata)) at “roughly one-eighth the cost of similar models.”
+
+## Running everywhere
+
+Snowflake is providing resources like coding templates and a list of training sources alongside Arctic LLM to guide users through the process of getting the model up and running and fine-tuning it for particular use cases. But, recognizing that those are likely to be costly and complex undertakings for most developers (fine-tuning or running Arctic LLM requires around eight GPUs), Snowflake’s also pledging to make Arctic LLM available across a range of hosts, including Hugging Face, Microsoft Azure, Together AI’s model-hosting service and enterprise generative AI platform Lamini.
+
+Here’s the rub, though: Arctic LLM will be available *first* on Cortex, Snowflake’s platform for building AI- and machine learning-powered apps and services. The company’s unsurprisingly pitching it as the preferred way to run Arctic LLM with “security,” “governance” and scalability.
+
+“Our dream here is, within a year, to have an API that our customers can use so that business users can directly talk to data,” Ramaswamy said. “It would’ve been easy for us to say, ‘Oh, we’ll just wait for some open source model and we’ll use it. Instead, we’re making a foundational investment because we think [it’s] going to unlock more value for our customers.”
+
+So I’m left wondering: Who’s Arctic LLM really for besides Snowflake customers?
+
+In a landscape full of “[open](https://techcrunch.com/2024/04/20/this-week-in-ai-when-open-source-isnt-so-open/)” generative models that can be fine-tuned for practically any purpose, Arctic LLM doesn’t stand out in any obvious way. Its architecture might bring efficiency gains over some of the other options out there. But I’m not convinced that they’ll be dramatic enough to sway enterprises away from the countless other well-known and -supported, business-friendly generative models (e.g. [GPT-4](https://techcrunch.com/tag/gpt-4/)).
+
+There’s also a point in Arctic LLM’s disfavor to consider: its relatively small context.
+
+In generative AI, context window refers to input data (e.g. text) that a model considers before generating output (e.g. more text). Models with small context windows are prone to forgetting the content of even very recent conversations, while models with larger contexts typically avoid this pitfall.
+
+Arctic LLM’s context is between ~8,000 and ~24,000 words, dependent on the fine-tuning method — far below that of models like Anthropic’s Claude 3 Opus and Google’s Gemini 1.5 Pro.
+
+Snowflake doesn’t mention it in the marketing, but Arctic LLM almost certainly suffers from the same limitations and shortcomings as other generative AI models — namely, [hallucinations](https://techcrunch.com/2023/09/04/are-language-models-doomed-to-always-hallucinate/) (i.e. confidently answering requests incorrectly). That’s because Arctic LLM, along with every other generative AI model in existence, is a statistical probability machine — one that, again, has a small context window. It guesses based on vast amounts of examples which data makes the most “sense” to place where (e.g. the word “go” before “the market” in the sentence “I go to the market”). It’ll inevitably guess wrong — and that’s a “hallucination.”
+
+As Devin writes in his piece, until the next major technical breakthrough, incremental improvements are all we have to look forward to in the generative AI domain. That won’t stop vendors like Snowflake from championing them as great achievements, though, and marketing them for all they’re worth.

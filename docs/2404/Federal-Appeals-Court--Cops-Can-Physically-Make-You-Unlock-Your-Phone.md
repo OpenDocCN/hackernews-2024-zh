@@ -1,0 +1,39 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:24:16
+-->
+
+# Federal Appeals Court: Cops Can Physically Make You Unlock Your Phone
+
+> 来源：[https://reason.com/2024/04/19/appeals-court-rules-that-cops-can-physically-make-you-unlock-your-phone/](https://reason.com/2024/04/19/appeals-court-rules-that-cops-can-physically-make-you-unlock-your-phone/)
+
+As we keep more and more personal data on our phones, [iPhone](https://www.wired.com/story/apple-pq3-post-quantum-encryption/) and [Android](https://www.linkedin.com/pulse/android-encryption-basics-mike-burr-cissp-giac-gmob) devices now have some of the most advanced encryption technology in existence to keep that information safe from prying eyes. The easiest way around that, of course, is for someone to gain access to your phone.
+
+This week, a federal court decided that police officers can *make* you unlock your phone, even by physically forcing you to press your thumb against it.
+
+In November 2021, Jeremy Payne was [pulled over](https://www.documentcloud.org/documents/24555464-usa-v-jeremy-travis-payne-mts-exhibits?responsive=1&title=1) by two California Highway Patrol (CHP) officers over his car's window tinting. When asked, Payne admitted that he was on parole, which the officers confirmed. After finding Payne's cellphone in the car, officers unlocked it by [forcibly pressing his thumb against it](https://www.documentcloud.org/documents/24555465-usa-v-jeremy-travis-payne-mts?responsive=1&title=1) as he sat handcuffed. (The officers claimed in their arrest report that Payne "reluctantly unlocked the cell phone" when asked, which Payne disputed; the government later accepted in court "that defendant's thumbprint was compelled.")
+
+The officers searched through Payne's camera roll and found a video taken the same day, which appeared to show "several bags of blue pills (suspected to be fentanyl)." After checking the phone's map and finding what they suspected to be a home address, the officers drove there and used Payne's keys to enter and search the residence. Inside, they  found and seized more than 800 pills.
+
+Payne was [indicted](https://www.documentcloud.org/documents/24555467-usa-v-jeremy-travis-payne-indictment?responsive=1&title=1) for possession with intent to distribute fentanyl and cocaine.
+
+In a [motion to suppress](https://www.documentcloud.org/documents/24555465-usa-v-jeremy-travis-payne-mts?responsive=1&title=1), Payne's attorneys argued that by forcing him to unlock his phone, the officers "compelled a testimonial communication," violating both the Fourth Amendment's protection against unreasonable search and seizure and the Fifth Amendment's guarantee against self-incrimination. Even though the provisions of his parole required him to surrender any electronic devices and passcodes, "failure to comply could result in 'arrest pending further investigation' or confiscation of the device pending investigation," not the use of force to make him open the phone.
+
+The district court [denied](https://www.documentcloud.org/documents/24555466-usa-v-jeremy-travis-payne-denial-of-mts?responsive=1&title=1) the motion to suppress, and Payne pleaded guilty. In November 2022, he was [sentenced](https://www.documentcloud.org/documents/24555469-usa-v-jeremy-travis-payne-sentencing?responsive=1&title=1) to 12 years in prison. Notably, Payne had only served three years for the crime for which he was on parole—assault with a deadly weapon on a peace officer.
+
+Payne appealed the denial of the motion to suppress. This week, in an [opinion](https://cdn.ca9.uscourts.gov/datastore/opinions/2024/04/17/22-50262.pdf) authored by Judge Richard Tallman, the U.S. Court of Appeals for the 9th Circuit ruled against Payne.
+
+Searches "incident to arrest" are an [accepted part](https://www.law.cornell.edu/constitution-conan/amendment-4/search-incident-to-arrest-doctrine) of Fourth Amendment precedent. Further, Tallman wrote that as a parolee, Payne has "a significantly diminished expectation of privacy," and even though the conditions of his parole did not require him to "provide a biometric identifier," the distinction was insufficient to support throwing out the search altogether.
+
+But Tallman went a step further in the Fifth Amendment analysis: "We hold that the compelled use of Payne's thumb to unlock his phone (which he had already identified
+for the officers) required no cognitive exertion, placing it firmly in the same category as a blood draw or fingerprint taken at booking," he wrote. "The act itself merely provided CHP with access to a source of potential information."
+
+From a practical standpoint, this is chilling. First of all, the Supreme Court [ruled in 2016](https://reason.com/2016/06/23/supreme-court-says-4th-amendment-prohibi/) that police needed a warrant before drawing a suspect's blood.
+
+And one can argue that fingerprinting a suspect as they're arrested is part and parcel with establishing their identity. Nearly half of U.S. states [require people to identify themselves](https://worldpopulationreview.com/state-rankings/stop-and-id-states) to police if asked.
+
+But forcibly gaining access to someone's phone provides more than just their identity—it's a window into their entire lives. Even cursory access to someone's phone can turn up travel history, banking information, and call and text logs—a treasure trove of potentially incriminating information, all of which would otherwise require a warrant.
+
+When they drafted the Fourth Amendment, the Founders [drew on the history](https://constitution.congress.gov/browse/essay/amdt4-2/ALDE_00013706/) of "writs of assistance," general warrants used by British authorities in the American colonies that allowed government agents to enter homes at will and look for anything disallowed. As a result, the Fourth Amendment requires search warrants based on probable cause and signed by a judge.
+
+Tallman does note the peculiar circumstances of the case: "Our opinion should not be read to extend to all instances where a biometric is used to unlock an electronic device." But, he adds, "the outcome…may have been different had [the officer] required Payne to independently select the finger that he placed on the phone" instead of forcibly mashing Payne's thumb into it himself.

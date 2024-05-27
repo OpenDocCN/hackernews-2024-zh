@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:20:57
+-->
+
+# Tesla Cybertruck No Match For Car Wash
+
+> 来源：[https://jalopnik.com/tesla-cybertruck-no-match-for-car-wash-1851417011](https://jalopnik.com/tesla-cybertruck-no-match-for-car-wash-1851417011)
+
+After just a couple of months and [a few thousand miles](https://jalopnik.com/tesla-cybertruck-is-significantly-worse-at-towing-than-1851406117) of ownership, [Tik Tok user @captian.ad’s Tesla Cybertruck](https://www.tiktok.com/@captian.ad) was effectively [a several-thousand-pound paperweight](https://jalopnik.com/tesla-cybertruck-teardown-finds-massive-battery-pack-lo-1851400405) for several hours. After taking his truck to the beach and stopping off at a car wash to clean it up, he parked the truck in his garage, [where it decided to just stop working for a while](https://www.tiktok.com/@captian.ad/video/7357905192454606123?is_from_webapp=1&sender_device=pc). The screen, which runs all functions of the truck, went black, [and wouldn’t respond at all](https://jalopnik.com/tesla-cybertruck-owners-forum-is-already-full-of-tales-1851388334), even after performing the factory prescribed reboot procedure. Not great.
+
+Tesla's Cybertruck Has Finally Arrived
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/21637.vtt" srclang="en">
+
+After filing a ticket with Tesla to get the truck rebooted, the Cybertrucker went to bed and [woke up the next morning to a mostly functional truck](https://www.tiktok.com/@captian.ad/video/7358236474321505578). A call with Tesla confirmed that the truck had needed a complete reboot which took over five hours of sitting to complete. From the moment he’d initiated the reboot method of holding down two steering wheel buttons, the truck was apparently working on a reboot until some time in the middle of the night.
+
+Interestingly the user doesn’t mention whether Tesla was able to offer any insight as to why the truck decided to stop working, if it was caused by the car wash or something else entirely. The Cybertruck’s owners manual does caution against ever washing the truck in direct sunlight, and there is a section expressly mentioning that the truck has to be switched into “Car Wash Mode” before washing to avoid damage to parts of the vehicle.
+
+If you’re out there driving a Tesla Cybertruck, maybe don’t wash it for a while. You never know when you’ll be left stranded waiting for the truck to sort itself out in five hours or so.

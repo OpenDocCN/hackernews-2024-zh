@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:21:01
+-->
+
+# Protocol - Futility Closet
+
+> 来源：[https://www.futilitycloset.com/2024/04/19/protocol-3/](https://www.futilitycloset.com/2024/04/19/protocol-3/)
+
+New Mexico’s state senate took up a startling amendment in 1995 — it would have required psychologists to dress up as wizards when providing expert testimony on a defendant’s competency:
+
+> When a psychologist or psychiatrist testifies during a defendant’s competency hearing, the psychologist or psychiatrist shall wear a cone-shaped hat that is not less than two feet tall. The surface of the hat shall be imprinted with stars and lightning bolts. Additionally, a psychologist or psychiatrist shall be required to don a white beard that is not less than 18 inches in length and shall punctuate crucial elements of his testimony by stabbing the air with a wand. Whenever a psychologist or psychiatrist provides expert testimony regarding a defendant’s competency, the bailiff shall contemporaneously dim the courtroom lights and administer two strikes to a Chinese gong.
+
+The measure had received unanimous approval in the senate and was headed for the house of representatives when sponsor Duncan Scott explained that he’d intended it as satire — he felt that too many mental health practitioners had been acting as expert witnesses. It was withdrawn and never signed into law.

@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:58:41
+-->
+
+# Netflix's '3 Body Problem' Has Chilling Social Media Parallels
+
+> 来源：[https://reason.com/2024/04/03/the-3-body-problems-chilling-social-media-parallel/](https://reason.com/2024/04/03/the-3-body-problems-chilling-social-media-parallel/)
+
+When Cixin Liu's science fiction novel, *The Three-Body Problem*, debuted in English translation for American readers in 2014, it was clear that it was a comment on the perils of Chinese authoritarianism. The books have now been adapted into a series for Netflix; seen today, the story looks as much like a comment on social media. There's a reason that the first shades so quickly into the second. 
+
+The novel, initially published in 2008, begins with a harrowing sequence from China's Cultural Revolution in which a scientist is beaten and ultimately killed as part of a "struggle session," a public self-incrimination in front of an angry mob. The session was led by revolutionary youth who insisted the scientist had committed a crime against the people by stating basic facts about the fundamental nature of the universe that undermined the ideology of Chinese Communism. But the scientist does not recant. He cannot bring himself to say that which he knows to be simply untrue. 
+
+That sequence frames the novel and the rest of Liu's trilogy. It's a story about authoritarian overreach, the danger of mob thinking, the endurance of science and fact even in the face of political pressure, and [the hidden power of the private mind](https://reason.com/2016/12/18/the-hidden-mind/). Yet in a reminder of the Chinese government's persistent censorial power, Liu [apparently](https://twitter.com/TrungTPhan/status/1771606190809907318) had to move it to later in the novel in order to appease Communist Party overseers. He now recommends that readers seek out the English translation.
+
+The Netflix adaptation, *3 Body Problem*, also begins with this sequence. But the struggle session feels more familiar now, thanks to social media. Since 2014, almost anyone who has followed online arguments has witnessed a social media struggle session, or [dozens of them](https://www.thefire.org/research-learn/scholars-under-fire-database-guide), in which some notable person, often an intellectual or media figure, is hit with politicized demands to recant their own inconvenient ideas, beliefs, and even, at times, inarguably true facts—or face consequences from an online mob. These online struggle sessions don't result in violent death and they are (usually) not state-sponsored, but they do result in social punishments, including and especially the loss of work. The common name for these episodes isn't struggle sessions; it's cancellations. They are not precisely comparable phenomena, but they share methods and an overarching ethos. 
+
+Both the books and the series track humanity's first contact with an alien race that is slowly making its way toward Earth. These aliens, called Trisolarans in the books and San Ti in the series, do not have the capacity for private, individual thoughts, as every passing idea is "projected" for all to see. As the story proceeds, the aliens use their superior technology to inflict a twisted version of this on the human race, sending a "sophon" to spy on the Earth. A sophon is a proton-sized computer that is capable of surveiling any and all human communications, from private conversations to electronic messages to records stored in offline data banks. It transforms the entire planet into a terrifying panopticon. Effectively, it allows Earth's alien antagonists to see and hear *everything*.
+
+As with the opening sequence, the parallels with China's totalitarian surveillance regime are clear: Chinese citizens are always being watched, always being spied upon, creating a climate of fear and distrust and paranoia, and repressing the sort of free back and forth that is necessary to both scientific progress and cultural cohesion. Indeed, the aliens explicitly intend to slow or block scientific discovery. And a fractured and distrustful humanity that cannot negotiate its differences and disputes makes for an easier enemy to conquer. 
+
+Seen from today's vantage, this plays as much like a comment on social media and cancel culture as it does on Chinese totalitarianism. 
+
+Liu's story and its metaphors are fluid, imperfect, and exaggerated. The similarities are somewhat fuzzy and amorphous, as literary metaphors often are. And yet, the social media parallels are chilling. 
+
+We don't live in a world with a sophon, but thanks to social media, we do live in a world of tracked and recorded communication, in which so many thoughts and utterances and formerly private communications now have the potential to become public, to be used and manipulated against the speaker. And so it is perhaps not surprising that over the last decade, we have witnessed declining trust, paranoia, and socio-political disarray. 
+
+Social media run by private companies is not authoritarianism. But the always-on, all-thoughts-are-public surveillance system it effectively creates shares some features with the always-prying nature of authoritarian governments, and at times can lead to similar (if not as consequential) results. 
+
+What are we to do about this strange and unnerving shift in the nature of human connection? The Netflix series, still in its first season, has only just begun to introduce these concepts. But Liu's books offer some ideas. 
+
+Late in the series, there's a global push to forcibly shut down all forms of electronic communication in order to hide from the terrors of the universe. This effort is led by governments but enthusiastically endorsed and even demanded by the terrified public. Liu imagined this scenario more than a decade before COVID-19, but in the aftermath of the pandemic, in which the initial wave of draconian restrictions were sometimes as much of a product of public demand as top-down control, it's easy to see how this sort of panicked overreaction could happen. 
+
+But in Liu's telling, humanity survives not through top-down systems of control but through individual efforts, carried out in private. In both the show and the books, humanity's response to the aliens is led by a group of people known as Wallfacers who are empowered and granted vast resources to carry out whatever plans they desire, with no questions asked. Their plans are never to be made public, never to be stated clearly or communicated for the sophons to see. 
+
+The Wallfacers are charged with defeating the alien invaders using the one advantage of an individualistic society: their own thoughts, which the sophons cannot see. Private thoughts and private beliefs, known only to the self, are the salve, the solution, and the key to victory in the age of vast surveillance, whatever form it takes. 
+
+Indeed, in Liu's books, one Wallfacer, rather than attempt to build weapons or command an army against the invaders, simply spends his time imagining a beautiful, gentle, secret paradise with an idealized version of someone he hoped to love. It's a beautiful, quiet, placid, peaceful space for rest, for joy, for the comfort of another soul. There's a lesson here for the fight against authoritarianism and the age of social media and cancel culture: There's power in the hidden mind.

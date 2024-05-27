@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:20:31
+-->
+
+# Tesla Recalls All Cybertrucks Over Accelerator Pedal Defect
+
+> 来源：[https://gizmodo.com/tesla-recalls-all-cybertrucks-over-accelerator-pedal-de-1851421654](https://gizmodo.com/tesla-recalls-all-cybertrucks-over-accelerator-pedal-de-1851421654)
+
+ Photo: Mike Mareen (Shutterstock) 
+
+[Tesla’s Cybertruck](https://gizmodo.com/posts-about-broken-cybertrucks-fill-tesla-owners-forums-1851389945) has been [quite an embarrassment](https://gizmodo.com/cybertruck-drivers-humiliating-themselves-are-the-bigge-1851320392) and not just because of its looks. The electric vehicle that looks like it was designed by a child already has [rust issues](https://gizmodo.com/cybertruck-owners-say-their-stainless-steel-trucks-are-1851257880), [doesn’t do well with puddles](https://jalopnik.com/watch-this-tesla-cybertruck-sputter-out-after-driving-t-1851347369), and [some can’t even survive a car wash](https://gizmodo.com/drive-through-car-wash-was-too-much-for-tesla-cybertruc-1851420356), but an issue that causes the accelerator pedal to stick finally prompted a recall.
+
+Tesla Investors Not Happy With Mr. Tweet's Tweets
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/19013.vtt" srclang="en">
+
+Tesla will recall 3,878 Cybertrucks on Friday, according to a [report](https://static.nhtsa.gov/odi/rcl/2024/RCLRPT-24V276-7026.PDF) from the National Highway Traffic Safety Administration (NHTSA). Those vehicles have a defect in which the pad on top of the pedal can slip off and get wedged into the interior trim causing unintended acceleration. This defect is due to a lubricant that was used during the assembly process in order to make it easier to attach the pad to the pedal. Unfortunately, it appears that this workaround also makes it easier for the pad to become detached from the pedal.
+
+Telsa didn’t immediately respond to a request for comment about the recall.
+
+Cybertruck owners affected by the issue will get their pedals replaced or reworked for free. Tesla has already begun addressing the defect in production and will apply the fix to trucks already at delivery centers.
+
+The issue of the stuck pedal started popping up at the end of March with some owners [posting about it on social media](https://gizmodo.com/tesla-cybertruck-hit-with-stop-sale-because-of-unintend-1851410669). Last week, Tesla put a hold on sales of the Cybertruck as it investigated the problem. According to the NHTSA, there have been no reports of death or injuries due to the defect.
+
+It took years for the Cybertruck to make its way from an [embarrassing stage reveal](https://www.youtube.com/watch?v=udxR5rBq_Vg&t=1s) to people’s driveways [last December](https://gizmodo.com/elon-musk-makes-first-deliveries-cybertruck-price-range-1851062357). Its “unique” design with a sticker price starting at just over $80,000 has resulted in [one embarrassing moment after another](https://gizmodo.com/cybertruck-drivers-humiliating-themselves-are-the-bigge-1851320392). Musk, on the other hand, seems to be more focused on getting a [$55 billion compensation package](https://jalopnik.com/tesla-creates-website-to-convince-shareholders-to-make-1851421233) from shareholders.

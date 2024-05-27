@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:53:07
+-->
+
+# AMD ROCm Going Open-Source: Will Include Software Stack & Hardware Documentation
+
+> 来源：[https://wccftech.com/amd-rocm-going-open-source-will-include-software-stack-hardware-documentation/](https://wccftech.com/amd-rocm-going-open-source-will-include-software-stack-hardware-documentation/)
+
+AMD plans to open-source portions of its ROCm software stack and hardware documentation in a future update as the company aims to refine its software and AI ecosystem for consumers.
+
+## AMD Says It Will Open-Source Portions of Its ROCm Software Stack & Hardware Documentation After Getting Feedback From The Community
+
+AMD was recently in hot waters regarding its software and AI support under ROCm. Companies such as [George Hotz's](https://twitter.com/__tinygrad__/status/1770155923211997403?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1770155923211997403%7Ctwgr%5Eb225cbf7218d4c79f18ff26dfe9c88ccc74c241a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwccftech.com%2Ftinycorp-ditches-amd-tinybox-ai-package-opt-for-nvidia-or-intel-options%2F), TinyGrad, [called out AMD for its unstable driver support,](https://wccftech.com/tinycorp-ditches-amd-tinybox-ai-package-opt-for-nvidia-or-intel-options/) leading to a very unstable experience using the Radeon RX GPUs. One of the solutions proposed was to make the Radeon Software and ROCm open-source so that the community could offer driver fixes & various optimizations.
+
+Well, it looks like [AMD has listened to the feedback](https://twitter.com/amdradeon/status/1775261152987271614?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1775261152987271614%7Ctwgr%5E8f021c3e633e270f41bec7a94bc9403646d6e905%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fvideocardz.com%2Fnewz%2Famd-to-open-source-more-of-radeon-software-provide-more-hardware-documentation) and is now going to open-source additional portions of its software stack and hardware documentation. In addition to that, AMD has also created a tracker called "[fuzzyHSA](https://github.com/nod-ai/fuzzyHSA/issues)" which will capture feedback and provide updates on the go. Replying to the tiny corp, AMD states that they are focused on providing software and firmware updates to address the reported issues. Their software team is working on these now and will report the latest status on GitHub relatively soon.
+
+So far, AMD has done a pretty good job in [bringing ROCm 6.1 support to its consumer-level hardware, such as the Radeon RX 7900 XTX, Radeon RX 7900 XT, Radeon RX 7900 GRE, Radeon Pro W7900 and Radeon Pro W7800](https://wccftech.com/amd-preps-for-rocm-6-1-release-coming-enhanced-support-features/). These coupled with a range of AI optimizations have delivered a strong software stack and the open-source nature may just help them get their things going forward.
+
+The company is competing with the likes of [NVIDIA's CUDA](https://wccftech.com/nvidia-halts-use-of-cuda-on-other-platforms-lists-new-warning-in-the-eula/) and [Intel's oneAPI,](https://wccftech.com/qualcomm-intel-google-join-hands-to-come-nvidia-plans-on-dethroning-cuda-oneapi/) with the former being the undisputed leader in the AI segment right now and the latter being worked on by various companies, including Chipzilla, as a means to tackle CUDA. So it will be interesting to see where AMD's ROCm falls after the open-sourcing initiates.
+
+Share this story
+
+Facebook

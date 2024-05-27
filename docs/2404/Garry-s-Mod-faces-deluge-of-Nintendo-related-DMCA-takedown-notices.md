@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:31:38
+-->
+
+# Garry’s Mod faces deluge of Nintendo-related DMCA takedown notices
+
+> 来源：[https://www.engadget.com/garrys-mod-faces-deluge-of-nintendo-related-dmca-takedown-notices-123027589.html](https://www.engadget.com/garrys-mod-faces-deluge-of-nintendo-related-dmca-takedown-notices-123027589.html)
+
+Facepunch Studios has [announced](https://store.steampowered.com/news/app/4000/view/4200245595694413052) on Steam that it's removing 20 years' worth of Nintendo-related workshop items for its sandbox game [*Garry's Mod*](https://www.engadget.com/2013-11-26-garrys-mod-tops-3-5-million-sold-continues-to-pick-up-steam.html) to comply with the Japanese company's demands. Earlier this year, an X user with the name Brewster T. Koopa [posted](https://twitter.com/brewsterkoopa/status/1756767363112763649) that a group of trolls was filing false DMCA claims against the game to get Nintendo add-ons removed and to get add-on makers to shut down. The perpetrators allegedly used a fake email to impersonate Nintendo's lawyers to send DMCA takedown notices. Facepunch Studios said in its new announcement, that it believes the demands legitimately came from Nintendo and that it has to respect the company's decision and start taking down items related to its IPs.
+
+"This is an ongoing process, as we have 20 years of uploads to go through," the developer wrote. "If you want to help us by deleting your Nintendo related uploads and never uploading them again, that would help us a lot."
+
+> [PSA] False flaggers on the Garry's Mod Workshop.
+> 
+> There is someone, or a group of trolls going around the Gmod workshop filing false DMCA claims and shutting down addons, over 10 Gmod addon makers, myself included have been attacked, with over a dozen of our addons gone. [pic.twitter.com/ZwVVhQjQlu](https://t.co/ZwVVhQjQlu)
+> 
+> — Brewster T. Koopa (@brewsterkoopa) [February 11, 2024](https://twitter.com/brewsterkoopa/status/1756767363112763649?ref_src=twsrc%5Etfw)
+
+Koopa said in a follow-up tweet that they sent an email to the company to let it know that the demands aren't actually from Nintendo. They previously argued that the takedown notices couldn't be from the Japanese gaming giant, because Nintendo add-ons have been around since 2005 and because the company would've contacted Valve, the publisher of *Garry's Mod*, itself.
+
+While the announcement is still up, Facepunch founder Garry Newman announced that his team has received people's emails and DMs and that the developer is conducting an investigation. "We need to take these things seriously (particularly from Nintendo), but we also can't let people misuse DMCA takedowns," Newman wrote. We've reached out to Nintendo to ask whether the takedowns Facepunch received truly came from the company, and we'll update this post once they respond.
+
+> Yes, we have got your emails and dms, we have seen your theads, we're doing our own investigations. We need to take these things seriously (particularly from Nintendo), but we also can't let people misuse DMCA takedowns.
+> 
+> — garry (@garrynewman) [April 25, 2024](https://twitter.com/garrynewman/status/1783374453562290376?ref_src=twsrc%5Etfw)
+
+**Update, April 25 2024, 11:x04AM ET:** Newman has since taken to X to [state](https://twitter.com/garrynewman/status/1783501547361411494) that he has "been assured that the takedowns have been verified by Nintendo as legit" and the takedowns "will now continue as planned."

@@ -1,0 +1,72 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:59:06
+-->
+
+# The Secret Lives of Ernest Beaux - by Brian Buchanan
+
+> 来源：[https://buchananb.substack.com/p/the-secret-lives-of-ernest-beaux](https://buchananb.substack.com/p/the-secret-lives-of-ernest-beaux)
+
+**Ernest Beaux is known for Chanel No5, the most famous perfume in the world. But the man himself remains in the shadows, a name less well known than some of the other personalities in Chanel’s circle: Stravinsky, Diaghilev & Nijinsky of the Ballets Russes, and Winston Churchill, to name a few.**
+
+Beaux was born in Moscow on the seventh of December 1881, one of eight children by two marriages. His parents were French expatriates and the children grew up to speak French and Russian fluently.
+
+At that time, perfumers often came from Grasse – where their family had contacts in the industry. Beaux was not a Grassois but he was almost as lucky. His brother Édouard, who was eighteen years older than him, worked at Rallet – a large perfume and soap maker in Moscow. Rallet was a prestigious company that supplied toiletries to the Tsar and other European royals, and so was an ideal springboard for a young perfumer.
+
+Édouard had already become managing director by the time Ernest joined the company so young Beaux’ path to the top was assured. Rallet was then owned by Chiris, the perfume supplier from Grasse, so, unlike François Coty, who had to travel to Grasse to learn his trade, Grasse came to Beaux. Ernest started at Rallet in the soap division, and he finished as director of perfumery.
+
+In the book Son Parfum by his grand daughter Nathalie Beaux, Ernest is described as being intransigent. She writes how, once he rose to authority, Ernest became so hated by his workers they talked about throwing him in a vat of boiling soap. Luckily, Édouard was a diplomatic soul and would smooth things over when his brother got into trouble.
+
+When the First World War broke out in 1914, Beaux went to France and enlisted as an artillery officer. His unit of Breton gunners was posted to Russia, possibly the Kola peninsula, which is near the lakes of Murmansk in the Arctic circle. The time he spent there was a foundational experience for Beaux, one that he would draw on later in his career.
+
+Being a trained chemist, Beaux was soon recalled to France and given the mission of setting up a chemical weapons factory. One day there was an explosion in the production facility and Beaux was exposed to Cloropicrin, a poison gas. He was immediately rushed to hospital where he remained for two months. When he recovered, he could have accepted a medical discharge but he volunteered to go back, and returned to the fighting in Russia.
+
+After the Communist revolution of 1917, a Bolshevik army was mustered in Ukraine and laid siege to Kiev. In December of that year Beaux was given another special assignment, this time of a secret nature. His job was to enter the Ukrainian capital and remove all sensitive materials from the British and French embassies. This was not armed conflict but was nonetheless extremely dangerous. Nathalie Beaux writes that Ernest's car was hit by bullets on his way to the capital, but he and a colleague still managed to reach their destination where their task was to burn the embassies' documents, bury the caches of weapons, and organise the removal of White Russians and western agents from the encircled city.
+
+Russian counter intelligence soon became aware of Beaux' presence in Kiev and put a bounty on the head of this French 'liaison officer'. As a consequence he had to work in disguise, frequently changing residence and assuming different identities. It was surely thanks to his fluent Russian that Beaux managed to remain undetected for three months, and, after completing his mission, he escaped Kiev and reported back to French Military Intelligence.
+
+When Beaux was thirty he married a Russian of German extraction, Ida Schönaich, who was eighteen at the time. Nathalie comments that 'besides a magnetic attraction – one for the other – they had nothing in common'. Beaux was refined and urbane, an art lover who enjoyed the ballet and concerts. By contrast, Ida was out of her depths in polite society, and – especially after the birth of their son Mitya – preferred to stay at home. If it wasn't already a dysfunctional union, when her beloved 'Nestia' returned from the war – damaged psychologically by what he had seen and done – it became evident to both parties there was no future for them together, and they began to drift apart.
+
+While Beaux was in Ukraine, his Moscow apartment had been requisitioned by the Bolsheviks, and when Ida went there looking for him, she found the locks changed and someone else living there. She stayed long enough to gather up some documents and family photos, and then left – never to return. Because he and Ida had lost touch, when Ernest arrived in Moscow he was unaware of the situation with his apartment and was shocked to be told by the new occupants that he had no rights to his property, and he should leave before they called the commissar.
+
+Back on active service in Russia, Beaux was put in charge of a multinational raiding party. They were sent up-river on a commando-style mission to seize an outpost of the Red army, which they achieved after several days of skirmishing. Going through captured documents, Beaux realised a large force of Red Guards had been alerted and would soon arrive, so he ordered a hasty withdrawal and he and his unit returned to Allied lines with valuable intelligence.
+
+For his actions Beaux was decorated with the Cross of Saint Vladimir by the White Russian government, and the British Military Cross. More significantly, he was transferred to a new role, this time in Archangel, the port city on the Arctic coast. He was assigned to Mudyug Island, where the so called Interventionist Forces of the Western Allies operated a prison camp for captured suspects.
+
+Beaux’ role was to interrogate the prisoners and determine who were Bolshevik or revolutionary sympathisers, and who were White loyalists or merely innocents caught up in the chaos. Some 'ordinary' prisoners were given their freedom – in return for serving in a White Russian battalion, but those thought to be partisans had a much worse fate. The authorities had at their disposal open air Ice Cells, where recalcitrant prisoners would be held until they either talked, or succumbed to the cold.
+
+Beaux was finally sent back to France in 1919 where he was made Chevalier de la Légion d'honneur.
+
+With his military service now at an end, Beaux returned to his chosen career – perfumer, and within a short time his chef d'œuvre was realised, Chanel N°5.
+
+N°5 is not only the most famous perfume in the world but is still one of its best sellers. This is not without reason. It has benefited from highly successful marketing but it is, without doubt, a wonderful perfume; audacious, but lush and perfectly composed, rightly hailed as a masterpiece. It would be hard to overestimate its influence on the history of western perfumery. Although it wasn't the first aldehydic bouquet – that was Quelques Fleurs, which Beaux had studied closely – N°5 is often thought to be the founding work of the genre. For many people it is *the* aldehydic, in the sense that Shalimar is the Mother of all Ambers (the genre once known as Oriental).
+
+There is an apocryphal story that Chanel N°5 was the result of a compounding error; an assistant used pure aldehydes rather than the 10% prescribed. But Beaux insisted the overdose was intentional and it was inspired by the Arctic, where – according to an article in Perfumer & Flavorist – the midnight sun releases ‘an extremely fresh scent from the lakes’.
+
+In Son Parfum, his grand daughter wrote how Ernest felt 'he could – and must – create his perfume based on the odours [of] the High North'. But more than that, his perfume was charged with memories of Ida – and her ‘palest of blue eyes’. For Beaux, creating perfume was 'a way to make sense of the years of separation, of violence and death, and above all the terrible silence’ that he experienced in Siberia.
+
+She also says that Beaux – who was a keen experimenter – wanted to make a perfume using new materials which 'could come from nature, *or* from science'. As it turned out, the inspiration was natural, the materials pure science.
+
+As well as N°5, Beaux made other perfumes for Chanel. Sadly, these often feel like variations of his most famous work. What is less well known however, is he also worked for another brand.
+
+When Parfums Chanel was sold to the Wertheimer brothers – who owned the cosmetics and perfume house Bourjois, Beaux became head perfumer for both companies. During this time he created Bourjois' best known work Soir de Paris (1928). Unfortunately, this has been reformulated and has little to do with the work of Beaux. There still exist other Bourjois perfumes by him though, of which one is Flamme (1932). It opens with an unusual green bergamot and hyacinth, and possibly violet leaf, but underneath it’s a woody aldehydic and soft-rose bouquet; rather like a budget N°5.
+
+By the 1940's, Coco Chanel was becoming more and more unhappy with the 10% of the profit she received from Parfums Chanel and as a result she decided to release her own perfumes under the brand name Mademoiselle Chanel. It's not clear if this was a serious venture, or just a bargaining chip to use against her business partners, but the existence of a perfume called Mademoiselle Chanel N°1 is not in doubt. Examples of N°1 still exist, but they are very rare indeed.
+
+The creator of N°1 is unknown, but it's thought that Beaux was behind it. After all, who better to create a concourant of N°5 than the perfumer behind the original?
+
+Beaux openly praised MC N°1 but he could not claim authorship of it; it was expressly forbidden by Chanel's contract with the Wertheimer's – who were his employers after all. Friends of Chanel called it ‘Super N°5’. History doesn’t recall what the Wertheimers said...
+
+One way to find out who was behind MC N°1 would be by chemical analysis, and in 2007 the results of a GCMS of the juice were published in an article by Perfumer & Flavorist. Excerpts of this are quoted on the website perfumeprojects.com where it states that MC No 1 was 'similar in concept to Rallet No1' which is known to be the work of Beaux.
+
+The article goes on to note that the aldehyde cocktail in N°5 was replaced by a whopping 25% of *a*-n-methyl ionone, and so, Mademoiselle Chanel N°1 becomes 'a violet – orris modification of the Chanel N°5 theme'. The main difference being the aldehydes are replaced by another synthetic molecule.
+
+*a*-n-methyl ionone was 'a novel material in the 1940's, just as the aldehydes [were] in the 1910's'; an innovation which is in keeping with Beaux’ stated enthusiasm for new materials. Even though a 25% overdose was an audacious and highly unusual practice at the time, as we know from No5, it was not foreign to the work of Beaux.
+
+Another argument to support the idea that MC N°1 was the work of Beaux is the assertion that *a*-n-methyl ionone – at the time an unusual and hard to find molecule – would have been available to him in the form of Raldeine A, a captive of Givaudan, which was owned by Beaux’ old friend Leon Givaudan.
+
+Perfumer & Flavorist write that the 'conceptual similarity to Rallet N°1 [and] the use of an overdose of a novel material ... bear Beaux' signature’. In the light of this, Perfumeprojects.com concludes; Mademoiselle Chanel N°1 is ‘difficult to attribute to anyone but Ernest Beaux’. However, it still can’t be proved that Beaux was behind Chanel's pirate perfume – neither he nor anyone else would talk.
+
+olfastory.com do give him the credit for MC N°1 though, and they put the release date at 1946, the year Pierre Wertheimer returned from Mexico and signed over to Coco an extra 2% of profits from Parfums Chanel. After this, MC N°1 is said to have disappeared.
+
+And so, with Mademoiselle Chanel N°1, which was probably his last perfume, Beaux merged back into the place where he seemed to have thrived best, the shining demi world of half truths and secrets where he drew inspiration for his most famous – and surely best – perfume, Chanel N°5.

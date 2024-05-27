@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:07:44
+-->
+
+# If Inheritance is so bad, why does everyone use it? • Buttondown
+
+> 来源：[https://buttondown.email/hillelwayne/archive/if-inheritance-is-so-bad-why-does-everyone-use-it/](https://buttondown.email/hillelwayne/archive/if-inheritance-is-so-bad-why-does-everyone-use-it/)
+
+<date>May 15, 2020</date>
+
+# If Inheritance is so bad, why does everyone use it?
+
+[This essay](https://solovyov.net/blog/2020/inheritance/) says that inheritance is harmful and if possible you should "ban inheritance completely". You see these arguments a lot, as well as things like "prefer composition to inheritance". A lot of these arguments argue that in practice inheritance has problems. But they don't preclude inheritance working in another context, maybe with a better language syntax. And it doesn't explain why inheritance became so popular in the first place. I want to explore what's *fundamentally* challenging about inheritance and why we all use it anyway.
+
+My favorite essay on inheritance is [Why inheritance never made any sense](https://www.sicpers.info/2018/03/why-inheritance-never-made-any-sense/). In it Graham argues that there's actually three ways that we mean inheritance:
+
+> 1.  Ontological inheritance is about specialisation: this thing is a specific variety of that thing (a football is a sphere and it has this radius)
+> 2.  Abstract data type inheritance is about substitution: this thing behaves in all the ways that thing does and has this behaviour (this is the Liskov substitution principle)
+> 3.  Implementation inheritance is about code sharing: this thing takes some of the properties of that thing and overrides or augments them in this way.
+
+Since conventional class-based inheritance conflates these three types of inheritance, it doesn't really satisfy any of them properly. This is what makes it so challenging to use in practice. Things like abstract data types and modules and such only hit one of these kinds at a time, properly separating the concerns and making them easier to use.
+
+So then why do we use inheritance instead of ADTs and modules and stuff? And that's where we need to look at the history.
+
+### History
+
+Where did inheritance come from? As with many things in OOP, it comes from SIMULA-67\. The creators, Dahl and Nygaard, introduced objects as a generalization of their SIMULA-I's simulation syntax. That's important to understand why inheritance works the way it does: it was originally designed for use in simulation software. The [first examples](http://simula67.at.ifi.uio.no/Standard-70/Simula-1970-NR-22.pdf) of inheritance are for modeling customer orders and a jobshop simulation!
+
+SIMULA had a big influence on other object languages. Smalltalk credits it for a lot of the design decisions. This meant that inheritance was pretty entrenched by the point that the alternative started appearing. And that's the key point: inheritance came *first*. The idea of subtypes, or abstract data types, come from Barbara Liskov's CLU. That was six years later, *in part* based on her knowledge of SIMULA. Notably, CLU was a research language, not an industry language. ADTs only entered widespread industry use with Java interfaces, about two decades after CLU. ^(In the intervening thirty years, inheritance was established by C++, Smalltalk, and Object Pascal.)
+
+Similarly, modularization was a concept for a while but modules only appeared as a first-class language component with Modula, which came out in 1975\. Even *today* most industry languages don't have proper modules that encourage code specialization. Most languages with "modules" are really just namespaces.
+
+Time to take off the Fact Hat and put on the Speculation Hat. It seems to me that ADTs and modules were in part influenced by the existence of inheritance. People saw the idea and try to separate out the various concerns. This happens quite often in language design, and in fact any sort of technical development. Often people will introduce a practical innovation that sort of blends together a bunch of abstract concepts *without knowing about those concepts beforehand*. It's only once the innovation is used in practice and people get a better "intuition" for it that they start to see the abstract concepts and try to tease them apart. Of course, once something becomes established it's very hard to get rid of. And because a lot of languages started out using inheritance, it became a common thing.
+
+See also: *everything else in software*.
+
+It's also notably the first case where we put a syntactic relationship between two classes. Surprisingly, it still remains one of the only ways to relate two classes. You've basically got interfaces, traits/mixins, and inheritance, and that's *it*. I suspect this is because most object relationships are domain-based, and while language syntax tries to remain generality-based.
+
+### The better mousetrap
+
+There is one part of the story we need to talk about though: can we do inheritance in a better way? The key language here is Eiffel, by Bertrand Meyer. Eiffel used to be a rising giant in the OOP world but has mostly faded into irrelevance now. Among other things, almost all of the relationships were inheritance-based. There were no interfaces, no modules, no traits, etc. You're even expected to use multiple inheritance quite regularly.
+
+This isn't as bad as it sounds. Eiffel was designed from the start to avoid a lot of the pitfalls that you often see with inheritance. For example it avoided the "diamond problem" with a robust renaming mechanism. It also had a really interesting feature that made its inheritance a lot more powerful: code contracts. You could place preconditions and postconditions on methods that would be checked and every call. If you inherited the class, though, Eiffel could guarantee that you could *only* weaken preconditions and *only* strengthen postconditions. This means that you can substitute a child class anywhere the parent class would be accepted and guarantee that all of the invariants were still satisfied. That's a pretty cool language feature!
+
+Incidentally, Meyer also coined the "open closed principle", which is the O in SOLID. So his thinking on languages did have at least some effect on our modern development, if somewhat indirect.
+
+Unfortunately, Eiffel also had a minor problem with inheritance. You see, Eiffel is statically typed. The input types of a method's parameters are effectively preconditions. This means, to be type safe, you should only be able to "weaken the preconditions" on an inherited method's parameters' types, like say "instead of taking any natural number, this method can now take any integer". This is equivalent to replacing a type with its supertype, or "contravariance". But Meyer thought that ["wasn't useful"](https://archive.eiffel.com/doc/manuals/technology/typing/paper/page.html) and made method parameters *covariant*, replaceable with their *subtypes*. This makes the type system unsound.
+
+They call this the "CATcall" problem and still haven't figured out how to fix it.
+
+So yeah, inheritance has problems. I mean of course there are cases where you can safely use it, and there are cases where it's the right choice, but it definitely shows signs of being a "first-generation solution".
+
+## Some thoughts on first-generation solutions
+
+Probably something bigger here worth exploring but that's getting further away from "why inheritance", so I'll leave that for another newsletter. Cheers!
+
+* * *
+
+## Update 2024-04-24
+
+I wrote this essay four years ago. Since then I've written [this piece exploring when inheritance is preferable to composition](https://buttondown.email/hillelwayne/archive/when-to-prefer-inheritance-to-composition/).
+
+*If you're reading this on the web, you can subscribe [here](/hillelwayne). Updates are once a week. My main website is [here](https://www.hillelwayne.com).*

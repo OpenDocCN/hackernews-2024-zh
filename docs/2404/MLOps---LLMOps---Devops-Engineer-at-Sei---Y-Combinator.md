@@ -1,0 +1,59 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:19:15
+-->
+
+# MLOps / LLMOps / Devops Engineer at Sei | Y Combinator
+
+> 来源：[https://www.ycombinator.com/companies/sei/jobs/C2oRTUB-mlops-llmops-devops-engineer](https://www.ycombinator.com/companies/sei/jobs/C2oRTUB-mlops-llmops-devops-engineer)
+
+# Who?
+
+We are Sei, an AI-powered regulatory compliance platform.
+
+We are backed by world-class investors including Y Combinator, Tribe Capital, PayPal, Picus Capital & Hashed. Pranay (CEO) and Ram (CTO) are the founders. We have combined experience of 20+ years of building fintech, and tech products for businesses & customers across the world at companies such as Deutsche Bank, Cloud Kitchens, PayPal, TransferWise, and Amazon, among others.
+
+We are looking for a devops engineer who will help shape the tech, product, and culture of the company. We are a pre-product-market fit company, so expect things to move fast (not a cliche) and change directions as we twist and turn to get to P-M fit.
+
+# What to expect
+
+The tech stack looks like the below (expect this to change as we scale):
+
+1.  Typescript for APIs
+2.  Python scripts for AI/ML
+3.  Kafka, Spark, and data warehouses for ML pipelines (spark on Python)
+4.  AWS, GCP, Azure & Terraform
+5.  Foundation and custom models deployed in multiple cloud vendors
+
+You can expect to do all of the following:
+
+1.  Run, scale, and maintain infrastructure
+2.  Create scaleable infra to support enterprise loads (distributed GPU compute, foundation models, orchestrating across multiple cloud vendors, etc.)
+3.  Fool-proof security across the stack - encryption, hashing, privacy, VPC, etc.
+4.  Infrastructure as code - build terraform scripts and ensure easy replication of the infra across different regions
+5.  Manage production deployments, logging, and monitoring
+6.  Setup on-call processes
+7.  Mentor junior engineers
+
+# Our values
+
+1.  Continuous 360 feedback: Everyone is expected to share constructive critical feedback with everyone else, including the founders.
+2.  Product-minded: Everyone shares product ownership, so we expect everyone to do customer outreach, support, and talk to customers for feedback and new features.
+3.  Doers over talkers: We spend time figuring out the right direction to take and then execute very fast. No one is too “senior” to do a job - the CTO will code every day, the CEO will sell every day and everyone takes care of customer support on a schedule. We understand the difference between real work and pretense.
+4.  Humanity over everything else: We sell the product to businesses, but in reality, we sell it to real humans on the other side. Our end customers are consumers using the product through our UI or integrated with our APIs, so we are building the world’s most human-centric company (no pun intended). Kindness is expected and empathy is the core value we’re looking for.
+
+# About you
+
+1.  A solid devops engineer who has additional skills in either MLOps or LLMOps. We prefer candidates who have some experience with ML/GPUs/LLMs.
+2.  We don’t read much into your CV, but rather see what you have done in your life so far (side projects, open-source contributions, blogs, etc.). We don’t care about degrees, the institutions you went to, or the companies you worked for before. We are open to talking as long as you have put in the reps, good judgment and clarity, align with our values, and have a strong track record of thoughtful work.
+3.  You can take ownership of our LLM deployments, data pipelines, and backend infra to APIs to help support enterprise workloads.
+4.  We expect you to have worked with early-stage companies before (0 to 1 or 1 to 10), have an extremely strong bias for action, and have built and/or scaled systems from scratch.
+
+Pay and benefits We offer a solid, competitive package (including early-stage equity). We give you the flexibility to choose the split between cash and equity.
+
+# Why you should not join
+
+1.  If you want to coast along and do the minimal possible work. The work hours will be intense, we regularly work one of the week-end days as well. It takes a lot of sweat to get a startup off the ground and you will let the team down if you don’t pull up the socks.
+2.  If you cannot do intense work every day (with exceptions of course) - the above point talks about the sheer quantity of the work, but this is more on the quality. We have intentionally kept meetings to a bare minimum, so people can get into their zones and be productive. But if this gets you distracted and you commit half-assed things, then we might not be the right fit for you.
+3.  If you are not easy-going with the team. We have hired a team of people who are friendly and help each other out. There is zero attitude in the team. We sometimes have conflicting opinions on how things should be done, but at the end of the day we disagree and still commit to doing the things that move the company forward.
+4.  If you cannot be with us in our office in Gurgaon at least 3 days a week.

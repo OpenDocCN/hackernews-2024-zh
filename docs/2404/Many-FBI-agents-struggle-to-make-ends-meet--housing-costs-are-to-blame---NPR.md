@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:11:51
+-->
+
+# Many FBI agents struggle to make ends meet, housing costs are to blame : NPR
+
+> 来源：[https://www.npr.org/2024/04/11/1243982287/fbi-agents-housing-costshttps://github.com/gizak/termui](https://www.npr.org/2024/04/11/1243982287/fbi-agents-housing-costshttps://github.com/gizak/termui)
+
+The Empire State Building is lit in pastel colors to mark Easter as it stands between the towers of Hudson Yards in New York City on March 31. **Gary Hershorn/Getty Images** ****hide caption****
+
+****toggle caption****Gary Hershorn/Getty Images
+
+The Empire State Building is lit in pastel colors to mark Easter as it stands between the towers of Hudson Yards in New York City on March 31.
+
+Gary Hershorn/Getty Images
+
+Many FBI agents based in cities with a high cost of living are struggling to make ends meet, forcing them to make hours-long commutes or double up in apartments, according to bureau and Justice Department officials.
+
+Natalie Bara, president of the FBI Agents Association, said she's heard from two or three agents sharing an apartment near New York City, andothers who commute four hours each day, back and forth to their field offices. Some circumstances are even more extreme, she added.
+
+"They're having to juggle being able to afford rent and/or utilities versus being able to actually buy groceries, so it's getting to a level where it's becoming very, very difficult to not only recruit agents into these high cost of living areas, but also retain them in those areas," said Bara, who is a second-generation FBI agent.
+
+A survey last year found more than two-thirds of agents who live in these places said it's difficult to manage on their current salaries.
+
+The Agents Association is pressing for a housing allowance to support those workers who pay steep rent or mortgages because they livein New York, Newark, Honolulu, San Diego, San Francisco, Los Angeles, Boston, Miami, Seattle and Washington, D.C. They're asking for $165 million to be included in the Justice Department's 2025 budget to pay for a pilot program.
+
+FBI officials have been looking into the problem since 2021, comparing government compensation scales against the poverty line and analyzing how other federal agencies and private sector employers pay their workers.
+
+"There are multiple stressors that folks experience," said Caroline Otto, assistant director of the FBI's Resource Planning office. "We have heard very compelling and heart-wrenching stories across the workforce in these areas."
+
+FBI agents have little say in where they are placed once they graduate from the academy. What's more, agents usually come to the bureau as a second career, and they often take a pay cut to start.
+
+In New York, for example, starting salaries for FBI agents hover around $73,000\. But a nonprofit group in the city reported people need to earn at least $100,000 to afford food, housing and transportation there. That number reaches $150,000 to cover a family of four people.
+
+Representatives from the Agents Association have met with leaders at the FBI and the Justice Department to raise their concerns.
+
+The FBI says it needs both additional funding and authority from Congress to pursue a housing allowance. Rather than a pilot program, FBI leaders are hoping for something more permanent.
+
+"We are looking for a more permanent, sustainable solution for all individuals within these high-cost field offices," said Otto, the assistant director.
+
+At the Justice Department, Assistant Attorney General for Administration Jolene Lauria said officials are aware of financial challenges that federal workers face in the field — not just FBI employees, but across other parts of the DOJ as well.
+
+"The Justice Department is supportive of innovative efforts undertaken by the FBI and is also working across its components to identify achievable and sustainable strategies that support our people in the field," Lauria said. "The Department is ready and willing to work with Congress on more permanent solutions."
+
+It's not clear whether a majority in the closely divided House of Representatives will support any FBI housing allowance.
+
+Former President Donald Trump, the presumptive nominee for the Republican party in the 2024 election, has targeted the FBI workforce with steady criticism for years. And at a "weaponization of government" event at the conservative-leaning Heritage Foundation this week, there were new calls to "defund" the bureau.

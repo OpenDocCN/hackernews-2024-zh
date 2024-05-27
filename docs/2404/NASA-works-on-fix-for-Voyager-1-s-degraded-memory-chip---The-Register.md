@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:14:48
+-->
+
+# NASA works on fix for Voyager 1's degraded memory chip • The Register
+
+> 来源：[https://www.theregister.com/2024/04/15/voyager_engineers_prepare_fix/](https://www.theregister.com/2024/04/15/voyager_engineers_prepare_fix/)
+
+Engineers at NASA have pinpointed some corrupted memory as the cause of Voyager 1's troubles and are working on a remote fix to deal with the hardware problem.
+
+The veteran probe began sending unreadable data back to Earth in [late 2023](https://www.theregister.com/2023/12/14/engineers_work_to_fix_voyager/), and engineers have tried to understand the nature of the issue. Last month, they [sent a command](https://www.theregister.com/2024/03/14/voyager_1_not_dead/) – a "poke" to the spacecraft's Flight Data System (FDS) – and the resulting data stream contained a complete memory dump from the computer.
+
+The team was able to use this readout, which contained the computer's code and variables, to ascertain that approximately 3 percent of the FDS memory had been corrupted. That corruption is preventing normal operation of the FDS, which is responsible for packaging the probe's engineering and science data before it gets passed to the Telemetry Modulation Unit (TMU), the radio transmitter and is sent back to Earth.
+
+The Voyager team [reckons](https://blogs.nasa.gov/voyager/2024/04/04/engineers-pinpoint-cause-of-voyager-1-issue-are-working-on-solution/) that a single chip responsible for the corrupted portion of memory is at fault, although they can only make an informed guess with regard to what has happened.
+
+Two leading theories are that the chip has simply worn out having spent 46 years in space, or that an energetic particle might have damaged it.
+
+As Voyager 1 is [well out of the reach](https://eyes.nasa.gov/apps/orrery/#/sc_voyager_1) of any physical intervention, the issue will need to be addressed in software.
+
+According to NASA: "Although it may take weeks or months, engineers are optimistic they can find a way for the FDS to operate normally without the unusable memory hardware, which would enable Voyager 1 to begin returning science and engineering data again."
+
+Computer problems [caused by cosmic rays](https://ieeexplore.ieee.org/document/4328188) and energetic particles have long challenged spacecraft designers. Some might merely result in a bit flip, while others can leave satellites inoperable or damaged.
+
+Voyager 2 [suffered a bit flip in 2010](https://www.jpl.nasa.gov/news/engineers-diagnosing-voyager-2-data-system-update), which caused problems with science data transmitted from the spacecraft and was traced to the FDS. A computer reset dealt with the problem.
+
+This time, however, the hardware appears to have become inoperative, requiring engineers to devise something more complicated than a simple turn-it-off-and-on-again solution. ®

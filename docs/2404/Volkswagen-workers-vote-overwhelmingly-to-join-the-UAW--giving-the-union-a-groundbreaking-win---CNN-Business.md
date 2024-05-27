@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:22:43
+-->
+
+# Volkswagen workers vote overwhelmingly to join the UAW, giving the union a groundbreaking win | CNN Business
+
+> 来源：[https://www.cnn.com/2024/04/19/business/volkswagen-uaw-vote/index.html](https://www.cnn.com/2024/04/19/business/volkswagen-uaw-vote/index.html)
+
+New York CNN  — 
+
+Hourly workers at Volkswagen’s plant in Chattanooga, Tennessee, overwhelming voted to join the United Auto Workers late Friday, a major breakthrough in the union’s effort to organize workers at plants nationwide.
+
+Shortly after 11 pm ETon Friday the National Labor Relations Board, the federal body that oversees such votes, announced that 73% of the 3,600 workers at the plant who cast ballots had voted in favor of joining the union. There was an 84% turnout among eligible voters.
+
+“This election is big,” said Kelcey Smith, a worker in the paint department at Volkswagen, in a UAW statement. “This is the time; this is the place. Southern workers are ready to stand up and win a better life.”
+
+There are roughly 150,000 workers at nonunion auto plants in the United States today, roughly the same number as at the American plants of the three unionized automakers — Gener﻿al Motors, Ford and Stellantis. If the union can win the right to represent workers across the broad swath of the nonunion auto plants, it could increase their leverage in future contract negotiations.
+
+The UAW’s victory could also provide a high-profile beachhead for unions in Southern states, which have a much lower level of union representation among workers than in Northern industrial states. Most of the nonunion auto plants are spread across the south.
+
+The union has announced an effort to represent workers at not only Volkswagen, but also [nine other foreign automakers](https://www.cnn.com/2023/11/29/business/uaw-organize-nonunion-automakers/index.html) with American plants — BMW, Honda, Hyundai, Mazda, Mercedes, Nissan, Subaru, Toyota and Volvo. It has already filed to have another election at the [Mercedes plant in Vance, Alabama](https://www.cnn.com/2024/04/05/business/uaw-mercedes-union-vote/index.html), just outside of Tuscaloosa. That vote is set to take place next month and be concluded on May 17.
+
+It is also seeking to represent workers at three American automakers making electric vehicles — Tesla, Rivian and Lucid. But it has yet to file to hold votes at those American EV makers or at the American plants of the eight foreign automakers other than Volkswagen and Mercedes.
+
+Unlike many employers who conduct campaigns against union membership when faced with an organizing effort, Volkswagen had remained neutral in this campaign. Its statement once the vote was announced was similarly even-handed, stating only the vote results and that “We will await certification of the results by the NLRB. Volkswagen thanks its Chattanooga workers for voting in this election.”
+
+That certification is expected to come within five days if Volkswagen does not file objections to the vote, according to the NLRB. The agency said the company is expected to begin bargaining in good faith with the union at that time.
+
+One reason the company was more neutral than many employers facing a union vote is the strength of unions in its home country of Germany. The main union for its plants there has a seat on the company’s board.
+
+## Auto strikes and contracts helped win vote
+
+The union’s organizing efforts follow a [six-week strike](https://www.cnn.com/2023/09/15/business/auto-workers-strike/index.html) against the three unionized automakers last fall, which won [record pay increases](https://www.cnn.com/2023/10/30/business/gm-uaw-tentative-agreement/index.html) for UAW members at the three companies. They received immediate raises of at least 11% and pay increases totaling more than 30% over the life of the contract, which runs through April 2028.
+
+Many of the nonunion automakers, including Volkswagen, gave their workers similar raises in the wake of the UAW contracts. But the workers at the nonunion plants generally earn less than their counterparts at the unionized automakers.
+
+The average worker in Volkswagen’s Chattanooga plant makes about $60,000 a year before bonuses and benefits, according to the company. Production workers working under the recent UAW contract now make about $36 an hour, or about $75,000 a year before overtime, bonuses and benefits.
+
+Volkswagen once before had had an American plant where workers were represented by the UAW, in Pennsylvania. But that plant closed in 1988 in the face of weak American sales by Volkswagen. And the UAW has had little success winning the right to represent nonunion auto workers since then, until Friday’s vote.
+
+But the union’s effort had been opposed by a coalition of six southern Republican governors who have nonunion auto plants in their states.
+
+The six, including Tennessee Gov. Bill Lee as well as the governors of Alabama, Georgia, Mississippi, South Carolina and Texas, signed a letter this week arguing those nonunion jobs would be at risk if the union won Friday’s vote.
+
+“The reality is companies have choices when it comes to where to invest and bring jobs and opportunity. We have worked tirelessly on behalf of our constituents to bring good-paying jobs to our states,” said the letter. “Unionization would certainly put our states’ jobs in jeopardy.”
+
+But the vote represents a run of success by the nation’s unions, which won [pay increases of 10% or more](https://www.cnn.com/2023/11/21/business/big-paydays-union-members/index.html) for nearly a million union members last year, according to an analysis by CNN. [Strikes](https://www.cnn.com/2024/02/21/business/2023-strike-summary) were at a decade high in 2023, and organizing activity also increased.
+
+Friday’s vote results were praised by the AFL-CIO, the main federation of unions in the country.
+
+“This victory sends a powerful message to corporate interests everywhere: Workers will no longer tolerate exploitation and mistreatment,” said the AFL-CIO’s statement. “Whether it’s autoworkers in Tennessee, film crews in Hollywood, hotel workers in Las Vegas or baristas at the local coffee shop, when working people stand together in solidarity, we have the power to enact meaningful change and usher in a brighter future for all.”
+
+*This story has been updated with additional context and developments.*

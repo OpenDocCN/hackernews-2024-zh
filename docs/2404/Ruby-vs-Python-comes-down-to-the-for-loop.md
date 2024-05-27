@@ -1,0 +1,132 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:26:18
+-->
+
+# Ruby vs Python comes down to the for loop
+
+> 来源：[https://softwaredoug.com/blog/2021/11/12/ruby-vs-python-for-loop.html](https://softwaredoug.com/blog/2021/11/12/ruby-vs-python-for-loop.html)
+
+So much of how Ruby and Python differ comes down to the `for` loop.
+
+Python embraces `for`. Objects tell `for` how to work with them, and the for loop’s body processes what’s given back by the object. Ruby does the opposite. In Ruby, `for` itself (via `each`) is a method of the Object. The caller passes the body of the for loop to this method.
+
+With idiomatic Python, the object-model submits to the for loop. In Ruby’s case, the for loop submits to the object-model.
+
+That is to say, in Python, if you wish to customize iteration, an object tells the language how it should be iterated:
+
+```
+class Stuff:
+    def __init__(self):
+        self.a_list = [1,2,3,4]
+        self.position = 0
+    def __next__(self):
+        try:
+            value = self.a_list[self.position]
+            self.position += 1
+            return value
+        except IndexError:
+            self.position = 0
+            raise StopIteration
+    def __iter__(self):
+        return self 
+```
+
+Here `Stuff` uses methods `__next__` and `__iter__` to make itself iterable.
+
+```
+for data in Stuff():
+    print(data) 
+```
+
+In idiomatic Ruby, however, you do something quite the opposite. You create `for` itself as a method, and it accepts code (the body) to run. Ruby puts procedural code in blocks so they can be passed around. Then in your `each` method you interact with the block using `yield`, passing the value into the block to do what you need (the block is kind of an implicit argument on any method).
+
+If we rewrote the code above, it would be
+
+```
+class Stuff
+  def initialize
+    @a_list = [1, 2, 3, 4]
+  end
+
+  def each
+    for item in @a_list
+      yield item
+    end
+  end
+end 
+```
+
+Using `each` to iterate:
+
+```
+Stuff.new().each do |item|
+  puts item
+end 
+```
+
+Instead of passing data back to the for loop (Python) you pass the code to the data (Ruby).
+
+But it goes deeper than this:
+
+Python builds on `for`-like constructs for all kinds of processing; Ruby pushes other kinds of data processing work to methods.
+
+Pythonic code uses list and dictionary comprehensions to implement map and filter, with the same for/iteration semantics at the core of those expressions.
+
+```
+In [2]: [item for item in Stuff()]
+Out[2]: [1, 2, 3, 4]
+
+In [3]: [item for item in Stuff() if item % 2 == 0]
+Out[3]: [2, 4] 
+```
+
+Ruby keeps going with its methods-first approach, except instead of `each` we have a new set of methods commonly implemented on collections, as below:
+
+```
+class Stuff
+  ...
+
+  def select
+    out = []
+    each do |e|
+      # If block returns truthy on e, append to out
+      if yield(e)
+        out << e
+      end
+    end
+    out
+  end
+
+  def map
+    out = []
+    # One line block syntax, append output of block processed on e to out
+    each {|e| out << yield(e) } 
+    out
+end 
+```
+
+```
+puts Stuff.new().map {|item| item}
+puts Stuff.new().select{|item| item.even?} 
+```
+
+Python says “you tell us how to iterate your instances, we’ll decide what we do with your data.” Python has a few language based primitives for iteration and processing, and to customize that iteration we simply add the right code to the for loop’s (or expressions) body.
+
+Ruby flips the script, giving the objects deeper customizability. Yes in some cases we could simply add more control flow inside blocks. Yes, we could bend our usage of `each` to basically do `map`. But Ruby lets objects give different `map` and `each` implementations (perhaps “each”’s implementation would be very suboptimal, or even unsafe, if used for “map”). Ruby objects can be much more forward about the best ways to process its data.
+
+In Ruby, the objects control the affordances. In Python, the language does.
+
+Idiomatic Python has strong opinions about data processing. Python says “look, 90% of your code will fit neatly into these ideas, just conform to it and get your work done.” Just make your objects for-loopable and get out of my hair. However Ruby says “there will be important cases where we don’t want to give the caller that much power”. So Ruby encourages objects to control how they’re processed and developers are encouraged to fall in line to how the objects want to be interacted with. Ruby chooses expressiveness with fewer opinions about data.
+
+Python feels more like an extension of C-based “object oriented” programming. In C-based OO, like with [posix file descriptors](https://en.wikipedia.org/wiki/File_descriptor) or [Win32 window handles](https://stackoverflow.com/questions/2334966/win32-application-arent-so-object-oriented-and-why-there-are-so-many-pointers) the language doesn’t enforce bundling ‘methods’ with the object itself. Rather the object-to-method bundling happens out of convention. Python thinks this procedural world can be evolved - it upgrades this mindset to make it safer. Free functions exist, and indeed, are often encouraged over methods. Objects exist, but in a more hesitant way. Methods accept “self” as their first parameter, almost in the same way C functions in Win32 or Posix API accept a handle. When functions get passed around, they are treated almost like C function pointers. The procedural paradigm comes first and serves as the crucial foundation for everything, with object oriented semantics layered on top.
+
+Ruby, however, inverts this. Ruby puts object-orientation as the foundation of the pyramid. Ruby contains the messy procedural world in blocks, letting objects work with those procedural blocks. Instead of breaking objects to conform to the language’s procedural foundation, Ruby makes procedural code fit into the object’s view of the world. Ruby has real privates, unlike Python which has private methods / parameters only out of convention.
+
+It’s no wonder that Python felt natural to my brain when I came to it from a system-programming perspective. It evolved and made that world safer, with an ability to write C when needed. Perhaps that’s why it’s found its home in a system resource intensive numerical computing space.
+
+It’s also no wonder that Ruby feels like a natural fit for developers building more fluent, perhaps safer, APIs and DSLs. Ruby wants programmers to model the domain, not the programming environment, and for many jobs this feels like the right approach.
+
+A search developer like me, working at a [Ruby shop](http://engineering.shopify.com) needs to navigate these differences. Maybe you’ll want to join me on this Ruby-Python-Search Adventure? Well then maybe [apply to this job](https://jobs.smartrecruiters.com/ni/Shopify/bedf9119-9a23-4fd3-8d8a-7fcbf168eca9-senior-relevance-engineer-search-discovery) :-p
+
+Special Thanks to [Felipe Besson](https://felipebesson.com/), [Simon Eskildsen](https://sirupsen.com/) and [John Berryman](http://blog.jnbrymn.com/) for reviewing this post and giving substantive edits and feedback!

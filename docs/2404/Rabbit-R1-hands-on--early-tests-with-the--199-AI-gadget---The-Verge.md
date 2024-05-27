@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:29:55
+-->
+
+# Rabbit R1 hands-on: early tests with the $199 AI gadget - The Verge
+
+> 来源：[https://www.theverge.com/24138746/rabbit-r1-hands-on-ai-gadget-chatgpt](https://www.theverge.com/24138746/rabbit-r1-hands-on-ai-gadget-chatgpt)
+
+There were times I wasn’t sure [the Rabbit R1](/2024/1/18/24042688/rabbit-r1-ai-gadget-handheld-news-updates-storystream) was even a real thing. The AI-powered, Teenage Engineering-designed device came out of nowhere to become [one of the biggest stories at CES](/2024/1/9/24030667/rabbit-r1-ai-action-model-price-release-date), promising a level of fun and whimsy that felt much better than some of the more self-serious AI companies out there. CEO Jesse Lyu practically promised the world in this $199 device.
+
+Well, say this for Rabbit: it’s real. [Last night](/2024/4/23/24138733/hello-from-the-rabbit-r1-launch-party), I went to the swanky TWA Hotel in New York City, along with a few hundred reporters, creators, and [particularly enthusiastic R1 buyers](/2024/1/10/24033498/rabbit-r1-sold-out-ces-ai). After a couple of hours of photo booths, specialty cocktails, and a rousing keynote and demo from Lyu — in which he made near-constant reference to and fun of [the Humane AI Pin](/24126502/humane-ai-pin-review) — we all got our R1s to take home. I’ve been using mine ever since, and I have some thoughts. And some questions.
+
+*It might be a little big for some hands, but the R1 fits nicely enough in mine.*
+
+From a hardware perspective, the R1 screams “kinda meh Android phone.” Here are the salient specs: it’s about three inches tall and wide and a half-inch thick. It weighs 115 grams, which is about two-thirds as much as the iPhone 15\. It has a 2.88-inch screen, runs on a 2.3GHz MediaTek MT6765 processor, and has 128 gigs of storage and four gigs of RAM. It has a speaker on the back, two mics on the top, and a SIM card slot on the side right next to the USB-C charging port. It only comes in one color, a hue Rabbit calls “leuchtorange” but is often known as “brilliant orange” or “luminous orange.” It’s definitely orange, and it’s definitely luminous.
+
+At this point, the best way I can describe the R1 is like a Picasso painting of a smartphone: it has most of the same parts, just laid out really differently. Instead of sitting on top or in the back, the R1’s camera sits in a cutout space on the right side of the device, where it can spin its lens to face both toward and away from you. 
+
+The R1 is like a Picasso painting of a smartphone
+
+After spending a few hours playing with the device, I have to say: it’s pretty nice. Not luxurious, or even particularly high-end, just silly and fun. Where Humane’s AI Pin feels like a carefully sculpted metal gem, the R1 feels like an old-school MP3 player crossed with a fidget spinner. The wheel spins a little stiffly for my taste but smoothly enough, the screen is a little fuzzy but fine, and the main action button feels satisfying to thump on. 
+
+When I first got the device and connected it to Wi-Fi, it then immediately asked me to sign up for an account at Rabbithole, the R1’s web portal. I did that, scanned a QR code with the R1 to get it synced up, and immediately did a software update. I spent that time logging in to the only four external services the R1 currently connects to: Spotify, Uber, DoorDash, and Midjourney. 
+
+*The Rabbithole app is for managing your logins and seeing your notes. It needs some work.*
+
+Once I was eventually up and running, I started chatting with the R1\. So far, it does a solid job with basic AI questions: it gave me lots of good information about this week’s NFL draft, found a few restaurants near me, and knew when Herbert Hoover was president. This is all fairly basic ChatGPT stuff, and there’s some definite lag as it fetches answers, but I much prefer the interface to the Humane AI Pin — because there’s a screen, and you can see the thing working so the AI delays don’t feel quite so interminable. 
+
+Because there’s a screen, the AI delays don’t feel quite so interminable
+
+Almost immediately, though, I started running into stuff the R1 just can’t do. It can’t send emails or make spreadsheets, though Lyu has been demoing both for months. Rabbithole is woefully unfinished, too, to the point I was trying to tap around on my phone and it was instead moving a cursor around a half-second after every tap. That’s a good reminder that the whole thing is running on a virtual machine storing all your apps and credentials, which still gives me security-related pause.
+
+Oh, and here’s my favorite thing that has happened on the R1 so far: I got it connected to my Spotify account, which is a feature I’m particularly excited about. I asked for “Beyoncé’s new album,” and the device excitedly went and found me “Crazy in Love” — a lullaby version, from an artist called “Rockabye Baby!” So close and yet so far. It doesn’t seem to be able to find my playlists, either, or skip tracks. When I said, “Play The 1975,” though, that worked fine and quickly. (The speaker, by the way, is very much crappy Android phone quality. You’re going to want to use that Bluetooth connection.)
+
+The R1’s Vision feature, which uses the camera to identify things in the scene around you, seems to work fine as long as all you want is a list of objects in the scene. The device can’t take a photo or video and doesn’t seem to be able to do much else with what it can see.
+
+*The R1 has a camera, but it’s not a particularly useful one yet.*
+
+When you’re not doing anything, the screen shows the time and that bouncing rabbit-head logo. When you press and hold the side button to issue a command, the time and battery fade away, and the rabbit’s ears perk up like it’s listening. It’s very charming! The overall interface is simple and text-based, but it’s odd in spots: it’s not always obvious how to go back, for instance, and you only get to see a line or two of text at a time at the very bottom of the screen, even when there’s a whole paragraph of answer to read.
+
+Rabbit’s roadmap is ambitious: Lyu has spent the last few months talking about all the things the R1’s so-called “Large Action Model” can do, including learning apps and using them for you. During last night’s event, he talked about opening up the USB-C port on the device to allow accessories, keyboards, and more. That’s all coming… eventually. Supposedly. For now, the R1’s feature set is much more straightforward. You can use the device to play music, get answers to questions, translate speech, take notes, summon an Uber, and a few other things. 
+
+*The back of the R1 has its speaker, scroll wheel, and camera. And fingerprints.*
+
+That means there’s still an awful lot the R1 can’t do and a lot I have left to test. (Anything you want to know about, by the way, let me know!) I’m particularly curious about its battery life, its ability to work with a bad connection, whether it heats up over time, and how it handles more complex tasks than just looking up information and ordering chicken nuggets. But so far, this thing seems like it’s trying to be less like a smartphone killer and more like the beginnings of a useful companion. That’s probably as ambitious as it makes sense to be right now — though Lyu and the Rabbit folks have a lot of big promises to eventually live up to and not a lot of time to do so.
+
+*Photography by David Pierce / The Verge*

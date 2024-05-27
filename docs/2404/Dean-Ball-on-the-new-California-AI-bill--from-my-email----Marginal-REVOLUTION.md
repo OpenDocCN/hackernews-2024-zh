@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:40:02
+-->
+
+# Dean Ball on the new California AI bill (from my email) - Marginal REVOLUTION
+
+> 来源：[https://marginalrevolution.com/marginalrevolution/2024/04/dean-ball-on-the-new-california-ai-bill-from-my-email.html](https://marginalrevolution.com/marginalrevolution/2024/04/dean-ball-on-the-new-california-ai-bill-from-my-email.html)
+
+> [SB 1047](https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB1047) was written, near as I can tell, to satisfy the concerns of a small group of people who believe widespread diffusion of AI constitutes an existential risk to humanity. It contains references to hypothetical models that autonomously engage in illegal activity causing tens of millions in damage and model weights that “escape” from data centers—the stuff of science fiction, codified in law.
+> 
+> The bill’s basic mechanism is to require developers to guarantee, with extensive documentation and under penalty of perjury, that their models do not have a “hazardous capability,” either autonomously or at the behest of humans. The problem is that it is very hard to guarantee that a general-purpose tool *won’t *be used for nefarious purposes, especially because it’s hard to define what “used” means in this context. If I use GPT-4 to write a phishing email against an urban wastewater treatment plan, does that count? Under this bill, quite possibly so.
+> 
+> If, back in the 70s, Steve Jobs and Steve Wozniak had to guarantee that their computers would not be used for serious crimes, would they have been willing to sign with potential jail time on the line? Would they have even bothered to found Apple?
+> 
+> Finally, because of its requirements (or *very *strong incentives) for developers to monitor and have the means to shut off a user’s access, the bill could make it nearly impossible to open-source models at the current AI frontier—much less the frontiers of tomorrow.
+
+And here is [Dean’s Substack](https://hyperdimensional.substack.com/) on emerging technology (including AI) and the future of governance.

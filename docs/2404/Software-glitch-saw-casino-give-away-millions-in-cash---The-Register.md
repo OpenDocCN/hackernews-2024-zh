@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:18:44
+-->
+
+# Software glitch saw casino give away millions in cash • The Register
+
+> 来源：[https://www.theregister.com/2024/04/18/software_glitch_casino_cash_giveaway/](https://www.theregister.com/2024/04/18/software_glitch_casino_cash_giveaway/)
+
+A software glitch at Star Casino in Sydney, Australia, saw it inadvertently give away millions in cash without realizing it – for weeks.
+
+News of the giveaway emerged on Monday at an independent inquiry into the casino, which has had years of compliance troubles that led to a finding that its operators were unsuitable to hold a license.
+
+The cash was doled out by "ticket in, cash out" (TICO) machines that gamblers use to redeem barcoded receipts for slot machine winnings.
+
+In [testimony](https://www.nicc.nsw.gov.au/sites/default/files/2024-04/Bell%20Two%20Inquiry%20-%20Hearing%20Day%201.pdf) [PDF] given on Monday to the inquiry, casino manager Nicholas Weeks explained that it is possible to insert two receipts into TICO machines. That was a feature, not a bug, and allowed gamblers to redeem two receipts and be paid the aggregate amount.
+
+But a software glitch meant that the machines would return one of those tickets and allow it to be re-used – the barcode it bore was not recognized as having been paid.
+
+"What occurred was small additional amounts of cash were being provided to customers in circumstances when they shouldn't have received it because of that defect," Weeks told the inquiry.
+
+Readers may wish to take issue with Weeks's use of the word "small" – TICO machines can pay out up to AU$2,000 ($1,290) each time a customer redeems receipts.
+
+And in the weeks the flawed TICO machines operated, AU$3.2 million ($2.05 million) was given away.
+
+Local media [reported](https://www.smh.com.au/national/nsw/casino-gave-gamblers-free-cash-then-reported-them-for-fraud-20240417-p5fkg2.html) that news of the free cash got around and 43 people used the TICO machines to withdraw money to which they were not entitled – at least one of them a recovering gambling addict who fell off the wagon as the "free" money allowed them to fund their activities.
+
+Known abusers of the TICO machines have been charged, and one of those set to face the courts is accused of association with a criminal group. (The first inquiry into The Star, two years ago, found it may have been targeted by organized crime groups.)
+
+The software glitch wasn't spotted for over a month, despite audits detecting TICO machine discrepancies between June 7 and July 24, 2023.
+
+An internal investigation found "numerous failures (human, process and technological) that more than likely prevented the fraud from being identified at an earlier opportunity."
+
+Weeks attributed those failures to "cultural problem in parts of the casino in relation to the level of rigor through which controls are followed, the level of care in which work is conducted, and the desire from people in the business to drill down on things in circumstances where they don't appear that they are correct."
+
+The fresh inquiry into Star Casino was called after its response to earlier probes was felt to have fallen short. Testimony this week has also revealed that the casino's analysts don't get enough info to do their jobs well, and that facial recognition systems don't include images of some who should have completed source of wealth checks designed to detect possible money laundering. Those who did not complete their checks could therefore still enter the casino and gamble large sums of money. ®

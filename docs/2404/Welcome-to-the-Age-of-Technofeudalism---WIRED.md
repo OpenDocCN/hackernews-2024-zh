@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:04:21
+-->
+
+# Welcome to the Age of Technofeudalism | WIRED
+
+> 来源：[https://www.wired.com/story/yanis-varoufakis-technofeudalism-interview/](https://www.wired.com/story/yanis-varoufakis-technofeudalism-interview/)
+
+The tech giants have overthrown capitalism. That’s the argument of former Greek finance minister Yanis Varoufakis, who became famous trying to defend debt-laden Greece from its German creditors. Varoufakis has never quite regained the notoriety of 2015\. But he has remained a prominent left-wing voice. After a failed campaign for a seat in the European Parliament in 2019, he plans to run again this June. This time, his adversary isn’t Berlin or the banks. It’s the tech companies he accuses of warping the economy while turning people against one other.
+
+Courtesy of Penguin Random House
+
+Varoufakis is also a prolific author; his 17th book, written as a letter to his techno-curious father, chronicles the evolution of capitalism from the 1960s advertising boom, through Wall Street in the 1980s, to the 2008 financial crisis and the pandemic. In its most compelling stretches, [*Technofeudalism*](https://www.amazon.com/Technofeudalism-Killed-Capitalism-Yanis-Varoufakis/dp/1685891241) argues that Apple, Facebook, and Amazon have changed the economy so much that it now resembles Europe’s medieval feudal system. The tech giants are the lords, while everyone else is a peasant, working their land for not much in return.
+
+To Varoufakis, every time you post on X, formerly Twitter, you’re essentially toiling Elon Musk’s estate like a medieval serf. Musk doesn't pay you. But your free labor pays him, in a sense, by increasing the value of his company. On X, the more active users there are, the more people can be shown advertising or sold subscriptions. On Google Maps, he argues, users improve the product—alerting the system to traffic jams on their route.
+
+The feudal comparison isn’t novel. But *Technofeudalism* attempts to introduce the idea to a wider audience. Its US release, launched the month before regulators in the [US](https://www.wired.com/story/doj-sues-apple-antitrust/) and [European Union](https://www.wired.com/story/apple-meta-alphabet-eu-digital-markets-act/) simultaneously initiated antitrust actions against Apple, also had impeccable timing.
+
+Over Zoom, I spoke to Varoufakis, from his home near Athens, about how the tech giants have changed the economy—and why we should care about it.
+
+*This interview has been edited for length and clarity.*
+
+**WIRED: That word, *technofeudalism*, what does it mean? How is the feudal system relevant here?**
+
+**Yanis Varoufakis:** Profit drives capitalism, rent drove feudalism. Now we have moved [from one system to the other] because of this new form of super-duper, all-singing, all-dancing capital: cloud capital, algorithmic capital. If I'm right, that is creating new digital fiefdoms like Amazon.com, like Airbnb, where the main mode of wealth extraction comes in the form not of profit but of rent.
+
+Take the Apple Store. You are producing an app, Apple can withhold 30 percent of your profits [through a commission fee]. That's a rent. That's like a ground rent. It's a bit like the Apple Store is a fiefdom. It's a cloud fiefdom, and Apple extracts a rent exactly as in feudalism. So my argument is not that we went back from capitalism to feudalism. My argument is that we have progressed forward to a new system, which has many of the characteristics of feudalism, but it is one step ahead of capitalism. To signal that, I added the word *techno*.

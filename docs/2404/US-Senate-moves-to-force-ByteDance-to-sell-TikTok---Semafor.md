@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:30:30
+-->
+
+# US Senate moves to force ByteDance to sell TikTok | Semafor
+
+> 来源：[https://www.semafor.com/article/04/23/2024/us-senate-moves-to-force-bytedance-to-sell-tiktok](https://www.semafor.com/article/04/23/2024/us-senate-moves-to-force-bytedance-to-sell-tiktok)
+
+Under the measure, ByteDance would have up to 360 days to divest TikTok or face an effective ban within the US.
+
+A TikTok spokesperson last week characterized the legislation as an assault on free speech, signaling a likely legal challenge on First Amendment grounds.
+
+“It is unfortunate that the House of Representatives is using the cover of important foreign and humanitarian assistance to once again jam through a ban bill that would trample the free speech rights of 170 million Americans, devastate 7 million businesses, and shutter a platform that contributes $24 billion to the U.S. economy, annually,” the spokesperson said.
+
+Bloomberg reported earlier this week that TikTok’s head of public policy [told employees in a memo](https://www.bloomberg.com/news/articles/2024-04-22/tiktok-vows-legal-battle-as-the-us-presses-for-app-s-sale-or-ban?srnd=homepage-americas) that the company would “move to the courts for a legal challenge” once the measure is signed into law.
+
+The legislation represents a rare bipartisan achievement in Congress, where there is intense scrutiny of the Chinese government among members of both parties.
+
+An [earlier version](https://www.semafor.com/article/03/05/2024/new-bipartisan-push-aims-to-force-sale-of-tiktok) of the legislation introduced by the House China select committee leaders, Republican Rep. Mike Gallagher and Democratic Rep.Raja Krishnamoorthi, would have forced a sale within 180 days; the adjustment to the bill [helped it gain support](https://www.semafor.com/newsletter/04/19/2024/retaliation) from a key Democratic senator, Commerce Committee Chairwoman Maria Cantwell, who endorsed it last week.

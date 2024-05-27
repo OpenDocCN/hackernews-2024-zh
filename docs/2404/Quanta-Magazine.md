@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:12:06
+-->
+
+# Quanta Magazine
+
+> 来源：[https://www.quantamagazine.org/how-do-machines-grok-data-20240412/](https://www.quantamagazine.org/how-do-machines-grok-data-20240412/)
+
+As a network trains, it tends to learn more complex functions, and the discrepancy between the expected output and the actual one starts falling for training data. Even better, this discrepancy, known as loss, also starts going down for test data, which is new data not used in training. But at some point, the model starts to overfit, and while the loss on training data keeps falling, the test data’s loss starts to rise. So, typically, that’s when researchers stop training the network.
+
+That was the prevailing wisdom when the team at OpenAI began exploring how a neural network could do math. They were using a small [transformer](https://www.quantamagazine.org/will-transformers-take-over-artificial-intelligence-20220310/) — a network architecture that’s recently revolutionized large language models — to do different kinds of modular arithmetic, in which you work with a limited set numbers that loop back on themselves. Modulo 12, for example, can be done on a clock face: 11 + 2 = 1\. The team showed the network examples of adding two numbers, *a* and *b*, to produce an output, *c,* in modulo 97 (equivalent to a clock face with 97 numbers). They then tested the transformer on unseen combinations of *a* and *b* to see if it could correctly predict *c*.
+
+As expected, when the network entered the overfitting regime, the loss on the training data came close to zero (it had begun memorizing what it had seen), and the loss on the test data began climbing. It wasn’t generalizing. “And then one day, we got lucky,” said team leader Alethea Power, [speaking in September 2022](https://youtu.be/gYGWFjMf9JA?t=1236) at a conference in San Francisco. “And by lucky, I mean forgetful.”
+
+The team member who was training the network went on vacation and forgot to stop the training. As this version of the network continued to train, it suddenly became accurate on unseen data. Automatic testing revealed this unexpected accuracy to the rest of the team, and they soon realized that the network had found clever ways of arranging the numbers *a* and *b*. Internally, the network represents the numbers in some high-dimensional space, but when the researchers projected these numbers down to 2D space and mapped them, the numbers formed a circle.
+
+This was astonishing. The team never told the model it was doing modulo 97 math, or even what modulo meant — they just showed it examples of arithmetic. The model seemed to have stumbled upon some deeper, analytical solution — an equation that generalized to all combinations of *a* and *b*, even beyond the training data. The network had grokked, and the accuracy on test data shot up to 100%. “This is weird,” Power told her audience.
+
+The team verified the results using different tasks and different networks. The discovery held up.
+
+## **Of Clocks and Pizzas**
+
+But what was the equation the network had found? The OpenAI paper didn’t say, but the result caught Nanda’s attention. “One of the core mysteries and annoying things about neural networks is that they’re very good at what they do, but that by default, we have no idea how they work,” said Nanda, whose work focuses on reverse-engineering a trained network to figure out what algorithms it learned.
+
+Nanda was fascinated by the OpenAI discovery, and he decided to pick apart a neural network that had grokked. He designed an even simpler version of the OpenAI neural network so that he could closely examine the model’s parameters as it learned to do modular arithmetic. He saw the same behavior: overfitting that gave way to generalization and an abrupt improvement in test accuracy. His network was also arranging numbers in a circle. It took some effort, but Nanda eventually figured out why.
+
+While it was representing the numbers on a circle, the network wasn’t simply counting off digits like a kindergartner watching a clock: It was doing some sophisticated mathematical manipulations. By studying the values of the network’s parameters, [Nanda and colleagues revealed](https://arxiv.org/abs/2301.05217) that it was adding the clock numbers by performing “discrete Fourier transforms” on them — transforming the numbers using trigonometric functions such as sines and cosines and then manipulating these values using trigonometric identities to arrive at the solution. At least, this was what his particular network was doing.
+
+When a team at MIT [followed up](https://arxiv.org/abs/2306.17844) on Nanda’s work, they showed that the grokking neural networks don’t always discover this “clock” algorithm. Sometimes, the networks instead find what the researchers call the “pizza” algorithm. This approach imagines a pizza divided into slices and numbered in order. To add two numbers, imagine drawing arrows from the center of the pizza to the numbers in question, then calculating the line that bisects the angle formed by the first two arrows. This line passes through the middle of some slice of the pizza: The number of the slice is the sum of the two numbers. These operations can also be written down in terms of trigonometric and algebraic manipulations of the sines and cosines of *a* and *b*, and they’re theoretically just as accurate as the clock approach.

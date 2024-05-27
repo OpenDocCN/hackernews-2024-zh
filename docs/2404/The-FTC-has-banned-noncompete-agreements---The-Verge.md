@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:26:47
+-->
+
+# The FTC has banned noncompete agreements - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/23/24138559/ftc-noncompete-agreement-ban](https://www.theverge.com/2024/4/23/24138559/ftc-noncompete-agreement-ban)
+
+The Federal Trade Commission has [voted to ban noncompete](https://www.ftc.gov/news-events/news/press-releases/2024/04/ftc-announces-rule-banning-noncompetes) agreements nationwide, saying that they are an “unfair method of competition.”
+
+Noncompete agreements — which attempt to prevent employees from working for or starting competing businesses — are especially prevalent in the world of tech, where we’ve seen companies like Amazon [enforce](/2023/1/5/23540953/ftc-noncompete-ban-proposal) and then [retract](/2015/3/27/8303229/amazon-reverses-noncompete-contract-rules) a noncompete agreement for warehouse workers. [Acer even sued](/2012/2/7/2781962/acer-former-ceo-gianfranco-lanci-noncompete-lawsuit) its former CEO for allegedly breaching a noncompete policy by becoming a consultant for Lenovo.
+
+The change will force companies to reverse existing noncompete agreements and notify employees about the change. Existing noncompete agreements for senior executives can stay in place, but companies can’t enter or enforce new agreements. (The FTC defines senior executives as workers in “policy-making” decisions who earn more than $151,164 annually.)
+
+The FTC found that there are several alternatives to noncompete agreements, including trade secret laws and non-disclosure agreements. “Noncompete clauses keep wages low, suppress new ideas, and rob the American economy of dynamism,” FTC Chair Lina Khan says in a statement.
+
+The FTC first [proposed banning noncompete agreements](/2023/1/5/23540953/ftc-noncompete-ban-proposal) in January 2023 and estimates that around 30 million workers are currently locked into one. The agency says the ban will lead to the creation of over 8,500 businesses each year while also lowering healthcare costs and raising compensation for workers. The new rule will go into effect 120 days after it’s published in the Federal Register.

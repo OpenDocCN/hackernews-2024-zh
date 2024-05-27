@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:29:07
+-->
+
+# Green Roofs Are Great. Blue-Green Roofs Are Even Better | WIRED
+
+> 来源：[https://www.wired.com/story/blue-green-roofs-amsterdam-resilio-climate-adaptation-sponge-cities/](https://www.wired.com/story/blue-green-roofs-amsterdam-resilio-climate-adaptation-sponge-cities/)
+
+Courtesy of De Dakdokters
+
+Below that stretches a filter layer, which keeps the soil from getting into the next layer, a lightweight crate system that stores the water. And finally, below that you’ve got additional layers to keep water and plant roots from infiltrating the actual roof. “You have, in fact, a flat rain barrel on top of your roof,” says Kasper Spaan, policy developer for climate adaptation at Waternet, Amsterdam’s public water management organization, which is participating in RESILIO.
+
+The water levels in the blue-green roof are managed by a smart valve. If the weather forecast says a storm is coming, the system will release stored water from the roof ahead of time. That way, when a downpour comes, the roof refills, meaning there’s less rainwater entering the gutters and sewers in the surrounding area. In other words, the roof becomes a sponge that the operator can wring out as needed. “In the ‘squeezable’ sponge city, you make the whole city malleable,” says Spaan.
+
+This makes the traditional system of stormwater management more flexible, but also more complicated. So the RESILIO project used software from Autodesk to model the impact of blue-green roofs and the risk of flooding in Amsterdam, also adjusting for climate change.
+
+“You can take a look at historical flood patterns, and then you can do simulations that will help you understand: If I could take this much capacity out of the drainage network, when the storm comes, I’m going reduce flooding by 10, 15, 20 percent,” says Amy Bunszel, executive vice president of architecture, engineering, and construction design solutions at Autodesk. “So our software allows them to do simulations and play with different trade-offs.”
+
+Beyond the sponge-city benefits, blue-green roofs can cool the top floor of a building, essentially “sweating” off the stored water. With the right kinds of indigenous plants, they can also boost biodiversity [by catering to native pollinating insects](https://www.wired.com/story/the-ultra-efficient-farm-of-the-future-is-in-the-sky/). Going a step further, scientists are also experimenting with [growing crops on rooftops under solar panels](https://www.wired.com/story/your-rooftop-garden-could-be-a-solar-powered-working-farm/), known as rooftop agrivoltaics. Theoretically, pairing that with blue-green systems might actually improve the efficiency of the solar panels by cooling them with the evaporating water.

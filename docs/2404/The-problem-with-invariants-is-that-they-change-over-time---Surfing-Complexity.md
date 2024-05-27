@@ -1,0 +1,29 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:28:59
+-->
+
+# The problem with invariants is that they change over time – Surfing Complexity
+
+> 来源：[https://surfingcomplexity.blog/2024/03/26/the-problem-with-invariants-is-that-they-change-over-time/](https://surfingcomplexity.blog/2024/03/26/the-problem-with-invariants-is-that-they-change-over-time/)
+
+ Cliff L. Biffle blogged a great write-up of a debugging odyssey at [Oxide](https://oxide.computer/) with the title [Who killed the network switch?](https://cliffle.com/blog/who-killed-the-network-switch/) Here’s the bit that jumped out at me:
+
+> At the time that code was written, it was correct, but it embodied the assumption that any loaned memory would fit into one region.
+> 
+> That assumption became obsolete the moment that Matt implemented task packing, but we didn’t notice. This code, which was still simple and easy to read, was now also wrong.
+
+This type of assumption is an example of an *invariant*, a property of the system that is supposed to be guaranteed to not change over time. Invariants play an important role in formal methods (for example, see the section [Writing an invariant](https://www.learntla.com/core/invariants.html) in Hillel Wayne’s [Learn TLA+](https://www.learntla.com/index.html) site).
+
+Now, consider the following:
+
+*   Our systems change over time. In particular, we will always make modifications to support new functionality that we could not have foreseen earlier in the lifecycle of the system.
+*   Our code often rests on a number of *invariants*, properties that are currently true of our system and that we assume will always be true.
+*   These invariants are *implicit*: the assumptions themselves are not explicitly represented in the source code. That means there’s no easy way to, say, mechanically extract them via static analysis.
+*   A change can happen that violates an assumed invariant can be arbitrary far away from code that depends on the invariant to function properly.
+
+What this means is that these kinds of failure modes are *inevitable*. If you’ve been in this business long enough, you’ve almost certainly run into an incident where one of the contributors was an implicit invariant that was violated by a new change. If you’re system lives long enough, it’s going to change. And one of those changes is eventually going to invalidate an assumption that somebody made long ago, which was a reasonable assumption to make at the time.
+
+Implicit invariants are, by definition, impossible to enforce explicitly. They are time bombs. And they are everywhere.
+
+**Published** March 26, 2024March 26, 2024

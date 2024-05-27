@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:25:46
+-->
+
+# Trainee crashed a mainframe, taking a huge business down too • The Register
+
+> 来源：[https://www.theregister.com/2024/04/19/on_call/](https://www.theregister.com/2024/04/19/on_call/)
+
+On Call Welcome once more to On Call, *The Register*'s Friday foray into tech support memories contributed by you, our much-appreciated readers.
+
+This week, meet a *Reg*-admirer we'll anonymize as "Leanne" who once worked as a senior architect in a mainframe environment – a role that saw her keep an eye on several of internal chats in which colleagues would share news of glitches and oddities she would be asked to check out.
+
+One day a senior database administrator pinged one of those chats with the unwelcome observation that they were pretty sure some files had gone missing. Could Leanne check the mainframe?
+
+Leanne's console told her all was well with the big box. But multiple threads soon reported problems. Severe problems.
+
+"People couldn't log in, the business was down, SEV-1 tickets were stacking up. Alarm bells were ringing," Leanne told On Call.
+
+But according to the screen she saw, the mainframe was alive and well.
+
+A little digging into system logs revealed the mainframe was upset because requests to the mighty machine's direct-access storage device (DASD) were failing.
+
+Leanne got together with colleagues and her employer's outsourced maintenance provider to investigate the situation.
+
+The problem was obvious: the DASD had been deliberately taken offline. The mainframe was therefore unable to access its only source of storage.
+
+Who had done this deed?
+
+A trainee from the mainframe vendor admitted they had flipped the switch.
+
+"I put in the wrong command, and then the system wouldn't let me put in the right one," was the rookie's excuse.
+
+Leanne assessed the situation and decided the trainee "had no idea what she was doing and did not know what she had done."
+
+What she had done was take a big chunk of a Fortune 500 company offline. On Monday morning, just as the week was getting busy.
+
+Happily, Leanne's position meant she had privileges that allowed her to reconnect the DASD.
+
+Which she did ASAP, averting disaster.
+
+"The vendor was read the riot act for putting an unsupervised trainee on the console, and the trainee got to listen to her management get in trouble with the customer," Leanne told On Call, rating the incident as "Fun, fun all around."
+
+And maybe, also, one of history's great debrief meetings and/or lessons in giving a vendor a kicking for doing exactly what they're paid not to do.
+
+Has an ignorant kid broken your boxes? Or has an outsourced supplier brought you undone? On Call wants your story so we can share it here on a future Friday, and the good news is sending it to us is as simple as [clicking here to send us an email](mailto:oncall@theregister.com). ®

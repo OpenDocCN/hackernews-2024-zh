@@ -1,0 +1,10 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:42:31
+-->
+
+# Opinion | The U.S. economy’s problem? People forgot what ‘normal’ looks like. - The Washington Post
+
+> 来源：[https://www.washingtonpost.com/opinions/2023/12/02/us-economy-2024-recovery-normal/](https://www.washingtonpost.com/opinions/2023/12/02/us-economy-2024-recovery-normal/)
+
+It has been a miracle year for the U.S. economy. Inflation has plummeted without triggering a recession. Many [experts said](https://www.washingtonpost.com/business/2023/08/13/larry-summers-biden-inflation-projections/?itid=lk_inline_manual_2) that could not happen without widespread layoffs and a downturn. The economy has [gained 2.4 million jobs](https://fred.stlouisfed.org/series/PAYEMS) so far this year, and growth has accelerated, with an annualized rate [topping 5 percent](https://www.bea.gov/news/2023/gross-domestic-product-second-estimate-corporate-profits-preliminary-estimate-third) in the third quarter. The good news has also fueled a [stock market rally](https://www.cnn.com/2023/11/28/investing/premarket-stocks-markets-2024/index.html#:~:text=The%20S%26P%20500%20currently%20sits,was%20reached%20in%20January%202022).). In polls, people are [downbeat about this economy](https://www.washingtonpost.com/business/2023/10/22/biden-s-economy-is-great-everywhere-except-in-the-polls/d6bae722-70d6-11ee-936d-7a16ee667359_story.html?itid=lk_inline_manual_2), but their actions don’t match their words. There has been a [consumption boom](https://www.nytimes.com/2023/11/20/upshot/economy-voters-poll.html) this year. Americans continued to spend heavily on apparel, concerts and vacations. In many ways, this is the year the economy finally returned to something close to normal. But many people seem to have forgotten what normal looks like after a traumatic few years.

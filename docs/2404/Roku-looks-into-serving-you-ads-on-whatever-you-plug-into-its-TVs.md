@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:55:49
+-->
+
+# Roku looks into serving you ads on whatever you plug into its TVs
+
+> 来源：[https://www.engadget.com/roku-looks-into-serving-you-ads-on-whatever-you-plug-into-its-tvs-120016754.html](https://www.engadget.com/roku-looks-into-serving-you-ads-on-whatever-you-plug-into-its-tvs-120016754.html)
+
+Roku already [serves ads](https://www.engadget.com/roku-shoppable-ads-walmart-113552825.html) through its platform, but it's also apparently exploring the idea of showing you ads while you're using third-party devices connected to its TVs. Based on a recent [patent filing](https://patents.google.com/patent/US20230388589A1/en) unearthed by [*Lowpass*](https://www.lowpass.cc/p/roku-hdmi-ad-insertion-patent), the company is looking to develop a system or a method "for ad insertion by a display device coupled to a media device via a high-definition media interface (HDMI) connection." That means if you've connected another streaming device or console — say, an Apple TV, a Chromecast or a PlayStation — to a Roku TV via HDMI, the company would still be able to serve you advertisements.
+
+In particular, Roku is hoping to show you commercials while whatever you're watching or playing on the third-party device attached to it is on pause. In its patent, it described several methods on how it can detect whether the show or game on screen is paused, such as receiving a pause signal from the remote control, detecting a pause icon, looking at several video frames and determining that the image on screen hasn't changed for some time and getting a silent audio signal from the HDMI connection.
+
+If it works as intended, those ads wouldn't impact your viewing or playing experience (*much*), assuming you're truly stepping away or doing something else in the meantime. While you'd probably prefer those experiences to be free of ads altogether, Roku is at least looking to make sure that it's serving you relevant ads. It could analyze frozen video or audio frames and use automatic content recognition (ACR) technology to identify what's on screen. Or it could analyze metadata to show ads connected to what you're playing or watching. It could also serve commercials based on what third-party device is attached to your TV.
+
+As *Lowpass* notes, the company could have conjured the idea because manufacturers typically don't make a lot of money from hardware sales. For the fiscal year of 2023, Roku lost $44 million on smart TVs. Similarly, Samsung's visual display and digital appliances division [posted $37.5 million in operating losses](https://www.engadget.com/samsungs-annual-profits-continued-to-decline-in-2023-090500640.html) for last year's fourth quarter. Meanwhile, ads and services generated $1.6 billion in profit for Roku. This idea could potentially make it more money... if the prospect of watching commercials while your show or game is paused doesn't turn you off buying Roku TV, of course. This is just a patent at this point in time, though, and Roku may very well end up scrapping it and not implementing it at all.

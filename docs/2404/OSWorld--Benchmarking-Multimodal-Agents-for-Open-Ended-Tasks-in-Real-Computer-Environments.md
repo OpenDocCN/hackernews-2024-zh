@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:36:18
+-->
+
+# OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments
+
+> 来源：[https://os-world.github.io/](https://os-world.github.io/)
+
+## Abstract
+
+<md-block>Autonomous agents that accomplish complex computer tasks with minimal human interventions has the potential to transform human-computer interaction, significantly enhancing accessibility and productivity. However, existing benchmarks either lack an interactive environment or are limited to environments specific to certain applications or domains, failing to reflect the diverse and complex nature of real-world computer use, thereby limiting the scope of tasks and agent scalability. To address this issue, we introduce **OSWorld**, the first-of-its-kind scalable, real computer environment for multimodal agents, supporting task setup, execution-based evaluation, and interactive learning across various operating systems such as Ubuntu, Windows, and macOS. **OSWorld** can serve as a unified, integrated computer environment for assessing open-ended computer tasks that involve arbitrary applications. Building upon **OSWorld**, we create a benchmark of 369 computer tasks involving real web and desktop apps in open domains, OS file I/O, and workflows spanning multiple applications. Each task example is derived from real-world computer use cases and includes a detailed initial state setup configuration and a custom execution-based evaluation script for reliable, reproducible evaluation. Extensive evaluation of state-of-the-art LLM/VLM-based agents on **OSWorld** reveals significant deficiencies in their ability to serve as computer assistants. While humans can accomplish over 72.36% of the tasks, the best model achieves only 12.24% success, primarily struggling with GUI grounding and operational knowledge. Comprehensive analysis using **OSWorld** provides valuable insights for developing multimodal generalist agents that were not possible with previous benchmarks.</md-block>

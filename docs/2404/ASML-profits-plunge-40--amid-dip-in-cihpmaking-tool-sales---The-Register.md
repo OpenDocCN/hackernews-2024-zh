@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:16:43
+-->
+
+# ASML profits plunge 40% amid dip in cihpmaking tool sales • The Register
+
+> 来源：[https://www.theregister.com/2024/04/17/asml_profits_slump_40_percent_q1_2024/](https://www.theregister.com/2024/04/17/asml_profits_slump_40_percent_q1_2024/)
+
+Chipmaking kit maestro ASML generated almost half of its sales from China in calendar Q1, amid a wider downturn in orders and plunging profits.
+
+The photolithography giant reported a 40 percent dive in net profit to €1.2 billion ($1.3 billion) for the three months ended March 31, off the back of a 25 percent drop in revenue to €3.966 billion ($4.22 billion)
+
+Revenue was about the midpoint of ASML’s earlier guidance, however, new order bookings worth €3.6 billion ($3.8 billion) fell short of analyst expectations, and were considerably down from the record $9.1 billion ($9.6 billion) in Q4 of last year, attributed by some to Chinese chipmakers [hurrying to get orders in](https://www.theregister.com/2023/11/08/china_stockpiling_asml_kit/) before new export restrictions landed.
+
+China accounted for a whopping 49 percent of ASML's Q1 sales, the company confirmed.
+
+Those latest restrictions, imposed by the Dutch government at the behest of the US administration, effectively banned ASML from selling some of its deep ultraviolet (DUV) lithography machines to China from January.
+
+"There has been quite some speculation around the order intake for ASML," CFO Roger Dassen said in a video interview. "I think it's important to recognize that the order intake over the past six months, if you take the Q4 and the Q1 order intake together, you're looking at nearly €13 billion [$13.83 billion], which is a pretty significant number," he claimed.
+
+Dassen added that "people have recognized by now that the order intake process is typically quite lumpy."
+
+But as the only company in the world currently able to supply extreme ultraviolet (EUV) photolithography equipment for making the most advanced semiconductors, ASML should be able to ride out any troughs in order bookings. A new wave of chip fabrication plants are being constructed around the world, notably in the US thanks to funding from the Biden administration’'s [CHIPS Act](https://www.theregister.com/2024/03/15/biden_intel_chips_funds/).
+
+Dassen forecast that it would be a "transition year" in which momentum builds over the 12 months.
+
+"So that means a stronger second half than the first half. And also really gearing up towards what we think is going to be a strong year of 2025\. That is really backed up by some of the industry trends as we see them today. That means for us building a capacity and preparing for that ramp," he said.
+
+### Who's the mystery customer?
+
+Dassen says ASML is expecting to see higher volumes of its High NA (numerical aperture) EUV equipment, which provides better resolution for smaller features with the most advanced production processes. Intel was the [first customer](https://www.reuters.com/technology/asml-ships-first-high-na-lithography-system-intel-statement-2023-12-21/) to receive a TWINSCAN EXE:5200 system at its facility in Hillsboro, Oregon, earlier this year.
+
+"The industry is really excited around High NA and for very good reasons," Dassen claimed. "If you look at the specifications of the High NA tool, it will provide a transistor density that actually is 3x of the transistor density that you will have with a low NA tool. So it's a really big step up," he said.
+
+For the second quarter, ASML is forecasting net sales to be higher, between €5.7 billion ($6.06 billion) and €6.2 billion ($6.59 billion). Outgoing President and CEO Peter Wennink - who leaves this month - said the outlook for the full year 2024 is unchanged, with the second half expected to be stronger than the first, in line with the industry's continued recovery from the downturn.
+
+Not mentioned at all is the possibility of further export restrictions, which are likely as the US tries to curb China’s semiconductor advances and leans on its allies to fall in line.
+
+However, with all the new chip plants being built outside China, ASML seems optimistic, and still expects to reach annual revenue in 2025 of between €30 billion ($31.9 billion) and €40 billion ($42.3 billion).
+
+"I think we will find ourselves in 2025 in the midst of the upturn," said Dassen. "If you just look at all the fab openings that have been indicated by our customers. The recent news on positive outcomes of CHIPS Act money allocation. All of that is very strong, very supportive for new fab openings across the globe." ®

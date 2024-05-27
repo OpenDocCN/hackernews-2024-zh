@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:28:19
+-->
+
+# Lawmakers Are Kicking Warrantless Wiretapping Into Overdrive
+
+> 来源：[https://gizmodo.com/lawmakers-are-kicking-warrantless-wiretapping-into-over-1851417659](https://gizmodo.com/lawmakers-are-kicking-warrantless-wiretapping-into-over-1851417659)
+
+This week, Congress is expected to vote on a bill that would update key federal surveillance powers. The legislation has been packaged by its proponents as a reform bill but privacy advocates say that it would actually vastly expand the government’s spying capabilities.
+
+Why Former Employees & Scarlett Johansson Are Questioning OpenAI
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22550.vtt" srclang="en">
+
+H.R. 7888, or the [Reforming Intelligence and Securing America Act](https://rules.house.gov/bill/118/hr-PIH-RISA), would renew key surveillance powers enjoyed by the U.S. intelligence community, broadly known as Section 702\. Section 702 was created in 2008 as part of [the FISA Amendments Act](https://www.eff.org/702-spying), which gave the government the legal authority to conduct warrantless surveillance of Americans who communicate with people outside of the country. The law allows the U.S. intelligence community (most [notably the NSA](https://www.wired.com/story/section-702-nsa-abuses-reauthorization/)) [to conduct “targeted surveillance”](https://www.dni.gov/files/icotr/Section702-Basics-Infographic.pdf) of people outside the U.S. with the “compelled assistance of electronic communication service providers,” when a [government court](https://www.progressivecaucuscenter.org/the-foreign-intelligence-surveillance-act-and-the-warrantless-collection-of-personal-data) deems it necessary for national security reasons.
+
+While the government has said that this surveillance activity is targeted exclusively at non-Americans, the law has [repeatedly allowed large amounts of Americans’ communications to become ensnared in the government’s net](https://www.brennancenter.org/our-work/research-reports/pclob-report-reveals-new-abuses-fisa-section-702). As the Brennan Center, a legal nonprofit associated with NYU, [has put it,](https://www.brennancenter.org/our-work/research-reports/pclob-report-reveals-new-abuses-fisa-section-702) Section 702 has become a “go-to domestic spying” tool that is used to “conduct hundreds of thousands of warrantless ‘backdoor’ searches for Americans’ private communications every year.”
+
+In the past, the government has done much of its spying by tapping the information flows of [online communications providers](https://cdt.org/wp-content/uploads/2017/02/Section-702.pdf). Now, however, the new update would vastly expand the government’s ability to deputize U.S. businesses to spy on communications. Problematically, the vague language within the bill makes it difficult to understand what kind of organizations would be called upon to spy for the government and which would be exempted.
+
+“The definition is incredibly broad,” Kia Hamadanchy, senior federal policy counsel at the ACLU, told Gizmodo. “There was a version that came out in December that was hugely problematic.” The new version, which was released this week, now exempts “certain businesses—like hotels, for instance,” he says. However, the very fact that these carveouts are necessary would seem to speak to the overly broad nature of the bill’s legal reach.
+
+In [a write-up](https://www.zwillgen.com/law-enforcement/fisa-702-reauthorization-amendments-second-time-not-charm/) about the most recent iteration of the legislation, legal expert Marc Zwillinger describes the broad scope of the proposed law:
+
+> The new amendment would — notwithstanding these exclusions — still permit the government to compel the assistance of a wide range of additional entities and persons in conducting surveillance under FISA 702\. The breadth of the new definition is obvious from the fact that the drafters felt compelled to exclude such ordinary places such as senior centers, hotels, and coffee shops. But for these specific exceptions, the scope of the new definition would cover them—and scores of businesses that did not receive a specific exemption remain within its purview.
+> 
+> And even with these specific exceptions, the definition would include, for example, the owners and operators of facilities that house equipment used to store or carry data, such as data centers and buildings owned by commercial landlords, who merely have access to communications equipment in their physical space. It could also include other persons with access to such facilities and equipment, including delivery personnel, cleaning contractors, and utility providers.
+
+In other words, the government would be able to deputize an unknown amount of the private sector into acting as its own personal intelligence asset. Indeed, Hamadanchy gives some examples of companies that might potentially fall under this category and they are numerous: “Commercial landlords, grocery stores, barber shops, hardware shops, fitness centers” or, as he puts it, “anyone with a WiFi” connection.
+
+Still, it remains unclear what, exactly, these companies would be asked to do, once they were involved in said spy work. In the case of commercial landlords, for instance, it seems unclear what role such a business owner might play if called upon to surveil a target for the government. That said, it’s easy to speculate. “My assumption is that they would go to the” landlord “and then tap into the WiFi network of that building,” Hamadanchy offered.
+
+If all of this doesn’t seem mildly horrifying to you, it probably should. “This is a bad bill,” Hamadanchy said. “We shouldn’t do a bad bill. We should take the time to do it right.” Hamadanchy said that the Senate rules could allow the policy process to be dragged out until Sunday and that he expected that there might be an effort to strip the bill of its more controversial policies.
+
+Nevertheless, the Biden administration has lobbied hard for the bill to pass. On Wednesday, White House National Security Advisor Jake Sullivan [released a statement](https://www.whitehouse.gov/briefing-room/statements-releases/2024/04/17/statement-by-national-security-advisor-jake-sullivan-on-the-upcoming-vote-on-reauthorization-and-reform-of-fisa-section-702/) claiming that the new legislation would ensure “that the U.S. government has the tools to protect our national security, while dramatically enhancing protections for privacy and civil liberties.” He subsequently called on the Senate to “quickly send the bill to the President’s desk.”

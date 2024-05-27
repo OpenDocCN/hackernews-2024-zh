@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:20:29
+-->
+
+# TSMC to charge premium for making chips outside of Taiwan, including its new US fabs, CEO says | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/tech-industry/tsmc-to-charge-premium-for-making-chips-outside-of-taiwan-including-its-new-us-fabs-ceo-says](https://www.tomshardware.com/tech-industry/tsmc-to-charge-premium-for-making-chips-outside-of-taiwan-including-its-new-us-fabs-ceo-says)
+
+In the recent years, TSMC has radically changed its strategy of making chips only in Taiwan and initiated expansion overseas. As a result, the company is now building up fabs in Germany, Japan, and the U.S. However, the world's top contract chip will charge its customers a premium if they want their chips to be made outside of Taiwan. 
+
+"If my customer requests to be in some certain area, then definitely, TSMC and the customer had to share the incremental cost," said C.C. Wei, chief executive of TSMC, at the earnings call with analysts and investors (via [SeekingAlpha](https://seekingalpha.com/article/4684432-taiwan-semiconductor-manufacturing-co-ltd-tsm-q1-2024-earnings-call-transcript)). "We do encounter some kind of higher cost in the overseas or even recently, the inflation and the electricity. We expect our customers to share some of the higher cost with us, and we already started our discussion with our customers."
+
+Indeed, the costs of building fabs in Germany, Japan, and the U.S. are higher than the costs of building fabs in Taiwan and TSMC has complained about it a number of times in the past.  The company even had to delay production start at its Fab 21 near Phoenix, Arizona, due to problems with tools installation and [negotiations with trade unions](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-and-arizona-labor-unions-come-to-agreement-fab-construction-back-on-track). 
+
+Therefore, if a TSMC customer wants to produce its chips at a specific location, then the foundry will charge a premium. How high is that premium will be remains to be seen, but last year a media report indicated that chips made in Arizona on TSMC's N5 and N4 production nodes [could be from 20% to 30% more expensive than the same chips produced in Taiwan](https://www.tomshardware.com/news/tsmc-to-charge-extra-for-us-made-chips). 
+
+Due to higher construction and operational expenses of fabs in Japan, Germany, and the U.S., TSMC plans to transfer these additional costs to its customers to sustain its target gross margin of 53%. Although American chip designers may not welcome the increased production costs in the U.S., they will probably manufacture chips intended for government and other markets less sensitive to price increases at the Arizona facility. Consequently, they should manage to pass on these higher costs to at least some of their end customers without jeopardizing their market competitiveness.
+
+"In today's fragmented globalization environment, cost will be higher for everyone, including TSMC, our customers, our competitors and the entire semiconductor industry," the head of TSMC said. "We plan to manage and minimize the overseas cost gap by, first, pricing strategically to reflect the value of geographic flexibility; second, working closely with government to secure their support; and third, leveraging our fundamental advantage of manufacturing technology leadership, and our large-scale manufacturing base, which no other manufacturer in this industry can match." 
+
+It is noteworthy that C.C. Wei's phrasing implies that if a customer does not request a specific manufacturing location, then TSMC will not charge its 'location' premium. Meanwhile, it remains to be seen whether TSMC's yields in Taiwan, Germany, Japan, and the U.S. will be similar.
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

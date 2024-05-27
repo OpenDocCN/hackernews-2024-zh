@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:07:38
+-->
+
+# ESA Satellites to Test Razor-Sharp Formation Flying - IEEE Spectrum
+
+> 来源：[https://spectrum.ieee.org/satellite-constellation-formation-flying-esa](https://spectrum.ieee.org/satellite-constellation-formation-flying-esa)
+
+The European Space Agency will launch a mission late this year to demonstrate precision formation flying in orbit to create artificial solar eclipses. In a press conference last week, the agency announced details of the mission and the technology the orbiters will use to pull off its exquisitely-choreographed maneuvers.
+
+ESA’s [Proba-3](https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Proba_Missions/About_Proba-3) (PRoject for On-Board Autonomy) consists of a pair of spacecraft: a 300-kilogram Coronagraph spacecraft and a 250-kilogram [Occulter](https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Proba_Missions/Face_to_face_with_Sun-eclipsing_Proba-3). The pair are now slated to launch on an Indian [PSLV rocket](https://en.wikipedia.org/wiki/Polar_Satellite_Launch_Vehicle) in September and ultimately enter a highly elliptical, 600-by-60,530-kilometer orbit. The aim, the agency says, is to move the separate spacecraft to some 144 meters apart, with the Occulter, as a disc, blocking out the sun.
+
+Achieving this formation will allow the Coronagraph to study our star’s highly ionized, extremely hot atmosphere—but also demonstrate the technology as a precursor for more ambitious, future, formation-flying endeavors.
+
+Proba-3’s disk-shaped Occulter spacecraft was designed to block the Sun for the Coronagraph spacecraft. P. Sebirot/ESA
+
+Solar eclipses represent both spectacular alignments of celestial bodies and [moments of stark beauty](https://www.livescience.com/space/the-best-photos-and-videos-of-the-april-8-total-solar-eclipse-over-north-america). They are also fleeting opportunities to conduct science. The element helium was [first detected](https://www.smithsonianmag.com/history/how-scientists-discovered-helium-first-alien-element-1868-180970057/) in the Sun’s chromosphere by a French astronomer in India during a 1868 total solar eclipse in India. Fifty years later, British astronomers Frank Dyson and Arthur Eddington [performed measurements](https://en.wikipedia.org/wiki/Eddington_experiment) of the apparent shift of stars during a 1919 solar eclipse as an early test of Einstein’s general theory of relativity.
+
+ESA has science objectives for Proba-3, using observations made in space to study solar astrophysics without any intervention of the Earth’s atmosphere. The agency’s Association of Spacecraft for Polarimetric and Imaging Investigation of the Corona of the Sun ([ASPIICS](https://www.mps.mpg.de/6884329/proba-3)) coronagraph will help to discern why the solar corona is significantly hotter than the Sun itself. This could further our understanding of the Sun and assist solar weather predictions.
+
+However, it is the precision formation flying that Proba-3 aims to demonstrate which could help unlock future breakthroughs.
+
+Proba-3’s Coronagraph spacecraft hosts the mission’s ASPIICS instrument to observe the solar corona.P. Sebirot/ESA
+
+The two spacecraft will align to create eclipses for around six hours per orbit, starting on approach to its farthest point from Earth (apogee). The two spacecraft will use radio inter-satellite links to communicate, and star trackers will be used by both craft for determining their attitude.
+
+Global navigation satellite system (GNSS) receivers will pick up GPS signals around perigee, or the closest point to Earth, which, when combined with a dedicated relative navigation algorithm, will allow regular determination of their relative positions. Optical sensors on the Occulter will view pulsing LEDs on the Coronagraph to provide data for finer measurements. But greater, millimeter-scale precision requires more technological wizardry still.
+
+### How Proba-3 can achieve millimeter-scale orbital precision
+
+For this, the Occulter will ping a laser at a corner cube retro-reflector mounted on the Coronagraph spacecraft, which will bounce the beam back. This act of [metrology](https://en.wikipedia.org/wiki/Metrology) will allow precise tracking of the relative position and orientation of the two spacecraft. Using the data gathered, the craft can, the ESA says, control and maintain millimeter-level accuracy using 10 millinewton-scale cold gas thrusters aboard the Occulter.
+
+“Guidance, navigation and control has undergone a lot of development and this is what we all want to demonstrate,” [Damien Galano](https://ieeexplore.ieee.org/author/37088738884), Proba-3 Project Manager, said during a [press briefing](https://www.youtube.com/watch?v=nEztx11vC8o) on 3 April.
+
+“We have an actual application which is observation of the corona. So, by achieving really good observations of the corona, we would definitely demonstrate that all these equipment are working and that the technology is delivering actual science data,” he said, adding that Proba-3 formation flying control algorithms and metrology systems that could be applied to future missions.
+
+Precisely-controlled Occulter spacecraft could be used with space telescopes to block light from a star in order to directly detect potential orbiting planets, while a constellation of spacecraft can, through interferometry, create large-scale observatories, achieving large apertures and long focal lengths than possible with large solo satellites.
+
+Further applications include Earth observation, space-based gravitational wave detection, and a range of missions in which two or more spacecraft need to interact, such as rendezvous, docking, and in-orbit servicing.
+
+Before such complex projects can be undertaken, Proba-3 needs to prove it can nail the basics. “That’s clearly the operational challenge,” said [Dietmar Pilz](https://www.esa.int/About_Us/Corporate_news/Dietmar_Pilz_Director_of_Technology_Engineering_and_Quality), ESA Director of Technology, Engineering and Quality. “To see how far we can get the formation flying, what are the distances that we can achieve. This needs a lot of operational expertise and software from all the partners that are in this project.”
+
+If successful, Proba-3 could both surpass the work of previous space coronagraphs and illuminate paths for future complex space operations.
+
+From Your Site Articles
+
+Related Articles Around the Web

@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:08:13
+-->
+
+# Hawaii Moves to Ban Short-Term Rentals to Address Housing Crisis
+
+> 来源：[https://substack.perfectunion.us/p/hawaii-moves-to-ban-short-term-rentals](https://substack.perfectunion.us/p/hawaii-moves-to-ban-short-term-rentals)
+
+*By Paul Blest, More Perfect Union*
+
+After years of watching Airbnb steamroll state and local governments and housing markets, lawmakers are fed up — and finally doing something about it.
+
+The state legislature in Hawaii, where residents are [facing one of the worst shortages of affordable housing in the country](https://www.bloomberg.com/news/articles/2023-07-31/hawaii-s-plan-to-build-more-housing-could-be-national-model?embedded-checkout=true), is currently advancing two bills that would authorize county governments to phase out short-term rentals, like those found on Airbnb and Vrbo. The bills, HB 1838 and SB 2919, passed with amendments on Tuesday and will go back to their chambers of origin for final votes. 
+
+If passed into law, the bills would effectively give those local governments to ability to ban most Airbnb listings.
+
+The Office of Hawaiian Affairs, a self-governing agency whose nonpartisan members are elected by voters statewide, testified in March that more than half of all short-term rentals (STRs) in Hawaii are owned by people living out-of-state, and more than a quarter of STR owners own more than 20 units. The median rent in Hawaii is more than $2,200 and the median home price is $839,000, [making it the most expensive state to live in the U.S.](https://www.pewtrusts.org/en/about/news-room/opinion/2024/04/09/zoning-reform-can-cure-hawaiis-housing-struggles?amp=1) 
+
+These short-term listings “have proven to be more profitable than renting to local families, but this profit often comes at the cost of the communities where they're located,” the OHA testified. 
+
+The shortage in Hawaii has [become even more dire](https://www.civilbeat.org/2024/03/mauis-housing-crisis-only-got-worse-after-the-fires-will-a-new-department-help/) following last year’s wildfires, which destroyed thousands of units of housing and most of the community of Lahaina and killed more than a hundred people. On multiple occasions since the wildfires, Hawaii Gov. Josh Green has [threatened](https://fortune.com/2023/12/18/hawaii-governor-josh-green-convert-vacation-rentals-housing-lahaina-maui-wildfire-survivors/) to repurpose vacation properties into housing for victims of the fires, but has not followed through; in March, he said a moratorium on vacation rentals wasn’t necessary because enough units had been secured for the more than 3,000 survivors still living in hotels. Though the state said in March that dozens of survivors of the fires are moving into housing, [thousands remain in hotels](https://www.washingtonpost.com/national/2024/03/27/hawaii-lahaina-fire-housing-hotels/00d895d6-eca1-11ee-8f2c-380a821c02db_story.html), the AP reported last month. 
+
+Last year, New York City cracked down on short-term rentals, requiring hosts to register with the city before they’re able to rent out a property. Airbnb denounced the new regulations and [released a poll in December](https://news.airbnb.com/new-survey-finds-strict-short-term-rental-rules-deter-visitors-to-nyc/) purporting to show that visitors are “less likely to visit” New York City, [a place visited by more than 62 million people in 2023](https://www.google.com/search?q=how+many+tourists+nyc+2023&oq=how+many+tourists+nyc+2023&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCggCEAAYChgWGB4yCAgDEAAYFhgeMggIBBAAGBYYHjIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB7SAQgzNzQ3ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8). The city of Memphis also [passed short-term rental restrictions last year](https://www.commercialappeal.com/story/news/local/2023/03/21/city-of-memphis-to-require-permits-for-airbnbs-other-short-term-rentals/70034383007/), and in 2022, Honolulu banned rentals under 90 days, though a federal judge [has ruled to allow short-term rentals](https://www.courthousenews.com/existing-short-term-hawaii-rentals-may-remain-in-operation-judge-rules/) at properties that were rented out before the ordinance passed.
+
+Airbnb is also lobbying hard against the proposals in Hawaii. Their efforts are [headed up by former state Attorney General David Louie](https://hawaiiethics.my.site.com/public/s/contact/0032K00002DhPydQAF/david-m-louie), who is also a lobbyist for Meta. 
+
+Jordan Ruidas, a Lahaina fire survivor and activist with the group Lahaina Strong, testified in February that the House bill would be “crucial” for families in Lahaina, and told SFGate this week the organization supports both bills. 
+
+“The thought of the possibility of my keiki [children] and my future grandchildren not being able to stay and live in Hawaii is haunting,” Ruidas told SF Gate.
+
+*Watch our latest report on how short-term rentals are driving up housing costs:*
+
+*   Virginia Gov. Glenn Youngkin continued his [unprecedented spree of vetoes](https://www.axios.com/local/richmond/2024/04/10/2024-youngkin-bills-veto-virginia-legislature-list) by [nixing a plan](https://www.13newsnow.com/article/news/gov-youngkin-vetoes-prescription-drug-affordability-bill-hours-before-deadline/291-6fee03d3-1aaf-4138-b813-4bcb5963da5c) to create a Prescription Drug Affordability Board. Among his other vetoes: a $15 state minimum wage, extradition protections for abortion providers, and legal weed.
+
+*   Texas Attorney General Ken Paxton [is suing the state’s largest county](https://www.texastribune.org/2024/04/09/texas-harris-county-guaranteed-income/), Harris, to stop a guaranteed income pilot program for 1,900 of the poorest households in the county. The program would give those households $500 a month for 18 months, no strings attached; these programs, studies almost always show, [help to alleviate poverty](https://www.latimes.com/california/story/2024-01-12/la-guaranteed-income-are-they-more-financially-secure). 
+
+*   For the second straight year, Kentucky Gov. Andy Beshear has vetoed a bill to allow autonomous, driverless vehicles on Kentucky roads. The [legislation is opposed by the Teamsters](https://twitter.com/teamsters/status/1777811548620144821?s=46&t=kFo86qh_0rp1khO-yx5ocw), who called it “a threat to middle-class jobs and public safety.”
+
+*   After the Arizona Supreme Court reinstituted a Civil War-era complete ban on abortion, passed before Arizona even became a state, some Republican legislators denounced the ruling — [and then stopped efforts to immediately repeal the law](https://www.newsfromthestates.com/article/republicans-thwarted-attempts-repeal-arizonas-1864-abortion-ban-saying-they-need-more-time). Abortion rights will be on the ballot in Arizona in November, along with pivotal presidential and U.S. Senate contests and control of the narrowly divided state legislature.

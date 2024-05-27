@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:16:28
+-->
+
+# The great commercial takeover of low-Earth orbit | MIT Technology Review
+
+> 来源：[https://www.technologyreview.com/2024/04/17/1090856/international-space-station-axiom-low-earth-orbit/](https://www.technologyreview.com/2024/04/17/1090856/international-space-station-axiom-low-earth-orbit/)
+
+Other challenges include spaceflight-­associated neuro-ocular syndrome, which is a change in the structure and function of the eye, something researchers identified about 10 years ago. “We didn’t really see it with the shuttle, but as we started doing more and more station missions, we saw it,” Platts says. They have also identified small, structural changes in the brain but have yet to figure out what that means in the long term: “That’s a relatively new risk that we didn’t know about before the space station.”
+
+Overall, he says, the ability of the human body to regulate its function in space is “amazing.” His group is working on about 30 risks to humans posed by space exploration, which it classifies in a color-coding scheme. Green issues are well controlled. Yellow risks are of moderate concern, and red ones must be solved before missions are possible. “Right now, for low Earth orbit there are no red. Everything is yellow and green. We understand it pretty well and we can deal with it. But as we get to lunar, we see more yellow and some red, and as we get to Mars, we see more red yet,” Platts says. “There are things that we know right now are a problem, and we’re working hard to try and figure them out, either from a research standpoint or an engineering standpoint.”
+
+Some problems can only be studied as we venture farther into space—the long-term effects of Mars dust on the human body, for example. Others, such as the unanticipated development of psychiatric disorders, can be studied closer to home.
+
+NASA and other institutions are currently studying all this on the ISS and will need to continue such research long beyond the space station’s retirement—one reason why it is imperative that someone else launch a successor space station, and soon. To that end, just as it did with SpaceX from 2006 through 2011, the agency has seeded several companies with small investments, promising to lease space on emergent space stations. And right now, the soonest likely to launch is being led out of a sprawling former Fry’s Electronics retail store in a shopping center complex in Texas.
+
+* * *
+
+I met Michael Baine, the chief technology officer of Axiom Space, on a gray, drizzly January morning at the entrance to its Space Station Development Facility in Houston. Baine began his career at NASA Johnson Space Center just down the road, where he worked on everything from the shuttle and station to experimental lunar landers. Later, he left the agency to join Intuitive Machines as its chief of engineering. In February, that company’s Nova-C spacecraft, Odysseus, became the first US spacecraft to land successfully on the moon since the end of the Apollo program in 1972, making Intuitive Machines the first private company to land successfully on a celestial object beyond Earth. Baine has worked at Axiom Space since 2016\. The startup’s long-term goal is to build the first private commercial space station. It has successfully organized and managed three private missions to the International Space Station, in large part to study firsthand how humans work and live in space, so that they might design a more user-friendly product.  
+
+Axiom is not the only company interested in launching private space stations. Most notably, Blue Origin announced in 2021 that in partnership with the aerospace outfit Sierra Nevada, it would build Orbital Reef, a “mixed-use business park” capable of supporting up to 10 people simultaneously in low Earth orbit. In January, Sierra Nevada successfully stress-tested a one-third-scale test article of its habitat module, with the intention of launching a station into orbit on a Blue Origin New Glenn rocket in 2027\. Other companies, such as Lockheed Martin, have made moves into the market, though their progress is less clear.

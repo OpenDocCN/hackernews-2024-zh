@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:14:00
+-->
+
+# RocketStar tests fusion-enhanced in-space propulsion process | Aerospace Testing International
+
+> 来源：[https://www.aerospacetestinginternational.com/news/space/rocketstar-tests-fusion-enhanced-in-space-propulsion-process.html](https://www.aerospacetestinginternational.com/news/space/rocketstar-tests-fusion-enhanced-in-space-propulsion-process.html)
+
+US-based startup RocketStar has successfully demonstrated an electric propulsion unit for spacecraft that uses nuclear fusion-enhanced pulsed plasma.
+
+The company’s the FireStar Drive uses is a water-fueled pulsed plasma thruster that uses a form of aneutronic nuclear fusion to boost its performance.
+
+According to Rocketstart, its propulsion system’s base thruster generates high speed protons through the ionization of water vapor. When these protons collide with the nucleus of a boron atom, the atom undergoes fusion, transforming into a high-energy form of carbon that rapidly decays into three alpha particles.
+
+By introducing boron into the thruster’s exhaust, the FireStar Drive enables this fusion process. Similar to the way an afterburner enhances thrust in a jet engine by introducing fuel into the exhaust, the fusion occurring in the thruster’s exhaust significantly improves its performance.
+
+The fusion process was first devised during a R&D program for the US Air Force’s AFWERX (Air Force Work Project) initiative, where boronated water was introduced into the pulsed plasma thruster’s exhaust plume. This created alpha particles and gamma rays, clear indications of nuclear fusion.
+
+The process has now been further validated during subsequent testing at the Georgia Institute of Technology’s High Power Electric Propulsion Laboratory (HPEPL) in Atlanta, USA. During the tests the process was seen to create the ionizing radiation and improve the base propulsion unit’s thrust by 50%, said RocketStar.
+
+Adam Hecht, professor of nuclear engineering at the University of New Mexico said,  “RocketStar has not just incrementally improved a propulsion system, but taken a leap forward by applying a novel concept, creating a fusion-fission reaction in the exhaust. This is an exciting time in technology development, and I am looking forward to their future innovations.”
+
+Chris Craddock, CEO of RocketStar said, “We are thrilled at the results of our initial testing on an idea that our team has been exploring for some time. On a napkin at a conference in Florida, I sketched this idea out and described it to Wes Faler, the founder of Miles Space. He was quite clever in developing both the base thruster and the fusion enhancement.
+
+“We acquired Miles Space and Faler is now our CTO. So now I’m excited to take our already stellar thruster and make it fusion-enhanced with remarkable improvements in performance. Thanks to AFWERX and the USSF [United States Space Force] for believing it was possible!”
+
+Plans to test the FireStar Drive include further ground testing this year with an in-space demonstration scheduled for February 2025 as a hosted payload on space robotics firm Rogue Space System’s Barry-2 spacecraft. “We are very excited to test FireStar for RocketStar,” said Brent Abbott, CRO at Rogue Space Systems.  “We look forward to considering it for future Rogue missions.”

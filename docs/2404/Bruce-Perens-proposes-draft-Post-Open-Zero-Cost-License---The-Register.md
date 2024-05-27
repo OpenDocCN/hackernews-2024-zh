@@ -1,0 +1,68 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:40:41
+-->
+
+# Bruce Perens proposes draft Post-Open Zero Cost License • The Register
+
+> 来源：[https://www.theregister.com/2024/04/30/bruce_perens_post_open_license/](https://www.theregister.com/2024/04/30/bruce_perens_post_open_license/)
+
+Interview Bruce Perens believes he can do three impossible things, having already accomplished two of them.
+
+"I have done two impossible things, though of course I wasn't the only one behind them," he tells *The Register*. "The first was getting the world to buy into open source, and the second was convincing the ITU (a UN organization) and the governments of most countries worldwide to give up the Morse Code test for ham radio licenses."
+
+His third gambit – perhaps more correctly characterized as "improbable" – is to develop a license that mitigates the consequences of open source software development, issues he knows only too well as the co-author of the Open Source Definition (OSD) [back in](https://opensource.org/history) 1998.
+
+Twenty-six years on, Perens has published his initial draft of this improbable effort, the [Post-Open Zero Cost License](https://perens.com/static/DEVELOPMENT_LICENSE.txt?v=2004_04_25.1). He's been [working on it](https://www.theregister.com/2023/12/27/bruce_perens_post_open/) for a while but it's not ready for use yet. He said he'll either have to pay a lawyer or find a qualified volunteer to get the text into shape.
+
+"There are probably terms that won't work at all, and things that would have to be written better to be upheld by a court," he says.
+
+The license is one component among several – the paid license needs to be hammered out – that he hopes will support his proposed [Post-Open paradigm](https://postopen.org/) to help software developers get paid when their work gets used by large corporations.
+
+"There are two paradigms that you can use for this," he explains in an interview. "One is Spotify and the other is ASCAP, BMI, and SESAC. The difference is that Spotify is a for-profit corporation. And they have to distribute profits to their stockholders before they pay the musicians. And as a result, the musicians complain that they're not getting very much at all."
+
+Perens wants his new license – intended to complement open source licensing rather than replace it – to be administered by a 501(c)(6) non-profit. This entity would handle payments to developers.
+
+He points to the music performing rights organizations as a template, although among ASCAP, BMI, SECAC, and GMR, only ASCAP remains non-profit. BMI announced plans to [become a for-profit business](https://variety.com/2022/music/news/bmi-for-profit-business-model-1235400965/) in 2022, and subsequently [reduced payouts to musicians](https://www.musicbusinessworldwide.com/bmi-pay-songwriters-and-publishers-a-smaller-portion-of-its-revenues-as-a-for-profit-company-while-upping-its-own-margin-from-10-to-15-of-collections/) before being [sold](https://www.nytimes.com/2023/11/21/arts/music/bmi-sells-new-mountain-capital.html) in November 2023 to a private equity firm. And that's to say nothing about the [antitrust consent decrees](https://www.ascap.com/press/2021/01/01-15-ascap-bmi-consent-decrees) that continue to bind ASCAP and BMI.
+
+The basic idea is companies making more than $5 million annually by using Post-Open software in a paid-for product would be required to pay 1 percent of their revenue back to this administrative organization, which would distribute the funds to the maintainers of the participating open source project(s). That would cover all Post-Open software used by the organization.
+
+"The license that I have written is long – about as long as the Affero GPL 3, which is now 17 years old, and had to deal with a lot more problems than the early licenses," Perens explains. "So, at least my license isn't *excessively* long. It handles all of the abuses of developers that I'm conscious of, including things I was involved in directly like *[Open Source Security v. Perens](https://www.theregister.com/2020/03/27/grsecurity_bruce_perens_gpl_settlement/)*, and *[Jacobsen v. Katzer](https://www.theregister.com/2017/05/13/gnu_gpl_enforceable_contract/)."*
+
+"It also makes compliance easier for companies than it is today, and probably cheaper even if they do have to pay. It creates an entity that can sue infringers on behalf of any developer and gets the funding to do it, but I'm planning the infringement process to forgive companies that admit the problem and cure the infringement, so most won't ever go to court.
+
+"It requires more infrastructure than open source developers are used to. There's a central organization for Post-Open (or it could be three organizations if we divided all of the purposes: apportioning money to developers, running licensing, and enforcing compliance), and an outside CPA firm, and all of that has to be structured so that developers can trust it."
+
+In 2020 Perens resigned from the Open Source Initiative, the non-profit overseeing the OSD, when the organization was considering whether to give its blessing to the [Cryptographic Autonomy License](https://opensource.org/license/cal-1-0) because [he believed it wasn't "freedom respecting](https://www.theregister.com/2020/01/03/osi_cofounder_resigns/)."
+
+He has since come to believe that open source licensing has created its own set of problems. Perens points to the [XZ Affair](https://www.theregister.com/2024/04/01/xz_backdoor_open_source/), in which the overburdened maintainer of the XZ suite of compression tools was pressured to allow a pseudonymous contributor, assumed to be part of a nation-state hacking effort, to install backdoor code that was detected only by chance.
+
+"So why did that happen?" Perens says. "Because the developer was perfectly capable of creating the XZ software, but not of supporting all of the world's richest corporations for exactly nothing for the rest of his life. And so we have to pay those developers both to support the companies that use the software and to provide some balance to a situation that's become very unbalanced."
+
+> The developer was perfectly capable of creating the XZ software, but not of supporting all of the world's richest corporations for exactly nothing for the rest of his life
+
+The lack of balance can be seen in the way that companies attempting to commercialize open source projects, like [HashiCorp](https://www.theregister.com/2023/08/11/hashicorp_bsl_licence/), [Elastic](https://www.theregister.com/2021/01/18/elastics_doubling_down_on_open/), [Neo4j](https://www.theregister.com/2022/03/17/court_open_source/), [MongoDB](https://www.theregister.com/2018/10/16/mongodb_licensning_change/), [Redis](https://www.theregister.com/2024/03/22/redis_changes_license/), and [Sentry](https://www.theregister.com/2023/11/20/sentry_introduces_the_functional_source/), have moved away from open source licenses. They've done so to shield themselves from tech giants like Amazon that have a computing infrastructure cost advantage when it comes to offering open source software as a service.
+
+Mark Collier, COO of the OpenInfra Foundation, doesn't see a problem with open source.
+
+"I don't agree that there's a crisis in open source licensing," he tells *The Register*. "I think that there are many challenges that certainly are continuously coming up when it comes to different companies trying to figure out how they want to monetize and how they want to engage with open source."
+
+He acknowledges that companies like HashiCorp have backed away from open source licensing. "But I don't know that any of those have been successful," he says. "I think there's a lot of evidence that they [haven't been successful](https://www.theregister.com/2024/03/18/hashicorp_sale_report/)."
+
+Asked about Perens's argument that open source developers aren't being fairly compensated for their work, Collier is less emphatic.
+
+"I think that 'fair' is … a very charged word, and it's sort of subjective by its very nature," he says. "So it's hard to have a yes or no answer to that. Personally, what I see as fundamental when it comes to free and open source software is freedom."
+
+But freedom isn't really the issue Perens is trying to address, unless we're talking about freedom from compensation. He's concerned about how the financial aspects of open source can leave projects begging for support and susceptible to subversion. He's concerned about wealthy corporates profiting from free labor.
+
+That's one reason the Post-Open license covers co-opting content to train machine learning models.
+
+> The problem with AI is I pretty much think all AI is copyright infringement at this point
+
+"The problem with AI is I pretty much think all AI is copyright infringement at this point," says Perens. "They're reading people's copyrighted web content, they're reading open source, etc. And what AI really does is it mixes and matches its input. So what you are getting as the output of an AI is someone else's copyrighted content that is maybe not directly identifiable because of the mix and match.
+
+"But it's infringement and that needs to be solved and there are a whole bunch of court cases going on. So I think that that'll be solved at that level. But at the open source or Post-Open level, we just say no, don't train your model with this. Because it's not a fair use. It's not compensating the developers at all."
+
+Perens's to-do list remains long. He still has to write the paid license, the operating agreement, and the infringement process. He says he also needs to have a legal review done to avoid antitrust concerns. And he's looking for community support.
+
+"So, can I do this third impossible thing and sell Post-Open to the world?" he says. "The good news is that I'm still not getting significant pushback, and I'm getting enthusiastic help from some people. But I suspect a lot still don't believe that this can happen. If we go back to the genesis of open source, no lawyer would talk to us and we were anathema to the corporate world. We got past that, so I'm confident that we can make progress with Post-Open today." ®

@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:18:46
+-->
+
+# AWS stops selling Snowmobile truck for cloud migrations
+
+> 来源：[https://www.cnbc.com/2024/04/17/aws-stops-selling-snowmobile-truck-for-cloud-migrations.html](https://www.cnbc.com/2024/04/17/aws-stops-selling-snowmobile-truck-for-cloud-migrations.html)
+
+ Amazon Web Services Snowmobile Truck
+
+CNBC
+
+At [Amazon's](/quotes/AMZN/) annual cloud conference in 2016, the company captured the crowd's attention by driving an 18-wheeler onstage. Andy Jassy, now Amazon's CEO, called it the Snowmobile, and said the company would be using the truck to help customers speedily transfer data to Amazon Web Services facilities.
+
+Less than eight years later, the semi is out of commission.
+
+As of March, AWS had removed Snowmobile from its website, and the Amazon unit has stopped offering the service, CNBC has confirmed. The webpage devoted to AWS' "[Snow family](https://aws.amazon.com/snow/)" of products now directs users to its other data transport services, including the Snowball Edge, a 50-pound suitcase-sized device that can be equipped with fast solid-state drives, and the smaller Snowcone.
+
+An AWS spokesperson said in an emailed statement that the company has introduced more cost-effective options for moving data. Clients had to deal with power, cooling, networking, parking and security when they used the Snowmobile service, the spokesperson said.
+
+"Since we introduced Snowmobile in 2016, we've released many other new services and features which have made migrating data to AWS even faster and easier for our customers," the spokesperson wrote.
+
+An AWS Snowmobile truck appears in a Seattle parking lot in 2019.
+
+Andrew Evers | CNBC
+
+Snowmobile was priced at $0.005 gigabytes per month, not including other costs, according to a page formerly on the AWS website. For a company with 100 petabytes of data — the capacity of a Snowmobile — a transfer job would cost about $500,000 per month.
+
+Amazon's decision to axe Snowmobile comes as Jassy implements cost cuts across the company to contend with lackluster sales growth. Amazon has [slashed](https://www.cnbc.com/2023/03/20/amazon-layoffs-company-to-cut-off-9000-more-workers.html) more than 27,000 jobs since late 2022 and has discontinued projects in the devices and retail units. The cuts have continued this year, with Amazon [laying off hundreds](https://www.cnbc.com/2024/04/03/amazon-layoffs-hundreds-of-jobs-cut-in-cloud-computing-unit.html) of jobs in AWS earlier this month.
+
+While it's fairly routine for AWS and rivals [Microsoft](/quotes/MSFT/) Azure and [Google](/quotes/GOOGL/) Cloud Platform to get rid of products and services, the elimination of Snowmobile stands out due to the splashy way it was introduced at the company's showcase Reinvent conference in Las Vegas in late 2016.
+
+Jassy, who at the time led AWS, was delivering his keynote before tens of thousands of people in the crowd, when the 18-wheeler joined him on stage.
+
+"We're going to need a bigger box," Jassy said, as audience members rushed to raise their smartphones to capture photos of the spectacle.
+
+Jassy told the crowd why the truck was groundbreaking. Over a 10 gigabit-per-second connection, it would take 26 years to move an exabyte, or 1 million terabytes, of data to the cloud, he said. An AWS customer could do the job with 10 Snowmobiles in under six months, he said. Each Snowmobile had a capacity of 100 petabytes on hard disk drives.
+
+In a [blog post](https://aws.amazon.com/blogs/aws/aws-snowmobile-move-exabytes-of-data-to-the-cloud-in-weeks/) coinciding with the launch on Nov. 30, 2016, Amazon cloud evangelist Jeff Barr described Snowmobile as "a ruggedized, tamper-resistant shipping container 45 feet long, 9.6 feet high, and 8 feet wide" that "can be parked in a covered or uncovered area adjacent to your existing data center."
+
+Barr helped to convey the supposed simplicity of the process with photos of a Snowmobile built out of Lego getting connected to a corporate data center.
+
+"We intend to make sure that Snowmobile is both faster and less expensive than using a network-based data transfer model," Barr wrote.
+
+But the product didn't take off.
+
+A spokesperson for satellite operator Maxar said the company used Snowmobile once in 2017 to move more than 100 petabytes to AWS from its own servers. Snowmobile was an "ideal solution for that moment in time," the spokesperson said.
+
+"Since then, we have been uploading our imagery and associated data directly to the cloud," the spokesperson added.
+
+AWS still leads the giant cloud infrastructure market and generated $90.8 billion in [revenue](https://www.cnbc.com/2024/02/01/aws-q4-earnings-report-2023.html) last year, accounting for 16% of Amazon's total sales. The company's spokesperson said AWS' Snowball Edge devices, which clients can return to Amazon by mail after filling them up with data, are smaller than the Snowmobile vehicles, cost less and have a shorter turnaround time.
+
+There's also the AWS DataSync service for moving data, announced in 2018\. Clients generally find that sending data to AWS online is more economical than using Snowmobile, the company said.
+
+"We couldn't be more proud of the value that Snowmobile has brought to customers, and we're pleased to see them choosing newer, more efficient technologies," the spokesperson wrote.
+
+## Don’t miss these exclusives from CNBC PRO

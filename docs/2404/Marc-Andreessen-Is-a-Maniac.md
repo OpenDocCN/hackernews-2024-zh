@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:38:16
+-->
+
+# Marc Andreessen Is a Maniac
+
+> 来源：[https://gizmodo.com/marc-andreessen-is-a-maniac-1851433847](https://gizmodo.com/marc-andreessen-is-a-maniac-1851433847)
+
+At first glance, Marc Andreessen would appear to have all sorts of contradictory beliefs. From a distance, the venture capitalist spouts your [standard brand of right-wing libertarianism](https://www.salon.com/2014/06/06/techs_toxic_political_culture_the_stealth_libertarianism_of_silicon_valley_bigwigs/), but he’s also somehow a [huge fan of the Pentagon](https://www.youtube.com/watch?v=_lQWIFi0D4k). He’s a [big fan of “America”](https://fortune.com/longform/andreessen-horowitz-beyond-silicon-valley/) but doesn’t seem to like most Americans very much. His VC firm, Andreessen Horowitz, has claimed that the U.S. government is being strangled by special interests and lobbying but, last year, he [spent an ungodly amount of money](https://www.forbes.com/sites/davidjeans/2024/04/19/gundo-bros-silicon-valley-military/?sh=150a428852c9) lobbying that same government.
+
+Why Former Employees & Scarlett Johansson Are Questioning OpenAI
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22550.vtt" srclang="en">
+
+While Andreessen may be all over the place ideologically, when you burrow down to his core beliefs they seem pretty simple. He’s a big fan of power. That is power for certain people—i.e., people like him. Rich people, in other words. I used to consider Andreessen to be something of a buffoon—a guy who has been so rich for so long that it’s effectively addled his brain. His love of investing [in bad ideas](https://fortune.com/2023/07/13/adam-neumann-why-marc-andreessen-invested-flow-wework/) had me convinced of this. Now, however, I think a more apt descriptor might be “maniac.” He seems like a zealous believer in anything that helps sustain or enhance the American elite’s power accumulation, all other considerations be damned.
+
+A [recent Forbes story](https://www.forbes.com/sites/davidjeans/2024/04/19/gundo-bros-silicon-valley-military/?sh=150a428852c9) about Andreessen Horowitz’s relatively new American Dynamism fund, which is populated by defense startups, sheds some fresh light on this. Again, you would think for someone who has frequently railed against [big government](https://twitter.com/pmarca/status/1775424509509796108), feeding the American War Machine might be a bit taboo. But, no, he seems perfectly fine with it. The story focuses on the “Gundo Bros,” a gaggle of patriotic software developers attached to defense startups that are endorsed by a16z. Said “bros” sound like they mostly take their cues from 1980s action movies:
+
+> They pump iron while they code, host weekly bonfires on the beach, and shotgun energy drinks. They’re calling for a return to America’s hardware-building roots in El Segundo, where pioneers like Jack Northrop and Allan Lockheed built the pillars of America’s arsenal. And they embrace [Effective Accelerationism](https://12ft.io/proxy?q=https%3A%2F%2Fwww.forbes.com%2Fsites%2Femilybaker-white%2F2023%2F12%2F01%2Fwho-is-basedbeffjezos-the-leader-of-effective-accelerationism-eacc%2F%3Fsh%3D536890067a13), a philosophy that calls for technology to advance no matter the cost (and which counts Andreessen as its poster endorser).
+
+A16z’s American Dynamism fund is undeniably funny at first glance. On [its website](https://a16z.com/american-dynamism/), a storied timeline lays claim to a host of impressive historical events—the Wright brothers’ first flight, the invention of the transistor, the Manhattan Project, the moon landing—and frames them all as part of the American Dynamism “movement,” as if A16z had something to do with any of that stuff. “American Dynamism embodies the spirit of innovation, progress, and resilience that drives the United States forward. This powerful force is exemplified by groundbreaking achievements in technology and innovation, shaping both our nation and the global landscape,” the site says. A site visitor reading through this garbage might be distracted enough to forget that the fund is [promoting a host of private defense, surveillance, and weapons contractors](https://a16z.com/american-dynamism-50/) who will hoard breakthroughs for themselves.
+
+Viewed in its totality, Andreessen’s interests have a certain, chaotic uniformity. The attitude seems to be: throw anything at the wall, so long as it accelerates your money and power—deregulation, technological disruption, berzerk AI, missiles and bombs—it’s all good stuff! Some tenets of Andreessen’s belief system were laid bare last year in his “[Techno-Optimist’s Manifesto,](https://a16z.com/the-techno-optimist-manifesto/)” which he published on his venture capital firm’s blog. Said “manifesto” is basically a spastic apology for corporate greed and wealth accumulation by a technocratic elite. It reads like some weird mixture of Gordon Gekko and Steve Jobs’ keynote speeches with a little bit of Patrick Bateman rhetoric thrown in.
+
+Given his cartoonishly rich-douche outlook on life, it makes sense that Andreessen wouldn’t think fondly of the segments of society that don’t conform to his ubermensch-style aspirations. That is to say, The American Prospect published [a personal essay](https://prospect.org/power/2024-04-24-my-dinner-with-andreessen/) by the author Rick Perlstein last week that seems to provide further evidence of Andreessen’s hopelessly elitist outlook.
+
+According to Perlstein, he was invited to what sounds like a truly insufferable party at one of Andreessen’s multi-million dollar mansions back in 2017\. During this event, amidst bouts of annoying pseudo-intellectual ramblings by the dinner participants that were present, Andreessen is alleged to have said something truly dick-ish about rural Americans. Here’s that exchange as Perlstein relates it:
+
+> I brought up the ordinary comforts of kinship, friendship, craft, memory, legend, lore, skills passed down across generations, and other benefits that small towns provide: *things that make human beings human beings*. I pointed out that there must be something in the kind of places he grew up in worth preserving. I dared venture that it is always worth mourning when a venerable human community passes from the Earth; that maybe people are more than just figures finding their proper price on the balance sheet of life …
+> 
+> And that’s when the man in the castle with the seven fireplaces said it.
+> 
+> *“I’m glad there’s OxyContin and video games to keep those people quiet.”*
+
+Or something like that. Perlstein equivocates a little bit on the exact wording that Andreessen used, claiming:
+
+> I’m taking the liberty of putting it in quotation marks, though I can’t be sure those were his exact words. Marc, if you’re reading, feel free to get in touch and refresh my memory. Maybe he said “quiescent,” or “docile,” or maybe “powerless.” Something, certainly, along those lines.
+
+Still, it sounds like something he would say.
+
+From what I can glean from his previous comments, Andreessen doesn’t have much fondness for anyone who doesn’t have a massive bank account. Among the charming things he’s reportedly said over the years is that the American middle class [was an “accident of history,”](https://www.businessinsider.com/andreessen-american-middle-class-an-accident-2014-10) that the American middle class “is a myth” and/or an “artifact” and [that it was an](https://qz.com/36368/eight-things-marc-andreessen-said-to-quartz-that-made-us-sit-up-and-listen) “experiment [that] has been run and it was a catastrophic failure.” Another fun thing [Andreessen has said](https://qz.com/36368/eight-things-marc-andreessen-said-to-quartz-that-made-us-sit-up-and-listen): “I’m not saying we should have sweatshops in the US and I’m not saying we should have no environmental regulations, but it is harder to do business in most states in the US than it is to do business in a lot of places around the world.”
+
+If the American middle class was an accident, and regulations are bad for business, and the best thing that rural Americans can do is take painkillers and play video games, but the American war machine is totally awesome...it feels like you can draw a pretty clear picture of what Andreessen thinks about the majority of Americans and where he thinks our country should go. You’d be forgiven if you aren’t as excited about it as he is.

@@ -1,0 +1,72 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:33:09
+-->
+
+# Flint water crisis turns 10, and we still don’t have enough answers
+
+> 来源：[https://www.freep.com/story/opinion/columnists/nancy-kaffer/2024/04/26/flint-water-crisis-10th-anniversary-rick-snyder-lead/73430288007/](https://www.freep.com/story/opinion/columnists/nancy-kaffer/2024/04/26/flint-water-crisis-10th-anniversary-rick-snyder-lead/73430288007/)
+
+By 2015, I had been a reporter for a decade and a half, but I had never been lied to like I was after the Flint water crisis story broke.  
+
+Most journalists in Detroit and Lansing — the largest concentrations of reporters in the state — followed Flint only sporadically. I’d written about the [Genesee County drain commissioner’s flawed plan](https://www.crainsdetroit.com/article/20120106/FREE/120109949/flint-lapeer-3-counties-move-forward-with-plan-to-leave-detroit) to create [a new regional water authority](/story/opinion/columnists/nancy-kaffer/2016/05/15/flint-water-crisis/84296376/), a plan developed mostly because, for reasons that still bear interrogation, the commissioner intended to cut out the Detroit Water and Sewerage Department. And I wrote about some of [the problems that followed the switch](/story/opinion/columnists/nancy-kaffer/2015/02/14/lessons-flint-water-crisis/23390073/), after some bacterial outbreaks suggested things weren't going smoothly.
+
+In Detroit, our attention in the summer of 2015 was largely consumed with the [ongoing aftermath](/story/opinion/columnists/nancy-kaffer/2015/09/04/any-measure-there-too-many-fires-detroit/71654806/) of the city’s 2013 municipal bankruptcy, [the early days](/story/opinion/columnists/nancy-kaffer/2015/08/07/gop-presidential-debate/31305347/) of the 2016 presidential campaign, and, shamefully, the latest Lansing scandal, [an extramarital affair between two state lawmakers](/story/opinion/columnists/nancy-kaffer/2015/08/31/courser-gamrat-scandal/71485286/) whose names few even remember.
+
+While most of Michigan wasn't paying attention, Flint’s [state-appointed emergency manager](/story/news/politics/2015/10/24/emergency-manager-law-blame-flint-water-crisis/74048854/) had signed on to the new water authority, and OK’ed a switch to Flint River water while the new system was under construction — that happened 10 years ago this week. General Motors had [stopped using Flint River water](https://www.mlive.com/news/flint/2014/10/general_motors_wont_use_flint.html) in its plant there, saying it was too corrosive, residents had to begun to report that the city's tap water was yellow, smelled and tasted bad, and the state was insisting that water tests showed everything was fine. 
+
+In late summer of that year, I got a call from a longtime source, who wanted to introduce me to Dr. Mona Hanna-Attisha, a local pediatrician and researcher who had some explosive news: Since the water switch, the blood-lead levels of children in Flint had elevated, proof positive that thousands of young children had been exposed to a neurotoxin.  
+
+I remember the surrealism of that phone call; when you get the first line on a big story, you wonder if you’re about to feel the fool, because what you thought you just heard is [too terrible to be true](/story/opinion/columnists/nancy-kaffer/2015/10/03/life-flint-sickening-water/73219988/).  
+
+Well, it *was *true, and the next year was powerful and frustrating in near-equal measure.
+
+Powerful, because of the efforts of brave Flint residents to tell the truth about the end point of absolute systemic failure, and because of the reporting undertaken by a handful of [dedicated](https://www.michiganpublic.org/people/lindsey-smith) [journalists](https://www.mlive.com/user/rfonger/posts.html) at [a slew](https://www.michiganpublic.org/people/sarah-cwiek) of [statewide](https://www.aclumich.org/en/biographies/curt-guyette) [organizations](https://outliermedia.org/outlier-hires-new-enterprise-editor/). I'll never forget meeting Flint moms struggling to care for their children without tap water, or their anger and frustration at the disregard they'd been subject to. Or kids whose futures might be shaped by circumstances they were too young to understand. Some of those children reminded me of my son, then 5\. I had to not think about that part too much.
+
+Frustrating, because the [the failures that led to the Flint water crisis](/story/opinion/columnists/nancy-kaffer/2016/02/20/flint-government-crisis/80414296/) were all too clear, and none of it needed to happen.  
+
+Frustrating because of the lying. 
+
+People sometimes suggest that politicians and their representatives lie often. But with a notable exception or two, they don't. Sure, politicians stretch the truth, shade things to flatter themselves and their interests. But to lie outright is rare, in no small part because it's just too easy to get caught. Moral objections aside, it’s just not worth it.
+
+Flint was different.
+
+**From 2015:**[Year before water change, state knew of risks in Flint](/story/opinion/columnists/nancy-kaffer/2015/11/07/flint-lead-water/75268692/)
+
+## The things they tried to tell us about the Flint water crisis
+
+As the water crisis unfolded, [state officials](/story/opinion/columnists/nancy-kaffer/2016/01/05/snyder-flint-water/78068836/) repeatedly [tried to discredit](/story/opinion/columnists/nancy-kaffer/2015/12/17/flint-water-lead/77365380/) the Flint residents who wouldn’t stop sounding the alarm, suggesting they were angling for new fixtures or plumbing repairs on the city or state's dime.
+
+They attacked Hanna-Attisha, the pediatrician/researcher whose medical center was a regional catchment for blood-lead level testing in small children, and who'd gone public with what she'd learned. A state spokesman described a U.S. Environmental Protection Agency water expert as a "rogue employee," and a Virginia Tech scientist as some sort of flim-flam artist.
+
+Hanna-Attisha's data, then-Gov. Rick Snyder's press secretary wrote in an email to me on Sept. 24\. 2015, was “[spliced and diced](/story/opinion/columnists/nancy-kaffer/2015/09/26/shortfalls-em-law-writ-large-flint-water-crisis/72811990/).”
+
+State officials [took great pains to suggest](/story/news/politics/2015/11/21/snyders-top-aide-talked-flint-water-supply-alternatives/76037130/) that the decision to switch to Flint River water was made by the local elected officials who had been displaced by the appointment of an emergency manager, adopting the bizarre pretense that state-appointed emergency managers, granted sweeping, unilateral authority by state law, were ineffectual rubber-stampers of local decision-making. The state, the spokeswoman wrote, had “severe reservations” about the water switch, signing off only at the behest of the Flint City Council.  
+
+Flint’s council did endorse the switch, but state law grants emergency managers absolute authority — and emergency managers are appointed because state officials *don’t think the local electeds have made very good decisions*. That part about “severe reservations” was simply untrue — emails revealed after the crisis broke made it plain that state officials were fine with the switch, [even in the face of evidence](/story/news/local/michigan/flint-water-crisis/2016/02/12/e-mails-flint-water-plant-rushed-into-operation/80300220/) suggesting it would cost more to use river water.  
+
+**From 2015:**[Snyder must act on Flint lead crisis](/story/opinion/columnists/nancy-kaffer/2015/09/26/shortfalls-em-law-writ-large-flint-water-crisis/72811990/)
+
+## Hoist by their own data
+
+A few days after that Sept. 24 email from Snyder's press secretary, the Free Press obtained data intended to refute Hanna-Attisha's claims, showing that kids’ blood-lead levels were fine. There was, if you're not a math person, a very convincing chart. Presumably, they hoped we'd republish it, so the world would see what the state wanted them to.
+
+And it might have worked, but for Free Press data reporter Kristi Tanner. Tanner, also a statistics professor, requested additional numbers, performing her own analysis that [determined the state’s own data](/story/opinion/columnists/nancy-kaffer/2015/09/26/state-data-flint-lead/72820798/) supported Hanna-Attisha's research. (You might say that the state's data had been "spliced and diced.") A state health department official, we later learned from emails obtained under the Freedom of Information Act, wrote to other state employees that her "secret hope" was to convince Tanner that lead poisoning rates in Flint hadn't changed.
+
+But that’s what covering the Flint water crisis was like — scrambling around to establish the facts of things that were [plainly true the whole time](/story/opinion/columnists/nancy-kaffer/2016/01/11/flint-lead-water/78629628/): The water was contaminated with lead, Flint residents were harmed, the state and its emergency managers were at fault.  
+
+The state's efforts to discredit the truth-tellers and to dodge blame displayed a diligence that hadn’t been present in their duty of care for Flint. I cry when I’m angry, so I cried a lot that fall.  
+
+The state eventually got straight on [the need to acknowledge](/story/news/local/michigan/2015/12/29/deq-director-wyant-resigns-over-flint-water-crisis/78027052/) that there was a serious problem. A fatal outbreak of Legionnaire’s disease led to the criminal charges against some state officials, but didn't result in convictions of the highest-ranking members of state government, including Snyder. Flint received funding to replace its lead service lines, and the city’s water has met state and federal safety for years now.  
+
+It's not so easy to repair the toll on Flint residents.
+
+## There's no grant money to fix broken trust
+
+Some may never trust tap water again, or the government. And who can blame them? The city and state opted not to treat the drinking water with an affordable mixture of chemicals called [corrosion control](/story/opinion/columnists/nancy-kaffer/2015/11/07/flint-lead-water/75268692/) that would have kept lead out of the water. For 16 months, state government lied to Flint, insisting the yellow, foul-tasting water coming out of residents’ taps was fine. A state-appointed manager waved off residents’ concerns, with the underlying assumption they were compelled by some sinister motivation. 
+
+Ten years later, I still can’t say I really understand what happened in Flint, or why it happened at all.  
+
+But what I come back to again and again is the lying. The water crisis didn’t have to happen. But after it did, they didn’t have to lie about it.  
+
+*Nancy Kaffer is the editorial page editor of the Detroit Free Press. Contact her at [nkaffer@freepress.com](mailto:nkaffer@freepress.com). Submit a letter to the editor at [freep.com/letters](http://freep.com/letters) and we may publish it online or in print.*

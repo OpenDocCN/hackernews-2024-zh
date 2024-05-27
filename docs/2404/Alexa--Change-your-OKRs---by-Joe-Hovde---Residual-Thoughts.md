@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:18:13
+-->
+
+# Alexa, Change your OKRs - by Joe Hovde - Residual Thoughts
+
+> 来源：[https://residualthoughts.substack.com/p/alexa-change-your-okrs](https://residualthoughts.substack.com/p/alexa-change-your-okrs)
+
+An email I recently got from Alexa. I expect I am one of a very small number of people who read it.
+
+I still have an Amazon Alexa, which I find somewhat embarrassing to admit. But it was cheap and functional and I like to be able to play music with my voice or set an alarm without looking at a screen. I even occasionally use it to reorder things from Amazon, which as far as I can tell is the only way they make any money from it.
+
+I am close to getting rid of it, though, because it constantly tries to upsell me to use “routines.” For example, I will ask “Alexa, what’s the weather?” and it will respond, in its hauntingly monotonic female robot voice, “It’s 45 degrees right now. **By the way, I can tell you the weather and the news, and turn on your lights every morning when you wake up. Would you like me to do that?**”
+
+Or, I will ask it to set a timer for 8 minutes, and it will say, “okay — **by the way, you can play a trivia game while you wait. Would you like to do that?**”
+
+Generally, I just say “No,” but sometimes I will say “No, and never ask me anything like that ever again.” When I say that, the robot is silent, but I know it is only a temporary respite. The next time I ask it a question, it will glibly offer me another supposedly helpful add-on.
+
+I am certain that the team working on Alexa at Amazon has an OKR centered on something like **“*****increasing the percentage of Alexa users who use scheduled routines or proprietary apps.*****”** If you don’t know the term OKR, consider yourself lucky and don’t look it up; for our purposes you can just think of it as a “corporate goal.”
+
+The team came up with this goal because it makes sense that they would want people to use their thing a lot. The more people use their thing, the more “value” it imparts to them and the more bonded to Amazon they become. It theoretically increases the lifetime value of the user (me) to use their thing more.
+
+The trouble with this is that while all of it makes sense, it fails to capture the animosity built up by being pushy with features through a medium as intimate as voice in a user’s home. Sure, they probably have “guardrail metrics” like user retention or daily active users to ensure that there is no obvious downside to promoting these features, but these are blunt instruments.
+
+Perhaps they are measuring the number of users that churn from Alexa entirely, or some version of a Net Promoter Score in an email survey that they run. But it is very hard to attribute a user leaving a product to one specific change. So, I expect they’ve run tests that show that adding a given upsell doesn’t negatively impact user retention over some period, say 3 months. But it’s difficult to measure the impact of layering lots of these little annoyances on top of each other, and each subteam within the Alexa org is incentivized to promote their own little feature (after all, they have to hit their OKRs!). So the experience gets more and more bloated with upsells, until one day the user is so fed up he throws the Alexa out of his window, and it hits an innocent bystander, and they die a death that could have been avoided with a more thoughtful management structure.
+
+I think Alexa would be a much better product if it had a person at the top who used the product a lot and could make decisions on behalf of the user. These decisions would be informed by the data I mentioned above but they would not be captured by the data; they would have a common sense, “let’s not make our users miserable” motivation. The extreme version of this is someone like Steve Jobs, who ruled by decree and intuition, making decisions himself instead of relying on incentive structures to produce the right outcomes.
+
+The trouble with this setup is it requires the organization to place trust in human taste and judgment, and it requires that it lets go of the satisfying feeling of being a master watchmaker and building an OKR machine where every team produces something measurable and they all ladder up to the organization’s goals to create the perfect product. Especially in products where a lot of the value comes from the *feeling you get when you use the product* (like a speaker you talk to inside your home), I don’t think it is possible to build the perfect system with measurable goals and incentives, because the feeling of beautiful design or terrible design will not be measurable.
+
+This is in contrast to Amazon’s core shopping experience, where most of the value comes from the utility of being able to find anything you want to buy and get it delivered quickly. The feeling you get when you look at the cluttered homepage is not a great one, but that’s okay, because it accomplishes what you need to get done.
+
+A product team must decide where on the spectrum of “delightful experience” to “pure utility” its product belongs, and the further towards the delightful experience it is, the more it must be designed with human taste and the harder it will be to build an OKR machine that outputs it.

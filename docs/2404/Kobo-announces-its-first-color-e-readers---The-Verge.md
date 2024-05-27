@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:05:26
+-->
+
+# Kobo announces its first color e-readers - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/10/24124411/kobo-libra-colour-clara-colour-e-reader-kindle-e-ink](https://www.theverge.com/2024/4/10/24124411/kobo-libra-colour-clara-colour-e-reader-kindle-e-ink)
+
+Rakuten Kobo is launching its first color e-readers, the [Kobo Libra Colour](https://go.skimresources.com/?id=1025X1701640&xs=1&url=https%3A%2F%2Fus.kobobooks.com%2Fproducts%2Fkobo-libra-colour) and the [Kobo Clara Colour](https://go.skimresources.com/?id=1025X1701640&xs=1&url=https%3A%2F%2Fus.kobobooks.com%2Fcollections%2Fereaders%2Fproducts%2Fkobo-clara-colour). Both use E Ink’s latest Kaledio color screen technology, which has subtle, pastel-like hues and drops from a 300ppi grayscale resolution to 150ppi when you view content in color.
+
+I’ll be testing both e-readers soon, but so far, they look like small upgrades to Kobo’s existing e-readers. That’s not a bad thing, though! The seven-inch Kobo Libra 2 is [my favorite e-reader](/23769068/best-ebook-readers) outside of Amazon’s ecosystem, offering the [Kindle Paperwhite’s](/22745670/amazon-kindle-paperwhite-2021-review-usb-c-signature-edition-display-e-reader-books) IPX8 waterproof design but with extras like physical page-turning buttons, no lockscreen ads, and more storage.
+
+The $219.99 Kobo Libra Colour retains all of those features but is also now compatible with the [Kobo Stylus 2](https://help.kobo.com/hc/en-us/articles/10733885674391-About-Kobo-Stylus-2#:~:text=Note%3A%20Kobo%20Stylus%202%20only,Elipsa%2C%20and%20Kobo%20Elipsa%202E.), just like the [Kobo Elipsa 2E](/2023/4/5/23669572/kobo-elipsa-2e-e-reader-tablet-kindle-scribe-onyx-remarkable). However, it’s $30 more expensive than the Kobo Libra 2, and you’ll have to buy the stylus separately for $69.99\.
+
+The $149.99 Kobo Clara Colour is slightly more distinct from its closest sibling, the $139.99 [Kobo Clara 2E](/23542918/kobo-clara-2e-ereader-review-amazon-kindle). It offers the same six-inch display and IPX8 waterproof design but now comes with 16GB of storage, as well as an improved processor. I hope so; the Kobo Clara 2E’s sluggish performance was one of my chief complaints.
+
+Kobo also introduced an upgraded black-and-white Kobo Clara BW, with the same storage and processor upgrades, for $129.99.
+
+All of the devices are available to preorder starting today and will ship on April 30th.

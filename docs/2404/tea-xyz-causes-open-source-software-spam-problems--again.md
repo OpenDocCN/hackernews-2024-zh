@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:21:33
+-->
+
+# tea.xyz causes open source software spam problems, again
+
+> 来源：[https://www.web3isgoinggreat.com/?id=teaxyz-causes-open-source-software-spam-problems-again](https://www.web3isgoinggreat.com/?id=teaxyz-causes-open-source-software-spam-problems-again)
+
+The tea.xyz protocol first earned an entry on *Web3 is Going Just Great* in late February, when their plan to reward [open source software](https://en.wikipedia.org/wiki/Open-source_software) contributors resulted in crypto enthusiasts with no intention of participating in OSS opening endless pull requests to claim ownership of prominent OSS projects. This spam was disruptive to said projects, whose (usually volunteer) maintainers had to figure out what was going on and then try to stop the spammy PRs.
+
+Max Howell, the creator of tea.xyz (and creator of homebrew, though he's no longer involved), seemed apologetic, and promised to make changes to the protocol to stop this spammy behavior.
+
+Now, deprived of that avenue, people are just creating massive waves of empty software packages, with nothing other than a "teafile" with their crypto wallet address for rewards, and submitting them to package managers like [NPM](https://en.wikipedia.org/wiki/Npm) and [RubyGems](https://en.wikipedia.org/wiki/RubyGems).
+
+This spam prompted a blog post from RubyGems, who wrote that they had to devote time to strengthening limits on package publishing and "ensuring [accounts] didn't disrupt the community further."
+
+Security researchers at Phylum also wrote up the protocol's impact on the JavaScript world, which has seen as many as 7x as many packages published on NPM as previous daily averages. "Automated sustained spamming of this volume for months on end is rare and does nothing but cause heavy strain on the ecosystem itself, degrading the performance of the ecosystem for genuine users and straining open source security researchers," they wrote.

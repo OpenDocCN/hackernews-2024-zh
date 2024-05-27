@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:53:43
+-->
+
+# Discontinued Software
+
+> 来源：[https://almy.us/softwaredeath.html](https://almy.us/softwaredeath.html)
+
+# The Threat Of Discontinued Software
+
+I've used computers for over 50 years so I've seen my share of computer programs, and computers, come and go. But it's always disconcerting when long used programs go away. Of course data stored in proprietary formats is the riskiest problem. But the effect on one's workflow is also an issue. I think that now that I am retired, and older, it's becoming particularly irritating. So here are some issues I've had and am having, personally.
+
+## Changing Computers
+
+I've gone from IBM 360 (and punched cards) to DEC PDP-11 to TRS-80 to CP/M to MSDOS and Windows with a stint using OS/2 and now for the past 15 years the Apple Mac. Each of those changes has generally meant a complete change of application software and, more often than not, new file formats. I'm concerned about changing again. Now that Apple is going to ARM processors, that is another change which would be difficult because of my reliance on discontinued/abandoned software that only runs on Intel Macs. And, of course, this software could still fail with future OS versions. The successors to macOS Mojave, in 2019, no longer support 32-bit applications, and this is a problem.
+
+## My Java Saga
+
+I started writing programs in Java in the late 1990s. I used IBM's Visual Age for Java, which was the most advanced IDE at the time and in many respects the most advanced IDE ever. I can still run it on a Windows 2000 virtual machine, but it is locked in to an old Java version. IBM abandoned the product (which was actually written in Smalltalk) for Eclipse, which I've never liked. I was making major use of Java Beans which was well supported in Visual Age, but also supported in Borland JBuilder, so I switched to Borland. But then Borland also switched to Eclipse. So now I use NetBeans, which contrary to the name has minimal Java Bean support. Now the cost of the software went from about $100/year to free, but the quality and power is much reduced, so I'm not a happy camper. Luckily Netbeans is cross platform (I've used it under Windows, macOS, and Linux) and still being developed and supported so I don't feel that I will be orphaned again. However ownership has moved from Oracle to Apache which did delay their release schedule.
+
+## IBM
+
+Nobody has ever been fired for buying IBM, but this doesn't extend to their home products. With Visual Age the product was originally low enough priced for non-corporate users but the successor was much more expensive. I was also "burned" by OS/2\. They also had a good website design program for home users that they abandoned. And they also abandoned a tape backup program for OS/2 before they abandoned OS/2\. Basically every IBM product I ever bought ended up being abandoned.
+
+## Photography
+
+When I first went to digital photography I still was Windows computer based. I used ACDSee and Photoshop Elements. I kept my image files in a folder hierarchy. When I went to the Mac I bought Photoshop and used Bridge for management, still keeping the image files in a folder hierarchy. I can still use the purchased, not subscription, copy of Photoshop, but it will not run beyond macOS Sierra and doesn't handle the raw images from my Nikon D810.
+
+Then I got hooked on Aperture, now abandoned. I'm not happy about Aperture being dropped as Photos is not a substitute and I don't care for Lightroom. I also use the Nik plug-ins which have become free and then sold to DxO, and are commercial again. While Aperture continues to work in macOS Sierra, that version will be the end of the line for Nik plugins as they are 32-bit and the latest DxO 64-bit versions do no support Aperture. This leaves me in a waiting game, with only a year of software viability left. I save the processed images as large JPEGs, larger than I would otherwise need, so that I hopefully will never have to reprocess images with another program. I do keep all the raw initial images just in case. Luckily even those from my first DSLR, a Nikon D70, are still readable.
+
+As it turns out, there is a third party program that allows Aperture to run under Catalina, along with the latest DxO Nik plugins. However it came too late, as I had switched over to Adobe Lightroom.
+
+## Writing
+
+Luckily the oldest documents that I wrote and care about were printed, and I've scanned and OCRed them. ASCII text files, if I still had them around, would still be readable and the first word processing files I used were nroff format which is still viable! But with the move to personal computers I used a sad sequence of now dead word processors -- Superscripsit (TRS-80), Wordstar (CP/M) which is actually fairly recoverable, PC-Write also fairly recoverable, some really nice word processor for OS/2 which isn't recoverable, and many years of WordPerfect which can be read by LibreOffice
+
+But problems came *after* I switched to a Mac! No WordPerfect on a Mac and I don't like Microsoft Word after many bad experiences in the 90's. So I embraced Pages. This has been precarious since the latest versions were de-featured to match the iOS version. Until recently the latest Pages wouldn't even open the earliest Pages documents. I still use Pages but have added Nisus Writer Pro. The advantage of Nisus Writer Pro is that its native save format is RTF which will open in just about everything (but Pages!). Nisus Writer Pro is also fully OS X featured while LibreOffice/OpenOffice.org/Microsoft Word are not. But few people talk about Nisus Writer these days so what is its future?
+
+I'd been a big user of Circus Ponies Notebook. The company suddenly closed its doors. I'd continued using this program but it's proprietary document format is a risk. Luckily the document content can be extracted. Circus Ponies Notebook stopped working with macOS High Sierra. I've moved that type of work to Growly Notes which was commercial when I first got it but is now free. What will be its future?
+
+## Server
+
+Apple has been removing features from its Server application, which I have been using for years, and is basically discontinuing it with Mojave in 2018\. They don't want to be in the server business, for either hardware or software, leaving all current users in the lurch. I currently only use my Mac mini server as a file server, having successfully moved all the other services it was performing to a UniFi Security Gateway (a router intended for small businesses).
+
+## The Future
+
+What's next? I should be suspicious of programs from small companies, but so far the failures seem to have come from large companies' products (except for Circus Ponies). Obviously programs which have proprietary data formats, such as Scrivener, pose the greatest risk. I've used the Epsilon programmers editor since the late 1980's and it's a 1 man operation. Sounds risky but since it only edits ASCII text files I don't really have to worry although I'd sure miss its absence. It took about a year before Epsilon was upgraded to 64-bit after Catalina came out.
+
+Much of the problems I'm having can be traced to Apple releasing a new macOS version each year with limited new capability, at least capability useful to me, while disabling things I need, like compatibility with old software. One has to keep up to maintain at least security patches (current, and two versions back) and general fixes (current and one version back). As I write this Big Sur (2020) is out, Catalina (2019) gets support but no new versions, and Mojave (2018) is the oldest getting security updates. Yet I've got the following situation:
+
+*   I replaced my 2014 iMac with a 2020 to get extra years of hardware support because I need an Intel processor for Windows virtual machines. It runs Catalina as I have no use for Big Sur.
+*   My 2012 MacBook Pro was also replaced because it couldn't run supported OS versions. I now have a 2019 running Catalina basically will have the same issues as my iMac.
+*   My Mac mini server computer runs Sierra because Apple has de-featured Server with High Sierra and effectively dropped the product in Mojave. Since it is an internal system now, I don't worry about patches.
+*   I've got two other Mac minis that run Yosemite (2015) because they won't run anything newer.
+*   Joan's iMac was also replaced with a 2019 model. It also runs Catalina.
+
+A year ago I was running four different OSes, but at least now I'm down to three! It took over a year but there are finally replacements for all the 32-bit apps I need. Now I need to brace myself for the ARM-based CPUs.

@@ -1,0 +1,87 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:38:59
+-->
+
+# Tangoing with a Martin Gardner Word Game
+
+> 来源：[https://pncnmnp.github.io/blogs/martin-gardner-game.html](https://pncnmnp.github.io/blogs/martin-gardner-game.html)
+
+# Tangoing with a Martin Gardner Word Game
+
+## First Published: 28/01/24
+
+> *You’ll be sort of surprised what there is to be found once you go beyond Z and start poking around!*
+> - On Beyond Zebra!, Dr. Seuss
+
+It's fascinating how, out of the blue, we sometimes discover something so tangential yet interesting that we stop whatever we're doing to pursue that idea.
+
+Yesterday, while researching bit arrays, I came across [a 1961 article in the Communications of the ACM](https://dl.acm.org/doi/10.1145/366786.366795) by Anatol W. Holt. Having never heard of Holt, I naturally decided to explore his works on Google Scholar and Google Books. That's when I stumbled upon [Martin Gardner's 1969 column, "Mathematical Games"](https://archive.org/details/sim_scientific-american_1969-04_220_4/page/124/mode/2up), published in Scientific American.
+
+This was the April edition, in which Gardner had laid out eight problems based on logic and probability. A central theme amongst many of them was that the problem involved some sort of game - such as chess, name cards, and word games. *To call these problems intriguing would be an understatement* - there's an uncrossed knight's tour problem, a variant of chess where the first person to check the opponent's king wins, a variant of the urn problem, and, of course, the topic of this blog - a word game.
+
+Here’s the word game:
+
+> Anatol W. Holt, director of advanced systems for Applied Data Research, Inc., is a mathematician who makes a hobby of inventing games. His board game MEM, played with 32 stones of 11 colors, is a delightful strategy game based on a completely new idea involving pattern recognition. (It is currently on sale in stores and can also be ordered postpaid for $6.50 from Holt’s own firm, Stelledar, Inc., 1700 Walnut Street, Philadelphia, Pa. 19103.)
+
+> A few years ago, Holt devised the following word game. Two people each think of a “target word” with the same number of letters. Beginners should start with three-letter words and then go on to longer words as their skill improves. Players take turns calling out a “probe word” of the agreed length. The opponent must respond by saying whether the number of “hits” (right letter at the right position) is odd or even. The first to guess his opponent’s word is the winner. To show how logical analysis can determine the word without guesswork, Holt has supplied the following example of six probe words given by one player:
+> Even: Day, May, Buy
+> Odd: Say, Due, Ten
+
+> If you knew the target word and compared it letter by letter with any word on the even list, you would find that an even number of letters (zero counts as even) in each probe would match letters at the same positions in the target word; words on the odd list would match the target word in an odd number of positions. Find the target word.
+
+*Let's not be mimes! Go ahead, pick up your pencils, and start brainstorming.*
+
+This past Christmas, I played a "cannot count, but it's a lot" amount of NYT word games with my family. I must confess, I even tried building my own Wordle variants, but I couldn't come up with something as interesting and simple as this one.
+
+A natural solution can be derived by examining the similarities and differences between the odd and even probe words. Take, for example, "Day," which is even, and "Say," which is odd. Since the "-ay" suffix is consistent, it indicates that "S" is the first letter in the target word. Further, considering "Due," "Day," and "Buy," we deduce that "u" cannot be in the middle, and "D" cannot be at the start, as previously observed. This leaves "e" from the odd word "Due," suggesting that "e" is the last letter in the target word. Having determined both the first and last letters, we then look at "Ten." As it is an odd word and "e" is the middle letter, we can conclude that "e" is also the central letter in the target word. *Therefore, the target word is "See"*.
+
+*This can easily be turned into an NYT-esque word game, where the computer thinks of a three-letter dictionary word (or four, to make it more challenging) at random, and our task is to guess the word while the computer gives us odd/even hints. The fewer the number of guesses it takes to find the target word, the better.* It's a surprisingly fun game!
+
+This is a short Python program for playing the game:
+
+```
+import random
+from nltk.corpus import words
+
+def get_word(length=3):
+    return random.choice([w for w in words.words() if len(w) == length]).lower()
+
+def check(guess, answer):
+    return "Even" if sum(g == a for g, a in zip(guess, answer)) % 2 == 0 else "Odd"
+
+def play():
+    answer = get_word()
+    try:
+        while (guess := input("Guess: ")) != answer:
+            print(f"It's {check(guess, answer)}")
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print(f"The word was {answer}")
+
+if __name__ == "__main__":
+    play() 
+```
+
+Now, here's an interesting question: *how can we solve it computationally?*
+
+For a three-letter target word, an algorithm can be as follows:
+
+1.  Start by making random three-letter guesses from a dictionary.
+    1.  Continue guessing until you receive feedback indicating that the guessed word is an "odd probe word" (i.e., it has either one or three matching letters with the target word). If all three letters match, the problem is solved.
+2.  Take the odd probe word from Step 1 and generate variations of this word by changing one letter at a time while keeping the other two letters constant. For example, if “nay” is an odd probe word, generate variations such as “say”, “nap”, and “noy”.
+    1.  For each variation, make a guess and observe the feedback.
+    2.  Identify the letter that, when changed, results in an "even probe word" feedback. This letter is the first matching letter in the target word.
+3.  Next, make guesses keeping the identified matching letter (and its position) constant from Step 2, while changing the other two letters.
+    1.  Continue until you receive feedback indicating an "even probe word."
+    2.  Apply the same process as in Step 2 to identify the second matching letter.
+4.  With two letters already identified, use a dictionary to make the last-letter guesses until you find the target word.
+
+The problem becomes surprisingly complex when we restrict step 2 to only allow guesses of words found in a dictionary. This limitation means we cannot always generate variations while keeping the other letters constant. This complexity isn't immediately evident in the three-letter version; however, when we move to four or more letters, it becomes much harder. Dare I say, *the problem even becomes NP*.
+
+Think about it! The odd/even feedback we get does not directly indicate which letters are correct or their positions. This uncertainty leads to a combinatorial explosion of possibilities as the word length increases. With each guess, we only partially constrain the solution space, and in the worst case, many guesses might be needed to converge on the correct word. I plan to ponder more on this.
+
+Lastly, *every world builder gets to name their town*. Since the original authors are likely not present anymore, I'd like to propose a name for it - **Yinique**!
+
+[←](../blog.html)

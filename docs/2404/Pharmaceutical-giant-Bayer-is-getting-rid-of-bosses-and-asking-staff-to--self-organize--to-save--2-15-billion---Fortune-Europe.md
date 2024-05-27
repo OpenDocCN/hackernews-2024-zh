@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:24:22
+-->
+
+# Pharmaceutical giant Bayer is getting rid of bosses and asking staff to ‘self-organize’ to save $2.15 billion | Fortune Europe
+
+> 来源：[https://fortune.com/europe/2024/04/11/pharmaceutical-giant-bayer-ceo-bill-anderson-rid-bosses-staff-self-organize-save-2-billion/](https://fortune.com/europe/2024/04/11/pharmaceutical-giant-bayer-ceo-bill-anderson-rid-bosses-staff-self-organize-save-2-billion/)
+
+In a bid to claw back $2.15 billion, the struggling pharmaceutical giant Bayer CEO is doing away with middle managers and 99% of the company’s 1,362-page corporate handbook, allowing nearly 100,000 employees to self-manage.
+
+Bayer, the 160-year-old German company known for inventing aspirin, has been stuck in a rut: Its market cap has plunged to two-decade lows—spurred by its so-far disastrous acquisition of Monsanto—and its CEO Bill Anderson believes that flattening hierarchy and slashing corporate bureaucracy could be key to turning it around.
+
+When Anderson took the helm last June, he learned that the company’s rules and procedures handbook was longer than[*War and Peace*](https://www.youtube.com/watch?si=Zod8PkLwGmYRZ2r3&v=_mubMfgrdIQ&feature=youtu.be). It’s why, he says, when he listened to feedback from the firm’s workforce, the same complaints surfaced repeatedly. 
+
+“They basically said: ‘Increasingly, we can’t get anything done,'” Anderson told [*Business Insider*](https://www.businessinsider.com/bayer-bill-anderson-ceo-corporate-hierarchy-get-rid-of-bosses-2024-4). “It’s just too hard to get ideas approved, or you have to consult with so many people to make anything happen.”
+
+“We hire highly educated, trained people, and then we put them in these environments with rules and procedures and eight layers of hierarchy,” Anderson added. “Then we wonder why big companies are so lame most of the time.”
+
+So, the company is going boss-less, or as he calls it, moving to “dynamic shared ownership.”
+
+Whether or not it’s a fancy metaphor for a headcount reduction, Anderson has insisted that this new way of working could be revolutionary. “We don’t have to be that good to beat the current system,” the 57-year-old chief executive told the [*Wall Street Journal*](https://www.wsj.com/business/bayer-cuts-bosses-recovery-plan-f3c94865)*.*
+
+In the coming years, Bayer’s workforce will consist of constantly evolving “5,000 to 6,000 self-directed teams” that work together on projects of their choosing for 90 days, before regrouping for their next project. 
+
+Employees of Bayer’s consumer health division have already gotten a taste of this new structure—they’re being shown how to practically sign off on one another’s ideas without a manager in sight.
+
+“Stand up, share an idea,” a corporate trainer ordered them during a training session, according to the *WSJ.* “You’re going to self-organize.” 
+
+## Is going boss-less enough to fix ‘broken’ Bayer?
+
+Whether or not Anderson’s plan lands, it will buy him time: The company is worth a quarter of its $122 billion peak from nine years ago, its shares have tanked by more than 50% in the last year, and investors are urging it to split.
+
+The company has accumulated around €34.5 billion ($37.5 billion) in debt, not much less than the company’s €47.6 billion ($51.7 billion) in sales last year.
+
+To top that off, since its acquisition of Monsanto in 2018, Bayer has been fighting thousands of claims that its [Roundup weed killer causes cancer.](https://fortune.com/2024/04/05/bayer-monsanto-roundup-weed-killer-supreme-court-ruling-punishment/)
+
+Even Anderson has compared the current state of the company to the time he fractured his leg skateboarding—“[badly broken](https://fortune.com/europe/2024/03/06/bayer-ceo-bill-anderson-pharma-fractured-leg-skateboarding-broken/).” But looking ahead, he wrote in *Fortune* that“[our radical reinvention will liberate our people](https://fortune.com/2024/03/21/bayer-ceo-bill-anderson-corporate-bureaucracy-19th-century-leadership/?utm_source=search&utm_medium=suggested_search&utm_campaign=search_link_clicks)” while saving the company about €2 billion ($2.15 billion) in annual organizational costs by 2026.
+
+## But cutting out middle management is nothing new
+
+It’s not clear exactly how many managers will be laid off or demoted. Bayer couldn’t confirm the exact figure to *Fortune *but a spokesperson said there will be “significant changes” and those impacted will be in the thousands, not hundreds. The *Journal* reported that 40% of management positions are headed for the chopping block in the U.S. pharmaceutical division alone.  
+
+Although Anderson is pitching the move as an innovative way of transforming its corporate hierarchy and giving employees more choice, trimming middle management to save costs and become more efficient is nothing new. 
+
+In fact, middle managers—defined as nonexecutives who oversee employees—made up almost a third of layoffs last year.
+
+At Meta, where Mark Zuckerberg declared 2023 was going to be its “Year of Efficiency,” middle managers were the toll in that quest.  
+
+“I don’t think you want a management structure that’s just managers managing managers, managing managers, managing managers, managing the people who are doing the work,” Zuckerberg told staff in an [all-hands meeting.](https://www.theverge.com/2023/2/1/23581938/mark-zuckerberg-meta-earnings-q4-efficiency-cutting-managers)
+
+After laying off thousands of workers, the billionaire tech entrepreneur said that “[flattening](https://about.fb.com/news/2023/03/mark-zuckerberg-meta-year-of-efficiency/)” its internal hierarchy was core to its restructure—and he [credited Elon Musk](https://fortune.com/2023/06/09/mark-zuckerberg-elon-musk-twitter-meta-layoffs-middle-managers/) as the source of inspiration behind having “fewer layers of management.”
+
+Meanwhile at [Google](https://fortune.com/company/alphabet/)—where more than 30,000 managers are employed—[12,000 people lost their jobs](https://fortune.com/2023/02/06/middle-managers-tech-layoffs-efficiency-zuckerberg-facebook-google/), and at [Intel](https://fortune.com/company/intel/), managers’ [pay was slashed](https://www.bloomberg.com/news/articles/2023-02-01/intel-cuts-pay-across-company-to-preserve-cash-for-investment). Even beyond the tech industry, layoffs at [Citi](https://www.efinancialcareers.co.uk/news/citigroup-s-20-000-job-cuts-are-not-what-you-think) and [FedEx](https://fortune.com/company/fedex/) have massively impacted managers.

@@ -1,0 +1,62 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:52:49
+-->
+
+# Gen-Z is shunning college to take up traditional trades like welding and plumbing they say is far more satisfying and which doesn't incur huge student debt | Daily Mail Online
+
+> 来源：[https://www.dailymail.co.uk/news/article-13265379/Gen-Z-trade-school-college-debt-trade-work-jobs.html](https://www.dailymail.co.uk/news/article-13265379/Gen-Z-trade-school-college-debt-trade-work-jobs.html)
+
+Increasing numbers of Generation Z are opting out of college and turning to vocational schools with hopes of higher wages and avoiding student debt, data shows.
+
+Young people who came of age during the pandemic said they have [been deterred from four-year universities](/news/article-11842085/Hundreds-thousands-Americans-skipping-college-taking-pay-hour-work.html) by high tuition and the prospect of student debt.
+
+Instead, they are attending trade schools and are being enticed by well-paying job opportunities and satisfying work.
+
+The National Student Clearing House recorded a 16 percent increase in enrollment at two-year schools with a 'high vocational program focus' and a 2.6 percent rise in community college enrollment in 2023, reported [Bloomberg](https://www.bloomberg.com/news/articles/2024-01-24/rising-college-costs-enrollment-surges-at-vocational-training-programs?embedded-checkout=true). 
+
+'It's a really smart route for kids who want to find something and aren't gung ho on going to college,' wielding program graduate Tanner Burgess, 20, told [The Wall Street Journal](https://www.wsj.com/lifestyle/careers/gen-z-trades-jobs-plumbing-welding-a76b5e43).
+
+Alezet Valerio, 18, who started at a construction site right after graduating high school said she loves her job and finds it rewarding to building something
+
+Young people who came of age during the pandemic said they have been deterred from four year universities and are attending trade schools instead
+
+On TikTok, one young electrical lineman said he makes $200,000 a year and owns multiple homes
+
+'It feels good at the end of the day, I'm physically doing something and there's a sense of completion.'
+
+There was a 23 percent increase in students studying construction trades in 2023 compared to the year before, and a seven percent increase in HVAC and vehicle maintenance and repair programs.
+
+Largely left on their own amid remote learning, many felt they weren't learning enough, and the idea of four more years of school - or even two - held little appeal. 
+
+At the same time, the nation's student debt has soared. Over 43 million Americans owe a collective $1.3 trillion in student loan debt, with the average borrower owing $37,000, according to the U.S. Department of Education.
+
+Americans have [lost confidence in the value of a college](/news/article-12287115/Trust-universities-hits-new-low-amid-rows-rising-fees-politics-value-courses.html) degree over the years, with many suggesting they are unsure that the cost of an education is worth it.
+
+A Gallup poll published in July 2023 found that the share of Americans who trusted higher education fell from 57 percent in 2015 to 36 percent.
+
+Gen-Zers are looking to the trades to make money, with many posting online about the large salaries they make in fields like welding and plumbing.
+
+On TikTok, one young electrical lineman said he makes $200,000 a year and owns multiple homes.
+
+'We're doing 60 plus hours a week, 16 hours a day. With that comes doubletime, overtime, added benefits into your retirement, union benefits. We stay busy year round,' he said.
+
+'I own a few investment properties, a nice truck. I focus on investment properties and earning more money with the money I make here.'
+
+The National Student Clearing House recorded a 16 percent increase in enrollment at two-year schools with a 'high vocational program focus'
+
+There was a 23 percent increase in students studying construction trades in 2023 compared to the year before
+
+According to data from payroll-services provider ADP, the median pay for new construction hires was $48,089 last year, compared to $39,520 for professional services new hires.
+
+Software company Jobber surveyed 1,000 high school and college-age students in July 2023 and found that 56 percent of respondents believe that 'blue-collar' jobs have more job security than 'white-collar' desk jobs when it comes to AI.
+
+Business opportunities were also important to survey respondents, and nearly two-thirds said they want to start their own business at some point in their lives.
+
+Alezet Valerio, 18, who started at a construction site right after graduating high school, told The Wall Street Journal she loves her job and finds it rewarding to building something.
+
+'It's not at all what I was expecting. I'm building skyscrapers and building a career out of it,' she said.
+
+Colby Dell, 19, is attending trade school for automotive repair and hopes to open his own mobile detailing company.
+
+'I always thought it was a hobby. Looking into these vocational schools, I realized it was a dream I could really pursue,' he said.

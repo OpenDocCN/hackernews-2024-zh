@@ -1,0 +1,74 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:50:49
+-->
+
+# Debian Git monorepo
+
+> 来源：[https://blog.liw.fi/posts/2024/monorepo/](https://blog.liw.fi/posts/2024/monorepo/)
+
+[Lars Wirzenius Consulting Ltd](https://liw.fi/) has created a Git repository with the source code of Debian 12 (bookworm), the `main` component. It’s one repository for all the source code, as one commit. It’s a [monorepo](https://en.wikipedia.org/wiki/Monorepo).
+
+To clone the repository (but read below before you run this):
+
+```
+git clone https://monorepo.liw.fi/git/debian
+```
+
+Please be kind to the proof-of-concept Git server and avoid cloning if 42 or more people are already cloning. The checkout will take a few hours and use about 500 GiB disk space, and have about 15 million files outside `.git`.
+
+This is a read-only repository that will need to be moved onto Debian infrastructure before it’s actually usable for collaboration.
+
+## Motivation
+
+The monorepo will greatly simplify and improve the development process of Debian:
+
+*   Simpler collaboration: every package uses the same process, and the same tools, and it’ll be easier than ever to help with other people’s packages.
+
+*   Transitions are easier: all changes will be prepared in one branch and merged atomically, rather than uploading each source package separately.
+
+*   Enables distribution-wide changes in general: With all the source code for everything in one tree, in on repository, it’s feasible to make changes to Debian that affect many packages. For example, back in the day Debian took seven years to migrate `/usr/doc` to `/usr/share/doc`, and that can now be done in one commit.
+
+*   Easier to see what has changed: the release notes maintainers will especially appreciate this. In the future, Debian release notes will be excruciatingly detailed. They will no longer merely say “bug fixes and improvements”.
+
+*   Better non-free management: if a package in main is ever found to contain non-free code, it can be removed using `git filter-branch`.
+
+*   Better quality control: merges will only be happen after CI tests pass, using the [`bors`](https://bors.rust-lang.org/) tool from the developers of the Rust language. Currently packages are tested only after they’ve already been uploaded to the Debian archive. The change will reduce problems for people running the unstable branch of Debian in production. Soon there will be no bugs in unstable.
+
+*   More development speed: because Debian developers will no longer need to spend time fixing bugs in unstable, and maintaining the Debian bug tracker, they will have more time and energy to update packages to newer versions. This, in turn, will motivate large enterprise users of Debian to fund Debian development more, as their primary complaint of the slow pace of change will finally be solved.
+
+# Future of “.dsc”
+
+There will be no further need for the legacy `.dsc` source package format. Instead, a copy of the monorepo can be shipped.
+
+# Resource use
+
+The monorepo is not small. However, given how important Debian is to their business, companies like Apple, Microsoft, Amazon, and Google, are already chomping at the bit to donate hardware and cloud resources to enable use of the monorepo. Expect an announcement on `debian-devel-announce` as soon as details have been worked out.
+
+# Implementation
+
+The program [unpack-debian-sources](https://app.radicle.xyz/nodes/radicle.liw.fi/rad:zgYpM7b29D6wTMjEUxxzBjcF9EvK) is available on the [Radicle](https://radicle.xyz/) network as repository ID `rad:zgYpM7b29D6wTMjEUxxzBjcF9EvK`. Running it took about seven hours on my home computer. After that finished, I created the repository with the following commands:
+
+```
+git init .
+git add -v .
+git commit -m "Debian 12 (bookworm), main"
+```
+
+The `git add` took about 3.5 hours and `git commit` took another 2.5 hours. This required 16 GiB RAM to work. Since I’ve already done this, nobody else needs to. Everyone else can just clone, from my server or each other. The commit is:
+
+```
+commit 8ae3129b9f222534d6ed20dd0489fb8f2f1d1a97 (HEAD -> main, origin/main, origin/HEAD)
+Author: Lars Wirzenius <liw@liw.fi>
+Date:   Tue Mar 19 11:05:57 2024 +0000
+
+    Debian 12 main
+```
+
+Have fun!
+
+# Disclaimer
+
+This blog post is an April Fool’s joke. Debian is not moving to a monorepo. I have not been a member of Debian since 2018\. I don’t speak for Debian. I would be very surprised if Debian would abandon its current development model of being developer and package centric. I don’t even think it’d be sensible for Debian to have a monorepo. The monorepo is real, though it will be deleted by the end of April.
+
+The real motivation for all this is that I sometimes like to be cruel to my tools. This time, I’m cruel to Git: can it handle a repository of this size? In 2009 it could not. In 2024 it can.

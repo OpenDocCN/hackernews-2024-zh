@@ -1,0 +1,121 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:13:01
+-->
+
+# Anxiety and Procrastination: How They’re Connected and What to Do About It – Solving Procrastination
+
+> 来源：[https://solvingprocrastination.com/anxiety/](https://solvingprocrastination.com/anxiety/)
+
+*Anxiety* is a [feeling](https://web.archive.org/web/20211221211118/https:/www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder/overview/) of worry and unease that people experience in various situations, such as [before](https://web.archive.org/web/20211222155737/https:/www.nimh.nih.gov/health/topics/anxiety-disorders) taking a test, interviewing for a job, or making a big decision. Occasional anxiety is an [expected](https://web.archive.org/web/20211222155737/https:/www.nimh.nih.gov/health/topics/anxiety-disorders) part of life, though some people [suffer](https://web.archive.org/web/20211222155803/https:/www.mayoclinic.org/diseases-conditions/anxiety/symptoms-causes/syc-20350961) from anxiety disorders, which generally [involve](https://web.archive.org/web/20211222155737/https:/www.nimh.nih.gov/health/topics/anxiety-disorders) episodes of anxiety that are more intense, persistent, and frequent than normal.
+
+Anxiety—in both its normal and extreme forms—is associated with the tendency to [*procrastinate*](https://solvingprocrastination.com/procrastination/), by unnecessarily postponing decisions or actions. For example, if a student is anxious about a homework assignment, they might postpone working on it in order to [avoid dealing](https://doi.org/10.1111/spc3.12011) with the negative emotions that they experience when thinking about this assignment.
+
+The association between anxiety and procrastination is complex, and can have serious implications, so it’s important to understand it. As such, in the following article you will learn more about how anxiety and procrastination are connected, and see what you can do about this in practice.
+
+## The connection between anxiety and procrastination
+
+Anxiety can cause people to procrastinate by:
+
+*   Increasing their [aversion](https://doi.org/10.1080/0260293042000160384) to a task, for example by increasing the negative emotions that they [associate](https://doi.org/10.1002/pits.10045) with it.
+*   Making them [worry more](https://doi.org/10.1023/A:1026474715384) about a task, which can lead to issues such as overthinking, feeling overwhelmed, and being unsure how to start, especially in the face of things like [uncertainty](https://doi.org/10.1016/j.janxdis.2022.102633).
+*   Causing them to [ruminate more](https://doi.org/10.1007/s10942-017-0271-5), for example by making them preoccupied with painful thoughts about the past while distracting them from the future.
+
+Accordingly, people are often [more likely](https://doi.org/10.1037/0033-2909.133.1.65) to procrastinate while they’re anxious, or to procrastinate on tasks that [make them anxious](https://solvingprocrastination.com/emotion-regulation/). This is the case even if procrastinating for this reason can lead to more anxiety and [negative emotions](https://doi.org/10.1007/s12144-021-02653-z) over time by dragging out the task instead of finishing it, and even though this behavior can lead to [various other issues](https://solvingprocrastination.com/procrastination-dangers/), such as worse performance, missed opportunities, and increased interpersonal conflicts.
+
+Furthermore, anxiety is not only a potential cause of procrastination, but also a potential consequence of it, meaning that procrastination can [make people](https://doi.org/10.1007/s10212-012-0143-4) feel anxious or exacerbate existing anxiety. This means that people can [enter](https://doi.org/10.1007/s12144-021-02653-z) an [anxiety-procrastination cycle](https://solvingprocrastination.com/procrastination-cycle/), where anxiety leads people to procrastinate, which in turn makes them more anxious, which causes them to keep procrastinating, and so on.
+
+However, there are also important caveats about the relationship between anxiety and procrastination:
+
+*   **The relationship between anxiety and procrastination is complex.** This [complexity](https://doi.org/10.1002/per.2410030305) means, for example, that [various factors](https://doi.org/10.1007/978-1-4899-0227-6_7), [such as](https://doi.org/10.1002/j.1556-6676.1998.tb02548.x) people’s [*self-efficacy*](https://solvingprocrastination.com/self-efficacy/) and *[mindfulness](https://solvingprocrastination.com/procrastination-study-mindfulness/)*, can moderate the influence of anxiety on procrastination (e.g., high self-efficacy can serve as a resilience factor that protects against the effects of anxiety on procrastination). In addition, there are [various types of procrastination](https://solvingprocrastination.com/procrastination-types/) (e.g., anxious and hedonistic) and various forms of anxiety (e.g., as a stable personality trait and as a temporary mental state), which can be [associated](https://doi.org/10.1023/A:1026474715384) in different ways.
+*   **Anxiety doesn’t always lead to procrastination.** Specifically, some people are able to act in a timely manner even though they’re anxious, for example if their anxiety is mild enough and their motivation is strong enough. Furthermore, there are situations where anxiety [doesn’t increase](https://doi.org/10.1037/0033-2909.133.1.65) the [likelihood](https://doi.org/10.1016/0191-8869(96)00038-4) of procrastination, or even [decreases](https://doi.org/10.1111/ap.12173) this likelihood, for example by making people worried about a certain task in a way that makes them more likely to get started on it early. This also means that not everyone who has anxiety necessarily procrastinates.
+*   **Other things besides anxiety can cause procrastination.** For example, [other causes of procrastination](https://solvingprocrastination.com/why-people-procrastinate/) include abstract goals, far-future rewards, [depression](https://solvingprocrastination.com/depression/), [perfectionism](https://solvingprocrastination.com/perfectionism/), and [ADHD](https://solvingprocrastination.com/adhd/). This means that not everyone who procrastinates is necessarily anxious, and that anxious people who do procrastinate don’t necessarily do so because of their anxiety, or only because of their anxiety.
+
+**In summary**, anxiety can lead to procrastination in various ways, such as increasing people’s aversion to tasks and making them ruminate more. Furthermore, procrastination can sometimes increase anxiety, which can lead to an anxiety-procrastination cycle. However, the relationship between these phenomena is complex, which means, for example, that anxiety doesn’t always lead to procrastination, and can sometimes even decrease it.
+
+## Anxious procrastination
+
+The term *anxious procrastination* can be used in two key ways. First, it can be used to refer to procrastination that’s driven primarily by anxiety. Second, it [can be used](https://solvingprocrastination.com/procrastination-types/) to refer to procrastination that involves postponing things despite an intention to work on them and despite being aware that this delay is irrational and self-defeating.
+
+This second type of procrastination is sometimes also [referred to](https://doi.org/10.22215/etd/2015-11051) as *traditional procrastination* or *irrational delay*. It is [contrasted](https://solvingprocrastination.com/procrastination-types/) with *hedonistic procrastination* (or *hedonistic delay*), which involves postponing things voluntarily due to prioritization of enjoyable activities or due to lack of caring.
+
+The distinction between anxious and hedonistic procrastination is [similar](https://solvingprocrastination.com/procrastination-types/) to the [distinction](https://doi.org/10.2466/pr0.1996.78.2.611) between *avoidant procrastination*, which [involves](https://doi.org/10.3200/SOCP.149.3.402-408) delaying due to [fears](https://solvingprocrastination.com/fear/) and [anxieties](https://solvingprocrastination.com/anxiety/), and *arousal procrastination*, which involves waiting until right before the deadline to make tasks more exciting. However, the [distinction](https://doi.org/10.22215/etd/2015-11051) between these types of procrastination has been [criticized](https://doi.org/10.1016/j.paid.2010.02.025), as have similar distinctions (e.g., between [passive and active procrastination](https://solvingprocrastination.com/active-passive-procrastination/)).
+
+Note that the exact way in which different types of procrastination are categorized generally isn’t important from a practical perspective. Rather, what is important is to understand that anxiety and similar issues can cause procrastination, but that other types of issues can also cause procrastination, such as the prioritization of short-term enjoyment over long-term achievement.
+
+## Additional information about anxiety
+
+The sub-sections below contain further information about anxiety, which generally isn’t crucial to dealing with anxiety-based procrastination, but which can nevertheless be useful in some cases.
+
+### Forms of anxiety
+
+Anxiety can take many different forms. For example, it can vary in its intensity (e.g., from mild to severe), based on factors such as how strong the anxiety is, how often it occurs, and how it influences the person who experiences it. Similarly, anxiety can occur constantly throughout the day, or it can occur only at [specific times](https://doi.org/10.1080/0260293042000160384), such as someone engages with a certain task.
+
+In addition, people can experience anxiety with regard to many things, such as:
+
+*   Specific types of tasks, such as *test anxiety* toward [tests](https://doi.org/10.3389/fpsyg.2019.01917) that students take in [school](https://doi.org/10.1016/j.lindif.2021.102013), or *performance anxiety* on public presentations that someone gives as part of their work.
+*   Specific topics, such as math and [statistics](https://doi.org/10.1007/s10755-013-9256-1), regardless of what activity people perform in relation to that topic (e.g., take a test, do a homework assignment, or write a paper).
+*   Whole domains, such as [school](https://solvingprocrastination.com/academic-procrastination/) or the [workplace](https://solvingprocrastination.com/workplace-procrastination/).
+*   The [consequences](https://doi.org/10.1348/000709999157761) of performance on tasks, for example when it comes to the rewards associated with success or the punishments associated with failure.
+*   Other people’s evaluation of their performance (also known as *evaluation anxiety*).
+*   General interactions with [other people](https://doi.org/10.1177/0033294118755111) (also known as *social anxiety*).
+
+### The difference between anxiety and fear
+
+Similarly to anxiety, *fear* of various things, such as failure or negative feedback, can also [cause procrastination or be caused by it](https://solvingprocrastination.com/fear/).
+
+Anxiety and fear are closely related, as they are highly [similar](https://doi.org/10.1016/j.cpr.2010.08.004) to each other, and even [overlap](https://doi.org/10.1111/psyp.13474) in many ways, in terms of how they’re described and how they influence people. One possible way to [distinguish](https://doi.org/10.1111/psyp.13474) between these concepts is to [view](https://doi.org/10.1016/j.cpr.2010.08.004) fear as an emotional response to a specific and immediate threat, and view anxiety as a response to a more ambiguous and uncertain future threat. Under this distinction, fear is more likely to [trigger](https://doi.org/10.1111/psyp.13474) an immediate and active response, whereas anxiety is more likely to prompt caution and observation. However, the terms fear and anxiety are often used [interchangeably](https://doi.org/10.1016/j.cpr.2010.08.004), and their exact definitions—as well as any distinctions between them—depend heavily on who is using these terms, how, and in what context.
+
+From a practical perspective, any distinctions between these two concepts are generally not crucial to understand in the context of overcoming anxiety-based procrastination, as long as you understand these concepts in general, and understand that they can both lead to procrastination.
+
+### Anxiety and neuroticism
+
+Increased anxiety is [linked](https://doi.org/10.1111/ap.12173) to the personality trait of *neuroticism*, which reflects the tendency to be prone to negative emotions and [stress](https://solvingprocrastination.com/stress/). However, the link between neuroticism as a whole and procrastination as a whole is [fairly weak](https://doi.org/10.1037/0033-2909.133.1.65), likely due to the complexity of the relationship between them, for example in the sense that different aspects of neuroticism can either increase or decrease procrastination, similarly to how different forms of anxiety can have different effects on procrastination.
+
+## Dealing with anxiety-based procrastination
+
+If you suffer from severe anxiety or an anxiety disorder, then you should generally [seek help](https://web.archive.org/web/20211222155803/https:/www.mayoclinic.org/diseases-conditions/anxiety/symptoms-causes/syc-20350961) from a licensed professional (e.g., a therapist, psychologist, or psychiatrist), who will be able to [advise you](https://web.archive.org/web/20211221211118/https:/www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder/overview/) on the [proper course of treatment](https://web.archive.org/web/20211222155737/https:/www.nimh.nih.gov/health/topics/anxiety-disorders), including things such as therapy, medication, and lifestyle changes. This can be beneficial in reducing anxiety, as well as the issues that it leads to, such as procrastination.
+
+If you’re trying to deal with anxiety-based procrastination yourself, then a key technique you can use is [*inquiry-based stress reduction*](https://solvingprocrastination.com/study-inquiry-based-stress-reduction/). To do this, you should first identify a stressful thought that you have, and then consider the following questions:
+
+*   Is this thought true?
+*   Can you absolutely know that this thought is true?
+
+Then, you should reflect on the stressful thought, by considering factors such as its causes and effects, to understand it better. You can help yourself do this by considering the following questions:
+
+*   How do you react when you have this thought?
+*   Does this thought bring peace or stress to your life?
+*   What images do you see, past or present, as you think this thought?
+*   What physical sensations arise from having this thought?
+*   What emotions arise when you have that thought?
+*   Do any obsessions or addictions begin to appear when you have this thought?
+*   How do you treat others when you have this thought?
+*   How do you treat yourself when you have this thought?
+
+Then, you should try to perceive reality without the distortions that are caused by the stressful thought, and think about how you would feel without that thought, by considering:
+
+*   Who would you be without the thought?
+
+Finally, you should identify concrete evidence for the validity of the *opposite* of the stressful thought, and explore whether that opposite could be true. For example, if your initial thought was “I *won’t* be able to study properly for the test”, you can turn it into the opposite thought “I *will* be able to study properly for the test”, and then find evidence that supports the new positive thought that you generated.
+
+In addition, there are many other [anti-procrastination techniques](https://solvingprocrastination.com/how-to-stop-procrastinating/) that could help you deal with anxiety-based procrastination, including, most notably, the following:
+
+*   **Question and address your fears.** For example, if you realize that you’re [afraid](https://solvingprocrastination.com/fear/) of someone criticizing you for not having perfect work, you can ask yourself things such as “how likely is it that they will actually care if I make some small mistakes” or “so what if this person criticizes my work?”. When doing this, it could help to use [self-distancing techniques](https://effectiviology.com/self-distancing-rational-decisions/), for example by asking yourself “why should *you* worry so much about such tiny issues?” or by considering what advice you would give to a friend if they were in your situation.
+*   **Prepare for future contingencies.** For example, figure out which distractions might tempt you to procrastinate, and plan how you will deal with them.
+*   **Give yourself permission to make mistakes.** For example, if you’re writing a paper, accept that your work [won’t be perfect](https://solvingprocrastination.com/perfectionism/), especially when it comes to the first draft.
+*   **Break your work into small and manageable steps.** For example, if you have a large project that feels overwhelming, such as writing a research paper, you can break it down into a series of small steps, such as creating an outline, finding relevant resources, and writing the introduction.
+*   **Start with a tiny step.** For example, commit to writing only a single sentence or exercising for only 2 minutes, while giving yourself permission to stop after taking that tiny first step, to reduce the pressure associated with getting started.
+*   **Go through a starting ritual.** For example, you can have a calming breathing routine that you quickly go through to [relax](https://doi.org/10.1016/j.obhdp.2016.07.004) every time you’re about to do a task that makes you anxious.
+*   **Switch between tasks.** For example, if you’re stuck on a task and can’t make progress, switch to a [different task](https://solvingprocrastination.com/productive-procrastination/) until you’re ready to go back to the first one.
+*   **Schedule your work according to your productivity cycles.** For example, if you find it easier to concentrate on creative tasks in the morning, then you should schedule such tasks for that time period as much as possible.
+*   **Improve your work environment.** For example, if your current work environment has a lot of irritating background noise, get noise-canceling headphones or go somewhere quieter.
+*   **Improve your social-support network.** For example, you can find a role model to imitate or an authority figure to hold you accountable, or you can associate with people who motivate you to make progress while minimizing your contact with people who make you feel stressed.
+*   **Get enough rest.** For example, if you need to work hard on tasks that require deep concentration, make sure to take enough breaks that you don’t get burnt out. To encourage yourself to do this, you can remind yourself that even if getting rest can reduce your productivity in the short term, it will often be much better for you in the long term, both in terms of your productivity and in terms of your wellbeing.
+*   **Develop self-efficacy.** Specifically, this is your [belief](https://solvingprocrastination.com/self-efficacy/) in your ability to perform the actions needed to achieve your goals. You can develop it in [various ways](https://solvingprocrastination.com/self-efficacy/), such as identifying the strategies that you can use to achieve your goals, and then thinking about how you can execute those strategies successfully.
+*   **Forgive yourself for past procrastination.** For example, if you need to get started on a task that you’ve been postponing for a long time, you can say “I shouldn’t have postponed this task in the first place, but that’s in the past, and what’s important now is to move on and just get this done”.
+*   **Develop self-compassion.** Specifically, you should develop the three components of [self-compassion](https://solvingprocrastination.com/self-compassion/): *self-kindness*, which involves being nice to yourself, *common humanity*, which involves recognizing that everyone experiences challenges, and [*mindfulness*](https://solvingprocrastination.com/procrastination-study-mindfulness/), which involves accepting your emotions in a non-judgmental manner.
+*   **Acknowledge and reward your progress.** For example, you can treat yourself to some pleasant treat once you’ve managed to achieve your study goals for a week in a row.
+
+When choosing which techniques to use, it can help to start by figuring out [why you procrastinate](https://solvingprocrastination.com/why-people-procrastinate/), and when and how you do so, since this will help you identify the best [anti-procrastination techniques](https://solvingprocrastination.com/how-to-stop-procrastinating/) to use in your particular situation. Specifically, doing this can help you figure out how exactly your anxiety causes you to procrastinate, and can help you identify other issues beyond anxiety that are also causing you to procrastinate, such as [depression](https://solvingprocrastination.com/depression/), [perfectionism](https://solvingprocrastination.com/perfectionism/), and abstract goals.
+
+However, if you realize that the main reason for your procrastination is that you suffer from anxiety, you should generally aim to treat that first, using help from a licensed professional if necessary, since this is important both for dealing with your procrastination, and for reducing the other serious issues that anxiety can lead to.

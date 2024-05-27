@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:02:17
+-->
+
+# X’s AI Bot Is Reporting Joke Posts as Actual News | Lifehacker
+
+> 来源：[https://lifehacker.com/tech/grok-is-making-up-fake-news-on-x](https://lifehacker.com/tech/grok-is-making-up-fake-news-on-x)
+
+* * *
+
+If you pay for Twitter (sorry, X), you now have access to Grok, the company's AI bot. Part of that privilege includes access to a trending news feed in the Explore tab powered by the company's artificial intelligence. The only issue? It's garbage.
+
+Here's how Grok's trending news feed seems to work: The bot pulls together the "top" posts concerning any given news story, then generates a summary of the news from those posts. Simple enough, and something that we've seen generative AI do before. But before you fire your human writers and editors and put Grok in charge of the news, you might want to see *how* exactly it's reporting works.
+
+Grok appears to be aggregating joke tweets and spitting out an AI-generated answer as genuine news. You can see that from [this post shared by X user BrettRedacted](https://x.com/BrettRedacted/status/1776323701148930404 "(opens in a new window)") following the [earthquake that shook much of the New York City metro area](https://mashable.com/article/nj-ny-earthquake-april-5-reactions "(opens in a new window)"). The bot generated the headline: "Adams vs. Earthquake: 50,000 Cops in Subway Showdown," then reports how New York City Mayor Eric Adams is deploying the NYPD to "prevent further earthquakes," considering using "robo cops," and has ordered "every cop in the city" to "shoot the damn earthquake before it strikes again."
+
+Sure, we live in weird times, but no reasonable person would ever believe that Grok's summary of the news was accurate. If you somehow couldn't decide for yourself, you could take a look at the top posts fueling that news summary, which in this case, are all joke tweets about the mayor's response to the earthquake.
+
+This is a sad but humorous example of the state of X in 2024\. Past versions of the site would have been *the* place to be to follow both legitimate updates on breaking news like the NYC earthquake, and laugh at the jokes about the situation. Now, the site treats the jokes as news. You get what you pay for, I guess.
+
+It doesn't take much foresight to imagine how this situation goes from sad but humorous to simply dangerous. What happens when Grok decides to "report" on something that seems at first glance legitimate, but is based on the [rampant misinformation spreading across the site](https://www.nytimes.com/2024/01/25/us/politics/elon-musk-election-misinformation-x-twitter.html "(opens in a new window)")? An X user may check into the Explore page to see that their city is being bombed, or that a candidate in their election did something illegal, when neither "story" is actually true.
+
+While we can't stop the site from pushing this crap, we can all collectively agree to not treat Grok, or any generate AI for that matter, as a legitimate news source, or an accurate summarizer of the day's top stories.

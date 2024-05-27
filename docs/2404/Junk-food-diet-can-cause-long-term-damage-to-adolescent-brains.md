@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:19:26
+-->
+
+# Junk food diet can cause long-term damage to adolescent brains
+
+> 来源：[https://today.usc.edu/take-it-from-the-rats-a-junk-food-diet-can-cause-long-term-damage-to-adolescent-brains/](https://today.usc.edu/take-it-from-the-rats-a-junk-food-diet-can-cause-long-term-damage-to-adolescent-brains/)
+
+A new USC-led study on rats that feasted on a high-fat, sugary diet raises the possibility that a junk food-filled diet in teens may disrupt their brains’ memory ability for a long time.
+
+“What we see not just in this paper, but in some of our other recent work, is that if these rats grew up on this junk food diet, then they have these memory impairments that don’t go away,” said Scott Kanoski, a professor of biological sciences at the USC Dornsife College of Letters, Arts and Sciences. “If you just simply put them on a healthy diet, these effects unfortunately last well into adulthood.”
+
+The study appears in the May issue of the journal [Brain, Behavior, and Immunity](https://www.sciencedirect.com/science/article/pii/S0889159124002952).
+
+In developing the study, Kanoski and lead author and postdoctoral research fellow Anna Hayes considered that [prior research](https://www.mdpi.com/1420-3049/27/6/1816) has shown a link between poor diet and Alzheimer’s disease. People who suffer from Alzheimer’s disease tend to have lower levels of a neurotransmitter called acetylcholine in the brain that is essential for memory and functions such as learning, attention, arousal and involuntary muscle movement.
+
+The team wondered what this could mean for younger people who may be on a similar fat-filled, sugary Western diet, particularly during adolescence when their brain is undergoing significant development. By tracking the impact of the diet on the rats’ levels of acetylcholine and running the rats through some memory testing, they could learn more about the important relationship between diet and memory.
+
+The researchers tracked the acetylcholine levels of a group of rats on a fatty, sugary diet and in a control group of rats by analyzing their brain responses to certain tasks designed to test their memory. The team examined the rats’ brains post-mortem for signs of disrupted acetylcholine levels.
+
+The memory test involved letting the rats explore new objects in different locations. Days later, the researchers reintroduced the rats to the scene that was nearly identical except for the addition of one new object. Rats on the junk food diet showed signs they could not remember which object they had previously seen, and where, while those in the control group showed familiarity.
+
+“Acetylcholine signaling is a mechanism to help them encode and remember those events, analogous to ‘episodic memory’ in humans that allows us to remember events from our past,” lead author Hayes explained. “That signal appears to not be happening in the animals that grew up eating the fatty, sugary diet.”
+
+Kanoski emphasized that adolescence is a very sensitive period for the brain when important changes are occurring in development. “I don’t know how to say this without sounding like Cassandra and doom and gloom,” he said, “but unfortunately, some things that may be more easily reversible during adulthood are less reversible when they are occurring during childhood.”
+
+There is at least some hope for intervention. Kanoski said that in another round of the study, the research team examined whether the memory damage in rats raised on the junk food diet could be reversed with medication that induces the release of acetylcholine. They used two drugs, PNU-282987 and carbachol, and found that with those treatments given directly to the hippocampus, a brain region that controls memory and is disrupted in Alzheimer’s disease, the rats’ memory ability was restored.
+
+But without that special medical intervention, Kanoski said more research is needed to know how memory problems from a junk food diet during adolescence can be reversed.
+
+* * *
+
+*In addition to Kanoski and Hayes, the team included other USC Dornsife researchers Logan Tierno Lauer, Alicia E. Kao, Molly E. Klug, Linda Tsan, Jessica J. Rea, Keshav S. Subramanian, Cindy Gu, Arun Ahuja, Kristen N. Donohue and Léa Décarie-Spain; Natalie Tanios of Keck School of Medicine of USC; as well as Anthony A. Fodor and Shan Sun of the University of North Carolina at Charlotte.*
+
+*The work was supported by the following: National Institute of Diabetes and Digestive and Kidney Diseases grant DK123423 (SEK, AAF), National Institute of Diabetes and Digestive and Kidney Diseases grant DK104897 (SEK), Postdoctoral Ruth L. Kirschstein National Research Service Award from the National Institute on Aging F32AG077932 (AMRH), National Science Foundation Graduate Research Fellowships (separate awards to LT and KSS), Quebec Research Funds postdoctoral fellowship 315201 (LDS) and the Alzheimer’s Association Research Fellowship to Promote Diversity AARFD-22-972811 (LDS).*

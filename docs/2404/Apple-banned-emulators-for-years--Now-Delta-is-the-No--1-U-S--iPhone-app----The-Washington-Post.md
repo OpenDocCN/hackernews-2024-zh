@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:39:41
+-->
+
+# Apple banned emulators for years. Now Delta is the No. 1 U.S. iPhone app. - The Washington Post
+
+> 来源：[https://www.washingtonpost.com/technology/2024/04/30/delta-emulator-iphone-apple-antitrust/](https://www.washingtonpost.com/technology/2024/04/30/delta-emulator-iphone-apple-antitrust/)
+
+The hottest iPhone app in America may owe its popularity to government crackdowns on Apple.
+
+That app, [Delta](https://faq.deltaemulator.com/), lets you play old-school video games like “Super Mario Bros.” on an iPhone.
+
+Apple had banned apps like it for years but [un-banned them](https://www.theverge.com/2024/4/5/24122341/apple-app-store-game-emulators-super-apps) this month without much explanation. Delta’s creators say growing anti-monopoly pressures were responsible for Apple’s flip-flop.

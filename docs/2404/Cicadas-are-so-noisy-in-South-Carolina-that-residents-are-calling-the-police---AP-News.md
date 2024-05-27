@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:30:55
+-->
+
+# Cicadas are so noisy in South Carolina that residents are calling the police | AP News
+
+> 来源：[https://apnews.com/article/noisy-cicadas-south-carolina-police-39f2bd760a51c8c1d28d88b12473840e](https://apnews.com/article/noisy-cicadas-south-carolina-police-39f2bd760a51c8c1d28d88b12473840e)
+
+NEWBERRY, S.C. (AP) — Emerging [cicadas are so loud](https://apnews.com/article/periodical-cicada-invasion-bugs-everywhere-locusts-evolution-e57f708cdcf144a20fe8f694e95b5d44) in one South Carolina county that residents are calling the sheriff’s office asking why they can hear sirens or a loud roar.
+
+The Newberry County Sheriff’s Office sent out a message on Facebook on Tuesday letting people know that the whining sound is just the male cicadas singing to attract mates after more than a decade of being dormant.
+
+Some people have even flagged down deputies to ask what the noise is all about, Newberry County Sheriff Lee Foster said.
+
+The nosiest cicadas were moving around the county of about 38,000 people, about 40 miles (65 kilometers) northwest of Columbia, prompting calls from different locations as Tuesday wore on, Foster said.
+
+Trillions of [red-eyed periodical cicadas](https://apnews.com/article/cicadas-fungus-zombies-pee-urination-pumps-7bf34c2d7a3955efc13cfa05e92f27cb) are emerging from underground in the eastern U.S. this month. The broods emerging are on 13 or 17 year cycles.
+
+Their collective songs can be as loud as jet engines and scientists who study them often wear earmuffs to protect their hearing.
+
+After Tuesday, Foster understands why.
+
+“Although to some, the noise is annoying, they pose no danger to humans or pets,” Foster wrote in his statement to county residents. “Unfortunately, it is the sounds of nature.”

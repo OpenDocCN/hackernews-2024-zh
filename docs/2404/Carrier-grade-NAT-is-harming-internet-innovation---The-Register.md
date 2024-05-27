@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:35:46
+-->
+
+# Carrier-grade NAT is harming internet innovation • The Register
+
+> 来源：[https://www.theregister.com/2022/01/20/ipv4_nats_slow_ipv6_transition/](https://www.theregister.com/2022/01/20/ipv4_nats_slow_ipv6_transition/)
+
+Carriers and Big Tech are happily continuing to use network address translation (NAT) and IPv4 to protect their investments, with the result that transition to IPv6 is glacial while the entire internet is shaped in the image of incumbent players.
+
+That's the opinion of Geoff Huston, chief scientist at regional internet registry the Asia Pacific Network Information Centre (APNIC).
+
+Huston's opinion was published in the conclusion to a [lengthy post](https://blog.apnic.net/2022/01/19/ip-addressing-in-2021/) titled "IP addressing in 2021" that reports on IPv4 and IPv6 usage across last year.
+
+The post offers very deep detail on adoption of both protocols during 2021\. The headline news is that the small pool of available IPv4 addresses continued to dwindle, even as trading in addresses increased. IPv6 adoption, meanwhile, grew by just three per cent – and tellingly, no major player made the move to the newer protocol last year.
+
+> The widespread use of NATs in IPv4 limits the technical substrate of the internet to a very restricted model of simple client/server interactions.
+
+But Huston thinks the raw data doesn't explain what's really happening. He argues the widespread use of NAT masks the fact that the internet is largely stuck on IPv4 because incumbents don't see the need to change.
+
+Huston's post ponders what this all means for the future of the internet – and he doesn't like what he sees.
+
+"We are witnessing an industry that is no longer using technical innovation, openness, and diversification as its primary means of propulsion," he writes.
+
+"The widespread use of NATs in IPv4 limits the technical substrate of the internet to a very restricted model of simple client/server interactions using TCP and UDP. The use of NATs forces the interactions into client-initiated transactions, and the model of an open network with considerable communication flexibility is no longer being sustained in today's network.
+
+"Incumbents are entrenching their position, and innovation and entrepreneurialism are taking a back seat while we sit out this protracted IPv4/IPv6 transition."
+
+Those incumbents are large, and act in their own interests.
+
+"Today's internet carriage service is provided by a smaller number of very large players, each of whom appears to be assuming a very strong position within their respective markets," Huston observes. "The drivers for such larger players tend towards risk aversion, conservatism, and increased levels of control across their scope of operation."
+
+APNIC expressed similar concerns in December 2021, when a report jointly commissioned by Latin American internet registry LATNIC [suggested](https://www.theregister.com/2021/12/09/study_on_the_internets_technical_success_factors/) that big tech's in-house networks carry a huge slice of global traffic, giving the likes of Google and Facebook enormous influence over internet architecture.
+
+Huston expands on that theme in his post. "The evolving makeup of the internet industry has quite profound implications in terms of network neutrality, separation of carriage and service provision function, investment profiles, expectations of risk and return on infrastructure investments, and on the openness of the internet itself.
+
+"Given the economies of volume in this industry, it was always going to be challenging to sustain an efficient, fully open, and competitive industry, but the degree of challenge in this agenda is multiplied many-fold when the underlying platform has run out of the basic currency of IP addresses," he writes.
+
+"These days, we appear to be increasingly looking further afield for a regulatory and governance framework that can challenge the increasing complacency of the newly established incumbents," he laments, concluding with he perhaps grim observation that "It is unclear how successful we will be in this search." ®

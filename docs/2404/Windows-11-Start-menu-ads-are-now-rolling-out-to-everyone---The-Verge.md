@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:30:13
+-->
+
+# Windows 11 Start menu ads are now rolling out to everyone - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/24/24138949/microsoft-windows-11-start-menu-ads-recommendations-setting-disable](https://www.theverge.com/2024/4/24/24138949/microsoft-windows-11-start-menu-ads-recommendations-setting-disable)
+
+Microsoft is starting to enable ads inside the Start menu on Windows 11 for all users. After [testing these briefly](/2024/4/12/24128640/microsoft-windows-11-start-menu-ads-app-recommendations) with Windows Insiders earlier this month, Microsoft has started to distribute update [KB5036980](https://support.microsoft.com/en-us/topic/april-23-2024-kb5036980-os-builds-22621-3527-and-22631-3527-preview-5a0d6c49-e42e-4eb4-8541-33a7139281ed) to Windows 11 users this week, which includes “recommendations” for apps from the Microsoft Store in the Start menu.
+
+“The Recommended section of the Start menu will show some Microsoft Store apps,” says Microsoft in the update notes of its latest public Windows 11 release. “These apps come from a small set of curated developers.” The ads are designed to help Windows 11 users discover more apps, but will largely benefit the developers that Microsoft is trying to tempt into building more Windows apps.
+
+Microsoft only started testing these ads two weeks ago, so it’s surprising to see this “feature” progress from the Beta Channel to release in such a short period of time. [At the time of initial testing](/2024/4/12/24128640/microsoft-windows-11-start-menu-ads-app-recommendations) I mentioned Microsoft “could decide to ditch these ads” if there was enough feedback that suggested they weren’t popular, but two weeks of feedback certainly isn’t long enough to determine that.
+
+Luckily you can disable these ads, or “recommendations” as Microsoft calls them. If you’ve installed the latest KB5036980 update then head into Settings > Personalization > Start and turn off the toggle for “Show recommendations for tips, app promotions, and more.” While KB5036980 is optional right now, Microsoft will push this to all Windows 11 machines in the coming weeks.
+
+Microsoft’s move to enable ads in the Windows 11 Start menu follows similar promotional spots in the [Windows 10 lock screen](http://www.theverge.com/2015/4/29/8514345/windows-spotlight-lock-screen-with-ads) and [Start menu](http://www.theverge.com/2016/5/16/11682164/microsoft-windows-10-promoted-apps-start-menu-anniversary-update). Microsoft also started testing [ads inside the File Explorer of Windows 11](/2022/3/15/22979251/microsoft-file-explorer-ads-windows-11-testing) last year before disabling the experiment and saying the test was “not intended to be published externally.” Hopefully that experiment remains very much an experiment.

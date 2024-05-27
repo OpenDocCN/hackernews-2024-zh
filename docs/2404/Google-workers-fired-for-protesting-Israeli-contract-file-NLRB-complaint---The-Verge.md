@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:39:27
+-->
+
+# Google workers fired for protesting Israeli contract file NLRB complaint - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/30/24145680/google-workers-fired-project-nimbus-protest-nlrb-complaint](https://www.theverge.com/2024/4/30/24145680/google-workers-fired-project-nimbus-protest-nlrb-complaint)
+
+A software engineer who was fired from Google in connection to internal protests at the company’s offices says the company retaliated against him for merely watching the demonstration against an Israeli defense contract.
+
+The former employee, who asked to remain anonymous, said he went to the lounge on the 10th floor of Google’s New York City office around lunchtime to check out the protest.
+
+“When I got there, there were probably 20-ish people sitting on the floor. I didn’t talk to any of them, I talked to folks who were standing up, passing out flyers, doing other roles,” he said, adding that the protesters were wearing matching T-shirts.
+
+The worker then went back to his desk before returning to the protest around 5PM. “I chatted with them for maybe four minutes, like, ‘Oh my gosh, you’re still sitting here! How’s it going?’” he said. Then, he finished the workday from a nearby couch. The worker says he returned to Google the following day without incident. That night, while at dinner, he got an email from Google saying he had been terminated.
+
+“I think it’s all part of this bigger context of Google cracking down on workers having a voice,” said the former employee, who worked at Google for almost three years and was part of the Alphabet Workers Union leadership. (The Alphabet Workers Union is [a non-contract union](https://collectiveaction.tech/2021/the-abcs-of-googles-new-union/), meaning it hasn’t been recognized by the NLRB.)
+
+Google initially put nine employees on administrative leave for occupying its offices in New York City and Sunnyvale, California, in protest of Project Nimbus, a $1.2 billion cloud computing contract with the Israeli government. Those workers [were also arrested](/2024/4/17/24133056/google-protests-project-nimbus-no-tech-for-apartheid). The company then [fired 28 employees in connection with the protests](/2024/4/17/24133700/google-fires-28-employees-protest-israel-cloud-contract). In an internal memo to staff, Chris Rackow, Google’s head of global security, said the company would take further action if needed. 
+
+“The overwhelming majority of our employees do the right thing,” Rackow’s statement read. “If you’re one of the few who are tempted to think we’re going to overlook conduct that violates our policies, think again. The company takes this extremely seriously, and we will continue to apply our longstanding policies to take action against disruptive behavior — up to and including termination.”
+
+Less than a week later, Google fired more than 20 other employees, some of whom said they hadn’t participated in the protests at all.
+
+In a statement to *The Verge*, Google spokesperson Bailey Tomson said the company investigated the “physical disruption inside our buildings on April 16, looking at additional details provided by coworkers who were physically disrupted” to determine which workers had been involved.”
+
+But the software engineer who was fired says he was never contacted by HR or asked whether he had actually been involved in the protests. “They didn’t even reach out to me,” he said. “This was a total shock; I had no hint that this was coming.”
+
+The software engineer who was fired says he was never contacted by HR or asked whether he had actually been involved in the protests
+
+The worker said that while he was watching the protest, a security guard approached him and others in the lounge and asked to see their Google badges to make sure there were no outside participants. “It didn’t even occur to me that I shouldn’t show him my badge. He’s the security guard in the place that I work, and I was doing nothing wrong,” the worker said.
+
+More than 50 workers who were fired by Google in connection with protests over the company’s ties to the Israeli government [filed a complaint](https://www.documentcloud.org/documents/24628681-google-charge?responsive=1&title=1) with the National Labor Relations Board on Monday. The workers have alleged unlawful retaliation and are asking for their jobs back, according to an emailed statement from No Tech For Apartheid, the group that organized the protests.
+
+Google “retaliated against approximately 50 employees and interfered with their Section 7 rights by terminating and/or placing them on administrative leave in response to their protected concerted activity, namely, participation (or perceived participation) in a peaceful, non-disruptive protest that was directly and explicitly connected to their terms and conditions of work,” the complaint reads.
+
+Jane Chung, a spokesperson for No Tech For Apartheid, [previously told *The Verge*](/2024/4/22/24137464/google-has-fired-another-20-employees-since-the-internal-protest-over-the-companys-israeli-defense-c) that the firings included “non-participating bystanders.” Google disputes this. Tomson, the Google spokesperson, told *The Verge* that all of the workers who were fired were “personally and definitively involved in disruptive activity inside our buildings.”
+
+This is a marked departure from the way Google has handled employee dissent in the past. In 2018, more than 600 Google workers [signed an open letter](/2018/11/30/18118691/google-dragonfly-employee-activism-listserv-union-strike) opposing Project Dragonfly, an effort to build a search engine for China. As *The Verge* reported at the time, the petition began with an internally shared Google Doc, and all subsequent steps were also organized using Google products. Employees also [urged Google to drop Project Maven](/2018/6/1/17418406/google-maven-drone-imagery-ai-contract-expire), its contract with the US Department of Defense. That same year, over 20,000 Google employees [staged a walkout](/2018/11/2/18057716/google-walkout-20-thousand-employees-ceo-sundar-pichai-meeting) in protest of the company’s handling of sexual harassment allegations against executives.
+
+Meredith Whittaker, a program manager at Google who helped organize the 2018 walkout, [left the company in 2019](/2019/7/16/20695964/google-protest-leader-meredith-whittaker-leaves-company) of her own volition. In 2019, workers also [held a sit-in protesting alleged retaliation](/2019/4/30/18524374/google-employee-sit-in-may-1-protest) against their colleagues who had spoken out.
+
+“There’s been a total change in the way Google responds to employees trying to have a voice in their workplace,” the fired software engineer said. “It’s night and day from the Google of even five, 10 years ago.”

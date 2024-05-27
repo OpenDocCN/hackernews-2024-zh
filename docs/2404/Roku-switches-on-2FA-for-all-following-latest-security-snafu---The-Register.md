@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:13:04
+-->
+
+# Roku switches on 2FA for all following latest security snafu • The Register
+
+> 来源：[https://www.theregister.com/2024/04/15/roku_2fa_for_everyone/](https://www.theregister.com/2024/04/15/roku_2fa_for_everyone/)
+
+Streaming giant Roku is making 2FA mandatory after attackers accessed around 591,000 customer accounts earlier this year.
+
+That's as specific as Roku went in terms of a timeline, but it said that the compromises occurred over two separate incidents. The first affected 15,363 accounts, which prompted the company to start monitoring account activity more closely in March, it said, and this monitoring led to the discovery of a second incident affecting roughly 576,000 accounts.
+
+In fewer than 400 cases, attackers used the accounts to purchase streaming subscriptions and Roku hardware using the payment details stored in the user accounts, the company confirmed.
+
+Every one of these account holders has been reimbursed, Roku said, and in no cases were the attackers able to access any sensitive information, including "full credit card numbers or other full payment information."
+
+According to the data breach notification letters issued in the US on March 8, social security numbers, dates of birth, and other similar information also remain unaffected.
+
+Roku says its systems appear to be safe from compromise too. The company reckons the accounts were accessed via credential stuffing attacks that used stolen credentials from other sources.
+
+Credential stuffing and password spraying are both fairly similar types of brute force attacks, but the former uses known pairs of credentials (usernames and passwords). The latter simply spams common passwords at known usernames in the hope one of them leads to an authenticated session.
+
+"There is no indication that Roku was the source of the account credentials used in these attacks or that Roku's systems were compromised in either incident," it [said](https://www.roku.com/blog/protecting-your-roku-account) in an update to customers.
+
+"Rather, it is likely that login credentials used in these attacks were taken from another source, like another online account, where the affected users may have used the same credentials."
+
+All accounts now require [2FA](https://www.theregister.com/2024/01/11/mandiant_x_account_brute_forced/) to be implemented, whether they were affected by the wave of compromises or not. Roku has more than 80 million active accounts, so only a minority were affected, and these have all been issued mandatory password resets.
+
+Compromised or not, all users are encouraged to create a [strong, unique password for their accounts](https://www.theregister.com/2023/11/20/your_password_hygiene_is_still/), consisting of at least eight characters, including a mix of numbers, symbols, and letter cases.
+
+The UK's NCSC still recommends creating passwords consisting of three random words – one that's still long and strong enough to satisfy complexity checks. 
+
+"This highlights the need to utilize unique passwords with a password manager," said Josh Hickling, principle consultant at Pentest People. "Had the users of the site not reused their passwords, they wouldn't have been affected.
+
+"With Apple Keychain, or a third party like 1Password or LastPass on Android, it's easier than ever to manage a base of unique passwords. This mitigates the risk of your password being exposed on a third-party site and affecting you across different systems."
+
+Roku also asked users to remain vigilant to suspicious activity regarding its service, such as phishing emails or clicking on dodgy links to rest passwords – the usual stuff.
+
+"In closing, we sincerely regret that these incidents occurred and any disruption they may have caused," it said. "Your account security is a top priority, and we are committed to protecting your Roku account." ®

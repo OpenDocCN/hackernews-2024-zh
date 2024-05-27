@@ -1,0 +1,124 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:16:03
+-->
+
+# Cyc: history's forgotten AI project - by I. A. Fisher
+
+> 来源：[https://outsiderart.substack.com/p/cyc-historys-forgotten-ai-project](https://outsiderart.substack.com/p/cyc-historys-forgotten-ai-project)
+
+> The Cyc group at MCC is attempting to build a single intelligent agent whose knowledge base contains […] tens of millions of entries. We believe such a system will be a useful, perhaps necessary, platform on which to undertake the next generation of work in expert systems, natural language understanding, and machine learning.
+
+Six miles north of downtown Austin, Texas, in an unassuming office park just off the Mopac Expressway, stands the headquarters of Cyc, one of the most ambitious artificial intelligence projects in history – a four decade-long effort to codify the common-sense knowledge that is the foundation of human reasoning. Its researchers have produced a corpus of 1.5 million concepts and 25 million rules that feed an inference engine with more than a thousand specialized submodules. The system can use both common-sense knowledge and deep domain expertise to make deductions from chains of reasonings that are thousands of steps long. Its users range from an Ohio research hospital to the National Security Agency.
+
+Yet despite its impressive achievements, Cyc has been largely forgotten, left behind by a new generation of machine-learning algorithms that power the chatbots and self-driving cars of today. How did one of the grandest experiments in AI end up as a historical footnote?
+
+In 1983, a group of AI researchers met at Stanford to discuss a vexing issue in AI research: how to program machines with common sense.
+
+The organizer of the meeting, Stanford professor Doug Lenat, had been thinking about the problem for some time. In the 1970s, he had made a name for himself with a series of programs that exhibited striking flashes of intelligence. The first, AM (short for 'Automated Mathematician'), was pre-programmed with some elementary mathematics and told to search for 'interesting' theorems. It found hundreds, many mundane but some of them remarkably creative; one discovery mirrored work done by the mathematical prodigy [Srinivasa Ramanujan](https://en.wikipedia.org/wiki/Srinivasa_Ramanujan).
+
+AM's biggest shortcoming was the fact that its heuristics were hard-coded – meaning that it couldn't change tactics once it ran out of ideas. In Lenat's next program, EURISKO, the heuristics themselves could be evaluated and modified by the program. Lenat used EURISKO to compete against human opponents at a complicated table-top board game called Traveller Trillion Credit Squadron. Guided by Lenat, the system suggested a highly unorthodox strategy that seemed unlikely to work. But the unconventional strategy paid off, and Lenat–EURISKO won the tournament.
+
+Still, EURISKO eventually slowed down, too. Lenat wagered that a machine that could draw on a large body of general knowledge – what humans call 'common sense' – when it got stuck would have a better chance of achieving genuine intelligence than clever but simple-minded programs like AM and EURISKO.
+
+At the time, the cutting edge in artificial intelligence was so-called 'expert systems'. Unlike traditional programs that proceeded mechanically along a hard-coded path (like a glorified flowchart), expert systems made inferences and deductions from a set of facts and rules written by domain experts in fields like medical diagnosis and organic chemistry. They were (in theory) capable of performing a rudimentary kind of reasoning and dealing more flexibly with complex situations.
+
+However, each expert system had its own database of rules, which meant both wasteful duplication and the inability of different expert systems to talk to one another. Lenat saw that a shared bank of common-sense knowledge could be the foundation for a new generation of even more effective systems.
+
+At the Stanford meeting, Lenat and the other researchers calculated that a machine would need to know several million rules before it reached the 'crossover point' when it could begin to learn on its own. Assembling such a knowledge base would take 2,000 person-years of effort – not unthinkable, but beyond the resources of a busy professor and a few grad students.
+
+Lenat soon got the chance to pursue his vision outside the confines of academic research. The year after the Stanford meeting, ten US companies formed the Microelectronics and Computer Technology Corporation (MCC), a research consortium to counter an [ambitious computing initiative](https://en.wikipedia.org/wiki/Fifth_Generation_Computer_Systems) launched by the Japanese government. Lenat was considering a tenured position as a professor at Stanford, but the attraction of private-sector-scale resources proved too great. He signed on as MCC's chief scientist. Armed with a half-billion dollar budget and hundreds of employees, he headed MCC's flagship project: to produce the massive knowledge base that machines would need to reason like humans. They called it Cyc, from 'encyclopedia'.
+
+Despite its name, Cyc was not meant to be encyclopedic *per se*; it would cover an even more basic level of knowledge – propositions like 'A person is born only once' and 'Animals can't talk except in fairy tales' that are so obvious that no one bothers to write them down. Cyc would be the foundation for specialized expert systems that would have domain knowledge about things like chemical compounds and human anatomy.
+
+Cyc's knowledge base is a collection of *frames* (also called *units*), with *slots* for properties and *entries* for their values. Concretely, the frame 'Texas' has a 'capital' slot with the entry 'Austin'. Frames are organized into a global ontology, meaning that each frame belongs to one or more categories, and categories themselves belong to categories, all the way up to a root 'Thing' category that encompasses everything in the knowledge base.
+
+On top of frames sits a constraint language that allows the system to express logical concepts like quantification ('every X is Y') and disjunction ('X or Y but not both'), and an inference engine to make deductions and answer queries. While there is a general-purpose reasoning engine, specialized inference engines are used for most queries for efficiency.
+
+Cyc has 'microtheories' which allow it to reconcile seemingly contradictory facts from different domains, for example classical physics and quantum mechanics. In general, Cyc does not have 'probability factors', but it does have coarse notions of likelihood, as well as awareness that some facts (like the population of a country) are estimates and others (like the fact that dogs have four legs) are only true by default.
+
+The 'ontological engineers' employed by Cyc originally entered the frames by hand. One technique they used was reading English text and looking for sentences with ambiguous pronouns: in a case where a pronoun like 'he' or 'she' was syntactically ambiguous, what common-sense knowledge does a human use to identify the referent? Consider these two sentences:
+
+> Tom was mad at Joe because he stole his lunch.
+> 
+> Tom was mad at Joe so he stole his lunch.
+
+As any speaker of English can deduce without conscious effort, the word 'he' refers to Joe in the first sentence but Tom in the second, despite differing by only one word. We know this because of our understanding of human behavior and the concepts of anger and theft – it is logical that Tom would be mad at Joe if Joe stole Tom's lunch, but not if Tom stole Joe's lunch. But machines do not know this and must be taught explicitly.
+
+Another technique was looking at pairs of sentences and figuring out the subtext that links them. For instance: "Of the five schools that accepted her, Mary decided to go to Harvard. She graduated with a degree in chemistry." Between the two sentences, we infer that Mary probably left home and went to Massachusetts for a period of approximately four years; took a few dozen courses, many but not all of which were in chemistry; met other students and professors at the university; and many other things that are left unstated. An intelligent system like Cyc ought to be able to make these inferences; if it cannot, the ontological engineers have to figure out what axioms to add to the knowledge base so that it can.
+
+Work on Cyc progressed steadily through the ten years that MCC was funded. In a 1989 book-length report on the project, the Cyc team projected optimism. The knowledge base had reached 1 million 'pieces of data', including 50,000 individual units and 6,000 collections. Many "representational thorns" – difficulties in representing real-world knowledge within the system, some of which were in fact ancient problems in philosophy – were encountered and dealt with. The guiding philosophy was pragmatism over elegance: age-old philosophical problems were side-stepped with practical solutions. The infamous [problem of causation](https://plato.stanford.edu/entries/causation-metaphysics/), for instance, was reduced to the idea that 'E1 causes E2' means 'if E1 is observed, predict that E2 will happen'.
+
+When MCC disbanded in 1994, Cyc was spun off under a new company called Cycorp (pronounced "SIGH-core"). Cycorp sustained itself financially through contracts with the government and corporations. Much of what Cycorp did in this period has not been publicly disclosed, but a few projects have come to light through research papers and technical reports. Cyc was used by the Cleveland Clinic for answering *ad hoc* questions from medical researchers; it reduced the time from as long as a month of manual back-and-forth between medical and database experts, to less than an hour. Cycorp also partnered with the US intelligence community to assist in building a 'terrorism knowledge base' that analysts could query. Cyc's grasp of common-sense knowledge helped it 'fill in the blanks' in synthesizing information from different sources that was often incomplete or contradictory.
+
+In the 2000s, Cycorp released a subset of the knowledge base as OpenCyc, and offered researchers an expanded version called ResearchCyc. A few outside researchers published papers based on the Cyc system. But the core product remained proprietary, and OpenCyc releases stopped in 2012.
+
+While Cyc was slowly but steadily growing its knowledge base, the field of artificial intelligence was radically changing. Most expert systems were long gone by the 2000s. Neural networks using deep learning, a type of statistical machine learning based on generic, opaque algorithms trained on massive amounts of data, were making huge breakthroughs. It was practically the antithesis of Cyc's logical reasoning and painstakingly handcrafting knowledge base of explicit rules. But despite their lack of common-sense knowledge, deep-learning algorithms proved to be fantastically successful at previously intractable problems. Beginning with [AlexNet](https://en.wikipedia.org/wiki/AlexNet) in 2012, neural nets revolutionized the field of image recognition. Game-playing programs by Google's DeepMind lab trounced the previous strongest chess-playing program and beat one of the world's top go players. And neural nets were behind the astonishing success of large language models like ChatGPT and Gemini. In a field now dominated by machine learning, Cyc's rule-based, symbolic approach increasingly looked like an anachronism.
+
+Yet, forty years after its inception, Cyc is still here. It has grown to a knowledge base of 25 million rules, 1.5 million concepts, and more than a thousand specialized inference engines. Cycorp employs 50 technical staff members and is completely funded by its commercial contracts. Nevertheless, to the extent that Cyc is remembered at all in the AI community, it is as a cautionary tale of tremendous effort wasted on a misguided approach.
+
+The verdict is harsh – but the expectations were high. In 1989, Lenat and co-author [R. V. Guha](https://en.wikipedia.org/wiki/Ramanathan_V._Guha) wrote "we hope that by 1999 no one would even *think* about having a computer that doesn't have Cyc running on it". They have had to settle for more modest victories. Surviving for forty years in an industry notorious for its boom-and-bust cycles is a noteworthy achievement, but Cyc's impact has failed to be revolutionary. While outsiders cannot assess the capabilities of the proprietary system, it is fair to infer that if Cyc had achieved an epoch-making breakthrough, the wider world would have heard about it.
+
+Still, while overshadowed by flashier programs like ChatGPT, Cyc should not be counted out. Lenat, who passed away in 2023, wrote his final paper about the opportunities for Cyc and LLMs to complement each other. LLMs are fluent and knowledgeable, but often inconsistent and inaccurate. Cyc is not as good at understanding and generating English text, but its conclusions are always supported by a chain of reasoning that can be audited by a human. An integrated Cyc–LLM system could be a powerful synthesis.
+
+The course of progress is unpredictable: fertile areas of research turn barren and methodologies that were left for dead suddenly come back to life. Neural nets were invented in the 1940s, then fell out of favor for decades. Rule-based systems like Cyc were once the vanguard of AI. Perhaps their time will come again.
+
+Douglas B. Lenat and John Seely Brown. 1984\. Why AM and EURISKO appear to work. *Artificial Intelligence* 23, 3 (August 1984), 269–294\. [https://doi.org/10.1016/0004-3702(84)90016-X](https://doi.org/10.1016/0004-3702(84)90016-X)
+
+> A description of Lenat's earlier work that partially inspired Cyc.
+
+Douglas B. Lenat and R. V. Guha. 1989\. *Building Large Knowledge-Based Systems: Representation and Inference in the Cyc Project*. Addison-Wesley. [https://dl.acm.org/doi/book/10.5555/575523](https://dl.acm.org/doi/book/10.5555/575523)
+
+> A book-length report on the Cyc project's progress after five years. Thirty years out of date but still the most complete reference on the system.
+
+Douglas B. Lenat, R. V. Guha, Karen Pittman, Dexter Pratt, and Mary Shepherd. 1990\. Cyc: toward programs with common sense. *Communications of the ACM* 33, 8 (Aug. 1990), 30–49\. [https://doi.org/10.1145/79173.79176](https://doi.org/10.1145/79173.79176)
+
+> A shorter article covering much of the same ground as the 1989 book.
+
+Douglas B. Lenat and Chris Deaton. 2008\. Terrorism Knowledge Base. Government technical report (April 2008). [https://www.researchgate.net/publication/235042082_Terrorism_Knowledge_Base_TKB](https://www.researchgate.net/publication/235042082_Terrorism_Knowledge_Base_TKB)
+
+> A report on Cycorp's partnership with the US intelligence community to build a database on global terrorism.
+
+Douglas Lenat, Michael Witbrock, David Baxter, Eugene Blackstone, Chris Deaton, Dave Schneider, Jerry Scott, and Blake Shepard. 2010\. Harnessing Cyc to answer clinical researchers' ad hoc queries. *AI Magazine* 31, 3 (Fall 2010), 13–32\. [https://doi.org/10.1609/aimag.v31i3.2299](https://doi.org/10.1609/aimag.v31i3.2299)
+
+> A report on Cycorp's partnership with the Cleveland Clinic for medical research.
+
+Douglas Lenat. 2022\. Creating a 30-million-rule system: MCC and Cycorp. *IEEE Annals of the History of Computing* 44, 1 (Jan.–Mar. 2022), 44–56\. [https://muse.jhu.edu/pub/87/article/853382/pdf](https://muse.jhu.edu/pub/87/article/853382/pdf)
+
+> A history of the Cyc project, from its origins in the AI research of the 1970s to the present day.
+
+Doug Lenat and Gary Marcus. 2023\. Getting from generative AI to trustworthy AI: what LLMs might learn from Cyc. arXiv preprint (July 2023). [https://arxiv.org/abs/2308.04445](https://arxiv.org/abs/2308.04445)
+
+> Lenat's final paper. Compares the strengths of weaknesses of Cyc with LLMs.
+
+Cynthia Matuszek, John Cabral, Michael Witbrock, and John DeOliveira. 2006\. An introduction to the syntax and content of Cyc. AAAI Spring Symposium (2006). [https://www.researchgate.net/publication/221250660_An_Introduction_to_the_Syntax_and_Content_of_Cyc](https://www.researchgate.net/publication/221250660_An_Introduction_to_the_Syntax_and_Content_of_Cyc)
+
+> An account of CycL, the representation language used for the knowledge base, as of the mid 2000s.
+
+[The Software With Good Sense by George Harrar](https://www.nytimes.com/1990/04/01/business/technology-the-software-with-good-sense.html) in *The New York Times* (April 1, 1990, p. 7)
+
+> An early newspaper article on the Cyc project.
+
+[Dueling Brainscapes In Artificial Intelligence](https://www.bloomberg.com/news/articles/1997-06-22/dueling-brainscapes-in-artificial-intelligence) in *Bloomberg* (June 23, 1997)
+
+> A comparison of Cyc's "top-down" directed approach with a robotics company's "bottom-up" learning-based approach.
+
+[One Genius’ Lonely Crusade to Teach a Computer Common Sense](https://www.wired.com/2016/03/doug-lenat-artificial-intelligence-common-sense-engine/) by Cade Metz in *Wired* (2016)
+
+> Fairly recent detailed account in the popular press of the current state of the Cyc project.
+
+[Cyc](https://news.ycombinator.com/item?id=21781597) on Hacker News (2019)
+
+> An online discussion in which a couple former Cycorp employees chimed in.
+
+[Cyc Technology Overview](https://cyc.com/wp-content/uploads/2021/04/Cyc-Technology-Overview.pdf) published by Cycorp (2021)
+
+> A description of Cyc's commercial uses and comparison to machine learning.
+
+[Douglas Lenat: Cyc and the Quest to Solve Common Sense Reasoning in AI](https://www.youtube.com/watch?v=3wMKoSRbGVs&t=0s&ab_channel=LexFridman) on the Lex Fridman Podcast (2021)
+
+> Recent in-depth interview with Doug Lenat on the Cyc project and its future.
+
+[Doug Lenat, 1950–2023](https://garymarcus.substack.com/p/doug-lenat-1950-2023) by Gary Marcus on Substack (2023)
+
+> An obituary of Doug Lenat by a fellow researcher who knew him personally.

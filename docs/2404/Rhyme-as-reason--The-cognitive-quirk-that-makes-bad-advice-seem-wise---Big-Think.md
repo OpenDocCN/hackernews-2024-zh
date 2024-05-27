@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:31:13
+-->
+
+# Rhyme as reason: The cognitive quirk that makes bad advice seem wise - Big Think
+
+> 来源：[https://bigthink.com/neuropsych/rhyme-as-reason/](https://bigthink.com/neuropsych/rhyme-as-reason/)
+
+Many summers ago, when I was young, I got some booze, I got drunk, and I got a hangover. The next morning, I told my dad what happened over breakfast. “We had some wine at the restaurant,” I groaned, “and then a few beers at Mark’s house. It doesn’t seem enough for me to feel this bad.” My dad chuckled the chuckle of the knowing. He then said something I carry with me to this day: “Beer before wine and you’ll feel fine; wine before beer and you’ll feel queer.”
+
+Years later, I’m fairly certain my dad was dealing in aphoristic pseudoscience, but the point is that out of all the many tidbits of advice he handed down over the years, only a few stick in my memory. And those are the ones that *rhyme*d. There’s a mnemonic heft to a well-turned phrase, and a rhyming line lodges itself far easier than an entire book’s worth of learning.
+
+More than this, though, is the fact that humans are biased to perceive rhyming wisdom as more reputable than non-rhyming equivalents. If my dad had said, “Don’t drink wine before beer,” then I would have grunted and tutted it away. As his words *rhymed,* though, I gave them credence.
+
+This is known as the “rhyme-as-reason effect,” a cognitive phenomenon with a lot of real-life, practical applications.
+
+## Too many names
+
+There’s an odd and often frustrating fact: You might be able to remember the entire six verses of some obscure song from your childhood, yet you can’t remember something from last week. The reason is that the human mind retains things as a rhyme, song, or poem far easier than plain prose. Major examples of early literature — such as the *Epic of Gilgamesh*, the *Iliad*, and the Psalms — were written as poems. Not only did this make for exciting recitation, but it also meant people could memorize great swathes easily.
+
+In 1995, the cognitive psychologist David Rubin wrote a book called *Memory in Oral Traditions.* In it, he runs through the differences between literary and oral cultures and lays out the necessary factors that allow the latter. One such factor is the use of rhyming. To prove the point, Rubin conducted an experiment. He got his students to try to remember a ballad using two rhyming words. He then compared their performance with a group that had non-rhyming words. The rhyming group overwhelmingly outperformed the non-rhyming group.
+
+Why is this the case? Rubin hypothesized that it is all in the way we recall things. Let’s say you are trying to remember the name of someone you met just once. Without any hints or pointers, you have nearly infinite options for your mind to dizzily guess its way through. But, with a rhyme, there are fewer. The path leads to only one or a few places. For example, “That man was so grave, and his name was [blank].” Only a few mnemonic options fill in that blank.
+
+More recent studies seem to show [Rubin was on to something](http://sofferpsychmemory.weebly.com/semantic-acoustic-and-visual-levels-of-encoding.html). When we use rhymes, we break down information into something that can more easily be stored and retrieved — in something called [semantic encoding](http://sofferpsychmemory.weebly.com/semantic-acoustic-and-visual-levels-of-encoding.html).
+
+## Memorable does not mean better
+
+The second aspect of the rhyme-as-reason effect is that not only do we retain and recall rhymes easier, but we judge them more favorably. Friederick Nietzsche was a big fan of aphorisms. In fact, he wrote a series of books entirely in aphorisms because he knew that a well-crafted turn of phrase cuts into your understanding far quicker than prose. In *Gay Science*, he wrote, “Even now … the wisest among us are still occasionally fooled by rhythm — if only insofar as we sometimes consider an idea truer simply because it has a metrical form and presents itself with a divine skip and jump.” It is easier to manipulate and draw someone in if you speak eloquently or poetically. People often confuse verbosity with authority.
+
+Two psychologists, Matthew S. McGlone and Jessica Tofighbakhsh, investigated this phenomenon and wrote up their findings in a paper called “[The Keats heuristic: Rhyme as reason in aphorism interpretation](https://www.sciencedirect.com/science/article/abs/pii/S0304422X99000030).” They presented their participants with a series of aphorisms. Some participants received aphorisms that rhymed; others received aphorisms rewritten with non-lyrical synonyms. For example:
+
+(Rhyme): Little strokes will tumble great oaks.
+
+(Synonym): Little strokes will tumble great trees.
+
+They discovered that not only did participants aesthetically prefer the rhyming sentences, they more often than not thought them more accurate. Despite participants agreeing that aesthetic qualities don’t bestow truth, they couldn’t avoid their own biases. This led the team to call it the “Keats heuristic” after the poet [John Keats’s line](https://www.poetryfoundation.org/poems/44477/ode-on-a-grecian-urn): “Beauty is truth; truth is beauty.” It turns out that we are inclined to not only retain rhymes better but value them more highly as well.
+
+There are two important lessons to learn from this. The first is that rhyming is a great mnemonic. If you want to retain it, rhyme it. The second is to appreciate that just because you remember something in rhyme doesn’t make it accurate. My dad’s wisdom, “Beer before wine and you’ll feel fine; wine before beer and you’ll feel queer,” might sound neat but is based on scant and dubious evidence. Better something like “Consume a lot of booze; you’ll get the hangover blues.” Keep in mind that a nice turn of phrase isn’t necessarily better than a clumsier one.

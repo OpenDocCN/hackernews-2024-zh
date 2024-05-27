@@ -1,0 +1,369 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:57:32
+-->
+
+# C++ Coroutines Do Not Spark Joy | Probably Dance
+
+> 来源：[https://probablydance.com/2021/10/31/c-coroutines-do-not-spark-joy/](https://probablydance.com/2021/10/31/c-coroutines-do-not-spark-joy/)
+
+C++20 added minimal support for coroutines. I think they’re done in a way that really doesn’t fit into C++, mostly because they don’t follow the zero-overhead principle. Calling a coroutine can be very expensive (requiring calls to new() and delete()) in a way that’s not entirely under your control, and they’re designed to make it extra hard for you to control how expensive they are. I think they were inspired by C# coroutines, and the design does fit into C# much better. But in C++ I don’t know who they are for, or who asked for this…
+
+Before we get there I’ll have to explain what they are and what they’re useful for. Briefly, they’re very useful for code with concurrency. The classic example is if your code has multiple state machines that change state at different times: E.g. the state machine for reading data from the network is waiting for more bytes, and the code that provides bytes is also a state machine (maybe it’s decompressing) which in turn gets its bytes from another state machine (maybe it’s handling the TCP/IP layer). This is easier to do when all of these can pretend to operate on their own, as if in separate threads, maybe communicating through pipes. But the code looks nicer if the streamer can just call into the decompressor using a normal synchronous function call that returns bytes. Coroutines allow you to do that without blocking your entire system when more bytes aren’t immediately available, because code can pause and resume in the middle of the function.
+
+One of the best things the C++ standard did is to define the word “coroutine” as different from related concepts like “fibers” or “green threads”. (this very much went against existing usage, so for example Lua coroutines are not the same thing as C++ coroutines. I think that’s fine, since the thing that was added to C++ could be useful, and there is a good case to be made that the existing usage was wrong) In the standard, a coroutine is simply a function that behaves differently when called multiple times: Instead of restarting from the start on each call, it will continue running after the return statement that last returned. To do this, it needs some state to store the information of where it last returned, and what the state of the local variables was at that point. In existing usage that meant that you need a program stack to store this state, but in C++ this is just stored in a struct.
+
+To illustrate all of this, lets build a coroutine in plain C++, without using the language coroutines:
+
+ ## Manually Building a Coroutine
+
+We’ll take a very simple example. C++ coroutines transform this code:
+
+```
+generator_coro<int> range(int stop, int step = 1)
+{
+    for (int i = 0; i < stop;)
+    {
+        co_yield i;
+        i += step;
+    }
+}
+
+```
+
+Into this code:
+
+```
+struct range_struct
+{
+    int i;
+    int stop;
+    int step;
+    enum {
+        At_start,
+        In_loop,
+        Done
+    } state;
+
+    explicit range_struct(int stop, int step = 1)
+        : stop(stop), step(step), state(At_start)
+    {
+    }
+
+    int resume()
+    {
+    switch (state)
+    {
+    case At_start:  for (i = 0; i < stop;)
+                    {
+                        state = In_loop;
+                        return i;
+    case In_loop:       i += step;
+                    }
+                    state = Done;
+    case Done:      return 0;
+    }
+    }
+};
+
+```
+
+The “co_yield” in the first listing is a new keyword. I said that repeat calls to a coroutine resume after the last return statement, but they actually resume after the last “co_yield” statement. (and co_yield is syntactically the same as “return”) I think this was done because you want two different ways of returning from a function:
+
+*   co_return, which means “return and don’t call me again”
+*   co_yield, which means “return and resume here on the next call.”
+
+The second listing is a struct that looks exactly like what the compiler generates for the first listing. The transformation is this:
+
+1.  Turn all stack variables into member variables of a struct
+2.  Rename the function to resume() and make it a member function of the struct
+3.  Put a switch/case around the entire body of the function, as in Duff’s Device
+4.  Add a new case to your enum for every co_yield.
+5.  Add a Done case to indicate that the function is over. It doesn’t matter what I return at the end, that value returned from Done should never be used
+
+These transformations work even for functions that are much more complicated. This might be familiar from Simon Tatham’s classic article [Coroutines in C](https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html) which does this transformation using static variables instead of class member variables.
+
+Aside: As an example of how existing usage of the word “coroutine” was different, Tom Duff (of Duff’s Device) [said](https://brainwagon.org/2005/03/05/coroutines-in-c/#comments) that this is not a good way to implement coroutines, because when using this trick you can not yield from nested functions. The C++ standard turned this around and said “it’s only a coroutine if you can not yield from nested functions. If you could, it would be a fiber.”
+
+Let’s continue to build this coroutine by making it do something useful. Say we want to get this test to work:
+
+```
+TEST(range, coro_and_struct)
+{
+    std::vector<int> range_result;
+    std::vector<int> range_struct_result;
+    for (int i : range(10, 2))
+    {
+        range_result.push_back(i);
+    }
+    for (int i : range_struct(10, 2))
+    {
+        range_struct_result.push_back(i);
+    }
+    ASSERT_EQ((std::vector<int>{0, 2, 4, 6, 8}), range_result);
+    ASSERT_EQ((std::vector<int>{0, 2, 4, 6, 8}), range_struct_result);
+}
+
+```
+
+So here I allocate two vectors, then I loop over the results of the range() function (from the first listing) and also loop over the results of the range_struct() constructor (from the second listing), and both should give the same result. Knowing how the range_struct is implemented so far, what would you add to it to make this work?
+
+We need iterators. Here is the minimal implementation to make this work for range_struct:
+
+```
+struct range_struct
+{
+    // ... unchanged top half of the struct
+
+    struct end_iterator {};
+    struct iterator
+    {
+        range_struct * self;
+        bool operator==(const end_iterator&) const
+        {
+            return self->state == Done;
+        }
+        void operator++()
+        {
+            self->resume();
+        }
+        int operator*() const
+        {
+            return self->i;
+        }
+    };
+
+    iterator begin()
+    {
+        resume();
+        return { this };
+    }
+    end_iterator end()
+    {
+        return {};
+    }
+};
+
+```
+
+The iterator needs operator++ to advance, operator* to get a value and operator== to check if we’re at the end. The implementations of each is trivial, but it might take some thinking to see that this does the right thing. One odd thing is that when constructing the iterator, in begin(), we also have to call resume() once. This is just an accident of the C++ iterator interface. These coroutines actually map better to the Rust iterator interface where next() would directly wrap resume(). To see the need for the call, think about what would happen if we didn’t call resume() once, and if end==0\. The first call to operator== would return the wrong thing.
+
+It’s possible to avoid reading the internal state of the function. Instead of reading self->i, we could also store the return value of resume() and remember it. Then this would work for any function that followed the conversion steps I outlined above, but I wanted to keep the implementation trivial for educational purposes.
+
+If this is all the compiler does, then what is the problem? The problem is that they didn’t stop there.
+
+## Heap Allocation
+
+One problem with the above is step 1 of my conversion steps: “Turn all stack variables into member variables of a struct.” On more complex functions this can clearly be wasteful. If there was more work to be done after the end of the for-loop, the compiler could reuse the stack space that used to be taken up by the variable ‘i’. So the C++ standard doesn’t want to describe the layout of these coroutine structs. And because of that you’re not allowed to see this struct. The language hides it from you completely, even more than the types of lambda functions. You can’t even use sizeof() on it. How do you hide a type even more than lambda function types? They hide it behind a pointer. And that pointer points at a heap allocation.
+
+So every call to a coroutine includes a call to new(). And at the end of the coroutine, a call to delete(). How did they get this into the standard? Who bought the story of “we wanted this compiler optimization, and all we had to do was introduce a call to new() and a call to delete()” which is clearly not an optimization? The way to get this into the standard is to [promise](https://www.youtube.com/watch?v=8C8NnE1Dg4A) that the coroutine can be inlined, and if it’s inlined, no call to new() and delete() are necessary.
+
+This sounds good, and the simple generator example does get inlined for me, but it didn’t seem to work for anything more complicated. I was trying to implement [Differential Dataflow](https://www.microsoft.com/en-us/research/publication/differential-dataflow/) in a way that would allow the code to mostly look normal. So this was building up a graph of nested coroutines, each operating on pipes from other coroutines. This is similar to the simple range generator above, except every function is operating on infinite input pipes and there are joins and splits and aggregations. The lifetimes are often not clear, but sometimes they’re very clear and even then I didn’t get inlining.
+
+This is less of a problem if your coroutines are long-lived. Suspending and resuming a coroutine is fast once it has been allocated. This makes sense if you think back to the struct we created above: The heap allocation only affects the constructor and destructor. But if you have small utility coroutines, a heap allocation can really cost you.
+
+This is a big change in the language. The language has never wanted to give you control about inlining. The “inline” keyword is intentionally vague. There are non-standard ways of saying “don’t inline” and “please, try really hard to inline this” but no guarantees. In most code the difference between inlining and not inlining isn’t big. When it does matter, the difference can easily be 2x, 5x or more. But if not inlining means adding heap allocations, then suddenly not inlining can mean that your code runs 100x slower. With that big of a difference, we suddenly need real control about whether something is inlined or not. Since a coroutine is just a struct, we should already be able to control this: Just put it on the stack, or make it a member of a different struct, but the language intentionally forbids that, insisting that you leave it up to the compiler.
+
+So if something needs to be inlined, what do you use?
+
+## Macros
+
+My coroutine code quickly accumulated macros. And not just for performance reasons. There are several ways in which coroutines don’t compose nicely. As an example, lets stick to the generator code above and make it slightly more complex. Lets say it first emits the numbers zero to nine, then calls something else that also returns a generator:
+
+```
+generator_coro<int> foo()
+{
+    for (int i = 0; i < 10; ++i)
+        co_yield i;
+    generator_coro<int> rest = bar();
+    // ... how do I return all the values from rest?
+    return rest;
+}
+
+```
+
+This does not compile. The type for rest is generator_coro<int>, and it looks like the function returns a generator_coro<int>, but actually that’s the type of the coroutine wrapper, and the wrapper expects that we return ints. (as can be seen by us yielding ints before)
+
+So instead you have to write this:
+
+```
+generator_coro<int> foo()
+{
+    for (int i = 0; i < 10; ++i)
+        co_yield i;
+    generator_coro<int> rest = bar();
+    for (int i : rest)
+        co_yield i;
+}
+
+```
+
+OK that isn’t too bad. We just have to store the other coroutine on our stack and then yield all values from it. In my code I was composing coroutines like this a lot, which is all fine until I needed to make a change. I wanted to slightly change how to forward values like this. For the sake of example lets say I want to set a flag “is_draining” before doing this loop. So it should look like this instead:
+
+```
+generator_coro<int> foo()
+{
+    for (int i = 0; i < 10; ++i)
+        co_yield i;
+    generator_coro<int> rest = bar();
+    rest.set_is_draining(true);
+    for (int i : rest)
+        co_yield i;
+}
+
+```
+
+Unfortunately the code was manually inlined in various places like this: to completely drain and yield a generator, I was always iterating through the list, so when I needed to set the flag before the loop, I had to change every place. How would I fix this in normal code? Write a function that encapsulates the repeated code:
+
+```
+generator_coro<int> drain_and_yield_all(generator_coro<int> & coro)
+{
+    coro.set_is_draining(true);
+    for (int i : coro)
+        co_yield i;
+}
+
+```
+
+This seems reasonable: Now I can call this function to drain a generator. But you can’t do this. This is a new coroutine. If I try to use this in the outer function, I get this:
+
+```
+generator_coro<int> foo()
+{
+    for (int i = 0; i < 10; ++i)
+        co_yield i;
+    generator_coro<int> rest = bar();
+    generator_coro<int> rest2 = drain_and_yield_all(rest);
+    // ... what now?
+}
+
+```
+
+The function drain_and_yield_all returns a whole new coroutine, which I can’t return. So I’m right back at the problem where I started.
+
+The only way to solve this is to use macros. Coroutines don’t compose without macros. I can’t force the function “drain_and_yield_all” to be inlined, therefore it generates a new coroutine (probably allocated on the heap) and therefore I can’t write this little reusable helper. If I want to have one standardized way of doing this that I can easily change, I need to use a macro:
+
+```
+#define DRAIN_AND_YIELD_ALL(x) if (true)\
+{\
+    auto && coro = x;\
+    coro.set_is_draining(true);\
+    for (auto && i : coro)\
+        co_yield i;\
+} else static_cast<void>(0)
+
+```
+
+Not pretty, but it’s the only way.
+
+## Yielding Values
+
+In my manual code transformation above I was just reading the value ‘i’ from the stack of the coroutine. Why make it any more complicated?
+
+The standard makes this slightly more abstract. When I returned the type “generator_coro<int>” above, that is the same type no matter what the body of the function looks like. I haven’t shown what that type looks like because it’s messy, but I have to explain it a little bit. In theory it’s just a wrapper that provides the iterator interface so we can use the type in a loop, but it has to work for all functions. In my manual transformation above we saw that for each function we get a different struct, so how can one wrapper work for all the different structs you might get? The heap allocation makes it easier, but the main reason is that the wrapper can’t rely on anything in the function. We can’t access its stack variables. So how does co_yield work?
+
+Between the coroutine and the caller there is a channel of communication called the “promise type”. It’s where co_yield can store a value, and it’s where the wrapper can read from. This promise_type is the same for all coroutines that return the same wrapper. So in co_yield we’re actually just storing the value in the promise_type, and then the wrapper reads it from the promise_type. This is clearly inefficient in my example where I’m just yielding a stack variable. Do we really have to make a copy of that?
+
+One improvement is to store a pointer in the promise_type. That’s overkill for an int, but in general it’s faster. We can safely point at anything in the coroutine body, because those are all just members of the struct which lives on. This saves us a copy.
+
+But we can do one step better: Turns out direct reading from the stack is allowed in one special case: The promise_type is stored on the stack of the coroutine. So all coroutines that return the same wrapper will generate a struct that has the promise_type as one of its members. And we are allowed to read from the struct as long as we’re reading from the promise_type. The problem is that the coroutine can’t write to the promise_type. If it could, I would just have put my loop variable, ‘i’ into the promise_type.
+
+Luckily David Mazieres [found a way](https://www.scs.stanford.edu/~dm/blog/c++-coroutines.html#the-promise-object) to do the sane thing. Unfortunately the code looks a bit insane. There is another new operator, co_await, which I haven’t explained at all. It’s intended to be used when your coroutine waits for the result of a long operation, say a network call. In that case you can use co_await, which means “return for now and ask the object that I’m returning when it’s OK to call me again.” So in practice you co_await some kind of object that indicates when the network request is done. But we’re not going to use it for that. Turns out co_await can be used as a hack to get the promise object, because the awaitable object is allowed to read from the promise_type, just like the wrapper is allowed. So we’re going to create an awaitable object that looks like this:
+
+```
+template<typename PromiseType>
+struct GetPromise
+{
+  PromiseType * p;
+  bool await_ready()
+  {
+      return false; // says we're not ready, call await_suspend
+  }
+  bool await_suspend(costd::coroutine_handle<PromiseType> h)
+  {
+    p = &h.promise();
+    return false; // says no don't suspend coroutine after all
+  }
+  PromiseType * await_resume()
+  {
+      return p;
+  }
+};
+
+```
+
+Each of these functions has a meaning according to the standard. But really what’s relevant here is that in await_suspend we’re allowed to access the promise_type. We’re just going to stash a pointer away, and in await_resume we’re going to return it. And we never actually suspend the coroutine. So in the body of a coroutine you can do this:
+
+```
+generator_coro<int> range(int stop, int step)
+{
+    generator_coro<int>::promise_type * promise = co_await GetPromise<generator_coro<int>::promise_type>{};
+    for (promise->i = 0; promise->i < stop;)
+    {
+        co_yield promise->i;
+        promise->i += step;
+    }
+}
+
+```
+
+It’s kinda gross, but we know for a fact that the promise is stored right next to “stop” and “step” in the auto-generated struct of this coroutine. So this is how you yield a value directly from the stack without making a copy and without having to use a pointer. The co_yield call should compile down to a self-assignment, i=i.
+
+This looks insane, but if you think of the actual generated instructions, it’s the only sane way to pass data between the coroutine and its handle. Once you understand how coroutines work, it only makes sense for the wrapper to read values right from the stack, and for the coroutine to write values to the stack. And the only allowed place to do that is in the promise_type. We aren’t supposed to access it, even though it is on our stack, but that’s just the standard being weird.
+
+One nice thing would be to pull this into a wrapper function, so that I could write this instead:
+
+```
+generator_coro<int> range(generator_coro<int>::promise_type * promise, int stop, int step)
+{
+    for (promise->i = 0; promise->i < stop;)
+    {
+        co_yield promise->i;
+        promise->i += step;
+    }
+}
+
+```
+
+So I just receive the promise as one of my arguments. Alas, that wrapper is impossible to write, because we would have to force inlining to make it work, and we can’t. You can make it slightly less ugly with macros though…
+
+## Operators for Fibers
+
+One thing I was looking forward to was to finally have the co_yield and co_await operators in the language so that I could use them with fibers. Everything is customizable enough that this should be possible. Before C++20 I would have to create a macro like this in my fibers:
+
+```
+#define FIBER_YIELD(x) if (fiber_yield(x)) static_cast<void>(0) else return false
+
+```
+
+In this I assume that “fiber_yield()” returns true if the fiber should continue running, and false if the fiber should early-out. (probably because it’s being destructed, so we need to tear down the stack, so it’s absolutely necessary to return immediately) The co_yield operator has this behavior built-in and I want to use it as well in fibers. Unfortunately as soon as you use the keyword, your function is no longer a function, it’s now a coroutine. Meaning it needs a wrapper and it needs to be heap-allocated. This is terrible because fibers don’t have the problems with composition I mentioned above: It’s much easier to write little helper functions because in a fiber you’re allowed to yield from a nested function. But if those little nested functions have to be coroutines, that ruins everything.
+
+## Conclusion and Advice
+
+Overall I’m still happy that coroutines exist. I liked experimenting with them. But everyone’s reaction seems to be the same: These coroutines quickly deflate your energy. They don’t spark joy. Everything is just a bit clunky and gross. You always have to worry if something gets inlined, because the difference between an inlined coroutine and a not-inlined coroutine is a much bigger cliff than for a normal function. And they’re just not ergonomic to use.
+
+If you’re working on coroutines for other languages, do a couple of simple things:
+
+1.  Give me access to the generated struct. Allow me to put it on the stack of another function. Or as a member of another struct. Then I can store it on the heap if I want, but don’t force me.
+2.  Think more about how these compose. This gets a lot better already if I have control over the struct, because then if I want to write a small utility function, I can put it on the stack and don’t have to worry about heap allocations
+3.  Allow me to use the same operators for fibers. Don’t turn my function into a coroutine just because I use “co_yield”
+4.  Give me a saner way to access stack variables. Maybe just allow me to write “public” on stack variables. So that the initial code would have looked like this:
+
+```
+generator_coro<int> range(int stop, int step = 1)
+{
+    public int i;
+    for (i = 0; i < stop;)
+    {
+        co_yield i;
+        i += step;
+    }
+}
+
+```
+
+I pulled this out into a separate line to make this clearer, but it should be valid to make any stack variable public, no matter how it is declared. Since these just become struct members, using the “public” keyword even makes sense because it’s used for the same purpose: I make something accessible to users of the struct.
+
+As the coroutines are, I don’t quite know what they’re for. They seem like they might be useful, but nobody seems excited by them. Anyone who has long-running concurrent tasks switched to using fibers ages ago. See [this good talk](https://www.youtube.com/watch?v=JDcip-SRgVE) from 2012, or [this better talk](https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine) from 2015\. I don’t see how to use coroutines here. The threat of having a heap allocation when your inliner changes its mind ruins it. (or more likely for complex code like this, the inlining never works to begin with)
+
+I’m curious if anyone actually finds something useful to do with these. Are they just for simple generator functions?

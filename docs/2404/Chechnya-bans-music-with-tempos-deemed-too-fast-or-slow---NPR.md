@@ -1,0 +1,62 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:05:21
+-->
+
+# Chechnya bans music with tempos deemed too fast or slow : NPR
+
+> 来源：[https://www.npr.org/2024/04/09/1243632570/chechnya-music-ban-bpm](https://www.npr.org/2024/04/09/1243632570/chechnya-music-ban-bpm)
+
+Dancers wearing Chechen national costumes perform to celebrate the reelection of Chechnya's regional leader Ramzan Kadyrov (pictured in the background) in Grozny, Russia in September 2021. **Musa Sadulayev/AP** ****hide caption****
+
+****toggle caption****Musa Sadulayev/AP
+
+Dancers wearing Chechen national costumes perform to celebrate the reelection of Chechnya's regional leader Ramzan Kadyrov (pictured in the background) in Grozny, Russia in September 2021.
+
+Musa Sadulayev/AP
+
+Authorities in the Russian republic of Chechnya are banning music they consider either too fast or too slow, effectively criminalizing many genres.
+
+The Chechen Ministry of Culture announced the ban [on its website](https://mk-chr.ru/novosti/soveshchanie-s-rukovoditelyami-tvorcheskikh-gosudarstvennykh-i-munitsipalnykh-kollektivov-chechensko/) last week, by the order of Culture Minister Musa Dadayev and with the agreement of Chechen leader Ramzan Kadyrov.
+
+"Musical, vocal and choreographic" works will be limited to a tempo of 80 to 116 beats per minute (BPM) to "conform to the Chechen mentality and sense of rhythm," said Dadayev, according to the Russian state-run news agency TASS.
+
+"Borrowing musical culture from other peoples is inadmissible," Dadayev said, per a translation by [*The Guardian*](https://www.theguardian.com/world/2024/apr/09/chechnya-bans-dance-music-either-too-fast-slow). "We must bring to the people and to the future of our children the cultural heritage of the Chechen people. This includes the entire spectrum of moral and ethical standards of life for Chechens."
+
+Russian media [report](https://www.themoscowtimes.com/2024/04/05/chechnya-forbids-music-outside-80-116-bpm-tempo-a84755) that artists have until June 1 to rewrite any music that doesn't conform to the new rule, though it's not clear how it will be enforced.
+
+Chechnya is a roughly 6,700-square-mile autonomous republic situated in the North Caucasus of southern Russia and home to [some 1.5 million people](https://www.bbc.com/news/world-europe-18188085), the vast majority of whom are Muslim. Its leader, Ramzan Kadyrov, has [consistently quashed dissent](https://www.dw.com/en/chechen-leader-ramzan-kadyrov-russian-president-vladimir-putins-ally-in-ukraine/a-63368656) in the territory since he came to power in 2007 — nominated by Russian President Vladimir Putin, with whom he remains close.
+
+Over the years, dissidents, human rights activists and journalists — as well as [their family members](https://www.state.gov/continuing-human-rights-concerns-regarding-the-russian-federations-republic-of-chechnya/#:~:text=The%20United%20States%20is%20troubled,human%20rights%20defenders%20and%20dissidents.) — in Chechnya have faced threats and reported instances of abduction, arbitrary detention and death. Chechen authorities also orchestrated what [Human Rights Watch](https://www.hrw.org/news/2021/08/31/no-end-chechnyas-violent-anti-gay-campaign) describes as "lethal [purges of men](https://www.npr.org/sections/parallels/2017/06/15/532977587/they-told-me-i-wasnt-a-human-being-gay-men-speak-of-brutal-treatment-in-chechnya) perceived to be gay or bisexual" in 2017 and 2019\. (Kadyrov [said in 2017](https://www.nbcnews.com/feature/nbc-out/we-don-t-have-any-gays-chechen-leader-s-remarks-n784356), "We don't have any gays ... If there are any, take them to Canada.")
+
+The [U.S. Commission on International Religious Freedom](https://www.uscirf.gov/publication/russia-issue-update) has said Kadyrov's regime "maintains hegemony through the imposition of a purported 'traditional' version of Islam, which falsely claims to defend local belief and culture, and combat violent extremism."
+
+"In reality, Kadyrov has [co-opted] Chechen religion and culture to support his brutal regime, which violates the secular constitution of the Russian Federation and international standards of freedom of religion or belief," it added.
+
+While Chechnya waged [two wars against Russia](https://www.npr.org/2022/03/12/1085861999/russias-wars-in-chechnya-offer-a-grim-warning-of-what-could-be-in-ukraine) for its independence in the 1990s and early 2000s, it remains part of Russia and is now [seen as its close ally](https://www.npr.org/2022/04/27/1094873072/russia-ukraine-war-chechen-leader-ramzan-kadyrov) in the war against Ukraine. Even so, it's held on to its language and culture, in which [folklore plays a major role](https://www.everyculture.com/wc/Norway-to-Russia/Chechens.html). Traditional Chechen music includes instrumental songs and epic ballads, according to the *Guardian*.
+
+The government's crackdown on certain musical tempos would silence most modern music genres. Electronic styles of music like house, techno and dubstep all tend to have [BPMs of over 116](https://www.izotope.com/en/learn/using-different-tempos-to-make-beats-for-different-genres.html), says the audio tech company Izotope, while the average tempo of [2020's best-selling pop songs](https://www.bbc.com/news/entertainment-arts-53167325) was 122 BPM, according to the BBC.
+
+The independent Russian news outlet Meduza said the tempo of the Russian national anthem would be [considered too slow](https://www.rferl.org/a/russia-chechnya-music-tempo/32893827.html) under the new limit, reports RadioFreeEurope/RadioLiberty. But it would seem to permit hip-hop music, which generally has a BPM of 85 to 95.
+
+Some songs that would fit the bill include Beyonce's "Texas Hold 'Em" (110 BPM), the Bee Gees' "Stayin' Alive" (104 BPM), Led Zeppelin's "Stairway to Heaven" (82 BPM), ABBA's "Dancing Queen" (101 BPM) and Taylor Swift's 10-minute version of "All Too Well" (94 BPM), among others.
+
+Here are examples of songs that wouldn't:
+
+Too slow:
+
+*   "Little Wing" by Jimi Hendrix (71 BPM)
+*   "Don't Worry Be Happy" by Bobby McFerrin (69 BPM)
+*   "Rehab" by Amy Winehouse (72 BPM)
+*   "I Will Always Love You" by Whitney Houston (68 BPM)
+*   "Imagine" by John Lennon (76 BPM)
+*   "Hello" by Adele (79 BPM)
+
+Too fast:
+
+*   "Here Comes the Sun" by the Beatles (129 BPM)
+*   "Cruel Summer" by Taylor Swift (170 BPM)
+*   "16 Carriages" by Beyonce (127 BPM)
+*   "Smells Like Teen Spirit" by Nirvana (117 BPM)
+*   "Toxic" by Britney Spears (143 BPM)
+*   "Hotel California" by the Eagles (147 BPM)

@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:29:16
+-->
+
+# Zap Energy achieves 37-million-degree temperatures in a compact device
+
+> 来源：[https://www.zapenergy.com//news/37-million-degree-temperatures-in-a-compact-device](https://www.zapenergy.com//news/37-million-degree-temperatures-in-a-compact-device)
+
+In the nine decades since humans first produced fusion reactions, only a few fusion technologies have demonstrated the ability to make a thermal fusion plasma with electron temperatures hotter than 10 million degrees Celsius, roughly the temperature of the core of the sun. Zap Energy’s unique approach, known as a [sheared-flow-stabilized Z pinch](https://www.zapenergy.com/how-it-works), has now joined those rarefied ranks, far exceeding this plasma temperature milestone in a device that is a fraction of the scale of its competitors.
+
+A [new research paper](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.132.155101), published this month in *Physical Review Letters*, details measurements made on Zap Energy’s Fusion Z-pinch Experiment (FuZE) of 1-3 keV plasma electron temperatures — roughly the equivalent of 11 to 37 million degrees Celsius (20 to 66 million degrees Fahrenheit). Due to the electrons’ ability to rapidly cool a plasma, this feat is a key hurdle for fusion systems and FuZE is the simplest, smallest and lowest cost device to have achieved it. Zap’s technology offers the potential for a much shorter and more practical path to a commercial product capable of producing abundant, on-demand, carbon-free energy to the globe.
+
+“These are meticulous, unequivocal measurements, yet made on a device of incredibly modest scale by traditional fusion standards,” describes Ben Levitt, VP of R&D at Zap. “We’ve still got a lot of work ahead of us, but our performance to date has advanced to a point that we can now stand shoulder to shoulder with some of the world’s pre-eminent fusion devices, but with great efficiency, and at a fraction of the complexity and cost.”
+
+FuZE was originally funded for research at the University of Washington by the U.S. Department of Energy’s Advanced Research Projects Agency – Energy (ARPA-E). The device moved to Zap Energy’s dedicated R&D facilities in 2020, soon after the company was founded. The results in this paper were collected in 2022 in a collaboration funded by ARPA-E with researchers from Lawrence Livermore National Laboratory (LLNL) and University of California, San Diego (UCSD), who spearheaded the development of the measurement system used for these results.
+
+“Over many decades of controlled-fusion research, only a handful of fusion concepts have reached 1-keV electron temperature,” notes Scott Hsu, Lead Fusion Coordinator at the DOE and former ARPA-E Program Director. “What this team has achieved here is remarkable and reinforces ARPA-E’s efforts to accelerate the development of commercial fusion energy.”
+
+[https://www.youtube.com/embed/tI2p21V7zWE](https://www.youtube.com/embed/tI2p21V7zWE)
+
+VIDEO
+
+###### *Zap Energy’s team explains the promise of sheared-flow-stabilized Z-pinch fusion.*
+
+#### Hot soup
+
+The first step to create the conditions for fusion is to generate a plasma – the energetic “fourth state of matter” where nuclei and electrons aren’t bound together into atoms but flow freely in a sub-atomic soup. Compressing and heating a plasma made of two forms of hydrogen called deuterium and tritium causes their nuclei to collide and fuse. When they do, fusion reactions give off roughly 10 million times more energy per ounce than burning the same amount of coal.
+
+Such fusion reactions have been observed in the lab for decades in relatively small quantities. However, the great challenge is to create more output fusion energy from those reactions than the input energy required to initiate them.
+
+Zap Energy’s technology is based on a simple plasma confinement scheme known as a [Z pinch](https://www.zapenergy.com/blog/history-of-the-z-pinch), where large electric currents are channeled through a thin filament of plasma. The conducting plasma generates its own electromagnetic fields, which both heats and compresses it. While Z-pinch fusion has been experimented with since the 1950’s, the approach has largely been stymied by how short-lived its plasmas are, a problem Zap has solved by applying a dynamic flow through the plasma, a process called [sheared-flow stabilization](https://www.zapenergy.com/blog/a-moving-stream-zap-energys-novel-approach-to-stabilizing-fusion).
+
+“The dynamics are a wonderful balancing act of plasma physics,” explains Levitt. “As we climb to higher and higher plasma currents, we optimize the sweet spot where the temperature, density and lifetime of the Z pinch align to form a stable, high-performance fusing plasma.”
+
+FuZE is the simplest, smallest and lowest cost device to have achieved fusion electron temperatures exceeding 30 million degrees, offering the potential for a more practical and cost-effective fusion energy system than other approaches.
+
+#### A healthy pinch
+
+Fusion researchers measure plasma temperatures in units of electron-volts and can measure the temperature of the plasma’s ions (nuclei) and electrons separately. Since the ions are more than a thousand-fold heavier than the electrons, the two components of the plasma can heat and cool at different rates. Since the ions are what ultimately need to be heated to fusion temperatures, plasma physicists often worry about situations where cold electrons limit ion heating, like ice cubes in a hot soup. The electrons in the FuZE plasma, however, were shown to be as hot as the ions, indicating that the plasma is in a healthy thermal equilibrium.
+
+Further, Zap’s detailed measurements show that electron temperatures and fusion neutron production peak simultaneously. As neutrons are a primary product of the fusing ions, these observations support the idea of a fusing plasma in thermal equilibrium.  
+
+“The results in this paper and further tests we’ve done since, all paint a good overall picture of a fusion plasma with room to scale toward energy gain,” says Uri Shumlak, co-founder and Chief Scientist at Zap Energy. “Working at higher currents we’re still seeing sheared flow extending the Z-pinch lifetimes long enough to produce very high temperatures and the associated neutron yields we’d predict from modeling.”
+
+#### Gold standard measurements
+
+The temperatures reported in the paper were measured by a team of [outside collaborators](https://www.llnl.gov/article/50186/llnl-develops-portable-thomson-scattering-diagnostic-support-arpa-es-fusion-energy-ventures) from LLNL and UCSD skilled in a plasma measurement technique called Thomson scattering. To perform Thomson scattering, scientists use a very bright, very fast laser to fire a pulse of green light into the plasma, which scatters off of the electrons and provides information about their temperature and density.
+
+“We’re especially grateful to the collaboration team for the work they did to help gather this data and refine a critical measurement technique for us,” notes Levitt. Informed by this collaboration’s measurements on hundreds of plasmas, Zap now routinely gathers Thomson scattering data on FuZE-Q, its latest-generation device.
+
+*Temperatures are measured by firing a very fast, very bright pulse of green laser light into the plasma, which scatters off of the electrons and provides information about their temperature and density.*
+
+#### No external magnets, compression or heating
+
+Unlike the two mainstream fusion approaches that have been the focus of the majority of fusion research in recent decades, Zap’s technology does not require expensive and complex superconducting magnets or powerful lasers. “Zap tech is orders of magnitude less expensive and quicker to build than other devices, allowing us to iterate rapidly and produce the cheapest thermal fusion neutrons out there. Compelling innovation economics are vital to launching a commercial fusion product on a timescale that matters,” said Benj Conway, CEO and co-founder of Zap.
+
+In 2022, the same time these results from FuZE were collected, Zap [commissioned its next-generation device FuZE-Q](https://www.zapenergy.com/news/first-plasmas-fuzeq-series-c). While early results from FuZE-Q are still forthcoming, the device has a power bank with ten times the stored energy as FuZE and capacity to scale to much higher temperatures and densities. Meanwhile, parallel development of power plant systems is also underway.
+
+“We started Zap knowing we had a technology that was unique and outside the status quo, so definitively crossing this high electron temperature mark and seeing these results in a premier physics journal is major validation,” says Conway. “We’ve certainly got big challenges ahead, but we have all the ingredients to solve them.”
+
+***About Zap Energy***
+
+*Zap Energy is building a low-cost, compact and scalable fusion energy platform that conﬁnes and compresses plasma without the need for expensive and complex magnetic coils. Zap’s sheared-flow-stabilized Z-pinch technology provides compelling fusion economics and requires orders of magnitude less capital than conventional approaches. Zap Energy has over one hundred team members in two facilities near Seattle and is backed by leading ﬁnancial and strategic investors.*

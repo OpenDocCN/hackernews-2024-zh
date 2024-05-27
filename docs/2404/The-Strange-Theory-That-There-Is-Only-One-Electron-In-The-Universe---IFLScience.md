@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:18:03
+-->
+
+# The Strange Theory That There Is Only One Electron In The Universe | IFLScience
+
+> 来源：[https://www.iflscience.com/the-strange-theory-that-there-is-only-one-electron-in-the-universe-73818](https://www.iflscience.com/the-strange-theory-that-there-is-only-one-electron-in-the-universe-73818)
+
+It's estimated that there are around 10^(82) atoms in the observable universe. With each element in the periodic table containing at least one electron, you can therefore safely assume there are at least 10,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000 electrons in the observable universe as well.
+
+Or can you? According to a theory proposed by theoretical physicist John Wheeler, who outlined his thoughts in a conversation with fellow physicist [Richard Feynman](https://www.iflscience.com/feynmans-reversed-sprinkler-puzzle-finally-has-a-solution-72685), there is only one electron – it just looks like there are a lot more because it is moving forward and backward in time. 
+
+As odd as this sounds, it is itself a response to the incredible weirdness of electrons. Electrons, like other elementary particles, are indistinguishable from each other. They have the same negative charge, the same mass, and the [same spin](https://www.theguardian.com/science/life-and-physics/2011/mar/17/1#:~:text=In%20contrast%2C%20the%20mass%20of,it%20has%20this%20particular%20mass.). Swap one electron for another, and you [won't be able to tell](https://phys.libretexts.org/Bookshelves/Quantum_Mechanics/Advanced_Quantum_Mechanics_(Kok)/12%3A_Multiple_Particle_States/12.1%3A_Indistinguishable_Particles). 
+
+Its antiparticle – the positron – are also indistinguishable from each other, identical in their charge, mass, and spin. Strangely, they are identical to electrons, aside from their positive charge. It was these factors that led Wheeler to suggest that electrons and positrons were actually just one particle, negatively charged as it goes forward in time, and positively charged as it goes backward in time. 
+
+"I received a telephone call one day at the graduate college at Princeton from Professor Wheeler, in which he said, 'Feynman, I know why all electrons have the same charge and the same mass'," Feynman said in his 1965 [Nobel Lecture](https://www.nobelprize.org/prizes/physics/1965/feynman/lecture/).
+
+"'Because, they are all the same electron!' And, then he explained on the telephone, 'suppose that the world lines which we were ordinarily considering before in time and space – instead of only going up in time were a tremendous knot, and then, when we cut through the knot, by the plane corresponding to a fixed time, we would see many, many world lines and that would represent many electrons, except for one thing. If in one section this is an ordinary electron world line, in the section in which it reversed itself and is coming back from the future we have the wrong sign to the proper time – to the proper four velocities – and that’s equivalent to changing the sign of the charge, and, therefore, that part of a path would act like a positron'.”
+
+That would make for an old particle, having bounced back and forth through time a truly incomprehensible number of times. While this would be a fun way to explain why electrons and positrons share properties, it is incredibly unlikely to be correct. As Feynman points out, there are not nearly as many positrons as electrons in the universe, and there is [more](https://theconversation.com/cern-discovery-sheds-light-on-the-great-mystery-of-why-the-universe-has-less-antimatter-than-matter-147226#:~:text=Scientists%20believe%20that%20in%20the,preference%20to%20matter%20over%20antimatter.) matter than antimatter. If positrons and electrons were the same elementary particle going forward and backward in time, you'd expect there to be an even number.
+
+"Well, maybe [the missing positrons] are hidden in the protons or something," was the explanation that Wheeler offered, pretty unconvincingly. Though a thought experiment, and likely not [supposed to be taken seriously](https://interestingengineering.com/science/could-every-electron-in-the-universe-be-the-same-one), the phone call had a lasting impact on Feynman, writing a [paper](https://www.taylorfrancis.com/chapters/edit/10.1201/9780429493249-10/theory-positrons-feynman) on how positrons can be described as if they are electrons moving backward in time.
+
+"I did not take the idea that all the electrons were the same one from him as seriously as I took the observation that positrons could simply be represented as electrons going from the future to the past in a back section of their world lines," he added. "That, I stole!"

@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:25:39
+-->
+
+# 'Uncharted territory': El Niño to flip to La Niña in what could be the hottest year on record | Live Science
+
+> 来源：[https://www.livescience.com/planet-earth/weather/uncharted-territory-el-nino-to-flip-to-la-nina-in-what-could-be-the-hottest-year-on-record](https://www.livescience.com/planet-earth/weather/uncharted-territory-el-nino-to-flip-to-la-nina-in-what-could-be-the-hottest-year-on-record)
+
+El Niño is likely to give way soon, ushering in a quick switch to its opposite atmospheric and ocean pattern, La Niña. 
+
+For the U.S., this climatological flip-flop will likely mean a greater risk of major hurricanes in the Atlantic as well as areas of drier-than-usual weather in the southern portions of the country. Globally, La Niña usually leads to declining temperatures, but the lag in when the effects take place means that 2024 will likely still be a top-five year for temperature in climate history, said [Tom Di Liberto](https://www.tomdiliberto.com/), a climate scientist at the National Oceanic and Atmospheric Administration (NOAA). 
+
+"All signs suggest that 2024 is going to be another warm year," Di Liberto told Live Science. 
+
+[El Niño and La Niña](https://www.livescience.com/tag/el-nino-la-nina) describe opposing patterns in the trade winds that encircle the equator, blowing west from South America toward Asia. In a neutral year, when neither pattern is in play, these trade winds push warm water westward, which drives cool ocean water up from the depths to replace it. 
+
+When [El Niño](https://www.livescience.com/planet-earth/weather/what-is-el-nino) is in play, the trade winds weaken, so the eastern Pacific, along the west coast of North and South America, stays warmer. The effect, according to NOAA, is that the jet stream moves southward, drying Canada and the northern U.S. but bringing moisture to the southern portions of the U.S. 
+
+**Related:** [**Why don't hurricanes form at the equator?**](https://www.livescience.com/why-dont-hurricanes-form-at-the-equator)
+
+In a La Niña year, the trade winds strengthen, pushing warm water toward Asia and increasing the upwelling of cold water off the Pacific coast of the Americas. The jet stream moves northward, drying the Southwest and Southeast and bringing wetter weather to the Pacific Northwest and the Great Lakes. 
+
+Get the world’s most fascinating discoveries delivered straight to your inbox.
+
+The El Niño pattern has officially been active [since June 2023](https://www.weather.gov/news/230706-ElNino), but NOAA's Climate Prediction Center now reports that the pattern is weakening, with an 85% chance of a switch to neutral conditions before June. La Niña is then expected to roar back, with a 60% chance of La Niña conditions between June and August, the [National Centers for Environmental Prediction](https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml) reports.
+
+"When it comes to El Niños of this strength, moderate to strong, it"s not uncommon to see these events end rapidly and then shift into La Niña rapidly," Di Liberto said. 
+
+Ocean measurements currently show warm surface temperatures in the Pacific, Di Liberto said, but below-average cold water beneath. Once that cold water hits the surface, the switch will happen quickly, he said. 
+
+The flip from El Niño to La Niña raises the risk of a strong upcoming hurricane season, said [Alex DesRosiers](https://tropical.colostate.edu/member_research/desrosiers.html), a doctoral candidate in atmospheric science at Colorado State University. During El Niño, rising heat from the eastern Pacific flows into the upper atmosphere, leading to stronger winds at high altitudes. This creates vertical wind shear — a difference in wind speed and direction at the surface versus higher in the atmosphere. And vertical wind shear, DesRosiers told Live Science, "can really act to tear apart hurricanes as they try to form." 
+
+During La Niña, the upper atmosphere winds calm, reducing wind shear. This allows the convection of warm, moist air from the ocean surface to form big storms. 
+
+"As we move into La Niña, the atmosphere becomes more supportive of allowing storms to bubble up and intensify," DesRosiers said. 
+
+As a result of the expected La Niña and current extremely warm Atlantic Ocean surface temperatures, CSU's Tropical Weather & Climate Research team is currently [predicting a very active Atlantic hurricane season](https://tropical.colostate.edu/forecasting.html), with a forecast of 23 named storms (versus the average of 14.4) and five hurricanes of Category 3 or higher (versus the average of 3.2). This year may look similar to 2010 and 2020, both of which were busy storm seasons, although it's not guaranteed that strong storms will impact land, DesRosiers said. 
+
+All of these climatic patterns are taking place against a backdrop of rising ocean and surface temperatures. So, while La Niña usually brings cooler-than-average temperatures to the northern U.S., this region could still experience a scorching summer due to the background effects of [climate change](https://www.livescience.com/planet-earth/climate-change), Di Liberto said. 
+
+Similarly, although 2023 was an El Niño year, which should suppress hurricanes, it saw an above-average hurricane season, DesRosiers said. This busy storm season might be due, in part, to 2023 being the warmest year on record. 
+
+"With an Atlantic that is this warm," he said, "we're kind of in uncharted territory."

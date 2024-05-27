@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:16:08
+-->
+
+# Mickey, Minnie, Donald and Goofy file for union vote at Disneyland | CNN Business
+
+> 来源：[https://www.cnn.com/2024/04/17/business/disneyland-union-vote/index.html](https://www.cnn.com/2024/04/17/business/disneyland-union-vote/index.html)
+
+Anaheim, California CNN  — 
+
+Disneyland employees who perform as many of the theme park’s beloved characters have filed to have a vote on whether to join the Actors’ Equity Association, which represents live performers all over the country, from actors on Broadway to [strippers](https://www.cnn.com/2023/05/16/business/strippers-union/index.html) in Los Angeles.
+
+The group had announced a union organizing effort in February, but very often such campaigns fall short of filing to hold a vote. But the union announced Wednesday that it has filed cards signed by more than two-thirds of the 1,700 employees, seeking to have the National Labor Relations Board conduct an election.
+
+“The cast members who bring the characters and parades to life have been non-union since Disneyland Resort opened in the 1950s and have watched other workers in the park unionize all around them,” said Equity President Kate Shindle, using the “cast members” terms used at Disney to refer to its employees.
+
+Union organizing efforts have picked up in the last year, especially in the wake of a number of high-profile [contract wins by unions](https://www.cnn.com/2023/11/21/business/big-paydays-union-members/index.html) that provided union members with large pay raises. Included in those wins were contracts covering 32,000 hourly workers at Disney World in Orlando, Florida, which gave them raises equal to $3 an hour by the end of last year and raises of about 37% over their previous hourly rate by 2026.
+
+There are more than 21,000 Disneyland “cast member” employees, who are represented by more than a dozen unions. Those unionized jobs include everything from retail and food service workers to security guards, hair and make-up artists and pyrotechnic workers. But it doesn’t include the performers who dress up as characters such as Mickey and Minnie Mouse, Donald Duck or Goofy and interact with visitors. Workers performing in the same roles are unionized at some other Disney theme parks, such as Disney World.
+
+“These performers, and the hosts, leads and trainers who create magic alongside them, know that their lives — as well as the guest experience at Disneyland — can be improved through collective bargaining,” she said. “They deserve a voice in their workplace, and meaningful negotiations over wages, benefits and working conditions.”
+
+Disney did not have an immediate comment on the filing. But asked earlier in the week about the organizing campaign, a company spokesperson said: “We support our cast members’ right to a confidential vote that recognizes their individual choices.”
+
+The perfomers in the proposed bargaining unit just saw their pay raised to $24.15 an hour from $20 an hour in January, a 20.8% raise. Those raises came after the organizing effort was already underway, even if it had not yet been publicly announced.
+
+But Disney’s labor market in the state is shifting, as [California fast food workers](https://www.cnn.com/2024/04/01/business/california-fast-food-minimum-wage/index.html) just had their minimum wage increased to [$20 an hour](https://www.cnn.com/2024/04/11/business/california-minimum-wage-fast-food-kiosks/index.html) under state law, so the previous wage levels were likely no longer competitive.
+
+Several of the employees who spoke with CNN ahead of Wednesday’s announcement said that even the new higher pay level is still not a livable wage in Southern California, given that many of the workers work only part time.
+
+Mai Vo, who is what Disney calls a “look-alike” performer, someone who plays roles with her face showing, like Disney “Princesses,” is currently living at her mother’s home near Disneyland. Vo said it’s difficult for cast members to afford living on their own, and many have roommates.
+
+Zach Elefante, a parade performer, said many performers can lose paid hours if bad weather emerges, with decisions on cancellations often made with just minutes before showtime.
+
+But Elefante took pains to say the workers are not fundamentally at odds with their employer.
+
+Elefante said they “want to be able to work with the resort to let people not be in fear of paying their rent because it started raining.”
+
+Elefante and other Disney cast members say they have a deep, emotional connection to the shows they perform in, knowing that they get to make a story come to life in front of people young and old. Despite that, he said they feel disposable — and not listened to.
+
+Union supporters also speak about health and safety concerns, such as concerns about the designs of the heavy costumes many wear, and about interacting with the parks’ visitors in the wake of the pandemic.
+
+Vo said she remembers being troubled by a co-worker struggling for months with foot pain due to a costume’s shoes, which are often shared among employees.
+
+“Maybe things weren’t perfect at the Happiest Place on Earth, because it felt like my colleagues in the department were unhappy, and it didn’t make sense to me,” she said.
+
+Elefante also described two colleagues who raised issues with the ergonomics of a new, 120-pound costume, but were told there would be no changes. He said performers ended up performing in that costume for five or six years before the old version of the costume was brought back.
+
+But Elefante said that one of the main goals was simply for the people who work at Disneyland to have some semblance of influence on the Magic Kingdom.
+
+“There’s lots of perks that come along with [unionizing] and lots of benefits that people want to fight for. But if you got rid of all of that and only kept the fact that we are trying to have a voice at the table, that would be worth this entire process,” he said.
+
+Asked about the concerns raised by Elefante and Vo, a Disney spokesperson pointed to company policies that said schedule changes are based on the safety of visitors and employees, such as the case of inclement weather, and that no notice is required when that operational necessity is applied. She also said all cast members, whether or not they are represented by a union, have multiple methods to communicate safety concerns, including contacting park leadership, safety meetings, roundtables or using an anonymous hotline.
+
+But Elefante and Vo say they believe the majority of the group is ready to vote for the union due to their concerns. The two-thirds majority signing cards is not a guarantee the union will win a vote — support often decreases as management campaigns against the union in meetings with employees. But that level of support suggests it has a good chance of passing.
+
+Vo hopes that communication between employees and managers can improve, and that pay rates can increase. She said union representation would embody the same principles she espouses as her characters when talking to children in the parks.
+
+“Change can be scary. This whole thing is scary,” she said. “But if I’m brave enough and courageous enough to do it, I’m going to do it.”

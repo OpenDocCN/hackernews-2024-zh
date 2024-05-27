@@ -1,0 +1,50 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:08:06
+-->
+
+# U.S. CEOs now believe hybrid working is here to stay a year after most expected full-time return to office: KPMG study | Fortune
+
+> 来源：[https://fortune.com/2024/04/12/kpmg-study-us-ceos-accept-hybrid-working-employee-return-to-office/](https://fortune.com/2024/04/12/kpmg-study-us-ceos-accept-hybrid-working-employee-return-to-office/)
+
+Good news for those hoping to cling on to working from home: After a year of cracking down with rigid return-to-office mandates—and instilling fear in those who upheaved their life during the pandemic—defeated CEOs are now finally accepting that hybrid working is here to stay. 
+
+[KPMG](https://fortune.com/company/kpmg/) surveyed U.S. CEOs of companies turning over at least $500 million and found that [just one-third expect a full return to the office](https://kpmg.com/kpmg-us/content/dam/kpmg/pdf/2024/KPMG-2024-US-CEO-Outlook-Pulse-Survey.pdf) in the next three years.
+
+So it’s official: Leaders who believe that office workers will be back at their desks five days a week in the near future are now in the small minority. 
+
+It’s a complete 360 on their stance last year, when 62% of CEOs surveyed predicted that [working from home would end by 2026.](https://fortune.com/2023/10/05/ceo-rto-kpmg-research-return-to-work-full-time-5-days/)
+
+At the time, 90% of CEOs even admitted that they were so steadfast on summoning staff back to their vertical towers that they were sweetening the pot with salary raises, promotions, and favorable assignments to those who showed face more.
+
+But now, bosses are backtracking: Nearly half of CEOs have concluded that the future of work is hybrid—up from 34% last year. 
+
+What’s more, a sizable chunk of CEOs aren’t just embracing working from home on Fridays, they’re going one step further and ditching the workday altogether.
+
+KPMG found that a third of CEOs are exploring the feasibility of a four-day week at their firm.
+
+## Why the change of heart?
+
+Many CEOs have dedicated the last year to shaking off pandemic-era habits of working from home and calling staff back to the office, but their mandates have been met with resistance.
+
+Deutsche Bank’s decision to outright [ban staff from working at home on a Friday](https://fortune.com/2024/02/22/four-day-weekends-from-home-over-fridays-increasingly-just-another-office-day-data/) and the following Monday has not been taken lightly by staff—a large number of its 90,000-strong workforce have reportedly [started posting critical remarks](https://fortune.com/europe/2024/02/27/deutsche-bank-remote-work-return-to-office-enormous-resistance/?utm_source=search&utm_medium=suggested_search&utm_campaign=search_link_clicks) on the company’s internal messaging board to make their distaste for the new set-up known.
+
+[Amazon](https://fortune.com/company/amazon-com/) is perhaps the most documented example of how ugly the RTO battle can get: Around 30,000 employees [signed a petition](https://www.businessinsider.com/amazons-hr-boss-rejects-employee-remote-work-petition-2023-3) protesting the company’s in-office mandate, and more than 1,800 [pledged to walk out](https://fortune.com/2023/05/31/amazon-headquarters-workers-walkout-layoffs-return-to-office-mandate/?utm_source=search&utm_medium=suggested_search&utm_campaign=search_link_clicks) from their jobs to take a stand.
+
+[Research has echoed](https://fortune.com/europe/2023/08/01/research-damaging-results-mandated-return-to-office-worse-than-we-thought-rto-remote-work-careers-leadership-gleb-tsipursky/) that nearly half of companies with return-to-office mandates witnessed a higher level of employee attrition than they had anticipated, and 29% of companies enforcing office returns are struggling with recruitment.
+
+It perhaps explains why, as KPMG’s data shows, CEOs are now waking up to the fact that the future of work is probably the happy medium of hybrid.
+
+“CEOs have realized that forcing people back into the office can only go on for so long,” Amrit Sandhar, CEO of &Evolve an employee engagement consultancy tells *Fortune.*
+
+“With Gen Z over the next few years making up, in some cases the majority of the workforce, how long can CEOs insist people come into the office, when people are choosing to work remotely?
+
+“We are at the threshold of a new dawn and trying to hold on to past mindsets will have a direct impact on the caliber of people you attract going forward.”
+
+Lewis Maleh, CEO of the global executive recruitment agency Bentley Lewis, has already witnessed a U-turn to more flexible job ads.
+
+“I’ve noticed a definite rise in job postings advertising remote or hybrid work,”  Maleh tells *Fortune*.
+
+“We haven’t worked on any searches that require the candidate to be in the office five days per week in the past six months globally.”
+
+“The shift demonstrates the cementing of hybrid work models, as CEOs increasingly recognize flexibility as a key factor in attracting and retaining top talent.”

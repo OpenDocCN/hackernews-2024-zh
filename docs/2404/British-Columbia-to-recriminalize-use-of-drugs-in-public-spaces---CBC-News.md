@@ -1,0 +1,138 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:32:57
+-->
+
+# British Columbia to recriminalize use of drugs in public spaces | CBC News
+
+> 来源：[https://www.cbc.ca/news/canada/british-columbia/david-eby-public-drug-use-1.7186245](https://www.cbc.ca/news/canada/british-columbia/david-eby-public-drug-use-1.7186245)
+
+After weeks of troubling stories about problematic street drug use in hospitals, parks and at bus stops, the province of British Columbia announced plans to recriminalize the use of drugs in public places Friday — radically altering a pilot program aimed at addressing the toxic drug crisis.
+
+In a statement, Premier David Eby insisted that his government is "caring and compassionate for those struggling with addiction," but that patience for disorder only goes so far.
+
+"Keeping people safe is our highest priority," said Eby.
+
+"We're taking action to make sure police have the tools they need to ensure safe and comfortable communities for everyone as we expand treatment options so people can stay alive and get better," he said.
+
+With an election looming, Eby's NDP government has been bombarded with a string of headlines about concerns with decriminalization — a pilot program introduced in January 2023 allowed adult drug users in B.C. to carry up to 2.5 grams of drugs for personal use without facing criminal charges.
+
+The program was possible through an exemption granted by Health Canada under the Controlled Drugs and Substances Act which allowed for open drug use in some public spaces.
+
+Eby's political opponents have seized on concerns from hospital workers and patients about [illegal drug use and trafficking in the hallways of hospitals](https://www.cbc.ca/news/canada/british-columbia/st-pauls-hospital-drug-use-1.7168786).
+
+And last week, Vancouver Police Deputy Chief Fiona Wilson [testified at a House of Commons health committee hearing](https://www.cbc.ca/news/canada/british-columbia/bc-drug-decriminalization-pilot-scrutiny-1.7177661) about the struggles police are having responding to public complaints involving disturbances related to public drug consumption.
+
+***WATCH* | *B.C. government backtracks on drug use in public spaces over safety concerns:*** ### B.C. recriminalizes drug use in public spaces
+
+British Columbia Premier David Eby has announced that drug use in public spaces will be recriminalized over public safety concerns following a wave of troubling accounts of street drugs being taken in hospitals, parks and transit stops.
+
+In a release, the province says it is "working with Health Canada to urgently change the decriminalization policy to stop drug use in public and has requested an amendment to its … exemption to exclude all public places."
+
+"When police are called to a scene where illegal and dangerous drug use is taking place, they will have the ability to compel the person to leave the area, seize the drugs when necessary or arrest the person, if required," the province said in a statement.
+
+"This change would not recriminalize drug possession in a private residence or place where someone is legally sheltering or at overdose prevention sites and drug checking locations."
+
+B.C. Health Minister Adrian Dix said the province is also introducing specific measures aimed at curbing illicit drug use in health care facilities — including the prohibition of street drug possession or use.
+
+"We are taking immediate action to make hospitals safer and ensuring policies are consistent and strictly enforced through additional security, public communication and staff supports," Dix said in a statement.
+
+"The action plan launching today will improve how patients with addictions are supported while they need hospital care, while preventing others from being exposed to the secondhand effects of illicit drug use."
+
+The province said it is working with police to come up with guidance to ensure that people who merely possess drugs are not arrested unless they're threatening public safety or causing a disturbance.
+
+VPD Deputy Chief Constable Fiona Wilson told a parliamentary committee on health the limit on police powers to address the public consumption of illicit drugs is affecting public safety. (Ben Nelms/CBC)
+
+Vancouver Police Deputy Chief Fiona Wilson said at the announcement that decriminalization has to be part of a broader strategy to address the province's drug crisis.
+
+"We've heard loud and clear from the front-line police officers who continue to see the unintended ramifications that unchecked public drug use has on the safety and well-being of neighbourhoods," she said.
+
+"And the feedback has been unequivocal — public consumption is a significant issue that needs to be addressed and major changes are required."
+
+***LISTEN | Political panel discusses the pushback against safe supply pilot: *** On The Island17:28On The Island Political Panel for April 26 2024
+
+<p>Gregor Craigie convened the political panel.</p>
+
+## 14,000 lives lost
+
+The decriminalization pilot was introduced in January 2023 and allows adult drug users in B.C. to carry up to 2.5 grams of opioids, cocaine, methamphetamine and ecstasy for personal use without facing criminal charges.
+
+Relying on an exemption granted by Health Canada under the Controlled Drugs and Substances Act, it also allows for open drug use in some public spaces.
+
+The pilot is part of a government response to the public health emergency declared eight years ago due to a rise in deaths from toxic, illicit drugs. 
+
+More than 14,000 people have died since the emergency was declared in 2016, largely due to the opioid fentanyl.
+
+More than 14,000 people have died of toxic, illicit drugs in B.C. since a public health emergency was declared in 2016\. (Jean-Marc Poirier/Radio-Canada)
+
+By reducing stigma associated with drug use, officials say they hope to provide better access to lifesaving care along with a less deadly safe supply.
+
+But it has come with criticism about a lack of guardrails. 
+
+On April 15, Vancouver Police Deputy Chief Fiona Wilson testified at a House of Commons health committee hearing about how the pilot is limiting police response to problematic public drug use, including inside hospitals and at bus stops.
+
+***WATCH | B.C. Premier says compassion for drug users must be balanced against public safety*** ### 'We still have expectations around safety': B.C. bans drug use in public spaces
+
+B.C. Premier David Eby announced Friday plans to recriminalize drug use in public spaces. He says while it is still important to help drug users, open drug use around kids and other people is not acceptable.
+
+"In the wake of decriminalization, there are many of those locations where we have absolutely no authority to address that problematic drug use, because the person appears to be in possession of less than 2.5 grams," Wilson said. 
+
+"So, if you have someone who is with their family at the beach, and there's a person next to them smoking crack cocaine, it's not a police matter."
+
+## Courts previously stopped legislation
+
+Friday's announcement is the government's latest attempt at curbing public drug use.
+
+Last October, it tabled [new legislation in an attempt to ban illegal drug use in many public places](https://www.cbc.ca/news/canada/british-columbia/bc-drug-use-changes-1.6987330).
+
+The bill would have banned the use of illicit drugs within six metres of all building entrances and bus stops; within 15 metres of playgrounds, spray and wading pools, and skate parks; and in parks, beaches and sports fields.
+
+But in December, B.C. Supreme Court Chief Justice Christopher Hinkson [ordered the law paused until March 31, ruling it would likely result in more deaths](https://www.cbc.ca/news/canada/british-columbia/bc-supreme-court-pauses-province-s-public-drug-consumption-law-1.7071225), displacement and criminalization of people who use drugs.
+
+"Irreparable harm will be caused if the act comes into force," Hinkson wrote in his ruling.
+
+The provincial government appealed the ruling, but it was [upheld by the B.C. Court of Appeal](https://www.cbc.ca/news/canada/british-columbia/bc-public-drug-consumption-law-injunction-pause-appeal-rejected-1.7124864).
+
+***WATCH | The debate over decriminalization in B.C.:** * ### B.C.'s debate over drug decriminalization | Canada Tonight
+
+One year into a three-year drug decriminalization pilot, B.C. Premier David Eby says he shares public safety concerns that have been raised by police and city councillors from multiple municipalities. Jess Lamb, co-founder of the East Kootenay Network of People Who Use Drugs, and Alexa Loo, a city councillor in Richmond, B.C., give their thoughts on whether the pilot should continue.
+
+Eby says he expects the changes to go through this time because he is asking them to come from Health Canada.
+
+"The resolution of that court issue is potentially more than a year down the road and we cannot afford to wait. We need to act now," Eby said. 
+
+"I have talked to the prime minister about this. He assures me that the federal government will provide full support to ensure that police have the tools that they need."
+
+Eby said it's possible the government could face another legal challenge in response to these changes, but he thinks the risk is low.
+
+"In order for it to be successful, the court would have to find that the entire Controlled Drugs and Substances Act at the federal level was unconstitutional," he said.
+
+Eby said criminalizing drug use costs lives and taxpayer money while not making the public safer, but "police do need the tools to address extraordinary circumstances where people are compromising public safety through their drug use."
+
+## Election looms
+
+Vancouver Mayor Ken Sim said in a statement that he welcomed the change. 
+
+"Today's changes will make public drug use effectively illegal and provide the VPD with actual tools to maintain public safety. This change aligns with the critical work we have already undertaken with the federal and provincial governments to address open drug use in public areas, especially around playgrounds, splash pads, beaches, and sports fields."
+
+The premier said the issue has been intensely politicized as the province heads into an election.
+
+British Columbians go to the polls on Oct. 19. 
+
+Opposition B.C. United Leader Kevin Falcon and his critic for mental health and addiction Elenore Sturko issued a joint statement calling the government's move a "desperate attempt to salvage a failing policy."
+
+"Instead of upholding their commitments to scrap the decriminalization pilot when it clearly wasn't meeting its goals, David Eby and the NDP have stubbornly persisted with this dangerous policy," the statement says.
+
+"From its inception, the decriminalization experiment has failed to connect drug users with any necessary treatment or recovery services."
+
+B.C. Conservative Leader John Rustad said in an interview that "decriminalization has been an utter failure in this province."
+
+"This should have never happened in the province of British Columbia," he said.
+
+In a statement posted online, B.C. Green Party Leader Sonia Furstenau expressed concerns about the increase in arrests that could be associated with the policy, writing, "Police discretion is especially likely to stigmatize Indigenous and racialized British Columbians."
+
+"This issue is intrinsically linked to the housing and affordability crisis. Rolling back decriminalization isn't going to fix that. No jurisdiction in the world has arrested their way out of this problem, and we won't either."
+
+***WATCH | Full press conference on drug recriminalization: *** ### B.C. to recriminalize drug use in public spaces
+
+B.C. Premier David Eby, Vancouver Police Department Deputy Chief Constable Fiona Wilson and B.C. Health Minister Adrian Dix announce and answer questions about plans to recriminalize drug use in public spaces.

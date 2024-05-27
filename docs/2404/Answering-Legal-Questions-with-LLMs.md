@@ -1,0 +1,123 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:38:32
+-->
+
+# Answering Legal Questions with LLMs
+
+> 来源：[https://hugodutka.com/posts/answering-legal-questions-with-llms/](https://hugodutka.com/posts/answering-legal-questions-with-llms/)
+
+If you asked a lawyer whether ChatGPT could do his job, he would laugh you out of the room. The tool is often useful, but can’t handle legal questions end to end. It makes up sources, its reasoning can be flawed, and it may overlook key aspects of the law.
+
+We decided to tackle this problem at [Hotseat](https://hotseatai.com). After iterating multiple times, implementing advanced agentic workflows, and testing with dozens of lawyers, we’re certain that the product has glaring limitations and it won’t replace any jobs soon. However, we figured out an unintuitive, LLM-only method of doing RAG, and we leveraged it to make LLMs answer complex questions about select EU regulations.
+
+In this post, you’re going to learn how to implement a system that can perform advanced reasoning over very long documents.
+
+## The Problem
+
+A great answer to a legal question must at least:
+
+*   Be based on sound reasoning;
+*   Quote the source text of the law to be verifiable; and
+*   Take into account all relevant parts of the law.
+
+To meet these requirements, we had to put the relevant documents in the prompt - we couldn’t just hope that the LLM was trained on all of the law. We also limited our scope to a single regulation. It made the problem approachable, and we could scale later.
+
+In our first attempts, we^([1](#user-content-fn-we)) fed the entire 226 pages of the [EU’s AI Act](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206) into GPT-4 and asked a sample question:
+
+> Does the deployment of an LLM acting as a proxy to optimize SQL queries fall within the regulatory scope of the EU’s AI Act?
+
+And we found that GPT-4 couldn’t give us a good answer.
+
+A lawyer would start by asking some helper questions:
+
+1.  Does the proxy meet the definition of an AI system?
+2.  Can the proxy be classified as a high-risk AI system?
+3.  Will the proxy process personal or sensitive data?
+
+But in a single response, GPT-4 couldn’t both break down the question and answer it. The former task requires a high-level analysis of the document, and the latter - low-level focus on details.
+
+## The Solution
+
+We split answering the question into subtasks.
+
+The rough idea is to:
+
+1.  Make GPT-4 figure out which subquestions it should ask; then
+2.  Answer each subquestion independently; and
+3.  Aggregate the findings into a single response.
+
+### Breaking Down the Question
+
+To answer a legal question based on a single regulation, GPT-4 must first find the relevant sections. It requires high-level reasoning across the entire document.
+
+We discovered that GPT-4 can complete this task well, provided you prompt it carefully. All the standard prompt engineering guidelines apply. Crucial were:
+
+*   **Structuring the document with Markdown.** Without it, reasoning over 80,000 tokens wouldn’t work.
+*   **Roleplaying.** We framed the task as a senior lawyer planning out work for a junior lawyer.
+*   [**Tokens to “think.”**](https://platform.openai.com/docs/guides/prompt-engineering/give-the-model-time-to-think) We gave the model space to produce internal notes about the task - like how it understands the user’s question - before asking for the plan itself.
+
+We designed the output so it corresponds to a list of subquestions required to answer the main question. Each point is self-contained; it includes specific instructions and references to sections of the document. If a lawyer looked at any single step, they could carry it out themselves.
+
+Here’s what GPT-4 gave us:
+
+#### Plan for the Junior Lawyer
+
+1.  **Identify Relevant High-Risk Categories**:
+    *   Analyze **Annex III** for high-risk AI systems to see if the language model fits under any listed categories.
+2.  **Examine Requirements for High-Risk AI Systems**:
+    *   Look at **Articles 8-15** to understand general requirements for high-risk AI systems.
+3.  …
+
+*(The other 7 points truncated for brevity. Full plan [here](https://gist.github.com/hugodutka/9ba6cf3e172f38b288dc1705ecde9967), and the prompt [here](https://gist.github.com/hugodutka/6ef19e197feec9e4ce42c3b6994a919d).)*
+
+The quality of the plans still surprises me. When we analyzed them for questions from actual lawyers, we found that GPT-4 generally covers all necessary subquestions.
+
+### Answering Subquestions
+
+The plan is executed by a simple AI agent. In fact, just a single conversation that GPT-4 has with itself.
+
+GPT-4 is prompted with instructions to assume the role of a “master agent” tasked with answering a legal question based on the pre-generated plan. It can delegate subquestions to “junior lawyers” - in fact, separate GPT-4 chats - by calling [functions](https://platform.openai.com/docs/guides/function-calling).
+
+Here’s an example function call:
+
+```
+AnnexAnalysis({
+ task: "Analyze Annex III for high-risk AI systems to see if the language model fits under any listed categories.",
+ annexes: ["Annex III"],
+ legal_question:
+ "Does the deployment of an LLM acting as a proxy to optimize SQL queries fall within the regulatory scope of the EU's AI Act?",
+}); 
+```
+
+We convert such calls into prompts that contain the task, the question, the specified parts of the regulation, and instructions to carry out the task. Whatever GPT-4 outputs is fed back into the master chat as the junior lawyer’s answer.
+
+We preprocess the regulation so that when a call contains a reference to “Annex III,” we know which pages to put into the “junior lawyer’s” prompt. This is the LLM-based RAG I mentioned in the introduction.
+
+Compared to analyzing the entire AI Act, GPT-4’s reasoning is massively boosted when it’s given a clear task and a short context. With a 5k-token-long prompt, you can even usually trust the LLM to correctly quote the source, which is useful to a user verifying the final answer.
+
+We implemented the master AI agent as a while loop. It goes on as long as GPT-4 calls functions, going through the plan step by step. Eventually, after all subquestions are answered, it outputs the final answer in a format we can detect with a regex. We then break the loop and return the answer to the user.
+
+You can see the final answer [here](https://hotseatai.com/ans/does-the-development-and-deployment-of-q_2azysfQoPxFksVXKW8TYw2TGT79#legal-trace), in the “Legal trace” section.
+
+Here’s [the master prompt](https://gist.github.com/hugodutka/58ccf2d104c0fe9a8f7bde585d304d59) along with [function definitions](https://gist.github.com/hugodutka/004b8e90ca55e5c6f8f83e3eb603cf01), and here’s [the junior lawyer’s prompt](https://gist.github.com/hugodutka/d19137accea33fc4a0105f94f7f296c0).
+
+## Results and Limitations
+
+Answering a question this way takes 5 to 10 minutes and costs about $2 with GPT-4.
+
+The highlight of testing the system with dozens of lawyers was when a GDPR specialist reviewed its answers. The lawyer ranked 8 out of 10 responses as excellent, and the remaining 2 as overly cautious in interpreting the law.
+
+However, over the long term, we found that GPT-4 can identify subquestions very well but often can’t answer them correctly. In non-trivial scenarios, it makes logical errors.^([2](#user-content-fn-logic))
+
+Lawyers also told us that when they answer a question, they rarely touch upon a single regulation. Not only do they analyze multiple regulations, but they also take into account supporting documents such as various guidelines, regulatory technical standards, and court rulings. In contrast, this system can only process a single document at a time.
+
+We’ve learned that the combination of high latency, faulty reasoning, and limited document scope kills usage. No lawyer wants to expend effort to ask a detailed question, wait 10 minutes for an answer, wade through a 2-pages-long response, and find that the AI made an error.
+
+## Conclusion
+
+Keeping all the limitations in mind, dividing complex jobs into simple tasks improves the reasoning capabilities of LLMs dramatically.
+
+While the system isn’t directly useful for lawyers yet, the underlying architecture can be generalized to other problems. If less-than-perfect reasoning and high latency are acceptable, you could use it to answer arbitrary questions about arbitrary documents.
+
+If solving such problems is interesting to you, we’re looking for another co-founder. We’re still early, but we’ve learned a ton about how lawyers do legal research. Our next steps will be focused on semantic search that actually works, helping law firms navigate through thousands of legal documents.^([3](#user-content-fn-aipdf)) If you’d like to build a meaningful product in the legal tech space, please check out our [request for a co-founder](https://go.gkk.dev/request-for-cofounder). We’d love to hear from you.

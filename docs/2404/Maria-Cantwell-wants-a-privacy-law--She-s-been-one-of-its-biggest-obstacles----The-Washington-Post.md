@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:11:32
+-->
+
+# Maria Cantwell wants a privacy law. She’s been one of its biggest obstacles. - The Washington Post
+
+> 来源：[https://www.washingtonpost.com/technology/2024/04/13/congress-maria-cantwell-online-privacy/](https://www.washingtonpost.com/technology/2024/04/13/congress-maria-cantwell-online-privacy/)
+
+When Maria Cantwell first ran for the U.S. Senate, she championed what was then an unconventional political cause: internet privacy.
+
+“What you do on your computer should be your business, and no one else’s,” Cantwell, the dot-com millionaireand former U.S. House member, said in a 2000 [campaign video](https://youtu.be/JK0aE7t2hfg?t=67) that showed her huddled around a clunky white desktop monitor with a group of schoolchildren. The internet, she said, should remain “a tool for learning,” not for governments and private companies to “invade your privacy.”

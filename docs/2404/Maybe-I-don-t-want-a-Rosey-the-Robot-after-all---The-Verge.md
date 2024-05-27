@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:23:26
+-->
+
+# Maybe I don’t want a Rosey the Robot after all - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/19/24134905/boston-dynamics-atlas-robot-smart-home-robot](https://www.theverge.com/2024/4/19/24134905/boston-dynamics-atlas-robot-smart-home-robot)
+
+As a child of the 1980s, my perception of the smart home has been dominated by the idea that one day, we will all have Rosey the Robot-style robots roaming our homes — dusting the mantelpiece, preparing dinner, and unloading the dishwasher. (That last one is a must; we were smart enough to come up with a robot to wash our dishes; can’t we please come up with one that can also unload them?)
+
+However, after seeing [Boston Dynamics’ latest droid, Atlas,](/2024/4/17/24133145/boston-dynamics-resurrects-atlas-humanoid-robot-electric-new) unveiled this week, my childhood dreams are fast turning into a smart home nightmare. While *The Jetsons*’ robot housekeeper had a steely charm, accentuated by its frilly apron, the closer we come to having humanoid robots in our home, the more terrifying it appears they will be. Not so much because of how they look — I could see Atlas in an apron — but more because of what they represent. 
+
+With its bipedal, hardcore yogi moves, Atlas is a new all-electric humanoid robot from Boston Dynamics. And while the next generation of the company’s Atlas program is designed for commercial use, they tout it as being capable of doing work that’s “too dangerous, too hard, or too dull and dirty” for us humans. Three of those things definitely apply to the home. 
+
+While Atlas seems intentionally designed to feel menacing — or at least far from cuddly — the technology on show here makes it easy to connect the dots to the creation of a humanoid home robot. Nvidia is working on that very thing, recently announcing the launch of [Project GR00T Foundation model for humanoid robots](https://nvidianews.nvidia.com/news/foundation-model-isaac-robotics-platform). “Building foundation models for general humanoid robots is one of the most exciting problems to solve in AI today,” Jensen Huang, founder and CEO of Nvidia, said of the launch. “The enabling technologies are coming together for leading roboticists around the world to take giant leaps towards artificial general robotics.”
+
+As a child of the aforementioned ’80s, artificially intelligent robots are the stuff of nightmares. The *Terminator* series embedded the fear of the robot uprising in the psyche of my generation, and things haven’t gotten much cheerier since. 
+
+*Isn’t it cute? Anthropomorphizing household appliances has its charms ... and its chills.*
+
+Photo by Jennifer Pattison Tuohy / The Verge
+
+However, pop culture aside, it’s clear that robotics have a place in our homes. The question is, should we be working toward an all-capable, bipedal, human-like bot to take everyday chores off our hands? The more I think about it — and the more robots I have roaming around my home — the more I think the answer is no. We don’t need a robot that understands what we say and can replicate our movements; we need robots that do one job (or maybe two related jobs) and do them well. 
+
+I have more experience than most with home robots. [Amazon’s Astro robot rolled around my house](/23141966/amazon-astro-robot-review) for two weeks. I’ve played with an ElliQ [companion robot](https://elliq.com/), tested dozens of [robot vacuums and mops](/22997597/best-robot-vacuum-cleaner), and currently have two [robot lawnmowers patrolling my garden](/2024/3/19/24105936/segway-navimow-i-robot-mower-price-release-date-specs). Not to mention the various smart speakers scattered around my home, packing artificial intelligence inside, including one with a [screen on a robotic arm](/22297810/amazon-echo-show-10-2021-review) that swivels to face you when you talk to it (yes, it’s creepy). If there is a robot uprising on the cards, I’ll be the first to go. 
+
+When robots do their job, they are very useful. When they go wrong, they can wreak havoc
+
+When robots do their job, they are very useful. When they go wrong, they can wreak havoc. I’ve had a robot lawnmower cut down my husband’s favorite plants and a robot vacuum knock over a chair, causing a domino effect that ended in a smashed window. Unsupervised mechanical devices moving around your home come with consequences, and the fewer responsibilities — and appendages — you give them, the less catastrophic those will be when things go wrong, and the better they will do the job they’re designed for.
+
+A robot that can fold clothes, a dishwasher that can empty itself, a stovetop that can sauté the garlic and onions, these are the innovations I’d like to see. Some [have been attempted](/2018/1/10/16865506/laundroid-laundry-folding-machine-foldimate-ces-2018); others seem like the stuff of Samantha’s kitchen in *Bewitched*. All seem safer, simpler, and ultimately more comfortable than having a six-foot robot roaming around my house. 
+
+Comfortable because when my self-emptying dishwasher breaks, I can responsibly recycle it and get a new one. When my humanoid robot housekeeper reaches the end of its firmware updates, I’ll have to put it out to pasture. 
+
+Reading about how Atlas’ predecessor, having reached the end of its purpose, has been decommissioned and is [now a fixture in the lobby of Boston Dynamics](https://www.nytimes.com/2024/04/17/technology/humanoid-robot-boston-dynamics-atlas-retires.html), I felt a tinge of sadness. It brought to mind the heartbreaking final moments of Kazuo Ishiguro’s excellent novel [*Klara and the Sun*](https://www.amazon.com/Klara-Sun-novel-Kazuo-Ishiguro/dp/059331817X?tag=theverge02-20).
+
+Anthropomorphizing appliances — imbuing them with human characteristics and human-like intelligence — brings with it a whole host of complicated challenges around the nature of consciousness and the boundaries of humanity. This is not something I want to deal with when it comes to a dishwasher.

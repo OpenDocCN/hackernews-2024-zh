@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:16:35
+-->
+
+# TBM 271: The Biggest Untapped Opportunity - by John Cutler
+
+> 来源：[https://cutlefish.substack.com/p/tbm-271-the-biggest-untapped-opportunity](https://cutlefish.substack.com/p/tbm-271-the-biggest-untapped-opportunity)
+
+The biggest source of waste is *not* low performers or having too many employees.
+
+The biggest source of waste is untapped **skilled pragmatists**. 
+
+The number of skilled pragmatists in any given company is much larger than people realize and, therefore, represents a HUGE opportunity. But almost by definition, they are less visible.
+
+Skilled pragmatists are too smart to wade into conflicts or political maneuvering. They work within the system. They are *under-challenged *and *bored *at workbut are resourceful enough to scratch those itches in other ways. They aren't lazy—doing the bare minimum and stopping—but they also don't go "above and beyond" because they are inherently skeptical that it is worth it. They are very reliable, but to the point where they are conveniently (to them) invisible. Occasionally, they show flashes of brilliance to remind people they've got the chops, but not so often that it throws them into the lion's den.
+
+Importantly, these employees resist managerial efforts to "engage and challenge" them. They don't need to be engaged—they are fairly balanced. And they'd love to be challenged if working within the existing system wasn't so difficult. "I have my projects outside of work to be challenged; thank you very much." So, the normal playbook doesn't work. It feels condescending and paternalistic.
+
+*(Note: Before continuing, I want to note that skilled pragmatists often have the privilege of being ABLE to be somewhat detached yet still earn a living. Many people do not enjoy the privilege of fading into the background and are subject to much more scrutiny, stress, gaslighting, and doubt.)*
+
+Let's explore an example of a prototypical skilled pragmatist to make this real.
+
+It is very clear to Maria that her team is spinning in circles. She watches with mild amusement as managers struggle in vain to push back on reactive feature requests. She's skilled and makes decent progress with the spaghetti codebase the team inherited, but she knows she could be a lot more productive.
+
+At standups, Maria doesn't waste energy calling out things beyond her (and the team's) immediate control. Yes, software engineering is her passion, but she's not about to burn a lot of social capital by rocking the boat—she sees what happens to *those *people. She has some co-workers who have extremely strong careerist tendencies. In some cases, they game the performance management system to the Nth degree to the detriment of customer outcomes. She knows moving up takes a bit longer, but she has also had good luck shifting companies every couple of years to get a raise and promotion. It's almost like new hiring managers sense she has been under-utilized.
+
+Maria is a skilled pragmatist. She is not a pushover or an underperformer. She is a human navigating the weird sociotechnical systems we call "Companies."
+
+Here's the problem, however. Instead of figuring out how to tap into the incredible potential of the Maria's, companies:
+
+*   Hear the loud voices in the room, with strong opinions about what is broken. You are missing out on a whole source of information about how to fix the problem.
+
+*   Focus on the obvious "poor performers". This is funny because you might have ~5% of employees who are low performers. Yet have 60-80% Marias.
+
+*   Focus on rewarding 10x heroics and the cutthroat careerists
+
+*   Incorrectly see the issue as an "engagement" problem.
+
+*   Blame front-line managers for not engaging Maria when the issues exist elsewhere. Maria becomes a “management problem” vs. a leadership problem.
+
+*   Diminish Maria's contributions because they are less visible and showy.
+
+*   Promote people who actively poke and prod the system OR who are politically savvy enough to navigate the system—which has the byproduct of perpetuating whatever dysfunctions exist. Why change things when the people in power positions are adept at navigating things?
+
+Companies are doing layoffs when they are sitting on a goldmine of talent, motivation, and people who want to be challenged but aren't being challenged!
+
+If you want a Part 2 here on how to solve this. Here are some closing thoughts for now.
+
+I was thinking about what drew me to tech in the first place. Fun! How incredible is it to be paid to be a problem/puzzle solver and build/make things with other similarly curious people that can impact humans? That's incredible. Sometimes I have to pinch myself.
+
+I've realized that one of my big triggers is incoherence, dissonance, and waste. Many companies are filled with talented people who love to solve problems, yet we're only scratching the surface regarding harnessing their potential.
+
+And we make it SO HARD on ourselves. It is like we sabotage ourselves. I'm not sure why—maybe humans will be human, maybe it is power and money, maybe it is the natural entropy of companies and products—but many of the problems we face at work are very addressable. Yet, for whatever reason, it has to be difficult.
+
+Or does it?
+
+And with that…consider the untapped Maria potential in your company.
+
+Update: I’ve written [Part 2](https://cutlefish.substack.com/p/tbm-272-the-biggest-opportunity-part).

@@ -1,0 +1,76 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:23:56
+-->
+
+# Raw flux streams and obscure formats: Further work around imaging 5.25-inch floppy disks | by Leontien Talboom | Apr, 2024 | Digital Preservation at Cambridge University Libraries
+
+> 来源：[https://digitalpreservation-blog.lib.cam.ac.uk/raw-flux-streams-and-obscure-formats-further-work-around-imaging-5-25-inch-floppy-disks-5a2cf2e5f0d1](https://digitalpreservation-blog.lib.cam.ac.uk/raw-flux-streams-and-obscure-formats-further-work-around-imaging-5-25-inch-floppy-disks-5a2cf2e5f0d1)
+
+# **Raw flux streams and obscure formats: Further work around imaging 5.25-inch floppy disks**
+
+*Leontien Talboom, Technical Analyst, Cambridge University Library*
+
+*Chris Knowles, Digital Archivist,* [*Churchill Archives Centre*](http://archives.chu.cam.ac.uk/)
+
+This blog is a continuation of our earlier collaboration (which can be found [here](/diskovering-nostalgia-a-5-25-inch-floppy-tale-7347e5251fd0) and [here](https://www.chu.cam.ac.uk/news/archives-centre/all-together-now-world-digital-preservation-day-2023/)). These posts focused on our first efforts to set up a workflow to image 5.25-inch floppy disks using a variety of different types held in Churchill Archive Centre’s collections as examples.
+
+We discovered that the current floppy controller in the Forensic Recovery of Evidence Device (FRED) workstation in the Digital Preservation Lab at the Cambridge University Library (CUL), an [FC5025](http://www.deviceside.com/fc5025.html), cannot properly disk image the floppy disks from the Churchill collections. The FC5025 couldn’t read four of these disks and 25 had errors when imaged. Only one of the disks — the one that was [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS) formatted — was successfully imaged.
+
+We believe the disks that couldn’t be imaged are [International Computers Limited (ICL)](https://en.wikipedia.org/wiki/International_Computers_Limited) and [Wang](https://en.wikipedia.org/wiki/Wang_Laboratories) disks. Since our first exercise, we’ve researched these types of disks in more detail. ICL disks are still very obscure (and we would love to talk to anyone who’s worked with these); the Wang disks led to a chat with Elizabeth Kata, Richard Lehane and Tyler Thorsted, colleagues from different institutions across the digital preservation field that had encountered WANG disks in their collections. Richard and Elizabeth [had an established system for interpreting Wang disk images](https://github.com/richardlehane/wang/), and while we could confirm from what we had extracted that they were indeed in the expected format (albeit with some slight differences), our images were clearly incomplete or taken incorrectly (or both!), and so we needed to try a different method of capture.
+
+This started our quest of finding a different floppy controller, and after a suggestion from the Senior Technical Specialist at CUL, both CUL and CAC invested in a [GreaseWeazle](https://github.com/keirf/greaseweazle). This controller sits between a computer and a floppy drive, and like similar products such as the [FluxEngine](https://cowlark.com/fluxengine/) and [Kryoflux](https://www.kryoflux.com/), can read and save raw flux streams. GreaseWeazle and FluxEngine, whose software can be used on the GreaseWeazle hardware, also include recognised floppy disk profiles to convert raw flux streams into binary data. This is needed to make it possible to access the actual files on the floppy disk.
+
+**Sourcing a floppy disk drive and getting it to run**
+
+Acquiring a working 5.25-inch floppy disk drive was more challenging than expected. CUL had several drives in their collection, kindly donated to the Digital Preservation lab at an earlier point. However, it was quickly discovered that these drives were made for double-density disks, meaning that they were unable to read and image the more modern high-density disks. This was a problem, as the high-density disk drives can read double-density disks but not the other way around. As most of the disks in the CAC collections are high-density, a different drive needed to be sourced.
+
+Leontien then emailed to University technology listserv to ask if anyone had a high-density floppy disk drive they would be happy to donate or lend to the University Library. In total, six drives were donated.
+
+However, as with most of this older hardware, the donated drives were stored in lofts or boxes and were unused for a long time, so none of them could make reliable disk images (this was tested using test disks, no collection material was used for this process!). On top of this, at the time that these floppy disk drives were manufactured, no standards existed, meaning that all floppy drives acquired by CUL’s Digital Preservation team are different. All needed to be cleaned, but most also had other issues, such as broken parts. The volunteers at the [Centre for Computing History](https://www.computinghistory.org.uk/) (CCH) very kindly suggested visiting the CCH to look at a number of different drives in their collection. And after talking to the volunteers and watching them demonstrate how to clean and fix drives, we ended up with a working drive. Now it was time to do more imaging!
+
+*The six 5.25-inch floppy drives in the CUL Digital Preservation lab. It can be noted that they are all slightly different.*
+
+At CAC, Chris had set up CAC’s GreaseWeazle with a 3.5-inch floppy disk drive. We assumed we could easily change out the 3.5-inch for the 5.25-inch drive brought over from CUL, but this was not the case and led to our first hurdle: we needed a different power source. The GreaseWeazle can power a smaller drive by passing along power from its USB-connection, but this isn’t sufficient for the larger disk drives and the power supply used for the drive. At CUL, the power supply used for the 5.25-inch drives and the GreaseWeazle setup is powered by the power supply of the computer itself, which couldn’t be easily brought over to CAC.
+
+In the end, with help from Churchill’s Computing office, we came up with an improvised but entirely functional solution. Churchill had a [USB to SATA/IDE adapter](https://www.amazon.co.uk/FIDECO-Adapter-External-Converter-inches-Black/dp/B0919SF9CP) from a [previous similar project to read from an internal hard drive](https://twitter.com/ChuArchives/status/1539947300805644288), which had a connector to power those drives. This powered the 5.25-inch drive without being connected to a hard drive.
+
+*The setup of the floppy disk drive at CAC.*
+
+We started by using a test disk from CUL, that had read well on the same drive when it was set up there, as a baseline to confirm that we’d set everything up correctly, and after a few different attempts at formulating the command, we did indeed end up with the same result. The CUL test disk was a particularly good test example, written in a double-density format on a high-density capable disk, and read on a high-density machine, which we were able to read the flux from and correctly convert into a coherent image using a [GreaseWeazle user guide](https://github.com/keirf/greaseweazle/wiki/Yann-Serra-Tutorial) and in-built profiles.
+
+*Raw flux stream of a double-density disk made on a high-density disk drive.*
+
+*The raw flux stream from the above image converted using a floppy disk profile on the GreaseWeazle. This conversion is crucial to be able to read and access the actual files on the floppy disk.*
+
+We used the GreaseWeazle software to generate a .raw flux copy (by using the ‘read’ command without any format arguments), then examined the flux using [HxC Floppy Emulator](https://hxc2001.com/download/floppy_drive_emulator/). This tool visualises the flux to check if the capture processed correctly and determines how to process the flux into an image, e.g. by counting the number of tracks and sectors, and seeing how they were arranged. [This list](https://en.wikipedia.org/wiki/List_of_floppy_disk_formats) is very helpful in determining the floppy profile.
+
+**The ICL disks**
+
+After setting up and testing the 5.25-inch drive, we started imaging the disks. The first lot of disks were the ICL disks from [The Papers of Baron Soames](https://archivesearch.lib.cam.ac.uk/repositories/9/archival_objects/480720). When we first tried to image these disks, we were able to create images using the FC5025 floppy controller and confirmed they held data using a [Hex Editor](https://mh-nexus.de/en/hxd/), but the image creation process reported errors in every sector, meaning the results were incomplete or badly formatted (or possibly both!). After imaging the first disk, we viewed it on the HxC Floppy Emulator and confirmed that these results were indeed unusual; (what we believe to be) their 15 sector/35 track setup didn’t match anything on the GreaseWeazle or FluxEngine lists of formats.
+
+However, after reading a few disks we noticed that the middle of the disks was turning up red in the emulator, which we knew could be an indication of a dirty disk; such disks also run the risk of transferring dirt to the physical read heads on the drive itself, which would result in poor reads for future disks. As we had multiple disks that showed missing data in the middle section, we decided to clean the drive heads using a cotton bud and isopropyl alcohol. This resulted in much cleaner reads when re-imaging the disks that had errors, but we quickly ran into this issue again and decided to move on to disks from other collections to see if they might perform better.
+
+**The WANG disks**
+
+We moved on to the WANG disks from [The Papers of Sir Robert Edwards](https://archivesearch.lib.cam.ac.uk/repositories/9/resources/1546). These read well, looking to have 16 sectors/40 tracks, but again don’t match anything on the GreaseWeazle list (as while those numbers match acorn.adfs.160, that would use [FM encoding](https://en.wikipedia.org/wiki/Frequency_modulation_encoding), as opposed to the MFM encoding on these disks).
+
+Flux Stream of one of the WANG disks
+
+**The 4 formerly unreadable disks**
+
+These disks from [The Papers of Neil Kinnock](https://archivesearch.lib.cam.ac.uk/repositories/9/resources/1673) turned out to be single-density disks using ISO FM encoding, as opposed to everything else we’ve encountered thus far using ISO MFM encoding, and explains why the FC5025 controller was unable to read and image them. We believe they contain 10 sectors/80 tracks and are [Acorn DFS format](https://beebwiki.mdfs.net/Acorn_DFS_disc_format), as [described on the FluxEngine site](https://cowlark.com/fluxengine/doc/disk-acorndfs.html).
+
+What should be pointed out here is that the labelling on the physical disks was at odds with their contents, with the disks being labelled as double-sided, double-density, and the acorndfs format being single-density, with the ability to use both sides of a disk, but as separate volumes. This led us to re-evaluate whether some of the other disks should have been as considered one or two volumes, and is definitely something we will bear in mind in the future.
+
+*Floppy disks that read as single-density, but are labelled as double-density disks*
+
+**Next steps & lessons learned**
+
+We now have raw flux streams for the majority of the disks and have been able to view them on the emulator. We are relatively confident on the reliability of the copies from all the non-ICL disks, but there are 5 of the ICL disk that we didn’t haven’t yet had time to image, and we know that some of the copies we do have will have been made while the sensor was dirty. However, we are already able to see how they are formatted and that both the WANG and ICL disks are sufficiently unusual as to not be listed on either the [GreaseWeazle](https://github.com/keirf/greaseweazle/wiki/Yann-Serra-Tutorial) or [FluxEngine](https://cowlark.com/fluxengine/#which) profile lists. Luckily there are [some resources available](https://wiki.techtangents.net/wiki/Floppy_Disk_Imaging) on making our own disk profiles for obscure formats.
+
+The dirty ICL disks will need to be imaged again; given the issues we ran into, next time we will likely clean the drive between reading each individual disk, which is practical only because there are only 19 of them!
+
+Furthermore, we can test the WANG reading tool created by Richard Lehane; we believe our disks are slightly differently formatted, but we remain hopeful this may give some actual, discrete files.
+
+In terms of lessons learned: we would highly recommend investing in a GreaseWeazle for this type of work. It is inexpensive and highly customisable, which was exactly what we were looking for. Leontien had success asking around for 5.25-inch floppy drives and we would not be surprised if this would work for other institutions as well. Not having anything directly available in Churchill College, Chris is going to investigate if drives bought on eBay or similar either work directly, or can be cleaned into a state where they do. We would recommend sourcing a high density disk drive, because it can read all types of 5.25-inch floppies. But make sure to clean and test the drive before inserting any collection material.

@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:31:16
+-->
+
+# Chioma Okoli faces jail over a Facebook post reviewing Erisco tomato paste | openDemocracy
+
+> 来源：[https://www.opendemocracy.net/en/chioma-okoli-facebook-erisco-tomato-paste-eric-umeofia/](https://www.opendemocracy.net/en/chioma-okoli-facebook-erisco-tomato-paste-eric-umeofia/)
+
+Last September, Chioma Okoli posted on Facebook that a tomato puree she’d just purchased for the first time contained an unhealthy amount of sugar. Less than a week later, its manufacturer had her arrested and detained by Nigerian police.
+
+The 39-year-old, who is pregnant with her fourth child, has been trapped in a legal battle ever since, accused of a cybercrime punishable by up to three years in prison and a fine of seven million Nigerian naira (£3,526).
+
+Her case, which a court adjourned to 28 May, has sparked nationwide debates over whether sharing your opinion online can be considered a crime and whether a company has the right to bring a lawsuit over an unfavourable review and raised questions over Nigeria’s harsh Cybercrime Act.
+
+Okoli, who runs a small business selling imported children’s clothes in Lagos, posted on the social media site to accuse Nagiko Tomato Mix, which is made by Erisco Foods Limited, of having a high sugar content – and asked her 18,000 followers for their opinions on it.
+
+**Get one whole story, direct to your inbox every weekday.**
+
+[](https://www.opendemocracy.net/en/sign-up-for-the-opendemocracy-daily-email/)
+
+An online spat ensued, with commenters weighing in to either agree with Okoli or defend the product. The situation escalated when one Facebook user replied: “Stop spoiling my brother’s product. If [you] don’t like it, use another one than bring it to social media or call customer service.” Okoli responded: “Help me advise your brother to stop ki***ing people with his product, yesterday was my first time using [it] and it’s pure sugar.”
+
+Erisco, an indigenous company, released a statement describing Okoli’s claims as “untrue and unfounded” and petitioned the police to act, accusing her of criminal conspiracy, de-marketing and cyberbullying.
+
+Okoli was [arrested](https://web.facebook.com/photo/?fbid=814177687381504&set=a.488641016601841) as she attended a church near her home on 24 September and detained until the following day. She was then flown to the Nigerian Police Force’s headquarters in the capital, Abuja, and detained for another 24 hours, before being released on bail. It is unclear why Okoli was taken to Abuja, given both she and Erisco are based in Lagos, and the police did not respond to openDemocracy’s request for answers.
+
+While at the force headquarters, Okoli wrote a public apology to Erisco, saying: “I regret my actions, and wish to be forgiven. I pledge that this will never happen again. I undertake to retract all my earlier post on this matter immediately, this is without any compulsion.”
+
+Politician Dozie Ikedife Jr. last month told [a TV interviewer](https://www.facebook.com/orientaltimes1/videos/erisco-tomato-mix-review-chioma-absconded-nobody-forced-her-to-write-an-apology-/779118750427341/) that he had stood as bail guarantor for Okoli after being contacted by one of her aunties, who, like him, is from Anambra state. In the interview, he claimed Erisco’s founder and CEO, Eric Umeofia, had been in the police headquarters while Okoli wrote the apology, and accused Okoli of absconding to Lagos after her release and failing to return to the police station in Abuja after seven days to explain how the matter was resolved – which had been a condition of her bail. Okoli’s counsel, Inibehe Effiong [denied](https://fij.ng/article/pro-erisco-guarantor-claims-chioma-okoli-betrayed-him-by-jumping-bail/) Okoli absconded and claimed she had been “forced” to write “the so-called letter of apology”.
+
+The National Agency for Food and Drug Administration and Control released a statement on 29 September confirming that the sugar levels in the Nagiko Tomato Mix were safe for consumption. The following week, police charged Okoli with two counts of “instigating people against Erisco Foods Limited, knowing the said information to be false”, and [accused her](https://twitter.com/policeng/status/1765699292696592654?s=46) of violating “some salient parts” of the Cybercrime Act.
+
+Effiong has filed a 500 million naira (£303,654) lawsuit against Erisco and the police on Okoli’s behalf, arguing that her right to personal liberty was violated by being unlawfully detained for more than 24 hours without charge. The lawsuit also wants the company and the police to “publish an unreserved written apology” to Okoli in three national newspapers and on Erisco’s Facebook page.
+
+Erisco has responded with a five billion naira (over £3m) defamation lawsuit against Okoli, which it said in a [statement](https://web.facebook.com/eriscofoods/posts/pfbid02pq9jBfrGsSpBwE7LBLendSigX47ZvqujJ7Xw1yNya9uujDvssnGYviRucT4GJ4EMl?_rdc=1&_rdr) on 19 January is to “safeguard the brand and the company’s reputation”, claiming her comment had “resulted in several suppliers deciding to disassociate themselves from us”.
+
+Effiong has said he will file a countersuit to this on behalf of his client. Speaking to openDemocracy, he said Okoli should be the one claiming defamation because Umeofia, Erisco’s CEO, has “called her a criminal on national TV, accused her of belonging to a criminal syndicate, and accused her of blackmail.”
+
+When approached by openDemocracy, Erisco said: “We don’t want to comment on the issue as the matter is pending in court.”

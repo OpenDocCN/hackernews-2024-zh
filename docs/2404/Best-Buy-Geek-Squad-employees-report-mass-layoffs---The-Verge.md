@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:00:28
+-->
+
+# Best Buy Geek Squad employees report mass layoffs - The Verge
+
+> 来源：[https://www.theverge.com/2024/4/5/24122542/best-buy-geek-squad-layoffs-ai-restructuring](https://www.theverge.com/2024/4/5/24122542/best-buy-geek-squad-layoffs-ai-restructuring)
+
+Former employees of Best Buy’s in-house tech support and repair team Geek Squad say there were mass layoffs this week, [*404 Media* reports](https://www.404media.co/mass-layoffs-at-best-buy-geek-squad-former-employees-post-going-sleeper/). A former Geek Squad agent tells the outlet that they received an email on Tuesday about a work from home event the following day regarding a “company change.”
+
+“Our leadership gave individual calls stating we were being let go for the simple fact that the company couldn’t afford to pay us, more or less. It was extremely short notice and devastating,” an ex-Geek Squad worker told *404 Media*.
+
+Over at [r/GeekSquad](https://www.404media.co/mass-layoffs-at-best-buy-geek-squad-former-employees-post-going-sleeper/), recently laid-off Geek Squad agents have posted [photos of their badges](https://www.reddit.com/r/GeekSquad/comments/1bwp1tn/dapc_103868_florida_going_sleeper/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) in solidarity and referred to themselves as belonging to a Geek Squad “sleeper cell”, writing that they’re “going sleeper” along with their location and badge number. 
+
+*The Verge* has reached out to the company for more details about the layoffs and will update if we hear back. 
+
+During the company’s last earnings call in February, Best Buy’s CEO Corie Barry said to expect layoffs this year as part of a push to “redirect corporate resources to make sure we have the necessary assets dedicated to areas like AI and other elements of our strategy and rightsize parts of the business where we expect to see lower volume than we envisioned a few years ago. whether that is the result of lower industry sales or due to decisions we made like evolving our paid membership benefits.”
+
+As far as why, Barrie referenced multiple “macro factors” affecting consumer spending on electronics, including a drop in sales following heightened demand during the pandemic, and that, “honestly, really, right now, there isn’t any massive current innovation that would spur you to go buy a new laptop.”
+
+Barry called out Geek Squad repair operations specifically, [saying](https://s2.q4cdn.com/785564492/files/doc_earnings/2024/q4/transcript/BBY-Q4-Transcript.pdf), “Our fiscal ‘25 initiatives are focused on driving further efficiencies across forward and reverse supply chain, our Geek Squad repair operations and our customer care experience. We will continue to lean heavily on analytics and technology to achieve these efficiencies. This includes leveraging AI safely and effectively.” Another area she’s looking at is health, mentioning [Best Buy Health](https://www.bestbuyhealth.com/) as an area “where we are leveraging our expertise and our Geek Squad agents to capitalize on the growing use of technology to help provide health care in the home.”
+
+That “rightsizing” also includes the physical space in stores, where she confirmed Best Buy “[will be removing physical media](/2023/10/13/23915567/best-buy-discontinue-physical-media-dvd-blu-ray) and updating our mobile digital imaging, computing, tablets, and smart home departments.”
+
+Numerous former and current Geek Squad employees on Reddit over the years noted the [high turnover rate](https://www.reddit.com/r/GeekSquad/comments/tdmsew/high_turnover_rate_because_of_pay/) associated with the job due to its relatively low pay and slim prospects of promotion. Based on 231 salaries, Glassdoor estimated a [pay range](https://www.glassdoor.com/Hourly-Pay/Best-Buy-Geek-Squad-Agent-Hourly-Pay-E97_D_KO9,25.htm) of $16-$21 per hour for a Geek Squad agent. This estimate appears to be accurate based on the listed open roles on Best Buy’s website. For example, there’s currently an active listing for a “Geek Squad City Supervisor” in [Brooks, Kentucky](https://jobs.bestbuy.com/bby?id=job_details&req_id=941721BR), with an hourly pay range of $20-$30 per hour. An opening for an entry-level Geek Squad agent at a store in [Encinitas, California](https://jobs.bestbuy.com/bby?id=job_details&req_id=941802BR), has an hourly pay range of $15-$19 per hour.

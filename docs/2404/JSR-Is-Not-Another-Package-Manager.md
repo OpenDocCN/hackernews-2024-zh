@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:32:21
+-->
+
+# JSR Is Not Another Package Manager
+
+> 来源：[https://deno.com/blog/jsr-is-not-another-package-manager](https://deno.com/blog/jsr-is-not-another-package-manager)
+
+Over the past years, new package managers like yarn and pnpm have emerged, enhancing how packages are downloaded. However, the npm package registry, a cornerstone of the JavaScript ecosystem, has barely evolved. Its last notable update was a “files” tab added years ago. The JavaScript language, known for its vibrant evolution, seems paradoxically mired in a distribution model that hasn’t kept pace.
+
+Back when I created Node, there was no standard module system for JavaScript. As a result, the npm registry and Node defaulted to CommonJS (`require`), a system with fundamental flaws that made it unworkable in browsers. So, almost a decade ago, in 2015, the language adopted syntax for ES modules (`import`). Today, most JavaScript is written using ES modules, yet the pathways for distributing these modules remain convoluted, especially when TypeScript is involved. This clear gap in the ecosystem prompted the creation of [JSR](https://jsr.io), not as another package manager but as a transformative registry designed to revolutionize how JavaScript and TypeScript are shared across server-side runtimes, browsers, and various tools.
+
+JSR fundamentally improves the code distribution process by streamlining complexities that have long plagued developers. By being ESM-only and TypeScript-first, JSR eradicates the frustrating juggling of `package.json` configurations and the labyrinthine tsconfig compiler options. Through [a package scoring system](https://jsr.io/docs/scoring), JSR motivates best practices in code distribution—higher scores are awarded to packages that include comprehensive JSDoc documentation on each exported symbol, akin to what the Dart community has in [pub.dev](http://pub.dev). As seen in other modern programming ecosystems like Go and Rust, JSR provides automatic documentation generation right out of the box.
+
+JSR is a registry, not another client for the npm registry. But that doesn’t mean you need to give up everything from npm, or make a hard switch to a disjoint ecosystem of JavaScript modules. [JSR is designed to complement the npm registry](https://jsr.io/docs/npm-compatibility), not replace it. JSR packages are allowed to depend on npm packages - [see, for example, this package](https://jsr.io/@moductor/libintl@1.5.0/dependencies). Moreover, JSR packages can be used in existing npm-first software because JSR itself acts as an npm registry (accessible at npm.jsr.io) that distributes npm-compatible tarballs. This allows JSR packages to be included in any software using npm, yarn, or pnpm, as well as to integrate with [private registries](https://jsr.io/docs/private-registries). The npm tarballs that JSR distributes are optimal.
+
+At Deno, we prioritize security as a paramount concern in JavaScript development. While no registry can comprehensively police all published code, JSR provides transparency about its publishers and secures the publishing process. By integrating OIDC tokens with GitHub Actions, JSR creates advanced, verifiable provenance attestations using the [Supply Chain Levels for Software Artifacts](https://slsa.dev/) and stores them in [Sigstore](https://www.sigstore.dev/). This not only ensures the authenticity of the code but also establishes trust and accountability in what developers are implementing.
+
+JavaScript is the common language of many programmers, making it both universal and accessible. The language merits a central hub—a town square—where developers can share their work without undue complexity. We believe JavaScript will remain central to software development for many years, and JSR aims to support this enduring relevance. While JSR is not a package manager, it offers a new approach to how we manage and secure code, aspiring to be a stable, forward-looking platform that enhances and safeguards JavaScript development. In this way, JSR represents not just another tool in the ecosystem but a fundamental shift in how we think about distributing JavaScript and TypeScript.
+
+> 🚨️ Read more about JSR 🚨️

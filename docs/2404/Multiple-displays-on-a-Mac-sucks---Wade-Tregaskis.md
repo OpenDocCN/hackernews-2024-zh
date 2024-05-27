@@ -1,0 +1,132 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:34:11
+-->
+
+# Multiple displays on a Mac sucks – Wade Tregaskis
+
+> 来源：[https://wadetregaskis.com/multiple-displays-on-a-mac-sucks/](https://wadetregaskis.com/multiple-displays-on-a-mac-sucks/)
+
+So many people I’ve worked with have used multiple displays – typically a matched pair side-by-side – and sworn by them. It’s always mystified me, to be honest.
+
+I’ve attempted the multi-display lifestyle a few times over the last thirty years. At first as a bourgeois indulgence, back when even having a single 17″ display was considered luxurious^([1](#f3ad31a4-54b3-4c05-9f1f-e3057f4f8a73)), let-alone two displays. Just because I could. Then sporadically over the years in more practical attempts to expand my screen real estate.
+
+The debut of 5k displays in 2014 relieved that pressure for a long while. It’s hard to overstate how profound that first 5k iMac was.
+
+But in the last year or so I’ve felt a bit cramped – particularly as I’ve spent increasing amounts of time in Xcode, which is *okay* on a 5k display but not great. Especially if you try to do GUI design, whether AppKit or SwiftUI. Let-alone if you start working with iPad Pro simulators and the like.
+
+So I’ve been considering, yet again, my options.
+
+Sadly:
+
+1.  I have an iMac Pro. Even if I were willing to waste the built-in display, I cannot – Apple does not allow iMacs to disable their internal displays.
+
+    I wouldn’t necessarily mind replacing the iMac Pro (it’s been a pretty shitty computer since the day it was made) but [Apple keep conspiring to discourage me from doing so](https://wadetregaskis.com/apples-timing-problem/)^([2](#2d929093-1c10-4680-a4bd-383b85a98e88)).
+2.  There aren’t any great options for larger displays.
+
+    Available 6k displays aren’t great^([3](#85221166-1dce-4d95-b6be-6b7fa2b7c644)), although I’m glad there’s at least a couple of half-decent options. I never thought I’d be thankful that *Dell*, of all hardware companies, is still around and making better products than Apple.
+
+    8k displays practically don’t exist – I don’t have the physical space to use an 8k TV^([4](#31755725-c69f-4729-b5d0-d0e1d2833f9f)), which is otherwise actually the best way to go, and [the one 8k computer display](https://www.dell.com/en-us/shop/dell-ultrasharp-32-8k-monitor-up3218k/apd/210-alez/monitors-monitor-accessories) I know of is far too physically small for its resolution^([5](#329e19a1-f614-448f-8975-7365a698f75a)).
+
+As it happened, I had an extra 5k display left over from working at LinkedIn (they wouldn’t provide decent displays to employees while I was there, so I had to buy my own out of my own pocket^([6](#3f8979d6-ea6a-4991-afc8-845186aeb8a5))). So far as multi-display setups go it’s arguably ideal, since it’s basically the exact same panel as the iMac Pro’s display, so it should match quite well^([7](#9cf23db5-75b6-40a4-88cd-48d1ad743001)). So a few months ago I went to some effort to rearrange my working space to accomodate it, and set to work with it.
+
+And not a lot has changed in thirty years.
+
+## The Mac operating system *still* Just. Fucking. Sucks. at remembering where windows were, when relaunching apps.
+
+For the first month or so it was mostly fine – a couple of apps would be *occasionally* problematic, but it was tolerable. Mostly. Xcode in particularly pisses me off in that it *always* forgets where the documentation window was, every time you open it^([8](#08475590-6d49-4fed-ab6b-99455053ae2a)).
+
+But then, something invisible to me apparently happened, and since then *every single boot every single window resets its position onto the built-in display*. Every single boot I have to spend a bunch of time digging buried windows out from the over-crowded main display and shifting them back to their correct positions on the second display.
+
+I might dismiss this as particular bad luck, except I know from decades of experience that this is in fact normal. It *always* happens, sooner or later. And at some point it will unfuck itself and start [mostly] remembering where windows go. Only to inevitably repeat the vicious cycle.
+
+## Full-screen apps (mostly games) don’t handle the additional display(s) correctly.
+
+This cuts both ways – some apps erroneously ignore the extra displays, while some erroneously *don’t* and do stupid things like put windows on the wrong display:
+
+*   Games are the most common offenders in the former category, as they usually fail to dim or turn off unused displays. It’s very distracting having a bright display right next to one on which you’re trying to play a game. Every time I launch or exit such an app I have to manually open System Settings, go to Display settings, click the secondary display, and manually changes its brightness.
+
+    My secondary display ([LG 5k](https://www.lg.com/us/monitors/lg-27md5kl-b-5k-uhd-led-monitor)) doesn’t have a power button, and I found out real quick that unplugging the Thunderbolt cable confuses the hell out of macOS, resulting in windows going wild and some apps outright crashing.
+*   In the latter, “WTF are you doing?!” subcategory are applications like Adobe Lightroom Classic, which will spontaneously move the entire window to a different display sometimes, and the only way to get it back is to quit & relaunch Lightroom^([9](#652e1ed2-b22f-476a-bfcf-9c76338c27b3)).
+
+## Side Docks aren’t practical.
+
+When the Dock is on the side, it only appears on the display that is farthest to that side. Having to move the mouse across *multiple* displays just to get to the Dock is untenably slow and awkward.
+
+I have the Dock set to auto-hide, because I’m not a monster. But that does mean I have to be careful about mouse movements near its edge of the screen.
+
+I prefer having the Dock on the left-hand side because it’s the least intrusive place – there’s relatively little you have to mouse to or interact with on the left edge (the right side is second-best, but notably is the home of scrollbars). It’s also slightly easier to mouse left (or right) than down, because moving the mouse ‘down’ (towards me) has extra tension from the USB cable.
+
+With multiple monitors (in a typical horizontal arrangement), I’m forced to use a bottom Dock, which is the worst place to have the Dock because so much stuff is placed right at the bottom of the screen – window resize widgets, toolbars & their buttons, horizontal scrollbars, etc. It’s immensely irritating to have to finesse minute mouse movements in order to avoid triggering the Dock while somehow still getting the cursor within a few pixels of the edge of the screen. Sometimes it’s necessary to move the entire window just to interact with its bottom parts – which can in turn require first resizing it from the top, in order to allow it to be moved upwards.
+
+## 
+
+I have the menu bar set to auto-hide, partly for reasons of visual cleanliness and to save a little screen space, but also because the menubar ruined my previous iMac’s display by burning in, hard.
+
+I also use the menubar a lot more than for just activating menus with the mouse – I have iStat Menus and a host of other monitoring utilities in there as well. So I’m frequently mousing up to the top of the screen to reveal the menubar. Which is not a burden in itself – flicking the mouse to the top of the screen is a completely trivial operation.
+
+But it doesn’t work half the time, when you have multiple displays, because the menubar will only deign to reveal itself on the “active” display, which is often at a glance visually indistinguishable from the “inactive” display (thanks to Apple’s long-running war against clarity).
+
+That defeats the instinct and muscle-memory to just flick the cursor to the top of the display in order to see the menubar. Worse, since macOS has some design flaws regarding menu bar reveal (e.g. it refuses to reveal if the frontmost application’s main thread runloop isn’t idle, and whenever an application is launching), you can’t immediately tell if it’s refusing to reveal itself because the cursor’s on the “wrong” display. So inevitably there’s wasted, distracting moments of pause and investigation, and possibly movement to a whole different display. For an operation that happens hundreds of times a day, wasted seconds add up.
+
+## Windows appear on the wrong display sometimes.
+
+Enough said, really. I have no idea why they appear in the wrong places, but then so much about macOS’s window management is inexplicably buggy like this, such as why some modal dialogs appear *behind* all existing windows.
+
+## Multi-display ergonomics tend to suck.
+
+If – in a typical horizontal arrangement – you give the two displays equal priority in placement, you end up with one to your left and one to your right, with a very irritating gap between them in the one place it’s natural to look – straight ahead of you. Neither display is aligned with the keyboard or mouse, which I find impairs typing and mousing accuracy (especially with a treadmill desk where I’m constantly moving). And I find I get a sore neck no matter what, because I’m spending all my time looking anywhere but centre.
+
+If you keep a “primary” display front and centre, and put a second one off to a side, the second display becomes *much* less useful because it’s even more uncomfortable to actually look at. Which couples with the fact that…
+
+## Splitting work across multiple displays is *hard*.
+
+More so than it seems it should be. In practice there’s a *big* difference between two windows side-by-side on one display, and two windows on separate displays (*especially* if the displays aren’t identical, or aren’t aligned on horizontal or vertical axes). Maybe it’s as a simple as the difference between moving your eyes and moving your head.
+
+Whatever it is, I just cannot get comfortable moving between displays frequently. That then forces me to not put anything *important* on the second display (especially if it has an ergonomically inferior position compared to the primary display), so it ends up being kind of a dumping ground for stuff I don’t actually use that often – e.g. calendar, clipboard viewers, calculators, etc.
+
+And since I don’t actually use them that often, there’s really not much advantage to having them on a second display, versus just bringing them to the front on the main display and then hiding them again when I’m done. In fact, sometimes it’s counter-productive as irrelevant animations on the second display distract me, whereas they’d be safely out of sight behind other windows on the main display.
+
+The only meaningful use-case I have so far for genuine simultaneous use is moving information references – e.g. Xcode’s documentation window – to the second display. In fact that was the specific use-case that made me go to the trouble of hooking up the second display, since it’s practically impossible to fit a non-trivial Xcode project into just half a 5k display, and having to constantly toggle between code & documentation is irritating and a little disruptive – there’s often a *lot* of rapid back-and-forth between code & docs, which is of course much easier if they’re simultaneously visible.
+
+* * *
+
+## Follow-up
+
+There’s [a surprisingly long thread on HackerNews about this post](https://news.ycombinator.com/item?id=40166268). And I was pleasantly surprised to find mostly commiseration and honest attempts to help, as opposed to vitriol. It’s worth looking over if you want to dive even deeper into this topic.
+
+Addressing a select few points raised in the HackerNews comments:
+
+*   I’ve been a Mac user for about thirty-five years, and always focused on the Mac. So assertions that I’m “doing it wrong” because I’m secretly a Wintel or Linux stooge are misguided. 🙂
+*   A *lot* of folks also brought up problems with even getting external displays to work reliably, which I can definitely relate to – that LG 5k I’m using was a real bitch, frankly, before I replaced what turned out to be a faulty Thunderbolt cable that it came with. Even then, it never worked reliably with my work MacBook Pro, for some reason. Seems to work just fine with my iMac Pro. 🤷‍♂️
+
+    I chose not to go there in this post because somehow I’m not having those sorts of issues right now (🤞) and because I feel like that’s a whole *other* can of worms. But yes, it’s definitely a *big* problem for the Mac, too.
+*   One or two folks suggested that my problem is that I should just get a bigger single display. To which I agree, that is my problem. That was covered in the opening of the post. 🙂
+
+    Quite a few people suggested or at least evangelised using ultra-wide displays. I’m open to it, if one is ever released with decent pixel density. e.g. 5k is a decent number of pixels in 23.5″ (the horizontal width of a conventional 27″ display) but is *way* too few on a display that’s like 50″ wide. Abysmally few. I touched on this topic tangentially in the footnotes, but to reiterate: a decent display has a pixel density of *at least* 100 PPD (pixels per degree) at a reasonable working distance. Apple’s “Retina” displays all have this. To my knowledge no ultra-wide display ever made has this – not even close.
+*   The specific setup I’ve been using recently is with my iMac Pro in its traditional place front and centre, and the LG 5k off to the left side by about 45°.
+
+    In prior attempts at the multi-display lifestyle I’ve used many other setups, including symmetrical horizontal arrangements, stacked vertical arrangements, and even ad hoc “diagonal” arrangements with things like my iPad Pro or laptops. I don’t think there’s a reasonable layout that I have not tried.
+*   I don’t use [Spaces](https://en.wikipedia.org/wiki/Spaces_(software)). I’ve used it in the past (mostly *way* back when it was new to Mac OS X, and earlier on Linux) but it just never really felt nor worked right. It also has its own family of window management problems & bugs, with things like new windows (particularly modal dialogs) silently opening in the wrong space. 😔
+*   I don’t full-screen apps (except in very limited circumstances, such as some games which *only* run full-screen).
+
+    For *years* I did, on my work MacBook Pros, but only because I felt forced to by the small laptop screen – there are *so* many bugs around full-screen mode in macOS. And it makes very little sense for most apps when you have a decent-sized screen, as you end up with massive areas of wasted space in margins etc. In fact I got so sick of the bugs that even on my little 12″ MacBook Air I don’t use full-screen mode anymore, and just suffer through the loss of screen real estate. And, more importantly, I don’t do any real software development or photo/video work on laptops anymore – mostly just writing and web browsing.
+*   A few folks seemed surprised that I use the Dock at all, which I found surprising in turn. I’d never really considered *not* using the Dock.
+
+    Reflecting on it, I mostly use the Dock for:
+    *   Switching applications.
+
+        I use ⌘⇥ too, of course, but with multiple displays it’s unpredictable as to which screen the app palette appears on, making it hard to efficiently use the mouse with it (and merely hitting tab over and over again is far too slow when you have tens of apps open).
+
+        I do use Spotlight to launch & switch apps, but I try to avoid it for commonly-used apps as Spotlight is very unreliable:
+        *   Sometimes it takes a non-trivial amount of time to show the floating text input window, and keystokes in the interim may be silently ignored or go to the wrong place.
+        *   Sometimes it just doesn’t work. I type some letters and nothing happens, or it just shows me that infuriating “indexing” indeterminate progress bar. Try again later, apparently.
+        *   It randomly changes what frequently-used character sequences mean. e.g. I might have been using “te” for TextEdit for *months*, and then suddenly it decides that “te” means some random fifteen year old PDF file. It’s absolutely infuriating and inexplicable, and there’s no apparent way to fix it when this happens.
+    *   Accessing minimised windows. I don’t know of any other way to get at these.
+    *   Accessing the contextual menu for an app’s Dock icon – most often to force quit it, but also some apps put important functionality there which isn’t readily accessible through any other means. And I know that I can ⌥⌘⎋, which I use sometime too, but for whatever reason I prefer going via the Dock.
+    *   Monitoring (e.g. unread message counts).
+*   A lot of people tangentially critiqued the Mac’s lack of window tiling and gesture functionality, particularly those coming from Windows it seems. These are fair and broadly accurate critiques, but they did seem to overlook that while macOS doesn’t have a *lot* of such gestures & tiling features, it does have some (e.g. what Apple calls “[Split View](https://support.apple.com/en-au/guide/mac-help/mchl4fbe2921/mac)“).
+
+    But, “Split View” is essentially a specialisation of full screen mode, with many of the same design problems and bugs.
+*   There were a *lot* more display and window management utilities than I thought – *many* people come forth with suggestions and recommendations I’d not yet encountered (e.g. [Stay](https://cordlessdog.com/stay/), [Display Maid](https://funk-isoft.com/display-maid.html), [Phoenix](https://github.com/kasper/phoenix), [Rectangle Pro](https://rectangleapp.com/pro)). I might look into some of those, and will perhaps do a follow-up post if they substantially improve things (but, keep in mind that problems like Dock and menubar accessibility, let-alone fundamentals like the ergonomics, aren’t addressed by these utilities).
+*   A few people responded with essentially “huh, none of this happens to / bothers me”. Which is fair to say, but not surprising – different strokes for different folks. I was pleased to see that most weren’t trying to dismiss my opinion out of hand, merely noting that there are other opinions. Which is totally fine and important to remember.

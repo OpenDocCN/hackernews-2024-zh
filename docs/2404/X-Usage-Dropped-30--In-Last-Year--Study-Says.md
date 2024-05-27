@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:00:42
+-->
+
+# X Usage Dropped 30% In Last Year, Study Says
+
+> 来源：[https://www.forbes.com/sites/antoniopequenoiv/2024/03/06/usage-of-elon-musks-x-dropped-30percent-in-the-last-year-study-suggests/](https://www.forbes.com/sites/antoniopequenoiv/2024/03/06/usage-of-elon-musks-x-dropped-30percent-in-the-last-year-study-suggests/)
+
+## Topline
+
+X, formerly known as Twitter, experienced a 30% drop in usage from 2023 to 2024, according to a study from [Edison](https://www.edisonresearch.com/twitter-x-usage-sees-sharp-decline/ "https://www.edisonresearch.com/twitter-x-usage-sees-sharp-decline/") Research that clashes with [favorable](https://blog.twitter.com/en_us/topics/company/2023/one-year-in "https://blog.twitter.com/en_us/topics/company/2023/one-year-in") [traffic](https://techcrunch.com/2024/01/31/x-ceo-linda-yaccarino-claims-company-has-90m-u-s-users-less-than-1-are-teens/ "https://techcrunch.com/2024/01/31/x-ceo-linda-yaccarino-claims-company-has-90m-u-s-users-less-than-1-are-teens/") [metrics](https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=17ed20671059 "https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=17ed20671059") shared by the social media platform’s billionaire owner, Elon Musk, and CEO Linda Yaccarino.
+
+ <fbs-accordion class="expandable" current="-1">Musk rebranded Twitter to X not long after he acquired the platform for $44 billion in 2022\. (Photo ... [+] by Emin Sansar/Anadolu Agency via Getty Images)</fbs-accordion> Anadolu Agency via Getty Images
+
+## Key Facts
+
+The data, which is part of a [larger study](https://www.edisonresearch.com/twitter-x-usage-sees-sharp-decline/ "https://www.edisonresearch.com/twitter-x-usage-sees-sharp-decline/") conducted by Edison, said 27% of the total population in the U.S. reported using X in 2022 and 2023, a figure that has decreased to 19% in 2024.
+
+The data is a measure of people who said they were using the service, not a measure of premium X subscribers or accounts, Edison noted.
+
+Edison said the social media platform also experienced declines in monthly and weekly usage, but didn’t provide details about such data.
+
+The [2022](https://www.edisonresearch.com/wp-content/uploads/2022/03/Infinite-Dial-2022-Webinar-revised.pdf "https://www.edisonresearch.com/wp-content/uploads/2022/03/Infinite-Dial-2022-Webinar-revised.pdf") and [2023](https://www.edisonresearch.com/wp-content/uploads/2023/03/The-Infinite-Dial-2023.pdf "https://www.edisonresearch.com/wp-content/uploads/2023/03/The-Infinite-Dial-2023.pdf") usage data was gathered through a national telephone survey of about 1,500 people aged 12 and older—further details and methodology for the 2024 usage data will be released on March 28, according to Edison.
+
+## Contra
+
+Yaccarino has painted a different picture of traffic on X. She said during a Senate Judiciary Committee hearing in January that X had [90 million U.S. users](https://techcrunch.com/2024/01/31/x-ceo-linda-yaccarino-claims-company-has-90m-u-s-users-less-than-1-are-teens/ "https://techcrunch.com/2024/01/31/x-ceo-linda-yaccarino-claims-company-has-90m-u-s-users-less-than-1-are-teens/"), less than 1% of which she said were ages 13-17\. Last year, the chief executive also said that X had [540 million monthly active users](https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=49f22c431059 "https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=49f22c431059") and 200 million to 250 million daily active users or “something like that.”
+
+## Key Background
+
+Like Yaccarino, Musk has also pushed [favorable](https://twitter.com/elonmusk/status/1731546683584995685?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1731546683584995685%7Ctwgr%5E1580ff21962ddc030a72afa2fbfbe06a871eb112%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.timesnownews.com%2Fworld%2Felon-musk-shares-progress-report-of-x-has-social-media-app-hit-all-time-high-traffic-under-tesla-ceo-article-106962193 "https://twitter.com/elonmusk/status/1731546683584995685?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1731546683584995685%7Ctwgr%5E1580ff21962ddc030a72afa2fbfbe06a871eb112%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.timesnownews.com%2Fworld%2Felon-musk-shares-progress-report-of-x-has-social-media-app-hit-all-time-high-traffic-under-tesla-ceo-article-106962193") X traffic data, though the sourcing on some of [the](https://twitter.com/elonmusk/status/1723020532906435068 "https://twitter.com/elonmusk/status/1723020532906435068") [data](https://x.com/elonmusk/status/1747800112300999125?s=20 "https://x.com/elonmusk/status/1747800112300999125?s=20") he’s reposted is unclear. The platform has attempted to retain and attract users with new features including revenue share payouts for creators posting on X. Users have reported payouts worth hundreds of dollars, with viral content creators like Jimmy Donaldson, also known as Mr. Beast, reporting payouts [as high as $264,000](https://www.forbes.com/sites/antoniopequenoiv/2024/01/22/mr-beast-receives-264000-payout-from-first-video-posted-to-x/?sh=51f3747491ce "https://www.forbes.com/sites/antoniopequenoiv/2024/01/22/mr-beast-receives-264000-payout-from-first-video-posted-to-x/?sh=51f3747491ce"). Yaccarino said in a blog post last October that X had paid out [more than $20 million](https://blog.twitter.com/en_us/topics/company/2023/one-year-in "https://blog.twitter.com/en_us/topics/company/2023/one-year-in") to its creators. Engagement for creators has become a large part of X’s strategy following its fallout with several big-name advertisers last year in which the likes Disney, Apple, Comcast and IBM fled the platform after Musk was embroiled in controversy following his agreement with an [antisemitic tweet.](https://www.forbes.com/sites/tylerroush/2023/11/16/elon-musk-condemned-after-calling-antisemitic-post-actual-truth/?sh=587974a94020 "https://www.forbes.com/sites/tylerroush/2023/11/16/elon-musk-condemned-after-calling-antisemitic-post-actual-truth/?sh=587974a94020")
+
+## Further Reading
+
+[X CEO Says Platform Will Be Profitable By Early 2024—But Dodges Questions About Musk’s Monthly Fee](https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=17ed20671059 "https://www.forbes.com/sites/siladityaray/2023/09/28/x-ceo-says-platform-will-be-profitable-by-early-2024-but-dodges-questions-about-musks-monthly-fee/?sh=17ed20671059") (Forbes)
+
+ <fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">[Year Of Musk: X Faces Slashed Valuation And Fewer Advertisers One Year After Twitter Takeover](https://www.forbes.com/sites/antoniopequenoiv/2023/10/27/year-of-musk-x-faces-slashed-valuation-and-fewer-advertisers-one-year-after-twitter-takeover/?sh=200fcb695510 "https://www.forbes.com/sites/antoniopequenoiv/2023/10/27/year-of-musk-x-faces-slashed-valuation-and-fewer-advertisers-one-year-after-twitter-takeover/?sh=200fcb695510") (Forbes)
+
+[X Apparently Slowed Access To Sites Elon Musk Dislikes—Then Abruptly Backtracked](https://www.forbes.com/sites/willskipworth/2023/08/15/x-apparently-slowed-access-to-sites-elon-musk-dislikes-then-abruptly-backtracked/?sh=93fcb2ee154b "https://www.forbes.com/sites/willskipworth/2023/08/15/x-apparently-slowed-access-to-sites-elon-musk-dislikes-then-abruptly-backtracked/?sh=93fcb2ee154b") (Forbes)</fbs-ad>

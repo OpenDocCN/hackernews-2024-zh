@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:23:37
+-->
+
+# I Wrote My Own Editor
+
+> 来源：[https://bold-edit.com/wrote-my-own.html](https://bold-edit.com/wrote-my-own.html)
+
+<main class="wrote-my-own">
+
+I used to like vscode. I've been using it since it could run and debug C#. Last year, I noticed I frequently hit bugs where I couldn't type until I switched out and back into the editor with alt-tab. That's not so bad but it got annoying when I couldn't build or debug until I restarted the program
+
+One day, possibly the thing that bothered me the most was when I was writing a GDB pretty printer. I'd tweak the script; then to see the results I would press F5 to run the already built binary and wait over a second EVERY SINGLE TIME (about 1480ms). It was driving me nuts. I ended up leaving a terminal open and would save, alt tab, press up, enter. All that would still be almost a second faster than if I were to restart the debugger in vscode. I then realized it won't matter how fast my compiler is (I've implemented one for my own language) it will always feel slow if I use vscode (the compiler builds a debuggable binary in 15 milliseconds).
+
+Finally, what broke the camel's back was when I was debugging 3 different complex functions. Each had about 15-20 variables I was interested in. I had the watch panel take up the entire right side and there wasn't enough room. I had to **manually remove and add variables** every time I rotated to a third function. I wouldn't always put the vars back in the same order. It was obnoxious. Whichever function I was looking at I wanted to see the same set of variables on the top right in the same order every time. Between the bugs, it being slow to launch, and now debugging becoming a problem I decided then and there to write a text editor.
+
+I thought, how hard could it be? The answer is always harder than you expect but I knew that and I wanted to find out
+
+The first thing I did was implement GDB support. Here's a video of the watch variables at the top right changing based on the function its in
+
+<wrote-my-own-vids/dynamic.mp4>
+
+If you look closely you'll see there's no flickering. All variables and their values show up at the same time. You can see variables are shown significantly quicker. From the video you can't see when I press a button to launch the debugger. From launch to breakpoint (which includes the build step) it took <200ms. Two of my biggest annoyances I solved. Next, I wanted to make sure editing and rendering is fast no matter how large the file is. Some tools generate hundreds of MBs of JSON. Here's a video of me opening two files (both 1gb) scrolling around, typing, and pressing undo/redo.
+
+<wrote-my-own-vids/large.mp4>
+
+I was pretty happy that I could run 60fps without dropping frames with a debug build (vscode drops frames). However for a 4K monitor, I need an optimized build. Even with typing and undo/redo I consistently stayed over 144fps so people with fast monitors can have a smooth experience.
+
+I like being able to partially type a filename and jump to it, or find/jump to a type. I like to rename variables. LSP's (language server protocol) support these so I implemented it. It's not a complete implementation, one thing easy to see is there is no semantic tokens support which would improve highlighting. The video shows signature help but doesn't show jump to, rename, hover, etc. Friends didn't like debugging in their current IDE so they asked if I could implement DAP support. So I implemented that as well. The video shows an example using python.
+
+<wrote-my-own-vids/lsp.mp4>
+
+A few weeks before I began writing, I met the people who work on the [undo debugger](https://undo.io/). Their goal is to let people replay executions, so you can figure out and debug complicated problems that no one knows how to reproduce. But that's not why I liked it. I did this.
+
+<wrote-my-own-vids/udb.mp4>
+
+In that video, I ran the 'last' command on the global variable g1\. The debugger brought me to the last time it was modified. It's magic. I use it constantly, even when I know where it's modified. It saves me from writing a conditional on a breakpoint and I don't have to guess if I don't know which spot the variable was last modified. It's not a free debugger but I wanted to implement the feature for myself and it was very easy since it had the same protocol as gdb and the implementation was just a few lines on top of my already existing gdb implementation.
+
+This editor is still early in development and plenty of features are missing. There's no global search, there is a find but no replace and people who like vim motions will need to wait. If you try it for 5 minutes feel free to let me know all the things that you noticed were missing. There's a tutorial file in the download to give you something to do in the first few minutes of using this. </main>

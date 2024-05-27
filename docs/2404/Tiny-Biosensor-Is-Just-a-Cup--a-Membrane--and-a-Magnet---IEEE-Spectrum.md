@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:00:08
+-->
+
+# Tiny Biosensor Is Just a Cup, a Membrane, and a Magnet - IEEE Spectrum
+
+> 来源：[https://spectrum.ieee.org/biosensors-chipless-batteryless-wireless](https://spectrum.ieee.org/biosensors-chipless-batteryless-wireless)
+
+A wireless, chipless prototype biosensor offers the prospect of simple, wearable tech that can continuously monitor blood-sugar levels and other biochemical and physiological markers. The system pairs an implanted, magnetic biosensor with a miniature, wearable device that relays the sensor’s magnetic signals to a smartphone via Bluetooth.
+
+The implant is smaller than most pencil erasers. It is in fact a plastic cup covered with a thin, flexible membrane, on which is glued a minuscule magnet. The wearable reader is a magnetic-signal transmitter-receiver about the size of a stack of three or four American [Kennedy half-dollars](https://catalog.usmint.gov/coins/coin-programs/kennedy-half-dollars/) or [EU 10-euro collector coins](https://www.bundesbank.de/en/tasks/cash-management/euro-coins/collector-coins/10-euro-828912).
+
+The batteryless implant contains just three components made of three materials: a 6-millimeter-diameter silicone polymer cup, a 6-mm-diameter membrane of the same material, and a 1.5-by-0.8-mm cylindrical micromagnet.
+
+With membrane and magnet in place over the cup, the finished device is like a tiny kettledrum: Thump on it, and the drumhead vibrates.
+
+A magnetic implant vibrates signals out to a wearable device, whose coil picks up the signal and then routes it via Bluetooth to a smartphone for analysis.Mengdi Han Lab/University of Peking
+
+“We refer to the implantable part as the magnetic implant and the wearable part as the miniaturized wearable device,” says [Mengdi Han](https://future.pku.edu.cn/en/js/Faculty/DeptBME/41fab12c423d43d4b080d5b7737b5433.htm), assistant professor of [biomedical](https://spectrum.ieee.org/topic/biomedical/) engineering at Peking University’s [College of Future Technology](https://future.pku.edu.cn/en/index.htm) in China. “However, we have yet to devise a new, concise name for the system.”
+
+The reader is a magnetic sensing device called a [tunneling magnetoresistance (TMR) sensor](https://en.wikipedia.org/wiki/Tunnel_magnetoresistance), which picks up the motions of the implanted magnet and sends the signal via Bluetooth to a handheld device, where it is recorded and decoded.
+
+The wearable readout device, built around a tunnel magnetoresistance sensor (TMS), is the size of a small stack of U.S. half-dollar coins.Mengdi Han Lab/University of Peking
+
+Or as Han describes it, “Our work uses an elastic membrane to generate large a variation of magnetic field, enabling us to use a mini wearable device to measure the signal continuously at any place.”
+
+He adds, “We initially designed many complex 3D structures for the magnetic implant, but then realized that a simple cavity was more reliable.”
+
+### What the New Sensor Can Sense
+
+In their proof-of-concept experiments, Han and his colleagues used unmodified implanted sensors to measure intracranial pressure and cerebrospinal fluid viscosity in rats.
+
+To detect specific molecules in a living system, the researchers took a page from earlier work on magnetoelastic resonance sensors. “Our work indeed builds upon the foundation laid by previous research in magnetoelastic resonance sensors,” says Han.
+
+The researchers expanded the surface area attached to the implanted magnet by gluing vertical arrays of multiwalled carbon nanotubes to its exposed surface. They then coated the nanotubes with proteins that grab onto the molecules they want to detect, increasing the inertia of the vibrating surface.
+
+So, coating the sensor’s “drum” head with [concanavalin A](https://pubmed.ncbi.nlm.nih.gov/1155246/), a bean protein with a strong affinity for sugar molecules, produced a glucose sensor. Coating with specific antibodies produced real-time sensors for proteins like [albumin](https://pubmed.ncbi.nlm.nih.gov/25518870/) and [human immunoglobulin G](https://go.drugbank.com/drugs/DB00028).
+
+“Compared with previous works, the major advantage of our work is that we use an elastic membrane as the vibration structure,” Han says. “The resulting vibration amplitudes reach millimeter-level, two orders of magnitude larger than conventional [MEMS actuators](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7838232/). Such large amplitudes create obvious variations of magnetic field. Therefore, we can detect the change of magnetic field using sensors even with relatively low sensitivities, such as the TMR sensor chip integrated in our miniaturized wearable device.”
+
+By contrast, the small vibrational amplitudes inherent in earlier devices demanded more sophisticated and expensive receivers, says Han.
+
+“They need to rely on large coils to detect the high frequency change of magnetic field, or use lock-in electronics,” he adds. Some devices even demand expensive and bulky superconducting quantum interference device magnetometers ([SQUIDs](https://spectrum.ieee.org/a-new-hypersensitive-magnetometer-based-on-kinetic-inductance)) or [optically pumped magnetometers](https://www.cell.com/trends/neurosciences/fulltext/S0166-2236%2822%2900102-3).
+
+“I’m not sure if our device can surpass MEMS in terms of times and costs,” Han says. “However, I do think that our wearable reader can be at least 10 times cheaper than earlier bulky readout equipment.”
+
+Han adds that the group is looking into commercial development of their prototype device. “There is a demand for wireless implantable sensors in various clinical scenarios,” he says. “Currently, we are focusing on enhancing long-term stability postimplantation.”
+
+The researchers reported on their work earlier this month in the journal [*Science Advances*](https://www.science.org/doi/10.1126/sciadv.adm9314).
+
+From Your Site Articles
+
+Related Articles Around the Web

@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:20:10
+-->
+
+# Zilog Calls Time on the Venerable Z80, Discontinues the Standalone Z84C00 CPU Family - Hackster.io
+
+> 来源：[https://www.hackster.io/news/zilog-calls-time-on-the-venerable-z80-discontinues-the-standalone-z84c00-cpu-family-723594464754](https://www.hackster.io/news/zilog-calls-time-on-the-venerable-z80-discontinues-the-standalone-z84c00-cpu-family-723594464754)
+
+Zilog has announced it is halting production of its standalone DIP-packaged Z80 CPU models — a move that could spell trouble for vintage computing enthusiasts looking to build Z80-based systems or repair existing machines with new parts.
+
+Zilog launched the original eight-bit Z80 CPU in 1976 as its first product, designed by former Intel engineer and company co-founder Federico Faggin and early employee Masatoshi Shima. Designed to offer improvements over Intel's 8080 and built with embedded computing in mind, the Z80 quickly rose to become one of the most popular CPU choices for microcomputers — going head-to-head with MOS Technology's rival 6502, launched a year earlier, and appearing in devices including the Sinclair ZX Spectrum, Tandy TRS-80, and Namco's Pac-Man arcade cabinets.
+
+Although a design of its era, the Z80 CPU is still a popular choice for both modern embedded systems and enthusiast gadgets longing for a nostalgic return to simpler times — but it appears Zilog is finally calling time on the line, despite its status at one time as one of the mostly highly second-sourced CPU designs.
+
+The Zilog Z80, in continuous production since 1976, has finally reached the end of its life — in standalone CPU form, at least. (📷: Zilog/Electronics Magazine)
+
+In a product change notice issued by Zilog parent company Littelfuse this week, the company warned users that "our Wafer Foundry Manufacturer will be discontinuing support for the Z80 product and other product lines" — with 14 June 2024 as the last-time-buy (LTB) date, after which the parts will no longer be available to order.
+
+The notification names 13 Z80 parts, all in the Z84C00 family, as being officially end-of-life — including parts which are commonly used to replace faulty chips in vintage computers or to build Z80-powered modern machines inspired by same. The discontinuation does not, however, appear to cover the eZ80 embedded core range — only the standalone CPU parts.
+
+*UPDATE*: A separate product change notification confirms that the new Z180 core line is also affected, with the same last order date of 14 June 2024.
+
+An email address for those affected by the parts' end-of-life status is available [in the product notification PDF](https://www.mouser.com/PCN/Littelfuse_PCN_Z84C00.pdf); "depending on the overall LTB demand," Zilog warns, "minimum/maximum order quantities may be implemented."
+
+*Main article image courtesy of Gennadiy Shvets,* *[CC BY 2.5](https://creativecommons.org/licenses/by/2.5)**.*

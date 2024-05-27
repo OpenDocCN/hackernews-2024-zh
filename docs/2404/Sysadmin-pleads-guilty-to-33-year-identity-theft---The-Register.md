@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 12:52:25
+-->
+
+# Sysadmin pleads guilty to 33-year identity theft • The Register
+
+> 来源：[https://www.theregister.com/2024/04/03/sysadmin_33_year_id_theft/](https://www.theregister.com/2024/04/03/sysadmin_33_year_id_theft/)
+
+An Iowa system administrator has pleaded guilty to charges related to stealing and assuming a former coworker's identity over a 33-year period.
+
+According to court documents, Matthew David Keirans, 58, also maliciously worked with authorities, supplying them with forged documents that would ultimately see his victim jailed and admitted to a mental hospital for nearly a year and a half.
+
+Keirans first met his victim, William Donald Woods, who ran away from home at 16, in "about 1988" – which is as specific as the court documents get – while working at a hot dog stand in Albuquerque, New Mexico. 
+
+Roughly two years later in 1990, Keirans is said to have assumed Woods' identity "in every aspect of his life," purchasing all manner of forged documents, including a Kentucky birth certificate, US social security number, and I-9 form, all of which he later used to secure employment at an Iowa hospital in 2013 as a remote sysadmin.
+
+After passing the hospital's background checks, he became a core member of the University of Iowa Hospitals & Clinics' IT team and assumed a key role in maintaining the hospital's systems and infrastructure, according to Keirans' [plea agreement](https://regmedia.co.uk/2024/04/03/usa_v_keirans_plea_memorandum.pdf) [PDF].
+
+Over his ten-year employment, he earned more than $700,000 from his job and was earning more than $100,000 by the time he was nabbed by authorities.
+
+What happened with the real Woods between the late 1980s and the 2010s wasn't detailed in the court documents, but we know Keirans secured a job at an unnamed fast food chain in 1990 after he got his hands on a fake Colorado ID card. He also opened a Colorado bank account using Woods' name and the newfound ID card.
+
+A year later, Keirans bought a car for $600 using two $300 checks, which later bounced, drove it a little while until it broke down, and then abandoned it. After, he went to an ATM to withdraw all the money he had left, then fled Colorado before an arrest warrant for William Woods was issued in the state.
+
+In about 1994, Keirans, still using Woods' name, married a woman and had a child who also bore Woods' name.
+
+Between August 2016 and May 2022, Keirans took out eight different loans from credit unions in Woods' name, amounting to more than $200,000 in value, the court documents reveal.
+
+Keirans clearly loved a good Jeep so he bought three of them using loans taken out in Woods' name – a 2016 Cherokee, a 2019 Cherokee, before ending up in the big leagues with a 2018 Grand Cherokee.
+
+The fraudster was also approved for a Visa Platinum credit card with a limit of $11,000, in addition to numerous other personal loans, some of which used his Jeep as collateral.
+
+### Cruelty and incompetence in equal measure
+
+If the awfulness wasn't evident already here, the true malice behind Keirans' actions became clear in 2019 when then-homeless Woods discovered the huge debt taken in his name, which amounted to around $130,000 at the time, and went to his local Los Angeles bank to clear things up.
+
+Trying to explain that the lines of credit weren't taken out by the genuine Woods, he requested his account to be closed, saying he refused to pay the debt.
+
+Given the large sums in the account, the real Woods was asked a series of security questions, which of course he failed to answer correctly because he didn't create them. That prompted the bank teller dealing with Woods to alert the LAPD, which arrested Woods after Keirans faxed a series of forged documents to local police, "proving" he was the real Woods.
+
+This is all despite the real Woods presenting a genuine social security card and California state ID card. To cap it off, Woods was arrested not under his own name, but under Keirans' instead.
+
+The worst part – Woods was held in county jail for 428 days in total, and after a California judge deemed him mentally unfit to stand trial and Woods pleaded "no contest" to the two felony charges against him, he was sent to a mental hospital for a total of 147 days and medicated with psychotropic drugs. From then on, the judge also ordered Woods to only use his "true name," Matthew Keirans, going forward.
+
+Throughout this ordeal, Keirans, earning a healthy salary through his work-from-Wisconsin-home [sysadmin](https://www.theregister.com/2023/06/28/the_death_of_the_sysadmin/) gig, was in regular contact with authorities requesting updates to Woods' criminal case.
+
+In numerous messages sent between him and the authorities, Keirans was seen to be going along with the realities of the case, and at the time Woods' mental fitness was questioned, he implied there was a possibility that Woods may regain that fitness.
+
+Woods was released from both hospital and jail in 2021, was again homeless, and spent more than two years filing various reports to convince any authority that would listen that he was, in fact, the victim of identity fraud.
+
+His luck turned on January 13, 2023 when, after discovering where Keirans worked, he informed the Iowa hospital about the situation, which then engaged a senior detective in the local police force.
+
+That detective managed to unravel Keirans' 33-year scheme over the course of several months, in part using [DNA tests](https://www.theregister.com/2023/06/21/dna_testing_company_ftc_complaint/) to definitively prove Keirans wasn't the son of an elderly man in Kentucky as he had previously claimed.
+
+During a series of interviews with the detective, Keirans initially continued to falsely present as Woods until the DNA evidence was presented to him, at which point he said "my life is over" and "everything is gone."
+
+Keirans [now faces](https://www.justice.gov/usao-ndia/pr/former-hospital-administrator-pleads-guilty-identity-theft-scheme-spanned-three) a potential maximum sentence of 32 years in prison, with a minimum of two years. He'll also have to pay a $1.25 million fine, and serve five years of supervised release after his sentence. ®

@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:13:47
+-->
+
+# Mid-level Nvidia employee retires with $62 million from stock options, while another lost it all — a story of millionaire winners and losers | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/pc-components/gpus/nvidia-employees-make-fortunes-and-foul-ups-with-their-stock-options-a-story-of-millionaire-winners-and-losers](https://www.tomshardware.com/pc-components/gpus/nvidia-employees-make-fortunes-and-foul-ups-with-their-stock-options-a-story-of-millionaire-winners-and-losers)
+
+The wealth that can be gained from helping to propel a successful company is vividly illustrated by a recent Tweet/X by Barron’s writer [Tae Kim](https://twitter.com/firstadopter/status/1778536699221672052). One “mid-level” Nvidia employee accrued a fortune of $62 million, claims Kim. Thus, company share schemes can be a great incentive for employees. However, as a counterpoint, the senior Barron’s reporter also knows of at least one Nvidia employee who made a “half billion dollar mistake,” after their ‘green-gold’ slipped through their fingers.
+
+In the Tweet above, Kim tells the happy tale of a mid-level Nvidia employee who “maxed out the employee stock purchase plan (ESPP) for 18 years,” and kept a firm hold of this ‘green gold.’ The employee wasn’t a big shot engineer, it is made clear. They simply took full advantage of the Nvidia ESPP, which allows employees to use between 10-15% of their salary to buy company stock at a 15% discount to the market.
+
+This lucky (wise?) employee is said to have left Nvidia with a stack of shares worth $62 million. It must have been hard to hold these shares without sometimes dipping in to take some cash, but Kim asserts that this individual “never sold during tenure.” We don’t need to say that $62 million is a considerable retirement nest egg, and hope that the ex-employee enjoys the best of health, too.
+
+As teased in the intro, not everyone who took advantage of the Nvidia ESPP during the rocket-propelled share valuation gains of recent years fared so well. Kim tells of an early Nvidia employee, an engineer, who once was the proud owner of a million Nvidia shares (a single share is valued at $882 at the time of writing).
+
+Sadly, this employee had to sell up his green gold to pay for losses when his broker “margined his account with another stock that fell 90%,” [explains Kim](https://twitter.com/firstadopter/status/1778553658751226100). A margin account is where you leverage the value of one or more holdings to purchase other stocks or financial assets. In this instance, the forced sell from the margin account led to a “half billion dollar mistake” according to the source.
+
+## Curtis Priem and the semi-retirement mode Nvidians
+
+This isn’t the first time we have heard of, or reported on, Nvidia employees and their fortunes. Last November, we wrote about a lesser-known Nvidia co-founder, [Curtis Priem](https://www.tomshardware.com/news/nvidia-co-founder-lives-off-grid-but-could-have-been-worth-70-billion) (the first Nvidia CFO), who cashed out relatively early. Interestingly Priem’s Nvidia stock would have been worth over $70 billion if he had held onto it. However, this ‘loss’ seems to be of no concern to Priem, who has an estimated $30 million personal fortune and what sounds like a busy, fulfilling life.
+
+We published another fascinating story stemming from [Nvidia’s undeniable success](https://www.tomshardware.com/tech-industry/semiconductors/nvidia-crosses-dollar2-trillion-market-cap-as-ai-demand-and-stock-price-soar-becomes-only-fifth-company-to-reach-that-benchmark) in December last year. The headlining employee with $62 million in Nvidia shares might have retired. However, there seems to be a problem at Nvidia with reports of wealthy Nvidia employees operating [in semi-retirement mode](https://www.tomshardware.com/pc-components/gpus/wealthy-nvidia-employees-are-taking-it-easy-in-semi-retirement-mode-even-middle-managers-make-dollar1-million-a-year-or-more-report).
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.
+
+Hey boss, can we have some Future shares? OK, never mind, I’ve just looked at the chart...

@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:22:38
+-->
+
+# Inverters with constant full load capability enable an increase in the performance of electric drives - Fraunhofer IZM
+
+> 来源：[https://www.izm.fraunhofer.de/en/news_events/tech_news/inverters-with-constant-full-load-capability.html](https://www.izm.fraunhofer.de/en/news_events/tech_news/inverters-with-constant-full-load-capability.html)
+
+### Transistors made of heat-resistant silicon carbide
+
+To prevent the passive components of an inverter, such as capacitors and copper elements, from being damaged by heat build-up, conventional systems throttle their maximum output in continuous operation. This process is also known as “derating”: Chips made of silicon carbide allow a smaller cooling surface while maintaining the same performance, which means that semiconductor material can be saved compared to silicon chips, as more optimum cooling is provided.
+
+The system developed by Fraunhofer IZM uses modern silicon carbide transistors, which are more efficient and more temperature-resistant than pure silicon. Two of these silicon carbide transistors are applied directly to a ceramic substrate at Fraunhofer IZM using an innovative prepackaging process. These prepackages can then be flexibly embedded in conventional PCBs. Thanks to the thin design and a reduction in the materials required, less mechanical stress and more uniform deformation behavior occurs in case of heat exposure. In addition, the segmented ceramic substrates make optimum use of the limited space available to best meet the specific requirements of the automotive industry.
+
+### Copper cooling elements from the 3D printer
+
+ **In addition to the optimized materials, the researchers also looked at how to cool the individual components more efficiently. The better the cooling effect, the less expensive semiconductor material is required, as the chips can be arranged even more compactly. The researchers' aim is to achieve a high level of thermal integration of the various semiconductor elements, as well as passive components such as capacitors and copper conductors. For this purpose, the temperature-critical components are connected directly to the cooling system via silver sintered connections and thermally integrated in the best possible way: Thanks to a parallel arrangement, the cooling liquid reaches all heat sinks and connected semiconductor elements simultaneously, and the thermal energy is dissipated evenly. Copper is also being used for the first time in a 3D printing process to manufacture the cooling elements, allowing the excellent thermal conductivity of copper to be combined with the full flexibility of 3D printing, instead of only being able to access aluminum heat sinks as before. Compared to CNC milling processes, 3D printing allows a great deal of freedom with regard to the design of the cooling channel and, in turn, optimum utilization of the limited installation space.
+
+### High modularity of the prototype
+
+ **In addition to advances in materials and production processes, the scientists were also able to achieve greater modularity of the individual elements for the prototype. While the concept envisaged in the previous project was still based on a solution in which all components were permanently connected to each other, the elements of the inverter can now be replaced and repaired more easily as sub-modules. As a result, electric vehicles can be produced even more resource-efficiently and can also be operated longer. Especially in a resource-critical industry such as the automotive industry, low material costs are an important factor in being able to manage the energy transition cost-effectively.
+
+Following a simulation phase, the prototype is currently under construction and will ultimately undergo an extensive testing process at Porsche AG in order to one day find its way into series production. The Dauerpower project was successfully launched in 2021 and received funding of EUR 1.2 million from the German Federal Ministry of Economics under the reference number 19I21023C. In addition to Fraunhofer IZM, other project partners include Porsche AG and Robert Bosch GmbH.****

@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:11:04
+-->
+
+# This briefcase lets you walk around with 368TB of NVMe SSDs — WD Ultrastar Transporter features 128GB RAM, 1,300W power supply, and Ice Lake Xeon CPU | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/desktops/servers/this-briefcase-lets-you-walk-around-with-368tb-of-nvme-ssds](https://www.tomshardware.com/desktops/servers/this-briefcase-lets-you-walk-around-with-368tb-of-nvme-ssds)
+
+Western Digital, known for its hard drives and SSDs, has unveiled a new product that isn't a storage device in the technical sense. The product, known as the Ultrastar Transporter, is a new Western Digital-built travel case that houses a whopping 368TB of NVMe flash storage. The case is TAA compliant and has a 12-core Intel Ice Lake server that houses all SSDs and dual 200Gb ethernet ports.
+
+The Ultrastar Transporter briefcase addresses high-performance, high-capacity data transfers between server and edge locations. Western Digital reports that demand is high for physical storage transport, particularly vast amounts of data that would take days or weeks to transfer over the Internet. WD's new travel case solves this problem by allowing users to transport vast data through good old physical transportation.
+
+Image 1 of 2
+
+(Image credit: Western Digital)
+
+(Image credit: Western Digital)
+
+A few examples include workloads where high-capacity data capture needs to be processed at one location from another. Another is the proliferation of multi-datacenter workflows, where large data sets have to be held at multiple locations and rapidly sent to those locations faster than what raw internet bandwidth can provide.
+
+The Ultrastar Transporter has a rackmount server that holds all 368TB of NVMe flash storage to accommodate all that storage. The server features a 12-core Intel [Ice Lake](https://www.tomshardware.com/reviews/intel-10nm-ice-lake-test-benchmarks,6257.html) Xeon 4310 CPU, 128GB of DDR4 RDIMM memory, 1300W Titanium PSU, and dual 2TB SN740 NVMe SSDs in Raid 1, which serve as the boot drive. I/O consists of dual 200GB ethernet ports, dual USB 3.0 ports, a DB9 serial port, and a VGA port. 7 PCIe Gen4 slots are located on the board, including four x16 slots and three x8 slots. These PCIe slots connect all 368TB of SSD storage to the system.
+
+The case itself looks like a conventional carrying case. The outer shell appears to be hard plastic, with metal supporting rails filling the lips of the case. The case features two latching mechanisms and a mechanism to attach a lock for [security](https://www.tomshardware.com/tag/security). You can transport the travel case by rolling it on its two wheels or with another handle that allows you to carry it like a briefcase.
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

@@ -1,0 +1,77 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:40:29
+-->
+
+# A desire for a loud car with a modified muffler is predicted by being a man and higher scores on psychopathy and sadism
+
+> 来源：[https://cipp.ug.edu.pl/A-desire-for-a-loud-car-with-a-modified-muffler-is-predicted-by-being-a-man-and-higher,162006,0,2.html](https://cipp.ug.edu.pl/A-desire-for-a-loud-car-with-a-modified-muffler-is-predicted-by-being-a-man-and-higher,162006,0,2.html)
+
+## BACKGROUND
+
+This brief report is a pilot study examining whether demographic variables (age and sex) and self-report responses on a dark tetrad scale predict the variance in how people respond to an aggregate of three items specifically created for this study and designed to assess a desire to have a loud vehicle. Participants were asked how they feel about their car, their desire to have a loud car, and their willingness to modify their muffler to have an even louder car. As muffler/exhaust system modifications are typically illegal, the present analyses add to both the understanding of the dark personality variables as well as what individual difference variables may predict who engages in these behaviours.
+
+The dark tetrad includes the dimensions of Machiavellianism, or “controlled manipulation” ([Paulhus et al., 2021](#), p. 210) and reflect those who tend to be strategic in their interactions with others. Narcissism, or self-love/confidence, reflects those who tend to seek attention to reinforce their exaggerated positive self-views. Psychopathy, or impulsive cruelty to others, reflects the callous nature of some individuals. Sadism, defined in the dark tetrad as everyday sadism, involves the enjoyment some individuals experience watching others being harmed or from inflicting pain and suffering on others ([Paulhus et al., 2021](#)). Although the dark personality dimensions share commonalities, with some suggesting that there may be a common dark factor ([Moshagen et al., 2018](#)), research has shown that the dimensions have unique correlations with some variables. For example, [Galić (2016)](#) reported that both Machiavellian and psychopathy scores positively correlated with counterproductive work attitudes, such as time theft, but that the positive correlation with narcissism did not reach significance (sadism was not measured). [Campbell et al. (2009)](#) reported that a significant negative correlation was found between psychoticism scores and higher-order moral reasoning with a focus on basic rights for people, but that neither Machiavellian nor narcissism scores correlated significantly greater than zero (sadism was not measured).
+
+As each of the dark tetrad traits have been reported to be correlated with antisocial intent and criminal attitudes ([Mededović & Kovačević, 2021](#)), the present study predicted that each dark trait would positively correlate with the loud car scale aggregate, and because typically modifications to vehicles represent criminal activity, it was predicted that sadism and psychopathy would positively predict the aggregate of the car items. In addition, it was predicted that narcissism would positively predict the car scale because making their car louder directs attention from others to that car and, by extension, the driver. This “look at me” behaviour is reflective of narcissism ([DeWall et al., 2011](#)). Machiavellianism was not predicted to be a strong predictor of the aggregate of the car items, as although Machiavellianism correlates with antisocial measures, the review by [Kowalski et al. (2021)](#) suggests that once psychopathy has been entered into regression equations, variance due to Machiavellianism tends to become nonsignificant when predicting antisocial behaviours. With respect to demographic variables, it is predicted that younger individuals who are men will score the highest on the aggregate of the three car items as [Feder et al. (2019)](#) report that this segment of the population (i.e., young men) has the highest prevalence of loud leisure noise.
+
+## PARTICIPANTS AND PROCEDURE
+
+### PARTICIPANTS
+
+Participants were 529 (289 men, 234 women, and 6 identified as other) undergraduate business students with a mean age of 18.14 years (*SD* = 1.19, range 16 to 37). Because the research question is new and exploratory, the minimum number of participants was considered to be 250, based on the results reported by [Schönbrodt and Perugini (2013)](#) for the sample size for correlations to be stable. Individuals completed the self-report measures on-line using the survey system Qualtrics. Participants were given partial credit towards the research component of their course, which only required checking the consent page and was not contingent on completion of the survey. The study received institutional ethical approval.
+
+### MEASURES
+
+Three questions were created for the purpose of this study to assess an individual’s affect towards vehicles, and specifically, loud cars with modified mufflers. The items were: “My car is an extension of what makes me a person”, “I think loud cars are really cool”, and “If I could, I would make my car louder with muffler modification”. Items were responded to using the following response key: 1 – *strongly disagree*, 2 – *somewhat disagree*, 3 – *neither agree nor disagree*, 4 – *somewhat agree*, or 5 – *strongly agree*. For the present sample, the mean was 6.53 (*SD* = 3.11). Although the mean was relatively low (the maximum score could be 15), 10 of the participants had a scale aggregate score of 15, the scale total was not skewed (skew = .82, kurtosis = –.09), and the internal consistency (coefficient α) was .76\. A factor analysis of the three items demonstrated a single factor explaining 56% of the variance.
+
+*Short Dark Tetrad*. Participants also completed the Short Dark Tetrad (SD4; [Paulhus et al., 2021](#)). This 28-item scale assesses four sub-scales, each with seven items, responded to using the following response key: 1 – *strongly disagree*, 2 – *disagree*, 3 – *neutral*, 4 – *agree*, or 5 – *strongly agree*. For the present data, Machiavellianism, titled “Crafty”, had a mean of 24.51 (*SD* = 4.18) and a coefficient α reliability estimate of .68\. Narcissism, titled “Special”, had a mean of 21.11 (*SD* = 4.00) and a coefficient α reliability estimate of .66\. Psychopathy, titled, “Wild”, had a mean of 16.22 (*SD* = 4.61), and a coefficient α reliability estimate of .72\. Sadism, titled “Mean”, had a mean of 18.26 (*SD* = 5.47), and a coefficient α reliability estimate of .76\. The α estimates in the present study are slightly lower but similar to those reported by [Paulhus et al. (2021)](#), who reported estimates, across three samples, from .75 to .78 for Machiavellianism, .80 to .83 for narcissism, and .81 to .82 for both psychopathy and sadism.
+
+## RESULTS
+
+All data reported below will be made available upon request to the author and were analysed using SPSS 27\. [Table 1](#T1) provides the zero-order correlations between the study variables. All missing data were treated with pair-wise deletion. Age did not correlate significantly with the other variables. Men scored significantly higher on the car and SD4 scales. The car scale score correlated positively and significantly with each of the SD4 scales. At the car scale item level, each item had significant (*p* < .001, two-tailed) positive correlations with the SD4 scales except for the correlation between the item “If I could, I would make my car louder with muffler modification” and the Crafty scale, which correlated with a value of 0.11 and had a two-tailed significance value of .012\. In addition, the SD4 scales showed moderate to high inter-scale correlations.
+
+##### Table 1
+
+Correlations between age, sex, car scale, and the SD4 scales with 95% confidence intervals
+
+|  | Age | Sex^a | Car | Crafty | Special | Wild |
+| --: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Sex^a | –.05^b |  |  |  |  |  |
+|  | [–.13, .04] |  |  |  |  |  |
+| 3\. Car | –.002^c | –.33* |  |  |  |  |
+|  | [–.09, .08] | [–.39, –.24] |  |  |  |  |
+| 4\. Crafty | –.04^d | –.17* | .21* |  |  |  |
+|  | [–.13, .05] | [–.22, –.06] | [.12, .29] |  |  |  |
+| 5\. Special | –.09^e | –.12^h | .26* | .39* |  |  |
+|  | [–.17, –.001] | [–.20, –.03] | [.18, .33] | [.32, .46] |  |  |
+| 6\. Wild | .01^f | –.33* | .51* | .40* | .49* |  |
+|  | [–.08, .09] | [–.41, –.26] | [.44, .57] | [.33, .47] | [.42, .55] |  |
+| 7\. Mean | –.02^g | –.42* | .49* | .45* | .41* | .71* |
+|  | [–.10, .07] | [–.49, –.35] | [.42, .55] | [.36, .51] | [.33, .47] | [.66, .75] |
+
+[Table 2](#T2) presents the results of a linear regression model using ordinary least squares in predicting the car scale score. The overall model was significant (*F*(6, 511) = 36.01, *p* < .001), accounting for approximately 29% of the variance (*R*² = .30; adjusted *R*² = .29). Significant predictors were being a man, and higher scores on psychopathy (Wild) and sadism (Mean).
+
+##### Table 2
+
+Predicting the car scale scores with the measured variables
+
+| Predictor | β and 95% CI | Standardized β | *t* | *p* |
+| :-- | :-: | :-: | :-: | :-: |
+| Constant | 2.67 [–1.39, 6.73] |  | 1.29 | .197 |
+| Age | –.02 [–.21, .17] | –.01 | –0.23 | .822 |
+| Sex^a | –.74 [–1.23, –.25] | –.12 | –2.98 | .003 |
+| Crafty | –.02 [–.09, .04] | –.03 | –0.70 | .487 |
+| Special | .01 [–.06, .08] | .01 | 0.31 | .755 |
+| Wild | .20 [.13, .27] | .30 | 5.28 | < .001 |
+| Mean | .13 [.07, .20] | .23 | 4.11 | < .001 |
+
+## DISCUSSION
+
+This brief report tested the predictions that the dark tetrad scales would positively correlate with an aggregate of three car-related items, including how the individual related to their vehicle, how they like loud cars, and that they would modify their muffler to make their car louder. The results demonstrated that each of the SD4 scales correlated positively with the car scale. In addition, it was predicted that younger men as well as the sadism, psychopathy, and narcissism scales would positively and significantly predict the car scores. The regression results somewhat supported the predictions. Although the regression weight for age was not significant, the direction was negative, suggesting greater endorsement for the car items for the younger sample. The regression weight for sex was significant, supporting the hypothesis that men would score higher on the car scale. Both psychopathy and sadism significantly predicted the car scale, and supported the hypotheses based on the links between these dark dimensions and criminal intentions and antisocial attitudes ([Mededović & Kovačević, 2021](#)). The present results did not support the hypothesis that narcissism would predict the car scores as although the regression weight was positive, the weight was nonsignificant. Possibly if the car scale had included questions about an audience, or specifically people noticing the car, narcissism may have been a stronger predictor. Alternatively, the lack of a significant predictor weight for narcissism could be because of the relationship between narcissism and empathy. If individuals who chose to operate loud cars do so even if the noise startles or upsets people, then it may be that those who have loud cars score lower on empathy. Examining the correlations between trait emotional intelligence and the dark triad, [Petrides et al. (2011)](#) reported that empathy had significant negative correlations with Machiavellian and psychopathy scores, but a nonsignificant correlation with narcissism scores. Future research may want to examine the possible predictive power of empathy with respect to operating loud cars.
+
+The present findings are in agreement with those reported by [Wehner et al. (2022)](#) who reported that psychopathy and sadism scores had significant positive correlations with responses to a single item asking if the individual had intentionally started an illegal fire. In contrast, both Machiavellian and narcissism scores did not correlate significantly with the fire-setting question. As described by [Paulhus et al. (2021)](#), the distinction between sadism and psychopathy, as measured by the SD4, refers to the proximity of the individual with possible victims such that psychopathy reflects an up-close cruelty whereas sadism includes viewing the harm to others from a distance. In the context of loud cars, it can understandable how both sadism and psychopathy were both significant predictor variables. Modifying a muffler to make a car louder is disturbing to pedestrians, other drivers, and animals at a distance, meeting the sadism component, as well as startling when up close at intersections, meeting the psychopathy component. Recently, [Dinić et al. (2021)](#) reported that each of the dark tetrad dimensions positively correlated with utilitarian decision making in scenarios where an individual had to be sacrificed to save other people. Other than legally enforcing laws with respect to these automobile modifications, the present results suggest that other tactics, such as information campaigns, may not be useful as it is unlikely that those scoring higher on psychopathy and sadism would be swayed by the fact that the modified mufflers may be damaging to others, as researchers have recently reported that the dark personality dimensions are negatively correlated with altruism measures (see [Trahair et al., 2022](#)).
+
+## LIMITATIONS, FUTURE RESEARCH, AND CONCLUSIONS
+
+Although the present study explains some of the variance in people’s favourable attitudes towards cars with loud modified mufflers, the study is limited in that other loud vehicles were not examined. For example, different results may have occurred if motorcycles or trucks had been the target variable. Size of vehicle may also have had an impact on the results. For example, [Pazhoohi and Klingstone (2022)](#) reported that larger vehicles are perceived as more aggressive (see also [Yoshida & Igata, 2012](#)). If both larger and louder car items had been included, the correlations with sadism and psychopathy may have been even greater. Also it was not examined whether individuals choose to listen to loud music while driving, as some researchers, such as [Brodsky et al. (2018](#); see also [Karageorghis et al., 2021](#)), have reported that listening to hostile music while driving resulted in higher frequencies of violating speed limits in a driving simulator. In addition, the three items used to generate the car scale were created for the purpose of this pilot study and were not validated with respect to predicting actual ownership of load cars. Future research may want to examine other loud/modified vehicles, how drivers make their cars louder, actual loud car ownership, other antisocial behaviours (such as lighting fireworks in residential areas), socioeconomic factors, as well as other measures of dark personality characteristics and empathy in a more heterogeneous sample.

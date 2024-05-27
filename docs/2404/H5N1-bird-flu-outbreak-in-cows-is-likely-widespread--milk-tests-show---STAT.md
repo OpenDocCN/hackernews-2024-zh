@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:33:58
+-->
+
+# H5N1 bird flu outbreak in cows is likely widespread, milk tests show - STAT
+
+> 来源：[https://www.statnews.com/2024/04/25/h5n1-bird-flu-cows-outbreak-likely-widespread/](https://www.statnews.com/2024/04/25/h5n1-bird-flu-cows-outbreak-likely-widespread/)
+
+Andrew Bowman, a veterinary epidemiologist at Ohio State University, had a hunch. He had been struck by the huge amounts of H5N1 virus he’d seen in milk from cows infected with the bird flu and thought that at least some virus was getting off of farms and going downstream — onto store shelves.
+
+He knew the Food and Drug Administration was working on its own national survey of the milk supply. But he was impatient. So he and a graduate student went on a road trip: They collected 150 commercial milk products from around the Midwest, representing dairy processing plants in 10 different states, including some where herds have tested positive for H5N1\. Genetic testing found viral RNA in 58 samples, he told STAT.
+
+The researchers expect additional lab studies currently underway to show that those samples don’t contain live virus with the capability to cause human infections, meaning that the [risk of pasteurized milk to consumer health](https://www.statnews.com/2024/04/24/h5n1-bird-flu-pasteurized-milk-grocery-stores-safety/) is still very low. But the prevalence of viral genetic material in the products they sampled suggest that the H5N1 outbreak is likely far more widespread in dairy cows than official counts indicate. So far, the U.S. Department of Agriculture has reported 33 herds in eight states have tested positive for H5N1.
+
+“The fact that you can go into a supermarket and 30% to 40% of those samples test positive, that suggests there’s more of the virus around than is currently being recognized,” said Richard Webby, an influenza virologist who has been analyzing the samples at St. Jude’s Children’s Research Hospital in Memphis, Tenn., where he heads the WHO Collaborating Center for Studies on the Ecology of Influenza in Animals.
+
+Earlier this week, the FDA announced that its effort had found evidence of the H5N1 virus in samples of milk purchased from store shelves, but it provided no detailed results. On Thursday, during an online symposium hosted by the Association of State and Territorial Health Officials, the FDA disclosed a high-level readout from the agency’s investigation. Results returned Thursday morning showed PCR-positive milk in 20% of samples, “maybe with some preponderance for areas with known herds,” said Donald Prater, acting director of the FDA’s Center for Food Safety and Applied Nutrition. He did not say how many samples the FDA had analyzed or from what geographic area.
+
+The testing by PCR — polymerase chain reaction — turned up only genetic traces of the virus, not evidence that it’s alive or infectious. The FDA has been adamant that H5N1, which is heat-sensitive, is very likely killed through the process of pasteurization.
+
+The agency is still assessing those samples for viral viability by attempting to grow virus from milk found to contain RNA from H5N1\. The FDA plans to release results of those studies in the coming days. On Wednesday, Jeanne Marrazzo, the new director of the National Institute of Allergy and Infectious Diseases, told reporters that a team of NIAID-funded researchers had early data to [suggest that pasteurization does appear to be effective](https://www.statnews.com/2024/04/24/h5n1-bird-flu-usda-orders-dairy-cow-testing/).
+
+The team that produced that data — the St. Jude and OSU groups — told STAT that it has so far analyzed four samples of store-bought milk that had tested positive via PCR for H5N1 genetic material. “We’ve done the viral growth assays to see if we can recover any virus from them and we can’t,” Webby said.
+
+Those four samples came from an initial collection of 22 commercial milk products purchased in the Columbus, Ohio, area. “It was basically just me hitting up the five grocery stores between campus and my house,” said Bowman.
+
+PCR testing at OSU revealed three of those 22 products to be positive for viral RNA. Bowman sent them to Webby to inject into plates of mammalian cells and embryonated chicken eggs and look for any signs of active viral replication. In order to do that, Webby needed a negative control, so he went and bought milk at a store near his lab in Memphis. But PCR testing found H5N1 RNA in that sample too, making it useless as a negative control, but an additional data point showing a lack of live virus.
+
+That sample is still in Webby’s fridge at home. He used it to make dinner earlier this week. “I’m not concerned about it all,” he said.
+
+Although the risk of infection from dairy products is very low, the worry is that the wider H5N1 spreads in cows, the more opportunities the virus has to adapt to transmit efficiently in mammalian hosts. It also increase the chances H5N1 could get into pigs, where it could swap genes and form hybrids with other flu viruses. Viruses that mutate to be able to spread easily through one species of mammals could find it easier to infect people.
+
+The St. Jude group is now repeating its analyses with the additional samples Bowman and his graduate student bought around the Midwest. Their early findings provide further evidence that H5N1 is spreading broadly among dairy cows in the U.S.
+
+This week, researchers examining [viral genome sequences released Sunday](https://www.statnews.com/2024/04/21/usda-releases-h5n1-bird-flu-genetic-data-eagerly-awaited-by-scientists/) by the USDA found that the outbreak has likely been underway [for months longer than previously known](https://www.statnews.com/2024/04/23/h5n1-bird-flu-genetic-analysis/). “Both of these data — the milk data and the genetic data that shows this has been around since December of last year — suggests that the outbreak is probably much bigger than we know,” said Angie Rasmussen, a virologist who studies emerging zoonotic pathogens at the Vaccine and Infectious Disease Organization at the University of Saskatchewan in Canada.
+
+It may also signal that herds can be infectious with only mild symptoms or no symptoms at all, which would complicate the response and make containment much more difficult.
+
+“This is telling us that we’re probably already seeing that milk from asymptomatically infected cows does have some virus in there,” said Andrew Pekosz, a molecular microbiologist who studies respiratory viruses at Johns Hopkins Bloomberg School of Public Health.
+
+So far, there has been only [one report](https://www.nytimes.com/2024/04/19/health/bird-flu-usda-cattle.html) of H5N1 infections in a cattle herd with no symptoms — in North Carolina. But USDA officials have not disclosed further details beyond the fact that milk from infected but asymptomatic cows seems unchanged.
+
+In H5N1-infected cows, the first thing that tends to happen is their appetite disappears and their activity goes down. Then their milk production dries up. In some animals, the milk they do produce turns yellow and thick. “It’s an odd thing that seems to be unique to this particular virus,” said Keith Poulsen, director of the Wisconsin Veterinary Diagnostic Laboratory. And it’s one of the chief red flags that dairy farmers are supposed to be on the lookout for when deciding whether to test their herds. If milk from asymptomatic or pre-symptomatic cows looks normal but can carry virus, it would obscure the need for testing.
+
+To really understand the scale of spread as well as possible mechanisms of viral transmission, it’s necessary to conduct widespread testing of animals with and without symptoms, said Jennifer Nuzzo, an epidemiologist and director of Brown University’s Pandemic Center. “If we’re only testing cows with outward symptoms, we’re missing infections in those without.”
+
+Up until this week, USDA policy did not require testing of any animals, and only recommended it for dairy cows greater than 3 years of age that have been lactating for at least 150 days and are showing severe clinical symptoms like fever, lethargy, abnormal milk production, and loose stool.
+
+On Wednesday, the agency [issued a federal order](https://www.statnews.com/2024/04/24/h5n1-bird-flu-usda-orders-dairy-cow-testing/) requiring an animal to test negative for the virus before it can be transported across state lines. It also requires laboratories and state veterinarians to report to the USDA any animals that have tested positive for H5N1 or any other influenza A virus. But outside of interstate travel, testing remains voluntary and encouraged only for visibly ill animals.
+
+Public health experts told STAT that such narrow testing criteria are likely distorting the true extent of the outbreak. “I have not seen evidence that makes me want to discard the fear that testing practices are absolutely shaping what we think we know about this virus,” Nuzzo said. “We just don’t have the right data right now to tell us what’s going on.”
+
+The situation is reminiscent, she said, of the Covid-19 pandemic. In the early weeks of that outbreak, testing policies were narrow — limited to symptomatic individuals who had traveled to China. Meanwhile, the SARS-CoV-2 virus [was spreading undetected](https://www.statnews.com/2020/03/03/washington-state-risks-seeing-explosion-in-coronavirus-without-dramatic-action-new-analysis-says/) throughout the U.S., as genomic analyses would later show. Later, when at-home tests became widely available, [official counts became unreliable](https://www.statnews.com/2021/12/07/growing-use-of-home-covid19-tests-leaves-health-agencies-in-the-dark/), leaving state and local health departments in the dark.
+
+“At least with Covid, [wastewater surveillance](https://www.statnews.com/2020/05/28/wastewater-testing-gains-support-as-covid19-early-warning/) eventually kicked in to supplement our picture,” Nuzzo said. “With H5N1, we don’t have that.”
+
+On Wednesday, the Centers for Disease Control and Prevention said it is exploring wastewater testing for H5N1, but noted significant hurdles, including farms not being linked to municipal wastewater systems and the potential for infected wild birds to confound testing of water around farms.
+
+Requiring dairy farms to regularly test all their animals, including asymptomatic ones, is not logistically feasible given the current capacity of state veterinary diagnostic laboratories, Poulsen said. He and other lab directors are already bracing for the massive ramp-up in testing they expect to begin when the USDA order goes into effect Monday. But he does think more has to be done at the federal level to encourage farmers to test their herds.
+
+“At this point, farms just aren’t volunteering samples because they don’t have any incentives to raise their hand,” Poulsen said. That information blackout makes it much more challenging for epidemiologists to trace the virus and understand how it’s spreading, the exact mechanisms of which are still unclear.
+
+“We need to do what we can now to understand it and contain it so it doesn’t turn into a pathogen of pandemic potential,” Poulsen said. “That is a real risk if we continue to ignore it.”

@@ -1,0 +1,116 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:36:46
+-->
+
+# My Setup, April 2024 - by Thorsten Ball - Register Spill
+
+> 来源：[https://registerspill.thorstenball.com/p/my-setup-april-2024](https://registerspill.thorstenball.com/p/my-setup-april-2024)
+
+Last week I got a new monitor, after my old one has shown worse and worse signs of what looked like burn-ins.
+
+The new monitor allowed me to get rid of two (!) cables in my setup, which pleased me quite a bit. And since there are people reading this whose eyebrows went up at the “two cables”, I thought I’d use this as an occasion to write about [my desk and computer setup](https://thorstenball.com/my-setup/) a little bit.
+
+Here’s a photo. Feel free to print it out and keep as a reference as you read on.
+
+Let’s do this bottoms-up.
+
+**Chair**: I’ve had this Steelcase Gesture for six years now and highly recommend it. I know, I know, these chairs are expensive and the IKEA Markus chair is also pretty comfortable, but believe me when I say the same thing that everyone else also says: investing in a good chair really pays off.
+
+As for Aeron vs. Gesture: I don’t like the Aeron. I think it’s a “world population is split 50/50 on this” kind of thing. Try both, chose one.
+
+Also worth noting: in the past few months I thought the chair would’ve given up on me, but turns out [it was my butt, not the chair](https://twitter.com/thorstenball/status/1781317912470446351) — somehow something happened in a workout that made it uncomfortable to sit on this chair for more than two hours. Changed workout program and chair’s comfortable again. Meaning: investment still pays off!
+
+If you came here to read about cables and are now wondering how we ended up talking about my butt: sorry but not really! Wait until we get to the desk mat.
+
+**Desk**: also a Steelcase, the height-adjustable Steelcase Ology. Bought it at the same time as the chair and have to admit that I very rarely put it up and use it in standing position. When I went through the whole working-out-made-my-butt-hurt ordeal (see previous section), I used it *a lot*, but now that everything’s fine again down under, I enjoy sitting in very unergonomic positions.
+
+Big plus of the desk: the cable tray. Everything’s stuffed in there, including a very large power strip, power adapters and multiple chargers.
+
+**Desk mat**: Always wanted a desk mat. Don’t know why. Seemed comfortable. Then, last year, when it got so hot in summer that I’d sweat just sitting here, with my forearms sticking to the desk (see? told you), I thought that a mat could solve this.
+
+First I ordered a mat made out of felt. Bad move. Felt feels horrible when you constantly move your arms on it. Then, thinking that I could get rid of the mouse pad at the same time, I ordered a gaming desk mat, from Razer. It’s called: Razer Pro Glide XXL. What a name. But it’s good! And even though it’s in light grey, it doesn’t look that disgusting yet, even six months later.
+
+**Audio interface**: this is a Focusrite Scarlett 2i2 and I’ve had it for years too. No complaints about it, does what it’s supposed to and even works under Linux nowadays without a lot of fiddling.
+
+Few months back I mounted it under the desk. Pro: less stuff on the desk — less cables, less audio interfaces. Con: not that comfortable anymore to change volume or turn it on/off.
+
+Last point is a bit of a pain in the butt (like the chair was, yes): whenever I switch computers, I have to turn the audio interface on again, which means I’m in a lot of calls in which people say “thorsten? can you hear me?” because they didn’t hear my “hello” because I forgot to turn the thing on again. I know that there’s a setting in the driver to permanently turn it on but last time I did that, I could see sparks flying when switching the USB-C cable to a different machine. I’ll take “can you hear me?” over sparks any day, so I keep it off.
+
+**Microphone**: I bought the Shure Beta 87A also years ago after reading through Marco Arment’s [microphone reviews](https://marco.org/podcasting-microphones). I really don’t know enough about microphones to know how this one stacks up against a lot of others, but I do know that it sounds better than the Blue Yeti I had before.
+
+I never really think about this microphone because it really just does its job, so: A+.
+
+**Microphone Arm**: it’s an Elgato Wave Mic Arm LP. Quite the name and also quite new. I bought this a couple of months ago after getting fed up with the cheap-ish microphone arm that I had before. The old one started to squeak and the microphone didn’t stay in place and the arm would also cover the laptop on the side and I thought there has to be a better way. Turns out there is.
+
+This microphone arm is amazing. Yes. It’s incredibly solid, it’s quiet, it keeps the microphone where it should, I can hide the mic *and* my headphone cable in it — should’ve bought this one sooner. Highly recommend it.
+
+**Headphones**: these are Bose QC-45 that I’ve bought after years of using Bose QC-25.
+
+Headphones are very important to me. I wear them for ten hours on a workday, easily. And I always, always have noise-cancelling on. I don’t listen to a lot of music anymore when working, but in a house with two small kids the barely-perceptible hum of the active noise cancelling doing its job is one of the sweeter sounds in my life.
+
+But after years of using the QC-25 (and loving them!) it started to feel a little bit dumb to recharge the batteries every couple of days. I would constantly have batteries lying around here and the charger would always be plugged in. “Don’t they build these headphones with built-in batteries nowadays?” I thought and then bought the Bose 700.
+
+The Bose 700 were great, but they’re too tight and after wearing them for ten hours per day, my ears would start to sweat (did *you* expect that there’d be this much sweat in this post? I didn’t) and things would become uncomfortable.
+
+Then someone told me that the QC-45 are basically the QC-25 but rechargeable via USB-c and, bingo, that’s exactly what they are and why I love them. Very comfortable, great-sounding (to my sweaty ears) headphones.
+
+**Mouse**: this mouse has probably the greatest of all the names in this line-up — it’s a Razer DeathAdder V2.
+
+Yes, it’s a gaming mouse that has colored lights in it and it’s called DeathAdder. Don’t I have some self-respect? Well, I thought we answered that with No when we talked about butt pain, but listen: this mouse is amazing.
+
+For years I’ve used Apple’s Magic Trackpad and loved it. Then I developed some pain in my right hand and went looking for a mouse. At first I used a cheap, vertical mouse that I found on Amazon and that was *okay* but it wasn’t great.
+
+(Also: using a vertical mouse feels as cool as wearing compression socks on a long flight - sorry vertical mice users.)
+
+Then I bought a gaming mouse from Steelseries. I can’t remember the name but I’m sure it also sounded like an Iron Maiden album. That impressed me. It felt comfortable and precise and a lot of the annoyances I’ve had with the Magic Trackpad or other mice just went away.
+
+But then the scroll wheel broke and I bought the (I wish I could play some music here:) *Razer DeathAdder* and it changed my life. It’s so good. The *click*, man. Just that click alone makes you reconsider why you ever used a trackpad at all. Then you notice how light it is, then you notice that the cable is also very light and basically feels wireless, and then you notice that pointing at stuff on the screen and resizing things and selecting stuff is suddenly easier and, oh my god, the two buttons on the side allow you to go forward and back in the browser? I don’t know how else to put it, but after years of using only trackpads switching to a very good mouse feels like waking from a bad dream. Try it.
+
+(I’ve convinced three other people to switch to gaming mice and they *all* say it’s life-changing.)
+
+**Webcam**: probably one of the oldest pieces of hardware I still have. It’s a Logitech C920 HD Pro Webcam and I think it’s pretty, pretty good for how much it cost.
+
+Yes, there are better cameras, and I’m curious to try one, but I think in webcam land there are these ~100 bucks webcams on one side, then there’s a very wide and deep valley, and then there are the professional cameras on the other side for which you pay hundreds if not thousands of bucks. I don’t know whether I want to cross that valley. I’ve heard that you have to use HDMI adapters and battery adapters and that the cameras overheat and don’t reliably work and it all sounds like a (sing it with me:) big pain in the butt. So I’m sticking with this one until someone tells me “buy this one, it’s twice as good and you don’t ever have to worry about it.”
+
+**Lights**: the one on the left is a Elgato Key Light Air and the one on the right is an Elgato Ring Light (that name probably would’ve been enough for you to distinguish them, huh).
+
+I first bought the Ring Light because I thought I could get away with only a single light. Quickly realized that when you have glasses and you mount a ring light right behind the camera it constantly looks like you have two small ring lights in your face. Stay away from ring lights if you have glasses.
+
+So then I ordered the smaller Key Light Air and moved both to the sides of the desk. Now they work pretty well. I can adjust the light on my phone, or in the menu bar on macOS, or through Home Assistant.
+
+And let me tell you something: before you worry about your webcam or camera, you should get a good light. Consistent lighting makes a huge difference.
+
+That’s also why I bought these. I don’t have strong lights in this room, so in Zoom calls or in video recordings, the lighting and thus the quality of my webcam video was determined by what I had open on screen. If I had a blank, white page open everything would look crisp and properly lit. When I then switched to the dark terminal, quality dropped.
+
+So I got some lights to have consistent video quality, no matter what time of day or what application I have maximized. Recommended move.
+
+**Mug**: this is an Ember Smart Mug. A smart mug. A *smart*  *mug*. Yes. I can connect to it via Bluetooth and tell it to keep my coffee at a certain temperature and the Ember app even allows you to connect to “multiple devices” and you can create an account to sync your “device settings” and I can configure the color of the light on the outside of the mug — yes, it’s all very ridiculous. But! (No, only one T in this one)
+
+But I won it in a quiz at Sourcegraph (which is also why there’s a Sourcegraph logo on it), so no, I didn’t spend money on a smart mug, but yes, I’ve been using it every day since then and the battery is often empty and I forget to recharge it but when it’s charged and I forget to drink my coffee and get a push notification that says “Your coffee has reached perfect temperature” I feel a bit embarrassed but also happy.
+
+So, take that for what it’s worth.
+
+**Keyboard**: it’s Keychron Q3 with Gateron G Pro Brown switches.
+
+It’s great, it works flawlessly, the switches sound nice, I can type up to 140wpm on it, it’s *fucking heavy*. It’s so heavy that the package arrived and the guy handed it to me I thought “what the fuck did I order?! this can’t be the keyboard.” It’s so heavy that it never, ever moves, which is great.
+
+I don’t know what else to say here, though. I think I kinda lost my appetite for mechanical keyboards over the years. I started using a KUL ES-87 in 2015\. Back then with Cherry MX Blue switches. I loved it and also convinced my colleagues to switch to mechanical keyboards (quite the sound in that office). Then I got a Topre and didn’t fall in love that much. Then, years later, I got a cheap one off of Amazon and that was also nice but started to fall apart, so now I got this Keychron Q3.
+
+But… I also wonder whether I shouldn’t switch to the Apple Magic Keyboard again. I don’t think I’ve ever typed faster on any keyboard than on the tenkeyless Apple Magic Keyboard.
+
+**Monitor**: this is a brand-new Dell U2723QE. It’s a 27-inch 4k monitor with a built-in USB hub and it’s really nice.
+
+I’ve had an HP Z27 for the past 5 years and, like I wrote above, it started to break down so I went looking for a replacement.
+
+One big requirement for me was that the monitor has a built-in USB hub, because I want to connect all the peripherals to the monitor so that I can just switch which computers is attached to the monitor and all the peripherals go along with it.
+
+With the HP Z27 I could do that: mouse, keyboard, audio interface, and webcam were all connected to the monitor. I could then use a single USB-C cable to connect the monitor and peripherals to a MacBook, while also charging the MacBook. The desktop computer was connected to the monitor via DisplayPort and a separate USB-A-to-USB-C cable was used to connect the USB-Hub part of the monitor to the desktop computer. That means I had a small USB-C cable attached to the monitor and I could then plug either the MacBook or the desktop computer into this USB-C cable to connect one or the other.
+
+Now, with the Dell U2723QE (DeathAdder isn’t such a bad name after all, is it?), I don’t have to change a single cable! I just have to press a button on the back of the monitor to switch between computers.
+
+I know you’ve been waiting for it, so here’s a diagram:
+
+How it’s all connected. (Diagram created with Monodraw, a beautiful piece of software)
+
+Like I said: switching to that monitor allowed me to get rid of a small adapter cable and another USB-A-to-USB-C cable — isn’t that a huge payoff that makes talking about butt pain and forearm sweat worth it?

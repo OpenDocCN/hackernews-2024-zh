@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:39:13
+-->
+
+# Businesses Are Getting People Killed - by Darrell Owens
+
+> 来源：[https://darrellowens.substack.com/p/businesses-are-getting-their-customers](https://darrellowens.substack.com/p/businesses-are-getting-their-customers)
+
+Traffic deaths per-capita in the United States vs. Other Nations.
+
+A couple of days ago in Berkeley, a driver rammed into a cyclist on an extravagantly large, car-oriented commercial corridor and severed the man’s leg. That man, for no good reason, will suffer a potentially life-de-stabilizing disability for the duration of his life. The consequence for the driver will be nothing. The street won't be any safer in the near future as well, because years ago some business owners and a pro-car council member killed a bike lane proposal for the corridor.
+
+A month ago, a reckless, impatient driver in San Francisco lost control and rammed into a mother, father, and their two babies waiting at a bus stop — killing the entire family. In August last year, another driver coming too fast off a freeway off-ramp struck a family and killed their baby. This week it was announced that the driver will suffer no consequences, other than symbolic community service and taking a “driver safety class.” Criminal courts will likely impose a similarly weak consequence to the driver that wiped out the family last month.
+
+Honestly, I don’t think either driver should be thrown in jail — even though evidence suggests their reckless impatience killed people. Certainly, that will haunt her for the rest of her life. Jail time should be reserved for drivers who intentionally act maliciously. I place most of the blame for these accidents on traffic engineers and city planners who let drivers speed through crowded pedestrian areas.
+
+However, driving is not a right, it’s a privilege and our social contract depends on people responsibly using this privilege. A responsible society would've barred this person from driving ever again in a dense, transit-rich, populated area like San Francisco at the very least. Yet our justice system treats cars as equally essential to people's mobility as oxygen is to the brain, yet with none of the caution and responsibility expected of a car's use. The easiest way to get away with murder in the United States is to kill someone with your car and make it look like a traffic accident.
+
+Every day in America, people like you and I, die at the hands of drivers who will never suffer any consequence for their actions. Every day, families are torn apart by cars killing people. Those who survive blows from cars are instantly disabled and disfigured, lose their jobs and livelihoods, and suffer from severe injuries — physical and psychological — for the rest of their lives. It is a leading cause of death for most age groups that are not seniors.
+
+Cities throughout the country, including Berkeley and San Francisco, passed “Vision Zero”, a plan to eliminate traffic deaths, inspired by the Netherlands’s success in creating a traffic-death-free haven. These reforms have failed everywhere in the United States because Americans are politically unwilling to make the changes necessary to make alternatives to driving safer. No large or even medium-sized city can boast zero traffic deaths and nationwide traffic deaths have stubbornly increased since 2010.
+
+The reasons are multi-faceted: the rise of smartphones distracting drivers, regulatory loopholes allowing oversized trucks that can’t see in front of them, and the decline of public transit ridership putting more cars on the road. Paris initiated traffic safety reforms that reduced driving to widespread opposition by motorists and merchants. But the mayor persisted and transformed Paris into a walking, cycling, and transit haven. Paris's transformation is broadly popular and the envy of many in the United States. Unfortunately, no American city has the guts to commit to what Paris did and I'm going to be frank as to why.
+
+The number one obstacle to any safety improvements is local merchants and commerce interests, unfortunately. Business owners and the merchant class believe that any customers they get are drivers. They are unswayed by research consistently showing that increased foot traffic and alternative travel to commercial areas increase their profit. Part of this is because merchants are just as car-brained as the general population. But the other half is that merchants disproportionately listen to their patrons who drive and complain about parking. Transit riders, cyclists and pedestrians don’t advertise to merchants that they didn't arrive by car.
+
+Though small in number, the elected interests of most local cities give disproportionate attention to business interests and their pro-driving beliefs. Even in progressive Berkeley, home of many climate scientists from the university, transportation decisions are dictated by science illiterates and business interests, not the city’s intellectuals. When Berkeley proposed building a bike lane in my neighborhood, which has no protected bike lanes near a prominent middle school, many wise locals went uncharacteristically nuts. Plastered on neighborhood businesses were conspiracy theories about a United Nations agenda to force people into plastic cities where they won't be allowed to own cars. Every other lawn has signs proclaiming economic ruin if drivers are forced to park a whopping 30 seconds away on side streets rather than directly in front of businesses.
+
+Despite the town being highly educated, many Berkeleyans simply closed their ears to modern climate science and empirical evidence on transportation. A writer for The New York Times, one of many residing in Berkeley, privately remarked to me how astonishing it was to witness such a sophisticated population reacting like simpletons to the most modest safety improvements that are commonplace throughout the world.
+
+Sadly, history is repeating itself in San Francisco. Business interests in the West Portal neighborhood where the family was wiped out by a car are already organizing to stop any improvements to the street. This is a major transit hub in S.F., developed before cars were even in mass use, yet the jurisdiction of drivers knows no bounds. If there can’t be a car-free commercial strip in West Portal, there can’t be one anywhere in America. Some business groups see the death of that family as merely an unavoidable consequence, a price paid to ensure drivers don't have to walk an additional 30 seconds from parking on a side street to reach their shops. I don't think the merchants are bad people, but they are so indoctrinated by decades of car-centrism that they harm their own bottom line. A car-free corridor would increase profits for the local businesses!
+
+Because localities refuse to deal with this car carnage, car insurance has skyrocketed as traffic violence has increased. Insurance companies know people are killing themselves and each other at higher rates on the road. But it's also creating a negative side-effect of increasing the number of uninsured drivers, which is why hit-and-runs keep increasing.
+
+Change takes a long time and if it’s going to start anywhere, it’s local. Hassle your local elected officials; form groups, start petitions; tell your local businesses that patrons besides motorists matter. I personally let my local grocers know that I arrive by bus or foot, and my neighbors now keep their bike helmets on while shopping. Even though they advocate against my safety, I don’t hate them, it just that they don’t know better.
+
+We can’t keep this status-quo going: 45,000 killed, over 100,000 injured by cars a year. Yet it gets a fraction of the media coverage a Boeing plane part gets. It's truly absurd that transit riders, cyclists, and even pedestrians are guaranteed travel on a very limited number of streets, while drivers are granted virtually every road and cry discrimination if a portion of one is given to someone else.
+
+—
+
+*The driver who killed the family at West Portal has not yet settled in court. That was another driver who killed a baby after ramming a family at 4th and King late last year. I mixed up my family-ramming drivers. This has been corrected.*

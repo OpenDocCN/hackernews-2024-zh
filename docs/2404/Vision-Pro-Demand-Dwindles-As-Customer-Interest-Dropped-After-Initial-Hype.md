@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:28:42
+-->
+
+# Vision Pro Demand Dwindles As Customer Interest Dropped After Initial Hype
+
+> 来源：[https://wccftech.com/vision-pro-demand-dwindles-as-customer-interest-dropped-after-initial-hype/](https://wccftech.com/vision-pro-demand-dwindles-as-customer-interest-dropped-after-initial-hype/)
+
+Apple's Vision Pro headset took the AR market by storm with its stunning looks and advanced technology underneath. While the headset had a solid start, the traction has reduced over time, potentially due to its hefty price tag and minimal real-world use cases. Prominent industry analyst claims that the demand for Vision Pro demos has greatly reduced, highlighting poor demand for the headset after initial hype.
+
+## Vision Pro hype cooled down after launch as sales dropped in some retail stores
+
+Apple markets the Vision Pro as a spatial computer and while it does have all the attributes and applications for it, the hefty price tag is not for everyone. *[Mark Gurman](https://www.bloomberg.com/news/newsletters/2024-04-21/apple-aapl-growth-opportunities-southeast-asia-and-africa-lower-end-iphone-lv9itkna)* from Bloomberg states that the Vision Pro excitement has dropped since its launch and there have been significant reductions in demand for demos and the product itself. The analyst states:
+
+> Demand for demos is way down. People who do book appointments often don't show up, and sales — at least at some locations — have gone from a couple of units a day to just a handful in a whole week. Apple also has had to step up the marketing on its online homepage. There's a huge promo for the Vision Pro at the top of the website.
+
+Apple has to step up its game and offer a budget variant of the headset to increase adoption, as the VR category is not permeable for easier inception. Gurman also shared his experience with the Vision Pro and how he barely uses the device for work and even media consumption. He also states that the tedious work involved in attaching batteries, booting the device, and navigating the interface makes it an inconvenience compared to other devices like a laptop or a tablet.
+
+Additionally, visionOS is still in its early stages, and third-party developers are yet to offer their apps for the platform, which is one of the reasons why the analyst sticks to his laptop, even for content consumption. Apple has yet to optimize its apps for the Vision Pro as well, and since it is a first-gen product, it might take some time for developers to curate bugs and issues for a seamless user experience.
+
+The company is working on the second generation of the Vision Pro, which could offer overall improvements along with a price reduction, allowing the headset to become a [mainstream product](https://wccftech.com/vision-pro-2-success-depends-on-these-factors/). So far, Apple is planning to manufacture 400,000 units of the device this year due to production issues. The Vision Pro will be available in additional countries later this year, which could increase sales figures.
+
+Share this story
+
+Facebook

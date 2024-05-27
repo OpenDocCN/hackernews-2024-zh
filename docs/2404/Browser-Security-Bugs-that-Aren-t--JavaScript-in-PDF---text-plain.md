@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:10:30
+-->
+
+# Browser Security Bugs that Aren’t: JavaScript in PDF – text/plain
+
+> 来源：[https://textslashplain.com/2024/04/10/browser-security-bugs-that-arent-javascript-in-pdf/](https://textslashplain.com/2024/04/10/browser-security-bugs-that-arent-javascript-in-pdf/)
+
+A fairly common security bug report is of the form: “*I can put JavaScript inside a PDF file and it runs!*”
+
+For example, open [this PDF file](https://webdbg.com/test/pdf/contains-script.pdf) with Chrome, and you can see the `alert(1)` message displayed:
+
+Support for JavaScript within PDFs is by-design and expected by the developers of PDF rendering software, including common browsers like Chrome and Edge. Much like HTML, PDF files are an [active content](https://chromium.googlesource.com/chromium/src/+/master/docs/security/faq.md#Are-PDF-files-static-content-in-Chromium) type and may contain JavaScript.
+
+Periodically, *less experienced* security researchers excitedly file this issue against **browsers**, and those reports are quickly resolved “[By Design](https://chromium.googlesource.com/chromium/src/+/master/docs/security/faq.md#Are-PDF-files-static-content-in-Chromium).”
+
+Periodically, *more experienced* security researchers excitedly file this issue against **sites and applications** that are willing to host or transfer untrusted PDF files, arguing that this represents a “[Stored Cross-Site Scripting vulnerability](https://owasp.org/www-community/attacks/xss/#stored-xss-attacks).”
+
+Their confusion here is somewhat more understandable– if a website allows a user to upload a **HTML document** containing script, and then serves that HTML document from their domain, any script within it will run in the security context of the serving domain. *That* describes a classic Stored XSS Attack, and it presents a security threat because the embedded script can steal or manipulate cookies (by accessing the `document.cookie` property), manipulate web platform storage (IndexedDB, `localStorage`, etc), conduct request forgery attacks from a 1st party origin, etc.
+
+The story for PDF documents is very different.
+
+The [Chrome Security FAQ](https://chromium.googlesource.com/chromium/src/+/master/docs/security/faq.md#does-executing-javascript-in-a-pdf-file-mean-there_s-an-xss-vulnerability) describes the limitation tersely, noting `the set of bindings provided to the PDF are more limited than those provided by the DOM to HTML documents, nor do PDFs get any ambient authority based upon the domain from which they are served`.
+
+What does that mean? It means that, while PDF’s JavaScript does run, the *universe* the script runs in is limited: there’s no access to cookies or storage, very limited ability to make requests (e.g. you can navigate the document’s window elsewhere, but that’s about it), and no ability to make use of the Web Platform’s powerful capabilities exposed by the HTML Document Object Model (DOM) objects like `document`, `window`, `navigator`, et cetera. While the capabilities of JavaScript in PDF are extremely limited, they’re not non-existent, and PDF engine software must take care to avoid introducing new capabilities that void the safety assumptions of PDF-handling code.
+
+#### Restricting JavaScript in PDF
+
+Engineers should take care that handling of JavaScript in PDF respects app/user settings. For example, if the user turns off JavaScript for a site, PDFs hosted on that site [shouldn’t allow script](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/resources/pdf/main.ts;l=40;drc=1076746b494b84eeaf625c7a475ee501de270f17) either. This works properly in Chrome and Edge.
+
+Firefox’s global `javascript.enabled` toggle from the `about:`config page doesn’t impact script inside its PDF viewer:
+
+Instead, Firefox offers an individual `pdfjs.enableScripting` preference that can be configured from the `about:`config page.
+
+Chromium currently [ignores](https://issues.chromium.org/issues/41494478) `Content-Security-Policy` headers on PDF responses because it renders PDF files using web technologies that could otherwise be disallowed by the `CSP`, leading to user confusion and webdev annoyance.

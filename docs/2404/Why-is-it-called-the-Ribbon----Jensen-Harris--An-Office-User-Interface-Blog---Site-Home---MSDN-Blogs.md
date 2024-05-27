@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:21:18
+-->
+
+# Why is it called the Ribbon? - Jensen Harris: An Office User Interface Blog - Site Home - MSDN Blogs
+
+> 来源：[https://web.archive.org/web/20160203163107/http://blogs.msdn.com/b/jensenh/archive/2005/10/07/478214.aspx](https://web.archive.org/web/20160203163107/http://blogs.msdn.com/b/jensenh/archive/2005/10/07/478214.aspx)
+
+Because you can never predict what name will end up sticking.
+
+Back when my team was working on the [UI redesign of Outlook 2003](https://web.archive.org/web/20160203163107/http://www.microsoft.com/office/outlook/prodinfo/overview.mspx), one of the areas we were designing was what marketing later named the "[Navigation Pane](https://web.archive.org/web/20160203163107/http://office.microsoft.com/en-us/assistance/HP010378651033.aspx)."  But official feature naming happens late in the product cycle (usually after Beta 1), and so there's always some internal name that sticks around long after the official name comes into use.
+
+When we were working on the feature list for Outlook 2003, the line item that became the Navigation Pane was called "Combined Outlook Bar and Folder List."  Fortunately, a member of my team had the foresight to realize that it was a crappy name to have to live with for 2 years.  He suggested that we name it the "WunderBar' instead.  That worked out great because it was a snappy name, easy to say, it has positive connotations (Wonder) and it was funny because we had a large number of native German speakers on the team at the time.  Later on, someone found a [WunderBar candy bar](https://web.archive.org/web/20160203163107/http://www.mikescandywrappers.com/wunderbar_1204.html) and it also turned out that the ketchup dispensers in the cafeteria were [called the "Wunder-Bar."](https://web.archive.org/web/20160203163107/http://www.wunderbar.com/)  All the better.  Even today, many people internally still call the Navigation Pane by its original name and all of the code still refers to it as such.
+
+So where did ["Ribbon"](https://web.archive.org/web/20160203163107/http://blogs.msdn.com/jensenh/archive/2005/09/14/467126.aspx) come from?
+
+Back in the fall of 2003 we were working hard to produce a number of different prototypes in an attempt to determine what direction we wanted to go with the new UI.  We drew lots of pictures and spent a lot of time debating the merits of different directions.
+
+A few of us were in an office brainstorming and I proposed the idea of a "ribbon" of commands.  Imagine something like a [medieval scroll](https://web.archive.org/web/20160203163107/http://courseweb.stthomas.edu/medieval/images/waldensianscroll.gif), in which a long strip of paper was wound around two spindles and you could move back and forth along the paper by turning one of the spindles.  I guess in computer terms, it would have looked like an extremely long scrolling series of commands in a thin strip--sort of like the Office 12 Ribbon with the tab content laid side-to-side, and then add ultra-fast scrolling in both directions.
+
+Needless to say, that was a stupid idea (I'm not sure we even bothered to draw it), but it kind of organically morphed into a set of pictures called "Ribbon" in which we took the same idea but separated it into tabs instead.  By the time we had fleshed out the idea, we were calling it the Ribbon--even though it didn't really make much sense anymore.
+
+That, I suppose, would have been the optimum point to have recognized that we needed a catchier name (ala WunderBar), but alas, we didn't and by a few days later, calling it something else just would have confused everyone.  Also, the Ribbon was but one of many ideas on the table and it wasn't clear at the time that it was the one we were going to build.
+
+So, totally by accident, a name describing a different UI mechanism entirely is still the code name we're using today.

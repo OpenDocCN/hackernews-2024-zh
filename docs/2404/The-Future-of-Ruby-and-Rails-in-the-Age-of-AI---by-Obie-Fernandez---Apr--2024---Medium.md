@@ -1,0 +1,131 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:21:34
+-->
+
+# The Future of Ruby and Rails in the Age of AI | by Obie Fernandez | Apr, 2024 | Medium
+
+> 来源：[https://obie.medium.com/the-future-of-ruby-and-rails-in-the-age-of-ai-8f1acea31bc2](https://obie.medium.com/the-future-of-ruby-and-rails-in-the-age-of-ai-8f1acea31bc2)
+
+# The Future of Ruby and Rails in the Age of AI
+
+## Rubyists Will Lead the AI Revolution via Prompt-Driven Development
+
+Artificial Intelligence (AI) is transforming the way we build, debug, and optimize code, and it’s happening at an unprecedented pace. As a long-time Ruby and Rails developer, I’m participating in these developments with excitement via [my startup](https://olympia.chat) and [my new book](/patterns-of-application-development-using-ai-fbb660fa9ae7) and [open-source projects](https://github.com/OlympiaAI/open_router).
+
+The good news I want to share is: not only will Ruby *and* Rails survive this AI revolution, Rubyists will pioneer the most revolutionary application development approaches of the coming era. The very qualities that drew us to the Ruby and Rails ecosystem — the expressiveness, the readability, the emphasis on developer happiness — are precisely what position us to spearhead the AI-powered future of software development.
+
+In case you’re not familiar with it, the magic of Ruby lies in its dynamic, expressive nature. It’s a language that gets out of your way and lets you focus on solving problems instead of wrestling with syntax. And when you pair that with the convention-over-configuration approach of Rails, you have a potent combination that enables rapid, iterative development. It’s the reason that 20 years later, Rails remains the undisputed king of web application frameworks.
+
+> The very qualities that drew us to the Ruby and Rails ecosystem — the expressiveness, the readability, the emphasis on developer happiness — are precisely what position us to spearhead the AI-powered future of software development.
+
+As I’ve learned first-hand in the last year, these “magical” qualities are incredibly well-suited for AI-enhanced software development. I envision a near future where I’ll be able to declare my application’s functionality in plain, almost natural language (pseudo-code, really) instead of extensive code, tests, and documentation. This is the real promise of AI for software development, and it’s a promise that those of us most familiar with the essence of Ruby are uniquely positioned to deliver on.
+
+# Prompt-Driven Development: A New Paradigm
+
+In this brave new world of AI-powered development, I’m not just talking about using AI to generate code snippets or autocomplete our methods. I’m talking about a fundamental shift. Prompt-Driven Development: a paradigm where application behavior is defined not by thousands of lines of painstakingly written and maintained code, but by high-level, declarative prompts. In the early days it will be woven into plain old Ruby code, but eventually it will just be talk.
+
+Imagine describing a complex workflow or a new feature in plain, conversational language. Your AI assistant takes this description and brings it to life *in realtime, at runtime*. No more spending hours wrestling with intricate implementations or worrying about low-level details. You focus on the the business goals, the AI takes care of how to make it happen.
+
+*The vision is not about generating code to be stored and maintained.* It’s about creating a dynamic, runtime relationship between your declarative prompts and the actual behavior of your application. Your prompts are your living, breathing codebase.
+
+```
+You are an intelligent account manager for Olympia. The user will request
+changes to their account, and you will process those changes by invoking one
+or more of the functions provided. Escalate to human support rep if you
+encounter any problems.
+
+Do not allow the user to change their account or add a new AI assistant
+unless their account subscription status is active.
+
+Make sure to notify the account owner of the result of the change request
+whether or not it is successful.
+
+Always end by calling the 'finished' function so that we save the state
+of the change request as completed.
+```
+
+The prompt above is not a fantasy. As described [in my new book](https://leanpub.com/patterns-of-application-development-using-ai), it’s the actual system prompt supplied to the AccountManager component in [Olympia](https://olympia.chat/?utm_source=medium). A component that interfaces with the rest of my app via prompts. Let me say that again. The internal API for this component is plain text. I’m literally taking what would have been dozens or hundreds of lines of code and letting AI handle the job in a black-box fashion. Already. Today.
+
+> Are you taking similar approaches in your projects? Let’s [talk](mailto:obiefernandez@gmail.com)!
+
+# Challenges and Opportunities
+
+Of course, this approach comes with its own set of challenges. How do we ensure deterministic results when those are called for? How do we ensure the generated code is efficient and secure? How do we debug issues when the code is abstracted away? These are the questions we as Rubyists are uniquely equipped to tackle. Our community’s blend of pragmatism, creativity, and focus on developer experience will be invaluable in shaping the best practices and tools of this new paradigm.
+
+The potential benefits are game-changing. Faster development cycles, fewer bugs, and more maintainable, self-documenting codebases. And with the expressiveness and readability of Ruby, we have the opportunity to create prompt-driven DSLs that are a joy to work with. It’s a future where the role of the developer shifts from low-level code wrangler to high-level prompt composer.
+
+# The History of Declarative Coding and BDD
+
+It’s not the first time in computing history that people have tried to establish a declarative paradigm using natural language. In the past, there have been several attempts to create programming languages or frameworks that allow developers to express their intent using natural language-like syntax.
+
+HYPERCARD IS AN interactive system designed to work as a unique information centre. It can be used to look for and store text, custom graphics and digitised photographs. Unlike a book, which has a linear format (you flip from one page to the next), HyperCard’s interactive capabilities let you associate any one piece of information with any other. By modelling itself on our thought processes (association processes), HyperCard lets you find out what you need to know in the easiest, and therefore fastest, way. Excerpt from a*rticle in* [***Music Technology, January 1988***](https://www.muzines.co.uk/mags/MT/88/01/73)
+
+For example, in the 1980s, there was a language called HyperTalk, used in Apple’s HyperCard, which aimed to make programming more accessible by using English-like commands. More recently, there have been attempts like [Inform 7](https://ganelson.github.io/inform-website/), a programming language for creating interactive fiction that uses a subset of English grammar.
+
+Inform is a programming language for creating interactive fiction, using natural language syntax. Using natural language and drawing on ideas from linguistics and from literate programming, Inform is widely used as a medium for literary writing, as a prototyping tool in the games industry, and in education, both at school and university level (where Inform is often assigned material for courses on digital narrative). It has several times ranked in the top 100 most influential programming languages according to the TIOBE index. Created in April 2006, it was open-sourced in April 2022.
+
+However, these approaches all relied on structured language — while they used words and phrases that resembled natural language, they still required the developer to adhere to a specific, predefined syntax and grammar. The developer had to learn this “pseudo-English” and work within its constraints.
+
+In the mid-2000s, a new approach to software development started gaining traction: Behavior-Driven Development (BDD). BDD emerged as an evolution of Test-Driven Development (TDD), with a key difference: instead of focusing on testing individual units of code, BDD focused on defining the desired behavior of the system using a language that could be understood by all stakeholders, including non-technical ones.
+
+Excitement about BDD amongst me and my colleagues at Thoughtworks led to the creation of tools like RSpec, Cucumber and Pickle, which allowed developers to define application behavior using a structured form of natural language. My friend Aslak Hellesoy’s Gherkin syntax resembles English sentences, organized into scenarios and steps. For example:
+
+```
+Given I am on the home page
+When I click on the "Login" button
+Then I should see the login form
+```
+
+These scenarios serve as both documentation and automated tests. Developers write code that links each step to a corresponding action or assertion in the application. When the tests are run, the tool reads the Gherkin scenarios and executes the linked code, ensuring that the application behaves as described.
+
+This approach had a significant impact, especially in the Ruby community, *where it was born*. It allowed teams to bridge the gap between business requirements and technical implementation. Business analysts, product managers, and even clients could contribute to writing these scenarios, ensuring that the development team had a clear, shared understanding of what needed to be built.
+
+Moreover, by tying the application code directly to these human-readable scenarios, BDD made the codebase more maintainable and easier to understand. Developers could see not just what the code was doing, but why it was doing it. This made it easier to make changes and avoid introducing bugs.
+
+The problem was that while BDD and tools like Cucumber and Pickle represented a significant step towards using natural language in software development, they still required a level of structure and specificity in how the scenarios were written. They also require extensive implementation of “steps”.
+
+```
+Given("I have entered {int} into the calculator") do |number|
+  @calculator = Calculator.new if @calculator.nil?
+  @calculator.enter(number)
+end
+
+When("I press add") do
+  @result = @calculator.add
+end
+
+Then("the result should be {int} on the screen") do |expected|
+  expect(@result).to eq(expected)
+end
+```
+
+I can tell you from personal experience that even though they look simple, steps are a nightmare to write and maintain. The AI-powered approach I’m envisioning takes BDD a couple, ahem, steps further.
+
+Instead of requiring scenarios to be written in a specific format, an AI system can understand and generate code from free-form descriptions, or even from a conversation about the system requirements. Imagine the following:
+
+> Human: “When a user clicks the login button, they should be taken to a login page where they can enter their username and password. If they enter the correct details, they should be logged in and redirected to their dashboard. If they enter incorrect details, they should see an error message.”
+> 
+> AI: “Do we support Oauth-based logins?
+> 
+> Human: Sure, but just Google for now.
+> 
+> AI: And how should I style it?
+> 
+> Human: Show me a few options based on our typical style guide.
+
+And so on and so forth…
+
+In the aformentioned conversation (and in contrast to BDD), the AI system is generating not just the test scenarios, but also specification, code and visual design for this behavior. This is the kind of natural, conversational interaction that the advancements in AI are starting to make possible.
+
+> The AI-powered future of software development promises to take the concept of natural language programming to a whole new level. It’s an exciting prospect, and one that the Ruby community, with its history of embracing innovative approaches to software development, is well-positioned to explore and pioneer — we were literally the ones that pioneered BDD.
+
+So while BDD and tools like Cucumber and Pickle were groundbreaking in their time and are still widely used today, the AI-powered future of software development promises to take the concept of natural language programming to a whole new level. It’s an exciting prospect, and one that the Ruby community, with its history of embracing innovative approaches to software development, is well-positioned to explore and pioneer — we were literally the ones that pioneered BDD.
+
+# AI Woven into the Fabric of Ruby and Rails
+
+I’ve been working with Ruby on Rails almost every day for almost 20 years at this point, so my perspective on how to get to the magical future described above involves weaving AI tightly into the fabric of Ruby and Rails at a fundamental level. LLMs could eventually be leveraged within the Ruby interpreter itself to enable magical experiences — intelligently inferring method names and arguments, seamlessly connecting disparate services and APIs, and optimizing code in real-time, but *first* I plan to include more and more AI integration in the building blocks that I use to put together applications in Ruby on Rails.
+
+For example, when defining a function to pass to an LLM, instead of being verbose about parameters, [the framework I’m working on](https://github.com/OlympiaAI/raix-rails) would provide a smart parameters object that handles the mappings, derivations and calculations. Code that uses AI components such as smart parameters objects will inevitably start looking more and more like pseudocode.
+
+Some may criticize this as too magical, too abstract. But they leveled the same criticisms at Rails in the early days, and it’s evident how wrong they were about it. Will “they” criticize the approach I’m advocating for also? Absolutely. Let the gnashing of teeth commence once more.

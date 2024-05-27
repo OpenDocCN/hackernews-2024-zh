@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:32:53
+-->
+
+# Nvidia CEO hand-delivers world's fastest AI system to OpenAI, again — first DGX H200 given to Sam Altman and Greg Brockman | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-ceo-hand-delivers-worlds-fastest-ai-system-to-openai-again-first-dgx-h200-given-to-sam-altman-and-greg-brockman](https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-ceo-hand-delivers-worlds-fastest-ai-system-to-openai-again-first-dgx-h200-given-to-sam-altman-and-greg-brockman)
+
+Nvidia CEO Jensen Huang took on a new side gig as a courier, delivering the world's first [DGX H200](https://www.tomshardware.com/news/nvidia-unveils-dgx-gh200-supercomputer-and-mgx-systems-grace-hopper-superchips-in-production) ever seen in the wild to OpenAI's Sam Altman and Greg Brockman. The trio [shared a picture of their meeting on Twitter/X,](https://twitter.com/gdb/status/1783234941842518414) commemorating a successful Jensen Huang delivery to OpenAI. 
+
+The DGX H200 is a brand-new and rocket-fast GPU-based server from Nvidia, holding the new H200 Tensor Core GPU inside a powerful [enterprise](https://www.tomshardware.com/tag/enterprise)-grade server shell. The Hopper-based H200 GPU represents a generational step forward from its little brother, the H100, with the newer card now featuring 141 GB of memory running at 4.8 TB/s compared to the H100's measly 80 GB at 3.3 TB/s. Nvidia calls its H200 "the world’s most powerful GPU for supercharging AI workloads", a claim that few could refute.
+
+Huang signed the supercomputer with the epithet "to advance AI, computing, and humanity". The signature and photo op bring to mind a very similar scene from 2016 when Huang had [a very similar delivery](https://www.tomshardware.com/tech-industry/artificial-intelligence/elon-musk-reminisces-about-the-time-jensen-huang-donated-a-dgx-1-to-openai-shares-photo-gallery) for OpenAI - the world's first DGX-1 server handed off to an excited Elon Musk. Back when Musk was a proud member and co-founder of OpenAI, he happily received the DGX-1, also signed with Huang's cheers "to the future of computing and humanity". The gift of the DGX-1 was hailed by Elon and many members of the OpenAI team as a boon that accelerated their research by weeks, and the astronomical leap in performance up to the DGX H200 could have a similar impact. 
+
+But those were happier times; today, Musk is in the process of [suing OpenAI](https://www.tomshardware.com/tech-industry/artificial-intelligence/elon-musk-sues-openai-alleging-breaches-of-the-founding-agreement). He alleges claims of breaking their founding contract by turning OpenAI from a non-profit into an aggressive for-profit company, and for exacerbating the potential dangers of artificial general intelligence (AGI), calling the prospect of AGI "a grave threat to humanity.” It seems there is no love lost between Musk and Huang today, a warm relief for fans of the CEO of leather jackets/Nvidia and the man who killed Twitter. Time will tell if Musk will receive a free AI supercomputer of his own for training his pet Grok's [next generation](https://www.tomshardware.com/tech-industry/artificial-intelligence/elon-musk-says-the-next-generation-grok-3-model-will-require-100000-nvidia-h100-gpus-to-train).
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

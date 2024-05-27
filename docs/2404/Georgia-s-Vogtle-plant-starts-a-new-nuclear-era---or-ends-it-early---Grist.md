@@ -1,0 +1,86 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:02:50
+-->
+
+# Georgia's Vogtle plant starts a new nuclear era — or ends it early | Grist
+
+> 来源：[https://grist.org/energy/plant-vogtle-georgia-nuclear/](https://grist.org/energy/plant-vogtle-georgia-nuclear/)
+
+Few issues are as divisive among American environmentalists as nuclear energy. Concerns about [nuclear waste storage](https://grist.org/cities/smaller-reactors-may-still-have-a-big-nuclear-waste-problem/) and safety, particularly in the wake of the 1979 [Three Mile Island reactor meltdown](https://www.nrc.gov/reading-rm/doc-collections/fact-sheets/3mile-isle.html) in Pennsylvania, helped spur the retirement of nuclear power plants across the country. Nuclear energy’s proponents, however, counter that nuclear power has historically been among the [safest forms of power generation](https://ourworldindata.org/safest-sources-of-energy), and that the consistent carbon-free energy it generates makes it an essential tool in the fight against global warming.
+
+But this well-worn debate may not actually be the one that determines the future of nuclear energy in the United States. More decisive is the unresolved question of whether the U.S. actually has the practical ability to build new nuclear plants at all.
+
+The answer to this question may hinge on what happens in the wake of a construction project that’s reaching completion near Waynesboro, Georgia, where the second in a pair of new nuclear reactors is scheduled to enter commercial service at some point over the next three months. Each reactor has the capacity to [power half a million homes and businesses annually](https://www.georgiapower.com/company/news-center/2023-articles/vogtle-unit-3-reaches-100-percent-energy-output.html) without emitting greenhouse gases. Despite this, they are hardly viewed as an unambiguous success.
+
+The construction of those reactors — Units 3 and 4 of [Plant Vogtle](https://grist.org/energy/first-us-nuclear-reactor-40-years-online-georgia/), the first U.S. nuclear reactors built from scratch in decades — was a yearslong saga whose delays and budget overruns drove the giant nuclear company Westinghouse into bankruptcy. The reactors, first approved by Georgia regulators in 2009, are reckoned to be the most expensive infrastructure project of any kind in American history, at a total cost of $35 billion. That’s nearly double the original budget of the project, which is set to cross the finish line seven years behind schedule. Much of the cost was ultimately borne by Georgia residents, whose energy bills have ballooned to pay off a portion of the overruns.
+
+“It’s a simple fact that Vogtle had disastrous cost overruns and delays, and you have to stare that fact in the face,” said John Parsons, a researcher at MIT’s Center for Energy and Environmental Policy Research. “It’s also possible that nuclear, if we can do it, is a valuable contribution to the system, but we need to learn how to do it cheaper than we’ve done so far. I would hate to throw away all the gains that we’ve learned from doing it.”
+
+What kind of learning experience Vogtle ends up being may well come down to how it’s interpreted by the [state and regional utility officials](https://grist.org/georgia-psc/want-clean-electricity-these-overlooked-elected-officials-get-to-decide/) who approve new sources of power. Many are likely looking at the monumental expense and difficulty of building Vogtle and thinking they’d be foolish to try their hand at new nuclear power. Other energy officials, however, say those delays and overruns are the reason they’d be foolish not to.
+
+The case for building more nuclear plants in the wake of Vogtle rests on a simple argument: Because the new reactors were the first newly built American nuclear plant to come online since 1993 — and the first to begin construction since the 1970s — many of their challenges were either unique to a first-of-a-kind reactor design or a result of the loss of industrial knowledge since the decline of the nuclear industry. Therefore, they might not necessarily recur in a future project, which could take advantage of the finalized reactor design and the know-how that had to be generated from scratch during Vogtle.
+
+The Biden administration, which sees nuclear energy as an important component of its plan to get the U.S. to net-zero emissions by 2050, is betting that Vogtle can pave the way for a rebirth of the nuclear industry.
+
+The generational gap between Vogtle and previous nuclear projects meant that the workforce and supply chain needed to build a nuclear plant had to be rebuilt for the new units. Their construction involved training some 13,000 technicians, according to Julie Kozeracki, a senior advisor at the [Department of Energy’s Loan Programs Office](https://www.nytimes.com/2023/05/11/climate/jigar-shah-climate-biden.html), a once-obscure agency that has become one of the federal government’s main conduits for climate investments under the Biden administration.
+
+When Vogtle’s Units 3 and 4 were approved by Georgia regulators in 2009, the reactor model, known as an AP1000, had never before been built. (It was Westinghouse’s flagship model, combining massive generation capacity with new “passive safety” features, which allow reactors to remain cooled and safe without human intervention, external power, or emergency generators in the case of an accident.) It later emerged that the reactor’s developer, Westinghouse, [had not even fully completed the design before starting construction](https://www.post-gazette.com/business/powersource/2017/10/23/Westinghouse-sold-an-unfinished-product-then-the-problems-snowballed/stories/201710290008), causing a significant share of the project’s costly setbacks. While that was bad news for Georgians, it could mean a smoother path ahead for future reactors.
+
+“In the course of building Vogtle,” Kozeracki told Grist, “we have now addressed three of the biggest challenges: the incomplete design, the immature supply chain, and the untrained workforce.”
+
+These factors helped bring down the cost of Unit 4 by 30 percent compared to Unit 3, Kozeracki said, adding that a hypothetical Unit 5 would be even cheaper. Furthermore, as a result of the Inflation Reduction Act, the climate-focused law that Congress passed in 2022, any new nuclear reactor would receive somewhere between 30 and 50 percent of its costs back in tax credits.
+
+“We should be capitalizing on those hard-won lessons and building 10 or 20 more [AP1000s],” Kozeracki said.
+
+Despite this optimism, however, no U.S. utility is currently building a new nuclear reactor. Part of the reason may be that it’s already too late to capitalize on the advantages of the Vogtle experience. For one thing, the 13,000 workers who assembled Vogtle may not all be available for a new gig.
+
+“The trained workforce is a rapidly depreciating asset for the nuclear industry,” said John Quiggin, an economist at the University of Queensland, in an email. “Once the job is finished, workers move on or retire, subcontractors go out of business, the engineering and design groups are broken up and their tacit knowledge is lost. If a new project is started in, say, five years, it will have to do most of its recruiting from scratch.”
+
+In Quiggin’s view, the opportunity has already passed, as much of the physical construction at Plant Vogtle happened years ago. “You can’t go back and say, ‘Look, we’ve got the team, we know what we did wrong last time, we’re going to do it better this time.’ It’ll be a totally new group of people doing it,” he said in an interview.
+
+“It would have been better to start five years ago,” Kozeracki acknowledged. “But the second best time is right now.”
+
+The federal government has put money on the table, but whether a new nuclear plant will actually get built is ultimately in the hands of a constellation of players including the nuclear industry, utility companies, and utility commissions, who would have to work together and overcome their current stalemate. None of them are clamoring to shoulder the risk of taking the first step.
+
+“Everybody’s hoping that someone else would solve the cost problem,” Parsons said.
+
+Utility commissioners — the state-level officials, often in elected positions, whose approval would be needed to site a future reactor — are wary of being blamed for passing on potential cost overruns to ratepayers.
+
+“It would just be surprising for me if a Public Service Commission signed off on another AP1000 given how badly the last ones went,” said Matt Bowen, a researcher at Columbia’s Center on Global Energy Policy.
+
+If more nuclear energy is built soon, it will most likely be in the Southeast, where power companies operate under what’s called a “vertically integrated monopoly” profit model, meaning they do not participate in wholesale energy markets but rather generate energy themselves and then sell it directly to customers.
+
+Under this model, utilities are guaranteed a return on any investment their shareholders make, which is paid for by their customers at rates set by the state-level utility commissions. Many ratepayer advocates accuse these commissions of effectively rubber-stamping utility demands as a result of regulatory capture — at the expense of customers who are unable to choose a different power company. But this same dynamic means that vertically integrated utilities are in the best position to build something as expensive as a nuclear plant.
+
+“Their primary business model is capital expenditure,” explained Tyler Norris, a Duke University doctoral fellow and former special advisor at the Department of Energy. “The way they make money is by investing capital, primarily in generation capacity or transmission upgrades. They have an inherent incentive to spend money; they make more money the more they spend.”
+
+Under the regulatory compact between states and utilities, it is utility commissioners’ job to make sure those expenditures (which ultimately, after all, come from ratepayer money) are “just and reasonable.”
+
+Tim Echols, a member of Georgia’s Public Service Commission, said in an email that he would not approve another nuclear reactor in Georgia in the absence of “some sort of federal financial backstop” to protect against the risk of a repeat of the Vogtle experience.
+
+“I haven’t seen any other [utility commission] raise their hand to build a nuclear reactor,” added Echols, who is also the chair of a committee on nuclear issues at the National Association of Regulatory Utility Commissioners.
+
+Kozeracki, of the Department of Energy, said that private-sector nuclear industry players have also asked for such a backstop in the form of a federal cost overrun insurance program, which would require Congressional legislation. However, she added that it might be incumbent upon industry figures to explain just how much more capacity to build such a backstop would give them.
+
+“The real piece that’s missing there is a compelling plan from the nuclear industry for what they would deliver with something like a cost overrun insurance program,” Kozeracki said.
+
+There is an ongoing debate among nuclear advocates about whether a different type of reactor, such as the so-called small modular reactors currently in development, is a more viable solution than the AP1000\. The Nuclear Regulatory Commission has issued a permit for the Tennessee Valley Authority to build one such reactor. But the excitement around SMRs has somewhat [waned](https://www.reuters.com/business/energy/cancelled-nuscale-contract-weighs-heavy-new-nuclear-2024-01-10/) since the cancellation of a much-anticipated project in November. Experts told Grist that some, but not all, of the knowledge and lessons gained through the Vogtle experience would carry over to a new project that was not an AP1000.
+
+The search for new nuclear solutions is coinciding with what could be a dramatic juncture in the history of American energy planning. In recent months, utilities across the country have reported anticipating massive increases in demand for electricity, which had remained relatively flat for two decades. A December [report](https://gridstrategiesllc.com/wp-content/uploads/2023/12/National-Load-Growth-Report-2023.pdf) from the consulting firm Grid Strategies found that grid planners’ five-year forecasts for the growth of their power loads had nearly doubled over the last year.
+
+The growth in demand is largely attributed to a mix of new data centers, many of which will power artificial intelligence, as well as new industrial sites.
+
+For James Krellenstein, co-founder of the nuclear energy consultancy Alva Energy, this new load growth “dramatically changes the calculus in favor of nuclear.” 
+
+“Facing both the need to decrease carbon emissions while having to increase the amount of power that we need, nuclear is a natural technology for that challenge,” Krellenstein added.
+
+So far, however, utilities have responded instead by seeking to rapidly expand fossil fuel generation — in particular, by building new natural gas plants.
+
+“We’re seeing utilities put forward very large gas expansion plans, and this is eating nuclear’s lunch,” said Duke University’s Norris.
+
+Kozeracki characterized the utilities’ plans as shortsighted. “I recognize that natural gas may feel like the easy button, but I should hope that folks are able to account for the cost and benefits of decarbonizing resiliently and make choices their children will be proud of, which I think would be starting new nuclear units now,” she said.
+
+Norris urged caution in accepting the largest estimates of forecasted electricity demand. “Utilities have every incentive to characterize a worst case scenario here for extreme load growth, and not seriously consider demand response solutions, so that they can justify very large capital expenditures for capacity,” Norris said. “That’s why it’s so important that the clean energy and climate community be very engaged in these state level resource planning processes.”
+
+* * *

@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 13:03:10
+-->
+
+# Steven Levitt and John Donohue defend a finding made famous by “Freakonomics”
+
+> 来源：[https://www.economist.com/by-invitation/2024/04/08/steven-levitt-and-john-donohue-defend-a-finding-made-famous-by-freakonomics](https://www.economist.com/by-invitation/2024/04/08/steven-levitt-and-john-donohue-defend-a-finding-made-famous-by-freakonomics)
+
+MORE THAN two decades have passed since we published an academic paper linking the legalisation of abortion to the enormous decline in American crime since the 1990s. The underlying theory is straightforward. Children who are unwanted at birth are at risk of a range of adverse life outcomes and commit much more crime later in life. Legalised abortion greatly reduced the number of unwanted births. Consequently, legalised abortion will reduce crime, albeit with substantial lags.
+
+Our paper created much controversy, which was further stoked by a chapter on the topic in the best-selling book “Freakonomics”, written by one of us with Stephen Dubner, published in 2005\. For many, it was more important to spin a political response to our hypothesis than to evaluate whether it was correct.
