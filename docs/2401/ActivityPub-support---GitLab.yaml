@@ -250,6 +250,7 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Mastodon和Lemmy实现了一个`GET /`端点（带有提及的Accept标头）。该端点会响应有关参与者的一般信息，比如收件箱和发件箱的名称和URL。虽然不受标准要求，但它使发现变得更容易。
 - en: 'While a person is the main use case for an actor, an actor does not necessarily
     map to a person. Anything can be an actor: a topic, a subreddit, a group, an event.
     For GitLab, anything with activities (in the sense of what GitLab means by “activity”)
@@ -258,127 +259,152 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然人是参与者的主要用例，但参与者不一定对应一个人。任何东西都可以成为参与者：一个话题，一个子版块，一个群组，一个事件。对于GitLab而言，任何具有活动（就像GitLab所说的“活动”那样）都可以成为ActivityPub参与者。这包括项目、群组和发布等项目。在这些更抽象的示例中，可以将参与者视为可操作的反馈。
 - en: 'ActivityPub by itself does not cover everything that is needed to implement
     the Fediverse. Most notably, these are left for the implementers to figure out:'
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这些留给实现者去解决：
 - en: Finding a way to deal with spam. Spam is handled by authorizing or blocking
     (“defederating”) other instances.
   id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 找到一种方法来处理垃圾邮件。垃圾邮件通过授权或阻止（“取消联邦”）其他实例来处理。
 - en: Discovering new instances.
   id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发现新实例。
 - en: Performing network-wide searches.
   id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 执行全网搜索。
 - en: Motivation
   id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 动机
 - en: Why would a social media protocol be useful for GitLab? People want a single,
     global GitLab network to interact between various projects, without having to
     register on each of their hosts.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 社交媒体协议对GitLab有什么用处呢？人们希望有一个单一的全球GitLab网络，可以在各种项目之间进行交互，而不必在每个主机上注册。
 - en: 'Several very popular discussions around this have already happened:'
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 已经有几次围绕这个问题的非常受欢迎的讨论：
 - en: 'The ideal workflow would be:'
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 理想的工作流程应该是：
 - en: Alice registers to her favorite GitLab instance, like `gitlab.example.org`.
   id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Alice注册到她最喜欢的GitLab实例，像是`gitlab.example.org`。
 - en: She looks for a project on a given topic, and sees Bob’s project, even though
     Bob is on `gitlab.com`.
   id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 她在给定主题上寻找一个项目，并看到Bob的项目，尽管Bob在`gitlab.com`上。
 - en: Alice selects **Fork**, and the `gitlab.com/Bob/project.git` is forked to `gitlab.example.org/Alice/project.git`.
   id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Alice选择**Fork**，`gitlab.com/Bob/project.git`被分叉到`gitlab.example.org/Alice/project.git`。
 - en: She makes her edits, and opens a merge request, which appears in Bob’s project
     on `gitlab.com`.
   id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 她进行编辑，并发起一个合并请求，该合并请求出现在Bob的`gitlab.com`项目中。
 - en: Alice and Bob discuss the merge request, each one from their own GitLab instance.
   id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Alice和Bob在各自的GitLab实例中讨论合并请求。
 - en: Bob can send additional commits, which are picked up by Alice’s instance.
   id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Bob可以发送额外的提交，这些提交会被Alice的实例接收。
 - en: When Bob accepts the merge request, his instance picks up the code from Alice’s
     instance.
   id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当Bob接受合并请求时，他的实例会从Alice的实例中获取代码。
 - en: 'In this process, ActivityPub would help in:'
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个过程中，ActivityPub会在以下方面帮助：
 - en: Letting Bob know a fork happened.
   id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 让Bob知道发生了分叉。
 - en: Sending the merge request to Bob.
   id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向Bob发送合并请求。
 - en: Enabling Alice and Bob to discuss the merge request.
   id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使Alice和Bob讨论合并请求。
 - en: Letting Alice know the code was merged.
   id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 让Alice知道代码已合并。
 - en: 'It does *not* help in these cases, which need specific implementations:'
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些情况下它*不*起作用，需要特定的实现：
 - en: Implementing a network-wide search.
   id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实现全网搜索。
 - en: Implementing cross-instance forks. (Not needed, thanks to Git.)
   id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实现跨实例分支。（由于Git不需要，因此不是必需的。）
 - en: 'Why use ActivityPub here rather than implementing cross-instance merge requests
     in a custom way? Two reasons:'
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么在这里使用ActivityPub而不是以自定义方式实现跨实例合并请求呢？有两个原因：
 - en: '**Building on top of a standard helps reach beyond GitLab**. While the workflow
     presented above only mentions GitLab, building on top of a W3C standard means
     other forges can follow GitLab there, and build a massive Fediverse of code sharing.'
@@ -386,6 +412,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**在标准的基础上构建有助于超越GitLab**。尽管上面介绍的工作流程只提到了GitLab，但在W3C标准的基础上构建意味着其他熔炉可以跟随GitLab，构建一个庞大的代码共享联邦。'
 - en: '**An opportunity to make GitLab more social**. To prepare the architecture
     for the workflow above, smaller steps can be taken, allowing people to subscribe
     to activity feeds from their Fediverse social network. Anything that has a RSS
