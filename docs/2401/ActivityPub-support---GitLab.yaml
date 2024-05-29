@@ -1,49 +1,73 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:23:55'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:23:55
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: ActivityPub support | GitLab
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: ActivityPub 支持 | GitLab
 - en: 来源：[https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/](https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/](https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/)
 - en: This page contains information related to upcoming products, features, and functionality.
     It is important to note that the information presented is for informational purposes
     only. Please do not rely on this information for purchasing or planning purposes.
     The development, release, and timing of any products, features, or functionality
     may be subject to change or delay and remain at the sole discretion of GitLab
     Inc.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 此页面包含与即将推出的产品、功能和功能相关的信息。重要的是要注意，所提供的信息仅供参考。请不要依赖此信息进行购买或规划。任何产品、功能或功能的开发、发布和时间可能会受到更改或延迟，并保留由
+    GitLab Inc. 完全自行决定的权利。
 - en: ActivityPub support
+  id: totrans-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 活动发布（ActivityPub）支持
 - en: Summary
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: The end goal of this proposal is to build interoperability features into GitLab
     so that it’s possible on one instance of GitLab to open a merge request to a project
     hosted on an other instance, merging all willing instances in a global network.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 此提案的最终目标是在 GitLab 中构建互操作性功能，以便在 GitLab 的一个实例上向托管在另一个实例上的项目提出合并请求，将所有愿意的实例合并为一个全局网络。
 - en: To achieve that, we propose to use ActivityPub, the w3c standard used by the
     Fediverse. This will allow us to build upon a robust and battle-tested protocol,
     and it will open GitLab to a wider community.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现这一目标，我们建议使用 ActivityPub，这是 Fediverse 使用的 w3c 标准。这将使我们能够建立在一个稳健和经过实战检验的协议之上，并将
+    GitLab 开放给更广泛的社区。
 - en: Before starting implementing cross-instance merge requests, we want to start
     with smaller steps, helping us to build up domain knowledge about ActivityPub
     and creating the underlying architecture that will support the more advanced features.
@@ -52,66 +76,95 @@
     notified on their social network of choice when their favorite project hosted
     on GitLab makes a new release. As a bonus, this is an opportunity to make GitLab
     more social and grow its audience.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始实施跨实例合并请求之前，我们希望从较小的步骤开始，帮助我们建立关于 ActivityPub 的领域知识，并创建支持更高级功能的基础架构。因此，我们建议首先实施社交功能，允许
+    Fediverse 上的人们订阅 GitLab 上的活动，例如在其社交网络中选择通知他们的最爱项目在 GitLab 上发布新版本时。作为一个额外的好处，这是一个使
+    GitLab 更具社交性并增加其受众的机会。
 - en: Feel free to jump to [Motivation](#motivation) if you already know what ActivityPub
     and the Fediverse are.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经了解了 ActivityPub 和 Fediverse，可以直接跳转到[动机](#motivation)。
 - en: 'Among the push for [decentralization of the web](https://en.wikipedia.org/wiki/Decentralized_web),
     several projects tried different protocols with different ideals behind their
     reasoning. Some examples:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在推动[网络去中心化](https://en.wikipedia.org/wiki/Decentralized_web)的过程中，有几个项目尝试了不同的协议，背后的理念也不尽相同。一些例子：
 - en: 'One gained traction recently: [ActivityPub](https://en.wikipedia.org/wiki/ActivityPub),
     better known for the colloquial [Fediverse](https://en.wikipedia.org/wiki/Fediverse)
     built on top of it, through applications like [Mastodon](https://en.wikipedia.org/wiki/Mastodon_%28social_network%29)
     (which could be described as some sort of decentralized Facebook) or [Lemmy](https://en.wikipedia.org/wiki/Lemmy_%28software%29)
     (which could be described as some sort of decentralized Reddit).'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 近来有一个获得了关注：[ActivityPub](https://en.wikipedia.org/wiki/ActivityPub)，更为人所知的是通过像
+    [Mastodon](https://en.wikipedia.org/wiki/Mastodon_%28social_network%29)（可以描述为某种去中心化的
+    Facebook）或 [Lemmy](https://en.wikipedia.org/wiki/Lemmy_%28software%29)（可以描述为某种去中心化的
+    Reddit）等应用构建在其上的俗称 [Fediverse](https://en.wikipedia.org/wiki/Fediverse)。
 - en: 'ActivityPub has several advantages that makes it attractive to implementers
     and could explain its current success:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: ActivityPub 具有几个优点，这些优点使其对实施者具有吸引力，并且可以解释其当前的成功：
 - en: '**It’s built on top of HTTP**. You don’t need to install new software or to
     tinker with TCP/UDP to implement ActivityPub, if you have a webserver or an application
     that provides an HTTP API (like a rails application), you already have everything
     you need.'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**它建立在 HTTP 之上**。如果你有一个 web 服务器或提供 HTTP API 的应用程序（比如一个 rails 应用程序），你就已经拥有了实现
+    ActivityPub 所需的一切，不需要安装新软件或调整 TCP/UDP。'
 - en: '**It’s built on top of JSON**. All communications are basically JSON objects,
     which web developers are already used to, which simplifies adoption.'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**它是建立在 JSON 之上的**。所有通信基本上都是 JSON 对象，这是网页开发人员已经习惯的，这简化了采用的过程。'
 - en: '**It’s a W3C standard and already has multiple implementations**. Being piloted
     by the W3C is a guarantee of stability and quality work. They have profusely demonstrated
     in the past through their work on HTML, CSS or other web standards that we can
     build on top of their work without the fear of it becoming deprecated or irrelevant
     after a few years.'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**这是一个 W3C 标准，并且已经有多个实现**。由 W3C 主导是对稳定性和质量工作的保证。他们在过去通过对 HTML、CSS 或其他网络标准的工作表明，我们可以在其基础上构建，而不必担心在几年后它就会过时或变得无关紧要。'
 - en: The Fediverse
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 联合宇宙
 - en: The core idea behind Mastodon and Lemmy is called the Fediverse. Rather than
     full decentralization, those applications rely on federation, in the sense that
     there still are servers and clients. It’s not P2P like SSB, Dat and IPFS, but
     instead a galaxy of servers chatting with each other instead of having central
     servers controlled by a single entity.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Mastodon 和 Lemmy 的核心理念被称为联合宇宙（Fediverse）。与完全去中心化不同，这些应用程序依赖于联合，在这种情况下仍然有服务器和客户端。它不像
+    SSB、Dat 和 IPFS 那样是点对点的，而是一群服务器互相交流，而不是由单一实体控制的中央服务器。
 - en: The user signs up to one of those servers (called **instances**), and they can
     then interact with users either on this instance, or on other ones. From the perspective
     of the user, they access a global network, and not only their instance. They see
     the articles posted on other instances, they can comment on them, upvote them,
     etc.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户注册到其中一个服务器（称为**实例**），然后他们就可以与该实例或其他实例上的用户互动。从用户的角度来看，他们访问的是一个全球网络，而不仅仅是他们的实例。他们可以看到其他实例发布的文章，可以对其发表评论、点赞等。
 - en: 'What happens behind the scenes: their instance knows where the user they reply
     to is hosted. It contacts that other instance to let them know there is a message
     for them - somewhat similar to SMTP. Similarly, when a user subscribes to a feed,
@@ -120,56 +173,81 @@
     This allows for a push model, rather than a constant poll model like RSS. Of course,
     what was just described is the happy path; there is moderation, validation and
     fault tolerance happening all the way.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '发生在幕后的事情: 他们的实例知道他们回复的用户托管在哪里。它联系另一个实例来告诉他们有一条消息。类似于 SMTP。类似地，当用户订阅一条反馈时，他们的实例通知托管反馈的实例这个订阅。目标实例创建新活动时，然后返回消息。这允许推送模型，而不是像
+    RSS 那样的常规轮询模型。当然，刚才描述的是幸福的路径; 一直有适度、验证和容错率的发生。'
 - en: ActivityPub
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: ActivityPub
 - en: Behind the Fediverse is the ActivityPub protocol. It’s a HTTP API attempting
     to be as general a social network implementation as possible, while giving options
     to be extendable.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 联合宇宙背后是 ActivityPub 协议。这是一个试图尽可能通用的社交网络 API，同时给出扩展的选项。
 - en: 'The basic idea is that an `actor` sends and receives `activities`. Activities
     are structured JSON messages with well-defined properties, but are extensible
     to cover any need. An actor is defined by four endpoints, which are contacted
     with the `application/ld+json; profile="https://www.w3.org/ns/activitystreams"`
     HTTP Accept header:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '基本理念是一个`行动者`发送和接收`活动`。活动是结构化的 JSON 消息，具有明确定义的属性，但可以扩展以满足任何需要。行动者由四个端点定义，这些端点通过`application/ld+json;
+    profile="https://www.w3.org/ns/activitystreams"` HTTP 接收头联系:'
 - en: '`GET /inbox`: used by the actor to find new activities intended for them.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`GET /inbox`: 行动者用于查找发送给他们的新活动。'
 - en: '`POST /inbox`: used by instances to push new activities intended for the actor.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`POST /inbox`: 实例用于推送给行动者的新活动。'
 - en: '`GET /outbox`: used by anyone to read the activities created by the actor.'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`GET /outbox`: 任何人都可以用来查看由该行动者创建的活动。'
 - en: '`POST /outbox`: used by the actor to publish new activities.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`POST /outbox`: 由行动者用来发布新的活动。'
 - en: 'Among those, Mastodon and Lemmy only use `POST /inbox` and `GET /outbox`, which
     are the minimum needed to implement federation:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中，Mastodon 和 Lemmy 只使用 `POST /inbox` 和 `GET /outbox`，这是实现联合所需的最低限度：
 - en: Instances push new activities for the actor on the inbox.
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实例将行动者的新活动推送到收件箱。
 - en: Reading the outbox allows reading the feed of an actor.
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 读取 outbox 允许读取行动者的反馈。
 - en: Additionally, Mastodon and Lemmy implement a `GET /` endpoint (with the mentioned
     Accept header). This endpoint responds with general information about the actor,
     like name and URL of the inbox and outbox. While not required by the standard,
     it makes discovery easier.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'While a person is the main use case for an actor, an actor does not necessarily
@@ -177,108 +255,134 @@
     For GitLab, anything with activities (in the sense of what GitLab means by “activity”)
     can be an ActivityPub actor. This includes items like projects, groups, and releases.
     In those more abstract examples, an actor can be thought of as an actionable feed.'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'ActivityPub by itself does not cover everything that is needed to implement
     the Fediverse. Most notably, these are left for the implementers to figure out:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: Finding a way to deal with spam. Spam is handled by authorizing or blocking
     (“defederating”) other instances.
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Discovering new instances.
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Performing network-wide searches.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Motivation
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Why would a social media protocol be useful for GitLab? People want a single,
     global GitLab network to interact between various projects, without having to
     register on each of their hosts.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'Several very popular discussions around this have already happened:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'The ideal workflow would be:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Alice registers to her favorite GitLab instance, like `gitlab.example.org`.
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: She looks for a project on a given topic, and sees Bob’s project, even though
     Bob is on `gitlab.com`.
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Alice selects **Fork**, and the `gitlab.com/Bob/project.git` is forked to `gitlab.example.org/Alice/project.git`.
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: She makes her edits, and opens a merge request, which appears in Bob’s project
     on `gitlab.com`.
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Alice and Bob discuss the merge request, each one from their own GitLab instance.
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Bob can send additional commits, which are picked up by Alice’s instance.
+  id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: When Bob accepts the merge request, his instance picks up the code from Alice’s
     instance.
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'In this process, ActivityPub would help in:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: Letting Bob know a fork happened.
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Sending the merge request to Bob.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Enabling Alice and Bob to discuss the merge request.
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Letting Alice know the code was merged.
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'It does *not* help in these cases, which need specific implementations:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing a network-wide search.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implementing cross-instance forks. (Not needed, thanks to Git.)
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Why use ActivityPub here rather than implementing cross-instance merge requests
     in a custom way? Two reasons:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '**Building on top of a standard helps reach beyond GitLab**. While the workflow
     presented above only mentions GitLab, building on top of a W3C standard means
     other forges can follow GitLab there, and build a massive Fediverse of code sharing.'
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -288,221 +392,320 @@
     feed could become an ActivityPub feed. People on Mastodon could follow their favorite
     developer, project, or topic from GitLab and see the news in their feed on Mastodon,
     hopefully raising engagement with GitLab.'
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**让 GitLab 更具社交性**。为了准备上述工作流程的架构，可以采取较小的步骤，允许人们从他们的 Fediverse 社交网络订阅活动动态。任何有
+    RSS 订阅的内容都可以成为 ActivityPub 订阅源。Mastodon 上的人可以关注他们在 GitLab 上喜欢的开发者、项目或主题，并在他们的
+    Mastodon 动态中看到相关新闻，希望能提高与 GitLab 的互动。'
 - en: Goals
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 目标
 - en: allowing to share interesting events on ActivityPub based social media
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许在基于 ActivityPub 的社交媒体上分享有趣的事件
 - en: allowing to open an issue and discuss it from one instance to an other
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许从一个实例打开问题并在另一个实例中进行讨论
 - en: allowing to fork a project from one instance to an other
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许从一个实例 fork 一个项目到另一个实例
 - en: allowing to open a merge request, discuss it and merge it from one instance
     to an other
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许从一个实例打开合并请求，讨论并合并到另一个实例
 - en: allowing to perform a network wide search?
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许进行全网搜索？
 - en: Non-Goals
+  id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 非目标
 - en: federation of private resources
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 私有资源的联邦
 - en: allowing to perform a network wide search?
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许进行全网搜索？
 - en: Proposal
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 提案
 - en: The idea of this implementation path is not to take the fastest route to the
     feature with the most value added (cross-instance merge requests), but to go on
     with the smallest useful step at each iteration, making sure each step brings
     something immediately useful.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种实施路径的想法不是为了采取增加最大价值功能的最快路径（跨实例合并请求），而是继续进行每次迭代中最小有用的步骤，确保每个步骤都立即带来一些有用的东西。
 - en: '**Implement ActivityPub for social following**. After this, the Fediverse can
     follow activities on GitLab instances.'
+  id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**实现 ActivityPub 进行社交关注**。之后，Fediverse 可以关注 GitLab 实例上的活动。'
 - en: ActivityPub to subscribe to project releases.
+  id: totrans-73
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 ActivityPub 订阅项目发布。
 - en: ActivityPub to subscribe to project creation in topics.
+  id: totrans-74
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 ActivityPub 订阅主题中项目创建。
 - en: ActivityPub to subscribe to project activities.
+  id: totrans-75
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 ActivityPub 订阅项目活动。
 - en: ActivityPub to subscribe to group activities.
+  id: totrans-76
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 ActivityPub 订阅组活动。
 - en: ActivityPub to subscribe to user activities.
+  id: totrans-77
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 ActivityPub 订阅用户活动。
 - en: '**Implement cross-instance forks** to enable forking a project from an other
     instance.'
+  id: totrans-78
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**实现跨实例 fork**，以便从另一个实例 fork 一个项目。'
 - en: '**Implement ActivityPub for cross-instance discussions** to enable discussing
     issues and merge requests from another instance:'
+  id: totrans-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**实现 ActivityPub 进行跨实例讨论**，以便从另一个实例讨论问题和合并请求：'
 - en: In issues.
+  id: totrans-80
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在问题中。
 - en: In merge requests.
+  id: totrans-81
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在合并请求中。
 - en: '**Implement ActivityPub to submit cross-instance merge requests** to enable
     submitting merge requests to other instances.'
+  id: totrans-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**实现 ActivityPub 提交跨实例合并请求**，以便向其他实例提交合并请求。'
 - en: '**Implement cross-instance search** to enable discovering projects on other
     instances.'
+  id: totrans-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**实现跨实例搜索**，以便发现其他实例上的项目。'
 - en: It’s open to discussion if this last step should be included at all. Currently,
     in most Fediverse apps, when you want to display a resource from an instance that
     your instance does not know about (typically a user you want to follow), you paste
     the URL of the resource in the search box of your instance, and it fetches and
     displays the remote resource, now actionable from your instance. We plan to do
     that at first.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前尚不确定是否应该包括这最后一步。当前，在大多数 Fediverse 应用中，当您想显示您的实例不知道的资源（通常是您想关注的用户）时，您会在您的实例的搜索框中粘贴资源的
+    URL，然后它会获取并显示远程资源，现在可以在您的实例中操作。我们计划首先这样做。
 - en: 'The question is : do we keep it at that? This UX has severe frictions, especially
     for users not used to Fediverse UX patterns (which is probably most GitLab users).
     On the other hand, distributed search is a subject complicated enough to deserve
     its own blueprint (although it’s not as complicated as it used to be, now that
     decentralization protocols and applications worked on it for a while).'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题是：我们是否就此打住？这种用户体验存在严重的摩擦，尤其是对于不习惯 Fediverse 用户体验模式的用户（这可能是大多数 GitLab 用户）。另一方面，分布式搜索是一个足够复杂的主题，值得有自己的蓝图（尽管它并不像过去那样复杂，现在去中心化协议和应用程序已经在此方面努力了一段时间）。
 - en: Design and implementation details
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设计和实施细节
 - en: 'First, it’s a good idea to get familiar with the specifications of the three
     standards we’re going to use:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，熟悉一下我们将要使用的三个标准的规范是个好主意：
 - en: '[ActivityPub](https://www.w3.org/TR/activitypub/) defines the HTTP requests
     happening to implement federation.'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[ActivityPub](https://www.w3.org/TR/activitypub/)定义了实现联合的HTTP请求。'
 - en: '[ActivityStreams](https://www.w3.org/TR/activitystreams-core/) defines the
     format of the JSON messages exchanged by the users of the protocol.'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[ActivityStreams](https://www.w3.org/TR/activitystreams-core/)定义了协议用户交换的JSON消息的格式。'
 - en: '[Activity Vocabulary](https://www.w3.org/TR/activitystreams-vocabulary/) defines
     the various messages recognized by default.'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[活动词汇表](https://www.w3.org/TR/activitystreams-vocabulary/)定义了默认情况下被识别的各种消息。'
 - en: Feel free to ping [@oelmekki](https://gitlab.com/oelmekki) if you have questions
     or find the documents too dense to follow.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您有问题或觉得文件太难理解，请随时联系[@oelmekki](https://gitlab.com/oelmekki)。
 - en: Production readiness
+  id: totrans-92
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 生产就绪性
 - en: TBC
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 待确定
 - en: The social following part
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 社交跟随部分
 - en: This part is laying the ground work allowing to [add new ActivityPub actors](../../../development/activitypub/actors/index.html)
     to GitLab.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 此部分正在为GitLab[添加新的ActivityPub角色](../../../development/activitypub/actors/index.html)奠定基础。
 - en: 'There are 5 actors we want to implement:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们要实现5个角色：
 - en: the `releases` actor, to be notified when given project makes a new release
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`releases` actor，当给定项目发布新版本时通知'
 - en: the `topic` actor, to be notified when a new project is added to a topic
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`topic` actor，当一个新项目被添加到一个主题时通知'
 - en: the `project` actor, regarding all activities from a project
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`project` actor，涉及来自一个项目的所有活动'
 - en: the `group` actor, regarding all activities from a group
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`group` actor，涉及来自一个群组的所有活动'
 - en: the `user` actor, regarding all activities from a user
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`user` actor，涉及来自一个用户的所有活动'
 - en: We’re only dealing with public resources for now. Allowing federation of private
     resources is a tricky subject that will be solved later, if it’s possible at all.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在只处理公共资源。允许私有资源的联合是一个棘手的问题，如果可能的话，这将在以后解决。
 - en: Endpoints
+  id: totrans-103
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 端点
 - en: 'Each actor needs 3 endpoints:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个角色需要3个端点：
 - en: the profile endpoint, containing basic info, like name, description, but also
     including links to the inbox and outbox
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 包含基本信息的配置文件端点，例如名称、描述，还包括指向收件箱和发件箱的链接
 - en: the outbox endpoint, allowing to show previous activities for an actor
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发件箱端点，允许显示角色的先前活动
 - en: the inbox endpoint, on which to post to submit follow and unfollow requests
     (among other things we won’t use for now).
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 收件箱端点，用于发布跟随和取消跟随请求（我们现在不会使用的其他一些东西）。
 - en: The controllers providing those endpoints are in `app/controllers/activity_pub/`.
     It’s been decided to use this namespace to avoid mixing the ActivityPub JSON responses
     with the ones meant for the frontend, and also because we may need further namespacing
@@ -510,226 +713,328 @@
     for an other, and for our later cross-instance features. Also, this namespace
     allow us to easily toggle what we need on all endpoints, like making sure no private
     project can be accessed.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 提供这些端点的控制器位于`app/controllers/activity_pub/`。决定使用此命名空间是为了避免将ActivityPub的JSON响应与用于前端的响应混淆，而且因为我们可能需要进一步的命名空间，因为我们格式化活动的方式可能对于一个Fediverse应用程序、另一个应用程序以及我们以后的跨实例功能可能不同。此外，这个命名空间使我们能够轻松地切换我们在所有端点上所需的内容，比如确保不能访问任何私有项目。
 - en: Serializers
+  id: totrans-109
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 序列化器
 - en: The serializers in `app/serializers/activity_pub/` are the meat of our implementation,
     are they provide the ActivityStreams objects. The abstract class `ActivityPub::ActivityStreamsSerializer`
     does all the heavy lifting of validating developer provided data, setting up the
     common fields and providing pagination.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '`app/serializers/activity_pub/`中的序列化器是我们实现的核心部分，它们提供了ActivityStreams对象。抽象类`ActivityPub::ActivityStreamsSerializer`承担了验证开发者提供的数据、设置公共字段和提供分页的繁重工作。'
 - en: That pagination part is done through `Gitlab::Serializer::Pagination`, which
     uses offset pagination. [We need to allow it to do keyset pagination](https://gitlab.com/gitlab-org/gitlab/-/issues/424148).
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个分页部分是通过`Gitlab::Serializer::Pagination`完成的，它使用偏移分页。[我们需要允许它进行键集分页](https://gitlab.com/gitlab-org/gitlab/-/issues/424148)。
 - en: Subscription
+  id: totrans-112
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 订阅
 - en: Subscription to a resource is done by posting a [Follow activity](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow)
     to the actor inbox. When receiving a Follow activity, [we should generate an Accept
     or Reject activity in return](https://www.w3.org/TR/activitypub/#follow-activity-inbox),
     sent to the subscriber’s inbox.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将[FOLLOW活动](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow)发布到角色收件箱来订阅资源。当收到跟随活动时，[我们应该返回生成接受或拒绝活动](https://www.w3.org/TR/activitypub/#follow-activity-inbox)，发送到订阅者的收件箱。
 - en: 'The general workflow of the implementation is as following:'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 实施的一般工作流程如下：
 - en: A POST request is made to the inbox endpoint, with the Follow activity encoded
     as JSON
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送一个 POST 请求到收件箱端点，其 Follow 活动以 JSON 编码
 - en: 'if the activity received is not of a supported type (e.g. someone tries to
     comment on the activity), we ignore it ; otherwise:'
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果接收到的活动不是支持的类型（例如，有人试图评论该活动），我们会忽略它；否则：
 - en: we create an `ActivityPub::Subscription` with the profile URL of the subscriber
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们创建一个带有订阅者个人资料 URL 的 `ActivityPub::Subscription`
 - en: we queue a job to resolve the subscriber’s inbox URL
+  id: totrans-118
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们排队一个作业来解析订阅者的收件箱 URL
 - en: in which we perform a HTTP request to the subscriber profile to find their inbox
     URL (and the shared inbox URL if any)
+  id: totrans-119
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在其中，我们执行 HTTP 请求到订阅者的个人资料以查找其收件箱 URL（如果有的话还有共享收件箱 URL）
 - en: we store that URL in the subscription record
+  id: totrans-120
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们将该 URL 存储在订阅记录中
 - en: we queue a job to accept the subscription
+  id: totrans-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们排队一个作业来接受订阅
 - en: in which we perform a HTTP request to the subscriber inbox to post an Accept
     activity
+  id: totrans-122
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在其中，我们执行 HTTP 请求到订阅者的收件箱以发布一个接受活动
 - en: we update the state of the subscription to `:accepted`
+  id: totrans-123
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们更新订阅的状态为 `:accepted`
 - en: '`ActivityPub::Subscription` is a new abstract model, from which inherit models
     related to our actors, each with their own table:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ActivityPub::Subscription` 是一个新的抽象模型，从中继承了与我们的参与者相关的模型，每个模型都有自己的表：'
 - en: ActivityPub::ReleasesSubscription, table `activity_pub_releases_subscriptions`
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ActivityPub::ReleasesSubscription，表 `activity_pub_releases_subscriptions`
 - en: ActivityPub::TopicSubscription, table `activity_pub_topic_subscriptions`
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ActivityPub::TopicSubscription，表 `activity_pub_topic_subscriptions`
 - en: ActivityPub::ProjectSubscription, table `activity_pub_project_subscriptions`
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ActivityPub::ProjectSubscription，表 `activity_pub_project_subscriptions`
 - en: ActivityPub::GroupSubscription, table `activity_pub_group_subscriptions`
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ActivityPub::GroupSubscription，表 `activity_pub_group_subscriptions`
 - en: ActivityPub::UserSubscription, table `activity_pub_user_subscriptions`
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ActivityPub::UserSubscription，表 `activity_pub_user_subscriptions`
 - en: The reason to go with a multiple models rather than, say, a simpler `actor`
     enum in the Subscription model with a single table is because we needs specific
     associations and validations for each (an `ActivityPub::ProjectSubscription` belongs
     to a Project, an `ActivityPub::UserSubscription` does not). It also gives us more
     room for extensibility in the future.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择多个模型而不是，比如，在 Subscription 模型中使用一个更简单的 `actor` 枚举与单个表一起的原因是因为我们需要为每个模型进行特定的关联和验证（`ActivityPub::ProjectSubscription`
+    属于项目，而 `ActivityPub::UserSubscription` 不属于）。这也为我们未来的扩展提供了更多的空间。
 - en: Unfollow
+  id: totrans-131
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 取关
 - en: When receiving [an Undo activity](https://www.w3.org/TR/activitypub/#undo-activity-inbox)
     mentioning previous Follow, we remove the subscription from our database.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 当接收到[撤销活动](https://www.w3.org/TR/activitypub/#undo-activity-inbox)提到之前的 Follow
+    时，我们会从数据库中删除该订阅。
 - en: We are not required to send back any activity, so we don’t need any worker here,
     we can directly remove the record from database.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不需要发送任何活动，所以我们在这里不需要任何工作程序，可以直接从数据库中删除记录。
 - en: Sending activities out
+  id: totrans-134
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 发送活动
 - en: When specific events (which ones?) happen related to our actors, we should queue
     events to issue activities on the subscribers inboxes (the activities are the
     same than we display in the actor’s outbox).
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 当特定事件（哪些事件？）与我们的参与者相关时，我们应该排队事件以在订阅者的收件箱中发布活动（活动与我们在参与者的发件箱中显示的活动相同）。
 - en: We’re supposed to deduplicate the subscriber list to make sure we don’t send
     an activity twice to the same person - although it’s probably better handled by
     a uniqueness validation from the model when receiving the Follow activity.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该对订阅者列表进行去重，以确保我们不会将活动两次发送给同一个人 - 虽然在接收 Follow 活动时通过模型的唯一性验证可能更好处理。
 - en: 'More importantly, we should group requests for a same host : if ten users are
     all on `https://mastodon.social/`, we should issue a single request on the shared
     inbox provided, adding all the users as recipients, rather than sending one request
     per user.'
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 更重要的是，我们应该对同一主机的请求进行分组：如果十个用户都在 `https://mastodon.social/` 上，我们应该在提供的共享收件箱上发出单个请求，将所有用户添加为收件人，而不是每个用户发送一个请求。
 - en: Mastodon [requires instance to implement the Webfinger protocol](https://docs.joinmastodon.org/spec/webfinger/).
     This protocol is about adding an endpoint at a well known location which allows
     to query for a resource name and have it mapped to whatever URL we want (so basically,
     it’s used for discovery). Mastodon uses this to query other fediverse apps for
     actor names, in order to find their profile URLs.
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: Mastodon [要求实例实现 Webfinger 协议](https://docs.joinmastodon.org/spec/webfinger/)。该协议是关于在一个已知位置添加一个端点，该端点允许查询资源名称并将其映射到我们想要的任何
+    URL（基本上，它用于发现）。Mastodon 使用这个来查询其他 Fediverse 应用程序的 actor 名称，以便找到它们的配置文件 URL。
 - en: Actually, GitLab already implements the Webfinger protocol endpoint through
     Doorkeeper ([this is the action that maps to its route](https://github.com/doorkeeper-gem/doorkeeper-openid_connect/blob/5987683ccc22262beb6e44c76ca4b65288d6067a/app/controllers/doorkeeper/openid_connect/discovery_controller.rb#L14-L16)),
     implemented in GitLab [in JwksController](https://gitlab.com/gitlab-org/gitlab/-/blob/efa76816bd0603ba3acdb8a0f92f54abfbf5cc02/app/controllers/jwks_controller.rb).
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，GitLab 已经通过 Doorkeeper 实现了 Webfinger 协议端点（[这是映射到其路由的操作](https://github.com/doorkeeper-gem/doorkeeper-openid_connect/blob/5987683ccc22262beb6e44c76ca4b65288d6067a/app/controllers/doorkeeper/openid_connect/discovery_controller.rb#L14-L16)），在
+    GitLab 中实现了 [JwksController](https://gitlab.com/gitlab-org/gitlab/-/blob/efa76816bd0603ba3acdb8a0f92f54abfbf5cc02/app/controllers/jwks_controller.rb)。
 - en: There is no incompatibility here, we can just extend this controller. Although,
     we’ll probably have to rename it, as it won’t be related to Jwks alone anymore.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里没有不相容，我们可以简单地扩展这个控制器。尽管我们可能需要重命名它，因为它不再仅仅与 Jwks 相关。
 - en: One difficulty we may have is that contrary to Mastodon, we don’t only deal
     with users. So we need to figure something to differentiate asking for a user
     from asking for a project, for example. One obvious way would be to use a prefix,
     like `user-<username>`, `project-<project_name>`, etc. I’m pondering that from
     afar, while we haven’t implemented much code in the epic and I haven’t dig deep
     into Webfinger’s specs, this remark may be deprecated when we reach actual implementation.
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能会遇到的一个困难是，与 Mastodon 相反，我们不仅仅处理用户。所以我们需要想出一些方法来区分请求用户和请求项目，例如。一个明显的方法是使用前缀，如`user-<username>`，`project-<project_name>`，等等。当我们实际实施代码并且我还没有深入研究
+    Webfinger 的规范时，我正在远处思考这个问题，这个评论可能在我们达到实际实施时就过时了。
 - en: Mastodon [requires HTTP signatures](https://docs.joinmastodon.org/spec/security/#http),
     which is yet an other standard, in order to make sure no spammer tries to impersonate
     a given server.
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: Mastodon [要求使用 HTTP 签名](https://docs.joinmastodon.org/spec/security/#http)，这是另一个标准，为了确保没有垃圾邮件发送者试图冒充给定服务器。
 - en: This is asymmetrical cryptography, with a private key and a public key, like
     SSH or PGP. We will need to implement both signing requests, and verifying them.
     This will be of considerable help when we’ll want to have various GitLab instances
     communicate later in the epic.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是非对称加密，有一个私钥和一个公钥，就像 SSH 或 PGP 一样。我们将需要实现签名请求和验证它们。当我们以后想要各种 GitLab 实例进行通信时，这将非常有助于我们。
 - en: Host allowlist and denylist
+  id: totrans-144
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 主机 allowlist 和 denylist
 - en: 'To give GitLab instance owners control over potential spam, we need to allow
     to maintain two mutually exclusive lists of hosts:'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让 GitLab 实例所有者控制潜在的垃圾邮件，我们需要允许维护两个互斥的主机列表：
 - en: 'the allowlist : only hosts mentioned in this list can be federated with.'
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: allowlist：只有列在此列表中的主机才能进行联邦。
 - en: 'the denylist : all hosts can be federated with but the ones mentioned in that
     list.'
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: denylist：所有主机都可以进行联邦，但在该列表中提到的主机除外。
 - en: A setting should allow the owner to switch between the allowlist and the denylist.
     In the beginning, this can be managed in rails console, but it will ultimately
     need a section in the admin interface.
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个设置应该允许所有者在 allowlist 和 denylist 之间切换。起初，这可以在 rails console 中管理，但最终需要在管理员界面中有一个部分。
 - en: Limits and rollout
+  id: totrans-149
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 限制和推出
 - en: 'In order to control the load when releasing the feature in the first months,
     we’re going to set `gitlab.com` to use the allowlist and rollout federation to
     a few Fediverse servers at a time, so that we can see how it takes the load progressively,
     before ultimately switching to denylist (note: there are [some ongoing discussions](https://gitlab.com/gitlab-org/gitlab/-/issues/426373#note_1584232842)
     regarding if federation should be activated on `gitlab.com` or not).'
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在前几个月发布功能时控制负载，我们将设置 `gitlab.com` 使用 allowlist 并逐步向几个 Fediverse 服务器推出联邦，以便我们可以看到它如何逐步承担负载，最终切换到
+    denylist（注：关于 `gitlab.com` 是否应该激活联邦正在进行[一些讨论](https://gitlab.com/gitlab-org/gitlab/-/issues/426373#note_1584232842)）。
 - en: 'We also need to implement limits to make sure the federation is not abused:'
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要实施限制，以确保联邦系统不被滥用：
 - en: limit to the number of subscriptions a resource can receive.
+  id: totrans-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 限制资源可以接收的订阅数量。
 - en: limit to the number of subscriptions a third party server can generate.
+  id: totrans-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 限制第三方服务器可以生成的订阅数量。
 - en: The cross-instance issues and merge requests part
+  id: totrans-154
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 跨实例问题和合并请求部分
 - en: We’ll wait to be done with the social following part before designing this part,
     to have ground experience with ActivityPub.
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 在设计这部分之前，我们将等待社交关注部分完成，以便在使用ActivityPub时有实际经验。
