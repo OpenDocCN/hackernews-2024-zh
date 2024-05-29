@@ -1,60 +1,88 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:33:05'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日 14:33:05
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Advent of Mojo : Part 1\. About this article | by p88h | Medium'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Mojo 之旅：第一部分。关于本文 | 作者：p88h | Medium
 - en: 来源：[https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb](https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb](https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb)
 - en: About this article
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 关于本文
 - en: This is part I of a series of articles on using Mojo in Advent of Code.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是关于在《冒险代码》中使用 Mojo 的系列文章的第一部分。
 - en: Go [here](/@p88h/advent-of-mojo-6d6d0d00761b) for the introduction and table
     of contents.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击[这里](/@p88h/advent-of-mojo-6d6d0d00761b)查看介绍和目录。
 - en: Performance overview
+  id: totrans-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 性能概览
 - en: Let’s start with the headliner. Is Mojo actually as fast as the company advertises
     it to be? Well, it depends. It’s plenty fast when you spend some time optimizing.
     After getting the hang of what works and what doesn’t work, I was able to achieve
     better performance in *every* days challenge (see benchmarks at the bottom), however,
     the gains were not very consistent and there are some caveats.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从头开始。Mojo 真的像公司宣传的那样快吗？嗯，这要看情况。当你花一些时间进行优化时，它的速度很快。在弄清楚什么有效和什么无效之后，我能够在*每一天*的挑战中取得更好的性能（请参见底部的基准测试），但是增益并不是非常一致，而且有一些注意事项。
 - en: I haven’t seen anything close to the ‘68.000 x performance’ gains. Advent of
     Code simply doesn’t have problems of this scale. My guess is those gains would
     require massive parallelization, and while that’s reasonably simple in Mojo, due
     to small problem size, the overheads often just eat up any gains. And the overheads
     are not very predictable, too. There doesn’t seem to be a way (yet) to profile
     the code, so it’s a bit of guesswork.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还没有看到任何接近“68,000 倍性能”提升的东西。《冒险代码》简直没有这种规模的问题。我猜想，那些增益可能需要大规模并行化，而虽然在 Mojo 中这相当简单，但由于问题规模较小，开销通常会吞噬掉任何收益。而且开销也不是很可预测。目前似乎没有办法对代码进行性能分析，所以这有点凭直觉。
 - en: Vector code
+  id: totrans-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 向量代码
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The highest improvement I was able to achieve was about 1000x vs Python — and
     this was similar to the use cases that Mojo seems to be built for — low level
     matrix operations. Writing SIMD code using fused multiply & addition, while working
@@ -63,63 +91,92 @@
     operations. If that particular solution was parallelisable (and much, much larger)
     then maybe that would yield 10.000 improvement or so, or even more, on some monster
     CPU with 100 cores.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我能够实现的最高改进大约是 Python 的 1000 倍 —— 这与 Mojo 的使用案例类似 —— 低级矩阵操作。使用融合乘法和加法编写 SIMD
+    代码，同时使用类似 Python 的语法比 Rust 或 C++ 中的类似原生解决方案更简单。核心 SIMD 数据类型被很好地集成，并提供全面但基本的操作。如果那个特定的解决方案是可并行化的（并且要大得多），那么在某些拥有
+    100 个核心的怪物 CPU 上，可能会产生 10,000 倍甚至更多的改进。
 - en: There are other ways to optimize Python, though. While the average improvement
     over Python was > 100x (note that this does include parallelization), the same
     metric for PyPy3 was ‘only’ 38 x. And some of this solution could have used numpy,
     too.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有其他优化 Python 的方法。虽然相对于 Python 的平均改进是 >100 倍（注意这包括并行化），但对于 PyPy3，相同的度量指标只有‘仅’38倍。而且这个解决方案中的一些部分也可以使用
+    numpy。
 - en: Quirky strings
+  id: totrans-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 独特的字符串
 - en: There are a lot of quirks in Mojo that make this speed advantage go away pretty
     quickly, though. My code typically doesn’t use any dynamic memory allocation (which
     can be slow), opting for allocating large buffers; and simplifies input parsing,
     wherever possible, to string slicing (see more on Strings in the Usability section).
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Mojo 中有很多怪癖，这些怪癖使这种速度优势很快消失。我的代码通常不使用任何动态内存分配（这可能很慢），而是选择分配大缓冲区；并且尽可能简化输入解析，以字符串切片为例（请参阅可用性部分中有关字符串的更多信息）。
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: On that note, Strings themselves are slow. There is an equivalent (in spirit)
     of Rust’s *slice* which is *StringRef*, but it has very limited use. I implemented
     my own slices to get through AOC, but that’s ignoring a lot of everyday string
     processing needs, like UTF. When the parser above was implemented using *String.find()*
     it was 2–3x slower than PyPy, and close to Python.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 说到这一点，字符串本身速度较慢。在精神上相当于 Rust 的*slice*的东西是*StringRef*，但它的用途非常有限。我实现了自己的切片来完成
+    AOC，但这忽略了很多日常字符串处理需求，比如 UTF。当上面的解析器使用*String.find()*实现时，它比 PyPy 慢 2–3 倍，并且接近于
+    Python。
 - en: Some other related operations are weirdly slow. For example, *ord(‘A’)* is something
     I would expect the compiler to automatically optimize away as constant. It’s not,
     but if you force it to be by using *alias* then it works well, just makes the
     code weird a bit.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些其他相关的操作很奇怪地慢。例如，*ord(‘A’)* 是我期望编译器会自动优化为常量的东西。它并不是，但如果通过使用 *alias* 强制它成为常量，那么它运行得很好，只是让代码有点奇怪。
 - en: Simple threads
+  id: totrans-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 简单线程
 - en: 'There are no thread primitives in Mojo, but there is higher-level parallelization.
     Go figure. The only way to make something parallel, really, is to break it out
     into an indexed worker function, like so:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Mojo 中没有线程原语，但有更高级别的并行化。想想看。真正使某物并行的唯一方法是将其分解为一个索引化的工作函数，就像这样：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Note: accessing mutable variables from threads is slow. But if those variables
     are not mutable (like the A pointer in the example), then it gets much faster.
     Sometimes. Also, note that the pointer being immutable still allows mutating the
     contents of the memory it’s pointing at.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：从线程中访问可变变量是很慢的。但如果这些变量不可变（比如例子中的 A 指针），那么速度会快得多。有时候。还要注意，指针虽然是不可变的，但仍然允许改变它指向的内存内容。
 - en: There doesn’t seem to be any explicit synchronization (well, there are Atomics,
     at least) or thread communication — I considered implementing a lockless queue,
     but in the end there isn’t that much use of threads in AOC.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 似乎没有任何显式的同步（嗯，至少有原子操作）或线程通信 —— 我考虑过实现一个无锁队列，但最终 AOC 中线程的使用并不多。
 - en: Benchmarks for simple stuff like this show that threads have significant operational
     overheads. Day 1 Part 1 takes 7 microseconds without threads, and ten times more
     when using threading. Day 2, however is able to complete in 40 microseconds with
@@ -127,20 +184,28 @@
     items, in milliseconds and above. I guess this is on par with what could be expected
     from a ‘hands-off’ approach, and even with very careful handling of low-level
     threads there are certain things you cannot optimize away.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这种简单的东西，诸如线程之类的基准测试显示出了显著的操作开销。第一天第一部分不使用线程时需要 7 微秒，使用线程时需要十倍以上。然而，第二天使用线程时能够在
+    40 微秒内完成，并且使用的线程数量增加了一倍。对于更长的工作项，以毫秒及以上为单位更具可预测性。我猜这与从“不插手”的方法所能期望的相当，并且即使对低级线程进行了非常小心的处理，也有一些东西是无法优化掉的。
 - en: Summary
+  id: totrans-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: Overall, Mojo presents a **very** compelling performance proposal. I don’t have
     a lot of comparisons against C++, but for the one example I did, Mojo came really
     close. The programming model hints at the promise of even more potential improvements,
     like compiling the code to GPU target, and running that while pretending to be
     a single program, but it’s not really there yet and it’s hard to predict what
     compromises will be needed to actually achieve that.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 总体而言，Mojo 提出了一个**非常**引人注目的性能方案。我对与 C++ 的比较不多，但我做了一个例子，Mojo 非常接近。编程模型暗示着更多潜在的改进，比如将代码编译为
+    GPU 目标，并在假装是单个程序运行时运行，但现在还没有真正实现，很难预测实现这一点需要做出什么妥协。
 - en: Some of the gains in my solutions are perhaps more forced by Mojo’s lack of
     standard library, rather than better compilation techniques. I wouldn’t implement
     my own low-level string handling in Python, for example. When dealing with matrix
@@ -154,8 +219,14 @@
     where PyPy is slower than Python, too). A Gaussian solver in Python was even slower
     than NumPy, so I guess this is still a valid comparison, but I’m not sure how
     fast a _generic_ solution, or a NumPy equivalent for Mojo would be.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的解决方案中，一些收益可能更多地是由于 Mojo 缺乏标准库，而不是更好的编译技术所迫使的。例如，我不会在 Python 中实现自己的低级字符串处理。当处理矩阵操作时，我可能会使用
+    NumPy，而不是自己编写代码。我在第 24 天就是这样做的——Python 解决方案归结为运行一个线性代数求解器（我相信它使用的是 LAPACK 的 GESV，它使用高斯消元法对矩阵进行因式分解）。我的
+    Mojo 代码直接实现了高斯求解器，这稍微简单一些——但该求解器针对这个_具体的_问题，我不能用它同时解决多个方程，而 LAPACK 可以。结果代码的运行速度比
+    Python 快 30 倍（这是 PyPy 比 Python 更慢的那些晦涩案例之一）。Python 中的高斯求解器甚至比 NumPy 还要慢，所以我猜这仍然是一个有效的比较，但我不确定一个_通用_解决方案或
+    Mojo 的 NumPy 等效性会有多快。
 - en: There are certainly some aspects of ML programming that could benefit from this
     though — perhaps custom tensor operators or activations, and Modular is probably
     focusing on those key performance pain points, and some of the tasks in AOC do
@@ -164,19 +235,28 @@
     with this, assuming these workloads rely on switching back and forth between GPU/TPU
     and CPU for computations, and the CPU-side computations are mostly Python. It
     might be useful in some other areas, too, provided the language matures a bit.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，ML 编程的某些方面可能会受益于这一点——也许是自定义张量操作符或激活函数，而 Modular 可能正在关注这些关键性能痛点，并且 AOC 中的一些任务支持这一假设——这意味着你可以期望这确实会提高你想要用它运行的任何训练或推断工作负载的性能，假设这些工作负载依赖于在
+    GPU/TPU 和 CPU 之间来回切换进行计算，而 CPU 端的计算主要是 Python。它可能在其他一些领域也很有用，前提是语言成熟一点。
 - en: Whether that is a benefit enough is a very tough question. It is a different
     language, and switching is a huge cost, especially given that to benefit from
     these performance gains, you do have to rewrite the code significantly. The promise
     is there, certainly, but for now other factors are the real blockers — usability
     and safety and stability, the topics of the next parts.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 是否足够受益是一个非常棘手的问题。这是一种不同的语言，而且切换是一个巨大的成本，特别是考虑到要从这些性能收益中受益，你确实必须重写代码。当然，承诺是存在的，但目前其他因素才是真正的阻碍因素——可用性、安全性和稳定性，这些是下一部分的主题。
 - en: Benchmarks
+  id: totrans-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 基准测试
 - en: '[PRE3]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'

@@ -1,76 +1,114 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:05:47'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:05:47
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Adventures in application compatibility: The case of the jump into the middle
     of an instruction from nowhere - The Old New Thing'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 应用兼容性探险：从无处跳入指令中间的案例 - 旧的新东西
 - en: 来源：[https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966](https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966](https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966)
 - en: 'Adventures in application compatibility: The case of the jump into the middle
     of an instruction from nowhere'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 应用兼容性探险：从无处跳入指令中间的案例
 - en: 'A spike of Explorer crashes occurred with the release of a particular Windows
     Insider build. The crash looked like this:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个特定的 Windows Insider 构建发布后发生了 Explorer 崩溃的激增。崩溃看起来像这样：
 - en: '[PRE0]'
+  id: totrans-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This is most likely a nonsense instruction. There’s no obvious reason to be
     adding a partial upper register.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很可能是一个无意义的指令。显然没有明显的理由添加部分上位寄存器。
 - en: It looks like this is either a corrupted instruction pointer or corrupted code,
     because the first code byte is suspicious zero. And since the second byte is `66h`,
     it looks like an off-by-one, since `66h` is not an uncommon initial instruction
     byte. (It’s the operand size override prefix.) Another clue is that the calling
     function, not shown here, has no reason to be calling the `Some­Random­Internal­Function`
     function, and in fact, checking the alleged caller, it indeed does not call it.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来这要么是一个损坏的指令指针，要么是损坏的代码，因为第一个代码字节是可疑的零。而且由于第二个字节是 `66h`，看起来是一个偏移量错误，因为 `66h`
+    不是一个不寻常的初始指令字节。（这是操作数大小覆盖前缀。）另一个线索是，未显示的调用函数没有理由调用 `Some­Random­Internal­Function`
+    函数，事实上，检查所谓的调用者，它确实没有调用它。
 - en: 'Disassembling around the instruction shows that the instruction pointer is
     indeed in the middle of an instruction:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在指令周围进行反汇编显示指令指针确实在指令中间：
 - en: '[PRE1]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The instruction pointer is one less than the actual start of the instruction,
     causing the zero byte at the end of the immediate of the previous instruction
     to be misinterpreted as the start of the instruction to be executed.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 指令指针比实际指令的起始位置小一个，导致前一条指令的立即数末尾的零字节被错误地解释为要执行的指令的起始位置。
 - en: How did we end up in the middle of an instruction?
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们是怎么在指令中间结束的呢？
 - en: I did some bulk analysis of all the crash dumps that we received and observed
     that one third-party DLL was common to all of them. Further investigation shows
     that this third-party DLL is part of a “shell enhancement” program. This program
     patches Explorer in order to accomplish its enhancements, and apparently one of
     its patches went awry.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对我们收到的所有崩溃转储进行了批量分析，并观察到其中一个第三方 DLL 在所有崩溃转储中都是共同存在的。进一步的调查显示，这个第三方 DLL 是一个“Shell
+    Enhancement”程序的一部分。该程序对 Explorer 进行补丁以完成其增强功能，显然其中一个补丁出了问题。
 - en: 'The interesting thing here was how the program decided where to install its
     patches, and in particular how it managed to patch an function that was never
     exported or stored in a vtable: It found the function by contacting the Microsoft
     symbol server to get the names of all the functions in Explorer and their addresses!'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有趣的是程序如何决定在哪里安装其补丁，特别是它如何成功地对一个从未导出或存储在 vtable 中的函数进行补丁：它通过联系 Microsoft 符号服务器来获取
+    Explorer 中所有函数的名称和地址！
 - en: 'What happened is that we recently made changes to this internal function, and
     apparently those changes were enough to cause the patcher to go haywire. This
     is unfortunately a regular occurrence: Whenever a new build goes out, there’s
@@ -79,8 +117,12 @@
     enhancement” programs installed. If you’re really unlucky, their rogue patch crashes
     something in the Explorer startup path, and users finds themselves stuck with
     an unusable machine due to Explorer crash loops.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 发生的情况是，我们最近对这个内部函数进行了更改，显然这些更改足以导致打补丁程序失控。不幸的是，这种情况经常发生：每当新的构建发布时，Explorer 崩溃的数量就会激增，因为所有这些打补丁程序开始打错代码，而安装了这些“Shell
+    Enhancement”程序的所有系统上的 Explorer 都开始崩溃。如果你真的很不走运，它们的异常补丁可能会导致 Explorer 启动路径中的某个地方崩溃，用户发现自己因为
+    Explorer 崩溃而陷入无法使用的机器循环中。
 - en: This problem is particularly acute with monthly security patches, because we
     can’t roll the fix back. That would expose systems to the security issues that
     the monthly security update was intended to fix. (And now that the fix went out,
@@ -93,5 +135,7 @@
     customer satisfaction numbers to plunge every time an update goes out, particularly
     among users who don’t realize that the problem was caused by that program their
     computer-savvy nephew installed for them.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题在每月安全补丁上尤为严重，因为我们无法撤销修复。那样会使系统暴露于月度安全更新旨在解决的安全问题中。（而现在修复已经发布，所有坏人都已经反向工程了安全问题，可能正在努力将其武器化并利用未修补的系统。）我们必须希望足够多的用户意识到他们的系统崩溃是因为“外壳增强”程序（而不是归咎于Windows本身，这更有可能），并卸载或禁用这些程序以使系统重新正常工作。不幸的是，这些修补程序还会在每次更新发布时导致Windows客户满意度数字暴跌，特别是在那些不知道问题是由他们精通计算机的侄子为他们安装的程序引起的用户中。
