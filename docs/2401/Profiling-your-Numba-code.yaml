@@ -195,15 +195,18 @@
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然分析非常有帮助，但它并不总是能告诉您加速代码所需的所有信息。要了解更多关于这些问题的信息，请查看我的[即将发布的关于编写高性能低级代码的书籍](/products/lowlevelcode/)。
 - en: 'Limit #1: Compiled code doesn’t always match the source code'
   id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '限制 #1：编译后的代码并不总是匹配源代码。'
 - en: 'Consider the following example:'
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑以下示例：
 - en: '[PRE6]'
   id: totrans-34
   prefs: []
@@ -213,6 +216,7 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们对其进行分析，我们会得到：
 - en: '[PRE7]'
   id: totrans-36
   prefs: []
@@ -225,6 +229,8 @@
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么 `orig += 789` 被列出来，但添加 `123_000_000` 和 `456_000` 的其他行却没有？因为由于编译器优化，它们在编译后的版本中不再作为不同的操作存在。例如，我们可以检查函数生成的汇编代码，并搜索
+    789：
 - en: '[PRE8]'
   id: totrans-38
   prefs: []
@@ -236,16 +242,19 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器将三个添加的数字（`123_000_000`、`456_000`、`789`）合并为一个单一数字（`123_456_789`），这个数字很可能是与单一的加法操作一起使用的，而不是三个。
 - en: 'Limit #2: You need a mental model of how CPU execution works'
   id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '限制 #2：你需要一个关于 CPU 执行方式的心智模型。'
 - en: 'Recall that in our optimized dithering function we saw the following profiling
     results:'
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住，在我们优化的抖动函数中，我们看到了以下分析结果：
 - en: '[PRE9]'
   id: totrans-42
   prefs: []
@@ -256,6 +265,7 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么第一次计算比后面的要昂贵得多？它们似乎做的事情差不多。
 - en: 'One hypothesis is instruction-level parallelism: the CPU is able to go ahead
     and speculatively execute the later code in parallel. So the first line is expensive
     not because it’s any different, but because it’s *first*. We can partially test
@@ -264,6 +274,7 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个假设是指令级并行性：CPU 能够预先并行地执行后面的代码。所以第一行昂贵不是因为它与众不同，而是因为它是*第一个*。我们可以部分测试这个假设，通过改变语句的顺序并再次进行分析。这是结果：
 - en: '[PRE10]'
   id: totrans-45
   prefs: []
@@ -276,16 +287,19 @@
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，`result[y, x + 1] += error * 7 // 16` 这行代码在之前版本的代码中的样本比例要低得多，即使它运行的次数相同，并且执行的计算也完全相同。唯一改变的是执行顺序。
 - en: A mental model of a CPU that just executes code linearly, with no parallelism,
     is not sufficient to understand these results.
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个仅仅执行代码并且没有并行性的 CPU 的心智模型是不足以理解这些结果的。
 - en: 'Limit #3: Faster code may require a more holistic view'
   id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '限制 #3：更快的代码可能需要更全面的视角。'
 - en: Seeing which lines of code are slow can be very helpful, but some optimizations
     are a result of rethinking the code more broadly. For example, the final optimized
     version in the [original article](/articles/optimizing-dithering/) cuts memory
@@ -295,11 +309,13 @@
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看代码哪些行速度较慢可能非常有帮助，但有些优化是对代码进行更广泛重新思考的结果。例如，[原文](/articles/optimizing-dithering/)中的最终优化版本将内存使用减少了三分之二，同时比第二版本运行速度快了50%。这是通过改变算法的结构来实现的，而不仅仅是专注于一两行代码。
 - en: Give Profila a try!
   id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 试试 Profila 吧！
 - en: 'Profila is a new project: I released it the same day I wrote this article.
     So try it out, and please let me know about any bugs you find, your success stories,
     or any feedback at all, [in the GitHub issue tracker](https://github.com/pythonspeed/profila/issues/new)
@@ -307,3 +323,5 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Profila 是一个新项目：我在写这篇文章的当天发布了它。所以试试它，并请在 [GitHub issue 跟踪器](https://github.com/pythonspeed/profila/issues/new)
+    或通过电子邮件告诉我您发现的任何错误，您的成功故事，或任何反馈。
