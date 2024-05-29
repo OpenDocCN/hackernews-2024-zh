@@ -1,0 +1,321 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:20:23'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Coding the anime "woosh" screen on Amiga - @dansalvato
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/](https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: </images/20240223/1.mp4#t=0.01>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your browser does not support the video tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Amiga was a spectacle of graphics and sound when it debuted in 1985\. While
+    it can trivially display colorful images like in the above example, doing so in
+    the context of a game engine presents a lot of unique challenges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you haven't seen the gameplay proof-of-concept video for Magicore Anomala,
+    you can check it out [here](https://www.youtube.com/watch?v=4SB20aFHc08).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Challenge 1: The RAM requirements'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A run-of-the-mill Amiga 500 has 512kb of "Chip RAM" and 512kb of expansion RAM
+    (sometimes called "Slow RAM"), which is the platform target for Magicore. Only
+    Chip RAM can be used by the Amiga chipset to present graphics and sound, which
+    makes it much more valuable—all other kinds of expansion RAM can only be accessed
+    by the CPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fullscreen character graphic (CG) is a 320x240 bitmap with 32 colors, which
+    takes up 48kb of RAM uncompressed. That is a *lot*. Between all the common assets,
+    level data, and screen memory allocations, we don't want to afford that kind of
+    overhead on the RAM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, I recently added support for asset compression, using the ZX0 compression
+    format. Compressed, the CG is about 8kb, which is acceptable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the level assets are loaded, the compressed CG is loaded into the expansion
+    RAM. Then, right before it gets displayed, I unpack it into Chip RAM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The trick is that instead of finding 48kb of free Chip RAM to use, I reuse
+    other parts of screen memory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The room background image (the grassy field, in this example)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The screen layer used to render hazardous objects (not shown in the video)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The textbox screen area (as seen in the gameplay proof-of-concept video)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All three of these memory regions are contiguous in RAM, and they come out to
+    48,000 bytes, which is the *exact* size of the CG!
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's also okay to overwrite the room background image, because we can restore
+    it after the CG is done being displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the video below, I force the CG to always be shown on the screen, so we can
+    watch how the data gets decompressed and overwritten.
+  prefs: []
+  type: TYPE_NORMAL
+- en: </images/20240223/2.mp4#t=0.01>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your browser does not support the video tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pretty cool, right? As you can see, the CG takes maybe 500ms to fully decompress.
+    But that "loading time" is hidden into the flow of the cutscene.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Challenge 2: The "screen split" effect'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I was initially thinking about doing a vertical wipe for the screen transition.
+    But for that to look nice, the wipe would have to be a gradient, adjusting the
+    color palette every scanline. That's pretty possible, but the coprocessor (copper)
+    alone struggles to set all 32 colors in a single horizontal blank, and—I'll be
+    honest—I didn't want to deal with "racing the beam".
+  prefs: []
+  type: TYPE_NORMAL
+- en: The screen split effect is easier to pull off, and I think it looks cooler to
+    the common viewer. In fact, the copper was practically purpose-designed for this
+    effect! Check out [this](https://www.youtube.com/watch?v=YlAhRJjOhDg) video, which
+    demonstrates a similar effect built right into Amiga Workbench.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This demonstrates two special features of Amiga working in tandem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The copper runs in parallel to the CPU with its own instruction list. Those
+    instructions can tell it to change certain hardware registers at specific lines
+    on the screen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The screen memory can be changed to *anywhere* in Chip RAM by setting screen
+    pointers in the hardware registers. That means you can have multiple bitmap screens
+    and switch between them whenever you want—every frame (e.g. for double buffering),
+    or even multiple times in one frame.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Let's say my "main" screen memory begins at `0x20000`. Normally, I instruct
+    the copper to arm the bitplane DMA registers with this address. Once I enable
+    the bitplanes, the DMA happily marches through this region of memory, drawing
+    its data to the screen while incrementing the address pointer as it goes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is an interesting trick. Let's say each horizontal line takes up `0x100`
+    bytes of screen memory. What if I set the screen pointer to `0x20800` instead?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The screen will appear to "scroll up" by 8 lines, because the screen officially
+    starts 8 lines down into memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I have the top half of the split scroll up in this fashion. Then, at the split
+    point, the copper is instructed to shut off bitplane DMA (and change the BG color
+    to red).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, all the bitplane-related hardware registers are effectively frozen in time.
+    Once we reach the bottom of the split, the copper resets the BG color and resumes
+    bitplane DMA. The display picks up right where it left off, just lower down on
+    the screen!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''re wondering what this looks like, here is the copperlist used for
+    the effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That''s it! Every frame, I use the CPU to adjust `vs_TCopTop` and `vs_TCopBottom`
+    based on the current width of the split. (Not shown: Adjusting the screen pointer
+    for the top split, as described above.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Challenge 3: The "motion lines"'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can't reach full anime without having the lines that go "woosh" in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I use sprites to draw the lines, which is a good choice because they can be
+    drawn and moved fully independently from screen memory. The issue is that Amiga
+    sprites are both very limited and very complicated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sprite colors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sprites share a color palette with bitplanes, meaning I want to use up as few
+    colors as possible. The sprite is only 3 colors, leaving 28 for the CG (and 1
+    for the background).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem is that different sprites use different colors in the palette. The
+    first two sprites use colors 16-19, the second two sprites use colors 20-23, and
+    so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This changes if you combine sprites. By "attaching" two sprites together, they
+    become one sprite with a 16-color palette (colors 16-31). That means for the motion
+    lines, I can use 4 attached sprites, and use only colors 29-31 in the graphic.
+    It's a silly workaround for a silly limitation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reusing a sprite graphic
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first 4 bytes of a sprite graphic are actually "control bits" that tell
+    the Amiga the position and height of the sprite. That is actually a pain—what
+    if we want to draw the same graphic in multiple locations?
+  prefs: []
+  type: TYPE_NORMAL
+- en: My first thought was to manually set the hardware registers for sprite control
+    bits, but I simply could not get the sprite to display on screen when doing this.
+    Amiga sprite DMA works similarly to bitplane DMA; it has a pointer to the sprite
+    data that it walks through in order to display it to the screen. But when manually
+    setting the control bits, I just couldn't get it to do that. I'm sure it can be
+    done, but I decided to find another way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I instead created 8 fake sprites that are only 4 bytes large—*just* the control
+    bits. I set all the sprite pointers to those fake sprites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Around line 19, the sprite DMA looks at all the sprite pointers and arms itself
+    with the control bits, preparing to draw the data to the screen at the specified
+    position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once it does so, I pull a switcheroo: I change all the sprite pointers to the
+    "motion line" graphic. Now, the DMA is armed to draw all the sprites at different
+    positions, but using the same graphic.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, this can be trivially done in the copperlist:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Sprites don't get drawn when bitplanes are off
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Before the CG reaches the top of the screen, there is a bunch of empty space
+    between the top of the screen and the start of the CG. If bitplanes are enabled
+    during this time, they will draw junk data to the screen. Here is an example of
+    that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: </images/20240223/3.mp4#t=0.01>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your browser does not support the video tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dang, that's actually kind of cool-looking. Missed opportunity?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In that screen region, we want to disable bitplanes so that the DMA doesn't
+    run away with junk data like that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One problem: If you disable bitplanes, then sprites also don''t get drawn!
+    I don''t know why it works like this, but it does.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: </images/20240223/4.mp4#t=0.01>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your browser does not support the video tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See how the lines only get drawn within the bounds of the CG?
+  prefs: []
+  type: TYPE_NORMAL
+- en: My solution was to keep just 1 bitplane enabled, and set the screen pointer
+    to empty data. That way, it *is* drawing to the screen, but it's just drawing
+    nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But where do I find a screen full of empty data? Thankfully, I don't have to.
+    There are "bitplane modulo" registers (`BPLMOD1` and `BPLMOD2`) that let you increment
+    the screen pointer by a certain amount after each line. This is useful for interleaved
+    bitplanes, which I won't get into here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At 1 bit per pixel, a 320-pixel line is 320 bits, or 40 bytes. If I set `BPLMOD1`
+    to -40, then it will go backwards 40 bytes after each line, causing it to draw
+    the same 40 bytes over and over, on each new line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That means I only need to find 40 bytes of empty data, which is easy to find;
+    my screen has "safety margins" which hold nothing but junk data from objects that
+    are drawn beyond the screen borders. I can just clear out the first 40 bytes of
+    the safety margin, and I'm good to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I originally wasn't sure if I would include CGs like this in the game, because
+    I was worried about the RAM requirements. But now that I have data compression
+    implemented, I proved that the overhead is extremely reasonable, and I can add
+    this extra bit of flair to Magicore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There were a lot of other small challenges I didn't go over here, like getting
+    the bottom of the 100px motion line to not abruptly disappear after the sprite
+    leaves the top of the screen. But the ones I covered were the most interesting
+    to me, especially how they involve unique quirks of Amiga hardware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, if you like Amiga, you might have noticed that this effect doesn't use
+    the blitter at all! If you want to read a blitter-related post, try [this](/getting-clever-with-the-amiga-blitter)
+    one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Amiga is so great at displaying colorful graphics that I hope I can impress
+    people with its capabilities today, just as they were in the latter half of the
+    80s.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,556 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:53:04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: LiveView is best with Svelte
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.sequin.io/liveview-is-best-with-svelte/](https://blog.sequin.io/liveview-is-best-with-svelte/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We’re [Sequin](https://sequin.io/docs?ref=blog.sequin.io). We turn 3rd-party
+    API data (e.g. Salesforce, AWS) into Postgres tables and event streams. As an
+    infrastructure company, we questioned if we really need a SPA. So, we started
+    with LiveView, which helped us move fast but left us wanting more. This post is
+    about that journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Phoenix's [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html?ref=blog.sequin.io)
+    has polarized our team. Compared to SPA, there are components and features that
+    we’re able to build 2-3x faster. Conversely, there are components and features
+    that are frustrating to build or feel very counterintuitive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Said another way, LiveView makes a lot of things easy. But it also makes some
+    easy things hard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This created tension. Do we keep forging down this path? Or do we give in and
+    convert our app to a SPA?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, we found a companion library called [LiveSvelte](https://github.com/woutdp/live_svelte?ref=blog.sequin.io).
+    LiveView enables a development experience with Svelte that’s unlike any other
+    fullstack paradigm I’ve used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The team agrees: this is a killer way to build.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To appreciate the LiveView+Svelte paradigm, I’ll start by explaining how LiveView
+    works and what makes it different. Then, I’ll detail the friction we encountered
+    with a pure LiveView approach. At that point, you’ll be able to appreciate what
+    LiveSvelte offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is LiveView
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LiveView offers a very unique way to build web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a traditional server-rendered web application, the server is stateless. The
+    client requests a page and the server renders it. All client actions route back
+    to the server, which re-renders the next page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a SPA, the client is in charge of building pages. It leverages a backend
+    API to read and write data. Client apps are stateful (e.g. `useState` in React).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In LiveView, the server is in charge of rendering the page. But it’s stateful.
+    Actions in the frontend are handled by the backend, but the server *incrementally*
+    updates the DOM, much like in a SPA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At a high-level, the reason a SPA is complex is because distributed systems
+    are complex. Supporting a client JS app is supporting a microservice (and one
+    that runs in a hostile, untrusted environment, no less!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: In *theory* your frontend app uses a backend REST API that *could* be used to
+    support lots of different services and clients. In reality, the needs of your
+    frontend app are unique. So your backend routes and controllers explode with functions
+    that serve the needs of a single client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If nothing else, this complexity just means shaving a lot of yaks. Each request
+    requires a fair bit of plumbing on both the frontend and the backend. Callstacks
+    can easily exceed half a dozen layers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`onMount`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`await api.fetchUsers`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`parseResponse`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Router.handle(/api/users)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`AuthPlug.verify_cookie`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`UsersController.index`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Users.list_for_org`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ApiHelpers.prepare_response`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promise of LiveView is that you get to create rich client-side experiences
+    without the frontend microservice. You're back to the much simpler world where
+    you can query the database in the function adjacent to the function that renders
+    your table rows. If a new row comes in, you just need to push it to your table,
+    and LiveView will update the client for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But in addition, you also get to enjoy building an app using the stateful paradigm
+    of frontend frameworks. It's much easier and faster to build rich interaction
+    patterns this way vs prior backend paradigms where you'd need to "rebuild the
+    world" on each request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where LiveView makes easy things hard
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There's a lot of good stuff in LiveView. But there are also real thorns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two primary areas that we struggled with LiveView:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Client-side state is inevitable
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There is a (literal) speed of light limitation with this approach: your server
+    can only be *so close* to your users.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Invariably, you’re going to need to do some stuff client-side. Animations, tooltips,
+    showing/hiding DOM elements, disabling form fields, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, there’s a form in our app with two interdependent dropdowns. Selecting
+    an option in the first dropdown allows our server to generate the list for the
+    second dropdown. To get the best UX, you want to disable the second dropdown immediately
+    after the first dropdown changes. Then, when it’s repopulated by the server, you
+    can re-enable it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Simulating 1000ms of roundtrip latency between the client and the server.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To pull this off, as far as we could tell, you need to use two independent
+    concepts in LiveView:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use the [JS module](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html?ref=blog.sequin.io)
+    to disable the second dropdown when the first dropdown changes.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use a [hook](https://hexdocs.pm/phoenix_live_view/js-interop.html?ref=blog.sequin.io#client-hooks-via-phx-hook)
+    to register an event listener on the second dropdown. Then, send an action to
+    re-enable the second dropdown from the backend.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And for slightly more complex interaction patterns, you’ll need to incorporate
+    a *third* concept, LiveView state. For example, maybe you only want to re-enable
+    the second dropdown in certain conditions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way these three concepts fit together is not obvious (we’re still not sure
+    this is the right pattern!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, while the server is in charge of a lot of DOM changes, it can’t command
+    all of them. You use JS and hooks to sprinkle in JavaScript where needed. These
+    tools feel side-chained to core LiveView, and therefore their patterns of use
+    are not obvious. And the more JS and hooks you use, the more of your DOM state
+    now exists *outside* of LiveView.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a stark contrast to a paradigm like React. In React, it’s state and
+    actions all the way down. With that core concept, you can do most anything. And
+    there is no blurry line between DOM state and component state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: React can take that approach because there’s no latency between client-side
+    actions and client-side state. This means you can let React’s state paradigm handle
+    every action and transition. Because all of LiveView’s state is server-side, it
+    has to contend with the latency between client-side actions and server-side state.
+    This means that while LiveView state *looks like* other frontend frameworks, the
+    model is actually quite different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take input fields, for example. In React, a character can’t be inserted into
+    an input field without routing through state. This unlocks a powerful programming
+    model, where your component re-renders – and therefore responds – to every keystroke.
+    It gives the state and action paradigm a lot of reach, where you can use one core
+    concept (`useState`) to solve a huge space of problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In LiveView, it’s more accurate to say that the input field is changed by the
+    user, *and then* a short while later LiveView finds out about it and reacts to
+    it. With no latency, *it looks a lot like React*. But with increased latency,
+    it’s quite a different paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In frontend frameworks like React, you need to contend with server-side latency
+    all the time. But *when* a high-latency action is going to take place is clear
+    (i.e. you’re fetching from a server). In LiveView, the boundary is murkier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Three components
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'LiveView has three different types of components: LiveViews, LiveComponents,
+    and Components.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: LiveViews and LiveComponents are like stateful components in React, whereas
+    Components are like functional components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Importantly, a LiveView will always be the uppermost parent component. You render
+    LiveComponents and Components as children underneath a LiveView.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In React, it's easy to switch between stateful and functional components–just
+    add or remove `useState` hooks. The API for both are the same (they both accept
+    props in the same way). And outside state, they have an identical feature set.
+    For example, they can both register and respond to DOM events in the same way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ease of switching between component types is important. As an app matures,
+    you’re constantly factoring out components. You’re figuring out which bits should
+    be reused, what should be generalized, where state should live, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In LiveView, all three components are very different. As a result, refactoring
+    a LiveView into a LiveComponent is surprisingly cumbersome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In particular:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The syntax for rendering and passing props to LiveViews and LiveComponents is
+    different.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The lifecycle of LiveViews and LiveComponents are different.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The [communication options](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html?ref=blog.sequin.io#module-unifying-liveview-and-livecomponent-communication)
+    between LiveViews and LiveComponents are different. For example, you `send` to
+    LiveViews but `send_update` to LiveComponents.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: LiveComponents are not processes, and so can't interact with the rest of the
+    system like LiveViews can.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'That last point is what makes LiveComponents so different and so frustrating.
+    The limitations *make sense*: A LiveView is a process. That''s one of the best
+    parts about a LiveView, they''re "just processes" and so they can fit into your
+    Elixir/OTP system like every other process. For example, you can use pub/sub in
+    a LiveView to subscribe to system-wide changes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A LiveComponent is *not* its own process, they are modules invoked by a LiveView.
+    The parent LiveView process holds the state for all subcomponents. So, a LiveView
+    has a `pid`, state, and an inbox; a LiveComponent does not. This means the LiveView
+    also has to handle all message routing for its child LiveComponents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is in keeping with Elixir/OTP design principles: processes are the building
+    blocks. To give LiveComponents the same powers of independent state management
+    and action handling, they would each need to be their own process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Still, for the life of me, I *really* struggled with LiveComponents. So often,
+    I wanted to send my LiveComponent an event/action but didn''t have a good way
+    to do it. You end up using `send_update`, which is an awkward API. We couldn''t
+    decide: do we send *actions* via `send_update`, or do we use it to patch state?
+    If we use it to patch state, how do we tell in our `update` clause whether we''re
+    mounting or updating?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The elusive “LiveView way”
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LiveView often made us feel like we were “missing something.” The “LiveView
+    way” feels elusive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps LiveView is in an uncanny valley. It shares a lot in common with contemporary
+    frontend frameworks. So, our “React brains” and intuitions would kick in, driving
+    us to use old patterns–but those would often lead to a dead end. More alienness
+    would have forced us to recognize the differences and to approach problems differently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can do a lot with just LiveView state and actions. But there are limits,
+    and when you hit them you need to switch paradigms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It has components to help you organize and reuse code. But due to differences
+    between JavaScript and Elixir, LiveView can’t really offer the same isomorphic
+    component trees without a ton of abstraction, and so has LiveViews and LiveComponents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**This is what makes LiveSvelte so promising**. As you’ll see, it shifts more
+    responsibility to the frontend. It embraces the fact that the frontend will have
+    its own state. And it lets you take advantage of all the maturity of contemporary
+    JavaScript component frameworks.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: LiveView + Svelte
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LiveSvelte lets you render Svelte components from LiveView. It's an awesome
+    paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s a couple different ways to render Svelte from your LiveViews, but the
+    most basic way looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is an Elixir module, the LiveView. Inside the render, we first take our
+    Elixir data structures and encode them for the frontend. We like the pattern of
+    explicitly encoding Elixir structs and such as plain maps before passing to Svelte,
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’re able to set props on the Svelte component. Those are passed down as you’d
+    expect to the component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One of the props that LiveSvelte sets for us is the `live` prop. To communicate
+    from the Svelte component back up to the LiveView, we can call `live.pushEvent`.
+    For example, check how easy it is to send the server changes to the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a reactive block in Svelte. It will be executed whenever the variable
+    `form` is changed. (Kind of like a `useEffect`, where `form` is the dependency.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The LiveView can handle and respond to the `pushEvent` using typical Elixir
+    message handling semantics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We first decode the params from the frontend, reversing any encoding/mapping
+    we did on the way out. Then, `merge_changeset/2` updates our changeset. If there
+    are any validation errors in the changeset, those will make their way back to
+    the frontend via the `errors` prop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, you have data flow from Elixir down to the component via props. The LiveView
+    process can update props at any time to cause the Svelte component to re-render.
+    Any other communication can happen via the websocket.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The boundary between the two is very clear–just as clear as in any SPA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's most game-changing, though, is that you have a *backend, stateful process*
+    that is collaborating with a *frontend, stateful process*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And it's *so* fun and productive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The three powerhouse properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The backend controls the props on the frontend component.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The frontend *and* the backend are stateful.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You have a private, bi-directional communication channel between the two *where
+    either side can initiate a message to the other*.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '#1 is made possible thanks to LiveView’s rendering paradigm: re-renders on
+    the server are automatically pushed and applied to the client. This lets the server
+    update props on the component just like a JS parent component can!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#2 is possible because a LiveView is a process. Processes are how Elixir encapsulates
+    and reduces state.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#3 is made possible by the persistent websocket that LiveView gives you, wired
+    to the frontend.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the differences between this paradigm and a SPA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, all browser routing happens via the backend. This is a great simplifier.
+    (In a regular SPA you have to maintain *two* sets of routes, one for the browser
+    and one for your API.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Second, the backend is stateful. It knows what route you’re on. Which resource
+    you’re working with. Each action it handles can be far more incremental, as it’s
+    applying a state change to itself vs rebuilding state from scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Third, communication between the frontend and backend is private and coupled,
+    as it should be. You’re not “polluting” your server’s public routes with a bunch
+    of RPC calls that support a single component. When you see a `pushEvent` in the
+    client, you know exactly where the handler for that is – in the collaborating
+    Elixir module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fourth, functionality is split across just two files. Sure, the backend module
+    will call out to your backend functions (e.g. fetch data from database) and the
+    frontend will import components and styles. But roundtrips between the two aren’t
+    routing through a stack of API modules, routers, and controllers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fifth, communication between frontend and backend is far less ceremonious.
+    The backend can simply update props to inform frontend changes. And the frontend
+    can `pushEvent` without needing handlers for expired tokens, timeouts, or outages.
+    It’s binary: either the websocket is open which means the server is open for business,
+    or it’s not in which case LiveView helpfully shows the user a global “disconnected”
+    banner.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the simplest terms, the frontend microservice is eliminated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you end up with feels like such a great split of responsibilities with
+    very little boilerplate. All your business logic is on the backend – how you load
+    data, *which* data to load, how to sort and filter the data, your validators,
+    etc. Your frontend code is stupid simple. In Svelte, it’s all (1) `if/end` blocks
+    to conditionally render stuff (2) animations and (3) a few dead simple `pushEvent`
+    functions back to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That last part has been blowing my mind. The typical SPA frontend is full of
+    so much logic, usually `map`, `reduce`, and `filter` in order to process server
+    data, prepare data for display, or prepare data for the server. In a LiveSvelte
+    app, all this can just happen server-side. The LiveView can prepare data exactly
+    as the Svelte component needs it. This keeps complexity in your server language,
+    in your server's data structures, and in your server's test suite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The backend LiveView and the frontend Svelte component aren''t so much coupled
+    as they are two halves: the LiveView only renders that Svelte component, and that
+    Svelte component is only ever rendered by that LiveView.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In contrast to a “regular” LiveView, this paradigm:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Embraces state and state transitions in the frontend.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creates a clear boundary layer between the frontend and backend.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Leverages Svelte’s component paradigm, which like other contemporary JS frameworks
+    is very mature and familiar.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In general, lets great frontend frameworks do what they do best! A pure LiveView
+    approach doesn’t let you tap into this huge ecosystem. (For example, Svelte comes
+    with great animation primitives.)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By moving more into the frontend, we no longer felt like we were straddling
+    an awkward middleground.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We chose LiveSvelte because React didn't have a similarly complete LiveView
+    library. The joy of working with Svelte has been a very happy bonus. Because LiveView
+    does the heavy lifting with state management, our state management in Svelte is
+    very simple. For basic state and reactivity, Svelte is the lightest and fastest
+    frontend framework I've worked with. We also prefer its templating features to
+    React's, namely getting to use `if/else` instead of ternary operators and its
+    conditional property setting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further, Svelte 5 is around the corner, and we're bullish on its [runes](https://svelte.dev/blog/runes?ref=blog.sequin.io).
+    We think it makes Svelte even easier to pick up and reason about, meaning everyone
+    on the team is empowered to traverse the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m now convinced LiveView shines brightest as a backend-for-frontend. By rendering
+    frontend components, incrementally updating them, maintaining a stateful backend
+    process, and providing a websocket API, it creates a tremendously productive platform
+    for frontend applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re using LiveView and resonated with any of the friction I highlighted,
+    you need to give this a try. If you’ve never used LiveView, you’ll find that this
+    paradigm *lowers* the learning curve. This is because you’re able to use a lot
+    of the JavaScript framework primitives you’re used to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Update 4/3/2024**: Join the discussion on [Hacker News](https://news.ycombinator.com/item?id=39916144&ref=blog.sequin.io).'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,722 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:49:58'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to stream PostgreSQL CDC to Kafka and use Propel to get an instant API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.propeldata.com/blog/postgresql-cdc-to-kafka](https://www.propeldata.com/blog/postgresql-cdc-to-kafka)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Learn how to stream PostgreSQL Change Data Capture (CDC) to a Kafka topic and
+    serve the data via an API with Propel. This guide provides step-by-step instructions,
+    from setting up your PostgreSQL database and Kafka broker to deploying the Debezium
+    PostgreSQL connector and creating a Propel Kafka Datapool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Change Data Capture (CDC) is the process of tracking and capturing changes to
+    your data. In PostgreSQL, we can implement CDC efficiently using the transaction
+    log so that, rather than running batch jobs to gather data, we can capture data
+    changes as they occur continuously. This has numerous benefits, including allowing
+    your applications to see and react to changes in near real-time with lower impact
+    on your source systems. In this article, we'll walk you step-by-step through how
+    to stream CDC from PostgreSQL to a [Propel Kafka Data Pool](https://www.propeldata.com/docs/connect-your-data/kafka)
+    to get an instant data-serving API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are we trying to do?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We want to power large-scale analytics applications with data coming from PostgreSQL.
+    As we all know, PostgreSQL, as an OLTP database, is notoriously slow in handling
+    analytical queries that process and aggregate large amounts of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we want to capture all changes to our PostgreSQL database table(s) and
+    send them as JSON messages (see below) to a [Kafka](https://kafka.apache.org/)
+    topic.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Second, we’ll need to configure  [Kafka Connect](https://docs.confluent.io/platform/current/connect/userguide.html#connect-userguide)
+    and the [Debezium PostgreSQL connector](https://debezium.io/documentation/reference/2.6/connectors/postgresql.html)
+    to stream the CDC to a Kafka topic.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lastly, create a Propel Kafka Data Pool that ingests data from the Kafka topic
+    and exposes it via a low latency API.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will cover how to deploy how to create and deploy all services in a Kubernetes
+    cluster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How PostgreSQL CDC with Debezium works
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, we will provide a quick overview of how PostgreSQL change data
+    capture works with Debezium.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine you have a simple table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You update a row with the following SQL statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The change to the column <span class="code-exp">foo</span> will result in an
+    “update” to the transaction log, which Debezium then transforms into the JSON
+    message below and drops into a Kafka topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'CDC JSON with <span class="code-exp">before</span> and <span class="code-exp">after</span>:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The Debezium PostgreSQL connector generates a data change event for each row-level
+    <span class="code-exp">INSERT</span>, <span class="code-exp">UPDATE</span>, and
+    <span class="code-exp">DELETE</span> operation. The <span class="code-exp">op</span>
+    key describes the operation that caused the connector to generate the event. In
+    this example, u indicates that the operation updated a row. Valid values are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <span class="code-exp">c</span> = create
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <span class="code-exp">u</span> = update
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <span class="code-exp">d</span> = delete
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <span class="code-exp">r</span> = read (applies to only snapshots)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <span class="code-exp">t</span> = truncate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <span class="code-exp">m</span> = message
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the Propel Kafka Datapool?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Kafka [Data Pool](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools)
+    lets you ingest real-time streaming data into Propel. It provides an instant low-latency
+    API on top of Kafka to power real-time dashboards, streaming analytics, and workflows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider using Propel on top of Kafka when:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You need an API on top of a Kafka topic.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to power real-time analytics applications with streaming data from
+    Kafka.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to ingest Kafka messages into ClickHouse.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to ingest from [self-hosted Kafka](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=self-hosted-kafka),
+    [Confluent Cloud](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=confluent),
+    [AWS MSK](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=aws-msk),
+    or [Redpanda](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=redpanda)
+    into ClickHouse.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to transform or enrich your streaming data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to power real-time personalization and recommendations for use cases.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once we have the PostgreSQL, Debezium, and Kafka set up, we’ll ingest the data
+    into a Propel Kafka Data Pool to expose it via an API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up Minikube, PostgreSQL, Kafka, Kafka Connect, and Debezium
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We will walk through setting this up in a Kubernetes cluster on a Mac. This
+    can be done in other environments, but Kubernetes is a common platform for hosting
+    and running data streaming services in the cloud.  For this example, we will use
+    [Minikube](https://minikube.sigs.k8s.io/docs/start/) to deploy our Kubernetes
+    cluster, [Redpanda](https://redpanda.com/) to deploy our Kafka cluster, and [Helm](https://helm.sh/)
+    to manage Kubernetes applications like PostgreSQL.  I’ll provide the Mac-specific
+    commands but links to the installed services if you are running a different OS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up Minikube
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Step 1:** **Install** [**Docker Desktop**](https://www.docker.com/products/docker-desktop/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2:** **Install** [**Kubectl**](https://kubernetes.io/docs/tasks/tools/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 3: Install minikube**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4:** **Start minikube**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 5: Interact with your cluster**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 6:** **Install helm**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up PostgreSQL
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Step 1: Install the PostgreSQL Helm Chart with extended configuration**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extend the configuration to set the <span class="code-exp">wal_level</span>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2:** **Connect to PostgreSQL using the PostgreSQL CLI Create the database**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 3: Create the table**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4: Create a PostgreSQL user**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create a PostgreSQL user with the necessary privileges for Debezium to stream
+    changes from the PostgreSQL source tables, run this statement with superuser privileges:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting up Kafka (Redpanda)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Step 1: Add the helm repo and install dependencies**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2: Configure and install Redpanda**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 3: Install the Redpanda client <span class="code-exp">rpk</span>**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4:** **Create an alias to simplify the <span class="code-exp">rpk</span>
+    commands**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 5: Describe the Redpanda Cluster**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 6: Create a user**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 7: Create an** [**ACL**](https://docs.redpanda.com/current/manage/security/authorization/#create-acls)
+    **for the user <span class="code-exp">blog</span>**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting up Kafka Connect
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Step 1:  Create a namespace**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2: Create the Service**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is the manifest you’ll need to apply to set up the Kafka Connect service
+    with your Redpanda broker (see above).  Copy the manifest below and provide the
+    needed values to configure the service for your environment. In the example below,
+    we are connecting with <span class="code-exp">SASL_PLAINTEXT</span> and <span
+    class="code-exp">SCRAM-SHA-256</span>, ensure that <span class="code-exp">CONNECT_SASL_JAAS_CONFIG</span>
+    is using <span class="code-exp">org.apache.kafka.common.security.scram.ScramLoginModule</span>
+    and that you have set the username and password for both the <span class="code-exp">CONNECT_</span>
+    and <span class="code-exp">PRODUCER_</span> keys.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Use <span class="code-exp">kubectl</span> to install the manifest and start
+    the Kafka Connect pod in your cluster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: After you apply the manifest, you should get the following output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check the pod log files to ensure the service can log in to the broker. You
+    should see the following in the logs if everything has been configured correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check that the <span class="code-exp">connect-offsets</span> topic has been
+    created on the Redpanda broker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting up the Debezium PostgreSQL Connector
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We must create a topic to store the CDC messages before deploying the Debezium
+    PostgreSQL connector to the Kafka Connect service.   If you take a look at the
+    config below we’ve set the property <span class="code-exp">topic.prefix</span>
+    to “blog” <span class="code-exp">andpublication.autocreate.mode</span> to “filtered”
+    and set the <span class="code-exp">table.include.list</span> to “public.simple”.
+     This configures the connector to write the CDC messages to a topic named <span
+    class="code-exp">blog.public.simple</span>, use the command below to create the
+    topic, then deploy the connector using the cURL command. You’ll need to provide
+    your environment-specific details for connecting to your PostgreSQL server and
+    the username/password for the Redpanda service you used above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 1:  **Create a topic in Redpanda'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Install the Debezium PostgreSQL connector using cURL.  You’ll need to fetch
+    the password for the PostgreSQL user and fill it in below.  We will also set up
+    port forwarding from the Kafka Connect service to our local host.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 2: Get the PostgreSQL password**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 3: Forward the Kafka-Connect service port (8083)**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4: Deploy the Debezium Postgres Connector with cURL**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Insert data and validate the setup
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s validate the CDC messages are landing in the topic we created; we’ll insert
+    some data into our PostgreSQL table and then consume a message from the topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 1: Connect to the database**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2: Insert data into the table**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 3: Consume the CDC message from the topic**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ve validated that the Debezium CDC messages with <span class="code-exp">before</span>-and-<span
+    class="code-exp">after</span> values are landing in the topic.  Don’t be concerned
+    if <span class="code-exp">before</span> is not filled out in this example; if
+    you take a look, the “op” is <span class="code-exp">c</span>, which means a new
+    row was created in the table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Expose Redpanda to the internet
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deploying all of the services locally using <span class="code-exp">minikube</span>
+    is a great way to do local development and get hands-on experience without paying
+    a cloud provider. However, for us to use Propel and create a Kafka Data Pool,
+    Propel has to connect to our Redpanda topic. There are a number of ways that this
+    can be accomplished. For the sake of simplicity, we are going to install a reverse
+    proxy and create a TCP Tunnel to expose the Redpanda port to the internet.  The
+    reverse proxy we are going to use is called [LocalXpose](https://localxpose.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 💡 To use the LocalXpose TCP Tunnel with a [dedicated port](https://localxpose.io/docs/tunnels/tcp),
+    I had to pay $6\.  Other free services also do this, but you can’t control which
+    port the tunnel is on.  Redpanda has a limitation when creating the external NodePort
+    that restricts it to ports <span class="code-exp">30000-32767</span>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 1: Install LocalXpose and <span class="code-exp">kcat</span>**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://localxpose.io/docs](https://localxpose.io/docs)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 2: Start the TCP Tunnel**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now see the running tunnels. Copy the domain name in <span class="code-exp">From</span>,
+    e.g., <span class="code-exp">us.localx.io</span>. This will be used in step 3
+    and later when creating the Kafka Data Pool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 3: Upgrade the Redpanda install and expose an external NodePort**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save the yaml below to <span class="code-exp">external-dns.yaml</span>, and
+    replace the <span class="code-exp-bracket">domain</span> with the value from step
+    2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Upgrade Redpanda.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4: Forward the traffic to <span class="code-exp">minikube</span>**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 5: Validate you can connect externally using <span class="code-exp">kcat</span>**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now tunnel traffic to Redpanda running in <span class="code-exp">minikube</span>,
+    allowing Propel’s backend to connect and consume the CDC messages from the topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a Propel Kafka Data Pool
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Login to the [Propel console](https://console.propeldata.com) or create a new
+    account.  Then choose your environment and create a new Kafka Datapool, for this
+    example I’m using the <span class="code-exp">development</span> environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, choose Add new credentials to configure the connection to our Redpanda
+    cluster. (use the domain and port from the TCP Tunnel that you created above for
+    the Bootstrap Servers)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click Create and test Credentials
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ensure the topics are visible
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, choose the topic <span class="code-exp">blog.public.simple</span> to start
+    pulling in the CDC data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click Next to choose the primary timestamp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Give the Data Pool a unique name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click Next to start syncing the data from the topic into Propel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you see two records in the Datapool, you can click Preview Data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Query the data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To query the data we have in Propel, you’ll need to create an Application. Follow
+    the guide in the [docs](https://www.propeldata.com/docs/applications) to create
+    an application. Once you’ve created an Application, you can get a token, as seen
+    in the image below. We’ll use that token in the subsequent API calls below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use the [Data Grid API](https://www.propeldata.com/docs/query-your-data/data-grid)
+    to query the data in the newly created Kafka Data Pool.  Make sure to copy the
+    token you created above and replace <span class="code-exp-bracket">TOKEN</span>
+    with the value.  You will also need to replace <span class="code-exp-bracket">DATAPOOL_ID</span>
+    with the ID of the newly created Kafka Data Pool. Copy the <span class="code-exp">curl</span>
+    command below and execute it from the command line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will return a Data Grid with headers and rows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Update the source PostgreSQL database
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we update the PostgreSQL database with a new value for one of the rows, we’ll
+    see that change reflected in the Propel Data Pool. Let’s execute the SQL statement
+    below and re-run the GraphQL query we ran above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we re-run the GraphQL query, we get the following response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: This shows that we have three rows in our Data Pool; it reflects the raw CDC
+    messages that have been sent to the Kafka Data Pool. In order to use the data
+    for analytics, we need to transform it to correctly represent the current state
+    in the source database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a real-time transformation to unpack the CDC JSON message
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we’re getting the stream of CDC messages to Propel and landing them
+    in a Kafka Data Pool, we need to write some SQL to transform the messages based
+    on the “op” type.  The columns we are interested in using are <span class="code-exp">id</span>,
+    <span class="code-exp">_timestamp</span>, and <span class="code-exp">foo</span>.
+     Our <span class="code-exp">SELECT</span> statement below will query the source
+    table <span class="code-exp">blog-post</span> and extract <span class="code-exp">id</span>
+    and <span class="code-exp">foo</span> from <span class="code-exp">_propel_payload.after</span>.
+     This will handle both the create and update operations.  In the case of an update
+    operation a duplicate row will be inserted and then de-duped by Propel.  This
+    will ensure that when we set <span class="code-exp">id</span> as the <span class="code-exp">uniqueId</span>
+    column in the MaterializedView only one version of the <span class="code-exp">id</span>
+    exists with the latest value from the source table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should get a response like the one below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Query the Materialized View Data Pool
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that we’ve created the MaterialzedView let’s query the Data Pool that was
+    created along with it.  Replace <span class="code-exp-bracket">token</span> with
+    the token you created earlier, and use the response from the above <span class="code-exp">curl</span>
+    command to get the destination data pool id.  This is available at <span class="code-exp">data.createMaterializedView.materializedView.destination.id</span>
+    in the JSON.  Replace <span class="code-exp">datapool_id</span>with that value
+    and run the <span class="code-exp">curl</span> command from the command line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: The response you get should only have two rows and the updated value of <span
+    class="code-exp-bracket">baz</span> for <span class="code-exp">9cb52b2a-8ef2-4987-8856-c79a1b2c2f73</span>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Visualize the results
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s write a small <span class="code-exp">node.js</span> application that combines
+    all of the Propel concepts and renders a table with the results from the MaterializedView.
+     Instead of providing a token, we’ll use the Propel API to mint a token using
+    the OAuth2 client credentials from the Propel Application we created.  These are
+    found in the Propel console within the Applications section, as seen below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 1: OAuth2 client credentials**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Step 2: Set environment variables**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replace the tokens with the values from the console, then paste and execute
+    the commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 3: Install the dependencies**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 4: Copy the code**‍'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy the code below and replace <span class="code-exp-bracket">DATAPOOL_ID</span>
+    with the data pool ID for the MaterializedView from above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Step 5: Run the script**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wrap up
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In wrapping up this post, it's important to recap the key skills and knowledge
+    you've acquired. You have learned how to effectively stream PostgreSQL Change
+    Data Capture (CDC) to a Propel Kafka DataPool, a significant step in managing
+    real-time data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further, you've gained the ability to query this data, which opens up a wealth
+    of opportunities for analysis and insights. This guide also walked you through
+    the process of updating the source PostgreSQL database, ensuring that you can
+    maintain the accuracy and relevance of your data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the highlights of this guide was teaching you how to create a real-time
+    transformation to unpack the CDC JSON message. This is a fundamental skill that
+    elevates your data management capabilities, enabling you to manipulate and interpret
+    data for various applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, you've learned how to visualize the results. Visualization plays a
+    crucial role in data analysis, making complex data more understandable, revealing
+    trends and outliers, and contributing to more effective communication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We hope you found the content both informative and practical and that you enjoyed
+    the learning process. Propel is dedicated to empowering you with the tools and
+    knowledge to transform your data into valuable insights. We look forward to supporting
+    you in your future endeavors with Propel. Keep exploring and transforming your
+    data!
+  prefs: []
+  type: TYPE_NORMAL

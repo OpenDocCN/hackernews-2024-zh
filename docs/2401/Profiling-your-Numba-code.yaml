@@ -1,0 +1,215 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:20:44'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profiling your Numba code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://pythonspeed.com/articles/numba-profiling/](https://pythonspeed.com/articles/numba-profiling/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you’re writing numeric Python code, [Numba](/articles/numba-faster-python/)
+    can be a great way to speed up your program. By compiling a subset of Python to
+    machine code, Numba lets you write for loops and other constructs that would be
+    too slow in normal Python. In other words, it’s similar to Cython, C, or Rust,
+    in that it lets you write compiled extensions for Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Numba code isn’t always as fast as it could be, however. This is where profiling
+    is useful: it can find at least some of the bottlenecks in your code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this article we’ll cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profila, a new profiler I’ve released that is specifically designed for Numba
+    code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The limits of profiling. There are many potential performance enhancements that
+    a profiler can’t and won’t help you discover.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Introducing Profila: a profiler for Numba'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Profila](https://github.com/pythonspeed/profila) is a profiler specifically
+    designed to identify which lines of code in your Numba code are slow. It works
+    via sampling: it runs a `gdb` process that connects to your process every 10ms
+    or so, gets a backtrace, and uses that to identify which lines of code were running.
+    Get enough samples, and you’ll get a sense of where the most time was spent in
+    your program.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s see Profila in action! We’re going to profile the following program, which
+    dithers an image, switching it from grayscale to black and white. (This is the
+    initial naive version that I then [optimized for performance in a different article](/articles/optimizing-dithering/).)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then install `gdb` and `profila`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And now we can use Profila to profile the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Optimizing the code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: First, notice from the top of the output that 37.8 + 1.9 = about 40% of the
+    samples were either bad, or not running Numba code. This includes time spent importing
+    modules, running regular Python code, compiling the Numba code, and so on. That
+    means 60% of the time was spent running actual Numba code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we can see the combination of `np.round()` and `new_value = np.uint8(np.round(old_value
+    / 255.0)) * 255` is 30.2 + 9.8 = 40% of total samples. So that means 40/60, two
+    thirds of the time, was spent in that one line of code, turning `old_value` into
+    `new_value`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we saw in [the original article](/articles/optimizing-dithering/) featuring
+    this example, we can replace this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With a much simper version:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we profile this optimized version we’ll see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As was the case in the [original article](/articles/optimizing-dithering/),
+    our code now runs 3× as fast!
+  prefs: []
+  type: TYPE_NORMAL
+- en: And this time we didn’t have to guess, we had a profiler to point us at the
+    main bottleneck.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The limits of profiling
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While profiling is extremely helpful, it won’t always tell you everything you
+    need to know to speed up your code. To learn more about all of these issues, check
+    out my [upcoming book on writing high-performance low-level code](/products/lowlevelcode/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Limit #1: Compiled code doesn’t always match the source code'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we profile it, we get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Why is `orig += 789` listed, but not the other lines adding `123_000_000` and
+    `456_000`? Because thanks to compiler optimizations, they no longer exist in the
+    compiled version as distinct operations. We can for example inspect the generated
+    assembly for the function and search for 789:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The three added numbers (`123_000_000`, `456_000`, `789`) have been combined
+    by the compiler into a single number (`123_456_789`) which presumably is being
+    used with a single addition operation, instead of three.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Limit #2: You need a mental model of how CPU execution works'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Recall that in our optimized dithering function we saw the following profiling
+    results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Why is the first calculation so much more expensive than the later ones? They
+    seem to be doing more or less the same thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One hypothesis is instruction-level parallelism: the CPU is able to go ahead
+    and speculatively execute the later code in parallel. So the first line is expensive
+    not because it’s any different, but because it’s *first*. We can partially test
+    this hypothesis by changing the order of the statements and profiling again. Here’s
+    the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now the line `result[y, x + 1] += error * 7 // 16` has a much lower percentage
+    of samples than in the previous version of the code, even though it’s running
+    the exact same number of times and doing the exact same calculation. The only
+    thing that has changed is the order of execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A mental model of a CPU that just executes code linearly, with no parallelism,
+    is not sufficient to understand these results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Limit #3: Faster code may require a more holistic view'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Seeing which lines of code are slow can be very helpful, but some optimizations
+    are a result of rethinking the code more broadly. For example, the final optimized
+    version in the [original article](/articles/optimizing-dithering/) cuts memory
+    usage by two thirds, and also runs 50% even faster than the second version. It
+    does so by changing the structure of the algorithm, rather than just focusing
+    on a single line or two of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Give Profila a try!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Profila is a new project: I released it the same day I wrote this article.
+    So try it out, and please let me know about any bugs you find, your success stories,
+    or any feedback at all, [in the GitHub issue tracker](https://github.com/pythonspeed/profila/issues/new)
+    or by email.'
+  prefs: []
+  type: TYPE_NORMAL

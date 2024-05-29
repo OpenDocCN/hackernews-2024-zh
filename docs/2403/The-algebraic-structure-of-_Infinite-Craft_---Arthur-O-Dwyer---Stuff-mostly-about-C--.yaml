@@ -1,0 +1,232 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:38:31'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The algebraic structure of _Infinite Craft_ – Arthur O'Dwyer – Stuff mostly
+    about C++
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://quuxplusone.github.io/blog/2024/03/03/infinite-craft-theory/](https://quuxplusone.github.io/blog/2024/03/03/infinite-craft-theory/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Last month I [wrote](/blog/2024/02/08/infinite-craft/) about Neal Agarwal’s
+    web game [*Infinite Craft*](https://neal.fun/infinite-craft/). Tom Fang wrote
+    to tell me he’s created [a dictionary](https://szdytom.github.io/infinite-craft-dictionary/)
+    of *Infinite Craft* elements, along with their uses and recipes. This got me thinking
+    about the game’s mathematical structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By “mathematical structure,” I mean something like how we make recipes and
+    the metrics by which we might compare one recipe to another. For example, if our
+    goal is to make Sandwich, we could do it like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we diagram these recipes, we find that the first one is *shallower*, in the
+    sense that we combine only the primitive elements, elements made *from* the primitives
+    (Wave, Steam, Plant), and elements made from *those* elements (Sand, Tea). But
+    the second one is *terser*, in the sense that it is five lines long instead of
+    six.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At first glance, the world of *Infinite Craft* forms a [directed hypergraph](https://en.wikipedia.org/wiki/Hypergraph)
+    with a lot of structure: each directed hyperedge connects a set of one or two
+    vertices to a set of exactly one vertex. But a recipe isn’t merely a “path” on
+    that hypergraph! Mathematicians define the hypergraph analogue of a “path” as
+    a set of incident hyperedges — “incidence” meaning that the edges share *at least
+    one* vertex. In this sense there is a “path” from the starting elements to Sandwich
+    that consists of only a single hyperedge; namely,'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: That definition of “path” doesn’t help us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[I asked MathOverflow](https://mathoverflow.net/questions/466176/what-is-the-proper-name-for-this-tersest-path-problem-in-infinite-craft),
+    and they pointed me to another example of the same problem: [addition chains](https://en.wikipedia.org/wiki/Addition_chain).
+    An “addition chain” for an integer \(n\) is a sequence starting with 1 and ending
+    with \(n\), such that each element in the sequence is the sum of exactly two previous
+    elements. For example, we might make 31 in any of these three ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The middle chain is *shallowest*, but the right-hand one is *tersest*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Addition chains are idiomatically written as just an increasing sequence of
+    integers: (1 2 3 6 12 14 17 31). We don’t need to specify how each integer (say,
+    17) is constructed from the preceding elements, because it’s obvious. We could
+    represent *Infinite Craft* recipes just as concisely — (Wave Sand Glass Wine Sandwich)
+    — but that wouldn’t be very reader-friendly because it’s not obvious *which* two
+    preceding elements combine to make, say, Wine.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finding the tersest addition chain is directly relevant to the world of computer
+    programming. Suppose we want to calculate the 31st power of an unknown number
+    in register `A`, using only multiplication. Then we can do any of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our “shallowness” metric translates into a measure of the [data dependencies](https://en.wikipedia.org/wiki/Data_dependency)
+    involved in these computations. The middle program, being the shallowest, is also
+    the *fastest* on any machine with at least two multiplier units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another practically relevant metric for the “goodness” of a chain is its *width*:
+    the number of registers it uses in its most optimal [coloring](https://en.wikipedia.org/wiki/Register_allocation#Graph-coloring_allocation).
+    The left-hand recipe above is the *narrowest*, with width 2, whereas the others
+    have width 3:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The left-hand recipe corresponds to [Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication),
+    which always generates an addition chain of width 2\. For in-depth coverage of
+    various algorithms to generate addition chains, see [Knuth Volume 2](https://amzn.to/49zv6Gs)
+    §4.6.3 “Evaluation of Powers.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Surprisingly, the “tersest chain” problem is non-trivial in both *Infinite
+    Craft* and addition-chains. Knuth writes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several authors have published statements (without proof) that the binary method
+    [that is, Russian peasant multiplication] actually gives the minimum possible
+    number of multiplications. But that is not true. The smallest counterexample is
+    \(n = 15\), when the binary method needs six multiplications, yet we can calculate
+    \(y = x^3\) in two multiplications and \(x^{15} = y^5\) in three more, achieving
+    the desired result with only five multiplications.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This suggests the algorithm Knuth calls the “factor method”; but yet again,
+    you can find numbers whose optimal chain eludes both the binary method and the
+    factor method! It appears that there is no fast (non-exponential-time) algorithm
+    that generates an optimal addition chain for *every* input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get an intuitive sense of the difficulty — in particular, why no greedy
+    algorithm helps — look again at our tersest route to Sandwich:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This route to Sandwich passes through Wine on the fourth step. Now, the tersest
+    route to Wine itself is only three steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: But if you make Wine by that route, you’ll never reach Sandwich in the optimum
+    number of steps!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, our tersest route to 31 was (1 2 3 6 12 14 17 31), passing through
+    17 on the sixth step. There are two routes that make 17 in only five steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: But if you make 17 by either of these routes, you’ll never reach 31 in the optimum
+    number of steps!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Neill Clift of [AdditionChains.com](http://additionchains.com/) produced this
+    example for me — my utmost thanks to him! According to Neill, there are exactly
+    five optimal chains for 31 that contain the number 17: none of those chains contain
+    (1 2 4 8). Meanwhile there are seventy-two other optimal chains for 31 that don’t
+    contain 17 at all.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'UPDATE, April 2024: A third algebraic structure with this shape is [this one
+    from StackOverflow](https://stackoverflow.com/questions/78228861/choosing-a-sequence-of-bitwise-operations/78229017).
+    We have one primitive element `A` representing a fair coin flip that lands heads
+    with probability \(0.5_{10} = 0.1_2\). We can construct new elements using either
+    of two binary operations: `&` (representing a coin that lands heads iff *both*
+    inputs were heads) and `|` (representing a coin that lands tails iff *both* inputs
+    were tails). We’re trying to reach a target state representing a coin that comes
+    up heads with probability \(p\) (for some \(p = a/2^b\) between 0 and 1).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, we can make a coin that lands heads with probability \(0.5675_{10}
+    = 0.1001_2\) in either of these ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: I have not thought much about this particular structure, but it feels just as
+    non-trivial as addition chains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Still, knowing that *Infinite Craft* and addition chains are two examples of
+    the same hypergraph structure doesn’t tell me whether there’s an accepted name
+    *for* this particular hypergraph structure. If you have any leads, please pop
+    over to [MathOverflow](https://mathoverflow.net/questions/466176/what-is-the-proper-name-for-this-tersest-path-problem-in-infinite-craft)
+    and/or send me an email!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Observe that the addition-chain structure is commutative *and associative*,
+    whereas the *Infinite Craft* structure is commutative but non-associative:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This makes much of Knuth’s discussion (particularly “Graphical representation”
+    and the generation of equivalent *dual* addition chains) inapplicable to *Infinite
+    Craft*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To explore the *Infinite Craft* hypergraph offline — without stressing Neal’s
+    backend or needing to evade his Cloudflare bot-detection filter — you can download
+    a compressed database containing about 30,000 elements from Tom Fang’s GitHub,
+    [szdytom/infinite-craft-dictionary](https://github.com/szdytom/infinite-craft-dictionary/).
+    Computing the tersest recipe for each element, and inventing a compact way to
+    represent such a recipe in the database, is left as an exercise for the reader!
+  prefs: []
+  type: TYPE_NORMAL

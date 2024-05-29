@@ -1,0 +1,480 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:47:21'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Audio Libraries Considered Challenging | Tesselode Labs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://tesselode.github.io/articles/audio-libraries-considered-challenging/](https://tesselode.github.io/articles/audio-libraries-considered-challenging/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Audio Libraries Considered Challenging
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Published May 16, 2022 | Updated May 17, 2022
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reading time: 16 minutes'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I develop a game audio library called [Kira](https://github.com/tesselode/kira/).
+    Here's some of the hard parts I've figured out. If you decide to make an audio
+    library for some reason, learn from my experimentation!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Audio is Hard
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When it comes to graphics, different games have different acceptable framerates.
+    Most people would consider 60 FPS to look "smooth". But even if the framerate
+    dips a little bit below 60 FPS, it's not the end of the world. The game will keep
+    displaying the previously rendered frame until the next one is ready. If it's
+    a small enough frame drop, the player might not even notice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But if your game can't produce audio as quickly as the operating system wants
+    (this is called a buffer underrun), the operating system has no choice but to
+    fill the gaps with silence. And the player *will* notice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A short piece of music playing back normally
+  prefs: []
+  type: TYPE_NORMAL
+- en: A short piece of music playing back with underruns
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you can't listen to the example audio, imagine that when a game had frame
+    drops, the monitor would display a black screen for all the frames the game couldn't
+    produce quickly enough. Audio stuttering is the equivalent of that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When writing audio code, you want to avoid underruns at all costs. This means
+    **you have to do your audio processing on a separate thread.** If you tried to
+    do audio processing on the same thread as your graphics and input, your audio
+    would stutter when the graphics rendering becomes too demanding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You also can''t block the audio thread.** If something could cause the audio
+    thread to pause for an unknown amount of time, you shouldn''t do it. If the audio
+    thread pauses for too long, it won''t be able to process audio fast enough, leading
+    to buffer underruns.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notably, this means **you can't allocate or deallocate memory on the audio thread**.
+    When you ask the operating system to allocate or deallocate memory, you have to
+    pause the thread until the OS is ready to get around to your request. Usually
+    it'll do it quickly, but if the system is taxed, the OS might deprioritize the
+    audio thread, leading to a long period where you can't process any audio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping these two constraints in mind, let's look at some problems that come
+    up when creating a game audio library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communicating Between Threads
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A game audio library provides functions for playing and modifying audio that
+    you can call from gameplay code. It''ll look vaguely like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we play a new sound, we need to load audio data from a file on the gameplay
+    thread and send it to the audio thread. (We can't load the audio data on the audio
+    thread because that takes too long and could lead to buffer underruns.) To send
+    the audio data to the audio thread, we can use a ringbuffer, such as the [`ringbuf`](https://crates.io/crates/ringbuf)
+    crate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: But how do we tell the audio thread to modify an existing sound (e.g. setting
+    the volume of a sound that's already playing or setting the playback state of
+    a sound)?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared ownership via `Mutex`es
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We could allow the gameplay thread to control data on the audio thread directly
+    by giving it shared ownership of the data via a `Mutex`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the audio thread, we''ll store the sound state as an `Arc<Mutex<Sound>>`.
+    Our sound handle on the gameplay thread will have a clone of that `Arc<Mutex<Sound>>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To access audio data on the gameplay thread, we just have to lock the `Mutex`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, the audio thread also has to lock the data before it can access it.
+    Waiting for other threads to unlock the data does, in fact, block the audio thread,
+    which is one of the things we definitely shouldn't do. So `Mutex`es are out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared ownership via atomics
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There is a way we can share data among multiple threads without having to lock
+    it: atomics. Atomics are special versions of primitive types that the CPU knows
+    how to keep synchronized between threads.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can make each modifiable field of the sound atomic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The sound handle will get clones of each field:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And to set those fields from the gameplay thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using atomics won't block the audio thread, but it does have some limitations.
+    The largest atomic is 64 bits. That's enough space for a volume level or a playback
+    state, but what if we want to send a more complex command to the audio thread?
+    For example, what if we want to smoothly adjust the volume of a sound over a period
+    of time? Maybe even with a user-specified easing curve?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we represented all the needed information for that command as a struct,
+    it would look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's more than we can fit in one atomic. We could store the command in multiple
+    atomics, but then we have to keep them synced up. If we limited the maximum duration,
+    maybe we could store it in 16 bits. I'm sure this is a solvable problem, but the
+    solution won't be very ergonomic. So what else can we do?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use more ringbuffers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Why not just send commands via a ringbuffer? We're already using them for sending
+    audio data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can describe all of the possible commands with an enum:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The sound handle will own a command producer that it can push to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the audio thread will own a command consumer that it can pop from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There is a downside to this approach: every sound has to periodically poll
+    for new commands. Most sounds will not be changed at any one time, so it seems
+    wasteful that they all have to poll for commands. (And in my unscientific benchmarking,
+    all of the polling does make a noticeable difference in performance.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Maybe we can just use one ringbuffer to collect the commands for every sound?
+    We already have a ringbuffer for sending audio data, so let''s just expand that
+    to send a command enum:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, we need a way to tell the audio thread which sound we want to change,
+    so let's add some unique identifiers to those commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Every sound handle will need the ID of the sound it''s meant to control. Also,
+    every sound handle will need to push commands to the same command producer, so
+    we''ll need to wrap it in a `Mutex`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unlike the last time we tried using `Mutex`es, this `Mutex` is only shared on
+    the gameplay thread, so there's no risk of blocking the audio thread.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the audio thread, we''ll have some code along these lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works! It's reasonably efficient, and we can send arbitrarily complex commands
+    to the audio thread without blocking anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s only one problem: where does the `SoundId` come from?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing Resources on the Audio Thread
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We need to store resources (sounds, mixer tracks, etc.) on the audio thread
+    in a way that provides:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fast iteration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fast random access to resources via an ID that the gameplay thread also has
+    access to
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Solution 1: Arenas'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The arena data structure is a natural fit. An arena is essentially a `Vec` of
+    slots that can be occupied or empty. When we insert an item into the arena, the
+    arena picks an empty slot to insert the item into and returns a key that contains
+    the index of that slot. Accessing individual items is as fast as indexing into
+    a `Vec`. Iterating over items is slow if you loop through every slot and filter
+    out the empty ones, but you can use a linked list to make iteration much faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So this will be the flow of sending resources to the audio thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user calls a function in the library to send a resource to the audio thread
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The library sends a command to the audio thread with the resource to add and
+    waits for the audio thread to send back the key
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next time the audio thread starts processing, it receives the command to add
+    the resource, adds it to the arena, and sends back the key through a separate
+    ringbuffer
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next time the gameplay thread checks for the key, it receives it and returns
+    it to the user
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So we'll have to wait a bit for the audio thread to return the key, but it shouldn't
+    take too long, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...right?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why it takes too long
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: When you hear audio coming from speakers, you're hearing an analog representation
+    of digital samples that are evenly distributed over time. But an application does
+    not produce those digital samples at a constant rate. If it did, then if any of
+    the samples took too long to calculate, the application would fall behind and
+    wouldn't be able to produce audio fast enough, leading to underruns. Instead,
+    the operating system periodically asks the application to produce a batch of samples
+    at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say the operating system wants to output audio at 48,000 Hz (or samples
+    per second), and it requests 512 samples at a time. The audio thread will produce
+    512 samples of audio, then sleep until the operating system wakes it up for the
+    next batch of samples. The operating system might not need to wake it up for another
+    10 milliseconds, since that's the amount of audio it has queued up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the gameplay thread sends a command to play a sound right after the audio
+    thread falls asleep, the audio thread won't receive it and send back the sound
+    ID until 10ms later. To put that into perspective, in a 60 FPS game, 10ms is more
+    than half a frame. So if we played two sounds in a row, blocking the gameplay
+    thread each time to wait for the audio thread to send back a sound ID, we could
+    end up with a frame drop. That's not acceptable performance for an audio library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So arenas are out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Solution 2: `IndexMap`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we store resources in a hash map, we can create keys on the gameplay thread
+    and just send them to the audio thread along with the command to add a resource.
+    The standard library's `HashMap` isn't very quick to iterate over, but the [`indexmap`](https://crates.io/crates/indexmap)
+    crate solves that problem for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s the new flow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user calls a function in the library to send a resource to the audio thread
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The library increments an ID internally to use as the key for the resource
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The library sends a command to the audio thread to add the resource with the
+    ID
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The library immediately returns the ID to the caller
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Problem solved! We don't have to wait for the audio thread to send back an ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are some downsides to this approach, though:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hash maps are slower to get items from than arenas, because they have to hash
+    the key to get the location of the item in memory
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`IndexMap`s lose capacity over time...wait, what?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you're like me, you'd be surprised to learn the latter fact. But I'll prove
+    it to you!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here's a small example where I add items to an `IndexMap`. Every 5 items added,
+    I remove 3 items at arbitrary indices. Every time I add an item, I print the length
+    and total capacity of the map. You can run this code snippet yourself [here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We end up with a result something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice the dip from a capacity of 28 to a capacity of 26? This isn't a bug,
+    [it's just how the hashbrown algorithm works](https://github.com/bluss/indexmap/issues/183)
+    (which both `IndexMap` and the standard library's `HashMap` use).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It turns out there is a workaround: the capacity will never decrease if you
+    don''t exceed 50% of the capacity. So we could just allocate twice as much space
+    as we need to avoid the problem. Kira v0.5 uses this approach, but I didn''t feel
+    comfortable relying on an unspoken implementation detail of a library.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Solution 3: Revisiting arenas'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Maybe an arena can work; it would just need to let us generate new keys from
+    the gameplay thread. A suggestion from the Rust Audio discord got me thinking
+    about how atomics could be used to serve this purpose. I eventually came up with
+    an arena that has two components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The arena itself, which holds the resource data and lives on the audio thread
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An arena controller, which tracks free and empty slots and can generate keys.
+    The controller can be cloned and sent to other threads.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When we want to add an item to an arena, we first reserve a key from the arena
+    controller. If too many keys have been reserved, the controller will tell us the
+    arena is full and not give us a key. If there are slots available, we can send
+    the key along with the command to add an item and return the key immediately to
+    the caller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I find this to be a really elegant solution, since it solves multiple problems
+    at once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The backing data store is a `Vec`, so there won't be any surprises with the
+    capacity
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Looking up resources is fast, since the keys are just indices into the `Vec`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can generate new keys direcly from the gameplay thread
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's easy to get information on the number of allocated resources and remaining
+    capacity from the gameplay thread
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is the solution I'm using for Kira v0.6\. You can see my implementation
+    of the arena [here](https://crates.io/crates/atomic-arena).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Making audio libraries is hard. I don't know the best way to do it. This is
+    just what I've tried and how it went for me.
+  prefs: []
+  type: TYPE_NORMAL

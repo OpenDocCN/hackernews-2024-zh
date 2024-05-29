@@ -1,0 +1,526 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:58:12'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A very small Rust binary indeed · Graham King
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://darkcoding.net/software/a-very-small-rust-binary-indeed/](https://darkcoding.net/software/a-very-small-rust-binary-indeed/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Updated 2022-10-30*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How small can we make an x86_64 Linux Rust binary? Can it compete with a pure
+    assembly program? Let’s find out! On the way we’ll learn things about how programs
+    are loaded on Linux and appreciate how flexible Rust can be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Starting point: 3.6 MiB'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a project: `cargo new --vcs=none smallrs`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Replace `src/main.rs` with the simplest possible Rust program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You might argue that this isn’t the simplest possible Rust program: `fn main()
+    { }` would be simpler. You’d be right, but only because of what the Rust runtime
+    is doing for you.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you will know from [studying your Kerrisk](https://amzn.to/3bLdcYg) there
+    are only two ways a program can terminate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: being killed by a signal,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: requesting it’s own termination by calling [exit](https://man7.org/linux/man-pages/man2/exit.2.html).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you don’t exit the CPU will try running instructions past the end of your
+    program, hit an invalid instruction, and kill your program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why don’t you have to do this in Rust? The default return type of `fn main()
+    {}`, or any function that doesn’t provide a return type, is `()`. The [Termination
+    trait](https://doc.rust-lang.org/std/process/trait.Termination.html) is implemented
+    for `()`, which makes your [main function default to returning SUCCESS](https://github.com/rust-lang/rust/blob/2807f28de550fb6074dc4fb2f3099865de01bc1e/library/std/src/process.rs#L2152-L2157).
+  prefs: []
+  type: TYPE_NORMAL
+- en: That SUCCESS return value gets picked up by the [Rust runtime](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139).
+    Something must then make the `exit` syscall with that value, either rustc or LLVM,
+    but let’s not go *too* deep. By the time we’re done, all this machinery will be
+    gone anyway.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Build that program, confirm it works, and check the size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Three and a half megabytes! That’s not good at all. Let’s do better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The biggest gain is strip: 300 KiB'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The easiest and largest gain is simply to `strip` the symbols from the binary.
+    You can do this manually:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or `cargo` can do it for you (which is better). Add this to your `Cargo.toml`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You were probably going to forget to do this before release, so now you won’t.
+    Easy win.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Easy but modest gains: 260 KiB'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you search for advice online on shrinking a Rust binary you’ll find these
+    easy changes which aren’t particularly relevant to us here, but let’s add them
+    anyway. In a real program they will probably help.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of these go in the `[profile.release]` section of `Cargo.toml`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No gain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Small benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first line simplifies panic handling and gains us about 8k. The second line
+    enables link-time optimization, gains us about 30 KiB, but slows the build down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most projects will be use the standard library (`std`), and so will have to
+    stop here. A final thing you can try is [re-building the standard library](https://doc.rust-lang.org/cargo/reference/unstable.html#build-std),
+    which may allow some optimizations. Remove `panic = "abort"` ([because](https://github.com/rust-lang/wg-cargo-std-aware/issues/29))
+    and try this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cargo build –release -Z build-std –target x86_64-unknown-linux-gnu
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: It doesn’t help us here, and **where we’re going, there are no standard libraries**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'libc instead of the standard library: 16 KiB'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Removing the Rust standard library (`std::*`) will get us our second biggest
+    gain after `strip`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The std::process::exit function](https://github.com/rust-lang/rust/blob/4e808f87ccb706d339c9ea10c3c9a9c9fd7fc6cb/library/std/src/sys/unix/os.rs#L644-L646)
+    just calls libc:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s drop the standard library and use libc directly. First add a dependency
+    on `libc` in `Cargo.toml`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Intuitively I thought this dependency would make the program *larger* but that’s
+    not the case. The libc crate is a wrapper which contains mostly function definitions.
+    The code itself is dynamically linked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then change `src/main.rs` to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We stopped using the standard library (`#![no_std]`) which forces two changes
+    on us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust needs to know which function to call when something panics, and [the default
+    one](https://github.com/rust-lang/rust/blob/ef9b49881ba99248b68dbdebbebd50155587c509/library/std/src/panicking.rs#L531)
+    is in the standard library so we have to provide our own.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`#![no_std]` in a binary always seems to imply `#![no_main]`. As we’ll see
+    in a minute programs don’t actually start at `main`. There’s a fair bit of libc
+    and rust code between the start of the program and the normal Rust `fn main` being
+    called. Most of that machinery is in the standard library, which we no longer
+    have, so we have to provide an earlier entry point.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What does that get us?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s a huge improvement, **but is it the end? Of course not!**
+  prefs: []
+  type: TYPE_NORMAL
+- en: How small should it be? The assembler version is 352 bytes.
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here’s the same program using [nasm](https://nasm.us/). Save it to `exit.s`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assemble and link it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Check it’s size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 352 bytes! Now we’re talking! Let’s try to get closer to that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that there’s no `main` function in our assembly version. The first 64
+    bytes of a Linux binary are the [ELF header](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header).
+    When Linux loads a file it looks at the `e_entry` field of that ELF header, jumps
+    to that address and start decoding the bytes there assuming they are CPU instructions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Re-link `exit` with symbols:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Find the entry point:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Find the maching symbol:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: That matches the `_start` symbol in our assembly. Calling it `_start` is just
+    a convention and default, you can tell the linker to start anywhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There’s no machinery here - we jump straight to our code. By contrast in our
+    latest Rust version there is a `_start` provided by libc (I think), which calls
+    `__rt_lang_start`, which calls our C-style `main` function (`rt` here stands for
+    “runtime”, C does indeed have a small runtime).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first version of our code there were many more layers because the C runtime
+    calls the Rust runtime ([all of this](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139)
+    linked earlier)) which calls our `main`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Rust can we provide our own `_start` and go straight there? I was delighted
+    to discover **you very much can**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No libc either: 13 KiB'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At the very beginning I said that a program has to call `exit`, and that usually
+    we don’t have to worry about that because the runtime takes care of it for. Well,
+    we’re not going to have a runtime. Nothing is going to nicely wrap our `main`
+    function and turn the return value into the program’s exit code. We’ll have to
+    do it ourselves in assembly, using the same code as `exit.s`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the `libc` dependency from `Cargo.toml`. Then replace `src/main.rs`
+    with this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will need to tell the C compiler that we’re providing our own entry point,
+    telling it not to include it’s own start files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note the `target-cpu=native` is not necessary here. (Except it is! I paid for
+    AVX-512, dammit, I expect you to use it!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s check how we’re doing for size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The gains are modest because the C runtime is very small.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should be able to do better. The reason we can’t is that, **all along, we
+    have been the victims of a dastardly [sabotage](https://www.youtube.com/watch?v=z5rRZdiu1UE)**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Linker flags: 400 bytes'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Open up `target/release/smallrs` in a hex editor (I like [hexyl](https://github.com/sharkdp/hexyl))
+    and take a look. What do you see? Page and pages of zeros, that’s what!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The linker, in it’s wisdom, has been page-aligning the sections of our binary.
+    The zeros fill space right before 0x1000 (4k) and 0x3000 (4k * 3). Normally this
+    makes a lot of sense, we want our code to fit into as few 4k pages as possible;
+    but not in this case!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Why didn’t this happen with our assembly version? Because I cheated, that’s
+    why, by passing `ld` the `-n` and `-N` flags, which switch off the page aligning.
+    Let’s do that here also:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that’s a lot better!
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m not sure why I need `--no-dynamic-linker` here. Presumably the dynamic linker
+    expects sections to be page aligned. We’re a static binary with no dependencies,
+    so it’s not a problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s compare the assembly binary to ours to find the remaining differences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `static-pie` means it’s a [Position Independent Executable](https://en.wikipedia.org/wiki/Position-independent_code#Position-independent_executables)
+    which is a security feature to prevent a type of buffer overflow attack. It’s
+    enabled by default basically everywhere these days. We don’t accept untrusted
+    user input, so we’ll disable it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '(Aside: There might be a better way of disabling PIE than the linker flag I
+    use. The rustc linker code mentions `LinkOutputKind::StaticNoPicExe` which I think
+    is what we want, but I couldn’t figure out how to set that in Cargo.toml)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `BuildID` is inserted by the linker to uniquely identify the file. I don’t
+    know what it’s for, but it does not bring joy. The best argument I could find
+    online for it was that it might help when analysing core files. Out it goes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'RUSTFLAGS will have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -Ctarget-cpu=native
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: -Clink-args=-nostartfiles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: -Clink-args=-Wl,-n,-N,–no-dynamic-linker,–no-pie,–build-id=none
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here is our final build command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Four hundred bytes!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next steps would be to figure our where the extra almost 50 bytes is coming
+    from, but I’m going to call it good enough and have lunch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Update: Bigger programs'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: That’s as far as we can go with such a simple example. In a more real-world
+    setup we can get this far and our binary still isn’t small enough (I’m going to
+    use [Demeter Deploy](https://github.com/grahamking/demeter-deploy) as the example,
+    but you don’t need it to follow along), so I’m adding some notes for reducing
+    the size of more complex programs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most helpful activity is monitoring the binary size after every change.
+    A quite small Rust change can pull in lots of library code and bloat the binary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don’t panic
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Doing anything that can panic will pull in the panic machinery, which pulls
+    in the voluminous print/format machinery. [Indexing is where I noticed this](https://github.com/grahamking/demeter-deploy/blob/b2892473313d9769793cbfd3aa19a6c5c79fa451/seed/src/main.rs#L525):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'BIG: `my_thing[idx]`, gives a binary of 7608 bytes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'SMALL: `my_thing.get_unchecked(idx)`, with that single change the binary is
+    now 2976 bytes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This only applies if the overflow check is included. If the compiler is able
+    to elide the size check (typically because you do it yourself: `if x < arr.len()
+    { arr[x] }`) then indexing is fine.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoid fat pointers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A slice is a fat pointer containing the address of the backing array and it’s
+    size. An array is just the data itself. If we can avoid storing slices it saves
+    two `usize` (16 bytes). For example in [this ERRS array](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L94)
+    I gained about 200 bytes by using `&[u8; 8]` instead of `&[u8]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A `&str` is also a fat pointer, also 16 bytes. By storing only the address of
+    a null terminated string we can cut that in half, for example in [these error
+    messages](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L66-L75).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remove sections
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'LLVM will include more ELF sections than necessary. List these with `readelf
+    -S`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compared to a pure assembly version of the same program we have many more sections
+    here. Here’s how we’re going to remove them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.eh_frame_hdr`: Loader flag `--no-eh-frame-hdr`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.eh_frame`: Manually with `objcopy`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.data.rel.ro`: cargo flag `-Crelocation-model=static`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.got`: We need that. My guess is because Rust’s `core` lib depends on `memcpy`,
+    `memset`, etc, so it must find those symbols (we provide them), but I’m not sure.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.got.plt`: Manually with `objcopy`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This gives our final final RUSTFLAGS of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and a post-compile step of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that technically the `.eh_frame` is required by the ABI. As long as we
+    don’t have any exceptions to handle no-one will notice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**We went from 3.6 MiB to 400 bytes**. Rust, I am impressed. This is a true
+    systems programming language.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that even though our `_start` function here only contains a bit of assembly
+    this is just to make a simple example. We still have access to all of the regular
+    Rust language (including of course the borrow checker and so on) and all of [core](https://doc.rust-lang.org/core/index.html).
+    That means Option, Result, time::Duration, sync::atomic, and lots more. Rust is
+    used with no_std in embedded programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Aside from embedded, are there practical applications? Yes. I recently ported
+    [Demeter Deploy](https://github.com/grahamking/demeter-deploy)’s remote helper
+    (called `seed`) from Assembly to Rust, and, wait for it, thanks to all of the
+    above it compiles to **exactly the same size**. That’s incredible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And because I seem to end all my recent blog posts with a link to a Happy Hardcore
+    tune, here is what Darren Styles from old-school team Force & Styles is up to
+    these days: [Darren Styles - Hard Generation](https://www.youtube.com/watch?v=6QYZkAdFb_Q&t=206s).
+    You’ll need a standing desk for this one.'
+  prefs: []
+  type: TYPE_NORMAL

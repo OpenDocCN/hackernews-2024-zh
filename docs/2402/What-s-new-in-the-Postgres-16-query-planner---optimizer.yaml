@@ -1,0 +1,519 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:44:18'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: What’s new in the Postgres 16 query planner / optimizer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/](https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PostgreSQL 16 introduces quite a few improvements to the query planner and makes
+    many SQL queries run faster than they did on previous versions of PostgreSQL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you look at the [PG16 release notes](https://www.postgresql.org/docs/16/release-16.html),
+    you’ll see some of these planner improvements. But with the volume of changes
+    made in each PostgreSQL release, it’s not possible to provide enough detail about
+    each and every change. So maybe you might need a bit more detail to know what
+    the change is about—before you understand if it’s relevant to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this blog post, assuming you’ve already got a handle on the [basics of EXPLAIN](https://www.postgresql.org/docs/16/using-explain.html#USING-EXPLAIN-BASICS),
+    you’ll get a deep dive into the 10 improvements made in the PostgreSQL 16 query
+    planner. For each of the improvements to the PG16 planner (the planner is often
+    called an optimizer in other relational databases), you’ll also get comparisons
+    between PG15 and PG16 planner output—plus examples of what changed, in the form
+    of a self-contained test you can try for yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s dive into these 10 improvements to the PostgreSQL planner in PG16:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Incremental sorts for DISTINCT queries](#distinct-queries)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Faster ORDER BY / DISTINCT aggregates](#faster-orderby-distinct)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Memoize for UNION ALL queries](#union-all)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Support Right Anti Join](#right-anti-join)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Parallel Hash Full and Right Joins](#parallel-hashfull-rightjoin)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Optimize window function frame clauses](#frame-clauses)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Optimize various window functions](#window-functions)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[JOIN removals for partitioned tables](#join-removals)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Short circuit trivial DISTINCT queries](#short-circuit)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Incremental Sort after Merge Join, in more cases](#merge-joins)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Incremental sorts](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=d2d8a229bc58a2014dce1c7a4fcdb6c5ab9fb8da)
+    were first added in PostgreSQL 13\. These incremental sorts reduce the effort
+    required to get sorted results. How? By exploiting the knowledge that some given
+    result set is already sorted by 1 or more leading columns—and only performing
+    a sort on the remaining columns.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if there’s a btree index on column `a` and we need the rows ordered
+    by `a`,`b`, then we can use the btree index (which provides presorted results
+    on column `a`) and sort the rows seen so far only when the value of `a` changes.
+    With the quicksort algorithm used by PostgreSQL, sorting many smaller groups is
+    more efficient than sorting one large group.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner now considers performing incremental sorts for
+    `SELECT DISTINCT` queries. Prior to PG16, when the sorting method was chosen for
+    `SELECT DISTINCT` queries, the planner only considered performing a full sort
+    (which is more expensive than an incremental sort.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the PostgreSQL 16 `EXPLAIN` output above, you can see the planner chose
+    to use the `distinct_test_a_idx` index on the `a` column and then performed an
+    `Incremental Sort` to sort all of the equal values of `a` by `b`. The `Presorted
+    Key: a` indicates this. Because the `INSERT` statements above only added a single
+    value of `b` for each value of `a`, each batch of tuples sorted by incremental
+    sort only contains a single row.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `EXPLAIN` output for PostgreSQL 16 above shows that the `Peak Memory` for
+    the `Incremental Sort` was just 26 kilobytes, whereas the hashing method used
+    by PostgreSQL 15 needed much memory, so much so that it needed to spill about
+    30 megabytes of data to disk. **The query executed 63% faster on PostgreSQL 16**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PostgreSQL 15 and earlier, aggregate functions containing an `ORDER BY` or
+    `DISTINCT` clause would result in the executor always performing a sort inside
+    the `Aggregate` node of the plan. Because the sort was always performed, the planner
+    would never try to form a plan to provide presorted input to aggregate the rows
+    in order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner now tries to form a plan which feeds the rows
+    to the plan’s `Aggregate` node in the correct order. And the executor is now smart
+    enough to recognize this and forego performing the sort itself when the rows are
+    already pre-sorted in the correct order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Aside from PostgreSQL 16 executing the query over twice as fast as in PG15,
+    the only indication of this change in the `EXPLAIN ANALYZE` output above is from
+    the `temp read=4540 written=4560` that’s not present in the PostgreSQL 16 output.
+    In PG15, this is caused by the implicit sort spilling to disk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Memoize` plan nodes were first introduced in PostgreSQL 14\. The `Memoize`
+    plan node acts as a cache layer between a parameterized `Nested Loop` and the
+    Nested Loop’s inner side. When the same value needs to be looked up several times,
+    Memoize can give a nice performance boost as it can skip executing its subnode
+    when the required rows have been queried already and are cached.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner will now consider using `Memoize` when a `UNION
+    ALL` query appears on the inner side of a parameterized `Nested Loop`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the PostgreSQL 16 EXPLAIN output above, you can see the `Memoize` node is
+    put atop of the `Append` node—which caused a reduction in the number of `loops`
+    in the `Append` from 1 million in PG15 down to 10 in PG16\. Each time the `Memoize`
+    node has a cache hit, there’s no need to execute the `Append` to fetch records.
+    This results in the **query running around 6 times faster on PostgreSQL 16**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When performing a `Hash Join` for an `INNER JOIN`, PostgreSQL prefers to build
+    the hash table on the smaller of the two tables. Smaller hash tables are better
+    as it’s less work to build them. Smaller tables are also better as they’re more
+    cache-friendly for the CPU, and it’s less likely that the CPU will stall while
+    waiting for data to arrive from main memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PostgreSQL versions before 16, an `Anti Join`—as you might see if you use
+    `NOT EXISTS` in your queries—would always put the table mentioned in the `NOT
+    EXISTS` part on the inner side of the join. This meant there was no flexibility
+    to hash the smaller of the two tables, resulting in possibly having to build a
+    hash table on the larger table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner can now choose to hash the smaller of the two
+    tables. This can now be done because PostgreSQL 16 supports `Right Anti Join`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see from the `EXPLAIN ANALYZE` output above that due to PG16’s planner
+    opting to use a `Hash Right Anti Join`, the `Memory Usage` in PostgreSQL 16 was
+    much less than in PostgreSQL 15 and the `Execution Time` was almost halved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PostgreSQL 11 saw the introduction of `Parallel Hash Join`. This allows multiple
+    parallel workers in a parallel query to assist in the building of a single hash
+    table. In versions prior to 11, each worker would have built its own identical
+    hash table, resulting in additional memory overheads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PostgreSQL 16, `Parallel Hash Join` has been improved and now supports `FULL`
+    and `RIGHT` join types. This allows queries that have a `FULL OUTER JOIN` to be
+    executed in parallel and also allows `Right Joins` plans to execute in parallel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `EXPLAIN` output shows that PostgreSQL 16 was able to perform the join in
+    parallel and this resulted in a significant reduction in the query’s `Execution
+    Time`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a query contains a window function such as `row_number()`, `rank()`, `dense_rank()`,
+    `percent_rank()`, `cume_dist()` and `ntile()`, if the [window clause](https://www.postgresql.org/docs/16/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS)
+    did not specify the `ROWS`option, then PostgreSQL would always use the default
+    `RANGE` option. The `RANGE` option causes the executor to look ahead until it
+    finds the first “non-peer” row. A peer row is a row in the window frame which
+    compares equally according to the window clause’s `ORDER BY` clause. When there
+    is no `ORDER BY` clause, all rows within the window frame are peers. When processing
+    records which have many rows which sort equally according to the window clause’s
+    `ORDER BY` clause, the additional processing to identify these peer rows could
+    be costly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The window functions mentioned above don’t behave any differently whether `ROWS`
+    or `RANGE` is specified in the query’s window clause. However, the executor in
+    PostgreSQL versions prior to 16 didn’t know that, and because **some** window
+    functions do care about the `ROWS`/`RANGE` option, the executor had to perform
+    checks for peer rows in all cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner knows which window functions care about the
+    `ROWS`/`RANGE` option and it passes this information along to the executor so
+    that it can skip the needless additional processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This optimization works particularly well when `row_number()` is being used
+    to limit the number of results in the query as shown in the example below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `Index Scan` node in the `EXPLAIN` output for PG15 above shows that 50410
+    rows had to be read from the `scores_score_idx` index before execution stopped.
+    While in PostgreSQL 16, only 11 rows were read as the executor realized that once
+    the row_number got to 11, there’d be no more rows matching the `<= 10` condition.
+    Both this and the executor using the `ROWS` window clause option led to this query
+    running over 500 times faster on PostgreSQL 16.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This change expands on work done in PostgreSQL 15\. In PG15 the query planner
+    was modified to allow the executor to stop processing `WindowAgg` executor nodes
+    early. This can be done when an item in the `WHERE` clause filters a window function
+    in a way that once the condition becomes false, it will never be true again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`row_number()` is an example of a function which can offer such guarantees
+    as it’s a monotonically increasing function, i.e. subsequent rows in the same
+    partition will never have a row_number lower than the previous row.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner expands the coverage of this optimization to
+    also cover `ntile()`, `cume_dist()` and `percent_rank()`. In PostgreSQL 15, this
+    only worked for `row_number()`, `rank()`, `dense_rank()`, `count()` and `count(*)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the PostgreSQL 16 `EXPLAIN` output above, you can see that the planner
+    was able to use the `pr <= 0.01` condition as a `Run Condition`, whereas, with
+    PostgreSQL 15 this clause appeared as a `Filter` on the subquery. In PG16, the
+    run condition was used to abort the execution of the `WindowAgg` node early. This
+    resulted in the `Execution Time` in PG16 being more than 4 times faster than in
+    PG15.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a long time now, PostgreSQL has been able to remove a `LEFT JOIN` where
+    no column from the left joined table was required in the query and the join could
+    not possibly duplicate any rows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, in versions prior to PostgreSQL 16, there was no support for left join
+    removals on partitioned tables. Why? Because the proofs that the planner uses
+    to determine if there’s any possibility any inner-side row could duplicate any
+    outer-side row were not present for partitioned tables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner now allows the `LEFT JOIN` removal optimization
+    with partitioned tables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This join elimination optimization is more likely to help with views, as it’s
+    common that not all columns that exist in a view will always be queried.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The important thing to notice here is that the PostgreSQL 16 plan does not include
+    a join to `part_tab` meaning all there is to do is scan `normal_table`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL query planner is able to avoid including plan nodes to de-duplicate
+    the results when it can detect that all rows contain the same value. Detecting
+    this is trivial and when the optimization can be applied it can result in huge
+    performance gains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you look carefully at the SQL query, you’ll notice that each column in the
+    `DISTINCT` clause also has an equality condition in the `WHERE` clause. This means
+    that all the output rows in the query will have the same values in each column.
+    The PostgreSQL 16 query planner is able to take advantage of this knowledge and
+    simply `LIMIT` the query results to 1 row. PostgreSQL 15 produced the same query
+    result by reading the entire results and using the `Unique` operator to reduce
+    all the rows down to a single row. The `Execution Time` for PostgreSQL 16 was
+    more than 1200 times faster than PostgreSQL 15.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before PostgreSQL 16, when the query planner considered performing a `Merge
+    Join`, it would check if the sort order of the merge would suit any upper-level
+    plan operation (such as `DISTINCT`, `GROUP BY` or `ORDER BY`) and only use that
+    order if it matched the requirements for the upper-level exactly. This choice
+    was a little outdated as `Incremental Sorts` can be used for these upper-level
+    operations and incremental sorts can take advantage of results that are presorted
+    by only some of the leading columns that the results need to be sorted by.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PostgreSQL 16 query planner adjusted the rule used when considering `Merge
+    Join` orders from “the order of the rows must match exactly” to “there must be
+    at least 1 leading column correctly ordered”. This allows the planner to use `Incremental
+    Sorts` to get the rows into the correct order for the upper-level operation. We
+    know from earlier in this blog that incremental sorts, when they’re possible,
+    require less work than a complete sort as incremental sorts are able to exploit
+    partially sorted inputs and perform sorts in smaller batches, resulting in less
+    memory consumption and fewer sort comparisons overall.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG15 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: PG16 EXPLAIN output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the PG16 EXPLAIN output above, you can see that an `Incremental Sort` was
+    used (compared to PG15 which instead used a `Sort`) and that resulted in a small
+    reduction of the query’s `Execution Time` in PG16 and a large reduction in the
+    memory used to perform the sort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A lot of engineering work was done in PostgreSQL 16 to improve the query planner
+    by many engineers from all around the world. I’d like to thank all the people
+    who helped by reviewing the pieces that I worked on and all the people who gave
+    feedback on the changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each of the 10 improvements to the PostgreSQL 16 planner above are enabled by
+    default—and are either applied in all cases where the optimization is possible,
+    or are selectively applied by the query planner when it thinks the optimization
+    will help.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re running an older version of PostgreSQL, I encourage you to try your
+    workload on PostgreSQL 16 to see which of your queries are faster. And as always,
+    feedback about real-world usage of PostgreSQL in the wild is welcome on the [pgsql-general@postgresql.org](mailto:pgsql-general@postgresql.org?subject=PG16%20query%20planner%20feedback)
+    mailing list—you don’t have to just file issues, you can always share the positive
+    experiences too. So please drop us a line about your experience with the PostgreSQL
+    16 planner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enjoy what you’re reading?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to read more posts from our Citus database and Postgres teams, sign
+    up for our monthly newsletter and get the latest content delivered straight to
+    your inbox.
+  prefs: []
+  type: TYPE_NORMAL

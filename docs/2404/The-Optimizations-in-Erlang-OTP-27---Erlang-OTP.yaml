@@ -1,0 +1,601 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:31:10'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Optimizations in Erlang/OTP 27 - Erlang/OTP
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.erlang.org/blog/optimizations/](https://www.erlang.org/blog/optimizations/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This post explores the new optimizations for record updates as well as some
+    of the other improvements. It also gives a brief historic overview of recent optimizations
+    leading up to Erlang/OTP 27.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief history of recent optimizations [#](#a-brief-history-of-recent-optimizations)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The modern history of optimizations for Erlang begins in January 2018\. We had
+    realized that we had reached the limit of the optimizations that were possible
+    working on [BEAM code](https://www.erlang.org/blog/a-brief-beam-primer/) in the
+    Erlang compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Erlang/OTP 22 introduced a new [SSA-based intermediate representation](https://en.wikipedia.org/wiki/Static_single-assignment_form)
+    in the compiler. Read the full story in [SSA History](https://www.erlang.org/blog/ssa-history/).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Erlang/OTP 24 introduced the [JIT (Just In Time compiler)](https://www.erlang.org/blog/a-first-look-at-the-jit/),
+    which improved performance by emitting native code for BEAM instructions at load-time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Erlang/OTP 25 introduced [type-based optimization in the JIT](https://www.erlang.org/blog/type-based-optimizations-in-the-jit/),
+    which allowed the Erlang compiler to pass type information to the JIT to help
+    it emit better native code. While that improved the native code emitted by the
+    JIT, limitations in both the compiler and the JIT prevented the JIT to take full
+    advantage of the type information.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Erlang/OTP 26 [improved the type-based optimizations](https://www.erlang.org/blog/more-optimizations/).
+    The most noticeable performance improvements were matching and construction of
+    binaries using the bit syntax. Those improvements, combined with changes to the
+    `base64` module itself, made encoding to Base64 about 4 times as fast and decoding
+    from Base64 more than 3 times as fast.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What to expect of the JIT in Erlang/OTP 27 [#](#what-to-expect-of-the-jit-in-erlangotp-27)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The major compiler and JIT improvement in Erlang/OTP 27 is optimization of record
+    operations, but there are also many smaller optimizations that make the code smaller
+    and/or faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please try this at home! [#](#please-try-this-at-home)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While this blog post will show many examples of generated code, I have attempted
+    to explain the optimizations in English as well. Feel free to skip the code examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, if you want more code examples…
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To examine the native code for loaded modules, start the runtime system like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The native code for all modules that are loaded will be dumped to files with
+    the extension `.asm`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To examine the BEAM code for a module, use the `-S` option when compiling.
+    For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: A simple record optimization [#](#a-simple-record-optimization)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To get started, let’s look at a simple record optimization that was not done
+    in Erlang/OTP 26 and earlier. Suppose we have this module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is [BEAM code](https://www.erlang.org/blog/a-brief-beam-primer/) for the
+    record operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: That is, all three record update operations have been retained as separate [`update_record`](https://www.erlang.org/blog/more-optimizations/#updating-records-in-otp-26)
+    instructions. Each operation creates a new record by copying the unchanged parts
+    of the record and filling in the new values in the correct position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The compiler in Erlang/OTP 27 will essentially rewrite `update/1` to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which will produce the following BEAM code for the record creation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Those optimizations were implemented in the following pull requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating records in place [#](#updating-records-in-place)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To explore the more sophisticated record optimization introduced in Erlang/OTP
+    27, consider this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`count(List)` counts the number of atoms and the number of other terms in the
+    given list. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here follows the BEAM code emitted for `count/2`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first two instructions test whether the first argument in `{x,0}` is a
+    non-empty list and if so extracts the first element of the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The next instruction tests whether the first element is an atom. If not, a jump
+    is made to the code for the second clause.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next the counter for the number of atoms seen is fetched from the record and
+    incremented by one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next follows allocation of heap space and the updating of the record:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `test_heap` instruction ensures that there is sufficient room on the heap
+    for copying the record (4 words).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `update_record` instruction was introduced in Erlang/OTP 26\. Its first
+    operand is an atom that is a hint from the compiler to help the JIT emit better
+    code. In Erlang/OTP 26 the hints `reuse` and `copy` are used. For more about those
+    hints, see [Updating records in OTP 26](https://www.erlang.org/blog/more-optimizations/#updating-records-in-otp-26).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Erlang/OTP 27, there is a new hint called `inplace`. The compiler emits that
+    hint when it has determined that nowhere in the runtime system is there another
+    reference to the tuple except for the reference used for the `update_record` instruction.
+    In other words, from the **compiler’s** point of view, if the runtime system were
+    to directly update the existing record without first copying it, the observable
+    behavior of the program would not change. As soon will be seen, from the **runtime
+    system’s** point of view, directly updating the record is not always safe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This new optimization was implemented by Frej Drejhammar. It builds on and extends
+    the compiler passes added in Erlang/OTP 26 for [appending to a binary](https://www.erlang.org/blog/more-optimizations/#appending-to-binaries-in-otp-26).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let’s see what the JIT will do when a `record_update` instruction has an
+    `inplace` hint. Here is the complete native code for the instruction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: (Lines starting with `#` are comments emitted by the JIT, while the text that
+    follows `;` is a comment added by me for clarification.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The BEAM loader renames an `update_record` instruction with an `inplace` hint
+    to `update_record_in_place`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first two instructions load the tuple to be update into CPU register `rax`
+    and the new counter value (`C + 1`) into `rcx`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next two instructions test whether the new counter value is a small integer
+    that fits into a word. The test has been simplified to a more efficient test that
+    is only safe when the value is known to be an integer. If it is a small integer,
+    it is always safe to jump to the code that updates the existing tuple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: If it is not a small integer, it must be a **bignum**, that is a signed integer
+    that does not fit in 60 bits and therefore have to be stored on the heap with
+    `rcx` containing a tagged pointer to the bignum on the heap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If `rcx` is a pointer to a term on the heap, it is not always safe to directly
+    updating the existing tuple. That is because of the way the Erlang [generational
+    garbage collector](https://www.erlang.org/doc/apps/erts/garbagecollection#generational-garbage-collection)
+    works. Each Erlang process has two heaps for keeping Erlang terms: the young heap
+    and the old heap. Terms on the young heap are allowed to reference terms on the
+    old heap, but not vice versa. That means that if the tuple to be updated resides
+    on the old heap, it is not safe to update one of its elements so that it will
+    reference a term on the young heap.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Therefore, the JIT needs to emit code to ensure that the pointer to the tuple
+    resides in the “safe part” of the young heap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The safe part of the heap is between the high water mark and the heap top. If
+    the tuple is below the high water mark, if it is still alive, it will be copied
+    to the old heap in the next garbage collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the tuple is in the safe part, the copy code is skipped by jumping to the
+    code that stores the new value into the existing tuple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If not, the next part will copy the existing record to the heap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The copying is done using [AVX instructions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next follows the code that writes the new value into the tuple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If all the new values being written into the existing record are known never
+    to be tagged pointers, the native instructions can be simplified. Consider this
+    module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `update_record` instruction looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Based on the type for the new value, `{t_atom,[false,true]}`, the JIT is able
+    to generate much shorter code than for the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'References to literals (such as `[1,2,3]`) are also safe, because literals
+    are stored in a special literal area, and the garbage collector handles them specially.
+    Consider this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Both of the record updates in the `case` can be done in place. Here is the
+    BEAM code for the record update in the first clause:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the value to be written is a literal, the JIT emits simpler code without
+    the copy fallback:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: The large integer `9223372036854775807` is a placeholder that will be patched
+    later when the address of the literal fun will be known.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the pull request for updating tuples in place:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing by generating less garbage [#](#optimizing-by-generating-less-garbage)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When updating a record in place, omitting the copying of the existing record
+    should be a clear win, except perhaps for very small records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is less clear is the effect on garbage collection. Updating a tuple in
+    place is an example of optimizing by generating less garbage. By creating less
+    garbage, the expectation is that garbage collections should occur less often,
+    which should improve the performance of the program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of the highly variable execution time for doing a garbage collection,
+    it is notoriously difficult to benchmark optimizations that reduce the amount
+    of garbage created. Often the outcomes of benchmarks do not apply to performing
+    the same tasks in a real application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My own [anecdotal evidence](https://en.wikipedia.org/wiki/Anecdotal_evidence)
+    suggests that in most cases there are no measurable performance wins by producing
+    less garbage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also remember when an optimization that reduced the size of an Erlang term
+    resulted in a benchmark being consistently slower. It took the author of that
+    optimization several days of investigation to confirm that the slowdown in the
+    benchmark was not the fault of his optimization, but by creating less garbage,
+    garbage collection happened at a later time when it happened to be much more expensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On average we expect that this optimization should improve performance, especially
+    for large records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimization of funs [#](#optimization-of-funs)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The internal representation of funs in the runtime system has changed in Erlang/OTP
+    27, making possible several new optimizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, consider this function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In Erlang/OTP 26, the native code for creating the fun looks like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The large integer `9223372036854775807` is a placeholder for a value that will
+    be filled in later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the work of actually creating the fun object is done by calling a helper
+    function (the `call 4337160320` instruction) in the runtime system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Erlang/OTP 27, the part of fun that resides on the heap of the calling process
+    has been simplified so that it is now smaller than in Erlang/OTP 26, and most
+    importantly does not contain anything that is too tricky to initialize in inline
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code for creating the fun is not only shorter, but it also doesn’t need
+    to call any function in the runtime system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The difference from Erlang/OTP 26 is that the parts of the fun that is only
+    needed when loading and unloading code are no longer stored on the heap. Instead
+    those parts are stored in the literal pool area belonging to the loaded code for
+    the module, and are shared by all instances of the same fun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The part of the fun that resides on the process heap is two words smaller compared
+    to Erlang/OTP 26.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The creation of the fun environment has also been optimized. In Erlang/OTP
+    26, four instructions were needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In Erlang/OTP 27, using [AVX instructions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+    both variables (`A` and `C`) can be moved using only two instructions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another optimization made possible by the changed fun representation is testing
+    for a fun having a specific arity (the number of expected arguments when calling
+    it). For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is the native code emitted by the JIT in Erlang/OTP 26:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In Erlang/OTP 27, the arity for the fun (the number of expected arguments)
+    is stored in the header word of the fun term, which means that the test for a
+    fun can be combined with the test for its arity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All external funs are now literals stored outside all process heaps. As an
+    example, consider the following functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: In Erlang/OTP 26, the external fun returned by `my_fun/0` would not occupy any
+    room on the heap of the calling process, while the dynamic external fun returned
+    by `mfa/3` would need 5 words on the heap of the calling process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Erlang/OTP 27, neither of the funs will require any room on the heap of the
+    calling process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Those optimizations were implemented in the following pull requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integer arithmetic improvements [#](#integer-arithmetic-improvements)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the end of June last year, we released the [OTP 26.0.2 patch](https://www.erlang.org/patches/otp-26.0.2)
+    for Erlang/OTP 26 that made [`binary_to_integer/1`](https://www.erlang.org/doc/man/erlang#binary_to_integer-1)
+    faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To find out how much faster, run this benchmark:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: It measures the time to convert a binary holding 1,262,000 digits to an integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running an unpatched Erlang/OTP 26 on my Intel-based iMac from 2017, the benchmark
+    finishes in about 10 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same benchmark run using Erlang/OTP 26.0.2 finishes in about 0.4 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The speed-up was achieved by three separate optimizations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`binary_to_integer/1` was implemented as a BIF in C using a naive algorithm
+    that didn’t scale well. It was replaced with a [divide-and-conquer algorithm](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm)
+    implemented in Erlang. (Implementing the new algorithm as a BIF wasn’t faster
+    than the Erlang version.)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The runtime system’s function for doing multiplication of large integers was
+    modified to use the [Karatsuba algorithm](https://en.wikipedia.org/wiki/Karatsuba_algorithm),
+    which is a divide-and-conquer multiplication algorithm invented in the 1960s.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some of the low-level helper functions for arithmetic with large integers (bignums)
+    were modified to take advantage of a 128-bit integer data type on 64-bit CPUs
+    when supported by the C compiler.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Those improvements were implemented in the following pull request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Erlang/OTP 27, some additional improvement of integer arithemetic were implemented.
+    That reduced the execution time for the `binary_to_integer/1` benchmark to about
+    0.3 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Those improvements are found in the following pull request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Those arithmetic enchancements improve the running times for the [pidigits
+    benchmark](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/pidigits-erlang-2.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Version |   | Seconds |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 26.0 |   | `7.635` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 26.2.1 |   | `2.959` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 27.0 |   | `2.782` |'
+  prefs: []
+  type: TYPE_TB
+- en: (Run on my M1 MacBook Pro.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Numerous miscellaneous enhancements [#](#numerous-miscellaneous-enhancements)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Many enhancements have been made to the code generation for many instructions,
+    as well as a few to the Erlang compiler. Here follows a single example to show
+    one of the improvements to the `=:=` operator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is the BEAM code for the `=:=` operator as used in this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is the native code for Erlang/OTP 26:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code begins with a few tests to quickly succeed or fail, but in practice
+    those are unlikely to trigger for this example, which means that the call to the
+    general routine in the runtime system for comparing two terms will almost always
+    be called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Erlang/OTP 27, the JIT emits special code for testing whether a term is
+    an empty map:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here follows the main pull requests for miscellaneous enhancements in Erlang/OTP
+    27:'
+  prefs: []
+  type: TYPE_NORMAL

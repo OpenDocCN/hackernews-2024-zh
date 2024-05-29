@@ -1,0 +1,383 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:47:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How HEAD works in git
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jvns.ca/blog/2024/03/08/how-head-works-in-git/](https://jvns.ca/blog/2024/03/08/how-head-works-in-git/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Hello! The other day I ran a Mastodon poll asking people how confident they
+    were that they understood how HEAD works in Git. The results (out of 1700 votes)
+    were a little surprising to me:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 10% “100%”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 36% “pretty confident”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 39% “somewhat confident?”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 15% “literally no idea”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I was surprised that people were so unconfident about their understanding –
+    I’d been thinking of `HEAD` as a pretty straightforward topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually when people say that a topic is confusing when I think it’s not, the
+    reason is that there’s actually some hidden complexity that I wasn’t considering.
+    And after some follow up conversations, it turned out that `HEAD` actually *was*
+    a bit more complicated than I’d appreciated!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a quick table of contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HEAD is actually a few different things
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After talking to a bunch of different people about `HEAD`, I realized that
+    `HEAD` actually has a few different closely related meanings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The file `.git/HEAD`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`HEAD` as in `git show HEAD` (git calls this a “revision parameter”)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: All of the ways git uses `HEAD` in the output of various commands (`<<<<<<<<<<HEAD`,
+    `(HEAD -> main)`, `detached HEAD state`, `On branch main`, etc)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: These are extremely closely related to each other, but I don’t think the relationship
+    is totally obvious to folks who are starting out with git.
+  prefs: []
+  type: TYPE_NORMAL
+- en: the file `.git/HEAD`
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Git has a very important file called `.git/HEAD`. The way this file works is
+    that it contains either:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The name of a **branch** (like `ref: refs/heads/main`)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A **commit ID** (like `96fa6899ea34697257e84865fefc56beb42d6390`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This file is what determines what your “current branch” is in Git. For example,
+    when you run `git status` and see this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'it means that the file `.git/HEAD` contains `ref: refs/heads/main`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `.git/HEAD` contains a commit ID instead of a branch, git calls that “detached
+    HEAD state”. We’ll get to that later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (People will sometimes say that HEAD contains a name of a **reference** or a
+    commit ID, but I’m pretty sure that that the reference has to be a **branch**.
+    You *can* technically make `.git/HEAD` contain the name of a reference that isn’t
+    a branch by manually editing `.git/HEAD`, but I don’t think you can do it with
+    a regular git command. I’d be interested to know if there is a regular-git-command
+    way to make .git/HEAD a non-branch reference though, and if so why you might want
+    to do that!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`HEAD` as in `git show HEAD`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'It’s very common to use `HEAD` in git commands to refer to a commit ID, like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`git diff HEAD`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git rebase -i HEAD^^^^`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git diff main..HEAD`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git reset --hard HEAD@{2}`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All of these things (`HEAD`, `HEAD^^^`, `HEAD@{2}`) are called “revision parameters”.
+    They’re documented in [man gitrevisions](https://git-scm.com/docs/gitrevisions),
+    and Git will try to resolve them to a commit ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (I’ve honestly never actually heard the term “revision parameter” before, but
+    that’s the term that’ll get you to the documentation for this concept)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'HEAD in `git show HEAD` has a pretty simple meaning: it resolves to the **current
+    commit** you have checked out! Git resolves `HEAD` in one of two ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if `.git/HEAD` contains a branch name, it’ll be the latest commit on that branch
+    (for example by reading it from `.git/refs/heads/main`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: if `.git/HEAD` contains a commit ID, it’ll be that commit ID
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'next: all the output formats'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now we’ve talked about the file `.git/HEAD`, and the “revision parameter” `HEAD`,
+    like in `git show HEAD`. We’re left with all of the various ways git uses `HEAD`
+    in its output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`git status`: “on branch main” or “HEAD detached”'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When you run `git status`, the first line will always look like one of these
+    two:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`on branch main`. This means that `.git/HEAD` contains a branch.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`HEAD detached at 90c81c72`. This means that `.git/HEAD` contains a commit
+    ID.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I promised earlier I’d explain what “HEAD detached” means, so let’s do that
+    now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: detached HEAD state
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: “HEAD is detached” or “detached HEAD state” mean that you have no current branch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Having no current branch is a little dangerous because if you make new commits,
+    those commits won’t be attached to any branch – they’ll be orphaned! Orphaned
+    commits are a problem for 2 reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: the commits are more difficult to find (you can’t run `git log somebranch` to
+    find them)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: orphaned commits will eventually be deleted by git’s garbage collection
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Personally I’m very careful about avoiding creating commits in detached HEAD
+    state, though some people [prefer to work that way](https://github.com/arxanas/git-branchless).
+    Getting out of detached HEAD state is pretty easy though, you can either:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go back to a branch (`git checkout main`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a new branch at that commit (`git checkout -b newbranch`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you’re in detached HEAD state because you’re in the middle of a rebase, finish
+    or abort the rebase (`git rebase --abort`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Okay, back to other git commands which have `HEAD` in their output!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`git log`: `(HEAD -> main)`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When you run `git log` and look at the first line, you might see one of the
+    following 3 things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD -> main)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD, main)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It’s not totally obvious how to interpret these, so here’s the deal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: inside the `(...)`, git lists every reference that points at that commit, for
+    example `(HEAD -> main, origin/main, origin/HEAD)` means `HEAD`, `main`, `origin/main`,
+    and `origin/HEAD` all point at that commit (either directly or indirectly)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`HEAD -> main` means that your current branch is `main`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If that line says `HEAD,` instead of `HEAD ->`, it means you’re in detached
+    HEAD state (you have no current branch)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'if we use these rules to explain the 3 examples above: the result is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD -> main)` means:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `ref: refs/heads/main`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.git/refs/heads/main` contains `96fa6899ea`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD, main)` means:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `96fa6899ea` (HEAD is “detached”)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.git/refs/heads/main` also contains `96fa6899ea`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`commit 96fa6899ea (HEAD)` means:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `96fa6899ea` (HEAD is “detached”)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.git/refs/heads/main` either contains a different commit ID or doesn’t exist'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'merge conflicts: `<<<<<<< HEAD` is just confusing'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When you’re resolving a merge conflict, you might see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: I find `HEAD` in this context extremely confusing and I basically just ignore
+    it. Here’s why.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you do a **merge**, `HEAD` in the merge conflict is the same as what `HEAD`
+    was when you ran `git merge`. Simple.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When you do a **rebase**, `HEAD` in the merge conflict is something totally
+    different: it’s the **other commit** that you’re rebasing on top of. So it’s totally
+    different from what `HEAD` was when you ran `git rebase`. It’s like this because
+    rebase works by first checking out the other commit and then repeatedly cherry-picking
+    commits on top of it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Similarly, the meaning of “ours” and “theirs” are flipped in a merge and rebase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fact that the meaning of `HEAD` changes depending on whether I’m doing a
+    rebase or merge is really just too confusing for me and I find it much simpler
+    to just ignore `HEAD` entirely and use another method to figure out which part
+    of the code is which.
+  prefs: []
+  type: TYPE_NORMAL
+- en: some thoughts on consistent terminology
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I think HEAD would be more intuitive if git’s terminology around HEAD were a
+    little more internally consistent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, git talks about “detached HEAD state”, but never about “attached
+    HEAD state” – git’s documentation never uses the term “attached” at all to refer
+    to `HEAD`. And git talks about being “on” a branch, but never “not on” a branch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So it’s very hard to guess that `on branch main` is actually the opposite of
+    `HEAD detached`. How is the user supposed to guess that `HEAD detached` has anything
+    to do with branches at all, or that “on branch main” has anything to do with `HEAD`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: that’s all!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If I think of other ways `HEAD` is used in Git (especially ways HEAD appears
+    in Git’s output), I might add them to this post later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you find HEAD confusing, I hope this helps a bit!
+  prefs: []
+  type: TYPE_NORMAL

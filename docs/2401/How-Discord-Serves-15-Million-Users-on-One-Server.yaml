@@ -1,0 +1,327 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:37:48'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Discord Serves 15-Million Users on One Server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.bytebytego.com/p/how-discord-serves-15-million-users](https://blog.bytebytego.com/p/how-discord-serves-15-million-users)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: How is GenAI impacting software development?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Join LinearB and ThoughtWorks’ Global Lead for AI Software Delivery to explore
+    the metrics showing AI’s impact, unpack best practices for leveraging AI in software
+    development, and measure the ROI of your own GenAI initiative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[This workshop](https://bit.ly/LinearB_010924) includes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**📊Data insights** from LinearB’s new GenAI Impact Report'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**🗣️Case studies** into how others are already doing it'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**🔎Impact Measures:** adoption, benefits & risk metrics'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ✅**Live demo:** How you can measure the impact of your GenAI initiative today
+  prefs: []
+  type: TYPE_NORMAL
+- en: Join the conversation on January 25th or 30th.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Register Now](https://bit.ly/LinearB_010924)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In early summer 2022, the Discord operations team noticed unusually high activity
+    on their dashboards. They thought it was a bot attack, but it was legitimate traffic
+    from MidJourney - a new, fast-growing community for generating AI images from
+    text prompts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To use MidJourney, you need a Discord account. Most MidJourney users join one
+    main Discord server. This server grew so quickly that it soon hit Discord’s old
+    limit of around 1 million users per server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discord risked losing this important new community if they didn’t act fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the story of how the Discord team creatively solved this challenge.
+    They found ways to dramatically expand what their infrastructure could handle
+    - keeping the thriving MidJourney community active on Discord.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discord is a popular chat app used by hundreds of millions to connect. Originally
+    for gamers, now all types of communities use it - from hiking clubs to study groups
+    to large gaming communities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Discord, a "server" hosts a community. It has chat channels to discuss topics
+    chosen by the server owner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Internally, Discord calls these servers "guilds" - so we'll use that term going
+    forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Largest Discord Guilds (image source: [Discord](https://discord.com/servers))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before MidJourney, the biggest guilds had around 1 million members - huge gaming
+    communities like Roblox and Fortnite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Discord engineering team thought 1 million members was very close to the
+    maximum a guild could handle. Let's explore why - but first, some quick background
+    on the technologies powering Discord.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discord’s real-time messaging backend is built with Elixir. Elixir runs on the
+    BEAM virtual machine. BEAM was created for Erlang - a language optimized for large
+    real-time systems requiring rock-solid reliability and uptime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A key capability BEAM provides is extremely lightweight parallel processes.
+    This enables a single server to efficiently run tens or hundreds of thousands
+    of processes concurrently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Elixir brings friendlier, Ruby-inspired syntax to the battle-tested foundation
+    of BEAM. Combined they make it much easier to program massively scalable, fault-tolerant
+    systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code snippets comparing Erlang and Elixir syntax (image source: [elixirforum](https://elixirforum.com/t/code-snippets-to-compare-erlang-and-elixir-syntax/16443/3))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So by leveraging BEAM's lightweight processes, the Elixir code powering Discord
+    can "fan out" messages to hundreds of thousands of users around the world concurrently.
+    However, limits emerge as communities grow larger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned, Discord handles all real-time communication using Elixir processes
+    on the highly concurrent BEAM virtual machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The path of a message through Discord’s real-time infra to other users and
+    bots in a guild (Source: [Discord eng blog](https://discord.com/blog/maxjourney-pushing-discords-limits-with-a-million-plus-online-users-in-a-single-server))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Internally, each Discord community is called a “guild”. A dedicated Elixir “guild
+    process” handles coordination and routing for each guild. This tracks all connected
+    users to the guild.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every online user has a separate Elixir "session process”. When the guild process
+    gets a new message, event, or update, it fans out this information to the relevant
+    session processes. These session processes then push the update over WebSocket
+    to the Discord clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This architecture provides a cost-effective way to handle millions of active
+    guilds across a large pool of Linux servers in Discord's cloud infrastructure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, scaling limits emerge as guilds grow larger. Distributing messages
+    and events to more users creates exponentially more work. Larger guilds also have
+    more activity to distribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So the guild process load grows much faster as its number of users increases.
+    BEAM helps tremendously, but there's only so much one BEAM process can handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is why Discord thought breaking 1 million concurrent users per guild would
+    be very difficult.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re not a paid subscriber, here’s what you missed this month.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Netflix: What Happens When You Press Play?](https://blog.bytebytego.com/p/netflix-what-happens-when-you-press)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[6 More Microservices Interview Questions](https://blog.bytebytego.com/p/6-more-microservices-interview-questions)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[7 Microservices Interview Questions](https://blog.bytebytego.com/p/7-microservices-interview-questions)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Why the Internet Is Both Robust and Fragile](https://blog.bytebytego.com/p/why-the-internet-is-both-robust-and)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Unlock Highly Relevant Search with AI](https://blog.bytebytego.com/p/unlock-highly-relevant-search-with)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To receive all the full articles and support ByteByteGo, consider subscribing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that background established, let’s return to the main story. Facing a scaling
+    crisis from Midjourney's runaway growth, Discord formed a small team of senior
+    engineers to dig into the problems. This team was called MaxJourney.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here’s what they accomplished.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding where systems spend time and memory is critical before improving
+    them. The team used various profiling techniques to analyze guild process performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The simplest was sampling stack traces to reveal expensive operations. This
+    quickly highlights issues without much effort. However, richer data was needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So they instrumented the event loop to record metrics on each message type.
+    This included frequency, min/max/average processing times. This analysis revealed
+    the costliest operations to optimize. Cheap ones could be ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Memory usage was also examined, since it impacts hardware needs and garbage
+    collection throughput.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To estimate sizes of large data structures reasonably quickly, a helper library
+    was built to sample maps and lists. It avoids fully traversing all elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This sampling revealed memory-intensive fields to refactor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Armed with visibility into these time and memory hotspots, the team could now
+    systematically target optimizations to rewrite inefficient code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The team's first optimization was reducing unnecessary work. They realized the
+    client app did not always need every update for guilds that users were not actively
+    viewing in the app's foreground.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So they implemented "passive" connections for those guilds. Passive connections
+    skip processing and data transmission until the user opens the guild.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over 90% of the user-guild connections became passive for large servers. This
+    cut required work by 90%, greatly reducing load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, MidJourney kept growing. So this alone was not enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relays already existed to split fanout work across BEAM processes for scaling.
+    Relays are only enabled for large guilds, where they maintain session connections
+    on behalf of the guild.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each relay handles fanout and permissions for up to 15,000 users. This allowed
+    leverage more BEAM processes to serve large guilds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Originally, relays duplicated full member lists. It was simple to implement,
+    but for massive guilds with millions of members, dozens of copied lists wasted
+    huge amount of RAM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, creating relays stalled massive guilds for seconds while serializing and
+    transmitting member data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So the team optimized relays to track just the tiny subset of members needed
+    per relay.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to overall throughput, ensuring low latency was critical. So the
+    team analyzed operations with high per-call duration, beyond just total time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Key culprits were member iterations taking seconds, blocking guilds. The solution
+    was worker processes to offload these. Workers leverage ETS, an in-memory database
+    for fast inter-BEAM-process data sharing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Members were stored in ETS, with recent changes in the guild's heap. This hybrid
+    model kept the guild's memory small.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For slow tasks, workers are spawned to run them asynchronously using the shared
+    ETS data, freeing the guild to continue handling messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An example slow task is handling guild migration between machines. Copying state
+    from the old guild process to the new process normally stalls the old one for
+    minutes. But offloading this to a worker avoids blocking the old guild process
+    from handling incoming messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another idea was offloading fanout from guilds to separate "sender" processes,
+    further reducing guild workload and insulating the guild processes from network
+    backpressure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this unexpectedly tanked performance due to pathological garbage collection.
+    Analysis showed it was triggered by freeing small memory outside the heap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tuning the virtual binary heap size fixed this. Now offload could be enabled,
+    significantly improving throughput.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Through systematic optimization, the MaxJourney team achieved the seemingly
+    impossible - expanding guild capacity 15x to keep MidJourney thriving on Discord.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[1] [Maxjourney: Pushing Discord’s Limits with a Million+ Online Users in a
+    Single Server](https://discord.com/blog/maxjourney-pushing-discords-limits-with-a-million-plus-online-users-in-a-single-server)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Using Rust to Scale Elixir for 11 Million Concurrent Users](https://discord.com/blog/using-rust-to-scale-elixir-for-11-million-concurrent-users)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[2] [How Discord Scaled Elixir to 5,000,000 Concurrent Users](https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[3] [Discord Developer Portal — Documentation — Guild](https://discord.com/developers/docs/resources/guild)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[4] [GitHub - discord/manifold: Fast batch message passing between nodes for
+    Erlang/Elixir.](https://github.com/discord/manifold)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[5] [BEAM (Erlang virtual machine) - Wikipedia](https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[6] [Erlang''s virtual machine, the BEAM](https://www.erlang-solutions.com/blog/erlangs-virtual-machine-the-beam/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[7] [Introduction — Elixir v1.16.0](https://hexdocs.pm/elixir/1.16/introduction.html)'
+  prefs: []
+  type: TYPE_NORMAL

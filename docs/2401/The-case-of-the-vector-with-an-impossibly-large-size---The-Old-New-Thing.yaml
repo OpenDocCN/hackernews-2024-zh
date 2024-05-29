@@ -1,0 +1,240 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:43:51'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The case of the vector with an impossibly large size - The Old New Thing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242](https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The case of the vector with an impossibly large size
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A customer had a program that crashed with this stack:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: They wondered if some recent change to Windows was the source of the problem,
+    since it didn’t happen as much in earlier versions of Windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The stack trace pointed to `Widget::<wbr>IsEnabled`, which was crashing on the
+    first instruction because it was given an invalid `this` pointer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `Widget` pointer came from a `std::vector` that is a member of the `Standard­Widgets`
+    class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code crashed at this call to `Widget::<wbr>GetCost`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The customer’s debugging showed that at the point of the crash, not only was
+    the `widget` garbage, but the `m_widgets` vector had an impossibly large number
+    of elements. The `m_widgets` is expected to have only four widgets, but it somehow
+    found itself with ten, and sometimes as many as a hundred widgets. Of course,
+    they were nearly all corrupted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s the code that lazy-initializes the widget list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The customer noted that the `reserve` method is always called with the value
+    4, and the code never pushes more than four items into the vector. They admitted
+    that if there is a problem creating all four of the standard widgets, the vector
+    could end up with fewer than four widgets, but it should never have *more* than
+    four.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You already have multiple clues that point toward what the customer’s problem
+    is. I’ll give you some time to think about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the meantime, let’s look at other issues with how the code lazy-initializes
+    the widget list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the customer noted, if there is a problem creating any of the four standard
+    widgets, the failure is propagated to the caller of `Lazy­Initialize­Widget­List`,
+    and `get_TotalCost` in turn propagates the error to its own caller, and it never
+    gets to the point where it walks through the vector adding up all the costs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a memory allocation failure at the `reserve()`, or if there is a
+    problem with the first standard widget, then the vector remains empty, and a second
+    call to `Lazy­Initialize­Widget­List` will make a new attempt at initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a problem with the second or subsequent standard widget, however,
+    things get weird. The `Lazy­Initialize­Widget­List` function returns a failure,
+    which causes `get_TotalCost` to return failure. But the second time someone calls
+    `get_TotalCost`, `Lazy­Initialize­Widget­List` will see a nonempty vector and
+    assume that everything was initialized. This time, the `get_TotalCost` method
+    will proceed with the summation and perform an out-of-bounds array access when
+    it gets to the widget that failed to be created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Oops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This particular problem boils down to leaving a partially-initialized `m_widgets`
+    if the lazy initialization fails. To avoid this problem, we should create the
+    vector in a local variable and transfer it to the member variable only after we
+    are sure all of the widgets were created successfully.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This ensures that the `m_widgets` is either totally empty or totally initialized.
+    It is never in a half-initialized state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While we’re at it, we probably should convert the loop in `get_TotalCost` into
+    a ranged `for` loop. Right now, `get_<wbr>Total­Cost` has a hidden dependency
+    on `Lazy­Initialize­Widgets`: It assumes that `Lazy­Initialize­Widgets` always
+    creates exactly the number of widgets as there are `standard­Widget­Names`. Maybe
+    in the future, you might want to suppress some of the standard widgets based on
+    some configuration setting. If you add that configuration setting and forget to
+    update `get_<wbr>Total­Cost` to account for suppressed widgets, you will have
+    an out-of-bounds index. All the logic to decide which widgets are standard should
+    be local to `Lazy­Initialize­Widgets`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Or if you want to get fancy,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Okay, but back to the crash. I think I’ve added enough filler to give you time
+    to consider what is happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When I looked at this crash, I noticed that the class is implemented with [the
+    `Microsoft::<wbr>WRL::<wbr>RuntimeClass` template class](https://learn.microsoft.com/en-us/cpp/cppcx/wrl/runtimeclass-class?view=msvc-170),
+    and the implementation explicitly listed `FtmBase` as a template parameter, marking
+    this class as free-threaded (also known as “agile”), which means that it can be
+    used from multiple threads simultaneously.¹
+  prefs: []
+  type: TYPE_NORMAL
+- en: The object is eligible for multithreaded use, but there are no mutexes to protect
+    two threads from modifying `m_widgets` at the same time. I suspected a race condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also observe that the class is being used in a free-threaded manner
+    because the stack trace that leads to the crash says that it’s running on a thread
+    pool thread (`TppWorkerThread`), and thread pool threads default to the multi-threaded
+    apartment.² The only code on the stack between `TppWorkerThread` and the application
+    code is all COM and RPC, so no application code snuck in and initialized the thread
+    into single-threaded apartment mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And when I looked at the crash dump, I caught the code red-handed: There was
+    another thread also calling into this code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that the `this` pointer is the same for both threads, so we have proof
+    that this object is being used from multiple threads simultaneously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fix for the multithreading issue is to ensure that only one thread tries
+    to initialize the widget vector at a time. We can do this by adding a mutex, but
+    I’m going to go even further and use the `std::once_flag`, whose purpose in life
+    is to be used in conjunction with `std::<wbr>call_once` to perform thread-safe
+    one-time initialization, which is exactly what we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Update**: We had to change the `RETURN_<wbr>IF_<wbr>FAILED` to `THROW_<wbr>IF_<wbr>FAILED`
+    because (1) without the change, the compiler will complain that not all code paths
+    return a value, because the lambda also falls off the end, and more importantly,
+    (2) `call_once` doesn’t care about the lambda return value; it uses exceptions
+    to detect errors. **End Update**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This version also deals with the edge case where there are no standard widgets
+    at all. The original code would continuously try to reinitialize the vector since
+    it couldn’t tell whether an empty vector means “Not yet initialized” or “Successfully
+    initialized (and it’s empty)”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Bonus chatter**: How did this multithreaded race condition lead to a vector
+    with a ridiculous size? Well, we saw some time ago that [the internal structure
+    of a `std::vector`](https://devblogs.microsoft.com/oldnewthing/20230802-00/?p=108524
+    "Inside STL: The vector") is three pointers, one for the start of the vector data,
+    one for the end of the valid data, and one for the end of the allocated data.
+    If two threads call `reserve()` simultaneously, both will allocate new data, and
+    then they were race to update the three pointers. You might end up with a “start”
+    pointer that points to the data allocated by the first thread, but an “end” pointer
+    that points to the data allocated by the second thread, resulting in a vector
+    of unusual size.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ¹ It was actually convenient that the implementation lists `FtmBase` explicitly,
+    since the default behavior varies depending on whether `__WRL_<wbr>CONFIGURATION_<wbr>LEGACY__`
+    is set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Template parameter | Standard mode | Legacy mode |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Nothing specified | Free-threaded | Not free-threaded |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `FtmBase` | Free-threaded |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `InhibitFtmBase` | Not free-threaded |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `InhibitFtmBase` + `FtmBase` | Not free-threaded |'
+  prefs: []
+  type: TYPE_TB
+- en: 'In pseudocode:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The explicitly inclusion of `FtmBase` saved me the trouble of looking up what
+    mode the customer’s project is using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ² Assuming the multi-threaded apartment exists at all.
+  prefs: []
+  type: TYPE_NORMAL

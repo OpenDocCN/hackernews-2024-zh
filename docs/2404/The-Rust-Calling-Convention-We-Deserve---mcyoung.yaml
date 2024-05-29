@@ -1,0 +1,507 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:17:45'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Rust Calling Convention We Deserve · mcyoung
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://mcyoung.xyz/2024/04/17/calling-convention/](https://mcyoung.xyz/2024/04/17/calling-convention/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I will often say that the so-called “C ABI” is a very bad one, and a relatively
+    unimaginative one when it comes to passing complicated types effectively. A lot
+    of people ask me “ok, what would you use instead”, and I just point them to the
+    [Go register ABI](https://go.googlesource.com/go/+/refs/heads/dev.regabi/src/cmd/compile/internal-abi.md),
+    but it seems most people have trouble filling in the gaps of what I mean. This
+    article explains what I mean in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I have discussed [calling conventions](https://mcyoung.xyz//2021/11/09/assembly-1/#the-calling-convention)
+    in the past, but as a reminder: the *calling convention* is the part of the ABI
+    that concerns itself with how to pass arguments to and from a function, and how
+    to actually call a function. This includes which registers arguments go in, which
+    registers values are returned out of, what function prologues/epilogues look like,
+    how unwinding works, etc.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This particular post is primarily about x86, but I intend to be reasonably generic
+    (so that what I’ve written applies just as well to ARM, RISC-V, etc). I will assume
+    a general familiarity with x86 assembly, LLVM IR, and Rust (but not rustc’s internals).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Today, like many other natively compiled languages, Rust defines an unspecified0-
+    calling convention that lets it call functions however it likes. In practice,
+    Rust lowers to LLVM’s built-in C calling convention, which LLVM’s prologue/epilogue
+    codegen generates calls for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Rust is fairly conservative: it tries to generate LLVM function signatures
+    that Clang could have plausibly generated. This has two significant benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Good probability debuggers won’t choke on it. This is not a concern on Linux,
+    though, because DWARF is very general and does not bake-in the Linux C ABI. We
+    will concern ourselves only with ELF-based systems and assume that debuggability
+    is a nonissue.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It is less likely to tickle LLVM bugs due to using ABI codegen that Clang does
+    not exercise. I think that if Rust tickles LLVM bugs, we should actually fix them
+    (a very small number of rustc contributors do in fact do this).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'However, we are too conservative. We get terrible codegen for simple functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`arr` is 12 bytes wide, so you’d think it would be passed in registers, but
+    no! It is passed by pointer! Rust is actually *more* conservative than what the
+    Linux C ABI mandates, because it actually passes the `[i32; 3]` in registers when
+    `extern "C"` is requested.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The array is passed in `rdi` and `rsi`, with the `i32`s packed into registers.
+    The function moves `rdi` into `rax`, the output register, and shifts the upper
+    half down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not only does clang produce patently *bad* code for passing things by value,
+    but it also knows how to do it better, if you request a standard calling convention!
+    We could be generating *way* better code than Clang, but we don’t!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hereforth, I will describe how to do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s suppose that we keep the current calling convention for `extern "Rust"`^(,
+    but we add a flag `-Zcallconv` that sets the calling convention for `extern "Rust"`
+    when compiling a crate. The supported values will be `-Zcallconv=legacy` for the
+    current one, and `-Zcallconv=fast` for the one we’re going to design. We could
+    even let `-O` set `-Zcallconv=fast` automatically.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why keep the old calling convention? Although I did sweep debugability under
+    the rug, one nice property `-Zcallconv=fast` will not have is that it does not
+    place arguments in the C ABI order, which means that a reader replying on the
+    “Diana’s silk dress cost $89” mnemonic on x86 will get fairly confused.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I am also assuming we may not even support `-Zcallconv=fast` for some targets,
+    like WASM, where there is no concept of “registers” and “spilling”. It may not
+    even make sense to enable it for for debug builds, because it will produce much
+    worse code with optimizations turned off.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is also a mild wrinkle with function pointers, and `extern "Rust" {}`
+    blocks. Because this flag is per-crate, even though functions can advertise which
+    version of `extern "Rust"` they use, function pointers have no such luxury. However,
+    calling through a function pointer is slow and rare, so we can simply force them
+    to use `-Zcallconv=legacy`. We can generate a shim to translate calling conventions
+    as needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, we can, in principle, call any Rust function like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, this mechanism can only be used to call unmangled symbols. Thus, we
+    can simply force `#[no_mangle]` symbols to use the legacy calling convention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In an ideal world, LLVM would provide a way for us to specify the calling convention
+    directly. E.g., this argument goes in that register, this return goes in that
+    one, etc. Unfortunately, adding a calling convention to LLVM requires writing
+    a bunch of C++.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, we can get away with specifying our own calling convention by following
+    the following procedure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, determine, for a given target triple, the maximum number of values that
+    can be passed “by register”. I will explain how to do this below.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Decide how to pass the return value. It will either fit in the output registers,
+    or it will need to be returned “by reference”, in which case we pass an extra
+    `ptr` argument to the function (tagged with the `sret` attribute) and the actual
+    return value of the function is that pointer.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Decide which arguments that have been passed by value need to be demoted to
+    being passed by reference. This will be a heuristic, but generally will be approximately
+    “arguments larger than the by-register space”. For example, on x86, this comes
+    out to 176 bytes.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Decide which arguments get passed by register, so as to maximize register space
+    usage. This problem is NP-hard (it’s the knapsack problem) so it will require
+    a heuristic. All other arguments are passed on the stack.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generate the function signature in LLVM IR. This will be all of the arguments
+    that are passed by register encoded as various non-aggregates, such as `i64`,
+    `ptr`, `double`, and `<2 x i64>`. What valid choices are for said non-aggregates
+    depends on the target, but the above are what you will generally get on a 64-bit
+    architecture. Arguments passed on the stack will follow the “register inputs”.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generate a function prologue. This is code to decode each Rust-level argument
+    from the register inputs, so that there are `%ssa` values corresponding to those
+    that would be present when using `-Zcallconv=legacy`. This allows us to generate
+    the same code for the body of the function regardless of calling convention. Redundant
+    decoding code will be eliminated by DCE passes.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generate a function exit block. This is a block that contains a single `phi`
+    instruction for the return type as it would be for `-Zcallconv=legacy`. This block
+    will encode it into the requisite output format and then `ret` as appropriate.
+    All exit paths through the function should `br` to this block instead of `ret`-ing.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If a non-polymorphic, non-inline function may have its address taken (as a function
+    pointer), either because it is exported out of the crate or the crate takes a
+    function pointer to it, generate a shim that uses `-Zcallconv=legacy` and immediately
+    tail-calls the real implementation. This is necessary to preserve function pointer
+    equality.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The main upshot here is that we need to cook up heuristics for figuring out
+    what goes in registers (since we allow reordering arguments to get better throughput).
+    This is equivalent to the knapsack problem; knapsack heuristics are beyond the
+    scope of this article. This should happen early enough that this information can
+    be stuffed into `rmeta` to avoid needing to recompute it. We may want to use different,
+    faster heuristics depending on `-Copt-level`. Note that correctness requires that
+    we forbid linking code generated by multiple different Rust compilers, which is
+    already the case, since Rust breaks ABI from release to release.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Assuming we do that, how do we actually get LLVM to pass things in the way
+    we want it to? We need to determine what the largest “by register” passing LLVM
+    will permit is. The following LLVM program is useful for determining this on a
+    particular version of LLVM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you pass an aggregate by-value to an LLVM function, LLVM will attempt to
+    “explode” that aggregate into as many registers as possible. There are distinct
+    register classes on different systems. For example, on both x86 and ARM, floats
+    and vectors share the same register class (kind of^().)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above values are for x86^(. LLVM will pass six integers and eight SSE vectors
+    by register, and return half as many (3 and 4) by register. Increasing any of
+    the values generates extra loads and stores that indicate LLVM gave up and passed
+    arguments on the stack.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values for `aarch64-unknown-linux` are 8 integers and 8 vectors for both
+    inputs and outputs, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the maximum number of registers we get to play with for each class.
+    Anything extra gets passed on the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I recommend that *every function* have the same number of by-register arguments.
+    So on x86, EVERY `-Zcallconv=fast` function’s signature should look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: When passing pointers, the appropriate `i64`s should be replaced by `ptr`, and
+    when passing `double`s, they replace `<2 x i64>`s.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But you’re probably saying, “Miguel, that’s crazy! Most functions don’t pass
+    176 bytes!” And you’d be right, if not for the magic of LLVM’s very well-specified
+    `poison` semantics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can get away with not doing extra work if every argument we do not use is
+    passed `poison`. Because `poison` is equal to “the most convenient possible value
+    at the present moment”, when LLVM sees `poison` passed into a function via register,
+    it decides that the most convenient value is “whatever happens to be in the register
+    already”, and so it doesn’t have to touch that register!
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if we wanted to pass a pointer via `rcx`, we would generate the
+    following code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is perfectly legal to pass poison to a function, if it does not interact
+    with the poisoned argument in any proscribed way. And as we see, `load_rcx()`
+    receives its pointer argument in `rcx`, whereas `make_the_call()` takes no penalty
+    in setting up the call: loading poison into the other thirteen registers compiles
+    down to nothing^(, so it only needs to load the pointer returned by malloc into
+    `rcx`.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This gives us almost total control over argument passing; unfortunately, it
+    is not total. In an ideal world, the same registers are used for input and output,
+    to allow easier pipelining of calls without introducing extra register traffic.
+    This is true on ARM and RISC-V, but not x86\. However, because register ordering
+    is merely a suggestion for us, we can choose to allocate the return registers
+    in whatever order we want. For example, we can pretend the order registers should
+    be allocated in is `rdx`, `rcx`, `rdi`, `rsi`, `r8`, `r9` for inputs, and `rdx`,
+    `rcx`, `rax` for outputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`square` generates extremely simple code: the input and output register is
+    `rdi`, so no extra register traffic needs to be generated. Similarly, when we
+    effectively do `@square(@square(%0))`, there is no setup between the functions.
+    This is similar to code seen on aarch64, which uses the same register sequence
+    for input and output. We can see that the “naive” version of this IR produces
+    the exact same code on aarch64 for this reason.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we’ve established total control on how registers are assigned, we can
+    turn towards maximizing use of these registers in Rust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For simplicity, we can assume that rustc has already processed the users’s types
+    into basic aggregates and unions; no enums here! We then have to make some decisions
+    about which portions of the arguments to allocate to registers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, return values. This is relatively straightforward, since there is only
+    one value to pass. The amount of data we need to return is *not* the size of the
+    struct. For example, `[(u64, u32); 2]` measures 32 bytes wide. However, eight
+    of those bytes are padding! We do not need to preserve padding when returning
+    by value, so we can flatten the struct into `(u64, u32, u64, u32)` and sort by
+    size into `(u64, u64, u32, u32)`. This has no padding and is 24 bytes wide, which
+    fits into the three return registers LLVM gives us on x86\. We define the *effective
+    size* of a type to be the number of non-`undef` bits it occupies. For `[(u64,
+    u32); 2]`, this is 192 bits, since it excludes the padding. For `bool`, this is
+    one. For `char` this is technically 21, but it’s simpler to treat `char` as an
+    alias for `u32`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for counting bits this way is that it permits significant compaction.
+    For example, returning a struct full of bools can simply bit-pack the bools into
+    a single register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, a return value is converted to a by-ref return if its effective size is
+    smaller than the output register space (on x86, this is three integer registers
+    and four SSE registers, so we get 88 bytes total, or 704 bits).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Argument registers are much harder, because we hit the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem),
+    which is NP-hard. The following relatively naive heuristic is where I would start,
+    but it can be made infinitely smarter over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, demote to by-ref any argument whose effective size is larget than the
+    total by-register input space (on x86, 176 bytes or 1408 bits). This means we
+    get a pointer argument instead. This is beneficial to do first, since a single
+    pointer might pack better than the huge struct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enums should be replaced by the appropriate discriminant-union pair. For example,
+    `Option<i32>` is, internally, `(union { i32, () }, i1)`, while `Option<Option<i32>>`
+    is `(union { i32, (), () }, i2)`. Using a small non-power-of-two integer improves
+    our ability to pack things, since enum discriminants are often quite tiny.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to handle unions. Because mucking about with unions’ uninitialized
+    bits behind our backs is allowed, we need to either pass it as an array of `u8`,
+    unless it only has a single non-empty variant, in which case it is replaced with
+    that variant^.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can proceed to flatten everything. All of the converted arguments are
+    flattened into their most primitive components: pointers, integers, floats, and
+    bools. Every field should be no larger than the smallest argument register; this
+    may require splitting large types such as `u128` or `f64`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This big list of primitives is next sorted by effective size, from smallest
+    to largest. We take the largest prefix of this that will fit in the available
+    register space; everything else goes on the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If part of a Rust-level input is sent to the stack in this way, and that part
+    is larger than a small multiple of the pointer size (e.g., 2x), it is demoted
+    to being passed by pointer-on-the-stack, to minimize memory traffic. Everything
+    else is passed directly on the stack in the order those inputs were before the
+    sort. This helps keep regions that need to be copied relatively contiguous, to
+    minimize calls to `memcpy`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The things we choose to pass in registers are allocated to registers in reverse
+    size order, so e.g. first 64-bit things, then 32-bit things, etc. This is the
+    same layout algorithm that `repr(Rust)` structs use to move all the padding into
+    the tail. Once we get to the `bool`s, those are bit-packed, 64 to a register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a relatively complicated example. My Rust function is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The codegen for this function is quite complex, so I’ll only cover the prologue
+    and epilogue. After sorting and flattening, our raw argument LLVM types are something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Everything fits in registers! So, what does the LLVM function look like on x86?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Above, `!dbg` metadata for the argument values should be attached to the instruction
+    that actually materializes it. This ensures that gdb does something halfway intelligent
+    when you ask it to print argument values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, in current rustc, it gives LLVM eight pointer-sized parameters,
+    so it winds up spending all six integer registers, plus two values passed on the
+    stack. Not great!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is not a complete description of what a completely over-engineered calling
+    convention could entail: in some cases we might know that we have additional registers
+    available (such as AVX registers on x86). There are cases where we might want
+    to split a struct across registers and the stack.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also isn’t even getting into what returns *could* look like. `Result`s
+    are often passed through several layers of functions via `?`, which can result
+    in a lot of redundant register moves. Often, a `Result` is large enough that it
+    doesn’t fit in registers, so each call in the `?` stack has to inspect an ok bit
+    by loading it from memory. Instead, a `Result` return might be implemented as
+    an out-parameter pointer for the error, with the ok variant’s payload, and the
+    is ok bit, returned as an `Option<T>`. There are some fussy details with `Into`
+    calls via `?`, but the idea is implementable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, because we’re Rust, we’ve also got a trick up our sleeve that C doesn’t
+    (but Go does)! When we’re generating the ABI that all callers will see (for `-Zcallconv=fast`),
+    we can look at the function body. This means that a crate can advertise the *precise*
+    ABI (in terms of register-passing) of its functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This opens the door to a more extreme optimization-based ABIs. We can start
+    by simply throwing out unused arguments: if the function never does anything with
+    a parameter, don’t bother spending registers on it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another example: suppose that we know that an `&T` argument is not retained
+    (a question the borrow checker can answer at this point in the compiler) and is
+    never converted to a raw pointer (or written to memory a raw pointer is taken
+    of, etc). We also know that `T` is fairly small, and `T: Freeze`. Then, we can
+    replace the reference with the pointee directly, passed by value.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most obvious candidates for this is APIs like `HashMap::get()`. If the key
+    is something like an `i32`, we need to spill that integer to the stack and pass
+    a pointer to it! This results in unnecessary, avoidable memory traffic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profile-guided ABI is a step further. We might know that some arguments are
+    hotter than others, which might cause them to be prioritized in the register allocation
+    order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You could even imagine a case where a function takes a very large struct by
+    reference, but three `i64` fields are very hot, so the caller can *preload* those
+    fields, passing them both by register *and* via the pointer to the large struct.
+    The callee does not see additional cost: it had to issue those loads anyway. However,
+    the caller probably has those values in registers already, which avoids some memory
+    traffic.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instrumentation profiles may even indicate that it makes sense to duplicate
+    whole functions, which are identical except for their ABIs. Maybe they take different
+    arguments by register to avoid costly spills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a bit more advanced (and ranty) than my usual writing, but this is an
+    aspect of Rust that I find really frustrating. We could be doing *so much better*
+    than C++ ever can (because of their ABI constraints). None of this is new ideas;
+    this is *literally* how Go does it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: So why don’t we? Part of the reason is that ABI codegen is complex, and as I
+    described above, LLVM gives us very few useful knobs. It’s not a friendly part
+    of rustc, and doing things wrong can have nasty consequences for usability. The
+    other part is a lack of expertise. As of writing, only a handful of people contributing
+    to rustc have the necessary grasp of LLVM’s semantics (and mood swings) to emit
+    the Right Code such that we get good codegen and don’t crash LLVM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another reason is compilation time. The more complicated the function signatures,
+    the more prologue/epilogue code we have to generate that LLVM has to chew on.
+    But `-Zcallconv` is intended to only be used with optimizations turned on, so
+    I don’t think this is a meaningful complaint. Nor do I think the project’s Goodhartization
+    of compilation time as a metric is healthy… but I do not think this is ultimately
+    a relevant drawback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I, unfortunately, do not have the spare time to dive into fixing rustc’s ABI
+    code, but I do know LLVM really well, and I know that this is a place where Rust
+    has a low bus factor. For that reason, I am happy to provide the Rust compiler
+    team expert knowledge on getting LLVM to do the right thing in service of making
+    optimized code faster.
+  prefs: []
+  type: TYPE_NORMAL

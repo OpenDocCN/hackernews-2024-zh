@@ -1,0 +1,1472 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:31:52'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jetmove - A script to enhance navigation and multiple carets in Jetbrains IDEs
+    · GitHub
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://gist.github.com/lurebat/df773fecbc6829625d996fc8a65d5e25](https://gist.github.com/lurebat/df773fecbc6829625d996fc8a65d5e25)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '|  | import com.intellij.find.FindModel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.actionSystem.AnActionEvent |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.actionSystem.DataContext |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.editor.Caret |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.editor.Editor |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.editor.actionSystem.TypedAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.editor.actionSystem.TypedActionHandler |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.ui.DialogPanel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.ui.DialogWrapper |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.openapi.util.TextRange |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.ui.EditorTextField |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.ui.dsl.builder.bind |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.ui.dsl.builder.bindSelected |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.ui.dsl.builder.panel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import com.intellij.ui.dsl.builder.toMutableProperty |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import liveplugin.currentEditor |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import liveplugin.editor |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import liveplugin.executeCommand |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import liveplugin.registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import org.intellij.lang.regexp.RegExpFileType |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | import javax.swing.JComponent |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | /** |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * Represents a generic text object that provides a range within a document.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | */ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | interface TextObject { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val name: String |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val shortcut: String |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | /** |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * Calculates the range for the current text object. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @param inside Whether to find the range inside or around the text object.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @param caret The caret to use as a reference point. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @return A pair representing the start and end index of the range, or
+    null if not applicable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | */ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun range(inside: Boolean, caret: Caret): Pair<Int, Int>? |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | /** |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * A simplified version of TextObject for easier creation of specific text
+    objects. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | */ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | abstract class SimpleTextObject : TextObject { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | override fun range(inside: Boolean, caret: Caret): Pair<Int, Int>? = |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | range(inside, caret.editor.document.charsSequence, caret.offset) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | /** |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * Calculates the text object''s range based on characters and an offset
+    within a document. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @param inside Whether to find the range inside or around the text object.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @param chars The character sequence to analyze. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @param offset The offset within the character sequence to consider.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | * @return A pair representing the start and end index of the range, or
+    null if not applicable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | */ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | abstract fun range(inside: Boolean, chars: CharSequence, offset: Int):
+    Pair<Int, Int>? |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | class CharPairs(private val starts: CharArray, private val ends: CharArray)
+    { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | constructor(vararg pairs: Pair<Char, Char>) : this( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | pairs.map { it.first }.toCharArray(), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | pairs.map { it.second }.toCharArray() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun findPreviousStart(text: CharSequence, offset: Int): Int? { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val charsCount = Array(starts.size) { 0 } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | for (i in offset - 1 downTo 0) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val char = text[i] |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val start = starts.indexOf(char) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (start != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (charsCount[start] == 0) return i |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | charsCount[start]-- |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | continue |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val end = ends.indexOf(char) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (end != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | charsCount[end]++ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun findNextEnd(text: CharSequence, offset: Int): Int? { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val charsCount = Array(ends.size) { 0 } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | for (i in offset until text.length) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val char = text[i] |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val end = ends.indexOf(char) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (end != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (charsCount[end] == 0) return i |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | charsCount[end]-- |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | continue |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val start = starts.indexOf(char) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (start != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | charsCount[start]++ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun findNextStart(text: CharSequence, offset: Int): Int? = text.indexOfAny(starts,
+    offset).takeIf { it != -1 } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | class BalancedTextObject(override val name: String, override val shortcut:
+    String, private val pairs: CharPairs) : |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | SimpleTextObject() { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | constructor(name: String, shortcut: String, vararg pairs: Pair<Char, Char>)
+    : this( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | name, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | shortcut, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | CharPairs(*pairs) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | override fun range(inside: Boolean, caret: CharSequence, offset: Int):
+    Pair<Int, Int>? { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val start = pairs.findPreviousStart(caret, offset) ?: pairs.findNextStart(caret,
+    offset) ?: return null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val end = pairs.findNextEnd(caret, offset) ?: return null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return if (inside) Pair(start + 1, end) else Pair(start, end + 1) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun getUnmatchedCharIndex(isBackwards: Boolean, text: CharSequence, char:
+    Char, match: Char): Int { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var count = 0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val range = if (isBackwards) text.indices.reversed() else text.indices
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | for (i in range) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val c = text[i] |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (c == char) count++ |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (c == match) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (count == 0) return i |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | count-- |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val textObjects = arrayOf( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("word", "W", '' '' to '' '', '' '' to ''\n'', ''\n''
+    to '' ''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("double-quote", "shift QUOTE''", ''"'' to ''"''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("single-quote", "QUOTE", ''\'''' to ''\''''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("paren", "shift 9", ''('' to '')''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("bracket", "[", ''['' to '']''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("brace", "shift [", ''{'' to ''}''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("angle-bracket", "shift ,", ''<'' to ''>''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("backtick", "`", ''`'' to ''`''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | BalancedTextObject("block", "B", ''{'' to ''}'', ''('' to '')'', ''[''
+    to '']''), |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val baseShortcutAround = "alt S, " |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val baseShortcutInside = "alt shift S," |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun registerTextObjectActions() { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | for (textObject in textObjects) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("text-object-around-${textObject.name}", baseShortcutAround
+    + textObject.shortcut) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.project?.currentEditor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.caretModel.allCarets.forEach { caret -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val range = textObject.range(false, caret) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (range != null) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.setSelection(range.first, range.second) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("text-object-inside-${textObject.name}", baseShortcutInside
+    + textObject.shortcut) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.project?.currentEditor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.caretModel.allCarets.forEach { caret -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val range = textObject.range(true, caret) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (range != null) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.setSelection(range.first, range.second) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | data class Model( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var onChanged: () -> Unit = {}, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) : FindModel() { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun matches(text: String): Boolean { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val re = compileRegExp() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return re.matcher(text).find() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var string |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | get() = stringToFind |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | set(value) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | stringToFind = value |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | onChanged() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var keep = true |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | set(value) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | field = value |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | onChanged() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var case = super.isCaseSensitive() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | set(value) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | field = value |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | super.setCaseSensitive(value) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | onChanged() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var words = super.isWholeWordsOnly() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | set(value) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | field = value |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | super.setWholeWordsOnly(value) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | onChanged() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var regex = super.isRegularExpressions() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | set(value) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | field = value |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | super.setRegularExpressions(value) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | onChanged() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun matchingCarets(model: Model, carets: List<Caret>): List<Pair<Caret,
+    ClosedRange<Int>?>> { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val re = if (model.regex) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | model.compileRegExp().toRegex() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | Regex(model.stringToFind.let { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (model.words) it.split("\\s+").joinToString("&#124;") { "\\b$it\\b"
+    } else it |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | }, if (model.case) RegexOption.IGNORE_CASE else RegexOption.LITERAL) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return carets.map { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | // get selected text or line |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val selectedText = it.selectedText?.ifEmpty { null } ?: getLine(it) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | it to if (model.keep) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | re.find(selectedText)?.range |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | (if (re.find(selectedText) == null) 0..selectedText.length else null)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun filterCarets(it: AnActionEvent, keep: Boolean) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.editor ?: return |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val project = it.project ?: return |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val model = Model() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var panel: DialogPanel? = null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | model.regex = true |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | model.keep = keep |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val wrapper = object : DialogWrapper(editor.contentComponent, true) {
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | init { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | init() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | title = "Filter Caret" |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | override fun createCenterPanel(): JComponent { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | panel = panel { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | row { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | label("Filter:") |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | cell(EditorTextField(project, RegExpFileType.INSTANCE).apply { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | setOneLineMode(true) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | setPreferredWidth(300) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | }).bind( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | { it.text }, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | { e, s -> e.text = s }, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | model::string.toMutableProperty() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ).focused() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | buttonsGroup("Action") { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | row { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | radioButton("Keep", true) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | radioButton("Remove", false) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | }.bind(model::keep.toMutableProperty()) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | row { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | checkBox("Match case").bindSelected( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | model::case.toMutableProperty() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | checkBox("Words").bindSelected(model::words.toMutableProperty()) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | checkBox("Regex").bindSelected(model::regex.toMutableProperty()) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return panel!! |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (!wrapper.showAndGet()) return |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val caretModel = editor.caretModel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | matchingCarets(model, editor.caretModel.allCarets).filter { it.second
+    == null }.forEach { (c, _) -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caretModel.removeCaret(c) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("filter-carets-keep", "alt K") { filterCarets(it, true)
+    } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("filter-carets-remove", "alt shift K") { filterCarets(it,
+    false) } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | internal object EditorKeyListener : TypedActionHandler { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | private val action = TypedAction.getInstance() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | private val attached = mutableMapOf<Editor, TypedActionHandler>() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | private var originalHandler: TypedActionHandler? = null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | override fun execute(editor: Editor, charTyped: Char, dataContext: DataContext)
+    { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | (attached[editor] ?: originalHandler ?: return).execute(editor, charTyped,
+    dataContext) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun attach(editor: Editor, callback: TypedActionHandler) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (attached.isEmpty()) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | originalHandler = action.rawHandler |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | action.setupRawHandler(this) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | attached[editor] = callback |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun detach(editor: Editor) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | attached.remove(editor) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (attached.isEmpty()) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | originalHandler?.let(action::setupRawHandler) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | originalHandler = null |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun Editor.waitForChar(callback: (Char) -> Unit) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | EditorKeyListener.attach( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | this |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) { editor, char, dataContext -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | EditorKeyListener.detach(editor) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | callback(char) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun selectToChar(editor: Editor, backwards: Boolean) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val document = editor.document |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val text = document.charsSequence |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.waitForChar { char -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val allCarets = editor.caretModel.allCarets |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (allCarets.size != 1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | allCarets.forEach { caret -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | // search until newline |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val newLine = text.indexOf(''\n'', caret.offset) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (backwards) { // search backwards |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val index = text.lastIndexOf(char, if (newLine == -1) text.length else
+    newLine - 1) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (index != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.setSelection(index, caret.selectionEnd) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { // search forwards |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val index = text.indexOf(char, caret.offset) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (index != -1 && index < newLine) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.setSelection(caret.selectionStart, index + 1) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val caret = allCarets[0] |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val offset = if (backwards) caret.selectionStart else caret.selectionEnd
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val index = if (backwards) text.lastIndexOf(char, offset - 1) else text.indexOf(char,
+    offset + 1) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (index != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.setSelection( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (backwards) index else caret.selectionStart, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (backwards) caret.selectionEnd else index + 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("select-to-forwards", "alt X") { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.editor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | selectToChar(editor, false) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("select-to-backwards", "alt shift X") { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.editor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | selectToChar(editor, true) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("switch-selection", "alt Z") { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = it.editor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val caretModel = editor.caretModel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val allCarets = caretModel.allCarets |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | allCarets.forEach { caret -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (caret.offset < caret.leadSelectionOffset) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.moveToOffset(caret.selectionEnd) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.moveToOffset(caret.selectionStart) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | var bracketPairs = mapOf( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''('' to '')'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''['' to '']'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''{'' to ''}'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''<'' to ''>'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''"'' to ''"'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''\'''' to ''\'''', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''`'' to ''`'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | '')'' to ''('', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | '']'' to ''['', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''}'' to ''{'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ''>'' to ''<'', |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerAction("replace-brackets", "alt shift 9") { ev -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val editor = ev.editor ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val project = ev.project ?: return@registerAction |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val caretModel = editor.caretModel |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val allCarets = caretModel.allCarets |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.waitForChar { userChar -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val userOpposite = if (userChar == ''-'') (''-'') else (bracketPairs[userChar]
+    ?: return@waitForChar) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | allCarets.forEach { caret -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | // find next or current bracket |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val text = editor.document.charsSequence.substring(caret.offset) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | text.indexOfAny(bracketPairs.keys.toCharArray()).takeIf { it != -1 }?.let
+    { index -> |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val char = text[index] |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val charOpposite = bracketPairs[char] ?: return@forEach |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val charOppositeIndex = getUnmatchedCharIndex(false, text.substring(index
+    + 1), char, charOpposite) + index + 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (charOppositeIndex != -1) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | if (userChar == ''-'') { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | // Delete brackets |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.executeCommand( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | project, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | "Delete brackets - $char $charOpposite" |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.deleteString(caret.offset + index, caret.offset + index
+    + 1) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.deleteString( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + charOppositeIndex - 1, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + charOppositeIndex |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } else { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.executeCommand( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | project, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | "Replace brackets - $char $charOpposite - with $userChar $userOpposite"
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | // replace char with userChar and charOpposite with userOpposite |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.replaceString( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + index, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + index + 1, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | userChar.toString() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | editor.document.replaceString( |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + charOppositeIndex, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | caret.offset + charOppositeIndex + 1, |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | userOpposite.toString() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | ) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | registerTextObjectActions() |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | fun getLine(it: Caret): String { |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val line = it.editor.document.getLineNumber(it.offset) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val start = it.editor.document.getLineStartOffset(line) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | val end = it.editor.document.getLineEndOffset(line) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | return it.editor.document.getText(TextRange(start, end)) |'
+  prefs: []
+  type: TYPE_TB
+- en: '|  | } |'
+  prefs: []
+  type: TYPE_TB

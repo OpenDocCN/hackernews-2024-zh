@@ -1,0 +1,91 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:56:43'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: RubyGems is not vulnerable to the xz/liblzma backdoor - RubyGems Blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html](https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The past few days have seen the security world focused on the revelation of
+    the [xz/liblzma backdoor](https://xeiaso.net/notes/2024/xz-vuln/). For more background,
+    see [this early writeup of the issue](https://xeiaso.net/notes/2024/xz-vuln/),
+    [this GitHub Gist](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27),
+    [this detailed timeline](https://boehs.org/node/everything-i-know-about-the-xz-backdoor),
+    and the official detail page for [CVE-2024-3094](https://nvd.nist.gov/vuln/detail/CVE-2024-3094).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In response to the backdoor becoming public, we have done an internal audit
+    not just of the software used to run RubyGems.org itself, but also every gem that
+    has ever been published.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are happy to report that RubyGems.org is not vulnerable to this issue. Furthermore,
+    we are happy to confirm that no gem currently published on RubyGems.org contains
+    the vulnerable `liblzma` library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I would like to thank the rest of the RubyGems.org security team for their support
+    in this investigation, and for their continued dedication to the security of the
+    ecosystem. I would also like to thank AWS for their continued support of RubyGems
+    security, including sponsoring me as [Ruby Central’s security engineer in residence](https://rubycentral.org/news/ruby-central-welcomes-new-software-engineer-in-residence-sponsored-by-aws/),
+    as well as funding the [rubygems-research](https://github.com/segiddins/rubygems-research)
+    project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thanks to the data consolidated in that project (available publicly at [research.rubygems.info](https://research.rubygems.info)),
+    we were able to quickly confirm that no currently published gems contain any references
+    to the vulnerable `liblzma` library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Technical Details
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The RubyGems.org app containers, built [via Dockerfile](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile),
+    do not contain vulnerable versions of `liblzma` nor `xz`. Our images are based
+    on [Alpine 3.18 stable](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile#L5),
+    which never contained or had access to the vulnerable library version. In addition,
+    Alpine Linux uses the `musl` libc, which does not contain the (glibc-only) [IFUNC
+    mechanism](https://sourceware.org/glibc/wiki/GNU_IFUNC) used to activate the backdoor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our process for building the containers deployed to production is public, run
+    via GitHub Actions after every commit to the public RubyGems.org codebase. The
+    [latest container build job logs](https://github.com/rubygems/rubygems.org/actions/runs/8498544592/job/23278360812)
+    can be used to reproduce the build by any interested parties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As verified by running `find / -name '*lzma*'` in our built containers, we depend
+    only on version 5.4.3 and not on the vulnerable versions 5.6.0 or 5.6.1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary>Full command output</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As of March 31st 2024, the only gem on RubyGems.org that contains `liblzma`
+    is the [gem also named liblzma](https://rubygems.org/gems/liblzma). That gem contains
+    only versions 0.2 and 0.3 of the library, which do not contain the backdoor. There
+    are zero gems that contain the `xz` command-line tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary>Full command output</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]</details>'
+  prefs: []
+  type: TYPE_NORMAL

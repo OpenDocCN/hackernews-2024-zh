@@ -1,0 +1,598 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:49:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Diffusion models from scratch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.chenyang.co/diffusion.html](https://www.chenyang.co/diffusion.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '\[\newcommand{\Kset}{\mathcal{K}} \newcommand{\distK}{ {\rm dist}_{\Kset} }
+    \newcommand{\projK}{ {\rm proj}_{\Kset} } \newcommand{\eps}{\epsilon} \newcommand{\Loss}{\mathcal{L}}
+    \newcommand{\norm}[1]{\left\lVert #1 \right\lVert} \newcommand{\R}{\mathbb{R}}
+    \DeclareMathOperator{\softmin}{softmin} \DeclareMathOperator{\distop}{dist}\]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Paper (ICML 2024)](https://arxiv.org/abs/2306.04848)   [Code (Github)](https://github.com/yuanchenyang/smalldiffusion)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Discussion on HackerNews](https://news.ycombinator.com/item?id=39672450)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Diffusion models have recently produced impressive results in generative modeling,
+    in particular sampling from multimodal distributions. Not only has diffusion models
+    seen widespread adoption in text-to-image generation tools such as [Stable Diffusion](https://github.com/Stability-AI/stablediffusion),
+    they also excel in other application domains such as [audio](https://text-to-audio.github.io/)/[video](https://openai.com/research/video-generation-models-as-world-simulators)/[3D](https://zero123.cs.columbia.edu/)
+    generation, [protein design](https://www.nature.com/articles/s41586-023-06415-8),
+    [robotics path planning](https://diffusion-policy.cs.columbia.edu/), all of which
+    require sampling from multimodal distributions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial aims to introduce diffusion models from an optimization perspective
+    as introduced in [our paper](https://arxiv.org/abs/2306.04848) (joint work with
+    [Frank Permenter](https://www.mit.edu/~fperment/)). It will go over both theory
+    and code, using the theory to explain how to implement diffusion models from scratch.
+    By the end of the tutorial, you will learn how to implement training and sampling
+    code for a toy dataset, which will also work for larger datasets and models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial we will mainly reference code from [`smalldiffusion`](https://github.com/yuanchenyang/smalldiffusion).
+    For pedagogical purposes, the code presented here will be simplified from the
+    [original library code](https://github.com/yuanchenyang/smalldiffusion/blob/main/src/smalldiffusion/),
+    which is on its own well-commented and easy to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training diffusion models
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Diffusion models aim to generate samples from a set that is learned from training
+    examples, which we will denote by \(\mathcal{K}\). For example, if we want to
+    generate images, \(\mathcal{K} \subset \mathbb{R}^{c\times h \times w}\) is the
+    set of pixel values that correspond to realistic images. Diffusion models also
+    work for \(\mathcal{K}\) corresponding to modalities other than images, such as
+    audio, video, robot trajectories, and even in discrete domains such as text generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a nutshell, diffusion models are trained by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sampling \(x_0 \sim \mathcal{K}\), noise level \(\sigma \sim [\sigma_\min, \sigma_\max]\),
+    noise \(\epsilon \sim N(0, I)\)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generating noisy data \(x_\sigma = x_0 + \sigma \epsilon\)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Predicting \(\epsilon\) (direction of noise) from \(x_\sigma\) by minimizing
+    squared loss
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This amounts to training a \(\theta\)-parameterized neural network \(\epsilon_\theta(x,
+    \sigma)\), by minimizing the loss function
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\Loss(\theta) = \mathop{\mathbb{E}} \lVert\epsilon_\theta(x_0 + \sigma_t \epsilon,
+    \sigma_t) - \epsilon \lVert^2\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In practice, this is done by the following simple `training_loop`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The training loop iterates over batches of `x0`, then samples noise level `sigma`
+    and noise vector `eps` using `generate_train_sample`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Noise schedules
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'In practice, \(\sigma\) is not sampled uniformly from the interval \([\sigma_\min,
+    \sigma_\max]\), instead this interval is discretized into \(N\) distinct values
+    called a *\(\sigma\) schedule*: \(\{ \sigma_t \}_{t=1}^N\), and \(\sigma\) is
+    instead sampled uniformly from the \(N\) possible values of \(\sigma_t\). We define
+    the `Schedule` class that encapsulates the list of possible `sigmas`, and sample
+    from this list during training.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this tutorial, we will use a log-linear schedule defined below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other commonly used schedules include `ScheduleDDPM` for pixel-space diffusion
+    models and `ScheduleLDM` for latent diffusion models such as Stable Diffusion.
+    The following plot compares these three schedules with default parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A comparison plot of different diffusion schedules
+  prefs: []
+  type: TYPE_NORMAL
+- en: Toy example
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'In this tutorial we will start with a toy dataset used in one of the first
+    diffusion papers [[Sohl-Dickstein et.al. 2015]](https://arxiv.org/abs/1503.03585),
+    where \(\Kset \subset \R^2\) are points sampled from a spiral. We first construct
+    and visualize this dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Swissroll toy dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this simple dataset, we can implement the denoiser using a multi-layer
+    perceptron (MLP):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The MLP takes the concatenation of \(x \in \R^2\) and an embedding of the noise
+    level \(\sigma\), then predicts the noise \(\epsilon \in \R^2\). Although many
+    diffusion models use a sinusoidal positional embedding for \(\sigma\), the simple
+    two-dimensional embedding works just as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two-dimensional \(\sigma_t\) embedding
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have all the ingredients to train a diffusion model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training loss over 15000 epochs, smoothed with moving average
+  prefs: []
+  type: TYPE_NORMAL
+- en: The learned denoiser \(\eps_\theta(x, \sigma)\) can be visualized as a vector
+    field parameterized by the noise level \(\sigma\), by plotting \(x - \sigma \eps_\theta(x,
+    \sigma)\) for different \(x\) and levels of \(\sigma\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plot of predicted \(\hat{x}_0 = x - \sigma \eps_\theta(x, \sigma)\) for different
+    \(x\) and \(\sigma\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the plots above, the arrows point from each noisy datapoint \(x\) to the
+    “clean” datapoint predicted by the denoiser with noise level \(\sigma\). At high
+    levels of \(\sigma\), the denoiser tends to predict the mean of the data, but
+    at low noise levels the denoiser predicts actual data points, provided that its
+    input \(x\) is also close to the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do we interpret what the denoiser is learning, and how do we create a procedure
+    to sample from diffusion models? We will next build a theory of diffusion models,
+    then draw on this theory to derive sampling algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Denoising as approximate projection
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The diffusion training procedure learns a denoiser \(\eps_\theta(x, \sigma)\).
+    In [our paper](https://arxiv.org/abs/2306.04848), we interpret the learned denoiser
+    as an approximate projection to the data manifold \(\Kset\), and the goal of the
+    diffusion process as minimizing the distance to \(\Kset\). This motivates us to
+    introduce a relative-error approximation model to analyze the convergence of diffusion
+    sampling algorithms. First we introduce some basic properties of distance and
+    projection functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Distance and projection functions
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The *distance function* to a set \(\Kset \subseteq \R^n\) is defined as
+  prefs: []
+  type: TYPE_NORMAL
+- en: '\[\distK(x) := \min \{ \norm{x-x_0} : x_0 \in \Kset \}.\]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The *projection* of \(x \in \R^n\), denoted \(\projK(x)\), is the set of points
+    that attain this distance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '\[\projK(x) := \{ x_0 \in \Kset : \distK(x) = \norm{x-x_0} \}\]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If \(\projK(x)\) is unique, the gradient of \(\distK(x)\), the direction of
+    steepest descent of the distance function, points towards this unique projection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Proposition** Suppose \(\Kset\) is closed and \(x \not \in \Kset\). If \(\projK(x)\)
+    is unique, then'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\nabla \frac{1}{2} \distK(x)^2 = \distK(x) \nabla \distK(x) = x-\projK(x).\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tells us that if we can learn \(\nabla \distK(x)\) for every \(x\), we
+    can simply move in this direction to find the projection of \(x\) onto \(\Kset\).
+    One issue with learning this gradient is that \(\distK\) is not differentiable
+    everywhere, thus \(\nabla \distK\) is not a continuous function. To solve this
+    problem, we introduce a squared-distance function smoothed by a parameter \(\sigma\)
+    using the \(\softmin\) operator instead of \(\min\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\distop^2_\Kset(x, \sigma) := \substack{\softmin_{\sigma^2} \\ x_0 \in \Kset}
+    \norm{x_0 - x}^2 = {\textstyle -\sigma^2 \log\left(\sum_{x_0 \in \Kset} \exp\left(-\frac{\norm{x_0
+    - x}^2}{2\sigma^2}\right)\right)}\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following picture from [[Madan and Levin 2022]](https://arxiv.org/pdf/2108.10480.pdf)
+    shows the contours of both the distance function and its smoothed version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Smoothed distance function has continuous gradients
+  prefs: []
+  type: TYPE_NORMAL
+- en: From this picture we can see that \(\nabla \distK(x)\) points toward the closest
+    point to \(x\) in \(\Kset\), and \(\nabla \distop^2(x, \sigma)\) points toward
+    a weighted average of points in \(\Kset\) determined by \(x\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ideal denoiser
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'The ideal or optimal denoiser \(\epsilon^*\) for a particular noise level \(\sigma\)
+    is an exact minimizer of the training loss function. When the data is a discrete
+    uniform distribution over a finite set \(\Kset\), the ideal denoiser has an exact
+    closed-form expression given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\eps^*(x_\sigma, \sigma) = \frac{\sum_{x_0 \in \Kset} (x_\sigma-x_0) \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}
+    {\sigma \sum_{x_0 \in \Kset} \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From the above expression, we see that the ideal denoiser points towards a
+    weighted mean of all the datapoints in \(\Kset\), where the weight for each \(x_0
+    \in \Kset\) determines the distance to \(x_0\). Using this expression, we can
+    also implement the ideal denoiser, which is computationally tractable for small
+    datasets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For our toy dataset, we can plot the direction of \(\epsilon^*\) as predicted
+    by the ideal denoiser for different noise levels \(\sigma\):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plot of direction of \(\eps^*(x, \sigma)\) for different \(x\) and \(\sigma\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: From our plots we see that for large values of \(\sigma\), \(\epsilon^*\) points
+    towards the mean of the data, but for smaller values of \(\sigma\), \(\epsilon^*\)
+    points towards the nearest data-point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One insight from our paper is that the ideal denoiser for a fixed \(\sigma\)
+    is equivalent to the gradient of a \(\sigma\)-smoothed squared-distance function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Theorem** For all \(\sigma > 0\) and \(x \in \R^n\), we have'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\frac{1}{2} \nabla_x \distop^2_\Kset(x, \sigma) = \sigma \eps^*(x, \sigma).\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tells us that the ideal denoiser found by minimizing the diffusion training
+    objective \(\Loss(\theta)\) is in fact the gradient of a smoothed squared-distance
+    function to the underlying data manifold \(\Kset\). This connection is key to
+    motivating our interpretation that the denoiser is an approximate projection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relative error model
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: In order to analyze the convergence of diffusion sampling algorithms, we introduced
+    a relative error model which states that the projection predicted by the denoiser
+    \(x-\sigma \epsilon_{\theta}( x, \sigma)\) well approximates \(\projK(x)\) when
+    the input to the denoiser \(\sigma\) well estimates \(\distK(x)/\sqrt{n}\). For
+    constants \(1 > \eta \ge 0\) and \(\nu \ge 1\), we assume that
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\norm{ x-\sigma \epsilon_{\theta}( x, \sigma) - \projK(x)} \le \eta \distK(x)\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: when \((x, \sigma)\) satisfies \(\frac{1}{\nu}\distK(x) \le \sqrt{n}\sigma \le
+    \nu \distK(x)\). In addition to the discussion about ideal denoisers above, this
+    error model is motivated by the following observations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Low noise* When \(\sigma\) is small and the manifold hypothesis holds, denoising
+    approximates projection because most of the added noise is orthogonal to the data
+    manifold.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When added noise is small, most of noise is orthogonal to tangent space of manifold.
+    Under the manifold hypothesis, denoising is approximately projection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*High noise* When \(\sigma\) is large relative to the diameter of \(\Kset\),
+    then any denoiser predicting any weighted mean of the data \(\Kset\) has small
+    relative error.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When added noise is large compared to diameter of data, denoising and projection
+    point in the same direction
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also perform empirical tests of our error model for pre-trained diffusion
+    models on image datasets. The CIFAR-10 dataset is small enough for tractable computation
+    of the ideal denoiser. Our experiments show that for this dataset, the relative
+    error between the exact projection and ideal denoiser output is small over sampling
+    trajectories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ideal denoiser well-approximates projection onto the CIFAR-10 dataset under
+    relative-error model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sampling from diffusion models
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Given a learned denoiser \(\epsilon_\theta(x, \sigma)\), how do we sample from
+    it to obtain a point \(x_0 \in \Kset\)? Given noisy \(x_t\) and noise level \(\sigma_t\),
+    the denoiser \(\eps_\theta(x_t, \sigma_t)\) predicts \(x_0\) via
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\hat x_0^t := x_t - \sigma_t \eps_\theta(x_t, \sigma_t)\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intuition from the relative error assumption tells us that we want to start
+    with \((x_T, \sigma_T)\) where \(\distK(x_T)/\sqrt{n} \approx \sigma_T\). This
+    is achieved by choosing \(\sigma_T\) to be large relative to the diameter of \(\Kset\),
+    and \(x_T\) sampled i.i.d. from \(N(0, \sigma_T)\), a Gaussian with variance \(\sigma_T\).
+    This ensures that \(x_T\) is far away from \(\Kset\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although \(\hat x_0^T = x_T - \sigma_T \eps_\theta(x_T, \sigma_T)\) has small
+    relative error, the absolute error \(\distK(\hat x_0^T)\) can still be large as
+    \(\distK(x_T)\) is large. In fact, at high noise levels, the expression of the
+    ideal denoiser tells us that \(\hat x_0^T\) should be close to the mean of the
+    data \(\Kset\). We cannot obtain a sample close to \(\Kset\) with a single call
+    to the denoiser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sampling process iteratively calls the denoiser based on \(\sigma_t\) schedule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thus we want to *iteratively call the denoiser* to obtain a sequence \(x_T,
+    \ldots, x_t, \ldots x_0\) using a pre-specified schedule of \(\sigma_t\), hoping
+    that \(\distK(x_t)\) decreases in concert with \(\sigma_t\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t-1}) \eps_\theta(x_t, \sigma_t)\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is exactly the deterministic [DDIM sampling algorithm](https://arxiv.org/abs/2010.02502),
+    though presented in different coordinates through a change of variable. See [Appendix
+    A of our paper](https://arxiv.org/abs/2306.04848) for more details and a proof
+    of equivalence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Diffusion sampling as distance minimization
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: We can interpret the diffusion sampling iterations as gradient descent on the
+    squared-distance function \(f(x) = \frac{1}{2} \distK(x)^2\). In a nutshell,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**DDIM is approximate gradient descent on \(f(x)\) with stepsize \(1- \sigma_{t-1}/\sigma_t\),
+    with \(\nabla f(x_t)\) estimated by \(\eps_\theta(x_t, \sigma_t)\).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How should we choose the \(\sigma_t\) schedule? This determines the number and
+    size of gradient steps we take during sampling. If there are too few steps, \(\distK(x_t)\)
+    might not decrease and the algorithm may not converge. On the other hand, if we
+    take many small steps, we need to evaluate the denoiser for as many times, a computationally
+    expensive operation. This motivates our definition of admissible schedules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Definition** An *admissible schedule* \(\{ \sigma_t \}_{t=0}^T\) ensures
+    \(\frac{1}{\nu} \distK(x_t) \le \sqrt{n} \sigma_t \le \nu \distK(x_t)\) holds
+    at each iteration. In particular, a geometrically decreasing (i.e. log-linear)
+    sequence of \(\sigma_t\) is an admissible schedule.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our main theorem states that if \(\{\sigma_t\}_{t=0}^T\) is an admissible schedule
+    and \(\epsilon_\theta(x_t, \sigma_t)\) satisfies our relative error model, the
+    relative error can be controlled, and the sampling procedure aiming to minimize
+    distance converges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Theorem** Let \(x_t\) denote the sequence generated by DDIM and suppose that
+    \(\nabla \distK(x)\) exists for all \(x_t\) and \(\distK(x_T) = \sqrt n \sigma_T\).
+    Then'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(x_t\) is generated by gradient descent on the squared-distance function with
+    stepsize \(1 - \sigma_{t-1}/\sigma_{t}\)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: \(\distK(x_{t})/\sqrt{n} \approx \sigma_{t}\) for all \(t\)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Coming back to our toy example, we can find an admissible schedule by subsampling
+    from the original log-linear schedule, and implement the DDIM sampler as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Samples from 20-step DDIM
+  prefs: []
+  type: TYPE_NORMAL
+- en: We see that most samples lie close to the original data, but there is room for
+    improvement. One way is to increase the number of DDIM steps, but this incurs
+    an additional computational cost. Next, we use our interpretation of diffusion
+    models to derive a more efficient sampler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improved sampler with gradient estimation
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Since \(\nabla \distK(x)\) is invariant between \(x\) and \(\projK(x)\), we
+    aim to minimize estimation error \(\sqrt{n} \nabla \distK(x) - \epsilon_{\theta}(x_t,
+    \sigma_t)\) with the update:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\bar\eps_t = \gamma \eps_{\theta}(x_t, \sigma_t) + (1-\gamma) \eps_{\theta}(x_{t+1},
+    \sigma_{t+1})\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Intuitively, this update corrects any error made in the previous step using
+    the current estimate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our gradient estimation update step
+  prefs: []
+  type: TYPE_NORMAL
+- en: This leads to faster convergence compared to the DDIM sampler, as seen from
+    the samples on our toy model lying closer to the original data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Samples from 20-step gradient estimation sampler
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compared to the default DDIM sampler, our sampler can be interpreted as adding
+    momentum, causing the trajectory to potentially overshoot but converge faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sampling trajectories varying momentum term \(\gamma\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Empirically, adding noise during the generation process also improves the sampling
+    quality. In order to do so while sticking to our original \(\sigma_t\) schedule,
+    we need to denoise to a smaller \(\sigma_{t'}\) then add back noise \(w_t \sim
+    N(0, I)\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \epsilon_\theta(x_t, \sigma_t) +
+    \eta w_t\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we assume that \(\mathop{\mathbb{E}}\norm{w_t}^2 = \norm{\epsilon_\theta(x_t,
+    \sigma_t)}^2\), we should choose \(\eta\) so that the norm of the update is constant
+    in expectation. This leads to the choice of \(\sigma_{t-1} = \sigma_t^\mu \sigma_{t'}^{1-\mu}\)
+    where \(0 \le \mu < 1\) (by definition, \(\sigma_{t'} \le \sigma_{t-1} \le \sigma_t\)),
+    and \(\eta = \sqrt{\sigma_{t-1}^2 - \sigma_{t'}^2}\). When \(\mu = \frac{1}{2}\),
+    we exactly recover the [DDPM sampler](https://arxiv.org/abs/2006.11239) (see [Appendix
+    A of our paper](https://arxiv.org/abs/2306.04848) for a derivation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sampling trajectories varying amount of noise added during sampling
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our gradient estimation update can be combined with adding noise during sampling.
+    In summary, our full update step is
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \bar\eps_t + \eta w_t\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The full sampler that generalizes DDIM (`gam=1, mu=0`), DDPM (`gam=1, mu=0.5`)
+    and our gradient estimation sampler (`gam=2, mu=0`) is implemented below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Large-scale examples
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The training code above not only works for our toy dataset, they can also be
+    used to train image diffusion models from scratch. See [this example](https://github.com/yuanchenyang/smalldiffusion/blob/main/examples/fashion_mnist.py)
+    for an example of training on the FashionMNIST dataset to get a second-place FID
+    score on [this leaderboard](https://paperswithcode.com/sota/image-generation-on-fashion-mnist):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Samples from a diffusion model trained on the FashionMNIST dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The sampling code works without modifications to sample from state-of-the-art
+    pretrained latent diffusion models:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can visualize the different effects of our momentum term \(\gamma\) on high
+    resolution text-to-image generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text-to-image samples using Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other resources
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Also recommended are the following blog posts on diffusion models:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[What are diffusion models](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
+    introduces diffusion models from the discrete-time perspective of reversing a
+    Markov process'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Generative modeling by estimating gradients of the data distribution](https://yang-song.net/blog/2021/score/)
+    introduces diffusion models from the continuous time perspective of reversing
+    a stochastic differential equation'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[The annotated diffusion model](https://huggingface.co/blog/annotated-diffusion)
+    goes over a pytorch implementation of a diffusion model in detail'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Citation
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'If you found this blog useful, please consider citing our paper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE

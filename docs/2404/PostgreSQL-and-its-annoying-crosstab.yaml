@@ -1,0 +1,288 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:58:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: PostgreSQL and its annoying crosstab
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/](https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Today, I had to pivot (pun intended) from my usual tasks to help a colleague
+    with a query. The task is deceptively simple: Collect metadata about all columns
+    of a table in a single query. This was to be a function in PostgreSQL that would
+    return a table with the following columns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`table_name`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`column_name`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data_type`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`total_tows`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`not_null_count`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`unique_count`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`max_value` (for integers)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`min_value` (for integers)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`avg_value` (for integers)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`max_length` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`min_length` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`avg_length` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`space_count_max` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`space_count_min` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`space_count_avg` (for strings)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`max_date` (for dates)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`min_date` (for dates)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can can imagine how this would be slow if you did the query for each column
+    individually since it requires a full table scan if we have no index on the column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s create a test table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Get the stats, in wide format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first part of the solution was to build a query that would return the metadata
+    wide, something like (shortened for brevity):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Get the stats, in tall format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The idea is to gather the stats of the table in a single go and then build
+    some sort of pivot table from it. Since we are using dynamic SQL, it’s not too
+    hard. We can use a lateral join to make the data tall:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will yield results that look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| column_name | meta_key | value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | total_rows | 1000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | not_null_count | 904 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | unique_count | 100 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | max_value | 99 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | min_value | 0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | avg_value | 50.4115044247787611 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | total_rows | 1000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | not_null_count | 915 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | unique_count | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | max_length | 20 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | min_length | 20 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | avg_length | 20.0000000000000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | space_count_max | 9 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | space_count_min | 9 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | space_count_avg | 9.0000000000000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: Crosstab the data into a table
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now, we need to pivot this data. PostgreSQL’s crosstab is what we need, but
+    getting it to work is a bit of a pain. The first thing we need to do is to install
+    the `tablefunc` extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`crosstab` takes a string as argument with the query that will return the data
+    to pivot. We can use behemoth of generated SQL that we had above (just 10 times
+    bigger, because what table has only 2 columns?). The query will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now let’s look at the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| column_name | total_rows | not_null_count | unique_count | max_value | min_value
+    | avg_value | max_length | min_length | avg_length | space_count_max | space_count_min
+    | space_count_avg |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | 1000 | 904 | 100 | 99 | 0 | 50.4115044247787611 | null | null |
+    null | null | null | null |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | 1000 | 915 | 1 | 20 | 20 | 20.0000000000000000 | 9 | 9 | 9.0000000000000000
+    | null | null | null |'
+  prefs: []
+  type: TYPE_TB
+- en: Uh… WTF? THis is not what we wanted. The stats for `string_col` moved to the
+    left. It didn’t pivot by name, it just filled up the columns. When using `crosstab`,
+    the first column is the one that will be pivoted. If we want to pivot into a table
+    that has more columns than each value, (here, e.g. the `int_col` will pivot into
+    6 columns, but `string_col` will pivot into 9 columns), we need to supply crosstab
+    with a second parameter. It is also recommended to order the rows, so that each
+    parameter will be in order
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s have a look at the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| column_name | avg_length | avg_value | max_length | max_value | min_length
+    | min_value | not_null_count | space_count_avg | space_count_max | space_count_min
+    | total_rows | unique_count |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| int_col | null | 50.4115044247787611 | null | 99 | null | 0 | 904 | null
+    | null | null | 1000 | 100 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| string_col | 20.0000000000000000 | null | 20 | null | 20 | null | 915 | 9.0000000000000000
+    | 9 | 9 | 1000 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: Ahhh, this looks more like it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This approach has a couple of drawbacks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All data types must be converted to text because our tall format requires static
+    types.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Crosstab is really annoying and easy to get wrong
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You can’t include more columns than you have in the list of columns to pivot
+    into. The crosstab function WILL complain if there is a column in the result that
+    has no value in the pivot list.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: But, you know what? It works. It’s good enough for me at the moment. If you
+    have *any* suggestion on how to improve this, PLEASE let me know.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PS: I learned that you can also escape multiline strings in postgres using
+    dollar-quoted strings.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ahh, feels so much better.
+  prefs: []
+  type: TYPE_NORMAL

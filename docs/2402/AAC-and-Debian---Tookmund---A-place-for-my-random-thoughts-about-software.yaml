@@ -1,0 +1,224 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:21:53'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: AAC and Debian – Tookmund – A place for my random thoughts about software
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://tookmund.com/2024/02/aac-and-debian](https://tookmund.com/2024/02/aac-and-debian)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Currently, in a default installation of Debian with the GNOME desktop, Bluetooth
+    headphones that require the AAC codec ^(cannot be used. [As the Debian wiki outlines](https://wiki.debian.org/BluetoothUser/a2dp#AAC_codec),
+    using the AAC codec over Bluetooth, while technically supported by PipeWire, is
+    explicitly disabled in Debian at this time. This is because the `fdk-aac` library
+    needed to enable this support is currently in the `non-free` component of the
+    repository, meaning that PipeWire, which is in the `main` component, cannot depend
+    on it.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Fix it Yourself
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If what you, like me, need is simply for Bluetooth Audio to work with AAC in
+    Debian’s default desktop environment^(, then you’ll need to rebuild the `pipewire`
+    package to include the AAC codec. While the current version in Debian `main` has
+    been built with AAC deliberately disabled, it is trivial to enable if you can
+    install a version of the `fdk-aac` library.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**I preface this with the usual caveats when it comes to patent and licensing
+    controversies. I am not a lawyer, building this package and/or using it could
+    get you into legal trouble.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: These instructions have only been tested on an up-to-date copy of Debian 12.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Install `pipewire`’s build dependencies
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Install `libfdk-aac-dev`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If the above doesn’t work you’ll likely need to enable non-free and try again
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Alternatively, if you wish to ensure you are maximally license-compliant and
+    patent un-infringing^(, you can instead build `fdk-aac-free` which includes only
+    those components of AAC that are known to be patent-free^(. This is what should
+    eventually end up in Debian to resolve this problem (see below).))
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Get the `pipewire` source code
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will create a bunch of files within the `pipewire-source` directory, but
+    you’ll only need the `pipewire-<version>` folder, this contains all the files
+    you’ll need to build the package, with all the debian-specific patches already
+    applied. Note that you don’t want to run the `apt source` command as root, as
+    it will then create files that your regular user cannot edit.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Fix the dependencies and build options To fix up the build scripts to use the
+    fdk-aac library, you need to save the following as `pipewire-source/aac.patch`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then you’ll need to run `patch` from within the `pipewire-<version>` folder
+    created by `apt source`:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Build `pipewire`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note that you will likely see an error from `debsign` at the end of this process,
+    this is harmless, you simply don’t have a GPG key set up to sign your newly-built
+    package^(. Packages don’t need to be signed to be installed, and debsign uses
+    a somewhat non-standard signing process that dpkg does not check anyway.)
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Install `libspa-0.2-bluetooth`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Restart PipeWire and/or Reboot
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Theoretically there’s a set of services to restart here that would get pipewire
+    to pick up the new library, probably just pipewire itself. But it’s just as easy
+    to restart and ensure everything is using the correct library.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Why
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'This is a slightly unusual situation, as the `fdk-aac` library is licensed
+    under what [even the GNU project](https://www.gnu.org/licenses/license-list.html#fdk)
+    acknowledges is a free software license. However, [this license](https://android.googlesource.com/platform/external/aac/+/master/NOTICE)
+    explicitly informs the user that they need to acquire a patent license to use
+    this software^:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3\. NO PATENT LICENSE
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: NO EXPRESS OR IMPLIED LICENSES TO ANY PATENT CLAIMS, including without limitation
+    the patents of Fraunhofer, ARE GRANTED BY THIS SOFTWARE LICENSE. Fraunhofer provides
+    no warranty of patent non-infringement with respect to this software. You may
+    use this FDK AAC Codec software or modifications thereto only for purposes that
+    are authorized by appropriate patent licenses.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'To quote the GNU project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because of this, and because the license author is a known patent aggressor,
+    we encourage you to be careful about using or redistributing software under this
+    license: you should first consider whether the licensor might aim to lure you
+    into patent infringement.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: AAC is covered by a number of patents, which expire at some point in the 2030s^(.
+    As such the current version of the library is potentially legally dubious to ship
+    with any other software, as it could be considered patent-infringing^.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fedora’s solution
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since 2017, Fedora has included a modified version of the library as fdk-aac-free,
+    see the [announcement](https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/F64JBJI2IZFT2A5QDXGHNMPALCQIVJAX/)
+    and the [bugzilla bug requesting review](https://bugzilla.redhat.com/show_bug.cgi?id=1501522).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This version of the library includes only the AAC LC profile, which is believed
+    to be entirely patent-free^.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on this, there is an open bug report in Debian requesting that the [`fdk-aac`
+    package be moved to the main component](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=981285)
+    and that the [`pipwire` package be updated to build against it](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1021370).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Debian NEW queue
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To resolve these bugs, a version of `fdk-aac-free` has been uploaded to Debian
+    by Jeremy Bicha. However, to make it into Debian proper, it must first pass through
+    the [ftpmaster’s NEW queue](https://ftp-master.debian.org/new.html). The [current
+    version of fdk-aac-free](https://ftp-master.debian.org/new/fdk-aac-free_2.0.2-3.html)
+    has been in the NEW queue since July 2023.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on conversations in some of the bugs above, it’s been there since at least
+    2022^.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope this helps anyone stuck with AAC to get their hardware working for them
+    while we wait for the package to eventually make it through the NEW queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Discuss on Hacker News](https://news.ycombinator.com/item?id=39503266)'
+  prefs: []
+  type: TYPE_NORMAL

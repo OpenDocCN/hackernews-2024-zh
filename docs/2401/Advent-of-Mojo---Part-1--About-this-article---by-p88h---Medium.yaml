@@ -1,0 +1,182 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:33:05'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Advent of Mojo : Part 1\. About this article | by p88h | Medium'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb](https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: About this article
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This is part I of a series of articles on using Mojo in Advent of Code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go [here](/@p88h/advent-of-mojo-6d6d0d00761b) for the introduction and table
+    of contents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance overview
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let’s start with the headliner. Is Mojo actually as fast as the company advertises
+    it to be? Well, it depends. It’s plenty fast when you spend some time optimizing.
+    After getting the hang of what works and what doesn’t work, I was able to achieve
+    better performance in *every* days challenge (see benchmarks at the bottom), however,
+    the gains were not very consistent and there are some caveats.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I haven’t seen anything close to the ‘68.000 x performance’ gains. Advent of
+    Code simply doesn’t have problems of this scale. My guess is those gains would
+    require massive parallelization, and while that’s reasonably simple in Mojo, due
+    to small problem size, the overheads often just eat up any gains. And the overheads
+    are not very predictable, too. There doesn’t seem to be a way (yet) to profile
+    the code, so it’s a bit of guesswork.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vector code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The highest improvement I was able to achieve was about 1000x vs Python — and
+    this was similar to the use cases that Mojo seems to be built for — low level
+    matrix operations. Writing SIMD code using fused multiply & addition, while working
+    in Python-ish syntax is simpler than similar native solutions in Rust or C++.
+    The core SIMD datatypes are well integrated and offer comprehensive, if basic,
+    operations. If that particular solution was parallelisable (and much, much larger)
+    then maybe that would yield 10.000 improvement or so, or even more, on some monster
+    CPU with 100 cores.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other ways to optimize Python, though. While the average improvement
+    over Python was > 100x (note that this does include parallelization), the same
+    metric for PyPy3 was ‘only’ 38 x. And some of this solution could have used numpy,
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Quirky strings
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are a lot of quirks in Mojo that make this speed advantage go away pretty
+    quickly, though. My code typically doesn’t use any dynamic memory allocation (which
+    can be slow), opting for allocating large buffers; and simplifies input parsing,
+    wherever possible, to string slicing (see more on Strings in the Usability section).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: On that note, Strings themselves are slow. There is an equivalent (in spirit)
+    of Rust’s *slice* which is *StringRef*, but it has very limited use. I implemented
+    my own slices to get through AOC, but that’s ignoring a lot of everyday string
+    processing needs, like UTF. When the parser above was implemented using *String.find()*
+    it was 2–3x slower than PyPy, and close to Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some other related operations are weirdly slow. For example, *ord(‘A’)* is something
+    I would expect the compiler to automatically optimize away as constant. It’s not,
+    but if you force it to be by using *alias* then it works well, just makes the
+    code weird a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simple threads
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are no thread primitives in Mojo, but there is higher-level parallelization.
+    Go figure. The only way to make something parallel, really, is to break it out
+    into an indexed worker function, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note: accessing mutable variables from threads is slow. But if those variables
+    are not mutable (like the A pointer in the example), then it gets much faster.
+    Sometimes. Also, note that the pointer being immutable still allows mutating the
+    contents of the memory it’s pointing at.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There doesn’t seem to be any explicit synchronization (well, there are Atomics,
+    at least) or thread communication — I considered implementing a lockless queue,
+    but in the end there isn’t that much use of threads in AOC.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Benchmarks for simple stuff like this show that threads have significant operational
+    overheads. Day 1 Part 1 takes 7 microseconds without threads, and ten times more
+    when using threading. Day 2, however is able to complete in 40 microseconds with
+    threading, and uses twice as many threads. It’s more predictable with longer work
+    items, in milliseconds and above. I guess this is on par with what could be expected
+    from a ‘hands-off’ approach, and even with very careful handling of low-level
+    threads there are certain things you cannot optimize away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Overall, Mojo presents a **very** compelling performance proposal. I don’t have
+    a lot of comparisons against C++, but for the one example I did, Mojo came really
+    close. The programming model hints at the promise of even more potential improvements,
+    like compiling the code to GPU target, and running that while pretending to be
+    a single program, but it’s not really there yet and it’s hard to predict what
+    compromises will be needed to actually achieve that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some of the gains in my solutions are perhaps more forced by Mojo’s lack of
+    standard library, rather than better compilation techniques. I wouldn’t implement
+    my own low-level string handling in Python, for example. When dealing with matrix
+    operations, I would probably use NumPy, rather than coding it myself. I did that
+    in Day 24 — the Python solution boils down to running a linear algebra solver
+    (which I believe uses GESV from LAPACK, that factorizes the matrix using Gaussian
+    elimination). My mojo code implements a Gaussian solver directly, which is a bit
+    simpler — but that solver is targetted towards this _specific_ problem, I couldn’t
+    solve multiple equations at the same time with it, and LAPACK can. The resulting
+    code runs 30 times faster than Python (and this is one of those obscure cases
+    where PyPy is slower than Python, too). A Gaussian solver in Python was even slower
+    than NumPy, so I guess this is still a valid comparison, but I’m not sure how
+    fast a _generic_ solution, or a NumPy equivalent for Mojo would be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are certainly some aspects of ML programming that could benefit from this
+    though — perhaps custom tensor operators or activations, and Modular is probably
+    focusing on those key performance pain points, and some of the tasks in AOC do
+    support this hypothesis — meaning you could expect this would really improve the
+    performance of whatever training or inference workloads you would want to run
+    with this, assuming these workloads rely on switching back and forth between GPU/TPU
+    and CPU for computations, and the CPU-side computations are mostly Python. It
+    might be useful in some other areas, too, provided the language matures a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whether that is a benefit enough is a very tough question. It is a different
+    language, and switching is a huge cost, especially given that to benefit from
+    these performance gains, you do have to rewrite the code significantly. The promise
+    is there, certainly, but for now other factors are the real blockers — usability
+    and safety and stability, the topics of the next parts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Benchmarks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE

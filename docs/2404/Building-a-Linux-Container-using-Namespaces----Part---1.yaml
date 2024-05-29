@@ -1,0 +1,950 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:09:22'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Building a Linux Container using Namespaces :: Part - 1'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.polarsparc.com/xhtml/Containers-1.html](https://www.polarsparc.com/xhtml/Containers-1.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Building a Linux Container using Namespaces :: Part - 1'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ever wondered how Linux Containers worked ???
+  prefs: []
+  type: TYPE_NORMAL
+- en: Currently, [Docker](https://www.polarsparc.com/xhtml/Docker.html) is one of
+    the most popular and prevalent container implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Containers run on top of the same Operating System kernel, but isolate the application
+    processes running inside them from one another. One of the secret sauces behind
+    containers is [Namespaces](http://man7.org/linux/man-pages/man7/namespaces.7.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Namespace abstracts global system resources, such as, host names, user IDs,
+    group IDs, process IDs, network ports, etc., in a way that it appears to the processes
+    (within the namespace) as though they have their own isolated instance of the
+    global system resources. One of the primary goals of namespaces is to support
+    the implementation of containers (lightweight virtualization).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Currently, in Linux there are 6 types of namespaces - IPC, Network, Mount, PID,
+    User, and UTS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following are brief descriptions for each of the namespaces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'IPC :: This namespace isolates certain interprocess communication (IPC) resources,
+    namely, Message Queues, Semaphores, and Shared Memory'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Network :: This namespace provides isolation of the system resources associated
+    with networking, such as, Network devices, IP addresses, IP routing tables, /proc/net
+    directory, port numbers, and so on'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Mount :: This namespace isolates the set of filesystem mount points seen by
+    a group of processes. Processes in different mount namespaces can have different
+    views of the filesystem hierarchy'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'PID :: This namespace isolates the process ID number space. This allows processes
+    in different PID namespaces to have the same PID'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'User :: This namespace isolates the user and group ID number spaces, such that,
+    a process''s user and group IDs can be different inside and outside the user namespace'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'UTS :: This namespace isolates two system identifiers — the hostname and the
+    domainname. For containers, the UTS namespaces allows each container to have its
+    own hostname and NIS domain name'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For the demonstration in this article, we will be using the unshare Linux command
+    as well as implement, build, and execute a simple container using golang.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The installation is on a Ubuntu 18.04 LTS based Linux desktop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will need two commands newuidmap and newgidmap to demonstrate User namespace.
+    For this, we need to install the package uidmap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install the package uidmap, execute the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo apt install -y uidmap
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we will need the brctl command to create a bridge network interface. For
+    this, we need to install the package bridge-utils.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install the package bridge-utils, execute the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo apt install -y bridge-utils
+  prefs: []
+  type: TYPE_NORMAL
+- en: To develop, build, and execute the simple container in go programming language,
+    we need to install the golang package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To check the version of golang available to install, execute the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo apt-cache policy golang
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.1
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To install golang, execute the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo apt install -y golang
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above installation procedure installs golang from the official Ubuntu repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a directory for developing, building, and running go programs by executing
+    the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ mkdir $HOME/projects/go
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ export GOPATH=$HOME/projects/go
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will need one of the popular go packages on netlink for networking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To download the go package, execute the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ go get github.com/vishvananda/netlink
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open two Terminal windows - we will refer to them as TA and TB respectively.
+    TB is where we will demonstrate the simple container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to download a minimal root filesystem (rootfs) that will be used as
+    the base image for the simple container. For our demonstration, we will choose
+    the latest [Ubuntu Base 18.04.4 LTS](http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.4/release/ubuntu-base-18.04.4-base-amd64.tar.gz)
+    at the time of this article.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will assume the latest Ubuntu Base is downloaded to the directory $HOME/Downloads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The unshare command executes the specified program with the indicated namespace(s)
+    isolated from the parent process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the options for the unshare command, execute the following command
+    in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.2
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each process (with [PID]) has associated with it a sub-directory /proc/[PID]/ns
+    that contains one entry for each of the namespaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To list all the namespaces associated with a process, execute the following
+    command in TA :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.3
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To launch a simple container whose host name is isolated from the parent host
+    name, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo unshare -u /bin/sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -u option enables the UTS namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The command prompt will change to a #.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To check the PID of the simple container, execute the following command in
+    TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To list all the namespaces associated with the simple container, execute the
+    following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.5
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Comparing Output.5 to Output.3, we see a change in the uts namespace, which
+    is expected and correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To change the host name of the simple container, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the host name of the parent host, execute the following command
+    in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the host name of the simple container, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This demonstrates to us that we have isolated the host name of the simple container
+    from the parent host name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we will mimic the above UTS namespace isolation using the following go
+    program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <fieldset id="sc-fieldset"><legend>Listing.1</legend>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: </fieldset>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Command function from the exec package allows one to run the specified command
+    (1st parameter) with the supplied arguments (2nd parameter). It returns an instance
+    of the Cmd struct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One can set the standard input (os.Stdin), the standard output os.Stdout, the
+    standard error os.Stderr, and some operating system specific attributes on the
+    returned Cmd instance. In this case, we specify the syscall.CLONE_NEWUTS OS attribute
+    to indicate the command be run in a new UTS namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'IMPORTANT : When the main process starts, it internally spawns another main
+    process (with the CLONE argument) in a new namespace. It is this spawned main
+    process (running in the new namespace) that is overlayed (syscall.Exec) with the
+    shell command by invoking the function execContainerShell.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create and change to the directory $GOPATH/uts by executing the following commands
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ mkdir -p $GOPATH/uts
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ cd $GOPATH/uts
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy the above code into the program file main.go in the current directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compile the program file main.go, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To run program main, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.8
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The command prompt will change to a ->.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the host name of the simple container, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SUCCESS !!! We have demonstrated the UTS namespace using both the unshare command
+    and a simple go program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us layer the User namespace on top of the UTS namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To launch a simple container whose user/group IDs as well as the host name
+    are isolated from the parent namespace, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo unshare -uU /bin/sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -U option enables the User namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the user ID and group ID in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.10
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: When a User namespace is created, it starts without a mapping for the user/group
+    IDs in the new namespace to the parent user/group IDs. The unmapped user/group
+    ID is assigned the default value of the overflow user/group ID. The default value
+    for the overflow user ID is read from /proc/sys/kernel/overflowuid (which is 65534).
+    Similarly, the default value for the overflow group ID is read from /proc/sys/kernel/overflowgid
+    (which is 65534).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To fix the mapping for the user/group ID to the parent user/group ID, exit
+    the simple container by executing the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To re-launch the simple container with the current effective user/group ID
+    mapped to the superuser user/group ID in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo unshare -uUr /bin/sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -r option enables the mapping of the user/group IDs in the new namespace
+    to the parent namespace user/group IDs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The command prompt will change to a #.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the user ID and group ID in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.11
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To list all the namespaces associated with the simple container, execute the
+    following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.12
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Comparing Output.12 to Output.3, we see a change in both the uts namespace as
+    well as the user namespace, which is what is expected and correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we will mimic the above UTS and User namespace isolation using the following
+    go program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <fieldset id="sc-fieldset"><legend>Listing.2</legend>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: </fieldset>
+  prefs: []
+  type: TYPE_NORMAL
+- en: As indicated previously, the Command function returns an instance of the Cmd
+    struct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we specify the additional syscall.CLONE_NEWUSER OS attribute
+    to indicate the command be run in a new User namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, we set the user ID map UidMappings as an array of syscall.SysProcIDMap
+    struct entries, each consisting of the user ID mapping in the container (ContainerID)
+    to the user ID in the host namespace (HostID). In this case, we map the root user
+    ID 0 in the container to the root user ID 0 of the host namespace. Similarly,
+    we set the group ID map GidMappings
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create and change to the directory $GOPATH/user by executing the following
+    commands in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ mkdir -p $GOPATH/user
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ cd $GOPATH/user
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy the above code into the program file main.go in the current directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compile the program file main.go, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To run program main, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.13
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The command prompt will change to a ->.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the user ID and group ID in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.14
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To list all the namespaces associated with the simple container, execute the
+    following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.15
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To display the host name of the simple container, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SUCCESS !!! We have demonstrated the combined UTS and User namespaces using
+    both the unshare command and a simple go program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us now layer the PID namespace on top of the User namespace and the UTS
+    namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To launch a simple container whose process IDs as well as the user/group IDs
+    and the host name are isolated from the parent namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo unshare -uUrpf --mount-proc /bin/sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -p option enables the PID namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -f option enables spawning (or forking) of new processes in the new namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The --mount-proc option mounts the proc filesystem as a private mount at /proc
+    in the new namespace. This means the /proc pseudo directory only shows information
+    only about processes within that PID namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ATTENTION
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The command prompt will change to a #.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display all the processes in the new namespace, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.17
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To display all the processes in the parent namespace, execute the following
+    command in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.18
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Comparing Output.17 to Output.18, we see the isolation between the new namespace
+    and the parent namespace, which is what is expected and correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we will mimic the above UTS, User, and PID namespace isolation using
+    the following go program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <fieldset id="sc-fieldset"><legend>Listing.3</legend>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: </fieldset>
+  prefs: []
+  type: TYPE_NORMAL
+- en: As indicated previously, the Command function returns an instance of the Cmd
+    struct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we specify the additional syscall.CLONE_NEWNS and syscall.CLONE_NEWPID
+    OS attributes to indicate the command be run in a new PID namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create and change to the directory $GOPATH/pid by executing the following commands
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ mkdir -p $GOPATH/pid
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ cd $GOPATH/pid
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy the above code into the program file main.go in the current directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compile the program file main.go, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To run program main, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.19
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The command prompt will change to a ->.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the host name of the simple container, execute the following command
+    in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display the user ID and group ID in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.21
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To display all the processes in the simple container, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.22
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To list all the namespaces associated with the simple container, execute the
+    following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.23
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To exit the simple container, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SUCCESS !!! We have demonstrated the combined UTS, User, and PID namespaces
+    using both the unshare command and a simple go program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will now setup the minimal Ubuntu Base image for use in the new namespace
+    in the /tmp directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create and copy the base image to a directory in /tmp, execute the following
+    commands in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ mkdir -p /tmp/rootfs/.old_root
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ tar -xvf $HOME/Downloads/ubuntu-base-18.04.4-base-amd64.tar.gz --directory
+    /tmp/rootfs
+  prefs: []
+  type: TYPE_NORMAL
+- en: cd /tmp
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let us now layer the Mount namespace on top of the User, the UTS, and the
+    PID namespaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To launch a simple container whose mount points as well as the process IDs,
+    the user/group IDs, and the host name are isolated from the parent namespace,
+    execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ sudo unshare -uUrpfm --mount-proc /bin/sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: The -m option enables the Mount namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The command prompt will change to a #.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To list all the mount points in the parent namespace, execute the following
+    command in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $ cat /proc/mounts | sort
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.24
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let us list all the mount points in the new namespace by executing the
+    following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cat /proc/mounts | sort
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.25
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Comparing Output.25 and Output.24, we see the one difference for proc. When
+    a new Mount namespace is created, the mount points of the new namespace is a copy
+    of the mount points in the parent's namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will now demonstrate any changes to the new namespace will not affect the
+    parent namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make the mount point / (and its children recursively) to be private to the
+    new namespace, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: mount --make-rprivate /
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To recursive bind the mount point rootfs/ to rootfs/ in the new namespace,
+    execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: mount --rbind rootfs/ rootfs/
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We need the proc filesystem in the new namespace for making changes to mounts.
+    To mount /proc as the proc filesystem proc in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: mount -t proc proc rootfs/proc
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Next, we need to make rootfs/ the root filesystem in the new namespace and
+    move the parent root filesystem to rootfs/.old_root using the pivot_root command.
+    To do that, execute the following commands in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: pivot_root rootfs/ rootfs/.old_root
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: cd /
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To list all the file(s) under / in the parent namespace, execute the following
+    command in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.26
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To list all the file(s) under / in the new namespace, execute the following
+    command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.27
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Comparing Output.26 and Output.27, we see the root filesystems are totally different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To mount /tmp as the temporary filesystem tmpfs in the new namespace, execute
+    the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: mount -t tmpfs tmpfs /tmp
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To create a text file /tmp/leopard.txt in the directory /tmp of the new namespace,
+    execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: echo 'leopard' > /tmp/leopard.txt
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To list the properties of the file /tmp/leopard.txt in the new namespace, execute
+    the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.28
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To list the properties of the file /tmp/leopard.txt in the parent namespace,
+    execute the following command in TA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.29
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, to completely remove the parent root filesystem rootfs/.old_root from
+    the new namespace, execute the following commands in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: mount --make-rprivate /.old_root
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: umount -l /.old_root
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To list all the mount points in the new namespace by executing the following
+    command in TB :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cat /proc/mounts | sort
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following would be a typical output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output.30
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To exit the new namespace, execute the following command in TB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SUCCESS !!! We have demonstrated the combined UTS, User, PID, and Mount namespaces
+    using the unshare command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

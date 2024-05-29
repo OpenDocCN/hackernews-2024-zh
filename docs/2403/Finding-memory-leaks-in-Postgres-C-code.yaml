@@ -1,0 +1,439 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:46:28'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding memory leaks in Postgres C code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code](https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I spent the last week looking for a memory leak in Postgres’s WAL Sender process.
+    I spent a few days getting more acquainted with Valgrind and gcc/clang sanitizers,
+    but ultimately got nowhere useful with them. Finally, I stumbled on the memleak
+    program from the bcc tools collection which led me right to the source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since I had a bit of trouble figuring this all out for the first time, I wanted
+    to share the process I went through. Working with some contrived memory leaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although this happened in Postgres, and this post introduces a leak into Postgres
+    to set us up for an investigation, the techniques are broadly useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifically, by the end of this post, we’ll be able to get a nice stack trace
+    leading to a leak for a running program without any modification to the program
+    required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Valgrind
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Computer Science students typically learn about Valgrind for debugging memory
+    leaks in programs. But Valgrind primarily checks for leaks at the end of the program,
+    not during it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example in this simple, leaky `main.c`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can build and run with Valgrind and it will tell us about the leak:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can add in the correct call to `free(x)`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Rebuild, and run with Valgrind again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: And Valgrind tells us there is indeed no leak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leaks in Arenas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: But there are various ways to manage memory. Postgres code doesn’t typically
+    call malloc directly. It calls `palloc` to allocate memory in a `MemoryContext`
+    (which in other codebases is sometimes called “[arenas](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator)”).
+    `MemoryContexts` are a chunk of free memory from which `palloc` takes memory.
+    It is then freed all at once at some point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem is that leaks can happen during the lifetime of the `MemoryContext`.
+    And Valgrind can’t easily tell you about these leaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Postgres does have a useful builtin method to dump memory context info. For
+    example you can add this line to any function, or you can execute this from gdb:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: And you will get information about allocations in the memory context and all
+    child memory contexts, written to stderr. By observing the increase in allocations
+    printed by `MemoryContextStats` over time, and by adding additional memory contexts,
+    you may be able to discover the location of a leak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But adding this call explicitly or via `gdb` is pretty manual. It would be much
+    more convenient if there was some system that could automatically tell us about
+    growing memory allocations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s introduce a leak into Postgres and see what we can do to discover it,
+    reenacting a situation wherein we don’t know where this leak is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setup
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First grab Postgres, checkout release 16.2 and build it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: These flags enable Valgrind, enable debug mode, and set the build up to install
+    locally rather than globally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you’ve built it, you can create a Postgres database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And then start the Postgres server in the foreground:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a second terminal, connect to it with our built copy of `psql`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Great! Now let’s introduce a leak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing a leak
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The function `PostgresMain()` in `src/backend/tcop/postgres.c` has a giant loop
+    that looks tempting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s make this change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since we’re allocating in the main Postgres loop, every time a single connected
+    client sends a statement on the same connection, we’ll allocate a new 4KB chunk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we’re using `palloc`, all memory will be freed at the end of the process
+    in a way Valgrind will think is valid. But during the lifetime of a single client,
+    the Postgres backend process handling the connection will keep increasing in memory
+    as the client sends statements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a memory leak! In the extreme case, if a client sends 1 million statements,
+    we’d allocate 4KB * 1,000,000 = 4GB in a single process and not free it until
+    the process exits. This is a somewhat contrived case but this sort of situation
+    does happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set up Valgrind wrapper
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s rebuild with our diff, remember that Valgrind has already been enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We still need to wrap Postgres in Valgrind. Tom Lane [shared](https://www.postgresql.org/message-id/159904.1608307376%40sss.pgh.pa.us)
+    his wrapper script for this on the Postgres mailing list, which I’ve adapted.
+    Add this to `postgres.valgrind` in the root directory of the Postgres repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sidenote: I tried to also run this Valgrind script with the --leak-check=full
+    flag, but Postgres would always crash when I had this flag. I don’t know why.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now rename the current Postgres binary to `postgres.orig`, and copy this script
+    as the new Postgres binary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Start the server (no need to re-`initdb`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And connect with `psql` like before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You’ll immediately see a log line in the Postgres server process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this was the leak we introduced. If we run `SELECT 1` a number of times
+    in that same `psql` process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’ll see the same number of print statements in the server logs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now if we Ctrl-c on the server process, we can look at Valgrind logs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: It only found 410 bytes definitely lost. There is no way to account for the
+    accumulation of 4096*5 = 20,480 bytes lost with every client statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, Valgrind is very slow. The Valgrind [manual](https://valgrind.org/docs/manual/valgrind_manual.pdf)
+    says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your program will run much slower (eg. 20 to 30 times) than normal, and use
+    a lot more memory.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We’ll have to try something else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AddressSanitizer, LeakSanitizer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Valgrind has been around since 2002\. But around 2013, Google contributed somewhat
+    similar functionality directly into `clang` and later `gcc`. The history is a
+    little difficult for me to follow. AddressSanitizer and LeakSanitizer may have
+    been independent at one point but now AddressSanitizer contains LeakSanitizer.
+    To get the sanitizer, you simply compile your code with `-fsanitize=address`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s go back to that simple, leaky `main.c` program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And compile and run with the sanitizers on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Hey, that’s perfect. And even simpler than using Valgrind and requiring a wrapper.
+    The leak detection is just built right into the binary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s try this with Postgres.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Postgres and AddressSanitizer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Back in the Postgres git repo we cloned earlier, remember we have this diff
+    applied that will leak memory with every client statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run `make clean` and autoconf again but this time with `-fsanitize=address`
+    in the `CFLAGS` value. Then rebuild.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now run the Postgres server again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ok it immediately crashed! That’s interesting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But looking closely, the messages are 1) not related to the 4096-byte leak we
+    introduced and 2) don’t really seem like leaks that matter since these are related
+    to program initialization. Since they’re not in a loop the allocations shown won’t
+    keep growing over time. So not a huge deal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where was our leak? It turns out the default behavior of AddressSanitizer/LeakSanitizer
+    is to crash on the first error. In this situation, and likely many production
+    systems that only later introduce sanitizers, that isn’t useful. Thankfully the
+    sanitizers have some runtime options we can set in environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s set the environment variable `ASAN_OPTIONS="halt_on_error=false"` and
+    re-run Postgres:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ok! It reported a leak but it kept going. Let’s trigger the leak we added by
+    connecting with `psql` like before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: And exit the connection. You may see a leak report for the `psql` process itself.
+    But the leak we are looking for is in the Postgres backend process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: But nothing about our leak! I guess the sanitizers work similarly to Valgrind
+    in this regard, since the memory was freed by the time the process ended. Just
+    not before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I got stumped for a while at this point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: eBPF and bcc tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I’ve been reading Brendan Gregg’s [Systems Performance](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html)
+    book, so I started wondering if there was a way to use [perf](https://perf.wiki.kernel.org/index.php/Main_Page)
+    or [bpf profile](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
+    to record the memory usage of a running program and see where the allocations
+    were coming from. I have used `perf` for profiling *functions* but not for profiling
+    *memory usage*. I looked around for how you might record allocations with a stack
+    trace but couldn’t figure it out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I looked into `bpf profile` and noticed Brendan Gregg’s [page](https://www.brendangregg.com/FlameGraphs/memoryflamegraphs.html)
+    on memory leaks. Turns out there’s a tool for identifying memory leaks directly,
+    [memleak.py](https://github.com/iovisor/bcc/blob/master/tools/memleak.py)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use it, [install](https://github.com/iovisor/bcc/blob/master/INSTALL.md)
+    the bcc tools suite if you don’t have it already. Unfortunately each distribution
+    changes the names of the programs so it may be easiest to use `find`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ok, so it’s at `/usr/share/bcc/tools/memleak`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s rebuild Postgres without sanitizers on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the Postgres server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And start `psql` and grab the associated backend process PID that is handling
+    our request on the server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Open a new terminal session, keeping alive that `psql` connection and the Postgres
+    server process. And run the `memleak` program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: It will start reporting leaks every five seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s trigger the leak more aggressively by continuing to run `SELECT 1` statements
+    in the `psql` session:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After running this `SELECT 1` command 20-30 times or so, you should see the
+    memleak program report:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: And *that* is the memory leak, with a beautiful stack trace to help us find
+    exactly where it is.
+  prefs: []
+  type: TYPE_NORMAL

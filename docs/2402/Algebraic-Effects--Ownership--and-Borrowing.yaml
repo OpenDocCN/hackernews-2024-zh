@@ -1,0 +1,422 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:03:12'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Algebraic Effects, Ownership, and Borrowing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://antelang.org/blog/effects_ownership_and_borrowing/](https://antelang.org/blog/effects_ownership_and_borrowing/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Algebraic Effects](/docs/language/#algebraic-effects) are a useful abstraction
+    for reasoning about effectful programs by letting us leave the interpretation
+    of these effects to callers. However, most existing literature discusses these
+    in the context of a pure functional language with pervasive sharing of values.
+    What restrictions would we need to introduce algebraic effects into a language
+    with ownership and borrowing - particularly Ante?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ownership
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Consider the following program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This seems like it’d pass type checking at first glance, but we can easily
+    construct a program that tries to use the same moved value twice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since a handler’s body may be called multiple times, it may not move any value
+    in its environment. This restriction is similar to moving values in a loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Borrowing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Things get more complicated when we consider borrowing. Although Ante’s references
+    [do not have explicit lifetime variables](/docs/language/#borrowing), we still
+    need to ensure their lifetime is sound.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Returning Owning References
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Consider the following program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This breaks the aliasing restriction on `&own mut` in a way the compiler cannot
+    verify with existing rules on tracking lifetimes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The solution to this is that each function using the same `Read (&own mut Box
+    String)` effect is considered to borrow from the same effect handler. Attempting
+    to retrieve two owned, mutable references from the same handler then would be
+    a lifetime error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, trying to obfuscate this by calling a function which indirectly
+    returns another reference should also fail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Owned Reference Parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now let’s consider how we can break programs which pass references to effects.
+    For this we’re going to use the `Yield a` effect which is used for creating generators
+    or streams:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: To prevent this we need to tie `y` to the variable that owns it - which is `resume`.
+    This way we can still yield owned references if needed, but we cannot call `resume`
+    until they are dropped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Conceptually, we can think of a handle expression as receiving a single `resume`
+    object which is then unpacked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resume
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One core aspect of effects that we’ve glossed over so far is the `resume` function
+    which resumes an effectful computation from the handler. Since `resume` refers
+    to an in-progress computation, we need a way to safely encode this environment,
+    yet we need to do so when defining the effect before the environment is known.
+    What type should be given to `resume`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: After resuming from the `fork` the second time, we enter the false branch. When
+    doing so, `message` has already been moved, so we’d be reading from an already-dropped
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the problem the different closure types already solve. We just need
+    some way to determine if `resume` should be a `Fn`, `FnMut`, or `FnOnce` since
+    we cannot know this within the handler itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One possibility is to require this in the definition of `Fork`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that `fork` is still callable without restrictions. It is only `resume`
+    that will be a `FnMut` when it is introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Anyways, now we’d get an error when writing `foo`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since this error would otherwise be much more common, `resume` is by default
+    a `FnOnce` unless otherwise specified. This means when defining an effect we will
+    need to think about what kinds of effect handlers we want to permit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also note that after removing `drop`, `message` will not be dropped at the end
+    of `foo`. Instead, it is part of `resume`’s environment and will be dropped after
+    the last use of `resume` in the effect handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Environment Type Quantification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Most effects which give an explicit type for `resume` will either omit the
+    environment type, or specify it as a type variable quantified over the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is generally desired since it allows the `resume` closure to be unboxed
+    most of the time. However, what would happen if the user wrote the trait as the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since each generic instance of a trait would be separate (e.g. `Read I32` versus
+    `Read String`), each use of this effect with a different environment would be
+    a separate effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Above, `forced_example` would be inferred to have the effects `Foo Env1` and
+    `Foo Env2` where `Env1` and `Env2` are both opaque types representing the environments.
+    Since each of these would need to be handled by separate effect handlers, this
+    technique could be used to limit an effect to being called at most once per handler.
+    It remains to be seen how useful this would be however.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Restricting the environment type
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If any capabilities are required on the `resume` closure, a `given` clause
+    can be added. Since most traits on closures are defined as long as they’re defined
+    on the closure environment, it is usually sufficient to require the trait on the
+    closure environment alone:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note that since `resume` is a continuation, this environment type includes
+    any captured variables across other function calls as well. So the `Clone` constraint
+    above would also apply to the `vec` variable below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since environment types can grow quite large, it is generally recommended to
+    avoid cloning `resume`. A more useful trait constraint on `resume` is covered
+    in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multithreading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Going back to the `Fork` example, what would happen if we tried to run each
+    resumption in its own thread?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to spawn a new thread to call `resume` we’d need to require a reference
+    to the closure environment is `Send`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Polymorphic Effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Ante also enables functions to be polymorphic over their effects. For example,
+    the `map` function has the type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, recalling the `FooCloneEnv` example from earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works fine, but how could we pass a function such as `outer_fn` to `map`?
+    The effect variable `e` would be instantiated to `FooCloneEnv` but now we’d also
+    need to know if the environment of `map` when it calls the passed-in function
+    is clone-able. In the most general case, we’d need to be able to verify any trait
+    from `map` and whether it can allow the function used to resume multiple times
+    or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We’d have to add these constraints to the effect variables directly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a big hit to the usability of effects in this scheme since these constraints
+    would have to be manually specified on `map` for its contents to be checked. If
+    not specified, a new version of `map` would have to be written with a `Send`able
+    environment or similar. This will inevitably lead to some duplication when using
+    effects that algebraic effect handlers are usually meant to remove.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a later article, we’ll focus on ways to simplify the usability of this scheme
+    by providing sane defaults where possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation Details and Boxing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, each of the rules covered above should apply to any language with effects,
+    ownership, and borrowing. Different implementations of effects can have wildly
+    different runtime costs however.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, most languages implementing the full spectrum of algebraic effects
+    will keep track of the stack of effect handlers at runtime. When an effect call
+    is made, a lookup needs to be performed then the code needs to jump to the relevant
+    handler and back. This may be done by jumping up the call stack and copying stack
+    frames or by converting effectful functions to continuation passing style (CPS)
+    - like Ante does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Languages without algebraic effects aren’t completely free from the costs of
+    effects either though. Even if we restrict ourselves to just the `async` effect,
+    we can see plenty of languages which include it - each with its own unique implementation
+    and performance characteristics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider Rust’s `async` effect which is implemented by compiling async functions
+    to state machines. In this scheme, the following code is rejected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Because the resulting state machine would have infinite size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To get around this, users need to box recursive functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we try to implement a similar example in future-Ante^:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result would look quite different:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So theoretically no boxing is needed for recursion alone. The performance characteristics
+    here look quite different - but that is because in Ante they’re largely determined
+    by the handler that is used rather than the call site of the effect. If we use
+    a different handler which does not resume in a tail position, boxing will be required.
+    For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compiles to^:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we can see the inner continuation captures the outer continuation `k`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give `k` a valid type, we’d need to box it to ensure it always has the same
+    size for each recursive call. This is similar to what we’d need to do in the Rust
+    example, but there are some unique problems with requiring users manually box
+    these continuations in Ante:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The continuation is added by the compiler, so it isn’t clear to the user where
+    they should add the boxing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether boxing is required is dependent on the structure of the handler. We
+    don’t want to always add boxing since tail-resume is the more common case.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We could try to get around this by marking whether a given effect must have
+    a tail-resumptive handler or not, and requiring recursive functions using non-tail-resumptive
+    handlers to box their continuations somehow. This would make effects much more
+    cumbersome to use however, and one of Ante’s goals is to be a slightly *higher*
+    level language than Rust. If effects are not simple to use then users will avoid
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For these reasons, the current plan is for the compiler to automatically insert
+    boxing of closures where appropriate and infer their lifetimes via [lifetime inference](/docs/ideas/#lifetime-inference).
+    Lifetime inference is a very interesting topic to me - it was one of Ante’s original
+    goals to experiment with it. When it works well it can be great since it can stack-allocate
+    potentially even to prior stack frames. The downside is that the inferred lifetimes
+    can be imprecise. Although, in this case, if lifetimes cannot be accurately inferred,
+    we would still know their longest possible lifetime is that of the effect handler.
+    ^(This is a topic that deserves much more detail though so I’ll leave it to a
+    future blog post. If you’re still curious, there are some papers on it reachable
+    from the documentation link above.)
+  prefs: []
+  type: TYPE_NORMAL

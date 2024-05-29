@@ -1,0 +1,163 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:05:47'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interesting Uses of Ansible’s ternary filter
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.zufallsheld.de/2024/02/21/interesting-use-of-ansible-ternary-filter/](https://www.zufallsheld.de/2024/02/21/interesting-use-of-ansible-ternary-filter/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Posted on Wed 21 February 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some time ago I discovered an interesting use of the [ternary-filter](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/ternary_filter.html)
+    in Ansible. A ternary-filter in Ansible is a filter that takes three arguments:
+    a condition, a value if the condition is true and an alternative value if the
+    condition is false.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a simple example straight from Ansible’s documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: But there are many more interesting use cases for this filter and I decided
+    to take a look what Ansible’s collection authors used it for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Display command output only if verbosity is greater than 0.
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This was the usage that initially got me interested in different use-cases for
+    the filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Depending on what verbosity level you use when running a playbook (e.g. how
+    many `-v` you add to the command), the command will run in quiet-mode (with the
+    `-quiet` flag) or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: ([Source](https://github.com/ansible-collections/ansible-consul/blob/3ee2b43972e0da2f378422d16c672a7c719c4998/tasks/config.yml#L49))
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'HN-User [raziel2p](https://news.ycombinator.com/user?id=raziel2p) gave an even
+    better [example](https://news.ycombinator.com/item?id=39466080) to achieve this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Testing task idempotency in one run without molecule
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This use of the ternary-filter is useful for testing task idempotency in one run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, the task-file `test_create_scheduler.yml` is imported without a variable
+    set, so the task will change something. Then, the task-file is imported again,
+    however this time with the variable `test_proxysql_scheduler_check_idempotence`
+    set to `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: When importing the test file `test_create_scheduler.yml` without the variable
+    `test_proxysql_scheduler_check_idempotence`, the assert will check for `status
+    is changed`, because the ternary-filter evaluated the variable `test_proxysql_scheduler_check_idempotence`
+    as `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: When importing the test file `test_create_scheduler.yml` with the variable `test_proxysql_scheduler_check_idempotence`,
+    the assert will check for `status is not changed`, because the ternary-filter
+    evaluated the variable `test_proxysql_scheduler_check_idempotence` as `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ([Source](https://github.com/ansible-collections/community.proxysql/blob/d4ef72ae73dfad8d46ff639dd2ac76e204635d5b/tests/integration/targets/test_proxysql_scheduler/tasks/test_create_scheduler.yml#L13))
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do things based on regex searches
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Ansible you can chain filters using a pipe (`|`). This allows you to filter
+    based on regex searches (which in hindsight is obvious that it works, but I never
+    thought about that).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: ([Source](https://github.com/ansible-collections/community.proxysql/blob/d4ef72ae73dfad8d46ff639dd2ac76e204635d5b/tests/integration/targets/test_proxysql_mysql_users/tasks/base_test.yml#L5))
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handle older Python versions easily
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the following task, the cassandra-driver is installed. If the used (obsolete!)
+    Python version starts with 2.7, pip should install the cassandra-driver in version
+    3.26.*. If a recent Python version is used, pip will install the latest version
+    of the cassandra-driver.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s definitely not the most elegant solution, but it works. (I’d probably
+    have tried to install the correct cassandra-driver version according to the operating
+    system and its Python version, where it should be installed)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ([Source](https://github.com/ansible-collections/community.cassandra/blob/a35580565c949d7d13bbfd5dca307746e42d3725/tests/integration/targets/setup_cassandra/tasks/cassandra_auth.yml#L130))
+  prefs: []
+  type: TYPE_NORMAL
+- en: This task will add a line starting with `ssl_ciphers`, if the variable `zabbix_web_ssl_cipher_suite`
+    is defined and not `none`. Otherwise it will add the same line but commented out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: ([Source](https://github.com/ansible-collections/community.zabbix/blob/facde86d8e388673d503ebc3b19fd0f9f6037798/roles/zabbix_web/templates/nginx_vhost.conf.j2#L73))
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I used another way to add commented out lines in a template ([see](https://github.com/dev-sec/ansible-collection-hardening/blob/bdf6d65cfd9d63b7ffe00f67e280f652299283bc/roles/ssh_hardening/templates/opensshd.conf.j2#L48)).
+    I used the [comment-filter](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/comment_filter.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that I see my own code, I could probably use the ternary-filter here, too!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: But I think I actually like the if-else syntax more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do you have any other interesting uses of the ternary-filter?
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,316 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:49:23'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing scoped defer in C - by Sir Whinesalot
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://btmc.substack.com/p/implementing-scoped-defer-in-c](https://btmc.substack.com/p/implementing-scoped-defer-in-c)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Note: Before reading this post, you should read my post on [implementing generators
+    in C](https://btmc.substack.com/p/implementing-generators-yield-in) because I’ll
+    be relying on similar techniques here.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Error handling and resource management in C can be a total pain in the butt.
+    Consider for example a program that needs to split a log file into three separate
+    files for “info”, “warning” and “error” logs respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Copy-pasting those `fclose` calls around everywhere is not only annoying but
+    extremely error prone. The above is the *simplest* example. Imagine we only want
+    to create the various output files if one of the corresponding log type lines
+    appears in the original file, or only create and write to one of the files if
+    a certain configuration option is set. There might be memory management (malloc/free)
+    happening in between all of this for whatever reason.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post I’m going to show you a really neat macro trick that makes dealing
+    with *resource* management as pleasant as it can get in *standard* C.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most programming languages provide a built-in mechanism for resource management.
+  prefs: []
+  type: TYPE_NORMAL
+- en: C++ and Rust have [scope-based resource management](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization),
+    where each type may have an associated “destructor” (called `drop` in rust) that
+    is implicitly inserted by the compiler at the end of the scope where the variable
+    storing the resource resides. When the scope ends resources are cleaned up, no
+    matter if it happens “naturally”, due to an exception, or a return statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This solution is particularly nice because there is nothing for the consumer
+    of the API to worry about, it just works, but it requires that object lifetimes
+    be tied to scopes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Languages like C#, Java and Python have special resource handling blocks: `using`
+    statements in C#, `try-with-resource` statements in Java, and `with` statements
+    in python, which implicitly call a cleanup function at the end of their scope.
+    In C# it’s also possible to have `using` statements not introduce a new scope,
+    tying the resource to the *current* scope instead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead of calling the destructor, a specific method from the language’s “cleanup
+    protocol” is called: `Dispose()` in C#, `close()` in Java and `__exit__()` in
+    Python.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This solution has the disadvantage that the consumer of the API must remember
+    to use the resource handling statement for cleanup to occur, but it allows regular
+    objects to be managed in a non-scope oriented manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Languages like Go, Zig, Odin, and C3 support a `defer` statement that allows
+    to specify the cleanup action, rather than implicitly invoking some standard cleanup
+    protocol method or destructors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This solution has the disadvantage that the user of the API must not only remember
+    to use defer, but also to know which specific function to call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An important thing to note is that Go’s defer works differently from the other
+    languages mentioned. The defer of the other languages is very simple: it can be
+    understood as “copy-pasting” the cleanup code right before the scope ends (including
+    if it is exited by a return statement).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go’s defer is more of an imperative command. The block of code it will execute
+    works like a closure, capturing the values of the referenced variables at the
+    time of the defer statement’s execution (not at cleanup!). It also runs the cleanup
+    code at function end rather than scope end, so it requires extra storage. For
+    example, a defer statement executed in a loop 10 times will add 10 cleanup instructions
+    to the “cleanup stack”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go’s style of defer is less efficient and its behavior can be surprising.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advantage of defer is that it is fully explicit and gives the user the most
+    control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fully explicit? Most control? Sounds like C to me. There are already some existing
+    implementations of defer for C but I’m not happy with any of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [reference implementation](https://gustedt.gitlabpages.inria.fr/defer/)
+    of the [N2895 defer proposal](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2895.htm)
+    is needlessly complicated, to the point of requiring an extra preprocessor. It
+    relies on GCC extensions and setjmp + longjmp. It needs all this complexity to
+    support features nobody asked for, IMHO. It is “Go style”.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ceraii’s [implementation](https://github.com/seleznevae/ceraii/blob/master/src/ceraii.h)
+    is also quite complicated (though not to the same extent) and relies on setjmp
+    + longjmp. It is “Go style”.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: moon-chilled’s [Defer macro](https://github.com/moon-chilled/Defer/blob/master/defer.h)
+    is the simplest but also requires either GCC extensions or setjmp + longjmp, plus
+    a 32 element buffer at the start of each function to store the defers. It is “Go
+    style”.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I don’t want any of this, I want a simple and efficient scoped defer like Zig,
+    Odin, C3 and D have, but in pure standard C. I want the scoped defer of the [N3199
+    proposal](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3199.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: So until that gets accepted (i.e. never), it is time to get our hands dirty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The classic solution to do resource management in C is to (ab)use goto statements
+    to organize things a little:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We avoid the copy-paste problem, but this has its own issues. The resource cleanup
+    has to be explicitly written in last-in-first-out order at the end of the function.
+    Instead of using return, it’s now necessary to use goto to jump to the correct
+    cleanup point. Things gets even more complicated when certain resources are allocated
+    and released within inner scopes. This technique is also partially responsible
+    for [goto fail](https://www.imperialviolet.org/2014/02/22/applebug.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Having only one resource cleanup call and the ability to jump around opens
+    up some options. Lets reorganize the code a little:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Yikes that looks even worse! But this was an important change, now the cleanup
+    code is right next to the initialization code, right where defer would be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lets try making some macros:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Better, but not good enough. Having to manually count the defers like this is
+    really annoying. We need to get fancier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There’s no good way to “count” in the C preprocessor to avoid the issue above.
+    The closest thing we have is the __LINE__ macro which stores the current line,
+    but there’s no way to refer to the “last line” in which we deferred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Rather than trying to do everything at the preprocessor level, we’ll shift
+    some of the work to runtime. Let’s rework the example above to use a duff’s device-like
+    switch statement instead of straight gotos:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Much better, now we only need 1 count in the defers. The basic idea is that
+    each call to defer sets the defer count (`_d`) equal to I. It also adds an `if(0)`
+    block that has the corresponding switch case label in its body. Inside the body
+    it executes the action, decrements `_d`, and jumps to the switch again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So once the first jump back to the switch occurs, the defer blocks get executed
+    in reverse order, until `_d` becomes 0 which isn’t a valid case and the switch
+    stops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'is modeled after:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which I personally find makes it quite easy to understand. But this is still
+    not good enough! If a user writes the wrong value in the defer count, all hell
+    breaks loose. We’re also missing inner scope support for proper scoped defer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Rather than track the current defer by incrementing and decrementing, we’ll
+    track where the defers occur by storing their `__LINE__`, and we’ll track the
+    previous defer through an auxiliary variable called `_d_p`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `_d_p` (defer previous) variable is declared inside a new scope, such that
+    it shadows any previous usage of the variable. It remembers the last value of
+    `_d`, before `_d` is set to the current line. Now we can use the line as the case
+    constant, avoiding explicit defer counting. Instead of decrementing, we set `_d`
+    back to its previous value through `_d_p`. The last thing we need to ensure is
+    that when the first `_d_p` is set, it points to “nowhere” so the switch ends,
+    we do this by setting `_d` right after the switch starts to an impossible line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ve now gotten a single level of defer working with no manual counting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we want to support are nested scopes, where you can execute a
+    subset of defers for a particular scope without running the whole thing. We also
+    need `defer_return` to run every defer from the current scope all the way to the
+    top level defer block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing to do is introduce a way to open a new defer scope. We’ll do
+    this with the most complicated trick so far:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We factor out the logic of defer into a `_DEFER_SNAPSHOT` macro which is shared
+    with `defer_scope`. The idea is that `defer_scope` behaves like defer, in that
+    it creates a “jump point”, but rather than executing an action, it makes a decision
+    based on a new `_d_r` (defer return) variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `_d_r` is true, it continues the “unwinding” process.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `_d_r` is false, it jumps out of its `do {} while(0)` loop with `continue`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This variable is set by the updated `defer_return`. We also add a `defer_break`
+    alternative which is used to end only the current scope:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We make a small change to run_deferred, such that it works for both the top
+    level defer block and the inner defer scopes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: For the inner scopes, the `while(0)` ends the `do` loop. For the top level block,
+    it’s just an extra `while(0)` that does nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, we need to initialize the `_d_r` variable when we start the defer_block:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we’re done, scoped defer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unlike the little macro I used to implement generators in C, this one is a bit…
+    much. But it’s also substantially simpler and more efficient than the longjmp
+    based approaches, so if you want to have defer in C, try this out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are ok with sticking to GCC (or clang), then [__attribute__((cleanup))](https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute)
+    is the way to go, it just works, even if it only allows calling a function with
+    a specific prototype rather than an arbitrary block of code.
+  prefs: []
+  type: TYPE_NORMAL

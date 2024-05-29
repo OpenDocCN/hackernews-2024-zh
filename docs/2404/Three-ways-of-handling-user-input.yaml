@@ -1,0 +1,309 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:38:51'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Three ways of handling user input
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://dubroy.com/blog/three-ways-of-handling-user-input/](https://dubroy.com/blog/three-ways-of-handling-user-input/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: January 5, 2022
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although there has been important progress in models and packages for the output
+    of graphics to computer screens, there has been little change in the way that
+    input from the mouse, keyboard, and other input devices is handled. New graphics
+    standards are still using a fifteen-year-old model even though it is widely accepted
+    as inadequate.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: — *Brad Myers, [A New Model for Handling Input](https://www.cs.cmu.edu/~amulet/papers/p289-myers-TOIS-new-model.pdf),
+    1990.*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It’s 2022 and things are pretty much the same: the dominant way of handling
+    user input is still based on events and — in some form or another — callbacks.
+    They come in slightly different forms ([addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener),
+    [responder](https://developer.apple.com/documentation/appkit/nsresponder) [objects](https://developer.apple.com/documentation/uikit/uiresponder),
+    etc.) but the core idea is the same.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s still going strong more than 40 years later, so the event-and-callback-based
+    approach clearly has something going for it. But in nearly every code base I’ve
+    worked in, the hairiest, most difficult-to-modify logic is in the event handling
+    code. Handling user input is — to borrow [a phrase from Laurence Tratt](https://tratt.net/laurie/blog/entries/parsing_the_solved_problem_that_isnt.html)
+    — a solved problem that *isn’t*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To help me understand the pros and cons of the events-and-callbacks model and
+    to experiment with some other approaches, I decided to write up a simple example
+    in a three different styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A toy problem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The goal is to implement a square that you can either drag and drop, or click.
+    The code should distinguish between the two gestures: a click shouldn’t just be
+    treated as a drop with no drag. Finally, when you’re dragging, pressing escape
+    should abort the drag and reset the object back to its original position.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here’s an interactive demo. There are at least two bugs here — see if you can
+    find them! 😁
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Approach #1: Event listeners'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As a baseline, let’s start with the standard approach based on event listeners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are slightly nicer/cleaner ways to implement this, but I think this is
+    pretty good as a representative example. Note that I’m using the `pointerdown`
+    rather than `mousedown` so that I can take advantage of [pointer capture](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture#overview_of_pointer_capture).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Taking a look at it with a critical eye, the first thing that sticks out is
+    the shared state that’s used by all of the event handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`didDrag` keeps track of whether any *pointermove* event occurred, so we can
+    distinguish between a drag and a click'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dragOrigin` records the position where the drag gesture started, and doubles
+    as a way of checking whether the mouse is currently down.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`origPos` holds the original position of the target object, so we can reset
+    it if the drag is canceled.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: One thing I dislike a bit about the callback-based approach is how the control
+    flow is mostly implicit. You can “jump into” control at many parts of the code,
+    and the order of the handlers is purely determined by the order that the events
+    arrive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can you spot the problem with the `pointerup` handler, that causes the bugs
+    that I mentioned above?
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary>*Show me the answer!*</summary> The body of `pointerup` handler
+    should be guarded with `if (dragOrigin) { ... }`, just like the `pointermove`
+    handler. Otherwise (1) a drag that starts *outside* the square, but ends over
+    it, is treated as a click; and (2) after cancelling a drag, the next `pointerup`
+    event sets the status to *dropped*.</details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Approach #2: Polling'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another way to handle user input is *polling*, or periodically checking the
+    state of the hardware. The original Smalltalk MVC used this approach, and it’s
+    still used in game programming. ^(I don’t think I’ve ever written any code that
+    used polling for handling user input, so I wanted to at least give it a try.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is a polling-based version of the same example from above. I’ve left out
+    the helper code that takes care of updating the `mouse` and `keyboard` variables
+    using the standard DOM events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Conceptually, polling is a pretty simple approach, but it imposes a fair bit
+    of extra complexity on the handling code. For one thing, I needed `didHandlePointerDown`
+    so that it only reacts once when the mouse button is pressed, rather than on every
+    frame. I also needed to do my own hit testing with `rectContains`. This is one
+    downside of polling — you need to implement extra bookkeeping for some things
+    that you get for free in an event-based model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, the major drawback of polling is that you always need to be checking
+    for state changes. This consumes CPU cycles, and if it’s not frequent enough,
+    you can miss some user input. That’s why it’s not seen much anymore outside game
+    programming, where you typically have an active rendering loop anyways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the plus side, the control flow is more explicit when compared to the event
+    listener approach. For example, the code that handles cancellation will always
+    run after any other other handler *in the same frame*. We do still need to be
+    careful not process a `pointerup` without a corresponding `pointerdown`, as those
+    would always be handled in separate frames.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another thing that’s nice here is that you basically have unrestricted access
+    to the current state of the input devices, whereas in the callback-based model,
+    it’s less convenient to do something like looking at the current mouse position
+    inside the `keydown` handler. DOM events hack around this limitation by including
+    some keyboard state in the MouseEvent instances ([`altKey`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/altKey),[`ctrlKey`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/ctrlKey),
+    etc.), but that only addresses the most common cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With polling, not only do you have more flexibility in *where* you examine
+    the input state, but also *when* you examine it. With events, there’s an inversion
+    of control: the event dispatch mechanism determines when (and if) each component
+    observes the state change. This can be limiting, but it’s also a huge benefit
+    for composability, as it enables loosely-coupled coordination between parent and
+    child components (e.g. event delegation). I don’t know how you could achieve the
+    something similar in polling-based model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hybrid models
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After reading the first draft of this post, a few people mentioned event-based
+    approaches that feel somewhat similar to the polling approach. For example, you
+    could have a single callback that handles all the events, rather than a separate
+    callback for each event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This gives you all the advantages of events, while making the control flow a
+    bit more explicit (as with the polling approach), and making it easier to share
+    state and code between the different paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Approach #3: Process-oriented'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The third approach I wanted to try is inspired by [Squeak: a Language for Communicating
+    with Mice](https://swtch.com/~rsc/thread/squeak.pdf), by Luca Cardelli and Rob
+    Pike. The core idea is that concurrent, communicating processes are a good way
+    to model user interaction. Note that *process* here doesn’t mean an OS-level process;
+    it means a lightweight, sequential thread of control, like a [goroutine](https://go.dev/tour/concurrency/1)
+    or a [Ruby fiber](https://ruby-doc.org/core-2.5.0/Fiber.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To experiment with these ideas in JS, I built a tiny library called Abro.js
+    ^(which provides some slightly higher-level abstractions on top of `async` and
+    `await`. The result looks a lot more like the [Esterel language](http://www-sop.inria.fr/meije/esterel/esterel-eng.html)
+    than Squeak. (Esterel was also an inspiration for Cardelli and Pike.))
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a working implementation based on Abro:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also try this version out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before getting into the details, let me explain the basics of Abro:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each process (or *fiber*) is an async function that can block until an event
+    arrives from an *EventSource*. For example, control will block at 1️⃣ [↩](#code-pointerdown)
+    until a `pointerdown` occurs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unlike regular async functions, Abro fibers can be cleanly terminated from the
+    outside. I do this by keeping track of the promise that each fiber is blocked
+    on, so it can be terminated by rejecting that promise.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`abro.or` (see 2️⃣ [↩](#code-abro-or)) starts multiple fibers, and as soon
+    as one of them completes, the others are terminated. It’s based on the `par/or`
+    construct in [Céu](http://www.ceu-lang.org/), another Esterel-inspired language.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The ability to terminate fibers from the outside makes it possible to write
+    loops with no explicit exit condition (see 3️⃣ [↩](#code-infinite-loop)), as long
+    as they block somewhere within the loop.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you’re interested, you can take a look at [Abro on GitHub](https://github.com/pdubroy/handling-user-input/blob/main/abro.js),
+    but be warned — it’s very much a work in progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This first thing to notice with this approach is the clear, explicit sequencing
+    between the different states. The first line of the loop blocks on a `pointerdown`
+    event; the other handlers aren’t even active until control proceeds past that
+    point^.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other thing I really like is the separation of concerns that’s enabled by
+    the `or` construct along with the ability to abort individual threads of control.
+    Take a close look at `handleDrag` — it’s just an infinite loop that processes
+    `pointermove` events. It doesn’t need to be concerned with cancellation, that
+    happens automatically when the `handleEscape` task completes. Also, since this
+    is built on top of events, we can still take advantage of event bubbling and other
+    forms of coordination between a container and its descendants.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overall, I find the process-oriented approach to be pretty compelling. It seems
+    to retain all the advantages of the event-driven model (e.g., in comparison to
+    polling), while improving on some of the issues that callbacks have. I’m definitely
+    interested to try it out in some more realistic use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I found it really useful to work through a toy problem with a few different
+    approaches. Comparing event listeners to polling made it much easier for me to
+    see the pros and cons of each style. The advantages of events (and event dispatch)
+    are much more obvious to me now, and I realized that polling isn’t really as simple
+    as it sounds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, the three styles I’ve presented here are just a starting point,
+    and there are many other approaches that I haven’t touched on. There are two in
+    particular that I want to briefly mention:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Statecharts](https://statecharts.dev/) are closely related to the process-oriented
+    model I’ve explored here. The [original statecharts paper](https://dubroy.com/refs/Statecharts_a_visual_formalism_for_complex_systems.pdf)
+    references Esterel, saying: *“It is motivated by concerns very similar to our
+    own, and many of the resulting decisions taken there are strikingly similar to
+    those present in statecharts.”* There’s enough to unpack there that I decided
+    to leave it for a follow-up post.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Functional reactive programming](https://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming)
+    (FRP), and related approaches like RxJS. I don’t have much experience with FRP,
+    but I really should give it a try. Maybe another topic for a future post!'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Check out [Part II](https://dubroy.com/blog/handling-user-input-with-structured-concurrency/),
+    where I dig into the implementation details of Abro.js, and explore the process-oriented
+    approach a bit more deeply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 💬 *Want to leave feedback? [Send me an email](https://dubroy.com/blog/about/#contact)
+    or [respond on on Twitter](https://twitter.com/dubroy/status/1478728490807611393).*
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Thanks to Mariano Guerra, Sarah GHP, and Kevin Lynagh for providing feedback
+    on my drafts.*'
+  prefs: []
+  type: TYPE_NORMAL

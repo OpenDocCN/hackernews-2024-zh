@@ -1,0 +1,302 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:56:26'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: C and returning values quickly or safely. But not both. | Sub-Etha Software
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://subethasoftware.com/2024/01/18/c-and-returning-values-quickly-or-safely-but-not-both/](https://subethasoftware.com/2024/01/18/c-and-returning-values-quickly-or-safely-but-not-both/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**WARNING:** This article contains a C coding approach that many will find
+    uncomfortable.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my day job as a mild-mannered embedded C programmer, I am usually too busy
+    maintaining what was created before me to be creating something new for others
+    to maintain after me. There was that one time I had two weeks that were very different,
+    and fun, since they were almost entirely spent “creating” versus “maintaining.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Today’s quick C tidbit is about getting parameters back from a C function.
+    In C, you only get one thing back — typically a variable type like an int or float
+    or whatever:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you need more than one thing returned, it is common to pass in variables
+    by reference (the address of, or pointer to, the variable in memory) and have
+    the function modify that memory to update the variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The moment pointers come in to play, things get very dangerous. But fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When passing values in, they get copied in to a new variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Try it: [https://onlinegdb.com/WC3ihCAuj](https://onlinegdb.com/WC3ihCAuj)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Above, Function() gets a new variable (called “x” in this case) with the value
+    of the variable that was passed in to the call. The function is like Las Vegas.
+    Anything that happens to that variable inside the function stays inside the function
+    – the variable disappears at the end of the function, while the original variable
+    remains as-was.
+  prefs: []
+  type: TYPE_NORMAL
+- en: C++ changes this, I have learned, so you can pass in variables that can be modified,
+    but I am not a C++ programmer so this post is only about old-skool C.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pointing to a variable’s memory
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By passing in the address of a variable, the function can go to that memory
+    and modify the variable. It will be changed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Try it: [https://onlinegdb.com/Y2Z9WUvFG](https://onlinegdb.com/Y2Z9WUvFG)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing by value is slower, since a new variable has to be created. Passing
+    by reference just passes an address and the code uses that address – no new variable
+    is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But, using a reference for just for speed is dangerous because the function
+    can modify the variable even if you didn’t want it to. Consider passing in a string
+    buffer, which is a pointer to a series of character bytes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We do this all the time, but since PrintError() has access to the memory passed
+    in, it could try to modify it. If we passed in a constant string like “Human Detected”,
+    that string would typically be in program memory (though this is not true for
+    Harvard Architecture systems like the PIC and Arduino). At best, an operating
+    system with memory protection would trap that access with an exception and kill
+    the program. At worst, the program would self-modify (which was the case when
+    I learned this on OS-9/6809 back in the late 80s — no memory protection on my
+    TRS-80 CoCo!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Above would likely crash, though if the user had passed in the buffer holding
+    a string, it would just be modified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Try it: [https://onlinegdb.com/L50JRWYj](https://onlinegdb.com/L50JRWYj_)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And your point is?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'My point is — there are certainly times when speed is the most important thing,
+    and it outweighs the potential problems/crashes that could be caused by a bug
+    with code using the pointer. Take for example anything that passes in a buffer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are many bad things that could happen here. By using “strlen”, the buffer
+    MUST be a string that has a NIL (‘\0’) byte at the end. This routine could end
+    up trampling through memory uppercasing bytes that are beyond the caller’s string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is wise to always add another parameter that is the max size of the buffer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: That helps. But it is still up to the compiler to catch the wrong type of pointer
+    being passed in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The compiler should not let you do that, but some may just issue a warning and
+    build it anyway. (This is why I always try to have NO warnings in my code. The
+    more warnings there are, the more likely you will start ignoring them.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try #1: Passing by Reference'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Suppose we have a function that returns the date and time as individual values
+    (year, month, day, hour, minute and second). Since we cannot get six values back
+    from a function, we first try passing in six variables by reference and having
+    the routine modify them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That works fine … as long as you know the parameters are “ints” (whatever that
+    is) and not shorts or longs or any other numeric type. This, for example, would
+    be bad:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Above, we are passing in a short (let’s say that is a 16-bit variable on this
+    system) in to a function that expects an int (let’s say that is a 32-bit signed
+    variable on this system). The function would try to place 32-bits of information
+    at the address of a 16-bit value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bad things, as they say, can happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try #2: Passing a structure by reference'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Passing in six variable pointers is more work than passing in one, so if we
+    put the values in a structure we could pass in just the pointer to that structure.
+    This has the benefit of making sure the structure is only loaded with values it
+    can handle (unlike passing in an address of something that might be 8, 16, 32
+    or 64 bits).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This should greatly reduce the potential problems since you only have one pointer
+    to screw up, and if you get the type correct (a TimeStruct) the values it contains
+    should be fine since the compiler takes care of trying to set a “uint8_t” to “65535”
+    (a warning, hopefully, and storing 8-bits of that 16-bit value as a “loss of precision”).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try #3: Returning the address of a static'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An approach various standard C library functions take is having some fixed memory
+    allocated inside the function as a static variable, and then returning a pointer
+    to that memory. The user doesn’t make it and therefore isn’t passing in a pointer
+    that could be wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This approach is better, since it gets the speed from using a pointer, and the
+    safety of not being able to get the pointer wrong since the function tells you
+    where it is, not the other way around.
+  prefs: []
+  type: TYPE_NORMAL
+- en: BUT … once you have the address of that static memory, you can modify it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: In a real Date/Time function (like the one in the C library), those variables
+    are populated with the system time when you call the function, so even if the
+    user changed something like this, it would be set back to what it was the next
+    time it was called. But, I can see where there could be issues with other types
+    of functions that just hold on to memory like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plus, it’s always holding on to that memory whether anyone is using it or not.
+    That is a no-no when working on memory constrained systems like an Arduino with
+    4K of RAM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try #4: Returning a copy of a structure'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: And now the point of today’s ramblings… I rarely have used this, since it’s
+    probably the slowest way to do things, but … you don’t just have to return a date
+    type like and int or a bool or a pointer. You can return a structure, and C will
+    give the caller a copy of the structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Above is possibly the safest way to return data, since no pointers are used.
+    The called makes an new structure variable, and then the function creates a new
+    structure variable and the return copies that structure in to the caller’s structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try it: [https://onlinegdb.com/F6rR1V-xb](https://onlinegdb.com/F6rR1V-xb)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is slower, and consumes more memory during the process of making all these
+    copies, BUT it’s far, far safer. Even ChatGPT agrees that, if going to “safe”
+    code, this is the better approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And, at my day job, I experimented with this and it’s been working very well.
+    It’s about the closest thing C has to “objects”. I even use it for a BufferStruct
+    so I can pass a buffer around without using a pointer (though internally there
+    is a pointer to the buffer memory). It looks something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The extra overhead may be a problem if you are coding for speed, but doing
+    this trick (while trying not to think about all the extra work and copying the
+    code is doing) gives you a simple way to pass things around without ever using
+    a pointer. You could even do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: And now a certain percentage of C programmers who stumble in to this article
+    should be having night terrors at what is going on here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Until next time…
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like this:'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Like Loading...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Related*'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL

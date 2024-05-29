@@ -1,0 +1,272 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:53:41'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lambda Functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.lambdafunctions.com/articles/elixir-and-rust](https://www.lambdafunctions.com/articles/elixir-and-rust)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Managing mutable data in Elixir with Rust
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of Elixir’s core benefits, and the secret to its robustness and scalability,
+    is its foundation on immutable data. Sometimes, though, immutability is just not
+    a great fit for a particular task—but that task is only one part of a large project.
+    Is it possible to enjoy the benefits of Elixir’s data model everywhere else, but
+    carve out a little mutable exception for one area?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes!
+  prefs: []
+  type: TYPE_NORMAL
+- en: A long-running Elixir project I’m involved in has just this problem. The project
+    is delivered over the web, so moving away from Elixir as a whole is not on the
+    cards because [Phoenix](https://www.phoenixframework.org/) is quite simply a cheat
+    code for web development. We *could* hive off the mutable section into a microservice,
+    but that would require significant architectural and management overhead. All
+    we really need is a little escape hatch for a limited chunk of code, while still
+    being within the same VM and able to interact normally with the rest of the service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is just what [Rustler](https://github.com/rusterlium/rustler) offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rustler is “a library for writing Erlang NIFs in safe Rust code”—in other words,
+    you can write code that looks like standard Elixir functions, but behind the scenes
+    is actually implemented in Rust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[NIFs](https://www.erlang.org/docs/17/tutorial/nif) have been a feature of
+    the Erlang VM since long before either Elixir or Rust arrived on the scene. What
+    Rust and Rustler add is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: safety—this is critical since a crash in a NIF will bring down the whole VM
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: a lot of polish and interface glue that makes it feasible to write more ambitious
+    integrations that you might be inclined to attempt with C and Erlang’s standard
+    NIF support
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: access to all of Rust’s libraries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unfortunately, most of the Rustler examples on the web focus on the speed benefits
+    and show the implementation of a trivial `add` function and then stop there. While
+    that’s fine for demonstrating the bare minimum integration required, for me the
+    interesting part of Rustler is the chance to escape in a controlled way from the
+    immutable world—I want to explore how to manage a little mutable chunk of memory
+    in a safe way. Although Rustler is certainly capable of this, there’s very little
+    available in the way of tutorials or examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hopefully this article will help.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Goal
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned above, I want to explore memory management. More specifically,
+    I want to be able to hold a chunk of data in the Rust world that persists between
+    multiple calls to different “Elixir” (Rustler) functions. These functions should
+    allow the Elixir world to pass data into the Rust world, mutate the data held
+    there, and then retrieve results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To give us something substantial to play with and avoid having to implement
+    our own data store for this demo, I’ll use Oxigraph.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Oxigraph](https://github.com/oxigraph) is a Rust graph database library implementing
+    the SPARQL standard. Let’s suppose that we want to wrap it, so that we can have
+    access to a fast graph database from within Elixir. We’ll call our wrapper `FeGraph`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We want to be able to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make a new in-memory database
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add data to it
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Export the database as a [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax))
+    string:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To keep this to a reasonable length, we’re not going to implement everything
+    that would be required to expose all the capabilities of Oxigraph; just enough
+    to demonstrate holding data on the Rust side and acting on it from Elixir.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: (If you want to follow along, I recommend working through one of the many Rustler
+    `add` tutorials I mentioned before getting into the code, so that you have a basic
+    project up and running and have worked through how Rust and Elixir functions link
+    together. Everything below here assumes you’re already at that point.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key to this whole approach is the ability to pass a [Resource](https://erlang.org/doc/man/erl_nif.html#resource_objects)
+    between the two worlds. This acts as a handle to a piece of memory; it can be
+    returned from a NIF and then passed back into another call. Exactly what we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A BEAM `Resource` is represented in Rustler by a `rustler::resource::ResourceArc<T>`
+    struct. To get started with our implementation, let’s define a new type that we
+    can use as a handle to represent the state of our graph store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a production scenario we’re likely to want to manage more state than this,
+    but for now it will suffice to define a `MyGraph` struct that just contains (via
+    a mutex) the Oxigraph data store; this represents the mutable data we want to
+    manage outside Elixir. In the future, more fields could be added to `MyGraph`
+    as necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To turn this into something that can be passed back and forth between Elixir
+    and Rust, we need to wrap it in a `ResourceArc`. In order to make our function
+    signatures a bit more readable we’ll define a new type of `GraphArc` to represent
+    a `MyGraph` struct in a `ResourceArc`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `lib.rs`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A bit of additional plumbing is required to tell Rustler that a `MyGraph` is
+    something that can be used as a `Resource`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With these definitions in place, we can write a `new` function that allocates
+    a new data store and returns a handle to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And on the Elixir side, in `fe_graph.ex`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At this point we can test in `iex`, and see that the Elixir stub above has
+    been replaced by the Rust NIF we defined, which we can run and which gives us
+    back a reference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Granted we can’t yet *do* anything with it, but we’re already defining a data
+    store in Rust and seeing evidence of it in Elixir; and behind the scenes the BEAM
+    and Rustler are taking care of all of the heavy lifting for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How about a simple function to add some data to our new store? In a way that
+    will feel very familiar to Elixir code, it will need to both take and return a
+    `GraphArc` handle. We’ll also have it accept a single string to use for all three
+    parts of the triple to store (normally of course we’d take different strings for
+    the subject, predicate, and object parts of the triple, but our focus here isn’t
+    on SPARQL—we just want some data to store.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within the function we can use our `GraphArc` state argument to get a hold of
+    the Oxigraph store that we created back in the `new` function. Once we’ve got
+    it we can add some test data to the graph as normal, then return the unchanged
+    `state`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final piece of the puzzle is to retrieve some data from our store. Rather
+    than running a query (which would require getting into more SPARQL) we’ll just
+    dump the whole database and return it as a string. As before, our new function
+    will need to accept a `GraphArc`, but this time we’ll return an `OwnedBinary`,
+    which allows us to send a binary back to the BEAM and then wash our hands of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The majority of this function turns out to be messing around getting the data
+    out of Oxigraph into a buffer, and then from the buffer into the `OwnedBinary`;
+    the Rustler wrapper has become mostly invisible which is what I was originally
+    hoping for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this in place we can now demonstrate allocating some memory in Rust, returning
+    a handle to that memory, then using it to store data outside the BEAM memory model
+    and finally fetch the data back into the Elixir world:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note the important part; the reference is the same both times despite the data
+    changing and we are *not* storing it after the `set` call; normally we’d need
+    to do something like `db = FeGraph.set(db, "http://foo.com")` instead. The only
+    reason `set` returns the reference is for convenient use with the pipe operator
+    or similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While the code shown above does skip past most of the error handling, hopefully
+    it’s clear just how accessible Rustler makes it to link Rust code into Elixir
+    projects in a way that allows you to combine the strengths of both.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rustler is a tremendous addition to the Elixir ecosystem, and it opens up far
+    more opportunities than just calculating things more quickly. Being able to opt
+    out of the standard BEAM memory model for specific sections of code can open the
+    doors to custom data stores and other features that would not generally be a good
+    fit for Elixir, while still allowing you to use the power of Phoenix for the majority
+    of your application… all with virtually seamless integration.
+  prefs: []
+  type: TYPE_NORMAL

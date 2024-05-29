@@ -1,0 +1,1198 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:56:28'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dr George W Stagg - Fortran on WebAssembly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://gws.phd/posts/fortran_wasm/](https://gws.phd/posts/fortran_wasm/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Fortran](https://fortran-lang.org) is one of the oldest programming languages
+    around. It first appeared in 1957, making it older than the C programming language,
+    the Intel 4004 CPU, and even the IBM System/360 series of mainframe computers.
+    Fortran was created at a time when the byte had just been invented, and computers
+    were still made of vacuum tubes and frustration.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ¹ The name is derived from *Formula Translator*. Fortran was originally stylised
+    in all-caps, but modern Fortran has dropped it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ² The System/360 was released around 1965\. The 4004 around 1970\. And [K&R
+    C](https://en.wikipedia.org/wiki/The_C_Programming_Language) was published in
+    1978.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ³ The argument goes that Fortran’s lack of aliasing and use of native arrays
+    rather than pointer arithmetic allow the optimiser to generate more efficient
+    output than an equivalent C program. However, there are also counter-arguments
+    against this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over the years, Fortran has formed a rich history of use for computationally
+    intensive scientific and engineering applications. It has powered the fluid dynamics
+    of weather prediction and climate models, provided the condensed matter simulations
+    for my [PhD](../../docs/thesis_gws.pdf), and is still considered by some to be
+    more efficient than C for numerically heavy work. The syntax of modern Fortran
+    is also surprisingly easy to get up and running with. This is not your parent’s
+    Fortran 77 code; most restrictions that make fixed‑form Fortran awful to use are
+    no longer in place in modern Fortran.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a clash of computational eras, this blog post is about compiling existing
+    Fortran code for WebAssembly so that it can run in a web browser. I’ll describe
+    the method we currently use for the [webR](https://github.com/r-wasm/webr) project,
+    compiling Fortran code using a patched version of [LLVM](https://llvm.org)’s `flang-new`
+    compiler. The post also serves as a request for help. The method I describe unfortunately
+    relies on a hack, and this hack means that I cannot contribute the changes back
+    to LLVM without assistance from a more experienced compiler developer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁴ “LLVM” is not an acronym, it is the full name of the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, what’s the problem?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are a surprising number of potential methods and toolchains available
+    to compile Fortran to WebAssembly. Unfortunately, none of the available options
+    are feature complete. Each method has its drawbacks, and none are a simple plug-and-play
+    solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Back in 2020, the situation was summarised wonderfully by Christoph Honal’s
+    article [FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/).
+    Even now, the article is worth reading and provides a nice background for this
+    post. I personally owe a lot to Christoph’s article, particularly for its description
+    of the [Dragonegg](https://dragonegg.llvm.org) toolchain. Without that article,
+    I would have given up on Fortran for WebAssembly a long time ago.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our goal by the end of this post is to be able to compile a modern Fortran routine
+    to WebAssembly that takes in some numerical arguments, computes the output of
+    [BLAS](http://www.netlib.org/blas/) and [LAPACK](https://netlib.org/lapack/) routines,
+    and either returns the result or prints it to console. From what I remember, in
+    2020 none of the methods outlined in Christoph’s article could do this satisfactorily.
+    Dragonegg and `f2c` both get close but have some drawbacks, as I’ll describe below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁵ LAPACK (Linear Algebra Package) is a popular library of routines used to numerically
+    solve problems in linear algebra. It’s written in Fortran 90 and itself relies
+    on a BLAS (Basic Linear Algebra Subprograms) library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁶ via [Pyodide](https://pyodide.org/en/stable/) and [webR](https://github.com/r-wasm/webr).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Together, BLAS and LAPACK routines provide a powerful numerical platform. Running
+    them in the browser opens the door for several higher-level programming environments
+    that rely on them under the hood, such as SciPy or R. The beauty of this approach
+    is that it allows you to bring existing and extensively battle-tested tools and
+    libraries to the web without having to rewrite them all in Rust or JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Later, I’ll show an example of this with a machine learning demo that directly
+    uses BLAS routines compiled from Fortran to WebAssembly. Rather than having to
+    write fiddly linear algebra numerical algorithms in JavaScript, we can use reliable
+    and efficient BLAS routines directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁷ Whilst running machine learning algorithms in a web browser will never be
+    as efficient as using dedicated hardware, such as a GPU, I still think it’s a
+    fun demo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiler round-up
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since [FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/)
+    was published things have changed a little, particularly when it comes to the
+    LLVM-based Fortran compilers. As far as I am aware, here’s a brief round-up of
+    the current situation in 2024.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `f2c` utility
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The [`f2c`](https://en.wikipedia.org/wiki/F2c) program converts Fortran 77 to
+    C code, which Emscripten can then compile into WebAssembly. This is the method
+    that the [Pyodide](https://pyodide.org/en/stable/) project uses to compile Python
+    packages containing Fortran code. They say that this [“does not work very well”](https://pyodide.org/en/0.25.0/project/roadmap.html#find-a-better-way-to-compile-fortran).
+    The tool doesn’t work with modern Fortran code, and even after conversion the
+    result still throws fatal errors and requires extensive patching.
+  prefs: []
+  type: TYPE_NORMAL
+- en: LFortran
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The LFortran compiler has made great strides over the last few years. In 2020,
+    it was [missing a lot of features](https://gitlab.com/lfortran/lfortran/-/issues/121)
+    and only supported a very small subset of Fortran. Now it now supports a much
+    wider range of language features and can be used to compile a reasonable amount
+    of Fortran code. It can even compile to WebAssembly out of the box!
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁸ Check out the LFortran demo at [https://dev.lfortran.org](https://dev.lfortran.org).
+    While extremely impressive, note that the first thing I tried was changing `x
+    ** 2` to `x ** 3` and saw that such a change is currently not supported by the
+    code generator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are still some barriers that make using LFortran a little rough.
+    The project is currently considered to be in alpha phase and the developers state
+    that issues compiling real-world code are expected. While it can successfully
+    compile some projects, such as [MINPACK](https://github.com/fortran-lang/minpack),
+    the full Fortran specification is not yet supported and so many larger projects
+    still cannot be compiled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The LFortran developers are targeting full support for Fortran 2018, and its
+    standout feature is an interactive Jupyter-like Fortran REPL. With a few more
+    years of development, I expect that LFortran will be an excellent choice for compiling
+    Fortran code for WebAssembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dragonegg
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Dragonegg](https://dragonegg.llvm.org) is a plugin for GCC that uses the GNU
+    compilers as a frontend and emits LLVM IR. With this, LLVM can be used as the
+    backend to produce WebAssembly output. The technique works, and it was the original
+    method that I used to compile Fortran sources for the [webR](https://github.com/r-wasm/webr)
+    project.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are some pretty serious drawbacks to this approach. Dragonegg
+    requires a very old version of GCC and LLVM. For most users, this means setting
+    up a virtual machine or Docker container to provide the necessary environment.
+    The LLVM IR emitted by Dragonegg also needs some fairly nasty post-processing
+    before LLVM can produce WebAssembly output. Take a look at the [script originally
+    used by webR](https://github.com/r-wasm/webr/blob/v0.1.0/tools/dragonegg/emfc.in)
+    to get an idea of the extra processing required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ⁹ The latest supported versions are `gcc-4.8` and `llvm-3.3`
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nevertheless, in 2020 this was the only real way to compile Fortran code for
+    WebAssembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classic flang
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[“Classic” Flang](https://github.com/flang-compiler/flang) is another Fortran
+    compiler targeting LLVM, based on an open-sourced PGI/NVIDIA compiler `pgfortran`.
+    Classic Flang never supported 32-bit output, so it is not an option for us since
+    we’ll be using `wasm32` for our target architecture. This will likely be the case
+    until browser support for 64-bit Wasm memory has improved.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(10) Previously, Flang or Flang-7.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(11) At the time of writing Firefox, Chrome and Node supports `wasm64`, but
+    locked behind a feature flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even so, the project documentation itself suggests that choosing to use Classic
+    Flang for a new project today is probably not a great idea:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classic Flang […] continues to be maintained, but the plan is to replace Classic
+    Flang with the new Flang in the future.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: LLVM Flang
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[“LLVM Flang”](https://flang.llvm.org/docs/) is a full ground-up reimplementation
+    of a Fortran frontend for LLVM. It was designed to replace Classic Flang, developed
+    by much of the same team, and was accepted as part of the LLVM project as of LLVM
+    11\. As such, the Flang sources can now be found in [the official LLVM source
+    tree](https://github.com/llvm/llvm-project/tree/main/flang).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(12) Also known as Flang, new Flang, or `flang-new`. Previously, F18.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flang is not yet considered to be ready for production use, but its development
+    is extremely active right now and pre-production versions of the `flang-new` compiler
+    have been made available by the team. In recent years, the compiler has become
+    very usable for compiling real-world Fortran code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Currently, LLVM Flang cannot generate WebAssembly output out of the box. Despite
+    this, we’ll soon see that with LLVM’s modular design it’s possible to use the
+    Flang frontend with LLVM’s WebAssembly backend. With this, we can take advantage
+    of all the development work put into the Flang frontend by the NVIDIA and PGI
+    teams for our own purposes of compiling Fortran to WebAssembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was also possible back in 2020, though it required larger patches to LLVM,
+    injecting custom maths routines, and a multi-step compilation process. Now, due
+    to the impressive development efforts in the `flang-new` frontend, creating a
+    Fortran to WebAssembly compiler is possible with just a few small changes to LLVM’s
+    source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building and using LLVM Flang for WebAssembly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If one were interested in trying out LLVM Flang, they might grab an LLVM release
+    using their package manager of choice. However, following that route will disappoint
+    us, as a `flang-new` binary is not included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(13) At least, not with LLVM v17.0.6 for macOS using `brew`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]brew install llvm'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Downloading https://formulae.brew.sh/api/formula.jws.json
+  prefs: []
+  type: TYPE_NORMAL
+- en: '################################################################################
+    100.0%'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Downloading https://ghcr.io/v2/homebrew/core/llvm/manifests/17.0.6_1
+  prefs: []
+  type: TYPE_NORMAL
+- en: '################################################################################
+    100.0%'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Fetching llvm
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Downloading https://ghcr.io/v2/homebrew/core/llvm/blobs/sha256:8d739bdfa4152
+  prefs: []
+  type: TYPE_NORMAL
+- en: '################################################################################
+    100.0%'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Installing llvm
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Pouring llvm--17.0.6_1.arm64_sonoma.bottle.tar.gz
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Summary
+  prefs: []
+  type: TYPE_NORMAL
+- en: '🍺 /opt/homebrew/Cellar/llvm/17.0.6_1: 7,207 files, 1.7GB'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> Checking for dependents of upgraded formulae...
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==> No broken dependents to reinstall!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]flang-new'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'zsh: command not found: flang-new'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we will be modifying the LLVM Flang source in any case, we’ll have to
+    compile from scratch. Let’s grab the LLVM v18.1.1 sources and start there instead.
+    Feel free to follow along at home; I’ll try to provide all the commands and everything
+    you need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(14) I’m going to assume you’re familiar with [Emscripten](https://emscripten.org)
+    and have a version of that toolchain on your path. If not, and you want to play
+    along, start with [emsdk](https://github.com/emscripten-core/emsdk) to setup Emscripten
+    on your machine, get comfortable with compiling C code for WebAssembly, then return
+    here to continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]git clone --depth=1 --branch=llvmorg-18.1.1 https://github.com/llvm/llvm-project.git'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cloning into 'llvm-project'...
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'remote: Enumerating objects: 138937, done.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Receiving objects: 100% (138937/138937), 199.81 MiB | 11.36 MiB/s, done.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note: switching to ''6009708b4367171ccdbf4b5905cb6a803753fe18''.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Updating files: 100% (132077/132077), done.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]cmake -G Ninja -S llvm-project/llvm -B build \'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -DCMAKE_INSTALL_PREFIX=llvm-18.1.1 \
+  prefs: []
+  type: TYPE_NORMAL
+- en: -DCMAKE_BUILD_TYPE=MinSizeRel \
+  prefs: []
+  type: TYPE_NORMAL
+- en: -DLLVM_DEFAULT_TARGET_TRIPLE="wasm32-unknown-emscripten" \
+  prefs: []
+  type: TYPE_NORMAL
+- en: -DLLVM_TARGETS_TO_BUILD="WebAssembly" \
+  prefs: []
+  type: TYPE_NORMAL
+- en: -DLLVM_ENABLE_PROJECTS="clang;flang;mlir"
+  prefs: []
+  type: TYPE_NORMAL
+- en: -- The C compiler identification is AppleClang 15.0.0.15000100
+  prefs: []
+  type: TYPE_NORMAL
+- en: '-- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -- Detecting C compiler ABI info - done
+  prefs: []
+  type: TYPE_NORMAL
+- en: -- Performing Test HAVE_POSIX_REGEX -- success
+  prefs: []
+  type: TYPE_NORMAL
+- en: -- Configuring done (29.0s)
+  prefs: []
+  type: TYPE_NORMAL
+- en: -- Generating done (2.9s)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '-- Build files have been written to: fortran/build'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]cmake --build build'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[6136/6136] Linking CXX executable bin/obj2yaml'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grab a cuppa, this step uses a lot of resources and can take a **very** long
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '^(15) **cuppa** (/ˈkʌp.ə/): noun, informal, UK. A hot drink, usually tea or
+    coffee.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interlude — Calling Fortran subroutines from C
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While we wait for LLVM to build, start up a new terminal and we’ll remind ourselves
+    how to compile and link a Fortran subroutine as part of a C program. The principles
+    here will help us later when it comes to calling Fortran from JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let’s write a simple subroutine that takes in three integer arguments:
+    `x`, `y`, and `z`. It will set the value of `z` to the sum of `x` and `y`. Name
+    our new subroutine `foo` and save the file containing your subroutine as `foo.f08`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Notice how, generally, Fortran routines pass arguments by reference and we
+    can declare how an argument will be used in the subroutine using `INTENT()`. Assuming
+    you already have a traditional Fortran compiler like `gfortran` installed, compile
+    the Fortran source into an object file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(16) You don’t *need* a native fortran compiler to follow along with the rest
+    of the post, but if you’d like one you can get `gfortran` from your OS’s usual
+    package manager as part of the GCC compiler suite. There’s also [`ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html),
+    if you’re on an Intel CPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]gfortran -c foo.f08 -o foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]file foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'foo.o: Mach-O 64-bit object arm64'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]nm foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000038 s EH_frame1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000000 T _foo_
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000000 t ltmp0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000038 s ltmp1
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m on an M1 macOS machine, so my resulting object is a Mach object for ARM.
+    If you’re a Linux user, you should see something like `ELF 64-bit LSB shared object,
+    x86-64`. I’ve also run `nm` to take a look at the names of the symbols in the
+    object that the compiler has built. Keep an eye on the symbol for our subroutine
+    — on my machine it’s named `_foo_`. The leading underscore is fairly standard,
+    but the trailing underscore differs from what is usual for C procedures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s write a C program that calls our Fortran subroutine. Notice again how
+    we pass the arguments by reference to the external symbol. Also, if your Fortran
+    compiler added the trailing underscore, we’ll need to include it when we declare
+    the symbol name in C.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(17) Modern Fortran standards provide a Fortran module [`iso_c_binding`](https://fortranwiki.org/fortran/show/iso_c_binding)
+    and a C header file `ISO_Fortran_binding.h` to improve C interoperability, but
+    our code is going to be simple enough that we can do without those today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Compile the C source using `gcc` or equivalent, and then run the resulting
+    binary to observe a truly staggering level of numerical computation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]gcc main.c foo.o -o main'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./main'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1 + 1 = 2**  **## Returning to LLVM Flang
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once LLVM has finished compiling, the `flang-new` binary should be available
+    in the directory `build/bin`. We can now run it and confirm that it has been set
+    up to produce binaries for `wasm32` and Emscripten.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./build/bin/flang-new --version'
+  prefs: []
+  type: TYPE_NORMAL
+- en: flang-new version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Target: wasm32-unknown-emscripten'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Thread model: posix'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'InstalledDir: .../fortran/build/bin'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Great! Let’s try compiling our Fortran subroutine using our freshly built compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'error: fortran/llvm-project/flang/lib/Optimizer/CodeGen/Target.cpp:1162:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'not yet implemented: target not implemented'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'LLVM ERROR: aborting'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ah, not so great. The `wasm32-unknown-emscripten` target triple unfortunately
+    hasn’t been implemented yet in the `flang-new` compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And so here comes our first patch to LLVM. We will implement the target by extending
+    Flang’s list of known target specifics. The required changes, shown below as a
+    diff, can be mostly deduced by looking at the other targets implemented in the
+    file `flang/lib/Optimizer/CodeGen/Target.cpp`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Save the contents of the above diff as the file `add-wasm32-target.diff`,
+    and then apply it to the `llvm-project` directory using `git` or the `patch` utility.
+    Then, rebuild LLVM Flang. It should be quicker to build the second time, as most
+    generated objects are unaffected by the change.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]patch -p1 -d llvm-project < add-wasm32-target.diff'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]cmake --build build'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[180/180] Generating ../../../../include/flang/ieee_arithmetic.mod'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once LLVM has been recompiled, try compiling our Fortran source once again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]file foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'foo.o: WebAssembly (wasm) binary module version 0x1 (MVP)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]llvm-nm foo.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 00000001 T foo_
+  prefs: []
+  type: TYPE_NORMAL
+- en: Success! We can confirm this is a real WebAssembly object using the `file` utility,
+    and `llvm-nm` can see the `foo` symbol within, corresponding to our Fortran subroutine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(18) You might need to use a WebAssembly aware version of this tool from Emscripten.
+    If you’re using [emsdk](https://github.com/emscripten-core/emsdk), ensure that
+    `.../emsdk/upstream/bin/` is on your `$PATH`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(19) Here I’m using Node v18, but I think anything newer than Node v16 should
+    work. Emscripten is bundled with a version of Node, but I like using [nvm](https://github.com/nvm-sh/nvm)
+    to manage my Node installations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s continue compiling our C function for WebAssembly using Emscripten and
+    running it using Node. We should see the same output as with our native binary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc main.c foo.o -o main.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]node main.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1 + 1 = 2*  *## Interlude — Calling a Fortran routine from JavaScript
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous section we used a C program to call Fortran code, but we don’t
+    technically need to do that. If we tell Emscripten about the Fortran subroutine,
+    we can call it directly from JavaScript without writing any C code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, let’s link our Fortran object with Emscripten, producing a script that
+    loads our WebAssembly binary into memory but does not execute any routines. In
+    addition to our symbol `_foo_`, we’ll also export `_malloc` and `_free` so that
+    we can use them from JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(20) See the [Emscripten documentation](https://emscripten.org/docs/tools_reference/settings_reference.html)
+    for more details about `emcc` command line options. By the way, if you’ve not
+    used Emscripten much before you might see extra `cache:INFO` lines emitted during
+    various steps in this post. They are nothing to worry about and can be ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc foo.o -sEXPORTED_FUNCTIONS=_foo_,_malloc,_free -o foo.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'cache:INFO: generating system asset: symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json...
+    (this will be cached in ".../emsdk/upstream/emscripten/cache/symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json"
+    for subsequent builds)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'cache:INFO: - ok'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]node foo.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that when we run the script `foo.js` directly… nothing happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we’ll write a JavaScript file that loads `foo.js` and then calls our Fortran
+    subroutine. We’ll need to allocate some memory to hold our integers `x`, `y` and
+    `z` using the exported `_malloc()` function. We’ll also need to set our input
+    arguments `x` and `y` to some integer values, and we can do that by setting values
+    in the allocated WebAssembly memory through `Module.HEAPU32`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[~/fortran]node standalone.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x = 123
+  prefs: []
+  type: TYPE_NORMAL
+- en: y = 456
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + y = 579
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should also be able to run the resulting WebAssembly binary in a web browser.
+    Remove the line `var Module = require('./foo.js');` from `standalone.js`, and
+    instead load the script `foo.js` in your HTML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Spin up a local web server, visit the page, and the same output should be
+    seen in the browser’s JavaScript console.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '^(22) Something like `Rscript -e ''httpuv::runStaticServer()''` or `python3
+    -m http.server` should work well.**  **## The Fortran runtime library: A journey
+    to “Hello, World!”'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ubiquitous “Hello, World!” test program is the usual way to introduce a
+    programming language, but I didn’t introduce Fortran using such a program above.
+    As you’ll see, that was for a good reason. Let’s see what happens when we try
+    to build a “Hello, World!” subroutine in Fortran and call it from C. As before,
+    we’ll compile the Fortran object using `flang-new` and use Emscripten to compile
+    and link the C code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[PRE6]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc hello.c hello.o -o hello.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioBeginExternalListOutput'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioOutputAscii'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioEndIoStatement'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'emcc: error: ''wasm-ld -o hello.wasm [...] --no-entry --stack-first --table-base=1''
+    failed (returned 1)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The build failed due to some missing symbols. This is a consequence of a more
+    general issue in that we have not yet compiled the LLVM Fortran runtime library
+    for WebAssembly. There are a bunch of library symbols that we’re currently missing,
+    including some functions that are required to print output!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, the runtime library is written in C++ as part of the LLVM source tree
+    at `llvm-project/flang/runtime`. So, in principle, all we need to do is build
+    the library using Emscripten’s `em++` compiler and then link to it whenever we’re
+    using Fortran code in our WebAssembly program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is a `Makefile` designed to make this step easy. Save it in the current
+    directory and then run `make`. It should go ahead and use the version of Emscripten
+    on your path to build a static Fortran runtime library at `build/flang/runtime/libFortranRuntime.a`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(24) Be sure to indent the rules in this file using tabs, not spaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[~/fortran]make'
+  prefs: []
+  type: TYPE_NORMAL
+- en: em++ .../ISO_Fortran_binding.o -c .../ISO_Fortran_binding.cpp
+  prefs: []
+  type: TYPE_NORMAL
+- en: em++ .../allocatable.o -c .../allocatable.cpp
+  prefs: []
+  type: TYPE_NORMAL
+- en: em++ .../array-constructor.o -c .../array-constructor.cpp
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: emar -rcs build/flang/runtime/libFortranRuntime.a .../binary-to-decimal.o
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]file build/flang/runtime/libFortranRuntime.a'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'build/flang/runtime/libFortranRuntime.a: current ar archive'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s try again, linking in our shiny new library as part of the Emscripten
+    build step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
+    hello.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'wasm-ld: warning: function signature mismatch: _FortranAioOutputAscii'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '>>> defined as (i32, i32, i64) -> i32 in hello.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '>>> defined as (i32, i32, i32) -> i32 in build/flang/runtime/libFortranRuntime.a(io-api.o)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Success? Not quite. A warning is issued, letting us know about a signature mismatch.
+    Emscripten has compiled the symbol `_FortranAioOutputAscii` to take three `i32`
+    arguments. However, `flang-new` has compiled `hello.f08` with the expectation
+    that the symbol takes two `i32` arguments and a single `i64` argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(25) This is [LLVM IR notation](https://llvm.org/docs/LangRef.html#integer-type),
+    meaning an integer of size 32 bits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(26) This continues to crop up when compiling R packages for webR. Package
+    authors or vendored libraries may have used tools such as `f2c` that declare a
+    Fortran `SUBROUTINE` to return an `int`, while other libraries might declare a
+    Fortran `SUBROUTINE` to return `void`. Who is right? I’m not sure, as I understand
+    it early Fortran did not have a standard interface to C. Personally, I think returning
+    `void` makes most sense.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is unfortunate. Despite being emitted as just a warning, if you try running
+    the emitted program using Node you will see that the problem is catastrophic.
+    WebAssembly, unlike a lot of target systems, absolutely requires that symbols
+    defined over multiple compilation units have consistent function signatures, both
+    in argument and return type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]node hello.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '.../fortran/hello.js:128'
+  prefs: []
+  type: TYPE_NORMAL
+- en: throw ex;
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'RuntimeError: unreachable'
+  prefs: []
+  type: TYPE_NORMAL
+- en: at wasm://wasm/001a0366:wasm-function[20]:0x15d9
+  prefs: []
+  type: TYPE_NORMAL
+- en: at removeRunDependency (/Users/georgestagg/fortran/hello.js:630:7)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js v18.18.0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Rather than going over the debugging process that eventually leads us to what
+    is going on here, let me point you directly to the cause of the problem. Take
+    a look at this comment from the LLVM source:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*And therein lies the problem. For us, the host is different to the target,
+    breaking assumptions in the LLVM source code. Surprisingly, this does not cause
+    as much chaos as you might expect. From what I can tell, this machinery is used
+    only to make the Fortran runtime library functions, written in C++, available
+    to Fortran. There is a compile-time calculation using `sizeof()`, and since most
+    of the sizes match anyway it mostly works fine.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(27) The [C data model](https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models)
+    for the host and target defines how many bits certain fundamental C types are
+    represented with. The specific sizes can differ based on the hardware architecture
+    and your OS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately for us, assuming you’re following along on a modern 64-bit Unix-like
+    system such as Linux or macOS, the sizes don’t match for the `long` data type.
+    The result of `sizeof(long)` on our compiler’s host platform is 8 bytes (`i64`),
+    but for the target platform of `wasm32-unknown-emscripten` the returned value
+    should be 4 bytes (`i32`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we compile the Fortran runtime library C++ code using Emscripten, things
+    are fine. The resulting symbols are compiled with signatures such that `long`
+    arguments are `i32`. However, when we compile our Fortran code with `flang-new`
+    the external library symbols are declared such that `long` arguments are `i64`.
+    This difference leads to the inconsistent function signature warning and runtime
+    failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why did using `PRINT()` in our “Hello, World!” program invoke a function that
+    takes an argument of type `long`? Well, in some implementations of Fortran there
+    are so-called “hidden” arguments that are added whenever you pass a Fortran `CHARACTER`
+    type to a function or subroutine. These extra arguments pass in the length of
+    the strings. In the Fortran runtime library the hidden arguments are declared
+    with type `size_t` which, following a chain of `typedef`s, ends up being the same
+    as `unsigned long`. This hidden implicit argument is the one with inconsistent
+    size.****  ***## Hacking around the issue
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, I don’t know enough about the LLVM or Flang internals to implement
+    a real solution to this problem. Ideally, `flang-new` would emit the correct use
+    of `i32` or `i64` for the target architecture and data model when cross-compiling,
+    no matter the host architecture the compiler is running on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since I can’t solve this today, let’s hack around it for now. We’ll build a
+    version of `flang-new` with the size of a `long` hard-coded to what we need for
+    `wasm32` and Emscripten. We’ll also make some changes so that calls to `malloc()`
+    from Fortran are emitted with an `i32` argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(28) This additionally fixes dynamic allocation with `ALLOCATE()`, a feature
+    introduced in Fortran 90.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The required patches are again shown as a diff below. If you’re following along,
+    save it as a file named `force-4-byte-values.diff` and apply it to the `llvm-project`
+    directory using `git` or the `patch` utility. Finally, recompile `flang-new` once
+    more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[~/fortran]patch -p1 -d llvm-project < force-4-byte-values.diff'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]cmake --build build'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[0/60] Building CXX object tools/flang/lib/Lower/Runtime.cpp.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[49/49] Generating ../../../../include/flang/ieee_arithmetic.f18.mod'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once LLVM has been rebuilt, try compiling our program once again. This time,
+    it should compile without any warnings and successfully run under Node:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
+    hello.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]node hello.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hello, World!*********  ***# Compiling BLAS and LAPACK for WebAssembly
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have a Fortran compiler that can output WebAssembly objects, let’s
+    build some Fortran projects. [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms)
+    (Basic Linear Algebra Subprograms) is a set of low-level routines that perform
+    many common operations in linear algebra, including tools for matrix and vector
+    multiplication. They are a de facto standard in numerical computation, with several
+    different implementations of the BLAS routines available. Some implementations
+    have been tuned for use on certain hardware, others have been well optimised on
+    account of being around for a long time — the original BLAS routines were released
+    in 1979!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s grab a copy of the latest release of the so-called “reference implementation”
+    of BLAS, written in Fortran 90, and compile it using the patched LLVM we built
+    above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]curl -L https://www.netlib.org/blas/blas-3.12.0.tgz > blas-3.12.0.tgz'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '% Total % Received % Xferd Average Speed Time Time Time Current'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dload Upload Total Spent Left Speed
+  prefs: []
+  type: TYPE_NORMAL
+- en: 100 323k 100 323k 0 0 317k 0 0:00:01 0:00:01 --:--:-- 317k
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]tar xzf blas-3.12.0.tgz'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll need to modify `BLAS-3.12.0/make.inc` to tell it about our version of
+    `flang-new` and the Emscripten tools. Modify the following settings, leaving the
+    other lines in that file as they are, then build BLAS using `make`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[~/fortran]cd BLAS-3.12.0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran/BLAS-3.12.0]make'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ../build/bin/flang-new -O2 -c -o isamax.o isamax.f
+  prefs: []
+  type: TYPE_NORMAL
+- en: ../build/bin/flang-new -O2 -c -o sasum.o sasum.f
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: emar cr blas_LINUX.a isamax.o ... xerbla_array.o
+  prefs: []
+  type: TYPE_NORMAL
+- en: emranlib blas_LINUX.a
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran/BLAS-3.12.0]cd ..'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That went pretty well! Let’s try using it in a Fortran subroutine compiled for
+    WebAssembly. For fun, we’ll try working with double precision complex numbers.
+    We’ll use the BLAS level 2 routine [`ZGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/dc/dc1/group__complex16__blas__level2_gafaeb2abd9fffa7442b938dc384aeaf47.html#gafaeb2abd9fffa7442b938dc384aeaf47),
+    which performs the matrix-vector operation
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\begin{equation} \mathbf{y} \leftarrow \alpha\mathbf{A}\mathbf{x} + \beta\mathbf{y},
+    \end{equation}\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: where \(\alpha\) and \(\beta\) are scalar constants, \(\mathbf{x}\) and \(\mathbf{y}\)
+    are vectors, and \(\mathbf{A}\) is a matrix. Our Fortran routine will take in
+    `alpha`, `beta`, `A`, `X`, and `Y`, with a fixed parameter `N` so that \(\mathbf{A}\)
+    is a square matrix with three rows and columns. The result is written back into
+    \(\mathbf{y}\), so we declare that `Y` is of intent `INOUT`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Notice how with some BLAS routines, `CHARACTER` strings of length one control
+    configuration settings. Here, we pass `''N''` as the first argument. It is one
+    of the reasons we spent time and care above building a version of `flang-new`
+    that can deal with `CHARACTER` arguments and their hidden implicit length arguments
+    for the `wasm32` target.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we’ll write a C program to create some complex variables, send them to
+    Fortran and BLAS for processing, and print the result. This will let us know both
+    that passing double precision complex numbers to Fortran and calling BLAS routines
+    works as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*[~/fortran]./build/bin/flang-new -c bar.f08 -o bar.o'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]emcc bar.c bar.o build/flang/runtime/libFortranRuntime.a BLAS-3.12.0/blas_LINUX.a
+    -o bar.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]node bar.js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Y[0]: 23.000000 + 6.000000i, Y[1]: 18.000000 + 10.000000i, Y[2]: 6.000000 +
+    16.000000i'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And there we have it: BLAS compiled from Fortran 90 sources and running under
+    WebAssembly! To finish up, let’s confirm for ourselves that this output is correct,'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(31) Keeping in mind Fortran’s column-major array layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: \[\begin{equation} \begin{split} \alpha\mathbf{A}\mathbf{x} & + \beta\mathbf{y}
+    \\[0.5em] & = \begin{pmatrix} i & 7 & 8\\ 4 & 2i & 9\\ 5 & 6 & 3i \end{pmatrix}
+    \cdot \begin{pmatrix} 0\\1\\2 \end{pmatrix} + 2i \begin{pmatrix} 3\\4\\5 \end{pmatrix}\\[0.5em]
+    & = \begin{pmatrix} 23+6i\\18+10i\\6+16i \end{pmatrix}. \end{split} \end{equation}\]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example: A handwritten digit classifier'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The following demo uses a [multi-layer perceptron (MLP)](https://en.wikipedia.org/wiki/Multilayer_perceptron)
+    artificial neural network to classify hand-drawn digits. Try it out with your
+    mouse or touchscreen! Just draw a digit from 0-9 in the box, and the classifier
+    will try to label what digit you wrote. The relative probabilities according to
+    the network are shown in a plot on the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s not a perfect model, but it works fairly well for me! The weights powering
+    the model have been pre-trained using Python, but the classification is performed
+    at runtime using JavaScript and WebAssembly, running in your browser right now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With an MLP network, the classification process is essentially a repeated application
+    of matrix-vector addition and multiplication. In this demo the heavy lifting is
+    done by a single Fortran subroutine making use of the BLAS level 2 routine [`DGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/d7/d15/group__double__blas__level2_gadd421a107a488d524859b4a64c1901a9.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building LAPACK
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[LAPACK](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms) (Linear
+    Algebra Package) is a software library for solving linear algebra problems numerically.
+    It’s built upon BLAS and has similarly become a standard with many reimplementations
+    designed for specific hardware or systems.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s finish this post by also building the “reference implementation” of LAPACK.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(32) Also available from [netlib](https://www.netlib.org/lapack/), released
+    under a modified BSD licence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]curl -L https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz
+    > lapack-3.12.0.tgz'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '% Total % Received % Xferd Average Speed Time Time Time Current'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dload Upload Total Spent Left Speed
+  prefs: []
+  type: TYPE_NORMAL
+- en: 100 7747k 0 7747k 0 0 4117k 0 --:--:-- 0:00:01 --:--:-- 6655k
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]tar xzf lapack-3.12.0.tgz'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to BLAS, we need to modify some configuration options to let LAPACK
+    know about Emscripten and `flang-new`. Copy the file `lapack-3.12.0/make.inc.example`
+    to `lapack-3.12.0/make.inc`, then make the following modifications. Be sure to
+    replace `[...]` with the full path to the build directory on your machine, and
+    leave the other options in the file as they are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(33) A relative path doesn’t work here. Alternatively, simply set the option
+    to read `flang-new` and make it available on your `$PATH`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Then, build LAPACK using the `make lib` command to create the WebAssembly
+    static library `liblapack.a`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]cd lapack-3.12.0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran/lapack-3.12.0]make lib'
+  prefs: []
+  type: TYPE_NORMAL
+- en: make -C SRC
+  prefs: []
+  type: TYPE_NORMAL
+- en: '.../build/bin/flang-new -O2 -c -o sbdsvdx.o sbdsvdx.f'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: emar cr ../../libtmglib.a slatms.o ... dlarnd.o
+  prefs: []
+  type: TYPE_NORMAL
+- en: emranlib ../../libtmglib.a
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran/lapack-3.12.0]cd ..'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[~/fortran]file lapack-3.12.0/liblapack.a'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'lapack-3.12.0/liblapack.a: current ar archive'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this, LAPACK routines can be called in a similar way to the BLAS routine
+    example in the previous section.*  *## Example: Polynomial Interpolation with
+    Linear Algebra'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following demo finds interpolating polynomials for a set of points, demonstrating
+    LAPACK routines running in your web browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click the plot to add new points. An interpolating polynomial will be found
+    to pass through all the points using [Vandermonde’s method](https://en.wikipedia.org/wiki/Vandermonde_matrix).
+    The linear algebra equation given by this method is then solved numerically in
+    LAPACK using the [`DGELS()`](https://netlib.org/lapack/explore-html-3.6.1/d7/d3b/group__double_g_esolve_ga1df516c81d3e902cca1fc79a7220b9cb.html#ga1df516c81d3e902cca1fc79a7220b9cb)
+    routine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ^(34)  It is always possible to find an \(n-1\) degree polynomial containing
+    \(n\) data points exactly. However, when \(n\) is large the polynomial fluctuates
+    wildly between successive data points. This problem is known as [Runge’s phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon)
+    and can be avoided by using [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation).*******
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,562 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:19:36'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your GitHub pull request workflow is slowing everyone down
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://graphite.dev/blog/your-github-pr-workflow-is-slow](https://graphite.dev/blog/your-github-pr-workflow-is-slow)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: As developers, we strive to write clean, modular code that's easy to maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, between the pressure to deliver features quickly and the complexity
+    of modern applications, putting this into practice takes a lot of work. Any meaningful
+    engineering task can easily result in large, tangled pull requests that become
+    bottlenecks in the development process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this guide, we'll explore how the stacking workflow can help you overcome
+    these challenges and ship better code faster. Whether you're new to stacking or
+    looking to optimize an existing process, this workflow can streamline collaboration,
+    accelerate review cycles, and promote coding best practices on your team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Why your GitHub pull request workflow is slow**[](/blog/your-github-pr-workflow-is-slow#why-your-github-pull-request-workflow-is-slow)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here at Graphite, we analyzed data from thousands of repositories to understand
+    how common pull request (PR) workflows on GitHub lead to blocked developers, slow
+    reviews, and reduced code quality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**PRs are too big**[](/blog/your-github-pr-workflow-is-slow#prs-are-too-big)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The single most important bottleneck is PR size - large PRs can make code reviews
+    frustrating and ineffective. The average PR on GitHub has [900+ lines](https://www.keypup.io/product/average-pull-request-size-metric)
+    of code changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For speed and quality, PRs should be maintained under 200 lines—with 50 lines
+    being ideal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To put this in perspective, where giant 500+ line PRs take around 9 days to
+    get merged on average, tiny PRs under 100 lines can make it from creation to landing
+    within hours.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**PRs take too long to review and progress**[](/blog/your-github-pr-workflow-is-slow#prs-take-too-long-to-review-and-progress)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When PRs have thousands of lines changed, properly reviewing them becomes incredibly
+    difficult. Developers can easily waste days revising the code after initial feedback,
+    and reviewers need to then rescan all the code, spot changes, and approve or reject
+    every revision.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These back-and-forth review cycles on large PRs slow down team velocity, and
+    aren’t necessarily thorough. According to Graphite’s data, only 24% of massive
+    1000+ line PRs receive **any** review comments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Large PRs introduce more bugs**[](/blog/your-github-pr-workflow-is-slow#large-prs-introduce-more-bugs)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When code isn’t reviewed thoroughly, it’s easy for bugs to slip through since
+    reviewers [often don’t have the time to give each PR](https://graphite.dev/blog/how-large-prs-slow-down-development)
+    the attention they deserve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Problems can easily get hidden between the diffs, and reviewers often make assumptions
+    instead of testing to avoid feeling overwhelmed. One particularly interesting
+    finding is that as the size of a PR increases (by number of files changed), the
+    amount of time reviewers spend on each file decreases significantly (for PRs with
+    8 or more files changed).
+  prefs: []
+  type: TYPE_NORMAL
+- en: These quick reviews can easily lead to quality issues, which yield more bug
+    fix PRs, technical debt, and team frustration. Engineers feel their progress reversing
+    as they devote more and more time to patching bugs rather than developing features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Standard GitHub pull request workflow**[](/blog/your-github-pr-workflow-is-slow#standard-github-pull-request-workflow)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Millions of developers use GitHub's pull request model daily, but in practice
+    teams often encounter pain points that slow progress to a crawl.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's understand the standard GitHub PR workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**1\. Create a feature branch**[](/blog/your-github-pr-workflow-is-slow#1-create-a-feature-branch)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Typically, GitHub projects follow a branching model where developers create
+    a new branch for each user story or feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, you **checkout** the **main branch** *(where the production-ready code
+    lives)* and create a feature branch using the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**This spawns an isolated stream for your changes.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, this may seem great—you have a safe space to build new functionality without
+    impacting **main**. It lets **main** remain stable so your CI/CD pipeline is unobstructed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**But as your branch history diverges further from main, you’ll notice a few
+    significant problems:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Merging [upstream changes](https://stackoverflow.com/questions/2739376/definition-of-downstream-and-upstream)
+    becomes tedious due to rebasing conflicts.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You may disrupt other dependent branches while pushing a [hotfix](https://en.wikipedia.org/wiki/Hotfix),
+    losing your place.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: After weeks and multiple new main releases, your code now depends on outdated
+    branches and you may require many changes before it works with the latest branch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What was once a productive branch devolves into a stale silo as you start drowning
+    in more and more technical debt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**2\. Write code and commit changes**[](/blog/your-github-pr-workflow-is-slow#2-write-code-and-commit-changes)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since workflows don’t change overnight, you continue writing your big new feature.
+    You optimize for getting prototypes built instead of maintaining strict isolation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It feels faster to iterate on related components within your dedicated branch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Before you know it, you have:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1,500 lines modifying critical services.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data model changes spanning multiple microservices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multiple new frontend routes and UI flows.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All of this is smashed together in an unmanageable commit history
+  prefs: []
+  type: TYPE_NORMAL
+- en: But at least it's still safely quarantined behind your feature branch, right?
+    Not really—your branch is highly coupled across all of those fronts, and decoupling
+    things later can become challenging without a lot of rebasing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once ready, you commit and push the local code changes to the remote feature
+    branch. Now your changes are saved on the remote repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**3\. Open a pull request**[](/blog/your-github-pr-workflow-is-slow#3-open-a-pull-request)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once your feature branch contains the changes to be merged into the main branch,
+    the next step is to open a pull request (PR).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**A pull request lets you notify your teammates that your code is ready for
+    review and feedback.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To create a PR, you will go to your code management tool and open a pull request
+    for your branch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You write a short, descriptive summary of the changes in your PR e.g., "Added
+    user profile feature."
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the PR body, you write a longer description explaining in more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The specifics of what changes you have made and what new functionality you have
+    added.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical details on how you implemented things.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your reasoning for why these changes are needed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Steps for how teammates can test out the new functionality you built.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The PR now becomes a centralized place for discussion tied to the branch. You
+    will ping team members and stakeholders to request their code review.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**4\. Address review comments**[](/blog/your-github-pr-workflow-is-slow#4-address-review-comments)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After your code goes under review, teammates thoroughly inspect it for bugs,
+    bad coding practices that slipped in, edge cases you could’ve considered, and
+    opportunities for simplification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Issues large and small will inevitably come up. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have iterative back-and-forth code-level conversations on the PR page. Teammates
+    can comment on specific lines of code to point out problems or ask clarifying
+    questions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For each round of feedback, you dive back into your branch to address the comments.
+    This leads to a lot of rework—fixing defects, refactoring architecture, adding
+    test cases, etc., based on the insights from reviewers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you push new commits to your branch, they automatically appear in the pull
+    request for further feedback. This review cycle continues until all issues are
+    resolved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**5\. Merge your pull request**[](/blog/your-github-pr-workflow-is-slow#5-merge-your-pull-request)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Finally, after all the feedback has been sufficiently addressed and your code
+    receives a LGTM ("looks good to me") from teammates, it’s time to merge your approved
+    pull request into **main**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This merge integrates your code with **main**, which will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Merge your branch commits into the main branch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automatically close the pull request.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Delete your feature branch *(optional, depends on your internal workflows)*.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your changes are now fully incorporated into the production code. But for every
+    new (even closely related) feature, you’ll start from square one, repeating the
+    entire workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What if there was a better way?** Enter [stacking](https://stacking.dev).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Improving PR workflows with stacking**[](/blog/your-github-pr-workflow-is-slow#improving-pr-workflows-with-stacking)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Stacking is a development approach that optimizes the GitHub pull request
+    workflows by breaking large features into small, dependent pull requests that
+    get incrementally integrated. Once all incremental pull requests have been approved,
+    they get merged with main.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's explore how stacking addresses the painpoints in traditional PR workflows
+    and meaningfully increases your development speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What is stacking?**[](/blog/your-github-pr-workflow-is-slow#what-is-stacking)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Stacking structures feature development using “stacks” of small pull requests
+    built on top of one another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By stacking PRs, each PR becomes more focused and is easier to review and fix.
+    And new work can continue to build on existing PRs before they get approved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This lets engineers rapidly open multiple small PRs and progress concurrently
+    without being blocked. Changes ship continuously rather than landing in massive
+    monolithic code dumps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**How does stacking work?**[](/blog/your-github-pr-workflow-is-slow#how-does-stacking-work)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Stacking transforms how large features get built by having developers split
+    their work into multiple small, interconnected pull requests. Instead of one massive
+    PR, they create a stack of focused changes that build on each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*For example, a developer may be coding a new registration system. Rather than
+    complete all the frontend, backend, and database work in a single huge 1000 line
+    PR, they would break it down. One PR implements the registration API endpoints.
+    Another connects these to the database. A third builds out the registration page
+    tapping into the new API.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, every PR is restricted to only 1 commit of <200 lines, keeping changes
+    tightly scoped. This forces developers to consciously limit work to related changes—the
+    registration endpoint PR can't sneak in unrelated styling tweaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These focused PRs interlink together into a cohesive stack—the registration
+    page PR branches off the API PR, which builds on the database PR. Changes integrate
+    upstream incrementally as they’re reviewed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A developer tool like Graphite, that automates stacking handles all of the dependencies
+    between PRs, updating branches and continuously rebasing to keep branches in sync.
+    So,  with smaller changes, stacking dramatically reduces the time required for
+    reviews and revisions, helping you implement new features and fix bugs faster
+    than the traditional workflows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Why stacking improves the pull request workflow**[](/blog/your-github-pr-workflow-is-slow#why-stacking-improves-the-pull-request-workflow)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Transitioning teams from the traditional workflow to a stacking workflow fundamentally
+    upgrades how changes get structured, reviewed, and integrated. It optimizes for
+    productivity, quality, and comprehension. Here are a few ways it helps your dev
+    productivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Breaks down large changes**[](/blog/your-github-pr-workflow-is-slow#breaks-down-large-changes)'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Stacking centers around breaking down big feature work into chains of smaller
+    pull requests. Each PR is typically limited to 1 commit focused on an isolated
+    change. This restriction guides developers to consciously make only a single change,
+    squashing and rebasing along the way, instead of cluttering the PR with random
+    unnecessary commits like "typo fixes".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Accelerates review cycles**[](/blog/your-github-pr-workflow-is-slow#accelerates-review-cycles)'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: With traditional practices, devs batch changes into huge PRs that overwhelm
+    reviewers. Feedback gets pushed further and further in time because of how long
+    it’d take to review big chunks of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In contrast, stacking small PRs speeds up feedback loops, as reviewers have
+    much less complexity to parse and can give both timely and thorough feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Simplifies bug fixes**[](/blog/your-github-pr-workflow-is-slow#simplifies-bug-fixes)'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Atomization ensures fixes stay clean—if any PR introduces issues, reverting
+    that single, contained change is simple. The smaller this PR is, the quicker your
+    code can be fixed. For instance, a bug in a 50-line PR may take a few minutes
+    to fix compared to a 500-line PR.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Enables steady integration**[](/blog/your-github-pr-workflow-is-slow#enables-steady-integration)'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: With typical huge PR workflows, there ends up being an uncomfortable pressure
+    around finally getting giant changes approved and merged. Especially as the lengthy
+    review process drags on, managers start pushing hard to accelerate the merge and
+    unblock other work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the contrary, stacked PRs can flow into main rapidly through steady continuous
+    delivery of tiny, incremental changes. Each change is isolated and low risk, making
+    reverts painless if a merge leads to a bug. By splitting reviews before releasing
+    batches of hundreds or thousands of lines, stacking removes the bottlenecks and
+    tensions that accumulate around giant PRs
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you know stacking can greatly benefit your internal developer and Ops
+    workflows, how do you implement this flow for your team?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**GitHub pull request workflow with stacking**[](/blog/your-github-pr-workflow-is-slow#github-pull-request-workflow-with-stacking)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s look at a stacking workflow in action. The goal is to optimize GitHub
+    workflows through steady integration instead of having large, monolithic code
+    changes. We want our changes to flow through fluidly rather than turning them
+    into massive PRs that block other developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To simplify things, we’ll be working on [**Graphite**](https://graphite.dev/)—a
+    powerful tool that automates many stacking workflow steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**1\. Checkout main branch to start fresh**[](/blog/your-github-pr-workflow-is-slow#1-checkout-main-branch-to-start-fresh)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s suppose you’re working on a new feature—**app notifications**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you install and integrate Graphite with your Git repo, you can check out
+    the latest main branch code to ensure you begin with up-to-date context:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike Git workflows, where it is easy to neglect staying updated, Graphite
+    centers your workflow around continually integrating with the current mainline
+    state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**2\. Build feature incrementally through stacked branches**[](/blog/your-github-pr-workflow-is-slow#2-build-feature-incrementally-through-stacked-branches)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With main checked out, start constructing your feature through iterative, focused
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a first step for our **app notifications** feature, we’ll add initial notification
+    scaffolding by staging changes and committing them to a new branch in one flow
+    using `gt create`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This command will add your changes and create a new branch in one motion. You
+    can then continue iterating by creating and stacking additional branches:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The email templates build on the scaffolding foundation while the review happens
+    asynchronously. Engineers avoid blocking progress on dependent work. Changes integrate
+    smoothly through steady streams instead of massive pull requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**3\. Squash multi-commit branches**[](/blog/your-github-pr-workflow-is-slow#3-squash-multi-commit-branches)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you have multiple commits for a branch, Graphite makes it simple to squash
+    and merge them, bringing consistency and following the 1 commit per PR standard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: By cleaning up your PR commit history, you ensure a clear and concise main branch
+    history that makes it easy to see exactly what’s changed over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**4\. Merge to main incrementally**[](/blog/your-github-pr-workflow-is-slow#4-merge-to-main-incrementally)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After completing all your feature work incrementally, your small PRs can easily
+    be merged into the main branch without becoming a bottleneck or blocker for other
+    developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Simply submit the stack of branches to generate a stack of linked pull requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graphite auto-creates PRs for the branches so changes can flow downstream. It
+    even autopopulates the titles and descriptions with templates so you have a basic
+    PR ready to go—fill out the template, and you’re good to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, after approval, your feature stack smoothly merges into **main**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**5\. Greatly reduces the possibility of bugs**[](/blog/your-github-pr-workflow-is-slow#5-greatly-reduces-the-possibility-of-bugs)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In a stacked workflow, made up of many small, dependent pull requests, each
+    change is small enough to ensure thorough review. Because large features are broken
+    up into atomic changes and merged incrementally, it’s easy to roll back regressions
+    and fix bugs, avoiding unnecessary downtime that comes with big, monolithic changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Simplify your dev workflows with stacking in Graphite**[](/blog/your-github-pr-workflow-is-slow#simplify-your-dev-workflows-with-stacking-in-graphite)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most developers still struggle with all of the moving parts—scattered tools,
+    tangled branches, and stalled reviews of code review.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[**Graphite**](https://graphite.dev/) **offers a better way forward.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graphite parallelizes review and development, automates all of the complexities
+    of Git, and gives you more time to build.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developers stay unblocked on code review and continue pushing changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reviewers provide rapid, thorough feedback, as features are broken up into small
+    pieces
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managers rest easy as projects ship reliably
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Graphite organizes GitHub PRs into stacks while simplifying and accelerating
+    code review.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Start building with** [**Graphite**](https://graphite.dev/) **today.**'
+  prefs: []
+  type: TYPE_NORMAL

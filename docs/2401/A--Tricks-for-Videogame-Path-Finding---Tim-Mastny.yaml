@@ -1,0 +1,127 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 17:09:36'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A* Tricks for Videogame Path Finding | Tim Mastny
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/](https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Here’s a few tricks to make the algorithm faster and easier to implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implicit Graph Data Structure
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In textbooks, graphs are represented by a list of nodes and an adjacency matrix
+    or adjacency list. But you can be a little more flexible about representing adjacency
+    nodes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let’s say our game screen has 256 * 240 pixels. We’ll call the
+    coordinates of each pixel a node. Then we can say there are 8 adjacent pixels:
+    up, down, left, right, and the 4 diagonals. The cardinal directions have a weight
+    of 1, while the diagonals have a weight of the square root of 2 (~1.4).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We don’t need to create a huge adjacency list: we can generate it on the fly.
+    Moreover, not every pixel is a valid position for the monster: it might be on
+    a wall or occupied by another sprite. In that case, we can dynamically exclude
+    that pixel from the adjacency list.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how this might look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: So we only need to generate the adjacency list for the nodes we are actually
+    going to visit, and we don’t have to manually exclude adjacent nodes with a map
+    editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Geometry Informed Heuristics
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also manually tune aspects of the algorithm based on the geometry of
+    your map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step size
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Above I talked about using the pixels as nodes, but in a 2d tile based game,
+    you can use the tiles as nodes. This speeds up the search dramatically, since
+    the monster can find a path to the player in fewer iterations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this method, the path really isn’t an exact sequence of steps: your monster
+    likely isn’t moving at a speed of 1 tile per frame. Now the path is a series of
+    *directions* the monster should go.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that’s okay! As I said in the Dijkstra section, our monster doesn’t actually
+    care about the exact path, which is changing each frame as the player moves. It
+    just needs to move in a direction that could possibly reach the player (i.e. not
+    straight into a wall).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Iteration depth
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'One cool feature about A*: once a node comes off the priority queue, we know
+    that that node represents the last step in the best path we’ve seen so far. Therefore,
+    if we stopped the algorithm at some fixed number of iterations, we would know
+    that the resulting path is our best guess for the shortest path to the destination.
+    So we can get reasonable progress without the running the algorithm to completion.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You need to tune this maximum iteration depth to the geometry of the level.
+    For example, if the depth is too small you can still have monsters get stuck behind
+    a wall:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/3e5f1df81a892e847c511804471ebf12.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: With a fixed iteration depth of 30 tiles, we can position the player so the
+    monster gets traps and can’t make progress towards the player. How does this happen?
+    Remember that A* is recomputed each frame. On the first frame once reaching the
+    wall, the monster calculates that it should move down. But on the next frame,
+    it calculates that it should move up. This casuses the monster to get stuck in
+    a loop. However, as soon as the player moves into it’s range, the monster is able
+    to correctly find a path to the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see this effect exaggerated with a fixed depth of `1`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The monster always returns to pxiel 2 because it’s the shortest (Euclidean)
+    distance to the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you wanted to be really fancy, you could pre-compute the maximum depth A*
+    needs to find a path from any position on the map. Unlike the pre-computed Dijkstra,
+    you only have to save that maximum, since you know A* will find a valid path in
+    real time, given that maximum depth.
+  prefs: []
+  type: TYPE_NORMAL

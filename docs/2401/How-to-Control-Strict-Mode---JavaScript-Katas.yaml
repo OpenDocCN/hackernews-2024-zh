@@ -1,0 +1,174 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:30:18'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Control Strict Mode | JavaScript Katas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jskatas.org/blog/2023/10/16-control-strict-mode/](https://jskatas.org/blog/2023/10/16-control-strict-mode/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I was surprised to see that the worker threads run in non-strict mode by default.
+    This should rarely happen, because when using ES modules (ESMs), classes or `"use
+    strict"` then the engine forces strict mode. I didn't know this in the beginning.
+    I have been working on the katas I use for this site in the [javascript-katas
+    repo](https://codeberg.org/wolframkriesing/javascript-katas) which uses ESMs and
+    `type=module`, my default. This makes the entire nodejs project, any `npm ...`
+    command run use strict mode. Escaping from strict mode is not easily possible,
+    but one way to run code in non-strict mode is by using a worker thread.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I always like to understand where things originate, so let's read about strict
+    mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Strict Mode – When and Why?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Strict mode was introduced [in ES5 (in 2009)](https://262.ecma-international.org/5.1/#sec-4.2.2).
+    In the specification it says strict mode was added
+  prefs: []
+  type: TYPE_NORMAL
+- en: in the interests of security, to avoid what [...] consider to be error-prone
+    features, to get enhanced error checking
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: The strict variant also specifies additional error conditions that must be reported
+    by throwing error exceptions
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: So strict mode was introduced for making JS safer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Strict Mode?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Actually the worker I used was just a mean to solve my actual problem, which
+    was running tests for the `arguments` kata. In order to do that I needed to run
+    the tests in non-strict mode, so let's have a look at the strict mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Where does the strict mode play a role now? I had been diving deep into the
+    "function API", digging in the very first [ES1 spec](https://www.ecma-international.org/wp-content/uploads/ECMA-262_1st_edition_june_1997.pdf)
+    and all versions beyond to find out when was what introduced or deprecated (deprecation
+    happens rarely in JavaScript). So I came across `arguments` and when I wrote the
+    following test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It failed with "Uncaught SyntaxError: Unexpected eval or arguments in strict
+    mode", which was not due to the test code itself, but the rest of the code I ran
+    in the worker thread. The above test only got injected and makes only a small
+    part of the entire code run in the worker. The code has an `import` in it, which
+    turned all the code to be run in strict mode. And as the error says `arguments`
+    is not allowed in strict mode.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I want to control when to turn on strict mode. But for that let's understand
+    strict mode a bit better first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What forces Strict Mode?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As mentioned above `"use strict"` turns on strict mode, but in this case there
+    was none in the worker code yet, so what turned it on? In the [ES6 spec chapter
+    "Strict Mode Code"](https://262.ecma-international.org/6.0/#sec-strict-mode-code)
+    the following lines were newly added which force strict mode to turn on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Module code is always strict mode code.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: All parts of a ClassDeclaration or a ClassExpression are strict mode code.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: So the `import` turned it on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Control Strict Mode?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: So I rewrote the code to not use `import` and it ran in non-strict mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now I can control strict mode, I just have to add `"use strict"` at the top
+    of the code. Even better, I can put `"use strict"` at the beginning of a function
+    body, and it makes only this function run in strict mode. It must be the first
+    statement in this function, see the code below for some exploration. Oooh, I see
+    new katas arising.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above fails with the error message we know from above "Unexpected eval or
+    arguments in strict mode".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above fails too, for the same reason. Here only the function is run in strict
+    mode, but that's also where `arguments` is used, so it fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Passes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this one passes too, because the `"use strict"` strings are not at the
+    beginning of a function. I was irritated in the beginning, because I expected
+    it to be at the beginning of a scope, so after the `{`, but I was wrong. The [spec
+    also states](https://262.ecma-international.org/5.1/#sec-10.1.1) this explicitly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if the function code begins with a Directive Prologue that contains a Use Strict
+    Directive.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: in human words, this means the function must start with a `"use strict"` string.
+    The scope is not mentioned there. The spec defines three more cases in very hard
+    to read words. These are 1) the global code, 2) eval code and 3) `Function` code,
+    when either starts with a `"use strict"` string, then the entire code is run in
+    strict mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this I did not only learn what strict mode restricts, but also how to control
+    it. And all the magic is gone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 💡 **To turn on strict mode, you can use `"use strict"` in the four described
+    ways, classes or modules. That's how strict mode can be (manually) turned or forced
+    to be on.**
+  prefs: []
+  type: TYPE_NORMAL

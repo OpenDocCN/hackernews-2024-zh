@@ -1,0 +1,441 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:40:25'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why choose async/await over threads? – notgull – The world's number one source
+    of notgull
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://notgull.net/why-not-threads/](https://notgull.net/why-not-threads/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A common refrain is that threads can do everything that `async`/`await` can,
+    but simpler. So why would anyone choose `async`/`await`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a common question that I’ve seen a lot in the Rust community. Frankly,
+    I completely understand where it’s coming from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust is a low-level language that doesn’t hide the complexity of coroutines
+    from you. This is in opposition to languages like Go, where `async` happens by
+    default, without the programmer needing to even consider it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Smart programmers try to avoid complexity. So, they see the extra complexity
+    in `async`/`await` and question why it is needed. This question is especially
+    pertinent when considering that a reasonable alternative exists in OS threads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s take a mind-journey through `async` and see how it stacks up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Background Blitz
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Rust is a low-level language. Normally, code is linear; one thing runs after
+    another. It looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nice and simple, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, sometimes you will want to run many things at once. The canonical
+    example for this is a web server. Consider the following written in linear code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Imagine if `handle_client` takes a few milliseconds, and two clients try to
+    connect to your webserver at the same time. You’ll run into a serious problem!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Client #1 connects to the webserver, and is accepted by the `accept()` function.
+    It starts running `handle_client()`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Client #2 connects to the webserver. However, since `accept()` is not currently
+    running, we have to wait for `handle_client()` for Client #1 to finish running.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After waiting a few milliseconds, we get back to `accept()`. Client #2 can
+    connect.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now imagine that instead of two clients, there are two million simultaneous
+    clients. At the end of the queue, you’ll have to wait several minutes before the
+    web server can help you. It becomes un-scalable very quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, the embryonic web tried to solve this problem. The original solution
+    was to introduce threading. By saving the value of some registers and the program’s
+    stack into memory, the operating system can stop a program, run another program
+    in its place, then resume running that program later. Essentially, it allows for
+    multiple routines (or “threads”, or “processes”) to run on the same CPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using threads, we can rewrite the above code as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, the client is being handled by a separate thread than the one handling
+    waiting for new connections. Great! This avoids the problem by allowing concurrent
+    thread access.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Client #1 is `accept`ed by the server. The server spawns a thread that calls
+    `handle_client`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Client #2 tries to connect to the server.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Eventually, `handle_client` blocks on something. The OS saves the thread handling
+    Client #1 and brings back the main thread.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The main thread `accept`s Client #2\. It spawns a separate thread to handle
+    Client #2\. With only a few microseconds of delay, Client #1 and Client #2 are
+    run in parallel.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Threads work especially well when you consider that production-grade web servers
+    have dozens of CPU cores. It’s not just that the OS can give the *illusion* that
+    all of these threads run at the same time; it’s that the OS can *actually* make
+    them all run at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Eventually, for reasons I’ll elaborate later, programmers wanted to bring this
+    concurrency out of the OS space and into the user space. There are many different
+    models for userspace concurrency. There is event-driven programming, actors, and
+    coroutines. The one Rust settled on is `async`/`await`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To oversimplify, you compile the program as a grab-bag of state machines that
+    can all be run independently of another. Rust itself provides a mechanism for
+    creating state machines; the mechanism of `async` and `await`. The above program
+    in terms of `async`/`await` would look like this, written using [`smol`](https://crates.io/crates/smol):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The main function is preceded with the `async` keyword. This means that it is
+    not a traditional function, but one that returns a state machine. Roughly, the
+    function’s contents correspond to that state machine.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`await` includes another state machine as a part of the currently running state
+    machine. For `accept()`, it means that the state machine will include it as a
+    step.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Eventually, one of the inner functions will *yield*, or give up control. For
+    example, when `accept()` waits for a new connection. At this point the entire
+    state machine will yield its execution to the higher-level executor. For us, that
+    is `smol::Executor`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once execution is yielded, the `Executor` will replace the current state machine
+    with another one that is running concurrently, spawned through the `spawn` function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We pass an `async` block to the `spawn` function. This block represents an entire
+    new state machine, independent of the one created by the `main` function. All
+    this state machine does is run the `handle_client` function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once `main` yields, one of the clients is selected to run in its place. Once
+    that client yields, the cycle repeats.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can now handle millions of simultaneous clients.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Of course, user-space concurrency like this introduces an uptick in complexity.
+    When you’re using threads, you don’t have to deal with executors and tasks and
+    state machines and all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re a reasonable person, you might be asking “why do we need to do all
+    of this? Threads work well; for 99% of programs, we don’t need to involve any
+    kind of user-space concurrency. Introducing new complexity is technical debt,
+    and technical debt costs us time and money.
+  prefs: []
+  type: TYPE_NORMAL
+- en: “So why wouldn’t we use threads?”
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timeout Trouble
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Perhaps one of Rust’s biggest strengths is *composability*. It provides a set
+    of abstractions that can be nested, built upon, put together, and expanded upon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I recall that *the* thing that made me stick with Rust is the [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
+    trait. It blew my mind that you could make something an [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html),
+    apply a handful of different combinators, then pass the resulting [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
+    into any function that took an [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: It continues to impress me how powerful it is. Let’s say you want to receive
+    a list of integers from another thread, only take the ones that are immediately
+    available, discard any integers that aren’t even, add one to all of them, then
+    push them onto a new list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That would be fifty lines and a helper function in some other languages. In
+    Rust it can be done in five:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The best thing about `async`/`await` is that it lets you apply this composability
+    to I/O-bound functions. Let’s say you have a new client requirement; you want
+    to add a timeout to your above function. Assume that our `handle_client` above
+    function looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to add, say, a three-second timeout, we can combine two combinators
+    to do that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [`race`](https://docs.rs/smol/latest/smol/future/fn.race.html) function
+    takes two futures and runs them at the same time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The [`Timer`](https://docs.rs/smol/latest/smol/struct.Timer.html) future waits
+    for some time before returning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here is what the final code looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: I find this to be a very easy process. All you have to do is wrap your existing
+    code in an `async` block and race it against another future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An added bonus of this approach is that it works with any kind of stream. Here,
+    we use a `TcpStream`. However we can easily replace it with anything that implements
+    `impl AsyncRead + AsyncWrite`. It could be a GZIP stream on top of the normal
+    stream, or a Unix socket, or a file. `async` just slides into whatever pattern
+    you need from it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thematic Threads
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What if we wanted to implement this in our threaded example above?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Well, it’s not easy. Generally, you can’t interrupt the `read` or `write` system
+    calls in blocking code, without doing something catastrophic like closing the
+    file descriptor (which can’t be done in Rust).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, [`TcpStream`](https://doc.rust-lang.org/std/net/struct.TcpStream.html)
+    has two functions [`set_read_timeout`](https://doc.rust-lang.org/std/net/struct.TcpStream.html#method.set_read_timeout)
+    and [`set_write_timeout`](https://doc.rust-lang.org/std/net/struct.TcpStream.html#method.set_write_timeout)
+    that can be used to set the timeouts for reading and writing, respectively. However,
+    we can’t just use it naively. Imagine a client that sends one byte every 2.9 seconds,
+    just to reset the timeout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So we have to program a little defensively here. Due to the power of Rust combinators,
+    we can write our own type wrapping around the [`TcpStream`](https://doc.rust-lang.org/std/net/struct.TcpStream.html)
+    to program the timeout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: On one hand, it could be argued that this is elegant. We used Rust’s capabilities
+    to solve the problem with a relatively simple combinator. I’m sure it would work
+    well enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, it’s definitely hacky.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ve locked ourselves into using [`TcpStream`](https://doc.rust-lang.org/std/net/struct.TcpStream.html).
+    There’s no trait in Rust to abstract over using the [`set_read_timeout`](https://doc.rust-lang.org/std/net/struct.TcpStream.html#method.set_read_timeout)
+    and [`set_write_timeout`](https://doc.rust-lang.org/std/net/struct.TcpStream.html#method.set_write_timeout)
+    types. So it would take a lot of additional work to make it use any kind of writer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It involves an extra system call for setting the timeout.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I imagine this type is much more unwieldy to use for the kinds of actual logic
+    that web servers demand.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If I saw this code in production, I would ask the author why they avoided using
+    `async`/`await` to solve this problem. This is the phenomenon I was describing
+    in my post “[Why you might actually want async in your project](/why-you-want-async/)”.
+    Quite frequently I encounter a pattern where synchronous code can’t be used without
+    contortion, so I have to rewrite it in `async`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Async Success Stories
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There’s a reason why the HTTP ecosystem has adopted `async`/`await` as its primary
+    runtime mechanism, even for clients. You can take any function that makes an HTTP
+    call, and make it fit whatever hole or use case you want it to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`tower`](https://crates.io/crates/tower) is probably the best example of this
+    phenomenon I can think of, and it’s really *the* thing that made me realize how
+    powerful `async`/`await` can be. If you implement your service as an `async` function,
+    you get timeouts, rate limiting, load balancing, [hedging](https://docs.rs/tower/0.4.13/tower/hedge/index.html)
+    and back-pressure handling. All of that for free.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It doesn’t matter what runtime you used, or what you’re actually doing in your
+    service. You can throw [`tower`](https://crates.io/crates/tower) at it to make
+    it more robust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`macroquad`](https://docs.rs/macroquad) is a miniature Rust game engine that
+    aims to make game development as easy as possible. Its main function uses `async`/`await`
+    in order to run its engine. This is because `async`/`await` is really the best
+    way in Rust to express a linear function that needs to be stopped in order to
+    wait for something else.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In practice, this can be extremely powerful. Imagine simultaneously polling
+    a network connection to your game server and your GUI framework, on the same thread.
+    The possibilities are endless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving Async’s Image
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I don’t think the issue is that some people think threads are better than `async`.
+    I think the issue is that the benefits of `async` aren’t widely broadcast. This
+    leads some people to be misinformed about the benefits of `async`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If this is an educational problem, I think it’s worth taking a look at the educational
+    material. Here’s what the [Rust Async Book](https://rust-lang.github.io/async-book/01_getting_started/02_why_async.html)
+    says when comparing `async`/`await` to operating system threads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**OS threads** don’t require any changes to the programming model, which makes
+    it very easy to express concurrency. However, synchronizing between threads can
+    be difficult, and the performance overhead is large. Thread pools can mitigate
+    some of these costs, but not enough to support massive IO-bound workloads.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*- [Rust Async Book](https://rust-lang.github.io/async-book/01_getting_started/02_why_async.html),
+    various authors*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I think this is a consistent problem throughout the `async` community. When
+    someone asks the question of “why do we want to use this over OS threads”, people
+    have a tendency to kind of wave their hand and say “`async` has less overhead.
+    Other than that, everything’s the same.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the reason why web server authors switched to `async`/`await`. It’s
+    how they solved the [C10k problem](https://en.wikipedia.org/wiki/C10k_problem).
+    But, it’s not going to be the reason why everyone else switches to `async`/`await`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance gains are fickle and can disappear in the wrong circumstances. There
+    are plenty of cases where a threaded workflow can be faster than an equivalent
+    `async` workflow (mostly, in the case of CPU bound tasks). I think that we, as
+    a community, have over-emphasized the ephemeral performance benefits of `async`
+    Rust while downplaying its semantic benefits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the worst case, it leads to people shrugging off `async`/`await` as “[a weird
+    thing that you resort to for niche use cases](https://shnatsel.medium.com/smoke-testing-rust-http-clients-b8f2ee5db4e6)”.
+    It should be seen as a powerful programming model that lets you succinctly express
+    patterns that can’t be expressed in synchronous Rust without dozens of threads
+    and channels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also think there’s a tendency to try to make `async` Rust “just like sync
+    Rust” in a way that encourages negative comparison. By “tendency”, I mean that
+    it’s [the stated roadmap for the Rust project](https://blog.rust-lang.org/inside-rust/2022/02/03/async-in-2022.html),
+    saying that “that writing async Rust code should be as easy as writing sync code,
+    apart from the occasional `async` and `await` keyword.”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I reject this framing because it’s fundamentally impossible. It’s like trying
+    to host a pizza party on a ski slope. Sure, you can probably get 99% of the way
+    there, especially if you’re really talented. But there are differences that the
+    average bear *will* notice, no matter how good you are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We shouldn’t be trying to force our model into unfriendly idioms to appease
+    programmers who refuse to adopt another type of pattern. We should be trying to
+    highlight the strengths of Rust’s `async`/`await` ecosystem; its composability
+    and its power. We should be trying to make it so `async`/`await` is the *default*
+    choice whenever a programmer reaches for concurrency. Rather than trying to make
+    sync Rust and `async` Rust the same, we should embrace the differences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In short, we shouldn’t be using technical reasons to argue for a semantic model.
+    We should be using semantic reasons.
+  prefs: []
+  type: TYPE_NORMAL

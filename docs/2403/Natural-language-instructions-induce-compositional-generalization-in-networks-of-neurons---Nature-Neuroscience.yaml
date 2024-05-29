@@ -1,0 +1,946 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:29:31'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Natural language instructions induce compositional generalization in networks
+    of neurons | Nature Neuroscience
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.nature.com/articles/s41593-024-01607-5](https://www.nature.com/articles/s41593-024-01607-5)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Model architecture
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sensorimotor-RNN
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The base model architecture and task structure used in this paper follows^([18](/articles/s41593-024-01607-5#ref-CR18
+    "Yang, G. R., Joglekar, M. R., Song, H. F., Newsome, W. T. & Wang, X.-J. Task
+    representations in neural networks trained to perform many cognitive tasks. Nat.
+    Neurosci. 22, 297–306 (2019).")). All networks of sensorimotor units denoted sensorimotor-RNN
+    are gated recurrent units (GRU)^([49](/articles/s41593-024-01607-5#ref-CR49 "Chung,
+    J., Gulcehre, C., Cho, K. & Bengio, Y. Empirical evaluation of gated recurrent
+    neural networks on sequence modeling. Preprint at                    https://arxiv.org/abs/1412.3555                                     (2014)."))
+    using rectified linear unit (ReLU) nonlinearities with 256 hidden units each.
+    Inputs to the networks consist of (1) sensory inputs, *X*[*t*] and (2) task-identifying
+    information, *I*[*t*]. We initialize hidden activity in the GRU as \({h}^{0}\in
+    {{\mathbb{R}}}^{256}\) with values set to 0.1\. All networks of sensorimotor units
+    use the same hidden state initialization, so we omit *h*⁰ in network equations.
+    At each time step, a readout layer Linear[out] decodes motor activity, \(\hat{{y}_{t}}\),
+    from the activity of recurrent hidden units, *h*[*t*], according to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}_{t}={{{\rm{SensorimotorRNN}}}}\Big({X}_{t},{I}_{t};{h}_{t-1}\Big)\qquad\qquad{h}_{t}\in
+    {{\mathbb{R}}}^{256}\\ {\hat{y}}_{t}=\sigma \Big({{{{\rm{Linear}}}}}_{{{{\rm{out}}}}}({h}_{t})\Big)\qquad\qquad\qquad\qquad\qquad\quad{\hat{y}}_{t}\in
+    {{\mathbb{R}}}^{33}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where *σ* denotes the sigmoid function. Sensory inputs *X*[*t*] are made up
+    of three channels, two sensory modalities \({x}_{{{\mathrm{mod}}}\,1,t}\) and
+    \({x}_{{{\mathrm{mod}}}\,2,t}\), and a fixation channel *x*[fix,*t*]. Both \({x}_{{{\mathrm{mod}}}\,1,t},{x}_{{{\mathrm{mod}}}\,2,t}\in
+    {{\mathbb{R}}}^{32}\) and stimuli in these modalities are represented as hills
+    of activity with peaks determined by units’ preferred directions around a one-dimensional
+    circular variable. For an input at direction *θ*, the activity of a given input
+    unit *u*[*i*] with preferred direction *θ*[*i*] is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${u}_{i}=str \times 0.8\exp \left[-0.5 \times {\left(\frac{8| \theta -{\theta
+    }_{i}| }{\pi }\right)}^{2}\right]$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where *s**t**r* is the coefficient describing stimulus strength. The fixation
+    channel \({x}_{{{{\rm{fix}}}},t}\in {{\mathbb{R}}}^{1}\) is a single unit simulating
+    a fixation cue for the network. In all, sensory input \({X}_{t}=({x}_{mod1,t},{x}_{mod2,t},{x}_{fix,t})\in
+    {{\mathbb{R}}}^{65}\). Motor output, \({\hat{{y}}_{t}}\) consists of both a 32-dimensional
+    ring representing directional responses to the input stimulus as well as a single
+    unit representing model fixation, so that \({\hat{{y}}_{t}}\in {{\mathbb{R}}}^{33}\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For all models, task-identifying information \({I}_{t}\in {{\mathbb{R}}}^{64}\).
+    Task-identifying information is presented throughout the duration of a trial and
+    remains constant such that \({I}_{t}={I}_{t{\prime} }\forall t,t{\prime}\). For
+    all models, task-identifying info *I*[*t*] and sensory input *X*[*t*] are concatenated
+    as inputs to the sensorimotor-RNN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonlinguistic models
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For SIMPLENET, we generate a set of 64-dimensional orthogonal task rules by
+    constructing an orthogonal matrix using the Python package scipy.stats.ortho_group,
+    and assign rows of this matrix to each task type. For STRUCTURENET, we generate
+    a set of ten orthogonal, 64-dimensional vectors in the same manner, and each of
+    these represents a dimension of the task set (that is, respond weakest versus
+    strongest direction, respond in the same versus opposite direction, pay attention
+    only to stimuli in the first modality, and so on). Rule vectors for tasks are
+    then simple combinations of each of these ten basis vectors. For a full description
+    of structure rule vectors, see Supplementary Note [3](/articles/s41593-024-01607-5#MOESM1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also test SIMPLENETPLUS and STRUCTURENETPLUS, which use an additional hidden
+    layer with 128 units and ReLU nonlinearities to process orthogonal tasks rules
+    *I*[*t*] into a vector \(\bar{{I}_{t}}\) which is used by sensorimotor-RNN as
+    task-identifying information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{\bar{{I}_{t}}}^{{\prime} }=\rm{ReLU}({{{{\rm{Linear}}}}}_{{{{\rm{RuleEmb}}}}1}({I}_{t}))&{\bar{{I}_{t}}}^{{\prime}
+    }\in {{\mathbb{R}}}^{128}\\ {\bar{{I}_{t}}}^{{\prime} }=\rm{ReLU}({{{{\rm{Linear}}}}}_{{{{\rm{RuleEmb}}}}2}({I}_{t}^{{\prime}
+    }))&{\bar{{I}_{t}}}^{{\prime} }\in {{\mathbb{R}}}^{128}\\ \bar{{I}_{t}}=\rm{ReLU}({{{{\rm{Linear}}}}}_{{{{\rm{RuleEmb}}}}3}({\bar{{I}_{t}}}^{{\prime}
+    }))&\bar{{I}_{t}}\in {{\mathbb{R}}}^{64}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Full results for these models are included in Supplementary Fig. [4](/articles/s41593-024-01607-5#MOESM1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pretrained transformers
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The main language models we test use pretrained transformer architectures to
+    produce *I*. Importantly, transformers differ in the type of pretraining objective
+    used to tune the model parameters. GPT is trained to predict the next word given
+    a context of words^([9](/articles/s41593-024-01607-5#ref-CR9 "Radford, A. et al.
+    Language models are unsupervised multitask learners. OpenAI 1, 9 (2019).")). GPT
+    (XL) follows the same objective but trains for longer on a larger dataset^([50](/articles/s41593-024-01607-5#ref-CR50
+    "Radford, A. et al. Better language models and their implications.                    https://openai.com/blog/better-language-models/                                     (2019).")).
+    Both models are fully autoregressive. BERT, by contrast, takes bidirectional language
+    inputs and is tasked with predicting masked words that appear in the middle of
+    input phrases. Additionally, BERT is trained on a simple sentence prediction task
+    where the model must determine if input sentence 1 is followed by input sentence
+    2 in the training corpus. Extending this principle, SBERT is explicitly trained
+    to produce fixed-length embeddings of whole sentences^([21](/articles/s41593-024-01607-5#ref-CR21
+    "Reimers, N. & Gurevych, I. Sentence-bert: Sentence embeddings using siamese bert-networks.
+    Preprint at                    https://arxiv.org/abs/1908.10084                                     (2019).")).
+    It takes pretrained BERT networks and uses them in a siamese architecture^([51](/articles/s41593-024-01607-5#ref-CR51
+    "Bromley, J. et al. Signature verification using a ‘siamese’ time delay neural
+    network. Int. J. Pattern Recognit. Artif. Intell. 7, 669–688 (1993).")), which
+    allows the weights of the model to be tuned in a supervised fashion according
+    to the Stanford Natural Language Inference dataset^([22](/articles/s41593-024-01607-5#ref-CR22
+    "Bowman, S. R., Angeli, G., Potts, C. & Manning, C. D. A large annotated corpus
+    for learning natural language inference. Preprint at                    http://arxiv.org/abs/1508.05326                                     (2015).")).
+    Natural language inference is a three-way categorization task where the network
+    must infer the logical relationship between sentences: whether a premise sentence
+    implies, contradicts or is unrelated to a hypothesis sentence. Finally, CLIP is
+    trained to jointly embed images and language^([23](/articles/s41593-024-01607-5#ref-CR23
+    "Radford, A. et al. "Learning transferable visual models from natural language
+    supervision. In Proc. 38th International Conference on Machine Learning (eds Marina,
+    M. & Tong, Z.) 8748–8763 (PMLR, 2021).")). It uses data from captioned images
+    and is asked to properly categorize which text and images pairs match or are mismatched
+    in the dataset via a contrastive loss.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Importantly, the natural output of a transformer is a matrix of size \({\dim
+    }_{{{{\rm{trans}}}}.}\times {{{\mathcal{T}}}}\), the inherent dimensionality of
+    the transformer by the length of the input sequence. To create an embedding space
+    for sentences it is standard practice to apply a pooling method to the transformer
+    output, which produces a fixed-length representation for each instruction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For GPT, GPT (XL), BERT and SBERT, we use an average pooling method. Suppose
+    we have an input instruction \({w}_{1}\ldots {w}_{{{{\mathcal{T}}}}}\). Following
+    standard practice with pretrained language models, the input to our transformers
+    is tokenized with special ‘cls’ and ‘eos’ tokens at the beginning and end of the
+    input sequence. We then compute *I* as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}^{\rm{tran.}}={{{\rm{transformer}}}}\Big({{\mbox{[cls]}}}\,,{w}_{1}\ldots
+    {w}_{{{{\mathcal{T}}}}},\,{{\mbox{[eos]}}}\Big),\qquad{h}^{\rm{tran.}}\in {{\mathbb{R}}}^{{\dim
+    }_{{{{\rm{trans}}}}.}\times {{{\mathcal{T}}}}+2}\\ {h}^{I}={{{\rm{mean}}}}({h}^{\rm{tran.}}),\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad{h}^{I}\in
+    {{\mathbb{R}}}^{{\dim }_{{{{{\rm{trans}}}}}.}}\\ I={{{{\rm{Linear}}}}}_{{{{\rm{embed}}}}}({h}^{I})\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\quad
+    I\in {{\mathbb{R}}}^{64}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We chose this average pooling method primarily because a previous study^([21](/articles/s41593-024-01607-5#ref-CR21
+    "Reimers, N. & Gurevych, I. Sentence-bert: Sentence embeddings using siamese bert-networks.
+    Preprint at                    https://arxiv.org/abs/1908.10084                                     (2019)."))
+    found that this resulted in the highest-performing SBERT embeddings. Another alternative
+    would be to simply use the final hidden representation of the ‘cls’ token as a
+    summary of the information in the entire sequence (given that BERT architectures
+    are bidirectional, this token will have access to the whole sequence).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}^{\rm{tran.}}={{{\rm{transformer}}}}\Big(\,{{\mbox{[cls]}}}\,,{w}_{1}\ldots
+    {w}_{{{{\mathcal{T}}}}},\,{{\mbox{[eos]}}}\,\Big),\qquad{h}^{\rm{tran.}}\in {{\mathbb{R}}}^{{\dim
+    }_{{{{{\rm{trans}}}}}.}\times {{\,{\mathcal{T}}}}+2}\\ {h}^{I}=({h}_{{{{\rm{cls}}}}}^{\rm{tran.}})\qquad\qquad\qquad\qquad\qquad\qquad\quad\qquad\quad\;\;{h}^{I}\in
+    {{\mathbb{R}}}^{{\dim }_{{{{{\rm{trans}}}}}.}}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Where \({h}_{{{{\rm{cls}}}}}^{\rm{tran.}}\) denote the last hidden representation
+    for the ‘cls’ token. Ref. ^([21](/articles/s41593-024-01607-5#ref-CR21 "Reimers,
+    N. & Gurevych, I. Sentence-bert: Sentence embeddings using siamese bert-networks.
+    Preprint at                    https://arxiv.org/abs/1908.10084                                     (2019)."))
+    found this pooling method performed worse than average pooling, so we don’t include
+    these alternatives in our results. For GPT and GPT (XL), we also tested a pooling
+    method where the fixed-length representation for a sequence was taken from the
+    transformer output of the ‘eos’ token. In this case:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}^{\rm{tran.}}={{{\rm{transformer}}}}\Big(\,{{\mbox{[cls]}}}\,,{w}_{1}\ldots
+    {w}_{{{{\mathcal{T}}}}},\,{{\mbox{[eos]}}}\,\Big),\qquad{h}^{\rm{tran.}}\in {{\mathbb{R}}}^{{\dim
+    }_{{{{\rm{trans}}}}.}\times {{\;{\mathcal{T}}}}+2}\\ {h}^{I}=({h}_{{{{\rm{eos}}}}}^{\rm{tran.}}),\qquad\qquad\qquad\qquad\qquad\qquad\qquad\quad\quad{h}^{I}\in
+    {{\mathbb{R}}}^{{\dim }_{{{{\rm{trans}}}}.}}\\ I={{{{\rm{Linear}}}}}_{{{{\rm{embed}}}}}({h}^{I}),\qquad\qquad\qquad\qquad\qquad\qquad\quad
+    I\in {{\mathbb{R}}}^{64}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: We found that GPT failed to achieve even a relaxed performance criterion of
+    85% across tasks using this pooling method, and GPT (XL) performed worse than
+    with average pooling, so we omitted these models from the main results (Supplementary
+    Fig. [11](/articles/s41593-024-01607-5#MOESM1)). For CLIP models we use the same
+    pooling method as in the original multiModal training procedure, which takes the
+    outputs of the [cls] token as described above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For all the above models, we also tested a version where the information from
+    the pretrained transformers is passed through a multilayer perceptron with a single
+    hidden layer of 256 hidden units and ReLU nonlinearities. We found that this manipulation
+    reduced performance across all models, verifying that a simple linear embedding
+    is beneficial to generalization performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For GPT, BERT and SBERT, \({\dim }_{{{{\rm{trans}}}}.}=768\) and each model
+    uses a total of ~100 million parameters; for SBERT (L) \({\dim }_{{{{\rm{trans}}}}.}=1,024\)
+    and the model uses ~300 million parameters; GPT (XL) \({\dim }_{{{{\rm{trans}}}}.}=1,600\)
+    and the model uses ~1.5 billion parameters; for CLIP, \({\dim }_{{{{\rm{trans}}}}.}=512\)
+    and the model uses ~60 million parameters. Full PyTorch implementations, including
+    all pretrained weights and model hyperparameters, can be accessed at the Huggingface
+    library ([https://huggingface.co/docs/transformers/](https://huggingface.co/docs/transformers/))^([52](/articles/s41593-024-01607-5#ref-CR52
+    "Wolf, T. et al. Transformers: state-of-the-art natural language processing. In
+    Proc. 2020 Conference on Empirical Methods in Natural Language Processing: System
+    Demonstrations (eds Liu, Q. & Schlangen, D.) 38–45 (Association for Computational
+    Linguistics, 2020).")).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: BoW model
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For our BoW model, instructions are represented as a vector of binary activations
+    the size of the instruction vocabulary, where each unit indicates the inclusion
+    or exclusion of the associated word in the current instruction. For our instruction
+    set, ∣vocab∣ = 181\. This vector is then projected through a linear layer into
+    64-dimensional space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}_{i}^{{{{\rm{BoW}}}}}=\left\{\begin{array}{ll}1\quad\,{{\mbox{if}}}\,\,{w}_{i}\in
+    ({w}_{1}\ldots {w}_{{{{\mathcal{T}}}}})\\ 0\quad\,{{\mbox{otherwise}}}\,\end{array}\right.\qquad\qquad{h}^{{{{\rm{BoW}}}}}\in
+    {{\mathbb{R}}}^{| \rm{vocab}| }\\ I={{{{\rm{Linear}}}}}_{{{{\rm{embed}}}}}({h}^{{{{\rm{BoW}}}}}),\qquad\qquad\qquad\qquad\qquad\quad
+    I\in {{\mathbb{R}}}^{64}\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Blank slate language models
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Given that tuning the last layers of language models resulted in improved performance
+    (Fig. [2e](/articles/s41593-024-01607-5#Fig2)), we tested two additional models
+    to determine if training a blank slate language model trained exclusively on the
+    loss from sensorimotor tasks would improve performance. These models consist of
+    passing BoW representations through a multilayer perceptron and passing pretrained
+    BERT word embeddings through one layer of a randomly initialized BERT encoder.
+    Both models performed poorly compared to pretrained models (Supplementary Fig.
+    [4.5](/articles/s41593-024-01607-5#MOESM1)), confirming that language pretraining
+    is essential to generalization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tasks sets
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Tasks were divided into five interrelated subgroups: ‘go’, ‘decision-making’,
+    ‘matching’, and ‘comparison’ and ‘duration’. Depending on the task, multiple stimuli
+    may appear during the stimulus epoch. Also, depending on the task, models may
+    be required to respond in a particular direction or repress response altogether.
+    Unless otherwise specified, zero-mean Gaussian noise is added independently at
+    each time step and to each input unit and the variance of this noise is drawn
+    randomly from \({\mathbb{U}}[0.1,0.15]\). The timing of stimuli differs among
+    the tasks type. However, for all tasks, trials can be divided into preparatory,
+    stimulus and response epochs. The stimulus epoch can be subdivided into three
+    parts—stim1, delay and stim23—although these distinct parts aren’t used by all
+    tasks. A trial lasts for a total of *T* = 150 time steps. Let *d**u**r*[epoch]
+    denote the duration in simulated time steps of a given epoch. Then'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{rcl}&&du{r}_{{{{\rm{response}}}}} \sim\Big\{i| 20 < i\le 25;i\in
+    {\mathbb{N}}\Big\}\\ &&du{r}_{{{{\rm{stim}}}}1},du{r}_{{{{\rm{stim}}}}2} \sim\Big\{i|
+    37 < i\le 50;i\in {\mathbb{N}}\Big\}\\ &&du{r}_{{{{\rm{delay}}}}} \sim\Big\{i|
+    15 < i\le 25;i\in {\mathbb{N}}\Big\}\\ &&du{r}_{{{{\rm{prep}}}}.}=150-\Big(du{r}_{{{{\rm{response}}}}}+du{r}_{{{{\rm{stim}}}}1}+du{r}_{{{{\rm{stim}}}}2}+du{r}_{{{{\rm{delay}}}}}\Big)\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For tasks that don’t utilize a delay structure, stim1, stim2 and delay epochs
+    are grouped together in a single stimulus epoch where \(du{r}_{{{{\rm{stimulus}}}}}=du{r}_{{{{\rm{stim}}}}1}+du{r}_{{{{\rm{stim}}}}2}+du{r}_{{{{\rm{delay}}}}}\).
+    Unless otherwise specified, a fixation cue with a constant strength *s**t**r*[fix] = 1
+    is activated throughout the preparatory and stimulus epochs. For example trials
+    of each task, see Supplementary Fig. [13](/articles/s41593-024-01607-5#MOESM1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘Go’ tasks
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The ‘Go’ family of tasks includes ‘Go’, ‘RTGo’, ‘AntiGo’, ‘AntiRTGo’ and modality-specific
+    versions of each task denoted with either ‘Mod1’ and ‘Mod2’. In both the ‘Go’
+    and ‘AntiGo’ tasks, a single stimulus is presented at the beginning of the stimulus
+    epoch. The direction of the presented stimulus is generated by drawing from a
+    uniform distribution between 0 and 2*π*, that is, \({\theta }_{{{{\rm{stim}}}}}
+    \sim {\mathbb{U}}[0,2\pi ]\). The stimulus will appear in either modality 1 or
+    modality 2 with equal probability. The strength of the stimulus is given by \(st{r}_{{{{\rm{stim}}}}}
+    \sim {\mathbb{U}}[1.0,1.2]\). In the ‘Go’ task, the target response is in the
+    same direction as the presented stimulus, that is, \({\theta }_{{{{\rm{stim}}}}}={\theta
+    }_{{{{\rm{target}}}}}\), while in the ‘AntiGo’ task the direction of the response
+    should be in the opposite of the stimulus direction, \({\theta }_{{{{\rm{stim}}}}}+\pi
+    ={\theta }_{{{{\rm{target}}}}}\). For modality-specific versions of each task,
+    a stimulus direction is drawn in each modality \({\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}1}
+    \sim {\mathbb{U}}[0,2\pi ]\) and \({\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}2}
+    \sim {\mathbb{U}}[0,2\pi ]\) and for modality-specific Go-type tasks
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}1}
+    &{{\mbox{if}}}\,\,\,{{\mbox{Mod1 task}}}\\ {\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}2}
+    &{{\mbox{if}}}\,\,\,{{\mbox{Mod2 task}}}\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: while for modality-specific AntiGo-type tasks
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}1}+\pi
+    &{{\mbox{if}}}\,\,\,{{\mbox{Mod1 task}}}\,\\ {\theta }_{{{{\rm{stim}}}},{{{\rm{mod}}}}2}+\pi
+    &{{\mbox{if}}}\,\,\,{{\mbox{Mod2 task}}}\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For ‘RT’ versions of the ‘Go’ tasks, stimuli are only presented during the response
+    epoch and the fixation cue is never extinguished. Thus, the presence of the stimulus
+    itself serves as the response cue and the model must respond as quickly as possible.
+    Otherwise, stimuli persist through the duration of the stimulus epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘Decision-making’ tasks
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The ‘decision-making’ family of tasks includes ‘DM’ (decision-making), ‘AntiDM’,
+    ‘MultiDM’ (multisensory decision-making), ‘AntiMultiDM,’ modality-specific versions
+    of each of these tasks and, finally, confidence-based versions of ‘DM’ and ‘AntiDM.’
+    For all tasks in this group, two stimuli are presented simultaneously and persist
+    throughout the duration of the stimulus epoch. They are drawn according to \({\theta
+    }_{{{{\rm{stim}}}}1} \sim {\mathbb{U}}[0,2\pi ]\) and \({\theta }_{{{{\rm{stim}}}}2}
+    \sim {\mathbb{U}}\)\([({\theta }_{{{{\rm{stim}}}}1}-0.2\pi ,{\theta }_{{{{\rm{stim}}}}1}-0.6\pi
+    )\cup ({\theta }_{{{{\rm{stim}}}}1}+0.2\pi ,{\theta }_{{{{\rm{stim}}}}1}+0.6\pi
+    )]\). A base strength applied to both stimuli is drawn such that \(st{r}_{\rm{base}}
+    \sim {\mathbb{U}}[1.0,1.2]\). A contrast is drawn from a discrete distribution
+    such that *c* ~ {−0.175, −0.15, −0.1, 0.1, 0.15, 0.175} so the stimulus strength
+    associated with each direction in a trial are given by \(st{r}_{{{{\rm{stim}}}}1}=st{r}_{\rm{base}}+c\)
+    and \(st{r}_{{{{\rm{stim}}}}2}=\) \({str}_{\rm{base}}-c\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the ‘DM’ task,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}1} > st{r}_{{{{\rm{stim}}}}2}\\ {\theta
+    }_{{{{\rm{stim}}}}2}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for the the ‘AntiDM’ task,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}1} < st{r}_{{{{\rm{stim}}}}2}\\ {\theta
+    }_{{{{\rm{stim}}}}2}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For these versions of the tasks, the stimuli are presented in either modality
+    1 or modality 2 with equal probability. For the multisensory versions of each
+    task, stimuli directions are drawn in the same manner and presented across both
+    modalities so that \({\theta }_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}1}={\theta }_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}2}\)
+    and \({\theta }_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}1}={\theta }_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}2}\).
+    Base strengths are drawn independently for each modality. Contrasts for both modalities
+    are drawn from a discrete distribution such that \({c}_{{{\mathrm{mod}}}\,1},{c}_{{{\mathrm{mod}}}\,2}
+    \sim \left\{0.2,0.175,\right.\)\(\left.0.15,0.125,-0.125,-0.15,-0.175,-0.2\right\}\).
+    If both \(| {c}_{{{\mathrm{mod}}}\,1}| -| {c}_{{{\mathrm{mod}}}\,2}| =0\) then
+    contrasts are redrawn to avoid zero-contrast trials during training. If both \({c}_{{{\mathrm{mod}}}\,1}\)
+    and \({c}_{{{\mathrm{mod}}}\,2}\) have the same sign, then contrasts are redrawn
+    to ensure that the trial requires integrating over both modalities as opposed
+    to simply performing a ‘DM’ task in a single modality. Criteria for target responses
+    are measured as the strength of a given direction summed over both modalities.
+    So, for ‘MultiDM’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1,{{\mathrm{mod}}}\,1}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}1}+st{r}_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}2}
+    > st{r}_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}1}\\&+st{r}_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}2}\\
+    {\theta }_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}1}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for ‘AntiMultiDM’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1,{{\mathrm{mod}}}\,1}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}1}+st{r}_{{{{\rm{stim}}}}1,{{{\rm{mod}}}}2}
+    < st{r}_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}1}\\&+st{r}_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}2}\\
+    {\theta }_{{{{\rm{stim}}}}2,{{{\rm{mod}}}}1}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stimuli for modality-specific versions of each task are generated in the same
+    way as multisensory versions of the task. Criteria for target response are the
+    same as standard versions of ‘DM’ and ‘AntiDM’ tasks applied only to stimuli in
+    the relevant modality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In confidence-based decision-making tasks (‘ConDM’ and ‘ConAntiDM’), the stimuli
+    directions are drawn in the same way as above. Stimuli are shown in either modality
+    1 or modality 2 with equal probability. In each trial, *s**t**r*[base] = 1\. The
+    contrast and noise for each trial is based on the thresholded performance of a
+    SIMPLENET model trained on all tasks except ‘ConDM’ and ‘ConAntiDM’. Once this
+    model has been trained, we establish a threshold across levels of noise and contrasts
+    for which the model can perform a ‘DM’ or an ‘AntiDM’ task at 95% correct. We
+    then draw contrasts and noises for trials from above and below this threshold
+    with equal probability during training. In trials where the noise and contrast
+    levels fell below the 95% correct threshold, the model must repress response,
+    and otherwise perform the decision-making task (either ‘DM’ or ‘AntiDM’).
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘Comparison’ tasks
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Our comparison task group includes ‘COMP1’, ‘COMP2’, ‘MultiCOMP1’, ‘MultiCOMP2’,
+    ‘Anti’ versions of each of these tasks, as well as modality-specific versions
+    of ‘COMP1’ and ‘COMP2’ tasks. This group of tasks is designed to extend the basic
+    decision-making framework into a setting with more complex control demands. These
+    tasks utilize the delay structure in the stimulus epoch so that stim1 appears
+    only during the stim1 epoch, followed by a delay, and finally stim2\. This provides
+    a temporal ordering on the stimuli. In ‘COMP1’, the model must respond to the
+    first stimulus only if it has greater strength than the second and otherwise repress
+    a response that is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}1} > st{r}_{{{{\rm{stim}}}}2}\\ {{{\rm{repress}}}}\quad
+    &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Likewise, in ‘COMP2’, the model must respond to the second direction if it presented
+    with greater strength than the first otherwise repress response that is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,st{r}_{{{{\rm{stim}}}}2} > {{{{\rm{str}}}}}_{{{{\rm{stim}}}}1}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In ‘Anti’ versions of the task the ordering criteria is the same except for
+    stimuli with least strength, that is, for ‘AntiCOMP1’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,{{{{\rm{str}}}}}_{{{{\rm{stim}}}}1} < {{{{\rm{str}}}}}_{{{{\rm{stim}}}}2}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for ‘AntiCOMP2’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,{{{{\rm{str}}}}}_{{{{\rm{stim}}}}2} < {{{{\rm{str}}}}}_{{{{\rm{stim}}}}1}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In multisensory settings, the criteria for target direction are analogous to
+    the multisensory decision-making tasks where strength is integrated across modalities.
+    Likewise, for modality-specific versions, the criteria are only applied to stimuli
+    in the relevant modality. Stimuli directions and strength for each of these tasks
+    are drawn from the same distributions as the analogous task in the ‘decision-making’
+    family. However, during training, we make sure to balance trials where responses
+    are required and trials where models must repress response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘Duration’ tasks
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The ‘duration’ family of tasks includes ‘Dur1’, ‘Dur2’, ‘MultiDur1’, ‘MultiDur2’,
+    ‘Anti’ versions of each of these tasks and modality-specific versions of ‘Dur1’
+    and ‘Dur2’ tasks. These tasks require models to perform a time estimation task
+    with the added demand or stimuli ordering determining relevance for response.
+    Like in ‘comparison’ tasks, stim1 is presented followed by a delay and then stim2\.
+    For ‘Dur1’ trials
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,du{r}_{{{{\rm{stim}}}}1} > du{r}_{{{{\rm{stim}}}}2}\\ {{{\rm{repress}}}}\quad
+    &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Likewise, for ‘Dur2’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,du{r}_{{{{\rm{stim}}}}2} > du{r}_{{{{\rm{stim}}}}1}\\ {{{\rm{repress}}}}\quad
+    &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In ‘Anti’ versions of these tasks, the correct response is in the direction
+    of the stimulus with the shortest duration given the ordering criteria is met.
+    Hence, for ‘AntiDur1’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,du{r}_{{{{\rm{stim}}}}1} < du{r}_{{{{\rm{stim}}}}2}\\ {{{\rm{repress}}}}\quad
+    &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for ‘AntiDur2’
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,du{r}_{{{{\rm{stim}}}}2} < du{r}_{{{{\rm{stim}}}}1}\\ {{{\rm{repress}}}}\quad
+    &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Across these tasks directions are drawn according to \({\theta }_{{{{\rm{stim}}}}1}
+    \sim {\mathbb{U}}[0,2\pi ]\) and \({\theta }_{{{{\rm{stim}}}}2} \sim {\mathbb{U}}[({\theta
+    }_{{{{\rm{stim}}}}1}-0.2\pi ,{\theta }_{{{{\rm{stim}}}}1}-0.6\pi )\cup ({\theta
+    }_{{{{\rm{stim}}}}1}+0.2\pi ,{\theta }_{{{{\rm{stim}}}}1}+0.6\pi )]\). Stimulus
+    strengths are drawn according to \(st{r}_{{{{\rm{stim}}}}1},st{r}_{{{{\rm{stim}}}}2}
+    \sim {\mathbb{U}}[0.8,1.2]\). To set the duration of each stimulus, we first draw
+    \(du{r}_{{{{\rm{long}}}}} \sim\) \(\{i| 35 < i\le 50,i\in {\mathbb{N}}\}\) and
+    \(du{r}_{{{{\rm{short}}}}} \sim \{i| 25 < i\le (du{r}_{{{{\rm{long}}}}}-8),i\in
+    {\mathbb{N}}\}\). During training, we determine which trials for a given task
+    should and should not require a response in order to evenly balance repress and
+    respond trials. We then assign *d**u**r*[long] and *d**u**r*[short] to either
+    stim1 or stim2 so that the trial requires the appropriate response given the particular
+    task type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, criteria for correct response in the multisensory and modality-specific
+    versions of each tasks follow analogous tasks in the ‘decision-making’ and ‘comparison’
+    groups where multisensory versions of the task require integrating total duration
+    over each modality, and modality-specific tasks require only considering durations
+    in the given task modality. For multisensory tasks, we draw duration value \(du{r}_{{{{\rm{long}}}}}
+    \sim \{i| 75 < i\le 100,i\in {\mathbb{N}}\}\) and then split this value *d**u**r*[long0] = *d**u**r*[long ]× 0.55
+    and *d**u**r*[long1] = *d**u**r*[long ]× 0.45\. We also draw a value *d**u**r*[short] = *d**u**r*[long] − Δ*d**u**r*
+    where \(\Delta dur \sim \{i| 15 < i\le 25,i\in {\mathbb{N}}\}\). This value is
+    then subdivided further into *d**u**r*[short0] = *d**u**r*[long1] + Δ*d**u**r*[short]
+    where \(\Delta du{r}_{{{{\rm{short}}}}} \sim\) \(\{i| 19 < i\le 15,i\in {\mathbb{N}}\}\)
+    and *d**u**r*[short1] = *d**u**r*[Short] − *d**u**r*[short0]. Short and long durations
+    can then be allocated to the ordered stimuli according to task type. Drawing durations
+    in this manner ensures that, like in ‘decision-making’ and ‘comparison’ groups,
+    correct answers truly require models to integrate durations over both modalities,
+    rather than simply performing the task in a given modality to achieve correct
+    responses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘Matching’ tasks
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The ‘matching’ family of tasks consists of ‘DMS’ (delay match to stimulus),
+    ‘DNMS’ (delay non-match to stimulus), ‘DMC’ (delay match to category) and ‘DMNC’
+    (delay non-match to category) tasks. For all tasks, stim1 is presented at the
+    beginning of the stimulus epoch, followed by a delay, and the presentation of
+    stim2\. The stimulus strength is drawn according to \(st{r}_{{{{\rm{stim}}}}1},st{r}_{{{{\rm{stim}}}}2}
+    \sim {\mathbb{U}}[0.8,1.2]\). The input modality for any given trial is chosen
+    at random with equal probability. In both ‘DMS’ and ‘DNMS’ tasks, trials are constructed
+    as ‘matching stim’ trials or ‘mismatching stim’ trials with equal probability.
+    In ‘matching stim’ trials \({\theta }_{{{{\rm{stim}}}}1} \sim {\mathbb{U}}[0,2\pi
+    ]\) and \({\theta }_{{{{\rm{stim}}}}2}={\theta }_{{{{\rm{stim}}}}1}\). In ‘mismatch
+    stim’ trials, \({\theta }_{{{{\rm{stim}}}}1} \sim {\mathbb{U}}[0,2\pi ]\) and
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{stim}}}}2} \sim {\mathbb{U}}[({\theta }_{{{{\rm{stim}}}}1}-0.2\pi
+    ,{\theta }_{{{{\rm{stim}}}}1}-0.6\pi )\cup ({\theta }_{{{{\rm{stim}}}}1}+0.2\pi
+    ,{\theta }_{{{{\rm{stim}}}}1}+0.6\pi )].$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For ‘DMS’, models must respond in the displayed direction if the stimuli match,
+    otherwise repress response,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,{\theta }_{{{{\rm{stim}}}}1}={\theta }_{{{{\rm{stim}}}}2}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for ‘DNMS’, models must respond to the second direction if both directions
+    are mismatched,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,{\theta }_{{{{\rm{stim}}}}1}\ne {\theta }_{{{{\rm{stim}}}}2}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘DMC’ and ‘DNMC’ tasks are organized in a similar manner. The stimulus input
+    space is divided evenly into two categories such that cat1 = {*θ*: 0 < *θ*≤*π*}
+    and cat2 = {*θ*: *π* < *θ*≤2*π*}. For ‘DMC’ and ‘DNMC’ tasks, trials are constructed
+    as ‘matching cat.’ trials or ‘mismatching cat.’ trials with equal probability.
+    In ‘matching cat.’ trials \({\theta }_{{{{\rm{stim}}}}1} \sim {\mathbb{U}}[0,2\pi
+    ]\) and \({\theta }_{{{{\rm{stim}}}}2} \sim {\mathbb{U}}({{{\mbox{cat}}}}_{{{{\rm{stim}}}}1})\),
+    where \({\mathbb{U}}({{{\mbox{cat}}}}_{{{{\rm{stim}}}}1})\) is a uniform draw
+    from the category of stim1\. In ‘mismatch stim’ trials, \({\theta }_{{{{\rm{stim}}}}1}
+    \sim {\mathbb{U}}[0,2\pi ]\) and \({\theta }_{{{{\rm{stim}}}}2} \sim {\mathbb{U}}(-{{{\mbox{cat}}}}_{{{{\rm{stim}}}}1})\)
+    where \(-{{{\mbox{cat}}}}_{{{{\rm{stim}}}}1}\) is the opposite category as stim1\.
+    For ‘DMC’, the model must respond in the first direction if both stimuli are presented
+    in the same category otherwise repress response,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}1}\quad
+    &\,{{\mbox{if}}}\,\,{{{\mbox{cat}}}}_{{{{\rm{stim}}}}1}={{{\mbox{cat}}}}_{{{{\rm{stim}}}}2}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and for ‘DNMC’, the model should respond to the second direction if both stimuli
+    are presented in opposite categories otherwise repress response,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\theta }_{{{{\rm{target}}}}}=\left\{\begin{array}{ll}{\theta }_{{{{\rm{stim}}}}2}\quad
+    &\,{{\mbox{if}}}\,\,{{{\mbox{cat}}}}_{{{{\rm{stim}}}}1}\ne {{{\mbox{cat}}}}_{{{{\rm{stim}}}}2}\\
+    {{{\rm{repress}}}}\quad &\,{{\mbox{otherwise}}}\,\end{array}\right.$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Target output and correct criteria
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The target output \(y\in {{\mathbb{R}}}^{33\times T}\) for a trial entails maintaining
+    fixation in *y*[1] = *y*[fix] during the stimulus epoch, and then either responding
+    in the correct direction or repressing activity in the remaining target response
+    units *y*[2…33] in the response epoch. Since the model should maintain fixation
+    until response, target for fixation is set at *y*[fix] = 0.85 during preparatory
+    and stimulus epochs and *y*[fix] = 0.05 in the response epoch. When a response
+    is not required, as in the preparatory and stimulus epochs and with repressed
+    activity in the response epoch, unit *i* takes on a target activity of *y*[*i*] = 0.05\.
+    Alternatively, when there is a target direction for response,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${y}_{i}=0.8\exp \left[-0.5 \times {\left(\frac{8| {\theta }_{{{{\rm{target}}}}}-{\theta
+    }_{i}| }{\pi }\right)}^{2}\right]+0.05$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where *θ*[*i*] is the preferred direction for unit *i*. Like in sensory stimuli,
+    preferred directions for target units are evenly spaced values from [0, 2*π*]
+    allocated to the 32 response units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a model response to count as correct, it must maintain fixation, that is,
+    \({\hat{y}}_{{{{\rm{fix}}}}} > 0.5\) during preparatory and stimulus epochs. When
+    no response is required \({\hat{y}}_{i} < 0.15\). When a response is required,
+    response activity is decoded using a population vector method and \({\theta }_{{{{\rm{resp}}}}.}\in
+    ({\theta }_{{{{\rm{target}}}}}-\frac{\pi }{10},{\theta }_{{{{\rm{target}}}}}+\frac{\pi
+    }{10})\). If the model fails to meet any of these criteria, the trial response
+    is incorrect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model training
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Again following ref. ^([18](/articles/s41593-024-01607-5#ref-CR18 "Yang, G.
+    R., Joglekar, M. R., Song, H. F., Newsome, W. T. & Wang, X.-J. Task representations
+    in neural networks trained to perform many cognitive tasks. Nat. Neurosci. 22,
+    297–306 (2019).")), model parameters are updated in a supervised fashion according
+    to a masked mean squared error loss (mMSE) computed between the model motor response,
+    \({\hat{y}}_{1\ldots T}=\hat{y}\), and the target, *y*[1…*T*] = *y*, for each
+    trial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$L={{{\rm{mMSE}}}}(\,y,\hat{y})={\rm{mask}} \times {\Big\langle {\left({\,y}_{t}-{{\hat{y}_{t}}}\right)}^{2}\Big\rangle
+    }_{t}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, the multiplication sign denotes element-wise multiplication. Masks weigh
+    the importance of different trial epochs. During preparatory and stimulus epochs,
+    mask weights are set to 1; during the first five time steps of the response epoch,
+    the mask value is set to 0; and during the remainder of the response epoch, the
+    mask weight is set to 5\. The mask value for the fixation is twice that of other
+    values at all time steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For all models, we update Θ = {sensorimotor-RNN, Linear[out]} during training
+    on our task set. For instructed models, we additionally update Linear[embed] in
+    the process of normal training. We train models using standard PyTorch machinery
+    and an Adam optimizer. An epoch consists of 2,400 mini-batches, with each mini-batch
+    consisting of 64 trials. For all models, we use the same initial learning rate
+    as in ref. ^([18](/articles/s41593-024-01607-5#ref-CR18 "Yang, G. R., Joglekar,
+    M. R., Song, H. F., Newsome, W. T. & Wang, X.-J. Task representations in neural
+    networks trained to perform many cognitive tasks. Nat. Neurosci. 22, 297–306 (2019).")),
+    *l**r* = 0.001\. We found that in the later phases of training, model performance
+    oscillated based on which latest task presented during training, so we decayed
+    the learning rate for each epoch by a factor of *γ* = 0.95, which allowed performance
+    to converge smoothly. Following ref. ^([18](/articles/s41593-024-01607-5#ref-CR18
+    "Yang, G. R., Joglekar, M. R., Song, H. F., Newsome, W. T. & Wang, X.-J. Task
+    representations in neural networks trained to perform many cognitive tasks. Nat.
+    Neurosci. 22, 297–306 (2019).")), models train until they reach a threshold performance
+    of 95% across all tasks (and train for a minimum of 35 epochs). We found that
+    training for GPTNET tended to asymptote below performance threshold for multisensory
+    versions of comparison tasks. This held true over a variety of training hyperparameters
+    and learning rate scheduler regimes. Hence, we relax the performance threshold
+    of GPTNET to 85%. For each model type, we train five models that start from five
+    different random initializations. Where applicable, results are averaged over
+    these initializations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Language model fine-tuning
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: When fine-tuning models, we allow the gradient from the motor loss experienced
+    during sensorimotor training to fine-tune the weights in the final layers of the
+    transformer language models. During normal training, we checkpoint a copy of our
+    instructed models after training for 30 epochs. We then add the last three transformer
+    layers to the set of trainable parameters, and reset the learning rates to *l**r* = 1 × 10^−⁴
+    for Θ = {sensorimotor-RNN, Linear[out]} and *l**r*^(lang) = 3 × 10^(−4) for Θ^(lang) = {Linear[embed], transformer[−3,−2,−1]}
+    where transformer[−3,−2,−1] denotes the parameters of the last three layers of
+    the relevant transformer architecture. We used these reduced learning rates to
+    avoid completely erasing preexisting linguistic knowledge. Similarly for RNN parameters,
+    we found the above learning rate avoided catastrophic forgetting of sensorimotor
+    knowledge while also allowing the RNN to adapt to updated language embeddings
+    across all models. Autoregressive models were much more sensitive to this procedure,
+    often collapsing at the beginning of fine-tuning. Hence, for GPTNETXL and GPTNET,
+    we used *l**r*^(lang) = 5 × 10^(−5), which resulted in robust learning. Models
+    train until they reach a threshold performance of 95% across training tasks or
+    85% correct for GPTNET.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hold-out testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: During hold-out testing, we present models with 100 batches of one of the tasks
+    that had been held out of training. For the instructed model, the only weights
+    allowed to update during this phase are Θ = {sensorimotor-RNN, Linear[out], Linear[embed]}.
+    All weights of SIMPLENET and STRUCTURENET are trainable in this context. In this
+    hold-out setting, we found that in more difficult tasks for some of our more poorly
+    performing models, the standard hyperparameters we used during training resulted
+    in unstable learning curves for novel tasks. To stabilize performance and thereby
+    create fair comparisons across models, we used an increased batch size of 256\.
+    We then began with the standard learning rate of 0.001 and decreased this by increments
+    of 0.0005 until all models showed robust learning curves. This resulted in a learning
+    rate of 8 × 10^(−4). All additional results shown in the [Supplementary Information](/articles/s41593-024-01607-5#Sec36)
+    section 4 follow this procedure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CCGP calculation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To calculate CCGP, we trained a linear decoder on a pair of tasks and then
+    tested that decoder on alternative pairs of tasks that have an analogous relationship.
+    We grouped tasks into eight dichotomies: ‘Go’ versus ‘Anti’, ‘Standard’ versus
+    ‘RT’, ‘Weakest’ versus ‘Strongest’, ‘Longest’ versus ‘Shortest’, ‘First Stim.’
+    versus ‘Second Stim’, ‘Stim Match’ versus ‘Category Match’, ‘Matching’ versus
+    ‘Non-Matching’ and ‘Mod1’ versus ‘Mod2’. As an example, the ‘Go’ versus ‘Anti’
+    dichotomy includes (‘Go’, ‘AntiGo’), (‘GoMod1’, ‘AntiGoMod1’), (‘GoMod2’, ‘AntiGoMod2’),
+    (‘RTGo’, ‘AntiRTGo’), (‘RTGoMod1’, ‘AntiRTGoMod1’) and (‘RTGoMod2’, ‘AntiRTGoMod2’)
+    task pairs. For ‘RNN’ task representations, we extracted activity at the time
+    of stimulus onset for 250 example trials. For language representations, we input
+    the instruction sets for relevant tasks to our language model and directly analyze
+    activity in the ‘embedding’ layer or take the sequence-averaged activity in each
+    transformer layer. For nonlinguistic models, we simply analyze the space of rule
+    vectors. Train and test conditions for decoders were determined by dichotomies
+    identified across the task set (Supplementary Note [1](/articles/s41593-024-01607-5#MOESM1)).
+    To train and test decoders, we used sklearn.svm.LinearSVC Python package. The
+    CCGP score for a given task is the average decoding score achieved across all
+    dichotomies where the task in question was part of either the train set or the
+    test set. For model scores reported in the main text, we only calculate CCGP scores
+    for models where the task in question has been held out of training. In Supplementary
+    Fig. [9](/articles/s41593-024-01607-5#MOESM1), we report scores on tasks where
+    models have been trained on all tasks, and for models where instructions have
+    been switched for the hold-out task.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For Fig. [3e](/articles/s41593-024-01607-5#Fig3), we calculated Pearson’s *r*
+    correlation coefficient between performance on held-out tasks and CCGP scores
+    per task, as well as a *P*-value testing against the null hypothesis that these
+    metrics are uncorrelated and normally distributed (using the scipy.stats.pearsonr
+    function). Full statistical tests for CCGP scores of both RNN and embedding layers
+    from Fig. [3f](/articles/s41593-024-01607-5#Fig3) can be found in Supplementary
+    Fig. [9](/articles/s41593-024-01607-5#MOESM1). Note that transformer language
+    models use the same set of pretrained weights among random initialization of Sensorimotor-RNNs,
+    thus for language model layers, the Fig. [3f](/articles/s41593-024-01607-5#Fig3)
+    plots show the absolute scores of those language models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conditional clause/deduction task analysis
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We first split our task set into two groups (listed below): tasks that included
+    conditional clauses and simple deductive reasoning components (30 tasks) and those
+    where instructions include simple imperatives (20 tasks). We computed the difference
+    in performance across the mean of generalization performance for each group across
+    random initialization for each model (Fig. [2f](/articles/s41593-024-01607-5#Fig2)).
+    We compared these differences to a null distribution constructed by performing
+    a set of 50 random shuffles of the task set into groups of 30 and 20 tasks and
+    computing differences in the same way, again using two-sided unequal-variance
+    *t*-tests. Because STRUCUTRENET is a nonlinguistic model, we then compared performance
+    of STRUCUTRENET to our instructed models to disassociate the effects of performing
+    tasks with a deductive reasoning component versus processing instructions with
+    more complicated conditional clause structure. Results of all statistical tests
+    are reported in Supplementary Fig. [6](/articles/s41593-024-01607-5#MOESM1)).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Simple imperative tasks include: ‘Go’, ‘AntiGo’, ‘RTGo’, ‘AntiRTGo’, ‘GoMod1’,
+    ‘GoMod2’, ‘AntiGoMod1’, ‘AntiGoMod2’, ‘RTGoMod1’, ‘AntiRTGoMod2’, ‘RTGoMod2’,
+    ‘AntiRTGoMod2’, ‘DM’, ‘AntiDM’, ‘MultiDM’, ‘AntiMultiDM’, ‘DMMod1’, ‘DMMod2’,
+    ‘AntiDMMod1’ and ‘AntiDMMod2’.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Conditional clause/deduction tasks include: ‘ConDM’, ‘ConAntiDM’, ‘Dur1’, ‘Dur2’,
+    ‘MultiDur1’, ‘MultiDur2’, ‘AntiDur1’, ‘AntiDur2’, ‘AntiMultiDur1’, ‘AntiMultiDur2’,
+    ‘Dur1Mod1’, ‘Dur1Mod2’, ‘Dur2Mod1’, ‘Dur2Mod2’, ‘COMP1’, ‘COMP2’, ‘MultiCOMP1’,
+    ‘MultiCOMP2’, ‘AntiCOMP1’, ‘AntiCOMP2’, ‘AntiMultiCOMP1’, ‘AntiMultiCOMP2’, ‘COMP1Mod1’,
+    ‘COMP1Mod2’, ‘COMP2Mod1’, ‘COMP2Mod2’, ‘DMS’, ‘DNMS’, ‘DMC’ and ‘DMNC’.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Language production training
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Self-supervised language production network training
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Our language production framework is inspired by classic sequence-to-sequence
+    modeling using RNNs^([53](/articles/s41593-024-01607-5#ref-CR53 "Sutskever, I.,
+    Vinyals, O. & Le., Q. V. Sequence to sequence learning with neural networks. In
+    Proc. 27th International Conference on Neural Information Processing Systems 3104–3112
+    (MIT Press, 2014).")). Our Production-RNN is a GRU with 256 hidden units using
+    ReLU nonlinearities. At each step in the sequence, a set of decoder weights, Linear[words],
+    attempts to decode the next token, *w*[*τ*+1], from the hidden state of the recurrent
+    units. The hidden state of the Production-RNN is initialized by concatenating
+    the time average and maximum sensorimotor activity of a SBERTNET (L) and passing
+    that through weights Linear[sm]. The linguistic instruction used to drive the
+    initializing sensorimotor activity is in turn used as the target set of tokens
+    for the Production-RNN outputs. The first input to the Production-RNN is always
+    a special start-of-sentence token, and the decoder runs until an end-of-sentence
+    token is decoded or until input reaches a length of 30 tokens. Suppose \({w}_{1,k}\ldots
+    {w}_{{{{\mathcal{T}}}},k}\in {\rm{Instruc{t}}}_{k}^{i}\) is the sequence of tokens
+    in instruction *k* where *k* is in the instruction set for task *i* and *X*^(*i*)
+    is sensory input for a trial of task *i*. For brevity, we denote the process by
+    which language models embed instructions as Embed() (see ‘Pretrained transformers’).
+    The decoded token at the *τ*^(th) position, \({\hat{w}}_{\tau ,k}\), is then given
+    by
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{ll}{h}_{T}^{sm}={{{\rm{SensorimotorRNN}}}}\left({X}^{i},Embed\left({w}_{1,k}\ldots
+    {w}_{{{{\mathcal{T}}}},k}\right)\right)\quad\quad{h}_{T}^{sm}\in {{\mathbb{R}}}^{T\times
+    256}\\ sm\_out=\left.\right({{{{\rm{mean}}}}}_{T}\left({h}_{T}^{sm}\right),\mathop{\max
+    }\limits_{T}\left({h}_{T}^{sm}\right)\quad\quad\quad\quad\quad\quad\quad\quad\quad\;\;{sm}\_{out}\in
+    {{\mathbb{R}}}^{512}\\ \overline{{h}_{0}^{{{{\rm{decoder}}}}}}={{{\rm{relu}}}}\left({{{{\rm{Linear}}}}}_{{{{\rm{sm}}}}}(sm\_out)\right)\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\;\overline{{h}_{0}^{{{{\rm{decoder}}}}}}\in
+    {{\mathbb{R}}}^{256}\\ {h}_{0}^{{{{\rm{decoder}}}}}={{{\rm{Dropout}}}}\left(\overline{{h}_{0}^{{{{\rm{decoder}}}}}}\right)\;\;\;\quad\quad\quad\quad\quad\quad\quad\quad\quad\qquad\quad{h}_{0}^{{{{\rm{decoder}}}}}\in
+    {{\mathbb{R}}}^{256}\\ {h}_{\tau }^{{{{\rm{decoder}}}}}={{{\rm{ProductionRNN}}}}\left({\hat{w}}_{1,k}\ldots
+    {\hat{w}}_{\tau -1,k};{h}_{0}^{{{{\rm{decoder}}}}}\right),\quad\quad\quad{h}_{\tau
+    }^{{{{\rm{decoder}}}}}\in {{\mathbb{R}}}^{256}\\ {p}_{{\hat{w}}_{\tau ,k}}={{{\rm{softmax}}}}\left({{{{\rm{Linear}}}}}_{{{{\rm{words}}}}}\left({h}_{\tau
+    ,k}^{{{{\rm{decoder}}}}}\right)\right)\quad\quad\quad\quad\quad\quad\quad\quad\quad{p}_{{\hat{w}}_{\tau
+    ,k}}\in {{\mathbb{R}}}^{| vocab| },\\ {\hat{w}}_{\tau ,k}={{{\rm{argmax}}}}\left({p}_{{\hat{w}}_{\tau
+    ,k}}\right)\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The model parameters Θ^(production) = {Linear[sm], Linear[words], Production-RNN}
+    are trained using cross-entropy loss between the \({p}_{{\hat{w}}_{\tau ,i}}\)
+    and the instruction token *w*[*τ*,*k*] provided to the sensorimotor-RNN as input.
+    We train for 80 epochs of 2,400 batches with 64 trials per batch and with task
+    type randomly interleaved. We found that using an initial learning rate of 0.001
+    sometimes caused models to diverge in early phases of training, so we opted for
+    a learning rate of 1× 10^(−4), which led to stable early training. To alleviate
+    similar oscillation problems detected in sensorimotor training, we also decayed
+    the learning rate by *γ* = 0.99 per epoch. Additionally, the use of a dropout
+    layer with a dropout rate of 0.05 improved performance. We also used a teacher
+    forcing curriculum, where for some ratio of training batches, we input the ground
+    truth instruction token *w*[*τ*,*k*] at each time step instead of the models decoded
+    word \({\hat{w}}_{\tau ,k}\). At each epoch, \({\rm{teacher}}\,{{\mbox{\_}}}{\rm{forcing}}{{\mbox{\_}}}\)
+    \({\rm{ratio}}=0.5 \times \frac{80-{{{\rm{epoch}}}}}{80}\).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obtaining embedding layer activity using motor feedback
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For a task, *i*, we seek to optimize a set of embedding activity vectors \({E}^{i}\in
+    {{\mathbb{R}}}^{64}\) such that when they are input as task-identifying information,
+    the model will perform the task in question. Crucially, we freeze all model weights
+    Θ = {sensorimotor-RNN, Linear[out], Linear[embedding]} and only update *E*^(*i*)
+    according to the standard supervised loss on the motor output. For notional clarity,
+    GRU dependence on the previous hidden state *h*[*t*−1] has been made implicit
+    in the following equations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{array}{rcl}{\hat{y}}{\,}^{i}&=&\sigma \Big({{{{\rm{Linear}}}}}_{{{{\rm{out}}}}}\left({{{\rm{SensorimotorRNN}}}}({X}^{\,i},{E}^{i})\right)\Big)\\
+    L&=&{\rm{mMSE}}(\;y,\hat{y})\end{array}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: We optimized a set of 25 embedding vectors for each task, again using an Adam
+    optimizer. Here the optimization space has many suboptimal local minimums corresponding
+    to embeddings for related tasks. Hence, we used a high initial learning rate of
+    *l**r* = 0.05, which we decayed by *γ* = 0.8 for each epoch. This resulted in
+    more robust learning than lower learning rates. An epoch lasts for 800 batches
+    with a batch length of 64, and we train for a minimum of 1 epoch or until we reach
+    a threshold performance of 90% or 85% on ‘DMC’ and ‘DNMC’ tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Producing task instructions
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: To produce task instructions, we simply use the set *E*^(*i*) as task-identifying
+    information in the input of the sensorimotor-RNN and use the Production-RNN to
+    output instructions based on the sensorimotor activity driven by *E*^(*i*). For
+    each task, we use the set of embedding vectors to produce 50 instructions per
+    task. We repeat this process for each of the 5 initializations of sensorimotor-RNN,
+    resulting in 5 distinct language production networks, and 5 distinct sets of learned
+    embedding vectors. Reported results for each task are averaged over these 5 networks.
+    For the confusion matrix (Fig. [5d](/articles/s41593-024-01607-5#Fig5)), we report
+    the average percentage that decoded instructions are in the training instruction
+    set for a given task or a novel instruction. Partner model performance (Fig. [5e](/articles/s41593-024-01607-5#Fig5))
+    for each network initialization is computed by testing each of the 4 possible
+    partner networks and averaging over these results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sample sizes/randomization
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: No statistical methods were used to predetermine sample sizes but following
+    ref. ^([18](/articles/s41593-024-01607-5#ref-CR18 "Yang, G. R., Joglekar, M. R.,
+    Song, H. F., Newsome, W. T. & Wang, X.-J. Task representations in neural networks
+    trained to perform many cognitive tasks. Nat. Neurosci. 22, 297–306 (2019)."))
+    we used five different random weight initializations per language model tested.
+    Randomization of weights was carried out automatically in Python and PyTorch software
+    packages. Given this automated randomization of weights, we did not use any blinding
+    procedures in our study. No data were excluded from analyses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Software
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: All simulation and data analysis was performed in Python 3.7.11\. PyTorch 1.10
+    was used to implement and train models (this includes Adam optimizer implementation).
+    Transformers 4.16.2 was used to implement language models and all pretrained weights
+    for language models were taken from the Huggingface repository ([https://huggingface.co/docs/transformers/](https://huggingface.co/docs/transformers/)).
+    We also used scikit-learn 0.24.1 and scipy 1.7.3 to perform analyses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reporting summary
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Further information on research design is available in the [Nature Portfolio
+    Reporting Summary](/articles/s41593-024-01607-5#MOESM2) linked to this article.
+  prefs: []
+  type: TYPE_NORMAL

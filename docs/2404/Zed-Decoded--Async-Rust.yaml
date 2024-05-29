@@ -1,0 +1,335 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:03:09'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Zed Decoded: Async Rust'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://zed.dev/blog/zed-decoded-async-rust](https://zed.dev/blog/zed-decoded-async-rust)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Zed Decoded: Async Rust'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to the first article in a new series called **Zed Decoded**. In Zed
+    Decoded I'm going to take a close look at Zed — how it's built, which data structures
+    it uses, which technologies and techniques, what features it has, which bugs we
+    ran into. The best part? I won't do this alone, but get to interview and ask my
+    colleagues here at Zed about everything I want to know.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Companion Video**: Async Rust'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This post comes with a 1hr companion video, in which Thorsten and Antonio explore
+    how Zed uses async Rust — in Zed. It's a loose conversation that focuses on the
+    code and dives a bit deeper into some topics that didn't fit into the post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Watch the video here: [https://youtu.be/gkU4NGSe21I](https://youtu.be/gkU4NGSe21I)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first topic that was on my list: async Rust and how it''s used in Zed.
+    Over the past few months I''ve become quite fascinated with async Rust — Zed''s
+    the first codebase I''ve worked in that uses it — so I decided to sit down and
+    ask Antonio, one of Zed''s co-founders, about how we use async Rust in Zed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We won''t get into the details of async Rust itself (familiarity with that
+    is to be expected if you want to understand the nitty-gritty of the code we''ll
+    see), but instead focus on how Zed uses async Rust to build a high-performance,
+    native application: what async code looks like on the application level, which
+    runtime it uses, why it uses that runtime.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing async Rust with GPUI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s jump right into the deep end. Here is a snippet of code that''s representative
+    of async code in the Zed codebase:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s [a function from our `Editor`](https://github.com/zed-industries/zed/blob/98ddefc8884d0957ab766b3aea09265c8423684e/crates/editor/src/editor.rs#L3935-L3947).
+    When it''s called, Zed shows the names of the owners of each cursor: your name
+    or the names of the people you''re collaborating with. It''s called, for example,
+    when the editor is re-focused, so you can quickly see who''s doing what and where.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What `show_cursor_names` does is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Toggle on `Editor.show_cursor_names` and trigger a re-render of the editor.
+    When `Editor.show_cursor_names` is true, cursor names will be rendered.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Spawn a task that sleeps for `CURSOR_VISIBLE_FOR`, turn the cursors off, and
+    trigger another re-render.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If you''ve ever written async Rust before, you can spot some familiar elements
+    in the code: there''s a `.spawn`, there''s an `async move`, there''s an `await`.
+    And if you''ve ever used the `async_task` crate before, this might remind you
+    of code [like this](https://docs.rs/async-task/4.7.0/async_task/struct.Task.html#method.detach):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's because Zed uses `async_task` for its `Task` type. But in this example
+    there's an `Executor` — where is that in the Zed code? And what does `cx.background_executor()`
+    do? Good questions, let's find answers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: macOS as our async runtime
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One remarkable thing about async Rust is that it allows you to choose your own
+    runtime. That's different from a lot of other languages (such as JavaScript) in
+    which you can also write asynchronous code. Runtime isn't a term with very sharp
+    definition, but for our purposes here, we can say that a runtime is the thing
+    that runs your asynchronous code and provides you with utilities such as `.spawn`
+    and something like an `Executor`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most popular of these runtimes is probably [tokio](https://github.com/tokio-rs/tokio).
+    But there's also [smol](https://github.com/smol-rs/smol), [embassy](https://github.com/embassy-rs/embassy)
+    and others. Choosing and switching runtimes comes with tradeoffs, they [are only
+    interchangable to a degree](https://corrode.dev/blog/async/), but it is possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Zed for macOS, as it turns out, we don't use any one of these. We also don't
+    use `async_task`'s `Executor`. But there has to be something to execute the asynchronous
+    code, right? Otherwise I wouldn't be typing these lines in Zed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So what then does `cx.spawn` do and what is the `cx.background_executor()`?
+    Let''s take a look. Here are [three relevant methods from GPUI''s `AppContext`](https://github.com/zed-industries/zed/blob/dc98b3cfa19d6bd4eae813ce7dfaf9d9e13c232c/crates/gpui/src/app.rs#L818-L836):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Alright, two executors, `foreground_executor` and `background_executor`, and
+    both have `.spawn` methods. We already saw `background_executor`'s `.spawn` above
+    in `show_cursor_names` and here, in `AppContext.spawn`, we see the `foreground_executor`
+    counterpart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One level deeper, we can see what `foreground_executor.spawn` does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There''s a lot going on here, a lot of syntax, but what happens can be boiled
+    down to this: the `.spawn` method takes in a `future`, turns it into a [`Runnable`](https://docs.rs/async-task/latest/async_task/struct.Runnable.html)
+    and a `Task`, and asks the `dispatcher` to run it on the main thread.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `dispatcher` here is a `PlatformDispatcher`. That's the GPUI equivalent
+    of `async_task`'s `Executor` from above. It has `Platform` in its name because
+    it has different implementations for macOS, Linux, and Windows. But in this post,
+    we're only going to look at macOS, since that's our best-supported platform at
+    the moment and Linux/Windows implementations are still work-in-progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So what does `dispatch_on_main_thread` do? Does *this* now call an async runtime?
+    No, no runtime [there either](https://github.com/zed-industries/zed/blob/dc98b3cfa19d6bd4eae813ce7dfaf9d9e13c232c/crates/gpui/src/platform/mac/dispatcher.rs#L66-L75):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`dispatch_async_f` is where the call leaves the Zed codebase, because `dispatch_async_f`
+    is actually a compile-time generated binding to the [`dispatch_async_f`](https://developer.apple.com/documentation/dispatch/1452834-dispatch_async_f)
+    function in [macOS'' Grand Central Dispatch''s (GCD)](https://developer.apple.com/documentation/DISPATCH).
+    `dispatch_get_main_queue()`, too, is such a binding.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That''s right: Zed, as a macOS application, uses macOS'' GCD to schedule and
+    execute work.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happens in the snippet above is that Zed turns the `Runnable` — think of
+    it as a handle to a `Task` — into a raw pointer and passes it to `dispatch_async_f`
+    along with a `trampoline`, which puts it on its `main_queue`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When GCD then decides it's time to run the next item on the `main_queue`, it
+    pops it off the queue, and calls `trampoline`, which takes the raw pointer, turns
+    it back into a `Runnable` and, to poll the `Future` behind its `Task`, calls `.run()`
+    on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And, as I learned to my big surprise: that''s it. That''s essentially all the
+    code necessary to use GCD as a "runtime" for async Rust. Where other applications
+    use tokio or smol, Zed uses thin wrappers around GCD and crates such as `async_task`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Wait, but what about the `BackgroundExecutor`? It''s very, very similar to
+    the `ForegroundExecutor`, with the main difference being that the `BackgroundExecutor`
+    calls this method on `PlatformDispatcher`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only difference between this `dispatch` method and `dispatch_async_f` from
+    above is the queue. The `BackgroundExecutor` doesn't use the `main_queue`, but
+    [a global queue](https://developer.apple.com/documentation/dispatch/1452927-dispatch_get_global_queue?language=objc).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like I did when I first read through this code, you now might wonder: why?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why use GCD? Why have a `ForegroundExecutor` and a `BackgroundExecutor`? What's
+    so special about the `main_queue`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Never block the main thread
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In a native UI application, the main thread is important. No, the main thread
+    is *holy*. The main thread is where the rendering happens, where user input is
+    handled, where the operating system communicates with the application. The main
+    thread should never, ever block. On the main thread, the responsiveness of your
+    app lives or dies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's true for [Cocoa](https://en.wikipedia.org/wiki/Cocoa_(API)) applications
+    on macOS too. Rendering, receiving user input, communication with macOS, and other
+    platform concerns have to happen on the main thread. And since Zed wants perfect
+    cooperation with macOS to ensure high-performance and responsiveness, it does
+    two things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, it uses GCD to schedule its work — on and off the main thread — so that
+    macOS can maintain high responsiveness and overall system efficiency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Second, the importance of the main thread is baked into GPUI, the UI framework,
+    by explicitly making the distinction between the `ForegroundExecutor` and the
+    `BackgroundExecutor`, both of which we saw above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a writer of application-level Zed code, you should always be mindful of what
+    happens on the main thread and never put too much blocking work on it. If you
+    were to put, say, a blocking `sleep(10ms)` on the main thread, rendering the UI
+    now has to wait for that `sleep()` to finish, which means that rendering the next
+    frame would take longer than 8ms — the maximum frame time available if you want
+    to achieve [120 FPS](https://zed.dev/blog/120fps). You'd "drop a frame", as they
+    say.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Knowing that, let''s take a look at another small snippet of code. This time
+    it''s from the built-in terminal in Zed, a function that [searches through the
+    contents of the terminal buffer](https://github.com/zed-industries/zed/blob/dc98b3cfa19d6bd4eae813ce7dfaf9d9e13c232c/crates/terminal/src/terminal.rs#L1346-L1358):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first line in `find_matches`, the `self.term.clone()`, happens on the main
+    thread and is quick: `self.term` is an `Arc<Mutex<...>>`, so cloning only bumps
+    the reference count on the `Arc`. The call to `.lock()` then only happens in the
+    background, since `.lock()` might block. It''s unlikely that there will be contention
+    for this lock in this particular code path, but if there was contention, it wouldn''t
+    freeze the UI, only a single background thread. That''s the pattern: if it''s
+    quick, you can do it on the main thread, but if it might take a while or even
+    block, put it on a background thread by using `cx.background_executor()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s another example, the project-wide search in Zed (`⌘-shift-f`). It pushes
+    as much heavy work as possible onto background threads to ensure Zed stays responsive
+    while searching through tens of thousands of files in your project. Here''s a
+    simplified and heavily-commented [excerpt from `Project.search_local`](https://github.com/zed-industries/zed/blob/dc98b3cfa19d6bd4eae813ce7dfaf9d9e13c232c/crates/project/src/project.rs#L6485-L6498)
+    that shows the main part of the search:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s a lot of code — sorry! — but there''s not a lot more going on than the
+    concepts we already talked about. What''s noteworthy here and why I wanted to
+    show it is the ping-pong between the main thread and background threads:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main thread**: kicks off the search and hands the `query` over to background
+    thread'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**background thread**: finds files in project with >1 occurrences of `query`
+    in them, sends results back over channel as they come in'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**main thread**: waits until background thread has found `MAX+1` results, then
+    drops channel, which causes background thread to exit'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**main thread**: spawns multiple other main-thread tasks to open each file
+    & create a snapshot.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**background threads**: search through buffer snapshot to find all results
+    in a buffer, sends results back over channel'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**main thread**: waits for background thread to find results in all buffers,
+    then sends them back to the caller of the outer `search_local` method'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Even though this method can be optimized and the search made a lot faster (we
+    haven't gotten around to that yet), it can already search thousands of files without
+    blocking the main thread, while still using multiple CPU cores.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Async-Friendly Data Structures, Testing Executors, and More
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I''m pretty sure that the previous code excerpt raised a lot of questions that
+    I haven''t answered yet: how exactly is it possible to send a buffer snapshot
+    to a background thread? How efficient is it do that? What if I want to modify
+    such a snapshot on another thread? How do you test all this?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And I'm sorry to say that I couldn't fit all of the answers into this post.
+    But there is a [companion video](https://youtu.be/gkU4NGSe21I) in which Antonio
+    and I did dive into a lot of these areas and talked about async-friendly data
+    structures, copy-on-write buffer snapshots, and other things. Antonio also gave
+    [a fantastic talk about how we do property-testing of async Rust code](https://www.youtube.com/watch?v=ms8zKpS_dZE)
+    in the Zed code base that I highly recommend. I also promise that in the future
+    there will be a post about the data structures underlying the Zed editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Until next time!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

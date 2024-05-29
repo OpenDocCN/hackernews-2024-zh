@@ -1,0 +1,131 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:03:39'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Turning off Rust's borrow checker, completely
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://iter.ca/post/rust-skip-borrowck/](https://iter.ca/post/rust-skip-borrowck/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I recently came across [`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html),
+    a Rust macro that makes it so the borrow checker is “turned off” for a function.
+    It transforms the code of a function to transform reference manipulations into
+    unsafe code that does that without the borrow checker knowing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, this is not the sort of thing you would want to use in production,
+    or really for anything other than education and experimentation. However, it made
+    me curious if it could be implemented at a lower level: can we patch the compiler
+    to remove the borrow checker? Yes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The obvious way to do that would be to just not run the pass that does borrow
+    checking. The `analysis` pass (technically it’s a [query](https://rustc-dev-guide.rust-lang.org/query.html)
+    not a pass but that’s not relevant here) of the compiler does a lot of things,
+    including some borrow checking. Let’s just not run the `analysis` pass! Just return
+    early so that no analysis is run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: That makes it so the rest of the function isn’t run, and causes an `unreachable
+    statement` warning when compiling the compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This kinda works. Most valid Rust code still works with this patched compiler.
+    It is occasionally prone to internal compiler errors (ICEs), and sometimes you
+    get some extra ✨*bonus errors*✨ as a result of parts of the compiler assuming
+    that parts of the analysis have been performed. But alas, removing the analysis
+    pass still leads to some borrow checking. We’re going to need to use the nuclear
+    option: ignoring errors entirely. Deep within the part of the compiler that emits
+    errors is `HandlerInner::emit_diagnostic`, which emits an error diagnostic. Part
+    of that function checks if we’re emitting an error, and if so increments a counter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before starting codegen, the compiler checks if the error count is non-zero,
+    and aborts if so. But if we just remove that call to `bump_lint_err_count`, the
+    number of errors will always be zero. The errors will still be displayed, but
+    won’t prevent compilation from succeeding. Normally the compiler doesn’t bail
+    after an error but keeps going, and then only aborts before the next phase of
+    compilation. This makes it so if there are multiple errors with some code, you
+    get to see all of them at once. But by not incrementing the error count, we’ll
+    fool the compiler into thinking there are no errors! Here’s [the patch](https://github.com/rust-lang/rust/commit/709edf2581ad86d02897ba169eb6d92aeda5c11d)
+    if you want to follow along at home.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that errors are generated and displayed, but the patched compiler
+    just ignores the fact that there are errors and tries to generate code anyways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can’t catch some fatal errors that stop compilation right away, but luckily
+    most errors let the compiler keep going until some future stopping point (but
+    that future stopping point won’t happen now, since the error count is always 0).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, I was pretty sure that this wouldn’t *actually* work. It does.
+    Here’s [an example of Rust code that the borrow checker doesn’t like](https://blog.logrocket.com/introducing-the-rust-borrow-checker/#inpractice):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here’s what happens when we run that through our patched compiler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There’s an error, but due to our patch the compiler just keeps going along.
+    And as a result, the compiled program produces garbage data: `Some(-501713657)`
+    is not an element in the list.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how it handles an example from [`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html#expanded):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, it just outputs garbage data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the *fun* ways our patched compiler handles various error conditions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many result in an internal compiler error since codegen assumes that other parts
+    of the compiler did their job
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you have non-exhaustive patterns the compiler tries to execute an illegal
+    instruction and coredumps
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sometimes format strings that reference variables affected by errors cause an
+    ICE, so you effectively have to always do `std::io::stdout().write_all(...)` instead
+    of `println!`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Please remember not to use this for anything other than testing!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

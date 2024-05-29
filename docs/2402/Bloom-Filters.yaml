@@ -1,0 +1,476 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:01:50'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bloom Filters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://samwho.dev/bloom-filters/](https://samwho.dev/bloom-filters/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Everyone has a set of tools they use to solve problems. Growing this set helps
+    you to solve ever more difficult problems. In this post, I'm going to teach you
+    about a tool you may not have heard of before. It's a niche tool that won't apply
+    to many problems, but when it does you'll find it invaluable. It's called a "bloom
+    filter."
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-dog name="sage" mode="warning">**Before you continue!** This post assumes
+    you know what a **hash function** is, and if you don't it's going to be tricky
+    to understand. Sam has written a post about hash functions, and recommendeds that
+    you **[read this first](/hashing).**</s-dog>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#what-bloom-filters-can-do) What bloom filters can do'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Bloom filters are similar to the `Set` data structure. You can add items to
+    them, and check if an item is present. Here''s what it might look like to use
+    a bloom filter in JavaScript, using a made-up `BloomFilter` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: While this looks almost identical to a `Set`, there are some key differences.
+    Bloom filters are what's called a **probabilistic data structure**. Where a `Set`
+    can give you a concrete "yes" or "no" answer when you call `contains`, a bloom
+    filter can't. Bloom filters can give definite "no"s, but they can't be certain
+    about "yes."
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the example above, when we ask `bf` if it contains `"Ant"` and `"Rhino"`,
+    the `true` that it returns isn''t a guarantee that they''re present. We know that
+    they''re present because we added them just a couple of lines before, but it would
+    be possible for this to happen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: We'll demonstrate *why* over the course of this post. For now, we'll say that
+    when bloom filters return `true` it doesn't mean "yes", it means "maybe". When
+    this happens and the item has never been added before, it's called a **false-positive**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The opposite, claiming "no" when the answer is "yes," is called a **false-negative**.
+    A bloom filter will *never* give a false-negative, and this is what makes them
+    useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-dog name="haskie" mode="confused">A data structure that lies to you?! How
+    could that possibly be useful?</s-dog>
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not strictly lying, it's just not giving you a definite answer. Let's look
+    at an example where we can use this property to our advantage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#when-bloom-filters-are-useful) When bloom filters are useful'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Imagine you're building a web browser, and you want to protect users from malicious
+    links. You could build and maintain a list of all known malicious links and check
+    the list every time a user navigates the browser. If the link they're trying to
+    visit is in the list, you warn the user that they might be about to visit a malicious
+    website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we assume there are, say, 1,000,000 malicious links on the Internet, and
+    each link is 20 characters long, then the list of malicious links would be 20MB
+    in size. This isn't a huge amount of data, but it's not small either. If you have
+    lots of users and want to keep this list up to date, the bandwidth could add up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if you're happy to accept being wrong 0.0001% of the time (1 in a million),
+    you could use a bloom filter which can store the same data in 3.59MB. That's an
+    82% reduction in size, and all it costs you is showing the user an incorrect warning
+    1 in every million links visited. If you wanted to take it even further, and you
+    were happy to accept being wrong 0.1% of the time (1 in 1000), the bloom filter
+    would only be 1.8MB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This use-case isn't hypothetical, either. Google Chrome used a bloom filter
+    for this exact purpose until 2012\. If you were worried about showing a warning
+    when it wasn't needed, you could always make an API that has the full list of
+    malicious links in a database. When the bloom filter says "maybe," you would then
+    make an API call to check the full list to be sure. No more spurious warnings,
+    and the bloom filter would save you from having to call the API for every link
+    visited.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#how-bloom-filters-work) How bloom filters work'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At its core, a bloom filter is an array of <s-word>bits</s-word>. When it is
+    created, all of the <s-word>bits</s-word> are set to 0\. We're going to represent
+    this as a grid of circles, with each circle representing 1 <s-word>bit</s-word>.
+    Our bloom filters in this post are all going to have 32 <s-word>bits</s-word>
+    in total.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-dog name="sam" padding="false">I'm experimenting with alternate colour palettes.
+    If you find the above difficult to read, or just don't like it, please try [this
+    one](?palette=tol#bf0) and let me know what you think. [Click here](?palette=wong#bf0)
+    to go back to normal.</s-dog>
+  prefs: []
+  type: TYPE_NORMAL
+- en: To add an item to the bloom filter, we're going to hash it with 3 different
+    hash functions, then use the 3 resulting values to set 3 <s-word>bits</s-word>.
+    If you're not familiar with hashing, I recommend reading [my post](/hashing) about
+    it before continuing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this post I''m choosing to use 3 of the [SHA](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms)
+    family of hash functions: <s-word>sha1</s-word>, <s-word>sha256</s-word>, and
+    <s-word>sha512</s-word>. Here''s what our bloom filter looks like if we add the
+    value "foo" to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-bloom-filter id="bf1" class="bf" hashes="sha1,sha256,sha512" bits="32"><add
+    value="foo"></add></s-bloom-filter>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The <s-word>bits</s-word> in positions <s-bitlink bfid="bf1" highlight="true">15</s-bitlink>,
+    <s-bitlink bfid="bf1">16</s-bitlink> and <s-bitlink bfid="bf1">27</s-bitlink>
+    have been set. Other <s-word>bits</s-word>, e.g. <s-bitlink bfid="bf1">1</s-bitlink>
+    have not been set. You can hover or tap the <s-word>bits</s-word> in this paragraph
+    to highlight them in the visualisation. We get to this state by taking the hash
+    value of "foo" for each of our 3 hash functions and modulo it by the number of
+    <s-word>bits</s-word> in our bloom filter. Modulo gets us the remainder when dividing
+    by 32, so we get 27 with <s-word>sha1</s-word>, 15 with <s-word>sha256</s-word>
+    and 16 with <s-word>sha512</s-word>. The table below shows what's happening, and
+    you can try inputting your own values to see what <s-word>bits</s-word> they would
+    set if added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <hash-values id="hv1" bfid="bf1" value="foo" mod="32">Go ahead and <s-word>add</s-word>
+    a few of your own values to our bloom filter below and see what happens. There's
+    also a <s-word>check</s-word> button that will tell you if a value is present
+    within the bloom filter. A value is only considered present if all of the <s-word>bits</s-word>
+    checked are set. You can start again by hitting the <s-word>clear</s-word> button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-word-adder bfid="bf2"></s-word-adder>
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might occasionally notice that only 2, or even 1, <s-word>bits</s-word>
+    get set. This happens when 2 or more of our hash functions produce the same value,
+    or we attempt to set a <s-word>bit</s-word> that has already been set. Taking
+    that a bit further, have a think about the implications of a bloom filter that
+    has every <s-word>bit</s-word> set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-dog name="haskie" mode="concerned">Hmm... If every <s-word>bit</s-word> is
+    set, then won't the bloom filter claim it contains every item you check? That's
+    a false-positive every time!</s-dog>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exactly right. A bloom filter with every <s-word>bit</s-word> set is equivalent
+    to a `Set` that always returns `true` for `contains`. It will claim to contain
+    everything you ask it about, even if that thing was never added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#false-positive-rates) False-positive rates'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The rate of false-positives in our bloom filter will grow as the percentage
+    of set <s-word>bits</s-word> increases. Drag the slider below the graph to see
+    how the false-positive rate changes as the number of set <s-word>bits</s-word>
+    increases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph1" drawupto="0"><axes></axes></s-graph>
+  prefs: []
+  type: TYPE_NORMAL
+- en: It grows slowly at first, but as we get closer to having all <s-word>bits</s-word>
+    set the rate increases. This is because we calculate the false-positive rate as
+    `x^3`, where `x` is the percentage of set <s-word>bits</s-word> and `3` is the
+    number of hash functions used. To give an example of why we calculate it with
+    this formula, imagine we have a bloom filter with half of its bits set, `x = 0.5`.
+    If we assume that our hash function has an equal chance of setting any of the
+    bits, then the chance that all 3 hash functions set a bit that is already set
+    is `0.5 * 0.5 * 0.5`, or `x^3`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's have a look at the false-positive rate of bloom filters that use different
+    numbers of hash functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph2" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph><s-dog
+    name="haskie">It looks like more hash functions we use, the better our false-positive
+    rate is. Doesn't that mean we should always use lots of hash functions? Why don't
+    we use, like, 100?</s-dog>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem that using lots of hash functions introduces is that it makes the
+    bloom filter fill up faster. The more hash functions you use, the more <s-word>bits</s-word>
+    get set for each item you add. There's also the cost of hashing itself. Hash functions
+    aren't free, and while the hash functions you'd use in a bloom filter try to be
+    as fast as possible, it's still more expensive to run 100 of them than it is to
+    run 3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's possible to calculate how full a bloom filter will be after inserting a
+    number of items, based on the number of hash functions used. The graph below assumes
+    a bloom filter with 1000 <s-word>bits</s-word>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph3" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The more hash functions we use, the faster we set all of the bits. You'll notice
+    that the curve tails off as more items are added. This is because the more <s-word>bits</s-word>
+    that are set, the more likely it is that we'all attempt to set a <s-word>bit</s-word>
+    that has already been set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In practice, 1000 <s-word>bits</s-word> is a very small bloom filter, occupying
+    only 125 bytes of memory. Modern computers have a lot of memory, so let's crank
+    this up to 100,000 <s-word>bits</s-word> (12.5kB) and see what happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph4" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The lines barely leave the bottom of the graph, meaning the bloom filter will
+    be very empty and the false-positive rate will be low. All this cost us was 12.5kB
+    of memory, which is still a very small amount by 2024 standards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#tuning-a-bloom-filter) Tuning a bloom filter'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Picking the correct number of hash functions and <s-word>bits</s-word> for a
+    bloom filter is a fine balance. Fortunately for us, if we know up-front how many
+    unique items we want to store, and what our desired false-positive rate is, we
+    can calculate the optimal number of hash functions, and the required number of
+    <s-word>bits</s-word>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) page on Wikipedia
+    covers the mathematics involved, which I'm going to translate into JavaScript
+    functions for us to use. I want to stress that you don't need to understand the
+    maths to use a bloom filter or read this post. I'm including the link to it only
+    for completeness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#optimal-number-of-bits) Optimal number of bits'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following JavaScript function, which might look a bit scary but bear with
+    me, takes the number of items you want to store (`items`) and the desired false-positive
+    rate (`fpr`, where 1% == `0.01`), and returns how many <s-word>bits</s-word> you
+    will need to achieve that false-positive rate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can see how this grows for a variety of `fpr` values in the graph below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph5" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#optimal-number-of-hash-functions) Optimal number of hash functions'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After we''ve used the JavaScript above to calculate how many <s-word>bits</s-word>
+    we need, we can use the following function to calculate the optimal number of
+    hash functions to use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pause for a second here and have a think about how the number of hash functions
+    might grow based on the size of the bloom filter and the number of items you expect
+    to add. Do you think you'll use more hash functions, or fewer, as the bloom filter
+    gets larger? What about as the number of items increases?
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-graph id="graph6" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  prefs: []
+  type: TYPE_NORMAL
+- en: The more items you plan to add, the fewer hash functions you should use. Yet,
+    a larger bloom filter means you can use more hash functions. More hash functions
+    keep the false-positive rate lower for longer, but more items fills up the bloom
+    filter faster. It's a complex balancing act, and I am thankful that mathematicians
+    have done the hard work of figuring it out for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#caution) Caution'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While we can stand on the shoulders of giants and pick the optimal number of
+    <s-word>bits</s-word> and hash functions for our bloom filter, it's important
+    to remember that these rely on you giving good estimates of the number of items
+    you expect to add, and choosing a false-positive rate that's acceptable for your
+    use-case. These numbers might be difficult to come up with, and I recommend erring
+    on the side of caution. If you're not sure, it's likely better to use a larger
+    bloom filter than you think you need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#removing-items-from-a-bloom-filter) Removing items from a bloom filter'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've spent the whole post talking about adding things to a bloom filter, and
+    the optimal parameters to use. We haven't spoken at all about removing items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's because you can't!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a bloom filter, we're using <s-word>bits</s-word>, individual 1s and 0s,
+    to track the presence of items. If we were to remove an item by setting its <s-word>bits</s-word>
+    to 0, we might also be removing other items by accident. There's no way of knowing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click the buttons of the bloom filter below to see this in action. First we
+    will add "foo", then "baz", and then we will remove "baz". Hit "clear" if you
+    want to start again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-add-remove bfid="bf3"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf3" hashes="sha1,sha256,sha512" bits="32" class="bf">The
+    end result of this sequence is a bloom filter that doesn't contain "baz", but
+    doesn't contain "foo" either. Because both "foo" and "baz" set <s-word>bit</s-word>
+    <s-bitlink bfid="bf3">27</s-bitlink>, we accidentally clobber the presence of
+    "foo" while removing "baz".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Something else you might have noticed playing with the above example is that
+    if you add "foo" and then attempt to remove "baz" before having added it, nothing
+    happens. Even though <s-bitlink bfid="bf3">27</s-bitlink> is set, <s-word>bits</s-word>
+    <s-bitlink bfid="bf3">18</s-bitlink> and <s-bitlink bfid="bf3">23</s-bitlink>
+    are not, so the bloom filter cannot contain "baz". Because of this, it won't unset
+    <s-bitlink bfid="bf3">27</s-bitlink>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#counting-bloom-filters) Counting bloom filters'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While you can't remove items from a standard bloom filter, there are variants
+    that allow you to do so. One of these variants is called a "counting bloom filter,"
+    which uses an array of counters instead of bits to keep track of items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <s-add-remove bfid="bf4"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf4" counting="true" hashes="sha1,sha256,sha512" bits="32"
+    class="bf">Now when you go through the sequence, the end result is that the bloom
+    filter still contains "foo." It solves the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The trade-off, though, is that counters are bigger than <s-word>bits</s-word>.
+    With 4 bits per counter you can increment up to 15\. With 8 bits per counter you
+    can increment up to 255\. You'll need to pick a counter size sufficient to never
+    reach the maximum value, otherwise you risk corrupting the bloom filter. Using
+    8x more memory than a standard bloom filter could be a big deal, especially if
+    you're using a bloom filter to save memory in the first place. Think hard about
+    whether you really need to be able to remove items from your bloom filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Counting bloom filters also introduce the possibility of false-negatives, which
+    are impossible in standard bloom filters. Consider the following example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<s-add-remove bfid="bf5"><add value="loved"><add value="your"><remove value="response"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf5" counting="true" hashes="sha1,sha256,sha512" bits="32"
+    class="bf">Because "loved" and "response" both hash to the <s-word>bits</s-word>
+    <s-bitlink bfid="bf5">5</s-bitlink>, <s-bitlink bfid="bf5">22</s-bitlink>, and
+    <s-bitlink bfid="bf5">26</s-bitlink>, when we remove "response" we also remove
+    "loved". If we write this as JavaScript the problem becomes more clear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Even though we know for sure we''ve added "loved" in this snippet, the call
+    to `contains` will return `false`. This sort of false-negative can''t happen in
+    a standard bloom filter, and it removes one of the key benefits of using a bloom
+    filter in the first place: the guarantee of no false-negatives.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#bloom-filters-in-the-real-world) Bloom filters in the real-world'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Real-world users of bloom filters include [Akamai](https://www.akamai.com/),
+    who use them to avoid caching web pages that are accessed once and never again.
+    They do this by storing all page accesses in a bloom filter, and only writing
+    them into cache if the bloom filter says they've been seen before. This does result
+    in some pages being cached on the first access, but that's fine because it's still
+    an improvement. It would be impractical for them to store all page accesses in
+    a `Set`, so they accept the small false-positive rate in favour of the significantly
+    smaller bloom filter. Akamai released a [paper](https://web.archive.org/web/20210814193152/https://www.akamai.com/us/en/multimedia/documents/technical-publication/algorithmic-nuggets-in-content-delivery-technical-publication.pdf)
+    about this that goes into the full details if you're interested.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Google's [BigTable](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/68a74a85e1662fe02ff3967497f31fda7f32225c.pdf)
+    is a distributed key-value store, and uses bloom filters internally to know what
+    keys are stored within. When a read request for a key comes in, a bloom filter
+    in memory is first checked to see if the key is in the database. If not, BigTable
+    can respond with "not found" without ever needing to read from disk. Sometimes
+    the bloom filter will say a key might be in the database when it isn't, but this
+    is fine because when that happens a disk access will confirm the key in fact isn't
+    in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#conclusion) Conclusion'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Bloom filters, while niche, can be a huge optimisation in the right situation.
+    They're a wonderful application of hash functions, and a great example of making
+    a deliberate trade-off to achieve a specific goal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Trade-offs, and combining simpler building blocks to create more complex, purpose-built
+    data structures, are present everywhere in software engineering. Being able to
+    spot where a data structure could net a big win can separate you from the pack,
+    and take your career to the next level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope you've enjoyed this post, and that you find a way to apply bloom filters
+    to a problem you're working on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Join the discussion on [Hacker News](https://news.ycombinator.com/item?id=39439505)
+    or [Lobste.rs](https://lobste.rs/s/gwyglz/visual_interactive_guide_bloom_filters)!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#acknowledgements) Acknowledgements'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Enormous thank you to my reviewers, without whom this post would be a shadow
+    of what you read today. In no particular order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[rylon](https://rylon.dev), [Indy](https://indy.codes), [Aaron](https://twitter.com/AaronKalair),
+    Sophie, [Davis](https://dvsj.in), [ed](https://eduardmoldovan.com), [Michael Drury](https://github.com/mike12345567),
+    [Anton Zhiyanov](https://antonz.org/), [Christoph Berger](https://appliedgo.net/),
+    [Andrew Kingston](https://github.com/aptkingston), [Tom Hall](https://thattommyhall.com).</s-bloom-filter></s-bloom-filter></s-bloom-filter></hash-values>'
+  prefs: []
+  type: TYPE_NORMAL

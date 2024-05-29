@@ -1,0 +1,452 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:35:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The "current branch" in git
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jvns.ca/blog/2024/03/22/the-current-branch-in-git/](https://jvns.ca/blog/2024/03/22/the-current-branch-in-git/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Hello! I know I just wrote [a blog post about HEAD in git](https://jvns.ca/blog/2024/03/08/how-head-works-in-git/),
+    but I’ve been thinking more about what the term “current branch” means in git
+    and it’s a little weirder than I thought.
+  prefs: []
+  type: TYPE_NORMAL
+- en: four possible definitions for “current branch”
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It’s what’s in the file **`.git/HEAD`**. This is how the [git glossary](https://git-scm.com/docs/gitglossary#def_HEAD)
+    defines it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It’s what **`git status`** says on the first line
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It’s what you most recently **checked out** with `git checkout` or `git switch`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It’s what’s in your shell’s **git prompt**. I use [fish_git_prompt](https://fishshell.com/docs/current/cmds/fish_git_prompt.html)
+    so that’s what I’ll be talking about.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I originally thought that these 4 definitions were all more or less the same,
+    but after chatting with some people on Mastodon, I realized that they’re more
+    different from each other than I thought.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So let’s talk about a few git scenarios and how each of these definitions plays
+    out in each of them. I used git version `2.39.2 (Apple Git-143)` for all of these
+    experiments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'scenario 1: right after `git checkout main`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here’s the most normal situation: you check out a branch.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `ref: refs/heads/main`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `On branch main`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The thing I most recently checked out was: `main`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'My shell’s git prompt says: `(main)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In this case the 4 definitions all match up: they’re all `main`. Simple enough.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'scenario 2: right after `git checkout 775b2b399`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now let’s imagine I check out a specific commit ID (so that we’re in “detached
+    HEAD state”).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `775b2b399fb8b13ee3341e819f2aaa024a37fa92`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `HEAD detached at 775b2b39`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The thing I most recently checked out was `775b2b399`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: My shell’s git prompt says `((775b2b39))`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Again, these all basically match up – some of them have truncated the commit
+    ID and some haven’t, but that’s it. Let’s move on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'scenario 3: right after `git checkout v1.0.13`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: What if we’ve checked out a tag, instead of a branch or commit ID?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `ca182053c7710a286d72102f4576cf32e0dafcfb`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `HEAD detached at v1.0.13`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The thing I most recently checked out was `v1.0.13`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: My shell’s git prompt says `((v1.0.13))`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now things start to get a bit weirder! `.git/HEAD` disagrees with the other
+    3 indicators: `git status`, the git prompt, and what I checked out are all the
+    same (`v1.0.13`), but `.git/HEAD` contains a commit ID.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The reason for this is that git is trying to help us out: commit IDs are kind
+    of opaque, so if there’s a tag that corresponds to the current commit, `git status`
+    will show us that instead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some notes about this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we check out the commit by its ID (`git checkout ca182053c7710a286d72`) instead
+    of by its tag, what shows up in `git status` and in my shell prompt are exactly
+    the same – git doesn’t actually “know” that we checked out a tag.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: it looks like you can find the tags matching `HEAD` by running `git describe
+    HEAD --tags --exact-match` (here’s the [fish git prompt code](https://github.com/fish-shell/fish-shell/blob/a5156e9e0e89bff2bd81ac945a019bad34f14346/share/functions/fish_git_prompt.fish#L521-L527))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can see where `git-prompt.sh` added support for describing a commit by a
+    tag in this way in commit [27c578885 in 2008](https://github.com/git/git/commit/27c578885a0b8f56430c5a24f558e2b45cf04a38).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I don’t know if it makes a difference whether the tag is annotated or not.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If there are 2 tags with the same commit ID, it gets a little weird. For example,
+    if I add the tag `v1.0.12` to this commit so that it’s with both `v1.0.12` and
+    `v1.0.13`, you can see here that my git prompt changes, and then the prompt and
+    `git status` disagree about which tag to display:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: (my prompt shows `v1.0.12` and `git status` shows `v1.0.13`)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'scenario 4: in the middle of a rebase'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now: what if I check out the `main` branch, do a rebase, but then there was
+    a merge conflict in the middle of the rebase? Here’s the situation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `c694cf8aabe2148b2299a988406f3395c0461742` (the commit
+    ID of the commit that I’m rebasing onto, `origin/main` in this case)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `interactive rebase in progress; onto c694cf8`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The thing I most recently checked out was `main`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: My shell’s git prompt says `(main|REBASE-i 1/1)`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Some notes about this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think that in some sense the “current branch” is `main` here – it’s what I
+    most recently checked out, it’s what we’ll go back to after the rebase is done,
+    and it’s where we’d go back to if I run `git rebase --abort`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: in another sense, we’re in a detached HEAD state at `c694cf8aabe2`. But it doesn’t
+    have the usual implications of being in “detached HEAD state” – if you make a
+    commit, it won’t get orphaned! Instead, assuming you finish the rebase, it’ll
+    get absorbed into the rebase and put somewhere in the middle of your branch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: it looks like during the rebase, the old “current branch” (`main`) is stored
+    in `.git/rebase-merge/head-name`. Not totally sure about this though.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'scenario 5: right after `git init`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: What about when we create an empty repository with `git init`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` contains `ref: refs/heads/main`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `On branch main` (and “No commits yet”)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The thing I most recently checked out was, well, nothing
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'My shell’s git prompt says: `(main)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So here everything mostly lines up, except that we’ve never run `git checkout`
+    or `git switch`. Basically Git automatically switches to whatever branch was configured
+    in `init.defaultBranch`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'scenario 6: a bare git repository'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: What if we clone a bare repository with `git clone --bare https://github.com/rbspy/rbspy`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`HEAD` contains `ref: refs/heads/main`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`git status` says `fatal: this operation must be run in a work tree`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The thing I most recently checked out was, well, nothing, `git checkout` doesn’t
+    even work in bare repositories
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'My shell’s git prompt says: `(BARE:main)`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'So #1 and #4 match (they both agree that the current branch is “main”), but
+    `git status` and `git checkout` don’t even work.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some notes about this one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I think `HEAD` in a bare repository mainly only really affects 1 thing: it’s
+    the branch that gets checked out when you clone the repository. It’s also used
+    when you run `git log`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: if you really want to, you can update `HEAD` in a bare repository to a different
+    branch with `git symbolic-ref HEAD refs/heads/whatever`. I’ve never needed to
+    do that though and it seems weird because `git symbolic ref` doesn’t check if
+    the thing you’re pointing `HEAD` at is actually a branch that exists. Not sure
+    if there’s a better way.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: all the results
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here’s a table with all of the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|  | `.git/HEAD` | git status | checked out | prompt |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1\. `checkout main` | `ref: refs/heads/main` | `On branch main` | main |
+    `(main)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2\. `checkout 775b2b` | `775b2b399...` | `HEAD detached at 775b2b39` | 775b2b399
+    | `((775b2b39))` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3\. `checkout v1.0.13` | `ca182053c...` | `HEAD detached at v1.0.13` | v1.0.13
+    | `((v1.0.13))` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4\. inside rebase | `c694cf8aa...` | `interactive rebase in progress; onto
+    c694cf8` | main | `(main\&#124;REBASE-i 1/1)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 5\. after `git init` | `ref: refs/heads/main` | `On branch main` | n/a |
+    `(main)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 6\. bare repository | `ref: refs/heads/main` | `fatal: this operation must
+    be run in a work tree` | n/a | `(BARE:main)` |'
+  prefs: []
+  type: TYPE_TB
+- en: “current branch” doesn’t seem completely well defined
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: My original instinct when talking about git was to agree with the git glossary
+    and say that `HEAD` and the “current branch” mean the exact same thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But this doesn’t seem as ironclad as I used to think anymore! Some thoughts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.git/HEAD` is definitely the one with the most consistent format – it’s always
+    either a branch or a commit ID. The others are all much messier'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I have a lot more sympathy than I used to for the definition “the current branch
+    is whatever you last checked out”. Git does a lot of work to remember which branch
+    you last checked out (even if you’re currently doing a bisect or a merge or something
+    else that temporarily moves HEAD off of that branch) and it feels weird to ignore
+    that.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git status` gives a lot of helpful context – these 5 status messages say a
+    lot more than just what `HEAD` is set to currently'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`on branch main`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`HEAD detached at 775b2b39`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`HEAD detached at v1.0.13`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`interactive rebase in progress; onto c694cf8`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`on branch main, no commits yet`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: some more “current branch” definitions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I’m going to try to collect some other definitions of the term `current branch`
+    that I heard from people on Mastodon here and write some notes on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: “the branch that would be updated if i made a commit”
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Most of the time this is the same as `.git/HEAD`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Arguably if you’re in the middle of a rebase, it’s different from `HEAD`, because
+    ultimately that new commit will end up on the branch in `.git/rebase-merge/head-name`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: “the branch most git operations work against”
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is sort of the same as what’s in `.git/HEAD`, except that some operations
+    (like `git status`) will behave differently in some situations, like how `git
+    status` won’t tell you the current branch if you’re in a bare repository
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: on orphaned commits
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One thing I noticed that wasn’t captured in any of this is whether the current
+    commit is **orphaned** or not – the `git status` message (`HEAD detached from
+    c694cf8`) is the same whether or not your current commit is orphaned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I imagine this is because figuring out whether or not a given commit is orphaned
+    might take a long time in a large repository: you can find out if the current
+    commit is orphaned with `git branch --contains HEAD`, and that command takes about
+    500ms in a repository with 70,000 commits.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Git will warn you if the commit is orphaned (“Warning: you are leaving 1 commit
+    behind, not connected to any of your branches…“) when you switch to a different
+    branch though.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: that’s all!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I don’t have anything particularly smart to say about any of this. The more
+    I think about git the more I can understand why people get confused.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,111 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:41:51'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Chris''s Wiki :: blog/linux/TaskDelayAccountingNotes'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes](https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'If you run a recent enough version of [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html)
+    on a typical Linux system, it may nag at you to the effect of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CONFIG_TASK_DELAY_ACCT and [kernel.task_delayacct](https://docs.kernel.org/admin-guide/sysctl/kernel.html#task-delayacct)
+    sysctl not enabled in kernel, cannot determine SWAPIN and IO %
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You might wonder whether you should turn on this sysctl, how much you care,
+    and why it was defaulted to being disabled in the first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This sysctl enables [(Task) Delay accounting](https://docs.kernel.org/accounting/delay-accounting.html),
+    which tracks things like how long things wait for the CPU or wait for their IO
+    to complete on a per-task basis (which in Linux means 'thread', more or less).
+    General system information will provide you an overall measure of this in things
+    like 'iowait%' and [pressure stall information](/~cks/space/blog/linux/PSINumbersAndMeanings),
+    but those are aggregates; you may be interested in known things like how much
+    specific processes are being delayed or are waiting for IO.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Also, [overall system iowait% is a conservative measure](/~cks/space/blog/linux/LinuxMultiCPUIowait)
+    and won't give you a completely accurate picture of how much processes are waiting
+    for IO. You can get per-cgroup pressure stall information, which in some cases
+    can come close to a per-process number.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the context of [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html)
+    specifically, the major thing you will miss is 'IO %', which is the percent of
+    the time that a particular process is waiting for IO. Task delay accounting can
+    give you information about [per-process (or task) run queue latency](/~cks/space/blog/linux/SystemResponseLatencyMetrics)
+    but I don't know if there are any tools similar to iotop that will give you this
+    information. There is a program in the kernel source, [tools/accounting/getdelays.c](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/accounting/getdelays.c),
+    that will dump the raw information on a one-time basis (and in some versions,
+    compute averages for you, which may be informative). The (current) task delay
+    accounting information you can theoretically get is documented in comments in
+    [include/uapi/linux/taskstats.h](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/taskstats.h),
+    or [this version in the documentation](https://docs.kernel.org/accounting/taskstats-struct.html).
+    You may also want to look at [include/linux/delayacct.h](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/delayacct.h),
+    which I think is the kernel internal version that tracks this information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (You may need the version of getdelays.c from your kernel's source tree, as
+    the current version may not be backward compatible to your kernel. This typically
+    comes up as compile errors, which are at least obvious.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can access this information yourself is sort of covered in [Per-task
+    statistics interface](https://docs.kernel.org/accounting/taskstats.html), but
+    in practice you'll want to read the source code of getdelays.c or the Python source
+    code of [iotop](https://repo.or.cz/iotop.git). If you specifically want to track
+    how long a task spends delaying for IO, there is also a field for it in /proc/<pid>/stat;
+    per [proc(5)](https://man7.org/linux/man-pages/man5/proc.5.html), field 42 is
+    delayacct_blkio_ticks. As far as I can tell from the kernel source, this is the
+    same information that [the netlink interface](https://docs.kernel.org/accounting/taskstats.html)
+    will provide, although it only has the total time waiting for 'block' (filesystem)
+    IO and doesn't have the count of block IO operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Task delay accounting can theoretically be requested on a per-cgroup basis ([as
+    I saw in a previous entry on where the Linux load average comes from](/~cks/space/blog/linux/LoadAverageWhereFrom)),
+    but in practice this only works for [cgroup v1](https://docs.kernel.org/admin-guide/cgroup-v1/index.html).
+    This (task) delay accounting has never been added to [cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html),
+    which may be a sign that the whole feature is a bit neglected. I couldn't find
+    much to say why delay accounting was changed (in 2021) to default to being off.
+    [The commit that made this change](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e4042ad492357fa995921376462b04a025dd53b6)
+    seems to imply it was defaulted to off on the assumption that it wasn't used much.
+    Also see [this kernel mailing list message](https://lore.kernel.org/all/20210505111525.308018373@infradead.org/T/)
+    and [this reddit thread](https://old.reddit.com/r/linuxquestions/comments/1b6bijd/downsides_to_kerneltask_delayacct/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that I've discovered kernel.task_delayacct and played around with it a bit,
+    I think it's useful enough for us for diagnosing issues that we're going to turn
+    it on by default until and unless we see problems (performance or otherwise).
+    Probably I'll stick to doing this with an /etc/sysctl.d/ drop in file, because
+    I think that gets activated early enough in boot to cover most processes of interest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (As covered somewhere, if you turn delay accounting on through the sysctl, it
+    apparently only covers processes that were started after the sysctl was changed.
+    Processes started before have no delay accounting information, or perhaps only
+    'CPU' delay accounting information. One such process is init, PID 1, which will
+    always be started before the sysctl is set.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PS: The per-task IO delays do include NFS IO, [just as iowait does](/~cks/space/blog/linux/NFSIOShowsInIowait),
+    which may make it more interesting if you have NFS clients. Sometimes it''s obvious
+    which programs are being affected by slow NFS servers, but sometimes not.'
+  prefs: []
+  type: TYPE_NORMAL

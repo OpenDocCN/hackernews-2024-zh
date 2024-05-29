@@ -1,0 +1,368 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:26:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimize sgemm on RISC-V platform | by Zhao Dongyu | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444](https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**Prepare**'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The related code is located in [./prepare/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/prepare)
+    .
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Test Cross-Compilation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I use the **Allwinner Nezha D1** development board, and downloaded the cross-compilation
+    link from [here](https://xuantie.t-head.cn/community/download?id=4090445921563774976).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For detailed instructions, please refer to the [readme](https://github.com/Zhao-Dongyu/sgemm_riscv/blob/main/prepare/README.md).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Memory Bandwidth Test**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I conducted memory bandwidth tests on the development board using the following
+    projects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Roofline Model**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Roofline](https://en.wikipedia.org/wiki/Roofline_model) proposes a method
+    for quantitative analysis using “**Operational Intensity**” and provides a formula
+    for the theoretical performance limit achievable on computational platforms.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'According to [OpenPPL Public Course | RISC-V Technical Analysis](https://zhuanlan.zhihu.com/p/474684731):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The computing power of D1 can reach **4 GFlops** (@ 1GHz).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Memory: **2.727 GB/s** (DDR3 792 MHz).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Although I measured the highest as **2.592 GB/s**, there may be some problems
+    somewhere? Let’s trust Sensetime for now, temporarily accept its value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**SGEMM Optimization**'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Related code is located in [./sgemm/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/sgemm)
+    .
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Usage**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take *step0* as an example, you need to edit the **Makefile** first to configure
+    your cross-compilation chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Version 0: Naive Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This version seems to be **the most intuitive** to me, after all, this is how
+    I learned, understood, and computed matrix multiplication:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiply one row of A by one column of B to get one element of C.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: I think *version 0* very well explains the formula $C_{mn} = \sum_{k=1}^{K}
+    A_{mk}B_{kn}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, this version has obvious shortcomings: on a platform with a theoretical
+    computing power of **4 GFLOPS**, it only achieves a maximum computational performance
+    of **0.03 GFLOPS**. This is because **the access to matrix B has a very low cache
+    hit rate, i.e., “poor spatial locality”**. Throughout the calculation, it is equivalent
+    to accessing matrix B many, many times.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is advisable to access the elements of multi-dimensional arrays in sequential
+    order. This can improve the spatial locality of memory access and make it more
+    friendly to the cache.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, it can be observed that with the increase in size, the performance
+    fluctuates significantly. Analysis of the data shows that when *m=n=k* is 128
+    164 192 228 256 288 320 352 384, the performance is poor. These numbers differ
+    by 32, and 32 * 4 (sizeof(float)) = 128 B.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is speculated that the performance fluctuation is related to **cacheline**
+    and **hardware prefetching** — cacheline = 64B, after cache miss, hardware prefetching,
+    i.e., HWPrefetcher, reads one more cacheline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 1: Loop Interchange Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reusing data in the cache is the most basic and efficient use of cache. For
+    nested loops, *loop interchange*, *loop reversal*, *loop fusion*, *loop distribution*,
+    *loop tiling*, *loop unrolling and jam*, etc., can be used to improve program
+    performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting an appropriate loop transformation method can both maintain the semantics
+    of the program and improve its performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compared with *version 0*, *version 1* has better spatial locality for the operation
+    on matrix B, and the performance has been greatly improved (especially for larger
+    sizes, while for m = n = k <= 68, the efficiency of *version 0* is higher).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adjusting the order of m, n, and k does **not** affect the **result** (i.e.,
+    maintaining the semantics of the program), but it can affect the **performance**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the performance of different loop orders (using the Allwinner Nezha
+    D1 platform, with m=n=k=512 as an example)
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the hardware utilization of *version 1* is still very low, and further
+    optimizations are needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 2: Blocking Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: To avoid unnecessary cache swapping, blocking processing is performed. [Discussing
+    Why Blocking Matrix Optimization Works](https://zhuanlan.zhihu.com/p/342923482)
+    is a good read, I recommend learning from it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After performing block operations in *version 2*, the performance is still not
+    satisfactory. This is because, although this version superficially implements
+    blocking logic, there are still some small tricks in the calculation within the
+    block that have not been applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 3: Blocked Optimization Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**AddDot_4x4_opt** has been added.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Several tricks are mentioned in [**BLISlab-tutorial**](https://github.com/flame/blislab/blob/master/tutorial.pdf):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.4.2 Loop unrolling
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Updating loop index i and the pointer cp every time through the inner loop creates
+    considerable overhead. For this reason, a compiler will perform loop unrolling.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 2.4.3 Register variables
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Notice that computation can only happen if data is stored in registers. A compiler
+    will automatically transform code so that the intermediate steps that place certain
+    data in registers is inserted.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: After using these tricks, this version has significantly improved performance!
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, for larger matrix sizes, the performance of this version is still relatively
+    low. Upon investigation, for example, after accessing B[0,0], B[0,1], B[0,2],
+    B[0,3], when accessing B[1,0], when the size is large, there must be a **cache
+    miss**. Therefore, it would be great if the data could be rearranged in advance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 4: B prepack Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I assume matrix B is **parameter**, so we can perform the *pack* operation in
+    advance. Version 4 **prepack** matrix B, leading to further performance improvement!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The reason for the performance improvement is evident: there is a significant
+    reduction in **cache misses** when accessing matrix B. This is the first time
+    I deeply realized the importance of **prepacking neural network weights** before
+    model inference.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It can be seen that when the size is relatively large, the performance still
+    declines. This should be due to a high number of cache misses when accessing matrix
+    A. Should we pack A?
+  prefs: []
+  type: TYPE_NORMAL
+- en: I assume matrix A is **input**, so packing A cannot be done in advance and must
+    be included in the overall timing. Is it necessary?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 5: A pack & B prepack Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on *Version 4*, *Version 5* performs packing on matrix A.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, since matrix A is assumed to be an input, packing A needs to be performed
+    during computation, and this time consumption needs to be included in the timing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The results are still pleasing, especially with large matrix sizes, achieving
+    further performance improvements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I initially approached this experiment with a trial-and-error mindset, considering
+    **the additional read of A** and **writing of packA**. It seems the main challenge
+    ahead lies in combating cache misses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The current optimization direction has reached its limit. It’s worth trying
+    to do some **preload** during the calculation process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we’ll move to assembly, work on vector calculations, and implement **preload**
+    in assembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 6: Assembly Version**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Brief explanation: A is **not packed**, but B is **prepacked** with 16 numbers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Regarding the use of rvv instructions, I believe **vsetvli** is essential, and
+    **vfmacc.vf** is the mainstay.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I have learned a lot from [OpenPPL Course | RISC-V Technical Analysis](https://zhuanlan.zhihu.com/p/474684731).
+    They are truly professional! I recommend learning theoretical guidance and knowledge
+    points from them, paying tribute to OpenPPL!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As for assembly operators, there are many details in assembly, and I strongly
+    complain: **writing assembly is really annoying! Especially the debugging process,
+    it’s torturous.** The last time I wrote assembly was during my undergraduate classes.
+    Picking it up again brings some novelty and excitement, and being able to control
+    the execution of operators at a very fine granularity gives a great sense of accomplishment.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regarding how the assembly files are implemented specifically, I believe the
+    fastest way is to look at the assembly code. I won’t explain it further here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should be noted that this version’s performance is very poor. Why is that?
+    It’s another issue of **loop order**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 7: Assembly Version with Loop Order Swapped**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Brief explanation: A is **not packed**, but B is **prepacked** with 16 numbers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Reversing the order of loops, starting with the **n-direction** followed by
+    the **m-direction**, significantly improves performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the performance of large-sized matrices is still not very good. The
+    root cause remains in **memory access**. The computation of large-sized matrices
+    in the roofline model is considered **compute-bound**, where ideally the **compute
+    time** and **memory access time** should overlap as much as possible. Currently,
+    a significant amount of time is spent on memory access (mostly due to **cache
+    miss**!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 8: Assembly Version with Preload**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Brief Explanation: Matrix A is **not packed**, while Matrix B undergoes **prepackaging**
+    of 16 elements and includes a **preload** operation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The performance is explosive! It reaches a maximum of **2.212 GFLOPS**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Core operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inserting some **load** operations between **vfmacc.vf** instructions preloads
+    the data that will be used later into the **cache**, significantly reducing **cache
+    miss**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Initially, I was puzzled — how can the **compute time** and **memory access
+    time** overlap when the code seems to execute sequentially? It wasn’t until later
+    that I understood the essence here, which lies in the principle of **cacheline**.
+    Indeed, foundational knowledge is crucial!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Version 9: Assembly Version with A Packed**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on previous experience, an attempt was made to **pack** Matrix A, but
+    surprisingly, the results were not very good. A brief analysis suggests that the
+    preload for Matrix A in this version of the assembly code might not be optimized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous version, although A wasn’t packed, there was preload for A’s
+    4 rows, which also addressed the pain point of cache miss for Matrix A.
+  prefs: []
+  type: TYPE_NORMAL

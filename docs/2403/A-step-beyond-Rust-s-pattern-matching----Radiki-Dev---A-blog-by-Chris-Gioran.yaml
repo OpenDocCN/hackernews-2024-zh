@@ -1,0 +1,235 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:45:32'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A step beyond Rust''s pattern matching :: Radiki Dev — A blog by Chris Gioran'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://radiki.dev/posts/match-and-bind-patterns/](https://radiki.dev/posts/match-and-bind-patterns/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you don’t need a refresh of basic Rust pattern match, go directly to [the
+    new stuff](#glowdust) [#](#if-you-dont-need-a-refresh-of-basic-rust-pattern-match-go-directly-to-the-new-stuffglowdust)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A very opinionated reminder of patterns in Rust [#](#a-very-opinionated-reminder-of-patterns-in-rust)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here’s a simple pattern match in Rust:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pretty anticlimactic, huh? Well, let me spice it up a bit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Still not good enough? Ok, let’s try something fancier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Well, that escalated quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, `rustc` and I have had our disagreements, but in this case I can sort
+    of see the point: This pattern can, in theory, fail. Our puny human eyes may not
+    see it - in fact, you may think “hey, I am pretty sure 2 is equal to 2\. How can
+    that fail?”'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Good point. But what if it was
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Or some other, more complicated expression? No, says `rustc`, as long as there
+    is an equality at play, (by having a constant on the left hand side, for example),
+    I will not let you do this unconditionally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But *conditionally*? No problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s do that, then
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Excellent. I can pattern match on constants and capture variables. Let’s do
+    something more complex
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nice, I can do conditionals between pattern matches and variable bindings. The
+    example above is silly because the pattern will always match, but the syntax is
+    what matters here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I can even build on this, to add conditions for the already bound variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that’s where all the trouble begun [#](#glowdust)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Watching this, I couldn’t help but think that it looks a lot like a declarative
+    query…thing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Say I have a vector of pairs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I can grab an iterator out of it and do the same pattern matching in a for
+    loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is trivial, but it is also clearly a pattern match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*And I want to do it conditionally, in the match itself.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s try a `while` instead of a `for`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Ok, not bad, we’ve got some kind of a conditional going. But I want something
+    more. I want to do it in the pattern binding:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sadly, it doesn’t work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, I am not a language designer, and I know next to nothing about Rust internals
+    (I barely know Rust, to be honest). I can’t say if allowing this would break other
+    things in the language or if it’s a well known bad idea.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, my ignorance is my shield, and I have no problems whatsoever making
+    this work in my own language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pattern matching in Glowdust [#](#pattern-matching-in-glowdust)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The algorithm in Glowdust is simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Just like in Rust, if there is an unbound variable in the left hand side of
+    a pattern, then it is bound to whatever is on the right hand side. From then on,
+    it is bound, and it behaves as a match, again like Rust does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*(NOTE: I say left hand/right hand side, but in Glowdust syntax the -> operator
+    flips the two sides. Keep that in mind for the following examples)*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The difference is that it does both in the same pattern. Here’s an example,
+    in Glowdust
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First define a function to hold our data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then populate with the same data as the iterator example above and query that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This works as expected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But let’s not stop here. Let’s use this capability to do a join:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works exactly because the first time a variable is met it is bound, and
+    then it’s used as a *refutable* match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`middle`, in this case, is bound in the outer loop and then its value is used
+    as a refutable pattern in the inner loop.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also has a very declarative, pattern matching feel to it, but it is very
+    familiar and readable. The predicates it implies can be moved around and be optimized
+    according to cardinalities and other statistics in the data store. They can even
+    be pushed down to the storage layer, if computational storage becomes available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did I mention that it works? You can run these examples right now, today, in
+    [Glowdust](https://codeberg.org/glowdust/glowdust).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Query By Example didn’t go far enough [#](#query-by-example-didnt-go-far-enough)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This may remind you of Query By Example in MS Access or Hibernate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It isn’t.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s Query By Pattern, which is much cooler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This compiles down to proper bytecode, it isn’t just a DSL. You can have full
+    expressions reusing variables that just came into scope, join on them and use
+    them in further expressions like filters and (eventually) aggregations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think the comparison to Rust’s (and other languages’) patern matching is interesting,
+    but I don’t remotely argue that it is better. It is, however, better suited for
+    a database query language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which is quite fortunate, because that’s what I’m building.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As always, let me know your thoughts on [Mastodon](https://fosstodon.org/@chrisg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: And, if you find this interesting enough, you may want to [donate](https://liberapay.com/chris.gioran/)
+    towards the costs of developing Glowdust.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,283 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:29:50'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Practical Railway-Oriented Pipelines in Ruby - Ismael Celis
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://ismaelcelis.com/posts/practical-railway-oriented-pipelines-in-ruby/](https://ismaelcelis.com/posts/practical-railway-oriented-pipelines-in-ruby/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this series:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some years ago I [explored patterns](/posts/composable-pipelines-in-ruby/) for
+    building composable processing pipelines in Ruby, using a Railway-oriented paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this series, I’ll describe a simplified implementation for practical use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Part 1: The core pattern'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I’ve relied on versions of this approach in various projects for some time now,
+    and I’ve found it to be a very effective way to build and maintain complex data
+    processing workflows. The following are the core components of the pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A generic `Result` wraps values passed through the pipeline, and can be in
+    one of two states: `Continue` or `Halt`. The values themselves can be anything
+    relevant to the domain, but `Result` offers a consistent interface for handling
+    them in the pipeline, as well as metadata such as user input, errors and arbitrary
+    context (I’ll describe some of this in a separate article).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Result` instances can be *continued* or *halted*. These return new copies
+    with the same or different data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Step interface
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: A step is a simple object that responds to `#call` and takes a `Result` as input,
+    returning a new `Result`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And so is this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Steps can be instances, classes, Procs, Lambdas or [Method objects](https://ruby-doc.org/3.3.0/Method.html).
+    They can be stateless procedures, or complex objects that manage their own internal
+    state. It doesn’t matter how they were defined or initialised, as long as they
+    respond to `#call`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pipeline
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A pipeline is a container for a sequence of steps that process a `Result` and
+    return a new `Result`, in the order they were added to the pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: There’s very little to the `Pipeline` class itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because it responds to `#call(Result) Result`, a pipeline is itself a step.
+    More on that later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Railway bit
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Where this becomes useful is in the ability to “halt” processing at any point
+    in the pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The key to this is the `Pipeline#call` method, expanded here for clarity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, any step that returns a *halt* will just skip over further steps downstream.
+    In other words, a step can return a *continue* or a *halt*, but it can only ever
+    receive a *continue* as argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other implementations of this pattern rely on Sum types or monads to represent
+    the *continue* and *halt* states. See [Dry::Monads](https://dry-rb.org/gems/dry-monads/)
+    for a more functional approach. I also expand on a typed implementation in [this
+    article](/posts/composable-pipelines-in-ruby/).
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Lets do some number crunching:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the second `ValidateSetSize` step will halt the pipeline if
+    the set size is greater than 100, preventing `MultiplyBy` from running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 1\. `Logging`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '2\. `ValidateSetSize.new(lte: 100)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3\. `MultiplyBy.(2)`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 4\. `LimitSet.(5)`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: However, if all steps return a *continue* result, the pipeline processes all
+    steps and returns the final result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 1\. `Logging`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '2\. `ValidateSetSize.new(lte: 100)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3\. `MultiplyBy.(2)`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 4\. `LimitSet.(5)`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Composing pipelines
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since `Pipeline` itself implements the `#call(Result) Result` interface, it
+    can be used as a step in another pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 1\. `Step1`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2\. `NumberCruncher`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2.1\. `Logging`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '2.2\. `ValidateSetSize.new(lte: 100)`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2.3\. `MultiplyBy.(2)`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2.4\. `LimitSet.(5)`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3\. `Step3`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This allows “packaging up” complex processing workflows into reusable components,
+    where each component can be composed of multiple steps if need be. It’s also possible
+    to have factory methods that parameterise the creation of pipelines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pipelines can also be used internally by custom classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which approach to use will depend on each step’s internals. Other than the simple
+    `#call` interface, steps are effective black boxes and refactoring them is straightforward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Like anything, this approach has its trade-offs. If the problem can be better
+    thought of as an object graph rather than a sequence, or the processing required
+    can’t be easily broken down into steps, then this approach might not be the best
+    fit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, I’ve found it provides a *simple* mental model to reason about problems
+    (in [the Rick Hickey sense](https://www.youtube.com/watch?v=SxdOUGdseq4)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any operation that can be coerced into complying with the [Monoid Laws](https://blog.ploeh.dk/2017/10/06/monoids/)
+    can be a good candidate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next article in this series, I describe how to make pipelines more useful
+    by handling user input, errors and general metadata.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic implementation used in this article is [here](https://gist.github.com/ismasan/0bdcc76c2ea48f4259b38fafe131edb8).
+  prefs: []
+  type: TYPE_NORMAL

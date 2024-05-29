@@ -1,0 +1,133 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:58:47'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replacing complicated hashmaps with SQLite | Wilson Husin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://husin.dev/ephemeral-sqlite/](https://husin.dev/ephemeral-sqlite/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a recent project, I was working on a command line application with tricky
+    data manipulation scenario. Imagine if you were moving members from mailing lists
+    (e.g. Google Groups) to group chat service (e.g. Slack), where the goal is for
+    members of the mailing list will find a new home in group chat channels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is perfectly sensible for engineers with hacker spirit to say “script this
+    out and run it for each of the groups” and I agree — surely it’s a thing that
+    a few HTTP calls and hashmaps can solve?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Turns out, this situation comes with some curve balls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mailing lists may have other mailing lists as members (nested mailing list),
+    but group chat channels only have members, thus some may need to be merged in
+    migration.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Potential of many-to-one relationship, where 2+ entities of mailing lists ends
+    up in 1 channel.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some mailing lists already have an existing group chat channel counterparts,
+    but the membership is not guaranteed to be consistent.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Not all requests are “create channel”.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Same applies to users and memberships — take the existing records to consideration.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mailing list have members which are identified by email address. Group chat
+    service can lookup users by email, but need the user ID for API calls to link
+    channel membership.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We would need to lookup users of group chat service by both email and user ID;
+    2 lookup keys (hashmaps) for the same value kind.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Now that doesn’t look so simple anymore, does it? As I was thinking about it,
+    there is a lingering thought at the back of my head: “If I could use `WHERE` on
+    any field and `JOIN` several entities, the new memberships could be solved in
+    a single SQL query.”'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And then it hit me — maybe I really could after all. So I did exactly that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Much of what I had originally implemented is now much simpler, without having
+    to worry about passing around states in every function. Initial implementation
+    has my function signatures looking like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pretty much all functions require the states to be passed around that creates
+    noise and bug-prone (e.g. what if a function unintentionally modified the hashmap?).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With SQLite as state management, the same method now look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And thus when I want to lookup the list of users which did not find any matches,
+    it ends up being an intuitive flow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you find yourself passing around hashmap, reindexing the map, writing too
+    many conditions to settle state management, and thought that it would be trivial
+    in SQL: consider using ephemeral SQLite instance!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Miscellaneous interesting bits from the project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because database is ephemeral (using `:memory:`), I need to run migration every
+    time the application boots. Corollary to that, I don’t need migration tools to
+    manage up / down migrations!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I can use `sqlite3` CLI to inspect the database, which is a nice bonus when
+    debugging. Of course I would have to change the setup from `:memory:` to a file
+    path that exists in file system.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The final form of `MatchUsers` end up taking only `context.Context`, since it
+    worked out better for the rest of the project to access database connection from
+    context.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

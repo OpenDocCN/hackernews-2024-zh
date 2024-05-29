@@ -1,0 +1,685 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:50:15'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Stupid RCU Tricks: How Read-Intensive is The Kernel''s Use of RCU? - Paul E.
+    McKenney''s Journal — LiveJournal'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://paulmck.livejournal.com/67547.html](https://paulmck.livejournal.com/67547.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: RCU is a specialized synchronization mechanism, and is typically used where
+    there are far more readers (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_read_lock()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ','
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_read_unlock()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ','
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_dereference()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ', and so on) than there are updaters ('
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ','
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`call_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ','
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_assign_pointer()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ', and so on). But does the Linux kernel really make heavier use of RCU''s read-side
+    primitives than of its update-side primitives?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way to determine this would be to use something like ftrace to record all
+    the calls to these functions. This works, but trace messages can be lost, especially
+    when applied to frequently invoked functions. Also, dumping out the trace buffer
+    can perturb the syatem. Another approach is to modify the kernel source code to
+    count these function invocations in a cache-friendly manner, then come up with
+    some way to dump this to userspace. This works, but I am lazy. Yet another approach
+    is to ask the tracing folks for advice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This last is what I actually did, and because the tracing person I happened
+    to ask happened to be Andrii Nakryiko, I learned quite a bit about BPF in general
+    and the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: command in particular. If you don't happen to have Andrii on hand, you can do
+    quite well with Appendix A and Appendix B of Brendan Gregg's “BPF Performance
+    Tools”. You will of course need to install
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: itself, which is reasonably straightforward on many Linux distributions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linux-Kernel RCU Read Intensity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Those of you who have used
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`sed`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`awk`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: have a bit of a running start because you can invoke
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: with a
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-e`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: argument and a series of tracepoint/program pairs, where a program is
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: code enclosed in curly braces. This code is compiled, verified, and loaded into
+    the running kernel as a kernel module. When the code finishes executing, the results
+    are printed right there for you on
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`stdout`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: This command uses the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`kprobe`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: facility to attach a program to the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`__rcu_read_lock()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function and to attach a very similar program to the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_gp_fqs_loop()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function, which happens to be invoked exactly once per RCU grace period. Both
+    programs count the number of calls, with
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@gp`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: being the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: “variable” accumulating the count, and the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`count()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function doing the counting in a cache-friendly manner. The final
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`interval:s:10`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: in effect attaches a program to a timer, so that this last program will execute
+    every 10 seconds (“
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`s:10`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ”). Except that the program invokes the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`exit()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function that terminates this
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: program at the end of the very first 10-second time interval. Upon termination,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'outputs the following on an idle system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: In other words, there were about a thousand grace periods and more than six
+    million RCU readers during that 10-second time period, for a read-to-grace-period
+    ratio of more than six thousand. This certainly qualifies as read-intensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But what if the system is busy? Much depends on exactly how busy the system
+    is, as well as exactly how it is busy, but let's use that old standby, the kernel
+    build (but using the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nice`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: command to avoid delaying
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ). Let's also put the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: script into a creatively named file
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu1.bpf`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: This allows the command
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace rcu1.bpf`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'to produce the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Where the idle system had about one thousand grace periods over the course of
+    ten seconds, the busy system had only 274\. On the other hand, the busy system
+    had 78 million RCU read-side critical sections, more than ten times that of the
+    idle system. The busy system had more than one quarter million RCU read-side critical
+    sections per grace period, which is seriously read-intensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: RCU works hard to make the same grace-period computation cover multiple requests.
+    Because
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: invokes
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`call_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ', we can use the number of'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`call_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: invocations as a rough proxy for the number of updates, that is, the number
+    of requests for a grace period. (The more invocations of
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`kfree_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ', the rougher this proxy will be.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can make the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: script more concise by assigning the same action to a group of tracepoints,
+    as in the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu2.bpf`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'file shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this file in place,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace rcu2.bpf`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'produces the following output in the midst of a kernel build:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: These results look quite different from the earlier kernel-build results, confirming
+    any suspicions you might harbor about the suitability of kernel builds as a repeatable
+    benchmark. Nevertheless, there are about 180K RCU read-side critical sections
+    per grace period, which is still seriously read-intensive. Furthermore, there
+    are also almost 2K
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`call_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: invocations per RCU grace period, which means that RCU is able to amortize the
+    overhead of a given grace period down to almost nothing per grace-period request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linux-Kernel RCU Grace-Period Latency
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: program makes a histogram of grace-period latencies, that is, the time from
+    the call to
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_gp_init()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to the return from
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_gp_cleanup()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ':'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`kretprobe`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: attaches the program to the return from
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_gp_cleanup()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: . The
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`hist()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function computes a log-scale histogram. The check of the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@start`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: variable avoids a beginning-of-time value for this variable in the common case
+    where this script start in the middle of a grace period. (Try it without that
+    check!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The output is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Most of the grace periods complete within between four and eight milliseconds,
+    with most of the remainder completing within between two and four milliseconds
+    and then between eight and sixteen milliseonds, but with a few stragglers taking
+    up to 64 milliseconds. The final
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@start`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: line shows that
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: simply dumps out all the variables. You can use the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`delete(@start)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function to prevent printing of
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@start`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ', but please note that the next invocation of'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rcu_gp_init()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: will re-create it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is nice to know the internal latency of an RCU grace period, but most in-kernel
+    users will be more concerned about the latency of the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function, which will need to wait for the current grace period to complete and
+    also for callback invocation. We can measure this function's latency with the
+    following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`tid`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: variable contains the ID of the currently running task, which allows this script
+    to associate a given return from
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: with the corresponding call by using
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`tid`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: as an index to the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@start`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you would expect, the resulting histogram is weighted towards somewhat longer
+    latencies, though without the stragglers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In addition, we see not one but two values for
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@start`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: . The
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`delete`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: statement gets rid of old ones, but any new call to
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: will create more of them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linux-Kernel Expedited RCU Grace-Period Latency
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Linux kernels will sometimes executed
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to obtain a faster grace period, and the following command will further cause
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to act like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ':'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Doing this on a dual-socket system with 80 hardware threads might be ill-advised,
+    but you only live once!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ill-advised or not, the following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: script measures
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'latency, but in microseconds rather than milliseconds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'The output of this script run concurrently with a kernel build is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Most
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: invocations complete within a few hundred microseconds, but with a few stragglers
+    around ten milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But what about linear histograms? This is what the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`lhist()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'function is for, with added minimum, maximum, and bucket-size arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'Running this with the usual kernel build in the background:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: The final bucket is overflow, containing measurements that exceeded the one-millisecond
+    limit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above histogram had only a few empty buckets, but that is mostly because
+    the 18
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`synchronize_rcu_expedited()`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: instances that overflowed the one-millisecond limit are consolidated into a
+    single
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`[1000, ...)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: overflow bucket. This is sometimes what is needed, but other times losing the
+    maximum latency can be a problem. This can be dealt with given the following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'Given the usual kernel-build background load, this produces the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'This is a bit hard to read, but simple scripting can be applied to this output
+    to produce something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: This produces compact output despite outliers such as the last entry, corresponding
+    to an invocation that took somewhere between 1.6 and 1.7 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bpftrace`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: command can be used to quickly and easily script compiled in-kernel programs
+    that can measure and monitor a wide variety of things. This post focused on a
+    few aspects of RCU, but quite a bit more material may be found in Brendan Gregg's
+    “BPF Performance Tools” book.
+  prefs: []
+  type: TYPE_NORMAL

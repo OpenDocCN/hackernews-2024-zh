@@ -1,0 +1,88 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:54:11'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Null is not false, part one | Fabulous adventures in coding
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://ericlippert.com/2012/03/26/null-is-not-false-part-one/](https://ericlippert.com/2012/03/26/null-is-not-false-part-one/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The way you typically represent a “missing” or “invalid” value in C# is to use
+    the “null” value of the type. Every reference type has a “null” value; that is,
+    the reference that does not actually refer to anything. And every “normal” value
+    type has a corresponding “nullable” value type which has a null value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way these concepts are implemented is completely different. A reference
+    is typically implemented behind the scenes as a 32 or 64 bit number. As we’ve
+    discussed [previously](http://blogs.msdn.com/b/ericlippert/archive/2009/02/17/references-are-not-addresses.aspx),
+    that number should logically be treated as an “opaque” handle that only the garbage
+    collector knows about, but in practice that number is the offset into the virtual
+    memory space of the process that the referred-to object lives at, inside the managed
+    heap. The number zero is reserved as the representation of null because the operating
+    system reserves the first few pages of virtual memory as invalid, always. There
+    is no chance that by some accident, the zero address is going to be a valid address
+    in the heap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By contrast, a nullable value type is simply an instance of the value type plus
+    a Boolean that indicates whether the value is to be treated as a value, or as
+    null. It’s just a syntactic sugar for passing around a flag. This is because value
+    types need not have any “special” value that has no other meaning; a byte has
+    256 possible values and every one of them is valid, so a nullable byte has to
+    have some additional storage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some languages allow null values of value types or reference types, or both,
+    to be implicitly treated as Booleans. In C, you can say:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: and that is treated as if you’d said `if (x != null)`. And similarly for nullable
+    value types; in some languages a null value type is implicitly treated as “false”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The designers of C# considered those features and rejected them. First, because
+    treating references or nullable value types as Booleans is a confusing idiom and
+    a potential rich source of bugs. And second, because semantically it seems presumptuous
+    to automatically translate null — which should mean “this value is missing” or
+    “this value is unknown” — to “this value is logically false”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In particular, we want to treat nullable bools as having three states: true,
+    false and null, and not as having three states: true, false and different-kind-of-false.
+    Treating null nullable Booleans as false leads to a number of oddities. Suppose
+    we did, and suppose x is a nullable bool that is equal to null:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Neither `Foo` nor `Bar` is executed because “not null” is of course also null.
+    (The answer to “what is the opposite of this unknown value?” is “an unknown value”.)
+    Does it not seem strange that `x` and `!x` are both treated as false? Similarly,
+    if `(x | !x)` would also be treated as false, which also seems bizarre.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution to the problem of these oddities is to avoid the problem in the
+    first place, and not make nulls behave as though they were false.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Next time on FAIC:** [we’ll look at a different aspect of truth-determining:
+    just what is up with those “true” and “false” user-defined operators?](https://ericlippert.com/2012/04/12/null-is-not-false-part-two/
+    "Null is not false, part two")'
+  prefs: []
+  type: TYPE_NORMAL

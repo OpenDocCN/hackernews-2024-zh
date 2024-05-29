@@ -1,0 +1,158 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:34:11'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Patching requests for fun and (concurrent) profit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.borrego.dev/entries/patching-requests-for-fun-and-concurrent-profit.html](https://blog.borrego.dev/entries/patching-requests-for-fun-and-concurrent-profit.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Patching requests for fun and (concurrent) profit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 24 apr. 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because life is too short to spam calls to `SSL_CTX_load_verify_locations()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the issue?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's consider the following script. It runs a bunch of concurrent requests
+    against a URL using the [requests](https://requests.readthedocs.io/en/latest/)
+    library, both with certificate verification enabled and disabled, and outputs
+    the time it takes to do it in both cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: What's the time difference between the two? It turns out it is highly dependent
+    on your local configuration. On my local machine, with a relatively modern config
+    (Python 3.12 + OpenSSL 3.0.2), the times are `~1.2s` for `verify=True` and `~0.5s`
+    for `verify=False`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's a >100% difference, but we initially blamed it on cert verification not
+    being trivial and taking some time. However, we observed even larger differences
+    (>500%) in some of our environments, and decided to find out what was going on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's going on?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our main use case for requests is running lots of requests concurrently, and
+    we spent some time bisecting this oddity to see if there was room for a performance
+    optimization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The issue is a bit more clear after profiling the concurrent executions. When
+    verifying certs, these are the top 3 function calls by total time spent in them
+    among all threads:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Conversely, this is how the top 3 looks like without cert verification:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the first case, a full 0.68 seconds are spent in the `load_verify_locations()`
+    function of the `ssl` module, which configures a `SSLContext` object to use a
+    set of root CA certificates for validation. This is done via a C FFI call to OpenSSL's
+    `SSL_CTX_load_verify_locations()` which [is known](https://github.com/python/cpython/issues/95031)
+    to be [quite slow](https://github.com/openssl/openssl/issues/16871). This happens
+    once per request (hence the `30` on the left).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken at face value, 0.68 seconds isn't that big of a deal, but please note
+    that this is **longer than the network wait for the requests themselves**. In
+    scenarios with a higher concurrency, we have also observed some global blocking
+    going on, either because each FFI call locks up the GIL or because of some thread
+    safety mechanisms in OpenSSL itself. In either case, the performance hit gets
+    worse and worse as you scale the number of concurrent requests up. We also think
+    that this is more or less pronounced depending on internal changes between OpenSSL's
+    versions, hence the variability between environments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When cert validation isn't needed, these calls are skipped which speeds up concurrent
+    performance dramatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A possible fix
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It isn''t possible to skip loading root CA certificates entirely, but it isn''t
+    necessary to do it on every request. At the time of writing this, a call to `load_verify_locations()`
+    happens when:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A new `urllib3.connectionpool.HTTPSConnectionPool` is created, or
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: On each connection, by urllib3's `ssl_wrap_socket()`, when the connection's
+    `ca_certs` or `ca_cert_dir` attributes are set (see [the relevant code](https://github.com/urllib3/urllib3/blob/9929d3c4e03b71ba485148a8390cd9411981f40f/src/urllib3/util/ssl_.py#L438)).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Recently, Requests added an internal `_get_connection()` function that caches
+    connection pools, and so, for most cases, the first case doesn't need to be addressed
+    anymore, since most HTTPS requests will share the same cached `HTTPSConnectionPool`
+    instead of creating one per request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second one is addressed in [the submitted PR](https://github.com/psf/requests/pull/6667).
+    It creates a default `SSLContext` with the default CA certificates already loaded,
+    and patches the function that hooks up each connection with a secure context to
+    reuse the default one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: When `verify=True`, we provide the connection pool with a `SSLContext` with
+    the CA certificates already loaded. As shown, by not setting `ca_certs` or `ca_cert_dir`
+    in that case, we avoid a spurious call to `load_verify_locations()` by urllib3
+    and cert verification still works as intended. A couple of additional changes
+    are also made in the PR to carefully avoid setting those two connection parameters
+    when not needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A small caveat happens when `verify` isn't a boolean, but rather a string indicating
+    a path to an alternative CA bundle or cert store. In those cases, we do set `ca_certs`
+    or `ca_cert_dir` accordingly to ensure that the alternative CA bundle requested
+    by the user is loaded instead. There is further room for optimization here, because
+    this use case will still incur in a call to `load_verify_locations()` per request.
+    Perhaps the previous approach could be generalized by caching different `SSLContext`
+    objects depending on the CA bundle that the request wishes to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Update: The corresponding [pull request](https://github.com/psf/requests/pull/6667)
+    has since been accepted by the maintainers and merged, and the changes have been
+    published in version [2.32.0](https://github.com/psf/requests/blob/main/HISTORY.md#2320-2024-05-20)
+    of Requests.'
+  prefs: []
+  type: TYPE_NORMAL

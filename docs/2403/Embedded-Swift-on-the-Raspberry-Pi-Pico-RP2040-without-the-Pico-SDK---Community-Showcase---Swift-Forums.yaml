@@ -1,0 +1,93 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:40:56'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Embedded Swift on the Raspberry Pi Pico/RP2040 without the Pico SDK - Community
+    Showcase - Swift Forums
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338](https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Interesting. I think a special libc *might* be interesting/necessary for some
+    embedded environments. For example, the Pico C SDK does depend on an embedded
+    libc AFAIK, but that's a topic for the other thread [Embedded Swift running on
+    the Raspberry Pi Pico](https://forums.swift.org/t/embedded-swift-running-on-the-raspberry-pi-pico/69001).
+    You're right that the from-scratch approach we're discussing in this thread doesn't
+    need it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That would be nice, although I fear the stuff we need to do for the RP2040
+    will be difficult to wrap in a package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second-stage bootloader (boot2) is assembled and linked with a special linker
+    script that puts it at the right location in flash
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Then we calculate a checksum over the bootloader binary and write that checksum
+    into the binary (the RP2040 won't boot unless this checksum is there). This is
+    currently done by a Python script.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The runtime (crt0) for the main executable (setting up IRQ handlers, exception
+    handlers etc.) is assembled and linked with the main executable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The main executable also needs to be linked with a special linker script
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Maybe the checksum calculation can be done in a SwiftPM plugin? But I'm not
+    sure we can integrate this cleanly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can prebuild boot2 and crt0, but then we're also no longer talking about
+    a simple package that you can include as a dependency, right (because of the binary
+    files involved)? And it doesn't solve how to pass the linker script to the final
+    link step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think my biggest problem in doing any SwiftPM experiments right now is that
+    I can't use `swift` as the linker to build a Pico executable – I have to use Clang
+    for linking. I don't think I can tell SwiftPM to link with Clang unless I build
+    an SE-0387-style SDK?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the errors I get when I try to link with Swift (on Linux; I understand
+    linking ELF files on macOS is work in progress: [[embedded] Start building and
+    including lld even in Darwin toolchains by kubamracek · Pull Request #70715 ·
+    apple/swift · GitHub](https://github.com/apple/swift/pull/70715)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: OK, so it's looking for `/usr/lib/swift/armv6m/swiftrt.o` and doesn't find it.
+    That directory doesn't exist. Should it exist? Will it exist in the future as
+    the embedded toolchain improves?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Linking with `-nostartfiles` gets rid of that error, but produces more:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: I'm afraid I don't really understand what I'm doing here, so it's hard to ask
+    better questions.
+  prefs: []
+  type: TYPE_NORMAL

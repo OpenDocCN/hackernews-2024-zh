@@ -1,0 +1,362 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:03:09'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to mess with your roommate | Max Bernstein
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://bernsteinbear.com/blog/how-to-mess-with-your-roommate/](https://bernsteinbear.com/blog/how-to-mess-with-your-roommate/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Before I explain what I did to hurt poor Logan, I must explain our apartment’s
+    media setup. You will see why shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logan, if you’re reading this, I hope you’re more entertained than not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have a computer running Ubuntu desktop connected to a TV. This acts as our
+    media server. Because it is also generally useful for it to be internet-connected,
+    it also serves a couple of webpages, an SSH server, and handful of other services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the TV is 4K and the desktop computer is salvaged, the graphics card it
+    had was not acceptable. Logan decided to purchase a several-generations-old NVIDIA
+    graphics card (which was far better than our existing one) to display smooth 4K
+    video.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The prank
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Shortly after the installation, we had a couple of driver glitches, at which
+    point I thought it would be humorous if there was a way to manually launch error
+    messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After some internet searching, it became apparent that remotely displaying
+    a message on the TV is as simple as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SSH into the box as the user displaying the content
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`DISPLAY=:0 zenity --info --text ''Hello!''`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: (The `DISPLAY=:0` bit is necessary because there is no display on the session
+    I am connected to, and I want to show it on the primary viewing display.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we were having trouble with the NVIDIA graphics card, however, I went
+    with something more similar to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DISPLAY=:0 zenity --warning --text ''Display is running in low-graphics mode.''`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I gave this a go (and it worked), but manually logging into the server from
+    an SSH client *every time* I wanted to bother Logan was a pain. So I decided to
+    get crafty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I thought about making a cron job to bother him regularly, but that has two
+    problems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s just that — regular
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We have other *real* cron jobs, which makes the sneaky new one too discoverable
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Other options like a SysVInit script were also out for similar reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So I decided on instead making a publicly-accessible webpage that has a button
+    on it: “Fuck with Logan”.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The prank setup
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to execute, I figured I needed a couple things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Something that can handle user input
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Something that can execute arbitrary commands on the web user’s behalf
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Which ends up being:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: NGINX
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The NGINX FPM extension
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The PHP FPM package
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'So I went and set up a website at [http://our.apartment.server](#) with a landing
+    page (`logan.html`) and an “action page” (`zenity.php`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are some nonsense `meta` tags in there to make the page easier to use
+    on phones (I was making this easier to use on-the-go, remember?).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For those who can’t render HTML in their heads (most people, I imagine), that
+    page looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the button is clicked, it POSTs to another page that does the heavy lifting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This page does a number of things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pick a semi-random error message to display
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pick the type of dialog box that will appear
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Display the box for a certain period of time (10 seconds)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Render the button and also an explanation of what just happened – all accompanied
+    by a fun picture of Logan himself
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'For those who can’t render HTML in their heads (again, hopefully most people),
+    that page looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you’re wondering why the webpage allows code execution in such a fashion,
+    and how the web server owner (`www-data`) could possibly execute commands as the
+    display user (`thedisplayuser`), you will probably be happy to know that I strictly
+    limit it in the sudoers file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This particular bit of configuration allows for `www-data` to execute only `/usr/bin/zenity`
+    as `thedisplayuser`, and without a password.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I deployed it after squashing some annoying PHP and NGINX configuration nonsense.
+    Then, I sent the URL to a couple of friends on campus who know Logan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The prank result
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Thank goodness Logan reacted as strongly as he did. If he’d been mildly irritated,
+    I would have been peeved that all my efforts were for nothing. But no! He lost
+    his cool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I cannot count how many reboots, driver re-installations, kernel modifications
+    there were. I only wish I had filmed how angry he got when, after opening VLC,
+    someone in the apartment popped up a bunch of windows with graphics card errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But I got too amused, and Chris, another roommate, decided to intervene…
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pranker pranked
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Step 1
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: I noticed one day when Logan was asleep that an error message that said “Max
+    is behind all this” showed up. What??? I had been reverse-pranked! So I investigated,
+    and found that somebody (Chris), had edited that message into `zenity.php` to
+    be chosen at random. I promptly removed it (Logan couldn’t figure out the prank
+    just yet), and assumed the fun was over. BUT NO.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 2
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'A week or so later, the messaged popped up again. I assumed Chris had noticed
+    and decided to re-add it to the list. Nope. Wasn’t there. After carefully checking
+    the file, I noticed that it was now calling `/usr/sbin/zenity` instead of `/usr/bin/zenity`
+    (the system default) and there was an accompanying entry in the sudoers file to
+    allow it. What was `/usr/sbin/zenity`? A shell script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Well, that’s some next-level shit if I’ve ever seen it. Ninety nine percent
+    of the time, it does the right thing — and the other one percent it displays “Max
+    is responsible for these.” I deleted the file (a mistake, I now know) and sudoers
+    entry, and changed `zenity.php` to the way it was. The messages stopped appearing.
+    BUT THEN THEY CAME BACK.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 3
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: I checked `zenity.php`. Nothing new. `/usr/sbin/zenity`? Gone. Color me confused.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So I decided I’d peek into `/usr/bin/zenity`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The crafty little fucker. He’d edited the `zenity` binary directly to BE A
+    BASH SCRIPT and work 1/70th of the time. What the *hell*. And what even is `rpmdb-client`??
+    So I fought back. I modified it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: See the difference? The first one calls `/usr/sbin/rpmdb-client` instead of
+    `/usr/bin/rpmdb-client` and made the `sbin` variant a no-op bash script. With
+    all luck, he wouldn’t notice the one-character change and his message would never
+    display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'TODO: Figure out the difference between the ELF executable in `/usr/sbin/zenity`
+    and `/usr/bin/rpmdb-client`, which was created by Chris. There is some strange
+    binary difference I don’t understand yet.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 4
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'I decided to fight back further before Chris found out about the one-letter
+    differential described above. I reverted all of my changes and decided to make
+    a patch to `zenity` instead. Major props to [Tom Hebb](https://tchebb.me/) (like
+    in every other technical post I write) for helping me with this. Here’s what I
+    did:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configure `apt` to download source packages (in this case, adding a `deb-src`
+    line to `/etc/apt/sources.list`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`apt-get source zenity`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Make a patch using `quilt`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`quilt new myPatch.diff`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Patch `src/msg.c` to detect if the word “max” or “Max” is used in the message
+    text:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`quilt add src/msg.c`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`quilt pop`'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`dpkg-source --commit`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`dpkg-buildpackage -us -uc`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Realize that creating and installing a new package is more noticeable than just
+    silently replacing the binary
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Silently replace the `rpmdb-client` (his `zenity`) binary with my compiled version
+    of `zenity`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pat myself on the back
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This patch changes `zenity` so that if it notices the message contains the text
+    “max” or “Max”, it quietly does nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'UPDATE: So far (end of March 2018), Chris has not noticed that I have modified
+    the binary. Logan has also therefore not noticed any messages that include my
+    name. There is as of yet no end in sight to the prank, unless I decide to tell
+    him when we graduate.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'UPDATE: We graduated and all parted ways. Though Logan and I will be living
+    together again next year, we will likely not be in the house enough to carry on
+    this prank. I decided to publish this post before attempting further shenanigans.'
+  prefs: []
+  type: TYPE_NORMAL

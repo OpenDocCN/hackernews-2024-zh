@@ -1,0 +1,305 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:40:13'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Crash-only software: More than meets the eye [LWN.net]'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lwn.net/Articles/191059/](https://lwn.net/Articles/191059/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
+    made this article — and everything that surrounds it — possible. If you appreciate
+    our content, please [buy a subscription](/subscribe/) and make the next set of
+    articles possible. |'
+  prefs: []
+  type: TYPE_TB
+- en: July 12, 2006
+  prefs: []
+  type: TYPE_NORMAL
+- en: This article was contributed by Valerie Aurora
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next time your Linux laptop crashes, pull out your watch (or your cell phone)
+    and time how long it takes to boot up. More than likely, you're running a journaling
+    file system, and not only did your system boot up quickly, but it didn't lose
+    any data that you cared about. (Maybe you lost the last few bytes of your DHCP
+    client's log file, darn.) Now, keep your timekeeping device of choice handy and
+    execute a normal shutdown and reboot. More than likely, you will find that it
+    took longer to reboot "normally" than it did to crash your system and recover
+    it - and for no perceivable benefit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'George Candea and Armando Fox noticed that, counter-intuitively, many software
+    systems can crash and recover more quickly than they can be shutdown and restarted.
+    They reported the following measurements in their paper, [Crash-only Software](http://www.usenix.org/events/hotos03/tech/candea.html)
+    (published in [Hot Topics in Operating Systems IX](http://www.usenix.org/events/hotos03/)
+    in 2003):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| System | Clean reboot | Crash reboot | Speedup |'
+  prefs:
+  - PREF_BQ
+  type: TYPE_TB
+- en: '| RedHat 8 (ext3) | 104 sec | 75 sec | 1.4x |'
+  prefs:
+  - PREF_BQ
+  type: TYPE_TB
+- en: '| JBoss 3.0 app server | 47 sec | 39 sec | 1.2x |'
+  prefs:
+  - PREF_BQ
+  type: TYPE_TB
+- en: '| Windows XP | 61 sec | 48 sec | 1.3x |'
+  prefs:
+  - PREF_BQ
+  type: TYPE_TB
+- en: In their experiments, no important data was lost. This is not surprising as,
+    after all, good software is designed to safely handle crashes. Software that loses
+    or ruins your data when it crashes isn't very popular in today's computing environment
+    - remember how frustrating it was to use word processors without an auto-save
+    feature? What is surprising is that most systems have two methods of shutting
+    down - cleanly or by crashing - and two methods of starting up - normal start
+    up or recovery - and that frequently the crash/recover method is, by all objective
+    measures, a better choice. Given this, why support the extra code (and associated
+    bugs) to do a clean start up and shutdown? In other words, why should I ever type
+    "halt" instead of hitting the power button?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The main reason to support explicit shutdown and start-up is simple: performance.
+    Often, designers must trade off higher steady state performance (when the application
+    is running normally) with performance during a restart - and with acceptable data
+    loss. File systems are a good example of this trade-off: ext2 runs very quickly
+    while in use but takes a long time to recover and makes no guarantees about when
+    data hits disk, while ext3 has somewhat lower performance while in use but is
+    very quick to recover and makes explicit guarantees about when data hits disk.
+    When overall system availability and acceptable data loss in the event of a crash
+    are factored into the performance equation, ext3 or any other journaling file
+    system is the winner for many systems, including, more than likely, the laptop
+    you are using to read this article.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Crash-only software is software that crashes safely and recovers quickly. The
+    only way to stop it is to crash it, and the only way to start it is to recover.
+    A crash-only system is composed of crash-only components which communicate with
+    retryable requests; faults are handled by crashing and restarting the faulty component
+    and retrying any requests which have timed out. The resulting system is often
+    more robust and reliable because crash recovery is a first-class citizen in the
+    development process, rather than an afterthought, and you no longer need the extra
+    code (and associated interfaces and bugs) for explicit shutdown. All software
+    ought to be able to crash safely and recover quickly, but crash-only software
+    must have these qualities, or their lack becomes quickly evident.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concept of crash-only software has received quite a lot of attention since
+    its publication. Besides several well-received research papers demonstrating useful
+    implementations of crash-only software, crash-only software has been covered in
+    several popular articles in publications as diverse as Scientific American, Salon.com,
+    and CIO Today. It was cited as one of the reasons Armando Fox was named one of
+    Scientific American's list of top 50 scientists for 2003 and George Candea as
+    one of MIT Technology Review's Top 35 Young Innovators for 2005\. Crash-only software
+    has made its mark outside the press room as well; for example, Google's distributed
+    file system, GoogleFS, is implemented as crash-only software, all the way through
+    to the metadata server. The term "crash-only" is now regularly bandied about in
+    design discussions for production software. I myself wrote a [blog entry on crash-only
+    software](http://blogs.sun.com/roller/page/val?entry=is_b_your_b_software) back
+    in 2004\. Why bother writing about it again? Quite simply, the crash-only software
+    meme became so popular that, inevitably, mutations arose and flourished, sometimes
+    to the detriment of allegedly crash-only software systems. In this article, we
+    will review some of the more common misunderstandings about designing and implementing
+    crash-only software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Misconceptions about crash-only software
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The first major misunderstanding is that crash-only software is a form of free
+    lunch: you can be lazy and not write shutdown code, not handle errors (just crash
+    it! whee!), or not save state. Just pull up your favorite application in an editor,
+    delete the code for normal start up and shutdown, and voila! instant crash-only
+    software. In fact, crash-only software involves greater discipline and more careful
+    design, because if your checkpointing and recovery code doesn''t work, you will
+    find out right away. Crash-only design helps you produce more robust, reliable
+    software, it doesn''t exempt you from writing robust, reliable software in the
+    first place.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another mistake is overuse of the crash/restart "hammer." One of the ideas in
+    crash-only software is that if a component is behaving strangely or suffering
+    some bug, you can just crash it and restart it, and more than likely it will start
+    functioning again. This will often be faster than diagnosing and fixing the problem
+    by hand, and so a good technique for high-availability services. Some programmers
+    overuse the technique by deliberately writing code to crash the program whenever
+    something goes wrong, when the correct solution is to handle all the errors you
+    can think of correctly, and then rely on crash/restart for unforeseen error conditions.
+    Another overuse of crash/restart is that when things go wrong, you should crash
+    and restart the whole system. One tenet of crash-only *system* design is the idea
+    that crash/restart is cheap - because you are only crashing and recovering small,
+    self-contained parts of the system (see the [paper on microreboots)](http://www.usenix.org/events/osdi04/tech/candea.html).
+    Try telling your users that your whole web browser crashes and restarts every
+    2 minutes because it is crash-only software and see how well that goes over. If
+    instead the browser quietly crashes and recovers only the thread that is misbehaving
+    you will have much happier users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the face of it, the simplest part of crash-only software would be implementing
+    the "crash" part. How hard is it to hit the power button? There is a subtle implementation
+    point that is easy to miss, though: the crash mechanism has to be entirely outside
+    and independent of the crash-only system - hardware power switch, kill -9, shutting
+    down the virtual machine. If it is implemented through internal code, it takes
+    away a valuable part of crash-only software: that you have an all-powerful, reliable
+    method to take any misbehaving component of the system and crash/restart it into
+    a known state.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I heard of one "crash-only" system in which the shutdown code was replaced with
+    an abort() system call as part of a "crash-only" design. There were two problems
+    with this approach. One, it relied on the system to not have any bugs in the code
+    path leading to the abort() system call or any deadlocks which would prevent it
+    being executed. Two, shutting down the system in this manner only exercised a
+    subset of the total possible crash space, since it was only testing what happened
+    when the system successfully received and handled a request to shutdown. For example,
+    a single-threaded program that handled requests in an event loop would never be
+    crashed in the middle of handling another request, and so the recovery code would
+    not be tested for this case. One more example of a badly implemented "crash" is
+    a database that, when it ran out of disk space for its event logging, could not
+    be safely shut down because it wanted to write a log entry before shutting down,
+    but it was out of disk space, so...
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another common pattern is to ignore the trade-offs of performance vs. recovery
+    time vs. reliability and take an absolutist approach to optimizing for one quality
+    while maintaining superficial allegiance to crash-only design. The major trade-off
+    is that checkpointing your application's state improves recovery time and reliability
+    but reduces steady state performance. The two extremes are checkpointing or saving
+    state far too often and checkpointing not at all; like Goldilocks, you need to
+    find the checkpoint frequency that is Just Right for your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What frequency of checkpointing will give you acceptable recovery time, acceptable
+    performance, and acceptable data loss? I once used a web browser which only saved
+    preferences and browsing history on a clean shutdown of the browser. Saving the
+    history every millisecond is clearly overkill, but saving changed items every
+    minute would be quite reasonable. The chosen strategy, "save only on shutdown,"
+    turned out to be equivalent to "save never" - how often do people close their
+    browsers, compared to how often they crash? I ended up solving this problem by
+    explicitly starting up the browser for the sole purpose of changing the settings
+    and immediately closing it again after the third or fourth time I lost my settings.
+    (This is good example of how all software should be written to crash safely but
+    does not.) Most implementations of bash I have used take the same approach to
+    saving the command history; as a result I now explicitly "exit" out of running
+    shells (all 13 or so of them) whenever I shut down my computer so I don't lose
+    my command history.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Shutdown code should be viewed as, fundamentally, only of use to optimize the
+    next start up sequence and should not be used to do anything required for correctness.
+    One way to approach shutdown code is to add a big comment at the top of the code
+    saying "WISHFUL THINKING: This code may never be executed. But it sure would be
+    nice."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another class of misunderstanding is about what kind of systems are suitable
+    for crash-only design. Some people think crash-only software must be stateless,
+    since any part of the system might crash and restart, and lose any uncommitted
+    state in the process. While this means you must carefully distinguish between
+    volatile and non-volatile state, it certainly doesn't mean your system must be
+    stateless! Crash-only software only says that any non-volatile state your system
+    needs must itself be stored in a crash-only system, such as a database or session
+    state store. Usually, it is far easier to use a special purpose system to store
+    state, rather than rolling your own. Writing a crash-safe, quick-recovery state
+    store is an extremely difficult task and should be left to the experts (and will
+    make your system easier to implement).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Crash-only software makes explicit the trade-off between optimizing for steady-state
+    performance and optimizing for recovery. Sometimes this is taken to mean that
+    you can't use crash-only design for high performance systems. As usual, it depends
+    on your system, but many systems suffer bugs and crashes often enough that crash-only
+    design is a win when you consider overall up time and performance, rather than
+    performance only when the system is up and running. Perhaps your system is robust
+    enough that you can optimize for steady state performance and disregard recovery
+    time... but it's unlikely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because it must be possible to crash and restart components, some people think
+    that a multi-threaded system using locks can't be crash-only - after all, what
+    happens if you crash while holding a lock? The answer is that locks can be used
+    inside a crash-only component, but all interfaces between components need to allow
+    for the unexpected crash of components. Interfaces between components need to
+    strongly enforce fault boundaries, put timeouts on all requests, and carefully
+    formulate requests so that they don't rely on uncommitted state that could be
+    lost. As an example, consider how the recently-merged [robust futex facility](http://lwn.net/Articles/172149/)
+    makes crash recovery explicit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some people end up with the impression that crash-only software is less reliable
+    and unsuitable for important "mission-critical" applications because the design
+    explicitly admits that crashes are inevitable. Crash-only software is actually
+    more reliable because it takes into account from the beginning an unavoidable
+    fact of computing - unexpected crashes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A criticism often leveled at systems designed to improve reliability by handling
+    errors in some way other than complete system crash is that they will hide or
+    encourage software bugs by masking their effects. First, crash-only software in
+    many ways exposes previously hidden bugs, by explicitly testing recovery code
+    in normal use. Second, explicitly crashing and restarting components as a workaround
+    for bugs does not preclude taking a crash dump or otherwise recording data that
+    can be used to solve the bug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How can we apply crash-only design to operating systems? One example is file
+    systems, and the design of chunkfs (discussed in last week's [LWN article on the
+    2006 Linux file systems workshop](http://lwn.net/Articles/190222/) and in more
+    detail [here](http://www.fenrus.org/chunkfs.txt)). We are trying to improve reliability
+    and data availability by separating the on-disk data into individually checkable
+    components with strong fault isolation. Each chunk must be able to be individually
+    "crashed" - unmounted - and recovered - fsck'd - without bringing down the other
+    chunks. The code itself must be designed to allow the failure of individual chunks
+    without holding locks or other resources indefinitely, which could cause system-wide
+    deadlocks and unavailability. Updates within each chunk must be crash-safe and
+    quickly recoverable. Splitting the file system up into smaller, restartable, crash-only
+    components creates a more reliable, easier to repair crash-only system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The conclusion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Properly implemented, crash-only software produces higher quality, more reliable
+    code; poorly understood it results in lazy programming. Probably the most common
+    misconception is the idea that writing crash-only software is that it allows you
+    to take shortcuts when writing and designing your code. Wake up, Sleeping Beauty,
+    there ain't no such thing as a free lunch. But you can get a more reliable, easier
+    to debug system if you rigorously apply the principles of crash-only design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Thanks to [Brian Warner](http://www.lothar.com/) for inspiring this article,
+    [George Candea](http://people.epfl.ch/george.candea) and [Armando Fox](http://swig.stanford.edu/~fox/)
+    for comments and for codifying crash-only design in general, and the implementers(s)
+    of the Emacs auto-save feature, which has saved my work too many times to count.]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Log in](https://lwn.net/Login/?target=/Articles/191059/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to post comments)
+  prefs: []
+  type: TYPE_NORMAL

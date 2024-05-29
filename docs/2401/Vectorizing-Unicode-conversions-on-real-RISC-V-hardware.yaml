@@ -1,0 +1,690 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:14:03'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vectorizing Unicode conversions on real RISC-V hardware
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html](https://camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Vectorizing Unicode conversions on real RISC-V hardware
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this article we'll discuss how to achieve the speedup below for UTF-8 to
+    UTF-16 conversion, using the RISC-V Vector extension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I excluded the plain ASCII case from the graph above because it made the other
+    results less readable, the speedup was: 8x for C908, and 11x for C920\. More comprehensive
+    measurements are at the [end](#finbench) of the article.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The vast majority of text you'll come across will be encoded in the UTF-8 format,
+    but some languages and APIs use UTF-16 as their native format instead (JavaScript,
+    Java, Windows, ...). This and other reasons, might cause you to convert between
+    different Unicode encodings. As demonstrated by [simdutf](https://github.com/simdutf/simdutf/),
+    this conversion process has a lot of optimization potential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we'll focus on UTF-8 to UTF-16 conversion, and aim to develop an optimized
+    RISC-V implementation that can be upstreamed to the [simdutf](https://github.com/simdutf/simdutf/)
+    library, which is used among others by Node.js and Bun. ([The changes](https://github.com/simdutf/simdutf/pull/373)
+    are now upstream)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The RISC-V Vector extension (RVV) adds a set of 32 vector registers that are
+    each VLEN bits wide, where VLEN is a power-of-two greater or equal to 128 (in
+    the standard V extension). Vector registers can be interpreted as multiple 8/16/32/64
+    bit elements, and operated on accordingly, as signed/unsigned integers or single/double
+    precision floating point numbers. Since we can operate on multiple elements at
+    a time large speedup over scalar code is possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time of writing (early 2024) there is almost no hardware available that
+    supports RVV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only hardware with RVV support, regular consumers can buy, is the [Kendryte
+    K230](https://www.canaan.io/product/k230). It has a [C908](https://www.t-head.cn/product/%E7%8E%84%E9%93%81C908)
+    in-order core from Xuantie running at 1.6GHz with a VLEN of 128 bits. ([C908 benchmark
+    page](../canmv_k230/index.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can also buy two other CPUs that support an early incompatible draft version
+    (0.7.1) of the vector extension, the [C906](https://www.t-head.cn/product/C906?lang=en)
+    and the [C920](https://www.t-head.cn/product/C910?lang=en) (C910 with RVV). Since
+    the C906s performance characteristics are very similar to the C908, we won't include
+    benchmarks for this one. ([C906 benchmark page](../mangopi_mq_pro/index.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The [C920](https://www.t-head.cn/product/c910?lang=en) however is a much faster
+    out-of-order core at 2GHz, the results of which are more interesting than the
+    ones from C908 for future hardware. Targeting RVV 0.7.1 is a pain, as there is
+    no official toolchain support, but I've taken the time to manually translate the
+    generated assembly and assemble it with an [older GCC branch](https://github.com/brucehoult/riscv-gnu-toolchain).
+    ([C920 benchmark page](../milkv_pioneer/index.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are [a few open-source RVV implementations](https://github.com/stars/camel-cdr/lists/rvv-implementations),
+    but most are still in development/incomplete. The only one that is complete, and
+    we could simulate locally is Tenstorrents bobcat (formally ocelot), but it was
+    a proof-of-concept design and some instructions we'll be using were explicitly
+    not optimized. (we'll discuss that [later](#gather))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fortunately, I own the Kendryte K230, and have ssh access to a Milk-V Pioneer
+    server with 64 C920 cores, thanks to [perfXlab](http://www.perfxlab.com/). The
+    development was done via qemu emulation, as that's far simpler than using real
+    hardware, for now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next two sections will cover the basics of RVV and Unicode, feel free to
+    [skip ahead](#attack) if you are already familiar with the topics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''ll try to explain the RVV basics using a short example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we're using the C intrinsics API to count the number of UTF-8 characters*
+    in the supplied data. The next section will describe this in more detail, but
+    to count the number of UTF-8 characters we just need to count the number of bytes
+    that don't match the pattern `**0b10xxxxxx**`, assuming the input is valid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**From here on out when I refer to a "character" I mean a Unicode code point.
+    This doesn''t directly map into a single character on screen, for example, this
+    emoji "🧙‍♀️" is built with three Unicode code points: 🧙 + Zero Width Joiner +
+    ♀️ = 🧙‍♀️*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned above RVV supports different vector lengths. To facilitate having
+    the same code work on machines with different vector lengths RVV has the `vsetvl*`
+    instruction. You give it the element count of your input, an element width, and
+    it will give you a count smaller or equal to your supplied count that it can fit
+    into a vector register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code above uses this to iterate over the input, `vl = vsetvl_e8m8(len)`
+    represents the of number elements one iteration processes. Next `vle8_v_u8m8()`
+    loads `vl` 8-bit integer elements from our input into a vector register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then a mask is created where each active element (element where the coresponding
+    bit in the mask is set) doesn't match the pattern `**0b10xxxxxx**`. vsrl stands
+    for *shift right logical*, and vmsne for *not equal to*, so `vmsne(vsrl(v, **6**,
+    vl), **0b10**, vl)` does `(x >> **6**) != **0b10**` on each element. RVV doesn't
+    have separate mask registers, instead, masks are stored in the lower bits of a
+    vector register, the intrinsics API adds the `vboolN_t` types to give this more
+    type safety. Finally, we use `vcpop` to count the number of active elements in
+    our mask and add that to our sum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might be wondering what the "m8" means, I've omitted that so far. RVV has
+    32 VLEN bits wide vector registers, but with `vsetvl` you can also configure the
+    LMUL (length multiplier), and cause the processor to group these registers. This
+    means that subsequent instructions will act on a register group, and `vsetvl`
+    will return a `vl` corresponding to LMUL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When LMUL=1 we've got 32 VLEN bits wide registers, for LMUL=2 they now act like
+    16 VLEN*2 bit wide registers, so for "m8" (LMUL=8), we've got 4 VLEN*8 bit wide
+    registers. Here we use less than five vector registers, so using LMUL=8 gives
+    us essentially free loop unrolling, which makes the scalar- and mask operations
+    less expensive. Unrolling isn't the only advantage of LMUL, it also allows us
+    to easily work with mixed-width data, we'll be heavily using this later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also explains why masks are stored in a vector register, more specifically
+    in an LMUL=1 vector register, even though they only store one bit per element
+    they are referring to. For LMUL=8 and 8-bit elements you need a full LMUL=1 register
+    to have enough bits to represent its mask.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Apart from the RVV feature discussed already, the other features we''ll be
+    using are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**reductions** over elements: Applies an operation to all elements to produce
+    a scalar result. E.g. sum all elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**narrowing/widening** arithmetic operations: Operation that decreases/increases
+    element width and LMUL.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**permutations**: Instructions to move elements, RVV supports slides, merge
+    (blend), compress, and gather (shuffle)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I hope this wasn''t too confusing, here are some more in-depth references on
+    RVV if you don''t feel prepared to follow along with the rest of the article:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Unicode defines a set of ~150,000 characters and assigns them a unique 32-bit
+    number, called code point. Storing just the code points themself is called UTF-32\.
+    This isn''t done in practice, because lower code points occur more often, and
+    this wastes a lot of space. There are two other encoding schemes: UTF-8, and UTF-16.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'UTF-8 uses one- to four-bytes to represent a code point using the format visualized
+    below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice the small Invalid range. Code points between 0xD800-0xDFFF are unassigned
+    and invalid, this is used to allow for the UTF-16 encoding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: UTF-16 encodes the code points from 1, 2 and 3 byte UTF-8 characters directly
+    as a single 16-bit character. Four-byte UTF-8 code points are encoded in two 16-bit
+    characters by leveraging part of the invalid character range to signal that it's
+    a multi-word UTF-16 character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '16-bit words in the range 0xD800-0xDBFF are called high surrogates and in the
+    range 0xDC00-0xDFFF low surrogates. A high surrogate is always followed by a low
+    surrogate, the code points are encoded as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, here is a side-by-side comparison of the encodings for the string "rνṿ🧙",
+    which includes all UTF-8 character lengths:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our goal is to implement a fast vectorized validating UTF-8 to UTF-16 conversion
+    routine, but let's tackle non-validating general UTF-8 to UTF-32 conversion first
+    and see where that leads us. We might end up simply converting the Unicode code
+    point (UTF-32) to UTF-16, or figure out a use of some intermediate variables to
+    get to UTF-16.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, this leaves us with a few things to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: identify character positions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: remove prefixes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: combine to UTF-32 code point
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The most important question seems to be, how we deal with the different character
+    sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Initially, I had two ideas on how to approach this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**vdecompress:** Skimming through the specification, the first instruction
+    that seemed to fit the bill was vdecompress. Although it isn''t really an instruction,
+    but rather a combination of the `viota` and `vrgather` instructions to synthesize
+    a `vcompress` inverse. It uses a mask to move every nth element of a vector to
+    the nth active element in the source register. This could allow us to widen every
+    UTF-8 character to four bytes long, so we can work on the different-sized characters
+    uniformly.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**vcompress:** Alternatively we could also `vcompress` every nth byte of all
+    UTF-8 characters into the nth of four separate vector registers. Then we could
+    also write code that operates on all character sizes uniformly, but we''d need
+    to recombine the registers to store the final code point.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first approach seemed quite promising to me, so I sketched out the creation
+    of the decompress-mask but got stuck on how to proceed from there. The problem
+    is, that now you go from an input register of, let's for now assume LMUL=1, to
+    an LMUL=4 register, and still need to do all of the logic to remove prefixes and
+    shift the bits into place. That makes every operation we do four times slower,
+    and we'd need to quite a few operations. Add to that, that `vrgather` is slow
+    with larger LMULs (see [later discussion](#gather)), and this doesn't seem like
+    that good of an idea anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's consider the `vcompress` approach again. Once we've removed the prefixes
+    from our four registers, we get the "shifting the bits into the right position"
+    part basically for free, because we need to recombine them anyway. Using a widening
+    multiply makes combining them while shifting by six bits even easier than interleaving
+    the bytes (shifting by eight bits), because we can't multiply by `**1**<<**8**`
+    since it doesn't fit into 8-bits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I was hoping to use masked widening adds and multiplies, but that didn't end
+    up being worth it, as we need to specify a destination operand that is already
+    widened. Another complication is that combining the first two bytes with the last
+    two bytes needs to shift the first two by 0, 6 or 12 bits, which doesn't nicely
+    translate into a masked operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can however always act like we have a four-byte UTF-8 character and later
+    calculate and apply a correction right shift amount. This also removes the need
+    to mask the add operations, as any residual bits are shifted away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So here is the game plan:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We want to process the input in chunks, but if we were to load the data directly
+    into a single vector register, we''d need to figure out where the last full character
+    ends in the register. Instead of doing that we can always lookahead three bytes,
+    and only consider them as continuation bytes, you''ll see why that works out quite
+    well later. Here is the framework we''ll be building on top of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]``'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* IMPL: extract b1/b2/b3/b4 */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t v1 = __riscv_vslide1down(v0, src[vl+**0**], vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t v2 = __riscv_vslide1down(v1, src[vl+**1**], vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t v3 = __riscv_vslide1down(v2, src[vl+**2**], vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* mask of non-continuation bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vbool4_t m = __riscv_vmsne(__riscv_vsrl(v0, **6**, vl), **0b10**, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* extract third and fourth bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t b1 = __riscv_vcompress(v0, m, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t b2 = __riscv_vcompress(v1, m, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t b3 = __riscv_vcompress(v2, m, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t b4 = __riscv_vcompress(v3, m, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* IMPL: remove prefixes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* remove prefix from trailing bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vlOut = __riscv_vcpop(m, vl);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b2 = __riscv_vand(b2, **0b00111111**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b3 = __riscv_vand(b3, **0b00111111**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b4 = __riscv_vand(b4, **0b00111111**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* TODO: remove prefix from leading bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* IMPL: remove prefix from leading bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint8m2_t shift = __riscv_vsrl(b1, **4**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: shift = __riscv_vmerge(__riscv_vssubu(shift, **10**, vlOut), **3**,
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vmseq(shift, **12**, vlOut), vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b1 = __riscv_vsll(b1, shift, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b1 = __riscv_vsrl(b1, shift, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* IMPL: combine to b1234 */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* unconditionally widen and combine to b1234 */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint16m4_t b34   = __riscv_vwaddu_wv(__riscv_vwmulu(b3,  **1**<<**6**,  vlOut),
+    b4,  vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint16m4_t b12   = __riscv_vwaddu_wv(__riscv_vwmulu(b1,  **1**<<**6**,  vlOut),
+    b2,  vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint32m8_t b1234 = __riscv_vwaddu_wv(__riscv_vwmulu(b12, **1**<<**12**, vlOut),
+    b34, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* TODO: compute shift amount */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: b1234 = __riscv_vsrl(b1234, __riscv_vzext_vf4(shift, vlOut), vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* IMPL: compute shift amount */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* derive required right-shift amount from `shift` to reduce*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '** b1234 to the required number of bytes */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: shift = __riscv_vmul(__riscv_vrsub(__riscv_vssubu(shift, **2**, vlOut), **3**,
+    vlOut), **6**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '#define VRGATHER_u8m1x2(tbl, idx) \'
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vset(__riscv_vlmul_ext_u8m2( \
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vrgather(tbl, __riscv_vget_u8m1(idx, **0**), vl8m1)), **1**, \
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vrgather(tbl, __riscv_vget_u8m1(idx, **1**), vl8m1));
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`static const uint64_t err1m[] = { **0x0202020202020202**, **0x4915012180808080**
+    };`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`static const uint64_t err2m[] = { **0xCBCBCB8B8383A3E7**, **0xCBCBDBCBCBCBCBCB**
+    };`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`static const uint64_t err3m[] = { **0x0101010101010101**, **0x01010101BABAAEE6**
+    };`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`const vuint8m1_t err1tbl = __riscv_vreinterpret_u8m1(__riscv_vle64_v_u64m1(err1m,
+    **2**));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`const vuint8m1_t err2tbl = __riscv_vreinterpret_u8m1(__riscv_vle64_v_u64m1(err2m,
+    **2**));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`const vuint8m1_t err3tbl = __riscv_vreinterpret_u8m1(__riscv_vle64_v_u64m1(err3m,
+    **2**));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`const size_t vl8m1 = __riscv_vsetvlmax_e8m1();`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`const size_t vl16m2 = __riscv_vsetvlmax_e16m2();`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*...*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*vuint8m2_t v3 = __riscv_vslide1down(v2, src[vl+2], vl);*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t s1 = __riscv_vreinterpret_u8m2(__riscv_vsrl(__riscv_vreinterpret_u16m2(v2),
+    **4**, vl16m2));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t s3 = __riscv_vreinterpret_u8m2(__riscv_vsrl(__riscv_vreinterpret_u16m2(v3),
+    **4**, vl16m2));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '``vuint8m2_t idx2 = __riscv_vand(v2, **0xF**, vl);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t idx1 = __riscv_vand(s1, **0xF**, vl);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t idx3 = __riscv_vand(s3, **0xF**, vl);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '``vuint8m2_t err1 = VRGATHER_u8m1x2(err1tbl, idx1);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t err2 = VRGATHER_u8m1x2(err2tbl, idx2);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vuint8m2_t err3 = VRGATHER_u8m1x2(err3tbl, idx3);`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`vint8m2_t  errs = __riscv_vreinterpret_i8m2(`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`__riscv_vand(__riscv_vand(err1, err2, vl), err3, vl));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`*/* TODO: detect 3/4 byte errors */*[PRE10]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '``To check for 3/4 byte errors, we check if the previous input had a 3 or 4
+    byte character, which should be followed by two continuation bytes. There is no
+    error, if we expect two continuations and get them, and if we don''t expect two
+    continuations and don''t get them, this maps perfectly to an XOR operation. We
+    use the fact, that the upper bit of our error bit set indicates the expectation
+    of two continuations. Interpreting the byte as a signed number, lets us easily
+    check if the MSB bit is set (`x < 0`) and if any of the other bits are set (`x
+    > 0`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we test if our error mask contains an error, and exit the function
+    with an error code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Lastly, we can''t forget about the first three bytes. They could e.g. be all
+    continuation bytes, which would cause our loop to ignore them. Before the start
+    of our loop, we find the end of the thired UTF-8 character and pass that to a
+    scalar validation routine, here we reuse `utf8_to_utf32_scalar` for simplicity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now for the fun part, making things faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we read an all ASCII vector, then we can skip the validation pass, and simply
+    widen and store the vector. We use a max reduction to determine if we have only
+    ASCII bytes, the result of which we can also use for our other fast paths:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`This fast path needs to happen after validation. We are only concerned with
+    creating b12 from b1 and b2, which allows us to simplify the code from the general
+    case a lot.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We don't need to bother with shifting to remove the prefix from b1, there are
+    only two possibilities, and one is to do nothing, hence a masked and fits perfectly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We still can't use a masked widening multiply without first widening the destination
+    operand, but we can use a simple `vmerge` to select between the two possible shift
+    values. The addition can then be done using a masked widening add because the
+    destination is already widened.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we need to zero extend again and we are done:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`I''ll leave understanding this one as an exercise to the reader, note that
+    the code points of all three and below byte UTF-8 characters fit into 16 bytes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: size_t vl8m4 = __riscv_vsetvlmax_e8m4();
+  prefs: []
+  type: TYPE_NORMAL
+- en: const vbool2_t m2even = __riscv_vmseq(__riscv_vand(__riscv_vid_v_u8m4(vl8m4),
+    **1**, vl8m4), **0**, vl8m4);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define DOWN __riscv_vreinterpret_u16m8'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define UP __riscv_vreinterpret_u32m8'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*...*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*b1234 = __riscv_vsrl(b1234, ...);*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* convert [000000000000aaaa|aaaaaabbbbbbbbbb]*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '** to      [110111bbbbbbbbbb|110110aaaaaaaaaa] */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vuint32m8_t sur = __riscv_vsub(b1234, **0x10000**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: sur = __riscv_vor(__riscv_vsll(sur, **16**, vlOut),
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vsrl(sur, **10**, vlOut), vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: sur = __riscv_vand(sur, **0x3FF03FF**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: sur = __riscv_vor(sur, **0xDC00D800**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* merge 1 byte b1234 and 2 byte sur */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vbool4_t m4 = __riscv_vmsgtu(b1234, **0xFFFF**, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b1234 = __riscv_vmerge(b1234, sur, m4, vlOut);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* swap b1234 two byte pairs */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* compress and store */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vbool2_t mOut = __riscv_vmor(__riscv_vmsne(DOWN(b1234), **0**, vlOut***2**),
+    m2even, vlOut***2**);
+  prefs: []
+  type: TYPE_NORMAL
+- en: b1234 = UP(__riscv_vcompress(DOWN(b1234), mOut, vlOut***2**));
+  prefs: []
+  type: TYPE_NORMAL
+- en: size_t vlDest = __riscv_vcpop(mOut, vlOut***2**);
+  prefs: []
+  type: TYPE_NORMAL
+- en: __riscv_vse16_v_u16m8(dest, DOWN(b1234), vlDest);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*/* reparse last character + tail */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*if (count > tail) {*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*if ((src[0] >> 6) == 0b10) --dest;*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*while ((src[0] >> 6) == 0b10 && tail < count)*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*--src, ++tail;*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/* go back one more, when on high surrogate */*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (dest[-**1**] >= **0xD800** && dest[-**1**] <= **0xDBFF**)
+  prefs: []
+  type: TYPE_NORMAL
+- en: --dest;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*}*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19][PRE20]'
+  prefs: []
+  type: TYPE_NORMAL

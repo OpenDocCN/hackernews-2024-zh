@@ -1,0 +1,466 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:33:25'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Beginner's Companion to Theorem Proving in Lean 4 | Blog | emallson.net
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/](https://emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This year, one of my hobby projects has been implementing some basic properties
+    and conversions between [Matroids](https://en.wikipedia.org/wiki/Matroid) in [Lean](https://lean-lang.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: My primary resource for doing this has been [*Theorem Proving in Lean 4*](https://lean-lang.org/theorem_proving_in_lean4/title_page.html)
+    (TPiL), which is an incredibly detailed walk through using Lean as a proof assistant.
+    While useful, it has...gaps—as does the main Lean documentation. A lot of this
+    gap appears to be [filled by the Zulip chat](https://leanprover-community.github.io/archive/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The title of this post is a bit of a double entendre: I am still a relative
+    beginner, writing what I intend as a companion to TPiL; and this is is intended
+    for beginners to Lean, covering that I wish I had known as a beginner myself.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A final caveat emptor: I haven''t really hung out in Zulip and don''t have
+    a good grasp on good code organization and style in Lean. These may not be best
+    practices, but they helped me.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is organized in small sections covering individual things that I learned
+    the hard way while working on my hobby project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary>Running Snippets</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can run the code snippets below in Lean or on the [Lean website](https://live.lean-lang.org/)
+    if you paste this prelude at the top:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: One of the biggest pain points early in my Lean experience was *finding* theorems
+    to use. The [`mathlib`](https://leanprover-community.github.io/mathlib4_docs/foundational_types.html)
+    documentation is great, but lacking [hoogle](https://hoogle.haskell.org/)-style
+    search.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'EDIT: Apparently not! `LeahNeukirchen` points out on [lobste.rs](https://lobste.rs/s/hwjv0f/beginner_s_companion_theorem_proving#c_7rypt5)
+    two different hoogle-like search engines that I missed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `rw?`, `simp?`, `apply?` and `exact?` tactics give you specialized hoogle-like
+    access within the Lean environment, finding candidate theorems that satisfy a
+    specific goal and listing them in the editor UI. You can pick one of the solutions
+    via code actions if using the LSP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, all target the current goal, but `rw?` and `simp?` can have `at`
+    forms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: TPiL explains what each of these tactics do in technical terms, but it took
+    time for me to grok what each do in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is important to understand that these tactics are all fundamentally performing
+    *pattern rewriting*. The patterns for each are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Input Goal:** `a`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption:** `a = b` or `a ↔ b`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output Goal:** `b`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rw` is the most direct of the 3\. It applies a theorem or assumption that
+    looks like `a = b` or `a <-> b` to a goal that looks like `a`, substituting it
+    with `b`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rw`, unlike `apply` and `exact`, can be applied to non-goals to transform
+    them. This is very useful to massage theorems from different sources into alignment
+    to prove your goal.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Input Goal:** `a`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption:** `a`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output Goal:** *No Goal*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`exact` takes an assumption, along with any needed parameters, and uses it
+    to resolve the current goal. It is simplistic, but effective.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Input Goal:** `b`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption:** `a → b`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output Goal:** `a`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`apply` transforms your goal into a different goal using an implication. If
+    a proof of `a` exists in the current scope, it is applied (in which case you basically
+    get `exact`). Otherwise, you get a new goal `a`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Importantly (so importantly I''ll bring it up again later): an `a ↔ b` or `a
+    = b` assumption can be converted to `a → b` (with `.mp`) or `b → a` (with `.mpr`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: TPiL mentions sub-goals at several points and does briefly discuss `have`, but
+    I feel this area was glossed over. Adding sub-goals toward your larger goal is
+    an extremely helpful method of making larger proofs tractable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first (and seemingly most common) way to introduce sub-goals is by way
+    of `have`, which generally has two purposes. First: you can introduce smaller
+    goals that are easier to prove—sometimes even possible for Lean to prove automatically.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Second: you can use it to instantiate other theorems for re-use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In contrast, `if` / `else` is generally useful in cases where you need to introduce
+    a goal that relies on the [law of the excluded middle](https://lean-lang.org/theorem_proving_in_lean4/axioms_and_computation.html?highlight=propext#the-law-of-the-excluded-middle).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that this, along with helpful theorems like `not_not` rely on classical
+    logic and as such are not strictly constructive (as far as my knowledge indicates),
+    but `if`/`else` in particular is such a useful means of organizing my thoughts
+    in the implementation of a proof that I opted to use it quite heavily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'EDIT: It appears that Lean will only allow non-constructive uses of `if` /
+    `else` if you have used `open Classical` in the module. [More info](https://lobste.rs/s/hwjv0f/beginner_s_companion_theorem_proving#c_jc4wbc)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: TLiP discusses handling cases with dots and `cases _ with` and `match _ with`,
+    but it wasn't clear to me how to handle the (labelled) sub-goals generated other
+    tools (like `apply Iff.intro`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use `case <label> => <proof>` to handle a specific named proof.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This couples well with `refine`, which is like `exact` but generates sub-goals
+    for (named or anonymous) placeholders:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As noted above, you can transform inferential rules with dot accessors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Beyond this, many operators expose helpful utilities. Using `a > b` as an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`le` produces `b < a`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`not_le` produces `¬ a <= b`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asymm` produces `¬ a < b`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`trans_le` produces `a <= c -> b < c`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and many more. These are super handy for cases where (for example) you've got
+    your hands on a proof of `a > b` and need to prove `¬ a <= b`, which happens often
+    with contraposition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These tactics are all negation-related. Much like `rw` / `apply` / `exact`,
+    they do different yet similar things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Input State:** an assumption `h`, for which you can prove `¬ h` from other
+    assumptions'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output State:** the goal is replaced with `¬ h`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is useful in cases where you have constructed a contradiction in your assumptions
+    for a proof by contradiction, but the contradiction is not obvious to Lean.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Input State:** a pair of assumptions `h` and `h''` which *blatantly* contradict'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output State:** *No Goal*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`contradiction` cuts out the extra steps of `absurd` in cases where the contradiction
+    is obvious to Lean. Typically, this means that you have hypothesis `h : a` and
+    `h'' : ¬ a`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Input State:** an assumption `h`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Output State:** the goal is replaced with `¬ h`, and `h` is replaced with
+    `¬ goal`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Unlike `absurd` / `contradiction`, this is *actually* doing something different:
+    applying [contraposition](https://en.wikipedia.org/wiki/Contraposition). I''m
+    including it mostly because the tactic wasn''t mentioned in TLiP and I often find
+    that `contrapose` is useful to simplify goals that involve negation in combination
+    with `rw [not_not]`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a conventional language with algebraic data types, there are broadly two
+    groups of types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a language like Rust, these are `struct`s or tuples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `And` type in Lean, while usually written `A ∧ B`, is actually a structure
+    that looks something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since this is a structure, that means you can destructure it in an assumption:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can deal with it in a goal in two ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instantiating the structure: `exact 〈 a, b 〉` (closes the goal)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Converting to sub-goals: `apply And.intro` (creates new goals for proving the
+    left and right sides)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In a language like Rust, these are `enum`s:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `Or` type in Lean is a sum type. While written `A ∨ B`, it would actually
+    look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As a sum type, you deal with it by *pattern matching* in assumptions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, in goals you generally do one of two things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instantiate one side of the structure: `exact Or.inr b` (which closes the goal).
+    This pairs well with `have` to create a sub-goal for one side of the `Or`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Convert to an implication: for example `rw [or_iff_not_imp_left]` (which convers
+    `a ∨ b` to `¬ a -> b`, and given a `¬a` assumption changes the goal to `b`)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The single thing that gave me the most trouble in my hobby project was the proving
+    of theorems involving *existential quantifiers.* It is important to understand
+    the constructive elements of Lean to fully understand the design of existentials,
+    and I think that TPiL does a pretty good job of explaining that. However, that
+    explanation doesn't really tell you how to prove existentials in more complicated
+    settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First off: existentials have the type `Exist α β`. This is a product type,
+    much like `And`, and can be destructured in a similar way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This also means that your options for *proving* an existential are much like
+    an `And`. Principally: construct it with `exact 〈x, h〉`, `x` is some value that
+    satisfies `h`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The question then: for complex types, how do you get an `x`? The answer: get
+    it from a method. `bex` seems like the common name for it. For example, to obtain
+    an element of a finite set `S`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once you're used to this, it starts becoming fairly natural. Retrieving elements
+    from collections generally requires proving that they are nonempty (otherwise
+    there may be no element to retrieve!), but that this was a totally separate type
+    (`Finset.Nonempty` in my case) was opaque and difficult for me to discover.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Above, I discussed `have` as a means of introducing sub-goals to solve. Alongside
+    it exists a syntactically-similar tool: `let`. Specifically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'may be restated as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which is then (almost!) equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There is one key difference: `let` definitions are *transparent*, while `have`
+    definitions are *opaque*. In other words: if you want the rewriter to be able
+    to operate on the construction of a term, use `let`. Otherwise, `have`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see the difference, consider this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: If `let x` is replaced by `have x`, then the inner sub-goal is no longer provable—the
+    definition of `x` has become opaque.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is one other difference: which fields are optional. `have` requires *only*
+    the `construction` / `proof` field, while `let` requires at least the `name` and
+    `construction` fields (the type may be inferred).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'My final note—and the only one on code organization—is to use small theorems.
+    If you example much of mathlib, you will find small proofs: a handful of lines,
+    at most. This is obviously helpful when you are familiar with the library internals,
+    but opaque as a reader on how exactly the proof is constructed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Don''t let that discourage you from focusing on small proofs, though! There
+    are two *strong* reasons beyond vague "code architecture" considerations for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Small proofs can often be constructed automatically by Lean through `exact?`,
+    `rw?` or `simp?` (if not more advanced tools like [`aesop`](https://github.com/JLimperg/aesop)),
+    which means less work for you.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The theorem lookup tactics start to perform noticeable worse with large proof
+    states, which makes the interactive experience worse.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This is not *too* much of a problem—my proof of submodularity of Matroid rank
+    functions derived from independence predicates is around 100 lines long and remained
+    at least *usable*—but certainly an element of UX that coincides with good practice:
+    small theorems, like small functions, are generally easier to work with and this
+    aligns with the practical performance of Lean''s interactive systems.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overall, working through these proofs in Lean was a very instructive experience
+    for me. Being a relative beginner to proof assistants in general (having only
+    light experience toying with Emacs' [Proof General](https://proofgeneral.github.io/)
+    + [Coq](https://coq.inria.fr/) during grad school), the quality of the LSP and
+    other tools were huge boons. I wish this had existed while I was working on theory
+    stuff more actively, as it did help me find issues with on-paper proofs that I'd
+    done which held hidden assumptions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That said: it definitely was not a replacement for working on paper for me.
+    The degree to which Lean encourages small transformations caused me to miss the
+    forest for the trees in a very direct way. It is useful in verification of theory,
+    but not a replacement for sitting down with pen, paper, and tea and working through
+    a proof.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hopefully these notes will be useful for others looking to use Lean as a proof
+    assistant (and, perhaps, people who are less committed to constructive theory
+    and are more than willing to embrace practical niceties like `if`/`else` and `not_not`).
+  prefs: []
+  type: TYPE_NORMAL

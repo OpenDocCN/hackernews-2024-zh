@@ -1,0 +1,703 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:30:04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: LaTeX3 Automatic Labels for Fun and No Profit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://commutative.xyz/~miguelmurca/blog/x/autoref.html](https://commutative.xyz/~miguelmurca/blog/x/autoref.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: LaTeX3 Automatic Labels for Fun and No Profit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I’m a PhD student in physics, which means I’ve spent the better part of the
+    last 10 years writing LaTeX. For those not in the know, LaTeX is a 40-year old
+    superset of a 46-year old typesetting system – i.e., a macro based programming
+    language to produce print documents. Notably, it’s mostly intended *not* as a
+    programming language; its strongest suit is arguably the way it beautifully typesets
+    mathematics, and its solution to express complex mathematical expressions. For
+    example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: refers to <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msqrt><mrow><mfrac><mrow><mi>a</mi>
+    <mo>+</mo> <mi>b</mi></mrow> <mrow><mi>|</mi> <mrow><mi>c</mi></mrow> <mi>|</mi></mrow></mfrac></mrow></msqrt></mrow></math>
+    . Indeed, if you’ve ever needed to write a mathematical expression into a computer,
+    you’re likely to have used either TeX or some form of pidgin TeX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But, (La)TeX really is Turing complete – it’s just extremely convoluted. This
+    makes (La)TeX a reasonably fun esoteric programming language to play around with.
+    On the other hand, being able to wrangle (La)TeX’s macro system lets you automate
+    repetitive tasks, or generally extend (La)TeX’s functionality, which end up being
+    of practical use. This is why there is also a community effort to improve programming
+    ("macro writing") in LaTeX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: LaTeX3 is a “new kernel for LaTeX [… based on] its own consistent interface
+    to all the functions needed to control TeX."^([[@expl3.pdf]](https://mirrors.up.pt/pub/CTAN/macros/latex/contrib/l3kernel/expl3.pdf))
+    The “new” qualifier is arguable, seeing as it has been in development since 1989,
+    but, in short, we now have access to a set of base macros in LaTeX which are more
+    sophisticated and behave more predictably. Unfortunately, however, due to Knuth’s
+    own [fondness of literate programming](https://en.wikipedia.org/wiki/Literate_programming)
+    (the man invented the concept, after all), and because of the nature of LaTeX’s
+    output,^([citation needed]) most information about LaTeX3’s functionality is buried
+    deep in long PDFs with interspersed prose and code and accessible only via `texdoc
+    <designator you must guess>`. A notable (and welcome) exception is [this article
+    by Alan Xiang, which I recommend reading](https://www.alanshawn.com/latex3-tutorial/).
+    In any case, this post is my attempt to make a small contribution to practical
+    and digestible LaTeX3 materials, so that you, too, can procrastinate writing your
+    document by writing very convoluted LaTeX macros.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Problem statement and goal
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In LaTeX, you may `\label{...}` sections, equations, …, and later refer to their
+    identifier with `\ref{...}`. So, for example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: yields
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As said, this also works for equations, and is most useful in mathematical
+    documents, where you want to reference equations in the body of text. LaTeX2e
+    provides the `equation` environment, which automatically typesets a nice `(eqno)`
+    next to your equation, and which you can label and reference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: yields something as
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, labels must be unique throughout the document. And so, when writing
+    out a long document, it quickly becomes quite upsetting to think up a good label
+    for an equation you are certain you will only reference in the next line of text.
+    Wouldn’t it be nice to have some `\AutoLabel` and `\AutoRef` macros that would
+    let you just
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: First steps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The simplest approach to this problem is to have `\AutoLabel` generate a different
+    label every time it’s called in a systematic way, and have `\AutoRef` reference
+    that label when it’s called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s break this down line by line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Anything between `\ExplSyntaxOn` and `\ExplSyntaxOff` obeys LaTeX3’s syntax
+    rules, rather than LaTeX2e’s rules. Indeed, (La)TeX allows you to (roughly speaking)
+    re-define syntax rules on the fly; in particular, the “function” of each character
+    as it is parsed. So, for example, while `\` is usually a special character (indicating
+    that what follows is a control sequence), you can change its value halfway through
+    the document to function as a regular character. A typical (ab)use of this mechanism
+    in LaTeX2e was the modification of the “character type” (the “character code”,
+    or “catcode") of `@` between special character and regular letter to guard internal
+    commands from the end-user. This procedure was summarized with the `\makeatletter`
+    and `\makeatother` commands (to, respectively, set the catcode of `@` to “regular
+    letter” and “other character"), and you’ll often find, in LaTeX2e code, code that
+    looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Calling `\@internalcommand` after `\makeatother` yields an error, because,
+    after `\makeatother` is called, LaTeX doesn’t know how to interpret the character
+    `@` anymore. This also highlights the fact that the catcode switching happens
+    as these declarations are parsed, even though the expressions in the declarations
+    themselves are *not* evaluated at the time of declaration. This finds expression
+    in the following example, a mistake I’ve incurred in more than once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Calling `\boom` later in the document errors out, since at the time of declaration,
+    `\@` is parsed as the command in the declaration, not `\@destroytheworld`. At
+    macro declaration time, the parser sees `\makeatletter`, but only as a macro that
+    is part of the declaration – it doesn’t make sense to “run” the definition at
+    declaration time, after all. It thus parses the rest of the declaration based
+    on its current rules, which do *not* expect `@` to be a regular character. So,
+    as far as the parser cares, `\boom` reads `[macro: \makeatletter] [macro: \@]
+    [letters: destroytheworld] [macro: \makeatother]`. When `\boom` is finally called,
+    LaTeX complains about the use of `\@`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a reasonably long tangent to say that `\ExplSyntaxOn` modifies catcodes,
+    to favour better and more consistent macro names, and to provide a nicer “programming”
+    environment. There are two notable effects: first, within `expl3` rules, spaces
+    are ignored. Really, dealing with spaces within macro declarations is a true pain
+    point of LaTeX2e; not just spaces you type out, but also spaces implied by new
+    lines. Here’s an example; what do you expect the differences to be between `\a`,
+    `\b`, `\c`, and `\d`?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I tested these out by calling `.\a..\b..\c..\d.` within a LaTeX document; the
+    periods are there to highlight eventual spacing. The results are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: (I’ve highlighted spaces for you, with the `␣` character.) Essentially, what
+    you would expect happens in the body of text – that a single newline becomes a
+    space – is also happening within the macro declaration, inserting spurious spaces
+    everywhere. These spaces can only be avoided by inserting comment characters,
+    `%`, before the end of the line, which the parser interprets as an explicit instruction
+    to ignore the newline. This results in a mess of `%` everywhere in macro declarations,
+    since, at some point, macro writers start putting a `%` at the end of every line
+    where they don’t *explicitly* want some space. While, in the example given, the
+    spaces are not too critical (although unwanted), within complicated macro declarations
+    spurious spaces will cause some really nasty bugs and crashes. The situation is
+    even worse with double newlines, which get transformed into a paragraph, and that
+    will *really* mess up your command’s parsing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other notable catcode switch is making `:` and `_` “regular letters”. So,
+    while in LaTeX2e, macro names are generally composed of `a-zA-Z` (and, eventually,
+    `@`), in LaTeX3, macros names are expected to be of the form (`texdoc expl3`,
+    sec. 3.2.),
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'where `module` would be a unique per-macro package prefix, to avoid name collisions,
+    and `description` would be the actual name of the macro. `arg-spec` is a bit more
+    special, telling you what *kind* of argument the macro expects, and, notably,
+    if the command will expand it or not. Think of it as only slightly more than type
+    hints. Macro expansion is a big topic – too big to cover here – but here’s an
+    illustrative example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Read more about expansion [here](https://www.overleaf.com/learn/latex/Articles/How_does_%5Cexpandafter_work%3A_The_meaning_of_expansion).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `expl3`, the `arg-spec` bit of a macro will tell you what the macro consumes,
+    and if it will expand what it consumes. The main ones to care about (though you
+    can find a complete list in `texdoc expl3`, chapter 3, and throughout the main
+    reference for programming in LaTeX3, `texdoc interface3`) are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`n` – a braced set of characters ("token list"),'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`N` – a single character ("token"); a macro is a single token,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`c` – a macro *name* (`foobar`, rather than `\foobar`); thus, a token list,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`V` – a variable, i.e., a macro containing a value (read on),'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`v` – a variable’s *name*; like `c`, but for `V`,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`e` – a braced set of characters to be fully expanded before consumption,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`o` – a braced set of characters to be expanded once before consumption,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`T` and `F` – a braced set of characters to be inserted in case some condition
+    evaluates to true or false, respectively.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The notion of a “variable” also appears here, as LaTeX3 tries to separate the
+    notion of a macro that *does* something (a function) from a macro that merely
+    stores some value (a variable). So, in LaTeX3 terms, `\foo` below would be a variable,
+    whereas `\baz` is a function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Though I should really say,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Even more correct would be
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, finally, heck it, `texdoc expl3` specifies that variables should be named
+    as `\⟨scope⟩_⟨module⟩_⟨description⟩_⟨type⟩`, so here’s some good, honest to God,
+    LaTeX3:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the price to pay for the magical expansion control tools that LaTeX3
+    gives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we move to the following line,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we’re declaring a new integer variable. As good LaTeX3 netizens, we use
+    the correct variable naming scheme, and declare the variable to be global with
+    `g_` (labels will need to be globally unique to the document, so this makes sense).
+    We can expect this variable to be initialized to 0; from page 168 of `texdoc interface3`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ⟨integer⟩ is initially equal to 0.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The idea will be that we can generate infinite unique labels by choosing a unique
+    prefix, and suffixing it with an increasing integer; `\g_autolabel_int` will hold
+    this integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we declare a user-facing command, with `\NewDocumentCommand` (LaTeX3’s
+    version of `\newcommand`, much nicer to use and about which you can read with
+    `texdoc xparse`). Thus, there is no need to adhere to LaTeX3’s naming conventions.
+    The declaration furthermore specifies that it takes no arguments from the user,
+    and leaves in its place, when called, two instructions: a global increment of
+    the `\g_autolabel_int` variable, and `\exp_args:Ne \label {autolabelprefix- \int_use:N
+    \g_autolabel_int}`. Here is what `interface3.pdf` has to say about `\exp_args:Ne`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This function absorbs two arguments (the ⟨function⟩ name and the ⟨tokens⟩)
+    and exhaustively expands the ⟨tokens⟩. The result is inserted in braces into the
+    input stream after reinsertion of the ⟨function⟩. Thus the ⟨function⟩ may take
+    more than one argument: all others are left unchanged.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Ideally, we would have some labelling function `\label:n` with a variant `\label:e`,
+    that would expand whatever would be given to it before taking the result as the
+    actual label text. But, we don’t, since `label` is a LaTeX2e command (`texdoc
+    latex2e`, chap. 7.1). So, we use `LaTeX3`’s `\exp_args:Ne`, to leave the first
+    token (`\label`) alone while the braced tokens that follow are not fully expanded.
+    Only then is this token list passed as argument to `\label`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the token list, we find `autolabelprefix- \int_use:N \g_autolabel_int`:
+    since `\int_use:N` will “[recover] the content of an ⟨integer⟩ and [place] it
+    directly in the input stream”, we get, after full expansion, our unique label,
+    of the form'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we have the declaration of the command that references this label:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s fairly similar to `\AutoLabel`, with the exception that the relevant LaTeX2e
+    function is now `\ref`, rather than `\label`. Since we know the form of the generated
+    labels, we reconstruct the label at referencing time, by once again using the
+    `\g_autolabel_int` variable and `\exp_args:Ne`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiple Labels
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The above solution works fine, but it quickly breaks down if we wish to reference
+    two equations after *both* their declarations. To recover a previous example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: will not work, as the output will read
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can deal with this quite simply, by counting the number of labels and references
+    separately:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: I’ve sneaked in `\c_autoprefix_tl` as a constant token list holding the prefix,
+    just because it looks that much nicer than a repeated arbitrary constant string
+    throughout the source, and I’ve also done away with the scope for the sake of
+    readability. Otherwise everything is still quite similar to the previous definition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Things start going awry when using, for example, the `gather` environment from
+    the `amsmath` package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: produces
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What’s going on? LaTeX3 does have some console debugging capabilities, with
+    commands such as `tl_show:N`, but it’s easier, here, to just go with LaTeX’s version
+    of print-debugging: placing values directly in the text. We thus modify the `\AutoLabel`
+    definition to not only label the equations, but also place the label’s name in
+    the text stream:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once again compiling, we find that the equations now read:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Huh?! Where did labels 1 and 2 go? The problem seems to happen only with `amsmath`
+    environments, and so a little bit of trolling its documentation (`texdoc amsmath`)
+    reveals the following paragraph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ifmeasuring@` – All display environments get typeset twice—once during a “measuring”
+    phase and then again during a “production” phase; `\ifmeasuring@` will be used
+    to determine which case we’re in, so we can take appropriate action.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '`\newif\ifmeasuring@`'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Uh oh. Our `\AutoLabel` function is getting called twice: once in a box that
+    `amsmath` uses to perform measurements, and then discards, and then again when
+    the actual typesetting happens. To make matters worse, `amsmath` is using a Plain
+    TeX Boolean, `\ifmeasuring@`, *and* the Boolean’s name has a `@` in it. Here’s
+    what `interface3.pdf` has to say on its Booleans, and Plain TeX’s Booleans:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'TeXhackers note: The `bool` data type is not implemented using the `\iffalse`/`\iftrue`
+    primitives, in contrast to `\newif`, etc., in plain TeX, LaTeX2e and so on. Programmers
+    should not base use of `bool` switches on any particular expectation of the implementation.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Plain TeX Booleans are very fickle, and likely to misbehave if the Boolean test
+    looks anything other than
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We might get away with giving some arguments to `\a` or `\b`, but no more than
+    that; certainly, something like `\ifbool\a\b\c\else\d\e\f\fi` is bound to cause
+    you trouble. So, our first step is moving the whole of `\AutoLabel` into a single
+    macro of its own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we need only to test `\ifmeasuring@` inside `\AutoLabel`, and behave accordingly;
+    i.e., if, indeed, measuring, we don’t want to do anything at all. But, recall
+    that LaTeX3 and LaTeX2e’s relationship with `@` is different, and LaTeX3 won’t
+    correctly interpret `\ifmeasuring@` at all (it’s not expecting macro names to
+    have `@`s in them). We may get around this by first using a `c`-type argument,
+    and an auxiliary definition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’re using the `Nc` variant of `\cs_set_eq:NN`, about which `interface3.pdf`
+    tells us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Globally creates ⟨control sequence1⟩ and sets it to have the same meaning as
+    ⟨control sequence2⟩ or ⟨token⟩. The second control sequence may subsequently be
+    altered with- out affecting the copy.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Is this very kosher? Absolutely not. Is this the least cursed LaTeX macro ever
+    written? Not even close, and it works, to boot. Run your compilation steps again,
+    and you’ll find the document now correctly reads
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Some final improvements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The last thing that’s missing is the ability to repeatedly reference the same
+    equation. As it stands, there is no way to typeset something like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s fix that. Specifically, let’s modify `\AutoRef` to take in an optional
+    argument. If the argument is present, and equal to `n`, then that command should
+    reference the `n`th equation before it. Thus, our previous example would correspond
+    to something like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I’ll once again give you the final answer, and then break down any new elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, note that I’ve also guarded the `\g_autoref_int` counter against double
+    incrementation due to measuring – something we’d neglected to previously do, but
+    it’s plausible `\AutoRef` is called within an `amsmath` environment. Otherwise,
+    the main difference to the previous definitions has to do with the inclusion of
+    the optional (`o`) argument in the declaration of `\AutoRef`.When no value is
+    given for these arguments, they take a special flag value (usually denoted `-NoValue-`
+    in the documentation). `xparse` provides the nice `IfValue(TF)` macros to deal
+    with the cases where, respectively, the argument takes some value, or no value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, when we find that the user passed some optional value, we calculate the
+    corresponding “absolute label number”; this is given by the current auto-labelling
+    number, minus the number the user gave minus one (in other words: if `g_autolabel_int`
+    is currently `2`, implying `autoprefix-1` and `-2` were already defined, and the
+    user passes in `\AutoRef[2]`, they are referencing `autoprefix-1`, and `1 = 2-(2-1)`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If, on the other hand, the user did not pass in any value, then they are referencing
+    the most recent label; as before, we increment `g_autoref_int`, and set `\l_tmpa_int`
+    to hold this number:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, the final line correctly references the most recent label:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This *almost* works, except for the following edge case: what do you expect
+    the following code to produce?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As it stands, the first call to `\AutoRef[1]` correctly references the label
+    of the first equation, but it does *not* advance `\g_autoref_int`, because a value
+    is given. Therefore, when `\AutoRef` is called a second time, in the second paragraph,
+    it again references the first equation. This is, however, the behaviour we might
+    expect in the following situation (which, with apologies, is more synthetic):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, here, we do *not* expect `\AutoRef[1]` to advance `\g_autoref_int`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The bottom line is that, to get the intended behaviour, calling `\AutoRef[1]`
+    should be indifferent from simply calling `\AutoRef`; but only in the case where
+    the two would produce the same result. This is not currently the case. But!, LaTeX3
+    has us covered with some pretty comprehensive arithmetic tools. The following
+    modification to `\AutoRef` is sufficient:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: The idea is not so different; but now, instead of addressing the optional argument
+    directly (`#1`), we start by assigning it to `\l_tmpb_tl`. Then, if we find that
+    the user did pass in some value, but that this value is 1, and would result in
+    the same as not having provided any value at all, we put the empty value into
+    `\l_tmpb_tl`. The rest of the command is therefore processed, in that case, as
+    though the user had not supplied a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `\l_tmpb_tl` instead of `#1` requires some further care with `\exp_args:Ne`
+    to make sure the value of `\l_tmpb_tl` is expanded before it’s tested, but nothing
+    special.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Thus, we have our final set of LaTeX3 macros:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: While quite a modest contribution to the [very hefty history of LaTeX packages](https://ctan.math.illinois.edu/),
+    it nonetheless served as a basis for discussing important points of LaTeX3 macro
+    writing, such as syntax differences, token list manipulation, controlled expansion,
+    variables and functions, Boolean tests, and LaTeX2e interfacing. Not too shabby.
+    Hopefully this post is also a good enough introduction that you may now directly
+    reference important reference documents, such as `interface3.pdf`, yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Personally, I also find the macro itself quite useful in practice, and it’s
+    something I’ve been using in my scientific writing. I am yet to find out if Physical
+    Review will be upset by it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a parting gift, and to point the interested user towards property lists,
+    here is an exercise for the reader: the `revtex4-2` document class, mandated by
+    Physical Review, does not support the use of `\footnotetext` and `\footnotenumber`.
+    This means that any footnote text really must be in the middle of the source of
+    the body of text. Can you write `\FootnoteLater` and `\FootnoteNow` to rectify
+    this?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**A Post-Scriptum for HackerNews readers:** I like to submit these posts to
+    HN, as I feel like the average HN user fits the intended audience. But, 1\. famously,
+    HN can be quite predictable in some of their responses (by what I expect is, essentially,
+    a meme effect), and 2\. I’ve had some unexpected experiences resulting from previously
+    reaching FP in HN. So, consider this a preemptive response to some points I expect
+    to be raised. If you’re coming in from HN and you see someone fail to account
+    for these answers, you’ll know they haven’t even read the whole thing. So:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s weird I even have to say this, but don’t stalk me and email me at my personal
+    address. This is genuinely something that has happened, inexplicably. If you wish
+    to contact me by email, by all means do so to `miguelmurca+autoref [æt] cumperativa.xyz`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Again, strange that I would need to point this out, but do not assume my nationality,
+    or language. This post is in English. If you wish to write me, please do so in
+    English.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Yes, we are aware of [typst](https://github.com/typst/typst). I think it’s cool,
+    but C++ hasn’t replaced C, Rust hasn’t replaced C++, Typst is unlikely to replace
+    LaTeX. Likewise, many are aware of [LuaTeX](https://www.luatex.org/), but, again,
+    the entrenching of a 40-odd year system is not to be underestimated. I am rooting
+    for `typst`, anyway, and hope it finds its place. A good place to start would
+    be to provide a compilation toolchain from `typst` to TeX, if they really want
+    to replace TeX.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are, in fact, reasons why someone would not want to just use your favourite
+    form of Markdown plus pidgin TeX, not least of all because not everyone is just
+    taking notes, and also because not everyone (dare I say, most people) who are
+    using LaTeX are of the computer science/technology subject. Also, on a purely
+    personal level, if you were taking your class notes in Markdown+TeX, either the
+    syllabus was too easy or you were making it way harder for yourself.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Yes, LaTeX is ugly and antiquated. It *is* old. It’s an evolving, niche, very
+    precocious thing, and it suffers from this. And, yet, it seems to have its place.
+    But, if you just look at it like an esoteric programming language, why should
+    this be a problem?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Even though I strived to be correct, it’s likely I’ve incurred in some error.
+    There are a lot of people who are *really* good with LaTeX in HN, and I expect
+    them to point out any errors (for which I will be very grateful, and will duly
+    correct). But, at the end of the day, LaTeX is far from my primary occupation,
+    and I felt like the sort of introduction that this text would be able to give
+    to the average programmer w.r.t. LaTeX would outweigh any eventual minor error,
+    easily corrected by consulting the official references.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Yes, it’s `$YEAR` and we’re still producing PDFs. Again, historical reasons
+    plus the fact that most people doing maths are not necessarily very interested
+    in computers.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 99% of the time that you’re writing LaTeX, you need to know literally nothing
+    of what’s contained in this blog post.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: (La)TeX does not have a grammar. Parsing TeX is Turing complete. This does not
+    mean that you could not write a grammar for, roughly speaking, “much” of TeX,
+    especially “many” mathematical expressions. I suspect this is what quite a few
+    pidgin TeX-related programs do.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,249 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:01:01'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fuzzing Ladybird with tools from Google Project Zero
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from](https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: While [Ladybird](https://ladybird.dev/) does an okay job with well-formed web
+    content, I thought it would be useful to throw some security research tools at
+    it and see what kind of issues it might reveal. So today we’ll be using “**[Domato](https://github.com/googleprojectzero/domato)**
+    [🍅](https://github.com/googleprojectzero/domato)”, a DOM fuzzer from [Google Project
+    Zero](https://googleprojectzero.blogspot.com/), to stress test Ladybird and fix
+    some issues found along the way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way this works is that Domato generates randomized web pages with lots of
+    mostly-valid but strange HTML, CSS and JavaScript. I then load these pages into
+    a debug build of Ladybird and observe what happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Domato generates HTML pages of roughly 500 KiB in size, filled with “interesting”
+    JS, CSS and HTML to surprise and delight your browser engine!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Domato README boasts a ton of bugs discovered in all major browsers, so
+    I have no doubt it will find some in ours as well. Here we go!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Unsurprisingly, it took less than a second to find the first issue! The output
+    produced by Domato is actually 562 KiB, but I was able to reduce it to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I’ve compiled Ladybird with UBSAN (Undefined Behavior SANitizer) for this test,
+    and I get the following very helpful trace output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s a good old-fashioned null pointer dereference!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As it turns out, we’ve implemented `<th>` and `<td>` elements with the assumption
+    that there’s always a `<table>` somewhere above it in the DOM tree. We probably
+    believed this because the following is not allowed by the HTML parser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`<mfrac><th>`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you load the above markup in a spec-compliant browser, it will create a single
+    `<mfrac>` element with nothing inside it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when creating DOM nodes manually using JavaScript API, you can break
+    some of the rules that the parser has to follow, and indeed put a `<th>` inside
+    an `<mfrac>`!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s the buggy function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s used to implement the ancient feature where `<table border=3>` and `<table
+    padding=5>` applies CSS border and padding to each table cell, and not just the
+    table box itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The fix is simply to stop assuming that `<th>` and `<td>` elements always have
+    a containing `<table>` in the ancestor chain. We don’t need the `table_containing_cell`
+    helper but can instead simply replace this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we’re done with issue #1! [(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b9bacb3ff49ba675f9875434d646fb1b34d2c0df)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We continue executing the fuzzer and once again, within less than 1 second,
+    we hit a new problem. The Domato output is 472 KiB, but it whittles down to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When opened in Ladybird, we fail like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reason things go wrong here is due to the special behavior of `onfoo` event
+    handler attributes on the `<body>` element. For compatibility with ancient web
+    content, assignments to `document.body.onfoo` must forward to `window.onfoo`.
+    However, documents created via `DOMParser`  *do not have a window object!*
+  prefs: []
+  type: TYPE_NORMAL
+- en: It turns out we’ve misunderstood this detail in our implementation, and structured
+    our internal object model as if every document always has a window. Oops!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fix is to make `Document::window()` return a nullable value, and then handle
+    null in a bajillion places. When assigning `document.body.onblur` in a window-less
+    document, we now simply do nothing, same as other browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b98a2be96bf03562ec21e80b48d4b3b97ad74cd6)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modern browsers have to support SVG both inline in HTML, and also as an external
+    image format. This adds a whole host of new edge cases and interesting interactions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, SVG allows declaring gradients that reference other gradients
+    to inherit their colors. As it turns out, we hadn’t considered the case where
+    a gradient references itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The SVG above would cause our implementation to loop forever as it attempted
+    to follow the chain of referenced gradients. Oops, indeed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The obvious fix is to stop following the chain of linked gradients if the current
+    gradient references itself. However, that doesn’t cover reference cycles that
+    span multiple steps like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: To properly handle cyclical references, we have to keep track of all the gradients
+    we’ve visited, and stop following the chain if we encounter a gradient we’ve already
+    visited before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Curiously, Firefox actually complains about these kind of gradients in their
+    developer console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/2e0297d7035a807d4a18c89c8b310ec06bef005d)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This one is interesting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above test would crash like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: As it turns out, this is actually a bug in the HTML spec! When an iframe is
+    removed from the DOM, its content document is detached from its browsing context.
+    However, when getting or setting a property on a window object, we run a spec
+    algorithm called **"check if an access between two browsing contexts should be
+    reported"** which inspects the browsing context of the “accessor” and “accessed”
+    window. The spec incorrectly assumed that both windows have an associated browsing
+    context at the time of property access.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[I’ve opened an issue against the HTML spec](https://github.com/whatwg/html/issues/10192),
+    and patched this in Ladybird in the meantime by adding a null check.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding spec bugs is actually one of my favorite things while working on Ladybird.
+    It allows us to improve the specs for everyone by submitting a bug report or fix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/ad843b6e4a4404a4897b587711f9ce97a4504ed0)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When opening the next page, it just wouldn’t finish loading. It just sat there
+    chewing 100% CPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s the reduction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This was a mistake in the implementation of `before()`, which has to find the
+    first preceding sibling of `<div id=”two”>` that isn’t one of its arguments (i.e
+    `<div id=”one”>` in this case.) We had the following loop mistake in the implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The problem here is that we kept fetching `node->previous_sibling`, instead
+    of continuing to follow the sibling chain via `previous_sibling->previous_sibling`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how I fixed it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/35f359c51c787153cd17c7289664ab87146241ea)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can probably go on for quite some time, so let’s call it a day. We found
+    five real bugs, one of which was a spec bug, and were able to fix all of them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though things went basically as I expected, it’s still quite interesting
+    just how quickly we fall apart when confronted with strange and unexpected inputs.
+    Fuzzers like Domato are an amazing resource for anyone who wants to make their
+    software more robust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next step here will be to get Ladybird to the point where we can handle
+    a sustained onslaught of fuzzed inputs. And once it’s reasonably stable, we can
+    start running it automatically in the cloud somewhere, and hopefully shake out
+    even more issues.
+  prefs: []
+  type: TYPE_NORMAL

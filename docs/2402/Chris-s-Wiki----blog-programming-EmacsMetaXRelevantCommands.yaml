@@ -1,0 +1,85 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:29:26'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Chris''s Wiki :: blog/programming/EmacsMetaXRelevantCommands'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/programming/EmacsMetaXRelevantCommands](https://utcc.utoronto.ca/~cks/space/blog/programming/EmacsMetaXRelevantCommands)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Today I learned about [the M-X command (well, key binding)](https://svbck.org/blog/2024-02-24-emacs-find-of-the-day-m-x.html)
+    ([via](https://fosstodon.org/@svbck/111987384357353958)), which "[queries the]
+    user for a command relevant to the current mode, and then execute it". In other
+    words it''s like M-x but it restricts what commands it offers to relevant ones.
+    What is ''relevant'' here? To quote the docstring:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[...] This includes commands that have been marked as being specially designed
+    for the current major mode (and enabled minor modes), as well as commands bound
+    in the active local key maps.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you're someone like me who has written some Lisp commands to customize your
+    experience in a major mode like [MH-E](https://www.gnu.org/software/emacs/manual/html_node/mh-e/index.html),
+    you might wonder how you mark your personal Lisp commands as 'specially designed'
+    for the relevant major mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In modern Emacs, the answer is that this is an extended part of '`(interactive
+    ...)`', the normal Lisp form you use to mark your Lisp functions as commands (things
+    which will be offered in M-x and can be run interactively). As mentioned in the
+    Emacs Lisp manual section [Using `interactive`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Using-Interactive.html),
+    '`interactive`' takes additional arguments to label what modes your command is
+    'specially designed' for; more discussion is in [Specifying Modes For Commands](https://www.gnu.org/software/emacs/manual/html_node/elisp/Command-Modes.html).
+    The basic usage is, say, '`(interactive "P" mh-folder-mode)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If your commands already take arguments, life is simple and you can just put
+    the modes on the end. But not all commands do (especially for quick little things
+    you do for yourself). If you have just '`(interactive)`', the correct change is
+    to make it '`(interactive nil mh-folder-mode)`'; a nil first argument is how you
+    tell `interactive` that there is no argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Don't make my initial mistake and assume that '`(interactive "" mh-folder-mode)`'
+    will work. That produced a variety of undesirable results.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is it useful to do this, assuming you have personal commands that are truly
+    specific to a given mode (as I do for commands that operate on MH messages and
+    the MH folder display)? My views so far are a decided maybe in my environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, you don't need to do this if your commands have keybindings in your major
+    mode, because M-X (execute-extended-command-for-buffer) will already offer any
+    commands that have keybindings. Second, [my assortment of packages](/~cks/space/blog/programming/EmacsPackages-2023-11)
+    already gives me quite a lot of selection power to narrow in on likely commands
+    in plain M-x, provided that I've named them sensibly. The combination of [vertico](https://github.com/minad/vertico),
+    [marginalia](https://github.com/minad/marginalia), and [orderless](https://github.com/oantolin/orderless)
+    let me search for commands by substrings, easily see a number of my options, and
+    also see part of their descriptions. So if I know I want something to do with
+    MH forwarding I can type 'M-x mh forw' and get, among other things, my function
+    for [forwarding in 'literal plaintext' format](/~cks/space/blog/sysadmin/EmailThreeForwardingFormats).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that said, adding the mode to '(interactive)' isn't much work and it does
+    sort of add some documentation about your intentions that your future self may
+    find useful. And if you want a more minimal [minibuffer completion](/~cks/space/blog/programming/EmacsUnderstandingCompletion)
+    experience, it may be more useful to have a good way to winnow down the selection.
+    If you use M-X frequently and you have commands you want to be able to select
+    in it in applicable modes without having them bound to keys, you really have no
+    choice.
+  prefs: []
+  type: TYPE_NORMAL

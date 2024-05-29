@@ -1,0 +1,1379 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:02:36'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Git by example: Interactive guide'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://antonz.org/git-by-example/](https://antonz.org/git-by-example/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Git by example: Interactive guide'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Git is *the* distributed version control system used in software development
+    today. It's very powerful, but also known for its not-so-obvious syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I got tired of googling the same Git commands over and over again. So I created
+    an interactive step-by-step guide to Git operations, from basic to advanced. You
+    can read it from start to finish to (hopefully) learn more about Git, or jump
+    to a specific use case that interests you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feel free to experiment with the examples by changing the commands and clicking
+    *Run*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Concepts](#concepts) • [Basics](#basics) • [Branch & merge](#branch-and-merge)
+    • [Local & remote](#local-and-remote) • [Undo](#undo) • [Advanced](#advanced-stuff)
+    • [Final thoughts](#final-thoughts)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This guide is also available in other formats:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Concepts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is the only piece of theory in the guide. I'll keep it short and simplified
+    to the π == 3 level. Please don't judge me if you're a Git master.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working tree, staging area, repository
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: A *working tree* is the slice of the project at any given moment (usually it's
+    the current moment). When you add or edit code, you change the working tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A *staging area* is where you stage the changes from the working tree before
+    making them permanent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A *repo* (repository) is the collection of permanent changes (*commits*) made
+    throughout the history of the project. Typically, there is a single *remote* repo
+    (managed by GitHub/GitLab/etc) and many *local* repos — one for each developer
+    involved in a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you make a change in the staging area permanent, it is removed from the
+    staging area and *committed* to the local repo. A commit is the permanent record
+    of that change. The repo contains all the commits that have been made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you *checkout* a specific commit, the working tree is updated to reflect
+    the project state at the time of that commit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Local and remote repos are frequently synchronized so that all repos contain
+    all commits from all developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Branch, tag, HEAD
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: A *branch* is an alternate version of the project reality. Typically, there
+    is a main branch, and separate branches for features under development. When work
+    on a feature branch is complete, it is merged into the main branch (or discarded).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A *tag* is a named state of the project. Typically, tags are created on the
+    main branch for important milestones such as releases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The currently checked-out commit (usually the latest commit in a branch) is
+    referenced as *HEAD*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that the boring stuff is out of the way, let's get to the recipes!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's start with basic Git operations on a local repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[init repo](#init-repo) • [add file](#add-file) • [edit file](#edit-file) •
+    [rename file](#rename-file) • [delete file](#delete-file) • [show status](#show-current-status)
+    • [show log](#show-commit-log) • [show commit](#show-specific-commit) • [search](#search-repo)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Init repo
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Create an empty repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="init-1" sandbox="shell" editor="basic" template="init.sh"
+    output="">[PRE2]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Set user name and email for the repo (they are required):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="init-2" sandbox="shell" editor="basic" template="init.sh"
+    depends-on="init-1" output-tail="" output="">Use the `--global` flag to set the
+    name and email at the OS user level instead of the repo level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show user and repo configs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="init-3" sandbox="shell" editor="basic" template="init.sh"
+    depends-on="init-2" output-tail="" output="">[PRE5]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Create a file and add it to the staging area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="add-1" sandbox="shell" editor="basic" template="add.sh"
+    output="">View changes in the staging area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="add-2" sandbox="shell" editor="basic" template="add.sh"
+    depends-on="add-1" output-tail="" output="">[PRE7]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Commit to the local repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="add-3" sandbox="shell" editor="basic" template="add.sh"
+    depends-on="add-1" output-tail="" output="">[PRE9]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Edit file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Edit the previously committed file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="edit-1" sandbox="shell" editor="basic" template="edit.sh"
+    output="">View local changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="edit-2" sandbox="shell" editor="basic" template="edit.sh"
+    depends-on="edit-1" output-tail="" output="">[PRE11]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add modified files and commit in one command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="edit-3" sandbox="shell" editor="basic" template="edit.sh"
+    depends-on="edit-1" output-tail="" output="">[PRE13]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that `-a` does not add new files, only changes to the already committed
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rename file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Rename the previously committed file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="mv-1" sandbox="shell" editor="basic" template="mv.sh" output="">The
+    change is already in the staging area, so `git diff` won''t show it. Use `--cached`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="mv-2" sandbox="shell" editor="basic" template="mv.sh" depends-on="mv-1"
+    output-tail="" output="">[PRE15]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Commit the change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="mv-3" sandbox="shell" editor="basic" template="mv.sh" depends-on="mv-1"
+    output-tail="" output="">[PRE17]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delete file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Delete the previously committed file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="rm-1" sandbox="shell" editor="basic" template="rm.sh" output="">The
+    change is already in the staging area, so `git diff` won''t show it. Use `--cached`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="rm-2" sandbox="shell" editor="basic" template="rm.sh" depends-on="rm-1"
+    output-tail="" output="">[PRE18]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Commit the change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="rm-3" sandbox="shell" editor="basic" template="rm.sh" depends-on="rm-1"
+    output-tail="" output="">[PRE20]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show current status
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Edit the previously committed file and add the changes to the staging area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="status-1" sandbox="shell" editor="basic" template="status.sh"
+    output="">Create a new file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="status-2" sandbox="shell" editor="basic" template="status.sh"
+    depends-on="status-1" output-tail="" output="">Show the working tree status:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="status-3" sandbox="shell" editor="basic" template="status.sh"
+    depends-on="status-2" output-tail="" output="">[PRE23]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that `message.txt` is in the staging area, while `praise.txt` is not tracked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show commit log
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Show commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE24]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show only the commit message and the short hash:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE25]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits as an ASCII graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE26]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show compact ASCII graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE28]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show specific commit
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Show the last commit contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="show.sh" output="">[PRE29]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show the second-to-last commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="show.sh" output="">[PRE30]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use `HEAD~n` to show the nth-before-last commit or use the specific commit hash
+    instead of `HEAD~n`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search repo
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There are 3 commits, each adding a new line to `message.txt`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE31]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The current `message.txt` state:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE32]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Search in working tree (current state):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE33]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Search the project as of the second-to-last commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE34]
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use the specific commit hash instead of `HEAD~n`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Branch and merge
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's dive into the wondrous world of merging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[branch](#branch) • [merge](#merge) • [rebase](#rebase) • [squash](#squash)
+    • [cherry-pick](#cherry-pick)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Branch
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Show branches (there is only `main` now):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="branch-1" sandbox="shell" editor="basic" template="branch.sh"
+    output="">Create and switch to a new branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="branch-2" sandbox="shell" editor="basic" template="branch.sh"
+    output="">[PRE36]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show branches (the current one is `ohmypy`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="branch-3" sandbox="shell" editor="basic" template="branch.sh"
+    depends-on="branch-2" output-tail="" output="">Add and commit a file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="branch-4" sandbox="shell" editor="basic" template="branch.sh"
+    depends-on="branch-2" output-tail="" output="">[PRE38]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show only commits from the `ohmypy` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="branch-5" sandbox="shell" editor="basic" template="branch.sh"
+    depends-on="branch-4" output-tail="" output="">### Merge
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits from all branches (two commits in `main`, one in `ohmypy`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="merge-1" sandbox="shell" editor="basic" template="merge.sh"
+    output="">[PRE41]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are now on the `main` branch, let''s merge the `ohmypy` branch back into
+    main:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="merge-2" sandbox="shell" editor="basic" template="merge.sh"
+    output="">[PRE42]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are no conflicts, so git commits automatically. Show the new commit history:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="merge-3" sandbox="shell" editor="basic" template="merge.sh"
+    depends-on="merge-2" output-tail="" output="">[PRE44]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rebase
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Show commits from all branches (two commits in `main`, one in `ohmypy`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="rebase-1" sandbox="shell" editor="basic" template="rebase.sh"
+    output="">[PRE46]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are now on the `main` branch, let''s rebase the `ohmypy` branch back into
+    main:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="rebase-2" sandbox="shell" editor="basic" template="rebase.sh"
+    output="">[PRE47]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the new commit history is linear, unlike when we do a `git merge
+    ohmypy`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="rebase-3" sandbox="shell" editor="basic" template="rebase.sh"
+    depends-on="rebase-2" output-tail="" output="">[PRE49]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rebasing rewrites history. So it's better not to rebase branches that have already
+    been pushed to remote.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Squash
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Show commits from all branches (two commits in `main`, three in `ohmypy`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="squash-1" sandbox="shell" editor="basic" template="squash.sh"
+    output="">[PRE51]
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we do `git merge ohmypy` to merge the `ohmypy` branch into `main`, the main
+    branch will receive all three commits from ohmypy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes we prefer to "squash" all the branch commits into a single commit,
+    and then merge it into main. Let's do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Switch to the `ohmypy` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="squash-2" sandbox="shell" editor="basic" template="squash.sh"
+    output="">[PRE52]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Combine all `ohmypy` changes into a single commit in the working directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="squash-3" sandbox="shell" editor="basic" template="squash.sh"
+    depends-on="squash-2" output-tail="" output="">[PRE53]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Commit the combined changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="squash-4" sandbox="shell" editor="basic" template="squash.sh"
+    depends-on="squash-3" output-tail="" output="">[PRE55]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Switch back to the `main` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="squash-5" sandbox="shell" editor="basic" template="squash.sh"
+    depends-on="squash-4" output-tail="" output="">Merge the `ohmypy` branch into
+    `main`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="squash-6" sandbox="shell" editor="basic" template="squash.sh"
+    depends-on="squash-5" output-tail="" output="">[PRE57]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note the single commit in `main` made of three commits in `ohmypy`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="squash-7" sandbox="shell" editor="basic" template="squash.sh"
+    depends-on="squash-6" output-tail="" output="">[PRE59]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cherry-pick
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I have a typo in `message.txt`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="cherry-1" sandbox="shell" editor="basic" template="cherry.sh"
+    output="">And I accidentally fixed it in the `ohmypy` branch instead of `main`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="cherry-2" sandbox="shell" editor="basic" template="cherry.sh"
+    output="">[PRE61]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''m not ready to merge the entire `ohmypy` branch, so I will cherry-pick the
+    commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="cherry-3" sandbox="shell" editor="basic" template="cherry.sh"
+    output="">[PRE62]
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`cherry-pick` applied the comment to the `main` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="cherry-4" sandbox="shell" editor="basic" template="cherry.sh"
+    depends-on="cherry-3" output-tail="" output="">[PRE64]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The typo is fixed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="cherry-5" sandbox="shell" editor="basic" template="cherry.sh"
+    depends-on="cherry-3" output-tail="" output="">## Local and remote
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with a local repo is fun, but adding a remote repo is even funnier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[push](#push) • [pull](#pull) • [resolve](#resolve-conflict) • [push branch](#push-branch)
+    • [fetch branch](#fetch-branch) • [tags](#tags)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Push
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Alice wants to clone our repo and make some changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clone the remote repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="push-1" sandbox="shell" editor="basic" template="push.sh"
+    output="">[PRE66]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normally you'd see a GitHub/GitLab/etc URL here, but our "remote" repo is on
+    the same machine in `/tmp/remote.git`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Set user name and email:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="push-2" sandbox="shell" editor="basic" template="push.sh"
+    depends-on="push-1" output-tail="" output="">Make some changes and commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="push-3" sandbox="shell" editor="basic" template="push.sh"
+    depends-on="push-2" output-tail="" output="">[PRE69]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Push locally committed changes to the remote repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="push-4" sandbox="shell" editor="basic" template="push.sh"
+    depends-on="push-3" output-tail="" output="">### Pull
+  prefs: []
+  type: TYPE_NORMAL
+- en: I want to pull Alice's changes to the local repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No commits from Alice yet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="pull-1" sandbox="shell" editor="basic" template="pull.sh"
+    output="">Pull the latest changes from the remote repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="pull-2" sandbox="shell" editor="basic" template="pull.sh"
+    output="">[PRE70]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The local repo now contains commits from Alice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="pull-3" sandbox="shell" editor="basic" template="pull.sh"
+    depends-on="pull-2" output-tail="" output="">[PRE71]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resolve conflict
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I have a local commit (not yet pushed to the remote) that conflicts with Alice's
+    changes (already pushed to the remote), so I need to resolve it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pull the changes from the remote repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="conflict-1" sandbox="shell" editor="basic" template="conflict.sh"
+    output="">[PRE72]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is a conflict in `message.txt`! Let''s show it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="conflict-2" sandbox="shell" editor="basic" template="conflict.sh"
+    depends-on="conflict-1" output-tail="" output="">[PRE73]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I like Alice''s version better, so let''s choose it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="conflict-3" sandbox="shell" editor="basic" template="conflict.sh"
+    depends-on="conflict-1" output-tail="" output="">Add the resolved file to the
+    staging area and complete the merge:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="conflict-4" sandbox="shell" editor="basic" template="conflict.sh"
+    depends-on="conflict-3" output-tail="" output="">[PRE76]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Push branch
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Create the local `ohmypy` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="push-branch-1" sandbox="shell" editor="basic" template="push-branch.sh"
+    output="">[PRE78]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add and commit a file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="push-branch-2" sandbox="shell" editor="basic" template="push-branch.sh"
+    depends-on="push-branch-1" output-tail="" output="">[PRE80]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Push the local branch to remote:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="push-branch-3" sandbox="shell" editor="basic" template="push-branch.sh"
+    depends-on="push-branch-2" output-tail="" output="">[PRE82]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show both local and remote branches:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="push-branch-4" sandbox="shell" editor="basic" template="push-branch.sh"
+    depends-on="push-branch-3" output-tail="" output="">[PRE83]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fetch branch
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Fetch remote branches:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="fetch-1" sandbox="shell" editor="basic" template="fetch.sh"
+    output="">Remote has the `ohmypy` branch, but it''s not checked out locally:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="fetch-2" sandbox="shell" editor="basic" template="fetch.sh"
+    depends-on="fetch-1" output-tail="" output="">Checkout the `ohmypy` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="fetch-3" sandbox="shell" editor="basic" template="fetch.sh"
+    depends-on="fetch-1" output-tail="" output="">[PRE85]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show branches:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="fetch-4" sandbox="shell" editor="basic" template="fetch.sh"
+    depends-on="fetch-3" output-tail="" output="">Create a tag for the latest commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="tag-1" sandbox="shell" editor="basic" template="tag.sh"
+    output="">Create a tag for the nth-before-last commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE86]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="tag-2" sandbox="shell" editor="basic" template="tag.sh"
+    depends-on="tag-1" output-tail="" output="">You can use the commit hash instead
+    of `HEAD~n`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="tag-3" sandbox="shell" editor="basic" template="tag.sh"
+    depends-on="tag-2" output-tail="" output="">Show compact log with tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE87]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="tag-4" sandbox="shell" editor="basic" template="tag.sh"
+    depends-on="tag-2" output-tail="" output="">[PRE88]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Delete tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="tag-5" sandbox="shell" editor="basic" template="tag.sh"
+    depends-on="tag-2" output-tail="" output="">[PRE89]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Push tags to the remote:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="tag-6" sandbox="shell" editor="basic" template="tag.sh"
+    depends-on="tag-5" output-tail="" output="">## Undo
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Damn, how do I undo what I just did?" — is the eternal Git question. Let''s
+    answer it once and for all.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[amend commit](#amend-commit) • [undo uncommitted](#undo-uncommitted-changes)
+    • [undo local](#undo-local-commit) • [undo remote](#undo-remote-commit) • [rewind
+    history](#rewind-history) • [stash changes](#stash-changes)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Amend commit
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Edit a file and commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE90]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="amend-1" sandbox="shell" editor="basic" template="amend.sh"
+    output="">[PRE91]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="amend-2" sandbox="shell" editor="basic" template="amend.sh"
+    depends-on="amend-1" output-tail="" output="">[PRE92]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I made a typo, so I want to change the commit message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE93]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="amend-3" sandbox="shell" editor="basic" template="amend.sh"
+    depends-on="amend-1" output-tail="" output="">[PRE94]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Git has replaced the last commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="amend-4" sandbox="shell" editor="basic" template="amend.sh"
+    depends-on="amend-3" output-tail="" output="">[PRE95]
+  prefs: []
+  type: TYPE_NORMAL
+- en: To change the commit message for one of the last `n` commits, use `git rebase
+    -i HEAD~n` (interactive) and follow the instructions on the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Amend only works if the commit has not yet been pushed to the remote repo!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Undo uncommitted changes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Edit the previously committed file and add the changes to the staging area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE96]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="undo-local-1" sandbox="shell" editor="basic" template="undo-local.sh"
+    output="">Show the working tree status:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-local-2" sandbox="shell" editor="basic" template="undo-local.sh"
+    depends-on="undo-local-1" output-tail="" output="">[PRE97]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the changes from the staging area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE98]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="undo-local-3" sandbox="shell" editor="basic" template="undo-local.sh"
+    depends-on="undo-local-1" output-tail="" output="">The local file is still modified,
+    but it''s not staged for commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-local-4" sandbox="shell" editor="basic" template="undo-local.sh"
+    depends-on="undo-local-3" output-tail="" output="">[PRE99]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s discard the changes altogether:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE100]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="undo-local-5" sandbox="shell" editor="basic" template="undo-local.sh"
+    depends-on="undo-local-3" output-tail="" output="">Show the file contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-local-6" sandbox="shell" editor="basic" template="undo-local.sh"
+    depends-on="undo-local-5" output-tail="" output="">The changes are gone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Undo local commit
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I changed my mind about the last commit and I want to undo it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-commit-1" sandbox="shell" editor="basic" template="undo-commit.sh"
+    output="">[PRE101]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Undo the last one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="undo-commit-2" sandbox="shell" editor="basic" template="undo-commit.sh"
+    output="">The commit is gone:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="undo-commit-3" sandbox="shell" editor="basic" template="undo-commit.sh"
+    depends-on="undo-commit-2" output-tail="" output="">But the changes are still
+    in the staged area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-commit-4" sandbox="shell" editor="basic" template="undo-commit.sh"
+    depends-on="undo-commit-2" output-tail="" output="">[PRE102]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To remove both the commit and the local changes, use `--hard` instead of `--soft`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE103]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="undo-commit-5" sandbox="shell" editor="basic" template="undo-commit.sh"
+    output="">[PRE104]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reset only works if the commit has not yet been pushed to the remote repo!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Undo remote commit
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I changed my mind about the last commit and I want to undo it, but the commit
+    is already pushed to the remote repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-remote-1" sandbox="shell" editor="basic" template="undo-remote.sh"
+    output="">[PRE105]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Undo the last one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE106]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="undo-remote-2" sandbox="shell" editor="basic" template="undo-remote.sh"
+    output="">[PRE107]
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can revert to nth-before-last commit by using `HEAD~n` or use the specific
+    commit hash instead of `HEAD~n`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the commit has already been pushed, git can''t delete it. Instead it
+    creates an "undo" commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-remote-3" sandbox="shell" editor="basic" template="undo-remote.sh"
+    depends-on="undo-remote-2" output-tail="" output="">[PRE108]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Push the "undo" commit to the remote:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="undo-remote-4" sandbox="shell" editor="basic" template="undo-remote.sh"
+    depends-on="undo-remote-2" output-tail="" output="">### Rewind history
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE109]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="reflog-1" sandbox="shell" editor="basic" template="reflog.sh"
+    output="">[PRE110]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show all repo states in reverse chronological order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="reflog-2" sandbox="shell" editor="basic" template="reflog.sh"
+    output="">[PRE111]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose I want to go back to `HEAD@{3}`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE112]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="reflog-3" sandbox="shell" editor="basic" template="reflog.sh"
+    output="">[PRE113]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This resets the entire repo and the working tree to the moment of `HEAD@{3}`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE114]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="reflog-4" sandbox="shell" editor="basic" template="reflog.sh"
+    depends-on="reflog-3" output-tail="" output="">[PRE115]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stash changes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Edit the previously committed file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE116]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="stash-1" sandbox="shell" editor="basic" template="stash.sh"
+    output="">Let's say we need to switch to another branch, but we don't want to
+    commit the changes yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Stash the local changes (i.e. save them in "drafts"):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="stash-2" sandbox="shell" editor="basic" template="stash.sh"
+    depends-on="stash-1" output-tail="" output="">[PRE117]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Stash is a stack, so you can push multiple changes onto it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE118]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="stash-3" sandbox="shell" editor="basic" template="stash.sh"
+    depends-on="stash-2" output-tail="" output="">[PRE119]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Show stash contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="stash-4" sandbox="shell" editor="basic" template="stash.sh"
+    depends-on="stash-3" output-tail="" output="">[PRE120]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can switch to another branch and do something:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE121]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Switch back to the main branch and re-apply the latest changes from the stash:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE122]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="stash-5" sandbox="shell" editor="basic" template="stash.sh"
+    depends-on="stash-3" output-tail="" output="">[PRE123]
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`pop` returns changes from the stack in "last in, first out" order.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clear the stash:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="stash-6" sandbox="shell" editor="basic" template="stash.sh"
+    depends-on="stash-5" output-tail="" output="">## Advanced stuff
+  prefs: []
+  type: TYPE_NORMAL
+- en: While git gurus probably know all about these features, most developers have
+    never heard of them. Let's fix that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[log summary](#log-summary) • [worktree](#worktree) • [bisect](#bisect) • [partial
+    checkout](#partial-checkout) • [partial clone](#partial-clone)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Log summary
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Since the 1.0 release (tag `v1.0`), we have 6 commits from 3 contributors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE124]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">[PRE125]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note the `--pretty` option which customizes the log fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE126]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'List the commits grouped by contributors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">[PRE127]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A couple of useful options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-n` (`--numbered`) sorts the output by descending number of commits per contributor.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-s` (`--summary`) omits commit descriptions and prints only counts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'List contributors along with the number of commits they have authored:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">###
+    Worktree
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''m in the middle of something important in the `ohmypy` branch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE128]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="worktree-1" sandbox="shell" editor="basic" template="worktree.sh"
+    output="">[PRE129]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suddenly I need to fix an annoying typo in the `main` branch. I can stash the
+    local changes with `git stash`, or I can checkout multiple branches at the same
+    time with `git worktree`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Checkout the main branch into `/tmp/hotfix`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE130]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="worktree-2" sandbox="shell" editor="basic" template="worktree.sh"
+    output="">[PRE131]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fix the typo and commit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE132]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="worktree-3" sandbox="shell" editor="basic" template="worktree.sh"
+    depends-on="worktree-2" output-tail="" output="">[PRE133]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Push to remote main:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE134]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="worktree-4" sandbox="shell" editor="basic" template="worktree.sh"
+    depends-on="worktree-3" output-tail="" output="">[PRE135]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now I can return to `/tmp/repo` and continue working on the `ohmypy` branch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bisect
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I have 5 poorly named commits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="bisect-1" sandbox="shell" editor="basic" template="bisect.sh"
+    output="">[PRE136]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And a failing test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="bisect-2" sandbox="shell" editor="basic" template="bisect.sh"
+    output="">I will use the bisection algorithm to find the commit that introduced
+    the bug:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="bisect-3" sandbox="shell" editor="basic" template="bisect.sh"
+    output="">[PRE137]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The current state is obviously buggy, but I''m pretty sure the first "main.sh"
+    commit was good:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE138]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="bisect-4" sandbox="shell" editor="basic" template="bisect.sh"
+    depends-on="bisect-3" output-tail="" output="">[PRE139]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Git has automatically checked out the middle commit. Let''s test it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="bisect-5" sandbox="shell" editor="basic" template="bisect.sh"
+    depends-on="bisect-4" output-tail="" output="">The test passes. Mark the commit
+    as good:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="bisect-6" sandbox="shell" editor="basic" template="bisect.sh"
+    depends-on="bisect-5" output-tail="" output="">[PRE140]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Git has automatically checked out the middle commit. Let''s test it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<codapi-snippet id="bisect-7" sandbox="shell" editor="basic" template="bisect.sh"
+    depends-on="bisect-6" output-tail="" output="">The test fails. Show the commit
+    details:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="bisect-8" sandbox="shell" editor="basic" template="bisect.sh"
+    depends-on="bisect-7" output-tail="" output="">[PRE141]
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the commit that introduced the bug (subtraction instead of addition)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial checkout
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The remote repo looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE142]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will selectively checkout only some of the directories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clone the repo, but do not checkout the working tree:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE143]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet id="sparse-checkout-1" sandbox="shell" editor="basic" template="sparse-checkout.sh"
+    output="">[PRE144]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tell git to checkout only the root and `users` directories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE145]'
+  prefs: []
+  type: TYPE_PRE
+- en: '<codapi-snippet id="sparse-checkout-2" sandbox="shell" editor="basic" template="sparse-checkout.sh"
+    depends-on="sparse-checkout-1" output-tail="" output="">Checkout the directories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="sparse-checkout-3" sandbox="shell" editor="basic" template="sparse-checkout.sh"
+    depends-on="sparse-checkout-2" output-tail="" output="">[PRE146]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Only the root and users directories are checked out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet id="sparse-checkout-4" sandbox="shell" editor="basic" template="sparse-checkout.sh"
+    depends-on="sparse-checkout-3" output-tail="" output="">[PRE147]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `products` directory was not checked out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial clone
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The partial checkout approach we tried earlier still clones the entire repo.
+    So if the repo itself is huge (which is often the case if it has a long history
+    or large binary files), the clone step can be slow and traffic-intensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To reduce the amount of data downloaded during cloning, use *partial clone*
+    with one of the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE148]'
+  prefs: []
+  type: TYPE_PRE
+- en: In both cases, git will lazily fetch the missing data later when needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that for this to work, the remote server should support partial cloning
+    (GitHub does).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Final thoughts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've covered important Git operations, from basic editing to branching and
+    merging, remote syncing, undoing changes, and performing some moderate magic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To learn more about Git, check out the [reference manual](https://git-scm.com/docs)
+    and the [Pro Git](https://git-scm.com/book) book by Scott Chacon and Ben Straub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And may Git be with you!
+  prefs: []
+  type: TYPE_NORMAL
+- en: ──
+  prefs: []
+  type: TYPE_NORMAL
+- en: P.S. Interactive examples in this post are powered by [**codapi**](https://codapi.org/)
+    — an open source tool I'm building. Use it to embed live code snippets into your
+    product docs, online course or blog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[* **Subscribe***](/subscribe/) *to keep up with new posts.**</codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet>'
+  prefs: []
+  type: TYPE_NORMAL

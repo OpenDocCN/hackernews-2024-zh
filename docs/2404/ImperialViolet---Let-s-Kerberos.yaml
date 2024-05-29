@@ -1,0 +1,152 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:03:21'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: ImperialViolet - Let's Kerberos
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.imperialviolet.org/2024/04/07/letskerberos.html](https://www.imperialviolet.org/2024/04/07/letskerberos.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: (I think this is worth pondering, but I don’t mean it *too* seriously—don’t
+    panic.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Are the sizes of post-quantum signatures [getting you down](https://dadrian.io/blog/posts/pqc-signatures-2024/)?
+    Are you despairing of deploying a post-quantum Web PKI? Don’t fret! Symmetric
+    cryptography is post-quantum too!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you connect to a site, also fetch a record from DNS that contains a handful
+    of “CA” records. Each contains:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: a UUID that identifies a CA
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: E[CA-key](server-CA-key, AAD=server-hostname)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A key ID so that the CA can find “CA-key” from the previous field.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: “CA-key” is a symmetric key known only to the CA, and “server-CA-key” is a symmetric
+    key known to the server and the CA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The client finds three of these CA records where the UUID matches a CA that
+    the client trusts. It then sends a message to each CA containing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: E[CA-key’](client-CA-key) — i.e. a key that the client and CA share, encrypted
+    to a key that only the CA knows. We’ll get to how the client has such a value
+    later.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A key ID for CA-key’.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: E[client-CA-key](client-server-key) — the client randomly generates a client–server
+    key for each CA.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The CA record from the server’s DNS.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The hostname that the client is connecting to.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The CA can decrypt “client-CA-key” and then it can decrypt “server-CA-key” (from
+    the DNS information that the client sent) using an AAD that’s either the client’s
+    specified hostname, or else that hostname with the first label replaced with `*`,
+    for wildcard records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CA replies with E[server-CA-key](client-server-key), i.e. the client’s chosen
+    key, encrypted to the server. The client can then start a TLS connection with
+    the server, send it the three encrypted client–server keys, and the client and
+    server can authenticate a Kyber key-agreement using the three shared keys concatenated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both the client and server need symmetric keys established with each CA for
+    this to work. To do this, they’ll need to establish a public-key authenticated
+    connection to the CA. So these connections will need large post-quantum signatures,
+    but that cost can be amortised over many connections between clients and servers.
+    (And the servers will have to pass standard challenges in order to prove that
+    they can legitimately speak for a given hostname.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CAs get to see which servers clients are talking to, like OCSP servers used
+    to. Technical and policy controls will be needed to prevent that information from
+    being misused. E.g. CAs run audited code in at least SEV/TDX.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You need to compromise at least three CAs in order to achieve anything. While
+    we have Certificate Transparency today, that’s a post-hoc auditing mechanism and
+    a single CA compromise is still a problem in the current WebPKI.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The CAs can be required to publish a log of server key IDs that they recognise
+    for each hostname. They could choose not to log a record, but three of them need
+    to be evil to compromise anything.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There’s additional latency from having to contact the CAs. However, one might
+    be able to overlap that with doing the Kyber exchange with the server. Certainly
+    clients could cache and reuse client-server keys for a while.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CAs can generate new keys every day. Old keys can continue to work for a few
+    days. Servers are renewing shared keys with the CAs daily. (ACME-like automation
+    is very much assumed here.)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The public-keys that parties use to establish shared keys are very long term,
+    however. Like roots are today.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Distrusting a CA in this model needn’t be a Whole Big Thing like it is today:
+    Require sites to be set up with at least five trusted CAs so that any CA can be
+    distrusted without impact. I.e. it’s like distrusting a Certificate Transparency
+    log.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Revocation by CAs is easy and can be immediately effective.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CAs should be highly available, but the system can handle a CA being unavailable
+    by using other ones. The high-availability part of CA processing is designed to
+    be nearly stateless so should scale very well and be reasonably robust using anycast
+    addresses.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

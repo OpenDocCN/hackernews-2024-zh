@@ -1,0 +1,254 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:29:04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Large sequence models for software development activities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.research.google/2023/05/large-sequence-models-for-software.html](https://blog.research.google/2023/05/large-sequence-models-for-software.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Posted by Petros Maniatis and Daniel Tarlow, Research Scientists, Google ![](img/a1ca82879abe550f982f8bd11e5aeb54.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Software isn’t created in one dramatic step. It improves bit by bit, one little
+    step at a time — editing, running unit tests, fixing build errors, addressing
+    code reviews, editing some more, appeasing [linters](https://en.wikipedia.org/wiki/Lint_(software)),
+    and fixing more errors — until finally it becomes good enough to merge into a
+    code repository. Software engineering isn’t an isolated process, but a dialogue
+    among human developers, code reviewers, bug reporters, software architects and
+    tools, such as compilers, unit tests, linters and static analyzers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Today we describe DIDACT (​​Dynamic Integrated Developer ACTivity), which is
+    a methodology for training large machine learning (ML) models for software development.
+    The novelty of DIDACT is that it uses *the process of software development* as
+    the source of training data for the model, rather than just *the polished end
+    state* of that process, the finished code. By exposing the model to the contexts
+    that developers see as they work, paired with the actions they take in response,
+    the model learns about the dynamics of software development and is more aligned
+    with how developers spend their time. We leverage instrumentation of Google''s
+    software development to scale up the quantity and diversity of developer-activity
+    data beyond previous works. Results are extremely promising along two dimensions:
+    usefulness to professional software developers, and as a potential basis for imbuing
+    ML models with general software development skills.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/560cdad8757928c28828ba961f532690.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJD9kDvfSCOudyA3cXrYr3eYIKzuqNfndwpoZVHsENIIFUTARGBFoqn_IE627Zk2iGuQg3NFOGcPw2pCA8fBSYv-iBzYNEw4yoOGghZrNvo1AJY1K0o9IvzMCqKjKPEKupP7NL8yQqBs3BUzoizgePEBgZN5vN9Ni7B0a2_eCs4GzFEJYDUR2xF4TIYg/s1475/image2.png)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| DIDACT is a multi-task model trained on development activities that include
+    editing, debugging, repair, and code review. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'We built and deployed internally three DIDACT tools, [Comment Resolution](https://ai.googleblog.com/2023/05/resolving-code-review-comments-with-ml.html)
+    (which we recently announced), Build Repair, and Tip Prediction, each integrated
+    at different stages of the development workflow. All three of these tools received
+    enthusiastic feedback from thousands of internal developers. We see this as the
+    ultimate test of usefulness: do professional developers, who are often experts
+    on the code base and who have carefully honed workflows, leverage the tools to
+    improve their productivity?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps most excitingly, we demonstrate how DIDACT is a first step towards a
+    general-purpose developer-assistance agent. We show that the trained model can
+    be used in a variety of surprising ways, via prompting with prefixes of developer
+    activities, and by chaining together multiple predictions to roll out longer activity
+    trajectories. We believe DIDACT paves a promising path towards developing agents
+    that can generally assist across the software development process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A treasure trove of data about the software engineering process
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Google’s software engineering toolchains store every operation related to code
+    as a log of interactions among tools and developers, and have done so for decades.
+    In principle, one could use this record to replay in detail the key episodes in
+    the “software engineering video” of how Google’s codebase came to be, step-by-step
+    — one code edit, compilation, comment, variable rename, etc., at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Google code lives in a [monorepo](https://en.wikipedia.org/wiki/Monorepo), a
+    single repository of code for all tools and systems. A software developer typically
+    experiments with code changes in a local [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write)
+    workspace managed by a system called [Clients in the Cloud](https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext)
+    (CitC). When the developer is ready to package a set of code changes together
+    for a specific purpose (e.g., fixing a bug), they create a changelist (CL) in
+    [Critique](https://abseil.io/resources/swe-book/html/ch19.html), Google’s code-review
+    system. As with other types of code-review systems, the developer engages in a
+    dialog with a peer reviewer about functionality and style. The developer edits
+    their CL to address reviewer comments as the dialog progresses. Eventually, the
+    reviewer declares “LGTM!” (“looks good to me”), and the CL is merged into the
+    code repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, in addition to a dialog with the code reviewer, the developer also
+    maintains a “dialog” of sorts with a plethora of other software engineering tools,
+    such as the compiler, the testing framework, linters, static analyzers, fuzzers,
+    etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/7b8d0e0dd6ee4742cfdaaf05b613843d.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjhdDAeePURbX0syZUQcLifMLS9uMw-ufpwg8jUXQoQMyHa0UNstR_vA7mqan_fjqzlXLuSlwVZItU-dqZne3Bk4Adsb2DLTi__wX0vmfk_JnEjRC_tmE72e7woRNCsZO6znn3OCQsZLZvZrlU55byBsm3oi5ubHBvDizqvz3N83je01r7XtZ6cuvEZZA/s1877/image4.gif)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| An illustration of the intricate web of activities involved in developing
+    software: small actions by the developer, interactions with a code reviewer, and
+    invocations of tools such as compilers. |'
+  prefs: []
+  type: TYPE_TB
+- en: A multi-task model for software engineering
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'DIDACT utilizes interactions among engineers and tools to power ML models that
+    assist Google developers, by suggesting or enhancing actions developers take —
+    in context — while pursuing their software-engineering tasks. To do that, we have
+    defined a number of tasks about individual developer activities: repairing a broken
+    build, predicting a code-review comment, addressing a code-review comment, renaming
+    a variable, editing a file, etc. We use a common formalism for each activity:
+    it takes some *State* (a code file), some *Intent* (annotations specific to the
+    activity, such as code-review comments or compiler errors), and produces an *Action*
+    (the operation taken to address the task). This Action is like a mini programming
+    language, and can be extended for newly added activities. It covers things like
+    editing, adding comments, renaming variables, marking up code with errors, etc.
+    We call this language *DevScript*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/e501ce4e695031908597de318fc17d3c.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsd4dFYSNVxcg20eqgJqdr3u9S2hHsBlqOelnix5XZd5zIhrZIemDLaF3CcaMk09Y_9kyDkhAuAq2-STjKDOP1Tb9ShsE91FpNgnLRqOxIzCKrTj2_WaAJUlRxikaLmQK2iv7YfpnQtQeaUeIXNCRE9efYju6KxGBEu4zwDA0vQ6qla6dNvpResnch2w/s1200/DIDACT.gif)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| The DIDACT model is prompted with a task, code snippets, and annotations
+    related to that task, and produces development actions, e.g., edits or comments.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: This state-intent-action formalism enables us to capture many different tasks
+    in a general way. What’s more, DevScript is a concise way to express complex actions,
+    without the need to output the whole state (the original code) as it would be
+    after the action takes place; this makes the model more efficient and more interpretable.
+    For example, a rename might touch a file in dozens of places, but a model can
+    predict a single rename action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An ML peer programmer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: DIDACT does a good job on individual assistive tasks. For example, below we
+    show DIDACT doing code clean-up after functionality is mostly done. It looks at
+    the code along with some final comments by the code reviewer (marked with “human”
+    in the animation), and predicts edits to address those comments (rendered as a
+    *diff*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/0958309b8514560c095f51ab8b05fa55.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNMPCHlZwRpo4EKM-HZt7qVII342P6kFgSK18H2sYqftvqmrEC-SZp9FsmgvpZtafgCid3WF905_ooJrA8vEFNs7M4B9Ox5pObqzvCltaAUXouIkiVpLWKRs-VEY0Dhpg11RbH7iJfhdinkNegpK0rOhTPR7rdzleQJzpIErVIZBkPi3WjisexB0Uklw/s897/DIDACT2.gif)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Given an initial snippet of code and the comments that a code reviewer attached
+    to that snippet, the Pre-Submit Cleanup task of DIDACT produces edits (insertions
+    and deletions of text) that address those comments. |'
+  prefs: []
+  type: TYPE_TB
+- en: The multimodal nature of DIDACT also gives rise to some surprising capabilities,
+    reminiscent of [behaviors emerging with scale](https://ai.googleblog.com/2022/11/characterizing-emergent-phenomena-in.html).
+    One such capability is *history augmentation*, which can be enabled via prompting.
+    Knowing what the developer did recently enables the model to make a better guess
+    about what the developer should do next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/de9f20eedef70be1d4b92b012ac76253.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgwd-Dvh_esu_26f2rO6DKwMpGyDF0wKHzasGuD3RhXNJiJR5cM613KLSuabNp5hvKV9dF2vzHd7XkUOKD4d7l1cOyV2ovYwxWLECmudUKDk5bmVNOg5eImsqUJbkUkPWk7yOiCogafub7eHb9B3cytjGInIICcMoWFrTlsgqfN3B9IvHFPbWbwfIkZQ/s1044/CitCMonster.gif)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| An illustration of history-augmented code completion in action. |'
+  prefs: []
+  type: TYPE_TB
+- en: A powerful such task exemplifying this capability is *history-augmented code
+    completion*. In the figure below, the developer adds a new function parameter
+    (1), and moves the cursor into the documentation (2). Conditioned on the history
+    of developer edits and the cursor position, the model completes the line (3) by
+    correctly predicting the docstring entry for the new parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| [![](img/f6baad53225c42e13ec7a315c6d00110.png)](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj_ao8R6Rv9t0sz_O27BPC0Wy3dpbllP101ovPL1yklPN4SqJu8B94EZyhKumBZLsbmuiLdNVlA92wmOgnBQ-nglk2FcNRc4B2J2hFsR3x0Zy2XWcDGylowaxI2hDJH2cAyIzAEcZqCeg8PsLWCNkKzhr-jnMPr4_aGjjZguCogRalV2582jqshece5bA/s1048/DIDACT4.gif)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| An illustration of edit prediction, over multiple chained iterations. |'
+  prefs: []
+  type: TYPE_TB
+- en: In an even more powerful history-augmented task, *edit prediction*, the model
+    can choose where to edit next in a fashion that is historically consistent**.**
+    If the developer deletes a function parameter (1), the model can use history to
+    correctly predict an update to the docstring (2) that removes the deleted parameter
+    (without the human developer manually placing the cursor there) and to update
+    a statement in the function (3) in a syntactically (and — arguably — semantically)
+    correct way. With history, the model can unambiguously decide how to continue
+    the “editing video” correctly. Without history, the model wouldn’t know whether
+    the missing function parameter is intentional (because the developer is in the
+    process of a longer edit to remove it) or accidental (in which case the model
+    should re-add it to fix the problem).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The model can go even further. For example, we started with a blank file and
+    asked the model to successively predict what edits would come next until it had
+    written a full code file. The astonishing part is that the model developed code
+    in a step-by-step way that would seem naturalto a developer: It started by first
+    creating a fully working skeleton with imports, flags, and a basic main function.
+    It then incrementally added new functionality, like reading from a file and writing
+    results, and added functionality to filter out some lines based on a user-provided
+    regular expression, which required changes across the file, like adding new flags.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: DIDACT turns Google's software development process into training demonstrations
+    for ML developer assistants, and uses those demonstrations to train models that
+    construct code in a step-by-step fashion, interactively with tools and code reviewers.
+    These innovations are already powering tools enjoyed by Google developers every
+    day. The DIDACT approach complements the great strides taken by large language
+    models at Google and elsewhere, towards technologies that ease toil, improve productivity,
+    and enhance the quality of work of software engineers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acknowledgements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*This work is the result of a multi-year collaboration among Google Research,
+    Google Core Systems and Experiences, and DeepMind. We would like to acknowledge
+    our colleagues Jacob Austin, Pascal Lamblin, Pierre-Antoine Manzagol, and Daniel
+    Zheng, who join us as the key drivers of this project. This work could not have
+    happened without the significant and sustained contributions of our partners at
+    Alphabet (Peter Choy, Henryk Michalewski, Subhodeep Moitra, Malgorzata Salawa,
+    Vaibhav Tulsyan, and Manushree Vijayvergiya), as well as the many people who collected
+    data, identified tasks, built products, strategized, evangelized, and helped us
+    execute on the many facets of this agenda (Ankur Agarwal, Paige Bailey, Marc Brockschmidt,
+    Rodrigo Damazio Bovendorp, Satish Chandra, Savinee Dancs, **Denis Davydenko, **Matt
+    Frazier, Alexander Frömmgen, Nimesh Ghelani, Chris Gorgolewski, Chenjie Gu, Vincent
+    Hellendoorn, Franjo Ivančić, Marko Ivanković, Emily Johnston, Luka Kalinovcic,
+    Lera Kharatyan, Jessica Ko, Markus Kusano, Kathy Nix, Christian Perez, Sara Qu,
+    Marc Rasi, Marcus Revaj, Ballie Sandhu, Michael Sloan, Tom Small, Gabriela Surita,
+    Maxim Tabachnyk, **Stephanie Tang, **David Tattersall, Sara Toth, Kevin Villela,
+    Sara Wiltberger, and Donald Duo Zhao) and our extremely supportive leadership
+    (Martín Abadi, Joelle Barral, Jeff Dean, Madhura Dudhgaonkar, Douglas Eck, Zoubin
+    Ghahramani, Hugo Larochelle, Chandu Thekkath, and Niranjan Tulpule). Thank you!*'
+  prefs: []
+  type: TYPE_NORMAL

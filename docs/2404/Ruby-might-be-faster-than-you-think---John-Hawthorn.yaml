@@ -1,0 +1,96 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:32:38'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ruby might be faster than you think - John Hawthorn
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.johnhawthorn.com/2024/ruby-might-be-faster-than-you-think/](https://www.johnhawthorn.com/2024/ruby-might-be-faster-than-you-think/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I saw a project a couple weeks back which allows [writing and running Crystal
+    methods inline inside a Ruby file](https://github.com/wouterken/crystalruby).
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s a neat project, and I don’t want to take away from it but something in
+    the [README example](https://github.com/wouterken/crystalruby/blob/1d8b38e103d5f3a210e0b6fbc5c1465cade62258/README.md)
+    looked off to me.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'require ''crystalruby'' require ''benchmark'' module Fibonnaci crystalize [n:
+    :int32] => :int32 def fib_cr(n) a = 0 b = 1 n.times { a, b = b, a + b } a end
+    module_function def fib_rb(n) a = 0 b = 1 n.times { a, b = b, a + b } a end end
+    puts(Benchmark.realtime { 1_000_000.times { Fibonnaci.fib_rb(30) } }) puts(Benchmark.realtime
+    { 1_000_000.times { Fibonnaci.fib_cr(30) } })'
+  prefs: []
+  type: TYPE_NORMAL
+- en: My benchmark runs look pretty similar to the README’s. The “crystalized” version
+    runs about 4x faster than the pure Ruby version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: But something is a bit off here. The Ruby implementation has a subtle mistake
+    which causes signficantly more work than it needs to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ruby’s multiple assignment `a, b = b, a + b` is equivalent to `a, b = [b, a
+    + b]`. Most of the time that Array allocation doesn’t actually happen, but because
+    in this case it’s the last line of the block, and because Ruby has an implicit
+    return at the end of the block the Array is required (even though `Integer#times`
+    doesn’t use the return we don’t yet have an optimization which “knows” that).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s see how we do avoiding that… (with a slightly unsightly `; nil` replacing
+    the return)
+  prefs: []
+  type: TYPE_NORMAL
+- en: def fib_rb(n) a = 0 b = 1 n.times { a, b = b, a + b; nil } a end
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Not bad. We’re making up the difference. Now we’re only about 2x slower than
+    crystal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make this a bit faster, instead of calling `Integer#times`, let’s inline
+    the loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: def fib_rb(n) a = 0 b = 1 while n > 0 a, b = b, a + b n -= 1 end a end
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nearly on par now! Finally, let’s enable YJIT, Ruby’s built-in JIT compiler
+    to see the real comparison.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now it’s Ruby that’s 5 times faster than Crystal!!! And 20x faster than our
+    original version. Though most likely that’s some cost from the FFI, or something
+    similar, though that does seem like a surprising amount of overhead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I thought it was notable that by making some minor tweaks to Ruby code it can
+    now outperform a precompiled statically typed language in a purpose-built example
+    of when it is slow. I’m hopeful that someday with future advancements in the Ruby
+    JIT even the small tweaks might not be necessary.
+  prefs: []
+  type: TYPE_NORMAL

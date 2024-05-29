@@ -1,0 +1,435 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:32:04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding fusion plasma tearing instability with deep reinforcement learning
+    | Nature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.nature.com/articles/s41586-024-07024-9](https://www.nature.com/articles/s41586-024-07024-9)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: DIII-D
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The DIII-D National Fusion Facility, located at General Atomics in San Diego,
+    USA, is a leading research facility dedicated to advancing the field of fusion
+    energy through experimental and theoretical research. The facility is home to
+    the DIII-D tokamak, which is the largest and most advanced magnetic fusion device
+    in the United States. The major and minor radii of DIII-D are 1.67 m and 0.67 m,
+    respectively. The toroidal magnetic field can reach up to 2.2 T, the plasma current
+    is up to 2.0 MA and the external heating power is up to 23 MW. DIII-D is equipped
+    with high-resolution real-time plasma diagnostic systems, including a Thomson
+    scattering system^([45](/articles/s41586-024-07024-9#ref-CR45 "Carlstrom, T. N.
+    et al. Design and operation of the multipulse Thomson scattering diagnostic on
+    DIII-D (invited). Rev. Sci. Instrum. 63, 4901–4906 (1992).")), charge-exchange
+    recombination^([46](/articles/s41586-024-07024-9#ref-CR46 "Seraydarian, R. P.
+    & Burrell, K. H. Multichordal charge-exchange recombination spectroscopy on the
+    DIII-D tokamak. Rev. Sci. Instrum. 57, 2012–2014 (1986).")) spectroscopy and magnetohydrodynamics
+    reconstruction by EFIT^([37](/articles/s41586-024-07024-9#ref-CR37 "Shousha, R.
+    et al. Machine learning-based real-time kinetic profile reconstruction in DIII-D.
+    Nucl. Fusion 64, 026006 (2024)."),[39](/articles/s41586-024-07024-9#ref-CR39 "Ferron,
+    J. et al. Real time equilibrium reconstruction for tokamak discharge control.
+    Nucl. Fusion 38, 1055 (1998).")). These diagnostic tools allow for the real-time
+    profiling of electron density, electron temperature, ion temperature, ion rotation,
+    pressure, current density and safety factor. In addition, DIII-D can perform flexible
+    total beam power and torque control through reliable high-frequency modulation
+    of eight different neutral beams in different directions. Therefore, DIII-D is
+    an optimal experimental device for verifying and utilizing our AI controller that
+    observes the plasma state and manipulates the actuators in real time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plasma control system
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the unique features of the DIII-D tokamak is its advanced PCS^([47](/articles/s41586-024-07024-9#ref-CR47
+    "Margo, M. et al. Current state of DIII-D plasma control system. Fusion Eng. Des.
+    150, 111368 (2020).")), which allows researchers to precisely control and manipulate
+    the plasma in real time. This enables researchers to study the behaviour of the
+    plasma under a wide range of conditions and to test ideas for controlling and
+    stabilizing the plasma. The PCS consists of a hierarchical structure of real-time
+    controllers, from the magnetic control system (low-level control) to the profile
+    control system (high-level control). Our tearing-avoidance algorithm is also implemented
+    in this hierarchical structure of the DIII-D PCS and is integrated with the existing
+    lower-level controllers, such as the plasma boundary control algorithm^([39](/articles/s41586-024-07024-9#ref-CR39
+    "Ferron, J. et al. Real time equilibrium reconstruction for tokamak discharge
+    control. Nucl. Fusion 38, 1055 (1998)."),[41](/articles/s41586-024-07024-9#ref-CR41
+    "Barr, J. et al. Development and experimental qualification of novel disruption
+    prevention techniques on DIII-D. Nucl. Fusion 61, 126019 (2021).")) and the individual
+    beam control algorithm^([40](/articles/s41586-024-07024-9#ref-CR40 "Boyer, M.,
+    Kaye, S. & Erickson, K. Real-time capable modeling of neutral beam injection on
+    NSTX-U using neural networks. Nucl. Fusion 59, 056008 (2019).")).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tearing instability
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Magnetic reconnection refers to the phenomenon in magnetized plasmas where the
+    magnetic-field line is torn and reconnected owing to the diffusion of magnetic
+    flux (*ψ*) by plasma resistivity. This magnetic reconnection is a ubiquitous event
+    occurring in diverse environments such as the solar atmosphere, the Earth’s magnetosphere,
+    plasma thrusters and laboratory plasmas like tokamaks. In nested magnetic-field
+    structures in tokamaks, magnetic reconnection at surfaces where *q* becomes a
+    rational number leads to the formation of separated field lines creating magnetic
+    islands. When these islands grow and become unstable, it is termed tearing instability.
+    The growth rate of the tearing instability classically depends on the tearing
+    stability index, *Δ*′, shown in equation ([2](/articles/s41586-024-07024-9#Equ2)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: $${\varDelta }^{{\prime} }\equiv {\left[\frac{1}{\psi }\frac{{\rm{d}}\psi }{{\rm{d}}x}\right]}_{x=0-}^{x=0+}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: (2)
+  prefs: []
+  type: TYPE_NORMAL
+- en: where *x* is the radial deviation from the rational surface. When *Δ*′ is positive,
+    the magnetic topology becomes unstable, allowing (classical) tearing instability
+    to develop. However, even when *Δ*′ is negative (classical tearing instability
+    does not grow), ‘neoclassical’ tearing instability can arise due to the effects
+    of geometry or the drift of charged particles, which can amplify seed perturbations.
+    Subsequently, the altered magnetic topology can either saturate, unable to grow
+    further^([48](/articles/s41586-024-07024-9#ref-CR48 "Escande, D. & Ottaviani,
+    M. Simple and rigorous solution for the nonlinear tearing mode. Phys. Lett. A
+    323, 278–284 (2004)."),[49](/articles/s41586-024-07024-9#ref-CR49 "Loizu, J. et
+    al. Direct prediction of nonlinear tearing mode saturation using a variational
+    principle. Phys. Plasmas 27, 070701 (2020).")), or can couple with other magnetohydrodynamic
+    events or plasma turbulence^([50](#ref-CR50 "Muraglia, M. et al. Generation and
+    amplification of magnetic islands by drift interchange turbulence. Phys. Rev.
+    Lett. 107, 095003 (2011)."),[51](#ref-CR51 "Hornsby, W. A. et al. On seed island
+    generation and the non-linear self-consistent interaction of the tearing mode
+    with electromagnetic gyro-kinetic turbulence. Plasma Phys. Control. Fusion 57,
+    054018 (2015)."),[52](#ref-CR52 "Agullo, O. et al. Nonlinear dynamics of turbulence
+    driven magnetic islands. I. Theoretical aspects. Phys. Plasmas 24, 042308 (2017)."),[53](/articles/s41586-024-07024-9#ref-CR53
+    "Choi, G. J. & Hahm, T. S. Long term vortex flow evolution around a magnetic island
+    in tokamaks. Phys. Rev. Lett. 128, 225001 (2022).")). Understanding and controlling
+    these tearing instabilities is paramount for achieving stable and sustainable
+    fusion reactions in a tokamak^([54](/articles/s41586-024-07024-9#ref-CR54 "Sauter,
+    O. et al. Marginal β-limit for neoclassical tearing modes in JET H-mode discharges.
+    Plasma Phys. Control. Fusion 44, 1999 (2002).")).
+  prefs: []
+  type: TYPE_NORMAL
+- en: ITER baseline scenario
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The ITER baseline scenario (IBS) is an operational condition designed for ITER
+    to achieve fusion power of *P*[fusion] = 500 MW and a fusion gain of *Q* ≡ *P*[fusion]/*P*[external] = 10
+    for a duration of longer than 300 s (ref. ^([12](/articles/s41586-024-07024-9#ref-CR12
+    "Shimada, M. et al. Progress in the ITER physics basis—chapter 1: overview and
+    summary. Nucl. Fusion 47, S1 (2007)."))). Compared with present tokamak experiments,
+    the IBS condition is notable for its considerably low edge safety factor (*q*[95] ≈ 3)
+    and toroidal torque. With the PCS, DIII-D has a reliable capability to access
+    this IBS condition compared with other devices; however, it has been observed
+    that many of the IBS experiments are terminated by disruptive tearing instabilities^([19](/articles/s41586-024-07024-9#ref-CR19
+    "Turco, F. et al. The causes of the disruptive tearing instabilities of the ITER
+    baseline scenario in DIII-D. Nucl. Fusion 58, 106043 (2018).")). This is because
+    the tearing instability at the *q* = 2 surface appears too close to the wall when
+    *q*[95] is low, and it easily locks to the wall, leading to disruption when the
+    plasma rotation frequency is low. Therefore, in this study, we conducted experiments
+    to test the AI tearability controller under the conditions of *q*[95] ≈ 3 and
+    low toroidal torque (≤1 Nm), where the disruptive tearing instability is easy
+    to be excited.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, in addition to the IBS where the tearing instability is a critical
+    issue, there are other scenarios, such as hybrid and non-inductive scenarios for
+    ITER^([12](/articles/s41586-024-07024-9#ref-CR12 "Shimada, M. et al. Progress
+    in the ITER physics basis—chapter 1: overview and summary. Nucl. Fusion 47, S1
+    (2007).")). These different scenarios are less likely to disrupt by tearing, but
+    each has its own challenges, such as no-wall stability limit or minimizing inductive
+    current. Therefore, it is worth developing further AI controllers trained through
+    modified observation, actuation and reward settings to address these different
+    challenges. In addition, the flexibility of the actuators and sensors used in
+    this work at DIII-D will differ from that in ITER and reactors. Control policies
+    under more limited sensing and actuation conditions also need to be developed
+    in the future.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamic model for tearing-instability prediction
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To predict tearing events in DIII-D, we first labelled whether each phase was
+    tearing-stable or not (0 or 1) based on the *n* = 1 Mirnov coil signal in the
+    experiment. Using this labelled experimental data, we trained a DNN-based multimodal
+    dynamic model that receives various plasma profiles and tokamak actuations as
+    input and predicts the 25-ms-after tearing likelihood as output. The trained dynamic
+    model outputs a continuous value between 0 and 1 (so-called tearability), where
+    a value closer to 1 indicates a higher likelihood of a tearing instability occurring
+    after 25 ms. The architecture of this model is shown in Extended Data Fig. [1](/articles/s41586-024-07024-9#Fig5).
+    The detailed descriptions for input and output variables and hyperparameters of
+    the dynamic prediction model can be found in ref. ^([5](/articles/s41586-024-07024-9#ref-CR5
+    "Seo, J. et al. Multimodal prediction of tearing instabilities in a tokamak. In
+    2023 International Joint Conference on Neural Networks (IJCNN) 1–8 (IEEE, 2023).")).
+    Although this dynamic model is a black box and cannot explicitly provide the underlying
+    cause of the induced tearing instability, it can be utilized as a surrogate for
+    the response of stability, bypassing expensive real-world experiments. As an example,
+    this dynamic model is used as a training environment for the RL of the tearing-avoidance
+    controller in this work. During the RL training process, the dynamic model predicts
+    future *β*[N] and tearability from the given plasma conditions and actuator values
+    determined by the AI controller. Then the reward is estimated based on the predicted
+    state using equation ([1](/articles/s41586-024-07024-9#Equ1)) and provided to
+    the controller as feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure [4b–d](/articles/s41586-024-07024-9#Fig4) shows the contour plots of
+    the estimated tearability for possible beam powers at the given plasma conditions
+    of our control experiments. The actual beam power controlled by the AI is indicated
+    by the black solid lines. The dashed lines are the contour line of the threshold
+    value set for each discharge, which can roughly represent the stability limit
+    of the beam power at each point. The plot shows that the trained AI controller
+    proactively avoids touching the tearability threshold before the warning of instability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The sensitivity of the tearability against the diagnostic errors of the electron
+    temperature and density is shown in Extended Data Fig. [2](/articles/s41586-024-07024-9#Fig6).
+    The filled areas in Extended Data Fig. [2](/articles/s41586-024-07024-9#Fig6)
+    represent the range of tearability predictions when increasing and decreasing
+    the electron temperature and density by 10%, respectively, from the measurements
+    in 193280\. The uncertainty in tearability due to electron temperature error is
+    estimated to be, on average, 10%, and the uncertainty due to electron density
+    error is about 20%. However, even when considering diagnostic errors, the trend
+    in tearing stability over time can still be observed to remain consistent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: RL training for tearing avoidance
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The dynamic model used for predicting future tearing-instability dynamics is
+    integrated with the OpenAI Gym library^([55](/articles/s41586-024-07024-9#ref-CR55
+    "Brockman, G. et al. OpenAI Gym. Preprint at                    https://arxiv.org/abs/1606.01540                                     (2016).")),
+    which allows it to interact with the controller as a training environment. The
+    tearing-avoidance controller, another DNN model, is trained using the deep deterministic
+    policy gradient^([56](/articles/s41586-024-07024-9#ref-CR56 "Lillicrap, T. P.
+    et al. Continuous control with deep reinforcement learning. Preprint at                    https://arxiv.org/abs/1509.02971                                     (2015)."))
+    method, which is implemented using Keras-RL ([https://keras.io/](https://keras.io/))^([57](/articles/s41586-024-07024-9#ref-CR57
+    "keras-rl2\. GitHub                    https://github.com/inarikami/keras-rl2                                     (2019).")).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The observation variables consist of 5 different plasma profiles mapped on
+    33 equally distributed grids of the magnetic flux coordinate: electron density,
+    electron temperature, ion rotation, safety factor and plasma pressure. The safety
+    factor (*q*) can diverge to infinity at the plasma boundary when the plasma is
+    diverted. Therefore, 1/*q* has been used for the observation variables to reduce
+    numerical difficulties^([42](/articles/s41586-024-07024-9#ref-CR42 "Abbate, J.,
+    Conlin, R. & Kolemen, E. Data-driven profile prediction for DIII-D. Nucl. Fusion
+    61, 046027 (2021).")). The action variables include the total beam power and the
+    triangularity of the plasma boundary, and their controllable ranges were limited
+    to be consistent with the IBS experiment of DIII-D. The AI-controlled plasma boundary
+    shape has been confirmed to be achievable by the poloidal field coil system of
+    ITER, as shown in Extended Data Fig. [3](/articles/s41586-024-07024-9#Fig7).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The RL training process of the AI controller is depicted in Extended Data Fig.
+    [4](/articles/s41586-024-07024-9#Fig8). At each iteration, the observation variables
+    (five different profiles) are randomly selected from experimental data. From this
+    observation, the AI controller determines the desirable beam power and plasma
+    triangularity. To reduce the possibility of local optimization, action noises
+    based on the Ornstein–Uhlenbeck process are added to the control action during
+    training. Then the dynamic model predicts *β*[N] and tearability after 25 ms based
+    on the given plasma profiles and actuator values. The reward is evaluated according
+    to equation ([1](/articles/s41586-024-07024-9#Equ1)) using the predicted states,
+    and then given as feedback for the RL of the AI controller. As the controller
+    and the dynamic model observe plasma profiles, it can reflect the change of tearing
+    stability even when plasma profiles vary due to unpredictable factors such as
+    wall conditions or impurities. In addition, although this paper focuses on IBS
+    conditions where tearing instability is critical, the RL training itself was not
+    restricted to any specific experimental conditions, ensuring its applicability
+    across all conditions. After training, the Keras-based controller model is converted
+    to C using the Keras2C library^([58](/articles/s41586-024-07024-9#ref-CR58 "Conlin,
+    R., Erickson, K., Abbate, J. & Kolemen, E. Keras2c: a library for converting Keras
+    neural networks to real-time compatible C. Eng. App. Artif. Intell. 100, 104182
+    (2021).")) for the PCS integration.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Previously, a related work^([17](/articles/s41586-024-07024-9#ref-CR17 "Fu,
+    Y. et al. Machine learning control for disruption and tearing mode avoidance.
+    Phys. Plasmas 27, 022501 (2020).")) employed a simple bang-bang control scheme
+    using only beam power to handle tearability. Although our control performance
+    may seem similar to that work in terms of *β*[N], it is not true if considering
+    other operating conditions. In ITER and future fusion devices, higher normalized
+    fusion gain (*G* ∝ *Q*) with stable core instability is critical. This requires
+    a high *β*[N] and small *q*[95] as \(G\propto {\beta }_{{\rm{N}}}/{q}_{95}^{2}\).
+    At the same time, owing to limited heating capability, high *G* has to be achieved
+    with weak plasma rotation (or beam torque). Here, high *β*[N], small \({q}_{95}^{2}\)
+    and low torque are all destabilizing conditions of tearing instability, highlighting
+    tearing instability as a substantial bottleneck of ITER.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As shown in Extended Data Fig. [5](/articles/s41586-024-07024-9#Fig9), our control
+    achieves a tearing-stable operation of much higher *G* than the test experiment
+    shown in ref. ^([17](/articles/s41586-024-07024-9#ref-CR17 "Fu, Y. et al. Machine
+    learning control for disruption and tearing mode avoidance. Phys. Plasmas 27,
+    022501 (2020).")). This is possible by maintaining higher (or similar) *β*[N]
+    with lower *q*[95] (4 → 3), where tearing instability is more likely to occur.
+    In addition, this is achieved with a much weaker torque, further highlighting
+    the capability of our RL controller in harsher conditions. Therefore, this work
+    shows more ITER-relevant performance, providing a closer and clearer path to the
+    high fusion gain with robust tearing avoidance in future devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, the performance of RL control in achieving high fusion can be further
+    highlighted when considering the non-monotonic effect of *β*[N] on tearing instability.
+    Unlike *q*[95] or torque, both increasing and decreasing *β*[N] can destabilize
+    tearing instabilities. This leads to the existence of optimal fusion gain (as
+    *G* ∝ *β*[N]), which enables the tearing-stable operation and makes system control
+    more complicated. Here, Extended Data Fig. [6](/articles/s41586-024-07024-9#Fig10)
+    shows the trace of RL-controller discharge in the space of fusion gain versus
+    time, where the contour colour illustrates the tearability. This clearly shows
+    that the RL controller successfully drives plasma through the valley of tearability,
+    ensuring stable operation and showing its remarkable performance in such a complicated
+    system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Such a superior performance is feasible by the advantages of RL over conventional
+    approaches, which are described below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (1)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: By employing a ‘multi-actuator (beam and shape) multi-objectives (low tearability
+    and high *β*[N])’ controller using RL, we were able to enter a higher*-β*[N] region
+    while maintaining tolerable tearability. As shown in Extended Data Fig. [5](/articles/s41586-024-07024-9#Fig9),
+    our controlled discharge (193280) shows a higher *β*[N] and *G* than the one in
+    the previous work (176757). This advantage of our controller is because it adjusts
+    the beam and plasma shape simultaneously to achieve both increasing *β*[N] and
+    lowering tearability. It is notable that our discharge has more unfavourable conditions
+    (lower *q*[95] and lower torque) in terms of both *β*[N] and tearing stability.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: (2)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The previous tearability model evaluates the tearing likelihood based on current
+    zero-dimensional measurements, not considering the upcoming actuation control.
+    However, our model considers the one-dimensional detailed profiles and also the
+    upcoming actuations, then predicts the future tearability response to the future
+    control. This can provide a more flexible applicability in terms of control. Our
+    RL controller has been trained to understand this tearability response and can
+    consider future effects, while the previous controller only sees the current stability.
+    By considering the future responses, ours offers a more optimal actuation in the
+    longer term instead of a greedy manner.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This enables the application in more generic situations beyond our experiments.
+    For instance, as shown in Extended Data Fig. [7a](/articles/s41586-024-07024-9#Fig11),
+    tearability is a nonlinear function of *β*[N]. In some cases (Extended Data Fig.
+    [7b](/articles/s41586-024-07024-9#Fig11)), this relation is also non-monotonic,
+    making increasing the beam power the desired command to reduce tearability (as
+    shown in Extended Data Fig. [7b](/articles/s41586-024-07024-9#Fig11) with a right-directed
+    arrow). This is due to the diversity of the tearing-instability sources such as
+    *β*[N] limit, *Δ*′ and the current well. In such cases, using a simple control
+    shown in ref. ^([17](/articles/s41586-024-07024-9#ref-CR17 "Fu, Y. et al. Machine
+    learning control for disruption and tearing mode avoidance. Phys. Plasmas 27,
+    022501 (2020).")) could result in oscillatory actuation or even further destabilization.
+    In the case of RL control, there is less oscillation and it controls more swiftly
+    below the threshold, achieving a higher *β*[N] through multi-actuator control,
+    as shown in Extended Data Fig. [7c](/articles/s41586-024-07024-9#Fig11).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Control of plasma triangularity
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Plasma shape parameters are key control knobs that influence various types of
+    plasma instability. In DIII-D, the shape parameters such as triangularity and
+    elongation can be manipulated through proximity control^([41](/articles/s41586-024-07024-9#ref-CR41
+    "Barr, J. et al. Development and experimental qualification of novel disruption
+    prevention techniques on DIII-D. Nucl. Fusion 61, 126019 (2021).")). In this study,
+    we used the top triangularity as one of the action variables for the AI controller.
+    The bottom triangularity remained fixed across our experiments because it is directly
+    linked to the strike point on the inner wall.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also note that the changes in top triangularity through AI control are quite
+    large compared with typical adjustments. Therefore, it is necessary to verify
+    whether such large plasma shape changes are permitted for the capability of magnetic
+    coils in ITER. Additional analysis, as shown in Extended Data Fig. [3](/articles/s41586-024-07024-9#Fig7),
+    confirms that the rescaled plasma shape for ITER can be achieved within the coil
+    current limits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Robustness of maintaining tearability against different conditions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The experiments in Figs. [3b](/articles/s41586-024-07024-9#Fig3) and [4a](/articles/s41586-024-07024-9#Fig4)
+    have shown that the tearability can be maintained through appropriate AI-based
+    control. However, it is necessary to verify whether it can robustly maintain low
+    tearability when additional actuators are added and plasma conditions change.
+    In particular, ITER plans to use not only 50 MW beams but also 10–20 MW radiofrequency
+    actuators. Electron cyclotron radiofrequency heating directly changes the electron
+    temperature profile and the stability can vary sensitively. Therefore, we conducted
+    an experiment to see whether the AI controller successfully maintains low tearability
+    under new conditions where radiofrequency heating is added. In discharge 193282
+    (green lines in Extended Data Fig. [8](/articles/s41586-024-07024-9#Fig12)), 1.8 MW
+    of radiofrequency heating is preprogrammed to be steadily applied in the background
+    while beam power and plasma triangularity are controlled via AI. Here, the radiofrequency
+    heating is towards the core of the plasma and the current drive at the tearing
+    location is negligible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, owing to the sudden loss of plasma current control at *t* = 3.1 s,
+    *q*[95] increased from 3 to 4, and the subsequent discharge did not proceed under
+    the ITER baseline condition. It should be noted that this change in plasma current
+    control was unintentional and not directly related to AI control. Such plasma
+    current fluctuation sharply raised the tearability to exceed the threshold temporarily
+    at *t* = 3.2 s, but it was immediately stabilized by continued AI control. Although
+    it is eventually disrupted owing to insufficient plasma current by the loss of
+    plasma current before the preprogrammed end of the flat top, this accidental experiment
+    demonstrates the robustness of AI-based tearability control against additional
+    heating actuators, a wider *q*[95] range and accidental current fluctuation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In normal plasma experiments, control parameters are kept stationary with a
+    feed-forward set-up, so that each discharge is a single data point. However, in
+    our experiments, both plasma and control are varying throughout the discharge.
+    Thus, one discharge consists of multiple control cycles. Therefore, our results
+    are more important than one would expect compared with standard fixed control
+    plasma experiments, supporting the reliability of the control scheme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, the predicted plasma response due to RL control for 1,000 samples
+    randomly selected from the experimental database, which includes not just the
+    IBS but all experimental conditions, is shown in Extended Data Fig. [9a,b](/articles/s41586-024-07024-9#Fig13).
+    When *T* > 0.5 (unstable, top), the controller tries to decrease *T* rather than
+    affecting *β*[N], and when *T* < 0.5 (stable, bottom), it tries to increase *β*[N].
+    This matches the expected response by the reward shown in equation ([1](/articles/s41586-024-07024-9#Equ1)).
+    In 98.6% of the unstable phase, the controller reduced the tearability, and in
+    90.7% of the stable phase, the controller increased *β*[N].
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Extended Data Fig. [9c](/articles/s41586-024-07024-9#Fig13) shows the achieved
+    time-integrated *β*[N] for the discharge sequences of our experiment session.
+    Discharges until 193276 either did not have the RL control applied or had tearing
+    instability occurring before the control started, and discharges after 193277
+    had the RL control applied. Before RL control, all shots except one (193266: low-*β*[N]
+    reference shown in Fig. [3b](/articles/s41586-024-07024-9#Fig3)) were disrupted,
+    but after RL control was applied, only two (193277 and 193282) were disrupted,
+    which were discussed earlier. The average time-integrated *β*[N] also increased
+    after the RL control. In addition, the input feature ranges of the controlled
+    discharges are compared with the training database distribution in Extended Data
+    Fig. [10](/articles/s41586-024-07024-9#Fig14), which indicates that our experiments
+    are neither too centred (the model not overfitted to our experimental condition)
+    nor too far out (confirming the availability of our controller on the experiments).'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,954 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:56:04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: My Notes on GitLab Postgres Schema Design – Shekhar Gulati
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/](https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I spent some time going over the Postgres schema of Gitlab. GitLab is an alternative
+    to Github. You can self host GitLab since it is an open source DevOps platform.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My motivation to understand the schema of a big project like Gitlab was to compare
+    it against schemas I am designing and learn some best practices from their schema
+    definition. I can surely say I learnt a lot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I am aware that best practices are sometimes context dependent so you should
+    not apply them blindly.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Gitlab schema file `structure.sql` [1] is more than 34000 lines of code.
+    Gitlab is a monolithic Ruby on Rails application. The popular way to manage schema
+    migration is using the `schema.rb` file. The reason the Gitlab team decided to
+    adopt `structure.sql` instead is mentioned in on of their issues [2] in their
+    issue tracker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now what keeps us from using those features is the use of `schema.rb`. This
+    can only contain standard migrations (using the Rails DSL), which aim to keep
+    the schema file database system neutral and abstract away from specific SQL. This
+    in turn means we are not able to use extended PostgreSQL features that are reflected
+    in schema. Some examples include triggers, postgres partitioning, materialized
+    views and many other great features.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In order to leverage those features, we should consider using a plain SQL schema
+    file (`structure.sql`) instead of a ruby/rails standard schema `schema.rb`.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The change would entail switching `config.active_record.schema_format = :sql`
+    and regenerate the schema in SQL. Possibly, some build steps would have to be
+    adjusted, too.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Now, let’s go over the things I learnt from Gitlab Postgres schema.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below are some of the tweets from people on this article. If you find this article
+    useful please share and tag me [@shekhargulati](https://twitter.com/shekhargulati)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '## 1\. Using the right primary key type for a table'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my work I have made the mistake of standardizing on primary key types. This
+    means standardizing on either `bigint` or `uuid` so all tables will have the same
+    type irrespective of their structure, access patterns, and growth rate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When your database is small this does not have any visible impact but as you
+    grow primary keys have a visible impact on storage space, write speed, and read
+    speed. So, we should give a proper thought process on choosing the right primary
+    key type for a table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As I discussed in an earlier post[3] when you use Postgres native UUID v4 type
+    instead of bigserial table size grows by 25% and insert rate drops to 25% of bigserial.
+    This is a big difference. I also compared against ULID but it also performed poorly.
+    One reason could be the ULID implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given this context I was interested to learn how Gitlab chooses primary key
+    types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Out of the 573 tables, 380 tables have bigserial primary key type, 170 have
+    serial4 primary key type, and remaining 23 had composite primary keys.They had
+    no table that used uuid v4 primary key or any other esoteric key type like ULID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Name | Description | Range | Text |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `serial` | 4 bytes | 1 to 2147483647 | ~2.1 billion |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `bigserial` | 8 bytes | 1 to 9223372036854775807 | ~9.2 quintillion |'
+  prefs: []
+  type: TYPE_TB
+- en: 1 quintillion is equal to 1000000000 billions
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The decision to choose serial or bigserial is dependent on the number of records
+    in that table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tables like `application_settings`, `badges`, `chat_teams`, `notification_settings`,
+    `project_settings` use serial type. For some tables like `issues`, `web_hooks`,
+    `merge_requests`, `projects` I was surprised to see that they had used the `serial`
+    type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The serial type might work for self-hosted community or enterprise versions
+    but for Gitlab.com SaaS service this can cause issues. For example, Github had
+    128 million public repositories in 2020\. Even with 20 issues per repository it
+    will cross the serial range. Also changing the type of the table is expensive.
+    The table has to be rewritten, and you will have to wait. This will also be a
+    problem if you have to shard the table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I performed a quick experiment that showed that for my table with two columns
+    and 10million records it takes 11 seconds to change the data type from integer
+    to bigint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Insert 10million records
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Change column type from integer to bigint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will also have to alter the sequence to change its type as well. This operation
+    is quick.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This finished in 4ms
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: All the bigserial sequences start from 1 and go till the max value of bigint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 2\. Use of internal and external ids
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is generally a good practice to not expose your primary keys to the external
+    world. This is especially important when you use sequential auto-incrementing
+    identifiers with type integer or bigint since they are guessable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, I was curious to know what happens when you create a Gitlab issue. Do we
+    expose the primary key id to the external user or do we use some other id? If
+    you expose the `issues` table primary key id then when you create an issue in
+    your project it will not start with 1 and you can easily guess how many issues
+    exist in the GitLab. This is both unsafe and poor user experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To avoid exposing your primary keys to the end user the common solution is use
+    two ids. The first is your primary key id which remains internal to the system
+    and never exposed to any public context. The second id is what we share with the
+    external world. In my past experience I have used UUID v4 as the external id.
+    As we discussed in the previous point there is a storage cost involved with using
+    UUID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: GitLab also uses internal and external ids in tables where ids have to be shared
+    with the external world. Tables like `issues`, `ci_pipelines`, `deployments`,
+    `epics`, and a few others have two ids – `id` and `iid`. Below is the part of
+    the issue schema. As shown below `iid` has integer data type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see there are `id` and `iid` columns. The value of the `iid` column
+    is shared with the end user. An issue is uniquely identified using `project_id`
+    and `iid`. This is because there could be multiple issues with the same `iid`
+    . To make it more clear, if you create two projects and create one issue in each
+    of the repositories then they both need to have a visible id of 1 as shown in
+    the example below. Both the `sg` and `sg2` projects start with issue id 1\. This
+    is achieved using `iid`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: They have a unique index on `project_id` and `iid` to quickly and efficiently
+    fetch an issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 3\. Using `text` character type with check constraints
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Postgres has three character types as described in their documentation[5].
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Name | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `character varying(n)`, `varchar(n)` | variable-length with limit |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `character(n)`, `char(n)` | fixed-length, blank padded |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `text` | variable unlimited length |'
+  prefs: []
+  type: TYPE_TB
+- en: I have mostly used `character varying(n)` or `varchar(n)` to store String values.
+    Gitlab schema uses both `character varying(n)` and `text` but more often they
+    use `text` type. One such example table is shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that apart from `entity_type` all other columns have `text` type.
+    They have used `CHECK` to define length constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned in multiple posts[6,7] on the web there is not much performance
+    difference between the two types. They both use `varlena` type under the hood.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with `varchar(n)` is that if n becomes more restrictive then it
+    will require an exclusive lock. This can cause performance issues depending on
+    the size of the table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `text` column with `CHECK` constraint on the other hand does not have this
+    issue. But it does cost a little during writes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s do a quick experiment to prove it. We will start by creating a simple
+    table
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Insert 10million records
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we increase the length of s from 200 to 300 then it is instantaneous
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: But if we reduce the length of `s` from 300 to 100 then it does take considerable
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see it took 36 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s do the same with the text column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Insert 10 million records
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is no alter constraint in Postgres. You have to drop the constraint and
+    then add a new constraint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, add again
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, as you can see, the `text` type with `CHECK` constraint allows you to evolve
+    the schema easily compared to `character varying` or `varchar(n)` when you have
+    length checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also noticed that they used `character varying` where length checks are not
+    required like as shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 4\. Naming conventions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The naming follows the following convention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All tables use plural forms. For example `issues`, `projects`, `audit_events`,
+    `abuse_reports`, `approvers`, etc.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tables use module name prefix to provide a namespace. For example, all tables
+    belonging to merge request functionality start with `merge_request` prefix as
+    shown in the listing below.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: merge_request_assignees
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: merge_request_blocks
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: merge_request_cleanup_schedules
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: merge_request_context_commit_diff_files
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: merge_request_context_commits
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: etc..
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Names of tables and columns follow snake_case convention. The underscore is
+    used to combine two or more words. For example, `title`, `created_at`, `is_active`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Columns expressing boolean follow either of the three naming convention depending
+    on their purpose
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Feature toggles. For example `create_issue`, `send_email`, `packages_enabled`,
+    `merge_requests_rebase_enabled`, etc
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Entity State: Examples, `deployed`, `onboarding_complete`, `archived`, `hidden`,
+    etc.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Qualifiers – They start with `is_xxx` or `has_xxx`. For example, `is_active`,
+    `is_sample`, `has_confluence`, etc. I think these can be expressed using the above
+    two.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Indexes follow the convention `index_#{table_name}_on_#{column_1}_and_#{column_2}_#{condition}`.
+    For example, `index_services_on_type_and_id_and_template_when_active`, `index_projects_on_id_service_desk_enabled`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 5\. Timestamp with timezone and without timezone
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: GitLab uses both `timestamp with timezone` and `timestamp without timezone`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My understanding is that the data type `timestamp without timezone` is used
+    when the system performs an action and data type `timestamp with time zone` is
+    used for user actions. For example, in the SQL shown below `created_at` and `updated_at`
+    does use `timestamp without time zone` whereas `closed_at` uses `timestamp with
+    time zone`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another example is `merge_request_metrics` where `latest_closed_at`, `first_comment_at`,
+    `first_commit_at` , and `last_commit_at` uses `timestamp with time zone` whereas
+    `latest_build_started_at` , `latest_build_finished_at`, and `merge_at` they use
+    `timestamp without timezone`. You might wonder why `merge_at` does not use a timezone.
+    I think it is because the system can merge the request based on certain conditions
+    or checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 6\. Foreign key constraints
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A foreign key constraint is a logical association of rows between two tables.
+    You typically use foreign keys to join tables in queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A **FOREIGN KEY** constraint is a database construct, an implementation that
+    forces the foreign key relationship’s integrity (referential integrity). Namely,
+    it ensures that a child table can only reference a parent table when the appropriate
+    row *exists* in the parent table. A constraint also prevents the existence of
+    “orphaned rows” in different methods. – [Link](https://docs.planetscale.com/learn/operating-without-foreign-key-constraints)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I have consulted in multiple projects in the last couple of years where team/architects
+    decided not to use foreign key constraints. They mainly cite performance as the
+    reason to not use foreign key constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One reason performance can degrade when you create foreign key is when you create
+    it with `ON DELETE CASCADE` action. The way `ON DELETE CASCADE` action works is
+    that if you delete a row in the parent table then any referencing row in the child
+    table is also deleted within the same transaction. You might expect only one row
+    to be deleted but you might end up deleting hundred or thousand or more child
+    table rows as well. But, this will be an issue only when one parent row is linked
+    with a large number of child table rows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two other reasons teams don’t use foreign key constraints. These
+    are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They don’t work well with online DDL schema migration operations especially
+    in MySQL
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is difficult to maintain foreign key constraints once you shard your data
+    into multiple database servers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MySQL compatible serverless database like PlanetScale(based on open source Vitess
+    database) does not support foriegn keys.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: So, I was curious to learn if GitLab uses Foreign key constraints or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'GitLab uses foriegn key constraints in most tables except in a few tables like
+    `audit_events` , `abuse_reports`, `web_hooks_logs`, `spam_logs`. I think there
+    are two main reasons why they don’t use foreign key constraints in `audit_events`
+    , `abuse_reports`, `web_hooks_logs`, `spam_logs`. These are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: These tables are immutable in nature. You don’t want to change them once entries
+    are written to them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These tables can grow to millions(or more) of rows so even a small performance
+    hit could have a big impact
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The rest of the tables where GitLab uses foreign keys use both `ON DELETE CASCADE`
+    , `ON DELETE RESTRICT` , and `ON DELETE SET NULL` actions. An example of each
+    of them is shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`ON DELETE SET NULL` will set the referencing column on the child table to
+    null for matching rows. It leads to orphaned rows but you can easily identify
+    them because of NULL. In this action also, a single row deletion can lead to multiple
+    rows getting updated in the child table. This may cause large transactions, excessive
+    locking, and replication lag.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ON DELETE RESTRICT` prevents deletion of referenced child rows. This does
+    not cause orphaned childs as you can’t delete a parent row if there are child
+    rows that references it. You get exceptions like as shown below.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 7\. Partitioning big tables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: GitLab uses partitioning to partition tables that can grow to a huge size. This
+    is done to improve query performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PARTITION BY RANGE: This partitioning strategy works by partitioning table
+    data based on the chosen range. This strategy is commonly used when you need to
+    partition time-series data. The tables `audit_events` and `web_hook_logs` use
+    this strategy.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'PARTITION BY LIST: This partitioning strategy works by partitioning table data
+    based on discrete values of a column. The table `loose_foreign_keys_deleted_records`
+    uses this strategy.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'PARTITION BY HASH: TThe table is partitioned by specifying a modulus and a
+    remainder for each partition. Each partition will hold the rows for which the
+    hash value of the partition key divided by the specified modulus will produce
+    the specified remainder. The table `product_analytics_events_experimental` uses
+    this strategy.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can read more about Postgres partitioning in Postgres [documentation](https://www.postgresql.org/docs/current/ddl-partitioning.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 8\. Supporting LIKE search use cases with Trigrams and `gin_trgm_ops`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: GitLab uses GIN(Generalized Inverted Index) indexes to perform efficient searches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The GIN index type was designed to deal with data types that are subdividable
+    and you want to search for individual component values (array elements, lexemes
+    in a text document, etc)” – [Tom Lane](https://www.postgresql.org/message-id/flat/26038.1559516834%40sss.pgh.pa.us#ccb004aefc151d913e7a274a9b30c631)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Due to the nature of the LIKE operation, which supports arbitrary wildcard expressions,
+    this is fundamentally hard to index. One such example is the issues table where
+    you might want to do something like search on title and description fields. So,
+    we use the pg_trgm extension to create an index that works on trigrams.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The GIN index makes searches performant. Let’s see that in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will create a simple table as shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s insert some data. I pulled an English word list in CSV format from this
+    [link](https://www.bragitoff.com/2016/03/english-dictionary-in-csv-format/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will create a btree index on the word column and later we will use the gin
+    index to show its efficiency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s run the explain plan query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s drop btree index;
+  prefs: []
+  type: TYPE_NORMAL
+- en: Install the `pg_trm` extension
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Create the index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let;s run explain
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: GitLab also makes use of `tsvector` to support complete full text search.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The advantages of doing text seach in your primary datastore are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Real time indexes. No lag to create index
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access to the complete data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Less complexity in your architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 9\. Use of `jsonb`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As I discussed an earlier [post](https://shekhargulati.com/2022/01/08/when-to-use-json-data-type-in-database-schema-design/)
+    I use json data type in schema design for following use cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dump request data that will be processed later
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Support extra fields
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: One To Many Relationship where many side will not have to its own identity
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Key Value use case
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Simpler EAV design
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: GitLab schema design also uses `jsonb` data type in multiple tables. They use
+    it mainly for 1 and 2 use cases in my list above. The advantage of using jsonb
+    over storing in plain text is the efficient querying supported by Postgres on
+    `jsonb` data type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The table `error_tracking_error_events` stores payload in jsonb data type. This
+    is an example of dump request data that will be processed in a later use case.
+    I covered a similar use case in my blog post so do read that for more information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can use a JSON schema to validate the structure of a JSON document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another example is the `operations_strategies` table shown below. You don’t
+    know how many parameters you might receive so you need a flexible data type like
+    `jsonb`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: An example of supporting extra fields use cases is shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: They also use jsonb for storing data that is already in JSON format. For example,
+    in the table `vulnerability_finding_evidences` report data is already JSON so
+    they saved it as is in `jsonb` data type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 10\. Other tidbits
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Auditing fields like `updated_at` are only used in tables where records can
+    be modified. For example `issues` has an `updated_at` column. For append-only
+    immutable log tables like `audit_events` do not have an `updated_at` column as
+    shown below in the code snippets. `issues` table with `updated_at` column
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`audit_events` table with no `updated_at` column.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Enums are stored as smallint rather than `character varying`. It saves space.
+    The only problem is you can’t change the order of enum values. In the example
+    shown below `reason` and `severity_level` are enums
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: Optimistic locking is used in a few(8) tables like `issues` and `ci_builds`
+    to protect against edits from multiple parties. Optimistic locking assumes that
+    there will be minimum such conflicts of data and if it does happen then the application
+    throws an exception and the update is ignored. Active Record supports optimistic
+    locking if the `lock_version` field is present. Each update to the record increments
+    the `lock_version` column and the locking facilities ensure that records instantiated
+    twice will let the last one saved raise a `StaleObjectError` if the first was
+    also updated. The `ci_builds` table shown below uses the ‘lock_version` column.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using inet for storing ip addresses. I was not aware of the `inet` type. They
+    have used inet in `audit_events` and `authentication_events` tables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: GitLab has not used inet in all the tables that store `ip_address`. For example,
+    in tables `ci_runners` and `user_agent_details`, they have stored it as `character
+    varying`. I am not sure why they have not used the same type in all the tables
+    that store ip addresses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should prefer `inet` over storing an ip address as a plain text type as
+    these types offer input error handling and specialized functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s quickly see it in action. We will start by creating a table with two fields
+    – id, and `ip_addr`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can insert a valid record like shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can also insert the record with a mask as shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Both these records will get inserted
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we try to save invalid data then insert will fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can inet operators supported by Postgres to check if an ip address is contained
+    by subnet as shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we want to check if subnet is contained or equal then we do following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are many other operators and functions supported by Postgres. You can
+    read them in the Postgres [docs](https://www.postgresql.org/docs/current/functions-net.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Postgres ‘bytea`data type is used to store`SHA` , encrypted tokens, encrypted
+    keys, encrypted password, fingerprints, etc.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Postgres array types are used for storing columns with multiple values as shown
+    below.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Arrays are to be used when you are absolutely sure you don’t need to create
+    any relationship between the items in the array with any other table. It should
+    be used for a tightly coupled one to many relationship. – [Link](https://stackoverflow.com/a/56298555)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: For example in the table shown below we are storing `*_ids` as an array rather
+    than storing them in a flat manner and defining relationships with other tables.
+    You don’t know how many users and projects will be mentioned so it will be wasteful
+    to create columns like `mentioned_user_id1` , `mentioned_user_id2`, `mentioned_user_id3`
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another common use case of Postgres array is to store fields like hosts, tags,
+    urls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I learnt a lot from the GitLab schema. They don’t blindly apply the same practices
+    to all the table designs. Each table makes the best decision based on its purpose,
+    the kind of data it stores, and its rate of growth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: References
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Gitlab schema `structure.sql` – [Link](https://gitlab.com/gitlab-org/gitlab/-/blob/master/db/structure.sql)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Issue 29465: Use structure.sql instead of schema.rb – [Link](https://gitlab.com/gitlab-org/gitlab/-/issues/29465)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Choosing Primary Key Type in Postgres – [Link](https://shekhargulati.com/2022/06/23/choosing-a-primary-key-type-in-postgres/)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Github’s Path to 128M public repositories – [Link](https://towardsdatascience.com/githubs-path-to-128m-public-repositories-f6f656ab56b1#:~:text=There%20are%20over%20128%20million%20public%20repositories%20on%20GitHub.)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Postgres Character Types Documentation – [Link](https://www.postgresql.org/docs/current/datatype-character.html)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Difference between text and varchar (character varying) – [Link](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: CHAR(x) vs. VARCHAR(x) vs. VARCHAR vs. TEXT – [Link](https://www.depesz.com/2010/03/02/charx-vs-varcharx-vs-varchar-vs-text/)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

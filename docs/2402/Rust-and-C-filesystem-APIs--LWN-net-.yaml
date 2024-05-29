@@ -1,0 +1,229 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:02:25'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust and C filesystem APIs [LWN.net]
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lwn.net/Articles/958072/](https://lwn.net/Articles/958072/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
+    made this article — and everything that surrounds it — possible. If you appreciate
+    our content, please [buy a subscription](/subscribe/) and make the next set of
+    articles possible. |'
+  prefs: []
+  type: TYPE_TB
+- en: By **Jonathan Corbet**
+  prefs: []
+  type: TYPE_NORMAL
+- en: January 15, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Rust-for-Linux project](https://rust-for-linux.com/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: advances, the kernel is gradually accumulating abstraction layers that enable
+    Rust code to interface with the existing C code. As the discussion around the
+    set of
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[filesystem abstractions](/ml/linux-fsdevel/20231018122518.128049-1-wedsonaf@gmail.com/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: posted by Wedson Almeida Filho in December shows, though, there is some tension
+    between two approaches to the design of those abstractions. The approach favored
+    by most of the kernel's C programmers looks set to win out, but this is a discussion
+    that is likely to return as the use of Rust in the kernel grows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If a Rust developer wants to implement a filesystem using the posted abstractions,
+    their job will be to put together an implementation that looks like this example
+    taken from the cover letter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The functions defined here perform the tasks that the kernel might ask of a
+    filesystem implementation: `read_dir()` to read directory contents, for example,
+    or `lookup()` to look up a file name within a directory. All of these operations
+    are defined as part of a single trait called `FileSystem`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This organization differs from how the API is defined for C code, where file
+    and filesystem-related operations are spread out across a wide range of object
+    types. A filesystem as a whole is defined by [`struct super_block`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1192),
+    which has a set of associated operations in [`struct super_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L2059).
+    But filesystems implement a number of other object types and related operations,
+    including inodes ([`inode`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L639),
+    [`inode_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1968)),
+    directory entries ([`dentry`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/dcache.h#L82),
+    [`dentry_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/dcache.h#L128)),
+    files ([`file`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L992),
+    [`file_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1916)),
+    and address spaces ([`address_space`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L448),
+    [`address_space_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L404)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an example of how the object model works on the C side, consider that `lookup()`
+    is an inode operation, `iterate_shared()` (used to implement the `read_dir()`
+    function defined in the Rust trait) is a file operation, and `read_folio()` is
+    an address-space operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Matthew Wilcox [had a couple of questions](/ml/linux-fsdevel/ZT7BPUAxsHQ%2FH%2FHm@casper.infradead.org/)
+    about the proposed abstractions, starting with the `inode` parameter to a number
+    of the operations. In the kernel's C code, those functions take a `struct inode`
+    pointer, which is quickly converted into a filesystem-specific structure pointer.
+    There is little in the way of type safety here; a function cannot know that it
+    was actually passed a pointer to the right sort of inode. In Rust, it seems, it
+    should be possible to do better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almeida [answered](/ml/linux-fsdevel/CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com/)
+    that this interface does, indeed, do better. The type of the `inode` parameter
+    is `&INode<Self>`, which ties the actual type of that parameter to the filesystem
+    type; it is not possible to pass the wrong type of inode to those functions without
+    running into compilation errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Wilcox''s other question proved harder to answer, though. The file operation
+    used (in C code) to read a directory is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The equivalent in the Rust code (`read_dir()`, above) takes an inode reference
+    as a parameter rather than a `struct file` pointer. Wilcox pointed out that, while
+    "<q>toy filesystems</q>" get away with just the information stored in the inode,
+    others need the information in the `file` structure. Not keeping that structure
+    in the interface thus seems a bit strange. Almeida answered that the filesystems
+    that have been implemented in Rust, to date, do not need anything from `struct
+    file`; he added: "<q>Passing a `file` to `read_dir` would require us to introduce
+    an unnecessary abstraction that no one uses, which we''ve been told not to do</q>".
+    But, he said, the interface could be changed if and when it becomes necessary.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Wilcox [responded](/ml/linux-fsdevel/ZZWhQGkl0xPiBD5%2F@casper.infradead.org/)
+    in fairly strong terms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we shouldn't merge any of this, or even send it out for review again until
+    there is at least one non-toy filesystems implemented. Either stick to the object
+    orientation we've already defined (ie separate aops, iops, fops, ... with substantially
+    similar arguments) or propose changes to the ones we have in C. Dealing only with
+    toy filesystems is leading you to bad architecture.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Almeida [was not pleased](/ml/linux-fsdevel/CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com/)
+    by this message; he asked: "<q>Are [you] saying that Rust cannot have different
+    APIs with the same performance characteristics as C''s, unless we also fix the
+    C apis?</q>" Wilcox [replied](/ml/linux-fsdevel/ZZYOkCyujEaR7TdX@casper.infradead.org/)
+    that the kernel''s object model exists for a reason, and that the Rust side should
+    not change that model without a strong justification. Al Viro [added](/ml/linux-fsdevel/20240103195358.GK1674809@ZenIV/)
+    that the existing set of objects and operations needed to be treated "<q>as externally
+    given</q>"; they can be changed with good reason, he said, but no such reason
+    exists here.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kent Overstreet, instead, [argued](/ml/linux-fsdevel/ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5/)
+    that the Rust abstractions are a way to design a cleaner interface, and that this
+    interface should not need to match the C API. Cleaning up the latter is "<q>a
+    giant hassle</q>" due to the need to change all existing filesystems at the same
+    time, while creating something better in Rust is relatively easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So instead, it would seem easier to me to do the cleaner version on the Rust
+    side, and then once we know what that looks like, maybe we update the C version
+    to match - or maybe we light it all on fire and continue with rewriting everything
+    in Rust.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Meanwhile, Almeida [complained](/ml/linux-fsdevel/CANeycqrazDc_KKffx3c4C1yKCuSHU14v+L+2wq-pJq+frRf2wg@mail.gmail.com/)
+    that passing a `file` structure into `read_dir()` when nothing uses it is just
+    the sort of thing the Rust developers have been advised to avoid. Those developers
+    have long been contending with the problem of merging abstractions so that they
+    can be used without being able to merge the users at the same time. Wilcox [answered](/ml/linux-fsdevel/ZZ2dsiK77Se65wFY@casper.infradead.org/)
+    that the advice had been misunderstood; the Rust developers have been asked not
+    to merge abstractions for which there are no users, not to change the interfaces
+    for the abstractions they *are* merging. Greg Kroah-Hartman [concurred](/ml/linux-fsdevel/2024010935-tycoon-baggage-a85b@gregkh/),
+    saying that the abstractions should be suitable for all filesystems, not just
+    those that have been implemented now. Dave Chinner [said](/ml/linux-fsdevel/ZZ3GeehAw%2F78gZJk@dread.disaster.area/)
+    that this problem is exactly why he has been suggesting that the Rust developers
+    reimplement ext2, since that filesystem, while being relatively simple, uses most
+    of the core filesystem API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Eventually, Almeida [gave in](/ml/linux-fsdevel/CANeycqrubugocT0ZEhcUY4H+kytzhm-E4-PoWtvNobYr32auDA@mail.gmail.com/),
+    and said that he would make a new version of the abstractions with separate file,
+    inode, and address-space traits; `read_dir()` will be updated to take a `File<T>`
+    reference instead. Wilcox [agreed](/ml/linux-fsdevel/ZZ6T6aBjOf+vA9sB@casper.infradead.org/)
+    that this approach seemed like the right way forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So this particular discussion appears to have come to a resolution. But implementing
+    kernel functionality in Rust is sure to provide innumerable opportunities to create
+    new interfaces that are cleaner and safer than those that have evolved over decades
+    in the kernel's C code. Sometimes those APIs will demonstrate misunderstandings
+    about why the C code evolved the way it did; sometimes they will truly be better.
+    But, either way, a Rust API that differs significantly from the C API will make
+    maintenance and future development harder, so there will continue to be strong
+    resistance to the idea of creating APIs on the Rust side that differ from what
+    is done on the C side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One answer, as was also [discussed](/Articles/952029/) at the 2023 Maintainers
+    Summit, is to evolve the C code to match the better interfaces being developed
+    for Rust. The idea makes some sense, but it is also asking Rust developers to
+    do large amounts of work — in C, which is just the thing they are trying to get
+    away from. Changing core kernel APIs, updating all users of those APIs, and obtaining
+    acceptance for the changes will not be a task for the faint of heart. Such a policy
+    would undoubtedly impede the development of better interfaces on the Rust side;
+    the result would be more maintainability, but that comes at a real cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What seems likely to happen at some point was alluded to by Overstreet above:
+    "<q>light it all on fire and continue with rewriting everything in Rust</q>".
+    There is no problem with API divergence if the API used by everybody is in the
+    Rust code. Your editor''s predictive powers are severely limited, but a couple
+    of things seem likely to happen: there will be proposals to replace some core
+    code with Rust implementations at some point, and the resistance to doing so will
+    be fierce. Even in this discussion, David Howells [made it clear](/ml/linux-fsdevel/1080086.1704413050@warthog.procyon.org.uk/)
+    that he didn''t want to see Rust anywhere near the core kernel.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That, though, is a discussion for a future time; Rust will have to prove itself
+    at the edges of the kernel first. But once the camel's nose (or the crab's) is
+    in the tent, the rest seems likely to want to follow. Stay tuned, it is going
+    to be interesting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Log in](https://lwn.net/Login/?target=/Articles/958072/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to post comments)
+  prefs: []
+  type: TYPE_NORMAL

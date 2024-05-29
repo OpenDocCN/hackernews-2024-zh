@@ -1,0 +1,228 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:18:59'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Types Have an Expectations Problem | by Sławomir Górawski | Stackademic
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8](https://medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python Types Have an Expectations Problem
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Photo by [Hitesh Choudhary](https://unsplash.com/@hiteshchoudhary?utm_source=medium&utm_medium=referral)
+    on [Unsplash](https://unsplash.com/?utm_source=medium&utm_medium=referral)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Background
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the last ~10 or so years, many of the popular scripting languages gained
+    optional static typing: JavaScript (via TypeScript), PHP, Python, even Ruby has
+    something along the lines as far as I know.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s become quite widespread in each of these languages’ communities, to the
+    point of being considered a best practice for applications, and definitely for
+    libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It’s easy to see how type annotations are useful — let’s take this function
+    that doesn’t have them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: It may seem pretty clear what it does — it checks whether `user` has permission
+    `perm` on `obj`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, if we wanted to use it somewhere, some questions immediately spring
+    to mind:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is `user` an instance of the application’s User model? (I guess.)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Is `perm` an instance of some Permission model or just some representation,
+    like a string? That one’s a bit harder, probably depends on the conventions of
+    the framework used and the specific project.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Is `obj` an instance of any model, or maybe the model *type*? What if the permission
+    checked is broader: should I pass null or is there a different function for that
+    somewhere?'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Does the function return true/false if the user has / doesn’t have the permission?
+    Or maybe it doesn’t return anything and throws an exception if the check is negative?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Compare that to the typed version:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s a bit longer, but it answers all our questions. (We’re not *absolutely*
+    sure what the code will do, but we can reasonably guess.) Also, it can catch bugs
+    and helps the IDEs with autocomplete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, if the type annotations are so useful, why do I claim that in Python they
+    have an “expectations problem”?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, let’s compare how other languages are doing it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparison
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JavaScript doesn’t have any typing on its own, you have to use TypeScript for
+    that. It’s a very popular choice, so it’s shouldn’t be hard to start with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can have something like this in the source code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, TypeScript is not gonna run in the browser (or Node.js) like this, we
+    have to compile it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s not gonna let us. And so if we succeed in compiling and running it later
+    we can be sure that the type mismatch was fixed and the program type checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now, let’s do something similar in PHP:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There is no compile step in PHP. However, if we run this code, it will crash
+    at runtime:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Yeah, maybe throwing exceptions is not as good as catching that earlier, but
+    at least we can be sure that the function code won’t be executed if the types
+    are wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Enter Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We ran this and the type annotations did nothing! It called the function with
+    the arguments of the wrong types, as if we didn’t do anything to prevent that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, to someone familiar with Python it’ll be very obvious — the type hints
+    don’t work at runtime, they are just there for a type checker program, like MyPy,
+    that you have to run separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But after what we saw with the other languages it may not be obvious at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In all my examples, I wrote the code using the most popular static typing solution
+    of the given language, then I did the simplest thing I could to get the code running
+    in my application. In case of TypeScript, I had to compile it to JS to run the
+    code and it caught the error then. In PHP, I “just” ran it and it caught the type
+    mismatch at runtime. In Python, I also could just run it — there was no compile
+    step needed — and then my type hints at runtime did nothing!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So if I have the source code in a given language and a running application,
+    that’s what I can know from that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, the last answer for Python would be different if I knew that someone ran
+    a correctly configured type checker on the codebase before running the code —
+    but how can I know that? I’d have to set up some CI with the type checking step
+    and make it impossible to deploy the code that doesn’t pass it, maybe. If I don’t
+    have that kind of infrastructure, there’s not much I can do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python type hints are a core part of the language, they even have standard library
+    modules (`typing`), and yet they don’t do anything when used in that language
+    without some external tooling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That, to me, is a bit of an expectations mismatch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, if the Python type annotations actually did look like what they are — information
+    for external tools, not a “working” part of the language — it would probably be
+    clearer. Like comments. And there actually *is* an official syntax for that!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: It works with MyPy, but it’s quite niche at this point (was intended for compatibility
+    with old Python versions), doesn’t work too well with tools like PyCharm and probably
+    can’t express everything that the annotations can.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A shame, because to me it communicates expectations better — it’s a comment,
+    so it’s an information for an external tool and it doesn’t work at runtime. All
+    expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stackademic 🎓
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Thank you for reading until the end. Before you go:'
+  prefs: []
+  type: TYPE_NORMAL

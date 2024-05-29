@@ -1,0 +1,96 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:44:51'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Representing State as interfaces in Go - Evan Moses
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.emoses.org/posts/resolver-resolved-pattern/](https://www.emoses.org/posts/resolver-resolved-pattern/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Representing State as interfaces in Go
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'I made up a neat little pattern in Go the other day. It’s a way to represent
+    a state change in a system by exposing different APIs for different states, while
+    only holding state in a single underlying struct. I’m sure I’m not the first person
+    to invent this, and it may already a name, so please let me know if you know of
+    one *[Update: [apg](https://lobste.rs/~apg) on Lobsters [pointed out the name](https://lobste.rs/s/tzgizl/representing_state_as_interfaces_go#c_cvlm2d)
+    “typestate”, which I like]*. I’m going to show an instance of the pattern first
+    and the motivation after.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So far, so boring. You’ve got a `Resolver` that batches up query data, an `Executor`
+    that, well, executes the query, and a `Resolve` that lets you access the result.
+    What’s neat about this is that `Resolver` and `Resolved` can be implemented by
+    the same struct:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ok but why?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I was building a system to bulk-lookup names in my system by ID. But if you
+    called `Resolve` before it had executed, you’d have an invalid result. And if
+    you `Collected` after you executed, you’d never look up the id. So I added a boolean
+    `hasExecuted` to `IdResolver` so that if you called `Resolve` before you had called
+    `Execute` or `Collect` after, it would check that flag and panic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is kind of a mess, harder to read and maintain, and much easier to mess
+    up the logic in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When to use it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Of course the `Resolver` and the `Resolved` *could* be represented by different
+    structs with their own methods. But in this case it felt like we were really working
+    with a single object: it collects data, operates on it, and manages the result.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The crux of the matter is that the object has different operations that are
+    valid in different states, and Go interfaces are a perfect way to expose that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Update: Is this just a `Builder`?'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A few folks on the internet have pointed out that this is very similar to the
+    Builder pattern that you see pretty often in Java/C# (and to a lesser extent in
+    Go), and especially a multiphase [Step Builder](https://www.svlada.com/step-builder-pattern/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I don’t think there’s a fundamental difference, but Builders that I’m familar
+    with generally have a state-change/execute step (`Build()`) that produces an immutable
+    object for use somewhere else, rather than doing any sort of effectful execution.
+    I think this pattern is both more general (you could certainly use it as a Builder)
+    and has a different purpose.
+  prefs: []
+  type: TYPE_NORMAL

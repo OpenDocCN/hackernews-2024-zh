@@ -1,0 +1,287 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:40:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supercharge compression efficiency with shared dictionaries  |  Blog  |  Chrome
+    for Developers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://developer.chrome.com/blog/shared-dictionary-compression](https://developer.chrome.com/blog/shared-dictionary-compression)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Data compression is a time-tested performance optimization technique that reduces
+    the size of eligible page resources. For some time, it was common practice to
+    primarily use gzip on web servers to compress common text-based page resources
+    such as HTML, CSS, and JavaScript files, and send them to the client where they
+    could be decompressed. The result is faster load times for resources without affecting
+    the intended behavior of a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Though gzip is highly effective in its own right, further improvements in compression
+    on the web have been realized in recent years. In 2016, the Brotli algorithm shipped
+    in Chrome, delivering overall better compression ratios for eligible resources.
+    By the end of 2017, all modern browsers supported Brotli, and server support for
+    it started to become more widespread. More recently, Chrome [has shipped ZStandard
+    compression](https://chromestatus.com/feature/6186023867908096).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The work doesn't stop there though! The Chrome team has been working on making
+    shared dictionaries usable on the web, which are now available in an origin trial
+    for both [Brotli and ZStandard](/origintrials#/view_trial/3693514644397228033).
+    Shared dictionaries can supplement Brotli and ZStandard compression to deliver
+    substantially higher compression ratios for websites that frequently ship updated
+    code, and can—in some cases—deliver **90% or better compression ratios**. This
+    post goes into more detail on how shared dictionaries work, and how you can register
+    for the origin trials to use them for Brotli and ZStandard on your website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared dictionaries explained
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Compression is a process of finding redundant sequences in an input and using
+    that information to create a much smaller output, which can be reversed later
+    on. Compression works well on the web because it substantially reduces resource
+    load times. Both Brotli and ZStandard can further increase their effectiveness
+    by using a *compression dictionary*, which is a collection of additional patterns
+    that these algorithms can use during compression. In fact, Brotli's high efficiency
+    is achieved to some degree by using an internal dictionary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, *custom* user-curated dictionaries can be used with Brotli and ZStandard
+    that contain patterns specific to particular resources. In practice, a custom
+    dictionary is an external file that can be applied to any input. Dictionaries
+    can be highly specific to an application's production code, or really any content
+    at all. How applicable a given dictionary is to its input can have a big impact
+    on overall compression efficiency. Dictionaries that are highly similar to the
+    contents of an input will yield outputs with higher compression ratios than dictionaries
+    with generic or dissimilar contents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example of how effective a custom compression dictionary can be:
+    say your website uses the Angular framework, and the current version you''re using
+    is version 1.7.9\. This version of the Angular framework is about 172 KiB uncompressed.
+    When compressed with Brotli''s default settings, its size becomes about 53 KiB.
+    This yields nearly a 70% compression ratio. However, say you decide to upgrade
+    to Angular 1.8.3 later on. Given that this version of Angular is roughly the same
+    size as version 1.7.9, you can expect pretty much the same compression ratio as
+    the previous version.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where a custom dictionary can come in handy by using a process known
+    as *delta compression* , which is when a dictionary of a previous version of a
+    resource can be used to compress a later version. Using the previous example,
+    if you compressed version 1.8.3 of Angular using version 1.7.9 as a dictionary,
+    the output would be just over 4 KiB. This represents a compression ratio of **nearly
+    98%**. Clearly, compression dictionaries can have a big impact on loading performance,
+    and their effectiveness has already [been realized in real-world applications](https://github.com/WICG/compression-dictionary-transport/blob/main/examples.md#static-resource-flow-results)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there's a challenge in making this flow work on the web. The catch
+    is that, if you use a dictionary to compress a resource, you need that same dictionary
+    in order to *decompress* it. This flow has been attempted on the web before—namely
+    [SDCH](https://en.wikipedia.org/wiki/SDCH)—but was challenging to implement safely.
+    This latest proposal for shared dictionary compression [addresses those concerns](https://github.com/WICG/compression-dictionary-transport?tab=readme-ov-file#this-time-will-be-different)
+    while providing a substantial benefit for both static and dynamic resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Chrome advertises support for shared dictionaries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All browsers advertise the compression algorithms they support through the
+    [`Accept-Encoding` request header](https://developer.mozilla.org/docs/Web/HTTP/Headers/Accept-Encoding).
+    The content of the header is a comma-separated list of supported encodings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This particular `Accept-Encoding` header states that the browser requesting
+    the resource supports the gzip, Brotli, and ZStandard compression algorithms.
+    A web server responding to the request can then decide which algorithm to use
+    when responding to the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When shared dictionary support is enabled and a relevant dictionary is available
+    for a resource, additional tokens are added to the `Accept-Encoding` header. These
+    tokens are `br-d` for Brotli and `zstd-d` for Zstandard. Chrome will also include
+    the hash of an available dictionary, which is covered next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If a web server is configured to recognize this token, and it recognizes the
+    dictionary, it can respond to that request with a resource that was compressed
+    using the dictionary for the applicable encoding. How this is achieved in practice
+    depends on whether the request is for a static or dynamic resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared dictionary compression for static resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A static page resource is one that always produces the same response for a requested
+    URL. Common examples of compressible static page resources are JavaScript and
+    CSS files. These resources are typically versioned for caching purposes in some
+    way—sometimes with a hash of the file's contents in the filename (for example
+    `styles.abcd1234.css`), or some other method of fingerprinting the resource. These
+    resource types are a great candidate for the delta compression that shared dictionaries
+    provide, as static resources are often cached for long periods of time and tend
+    to be updated with some frequency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A dictionary can be specified for a static resource by setting the `Use-As-Dictionary`
+    response header for it. The header takes one of a few key/value pairs, but the
+    only required one is `match`, which accepts [`URLPattern` syntax](https://urlpattern.spec.whatwg.org/)
+    specifying the resource path where the dictionary should be used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Think of the `Use-As-Dictionary` header as a mechanism that applies to future
+    versions of a resource that match the pattern specified within it. So, say your
+    website ships all of its styles in a single CSS file. For simplicity's sake, say
+    the first version of that resource is located at `/dist/styles.v1.css`, and is
+    sent with a `Use-As-Dictionary` response header containing a `match` value of
+    `/dist/styles.*.css`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After some time passes, you update your website''s CSS and ship a new version
+    of it located at `/dist/styles.v2.css`. Because the `match` value used in the
+    `Use-As-Dictionary` response header from the previous version applies to this
+    request, the browser will send a `Available-Dictionary` header containing a hash
+    of the dictionary encoded as a [structured field byte sequence](https://www.rfc-editor.org/rfc/rfc8941.html#name-byte-sequences):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, it's up to the server to configure compression on its end to
+    ensure the matching dictionary is used. The resource compressed with that dictionary
+    will then be sent, and the available dictionary in the user's browser cache will
+    be used to decompress it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you ship new code often for your website, delta compression can go a long
+    way. However, the process is flexible. If the browser doesn't determine that a
+    dictionary is available in the user's browser cache, it will *not* specify the
+    additional `br-d` or `zstd-d` tokens in the `Accept-Encoding` header. In that
+    case, the standard compression flow applies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared dictionary compression for dynamic resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dynamic resources can also benefit from shared dictionary compression. Dynamic
+    resources are those that change based on a context—such a news website where the
+    main page is updated frequently as news breaks, for example. HTML documents are
+    often dynamic resources. In such cases, the dictionary can contain most of the
+    site's common HTML structure and template code leading to compressed pages where
+    only the unique parts of each page are sent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Due to the nature of dynamically-generated resources, a dictionary must be
+    loaded on the client for later use. Loading a dictionary ahead of time means that
+    applying shared dictionary compression to dynamic resources is speculative. The
+    hope in such cases is that your website receives enough traffic that the dictionary
+    cost can be amortized over a large number of navigations. Should you decide to
+    try it, the first step is to specify the dictionary''s location by way of a `<link>`
+    element in your page HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When Chrome encounters this `<link>` element, it *may* fetch the dictionary
+    once the page is idle, and at low priority in an effort to avoid bandwidth contention.
+    The response for the dictionary itself must specify a `Use-As-Dictionary` header
+    and specify which dynamic resource path it applies to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: From here, the flow is largely the same as for static resources. The browser
+    will see that the dictionary itself applies to matching resources, and the browser
+    will attach an `Available-Dictionary` header to the request with a hash of the
+    dictionary's contents, again, similar to the static resources flow explained earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compress static resources at build time
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're familiar with bundlers, you might be familiar with various plugins
+    for them that can compress resources at build time, and subsequently serve those
+    compressed resources. For example, [Apache lets you use directives to serve those
+    precompressed resources](https://bash-prompt.net/guides/apache-brotli-static/)
+    at the time of the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most Node.js-based bundlers that support compression use Node''s built-in Zlib
+    library. Zlib offers support for Brotli and bundlers that use it typically offer
+    an interface to pass options directly into Zlib, which [supports dictionary-aided
+    compression](https://nodejs.org/api/zlib.html#class-options). Here are a few bundlers
+    that support using dictionaries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that available dictionaries for any given version of a resource may use
+    one of any previous versions of a resource. This means that you will need to analyze
+    user traffic and plan accordingly. Aim for a balance and generate resources that
+    benefit the maximum number of returning users as best as you can. CDN providers
+    are currently experimenting with shared dictionary compression. No implementations
+    are yet available for public use, but we expect that to change!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try it out!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Integrating shared dictionary compression with the browser''s existing compression
+    capabilities has the potential to substantially improve loading performance for
+    websites that frequently ship updated production code and receive significant
+    traffic from returning visitors. If you''re interested in giving shared dictionary
+    compression a shot, you have two options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're just looking to tinker with shared dictionary compression on your
+    own to get a feel for how it works, you can enable the **Compression dictionary
+    transport** experimental feature on the `chrome://flags` page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you're interested in trying this out on your production website and see how
+    shared dictionary compression could benefit real users, [register for the origin
+    trial](/origintrials#/view_trial/3693514644397228033) to get a token, and read
+    up on [how origin trials work](/docs/web-platform/origin-trials).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're quite excited about this major advancement in compression technology on
+    the web, and how much faster it could make existing applications that people use
+    every day. We encourage you to try it out, and most importantly, [we want to hear
+    your thoughts](https://github.com/WICG/compression-dictionary-transport/issues)
+    if you do! If you find a bug, [file it at crbug.com](https://issues.chromium.org/issues).
+    For additional resources and tools, check out [use-as-dictionary.com](https://use-as-dictionary.com/).
+    Finally, if you're interested in a deeper dive into how it all works, [the explainer](https://github.com/WICG/compression-dictionary-transport/blob/main/README.md)
+    is a good next step!
+  prefs: []
+  type: TYPE_NORMAL

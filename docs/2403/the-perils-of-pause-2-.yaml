@@ -1,0 +1,51 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:36:55'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: the perils of pause(2)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.cipht.net/2023/11/30/perils-of-pause.html](https://www.cipht.net/2023/11/30/perils-of-pause.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In the case of `pause(2)`, we can use `sigsuspend(2)`, or a few other similar
+    functions. If we need the signal handler, our code might look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'but in this case, we are just waiting for this signal, and don''t need to take
+    other action when it arrives, so `sigwait(2)` suffices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: We might use `sigwaitinfo` or `sigtimedwait` if we need more details than just
+    the signal number. If we were certain no other signal could arrive, we could avoid
+    the loop entirely, but it's nice to protect against cases you might not otherwise
+    consider, like testing the program interactively and hitting ^Z (sending SIGTSTP).
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Note that OpenBSD also lacks `sigwaitinfo` and `sigtimedwait` presently.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: For `poll(2)` and `select(2)`, unmasking variants `ppoll(2)` and `pselect(2)`
+    exist for this reason. (Linux also has `signalfd(2)`, which more naturally integrates
+    with polling loops, but note it only reads pending signals, so you still need
+    to mask with `sigprocmask`, and now you have to deal with reading `siginfo` out
+    of a buffer. Oh, and what you actually get out of the fd depends on which process
+    is reading…) There's also the classic [self-pipe trick](https://cr.yp.to/docs/selfpipe.html).
+  prefs: []
+  type: TYPE_NORMAL

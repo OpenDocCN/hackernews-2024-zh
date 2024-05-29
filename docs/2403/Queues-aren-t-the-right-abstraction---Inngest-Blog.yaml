@@ -1,0 +1,350 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:44:41'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Queues aren't the right abstraction - Inngest Blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.inngest.com/blog/queues-are-no-longer-the-right-abstraction](https://www.inngest.com/blog/queues-are-no-longer-the-right-abstraction)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Amazon SQS will be [20 years old](https://aws.amazon.com/about-aws/whats-new/2004/11/03/introducing-the-amazon-simple-queue-service/)
+    later this year. It still offers precisely what it advertises-a [simple queue
+    service](https://aws.amazon.com/sqs/). It's also still great. During Prime Day
+    2022, SQS handled [over 70 million messages per second at peak](https://aws.amazon.com/blogs/aws/amazon-prime-day-2022-aws-for-the-win/).
+    If you want a queue, this, or other time-tested solutions like RabbitMQ or ActiveMQ,
+    work well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But you don't want a queue. You want something better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Goal of Message Queues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Why have message queues been so widely used in networked systems and environments
+    by developers over the last few decades?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Many workloads within an application are long-running: notifications, data
+    processing, billing, etc. These operations can be time-consuming or resource-intensive
+    and you don''t want them blocking the rest of the application. Message queues
+    offload these functions from the critical path (*or thread*) and allow you to
+    execute them asynchronously. The queue will enable applications to remain responsive
+    while tasks are processed in the background.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, queues run critical workloads, just not on the critical path. You need
+    queues for three core reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They offer reliability through guaranteed delivery, persistence, and dead letter
+    queues, so developers know they aren't sending workloads into a black hole.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They allow developers to run critical, longer-running processes. These processes
+    often involve complex business logic, data transformations, or integration with
+    external systems. By offloading these tasks to a queue, developers can ensure
+    they are executed reliably without blocking the main application flow.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Queues also offer horizontal scalability by allowing multiple consumers to process
+    messages in parallel. This means applications can handle high throughput and scale
+    as the workload increases. Queues can also handle spikes in workload well, leveling
+    out load and allowing applications to remain stable.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At a higher level, queues are a way to build more efficient, functional, and
+    reliable applications. When you add queues to your application, you go from having
+    to fit every operation into a request-response framework to having the ability
+    to decouple and prioritize workloads. This allows you to design your application
+    around the optimal user experience rather than being constrained by the limitations
+    of synchronous processing. By leveraging queues, you can create applications that
+    are more responsive, scalable, and resilient to failures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why do developers need queues today?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exactly the same reasons. That is why developers still reach for them. All of
+    the above is still true. You want decoupling? Queues work. You want scalability?
+    Queues work. You want flexibility? Queues work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But queues suck *from an implementation point of view*. The underlying idea
+    is excellent, but anyone who has built infrastructure with message queues knows
+    the queue is just the pipe. And you need a lot of architecture to support that
+    pipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Queues Are The Wrong Abstraction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Message queues are an abstraction. They abstract away the communication protocols
+    and data storage required to enqueue and pass messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But in 2024, queues are no longer the right abstraction for building modern
+    systems. The underlying concept of queues still holds, but building a system with
+    queues requires much more than just the queue itself. Once developers have implemented
+    the primary queue, they find they need:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Chaining** to run tasks in a sequence'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Concurrency** to control how many jobs are executed at one time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Back-off** to gracefully handle rate-limited API calls.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Debouncing** to prevent functions executing multiple times.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**State persistence and management** as you''ll have to share state across
+    different workers and queues.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prioritization** to determine which messages are most critical.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Error handling** to include retries for failures and timeouts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Idempotency** to ensure non-duplication and prevent unwanted side effects.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Cancellation** to abort messages and in-progress jobs when required.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Observability** to monitor and optimize the system.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recovery tooling** to help understand errors and reprocess failed events.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Say you want concurrency. Now you're actually thinking about the workers that
+    are consuming the messages. You'll need to add more workers and/or adjust message
+    polling logic within the worker's code. Now, you need to think about the visibility
+    timeout for each message, among other things, and consider the downstream implications
+    of messages being processed more than once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Repeat that decision tree for every component of the infrastructure. It isn't
+    just a matter of grabbing an SQS URL and having SQS take care of everything. All
+    of this needs to be built *around* the message queue. Even if you don't immediately
+    need this infrastructure, you'll have to build it out fully over time to build
+    a robust message system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is challenging and tedious work. There are ways to lessen the load - [Celery](https://docs.celeryq.dev/en/stable/getting-started/introduction.html),
+    [Resque](https://github.com/resque/resque), [BullMQ](https://bullmq.io/) - but
+    then you have the problems of these half-abstractions: lack of a polyglot option,
+    slightly different implementations, and a learning curve for developers who are
+    not familiar with these tools leading to increased complexity and maintenance
+    overhead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, why do developers still reach for message queues if they are the wrong
+    abstraction? Two reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They understand message queues. Even if they know they'll have to implement
+    the infrastructure around the queue, developers have been working with SQS, RabbitMQ,
+    etc., for 20 years. It's a hassle, but a *known* hassle.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They don't know there is a better abstraction.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Over time, the abstraction has evolved and moved up the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reliability Through Durability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Durable execution is the right abstraction instead of dealing with queues directly.
+    Durable execution combines two elements to provide reliability and guarantees
+    to application workflows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, **durability**. Durable execution is fault-tolerant execution, guaranteeing
+    that code will run to completion even with failures or restarts. This removes
+    part of the problem above. With durable execution, developers don't have to build
+    out processes to guarantee execution, such as implementing retry logic, handling
+    failures, or persisting state, as these capabilities are provided out of the box
+    by the durable execution runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But durability alone isn't enough. Reliability through durable execution requires
+    **flow control**. Flow control is everything listed above that you have to build
+    out for reliable workflows around queues. While durable execution focuses on guaranteeing
+    the execution of tasks and handling failures, flow control deals with managing
+    how or when the code is executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flow control encompasses various aspects such as concurrency control, rate limiting,
+    resource sharing, and prioritization. Let's say you have a processing workflow
+    for transcribing video. What does this entail?
+  prefs: []
+  type: TYPE_NORMAL
+- en: You need multiple queues for transcription, summarization, and upload. Since
+    these have to run in series, you must manage the state between them.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You have to trigger the initial transcription with one event. Then, the next
+    two are triggered by the previous steps in the process.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You have to control for concurrency to manage the amount of videos being processed
+    by a single user at once.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You want to have some level of prioritization so you can control which users'
+    workflows run first.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You must implement retry logic in case any step fails, back-off logic if any
+    API is rate-limited, debouncing to stop multiple calls, and observability to ensure
+    you can understand what happens within the operations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing this at the queue level is a serious effort. Will you encapsulate
+    all this inside a single function or break it into different tasks for specific
+    queues? Are you going to save the state in the database for every step? Or YOLO
+    it and just create a call chain?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With a durable function, those problems are abstracted away to give you this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: You don't see all the infrastructure because it is abstracted away, but this
+    handles concurrency, retries, state, and the underlying queues. It is triggered
+    by a `video.uploaded` event then will continue to completion or show you the errors
+    (and allow you to replay if necessary).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What might this look like with the partial abstractions you see in something
+    like Celery and Python? Firstly, we''d need a message broker service as Celery
+    doesn''t abstract that away. We''d then add that to our Celery workers as a broker
+    URL. Then we have to think about flow control. How are we managing prioritization
+    and concurrency, and on a per-user basis? This is possible in Celery by dynamically
+    updating the configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we''d use that within our `tasks.py` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of `transcribe_video`, `summarize_transcript`, and `write_to_db` will be
+    in utils.py and then we can call `process_video_event` from our actual application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's wrong with this? Well, it's just more complicated. To our point about
+    Celery being a partial abstraction, we're still dealing with the low-level message
+    queue directly, and then we have to set up a lot of configuration. The flow control
+    we want (prioritization, concurrency) isn't easily embedded into our code. Instead,
+    we have to use a workaround to update the Celery configuration for each user.
+    State and logic are also separated, making it more difficult to understand the
+    workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compare that to this example, which is doing an even more complicated job and
+    pausing the queue for a period of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Much easier to follow even though it is a long-running workflow. Say you are
+    billing a customer and need to retry if the billing fails. Usually, a dunning
+    process takes place over a few days. How would you handle that with a queue?
+  prefs: []
+  type: TYPE_NORMAL
+- en: With a lot of Ibuprofen. Some queues give you the ability to add a delay, but
+    usually in the timeframe of seconds and minutes, not days you'd need here. So
+    you'd have to save the state and start another queue one day later. For this,
+    you'll probably end up with a mess of cron jobs and queues, managing state and
+    functions between them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With durable execution, all this can be encapsulated in a single workflow function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The entire process sleeps for a day before resuming where it left off. The developer
+    has to manage none of the state during this time—it just happens. Cross-language
+    support is first-class as the difficult parts of managing queues are completely
+    abstracted away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Durable execution delivers on the original goal of queues: To reliably execute
+    code that runs in a background process outside of synchronous API requests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't Build With Raw Queues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Could you build this yourself? Sure. If you have been using queues since their
+    inception, you probably understand the workarounds needed to get them into an
+    actual functional state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Should you? No. It is going to be a resource suck, both in time and money, to
+    implement all this just to have a durable execution engine that is available off-the-shelf.
+    All the infrastructure, all the logic, all the state - it's just tedious. If you
+    are interested in the nuts and bolts of message queues, go nuts. For everyone
+    else, use the higher-level abstraction that is now available - durable execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see how teams use durable execution in production today, check out how [Soundcloud
+    streamlined dynamic video generation](/customers/soundcloud?ref=blog), [Resend
+    sends email using serverless workflows](/customers/resend?ref=blog), and [Aomni
+    productionized AI-driven sales flows](/customers/aomni?ref=blog). When you want
+    to start with durable execution yourself, you can [sign up for Inngest](https://app.inngest.com/sign-up)
+    today or [reach out to sales engineering](/contact?ref=blog).
+  prefs: []
+  type: TYPE_NORMAL

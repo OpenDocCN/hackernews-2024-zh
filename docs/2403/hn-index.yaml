@@ -1,0 +1,145 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:47:38'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: hn-index
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.alexmolas.com/2024/02/12/hn-index.html](https://www.alexmolas.com/2024/02/12/hn-index.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main>
+  prefs: []
+  type: TYPE_NORMAL
+- en: hn-index
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*February 12, 2024 · 5 mins · 1066 words'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**TLDR** - I implemented an h-index calculator using HackerNews scores - [alexmolas.com/hn-index](https://www.alexmolas.com/hn-index).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m always looking for new blogs to follow, and a good way to find good quality
+    blogs is HackerNews. I already have a curated list of blogs, but I’m sure I’m
+    missing a lot of them. One of my problems is that a priori it’s difficult to know
+    which profiles are worth following and which are not. To solve this problem I
+    decided to use h-index, a metric used in science to measure the impact of publications.
+    With this metric, I can score HN users, and depending on the score decide whether
+    to follow them or not. As quick reminder, according to [Wikipedia](https://en.wikipedia.org/wiki/H-index),
+    the h-index is defined as
+  prefs: []
+  type: TYPE_NORMAL
+- en: The h-index is defined as the maximum value of h such that the given author/journal
+    has published at least h papers that have each been cited at least h times.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Fortunately, HackerNews exposes an open API to fetch the data of users and items,
+    and with this information is more or less easy to compute this index. The API
+    is documented in their GitHub ([HN API docs](https://github.com/HackerNews/API)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, I’ll explain how I’ve implemented this solution, and show how
+    can you use it to compute your index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: User data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: User data can be fetched from `https://hacker-news.firebaseio.com/v0/user/USER_NAME.json?print=pretty`,
+    and you’ll get something like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Item data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: User data can be fetched from `https://hacker-news.firebaseio.com/v0/item/ITEM_ID.json?print=pretty`,
+    and you’ll get something like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: One of the problems I’ve faced here is that all the items are exposed in the
+    same endpoint. This means that you can’t query specifically for stories. So you
+    don’t know a priori if an item is a comment or a story. We’ll see later that this
+    slows down quite a bit the computations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With these two endpoints, we have all the information we need to compute the
+    h-index of a user. To do so we only need to get all the submissions a user has
+    made, and then for each submission get the score it has. As I said before, we
+    can’t know a priori which submissions of a user are stories and which comments,
+    so we need to fetch first the data and then filter by type, which makes the process
+    slower.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I implemented the code to compute it in a [python script](https://github.com/alexmolas/alexmolas.github.io/blob/master/hn-index/script.py).
+    The code is quite fast, and it takes around 20 seconds to compute the h-index
+    for [pg](https://news.ycombinator.com/user?id=pg) which has more than 15k submissions,
+    of which around 700 are stories. For my user, it takes around 1 second.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making it accessible
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Then, I thought that if I wanted to make it accessible I should implement it
+    directly in my site. And with some help from a well-known LLM I managed to do
+    so. The functionality is now available at [HN-Index](https://www.alexmolas.com/hn-index/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For some reasons unknown to me, the web version is much slower than the Python
+    one, and I haven’t managed to make it faster yet. So if you know how to improve
+    it please write me and I’ll change it. The JavaScript code to fetch and compute
+    the index is [here](https://github.com/alexmolas/alexmolas.github.io/blob/master/hn-index/app.js).
+    I’m not a JavaScript expert, don’t be too harsh judging the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some insights
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Finally, let’s see who are the best HN users in terms of h-index. Since computing
+    the index for all the users was unfeasible I decided to check it only for the
+    [leaders](https://news.ycombinator.com/leaders). In the following table, we have
+    the user with the highest h-index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the other hand, it’s also interesting that some of the users in the leaderboard
+    have a very low h-index, which means that almost all their karma comes from comments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]* </main>'
+  prefs: []
+  type: TYPE_NORMAL

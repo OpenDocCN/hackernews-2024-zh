@@ -1,0 +1,336 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:29:46'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Compiling a Lisp: Overture | Max Bernstein'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://bernsteinbear.com/blog/compiling-a-lisp-0/](https://bernsteinbear.com/blog/compiling-a-lisp-0/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Many thanks to Kartik Agaram and Leonard Schütz for proofreading these posts.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my [last series](/blog/lisp/), I wrote about building a Lisp interpreter.
+    This time, we’re going to write a Lisp compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This series is an adaptation of Abdulaziz Ghuloum’s excellent paper [An Incremental
+    Approach to Compiler Construction](/assets/img/11-ghuloum.pdf), with several key
+    differences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our implementation is in C, instead of Scheme
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Our implementation generates machine code directly, instead of generating text
+    assembly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Our implementation may omit some runtime data structures
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See [my implementation](https://github.com/tekknolagi/ghuloum) for reference,
+    but note that it may be incomplete and also may look a little bit different than
+    the compiler detailed in these posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You probably have a couple questions, like *why Lisp?* and *why compile directly
+    to x86-64?* and *why C?* and *come on, another Lisp series?*, and those are all
+    very reasonable questions that will be answered in due time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I want to implement this compiler in another language than Scheme because it
+    will prevent me from copying too much of the code from the paper. Even though
+    the paper doesn’t actually contain the source for the whole compiler (most of
+    it is, after all, left as exercises for the reader), I think I will learn a lot
+    more when I have to write all of the code by myself. I get to make my own mistakes
+    and you get to watch me make and fix them in “real” time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I also don’t want to generate text assembly, but those reasons are a little
+    different than my reason for choosing another implementation language:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, I think that would be harder to test: I want to have an in-process unit
+    test suite that compiles Lisp programs and executes them on-the-fly. Shelling
+    out to a system assembler like `as` or `nasm` would be somewhat error prone. What
+    if the person building this doesn’t have the assembler I need? Sure, I could also
+    write a small assembler as part of this compiler, but that’s a lot of work. Harder
+    than just generating x86-64 directly, perhaps.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Second, I want to learn more about machine architecture. While `add a, b` seems
+    like one machine instruction, it could probably be encoded in 50 different ways
+    depending on whether `a` and `b` are registers, stack locations, other memory
+    addresses, immediates, which registers they are, etc. Shelling out to an assembler
+    abstracts a lot of that detail away. I *want* to get my hands dirty. Hopefully
+    you do, too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I chose Lisp because that’s what the Ghuloum paper uses, and because Lisp can
+    be represented as a small, compact, dynamically typed language. Many interpreter
+    implementations are under 200 lines. I don’t think this compiler will be that
+    short, though.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For questions, comments, and suggestions please post on [this sr.ht elist](https://lists.sr.ht/~max/compiling-lisp).
+    It’s a public inbox that I can use to discuss and receive patches. I got the idea
+    from [Chris Wellons](https://nullprogram.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Background knowledge
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to get the most out of this series, I recommend having at least passing
+    familiarity with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: C or a C-like language
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: some kind of assembly language
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Abstract Syntax Trees* and recursive tree traversal'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: no particular aversion to parentheses
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Having the background helps your focus be more on the bigger picture than the
+    minutia, but it is by no means required. I expect most of this series to be fairly
+    readable. If it’s not, that’s a bug and you should report it to me.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structure of the series
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I plan on writing this series in installments where each installment adds a
+    feature of some kind. Maybe that feature is a new bit of Lisp functionality, or
+    maybe it’s a refactoring of the compiler, or maybe it’s a compiler optimization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this reason, each post will tend to depend on the code and understanding
+    from previous posts. As such, I recommend reading the series in order. I’ll still
+    try to keep the big ideas understandable for those who don’t.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At each stage of the compiler, we should have a battery of tests that ensure
+    that the features we have already build continue to work as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I plan on adhering to this rough plan:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Compile integers](/blog/compiling-a-lisp-2/)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile other immediate constants](/blog/compiling-a-lisp-3/) (booleans, ASCII
+    characters, the empty list)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile unary primitives](/blog/compiling-a-lisp-4/) (`add1`, `sub1`, `integer->char`,
+    `char->integer`, `null?`, `zero?`, etc)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile binary primitives](/blog/compiling-a-lisp-5/) (`+`, `-`, `*`, `/`,
+    `=`, etc)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Read expressions from strings](/blog/compiling-a-lisp-6/)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile local variables](/blog/compiling-a-lisp-7/) (`let`-expressions)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile conditional expressions](/blog/compiling-a-lisp-8/) (`if`-expressions)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile heap allocation](/blog/compiling-a-lisp-9/) (`cons`)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile heap allocation (strings, symbols, etc)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compile procedure calls](/blog/compiling-a-lisp-11/) (`labels`, `code`, and
+    `labelcall`)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile closures
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add tail-call optimization
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile complex constants (`quote`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile variable assignment (`set!`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add macro expander
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add extended forms using macro expander (`let*`, `letrec`, etc)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add support for libraries and separate compilation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile foreign function calls
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add error checking to primitives and procedure calls
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile variable-arity procedures (aka varargs)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compile `apply`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add output ports (kind of like `FILE*`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add `write`, `display`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add input ports
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a tokenizer in Lisp
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a reader in Lisp
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a Lisp interpreter (or compiler) in Lisp
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'With optional add-ons also described in the initial paper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Big numbers, IEEE754 floats, complex numbers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: User-defined macros
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A module system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Heap overflow handler and garbage collector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stack overflow handler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Improved code generation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'And optional add-ons not described in the original paper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An intermediate representation for optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generate executables and write them to disk
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An interpreter with optional just-in-time compiler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'You may have noticed that this is a *lot* of steps, and there are some steps
+    that I intend to take but have completely omitted because I want to roll them
+    into other posts. Things like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Code generation infrastructure (a writable buffer, `mmap`/`mprotect`, etc)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compiler data structures (variable environments, label environments, etc)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing infrastructure (unit testing, integration testing)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'So it’s really actually more work than I listed above. This series may take
+    a long time. It may take some twisty turns. It may take some shortcuts. But there
+    is good news: I’ve already written the compiler up to compiling heap allocation
+    (still working on procedure calls), and even if I don’t finish this series there
+    is still Ghuloum’s excellent paper to learn from.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, [the smallest program](/blog/compiling-a-lisp-1/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mini Table of Contents
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are some other links you might find useful or interesting while following
+    along with this series:'
+  prefs: []
+  type: TYPE_NORMAL

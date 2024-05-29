@@ -1,0 +1,263 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:23:39'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'farside: A smart redirecting gateway for various frontend services'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://sr.ht/~benbusby/farside/](https://sr.ht/~benbusby/farside/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Contents
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[About](#about)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Demo](#demo)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[How It Works](#how-it-works)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Cloudflare](#regarding-cloudflare)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Development](#development)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Compiling](#compiling)'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[Environment Variables](#environment-variables)'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[#](#about)About'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A redirecting service for FOSS alternative frontends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Farside](https://farside.link) provides links that automatically redirect
+    to working instances of privacy-oriented alternative frontends, such as Nitter,
+    Libreddit, etc. This allows for users to have more reliable access to the available
+    public instances for a particular service, while also helping to distribute traffic
+    more evenly across all instances and avoid performance bottlenecks and rate-limiting.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Farside also integrates smoothly with basic redirector extensions in most browsers.
+    For a simple example setup, [refer to the wiki](https://github.com/benbusby/farside/wiki/Browser-Extension).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#demo)Demo'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Farside''s links work with the following structure: `farside.link/<service>/<path>`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '^(Note: This table doesn''t include all available services. For a complete
+    list of supported frontends, see: [https://farside.link](https://farside.link))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Farside also accepts URLs to "parent" services, and will redirect to an appropriate
+    front end service, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#how-it-works)How It Works'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The app runs with an internally scheduled cron task that queries all instances
+    for services defined in [services.json](https://git.sr.ht/~benbusby/farside/tree/HEAD/services.json)
+    every 5 minutes. For each instance, as long as the instance takes <5 seconds to
+    respond and returns a successful response code, the instance is added to a list
+    of available instances for that particular service. If not, it is discarded until
+    the next update period.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Farside''s routing is very minimal, with only the following routes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`/`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The app home page, displaying all live instances for every service
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`/:service/*glob`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The main endpoint for redirecting a user to a working instance of a particular
+    service with the specified path
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Ex: `/libreddit/r/popular` would navigate to `<libreddit instance URL>/r/popular`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the service provided is actually a URL to a "parent" service (i.e. "youtube.com"
+    instead of "piped" or "invidious"), Farside will determine the correct frontend
+    to use for the specified URL.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that a path is not required. `/libreddit` for example will still redirect
+    the user to a working libreddit instance
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`/_/:service/*glob`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Achieves the same redirect as the main `/:service/*glob` endpoint, but preserves
+    a short landing page in the browser's history to allow quickly jumping between
+    instances by navigating back.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Ex: `/_/nitter` -> nitter instance A -> (navigate back one page) -> nitter
+    instance B -> ...'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Note: Uses Javascript to preserve the page in history*'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When a service is requested with the `/:service/...` endpoint, Farside requests
+    the list of working instances from the db and returns a random one from the list
+    and adds that instance as a new entry in the db to remove from subsequent requests
+    for that service. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A user navigates to `/nitter` and is redirected to `nitter.net`. The next user
+    to request `/nitter` will be guaranteed to not be directed to `nitter.net`, and
+    will instead be redirected to a separate (random) working instance. That instance
+    will now take the place of `nitter.net` as the "reserved" instance, and `nitter.net`
+    will be returned to the list of available Nitter instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This "reserving" of previously chosen instances is performed in an attempt to
+    ensure better distribution of traffic to available instances for each service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Farside also has built-in IP ratelimiting for all requests, enforcing only one
+    request per second per IP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#regarding-cloudflare)Regarding Cloudflare'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Instances for each supported service that are deployed behind Cloudflare are
+    not included when using [farside.link](https://farside.link). If you would like
+    to also access instances that use Cloudflare (in addition to instances that do
+    not), you can either use [cf.farside.link](https://cf.farside.link) instead, or
+    deploy your own instance of Farside and set `FARSIDE_SERVICES_JSON=services-full.json`
+    when running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you do decide to use [cf.farside.link](https://cf.farside.link) or use the
+    full instance list provided by `services-full.json`, please be aware that Cloudflare
+    takes steps to block site visitors using Tor (and some VPNs), and that their mission
+    to centralize the entire web behind their service ultimately goes against what
+    Farside is trying to solve. Use at your own discretion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#development)Development'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To run Farside without compiling, you can perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Install dependencies: `mix deps.get`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Initialize db contents: `FARSIDE_CRON=0 mix run -e Farside.Instances.sync`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Run Farside: `mix run --no-halt`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[#](#compiling)Compiling'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: You can create a standalone Farside app using the steps below. In the example,
+    the Farside executable is copied to `/usr/local/bin`, but can be moved to any
+    preferred destination. Note that the executable still depends on the C runtime
+    of the machine it is built on, so if you want a more portable binary, you should
+    build Farside on a system with older library versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[#](#environment-variables)Environment Variables'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '| Name | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| FARSIDE_TEST | If enabled, bypasses the instance availability check and adds
+    all instances to the pool. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| FARSIDE_PORT | The port to run Farside on (default: `4001`) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| FARSIDE_DATA_DIR | The path to the directory to use for storing instance
+    data (default: `/tmp`) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| FARSIDE_SERVICES_JSON | The JSON file to use for selecting instances (default:
+    `services.json`) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| FARSIDE_CRON | Set to 0 to deactivate the scheduled instance availability
+    check (default on). |'
+  prefs: []
+  type: TYPE_TB

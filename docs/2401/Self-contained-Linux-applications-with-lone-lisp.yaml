@@ -1,0 +1,301 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:03:56'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Self-contained Linux applications with lone lisp
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications](https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Self-contained Linux applications with lone lisp
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I started [the lone lisp project](https://github.com/lone-lang/lone) to create
+    a lisp language and environment exclusively for Linux. I built into it support
+    for arbitrary [Linux system calls](/articles/linux-system-calls) so that it would
+    be possible to implement any program without need for any external dependencies
+    and so that every Linux feature would be available to programmers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although far from ready for production use, I have achieved a significant milestone
+    in the development of the language: it is now possible to create self-contained,
+    standalone, freestanding, redistributable Linux applications written entirely
+    in lisp.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lisp code can now be embedded directly into a copy of the lone interpreter
+    which may then be copied to and run on any Linux system of the same architecture,
+    unmodified and without any external dependencies. The application is limited only
+    by the system calls it uses: newer system calls will naturally require newer kernels.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this article I will demonstrate this capability, explain how it works and
+    the journey to implementing it. Every script bundling tool I've ever seen unpacks
+    the code to some file system location and then reads it back in. I came up with
+    a different solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple implementation of `env` in lone lisp
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `env` utility is among the simplest programs available in Unix-like operating
+    systems. It''s most fundamental function is to print the user''s environment.
+    That function can be trivially implemented in lone lisp:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this simple program produces a table of environment variables and their
+    values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Embedding `env.ln` into the interpreter
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to transform `env.ln` into a self-contained `env` program, the lone
+    lisp code must be embedded into a copy of the interpreter. This can be achieved
+    by the purpose-built `lone-embed` tool:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The interpreter will then seamlessly load and execute the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Elven segments
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Tracing the system calls of the application with `strace` reveals an interesting
+    property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: It begins writing its output immediately. There was no need for it to read from
+    the file system. The code must be somewhere else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's at the very end of the executable itself, at an aligned offset. Through
+    some elven magic the interpreter is reflecting upon its own contents at runtime.
+    It's loading the code from inside itself and evaluating it. Without using any
+    system calls to do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The source of this magic is the ELF segment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: ELF segments, also called program headers, describe the memory image of the
+    program. There are many types of segments but especially interesting are the `LOAD`
+    segments which tell Linux which parts of the file must be mapped to which addresses
+    in order for the program to work correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `lone-embed` tool copies the lisp code into the ELF and then creates a `LOAD`
+    segment for it. Linux then maps in the embedded code automatically at load time
+    before the interpreter has even started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the segment
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The code will be in memory but its location and size are unknown. It could
+    be anywhere inside the vastness of virtual address space. To that problem Linux
+    provides an ingenious solution: it tells us where it is.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to argument and environment vectors, processes receive the auxiliary
+    vector. It's essentially a null terminated array of key-value pairs of various
+    types and it's placed right there on the stack just after the environment vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Through this mechanism, Linux passes various bits of useful information to programs.
+    These include things like processor architecture and capabilities, current user
+    and group IDs, some random bytes, the location of the [vDSO](https://www.man7.org/linux/man-pages/man7/vdso.7.html),
+    the system's page size...
+  prefs: []
+  type: TYPE_NORMAL
+- en: And the location of the program header table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The table is just a contiguous array of [ELF program header structures](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#Program_header).
+    Given this pointer, all the program has to do is scan the table and find the correct
+    entry. One does not simply search for `LOAD` entries, however. Attempting to do
+    it uncovers a couple of problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first problem is the fact there are lots of these loadable segments and
+    they're all indistinguishable from one another. ELF sections have unique names
+    for identification, program headers have nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second problem is their alignment requirements. The addresses and sizes
+    are usually aligned to page boundaries. This obfuscates the true size of the data
+    they contain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The lone segment
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'In order to solve this, I created my own custom segment type: the `LONE` segment.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ELF provides an incredibly generous numeric range for operating system-specific
+    segments. All the values between `LOOS` and `HIOS` are free for operating systems
+    to allocate. Those definitions represent a range of integers between `0x60000000`
+    and `0x6FFFFFFF` inclusive. That's 268,435,455 magic numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I just picked one. That's what the `LOOS+0xc6f6e65` means. Spelled out `lone`
+    in ASCII and it just worked itself out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: I figured if GNU can do it then I can do it too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `LONE` segment is not loadable and thus does not have any alignment requirements,
+    allowing it to describe the embedded segment exactly. It also serves as a magic
+    number which makes it trivial to search for it in the program header table. Once
+    found, it contains all the information lone needs to load and execute the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The interpreter now has the address and size of the data embedded into its own
+    executable. At this point it's smooth sailing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All that's left to do is to make sense of the bytes. I chose to simply put a
+    descriptor object in there and have the interpreter read it in. Seemed like the
+    simplest possible solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Just a good old hash table in lone lisp syntax. The run key contains the offset
+    and size of the code the interpreter should run, relative to the end of the descriptor
+    object. It just reads in that slice and evaluates it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since it's just a normal hash table, it's also infinitely extensible with arbitrary
+    schemas. I plan to implement a modules key to contain an arbitrary number of lone
+    modules so that programs can statically link their libraries into the lone interpreter.
+    All I gotta do is place the embedded segment into the module search path, before
+    all the others. I suppose I could also allow configuring the interpreter via the
+    descriptor object, eliminating the need for command line switches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Special linker features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Remember the `lone-embed` tool which I briefly mentioned at the beginning of
+    the articled? It's an ELF patching tool which I built specifically for this purpose
+    and it's doing *a lot of* heavy lifting here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When programs are compiled and linked, the program headers are set in stone.
+    Yet to do all of this I needed to append new segments to the program header table.
+    This turned out to be *much* harder than anticipated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The program header table usually follows the ELF header and precedes the contents
+    of the file. Appending new items to it would require resizing the table, which
+    would require shifting up the addresses of *everything* that comes after it, invalidating
+    pointers to the old addresses. As far as I can tell, it just can't be done without
+    reinventing the linker itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I tried to move the table to the end of the file instead but couldn't get that
+    to work either. My program was somehow segfaulting before it even reached the
+    entry point, gdb was useless, I couldn't understand what was going on and was
+    reduced to desperately dumping `readelf` output on stackoverflow in hopes someone
+    would spot the problem. Well *someone* did and quickly at that but clearly this
+    was not a sustainable software development strategy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `mold` linker saves the day
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The linker is in a privileged position. It knows everything there is to know
+    about the program's memory layout and can easily add new ELF segments to it seemingly
+    at will. If a solution exists, I was convinced it would be found in the linker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I started learning [linker script](https://sourceware.org/binutils/docs/ld/Scripts.html).
+    Turns out it has a `PHDRS` command which is exactly what I needed but I couldn't
+    figure out how to use it. I just kept getting "unable to allocate headers" errors
+    no matter what I tried. I concluded it would be easier to simply *ask* for this
+    feature instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I [emailed](https://sourceware.org/pipermail/binutils/2023-November/130640.html)
+    the GNU binutils mailing list... Then I created an [LLVM issue](https://github.com/llvm/llvm-project/issues/72386)...
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then I opened a `mold` issue. The maintainer immediately understood what I wanted
+    to do and [made it happen](https://github.com/rui314/mold/commit/eb6c213f2a9aa8a101b2b52a791be369d165e6a9)
+    with what was essentially a single line of code change. Just *beyond awesome*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I waited eagerly for the new release but got so excited I built this huge C++
+    project from source *on my smartphone* just to integrate lone with it. All I had
+    to do was put `-Wl,--spare-program-headers,2` in the `LDFLAGS`. It gave me two
+    `NULL` program headers for my patching utility to edit any way it wanted. It worked
+    *perfectly*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far `mold` is the only linker with this feature and it's absolutely required
+    for `lone-embed` to work. It will outright refuse to patch the ELF if it doesn't
+    find at least two `NULL` program headers in it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Would be nice if the others gained this feature too. Unless I can figure out
+    a way to move the program header table to the end of the file without breaking
+    everything, I'm pretty much locked into using `mold`. Well, I don't really mind.
+    It's an awesome linker *and* it's free software. I'm OK with this!
+  prefs: []
+  type: TYPE_NORMAL

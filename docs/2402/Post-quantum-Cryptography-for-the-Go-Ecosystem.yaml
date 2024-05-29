@@ -1,0 +1,397 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:31:05'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Post-quantum Cryptography for the Go Ecosystem
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://words.filippo.io/dispatches/mlkem768/](https://words.filippo.io/dispatches/mlkem768/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[filippo.io/mlkem768](https://pkg.go.dev/filippo.io/mlkem768?ref=words.filippo.io)
+    is a pure-Go implementation of ML-KEM-768 optimized for correctness and readability.
+    ML-KEM (formerly known as Kyber, renamed because we can’t have nice things) is
+    a [post-quantum](https://en.wikipedia.org/wiki/Post-quantum_cryptography?ref=words.filippo.io)
+    key exchange mechanism in the process of being standardized by NIST and adopted
+    by most of the industry.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The package amounts to [~500 lines of code](https://github.com/FiloSottile/mlkem768/blob/main/mlkem768.go?ref=words.filippo.io),
+    plus 200 lines of comments, and 650 lines of tests. It has no dependencies except
+    for golang.org/x/crypto/sha3\. It’s meant for [upstreaming](https://go.dev/cl/550215?ref=words.filippo.io)
+    into the Go standard library (initially as an internal-only package used in an
+    opt-in crypto/tls experiment) and was designed to provide high security assurance
+    through ease of review, simplicity, and thorough testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I livecoded part of its development [on Twitch](https://twitch.tv/filosottile?ref=words.filippo.io),
+    and you can watch [the replay on YouTube](https://www.youtube.com/watch?v=MyB7A93C-V0&ref=words.filippo.io).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike most other implementations, this code was not ported from the reference
+    pq-crystals library, but written from scratch not having ever closely read other
+    codebases. This was an intentional exercise in spec validation, to show it is
+    possible to produce an interoperable implementation from the specification alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The [FIPS 203 document](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf?ref=words.filippo.io)
+    turned out to be an excellent implementation guide, with detailed pseudo-code,
+    exhaustive definitions, and consistent type information. (This is something I
+    would like to ask of any large specification document: define your types and use
+    them and denote them!) To make the code both easier to review and better as a
+    learning resource, function and variable names, and even operation ordering, are
+    carefully picked to mirror the FIPS specification.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The specification actually requires fairly limited math background, but to facilitate
+    the work of implementers, I wrote up [Enough Polynomials and Linear Algebra to
+    Implement Kyber](https://words.filippo.io/dispatches/kyber-math/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Beyond that, the only parts left as an exercise to the reader were
+  prefs: []
+  type: TYPE_NORMAL
+- en: implementing arithmetic modulo the prime 3329;
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: concretely implementing the compress and decompress functions mapping values
+    [0, 3329) to and from [0, 2ᵈ); and
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: ensuring constant time operations.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Modulo arithmetic was reasonably easy, as we all collectively learned a lot
+    about finite field arithmetic through years of RSA and elliptic curve implementations.
+    The small prime actually makes the task feel unnaturally simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Compression and decompression](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf?ref=words.filippo.io#equation.4.5)
+    turned out to be the most difficult part of the project. The specification defines
+    them in abstract terms as fractions and rounding rules—“just” compute (2ᵈ/q)·x
+    or (q/2ᵈ)·y and round to the closest integer—but in practice we need to implement
+    them with constant time arithmetic and bitwise operations! In my [public comments](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/n8dsN_aMsa8/m/NHO2lNyWAAAJ?ref=words.filippo.io)
+    I pointed out that having each implementation figure out a strategy is risky and
+    redundant. I was more correct than I thought: it turned out that [the reference
+    implementation and ~every implementation ported from it used a division](https://github.com/pq-crystals/kyber/commit/dda29cc63af721981ee2c831cf00822e69be3220?ref=words.filippo.io)
+    which depending on compiler optimizations and platform might result in a DIV instruction,
+    which is variable-time even when the divisor is fixed. This package was unaffected,
+    because it used [Barrett reduction](https://www.nayuki.io/page/barrett-reduction-algorithm?ref=words.filippo.io)
+    from the start, like BoringSSL.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can read [the rest of my formal public comments](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/n8dsN_aMsa8/m/NHO2lNyWAAAJ?ref=words.filippo.io)
+    on the pqc-forum mailing list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Readability was a major goal of the implementation, and it was pursued ~~even~~
+    especially for complex functions like compression and decompression. A readable
+    implementation has two purposes: first, it allows effective review, both during
+    the code review process and later by interested researchers, improving security;
+    second, it serves as an educational resource for the next generation of maintainers
+    and cryptography engineers (or curious nerds). Reading the Go cryptography standard
+    library is how I got started on the path that led me here, so it is especially
+    important to me to preserve and improve it as a learning resource. It’s obviously
+    subjective, but I believe this to be the most understandable public ML-KEM/Kyber
+    implementation. Compare for example [our compression/decompression functions](https://github.com/FiloSottile/mlkem768/blob/344d5ee2c575ca84613bbb119c1d8b1ef6699ea5/mlkem768.go?ref=words.filippo.io#L394-L442)
+    with [the reference implementation](https://github.com/pq-crystals/kyber/blob/11d00ff1f20cfca1f72d819e5a45165c1e0a2816/ref/poly.c?ref=words.filippo.io#L9-L112).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sometimes improving readability and reviewability means making code longer
+    and less reusable: for example for ML-KEM-768 we need to serialize 1-, 4-, 10-,
+    and 12-bit integers in a packed format. A universal 1-to-12 bit encoder and decoder
+    is a pretty gnarly piece of code to write correctly, but each of those four sizes
+    are actually pretty easy to write a dedicated encoder/decoder for. This is why
+    we have `ringCompressAndEncode1/4/10` etc. instead of a single universal function.
+    This also made it easy to work some special required checks into the 12-bit decoder.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This, by the way, was only possible because we targeted ML-KEM-768 specifically,
+    or we’d have had to implement 5- and 11-bit encodings, as well. ML-KEM is specified
+    at three security levels (-512, -768, and -1024). However, the Kyber team recommends
+    using -768 over -512 for a more conservative security margin against novel cryptanalysis,
+    while -1024 exists only for the same reasons 256-bit security levels exist: compliance
+    and blind [strength matching](https://www.imperialviolet.org/2014/05/25/strengthmatching.html?ref=words.filippo.io).
+    Most protocols being tested or standardized coalesced around ML-KEM-768, so targeting
+    only that improves not only readability, but also security (because there are
+    fewer moving parts), and performance (because we can optimize allocation sizes,
+    iteration counts, and encoding algorithms) at little to no cost.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After readability, testing is the main component in this package’s high security
+    assurance strategy. Besides checking that key generation, encapsulation, and decapsulation
+    round-trip correctly, and maintaining a test coverage of 95%+, we
+  prefs: []
+  type: TYPE_NORMAL
+- en: ensure interoperability with [test vectors obtained from NIST and other implementations](https://github.com/FiloSottile/mlkem768/blob/344d5ee2c575ca84613bbb119c1d8b1ef6699ea5/testdata/vectors.json?ref=words.filippo.io);
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exhaustively test every input combination for base field arithmetic operations
+    (addition, subtraction, and multiplication modulo 3329) against expected values
+    computed trivially with variable-time operations;
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exhaustively test compression and decompression against math/big.Rat (contributed
+    by David Buchanan);
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: test that pre-computed constants match their definition;
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: check that incorrect lengths (both long and short) cause the appropriate error
+    for every input of every function;
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: run an extensive set of reusable test vectors we developed (see below);
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: run test vectors [provided by Sophie Schmieg](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/aCAX-2QrUFw/m/hy5gwcESAAAJ?ref=words.filippo.io)
+    which will be eventually included in [Wycheproof](https://github.com/google/wycheproof?ref=words.filippo.io).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Our test vectors are designed to be reusable by other implementations, and [are
+    published as part of the CCTV project](https://c2sp.org/CCTV/ML-KEM?ref=words.filippo.io)
+    along with detailed [intermediate values](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#intermediate-values)
+    for testing and debugging each intermediate step and partial algorithm, which
+    we used during development. There are different sets of tests vectors, each designed
+    to reach different edge cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Negative test vectors](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#bad-encapsulation-keys)
+    provide invalid encapsulation keys, where the coefficients are higher than 3329\.
+    These were often requested, since all the test vectors from the Kyber and NIST
+    teams are for regular, correct inputs. These vectors individually test every value
+    from 3329 to 2¹²-1 and every coefficient location, sharing the remaining coefficients
+    so they compress from 1–3 MiB down to 12–28 KiB.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[“Unlucky” vectors](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#unlucky-ntt-sampling-vector)
+    require an unusually large number of XOF reads. Kyber samples a matrix from a
+    portion of public keys with *rejection sampling*: it gets a random value between
+    0 and 2 ¹²-1 and checks if it’s less than 3329, if not, it tries again. The amount
+    of bytes needed to sample a matrix depends on how lucky you get with the sampling,
+    and that’s a random function of the public key component. These vectors are regular
+    public keys and require reading more than 575 bytes from the SHAKE-128 XOF in
+    SampleNTT, which would ordinarily happen with probability 2⁻³⁸. Sophie’s vectors
+    were bruteforced further, and require up to 591 bytes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At this point I would like to thank our detection and response team for not
+    killing my job(s) hashing vast amounts of random seeds and looking for zeroes
+    in the output. — Sophie Schmieg
+  prefs:
+  - PREF_IND
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Special vectors [fail if strcmp is used](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#strcmp-vectors)
+    in ML-KEM.Decaps. In ML-KEM.Decaps the ciphertext is compared with the output
+    of K-PKE.Encrypt for implicit rejection. If an implementation were to use `strcmp()`
+    for that comparison it would fail to reject some ciphertexts if a zero byte terminates
+    the comparison early. This one I hope is going to sit as a silent trap for years—who
+    would use `strcmp()` in cryptographic code—and then ruthlessly kill a vulnerability,
+    because of course someone will.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Accumulated vectors](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#accumulated-pq-crystals-vectors)
+    (derived from the reference pq-crystals implementation) allow testing randomly
+    reachable edge cases without checking in large amounts of data. The reference
+    implementation of Kyber includes a `test_vectors.c` program that generates 300MB
+    of random vectors. I had no intention of checking in the output or compiling C,
+    but since they are just randomly generated vectors, we can regenerate them in
+    our tests from the deterministic RNG (SHAKE-128 with an empty input) and check
+    they hash to an expected value. We can even take it further, and produce hashes
+    for a million random tests, beyond the 10k they generate.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I am happy to report that none of the tests, many introduced after completion
+    of the implementation, identified any issues in filippo.io/mlkem768\. There is
+    [at least one reported instance](https://github.com/C2SP/CCTV/issues/7?ref=words.filippo.io)
+    of the negative vectors identifying a defect in a major implementation, though.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance is not a primary goal (neither of this package nor of [the Go cryptography
+    packages](https://go.dev/design/cryptography-principles?ref=words.filippo.io))
+    but the package needs to be fast enough to be useful. Thankfully, ML-KEM is pretty
+    fast, to the point that this simple implementation is competitive with our assembly-optimized
+    P-256 and X25519 implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compare apples to apples, note that we need to compare the whole operation
+    that each side needs to perform for key establishment: for ECDH, two scalar multiplications
+    (one of them by the fixed base point); for KEMs, key generation and decapsulation
+    on one side, and encapsulation on the other. ECDH is symmetrical, ML-KEM key establishment
+    is not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The ECDH benchmarks below already include the two scalar multiplications, while
+    the mlkem768 benchmarks are split as key generation and decapsulation under “Alice”
+    and encapsulation under “Bob”. Since decapsulation includes a full encryption
+    (to check the resulting ciphertext matches the input), Alice takes a lot longer
+    than Bob: the latter does an encryption, while the former does an encryption,
+    a decryption, and a key generation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All in all, “Bob” is as fast as our X25519 or P-256, while “Alice” takes less
+    than twice. Compared to some of the fastest ML-KEM implementations out there (BoringSSL
+    and libcrux), this package takes approximately double the time. For such a simple
+    and unoptimized implementation, this is more than satisfactory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The performance wasn’t entirely free. In general, I followed high-performance
+    Go programming patterns, trying for example to minimize heap allocations. Next,
+    I [reworked the x/crypto/sha3 package](https://go.dev/cl/544817/2?ref=words.filippo.io)
+    so it could be used without any heap allocation thanks to [the mid-stack inlining
+    trick](https://words.filippo.io/efficient-go-apis-with-the-inliner/). However,
+    I haven’t merged those changes yet and they are not included in the benchmarks
+    above, because they have a negative effect on Apple M2 processors. No idea why
+    yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The one successful optimization was complaining about the confusing result above
+    on the Gophers Slack `#performance` channel, which sniped Josh Bleecher Snyder
+    into contributing [a couple changes](https://github.com/FiloSottile/mlkem768/pulls?q=is%3Apr+author%3Ajosharian&ref=words.filippo.io)
+    :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is some low hanging fruit still: key generation and decapsulation both
+    sample a matrix from the same value, and since the two are usually done sequentially
+    on the Alice side, the matrix could be stored saving around 10% time. There might
+    be an opportunity to save a copy in the sha3 read path, too. After that, it’s
+    a matter of optimizing the field implementation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you got this far, you might want to follow me on Bluesky at [@filippo.abyssdomain.expert](https://bsky.app/profile/filippo.abyssdomain.expert?ref=words.filippo.io)
+    or on Mastodon at [@filippo@abyssdomain.expert](https://abyssdomain.expert/@filippo?ref=words.filippo.io).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Bonus track: using a ML-KEM implementation as Kyber v3'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: NIST made a few small changes to the Round 3 submission of Kyber. They are summarized
+    in Section 1.3 of the FIPS draft.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are a few experimental protocols defined in terms of Kyber v3
+    (or “draft00”), including the main deployed PQ TLS key exchange. Do we have to
+    make a separate package to support them?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, no we don’t.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One change adds some validation for an edge case (non-canonical coefficient
+    encodings in public keys) that was undefined in Kyber. Honest implementations
+    will not produce such keys, so we can reject them as specified in the FIPS draft.
+    It will make it possible to fingerprint our implementation as Kyber-on-ML-KEM
+    but will be otherwise harmless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One change removed a hashing step applied to CSPRNG input. Since those bytes
+    are random, it’s impossible for any party to tell the difference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final change is the major one, and the trickiest. The ciphertext used to
+    be hashed into the shared secret. This difference would prevent interoperability.
+    However, the mixing happens as an additional key derivation, which was entirely
+    removed in ML-KEM, which instead returns the value K as-is. This means we can
+    run ML-KEM to generate the shared secret K and then apply
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: to generate the Kyber shared secret. No need to break the ML-KEM abstraction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s one wrinkle: both Kyber and ML-KEM perform implicit rejection in Decapsulate
+    by hashing a secret with the ciphertext and returning that as the shared secret.
+    If we do the key derivation above on top of ML-KEM, we’ll hash the ciphertext
+    twice for implicit rejections. That’s ok, because the output of implicit rejection
+    is unpredictable by design, not an interoperation target.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The picture
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Berlin there's an old closed airport, [Tempelhof](https://en.wikipedia.org/wiki/Berlin_Tempelhof_Airport?ref=words.filippo.io),
+    which is now a public park. Walking down the taxiways (pictured) or along the
+    centrelines of the 09L/27R and 09R/27L crossed-out runways is kinda unsettling,
+    at least for me. ("Should I be speaking with Ground or Tower? Can I enter this
+    runway?") Fun fact, in 2010 a single-engine plane forgot to switch fuel tank and
+    did an emergency landing on 27L. Closed runways are the best bad places to land,
+    after all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A cement taxiway pictured at sunset, from the middle of the yellow centreline.
+    The airport terminal is visible on the horizon, and a patch of grass on the left.](img/0154902025ef34d014567ae278a1e7e9.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: This work was funded by a Google [Open Source Security Subsidy](https://bughunters.google.com/about/rules/5891381450768384/open-source-security-subsidies-rules?ref=words.filippo.io)
+    and by my awesome clients—[Sigsum](https://www.sigsum.org/?ref=words.filippo.io),
+    [Latacora](https://www.latacora.com/?ref=words.filippo.io), [Interchain](https://interchain.io/?ref=words.filippo.io),
+    [Smallstep](https://smallstep.com/?ref=words.filippo.io), [Ava Labs](https://www.avalabs.org/?ref=words.filippo.io),
+    [Teleport](https://goteleport.com/?ref=words.filippo.io), and [Tailscale](https://tailscale.com/?ref=words.filippo.io)—who,
+    through our retainer contracts, get face time and unlimited access to advice on
+    Go and cryptography.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here are a few words from some of them!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Latacora — [We wrote about password hashing with delegation](https://www.latacora.com/blog/2023/12/22/case-for-password-hashing/?ref=words.filippo.io),
+    a somewhat less known password hashing primitive. It's a PBKDF with a special
+    property, that allows offloading hashing computation to a potentially untrusted
+    server. In this blog post, we describe this primitive and discuss its applicability
+    in the context of End-to-End Encrypted (E2EE) backup systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Teleport — For the past five years, attacks and compromises have been shifting
+    from traditional malware and security breaches to identifying and compromising
+    valid user accounts and credentials with social engineering, credential theft,
+    or phishing. [Teleport Identity Governance & Security](https://goteleport.com/identity-governance-security/?utm=filippo&ref=words.filippo.io)
+    is designed to eliminate weak access patterns through access monitoring, minimize
+    attack surface with access requests, and purge unused permissions via mandatory
+    access reviews.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ava Labs — We at [Ava Labs](https://www.avalabs.org/?ref=words.filippo.io),
+    maintainer of [AvalancheGo](https://github.com/ava-labs/avalanchego?ref=words.filippo.io)
+    (the most widely used client for interacting with the [Avalanche Network](https://www.avax.network/?ref=words.filippo.io)),
+    believe the sustainable maintenance and development of open source cryptographic
+    protocols is critical to the broad adoption of blockchain technology. We are proud
+    to support this necessary and impactful work through our ongoing sponsorship of
+    Filippo and his team.
+  prefs: []
+  type: TYPE_NORMAL

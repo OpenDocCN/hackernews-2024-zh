@@ -1,0 +1,245 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:42:03'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'MicroZed Chronicles: The Frequency Domain'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.adiuvoengineering.com/post/microzed-chronicles-the-frequency-domain](https://www.adiuvoengineering.com/post/microzed-chronicles-the-frequency-domain)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Recently, I have posted a few blogs and projects which looked at signal processing
+    or filters. I thought it would be a good idea to go into more detail about one
+    of the commonly used elements of these blogs and projects which is the Fourier
+    Transform.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should be comfortable working in both the time and frequency domains, so
+    hopefully this blog provides a good starting point for those who might not be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Time or Frequency Domain**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: As engineers, we can analyze and manipulate signals in either time or frequency
+    domains and knowing when to do either one is a core reason an engineer is required
+    on a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The time domain enables engineers to analyze how a signal changes over time.
+    Typically, in electronic systems, the signal in question is either a changing
+    voltage, current, or frequency which has been output by a sensor or generated
+    by another part of the system. Within this domain, we can measure a signal’s amplitude,
+    frequency, and period in addition to more interesting parameters such as the rise
+    and fall times of the signal. If we wish to observe a time domain signal in a
+    laboratory environment, it’s common to use an oscilloscope or logic analyzer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are signal parameters that require analysis within the frequency
+    domain to access the information contained within. These parameters are present
+    within the frequency domain where we can identify the frequency components of
+    the signal, their amplitudes, and the phase of each frequency. Working within
+    the frequency domain also makes it much simpler to manipulate signals due to the
+    ease with which convolution can be performed in the frequency domain. Similar
+    to the time domain analysis, we must use a spectrum analyzer if we wish to observe
+    a frequency domain signal within the laboratory environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For some applications, we will wish to work within the time domain like systems
+    that monitor voltage or temperature, for example. While noise may be an issue,
+    taking an average number of samples will be sufficient in many cases. For other
+    applications, however, it is preferable to work within the frequency domain. For
+    example, this could include signal processing applications which requires the
+    filtering of one signal from another or to separate it from a noise source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, working within the time domain requires less processing on the quantized
+    digital signal. Working within the frequency domain, on the other hand, first
+    requires the application of a transform to the quantized data to convert from
+    the time domain. Similarly, we need to perform the inverse transform again back
+    to the time domain to output the post processed data from the frequency domain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**From the Time to Frequency Domain**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Depending upon the type of signal (i.e., repetitive or non-repetitive, discrete
+    or non-discrete), there are a number of methods that can be used to covert between
+    time and frequency domains such as Fourier series, Fourier Transforms or Z Transforms.
+    Within electronic signal processing and FPGA applications in particular, the most
+    often used method is the Discrete Fourier Transform (DFT) which is a subset of
+    the Fourier Transform. The DFT is used to analyze signals that are periodic and
+    discrete meaning they consist of a number of N bit samples evenly spaced at a
+    sampling frequency which, in many applications, are supplied by an ADC within
+    the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simply put, the DFT decomposes the input signal into two output signals which
+    represent the sine and cosine components of that signal. Thus, for a time domain
+    sequence of N samples, the DFT will return two groups of N/2+1 cosine and sine
+    wave samples respectively referred to as the real and imaginary components as
+    shown in figure one below. The real and imaginary sample width will also be N/2
+    for an input signal width of n bits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The algorithm to calculate the DFT is pretty straight forward and we can use
+    the equation shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where **x[i]** is the time domain signal, i ranges from 0 to N-1 and k ranges
+    from 0 to N/2\. The algorithm above is called the correlation method and it multiplies
+    the input signal with the sine or cosine wave for that iteration to determine
+    its amplitude.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At some point in our application, we’ll wish to transform back from the frequency
+    domain into the time domain. To do this, we can use the synthesis equation which
+    combines the real and imaginary waveforms to recreate a time domain signal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**ReX ̅** and **ImX ̅** are, however, scaled versions of the cosine and sine
+    waves so we need to scale them. **ImX[k]** or **ReX[k]** is divided by N/2 to
+    determine the values for **ReX ̅** and **ImX ̅** in all cases except when **ReX[0]**
+    and **ReX[N/2]**, in this case, they are divided by N.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For obvious reasons this is called the Inverse Discrete Fourier Transform or
+    IDFT for short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use tools such as Python, MATLAB and even Excel to perform DFT calculations
+    on captured data and many lab tools like oscilloscopes are capable of performing
+    DFT on request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we get any further, it’s worth pointing out that both the DFT and IDFT
+    above are referred to as real DFT and real IDFT. This means that the input is
+    a real number and not complex. It will soon become apparent why we need to know
+    this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can demonstrate the DFT algorithm using Python in JupyterLab using the following
+    code. We can also generate the plots below showing the real element using a signal
+    of 10 MHz and sampling rate of 100 Msps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**FPGA based Implementation**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The implementation of the DFT and IDFT as described above is often implemented
+    as a nested loop, each performing N calculations as shown in the Python example.
+    As such, the time taken to implement the DFT calculation is as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where Kdft is the processing time for each iteration to be performed, this can
+    become quite time consuming to implement. It will be pretty fast on a high-performance
+    desktop but much slower on a processor intended for the edge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, DFTs within FPGAs are normally implemented using an algorithm called
+    the Fast Fourier Transform (FFT) to calculate the DFT. This algorithm has often
+    been called the “the most important algorithm of our lifetime” because of its
+    enabling impact on many industries. The FFT differs slightly from the DFT algorithms
+    explained previously in that it calculates the complex DFT. This means that it
+    expects real and imaginary time domain signals and produces results in the frequency
+    domain which are n bits wide as opposed to n/2\. To clarify further, when we wish
+    to calculate a real DFT, we must first set the imaginary part to zero and move
+    the time domain signal into the real part. We have two options if we wish to implement
+    a FFT within our AMD FPGA. We can either write one from scratch using the HDL
+    of our choice or use the FFT IP provided within the Vivado IP catalogue. Unless
+    there are pressing reasons not to use the IP, I suggest using the IP core to allow
+    for reduced development time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic approach of the FFT is that it decomposes the time domain signal into
+    a number of single point time domain signals. This is often called bit reversal
+    because the samples are reordered. If a bit reversal algorithm is not used as
+    a short cut, the number of stages that it takes to create these single point time
+    domain signals is calculated by Log2 N where N is the number of bits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These single point time domain signals are then used to calculate the frequency
+    spectra for each point. This is pretty straight forward since the frequency spectra
+    is equal to the single point time domain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s in the recombination of these single frequency points that the FFT algorithm
+    gets complicated and we must recombine these spectra points one stage at a time.
+    This is the opposite of the time domain decomposition and will again take Log2
+    N stages to recreate the spectra. This is where the famous FFT butterfly comes
+    into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When compared with the DFT execution time, the FFT takes
+  prefs: []
+  type: TYPE_NORMAL
+- en: This results in significant improvements in execution time to calculate a DFT.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When implementing an FFT within our FPGA, we must also take into account the
+    size of the FFT because this will determine the noise floor below which we can’t
+    see signals of potential interest. The FFT size will also determine the spacing
+    of the frequency bins. The equation below is used for this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**FFTNoise Floor (dB)=6.02n+1.77+10log10(FFTsize/2)**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where n is the number of quantized bits within the time domain and FFT size
+    is the FFT size. For FPGA-based implementations, this is normally a power of 2
+    (e.g., 256, 512, 1024 etc.). The frequency bins will be evenly spaced at
+  prefs: []
+  type: TYPE_NORMAL
+- en: To illustrate a very simple example, a FS of 100 MHz with a FFT size of 128
+    would have a frequency resolution of 0.39 Hz. This means frequencies with 0.39
+    Hz of each other cannot be distinguished.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, we can look at the FFT in JupyterLabs and observe the output for the
+    same configuration as for the DFT.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, now that we understand a little more about FFTs and DFT we might
+    want to implement them in our FPGA. If you have a PYNQ board, you can find detailed
+    step-by-step instructions on how to do so for MPSoC or Zynq 7000 boards below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This should help you understand how to go about implementing an FFT in a FPGA
+    and give you  good starting point to working with them further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you enjoyed the blog why not take a look at the free webinars, workshops
+    and training courses we have created over the years. Highlights include
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do you want to know more about designing embedded systems from scratch? Check
+    out our book on creating embedded systems. This book will walk you through all
+    the stages of requirements, architecture, component selection, schematics, layout,
+    and FPGA / software design. We designed and manufactured the board at the heart
+    of the book! The schematics and layout are available in Altium [here](https://www.e3designers.com/altium-365)Learn
+    more about the board (see previous blogs on [Bring up](https://www.adiuvoengineering.com/post/microzed-chronicles-configuring-zynq-on-a-custom-board),
+    [DDR validation,](https://www.adiuvoengineering.com/post/microzed-chronicles-validating-your-custom-zynq-board-memory)
+    [USB](https://www.adiuvoengineering.com/post/microzed-chronicles-smart-sensor-iot-board-getting-usb-up-and-running),
+    [Sensors](https://www.adiuvoengineering.com/post/microzed-chronicles-petalinux-i2c-in-the-ps-and-axi-iic))
+    and view the schematics [here](https://www.adiuvoengineering.com/post/sensorsthink-board-schematic).
+  prefs: []
+  type: TYPE_NORMAL

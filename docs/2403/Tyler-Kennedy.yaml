@@ -1,0 +1,147 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:00:28'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tyler Kennedy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://tkte.ch/articles/2024/03/15/parsing-urls-in-python.html](https://tkte.ch/articles/2024/03/15/parsing-urls-in-python.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: tl;dr - Try [can_ada](https://github.com/tktech/can_ada) if you need to parse
+    URLs in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: URLs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Parsing URLs *correctly* is surprisingly hard. Who even defines what a "correct"
+    URL is? URLs have evolved drastically since they were originally defined in [1994](https://tools.ietf.org/html/rfc1738).
+    The [WHATWG](https://whatwg.org/) has a [URL specification](https://url.spec.whatwg.org/)
+    that is comprehensive and has helped standardize the behavior of URLs across browsers,
+    but this specification still isn''t universal and ambiguities like "how many slashes
+    are you allowed" can definitely get on [your nerves](https://daniel.haxx.se/blog/2017/01/30/one-url-standard-please):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So browsers accept URLs written with thousands of forward slashes instead of
+    two. That is not a good reason for the spec to say that a URL may legitimately
+    contain a thousand slashes. I’m totally convinced there’s no critical content
+    anywhere using such formatted URLs and no soul will be sad if we’d restricted
+    the number to a single-digit. So we should. And yeah, then browsers should reject
+    URLs using more.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*However*, if you''re creating something new and want to handle URLs, the WHATWG''s
+    URL specification probably is the best place to start.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: URLs in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''re working in Python, you''d probably start with the built-in `urllib`
+    module. It''s been around forever, but unfortunately it''s not compliant with
+    *any* URL specification, either the much older [rfc3978](https://tools.ietf.org/html/rfc3986):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: RFC 3986 is considered the current standard and any future changes to urlparse
+    module should conform with it. The urlparse module is currently not entirely compliant
+    with this RFC due to defacto scenarios for parsing, and for backward compatibility
+    purposes, some parsing quirks from older RFCs are retained. The testcases in test_urlparse.py
+    provides a good indicator of parsing behavior.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '... or the WHATWG URL Parser spec:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The WHATWG URL Parser spec should also be considered. We are not compliant with
+    it either due to existing user code API behavior expectations (Hyrum's Law). It
+    serves as a useful guide when making changes.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Having existed for over 16 years, so many projects depend on the urllib module
+    parsing URLs in *exactly* the way it does that it's unlikely to ever change in
+    any significant fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ada
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The [Ada](https://github.com/ada-url/ada) project is a new (2024) attempt to
+    create a URL parsing library that adheres to the WHATWG URL specification and
+    works [really, really fast](https://github.com/ada-url/ada?tab=readme-ov-file#ada-is-fast),
+    parsing 7 URLs for every 1 parsed by cURL. Written in C++, it now has bindings
+    to several other languages, including [Python](https://github.com/ada-url/ada-python),
+    and has become the URL parsing library used by Node.js as of version 18 to great
+    success:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since Node.js 18, a new URL parser dependency was added to Node.js — Ada. This
+    addition bumped the Node.js performance when parsing URLs to a new level. Some
+    results could reach up to an improvement of 400%.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The ada-python binding is perfectly functional, and the official binding for
+    the project. However, the ada-python bindings are built on [CFFI](https://cffi.readthedocs.io/en/latest/),
+    an approach that has the binding between C and Python written in Python itself,
+    which loses some of the performance benefits of using Ada in the first place when
+    most of the time is spent just making the function call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: can_ada
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Daniel Lemire](https://lemire.me), one of the developers behind the Ada project
+    asked me to [take a look](https://github.com/ada-url/ada-python/pull/1#issuecomment-1550405501)
+    at the ada-python bindings and out of that was born [can_ada](https://github.com/tktech/can_ada),
+    a new Python binding that uses [pybind11](https://pybind11.readthedocs.io/en/stable/)
+    and template magic to generate the binding code, which is then compiled into a
+    Python extension module. This approach has the potential to be much faster than
+    the ada-python bindings, and indeed when comparing the two bindings, the new can_ada
+    binding is about 2x faster than the ada-python bindings which in turn is about
+    2x faster than `urllib.parse`!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the same time, using the pybind11 approach allows for a very succinct and
+    [readable](https://github.com/TkTech/can_ada/blob/main/src/binding.cpp) binding
+    definition, coming in at just **60** lines of code and almost a 1:1 with the underlying
+    C++ API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Binary builds are available now for CPython 3.7 to 3.12, and PyPy 3.7 to 3.9
+    on many OS''s and architectures. Install it with pip or [get the source](https://github.com/tktech/can_ada):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compare this to the urllib version, which is not WHATWG compliant:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE

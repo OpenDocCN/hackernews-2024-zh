@@ -1,0 +1,163 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:32:10'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Oracle Shared Pool Internals: Allocated Chunk Status Indicators in Heap Dumps
+    | Tanel Poder Consulting'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/](https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over time, Oracle has been adding more contextual information into each allocated
+    heap memory chunk, to make it easier to see what for your heap memory is used.
+    This instrumentation is used for private (PGA,UGA,etc) heaps too, but this article
+    focuses only on shared pool heaps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A few examples from past are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Library cache object hash values added to allocated shared pool chunk names](/2010/11/04/a-little-new-feature-for-shared-pool-geeks/)
+    (2010)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The above technique is used for some other allocation types too, like `KKSSP^NNN`
+    allocations that are used for “session pages” that hold various tiny memory structures
+    like library cache lock (and pin in older DB versions) that a session must allocate
+    when accessing library cache objects. The NNN is in this case is not showing some
+    hash value, but the SID of the allocating session.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Additionally, you can use shared pool dumps for listing chunk location in the
+    *recurrent* end of the heap LRU replacement list after the [SEPARATOR marker in
+    shared pool heap dumps](/posts/oracle-shared-pool-list-chunk-position-in-lru-list/)
+    (2020). That would tell you which existing cursors have been executed more than
+    once (pinned at least 3 times - once for loading the object into cache + at least
+    2 executions).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Newer Oracle versions print out even more info about chunk status indicators
+    in heap dumps, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Recreatable chunks have 2 charaters indicating their status.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First character:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**P** - chunk is pinned'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**U** - chunk is unpinned'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Second character:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**C** - chunk is just created (pinned only once for KGL parent objects, twice
+    for child objects)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**T** - chunk is in the *transient* end of the LRU list (loaded and used only
+    once, heap is pinned only twice)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**R** - chunk is in the *recurrent* end of the LRU list (loaded and used twice
+    or more, heap is pinned at least 3 times)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The 3-digit number in `recrPC001` is the CON_ID of the allocating container/PDB,
+    if you’re using multitenant database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might wonder what’s the difference between C and T above. It looks like
+    Oracle immediately uses the transient flag (T) for objects like library cache
+    object handle (KGLHD - the entry point to any library cache object structure,
+    data dictionary cache objects KQR PO/SO), but for actual library cache object
+    “payload”, like cursors, PL/SQL objects, it first uses the (C) flag, which then
+    gets changed to (R) if executed for more than once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Query executed only once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The same query executed twice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above output, you see how `recrUC001` turned into `recrUR001` and the
+    chunk was moved below the `SEPARATOR` special marker in the LRU list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s an example of a few library cache object handle (KGLHD) objects, that
+    don’t even have the object name hash value included in the allocations (you can
+    find the right ones using `v$db_object_cache.addr` or `v$sql.address/child_address`)
+    in a heapdump:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: For such allocations, Oracle seems to immediately mark chunks as (R) or (T)
+    and not use the (C) flag at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Nowadays, Oracle tries make library cache’s heap allocations use standardized/fixed
+    sizes of individual chunks (*_kgl_fixed_extents* = 4096) to reduce heap fragmentation.
+    Thus, you’ll see a lot of `freeable` chunks if your cursor (or PL/SQL object)
+    requires more than 4kB of memory for its heaps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: These *freeable* chunks are not linked into the LRU list that shared pool manager
+    searches through. Oracle doesn’t free random freeable chunks on their own - and
+    it doesn’t see them anyway as they are not linked into the LRU list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared pool LRU list scan must find an unpinned *recreatable* chunk (the first
+    chunk in an allocated heap) and it frees this leading recreatable chunk first
+    (the `ds=0x13e3d9d48` points to the beginning of the heap). Then it goes on to
+    freeing the remaining chunks of this heap, it will walk through a linked list
+    of any further allocations “chained” to the leading chunk (marked as freeable)
+    and frees these as a result. The heap manager frees entire subheaps when it finds
+    its leading recreatable chunk to be unpinned - there’s no point in freeing only
+    the leading 4kB of a 100kB SQL Area heap and leaving the rest of it in some partially
+    allocated unusable state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

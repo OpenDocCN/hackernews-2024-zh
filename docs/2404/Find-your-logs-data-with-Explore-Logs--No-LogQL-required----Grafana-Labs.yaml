@@ -1,0 +1,355 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:03:41'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Find your logs data with Explore Logs: No LogQL required! | Grafana Labs'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://grafana.com/blog/2024/04/09/find-your-logs-data-with-explore-logs-no-logql-required/](https://grafana.com/blog/2024/04/09/find-your-logs-data-with-explore-logs-no-logql-required/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We are thrilled to announce the preview of Explore Logs, a new way to browse
+    your logs without writing LogQL. In this post, we’ll cover why we built Explore
+    Logs and we’ll dive deeper into some of its features, including at-a-glance breakdowns
+    by label, detected fields, and our new pattern detection. At the end, we’ll tell
+    you how you can try Explore Logs for yourself today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But let’s start from the beginning — with good old LogQL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We love LogQL
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Grafana Loki, Grafana Labs’ [open source log aggregation project](https://github.com/grafana/loki),
+    provides a powerful query language called [LogQL](/blog/2022/05/12/10-things-you-didnt-know-about-logql/).
+    Site reliability engineers (SREs) and other Loki experts love to use it to filter
+    logs for specific keywords, reduce noise by selecting specific labels, and perform
+    other operations to get answers to understand their systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Metrics can be created from logs, which are put into dashboards to visualize
+    key insights. Alerts can be set up and wired into [Grafana Incident Response &
+    Management](/products/cloud/irm/) (IRM), which includes [Grafana OnCall](/products/cloud/oncall/)
+    and [Grafana Incident,](/products/cloud/incident/) so you can make sure you get
+    early warnings when things go wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those same queries can be used to power [Grafana dashboard visualizations](/docs/grafana/latest/panels-visualizations/visualizations/)
+    so you can make sense of your logs. LogQL is really powerful! There’s just one
+    catch …
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‘But I don’t know LogQL!’
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you aren’t digging into your logs every day, you might not have had a reason
+    to learn LogQL. Perhaps you dive in now and again, or maybe only during an incident.
+    And even in those moments, having to remember the details of a query language
+    can slow down response times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The point is, you come to your logs platform not because you love logs, but
+    because you *need* logs to do your job. Whether you need them to see a deployment
+    go smoothly, to investigate a latency issue, or to deal with a 4 a.m. page, the
+    last thing you want to do is wrestle with yet another query language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If only you could take advantage of all the great benefits Loki + Grafana provides,
+    without needing to learn LogQL. Well, you guessed it: Now you can!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing Explore Logs, a new OSS application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Explore Logs is our new OSS application that lets you browse your logs as if
+    they were already neatly organized for you in advance. You can find [the source
+    code on GitHub](https://github.com/grafana/explore-logs), but before you head
+    there to try it, allow us to give you a quick tour.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you come into Explore Logs (in the navigation, head over to **Explore**
+    > **Logs**), you are presented with a list of detected services or apps. Engineers
+    no longer have to fight with teams across the organization to standardize on one
+    convention. Instead, we embrace the chaos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Services are presented along with their log volumes and a preview of recent
+    log lines, so you can see, at a glance, which services are the most chatty and
+    what kinds of logs they are emitting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don’t see the service you are looking for? Simply search for it with the search
+    bar (plain text search, not LogQL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: As if automatic service detection wasn’t enough, things start to get really
+    interesting when you select a service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to breakdown logs in a service
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Explore Logs provides tools to further visualize and breakdown a service’s logs
+    by labels, detected fields, and patterns, all while making sure the log lines
+    themselves are always just a click away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Labels** are key-value pairs that can be attached to log lines, for example:
+    `level=error`, `environment=prod`, `app=nginx`, `team=loki`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Detected fields** contain structured key-value pairs extracted automatically
+    from a log line at query time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Patterns** are templates automatically derived from the log stream, used
+    to match lines of the same type. New innovations here have led to some powerful
+    capabilities described below.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s explore (get it?) each of these in turn, and see how Explore Logs makes
+    it easier than ever to make use of these features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Labels
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In Loki, [labels](/docs/loki/latest/get-started/labels/) are key-value pairs
+    that are used to organize and identify log streams. Labels are attached to log
+    streams to help users query, filter, and aggregate logs efficiently. They are
+    similar to tags or metadata in other logging systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explore Logs creates a log volume chart for each label, allowing you to easily
+    see which are the most active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting a label shows you a breakdown of the logs per value. For example,
+    log level is broken down into debug, info, warning, error, and critical.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting a value applies the filter (by writing LogQL for you in the background)
+    and immediately jumps to a curated view showing the relevant log lines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detected fields
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Detected fields in Loki refer to fields that are automatically extracted from
+    log messages when they’re ingested. Loki doesn’t index the content of log lines,
+    but it can parse and extract fields from logs at query time. This feature allows
+    users to query logs more efficiently by using these fields without the need to
+    label every possible attribute as labels, which could be costly and inefficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explore Logs offers a seamless experience when dealing with detected metadata.
+    A selection of the fields is automatically broken out into a grid view, and you
+    can filter the logs down from there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To the end user, the mechanics work nearly identically when working with labels
+    and detected fields, reducing the cognitive overhead of having to remember which
+    is which (and the query syntax associated with each one).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pattern matching
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Loki extracts log patterns, which helps you understand the different types of
+    log lines produced by your services. Pattern extraction occurs after filtering.
+    For best results, we recommend that you first filter by known values (such as
+    labels, detected fields, and time range) to narrow down the search space and make
+    patterns more useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can use pattern matching to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understand the kinds of log lines produced by your systems
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Hide noisy or irrelevant lines to quickly narrow down on what’s important
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Focus on specific trends or anomalies by filtering for log lines matching one
+    or more of the patterns
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Explore Logs lets you easily add multiple patterns to your filters, which will
+    include log lines matching any of the selected patterns. You can also exclude
+    a pattern to hide that kind of log line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example use case for pattern matching
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Say you’re looking for errors among a lot of HTTP traffic logs. It can be tough
+    to spot the individual lines you’re looking for. With patterns, you can simply
+    mute the offending lines by excluding lines of that type at the click of a button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the example log lines below. You can clearly see two distinct patterns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first pattern describes the HTTP requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the second pattern describes the error lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The values are stripped away, leaving only string constants and LogQL placeholders
+    that make up the template, or pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Did you know?** In [Loki 3.0](https://github.com/grafana/loki), you can use
+    [pattern filters](/docs/loki/latest/query/#pattern-match-filter-operators) in
+    place of RegExp for a faster query time.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: What else can you do with Explore Logs?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to everything we’ve already covered, there are a few other notable
+    Explore Logs features to call out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Maybe LogQL is hard, but text search is not. Plain text, case-sensitive search
+    of your rendered log lines can come in handy when you’ve narrowed your search
+    far enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy URL
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Easily share your current Explore Logs context with a teammate, to help troubleshoot
+    in a team environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open in Explore
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Is there a feature in Explore that you really like that doesn’t exist in Explore
+    Logs yet? Would LogQL be really helpful for you at this point? Easily jump into
+    [Explore](/docs/grafana/latest/explore/) — our UI for data exploration of hundreds
+    of data sources, including Loki — while preserving your current context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Explore Logs works
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can probably agree this looks really cool, and it’s a pretty different experience
+    from Explore. But, how can it actually help developers?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, how does solving observability problems faster sound? Faster to close
+    that P1, faster to know what hotfix to push to prod, faster back to bed. Let’s
+    show you how.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suppose you need to identify a misbehaving pod in one of your services. You
+    can certainly get that information using LogQL and Explore — construct a LogQL
+    metrics query that counts errors by service, and see which one pops up. But is
+    it the *easiest* way?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Not anymore! Now you can:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by selecting your service
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Select the `level` label selector, then add `level=error` to your filter criteria
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Select the `pod` label selector, then see all impacted pods and their error
+    rates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With just one more click, see the log lines associated with these pods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Just a handful of clicks, with visual cues at each step of the way and — once
+    more with feeling — *without writing LogQL*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Special thanks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Explore Logs was the result of shared empathy, creativity, and hard work. We’d
+    like to recognize all the contributors to Explore Logs so far:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try it for yourself!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Explore Logs is available to preview today. You can learn more in the [Explore
+    Logs GitHub repository](https://github.com/grafana/explore-logs). You can also
+    try it out by installing from the repo and using Explore Logs with [Grafana 11](/blog/2024/04/09/grafana-11-release-all-the-new-features/)
+    and [Loki 3.0](/blog/2024/04/09/grafana-loki-3.0-release-all-the-new-features/),
+    both of which were [announced at GrafanaCON 2024](/blog/2024/04/09/grafanacon-2024-a-guide-to-all-the-announcements-from-grafana-labs/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Or you can also take Explore Logs for a spin in the [Grafana Play environment](https://play.grafana.org/a/grafana-lokiexplore-app/explore?mode=start&patterns=&var-patterns=&logId=&var-filters=).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please let us know what you would like to see improved or added with the **Give
+    Feedback** button in Explore Logs, or you can engage more deeply in the repo itself!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are excited to partner with our community and to build the easiest Loki +
+    Grafana experience together!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Learn all about the [latest features in Loki 3.0](/blog/2024/04/09/grafana-loki-3.0-release-all-the-new-features),
+    our open source log aggregation tool.*'
+  prefs: []
+  type: TYPE_NORMAL

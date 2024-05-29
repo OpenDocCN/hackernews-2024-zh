@@ -1,0 +1,357 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:01:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Researchers, please replace SQLite with DuckDB now | by Dirk Petersen | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://dirk-petersen.medium.com/researchers-please-replace-sqlite-with-duckdb-now-f038044a2702](https://dirk-petersen.medium.com/researchers-please-replace-sqlite-with-duckdb-now-f038044a2702)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Researchers, please replace SQLite with DuckDB now
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you are a researcher with computational workloads, you might be using SQLite
+    for some tasks. Please drop it now and switch to DuckDB, it is much faster and
+    easier to use
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You are a researcher, potentially in the life or social sciences, and your organization
+    offers you access to a fast machine with many CPUs and lots of memory, potentially
+    as part of a CPU cluster. You are familiar with Linux and use Python/Pandas and/or
+    R to manipulate and analyze your data. You sometimes use SQLite, for example,
+    to pre-filter large datasets but also as an option for storing datasets longer
+    term.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some colleagues and IT folks have told you that SQLite is a toy database engine
+    for testing (which isn’t true) and that you should switch to something faster
+    and more mature, such as PostgreSQL or other databases. But you like the fact
+    that SQLite does not require its own server, and you can just create a SQL database
+    in your project folder along with all the other files you are using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Don’t change that approach, even though a modern PostgreSQL on a modern computer
+    will be faster. Instead, you should switch from SQLite to DuckDB because it is
+    much faster and easier to use; these are the main benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: DuckDB is designed from day one to use all the CPU cores in your machine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB is optimized for complex queries, while SQLite and most other SQL databases
+    are more optimized for writing multiple datasets at the same time. You can read
+    up on the [details here](https://medium.com/scalecapacity/columnar-database-and-row-database-how-are-they-different-2efa8e4c38a3).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB supports multiple fast data formats out of the box and can read many
+    database files in parallel.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As test system we use a middle of the road 32 core server (Intel Gold 6326 CPU
+    @ 2.90GHz) with 768 GB Memory and fast local flash storage. The system is connected
+    to a fast shared Posix file system with more than 4GB/s read/write throughput
+    as shown by the [scratch-dna benchmark](https://www.delltechnologies.com/asset/en-au/products/storage/industry-market/white-paper-esg-technical-review-performance-testing-onefs-google-cloud.pdf).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: and a local flash disk with at least 1.2 GB/s read/write throughput
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s test SQLite and DuckDB with a reasonably sized CSV file — nothing
+    too huge, but also large enough to demonstrate the difference. If you work in
+    research, you will likely have access to a fast POSIX filesystem connected to
+    your Linux machine. This filesystem may contain many millions or billions of files,
+    and we would like to harvest that information to do some analysis of your file
+    metadata, such as sizes, file types, etc. You can use [pwalk](https://github.com/fizwit/filesystem-reporting-tools)
+    to generate a CSV file of your folder metadata and then ensure with ‘iconv’ that
+    it has the right format to be used with a database engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Testing SQLite
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s import this CSV file into SQLite. We’ll use standalone SQLite version
+    3.38 and Python version 3.10, which comes with SQLite version 3.39\. Additionally,
+    we’ll use Pandas as a helper to detect if the columns of the CSV files are numbers,
+    text, or dates — a functionality SQLite lacks. Pandas operates in memory and can
+    insert its table directly into a SQLite database. However, Pandas does not come
+    with Python and needs to be installed separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we execute the script in our shared file system and it takes more than
+    43 minutes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That is a lot ….. but all the columns seem to have been imported correctly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let’s run a simple query on our shared POSIX file system to check if all
+    283 million records were inserted. We don’t need Python for this; it’s simple
+    enough that we can just execute it in our Bash shell. We just count the number
+    of records in the table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'More than 20 min is quite long, there may be something wrong with our fast
+    shared filesystem? Let’s copy the database to local disk and try again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Well, since we’ve copied the file, it may have been cached, but that alone
+    cannot explain the difference. Re-running the data from the shared file system,
+    even when cached, is faster, but it’s still slow and takes almost 11 minutes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s return to our local file and run another simple yet slightly more complex
+    query. We’d like to know the total disk consumption of all files in bytes and
+    generate a sum() of the ‘st_size’ column:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The slightly more complex query takes more than 50% longer than the simple one
+    which makes sense and returns about 538 TiB (591263908311685 bytes) of disk consumption
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing DuckDB
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One of the first things we notice is that DuckDB can use CSV files directly
+    without importing them first. We can use the ‘read_csv_auto’ function to automatically
+    figure out the data types in each column.:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: It took 3 minutes to run a sql query directly on a CSV file and we can see that
+    the CPU utilization is more than 800% which means that 8–9 CPU cores were busy.
+    We also see that DuckDB has a nice progress bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, working with CSV files directly is slow, as queries cannot be optimized
+    when using this data interchange format, but we can counteract that with raw compute
+    power. However, let’s explore other options we have. We can import the CSV file
+    into a native DuckDB format that is probably very fast… but DuckDB is quite new,
+    and no other tools will be able to read the DuckDB format, so let’s check if other
+    formats are supported. We notice Apache Arrow, which is gaining a lot of popularity,
+    but we also see the good old Parquet format, which can be read by many tools out
+    there. Let’s try that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'OK, this conversion took just over 5 minutes, which is not bad. Now let’s see
+    what we can do with ‘x-dept.parquet’. If we read it through our shared POSIX file
+    system, let’s run our previous queries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Oops, 0.6 seconds instead of more than 20 minutes ? That is 2000 times faster
+    on a shared filesystem and more than 100 times faster when comparing to SQLite
+    on local flash/SSD! And we did not even use DuckDB’s internal database format
+    yet. Let’s confirm these results with our second query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Equally impressive. Now, let’s try something a bit more complex. We would like
+    to know the percentage share of each file type, as identified by the file extension,
+    as well as the total disk space each file type consumes. In this case, we’ll put
+    the SQL statement in a text file called ‘extension-summary.sql’ :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and then we ask DuckDB to run it against our Parquet file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This was executed on a different server from the previous one to ensure that
+    the cache was cold. 3.3 seconds is impressive, but obviously, we need to find
+    an even more complex query to test the true capabilities of DuckDB. Let’s try
+    to identify all files that may be duplicates, as they have the same name, file
+    size, and modification date, but are stored in different directories. We don’t
+    really have in-depth knowledge of SQL, so let’s ask ChatGPT for some help. Given
+    that DuckDB is compatible with PostgreSQL syntax, once we describe the table structure
+    and explain what we want to achieve, it provides a suitable solution that we then
+    copy into the ‘dedup.sql’ text file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this case 13 CPU cores ran for 22 seconds to execute a pretty complex query.
+    Rerunning this query after copying the parquet file to a local disk gives us this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: In other words, there is no performance difference between the shared file system
+    and the local flash disk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let’s compare this again with SQLite and our file ‘extentions-summary.sql’:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: OK, 6 minutes and 15 seconds versus 3.3 seconds means that DuckDB is 113 times
+    faster than SQLite, at least in this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And how does our complex ‘dedup.sql’ query perform? After asking ChatGPT again
+    to convert the PostgreSQL-compatible query to one that works with SQLite, we can
+    execute it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case DuckDB is only 15 times faster than SQLite and the performance
+    difference can perhaps be mostly attributed to the multiple cpu cores, that DuckDB
+    uses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And finally, a word about wildcards
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Research datasets are often dispersed across multiple files. This is sometimes
+    because the datasets are too large to be stored in a single file; other times,
+    it’s because researchers, working globally and distributed, manage their own datasets,
+    and the data only needs to be merged occasionally for analytics purposes. In many
+    database systems, this would mean you have multiple tables that would need to
+    be combined with a ‘union’ query, but with DuckDB, this process is very straightforward:
+    Imagine you had three files: ‘./data/prj-asia.csv’, ‘./data/prj-africa.csv’, and
+    ‘./data/prj-europe.csv’, all with the same schema (column structure). You can
+    simply use a wildcard to read all three files as a single table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary of Benefits of DuckDB vs SQLite for Analytics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: DuckDB is much faster than SQLite, in some cases orders of magnitude
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB has much more data import functionality built-in, no external python
+    packages needed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB does not experience any performance bottlenecks with shared Posix filesystems
+    which are common in most research environments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB uses PostgreSQL syntax, the most prevalent SQL slang among data scientists
+    and new open source database projects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DuckDB has built-in support for writing and reading Parquet and Apache Arrow
+    data formats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python and R packages are integral part of the DuckDB project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Support of wildcards allows researchers to work with many files in parallel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Where you should continue to use SQLite
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: SQLite is the most used database on planet Earth and is also one of the most
+    stable, with millions of smartphone apps using it internally. There are many good
+    reasons to use SQLite, and they are laid out on the [SQLite website](https://www.sqlite.org/whentouse.html).
+    Researchers appreciate SQLite because of its flexibility and the fact that no
+    database server is needed. However, as DuckDB does a better job of supporting
+    this use case, researchers should consider switching today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I hope to write a second article about DuckDB soon, now more geared towards
+    use of DuckDB in High Performance Computing (HPC) systems. A discussion of the
+    wildcard feature will be part of this.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is a similar [article for data scientists here](https://towardsdatascience.com/forget-about-sqlite-use-duckdb-instead-and-thank-me-later-df76ee9bb777),
+    but that one has more techie language and I felt the need to write something,
+    that is more inclusive towards all researchers.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you are interested in analyzing your filesystem metadata with a more professional
+    and feature rich tool, you should consider [https://starfishstorage.com/](https://starfishstorage.com/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

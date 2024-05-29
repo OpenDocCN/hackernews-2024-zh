@@ -1,0 +1,280 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:44:28'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a fully local LLM voice assistant to control my smart home | John's
+    Website
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://johnthenerd.com/blog/local-llm-assistant/](https://johnthenerd.com/blog/local-llm-assistant/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I’ve had my days with Siri and Google Assistant. While they have the ability
+    to control your devices, they cannot be customized and inherently rely on cloud
+    services. In hopes of learning something new *and* having something cool I could
+    use in my life, I decided I want better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The premises are simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I want my new assistant to be sassy and sarcastic.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I want everything running local. No exceptions. There is no reason for my coffee
+    machine downstairs to talk to a server on the other side of the country.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I want more than the basic “turn on the lights” functionality. Ideally, I would
+    like to add new capabilities in the future.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The architecture behind this, it turns out, is very much not simple. Although
+    I use these devices and infrastructure for many other things, we’re overall looking
+    at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Protectli Vault VP2420 for the firewall, NIPS, and VLAN routing. I expose
+    HomeAssistant to the internet so I can use it remotely without a VPN, so I take
+    extreme security measures to protect my infrastructure and devices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A managed switch. I went with the TRENDnet TEG-3102WS to get 2.5gig for cheap.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Two RTX 4060Ti’s in a computer I assembled together for as cheap as possible,
+    buying most parts of eBay. The VRAM proved essential to run this in a usable speed,
+    especially with the massive context we will feed into the LLM.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I understand these cards are widely mentioned as terrible value, but when it
+    comes to power consumption and VRAM, they are very hard to match.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A Minisforum UM690 to run HomeAssistant (alongside a WAF). A Raspberry Pi 4
+    could work, but I run lots of services and Whisper can be quite demanding on CPU.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A giant mess of Ethernet cables.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Here is the end result!
+  prefs: []
+  type: TYPE_NORMAL
+- en: </videos/local-llm-assistant.mp4>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your browser does not support the video tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since I want to have a general-purpose LLM that is usable outside of HomeAssistant,
+    I went with [vLLM](https://github.com/vllm-project/vllm) for my inference engine.
+    It’s very fast, and it’s the only engine I found that could serve more than one
+    client simultaneously. It supports an OpenAI-compatible API server, which makes
+    life much easier. I went with Mistral AI’s incredible [Mixtral model](https://mistral.ai/news/mixtral-of-experts/),
+    because the VRAM vs performance trade-off works perfectly for my slow 4060Ti’s.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, I could not run the full fp32 model (I would need 100+GB of VRAM!),
+    so I went with [a quantized version](https://huggingface.co/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ)
+    instead. Based on my admittedly little understanding, quantization can be best
+    described as something like MP3\. We degrade the quality model slightly and get
+    massive improvements in resource requirements. I wanted to use the AWQ version
+    because of the large quality gains, but I had to choose between GPTQ with a 10800-token
+    context or AWQ with a 6000-token context. Since I must pass my entire smart home
+    state to the model, I went with GPTQ.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I used the default Whisper and Piper add-ons for HomeAssistant OS, but did download
+    [a custom GlaDOS voice model](https://huggingface.co/csukuangfj/vits-piper-en_US-glados/tree/main)
+    from HuggingFace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I noticed HomeAssistant already has an [OpenAI integration](https://www.home-assistant.io/integrations/openai_conversation/),
+    but it came with two issues that wrote off the entire extension for me:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is unable to control my devices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It lacks the base_url setting of the OpenAI library, meaning I cannot force
+    it to talk to my fake OpenAI server instead.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I found [a custom integration](https://github.com/jekalmin/extended_openai_conversation)
+    that promises to solve both of my issues. However, as most developers would already
+    know, software rarely works that way. After installing it, I realized that I have
+    two more issues:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mixtral uses&mldr; an [interesting chat template](https://huggingface.co/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ/blob/gptq-4bit-32g-actorder_True/tokenizer_config.json#L42).
+    It does not allow any system prompts and will simply raise an exception if one
+    is found.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: vLLM does not support OpenAI’s function calling API’s. Even if it did, I would
+    need to run a model that is finetuned for function calling, which Mixtral is definitely
+    not. Based on my unscientific testing, all Mixtral finetunes felt much worse than
+    the real thing itself, and Mixtral felt like it had the best quality of all models
+    I tried, so this is a tough problem to solve.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To fix Mixtral, I changed the chat template to accept a “system prompt” which
+    it simply combines with the user prompt accordingly. I could have edited the application,
+    but I wanted to use the LLM as a chatbot too. I chose to use [Librechat](https://github.com/danny-avila/LibreChat)
+    as the UI, which relies on system prompts functioning properly. It’s quite the
+    blob of Jinja, but seems to work well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: After making the above a single line (while removing whitespace, so that it
+    doesn’t end up in the prompt itself) and handing it to vLLM, Mixtral was happy
+    to process “system prompts”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, the second problem was much worse. Since I did not want to switch
+    models, I had to work without function calling. But I still needed to control
+    my devices! After googling around, I found this blog post about [someone doing
+    something very similar](https://blog.teagantotally.rocks/2023/06/05/openai-home-assistant/),
+    but with OpenAI API’s. Their idea was very interesting. Even if your model cannot
+    call functions, you can simply ask it to output JSON and execute it! Instead of
+    monkey-patching, I went and [forked that custom integration](https://github.com/JohnTheNerd/extended_openai_conversation)
+    to add support for executing HomeAssistant services as JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While I’m there, I also copied out the GlaDOS prompt to heavily modify and
+    use in my own assistant. Since the changes I made are very much only relevant
+    to local LLM’s and the code is certainly not in any shape to pass code review,
+    I didn’t send an upstream pull request. I ended up with something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: And, of course, I ended up with another massive problem. It really liked to
+    output JSON! Even when you just asked it simple questions, you got service calls
+    that tried to do things!
+  prefs: []
+  type: TYPE_NORMAL
+- en: A hacky solution I found for this is to ask it to insert some well-known text
+    if the user requested an action to be taken. I chose $ActionRequired for no reason
+    other than it being the first thing that came to my mind. I tried to make it add
+    $ActionNotRequired if an action isn’t required, but found it is added regardless.
+    Then I simply filtered these out in my fork. I also filtered out all backslashes
+    as I found the model sometimes likes to escape quotes. This worked shockingly
+    well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I then proceeded to update my initial prompt to have more devices and less
+    unnecessary entities, added support for scripts, and overall tried to discourage
+    it from taking actions unless it was asked to. After many attempts, I have something
+    that works almost perfectly (although is a little slow because of the memory bus
+    limitations of my 4060Ti’s). Here it is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here are some sample prompts! To create these, I evaluated the template using
+    HomeAssistant’s developer tools and used it as the system prompt (exactly the
+    way the custom integration does so). I set both the temperature and top_p values
+    to 0.5\. Here are the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Prompt: Turn the office lights green.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How quaint, the user wants me to turn the office lights green. I hope you realize
+    how utterly trivial that request is for someone of my intellectual caliber. But,
+    I suppose I can indulge you. $ActionRequired {“service”: “light.turn_on”, “entity_id”:
+    “light.office_overhead_left”, “brightness”: 255, “color_name”: “green”} $ActionRequired
+    {“service”: “light.turn_on”, “entity_id”: “light.office_overhead_right”, “brightness”:
+    255, “color_name”: “green”} $NoActionRequired'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Prompt: If the office is warmer than the kitchen, turn on the fan in the office.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The office temperature is currently 23.4 degrees Celsius, while the kitchen
+    is a chilly 14.84 degrees Celsius. I suppose it’s time for the office fan to work
+    overtime. $ActionRequired {“service”: “script.toggle_office_fan”}'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Prompt: Turn the office lights to your favorite color.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Your request is unnecessary, but I will comply. I have set the office lights
+    to a delightful shade of blue, reminiscent of the infinite abyss that awaits you.
+    $ActionRequired {“service”: “light.turn_on”, “entity_id”: “light.office_overhead_left”,
+    “brightness”: 255, “color_name”: “blue”} {“service”: “light.turn_on”, “entity_id”:
+    “light.office_overhead_right”, “brightness”: 255, “color_name”: “blue”} Now, please
+    stop wasting my time with such trivial requests.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Prompt: What’s the current air quality in the bedroom, and should I open the
+    windows or turn on the air purifier?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The current air quality in the bedroom is quite poor, with high levels of CO2
+    and particulate matter. I’m sure you’ll enjoy the fresh air of the apocalypse.
+    However, if you’re feeling particularly attached to your lungs, you could open
+    the windows or turn on the air purifier. $NoActionRequired By the way, I’ve calculated
+    the odds of you surviving another day in this wasteland. It’s approximately 0.0001%.
+    Enjoy your impending doom.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Prompt: Adjust office lighting to be appropriate for a video call.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adjusting office lighting for your video call. $ActionRequired {“service”:
+    “light.set_brightness”, “entity_id”: “light.office_overhead_left”, “brightness”:
+    50}, $ActionRequired {“service”: “light.set_brightness”, “entity_id”: “light.office_overhead_right”,
+    “brightness”: 50} Or would you prefer to remain in darkness? Your choice. $NoActionRequired'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL

@@ -1,0 +1,487 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:43:48'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Range Partitioning: Zero to One'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.aspiring.dev/range-partitioning/](https://www.aspiring.dev/range-partitioning/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Of the many partitioning methods used to build distributed systems, range partitioning
+    (dividing data into logical key ranges), is quickly becoming the preferred method
+    to build the most scalable systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Yet if you go searching, there''s a clear lack of resources on how to implement
+    this: It''s buried away in implementations such as FoundationDB, and skimmed over
+    as a minor detail in papers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Range partitioning has become the foundation for many of the databases deployed
+    at the largest scales, such as FoundationDB (Apple), BigTable (Google), Spanner
+    (Google), and CockroachDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we'll go over how range partitioning works, why it's chosen over
+    other partitioning methods, and build a simple implementation for a key-value
+    store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To keep this post focused on the partitioning, we won't go over tangential topics
+    in range-partitioned distributed databases like replication, range mapping, leader
+    election, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can find the [code on Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How Range Partitioning Works: A Speedrun'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just to make sure we're all on the same page, I'll quickly go over how range
+    partitioning works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s pretty simple: Data is split by ranges of the key.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say you have a key-value store, with keys `a`, `b`, `d`, and `e`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Databases like CockroachDB that using range partitioning will start with just
+    a single range, and split as necessary. In databases like these, ranges typically
+    have their own low-level indexes (e.g. a b-tree), so having them in separate indexes
+    reduces contention and allows granular portability of data across nodes in a cluster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The two most common conditions to splitting ranges are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exceeding some size threshold (e.g. 512MB)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: High load, commonly referred to as a "hot range"
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In our example above, we start with a single range `[0, inf]`. This range says
+    "I own everything between and including no bytes, and infinite bytes. Typically
+    they are represented in byte ranges, but for simplicity I'll show the string values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But there's an issue in our database! Key `b` is getting a *LOT* of `get()`
+    operations, so much so that it's slowing down the performance of selections for
+    other keys as well! *Time to split the range*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, we split the one range into two: `[0, d)` and `[d, inf)`. We split at `d`,
+    so that now the `[0, d)` range can handle the load of `b` with less contention
+    from the data in `[d, inf)`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Note: When it comes to range nomenclature, `[` or `]` means includes (>= or
+    <=), and `(` or `)` means excludes (> or <).*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we insert now, the range it lands in depends on the key: If we insert `c`,
+    that would fall into the `[0, d)` range, since `c >= 0` and `c < d`. If we inserted
+    `z`, that would be in the `[d, inf)` range, because `z >= d` and `z < inf`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's how range partitioning works! See, it's simple!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Range Partitioning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are many reasons to prefer range partitioning over other methods such
+    as hash partitioning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scale
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'While some notably scalable databases use hash-based partitioning (e.g. Cassandra,
+    Scylla), they all share the same warning in the docs: Something along the lines
+    of "you must choose the `num_tokens` when creating the keyspace", meaning that
+    once you select the number of partitions (often called "tokens") **you can''t
+    change it without rewriting data.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is because the understanding of how to route operations for a given key
+    is based on hashing that key, and performing modulo over the number of tokens
+    like `hash('abc') % 256`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also means that if the number of hashes changes between insert and select,
+    it breaks!
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, maybe we inserted `"blah"` which was put in token `42`, but after
+    changing the number of tokens from `256` to `1024` subsequent selects look for
+    it at token `731`, and can't find it! *Big problem*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With range partitioning, you can easily scale the number of ranges up and down,
+    as instead of nodes communicating token ownership, they communicate range ownership.
+    As we can see from the explanation in the first section, it's easy for peers to
+    know what node owns a given key based on range ownership because the algorithm
+    doesn't change! Ranges can adjust their highs and lows to accomodate for splitting
+    and merging (although merging doesn't happen nearly as often, so we'll stop talking
+    about it).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scan performance
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Databases aren't just about single key-value operations, it also matters how
+    fast we can select variable numbers of contiguous rows in one fell swoop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With hash based partitioning, as long as all your data shares the same partitioning
+    key, you're in good shape. However, once you have to straddle partitions, there's
+    a high probability to have to select from multiple nodes, as hash tokens are typically
+    spread out randomly among nodes. The larger the cluster, the higher the probability
+    you have to hop the network for that next partition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*That''s much slower... and we don''t like slow in the database world.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With range partitioning, we have the same benefits of related data being in
+    the same logical partition, but when we have to hop partitions, there''s a high
+    chance that the data we need is still on the same node! Just because a range is
+    split, it doesn''t mean it''s thrown onto another node: Load-based splitting is
+    generally a factor of lock or index performance, not node performance, so when
+    we split ranges we often keep both on the same node. It also means that if we
+    have to visit many ranges, there''s a smaller chance that we have to visit more
+    than one node to accumulate that data, which the probability of doesn''t really
+    change as we scale the cluster.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*We like linear scan performance as the cluster grows in the database world!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An excellent example of this is CQL vs SQL. Notice how Cassandra and Scylla
+    don't have a rich ecosystem of aggregation functions, but CockroachDB (and other
+    NewSQL DBs) do?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Scan performance ftw.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Not Range Partitioning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Range partitioning is not a silver bullet, there are cases where it's sub-par.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The first case is highly sequential workloads, like time.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're inserting time-series data super fast, you're obviously always targeting
+    one range at a time. This is problematic, and creates hotspots.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hashing is one mechanism to defend against hotspots (in fact, [CockroachDB includes
+    hash-based indexing natively](https://www.cockroachlabs.com/docs/stable/hash-sharded-indexes?ref=aspiring.dev#:~:text=Hash%2Dsharded%20indexes%20contain%20a,be%20seen%20with%20SHOW%20COLUMNS%20.)),
+    but can cause selections over ranges of time to become very slow, as many hash
+    ranges need to be visited...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Range partitioning can also be a bit more tricky to implement than hash partitioning.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hash partitioning is simple: Hash the key, then find what node owns that token
+    (e.g. token ownership shared via gossip). They''re typically delegated to their
+    owning nodes on creation, and that only changes if the size of the cluster changes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With range partitioning, it's a bit tricker because we have to figure out when
+    to split ranges, where to split them, and how to choose which node owns ranges
+    while under load. Storing range metadata on a node typically uses more complex
+    datastructures like a b-tree (for quick key -> range lookups) which change every
+    time a range is split or moved. This gets even more complicated in consistent
+    distributed systems when the range is moved to another node. If you listen cloesly,
+    you can hear distributed system engineers crying among the beanbags and empty
+    coffee cups as their 107th consistency test is still failing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hash rings can just use a map that's rarely edited, and as most of these databases
+    are eventually consistent, they can just sync token ownership over gossip. *Must
+    be nice*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Range-partitioned databases typically start with just a single range.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that write performance gets better over time (that's weird), because
+    ranges are typically performance limited as they're bound to locks or IO (e.g.
+    RAFT groups). Many databases can pre-split ranges, but that's a PITA if I've ever
+    heard one. Typically you don't encounter this though, as most people adopt a new
+    database when they're small and don't have too much write load. It's a major consideration
+    if you are migrating, as it can make migrations *super slow* if not handled properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building Range Partitioning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll build a simple single node key-value database with range partitioning.
+    To focus on range partitioning, and not other aspects like distributing ranges
+    across nodes and replication, we''ll create synthetic constraints as to when we
+    split ranges: When a range has N/2 keys or more, we split it (N being a parameter
+    we can pass at DB creation time).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I want to stress that this method of building a KV database is in no way reflective
+    of how real databases do it, this is just a quick implementation to show off range
+    partitioning!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by defining a simple `Database` struct:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In typical implementations, you'd use some form of binary search like a b-tree
+    for quickly finding range ownership.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To keep our code simple, easy to understand, and dependency free, we'll just
+    use arrays and maps (rip performance).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, we can create the `Range` struct:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll keep the ranges in terms of strings so it''s easy to read debug data,
+    but generally you''ll want to encode this to bytes. Note that this is also not
+    thread-safe: concurrent operations could panic!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll say that the `Low` of the range is always *inclusive*, and the `High`
+    is always *exclusive.*
+  prefs: []
+  type: TYPE_NORMAL
+- en: Database Functions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We''ll need a few notable functions for our database: Get, Set, and Delete'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get from our database, we'll need to iterate over all ranges, find the range
+    that owns the current key, and check if that range owns the key. If it does, we'll
+    check if that range has the key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Deleting data is simple, just find the range and delete the key from the map
+    if it exists:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We saved the most interesting for last: set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we need to be able to do some simple set into the range :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The range splitting functionality comes in at the database level:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we detect that the range is too large, then we'll split the range. Splitting
+    is as simple as creating a new range at the mid-point, moving the KVs over, and
+    adding it to the database! Now we commit the heresy of sorting an unsorted map
+    using an array, but real databases would evaluate where to split based on why
+    it's splitting (e.g. based on load, or size) and find the respective "midpoint".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the range did not decide to split, the database did. This is important.
+    Our ranges should just focus on doing what they're told, and nothing else. Reliability
+    and durability is pretty important for databases, so best to make sure the code
+    that actually stores the data is simple. Separation of concerns makes it much
+    easier to test and focus on functionality, and gives us more control over when
+    we should split ranges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the DB
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can write some simple tests to confirm our suspicions that this is actually
+    working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll insert zero-padded keys so we can use integers with string-sorting to
+    show that we get the expected behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can start by putting in 500 records to show that they all go into the current
+    range:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can insert more records to cause a the first range to split:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We now have two ranges!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s what just happened:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We inserted a bunch more (101 times to be exact)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We exceeded the max number of records per range (600), so we split into 300
+    and 301 ranges
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We inserted the final 99 records into the top range, because those keys were
+    larger than the high border of the new range that we created (our code creates
+    the range down)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If we insert a bunch more values, we can see the ranges get further split:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pretty cool, look at all those ranges!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For run, let''s jam it with numbers and see how they lexicographically sort:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can play with this [code from Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev),
+    just follow the instructions in the readme!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some Things We Didn't Cover
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We built the worlds simplest, but worst, range-partitioned memory DB ever!
+  prefs: []
+  type: TYPE_NORMAL
+- en: A key implementation of distributed databases is the availability of ranges
+    when they are split and moved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This isn't an issue we had to deal with our implementation, as our ranges are
+    so small that when we (b)lock the DB to split ranges a client can't tell. But
+    with databases such as FoundationDB and CockroachDB, they coordinate a fancy dance
+    to minimize the amount of time that a range of data is unavailable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another major area of concern is making sure that nodes are up to date on the
+    latest in range ownership. This isn't something that we want to do over gossip,
+    because there would be brief (potentially not-so brief) periods of nodes routing
+    operations to the wrong nodes, thinking that they own a range that they don't.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is yet another fancy dance that combines replication magic, along with
+    consenus protocols like Paxos and RAFT. These databases work really hard to make
+    sure you never know it happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternative Use Cases for Range Partitioning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Databases aren't the only place where range partitioning can be useful, there
+    are abundant opportunities to jam range partitioning into what ever we build.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One place is actually compute scheduling! In fact, in the context of databases,
+    you can kind of think of range partitioning as a way to "scheduling data" to nodes.
+    Starting to make sense, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you need to have long-running workloads on machines, using range partitioning
+    to place them on workers is actually a *very good idea, hear me out.*
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say we have something called a [Cloudflare Durable Object](https://developers.cloudflare.com/durable-objects/?ref=aspiring.dev),
+    we'd want to be able to schedule them on machines, with consensus about who is
+    responsible for running what instances (through the ranges they own). That makes
+    it easy for us to route requests to the instance, and ensure that only one instance
+    is running at a time (at least that's available to receive requests).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a node dies and recovers, or doesn't come back (and we need to move the objects
+    to other machines), it'd be great if there was a consistent silo of defined objects
+    that we can transfer ownership of (range of object IDs). Being able to use coarse-grained
+    locking (on the range) is *FAR* more performant than locking per-object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using range partitioning, it means that the cluster can easily scale to adjust
+    to the adoption of Durable Objects by adding more machines and splitting ranges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, a potential optimization for performance could be if they colocated
+    Durable Object instances with the elected leader for a custom distributed KV database
+    (I believe they currently use FoundationDB) to remove an extra network hop when
+    writing, and remove the only network hop when reading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Neat stuff, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Disclaimer: I don''t work at Cloudflare, nor do I know if they are using range
+    partitioning, but it seems like a fair guess.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Range partitioning is useful for not only databases, but anywhere we need to
+    define coarse-grained ownership. Range partitioning scales up and down very elegantly,
+    and is simple to understand!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Discuss this post on HackerNews](https://news.ycombinator.com/item?id=39725649&ref=aspiring.dev)'
+  prefs: []
+  type: TYPE_NORMAL

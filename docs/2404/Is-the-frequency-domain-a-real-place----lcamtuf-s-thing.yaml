@@ -1,0 +1,260 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:00:21'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is the frequency domain a real place? - lcamtuf’s thing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lcamtuf.substack.com/p/is-the-frequency-domain-a-real-place](https://lcamtuf.substack.com/p/is-the-frequency-domain-a-real-place)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In an [earlier article on the Fourier transform](https://lcamtuf.substack.com/p/not-so-fast-mr-fourier),
+    I talked about the *frequency domain* — a wondrous mathematical place where complex
+    signals are transmuted into the amplitudes and phases of sine waveforms. The frequency
+    domain allows us to perform all kinds of signal processing tricks that seem nearly
+    impossible to pull off when we stare at the data in its most straightforward form
+    — that is, in the time domain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A waveform (top) and a frequency view (bottom) of “[Girl in Blue](https://www.youtube.com/watch?v=hZPrKy2WgAo)”.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the end of that deep dive, I left one question unanswered: how *real* is
+    this frequency place, anyway? The discrete Fourier transform (DFT) plays a central
+    role in communications and signal processing — but does it reveal some deeper,
+    unseen truth about the universe? For example, do square waves exist at all? After
+    all, the transform turns them into [a series of odd-numbered sine harmonics](https://lcamtuf.substack.com/p/square-waves-or-non-elephant-biology)
+    — and this model somehow predicts the behavior of electronic circuits in real
+    life.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Today, I’d like to knock the Fourier transform off the pedestal. To be sure,
+    sine waves are ubiquitous in nature, so this analytical tool is well-suited for
+    a number of tasks. That said, it’s eminently possible to construct other well-behaved
+    frequency domains that play by different rules — including one where only square
+    waves are real, and everything else is just harmonics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, let’s circle back to discrete cosine transform — a simplified,
+    real-numbers-only version of DFT. From the earlier article, you might recall the
+    following DCT-II formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(F_k = \sum\limits_{n=0}^{N-1} s_n \cdot cos ( \pi k { n + \frac12 \over N}
+    )\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operation boils down to taking a series of input values (*s[n]*— say, audio
+    samples), multiplying each by the value of a particular cosine expression, and
+    then summing the result to get the magnitude reading for a particular frequency
+    bin (*F[k]*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The construct at the heart of this algorithm is the *cos()* expression that
+    generates a sine wave with a frequency corresponding to the number of the current
+    DCT bin. This is known as the *basis function*; we can abstract it away and rewrite
+    the formula as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(F_k = \sum\limits_{n=0}^{N-1} s_n \cdot B(k,n)\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this generalized notation for a frequency-domain transform, *B(k, n)* returns
+    *some sort of a*  *multiplier* based on the values of *k* and *n*.Software engineers
+    might find it intuitive to think about *B(k, n)* as a lookup array. In fact, let’s
+    calculate that array — a *matrix* in the math parlance — for *N=16*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*DCT-II basis function plot for N=16.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you remember the operation of DCT, this visual should be easy to parse. The
+    first row *(k=0)* corresponds to the DC component — i.e., a cosine “running” at
+    0 Hz, perpetually stuck at +1.00\. The next row contains a cosine completing one
+    half of a cycle, going from +1.00 to -1.00; this is followed by a full cycle at
+    *k=2*, a cycle and a half at *k=3*, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, how does one go about building a new basis function that splits signals
+    not into sine frequencies, but into square waves? Foreshadowing a bit, the answer
+    appears almost ridiculously simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The Walsh matrix for N=16.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is known as the Walsh matrix. It essentially consists of square waves
+    running at different speeds, although with some complex symmetries thrown in.
+    And yes: every multiplier is just a +1 or a -1, so the computation boils down
+    to flipping some signs in the input data and then summing the results.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The matrix looks fairly trivial, but its design is involved. To capture all
+    frequency and phase information, the rows have increasing *sequency* — that is,
+    each next row has just one more sign flip than the one before. Further, the pattern
+    is carefully engineered to ensure *orthogonality* — the fragile input-output symmetry
+    that allows seamless conversions back and forth between the frequency representation
+    and the original time-series data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because of its complex structure, the most practical way to construct the Walsh
+    matrix is to start by generating something known as the Hadamard matrix. For *N=16*,
+    this intermediate matrix looks the following way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The Hadamard matrix for N=16\. Huh?*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At a glance, the plot looks chaotic, but it’s simply a reordering of the Walsh
+    layout. For example, row #15 is moved to #1, while the original #1 now sits at
+    #8\. But importantly, unlike Walsh, this fractal-esque pattern is actually fairly
+    easy to create from scratch.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get the ball rolling with Hadamard, we start with the following trivial
+    1×1 array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(H_0 = \begin{bmatrix} +1 \end{bmatrix}\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From there, we iteratively extend it by taking the array generated in the previous
+    step (*H[n-1]*) and tiling four copies of it on a grid with twice the original
+    dimensions. The first three copies are verbatim, and the final one — bottom right
+    — has all the signs flipped. The mathematical notation for this extension is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(H_{n} = H_{n-1} \otimes \begin{bmatrix} +1 & +1 \\ +1 & -1 \end{bmatrix}\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The fancy operator (⊗) is known as the *Kronecker product*, but it’s really
+    just glorified copy-and-paste. The first extension — consisting of four copies
+    of *H[0]* — looks the following way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(H_1 = \begin{bmatrix} \begin{array}{c | c } +1 & +1 \\ \hline +1 & -1 \end{array}\end{bmatrix}
+    \)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another iteration makes four copies of *H[1]*, producing this layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(H_2 = \begin{bmatrix} \begin{array}{c c | c c} +1 & +1 & +1 & +1 \\ +1 & -1
+    & +1 & -1 \\ \hline +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 \end{array} \end{bmatrix}\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: …and so on. The size of the resulting Hadamard matrix is always *2^n×2^n,* where
+    *n* is the number of construction steps we went through.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On a computer, the matrix can be computed by following this tiling algorithm,
+    but there’s a cute bitwise arithmetic trick we can employ instead: as it turns
+    out, the value of the Hadamard function at a particular cell can be divined by
+    calculating *x & y* and then checking if the number of bits set in the result
+    is even or odd. The following C code does just that, and then displays an 8×8
+    Hadamard matrix on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: In principle, this matrix is sufficient to construct a frequency-domain transform.
+    That said, its ordering of the frequency bins is unintuitive, so let’s try to
+    fix that before we leave.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To turn the Hadamard matrix in the nicely-ordered flavor showcased earlier,
+    we need to sort the rows based on their sequency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The most straightforward way, found in just about every reference implementation,
+    is just to count the number of sign changes in each row. That said, [a reader](https://icosahedron.website/@gaditb/112228725360149921)
+    pointed out another clever bit-twiddling hack: for an array with *2^n*rows, Hadamard
+    row mappings can be computed by XORing Walsh row numbers with their own value
+    shifted by a single bit to the right, and then reversing the order of the last
+    *n* bits.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s an implementation that does just that and prints a sorted 8×8 array
+    on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'Equipped with this, we can gut the DCT implementation and make a “discrete
+    square transform” and its inverse:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'Technically, this is called the *Walsh–Hadamard transform* (WHT), but never
+    mind. Let’s confirm that it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'The input is a square-wave-ish sequence of numbers: 1 1 1 1 5 5 5 5\. The output
+    from DFT or DCT would be a bunch of harmonics across multiple frequency bins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'In contrast, the frequency-domain representation generated by the program shows
+    non-zero components only in *F[0]* (DC) and *F[1]*, confirming that we have an
+    algorithm that deconstructs the signal into pure square waves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'Finally, we can verify that the inverse function — *isqft() —* transforms the
+    frequency domain back to what we started with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: 'I couldn’t find any visual comparisons of the algorithms’ outputs, so I prepared
+    my own. Here’s the quasi-conventional DCT spectrogram of an [🔈 11-second clip](https://lcamtuf.coredump.cx/dare.mp3)
+    from “DARE” by Gorillaz:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Your old-fashioned, family-friendly sine spectrogram.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '…and here’s the cool-looking Walsh-Hadamard equivalent:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A world premiere of the square-wave spectrogram.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Walsh-Hadamard transform, being computationally efficient and well-suited
+    for certain types of data, finds uses in a couple of niches. The point isn’t that
+    it needs to be used more; it’s just that discrete Fourier doesn’t have a monopoly
+    on truth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*For more articles on electronics, click [here](https://lcamtuf.coredump.cx/offsite.shtml).*'
+  prefs: []
+  type: TYPE_NORMAL

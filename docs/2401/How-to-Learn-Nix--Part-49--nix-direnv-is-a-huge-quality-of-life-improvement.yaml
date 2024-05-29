@@ -1,0 +1,158 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:20:01'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How to Learn Nix, Part 49: nix-direnv is a huge quality of life improvement'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://ianthehenry.com/posts/how-to-learn-nix/nix-direnv/](https://ianthehenry.com/posts/how-to-learn-nix/nix-direnv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The *reason* I [discovered an ancient blog post](/posts/how-to-learn-nix/installing-nix-on-macos/)
+    the other day was that I had something new to say about Nix for the first time
+    in over two years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The thing I want to say is this: [`nix-direnv`](https://github.com/nix-community/nix-direnv)
+    is great. It fixes roughly every problem that I’ve had with `nix-shell`, and does
+    so in a much nicer way than my previous ad-hoc solutions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is important because I *mostly* just use Nix to document and install per-project
+    native dependencies. I do use it to install “global” tools as well, but that is
+    [rarely very interesting](https://ianthehenry.com/posts/janet-game/how-to-patch-emacs/),
+    and most of my interaction with Nix these days consists of editing small `shell.nix`
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But it took a bit of doing to get to the point that I felt *good* about using
+    Nix for this. For one thing, shells don’t register GC roots, which means that
+    every time you collect garbage you have to re-download all the dependencies for
+    the project you were working on. We overcame that hurdle in [part 37](/posts/how-to-learn-nix/saving-your-shell/),
+    by making a custom wrapper around `nix-shell` that sets up GC roots correctly,
+    but it was surprisingly difficult.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For another thing, Nix is pretty insistent that you use *bash* as your interactive
+    shell. I figured out a workaround for that in [Nix classic](/posts/how-to-learn-nix/nix-zshell/),
+    but [essentially failed](/posts/how-to-learn-nix/nix-develop/) to make `nix develop`
+    similarly usable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`nix-direnv`](https://github.com/nix-community/nix-direnv) solves both of
+    these problems. Instead of spawning a new shell, it just adds environment variables
+    to your existing shell. And when it evaluates `shell.nix`, it automatically registers
+    the result as a GC root.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also only re-evaluates `shell.nix` when it actually changes, which means
+    that it in the typical case there’s no startup time. In contrast, my GC-root-installing
+    wrapper takes about 750ms to open a typical shell (raw `nix-shell`, without the
+    GC root evaluation dance, takes only 400ms). This doesn’t sound very long, because
+    it’s not – I’m running Nix on what I can only characterize as a supercomputer.
+    But I originally installed Nix on a laptop that pre-dated germ theory, and its
+    startup latency was a lot more annoying.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nix-direnv` also automatically updates the environment when `shell.nix` changes,
+    so you don’t have to close and re-open your `nix-shell` whenever you add a dependency.
+    Not only is this ergonomically better, but it also means that you don’t mess up
+    your shell history every time you add a dependency or exit a project.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I had never used [`direnv`](https://direnv.net/) before, and to this date the
+    only thing I’ve used it for is managing my Nix shells. But it’s a general tool
+    for managing per-directory environment variables, which is *essentially* all that
+    `nix-shell` is. `nix-shell` can also register bash functions – if you’re using
+    bash – which is useful if you want to use it to debug a derivation. But for my
+    purposes, environment variables are all I really need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`direnv` has some built-in support for Nix, but it isn’t great; [direnv publishes
+    a table outlining some of the advantages](https://github.com/direnv/direnv/wiki/Nix#some-factors-to-consider)
+    of using `nix-direnv`. `nix-direnv` is some sort of plugin(?) that replaces the
+    native Nix support with something much better. And it’s great. It makes the “reproducible
+    developer environment” aspect of Nix just work™. And it’s pretty easy to use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First off, install `nixpkgs.direnv` and `nixpkgs.nix-direnv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I installed them with `nix-env`, using the same declarative wrapper that I wrote
+    in [part 22](/posts/how-to-learn-nix/declarative-user-environment/). If you install
+    `nix-direnv` in a different way, the following will be different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Installing `nix-direnv` doesn’t “enable” the plugin; you have to separately
+    tell `direnv` about it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once you do that, you have to run the following commands in every directory
+    that you want to nix-shellify:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: And you’re done. That’s it! Now every time you navigate to that directory, you’ll
+    have&mldr;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Oh. Well that’s not great.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default `direnv` prints every environment variable that it adds, removes,
+    or changes. Which makes sense if you’re using it for, like, credentials or something,
+    but for Nix shells it’s just a waste of scrollback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s not really a simple way to suppress printing that giant `export` line,
+    but you can hack it away by adding something like this to your `.zshrc`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: (The `.`s in the regex exclude the “dim text” control characters at the beginning
+    of the line.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That removes the giant export line without removing the rest of the input.
+    And now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ahhh. That’s better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I’ve been using `nix-direnv` for a few months now, and I must say: I wish that
+    I had installed it sooner. It’s a *much* nicer experience than the default `nix-shell`,
+    and I’m happy that I can get rid of the bespoke hacks that I’ve accrued over the
+    years.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&mldr;almost. The one thing this does not help with is `nix-shell -p`. `nix-shell
+    -p` is a useful way to “temporarily” install packages without actually putting
+    them on your PATH, and I still use my zsh hack so that `nix-shell -p` doesn’t
+    drop me into a bash session. Although I do this rarely enough that I could probably
+    just suffer through it.'
+  prefs: []
+  type: TYPE_NORMAL

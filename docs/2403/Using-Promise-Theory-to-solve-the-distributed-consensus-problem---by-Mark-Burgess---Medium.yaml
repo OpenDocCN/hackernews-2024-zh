@@ -1,0 +1,562 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:52:45'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Promise Theory to solve the distributed consensus problem | by Mark Burgess
+    | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://mark-burgess-oslo-mb.medium.com/using-promise-theory-to-solve-the-distributed-consensus-problem-4cc2116f24e1](https://mark-burgess-oslo-mb.medium.com/using-promise-theory-to-solve-the-distributed-consensus-problem-4cc2116f24e1)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Using Promise Theory to solve the distributed consensus problem
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Secure tools for sharing granular data between micro clients
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Whenever we try to fix something in one corner of IT, we seem to yank another
+    corner out of place and create new problems–trading one conundrum for another.
+    Microservices are a perfect example of that: the denormalization of data and centralization
+    of processes makes teams less interdependent (solving a human issue), but creates
+    challenges for managing shared state. Breaking up singular data stores into (not
+    completely) independent parts can easily upset the integrity of algorithms, data,
+    user experiences, and hence [business continuity](https://en.wikipedia.org/wiki/Business_continuity_planning).
+    These headaches are now more keenly felt as these matters become regulated by
+    law (think [GDPR](https://gdpr-info.eu/), [DORA](https://www.digital-operational-resilience-act.com/),
+    etc). The most prominent issue is the so-called *consistency* of shared data,
+    because it underpins so much and involves technical issues that engineers can
+    sympathize with.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dare we ask?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The problem of [data consistency](https://en.wikipedia.org/wiki/Data_consistency)
+    remains one of those issues that continues to attract attention both from academics
+    and practitioners. It’s famously muddled together with the notion of [distributed
+    consensus](https://en.wikipedia.org/wiki/Consensus_(computer_science)). The English
+    meanings are basically the same, but the technical meanings are used differently.
+    Confusingly, the latter is used as part of the usual solution to the former in
+    standard algorithms like [**Paxos**](https://en.wikipedia.org/wiki/Paxos_(computer_science))
+    and [**Raft**](https://en.wikipedia.org/wiki/Raft_(algorithm)). Lesser known but
+    influential results, like the [**FLP theorem**](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf),
+    “prove” the impossibility of distributed consensus in an asynchronous environment
+    and scare people away from thinking carefully. There’s also the infamous CAP conjecture
+    whose popularization (and apparently endless revisions) added fuel to the mysticism
+    in a generally unhelpful way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The IT industry isn’t always good at asking probing questions–we like to trust
+    leaders and influencers who can think for us. But those thinkers sometimes leave
+    the problem half solved, and we end up with standard solutions that random software
+    engineers interpret for us. Dare we question them?
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Over my tenure in Computer Science, I’ve tried to clarify and even debunk the
+    occasional myth about what can and can’t be done by developing clear models, many
+    of which are summarised in my [Treatise on Systems](http://markburgess.org/treatise.html),
+    often with the help of the increasingly ubiquitous [Promise Theory](https://en.wikipedia.org/wiki/Promise_theory).
+    The data consistency issue is no different, and it turns out that there is a simple
+    answer we’ve been missing that [**András Gerlits**](https://itnext.io/microservices-and-the-myth-of-loose-coupling-9bbca007ac1a)
+    and I have been talking about quite a lot recently in connection with his [**Omniledger
+    calibrator software**](https://omniledger.io/). Of course, there may be several
+    ways of “solving” a problem, depending on the semantics we desire. Part of the
+    confusion about consistency lies in deciding what we consider to be an equitable
+    solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s apply the smallest amount of [Promise Theory](http://markburgess.org/promises.html)
+    to show how *intentional consistency* of data can be engineered at the same time
+    as we scale the scope and availability of a service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consistency: one of the skis is parallel!'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By consistency, we obviously don’t mean whipping data into a smooth spongy texture
+    for a dish best served fast! Consistency in IT refers to the pure undelayed homogeneity
+    of *facts* throughout a system–of data values, or key-value pairs that spans several
+    computers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consistency manifests as a business reliability (perhaps even security) issue
+    for most of us. It’s now related to *regulatory compliance* issues, particularly
+    in the EU, as well as matters of privacy and user experience. The related terms
+    *consensus* and *quorum* are more subtly used to refer to how one *reaches* agreement
+    about disputed facts, but in practice these all mean that we want parts of a system
+    to reach the goal of being *aligned* in their *promises of data*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On a ski slope, skiers are taught to keep their skis in alignment when making
+    turns. When parallel, the skis’ directions “agree” or are consistent with each
+    other. One might say they have reached a consensus about their direction of travel.
+    Those who are less stylish in their parallelism sometimes joke: “well, one of
+    the skis was parallel!”. In IT, we don’t want our systems to be split down the
+    middle by misalignments.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can’t actually stop it from happening, but we can prevent ourselves from
+    ever *seeing it* so that it can make no difference in practice. Just how stringently
+    this is prevented accounts for several differences in the discussions about data
+    consistency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Seeing is believing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If consensus is about winning an argument, then consistency is a problem about
+    *calibration* of state. Any user or observer has an equal “right” or capability
+    to measure the answers given by different independent agents and compare them
+    to see if they are equal. That single point of measurement calibrates the outcomes
+    of any two agents (see diagram below).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**A and B are supposed to be in alignment. A claims the value is a, B clams
+    it’s b. It’s up to C to decide whether it receives these and finds that a = b
+    are the same.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*C* observes *A* and *B* and, using this information, it is able to make a
+    conditional promise based on that information to any other agent of interest (including
+    the original *A* and *B*) about whether or not a=b according to its own measurements
+    and to the best of its capabilities. *C* is thus a calibrator–an independent adjudicator
+    of truth. This is how law courts work: a judge compares *A* and *B* to resolve
+    differences or make a choice. Consensus means that *A*, *B*, and *C* all agree
+    about their value for the promise. This is easy if there is an authoritative source
+    for correct change. This is what we need to preserve.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Agreeing about different versions of a particular value is relatively easy as
+    long as the values of a and b never change. But in a dynamically changing environment,
+    like bumping over snow moguls, keeping a and b skis aligned depends on a race
+    to change each. What if *a* changes while no one is looking and *C* hasn’t measured
+    *a* in a while, so it still thinks that *a=b*, but *A* knows better. How can we
+    know this? Clearly, we can’t because we already lost that race, but we need to
+    ask whether this matters to anything that can happen. If a skier falls in a forest
+    and no one is looking…should we care?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Central services!?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A small but growing number of voices is challenging the authority of the FLP
+    and CAP results, pointing out that their implications have been misunderstood.
+    The impossibility claims for distributed consensus stem from an incorrect assumption
+    about the universality of change. The standard assumption is that it has to apply
+    to everyone “at the same time”. But what does “at the same time” mean? If you’ve
+    ever watched a thunderstorm, you know that sensory data (what we see and what
+    we hear) arrive at very different times even though the strike happens at a single
+    moment and at a single location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A*vailability* (readiness to listen) and *consensus* (agreement) are *not*
+    global constraints that need to imply rigorous temporal precision, they are actually
+    only constraints on the *local* behaviour of observers and influencers (users).
+    Promise Theory is about autonomous agents, which implies the *causal independence
+    of agents*: changes promised by one agent cannot influence another without an
+    explicit acceptance by the promisee. So Promise Theory can help us to clarify
+    where incorrect assumptions about causality go wrong.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alignment of data ultimately boils down to how different agents in an information
+    system signal and observe change to one another. After all it’s this change that
+    measures the passage of time across the different partial processes. Observation
+    is a crucial element, because we don’t notice changes (the passage of time) while
+    we have our eyes closed. When we open them again, that’s when the change reaches
+    us in a single tick. So everyone receives the information at their own behest:
+    at their own pace, not when the lightning actually strikes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we apply this to think about how fragments in a system align their changing
+    facts, the solution for maintaining alignment across multiple locations boils
+    down to making sure we preserve the historical order of changes from the original
+    source. If you smash a plate with a picture painted on it, we can reconstruct
+    the picture later so that it’s consistent with the original as long as we put
+    the pieces in the correct spacetime order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An obvious and simple way to assure consistency is to have just one answer to
+    compare to. A single copy cannot be inconsistent, so we use *singular sources*
+    as sources for truth and arbitration. For perfect parallel turns, use a snowboard!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The industry standard is to force a single “master” database and replicate it
+    for redundancy. That way, you don’t have to worry about the “master” being consistent.
+    We don’t look at the copies too often, so that’s one way of avoiding trouble.
+    Centralization to a single master is presented as a control decision to assure
+    an authoritative source, i.e. a single source of control. But when the master
+    fails, we have to worry about whether any of the backups are consistent with the
+    master. Since we’ve now lost the original, the meaning of consistent is now ambiguous.
+    Aligned with what? Which of the skis is parallel?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many also point out that a central service is also a possible bottleneck (depending
+    on its relative capacity), but the true importance of centralisation in system
+    design is really (you guessed it) for *calibration–*to act as a standard measuring
+    stick for data. It turns out we can solve both the consistency problem and the
+    bottleneck problem alongside the partial sharing (microservice) problem all at
+    the same time by introducing a *data calibrator*, and just getting the plumbing
+    right to preserve causal order across a system. It’s a bit like a shared clock,
+    but in which the flow of data is the clock itself! In this way, all concerns about
+    data or network partitions, unreliable connections etc, can be resolved for each
+    individual client *locally* for best effort. To make everything happen “at the
+    same time” we can simply stop time for those who wait without a central service!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Independent contractors or central services?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scale it, agent by agent
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The figure below shows the basic interaction between a client and a single server,
+    e.g. a database. Assuming that there is only one copy of data on this server,
+    it has to be self-consistent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A user interacts with a datastore. The causality is simple: one version, one
+    value at a time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we add more clients, a single database may not be able to cope with the work
+    so we look to scale the system. Using Promise Theory notation, the database promises
+    to accept data (-) in the order the client promises to offer data (+). We simply
+    need to scale these promises to deal with a single *superagent* that encapsulates
+    more clients and databases to maintain alignment across redundant copies of data
+    on a continuous basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What’s true for *a single client-server pair* must also be true for *any pair*
+    in a collection of pairs. Consider three such pairs, in the diagram below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When N independent data stores want to coordinate a few records each can have
+    one version at a time in their private scope, but each data store and user can
+    hold its own version of what they call the same thing, becaus agreeing onthe key
+    is not agreeing about the value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every pair can work independently, but if we want *all three* of these pairs
+    to be aligned with one another “at all times”, could we arrange a perfect alignment
+    of their data promises? They need to be coordinated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Because data changes tend to be sparse arrival processes their streams can
+    naturally be merged without losing any contention. If (in rare cases) the streams
+    all have heavy traffic, we can use traffic lights to poll them round robin in
+    the usual way. Roundabouts (“road circles”) do this in traffic. We can create
+    the same effect with simple polling of the entrances and exits.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '“At all times” is the key term, and this is where people often stumble. There
+    are, after all, times when we don’t care if things are the same: i.e. when no
+    one is looking. Skiers can pick themselves up in the forest and recover without
+    being disqualified from a race. Instead of “equality at all times” we should be
+    asking “alignment whenever someone actually looks”, because this is all we can
+    promise about someone else’s state. Whatever we can’t see is uncorroborated hearsay.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What the FLP and CAP results interpret too restrictively is that all times and
+    locations must be universally in alignment for arbitrarily small intervals of
+    a mythical *universal time*. However, when sleeping, hours can pass during which
+    we can neither say nor care whether data elsewhere are in step or not. If we disregard
+    times when it is impossible to observe misalignment, the issues simply become
+    about tracing the history in causal order, like in a *supply chain*. We accomplish
+    this by managing observables when making *conditional promises* about consensus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We already know that the simple way to achieve this is to get everyone to interact
+    with the same database, which is the central services model. We can do better
+    than this by introducing a conditional interpolation pipeline. Reads and writes
+    of data queue up centrally to be admitted to a single calibrated timeline. If
+    two clients send a conflicting request it’s First Come First Served and the latecomer
+    is returned to sender. The accepted transactions are thus queued up to final destinations
+    so they can be picked up once the receivers are awake and available to assimilate
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Granular scaling with no master
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let’s do it step by step. You can skip this if it’s too much detail. To make
+    N databases behave as one we have to note the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We replace each master database interaction by interactions with an interloper:
+    a kind of “virtual data service”, i.e. a scale model of a single database (made
+    from distributed parts) made using smart data plumbing.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We then tie the *ability to observe* records together with the condition of
+    no pending change. This is slightly different from a typical mutex lock, but it
+    amounts to the same thing.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We intercept the usual promises from client to database by wrapping the service
+    connection with our smart pipeline, which now passes everything through an interloper
+    or data calibrator.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'With these promises, we can actually scale data replication up and down more
+    powerfully than by the master replica set method. Every database can continue
+    to work at near full capacity at its edge of the network. The data calibrator
+    mediates a kind of virtual database that coordinates changes on a microgranular
+    level between otherwise independent databases. Instead of writing directly to
+    a database connection, we feed operations into a smart pipeline and everything
+    else happens transparently. The data managed by the interloper proxy can cover
+    just as much or as little of the whole edge data stores as we want it to. This
+    is a matter of policy. The result is that we have an idea which is perfect for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Copy on write](https://en.wikipedia.org/wiki/Copy-on-write) backup of all
+    data, or'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microservices with denormalized storage, where perhaps only a small amount of
+    user data needs caching over some region.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To restore unity, replace three interactions with three things with three interactions,
+    one at a time, with one thing. We can use this simple causal reasoning to prevent
+    inconsistencies at various levels of nitpicking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promise theoretically, we proceed by drawing a boundary around the three interactions
+    we want to calibrate (excluding the databases themselves, which we don’t want
+    to force to be fully identical) and call these a single superagent. We redirect
+    the interactions for shared data to this new agent, which implements a smart data
+    pipeline for causal updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To the client user, this now looks like a single interface (or proxy) to a scaled
+    model of a database.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To each database, the client just looks like a single client.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let’s quickly examine the client-server interactions more closely and turn each
+    direct interaction into a supply chain interaction, with replication of the data
+    stream.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An interaction can be described formally by an exchange of promises about how
+    the two sides will behave. Each side has the freedom to decide what it accepts
+    from the other, though this is rarely properly acknowledged in human design including
+    IT.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Client**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clients impose changes ad hoc at any time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Clients promise to pay attention to and take responsibility for non-accepted
+    (failed) data impositions signalled by the interloper.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**db** :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A virtual db connection accepts only read/write/change commands from the interloper
+    and sleeps in between such events.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The db signals the interloper of success/failure for any attempted read/write
+    as its virtual client.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Interloper**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our smart plumbing accepts read requests for the shared data if and only if
+    the relevant records are up to date with all shared data changes logged by the
+    interpolator, i.e. the private write queue for that database is empty. We don’t
+    need to wait for irrelevant records.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The interloper accepts new write requests to forward to its shared clients *if
+    and only if* all active shared data connections confirm that they haven’t already
+    received a prior command that might read or write relevant overlapping data (e.g.
+    in a select/search of an affected value or a write to the affected value).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accepted writes are queued in a single totally ordered queue shared by all active
+    edge databases and are only removed when all databases have been updated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The queue processes the commit requests (as private write queues) to each database
+    and empties the queue as quickly as possible so that the affected records can
+    be read again. It’s this granular locking that permits almost wait-free replication
+    of consistent shared state,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The operations inform clients of success/failure for any attempted read/write,
+    like a normal SQL API.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The interloper is now the gatekeeper of a single scaled truth–a smart data calibrator
+    on a highly granular level. Its logic is determined entirely by conditional promises,
+    like a causal supply chain. Everything flows normally unless the preconditions
+    are not met. If no one is looking, there’s no pressure to deliver quickly. If
+    there is a delivery failure somewhere, or there are crossed wires, no one can
+    jump the queue or take out data that haven’t yet arrived.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If one of the databases becomes unavailable (e.g. if it loses power or its network
+    connection creating a “partition”) no harmful misalignment can be observed by
+    any client, because the interloper disallows reads until everything is reported
+    to be back in sync. Thus, when an orphaned receiver rejoins the collective, it
+    has to catch up with the shared order before it can serve any affected data to
+    its local clients. While cut off, attempts to write to the shared state would
+    simply fail without blocking writes to remaining available destinations. No collisions
+    can possibly occur as long as all changes are fed through the pipeline. Time effectively
+    stops for clients until a partitioned database gets plugged back in. The interpolator
+    acts as a master ledger for all changes, taking care of global order and regular
+    semantics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most solutions to the consensus/consistency problem don’t try to fully prevent
+    misreads of data like this, because that would require some changes to established
+    technology–and heaven forbid that we should inconvenience technologists to make
+    a public safety improvement. It’s more common to offer limited help in avoiding
+    the issue by posting “buyer beware” notices or recommendations for “best buy”
+    service. That covers some legal disclaimers, which may cover many cases: after
+    all, as network reliability improves, the probability of observing inconsistencies
+    shrinks anyway. The biggest problem becomes one of simple negligence in coordinating
+    updates across distributed copies.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Why is this different from master replication?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our ideal scenario promises a *virtual scale model* of each *single data record*
+    that we choose to track, made by connecting several databases together over a
+    smart data pipeline. Causal change manages temporal order over arbitrary spatial
+    separations, like a supply chain or pipeline. In the usual approach to database
+    redundancy, replicas tend to reduce database throughput performance; here the
+    opposite may actually be true.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What replica sets using Paxos and Raft propose is that you will literally deal
+    with one master server and try to keep backup copies of an entire database aligned
+    independently. When a master dies or fails, the clients try to decide on a new
+    leader so that they are all talking to the same server. This leads to a delay
+    in which no one can write. The skis come off!
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's no particular need to replicate a whole database if we only want to
+    share a few records. Granularity is the answer to scalability and reliability.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This is not the end of the story…
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All this is straightforward and it would surely be great if more people used
+    this approach, but probabilities tend to argue against solving the problem. What
+    our simple and obvious promise theoretic solution cannot do is make sense of the
+    biggest problem we have with modern data stores, which is that they typically
+    offer only *latest-value semantics*. The caching problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In IT, correct values are assumed to be the latest values. It’s a race to be
+    last, because the last value wins by overwriting and obliterating what came before.
+    So if you have an evil demon flooding the system with nonsense, you’re in trouble.
+    We always live in the moment, even when we keep ledgers and transaction logs at
+    some master location for forensics. Are we sure those logs are consistent? More
+    importantly, are they a record of what everyone *intended*?
+  prefs: []
+  type: TYPE_NORMAL
+- en: We still continue to design software that does not align change on a continuous
+    basis across multiple locations. We see the world of data as if it were a perpetual
+    snapshot, and we try to keep offline backups in sync by brute force as lagging
+    snapshots. Most of our technologies fail to track their changes as *versions*
+    of data records. We apply continuous [time-series databases](https://en.wikipedia.org/wiki/Time_series_database)
+    (addressable logs) and [version control repositories](https://en.wikipedia.org/wiki/Repository_(version_control))
+    (like git) for only a few specialised purposes at the edge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our age of ubiquitous e-commerce, we want data services to be *available*
+    all the time, not least for uninterrupted revenue. When restocking, we sometimes
+    need to close the shop doors temporarily to avoid mishaps when moving stuff. We
+    believe that continuous availability implies *instantaneous* and *simultaneous*
+    change for everyone, but that’s not true. In reality, clients and updates come
+    in bursts and each transaction takes a finite time (that we call *latency*) so
+    what we do in the gaps between can go unnoticed. We should hope for these gaps
+    when replicating data for backup, because replication is typically slow to catch
+    up with continuous change and we fear the risks of having data that are out of
+    essential alignment at a crucial moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What remains is a modelling issue (one of imposition over promise), not a technology
+    problem per se–but, luckily it’s a discussion for another snapshot in time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional references
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Scaling systems so that they keep the same kind of promises at every scale is
+    discussed in my article about [Software Wind Tunnels](http://markburgess.org/blog_windtunnel.html),
+    and in more detail in the [Treatise on Systems](http://markburgess.org/treatise.html).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This essay is based on a slimmed down version of [a paper I wrote with András
+    Gerlits](https://www.researchgate.net/publication/359578461_Continuous_Integration_of_Data_Histories_into_Consistent_Namespaces)
+    and served as a simple introduction to his software implementation.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*If you need to help to solve this issue, I suggest reaching out to* [*András*](https://twitter.com/AndrasGerlits)
+    *above or even me!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[See the book](http://markburgess.org/treatise.html)'
+  prefs: []
+  type: TYPE_NORMAL

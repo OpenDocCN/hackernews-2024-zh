@@ -1,0 +1,253 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:31:08'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: IPC - Shared Memory | Goodness’s blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://goodyduru.github.io/os/2024/01/31/ipc-shared-memory.html](https://goodyduru.github.io/os/2024/01/31/ipc-shared-memory.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the previous article, we covered the [Message Queues](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html)
+    IPC mechanism. This article will cover another one called Shared Memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before discussing shared memory and how it can be used for IPC, we must know
+    why such a thing as “Shared Memory” exists since we know that all the processes
+    share the RAM they should be sharing memory. The thing is, they share and don’t
+    share. This admittedly contradictory event is due to the magic of memory addressing.
+    Let’s talk about that for a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Memory Addressing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There are two modes of addressing memory: **physical** and **virtual**^([[1]](#footer-note-1)).
+    In physical addressing mode, when a process reads data from a memory address,
+    the CPU gets it from the same address in RAM and hands it over to the process.
+    Ditto for writes. Physical addressing was the only way to access the RAM in early
+    microprocessors and is still used in many embedded computers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Physical addressing is fine when only one process is expected to run on the
+    computer. It is a disaster for a multi-process system. For example, if 2 different
+    processes, A and B, are up simultaneously, A could write to a memory address B
+    also reads from. Even worse, A could write to a memory address containing part
+    of B’s executable code even if B is the kernel process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above issue is one of the reasons why virtual addressing is the memory address
+    mode used in many microprocessor architectures today^([[2]](#footer-note-2)).
+    In virtual addressing mode, when a process reads data from a memory address, this
+    memory address is translated to a physical address by the [MMU](https://en.wikipedia.org/wiki/Memory_management_unit),
+    and the data stored at that physical address is fetched from and handed over to
+    the process. This is done without the knowledge of the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This address translation is done using the help of a [**Page Table**](https://en.wikipedia.org/wiki/Page_table).
+    The Page Table stores the mapping between virtual and physical addresses in [page](https://en.wikipedia.org/wiki/Page_(computer_memory))^([[3]](#footer-note-3))
+    units. Every process has its page table and allows the process to reference **almost^([[4]](#footer-note-4))**
+    all the addresses up to the table’s maximum address^([[5]](#footer-note-5))
+  prefs: []
+  type: TYPE_NORMAL
+- en: Virtual addressing allows multiple processes to co-exist without stepping on
+    each other toes. If our 2 processes from the earlier example try to access the
+    same memory address, that address will point to two different addresses in the
+    RAM. So, memory address 4523 could translate to 9619 for A and 86443 for B. This
+    means they don’t share virtual memory but share physical memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If processes can only use virtual memory, which cannot be shared, how can they
+    communicate using Shared Memory? Let’s look at that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shared Memory
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Shared memory is a segment of memory shared between processes. The segment of
+    physical memory is mapped to each process’s virtual memory via their page tables.
+    Once this is done, the process can read and write to this segment just like with
+    other segments. Any data written to this segment is visible to other participating
+    processes. The segment’s virtual address could differ for each participating process,
+    though it has only one physical address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with [Message Queues](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html#message-queues),
+    there are two kinds of Shared Memory - System V and POSIX. This article will focus
+    on System V.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating or accessing a Shared Memory segment requires a unique integer key.
+    If a unique key isn’t used, an outsider process might communicate with your processes,
+    which could be annoying or, even worse, damaging. This key can be hardcoded in
+    each of the participating processes, or it could be generated. Hardcoding the
+    key reduces the chances of uniqueness because an outsider process could have the
+    same key hardcoded in it. The key generation should be done in a way that guarantees
+    that all participating processes will reproduce the same key. Fortunately, a function
+    that (almost) guarantees uniqueness and is deterministic exists. This function
+    is called [`ftok`](https://man7.org/linux/man-pages/man3/ftok.3.html). It accepts
+    an existing file path and an integer. As long as the file pointed to by the path
+    isn’t recreated, `ftok` will return the same result. All the participating processes
+    need to do is call the `ftok` function with the same file path and integer which
+    will generate the same key. Extra security steps could include ensuring that the
+    file is only accessible to the participating processes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once a key is generated, a process can use it to get or create a shared memory
+    segment by calling the [`shmget`](https://man7.org/linux/man-pages/man3/shmget.3p.html)
+    function. This function accepts 3 parameters: the key, the size of the shared
+    memory, and a flag. If the key isn’t associated with a shared memory segment and
+    the **IPC_CREAT** bit is set in the flag, a shared memory segment is created whose
+    size is set to the size parameter. On creating a segment, the function returns
+    an id. If the key has an existing shared memory segment, an id for that existing
+    segment is returned even if the flag has its **IPC_CREAT** bit set. Errors can
+    happen for several reasons which, the man page covers. Permissions can be defined
+    in the flag using the same format as [file permissions](https://www.multacom.com/faq/password_protection/file_permissions.htm).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After successfully getting the shared memory id, the virtual memory address
+    of the shared memory segment is returned by the [`shmat`](https://man7.org/linux/man-pages/man3/shmat.3p.html)
+    function. This function accepts 3 parameters: the shared memory id obtained from
+    `shmget`, the virtual memory address the process would like the segment to be
+    mapped, and a flag. The OS will pick an address if the address parameter is set
+    to zero. A memory address is returned on successful execution of the function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After a memory address is returned, a process can communicate with other processes
+    by just reading and writing to the address. There are no special functions for
+    reading and writing to the address. These are done using the same methods as reading
+    and writing to other addresses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a process has finished communicating, it can detach the segment from its
+    address space by calling the [`shmdt`](https://man7.org/linux/man-pages/man3/shmdt.3p.html)
+    function. The function accepts only one parameter, the virtual memory address
+    obtained from `shmat`. Once this function is called, the address becomes invalid,
+    and interacting with it could cause a Segmentation Fault.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detaching the segment does not destroy it, even if all the participating processes
+    detach from it. Destroying it is done by calling
+  prefs: []
+  type: TYPE_NORMAL
+- en: shmctl(id, IPC_RMID, NULL);
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The `id` parameter is the shared memory segment’s id obtained from `shmget`.
+    The `IPC_RMID` is a constant, meaning the removal of the segment. In addition
+    to destroying a segment, [`shmctl`](https://man7.org/linux/man-pages/man3/shmctl.3p.html)
+    can also be used to configure a segment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A list of all the shared memory segments on a system can be gotten by this command
+    `ipcs -m`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enough talk. Let’s take a look at an example in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show me the code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This example will demonstrate two processes communicating using a shared memory
+    in Python. Python does not provide out-of-the-box shared memory support. Instead,
+    I made use of the excellent [sysv-ipc](https://semanchuk.com/philip/sysv_ipc/#shared_memory)
+    library. You can find the pip package [here](https://pypi.org/project/sysv-ipc/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s the client code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: A temp file is (optionally) created to ensure that it exists. The ftok function
+    is called with the file path and an integer. The shared memory segment is (optionally)
+    created and accessed. This returns a shared memory object. A loop is run where
+    a message containing a byte string is sent. To prevent the process from processing
+    a message that it sent, a while loop runs that puts the process to sleep and receives
+    a message. The while loop stops if the message differs from the one sent, signifying
+    that the message was sent from another process. This while loop is a very primitive
+    form of communication synchronization. The message received is decoded and printed,
+    and then the loop continues. The loop is ended when *ROUNDS* messages are sent.
+    Afterward, an *end* message is sent to signify that the client is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Messages sent and received are byte strings, not regular strings, and thus have
+    to be encoded and decoded accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here’s the server code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The server code sets up the shared memory segment similarly to the client code.
+    Because `ftok` is called with the exact same parameters as the one in the client
+    code, the generated key value will be the same. A message is sent and a while
+    loop runs that ensures the message received isn’t the same as the sent message.
+    A loop is run, which checks that the first character of the received message isn’t
+    equal to *e* which signifies that *end* wasn’t received. Inside this loop, the
+    received message is printed, and a different message is sent. Once sent, another
+    message check runs as a while loop. The message is then received and decoded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The loop stops once the *end* message is received. The file for generating the
+    key and the shared memory segment are deleted. The program then exits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Shared message is super fast. There isn’t much difference between it and the
+    fastest IPC mechanism (mmap). [IPC-Bench](https://github.com/goldsborough/ipc-bench#benchmarked-on-intelr-coretm-i5-4590s-cpu--300ghz-running-ubuntu-20041-lts)
+    benchmarked 1,659,291 1KB messages per second on an Intel(R) Core(TM) i5-4590S
+    CPU @ 3.00GHz running Ubuntu 20.04.1 LTS. That’s super fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Due to its blazing-fast speed and its similarity to the standard reading and
+    writing to memory addresses, you’d need to include some form of synchronization
+    mechanism when using Shared Memory just as the code snippets above show.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Demo Code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can find my code that demonstrates Shared Memory on [GitHub](https://github.com/goodyduru/ipc-demos).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Shared Memory is an easy and fast IPC mechanism. It has a straightforward model
+    for sending and receiving messages. Even then, using it comes with the complexity
+    of including a synchronization mechanism. But once you get that right, its speed
+    makes it worth it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next article will cover another blazing-fast and familiar IPC mechanism
+    called [Memory-Mapped Files](https://goodyduru.github.io/os/2024/03/18/ipc-mmap.html).
+    Till then, take care of yourself and stay hydrated! ✌🏾
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

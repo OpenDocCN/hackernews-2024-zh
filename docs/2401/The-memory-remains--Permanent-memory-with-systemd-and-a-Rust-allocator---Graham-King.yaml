@@ -1,0 +1,261 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:39:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The memory remains: Permanent memory with systemd and a Rust allocator · Graham
+    King'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://darkcoding.net/software/rust-systemd-memory-remains/](https://darkcoding.net/software/rust-systemd-memory-remains/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We are going to **stitch three things** together to make Rust objects that **survive
+    program restart**. The memory backing the object will continue existing while
+    the program restarts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Systemd’s [File Descriptor Store](https://systemd.io/FILE_DESCRIPTOR_STORE/)
+    (systemd 254+) allows us to give any file descriptor to systemd, and later ask
+    for it back. The file stays open when we `systemctl restart <prog>`. Yes this
+    is similar to [socket activation](https://darkcoding.net/software/systemd-socket-activation-in-go/).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The [memfd_create](https://www.man7.org/linux/man-pages/man2/memfd_create.2.html)
+    syscall (Linux 3.17+) creates an anonymous file that only exists in memory, and
+    only as long as a reference to it exists. It effectively gives us a file descriptor
+    pointing to a chunk of allocated memory. It behaves like a regular file so we
+    can map it into regular memory with [mmap](https://www.man7.org/linux/man-pages/man2/mmap.2.html).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Rust’s [Allocator trait](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)
+    which allows us to control the memory an object lives in (Rust nightly since at
+    least 2 years ago). We will select our allocator with [Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We will make a Rust allocator which creates a memfd, shares it with systemd,
+    mmap’s it, and uses that memory as the allocation our allocator returns. When
+    the program restarts we ask systemd for our memfds, mmap it, and convert that
+    into our object. Finally we wrap the allocator and the ‘restorer’ in a function
+    which figures out whether we are allocating a new object or recovering an existing
+    one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s an arbitrary object we will use throught the post:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note the rather awkward `name` array. We don’t want any pointers in our object,
+    so no `String` or `Vec` because those would also need to go in our permanent memory
+    store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `repr(C)` ensures that the in-memory layout (representation) of this object
+    doesn’t change between versions of our binary. Rust makes no promises on memory
+    layout unless you request a specific representation. (Thank you Harry Stern on
+    Hacker News for catching this).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Rust Allocator
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we allocate an object on the heap with `Box`, by default it will use the
+    sytem allocator, which on Linux uses malloc. [Looking at the assembly](/software/underrust-rust-assembly-output/)
+    we see it call `__rust_alloc` (via `GLOBAL_OFFSET_TABLE`) which calls `__rdl_alloc`
+    which calls glibc’s `malloc`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`malloc` will get memory from the operating system ([details](https://darkcoding.net/software/how-memory-is-allocated/))
+    by either moving the program break (`sbrk` syscall) or by memory mapping an anonymous
+    region (via `mmap` syscall).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust (nightly) allows us to implement our own allocator. Here is an allocator
+    that delegates to the system allocator - the allocator you’re using if you don’t
+    know which one you’re using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We use it like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: An allocator backed by persistent memory
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we know how to write an allocator, let’s make the memory it uses be
+    in a file systemd owns. We need to call `memfd_create`, then `mmap` that file
+    descriptor, and finally give it to systemd.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create: When we are creating a new allocation we need to call `memfd_create`,
+    and then give that file descriptor to systemd by calling [sd_pid_notify_with_fds](https://www.freedesktop.org/software/systemd/man/latest/sd_pid_notify_with_fds.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Restore: When we are starting up we ask systemd for the fd by calling [sd_listen_fds_with_names](https://www.freedesktop.org/software/systemd/man/latest/sd_listen_fds_with_names.html).
+    Then we only need to `mmap`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In either case after `mmap` we end up with a bag of bytes, which we need to
+    convince Rust is a `Person`. That’s what `buf_addr as *mut u8 as *mut T` is doing
+    (here `T` is `Person`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We use the allocator like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Person` is an arbitrary object, there’s one at the start of this post.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each object must have a name which we associate with the FD in systemd. On restore
+    that allows us to map the correct FD back to the object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The memory only exists while the program is active (meaning running or restarting).
+    If the program is stopped systemd will evict it’s file descriptor from the store.
+    Hence the long sleep at the end of main.
+  prefs: []
+  type: TYPE_NORMAL
+- en: systemd file descriptor store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Typically now we’d create a systemd `.service` file making sure to enable the
+    File Descriptor store - it doesn’t default. Here we’ll use `systemd-run`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`systemd-run --user --service-type=exec --unit=remains -p FileDescriptorStoreMax=16
+    ./target/debug/remains`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that here ‘remains’ is the unit name (–unit=) not the binary. Then we treat
+    it like any other systemd service except it’s in the user scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It’s output is in `journalctl --user -u remains`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Restart it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now `p1.count` increases, it survives restart:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Stop it like this: `systemctl --user stop remains`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After that `stop` the fd is no longer stored. If we `start` now the count will
+    reset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: systemd 254+ (Fedora 39+) allows us to set `FileDescriptorStorePreserve=yes`
+    to keep the store alive even when our program is stopped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improvements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When I have done [online upgrades in the past](https://darkcoding.net/software/online-upgrades-in-go/)
+    the amount of state that I couldn’t recreate was quite small. I either stored
+    that state in Redis or wrote it to a temporary file, as a single serialized object.
+    Hence the systemd allocator above can only allocate once, hopefully that’s all
+    we’d need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make it work with multiple objects ideally we could estimate up-front how
+    much space we might need, and size the file and mmap space on first call. This
+    is helpful if all we want is a couple of `String` or a `Vec` in we persistent
+    object. The objects could go sequentially in the file, we’d maintain an index
+    of their positions. An mmap can grow (`mremap` syscall) but there’s no guarantee
+    that there is space to grow into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If estimating size up-front is not possible we’d need to add a new file whenever
+    the current one can no longer grow. systemd’s `FileDescriptorStoreMax` will need
+    to be set large enough, and each file will need a unique string passed to `sd_pid_notify_with_fds`’s
+    `FDNAME`. A global index points to the file, and each file has an index of offsets
+    to the ojects. And now we’re writing a real memory allocator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of packing the objects we could make an allocator factory (the design
+    pattern) and have each allocator deal with a single object in a single file. Simpler,
+    but only suitable if we have a limited number of objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A fun exercise is to change the allocator to be backed by a disk file. The bytes
+    on disk will be exactly how the object is laid out in memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clone and Pin notes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s go back to this allocation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we call this `let p2 = p1.clone()` (after adding `#[derive(Clone)]` to `Person`)
+    the Box isn’t cloned but dereferenced. `clone` is called directly on `Person`.
+    We end up with a new Person object on the stack. No problems there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If instead we do `let p2 = Box::clone(p1)` the box itself is cloned. A `Box`
+    internally is a tuple of a pointer and an allocator. We would need to `#[derive(Clone)]`
+    on `SystemdAlloc` for it to compile, but that’s just where our problems will start.
+    Rust will clone the allocator and call allocate on it. Our allocator is only designed
+    for single use. See the previous section for notes on that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Pin` and async contexts in general are not something an allocator needs to
+    worry about. The object in the allocation might change (e.g. with `std::mem::swap`)
+    but we are only concerned with the allocation itself, not with what’s inside it.
+    As cliched programmers, we care about the `Box`, not the `Person` :-)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Happy allocating!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The title is indeed a reference to the Metallica / Marianne Faithfull song.
+    This is not an endorsement of Metallica after “… And Justice for All”.
+  prefs: []
+  type: TYPE_NORMAL

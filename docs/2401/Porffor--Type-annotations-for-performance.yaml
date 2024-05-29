@@ -1,0 +1,199 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:16:08'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Porffor: Type annotations for performance'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://goose.icu/porffor-types/](https://goose.icu/porffor-types/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: My JS engine [Porffor](https://porffor.goose.icu) can now parse TypeScript,
+    as I added pluggable parser support which includes Babel’s parser (which can parse
+    TS). This itself isn’t that interesting, however I can now use those type annotations
+    as compiler hints to optimize!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For the above JS, Porffor has to do several checks of the type of `a`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`if (a) {`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If string, true if non-blank (not `''`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If undefined, false
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '&mldr;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**If number, true if not zero**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`typeof a`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If string, `'string'`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If object, `'object'`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '&mldr;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**If number, `''number''`**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I already optimize out types which are completely unused in the file. For example,
+    all the string checks are removed if the file has 0 strings used in it. But if
+    there were any strings, all string checks remain. Porffor could try to infer the
+    type automatically but this is tricky and could break. JIT engines can sometimes
+    do this by presuming the type of something once it has been ran with that type
+    several times, etc. But since we are compiling AOT and not JIT, we cannot de-opt/undo
+    that guess if it becomes wrong - instead we would just crash.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But we could define the type using type annotations (TS)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we have to do **0 checks of the type of `a`**, since we already know it
+    at compile-time. This can allow for some big speedups :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Progressive types
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Porffor does not type check itself. You can use your own (with your own config
+    too) if you want that. The input also does not have to be completely typed, allowing
+    “progressive types”. Types which exist can help speed things up, and untyped things
+    will just be treated regularly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Benchmark
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I’m using [a basic Brainf&mldr; interpreter I wrote in JS (`bf.js`)](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.js),
+    plus [a typed version (`bf.ts`)](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.ts).
+    Here are the times running BF which draws the Mandelbrot set, with different commands
+    (`porf` = Porffor):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`porf bf.js`: 272s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: This just runs the JS file regularly, with default options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`porf bf.ts -parse-types`: 274s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: This runs the TS file, but only parses the types without using them for optimization.
+    About the same time as regular JS, within error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`porf bf.ts -parse-types -opt-types`: 184s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '`-opt-types` tells Porffor to use the type annotations as compiler hints. 1.5x
+    speedup, just from using types!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`porf bf.ts -parse-types -opt-types -valtype=i32`: 84s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '`-valtype=i32` also tells Porffor to use `i32`s (32 bit integers) as `number`
+    instead of `f64`s. In the future I plan to add a special type to do this instead
+    of changing `number` for everything, but the compiler isn’t that smart yet heh.
+    Another 2.2x speedup compared to last, or 3.2x in total!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`porf bf.ts -parse-types -opt-types -valtype=i32 -funsafe-zero-proto-checks=charcodeat`:
+    67s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '`-funsafe-zero-proto-checks=charcodeat` additionally informs the compiler to
+    do no input out of bounds/etc checks for `String.prototype.charCodeAt`. In the
+    future, this should also be able to be automatically detected and done for you.
+    Mild 1.3x speedup compared to previously, resulting in 4x compared to original.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`node bf.js`: 66s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For comparison, Node running the same JS file. Obviously, Node is JIT compiled
+    so has a big advantage compared to compiling AOT to bytecode. Yet, we still roughly
+    match it with the right options! 🚀
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`quickjs bf.js`: 1812s'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For comparison, a traditional interpreter running the same benchmark.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The best part of this for me is that [the main diff for this feature was small,
+    only +131 -25](https://github.com/CanadaHonk/porffor/commit/a6a92e01ac1e09383f5c3f24e55f2648ff714b7a),
+    and only took me ~an evening to do; thanks to the great foundation from [the rewrite](/porffor-rewrite/).
+    Please note both regular JS and typed will likely speedup even more in the near
+    future! This is just today. I haven’t compared to many other engines as I’m saving
+    that for a later post when I’ve done more benchmarking and testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also for comedic relief, this makes the full description of Porffor even more
+    complicated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A from-scratch experimental AOT optimizing JS/TS -> Wasm/C engine/compiler/runtime
+    in JS
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Thanks for reading! :)
+  prefs: []
+  type: TYPE_NORMAL

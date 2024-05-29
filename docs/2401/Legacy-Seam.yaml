@@ -1,0 +1,148 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:33:31'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Legacy Seam
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://martinfowler.com/bliki/LegacySeam.html](https://martinfowler.com/bliki/LegacySeam.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'When working with a legacy system it is valuable to identify and create seams:
+    places where we can alter the behavior of the system without editing source code.
+    Once we''ve found a seam, we can use it to break dependencies to simplify testing,
+    insert probes to gain observability, and redirect program flow to new modules
+    as part of legacy displacement.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Michael Feathers coined the term “seam” in the context of legacy systems in
+    his book [Working Effectively with Legacy Code](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20).
+    His definition: **“a seam is a place where you can alter behavior in your program
+    without editing in that place”**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here's an example of where a seam would be handy. Imagine some code to calculate
+    the price of an order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function `calculateShipping` hits an external service, which is slow (and
+    expensive), so we don't want to hit it when testing. Instead we want to introduce
+    a [stub](/bliki/TestDouble.html), so we can provide a canned and deterministic
+    response for each of the testing scenarios. Different tests may need different
+    responses from the function, but we can't edit the code of `calculatePrice` inside
+    the test. Thus we need to introduce a seam around the call to `calculateShipping`,
+    something that will allow our test to redirect the call to the stub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way to do this is to pass the function for `calculateShipping` as a parameter
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: A unit test for this function can then substitute a simple stub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Each seam comes with an **enabling point**: “a place where you can make the
+    decision to use one behavior or another” [[WELC]](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20).
+    Passing the function as parameter opens up an enabling point in the caller of
+    `calculateShipping`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This now makes testing a lot easier, we can put in different values of shipping
+    costs, and check that `applyShippingDiscounts` responds correctly. Although we
+    had to change the original source code to introduce the seam, any further changes
+    to that function don't require us to alter that code, the changes all occur in
+    the enabling point, which lies in the test code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing a function as a parameter isn't the only way we can introduce a seam.
+    After all, changing the signature of `calculateShipping` may be fraught, and we
+    may not want to thread the shipping function parameter through the legacy call
+    stack in the production code. In this case a lookup may be a better approach,
+    such as using a service locator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The locator allows us to override the behavior by defining a subclass.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can then use an enabling point in our test
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This kind of service locator is a classical object-oriented way to set up a
+    seam via function lookup, which I'm showing here to indicate the kind of approach
+    I might use in other languages, but I wouldn't use this approach in TypeScript
+    or JavaScript. Instead I'd put something like this into a module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can then use the code in a test like this
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: As the final example suggests, the best mechanism to use for a seam depends
+    very much on the language, available frameworks, and indeed the style of the legacy
+    system. Getting a legacy system under control means learning how to introduce
+    various seams into the code to provide the right kind of enabling points while
+    minimizing the disturbance to the legacy software. While a function call is a
+    simple example of introducing such seams, they can be much more intricate in practice.
+    A team can spend several months figuring out how to introduce seams into a well-worn
+    legacy system. The best mechanism for adding seams to a legacy system may be different
+    to what we'd do for similar flexibility in a green field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feathers's book focuses primarily on getting a legacy system under test, as
+    that is often the key to being able to work with it in a sane way. But seams have
+    more uses than that. Once we have a seam, we are in the position to place probes
+    into the legacy system, allowing us to increase the observability of the system.
+    We might want to monitor calls to `calculateShipping`, figuring out how often
+    we use it, and capturing its results for separate analysis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But probably the most valuable use of seams is that they allow us to migrate
+    behavior away from the legacy. A seam might redirect high-value customers to a
+    different shipping calculator. Effective legacy displacement is founded on introducing
+    seams into the legacy system, and using them to gradually move behavior into a
+    more modern environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Seams are also something to think about as we write new software, after all
+    every new system will become legacy sooner or later. Much of my design advice
+    is about building software with appropriately placed seams, so we can easily test,
+    observe, and enhance it. If we write our software with testing in mind, we tend
+    to get a good set of seams, which is a reason why [Test Driven Development](/bliki/TestDrivenDevelopment.html)
+    is such a useful technique.
+  prefs: []
+  type: TYPE_NORMAL

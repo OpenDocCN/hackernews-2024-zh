@@ -1,0 +1,425 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:47:56'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Landlock: unprivileged access control — The Linux Kernel documentation'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://docs.kernel.org/userspace-api/landlock.html](https://docs.kernel.org/userspace-api/landlock.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The goal of Landlock is to enable to restrict ambient rights (e.g. global filesystem
+    or network access) for a set of processes. Because Landlock is a stackable LSM,
+    it makes possible to create safe security sandboxes as new security layers in
+    addition to the existing system-wide access-controls. This kind of sandbox is
+    expected to help mitigate the security impact of bugs or unexpected/malicious
+    behaviors in user space applications. Landlock empowers any process, including
+    unprivileged ones, to securely restrict themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can quickly make sure that Landlock is enabled in the running system by
+    looking for “landlock: Up and running” in kernel logs (as root): `dmesg | grep
+    landlock || journalctl -kb -g landlock` . Developers can also easily check for
+    Landlock support with a [related system call](#landlock-abi-versions). If Landlock
+    is not currently supported, we need to [configure the kernel appropriately](#kernel-support).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Landlock rules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A Landlock rule describes an action on an object which the process intends to
+    perform. A set of rules is aggregated in a ruleset, which can then restrict the
+    thread enforcing it, and its future children.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The two existing types of rules are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filesystem rules
+  prefs: []
+  type: TYPE_NORMAL
+- en: For these rules, the object is a file hierarchy, and the related filesystem
+    actions are defined with filesystem access rights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Network rules (since ABI v4)
+  prefs: []
+  type: TYPE_NORMAL
+- en: For these rules, the object is a TCP port, and the related actions are defined
+    with network access rights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining and enforcing a security policy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We first need to define the ruleset that will contain our rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this example, the ruleset will contain rules that only allow filesystem
+    read actions and establish a specific TCP connection. Filesystem write actions
+    and other TCP actions will be denied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ruleset then needs to handle both these kinds of actions. This is required
+    for backward and forward compatibility (i.e. the kernel and user space may not
+    know each other’s supported restrictions), hence the need to be explicit about
+    the denied-by-default access rights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because we may not know on which kernel version an application will be executed,
+    it is safer to follow a best-effort security approach. Indeed, we should try to
+    protect users as much as possible whatever the kernel they are using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To be compatible with older Linux versions, we detect the available Landlock
+    ABI version, and only use the available subset of access rights:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This enables to create an inclusive ruleset that will contain our rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can now add a new rule to this ruleset thanks to the returned file descriptor
+    referring to this ruleset. The rule will only allow reading the file hierarchy
+    `/usr`. Without another rule, write actions would then be denied by the ruleset.
+    To add `/usr` to the ruleset, we open it with the `O_PATH` flag and fill the &[`struct
+    landlock_path_beneath_attr`](#c.landlock_path_beneath_attr "landlock_path_beneath_attr")
+    with this file descriptor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: It may also be required to create rules following the same logic as explained
+    for the ruleset creation, by filtering access rights according to the Landlock
+    ABI version. In this example, this is not required because all of the requested
+    `allowed_access` rights are already available in ABI 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For network access-control, we can add a set of rules that allow to use a port
+    number for a specific action: HTTPS connections.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The next step is to restrict the current thread from gaining more privileges
+    (e.g. through a SUID binary). We now have a ruleset with the first rule allowing
+    read access to `/usr` while denying all other handled accesses for the filesystem,
+    and a second rule allowing HTTPS connections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The current thread is now ready to sandbox itself with the ruleset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the `landlock_restrict_self` system call succeeds, the current thread is
+    now restricted and this policy will be enforced on all its subsequently created
+    children as well. Once a thread is landlocked, there is no way to remove its security
+    policy; only adding more restrictions is allowed. These threads are now in a new
+    Landlock domain, merge of their parent one (if any) with the new ruleset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Full working code can be found in [samples/landlock/sandboxer.c](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/samples/landlock/sandboxer.c).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Good practices
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is recommended setting access rights to file hierarchy leaves as much as
+    possible. For instance, it is better to be able to have `~/doc/` as a read-only
+    hierarchy and `~/tmp/` as a read-write hierarchy, compared to `~/` as a read-only
+    hierarchy and `~/tmp/` as a read-write hierarchy. Following this good practice
+    leads to self-sufficient hierarchies that do not depend on their location (i.e.
+    parent directories). This is particularly relevant when we want to allow linking
+    or renaming. Indeed, having consistent access rights per directory enables to
+    change the location of such directory without relying on the destination directory
+    access rights (except those that are required for this operation, see `LANDLOCK_ACCESS_FS_REFER`
+    documentation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having self-sufficient hierarchies also helps to tighten the required access
+    rights to the minimal set of data. This also helps avoid sinkhole directories,
+    i.e. directories where data can be linked to but not linked from. However, this
+    depends on data organization, which might not be controlled by developers. In
+    this case, granting read-write access to `~/tmp/`, instead of write-only access,
+    would potentially allow to move `~/tmp/` to a non-readable directory and still
+    keep the ability to list the content of `~/tmp/`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Layers of file path access rights
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Each time a thread enforces a ruleset on itself, it updates its Landlock domain
+    with a new layer of policy. Indeed, this complementary policy is stacked with
+    the potentially other rulesets already restricting this thread. A sandboxed thread
+    can then safely add more constraints to itself with a new enforced ruleset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One policy layer grants access to a file path if at least one of its rules encountered
+    on the path grants the access. A sandboxed thread can only access a file path
+    if all its enforced policy layers grant the access as well as all the other system
+    access controls (e.g. filesystem DAC, other LSM policies, etc.).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bind mounts and OverlayFS
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Landlock enables to restrict access to file hierarchies, which means that these
+    access rights can be propagated with bind mounts (cf. [Shared Subtrees](../filesystems/sharedsubtree.html))
+    but not with [Overlay Filesystem](../filesystems/overlayfs.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A bind mount mirrors a source file hierarchy to a destination. The destination
+    hierarchy is then composed of the exact same files, on which Landlock rules can
+    be tied, either via the source or the destination path. These rules restrict access
+    when they are encountered on a path, which means that they can restrict access
+    to multiple file hierarchies at the same time, whether these hierarchies are the
+    result of bind mounts or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An OverlayFS mount point consists of upper and lower layers. These layers are
+    combined in a merge directory, result of the mount point. This merge hierarchy
+    may include files from the upper and lower layers, but modifications performed
+    on the merge hierarchy only reflects on the upper layer. From a Landlock policy
+    point of view, each OverlayFS layers and merge hierarchies are standalone and
+    contains their own set of files and directories, which is different from bind
+    mounts. A policy restricting an OverlayFS layer will not restrict the resulted
+    merged hierarchy, and vice versa. Landlock users should then only think about
+    file hierarchies they want to allow access to, regardless of the underlying filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inheritance
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Every new thread resulting from a *clone(2)* inherits Landlock domain restrictions
+    from its parent. This is similar to the seccomp inheritance (cf. [Seccomp BPF
+    (SECure COMPuting with filters)](seccomp_filter.html)) or any other LSM dealing
+    with task’s *credentials(7)*. For instance, one process’s thread may apply Landlock
+    rules to itself, but they will not be automatically applied to other sibling threads
+    (unlike POSIX thread credential changes, cf. *nptl(7)*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a thread sandboxes itself, we have the guarantee that the related security
+    policy will stay enforced on all this thread’s descendants. This allows creating
+    standalone and modular security policies per application, which will automatically
+    be composed between themselves according to their runtime parent policies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ptrace restrictions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A sandboxed process has less privileges than a non-sandboxed process and must
+    then be subject to additional restrictions when manipulating another process.
+    To be allowed to use *ptrace(2)* and related syscalls on a target process, a sandboxed
+    process should have a subset of the target process rules, which means the tracee
+    must be in a sub-domain of the tracer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Truncating files
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The operations covered by `LANDLOCK_ACCESS_FS_WRITE_FILE` and `LANDLOCK_ACCESS_FS_TRUNCATE`
+    both change the contents of a file and sometimes overlap in non-intuitive ways.
+    It is recommended to always specify both of these together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A particularly surprising example is *creat(2)*. The name suggests that this
+    system call requires the rights to create and write files. However, it also requires
+    the truncate right if an existing file under the same name is already present.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should also be noted that truncating files does not require the `LANDLOCK_ACCESS_FS_WRITE_FILE`
+    right. Apart from the *truncate(2)* system call, this can also be done through
+    *open(2)* with the flags `O_RDONLY | O_TRUNC`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The truncate right is associated with the opened file (see below).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rights associated with file descriptors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When opening a file, the availability of the `LANDLOCK_ACCESS_FS_TRUNCATE` and
+    `LANDLOCK_ACCESS_FS_IOCTL_DEV` rights is associated with the newly created file
+    descriptor and will be used for subsequent truncation and ioctl attempts using
+    *ftruncate(2)* and *ioctl(2)*. The behavior is similar to opening a file for reading
+    or writing, where permissions are checked during *open(2)*, but not during the
+    subsequent *read(2)* and *write(2)* calls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a consequence, it is possible that a process has multiple open file descriptors
+    referring to the same file, but Landlock enforces different things when operating
+    with these file descriptors. This can happen when a Landlock ruleset gets enforced
+    and the process keeps file descriptors which were opened both before and after
+    the enforcement. It is also possible to pass such file descriptors between processes,
+    keeping their Landlock properties, even when some of the involved processes do
+    not have an enforced Landlock ruleset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Current limitations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Filesystem topology modification
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Threads sandboxed with filesystem restrictions cannot modify filesystem topology,
+    whether via *mount(2)* or *pivot_root(2)*. However, *chroot(2)* calls are not
+    denied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Special filesystems
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Access to regular files and directories can be restricted by Landlock, according
+    to the handled accesses of a ruleset. However, files that do not come from a user-visible
+    filesystem (e.g. pipe, socket), but can still be accessed through `/proc/<pid>/fd/*`,
+    cannot currently be explicitly restricted. Likewise, some special kernel filesystems
+    such as nsfs, which can be accessed through `/proc/<pid>/ns/*`, cannot currently
+    be explicitly restricted. However, thanks to the [ptrace restrictions](#ptrace-restrictions),
+    access to such sensitive `/proc` files are automatically restricted according
+    to domain hierarchies. Future Landlock evolutions could still enable to explicitly
+    restrict such paths with dedicated ruleset flags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ruleset layers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a limit of 16 layers of stacked rulesets. This can be an issue for
+    a task willing to enforce a new ruleset in complement to its 16 inherited rulesets.
+    Once this limit is reached, [`sys_landlock_restrict_self()`](#c.sys_landlock_restrict_self
+    "sys_landlock_restrict_self") returns E2BIG. It is then strongly suggested to
+    carefully build rulesets once in the life of a thread, especially for applications
+    able to launch other applications that may also want to sandbox themselves (e.g.
+    shells, container managers, etc.).
+  prefs: []
+  type: TYPE_NORMAL
+- en: IOCTL support
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `LANDLOCK_ACCESS_FS_IOCTL_DEV` right restricts the use of *ioctl(2)*, but
+    it only applies to *newly opened* device files. This means specifically that pre-existing
+    file descriptors like stdin, stdout and stderr are unaffected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Users should be aware that TTY devices have traditionally permitted to control
+    other processes on the same TTY through the `TIOCSTI` and `TIOCLINUX` IOCTL commands.
+    Both of these require `CAP_SYS_ADMIN` on modern Linux systems, but the behavior
+    is configurable for `TIOCSTI`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On older systems, it is therefore recommended to close inherited TTY file descriptors,
+    or to reopen them from `/proc/self/fd/*` without the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
+    right, if possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Landlock’s IOCTL support is coarse-grained at the moment, but may become more
+    fine-grained in the future. Until then, users are advised to establish the guarantees
+    that they need through the file hierarchy, by only allowing the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
+    right on files where it is really required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '## Kernel support'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build time configuration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Landlock was first introduced in Linux 5.13 but it must be configured at build
+    time with `CONFIG_SECURITY_LANDLOCK=y`. Landlock must also be enabled at boot
+    time as the other security modules. The list of security modules enabled by default
+    is set with `CONFIG_LSM`. The kernel configuration should then contains `CONFIG_LSM=landlock,[...]`
+    with `[...]` as the list of other potentially useful security modules for the
+    running system (see the `CONFIG_LSM` help).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Boot time configuration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the running kernel does not have `landlock` in `CONFIG_LSM`, then we can
+    enable Landlock by adding `lsm=landlock,[...]` to [The kernel’s command-line parameters](../admin-guide/kernel-parameters.html)
+    in the boot loader configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if the current built-in configuration is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '...and if the cmdline doesn’t contain `landlock` either:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '...we should configure the boot loader to set a cmdline extending the `lsm`
+    list with the `landlock,` prefix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After a reboot, we can check that Landlock is up and running by looking at
+    kernel logs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The kernel may be configured at build time to always load the `lockdown` and
+    `capability` LSMs. In that case, these LSMs will appear at the beginning of the
+    `LSM: initializing` log line as well, even if they are not configured in the boot
+    loader.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Network support
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To be able to explicitly allow TCP operations (e.g., adding a network rule with
+    `LANDLOCK_ACCESS_NET_BIND_TCP`), the kernel must support TCP (`CONFIG_INET=y`).
+    Otherwise, [`sys_landlock_add_rule()`](#c.sys_landlock_add_rule "sys_landlock_add_rule")
+    returns an `EAFNOSUPPORT` error, which can safely be ignored because this kind
+    of TCP operation is already not possible.
+  prefs: []
+  type: TYPE_NORMAL

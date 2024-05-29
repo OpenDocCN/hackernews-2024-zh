@@ -1,0 +1,168 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:33:27'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Microdot: a web framework for microcontrollers [LWN.net]'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lwn.net//Articles/959067/](https://lwn.net//Articles/959067/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| **Please consider subscribing to LWN**Subscriptions are the lifeblood of
+    LWN.net. If you appreciate this content and would like to see more of it, your
+    subscription will help to ensure that LWN continues to thrive. Please visit [this
+    page](/subscribe/) to join up and keep LWN on the net. |'
+  prefs: []
+  type: TYPE_TB
+- en: By **Jake Edge**
+  prefs: []
+  type: TYPE_NORMAL
+- en: January 23, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many different Python [web frameworks](https://wiki.python.org/moin/WebFrameworks),
+    from nano-frameworks all the way up to the full-stack variety. One that recently
+    caught my eye is [Microdot](https://github.com/miguelgrinberg/microdot), the "<q>impossibly
+    small web framework for Python and MicroPython</q>"; since it targets [MicroPython](https://micropython.org/),
+    it is plausible for running the user interface of an "internet of things" (IoT)
+    device, for example. Beyond that, it is [Flask](https://flask.palletsprojects.com/en/3.0.x/)-inspired,
+    which should make it reasonably familiar to many potential web developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Microdot was created by Miguel Grinberg, who also created the well-known [Flask
+    Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+    that has served as the introduction to the Flask web framework for many people.
+    While Flask is considered to be a microframework, it still requires a full CPython
+    environment to run; another Python microframework described alongside Flask in
+    a [2019 LWN article](/Articles/792882/), [Bottle](https://bottlepy.org/docs/dev/),
+    has similar needs. Microdot came about because Grinberg [wanted a framework for
+    MicroPython](https://blog.miguelgrinberg.com/post/microdot-yet-another-python-web-framework)
+    and did not find anything usable back in 2019.
+  prefs: []
+  type: TYPE_NORMAL
+- en: MicroPython is a cut-down version of Python that is suitable for microcontrollers;
+    LWN [looked at version 1.20](/Articles/931051/) in May 2023\. There is a [lengthy
+    list of differences](https://docs.micropython.org/en/latest/genrst/index.html)
+    between MicroPython and CPython, but there is enough overlap that Python—and web—programmers
+    will feel right at home with Microdot. Code can be moved back and forth, because
+    Microdot can also run under CPython, though, of course, MicroPython runs on regular
+    CPUs as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As shown in Grinberg''s announcement blog post, a canonical "hello world" web
+    application looks fairly straightforward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `@app.get()` decorator describes the URL to match and the `index()` function
+    returns data that is used as the response. In this case, returning a dictionary
+    causes Microdot to format the response as JSON; a status code or custom headers
+    can be returned as the second and third elements of a multi-value return.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing that does stand out in the example is the "`async def`" in the definition
+    of `index()`. While Microdot 1.0, which was released in August 2022, had a synchronous
+    base with an [`asyncio`](https://docs.python.org/3/library/asyncio.html) extension,
+    Microdot 2.0, which was released in December, is designed to be fully asynchronous.
+    Regular `def` can still be used with Microdot 2.0, but web-server responsiveness
+    will suffer on microcontrollers, which generally lack threading support. Instead,
+    inside a handler defined with `async def`, processing that requires I/O should
+    be handled using `await`, rather than synchronously waiting for the operation
+    to return control. Grinberg gave a [talk on asynchronous Python](/Articles/726600/)
+    at PyCon 2017 that may be of interest to readers who are not familiar with the
+    topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While Microdot is inspired by Flask, it is not beholden to it. In particular,
+    Grinberg said that he liked the Flask [Blueprints](https://flask.palletsprojects.com/en/3.0.x/blueprints/)
+    for modularizing web applications, but thought the Flask mechanism was too complicated.
+    So Microdot has the concept of ["mounting" sub-applications](https://microdot.readthedocs.io/en/stable/intro.html#mounting-a-sub-application)
+    at different points in the URL hierarchy. As the documentation shows, a `customer_app`
+    and an `orders_app` can be created in two separate files, which get imported into
+    the main application source file in order to create the full application with
+    something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: That allows the functionality for customers and orders to be written as if they
+    are at the top-level of the hierarchy, then they can be mounted where they should
+    actually appear; any reorganization would not require changes to the sub-applications,
+    just a different mount point, as long as relative URLs are used within the sub-application
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For rendering its pages, Microdot [supports](https://microdot.readthedocs.io/en/stable/extensions.html#rendering-templates)
+    the familiar [Jinja templating engine](https://jinja.palletsprojects.com/en/3.1.x/),
+    but only for CPython. For MicroPython, [`utemplate`](https://github.com/pfalcon/utemplate)
+    can be used and it will work on CPython too; it implements a simplified version
+    of the Jinja syntax. Other [extensions](https://microdot.readthedocs.io/en/stable/extensions.html)
+    provide WebSocket, secure user session, server-sent event (SSE), and other functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In its most minimal configuration, Microdot clocks in at a little over 700
+    lines of code (plus comments and blank lines) in a single file; the full configuration
+    is a bit over double that in 11 files. Grinberg contrasts that with Flask and
+    [FastAPI](https://fastapi.tiangolo.com/), which both come in around ten times
+    the number of lines of code when including their main dependencies ([Werkzeug](https://werkzeug.palletsprojects.com/en/3.0.x/)
+    and [Starlette](https://www.starlette.io/), respectively). Meanwhile, the third-party
+    dependencies for Microdot are minimal, as one might guess:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The single-file minimal version does not require any dependencies at all, and
+    it even includes its own web server. Some of the optional features do require
+    third-party dependencies, and this is comparable to the larger frameworks. Like
+    Flask, you will need to add a templating library (Jinja or uTemplate) to use templates.
+    For user sessions, Microdot relies on PyJWT, while Flask uses its own Itsdangerous
+    package.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[Deploying a web application](https://microdot.readthedocs.io/en/stable/extensions.html#deploying-on-a-production-web-server)
+    on MicroPython uses the built-in web server, but CPython can use [Asynchronous
+    Server Gateway Interface](https://asgi.readthedocs.io/en/latest/) (ASGI) servers
+    or those that support its predecessor of sorts: [Web Server Gateway Interface](https://wsgi.readthedocs.io/en/latest/what.html)
+    (WSGI). TLS is also [supported](https://microdot.readthedocs.io/en/stable/intro.html#web-server-configuration)
+    so serving can be done over HTTPS. There are several example programs using each
+    server type, and both template engines, linked from the documentation. While WSGI
+    is a synchronous protocol, Microdot itself runs in an `asyncio` event loop, so
+    `async def` and `await` [should still be used](https://microdot.readthedocs.io/en/stable/intro.html#concurrency).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overall, Microdot looks like a nice option for new projects for microcontrollers.
+    Grinberg specifically does not recommend that people drop their current CPython
+    framework in favor of Microdot, unless they are unhappy with it or need to really
+    eke out the memory savings that Microdot can provide. There are now multiple MicroPython
+    web frameworks and tools [listed](https://awesome-micropython.com/#web) on the
+    [Awesome MicroPython web site](https://awesome-micropython.com/), so there are
+    lots more options than what Grinberg found five years ago. A simple web application
+    makes for an almost ideal interface to a headless, network-connected device, so
+    finding ways to make them easier to develop is welcome. From that perspective,
+    Microdot is worth a look.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Log in](https://lwn.net/Login/?target=/Articles/959067/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to post comments)
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,140 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:45:16'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go Enums Still Suck
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.zarl.dev/articles/enums-take-two](https://www.zarl.dev/articles/enums-take-two)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Go Enums Still Suck
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So my [original post](https://www.zarl.dev/articles/enums) got more eyeballs
+    than expected and I saw it on social media mainly hacker news, and lobste.rs to
+    my surprise. With varying levels of support for my ideas and some less than constructive
+    comments such as and I paraphrase… ***‘learn to code’***, ***‘why do you hate
+    Go?’***, ***‘THIS ISN’T JAVA’***. I love online discourse.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I will also say there was good discussion and support for what I was trying
+    to achieve. Sometimes the Go userbase is less than receptive to critiques of the
+    language ~~re:Generics Before Generics~~, but I still find Go my most productive
+    language to just *get shit done*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So some of the main critiques where:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use `stringer`
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first critique is well placed and I really should have started at that point,
+    in fact I could have forked the project and used it as the basis for my own as
+    it even uses the AST **(abstract syntax tree)** approach to parsing the GO code
+    and building up from there. The tool is even mentioned on the official go blog
+    post when `go generate` was introduced after all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I didn’t do this; In hindsight I’m an idiot for not doing this from the start,
+    but parsing a JSON file to a struct was just so simple and I admit I was lazy.
+    At least it proved out my idea, so I rebuilt it correctly *(i hope)* this second
+    time around.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I re-wrote my generator from scratch to use the [ast](https://pkg.go.dev/go/ast)
+    package like the `stringer` command tool. However I built out the data required
+    in a struct format that worked for me plus it was my first time really playing
+    with the `ast` package so that was fun in and of itself. I also used the open
+    source code for the `stringer` command so I could implement the same `String`
+    method and also the compile-time check when new enums have been added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unnecessary JSON Config
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Yes - it was completely unnecessary! So, again, moving to the `ast` library
+    means I can build up all information needed by parsing the Go code rather than
+    rely on a configuration file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extendable Enums
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This was the most extensive of the critiques, and rightly pointed out; enums
+    gain much more value when there is corresponding properties that relate to the
+    enum. In the example below, I chose the planets example where there is a myriad
+    of other properties we would want to have associated with the enum more than just
+    uniqueness. I initially wanted to leverage Go’s struct tags, but guess what; the
+    clue is in the name, they can not be used on anything but structs. So I just decided
+    on a comment of a comma separated list of `Name[Type]` pairs defined on the type
+    used in the iota definitions. For the planets example, it looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This allows us to define a list of properties and their types that will be
+    generated for the wrapper struct. We then just add the properties to the comments
+    on the iota definitions. Again, for the planets example, it looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This uses the corresponding values to build out the wrapper so they end up
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This allows easily extending the wrapper with more properties. You should also
+    note that the first property is not even defined in at the type definition. This
+    is a unique case where this will be the string representation for the enum. So
+    with the wrappers all generated. I decided to also generate the following `ExtensivePlanets`
+    function to enumerate through all the valid values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now write something like the following :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This allows us to calculate our weight on all the different planets as they
+    are exhaustively checked through all valid values. To mark invalid values, all
+    you need to do is add a comment to the appropriate iota definition with invalid.
+    This can be seen in the unknown value in the planets iota definitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The feedback I got has been worth while and has allowed me to approach the problem
+    from a different perspective and to also re-evaluate the choices I made on the
+    first implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Here](https://github.com/zarldev/goenums) is the github repository for goenums'
+  prefs: []
+  type: TYPE_NORMAL

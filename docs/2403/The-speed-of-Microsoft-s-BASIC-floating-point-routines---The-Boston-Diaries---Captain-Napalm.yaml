@@ -1,0 +1,113 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:30:56'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The speed of Microsoft's BASIC floating point routines - The Boston Diaries
+    - Captain Napalm
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://boston.conman.org/2024/03/01.1](https://boston.conman.org/2024/03/01.1)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I was curious about how fast [Microsoft's BASIC floating point](https://en.wikipedia.org/wiki/Microsoft_Binary_Format)
+    routines were. This is easy enough to test, now that I can [time assembly code
+    inside the assembler](/2023/12/19.3). The code calculates -2π³/3! using Color
+    BASIC routines, IEEE-754 single precision and double precision.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, Color BASIC:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: I can't use the `.FLOAT` directive here since that only supports either the
+    Microsoft format or IEEE-754 but not both. So for this test, I have to define
+    the individual bytes per float. The last line is what the result should be (by
+    checking a memory dump of the VM after running). Also, `.tao` is [2π](https://tauday.com/tau-manifesto),
+    just in case that wasn't clear. This ran in 8,742 cycles, taking 2,124 instructions
+    and 4.12 cycles per instruction (I modified the assembler to record this additional
+    information).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next up, IEEE-754 single precision:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The floating point control block (`.fpcb`) configures the MC6839 to use single
+    precision, normal rounding and projective closure (not sure what that is, but
+    it's the default value). And it does calculate the correct result. It's amazing
+    that code written 42 *years* ago for an 8-bit CPU works flawlessly. What it *isn't*
+    is fast. This code took 14,204 cycles over 2,932 instructions (average 4.84 cycles
+    per instruction).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The higher than average cycle type could be due to position independent addressing
+    modes, but I'm not entirely sure what it's doing to take nearly twice the time.
+    The ROM does use the IEEE-754 extended format (10 bytes) internally, with more
+    bit shifts to extract the exponent and mantissa, but *twice* the time?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps it's code to deal with ±∞ and NaNs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The IEEE-754 double precision is the same, except for the floating point control
+    block configuring double precision and the use of `.FLOATD` instead of `.FLOAT`;
+    otherwise the code is identical. The result, however, isn't. It took 31,613 cycles
+    over 6,865 instructions (average 4.60 cycles per instruction). And being twice
+    the size, it took nearly twice the time as single precision, which is expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final bit of code just loads the ROMs into memory, and calls each function
+    to get the timing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Really, the only surprising thing here was just how fast Microsoft BASIC was
+    at floating point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have my permission to link freely to any entry here. Go ahead, I won't bite.
+    I promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The dates are the permanent links to that day''s entries (or entry, if there
+    is only one entry). The titles are the permanent links to *that* entry only. The
+    format for the links are simple: Start with the base link for this site: [https://boston.conman.org/](https://boston.conman.org/),
+    then add the date you are interested in, say [2000/08/01](/2000/08/01), so that
+    would make the final URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://boston.conman.org/2000/08/01](https://boston.conman.org/2000/08/01)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also specify the entire month by leaving off the day portion. You can
+    even select [an arbitrary portion of time.](/about/technical.html)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may also note subtle shading of the links and that''s intentional: the
+    “closer” the link is (relative to the page) the “brighter” it appears. It''s an
+    experiment in using color shading to denote the distance a link is from here.
+    If you don''t notice it, don''t worry; it''s not all *that* important.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is assumed that every brand name, slogan, corporate name, symbol, design
+    element, et cetera mentioned in these pages is a protected and/or trademarked
+    entity, the sole property of its owner(s), and acknowledgement of this status
+    is implied.
+  prefs: []
+  type: TYPE_NORMAL

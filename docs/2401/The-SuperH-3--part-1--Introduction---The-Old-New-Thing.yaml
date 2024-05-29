@@ -1,0 +1,248 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:58:57'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The SuperH-3, part 1: Introduction - The Old New Thing'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749](https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The SuperH-3, part 1: Introduction'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Windows CE supported the Hitachi SuperH-3 and SuperH-4 processors](https://www.hpcfactor.com/support/windowsce/wce2.asp).
+    These were commonly abbreviated SH-3 and SH-4, or just SH3 and SH4, and the architecture
+    series was known as SHx.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ll cover the SH-3 processor in this series, with some nods to the SH-4 as
+    they arise. But the only binaries I have available for reverse-engineering are
+    SH-3 binaries, so that’s where my focus will be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SH-3 is the next step in the processor series that started with the SH-1
+    and SH-2\. It was succeeded by the SH-4 as well as the offshoots SH-3e and SH-3-DSP.
+    The SH-4 is probably most famous for being the processor behind the Sega Dreamcast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with all the processor retrospective series, I’m going to focus on how Windows
+    CE used the processor in user mode, with particular focus on the instructions
+    you will see in compiled code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SH-3 is a 32-bit RISC-style (load/store) processor with fixed-length 16-bit
+    instructions. The small instruction size permits higher code density than its
+    contemporaries, with Hitachi claiming a code size reduction of a third to a half
+    compared to processors with 32-bit instructions. The design was apparently so
+    successful that [ARM licensed it for their Thumb instruction set](https://lwn.net/Articles/647636/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SH-3 can operate in either big-endian or little-endian mode. Windows CE
+    uses it in little-endian mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The SH-3 has sixteen general-purpose integer registers, each 32 bits wide,
+    and formally named `r0` through `r15`. They are conventionally used as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Register | Meaning | Preserved? |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r0` | return value | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r1` |   | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r2` |   | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r3` |   | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r4` | argument 1 | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r5` | argument 2 | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r6` | argument 3 | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r7` | argument 4 | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r8` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r9` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r10` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r11` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r12` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r13` |   | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r14`, aka `fp` | frame pointer | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `r15`, aka `sp` | stack pointer | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: We’ll learn more about the conventions when we study [calling conventions](https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are actually two sets (banks) of the first eight registers (`r0` through
+    `r7`). User-mode code uses only bank 0, but kernel mode can choose whether it
+    uses bank 0 or bank 1\. (And when it’s using one bank, kernel mode has special
+    instructions available to access the registers from the other bank.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The SH-3 does not support floating point operations, but the SH-4 does. There
+    are sixteen single-precision floating point registers which are architecturally
+    named `fpr0` through `fpr15`, but which the Microsoft assembler calls `fr0` through
+    `fr15`. They can be paired up to produce eight double-precision floating point
+    registers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Double-precision register | Single-precision register pair |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr0` | `fr0` | `fr1` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr2` | `fr2` | `fr3` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr4` | `fr4` | `fr5` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr6` | `fr6` | `fr7` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr8` | `fr8` | `fr9` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr10` | `fr10` | `fr11` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr12` | `fr12` | `fr13` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dr14` | `fr14` | `fr15` |'
+  prefs: []
+  type: TYPE_TB
+- en: If you try to perform a floating point operation on an SH-3, it will trap, and
+    the kernel will emulate the instruction. As a result, floating point on an SH-3
+    is very slow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows NT requires that the stack be kept on a 4-byte boundary. I did not observe
+    any red zone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are also some special registers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Register | Meaning | Preserved? | Notes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pc` | program counter | duh | instruction pointer, must be even |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `gbr` | global base register | No | bonus pointer register |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `sr` | status register | No | Flags |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `mach` | multiply and accumulate high | No | For multiply-add operations
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `macl` | multiply and accumulate low | No | For multiply-add operations |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pr` | procedure register | Yes | Return address |'
+  prefs: []
+  type: TYPE_TB
+- en: Some calling conventions for the SH-3 say that `mach` and `macl` are preserved,
+    or that `gbr` is reserved, but in Windows CE, they are all scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[We’ll take a closer look at the status register later](https://devblogs.microsoft.com/oldnewthing/20190807-00/?p=102769).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The architectural names for data sizes are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**byte**: 8-bit value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**word**: 16-bit value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**longword**: 32-bit value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**quadword**: 64-bit value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unaligned memory accesses will fault. [We’ll look more closely at unaligned
+    memory access later](https://devblogs.microsoft.com/oldnewthing/20190821-00/?p=102794).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SH-3 has branch delay slots. Ugh, branch delay slots. What’s worse is that
+    some branch instructions have branch delay slots and some don’t. Yikes! [We’ll
+    discuss this in more detail when we get to control transfer](https://devblogs.microsoft.com/oldnewthing/20190816-00/?p=102788).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instructions on the SH-3 are generally written with source on the left and destination
+    on the right. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The SH-3 can potentially retire two instructions per cycle, although internal
+    resource conflicts may prevent that. For example, an `ADD` can execute in parallel
+    with a comparison instruction, but it cannot execute in parallel with a `SUB`
+    instruction. In the case of a resource conflict, only one instruction is retired
+    during that cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After an instruction that modifies flags, the new flags are not available for
+    a cycle, and after a load instruction, the result is not available for two cycles.
+    There are other pipeline hazards, but those are the ones you are likely to encounter.
+    If you try to use the results of a prior instruction too soon, the processor will
+    stall. (Don’t forget that the SH-3 is dual-issue, so two cycles can mean up to
+    four instructions.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, that’s enough background. [We’ll dig in next time by looking at addressing
+    modes](https://devblogs.microsoft.com/oldnewthing/20190806-00/?p=102752).
+  prefs: []
+  type: TYPE_NORMAL

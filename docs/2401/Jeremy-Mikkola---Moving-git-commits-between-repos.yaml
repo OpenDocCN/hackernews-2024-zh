@@ -1,0 +1,140 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:25:49'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jeremy Mikkola - Moving git commits between repos
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html](https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Moving git commits between repos
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Posted on July 15, 2017
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you know it is possible to move commits between two unrelated git repositories?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Doing so relies on an interesting property of Git. It doesn’t have a concept
+    of two repositories being the “same,” meaning it allows pushing and pulling between
+    any two repositories, regardless of whether they hold the same project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (To be fair, git will tell you when the two repositories have no commits in
+    common, but that is a warning you can ignore here.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally just moving the commits to another repo is not enough. It is often
+    important to move the files to a different path inside that repo. Fortunately,
+    git has a command for that. `git filter-branch` allows moving files around in
+    git history (and rewriting history in a variety of other ways).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I’ll demonstrate two use cases you might have: extracting part of one repository
+    out to its own repo, and the reverse, pulling commits in from another repo.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s say you have some subdirectory of a large project that really should be
+    a project on its own. Sure, you could create a new repository and copy over the
+    files, but that doesn’t maintain their commit history. To keep the commit history,
+    we need to do a little bit more work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by creating another copy of your project to work in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This clones the existing project from the `existing_project/` directory into
+    the `new_project/` directory. If you don’t have a local copy of `existing_project`,
+    substitute the project’s clone URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For safety, we’ll remove the git remote that points to the original project.
+    This will prevent accidentally pushing the modified version back to the original
+    repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, it’s time to filter the repository to just the subdirectory you want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: And you are done! Check the results with a quick `ls` and `git log`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pulling commits in from another repo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Doing the reverse and combining two repos is a little more complicated. For
+    this example, the commits will move from a project called `source_repo` and into
+    one called `dest_repo`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by adding a git remote to the destination repository that points to the
+    source:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting `remote.source.pushurl` to some random value make pushing fail, effectively
+    making the remote read-only. This prevents accidentally messing up the source
+    repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we’ll pull the commits from the source repo into a branch in the destination
+    repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates a branch called `source_master` that contains an exact copy of
+    the history of the master branch in the source repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s say you want the files from the source repository in a directory called
+    `source_files/`. Like in the other example, `git filter-branch` allows moving
+    the files to the new location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, I like to use `git log --stat` to sanity check the location of
+    the files in the commits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, it’s time to combine this history with the original history of this
+    project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you prefer, you could merge instead of rebasing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `source-commits` branch is ready to be merged into master.
+  prefs: []
+  type: TYPE_NORMAL

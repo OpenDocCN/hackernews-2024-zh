@@ -1,0 +1,171 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:38:05'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Bit-Banging" Bluetooth Low Energy - Dmitry.GR'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://dmitry.gr/?r=05.Projects&proj=11.%20Bluetooth%20LE%20fakery](https://dmitry.gr/?r=05.Projects&proj=11.%20Bluetooth%20LE%20fakery)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Faking Bluetooth LE
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Bluetooth LE** is a new technology, introduced in the Bluetooth 4.0 spec.
+    It has *absolutely nothing* to do with bluetooth besides the name. Now that we
+    have that out of the way, why is it cool? Well, it was made for low power, and
+    the design shows. Unlike real bluetooth that does frequency hoppping on a precise
+    schedule, regardless of anything, LE hops after some number of packets are sent,
+    and thus one does not need to be awake to keep a running clock to know where to
+    hop to next. In fact, LE allows a device to completely shut down its radio for
+    large periods of time while maintaining a connection. This makes it awesome for
+    keyboards and mice and all kinds of other such things. Another cool feature in
+    LE is that devices can send unsolicited broadcasts of small chunks of data. Unlike
+    real bluetooth, scanning for devices in the LE world can be passive - you just
+    listen for advertisement packets on the right channels and you hear all the advertisements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The simple channel hopping behaviour** of LE means that we can probably pretend
+    to be an LE device without the complex radio that normal bluetoth requires. The
+    frequency is 2.4GHz, chanels are 1MHz apart, modulation is GFSK, datarate is 1MBps,
+    preamble is 10101010 or 01010101 based on first data byte, and addressing is done
+    using a 32-bit address. Gee, don''t we know a device that can do all that? Of
+    course we do! The ever-popular [Nordic nRF24L01+](http://www.semiconductorstore.com/cart/pc/viewPrd.asp?idproduct=41939).
+    So let''s look at the differences between what LE needs and what we have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**CRC:** BTLE uses a 24-bit CRC that is not something nRF24 can do. Luckily
+    for us, nRF24 allows us to disable the CRC, and then we can send our own and check
+    received ones manually. Unpleasant? Sure, but doable.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Frequency Hopping:** BTLE needs ut to be able to hop quickly - 150us or faster.
+    Sadly here nRF24 fails us. After every transmission it shuts down its PLL, and
+    then restarts it on every transmit or receive command. This takes 130us. We are
+    left with too little time to do anything here, sadly. Luckily this is not the
+    major issue.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Packet Length:** BTLE packets are of various sizes, up to 39 bytes of payload
+    in fact. But the one packet we would really want to support is the CONNECT_REQ
+    packet, which is in fact 34 bytes of payload + 3 of CRC, meaning we''d need to
+    receive 37 bytes if we want to check CRCs, and even if we were willing to throw
+    caution to the wind and ignore them, we need to receive 34\. nRF24 will not handle
+    packets over 32 bytes. Sadly the last two bytes are kind of important (hop size
+    and a part of the channel map). This is where we lose.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**So... we cannot accept connections,** but not all is lost... BTLE allows
+    unsolicited advertisements, so we can still do some cool things by making them
+    broadcast data to anyone who''ll listen. Let''s work out just how much data we
+    can send... Out of our 32-byte budget: 3 go into CRC, 2 go into the ADV_NONCONN_IND
+    packet header, and 6 go into the MAC address, leaving us with 21 bytes of payload.
+    This payload, however, must have structure. Assuming minimum required headers,
+    we can get away with sending 19 bytes of data if we do not want our device to
+    broadcast a name. If we do want a name, we have 17 bytes to split between the
+    name (in UTF-8) and our data. And if we want to comply with the spec better and
+    broadcast device attributes, we''ll have 14 bytes to split between name and data
+    or 16 bytes of pure data - not too bad.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Let''s sort out the details** then... first of all, BTLE and nRF24 send data
+    bits in the air in opposite order, so we''ll have to reverse all our bits. Second,
+    BTLE uses data whitening, and nRF24 does not, so we''ll need to do that by hand
+    too. Lastly, there is the previously-mentioned 24-bit CRC. All LE broadcasts get
+    sent to the same "address": 0x8E89BED6, also known as "bed six." Of course, for
+    us it''ll be bit-reversed. BTLE applies CRC to the whole payload but not the address.
+    Whitening is applied to the payload and the CRC. Knowing this, thus, gives us
+    the ordering of events needed to assemble a complete working packet. Advertisement
+    packets are sent on 3 channels: 37, 38, and 39, which are 2.402HGz, 2.426GHz,
+    and 2.480GHz respectively. We''ll alternate between them, spewing our broadcast
+    everywhere methodically.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**BTLE CRC** is not too hard to implement in C, uses the initial value of 0x555555,
+    and looks something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The data whitening function** is also not too complicated. It is a 7-bit
+    linear-shift feedback style and is initialized by the value that is equal to (channelNum
+    << 1) + 1\. The code goes something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The advertisement packet payload** looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**So if we lump all this together,** we''ll end up with a packet with the above
+    header. We then CRC it using the above CRC function. We then whiten it using the
+    above whitening function. After this we send it. Let''s see... yup, it works.
+    An iPad3 running BTLExplorer shows that our device is visible and is a BTLE device.
+    Cool! One caveat: if you do not broadcast a device name, BTLExplorer will crash
+    - this is their bug, so do not worry.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What is the payload data format?** you may ask. Well, data is made of chunks,
+    each of which has a 2-byte header: length and type (in that order, length includes
+    the length of the type byte). Types you care about are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**2:** Flags - length will be 2 and the lone byte''s value you want is 5 -
+    this means a single-mode (not BTLE/BT combo) device in limited discovery mode.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**8 or 9:** Name - length is the length of the name in UTF-8 without NULL-termination.
+    8 is for "shortened name" and 9 is for "complete name."'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**255:** Custom data. This is where you can shove your custom data. On iPhone
+    you''ll have complete access to this.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Why all this?** Well, if you know a simpler way for an embedded project to
+    communicate data to an iPhone, let me know. WiFi is power hungry and messy. Real
+    bluetooth is locked down in iPhone, as are serial ports. This method works. If
+    and when Android gets a BTLE API, I am sure broadcast data will be available to
+    you too - it just makes sense.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Future work:** I just got some non-nordic 2.4GHz parts that support packets
+    up to 64 bytes and can keep their PPLs on, meaning that a full BTLE stack may
+    be possible on them. I am working on this as you read this.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All the code as well as the research that went into this and is published here
+    is under this license: you may use it in any way you please if and only if it
+    is for non-commercial purposes, you must provide a link to this page as well.
+    Any commercial use must be discussed with me.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Full sample code**, that will run on the nordic-fob from Sparkfun looks **approximately**
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE

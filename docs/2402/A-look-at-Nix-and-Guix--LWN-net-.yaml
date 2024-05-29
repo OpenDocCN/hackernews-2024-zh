@@ -1,0 +1,262 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:27:53'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A look at Nix and Guix [LWN.net]
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/](https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
+    made this article — and everything that surrounds it — possible. If you appreciate
+    our content, please [buy a subscription](/subscribe/) and make the next set of
+    articles possible. |'
+  prefs: []
+  type: TYPE_TB
+- en: By **Daroc Alden**
+  prefs: []
+  type: TYPE_NORMAL
+- en: February 27, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Nix](https://nixos.org/) and [Guix](https://guix.gnu.org/) are a pair of unusual
+    package managers based on the idea of declarative configurations. Their associated
+    Linux distributions — NixOS and the Guix System — take the idea further by allowing
+    users to define a single centralized configuration describing the state of the
+    entire system. Both have been [previously](/Articles/712318) [mentioned](/Articles/891752)
+    on LWN, but not covered extensively. They offer different takes on the central
+    idea of treating packages like immutable values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a normal Linux distribution, the set of packages, services, and configuration
+    files installed on a system is built up over time using tools that do not inherently
+    require knowledge of programming. This approach can be convenient, making it possible
+    to simply install a missing package and then have access to it going forward.
+    The downside of this approach is how difficult it makes reconstructing a new system
+    with the same set of tools, services, and tweaks when it comes time to migrate
+    to a new host. The majority of Linux distributions lack any kind of centralized
+    record of why each package was installed or each configuration option was changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'NixOS and Guix offer an alternative: specify your setup with a programmable
+    configuration file, and then let the package manager arrange for the software
+    available on the system to reflect that. These configurations can include comments,
+    version control, and the ability to factor out common parts for different machines,
+    making it much easier to keep track of why something was configured or installed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key idea
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Nix is a "<q>purely functional package manager</q>". Unlike other package managers,
+    Nix uses a general programming language of the same name for configuration, albeit
+    one optimized for the task of describing packages. The Nix language takes inspiration
+    from the [ML family](https://en.wikipedia.org/wiki/ML_(programming_language))
+    of languages, [Haskell](https://www.haskell.org/) in particular. Like Haskell,
+    Nix programs work with and produce immutable values through composing functions
+    (the "functional" part) that don't have side-effects (the "pure" part). Evaluating
+    a Nix program produces a set of build actions for the runtime of the package manager
+    to take, but does not itself build or install anything. Nix is also lazy, calculating
+    only the information about the produced values that actually ends up being required.
+    This lets Nix programs skip performing computations for optional dependencies
+    that don't end up being used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each Nix program describes a "derivation" — "<q>a specification for running
+    an executable on precisely defined input files to repeatably produce output files
+    at uniquely determined file system paths.</q>" Derivations describe a specific
+    build task to perform, including all of the necessary inputs to the build task
+    in the form of required dependencies, build tools, source code, etc. Nix doesn't
+    permit implicit dependencies between build tasks, requiring all prerequisites
+    to be specified explicitly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The benefit of using this model is that the full state of the system is specified
+    in the same place, using the same language. The configuration not only includes
+    the installed packages, but also the configuration files destined for `/etc`,
+    the systemd service files, the filesystem mounts, users, kernel configuration
+    options, drivers, etc. For example, here is a configuration module for running
+    [nginx](https://nginx.org/en/), which builds nginx, sets up its configuration
+    files, sets up a systemd service for nginx itself, and creates systemd timers
+    for renewing HTTPS certificates with LetsEncrypt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code that actually implements these options is [defined](https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/services/web-servers/nginx/default.nix)
+    in [nixpkgs](https://github.com/NixOS/nixpkgs), NixOS's package repository, in
+    the same language as the rest of the configuration. Becoming truly proficient
+    in Nix can take some time, but most configurations are relatively straightforward,
+    and the [NixOS manual](https://nixos.org/manual/nixos/stable/) provides examples
+    of common setups. The [options search](https://search.nixos.org/options) or `nix search`
+    command-line tool also let users search for configuration options and available
+    packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Derivations are [nearly all reproducible](https://reproducible.nixos.org/),
+    with the same inputs generating the same outputs. Some packages still include
+    randomness or information about the timing of the build, which foil reproducibility.
+    Work is ongoing to patch these packages to reach the project's goal of fully reproducible
+    builds. Combined with the fact that derivations record all of the inputs to the
+    build process, this reproducibility allows the result of derivations to be cached.
+    Nix keeps the cache of previously evaluated derivations under `/nix/store/`, indexed
+    by the hash of the derivation's inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nixpkgs contains definitions for more than 80,000 packages. These packages are
+    built, cached, and shared by [Hydra](https://hydra.nixos.org/build/248007843/download/1/hydra/),
+    NixOS's build farm. So, despite the fact that a NixOS configuration describes
+    how to obtain and build all of the selected software from scratch, if a user depends
+    on the package definitions in nixpkgs, they are likely to be able to download
+    a cached output for the derivation from Hydra. NixOS refers to itself as a mixed
+    source/binary distribution because of this — users can build software from scratch
+    (including [tuning the build flags](https://nixos.wiki/wiki/Build_flags) for their
+    system, as can be done by Gentoo users), but most users just download binary versions
+    of most of their packages, and know that they're getting the same result as having
+    built from scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiple versions
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Another benefit of arranging for the system to be built in this way is the ability
+    to depend on multiple versions of the same package. Because each derivation references
+    its build inputs explicitly, there is no requirement that a single global version
+    of a compiler or shared library exist that satisfies every dependent package's
+    needs simultaneously. This makes it easier to keep older software with specific
+    needs running, decreases the burden of updating every package in the ecosystem
+    at once when there's a major update to a common dependency, and means that maintainers
+    don't need to solve version conflicts. It is a bit of a double-edged sword, however,
+    because it does mean that it is easy to depend on several versions of a package
+    without meaning to, which can bloat the size of a NixOS installation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Being able to keep multiple versions of packages actually extends to being able
+    to keep multiple versions of the system's entire configuration. When re-building
+    a system using Nix, the derivation of the previous configuration remains available,
+    and can be switched to using the bootloader. Users can therefore upgrade fearlessly,
+    because any problems introduced by trying a new configuration can be resolved
+    by rebooting. By the same token, software that is only needed for a short time,
+    such as to try out a new program or grab a seldom-used command-line tool, can
+    be installed into a temporary environment without interfering with the overall
+    system configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is difficult to overstate how useful this ability is in practice. It is often
+    possible to put a Linux system into an unworkable state by doing something unusual.
+    While a lot can be learned from troubleshooting these issues, it is inconvenient
+    when what is needed is a functional system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Referring to dependencies directly, the way NixOS does, causes problems with
+    software not packaged for use on the distribution. Unlike a typical distribution,
+    NixOS only uses `/usr/bin` for [`env`](https://man7.org/linux/man-pages/man1/env.1.html),
+    to permit running shell scripts that start with `#!/usr/bin/env`. Shell scripts
+    or other programs that assume that system binaries will be available in `/usr/bin`
+    or other [standard locations](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
+    usually need to be adapted to run on NixOS. There are some [tools](https://nixos.org/manual/nixpkgs/stable/#sec-fhs-environments)
+    available to make a chroot environment that puts binaries in the expected places,
+    however, so this is usually not much of a hassle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Guix
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The Nix approach to package management has its benefits, but the Nix language
+    also has its quirks. Learning to use a new programming language on top of a new
+    package-management philosophy may seem like a tall order. The Guix project is
+    working to create a distribution that uses Nix-style package management, but using
+    a more widely used, general, and consistent programming language: Scheme. Guix
+    is a GNU project, and so it only packages free software (in contrast to Nix, which
+    packages non-free software behind a configuration option). It also has many fewer
+    contributors than Nix, and is somewhat younger as a project — Guix received its
+    first commit in 2012, whereas Nix dates to 2003 — so the number of packages available
+    in Guix is somewhat lower.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Despite this, Guix has made several interesting advances of its own, including
+    fully [bootstrappable builds](/Articles/841797/). Guix is now capable of building
+    itself almost entirely [from source](https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/)
+    on x86_64, a major milestone for the project. Ekaitz Zárraga gave a talk at FOSDEM
+    2024 about [extending that support to RISC-V](https://fosdem.org/2024/schedule/event/fosdem-2024-1755-risc-v-bootstrapping-in-guix-and-live-bootstrap/).
+    Guix also has some features that NixOS lacks, such as the ability to "[graft](https://guix.gnu.org/manual/en/html_node/Security-Updates.html)"
+    security updates onto a package. This lets a more up-to-date version of a runtime
+    dependency of a package be substituted in (presumably to fix some security problem)
+    without recompiling the dependent package. This permits rolling out security updates
+    to fundamental libraries without waiting for the build farm to rebuild all of
+    Guix's packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A section of a Guix configuration comparable to the Nix configuration given
+    above would look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This configuration has a few differences. For one thing, Guix uses [GNU Shepherd](https://www.gnu.org/software/shepherd/)
+    as an init system, instead of systemd. For another, the code shown here is not
+    a standalone file that is imported by the main configuration file. Instead, the
+    user would need to import this file and then add `%my-nginx-service` and `%my-certbot-service`
+    to the services list for their system configuration by hand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Experimenting
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Nix and Guix (the package managers) both work on other distributions. Some distributions,
+    such as Ubuntu and Debian, provide packages for them. For users of other distributions,
+    Nix provides [installation instructions](https://nixos.org/download) and [uninstallation
+    instructions](https://nixos.org/manual/nix/stable/installation/uninstall). Guix
+    only provides [installation instructions](https://guix.gnu.org/manual/en/html_node/Installation.html),
+    but maintainer Tobias Geerinckx-Rice [helpfully notes](https://mail.gnu.org/archive/html/help-guix/2021-01/msg00107.html)
+    that one can read the installer script to see what ought to be removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In either case, using the package managers on another distribution can be useful
+    for creating temporary environments, even if they cannot provide whole-system
+    configuration. Individual programming languages often provide a solution for temporary
+    development environments (for example, Python's [virtual environments](https://docs.python.org/3/library/venv.html)).
+    Many projects are now shipping a `shell.nix` file as a language-agnostic alternative,
+    which can install dependencies not packaged by the language's package manager.
+    Somewhat fewer ship a `guix.scm` file serving the same purpose, but several GNU
+    projects do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: NixOS and Guix offer a compelling alternatives to traditional distributions
+    by rethinking how package management can be done. Their design permits incredible
+    flexibility, simplifying package management for distribution maintainers and giving
+    users additional control over how their computers are configured, without sacrificing
+    binary packaging. Despite this, it seems unlikely that either will replace traditional
+    package managers, especially when other distributions are receiving some of the
+    same benefits of reproducibility using [other techniques](/Articles/954059).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Log in](https://lwn.net/Login/?target=/Articles/962788/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to post comments)
+  prefs: []
+  type: TYPE_NORMAL

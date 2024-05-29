@@ -1,0 +1,288 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:56:07'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a USB SNES Controller
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.chybby.com/posts/building-a-usb-snes-controller](https://blog.chybby.com/posts/building-a-usb-snes-controller)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '`#include  <HID-Project.h>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  CLOCK_PIN 14'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  LATCH_PIN 15'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  DATA_PIN 16'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_B 0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_Y 1'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_SELECT 2'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_START 3'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_UP 4'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_DOWN 5'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_LEFT 6'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_RIGHT 7'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_A 8'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_X 9'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_L 10'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_R 11'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_UNDEF_1 12'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_UNDEF_2 13'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_UNDEF_3 14'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#define  SNES_BUTTON_UNDEF_4 15'
+  prefs: []
+  type: TYPE_NORMAL
+- en: const  uint8_t num_buttons =  16;
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Map SNES buttons to HID joypad buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: const  uint8_t snes_id_to_hid_id[] = { 2, 4, 7, 8, 0, 0, 0, 0, 1, 3, 5, 6, 10,
+    11, 12, 13 };
+  prefs: []
+  type: TYPE_NORMAL
+- en: void  setup() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.begin();
+  prefs: []
+  type: TYPE_NORMAL
+- en: pinMode(CLOCK_PIN, OUTPUT);
+  prefs: []
+  type: TYPE_NORMAL
+- en: pinMode(LATCH_PIN, OUTPUT);
+  prefs: []
+  type: TYPE_NORMAL
+- en: pinMode(DATA_PIN, INPUT);
+  prefs: []
+  type: TYPE_NORMAL
+- en: digitalWrite(CLOCK_PIN, HIGH);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Report button states over HID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: void  reportButtons(bool  button_states[num_buttons]) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: // D-Pad.
+  prefs: []
+  type: TYPE_NORMAL
+- en: int8_t dpad_status = GAMEPAD_DPAD_CENTERED;
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (button_states[SNES_BUTTON_UP]) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_UP;
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (button_states[SNES_BUTTON_LEFT]) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_UP_LEFT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else  if (button_states[SNES_BUTTON_RIGHT]) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_UP_RIGHT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else  if (button_states[SNES_BUTTON_DOWN]) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_DOWN;
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (button_states[SNES_BUTTON_LEFT]) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_DOWN_LEFT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else  if (button_states[SNES_BUTTON_RIGHT]) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_DOWN_RIGHT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else  if (button_states[SNES_BUTTON_LEFT]) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_LEFT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else  if (button_states[SNES_BUTTON_RIGHT]) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: dpad_status = GAMEPAD_DPAD_RIGHT;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.dPad1(dpad_status);
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.dPad2(dpad_status);
+  prefs: []
+  type: TYPE_NORMAL
+- en: for (uint8_t snes_id =  0; snes_id < num_buttons; snes_id++) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (snes_id >=  4  && snes_id <=  7) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: // D-Pad.
+  prefs: []
+  type: TYPE_NORMAL
+- en: continue;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (button_states[snes_id]) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.press(snes_id_to_hid_id[snes_id]);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.release(snes_id_to_hid_id[snes_id]);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: void  loop() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Collect button state info from controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Send data latch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: digitalWrite(LATCH_PIN, HIGH);
+  prefs: []
+  type: TYPE_NORMAL
+- en: delayMicroseconds(12);
+  prefs: []
+  type: TYPE_NORMAL
+- en: digitalWrite(LATCH_PIN, LOW);
+  prefs: []
+  type: TYPE_NORMAL
+- en: delayMicroseconds(6);
+  prefs: []
+  type: TYPE_NORMAL
+- en: bool button_states[num_buttons];
+  prefs: []
+  type: TYPE_NORMAL
+- en: for (uint8_t id =  0; id < num_buttons; id++) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Sample the button state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: int button_pressed =  digitalRead(DATA_PIN) == LOW;
+  prefs: []
+  type: TYPE_NORMAL
+- en: button_states[id] = button_pressed;
+  prefs: []
+  type: TYPE_NORMAL
+- en: digitalWrite(CLOCK_PIN, LOW);
+  prefs: []
+  type: TYPE_NORMAL
+- en: delayMicroseconds(6);
+  prefs: []
+  type: TYPE_NORMAL
+- en: digitalWrite(CLOCK_PIN, HIGH);
+  prefs: []
+  type: TYPE_NORMAL
+- en: delayMicroseconds(6);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: // Update HID button states.
+  prefs: []
+  type: TYPE_NORMAL
+- en: reportButtons(button_states);
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gamepad.write();
+  prefs: []
+  type: TYPE_NORMAL
+- en: delay(16);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}`'
+  prefs: []
+  type: TYPE_NORMAL

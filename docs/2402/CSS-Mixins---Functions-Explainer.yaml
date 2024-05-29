@@ -1,0 +1,1211 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:49:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS Mixins & Functions Explainer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://css.oddbird.net/sasslike/mixins-functions/](https://css.oddbird.net/sasslike/mixins-functions/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main><details data-alert="note" open=""><summary>Note:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Author
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Miriam Suzanne
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Based heavily on a custom-function proposal by Tab Atkins)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intro
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to reduce code repetition, ensure consistency across a project, and
+    encourage best practice, authors have often turned to third-party CSS pre-processors
+    (Sass, Less, PostCSS, Stylus, etc) to define custom reusable ‘macros’. These generally
+    fall into two categories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Functions** return CSS *values* – like a string, color, or length. They can
+    only be used *inside* the value space of a CSS property.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Mixins** return CSS *declarations* or entire *rule blocks*. They can only
+    be used *outside* the value space of a CSS property.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'CSS already provides a wide range of built-in functions, such as `calc()`,
+    `minmax()`, and many more. Ideally, custom functions would work in a similar way,
+    but prefixed with a dashed-ident to avoid future compatibility issues. For a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'CSS does not yet have built-in mixins, though several have been proposed in
+    discussions of this feature. A simple mixin might look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Discussion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are several other relevant discussions in the CSS Working Group, that
+    predate this proposal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (If there are more I haven’t found, please [let me know](https://github.com/oddbird/css-sandbox/issues).)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary & Goals
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Features often change as they move from (generally imperative) pre-processors
+    into CSS – taking on different affordances and constraints appropriate for a declarative,
+    client-side language:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How would CSS-native mixins and functions differ from pre-processors?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What extra functionality or limitations come from providing these features in
+    the browser?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From a language/implementation perspective mixins and functions are entirely
+    distinct features – they live at different levels of the syntax, and come with
+    different complications. If we pursue both, we likely want to define them at different
+    levels of a specification, or even in different specifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Removing the reliance on pre-processors would further simplify maintenance
+    for CSS authors, while providing new client-side functionality:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing cascaded custom-properties as arguments.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding media/support and other client-side conditions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: My goal here is to explore what would be possible with each feature, where we
+    could re-use syntax between them, and how we might move forward with implementing them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I am not expecting this to be the final shape for either feature, but I want
+    to capture the state of the conversation, and help move it forward. If these features
+    are officially adopted by the working group, further development can be broken
+    into individual specs and issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Author Interest
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There is some (incomplete) data from the HTTP Archive project that can help
+    us understand how authors are using Sass currently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I also ran a small [survey on Mastodon](https://front-end.social/@mia/110833306689188274):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: “What are the most common custom functions or mixins that you define/use in
+    a css pre-processor?”
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The answers included:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Functions) Conversion from pixel to `rem` units
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Functions) random number generators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Functions) Color contrast
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Mixins) Named shorthands for common media queries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Mixins) Generating output from object for-each loops (like Sass Maps)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Mixins) Reusable component styles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Mixins) Complex solutions, like scroll-shadows or gradient text
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Both) Fluid typography settings
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Both) Complex `calc()` shorthands for various situations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some of these would be possible to achieve in CSS with a declarative syntax,
+    without additional new functionality. Others (like loops) would require imperative
+    control structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While some of these (like `random()`) are already being discussed for built-in
+    functions, others (like `color-contrast()`) may be simpler to solve in user-space.
+    It has been very difficult for the CSSWG to settle on a long-term solution for
+    the entire platform, while an individual team would be more able to change their
+    approach gradually over time. By capturing that logic in a single place (like
+    a custom function), many changes could be made without any invasive re-write of
+    the code base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The ability to declare this logic in CSS rather than a pre-processor would
+    provide several benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Reduce the external dependencies* and build steps required in order to generate
+    the code'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Reduce the file size delivered* from the server (though this may be negligible
+    after compression & increased client-side processing)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*use custom properties as arguments* so that the mixins or functions could
+    respond to changes in the cascade'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*use media/container/support conditions* as part of the internal logic'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Defining parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Both functions and mixins rely on a `<parameter-list>` syntax. Each `<parameter>`
+    in the `<parameter-list>` consists of three parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`<name>` (required) which is a `dashed-ident`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<syntax>` (default: `*`) similar to the `syntax` descriptor in `@property`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<default-value>` (default: `guaranteed invalid`) which is any value that matches
+    the syntax'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Defining all three aspects in the function prelude (name, type, and default)
+    can make the syntax over-complicated. My initial proposal included special `@property`-like
+    descriptor blocks to make that possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since then, the discussion has moved towards a more concise approach using a
+    comma-separated list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Authors can provide names only:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Optionally, they can also provide a default value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: <details data-alert="note" open=""><summary>Note:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, authors could define a syntax for any parameter, using the `type()`
+    function along side the name. This would work with or without default values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Defining a function: the `@function` rule'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to define a custom function, we need several bits of information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`function-name` (required)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`parameter-list` (optional - see above)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some amount of internal logic using `function-rules`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A returned `result` value
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The proposed syntax (with a few adjustments) could look something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `function-name` is a dashed-ident. If multiple functions have the same name,
+    then functions in a higher cascade layer take priority, and functions defined
+    later have priority within a given cascade layer. This matches the behavior of
+    other name-defining at-rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It may also be useful to define an intended ‘return type’ (e.g. `color` or `length`)
+    for the function, so that it can be validated at parse time. Like custom properties,
+    there is still a chance that a function’s output will be *invalid at computed
+    value time*, but we can at least ensure that the function is intended to return
+    an appropriate syntax for the context where it is being called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Extending the above syntax, I would imagine re-using the `type()` function
+    in the prelude:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: I would expect `<syntax>` to allows the same [subset of CSS Types](https://developer.mozilla.org/en-US/docs/Web/CSS/@property/syntax#values)
+    provided by the `syntax` descriptor of the `@property` rule. Maybe it would be
+    possible to remove the requirement for quotes around a syntax in this context?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Returning values
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There have been several syntax options discusses for returning a `<result>`
+    value, but it seems to me like the simplest and most familiar would be a descriptor
+    called something like `result` or `output`. This would help re-enforce the declarative
+    nature of functions, since it can be treated similar to other declarations: the
+    last `result` is used if multiple are present.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like custom properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<result>` can contain any valid CSS value-space syntax
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This value has `invalid at computed value time` behavior
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since functions exist in the value space, `<function-rules>` will not contain
+    any other (non-custom) CSS properties, so the single `result` descriptor should
+    stand out. If multiple results are encountered, the last result takes precedence
+    (consistent with other descriptors and properties). This is discussed in more
+    detail below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details data-alert="note" open=""><summary>Note:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function rules
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `<function-rules>` can include custom property declarations (which are scoped
+    to the function), as well as conditional at-rules (which may contain further nested
+    custom properties and `result`s). Element-specific conditions (such as container
+    queries) would be resolved for each element that calls the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My assumption would be that custom properties defined inside the function are
+    not available on elements where the function is called. However, it’s clear that
+    authors will expect to reference external custom properties from inside functions
+    – using some variation of dynamic scope, and ‘shadowing’ behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As far as I can tell, only custom properties, args/variables, and conditional
+    rules are useful inside a function definition. Functions have no output besides
+    their returned value, so nested selectors, built-in properties, and name-defining
+    rules are not necessary or meaningful. I don’t think there’s any need for these
+    things to invalidate the entire function, but they should be ignored and discarded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example function using conditional rules to return one of multiple values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some functions will also want access to contextual variables on the calling
+    elements. To avoid fully dynamic scoping of custom properties, Tab has proposed
+    a second list of properties that should be available in the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: <details data-alert="note" open=""><summary>Note:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calling functions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Custom functions can be called from the value space of any property, with the
+    name of the functions, followed by parenthesis and a comma-separated list of arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we do (eventually) want to support named arguments, it would ideally use
+    a familiar declaration syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If positional and named arguments are allowed in the same function call, the
+    common convention is to require all positional values come before any named values
+    to avoid confusion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to allow a broad syntax for argument values – including values that
+    contain commas. There’s an active discussion about the best way to handle this
+    more generally in [issue #9539](https://github.com/w3c/csswg-drafts/issues/9539).
+    Custom functions should use whatever solution is agreed on there.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting it all together
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Adapting the fluid ratio function above to the proposed syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We could also consider moving the `mix()` logic into the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Defining a mixin: the `@mixin` rule'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Rather than returning a single value, mixins return entire declarations and
+    potentially entire nested rule blocks. While much of the function syntax could
+    be re-purposed, we would need an additional way to manage property scoping – clearly
+    marking what rule blocks are internal, and which should be part of the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, when there are multiple mixins that use the same name, the last mixin
+    with that name takes precedence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mixin rules and output
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The simplest approach to nested rules and output would be to treat the inside
+    of a mixin definition the same as any rule-block nested context. Anything we can
+    put inside a rule block can be put inside a mixin, and will be output where the
+    mixin is called (with any parameters being replaced first). This will work for
+    many simpler cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This approach doesn’t allow the mixin to contain any internal logic scoped to
+    the mixin itself. Mixins should be able to use internally scoped custom-properties,
+    and also optionally *output* custom properties as part of the returned rule block.
+    As things stand, this doesn’t seem relevant to anything other than custom properties.
+    Built-in properties, selectors, and at-rules are only useful for their output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given that this issue is specific to custom properties, we could consider a
+    flag such as `!private`. That flag could be interesting for custom properties
+    in other contexts, but I won’t follow that path unless there’s interest. Alternatively,
+    we could explicitly mark blocks of content with either `@output` or `@private`
+    at-rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Applying mixins: the (new) `@apply` rule'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to apply a mixin, we use an `@apply` rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `<argument-list>` syntax should ideally match the function argument notation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the mixin is resolved, the output of the mixin is inserted where the apply
+    rule was called:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There is an additional question about how to handle mixin output at the top
+    level of the document (not nested inside a selector):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: As long as there is a selector wrapping the output, this should not be an issue.
+    Even if that selector is simply the parent reference `&`, that has a well-defined
+    behavior at the top level of documents – referring to the current `:scope`. However,
+    if the result is bare declarations without any selector, they should be discarded
+    and ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another example, from a Sass mixin I’ve used on occasion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Layers of complexity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The popular Sass functions and mixins demonstrate a range of different input
+    needs, from relatively static shorthands, to fully imperative control structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simple shorthands
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A `clearfix` mixin often has no exposed ‘parameters’, and no internal logic.
+    When the mixin is invoked, it will output the same code every time. This is useful
+    for maintaining DRY code (Don’t Repeat Yourself),
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Static mixins like this end up very similar to ‘utility classes’ such as `.clearfix`.
+    However, mixins still have the advantage that they can be applied in CSS, rather
+    than HTML. The need for CSS control comes into focus when combined with `@media`/`@container`
+    and other conditional logic. There is currently no way in CSS to write this code
+    without defining all the custom properties twice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Most of the existing proposals around this use-case would combine conditional
+    logic with selector logic, so that both can be defined at once. In Sass, we might
+    fix this instead by providing a `dark-mode` mixin that can be used multiple times
+    to output the same declarations with only minimal repetition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using Container Style Queries might also be an option here. They can be somewhat
+    *mixin-like*, but come with all the limitations of container queries. If we set
+    a custom property `--mode` on the root `html` element, we have to assign properties
+    on a different element than we query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That can cause several problems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are optimizations and features specific to the root, that can’t be replicated
+    on other elements.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In other component contexts, it’s likely to require extra markup.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: While no-parameter mixins like these are somewhat common, it’s much less common
+    to have a function without parameters, since a simple value can be captured in
+    a variable or custom property instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Built-in conditions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'It can also be useful to provide mixins that have no author-facing parameters,
+    but still contain internal logic and conditional statements – using `@supports`,
+    `@media`, or `@container`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A mixin like this might even reference external values by relying on custom
+    properties without accepting explicit override parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Accepting parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The most common reason to use a function or mixin is the ability to define
+    parameters that alter the output based on different input. For example, a `darken()`
+    function would accept two parameters: a color, and an amount to darken that color.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In many cases (like `darken()`) the internal function logic can be represented
+    by an inline calculation using existing CSS features. In those situations, a custom
+    function could still provide more concise and easy-to-use shorthand around a more
+    complex `calc()` or relative color adjustment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameter conditions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Once we allow both parameters and conditional logic, the next step would be
+    to allow parameters to be used in the conditions themselves. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Imperative control flow
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Some use-cases require more complex ‘flow control’ such as loops. For example,
+    a combination of mixins might generate a full color-palette based on a single
+    origin color. In Sass, it might looks something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting output CSS would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: I think it would be reasonable to draw a boundary here, since CSS is a declarative
+    language. Adding imperative flows would likely cause confusion around the execution model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detailed discussion and open questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Other result syntaxes for functions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Both Lea and I have noted that it would be useful if authors could rely on cascade
+    ‘order of appearance’ to provide ‘fallback’ return values. Sadly, however, that
+    sort of parse-time fallback is not possible with dynamic computed-value-time features
+    like custom properties or functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I initially proposed an at-rule syntax (`@return`), arguing that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It helps distinguish the final returned value from any internal logic like custom
+    properties and nested rules
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Result is not a property, but looks a lot like one
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: However, `result` does act like a property in many ways, and would help to re-enforce
+    our familiarity with declarative execution. While many imperative languages allow
+    an ‘eager’ *first-takes-precedence* function return, CSS and other declarative
+    languages generally uses a *last-takes-precedence* approach. For the same reason,
+    we should avoid active words like `return` that suggest the evaluation is linear
+    and can be cut short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: François Remy has proposed setting a custom property with the same name as the
+    function, and that property is treated as the resulting value. Lea Verou suggested
+    making the property name customizable in the prelude.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I prefer a syntax that is more consistent and reliable. I don’t see any utility
+    that comes from allowing this functionality to be renamed in each function, or
+    requiring that name to be determined by authors, or putting it in the author’s
+    custom-ident name space. Those all seem to me like ways of inviting typos and
+    confusion, without any clear gain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Matching the function name seems to me extra fragile – as you could never rename
+    one without also updating the other. Still, either approach could work, and provide
+    the same basic behavior. We can continue to bike-shed the details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing nested content to mixins
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Another common feature of Sass mixins is the ability to pass nested content
+    blocks into a mixin, and have the mixin place that content in a specific context.
+    This seems like a feature that could be supported in CSS as well, but would require
+    another mixin-specific at-rule (or similar placeholder). I’ll call it `@nested`
+    for now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The expected behavior would be the same as writing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: This seems like something that could be added later, if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Invalid function fallbacks
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sadly, last-takes-precedence `@return` behavior doesn’t provide the same benefit
+    here that it has in the cascade – where invalid declarations can be discarded
+    at parse time, falling back on previously declared values. In order to achieve
+    that, we would need to limit functions so that they are the only value in a property.
+    I don’t think that tradeoff makes sense for the use-cases I’ve seen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m also not sure it makes sense to provide function-defined fallback values
+    to return when arguments provided have invalid syntax. Ideally, function fallbacks
+    would be modeled after variable fallbacks – established where the function is
+    called, rather than where it is defined. It’s hard to see where this would fit
+    in the proposed syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One option would be a `var()`-like wrapper function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could even use the existing `var()`, but that would result in functions and
+    custom properties sharing a single namespace, which might not be ideal. Maybe
+    the proposed function for `first-supported()` would also be an option that has
+    broader use? This likely needs more bike-shedding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using parameters in conditional rules
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Above, I used an example with conditional output using media queries inside
+    the function. Authors may reasonably wish to take this farther and use parameters
+    to define the media queries themselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a very common use of pre-processor mixins, and a common use-case for
+    the proposed inline `if()` and `media()` functions as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As I understand it, that will not be possible as written above, for the same
+    reasons `var()` is not currently allowed in media-query conditions. However, the
+    issues are specific to cascaded values that need to be resolved at computed value
+    time. Passing static arguments from a parameter should not pose the same problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we had a new way of accessing values passed in – I’ll use `arg()` for the
+    sake of argument – simple value substitution should be possible:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above example, the `padding` declaration would be valid since a static
+    value can be passed along to the media query `arg()` – but the `margin` declaration
+    would fail since it supplies a custom property to a media query condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s not clear to me if parameters used this way would need to be explicitly
+    marked in advance for any reason? As proposed here, it would be up to function
+    authors to document and communicate which parameters can accept cascading variables,
+    and which can not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Argument conditions and loops
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'With both mixins and functions it can be useful to have conditions based on
+    the arguments passed in. For example, we might want to pass in one of several
+    established keywords, and return a different value depending which keyword is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s not clear to me if the proposed `@when`/`@else` features can be adapted
+    to this use-case, or if it would need to be a distinct set of similar flow controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, as we saw in the tint-shade example earlier, it can be useful to
+    loop over a set number of repetitions (for loop) or a set list of items (each loop).
+  prefs: []
+  type: TYPE_NORMAL
+- en: While these would be helpful features for authors, they are not required for
+    (or dependent on) an initial implementation of mixins or functions. They feel
+    like distinct features that would go well together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can we allow the `<calc-sum>` syntax?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This question was raised by [Brandon McConnell](https://github.com/w3c/csswg-drafts/issues/7490#issuecomment-1256880496)
+    in the ‘Declarative Custom Functions’ issue (see point 5, even though it’s not
+    specific to recursion). The goal is to provide custom functions that take raw
+    calc expressions, without being explicitly wrapped in a nested `calc()` function,
+    similar to the way other math functions work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the one hand, custom property substitution makes it trivial to capture expressions,
+    and later call them inside a `calc()` function. This already works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: To take it farther, we would need to expose the `<calc-sum>` grammar as a valid
+    syntax for authors to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It might also be worth considering what other syntax/types would be useful to
+    expose – either for parameters specifically, or for property registration more
+    generally. It seems ideal to me if those lists can be kept in alignment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What about `@extend`?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In Sass, mixins without parameters also overlap with the `@extend` feature,
+    which is used to combine related classes – one as an ‘extension’ of the other.
+    In most cases, that has the same intended result as a no-parameter-mixin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: The difference is that a class definition can be compiled from multiple rule
+    blocks in different style sheets, while a mixin generally has one centralized
+    definition. This is part of the reason extensions have become less common in Sass
+    – it can be difficult to reason about their impact. For now, I think mixins would
+    provide the similar functionality without the same complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we are interested in exploring `@extend` at some point, Tab has already written
+    an [unofficial draft specification](http://tabatkins.github.io/specs/css-extend-rule/)
+    that we can build from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can functions be chained, or call themselves?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I would expect that it should be possible to chain function/mixin calls together.
+    A theme-generating mixin should be able to reference a single-color generating
+    mixin or function internally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s less clear to me if recursive function calls are possible or necessary.
+    There are likely use-cases for recursion as a form of looping, but I’m not sure
+    how central they are. This doesn’t seem like a feature requirement in level 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keyframe-based mixins for interpolated values?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There has been a lot of recent discussion around [interpolating values between
+    breakpoints](https://github.com/w3c/csswg-drafts/issues/6245#issuecomment-1715416464)
+    for e.g. responsive typography. Conceptually, animation keyframes work well for
+    defining the steps involved – but in this case the result is not technically animated,
+    and interpolated values should ideally not be removed to the animation origin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get around that, the most recent proposals involves a new property (tentatively
+    `interpolate`) that would accept a keyframes name and timeline, then ‘expand in
+    place’ to represent the declarations in the referenced `@keyframes` rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alan Stearns has pointed out in conversations that this is a very mixin-like
+    behavior, and suggested treating keyframes as an existing form of mixin, rather
+    than a new property. Given the same keyframes above, we could consider a syntax like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If that clutters the mixin namespace, another approach might be requiring dashed-ident
+    mixin names, and providing some built-in mixins such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Prior art
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `@apply` Rule (abandoned)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: <details data-alert="note" open=""><summary>Links:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At one point, there was a plan for custom properties to act as a form of mixin,
+    using the `@apply` rule. That proposal was abandoned as the wrong approach for
+    several related reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom properties are value-level syntax, while mixins are declaration-level
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It doesn’t make sense for mixin definitions to be passed around in the cascade
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These are not difficult issues to avoid. I’m working from the premise that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both function and mixins should be *defined* globally, and not rely on any element-aware
+    aspects of the cascade.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Similar to e.g. `@keyframes`, function and mixin definitions would still resolve
+    name conflicts using global cascade features like *layers* and *order of appearance*.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Functions are applied in the *value* space, while mixins are applied in the
+    *declaration* space.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Container Style Queries (partially implemented)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: <details data-alert="note" open=""><summary>Links:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `style()` feature of `@container` can sometimes be used to approximate
+    mixin behavior. There are several recent [posts](https://front-end.social/@chriscoyier/110821892737745155)
+    and [articles](https://chriskirknielsen.com/blog/future-themes-with-container-style-queries/)
+    written about that approach. However, style queries share the limitation of other
+    container queries: *we can’t style the container being queried*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Container queries are designed as a *conditional selector* mechanism, for responding
+    to changes in context. The ancestor/descendant limitation is required for browsers
+    to separate selector-matching from value-resolution on a given element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, *mixins do not alter selection*, they only ‘bundle’ existing CSS rules
+    and declarations for re-use. Ideally, these two features should work well together,
+    so that contextual conditions can change the arguments passed to a given mixin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom Properties (implemented)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: <details data-alert="note" open=""><summary>Links:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also use custom properties to approximate some basic mixins and functions.
+    While these tricks can be useful, they involve significant complexity, caveats,
+    and limitations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each ‘function/mixin’ and ‘argument’ is a custom property, which can only have
+    a single resolved value per element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Arguments are substituted in the function/mixin *before the computed value inherits*,
+    so the logic has to be defined on every element that should re-calculate a result
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mixins and functions in pre-processors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: <details data-alert="note" open=""><summary>Links:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to parameters, Sass mixins can accept *content blocks*. An example
+    [from the documentation](https://sass-lang.com/documentation/at-rules/mixin/#content-blocks):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: That might be a useful feature for CSS mixins as well. It would be required
+    for the use-case of creating named conditions. That use-case may also be solved
+    by the proposed `@when` rule and ‘custom media queries’ feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sass provides some built-in core functions, but (so far) does not provide core
+    mixins. Likely for that reason, the HTTP Archive report lists several commonly-used
+    built-in functions (`if()`, and `darken()`), but only the most commonly used custom
+    mixin name (`clearfix`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Existing Proposal for Custom Functions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In July of 2022, Johannes Odland proposed ‘[Declarative custom functions](https://github.com/w3c/csswg-drafts/issues/7490)’
+    in the CSS Working Group issue tracker. Since then, the proposal has gone through
+    several revisions and updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The current (2023-08-08) proposal in that thread suggests that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Functions would be resolved at the same time as variable substitution
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Function parameters defined with a CSSOM ‘syntax’ can be validated at parse
+    time (like `@property`-registered variables)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This would be a declarative version of the more full-featured Houdini API feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There are also several example use-cases, such as this function for fluid typography:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: <details data-alert="warn"><summary>Unit division in math functions:</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Or a function for generating checkerboard background-images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: For these use-case, custom functions could be a simple wrapper for inserting
+    parameters into existing functions like `calc()`. Tab Atkins has suggested a math-only
+    version of this would be simplest to implement. While that might be a useful first-step,
+    it quickly falls short of the use-cases I’ve seen. I would prefer to start with
+    a more fully-featured approach, and work backwards to an attainable level 1 implementation
+    if needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to some bike-shedding of the syntax, there are several more open
+    questions in the thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can authors provide a fallback output for invalid arguments?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Would it be helpful to include default parameter values in the function definition?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can function authors define internally-scoped custom properties?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can authors use conditional at-rules inside the function logic?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can functions expose a parameter that accepts bare calculations (without `calc()`
+    syntax) similar to `clamp()` etc?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can functions perform recursive function calls?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can functions be called with named (rather than positional) arguments?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I hope to expand on this proposal, and explore some of those questions along
+    the way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acknowledgments
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This proposal is based on an [existing discussion](https://github.com/w3c/csswg-drafts/issues/7490)
+    with input from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Johannes Odland
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: David Baron
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Brian Kardell
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tab Atkins-Bittner
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '@jimmyfrasche'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Brandon McConnell
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lea Verou
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I’ve also incorporated feedback along the way from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nicole Sullivan
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Anders Hartvoll Ruud
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rune Lillesveen
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alan Stearns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Yehonatan Daniv
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Emilio Cobos Álvarez
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: François Remy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Steinar H Gunderson
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Matt Giuca
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Todo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

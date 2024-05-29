@@ -1,0 +1,641 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:47:31'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Immediate Mode GUI Programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://eliasnaur.com/blog/immediate-mode-gui-programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Immediate Mode GUI Programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The initial focus of the [Gio](https://gioui.org) project was to create a simple
+    cross-platform Go library for creating user interfaces for mobile and the desktop,
+    avoiding the platform bound and often complex native toolkits. This is also the
+    apparent selling point of Gio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, as work progressed it became clear that the immediate mode programming
+    model is a key driver for longer term adoption of Gio. After all, there are plenty
+    of cross-platform GUI toolkits available, but very few attempt the direct and
+    stateless programming model of immediate mode libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This article is an introduction to immediate mode programming, comparing Gio’s
+    approach with popular retained mode toolkits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is immediate mode?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In traditional *retained mode* UI toolkits, the state of the user interface
+    is owned by the toolkit, and event handling, layout and animation is handled internally.
+    The application can only indirectly manipulate the UI state, and responding to
+    user input happen in callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following JavaScript program implements a button and a click event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: func main() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: go func() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: w := app.NewWindow()
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: loop(w)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}()'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: app.Main()
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: func loop(w *app.Window) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: th := material.NewTheme(gofont.Collection())
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var ops op.Ops
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: // UI state.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var btn widget.Clickable
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var count int
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for e := range w.Events() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if e, ok := e.(system.FrameEvent); ok {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: gtx := layout.NewContext(&ops, e)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for btn.Clicked() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: count++
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: layout.W.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'return layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'return material.H5(th, fmt.Sprintf("Number of clicks: %d", count)).Layout(gtx)'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return material.Button(th, &btn, "Click me!").Layout(gtx)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: )
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.Frame(gtx.Ops)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice the differences: the program is in control of the main event'
+  prefs: []
+  type: TYPE_NORMAL
+- en: loop, user input is handled as part of program flow, and the
+  prefs: []
+  type: TYPE_NORMAL
+- en: program state is both minimal and cleanly separated. The counter
+  prefs: []
+  type: TYPE_NORMAL
+- en: doesn’t respond to user input, and so is reduced to a (high-level)
+  prefs: []
+  type: TYPE_NORMAL
+- en: drawing command. The same applies to layout; both the aligning and
+  prefs: []
+  type: TYPE_NORMAL
+- en: listing of the two widgets are stateless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drawing
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a user interface is a form of I/O system, drawing is the output part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mixing custom drawing and animation with higher level widgets is where the
+  prefs: []
+  type: TYPE_NORMAL
+- en: retained model typically struggles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here’s [a program](/include/files/bounce/main.go) that displays a
+  prefs: []
+  type: TYPE_NORMAL
+- en: bouncing ball, controlled by a button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: var root = document.getElementById("bounce");
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'root.style = "display: flex; position: relative; height: 200px";'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var ball = document.createElement("div");
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'ball.style = "background-color: green; position: absolute; width: 40px; height:
+    40px; border-radius: 50%";'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ball.style.bottom = 0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: var btn = document.createElement("button");
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'btn.style = "margin: auto";'
+  prefs: []
+  type: TYPE_NORMAL
+- en: btn.innerText = "Throw ball";
+  prefs: []
+  type: TYPE_NORMAL
+- en: root.appendChild(btn);
+  prefs: []
+  type: TYPE_NORMAL
+- en: var ballVisible = false;
+  prefs: []
+  type: TYPE_NORMAL
+- en: var now;
+  prefs: []
+  type: TYPE_NORMAL
+- en: var animHandle;
+  prefs: []
+  type: TYPE_NORMAL
+- en: btn.addEventListener("click", function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: ballVisible = !ballVisible;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (ballVisible) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: root.appendChild(ball);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: now = performance.now();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: btn.innerText = "Hide ball";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: animate(now);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: cancelAnimationFrame(animHandle);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: btn.innerText = "Throw ball";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ball.remove();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function animate(time) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var v0 = 50.0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var g = -9.81;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var t = (time - now)/1000;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: t *= 10;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var t1 = -v0 / (.5 * g);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var t = t % t1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var y = v0*t + .5*g*t*t;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ball.style.bottom = y+"px";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: animHandle = window.requestAnimationFrame(animate);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Several redundant state variables appear in the program: the'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`innerText` property, the `ball` object, the callback handle'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`animHandle`. As a result, the click listener must reset the extra'
+  prefs: []
+  type: TYPE_NORMAL
+- en: state and remember to unregister the callback. A lingering callback
+  prefs: []
+  type: TYPE_NORMAL
+- en: may be invoked when the program is unprepared or leak memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Layout
+  prefs: []
+  type: TYPE_NORMAL
+- en: The examples so far demonstrate some advantages of immediate mode
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'layouts such as centering, aligning and listing interface elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: operations are stateless, and they’re specified and controlled with
+  prefs: []
+  type: TYPE_NORMAL
+- en: regular programming constructs such as functions, loops and
+  prefs: []
+  type: TYPE_NORMAL
+- en: conditions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, state for static layout is about as harmless as having extra
+  prefs: []
+  type: TYPE_NORMAL
+- en: program constants in your program; the advantages are clearer for
+  prefs: []
+  type: TYPE_NORMAL
+- en: dynamic layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This program implements a scrollable list of many rows, with a button
+  prefs: []
+  type: TYPE_NORMAL
+- en: to modify their content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: type state struct {
+  prefs: []
+  type: TYPE_NORMAL
+- en: btn    widget.Clickable
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: factor int
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: list   layout.List
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var programState state
+  prefs: []
+  type: TYPE_NORMAL
+- en: func (s *state) layout(gtx layout.Context, th *material.Theme) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: for s.btn.Clicked() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: s.factor *= 10
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: const numRows = 1e6 // A million rows.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return s.list.Layout(gtx, numRows, func(gtx layout.Context, i int) layout.Dimensions
+    {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'txt := fmt.Sprintf("Row #%d", i*s.factor)'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return material.Body1(th, txt).Layout(gtx)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return layout.S.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return material.Button(th, &s.btn, "Multiply by 10").Layout(gtx)
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: )
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: User input
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps the most useful effect of state minimization is the
+  prefs: []
+  type: TYPE_NORMAL
+- en: elimination of event callbacks. Callbacks are the retained mode answer
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'to the question: given an input event such as a mouse click, where and'
+  prefs: []
+  type: TYPE_NORMAL
+- en: how should it be delivered? In Gio’s approach filters and unique
+  prefs: []
+  type: TYPE_NORMAL
+- en: handler keys replace callbacks for convenient distribution of events
+  prefs: []
+  type: TYPE_NORMAL
+- en: among widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following [implementation](/include/files/checkbox/main.go) of a basic checkbox
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'demonstrates low-level input handling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE

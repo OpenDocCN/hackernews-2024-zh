@@ -1,0 +1,1090 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:44:49'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Exploring Podman: A More Secure Docker Alternative | Better Stack Community'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/](https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Containerization has become an essential tool for developers and system operators
+    to package and deploy applications on various systems and platforms efficiently.
+    Many containerization solutions exist today, but without a doubt, Docker has emerged
+    as the de facto standard. This is largely due to its excellent tooling, strong
+    community, and vast ecosystem of pre-built images that can be easily shared and
+    used across different environments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Docker has held this position for many years, and it has truly revolutionized
+    how applications are shipped. At the same time, its wide adoption inspired the
+    development of many other containerization solutions offering even more features
+    and capabilities. One such solution is [Podman](https://podman.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman is an open-source container engine that aims to provide a more secure
+    and lightweight alternative to Docker. It allows users to run containers without
+    requiring a daemon, making it easier to manage and deploy containers on a variety
+    of systems. Additionally, Podman offers better security defaults through features
+    such as rootless containers (i.e., running containers through non-root users),
+    user namespaces, and a more careful utilization of kernel capabilities, all of
+    which can protect the host system from potential vulnerabilities and security
+    threats.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With its growing community and close compatibility with Docker images and commands,
+    Podman has gained significant traction among developers and system administrators
+    looking for alternative containerization solutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this article, we'll explore some of the key features and benefits of using
+    Podman as a containerization tool. We'll also discuss how it compares to Docker
+    and see why it has become a popular alternative choice in the industry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's dive right in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before proceeding with this article, ensure that you meet the following prerequisites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Good Linux command-line skills.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Prior experience with Docker.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (Optional) A Docker Hub account to follow the private registry setup examples.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Podman vs Docker Comparison
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'While both Podman and Docker allow users to run, manage, and deploy containers
+    in an efficient and scalable manner, there are some key differences between the
+    two. In this section, we will explore several of these differences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1\. Architecture differences
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the main differences between Podman and Docker lies in their architecture.
+    While Docker relies on a client-server model, Podman employs a daemonless architecture.
+    With Podman's approach, users manage containers directly, eliminating the need
+    for a continuous daemon process in the background. This direct management often
+    results in Podman containers launching significantly faster, sometimes up to 50%
+    quicker than Docker, depending on the image used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This architecture also enhances security. In Docker, initiating a container
+    means sending a request to the Docker daemon via the Docker client which subsequently
+    launches the container, which means that the container processes are children
+    of the Docker daemon, not the user session:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, any significant event coming from a container process that's picked
+    up by the Linux Audit system (`auditd`) specifies its audit user ID as `unset`
+    rather than the actual ID of the user who started the respective container in
+    the first place. This makes it extremely difficult to link malicious activity
+    to a specific user and taints the security of the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Podman, since each container is instantiated directly through a user login
+    session, the container process data retains this information and `auditd` can
+    accurately detect and list the ID of each user who started a specific container
+    process, maintaining a clear audit trail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2\. Container lifecycle management
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The absence of a daemon in Podman leads to a distinct approach to managing container
+    lifecycles compared to Docker. On Linux, Podman relies extensively on [Systemd](https://systemd.io/)
+    for this purpose. For instance, to correctly enforce restart policies for containers
+    using the `--restart always` flag, Podman relies on a `systemd` service called
+    `podman-restart`. This service automatically restarts all designated containers
+    after each system reboot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, Podman exposes a handy command for generating Systemd service files
+    from running containers. This allows you to bring your containers under `systemd`
+    management to start, stop, and inspect the various services running inside of
+    them more easily. In contrast, Docker handles all these tasks internally through
+    the daemon itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3\. Container orchestration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When developing locally, Docker users normally reach for [Docker Compose](https://docs.docker.com/compose/)
+    to define and manage multi-container applications more easily. While Podman doesn't
+    support Compose files out of the box, it provides a compatible alternative called
+    [Podman Compose](https://github.com/containers/podman-compose), which typically
+    works seamlessly with existing `docker-compose.yml` files. For a native experience,
+    you may also use pods, a concept that Podman borrows from [Kubernetes](https://kubernetes.io/)
+    and allows users to manage a group of containers as one uniform unit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When it comes to production deployment, Podman lacks a tool like [Docker Swarm](https://docs.docker.com/engine/swarm/)
+    for orchestrating multi-container application workloads. The best possible alternative
+    in such cases is to use an external orchestration system such as Kubernetes, which
+    offers similar features and integrates well with Podman, although it may require
+    some additional configuration and setup to ensure that everything works correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 4\. Security considerations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Containers aim to isolate applications from the host system securely, minimizing
+    compatibility issues and enhancing security. A primary security concern is the
+    risk of container breakout, where an attacker could compromise the host system.
+    To mitigate such risks, running containers with minimal privileges is essential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman is designed to help with this by providing stronger default security
+    settings compared to Docker. Features like [rootless containers](https://docs.docker.com/engine/security/rootless/),
+    [user namespaces](https://docs.docker.com/engine/security/userns-remap/), and
+    [seccomp profiles](https://docs.docker.com/engine/security/seccomp/), while available
+    in Docker, aren't enabled by default and often require extra setup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman's default setup includes rootless containers running in isolated user
+    namespaces, limiting the impact of any potential breakout. In contrast, Docker's
+    default setting runs container processes as `root`, posing a higher risk in case
+    of a breakout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, Podman containers, tied to user sessions, allow audit systems to trace
+    malicious activities back to specific users, unlike Docker, where tracing to a
+    user is challenging due to the system-wide daemon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman and Docker use Linux kernel capabilities and seccomp profiles to control
+    process permissions. By default, Podman launches containers with a narrower set
+    of 11 capabilities compared to Docker's more permissive default setting of 14
+    capabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, while both Podman and Docker can be configured for robust security,
+    Podman generally requires less effort to reach a secure configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Learn More**: [Docker Security: 14 Best Practices You Should Know](/community/guides/scaling-docker/docker-security-best-practices/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To sum it up, both Docker and Podman are capable tools, and knowing the main
+    differences between the two can help you choose the right one for your specific
+    needs. Please refer to the table below for some of the major differences between
+    the two, and you can assume full parity for most other features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|  | Podman | Docker |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Daemonless architecture | ✔ | ✘ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Systemd integration | ✔ | ✘ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Group containers in pods | ✔ | ✘ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Supports Docker Swarm | ✘ | ✔ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Supports Kubernetes YAML | ✔ | ✘ |'
+  prefs: []
+  type: TYPE_TB
+- en: With all of this clarified, let's go ahead and install Podman locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Podman
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Like Docker, Podman can run without a problem on all popular operating systems.
+    This includes macOS and Windows, as well as all major Linux distributions. The
+    only significant difference to note is that while Podman can run natively on Linux,
+    it requires a virtual machine to work on Windows and macOS. This adds a few extra
+    steps to the installation process on these systems, but other than that, the core
+    functionality remains the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial assumes that you are using a Debian-based Linux distribution such
+    as Ubuntu, Mint, or Debian itself. The installation process for other operating
+    systems is very similar and can be applied by referring to the official [Podman
+    installation instructions](https://podman.io/docs/installation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make sure that you are using a relatively recent version of your preferred distribution,
+    as PPA repositories on older versions may not have the latest Podman available
+    for installation. For instance, at the time of this writing, the latest major
+    version of Podman is `4.x`, yet the most recent LTS version of Ubuntu ([Ubuntu
+    22.04 LTS](https://discourse.ubuntu.com/t/jammy-jellyfish-release-notes/24668))
+    locks you in to Podman `3.x`. Therefore, this tutorial is based on a newer non-LTS
+    version ([Ubuntu 23.10](https://discourse.ubuntu.com/t/mantic-minotaur-release-notes/35534)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by downloading the latest information from all configured upstream package
+    sources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then run the following command to install Podman:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will see an output similar to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Type `Y` when prompted, then hit `Enter` to continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the installation is completed, you can verify that Podman is available
+    by typing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The output indicates that version `4.3.1` was successfully installed locally,
+    and you can run `podman` commands. You are now ready to launch your first container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running your first container
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s verify that the installation works by running the well-known ["Hello
+    World!" image](https://hub.docker.com/_/hello-world) from [Docker Hub](https://hub.docker.com/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will observe an output similar to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This output shows something important. Even though the "Hello World!" image
+    was built with tools from the Docker ecosystem, Podman was still able to run the
+    container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's because both Docker and Podman follow the OCI ([Open Container Initiative](https://opencontainers.org/))
+    standards. The OCI defines an [image format specification](https://github.com/opencontainers/image-spec/blob/main/spec.md)
+    and a [runtime specification](https://github.com/opencontainers/runtime-spec)
+    enabling different container runtimes, such as Podman and Docker, to interoperate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, Podman can seamlessly work with most Docker images and containers.
+    This compatibility allows you to migrate your existing workloads to Podman easily
+    without having to make any modifications and also to leverage the vast library
+    of Docker images available on Docker Hub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s further break down the output from the command above. The first line
+    says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This message indicates that Podman referenced a configuration file to obtain
+    the fully qualified name of the `hello-world` image. Unlike Docker, Podman recommends
+    against using short names to refer to images and does not default to a specific
+    registry, unless explicitly instructed to do so via its configuration files. Docker,
+    on the other hand, always uses Docker Hub (`docker.io`) as its default registry
+    and tries to locate every image there when a fully qualified name is not explicitly
+    provided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can further inspect the `shortnames.conf` file and confirm that the `hello-world`
+    alias maps to the image `docker.io/library/hello-world`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next few lines say:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: These messages indicate that the latest version of the `hello-world` image was
+    successfully downloaded to your local machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can verify this by issuing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The remaining output (the "Hello from Docker!" message and all subsequent lines)
+    display a message that's hard-coded into the [hello](https://github.com/docker-library/hello-world/blob/master/hello.c)
+    binary that ships with the `hello-world` image. This message could be a little
+    misleading as it suggests that the Docker engine executed the container when,
+    in reality, Podman did. It's important to understand that neither the Docker client
+    nor the Docker daemon were in any way involved in the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before you move on further, remove the `hello-world` image, as it''s no longer
+    needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The output indicates that the image was removed, displaying its tag and ID
+    for reference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, let's examine what happens when you attempt to run an arbitrary image
+    using only its short name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using short image names
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we discussed previously, Podman suggests using fully-qualified names for
+    container images to avoid ambiguity and ensure that the correct image is always
+    referenced from a specific registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's try running a container using the [official Caddy image](https://hub.docker.com/_/caddy)
+    from Docker Hub. If you're unfamiliar with [Caddy](/community/guides/web-servers/caddy/),
+    it's a lightweight web server and reverse proxy known for its ease of use and
+    fantastic performance. By running Caddy as a container, you can quickly spin up
+    a local web server for testing purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Coming from a Docker background, you would typically use the following command
+    to start the container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This translates to the following command in Podman:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Most of the time, transitioning from Docker to Podman is a matter of changing
+    `docker` to `podman` in your command. In fact, many users add `alias docker=podman`
+    to their shell config files and use Podman as an alias for `docker` commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The flags are also identical:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`--rm` specifies that the container should be automatically removed after it
+    exits, so it doesn''t clutter up your system.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-p 8080:80` specifies that port `8080` on the host machine should map to port
+    `80` in the container, so that you can access the web server running inside the
+    container by typing `localhost:8080` in your browser.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Try running the command. If everything goes well, a container should launch,
+    allowing you to open `localhost:8080` in a browser to see the built-in Caddy test
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Contrary to what you might anticipate, the command fails and returns the following
+    error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The command didn't work because Podman couldn't understand where to pull the
+    `caddy` image from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It first looked up `shortnames.conf` for an alias named `caddy` but could not
+    find one. Try a `grep` on `shortnames.conf`, and you will see that it returns
+    no matches indeed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: It then looked up the `registries.conf` file for a list of so-called unqualified
+    search registries. An unqualified search registry is the one that Podman tries
+    to contact whenever a non-fully qualified image name is supplied with the `run`
+    command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are three possible solutions to the issue that you encountered. Let''s
+    explore all of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1\. Specifying a fully-qualified name
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can specify the fully-qualified name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works! However, coming from a Docker background, you may find using short
+    names more ergonomic, because this is the workflow that you're used to. This is
+    absolutely possible with Podman, using either aliases or unqualified search registries
+    which we'll explore below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2\. Defining an alias
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You may decide to define an alias for `caddy` instead. When doing so, keep
+    in mind that the `/etc/containers/registries.conf.d/shortnames.conf` file is not
+    meant to be modified directly, as it is shipped as part of the [shortnames project](https://github.com/containers/shortnames).
+    The correct way to define a new alias is by adding an `[aliases]` section to your
+    `registries.conf` file like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: /etc/containers/registries.conf
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copied!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The default registry configuration for Podman is located at `/etc/containers/registries.conf`,
+    but modifying this file requires root privileges. This slightly defeats the idea
+    of rootless access that Podman aims to support. However, Podman offers a mechanism
+    to overcome this limitation. You can put your configuration into `$HOME/.config/containers/registries.conf`,
+    and it will take precedence over `/etc/containers/registries.conf`. This requires
+    no root privileges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go ahead and create the `$HOME/.config/containers/registries.conf` file on
+    your system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then add the following line to your file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ~/.config/containers/registries.conf
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copied!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now re-run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will see the following output indicating that the solution works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: While this solution works, adding aliases for every image that you plan on using
+    will be tedious and time-consuming in the long run. This leads us to the third
+    possible solution—configuring an unqualified search registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before you do that, revert the changes that you did so far so you can start
+    with a clean state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hit `Ctrl+C` to terminate the Caddy container and return to your terminal.
+    Then remove the `[aliases]` configuration from the `registries.conf` file by truncating
+    the entire file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Remove the `caddy` image that Podman just downloaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As expected, the output shows the tag and ID of the image that was removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: You are now ready to define an unqualified search registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3\. Defining an unqualified search registry
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Open your `$HOME/.config/containers/registries.conf` file and paste the following
+    contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ~/.config/containers/registries.conf
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copied!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now re-run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will see the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `caddy` image was successfully downloaded, a container was launched, and
+    Caddy is now ready to serve web requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To confirm that everything works, you can navigate to `localhost:8080`. There,
+    you should see the Caddy test page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using an unqualified search registry is unquestionably a better option than
+    using aliases, especially if you intend to use Podman as a drop-in replacement
+    for Docker, because you can continue using short names the way that you are used
+    to, and they will resolve from Docker Hub by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before you continue further, go back to your terminal and hit `Ctrl+C` to stop
+    the container, then remove the Caddy image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using private image registries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You are likely used to working with private registries that host your organization's
+    proprietary images. Docker can undoubtedly facilitate that, and so can Podman.
+    The process is very similar for both tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This example assumes that you have a working Docker Hub account. If you don't
+    have an account, you can [register one for free](https://hub.docker.com/signup).
+    The free tier allows you to maintain one private repository free of charge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Log into your Docker Hub account and navigate to [Account Settings](https://hub.docker.com/settings/general):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go to [Security](https://hub.docker.com/settings/security) and click on **New
+    Access Token**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specify **Podman tutorial** as the description and **Read & Write** as the
+    desired permissions, then click **Generate**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Copy the generated access token and store it somewhere safe. We will refer
+    to this token as `<your_access_token>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The token should now be listed under the available access tokens in your Docker
+    Hub account:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Navigate back to [Repositories](https://hub.docker.com/repositories) and create
+    a new private repository as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If all goes well, you should see the repository listed in your Docker Hub account:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's now configure Podman to run with your private repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Type the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, `docker.io` can be omitted if you have listed it as the first `unqualified-search-registries`
+    entry in your `registries.conf` file. Nevertheless, it's still considered a good
+    practice to specify the registry explicitly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Otherwise, `podman login` will fail with the following error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Type in your username and access token when prompted, and you should receive
+    the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Continue by downloading the official `hello-world` image locally:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A successful output will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now list your local Podman images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You should see the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Go ahead and upload a copy of the `hello-world` image to your private repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Navigate back to your private repository on Docker Hub to verify that the image
+    was successfully uploaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can now remove the public `hello-world` image from your local machine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, try running a container using the image from your private repository:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Podman goes ahead, successfully pulls the private image, and launches a container
+    using the image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Without valid login credentials, you would have received the following error
+    instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, using Podman with a private registry is almost identical to
+    using Docker for the same purpose. The only difference is that you prefixed your
+    commands with `podman` instead of `docker`. Just like Docker, you can use Podman
+    with all popular private registries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before you continue further, make sure to logout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also, remove the private image from your local machine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this, you can proceed to the next section and learn how to orchestrate
+    multiple containers with Podman.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Orchestrating multiple containers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, you have only been launching one container at a time to explore how
+    Podman works. At some point, you'll surely find it necessary to run multiple containers
+    working together as a unit. In this section, you'll explore one of the possible
+    ways to do that with [Podman Compose](https://github.com/containers/podman-compose).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman offers several options for orchestrating multiple containers, but Podman
+    Compose is the most similar to what's used in the Docker world. Other options
+    are pods and Kubernetes manifests, but both call for a deeper comprehension of
+    Podman (and Kubernetes), so we'll leave them out for now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following example, you'll use the Docker Compose instructions supplied
+    with the [official WordPress image](https://hub.docker.com/_/wordpress) on Docker
+    Hub to launch a simple [WordPress](https://github.com/WordPress/WordPress) installation
+    backed by a MySQL database server. If you're unfamiliar with WordPress, it is
+    a popular blogging and content management platform written in PHP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the Docker ecosystem, Compose allows you to define and manage multiple containers
+    through definitions stored inside a `docker-compose.yml` file. Being used to working
+    with Docker Compose, you can continue using your existing `docker-compose.yml`
+    files with Podman with the help of Podman Compose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman Compose is a community-driven tool that implements the [Compose specification](https://compose-spec.io/)
+    and seamlessly integrates with Podman. It relies on Python 3 to work, and one
+    of the easiest ways to get started with it is through [pipx](https://pipx.pypa.io/stable/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you don''t already have Python 3 or `pipx` installed on your system, you
+    can install them by running:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can verify that `pipx` is working by typing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This will output a version identifier similar to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The output confirms that version `1.2.0` is of `pipx` is installed on your system,
+    and you're ready to start using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can run the following command to install Podman Compose:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If everything goes well, you should see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output indicates that `pipx` was placed in your `$HOME/.local/bin` folder.
+    However, that folder is likely not included in your `$PATH` variable, meaning
+    if you type `podman-compose` right now, you will get a similar error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Don't be confused by this error. Podman Compose was successfully installed,
+    but you need to add its installation folder to your `$PATH`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can address this by running:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This command will ensure that `$HOME/.local/bin` is appended to your `$PATH`
+    through one of your shell's config files (`.profile`, `.bash_profile`, `.bashrc`,
+    etc. depending on your specific setup).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After running the command, you will see the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can follow the instructions and re-open your terminal session. Alternatively,
+    if you know precisely which shell config file was modified, you can source the
+    file for the changes to take immediate effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To confirm that the `$PATH` is set correctly, you can run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see `/home/<your_user_name>/.local/bin` listed in the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Create a new folder and `cd` into it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Create an `.env` file and define the following variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, create a new `docker-compose.yml` file and paste the following contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: docker-compose.yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copied!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the file, then run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's examine the output segment by segment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Initially, `podman-compose` launches and starts analyzing the `docker-compose.yml`
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: It detects two services named `wordpress` and `db`, and starts processing them
+    in sequential order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, it finds out that the `wordpress` service requires an external volume.
+    It tries to locate the volume by issuing `podman volume inspect <volume_name>`,
+    but since it doesn''t exist, it goes ahead and creates one by issuing `podman
+    volume create <volume_name>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, it checks whether there is a suitable network for deploying the `wordpress`
+    service. It doesn''t find one, so it creates it and then performs another check
+    to confirm that the network exists:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, with a suitable network and an external volume in place, Podman Compose
+    launches the `wordpress` container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since Podman cannot find a `wordpress` image available locally, it goes ahead
+    and looks up the unqualified search registry that you configured earlier (`docker.io`),
+    then downloads it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, Podman Compose proceeds with processing the instructions for the `db`
+    service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, it creates its external volume:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It then ensures that there is a suitable network for its deployment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, it launches the `db` container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Just like with the `wordpress` image, Podman cannot find a `mysql:5.7` image
+    locally, so it goes ahead and obtains it from Docker Hub:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, Podman Compose exits successfully, and everything appears to
+    be launched correctly. Let's go ahead and verify this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, try to open `localhost:8080` in a browser. You should see the WordPress
+    installation page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, go back to your terminal and type in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, both the `wordpress` container and the `db` container are up and running:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also go ahead and explore the list of available images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The list contains all the necessary images for running MySQL and WordPress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can further explore the list of available networks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Two networks show up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `podman` network is created by default when you install Podman for the first
+    time. It is used for launching containers when no other network is explicitly
+    specified. On the other hand, the `podman-tutorial_default` network is created
+    by Podman Compose to isolate the containers defined in your `docker-compose.yml`
+    from any other containers potentially running on the same system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, let''s check the available volumes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As expected, two external volumes appear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can go ahead and stop the containers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Podman Compose stops and removes the containers from your system but keeps
+    the network and volumes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can verify that no containers are running by typing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result shows an empty output, which confirms that all of the containers
+    were stopped and removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you want to remove the volumes as well, you can type in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To remove the network, type in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the commands are identical to what you would normally use with
+    Docker and Docker Compose. The only noticeable difference is that instead of `docker`
+    and `docker-compose`, you type in `podman` and `podman-compose`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Final thoughts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Podman is a capable containerization technology that offers a viable alternative
+    to Docker for running container workloads. Whether you choose Podman or Docker
+    depends entirely on your specific needs and preferences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Podman can do most of the things that Docker can do, with the added benefit
+    of not requiring a daemon running in the background. On top of that, Podman offers
+    some features that Docker does not, such as working with Kubernetes manifest files
+    and organizing individual containers into pods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final decision is yours. If you require a more lightweight and secure container
+    management solution, Podman might be a better choice. However, Docker may be the
+    way to go if you prioritize a robust ecosystem with extensive community support.
+    Ultimately, both tools offer powerful containerization capabilities to meet your
+    requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To explore Podman further, consider visiting the [official Podman website](https://podman.io/),
+    exploring its [documentation](https://podman.io/docs), and joining its growing
+    [community](https://podman.io/community).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thanks for reading!
+  prefs: []
+  type: TYPE_NORMAL

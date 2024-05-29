@@ -1,0 +1,515 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:30:52'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration Platform | Python | Zato
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://zato.io/articles/integration-platform.html](https://zato.io/articles/integration-platform.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Articles
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration Platform in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**What is an integration platform** and **how to integrate APIs correctly?**
+    Why in Python and open source? How should an **enterprise and B2B** integration
+    platform work? **How to rekindle your enthusiasm for work?** Let''s tackle these
+    and a few other subjects here.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By Dariusz Suchojad
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Integration platform in Python](img/81dbfb58219afaafbb10d1824d1e87b2.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is an integration platform?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An integration platform seamlessly allows for unified and secure **data exchange**
+    and **process automation** across **independent applications and systems**, no
+    matter if they are **on premises or in the cloud**, if they are purely virtual
+    or if they have a hardware component, and no matter if they belong to your organization
+    or your partners and clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Bridging the gaps between systems**, each of which will be likely written
+    by a different vendor, **while making your work enjoyable**, streamlining business
+    workflows, focusing on cohesive information flow, and helping you utilize the
+    resources of your organization efficiently, **that is the purpose of an integration
+    platform**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to integrate APIs and systems incorrectly?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s start with the opposite of what we would actually like to achieve: **how
+    to integrate incorrectly**? The surest way to incorrect systems integrations is
+    to connect them directly, one-to-one, in a **point-to-point** manner.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It does not matter if it is individual API endpoints or entire systems that
+    are connected. As long as it is point-to-point, the inevitable result is this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Point-to-point integrations](img/29fa9ce28c03883422a9e7699f2ab09a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: '**Telltale signs of integrations done incorrectly.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do you recognize one or more?
+  prefs: []
+  type: TYPE_NORMAL
+- en: You think in terms of connecting two or more specific, named systems. For instance,
+    you connect "MyDay" and "BillingCloud" rather than considering it in higher-level
+    terms of connecting HR and billing business functions, no matter what systems
+    they use today.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Your systems invoke each other directly. If a system has an API, another system
+    will use it directly whenever it needs something, with little to no coordination,
+    oversight and governance.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You may have a thin layer of API endpoints, each of which connects two or more
+    systems, but these endpoints only map data from one system to another directly,
+    which effectively means point-to-point mappings, just in a different place of
+    your architecture, hence point-to-point integrations again.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The responsibility for the coordination of business process logic is vaguely
+    defined, if at all. When messages in a process are exchanged, it is difficult
+    to trace them and know what should happen to them depending on where in the process
+    they are.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Decisions about how to integrate with other systems are made by vendors of specific
+    products being integrated, even though it is not clear if they have integration
+    skills in addition to the skills needed to build their core products, and whether
+    they grasp the whole picture of your business.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Your business suffers because vendors of your systems are clearly inflexible
+    in, or incapable of, integrating with other systems yet you can do little about
+    it because the integration logic is deeply embedded in their products.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You feel that building new integrations by vendors of your systems should take
+    at most days, from inception to production, but you wait months or years for what
+    really should be a simple job.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You tried to automate various business processes, perhaps more than once, but
+    you always felt you needed a more flexible tool.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Your business people have learned to put up with the lack of automation. "It
+    just cannot be had". This has been going on for years and you would like to change
+    it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Yes, it feels natural to just start invoking REST APIs. This is what they are
+    for, after all. But if you do it point-to-point, you are setting up yourself on
+    a course to unnecessary complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What else is wrong with point-to-point? Let''s discuss it, step by step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Key challenge | Negative impact of incorrect, point-to-point integrations
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1\. API ossification |'
+  prefs: []
+  type: TYPE_TB
+- en: Closely tying two systems which makes an integration essentially untouchable,
+    any changes must always be minutely coordinated, even though the systems may be
+    delivered by different vendors using different models, e.g. one is a generic cloud
+    offer, the other is a purpose-built one.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The end result is that it is better never to change an API because that may
+    result in unwanted, cascading effects that are difficult to foresee.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| 2\. Strain on people |'
+  prefs: []
+  type: TYPE_TB
+- en: Increased workload - managing numerous point-to-point integrations can easily
+    overwhelm people involved while diverting them from projects and initiatives that
+    are truly important.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stress and burnout - the complexity and constant upkeep of too many integration
+    touchpoints leads to higher stress and frustration levels, dampening team morale
+    and leading to higher turnover rates.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training demands - much more extensive training is needed by new team members
+    to appreciate the brittle nature of point-to-point integrations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lack of career growth - since so much time is spent on putting out fires in
+    what are effectively integration silos, people do not build their skills to the
+    best of their abilities, which quickly begins to limit their career choices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Talent retention difficulties - the best people will not stay for very long
+    in a place that intrinsically limits innovation and which will feel monotonous.
+    If they perceive their skills are not being utilized effectively, you will quickly
+    lose your best.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| 3\. Lack of scalability and reusability |'
+  prefs: []
+  type: TYPE_TB
+- en: Tightly-coupled systems lead to a web of complex and unmanageable connections
+    that rule out their reusability, making it unnecessarily difficult to add or replace
+    elements in your architecture.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The rigidity of point-to-point integrations negatively affects your ability
+    to swiftly react to market changes or new business requirements - it is hard to
+    know what, and why, will break if one part of the connected systems is changed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data inconsistencies are introduced if multiple versions of the same data are
+    handled slightly differently in each independent point-to-point integration, making
+    it more difficult to track, coordinate and execute business-wide data governance
+    standards.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Maintenance challenges are frequent when upgrading one part of the integrated
+    system leads to unwanted repercussions in seemingly distant and unrelated parts
+    that depend on what is being upgraded in ways that are never clearly expressed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The good news is that there is a correct way to do it all too. If you have already
+    integrated many systems in a point-to-point manner, this can be straightened up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have not started your integrations yet, read on as well to understand
+    how to avoid such a messy result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's check how to do it correctly now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Correct integration architecture
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '![Integration platform in Python](img/d299d8ee45b4a8528fcec83108174536.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: With Zato as an integration platform that sits between the systems, apps and
+    APIs that you integrate, you use Python to focus on the business logic exclusively
+    and the platform takes care of scalability, availability, communication protocols,
+    messaging, security or routing. This lets you concentrate only on what is the
+    very core of systems integrations - making sure **your API services are interesting,
+    reusable and atomic**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An integration platform is a fundamental part of the correct architecture thanks
+    to the platform''s:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Capacity to minimize development effort** - you can achieve more with fewer
+    people which is crucial if you are starting out with integrations and stays important
+    as you gain experience with the job.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Modularity, flexibility and consistency** - common functionalities, such
+    as data transformation, mappings, routing and security are expressed once and
+    can be reused in multiple independent business processes, without influencing
+    one another, which makes it easy to react in a flexible manner to new and ever-changing
+    business opportunities and technical requirements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reusability leading to business scalability** - as business needs grow, an
+    integration platform allows you to accommodate new applications or their migrations,
+    and to cover previously unforeseen or unexpected business workflows and processes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Standardization of best practices** - you are able to create a toolbox of
+    high-quality, reliable and efficient integration components that can be applied
+    uniformly in many scenarios, thus reducing the cognitive load on your people so
+    that **your team can achieve more while doing less**, instead of being bogged
+    down by routine tasks, which in turn fosters **a culture of creativity** and continuous
+    improvement which **attracts the best talent** possible.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Where is an integration platform used?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Enterprise integrations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Keeping in sync systems of record and their satellites is a core example of
+    what an integration platform does. For instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CRM, ERP and billing systems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HR, training and physical access control systems (PACS)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Supply chain management with real-time visibility into supplier inventories
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Public records, government portals and national or local emergency systems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Marketing and sales systems, including portals and apps for partners and vendors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customer support systems offering improved response times and personalized customer
+    interactions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Cloud integrations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Cloud-based systems can offer unparalleled advantages over systems running on
+    premises, and with their proliferation comes an increased need for an integration
+    platform given that a typical cloud system will give you a REST API, usually with
+    auto-generated documentation, but typically little guidance on what to do next
+    with it, how to make it an integral part of your architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A cloud-based system is one that you are going to share with many other users.
+    Cloud vendors will rarely customize their APIs for individual clients which means
+    that you will be required to update your integrations according to the vendor's
+    schedule, which may not be always in line with your own ideas of when to upgrade,
+    which in turn means that you need to be able to react to such changes in a very
+    flexible manner that will let you retain compatibility with other components of
+    your integrated landscape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hybrid integrations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A mix of on-premises and cloud systems is what a typical company uses today.
+    Some of them are difficult to move to the cloud, with some of them it does not
+    make any sense at all to do it, and others just keep quietly doing their job with
+    little maintenance needed so they will continue to use your own infrastructure
+    for many years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A key benefit of having an integration platform is that it gives you the ability
+    to easily switch between the two models. You can start in either way, run your
+    IT infrastructure in a plug and play manner, and keep using a balanced blend of
+    traditional and modern approaches, depending on what is most practical and desirable
+    in a given case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: IoT and hardware integrations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Increased operational efficiency, the gathering of data to gain useful insights,
+    as well as smart decision-making, all require extensive integrations and automation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sensors, energy monitoring systems and inventory applications collect real-time
+    data but the information needs to be distributed in a sensible manner - and typically,
+    a single source of data will send messages to multiple destinations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An interesting challenge in IoT and hardware integrations is that the sources
+    that send raw data have physically little room for advanced logic. They are often
+    small devices, with little computing power available and it is an integration
+    platform that provides this logic of how to smartly route, transform and distribute
+    the messages to the apps that need them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open-source integration platform
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The ease of getting started with an open-source platform is a clear benefit.
+    There are no trials and no lengthy discussions with a vendor. Just go to [downloads](/en/docs/3.2/admin/guide/install/index.html),
+    choose your preferred system and you can start using the platform immediately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A subtle advantage of open source becomes evident only after you are deeply
+    committed to a product. The reality of integrations is that systems can interact
+    in many non-obvious ways and the ability to truly understand what your platform
+    is doing, that is, being able to check its source code, to confirm that it does
+    what you think it should be doing, instead of waiting for days or weeks for a
+    reply from a vendor who does not really know you, this unlocks a spectrum of previously
+    untapped possibilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Premium, enterprise support](/en/services/index.html) is naturally available,
+    combining the best of both worlds: open source and commercial.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python API integrations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '![Service-oriented architecture](img/7fd76dab4b928938c1fbfb869a83bbe8.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Python is the perfect choice for the job of complex integrations because it
+    hits the sweet spot under several key headings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is a very high level language, with a syntax close to how grammar of various
+    spoken languages works, which makes it easy to translate business requirements
+    into implementation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is a solid, mainstream, fully-featured, real programming language rather
+    than a domain-specific one, which means that it offers you a great degree of flexibility
+    and choice in expressing your needs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is difficult to find universities without Python courses. Most people entering
+    the workforce already know Python - it has become a new career language. In fact,
+    it is becoming increasingly difficult to find new talent who would not prefer
+    to use Python.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Yet, one does not need to be a developer or a full-time programmer to use Python.
+    Most people who use Python are not programmers at all. They are specialists in
+    other fields who also need to use a programming language to automate or integrate
+    their work in a meaningful way.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Many Python users come from backgrounds in network and cybersecurity engineering
+    - fields that naturally require a lot of automation using a real language that
+    is convenient and easy to get started with.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Many Python users are scientists with a background in AI, ML and data science,
+    applying their domain-specific knowledge in processes that, by their very nature,
+    require them to collect and integrate data from independent sources, which again
+    leads to automation and integrations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Many Python users have a strong web programming background. This means that
+    it takes little effort to take a step further, towards automation and integrations.
+    In turn, this means that it is easy to find good people for API projects.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Many Python users know multiple programming languages - this is very useful
+    in the context of integration projects where one is typically faced with dozens
+    of technologies, vendors or integration methods and techniques.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lower maintenance costs - thanks to the language's unique design, Python programmers
+    tend to produce code that is easy to read and understand. From the perspective
+    of multi-year maintenance, reading and analyzing code, rather than writing it,
+    is what most people do most of the time, making sense to use a language that makes
+    it easy to carry out the most common tasks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In short, Python can be construed as executable pseudo-code with many of its
+    users already having experience with modern automation and integrations so Python,
+    both from a technical and strategic perspective, is a natural choice for both
+    simple and complex, sophisticated automation, integration and interoperability
+    solutions. This is why Zato is designed specifically with Python people in mind.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keep in mind that **change is the only unchanging factor.** The only assumption
+    that we can make about our work is that everything will perpetually undergo change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Systems will be rewritten, people will leave, vendors will come and go, and
+    not all of them will be always friendly to your organization, companies will merge
+    and break apart, new business requirements will keep appearing in reaction to
+    external events, and everything will be in motion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: No longer-term pause will appear on the horizon. Expect change, be prepared
+    to **adapt flexibly**, **attract great talent**, do not let your systems and integrations
+    ossify, and you will not be surprised when change comes, as it shall, inevitably.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dariusz Suchojad is founder of Zato Source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Ready to break free from the limitations of traditional methods? Dive into
+    the world of efficient integrations. Request your customized demo today.**'
+  prefs: []
+  type: TYPE_NORMAL

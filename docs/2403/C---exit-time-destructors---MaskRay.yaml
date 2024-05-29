@@ -1,0 +1,389 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:02:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: C++ exit-time destructors | MaskRay
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://maskray.me/blog/2024-03-17-c++-exit-time-destructors](https://maskray.me/blog/2024-03-17-c++-exit-time-destructors)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In ISO C++ standards, [basic.start.term] specifies that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constructed objects ([dcl.init]) with static storage duration are destroyed
+    and functions registered with std::atexit are called as part of a call to std::exit
+    ([support.start.term]). The call to std::exit is sequenced before the destructions
+    and the registered functions. [Note 1: Returning from main invokes std::exit ([basic.start.main]).
+    — end note]
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'For example, consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The destructor for object a will be registered for execution at program termination.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '## `__cxa_atexit`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Itanium C++ ABI employs `__cxa_atexit` rather than atexit for object destructor
+    registration for two primary reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Limited `atexit` guarantee: ISO C (up to C23) guarantees support for 32 registered
+    functions, although most implementations support many more.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Dynamic library unloading: `__cxa_atexit` provides a mechanism for handling
+    destructors when dynamic libraries are unloaded via `dlclose` before program termination.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Several standard libraries, including glibc, musl, and FreeBSD libc, implement
+    `atexit` using `__cxa_atexit`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In glibc, `atexit` returns `__cxa_atexit ((void (*) (void *)) func, NULL, __dso_handle)`,
+    where `__dso_handle` is part of libc itself.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: musl uses 0 instead of `__dso_handle`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api)
+    provides detailed documentation on object destruction mechanisms. Let''s illustrate
+    this with a GCC and glibc example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An invocation yields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Key points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The compiler registers destructors with `__cxa_atexit` using the `__dso_handle`
+    symbol as an argument.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`crtbeginS.o` defines the `.fini_array` section (triggering `__do_global_dtors_aux`)
+    and the hidden symbol `__dso_handle`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since 2017, lld [defines `__dso_handle` as a hidden symbol](https://reviews.llvm.org/D33856)
+    if crtbegin does not.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dlclose` invokes `.fini_array` functions. `__cxa_finalize(d)` iterates through
+    the termination function list, calling matching destructors based on the DSO handle.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`__cxa_atexit` implementations typically allocate memory dynamically and may
+    fail. The failures are simply ignored.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Note: In glibc, the `DF_1_NODELETE` flag marks a shared object as unloadable.
+    Additionally, symbol lookups with `STB_GNU_UNIQUE` automatically set this flag.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: musl provides a [no-op implementation for `dlclose` and `__cxa_finalize`](https://wiki.musl-libc.org/functional-differences-from-glibc.html#Unloading_libraries).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thread storage duration variables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Objects with thread storage duration that have non-trivial destructors will
+    register those destructors using `__cxa_thread_atexit` during construction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When exit-time destructors are undesired
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Exit-time destructors for static and thread storage duration variables can be
+    undesired due to
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Unnecessary overhead and complexity: This includes operating system kernels
+    and memory-constrained systems.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Potential race conditions: Destructors might execute during thread termination,
+    while other threads still attempt to access the object. Examples: [webkit](https://bugs.webkit.org/show_bug.cgi?id=21810)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Clang provides `-Wexit-time-destructors` (disabled by default) to warn about
+    exit-time destructors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Disabling exit-time destructors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Then, I will describe some approaches to disable exit-time destructors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pointer/reference to a dynamically-allocated object
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can use a reference or pointer that refers to a dynamically-allocated object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This approach prevents the destructor from running at program exit, as pointers
+    and references have a trivial destructor. Note that this does not create a memory
+    leak, since the pointer/reference is part of the root set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The primary downside is unnecessary pointer indirection when accessing the object.
+    Additionally, this approach uses a mutable pointer in the data segment and requires
+    a memory allocation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Class template with an empty destructor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A common approach, as outlined in [P1247](https://wg21.link/p1247), is to use
+    a class template with an empty destructor to prevent exit-time destruction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: libstdc++ employs a variant that uses a union member.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'C++20 will support constexpr destructor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Libraries like [`absl::NoDestructor`](https://github.com/abseil/abseil-cpp/blob/master/absl/base/no_destructor.h)
+    and [`folly::Indestructible`](https://github.com/facebook/folly/blob/main/folly/Indestructible.h)
+    offer similar functionality. The absl version optimizes for trivially destructible
+    types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiler optimization for no-op destructors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Ideally, compilers should optimize out exit-time destructors for empty user-provided
+    destructors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: LLVM has addressed this [since 2011](https://github.com/llvm/llvm-project/commit/ee6bc70d2f1c2434ca9ca8092216bdeab322c7e5).
+    Its GlobalOpt pass eliminates `__cxa_atexit` calls related to empty destructors,
+    along with other global variable optimizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In contrast, GCC has an [open feature request](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=19661)
+    for this optimization since 2005.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`no_destroy` attribute'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Clang supports `[[clang::no_destroy]]` (alternative form: `__attribute__((no_destroy))`)
+    to disable exit-time destructors for variables of static or thread storage duration.
+    Its `-fno-c++-static-destructors` option allows disabling exit-time destructors
+    globally.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Standardization efforts for this attribute are underway [P1247R0](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1247r0.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I recently encountered a scenario where the `no_destroy` attribute would have
+    been beneficial. I've filed a GCC feature request ([PR114357](https://gcc.gnu.org/PR114357))
+    after I learned that GCC doesn't have the attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Case study
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LLVM provides `ManagedStatic` to construct an object on-demand (good for reducing
+    startup time) and make destruction explicitly through `llvm_shutdown`. `ManagedStatic`
+    is intended to be used at namespace scope. A prime example is LLVM's statistics
+    mechanisms (`-stats` and `-time-passes`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Programs using LLVM can strategically avoid calling `llvm_shutdown` for fast
+    teardown by skipping some destructors. The lld linker employs this approach unless
+    the `LLD_IN_TEST` environment variable is set to a non-zero integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'DSO plugin users requiring library unloading may [find `ManagedStatic` unsuitable](https://discourse.llvm.org/t/making-llvm-play-nice-r-when-used-as-a-shared-library-in-a-plugin-setting/63306).
+    This is because:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A DSO may not be able to determine if other active LLVM users exist within the
+    process, making it unsafe to call `llvm_shutdown`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `llvm_shutdown` is deferred until around program exit, executing destructors
+    becomes unsafe once the DSO's code has been removed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The mold linker improves perceived linking speed by spawning a separate process
+    for the linking task. This allows the parent process (the one launched from the
+    shell or other programs) to exit early. This approach eliminates overhead associated
+    with static destructors and other operations.
+  prefs: []
+  type: TYPE_NORMAL

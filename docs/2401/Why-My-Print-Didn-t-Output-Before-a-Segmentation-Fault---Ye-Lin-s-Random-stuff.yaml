@@ -1,0 +1,206 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:25:18'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why My Print Didn't Output Before a Segmentation Fault - Ye Lin's Random stuff
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.yelinaung.com/posts/what-happened-to-my-print/](https://blog.yelinaung.com/posts/what-happened-to-my-print/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: So, as I was learning some [C](https://beej.us/guide/bgc/), at the pointers/segfault,
+    I was trying this code myself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then compile it and run it in the terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: To my surprise, it did not print out both “Hello!” and “Another Hello!” and
+    the program just crashed with “Segmentation fault (core dumped)” (aka segfault).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For “Another Hello!”, I get it. Program crashed before it reached to that line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How about “Hello!” ? What’s going on here ? Is it the segfault that prevented
+    printing out ? Before we go further, allow me to expand a bit on this segfault
+    thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first line declares a pointer `p` that should hold an integer type and we
+    are setting it to `NULL` (nowhere/no actual thing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second line tries to writes “5” to the memory location pointed to by
+    `p`. But `p` doesn’t exist. It’s invalid memory access and causes a crash which
+    is [segfault](https://en.wikipedia.org/wiki/Segmentation_fault)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wait, how does this crash prevent the program to print out “Hello!” in terminal?
+    It seems like nothing to do with our `printf` since it comes before the crash
+    happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happens when you do `printf` ? In most system, it prints out the data to
+    the output device, in this case, the terminal. It turns out the output devices
+    are “line buffered”. Line buffering means the outputs are stored in a place called
+    “buffer” before they are printed out and will be printed out later on certain
+    conditions. The condidtions, according to the [GNU C guidelines](https://www.gnu.org/software/libc/manual/html_node/Flushing-Buffers.html)
+    are
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Copied straight from the guide)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Flushing output on a buffered stream means transmitting all accumulated characters
+    to the file. There are many circumstances when buffered output on a stream is
+    flushed automatically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you try to do output and the output buffer is full.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When the stream is closed. See Closing Streams.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When the program terminates by calling exit. See Normal Termination.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When a newline is written, if the stream is line buffered.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whenever an input operation on any stream actually reads data from its file.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is true for printing something to the terminal as well as writing something
+    to a file. In our little program, the program crashed due to segfault and did
+    not manage to flush the buffer. The program abruptly ended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, how can we force the program to print out “Hello!” in terminal before anything
+    crashed ? That will help with debugging things like until at whihc point my program
+    executed before it crashed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, the easy way is remove the error part of the program!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compile it and run it again!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, all goes well, `main()` returns successfully and everything is flushed
+    out to the output device. I see my prints!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Newline (`\n`)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: But..how about I want to keep things the same way and have my prints. I wanna
+    have the cake and eat it too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rememer, in one of the conditions above, it says that “When a newline is written,
+    if the stream is line buffered”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For that, I can use a newline character (`\n`) to force the program flush to
+    the buffer. We can keep the rest in the same way. Let’s see if that works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Yes! I see my “Hello!” here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The “Another Hello!” didn’t make it but that’s ok. The program crashed before
+    it reaches to that line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Checking the exit code of the program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `fflush` function also flushes the output buffer to the output device without
+    the use of newline character (`\n`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: will output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: stderror is always unbuffered
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Someone on HN [said](https://news.ycombinator.com/reply?id=38830109&goto=item%3Fid%3D38803367%2338830109)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you use stderr, you get this for free: stderr is always unbuffered (see
+    [here](https://linux.die.net/man/3/stderr)).'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: works the same
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Same exit code as the previous example as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, that’s been my little TIL and hope you learn something as well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: References
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL

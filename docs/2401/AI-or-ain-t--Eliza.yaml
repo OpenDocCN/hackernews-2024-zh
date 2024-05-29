@@ -1,0 +1,268 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:34:58'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'AI or ain''t: Eliza'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://zserge.com/posts/ai-eliza/](https://zserge.com/posts/ai-eliza/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'AI or ain''t: Eliza'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the year 2023, AI took center stage in the media, stirring up discussions
+    about whether it was mere hype or real progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the concept of [non-human intelligence](https://en.wikipedia.org/wiki/Extraterrestrial_intelligence)
+    isn’t a recent fascination; it has been a dream since ancient times. As we learned
+    more about how neurons communicate through electronic pulses in our brains, it
+    seemed plausible to simulate our “intelligence” with similar electronic circuits.
+    The term “machine intelligence” was coined in the 1950s, around the same time
+    the [Turing test](https://en.wikipedia.org/wiki/Turing_test) was introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This test (also known as the “imitation game”) suggests that AI can be considered
+    genuinely intelligent if a human can’t tell whether they’re interacting with another
+    human or a machine. Picture an interrogator in a room, chatting through a text
+    interface, asking questions, and trying to figure out if their conversational
+    partner is human or not. If the person talking to the computer believes it’s a
+    human, even though it’s a machine, that signifies the machine is genuinely artificially
+    intelligent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Eliza
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the first computer programs that successfully passed the Turing test
+    was Eliza. Created in 1966 by [Joseph Weizenbaum](https://web.stanford.edu/class/cs124/p36-weizenabaum.pdf),
+    Eliza skillfully emulated the speech patterns of a psychotherapist in its conversations.
+    Interestingly, Eliza still [outperforms ChatGPT-3.5](https://arstechnica.com/information-technology/2023/12/real-humans-appeared-human-63-of-the-time-in-recent-turing-test-ai-study/)
+    in certain Turing test variations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Eliza demonstrates how even the simplest algorithm can be just sufficient to
+    appear intelligent. Let’s imagine a program that constantly prints “Hello, user!”
+    when it starts. We can hardly consider it intelligent and a user will quickly
+    start to suspect it’s just a hardcoded behaviour.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, imagine a program printing a random greeting from a predefined list. It
+    will take more attempts to unveil its artificiality, but as soon as the interrogator
+    starts asking questions, such a bot would appear too inadequate in comparison
+    to human interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Eliza works
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s recreate Eliza just the way it worked 57 years ago. I’ll share some [Go
+    code](https://github.com/zserge/aint/tree/main/eliza), but you can easily adapt
+    it to the other programming languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start with a basic chatbot interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we’re reading text from stdin line by line and sending each line to the
+    `response()` function. This function’s job is to handle what the user says, find
+    a suitable reply, and send it back.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Currently, our Eliza is pretty brainless; it doesn’t really understand anything
+    the user says and can’t wrap up a conversation properly. So, let’s give it a bit
+    more intelligence by introducing some stop words to help Eliza bid a proper goodbye.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Knowledge base
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To enhance Eliza’s conversational skills, we need to implant some knowledge
+    into its brain. In our case knowledge will be stored in a very structured and
+    oranised manner – as a sorted list of keywords, each accompanied with a set of
+    possible transformation rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transformation rules are predefined instructions and patterns to help Eliza
+    modify and respond to specific user inputs. Each transformation rule consist of
+    a pattern to match (decomposition) and instructions on how to reassemble the reply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a simple rule example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This rule is triggered when the user input contains the word “sorry”. Pattern
+    is a wildcard (`*`) that matches all input text. Reassembly rules are just static
+    strings and any of them can be returned as a possible reply:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'More complicated examples would use reassembly rules that include parts of
+    the user input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Consider user input *“I suspect you are a bot”*. Eliza will detect the keyword
+    `you` in the input and will start looking for matching patterns belonging to that
+    keyword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first pattern `* you * me` will not match the input, but the second one
+    will. Given the input *“I suspect you are a bot”* and pattern `* you are *` the
+    first wildcard would hold `I suspect` and the second wildcard would hold `a bot`.
+    Now, the reassembly rule would replace `(2)` placehodler with the contents of
+    the second wildcard replying with *“What makes you think I am a bot?"*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly for the input *“I think you might dislike me”* the reply could be
+    *“Really, I might dislike you?"*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Synonyms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To avoid duplication of the rules, Eliza uses synonym groups in its patterns.
+    For example, category `belief` may include words like “belief”, “feel”, “think”,
+    “believe”, “wish” etc. Then in a pattern it becomes possible to refer to the whole
+    category instead of individual words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here for the input *“I feel I am talking to a bot”* the reply could be *“But
+    you are not sure you are talking to the bot”*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might wonder how “I am” turned into “you are”. Eliza has a list of preprocessing
+    and postprocessing rules. Preprocessing helps to convert “I’m” into “I am” or
+    fix some common typos. Postprocessing helps to invert the pronouns and verbs,
+    i.e. “am → are”, “your → my”, “myself → yourself” etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another trick Eliza uses to handle synonyms is a “goto” reassembly rule. For
+    the given keyword some transformation rules might redirect Eliza to a different
+    (related) keyword:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here keyword “apologise” is treated just as if it was “sorry”. For the keyword
+    “can” the first reply would be *“You believe I can&mldr;"* and the second attempt
+    would navigate Eliza to a generic reply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, there is one last feature that Eliza employed to simulate intelligence:
+    memorisation. Some transformation rules would ask Eliza to store replies in a
+    memory stack. Later, when no suitable reply could be found these previous replies
+    are popped from memory and reused:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here the first reply about chatbot misbehaving is memorised and repeated when
+    Eliza is out of suitable replies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And that’s all Eliza does. Knowledge base can be represented directly with
+    Go code, but you can also store Eliza “scripts” as JSON or YAML files and parse
+    those on startup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All of Eliza state can be stored in two variables: an index, pointing to the
+    next available decomposition for each rule, and a memory of the latest stored
+    replies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Complete Eliza code is no more than three functions: a helper to pre/postprocess
+    text, a pattern matching algorithm and a top-level response function to handle
+    the rest of Eliza’s logic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pattern matching can be implemented in a number of ways. The obvious one would
+    be to use regular expressions, but that’s too high-level for Eliza. Another option
+    would be to implement [a 35-line tiny matcher](https://benhoyt.com/writings/rob-pike-regex/)
+    by [Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But since our text is already split into tokens we can build a similar recursive
+    matcher that operates on words rather than characters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After having all the knowledge encoded and these utility functions written
+    we can now build the rest of Eliza’s brain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Full sources are available [on GitHub](https://github.com/zserge/aint/tree/main/eliza/)
+    and you can play around with one of Eliza implementations [online](https://www.masswerk.at/elizabot/)
+    to take a Turing test yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AI?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Clearly, Eliza is not an AI. But it’s been a huge success and caused many people
+    treat it as a human. Being empathetic to its users and reflecting their language
+    back to them, Eliza seems to be very understanding. Also it doesn’t tend to reveal
+    much about itself, making it harder to discover that it’s merely a short list
+    of hardcoded phrases. Silence is golden, indeed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next part: [Markov Chains](/posts/ai-markov/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope you’ve enjoyed this article. You can follow – and contribute to – on
+    [Github](https://github.com/zserge), [Mastodon](https://mastodon.social/@zserge),
+    [Twitter](https://twitter.com/zsergo) or subscribe via [rss](/rss.xml).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Jan 01, 2024*'
+  prefs: []
+  type: TYPE_NORMAL

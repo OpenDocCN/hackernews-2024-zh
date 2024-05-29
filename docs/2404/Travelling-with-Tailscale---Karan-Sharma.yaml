@@ -1,0 +1,193 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:13:32'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Travelling with Tailscale | Karan Sharma
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://mrkaran.dev/posts/travel-tailscale/](https://mrkaran.dev/posts/travel-tailscale/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main>
+  prefs: []
+  type: TYPE_NORMAL
+- en: I have an upcoming trip to Europe, which I am quite excited about. I wanted
+    to set up a Tailscale exit node to ensure that critical apps I depend on, such
+    as banking portals continue working from outside the country. Tailscale provides
+    a feature called “Exit nodes”. These nodes can be setup to route all traffic (0.0.0.0/0,
+    ::/0) through them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I deployed a tiny DigitalOcean droplet in `BLR` region and setup Tailscale as
+    an exit node. The steps are quite simple and can be found [here](https://tailscale.com/kb/1103/exit-nodes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The node is now advertised as an exit node, and we can confirm that from the
+    output of `tailscale status`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the client side, I was able to start Tailscale and configure it to send
+    all the traffic to the exit node with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can confirm that the traffic is going via the exit node by checking our
+    public IP from this device:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, I encountered a minor issue since I needed to bring my work laptop
+    for on-call duties, in case any critical production incidents required my attention
+    during my travels. At my organization, we use Netbird as our VPN, which, like
+    Tailscale, creates a P2P overlay network between different devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem was that all 0.0.0.0 traffic was routed to the exit node, meaning
+    the internal traffic meant for Netbird to access internal sites on our private
+    AWS VPC network was no longer routed via the Netbird interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Netbird automatically propagates a bunch of IP routing rules when connected
+    to the system. These routes are to our internal AWS VPC infrastructure. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, `wt0` is the Netbird interface. So, for example, any IP like `10.0.1.100`
+    will go via this interface. To verify this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, after connecting to the Tailscale exit node, this was no longer the
+    case. Now, even the private IP meant to be routed via Netbird was being routed
+    through Tailscale:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although Tailscale nodes allow for the selective whitelisting of CIDRs to route
+    only the designated network packets through them, my scenario was different. I
+    needed to selectively bypass certain CIDRs and route all other traffic through
+    the exit nodes. I came across a relevant [GitHub issue](https://github.com/tailscale/tailscale/issues/1916),
+    but unfortunately, it was closed due to limited demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This led me to dig deeper into understanding how Tailscale propagates IP routes,
+    to see if there was a way for me to add custom routes with a higher priority.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Initially, I examined the IP routes for Tailscale. Typically, one can view the
+    route table list using `ip route`, which displays the routes in the `default`
+    and `main` tables. However, Tailscale uses routing table 52 for its routes, instead
+    of the default or main table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A few notes on the route table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`default dev tailscale0` is the default route for this table. Traffic that
+    doesn’t match any other route in this table will be sent through the `tailscale0`
+    interface. This ensures that any traffic not destined for a more specific route
+    will go through the Tailscale network.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`throw 127.0.0.0/8`: This is a special route that tells the system to “throw”
+    away traffic destined for 127.0.0.0/8 (local host addresses) if it arrives at
+    this table, effectively discarding it before it reaches the local routing table.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We can see the priority of these IP rules are evaluated using `ip rule show`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command lists all the current policy routing rules, including their priority
+    (look for the pref or priority value). Each rule is associated with a priority,
+    with lower numbers having higher priority.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, Linux uses three main routing tables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Local (priority 0)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Main (priority 32766)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Default (priority 32767)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since Netbird already propagates the IP routes in the main routing table, we
+    only need to add a higher priority rule to lookup in the `main` table before Tailscale
+    takes over.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, our `ip rule` looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To confirm whether the packets for destination `10.0.0.0/16` get routed via
+    `wt0` instead of `tailscale0`, we can use the good ol’ `ip route get`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Perfect! This setup allows us to route all our public traffic via exit node
+    and only the internal traffic meant for internal AWS VPCs get routed via Netbird
+    VPN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since, these rules are ephemeral and I wanted to add a bunch of similar network
+    routes, I created a small shell script to automate the process of adding/deleting
+    rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Fin!
+  prefs: []
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

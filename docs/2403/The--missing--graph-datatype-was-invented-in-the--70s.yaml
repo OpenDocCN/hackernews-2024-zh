@@ -1,0 +1,328 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:37:50'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The "missing" graph datatype was invented in the '70s
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://tylerhou.com/posts/datalog-go-brrr/](https://tylerhou.com/posts/datalog-go-brrr/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*This post is a response to/inspired by [The Hunt for the Missing Data Type](https://www.hillelwayne.com/post/graph-types/)
+    ([HN](https://news.ycombinator.com/item?id=39592444)) by Hillel Wayne. I suggest
+    reading his article first.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Why do programming languages lack built-in support for graphs and graph algorithms?
+    Or—why is there no “datatype” for a graph? Hillel Wayne argues (in the post linked
+    above) that there are a few reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are too many types of graphs.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are too many graph algorithms.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Even if you focus on one particular type of graph, there are many possible different
+    graph representations.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The graph representation you choose has a large effect on performance.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I agree with all these reasons. But I don’t agree with Wayne’s (implied) conclusion—that
+    graphs are inherently too complex to be well-supported by mainstream programming
+    languages. Languages **could** have **amazing** graph support! In maybe a decade?
+    And only after lots of research effort? (More on this later…)
+  prefs: []
+  type: TYPE_NORMAL
+- en: I claim the reason why it is so difficult to support graphs in languages nowadays
+    is **because the imperative/structured programming model of modern programming
+    languages is ill-suited for graph algorithms.** As Wayne correctly points out,
+    the core problem is that when you write a graph algorithm in an imperative language
+    like Python or Rust, you have to choose some explicit representation for the graph.
+    Then, your traversal algorithm is dependent on the representation you chose. If
+    you find out later that your representation is no longer efficient, it is a lot
+    of work to adapt your algorithms for a new representation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So what if we just, like, didn’t do this? What if we don’t pick a graph representation?
+    What if we could express our graph and our graph algorithm declaratively and have
+    the computer pick a representation for us? Would such an program be just as performant?
+    Are these questions rhetorical?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The answers, of course, are yes. **We already have a declarative programming
+    language where expressing graph algorithms is extremely natural**—[Datalog](https://en.wikipedia.org/wiki/Datalog),
+    whose semantics are based on* the relational algebra, which was developed in the
+    1970s. For example, computing graph reachability is a two line Datalog program
+    and (in extensions to Datalog) it is remarkably easy to compute more sophisticated
+    facts like single-source or all-pairs shortest paths. Datalog implementations
+    are also highly performant, adjust query strategies in response to changes in
+    data, and some engines even support advanced features like live streams/incremental
+    view maintenance. The downside? You have to write Datalog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Datalog
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In Datalog, it is natural to encode a graph as an *edge relation* (a set of
+    edges). Queries on a graph like connectivity are well-expressed by *recursive
+    joins* on that edge relation. (In fact, transitive closure in a graph is so naturally
+    expressed in Datalog that it is often used as the [first example when teaching
+    Datalog!](https://berkeley-cs294-248.github.io/lectures/unit9.pdf#page=37)) Here
+    is a concrete example of such a program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Lines 1-3 encode the graph in the edge relation. This graph in particular is
+    a (directed) “linked-list” graph on three nodes, where vertex 1 has an edge to
+    vertex 2, which has an edge to vertex 3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In plain English, lines 5 and 6 say: there are two ways that there might be
+    a path from <mjx-container class="MathJax" jax="SVG"></mjx-container>to <mjx-container
+    class="MathJax" jax="SVG"></mjx-container>. Either there is a direct edge from
+    <mjx-container class="MathJax" jax="SVG"></mjx-container>to <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>(line 5), or there is a path from <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>to some other vertex <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>, and a direct edge from <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>to <mjx-container class="MathJax" jax="SVG"></mjx-container>(line
+    6). Both rules are repeatedly evaluated until the database reaches a *fixed-point;*
+    i.e. further application of either rule leads to no changes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How does this evaluate? First, the database starts off as just containing the
+    edges:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While Datalog rules are allowed to fire in arbitrary order, let’s assume that
+    they fire in program order. The rule on line 5 fires, adding a path to our database
+    for each edge:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To execute line 6, the Database engine *joins* the `edge` and `path` relations
+    on the common variable <mjx-container class="MathJax" jax="SVG"></mjx-container>.
+    That is, the equivalent SQL statement might be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is the result of the join.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: And the Datalog engine adds these new tuples to the database. Note that before
+    firing the rule on line 6, we had paths of length <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>in our database; now we have paths of length <mjx-container
+    class="MathJax" jax="SVG"></mjx-container>.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: We fire the rule on line 5 again, but it does not change our database. Finally
+    we fire the rule on line 6, and we get the join
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Only the last entry is new, so we add it to our database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  prefs: []
+  type: TYPE_NORMAL
+- en: And now the program is finished, because execution of either rule will not change
+    the database. Notice how we have not only computed that there is a path from vertex
+    1 to vertex 4, as expected, but also computed whether there is a path between
+    every pair of vertices. You can see [this program in action](https://egraphs-good.github.io/egglog/?example=path)
+    in Egglog, an extension of Datalog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This program is also easy to augment. For example, if we wanted to support
+    undirected transitive closure, that would be as simple as adding one extra rule,
+    which says that there is a path from <mjx-container class="MathJax" jax="SVG"></mjx-container>to
+    <mjx-container class="MathJax" jax="SVG"></mjx-container>if there is a path from
+    <mjx-container class="MathJax" jax="SVG"></mjx-container>to <mjx-container class="MathJax"
+    jax="SVG"></mjx-container>:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can express much more powerful programs in Egglog (and Datalog in general)
+    than just transitive closure on a graph. For example, Egglog also supports algebraic
+    data types, which means the path relation can be annotated [with a “proof” of
+    the path](https://egraphs-good.github.io/egglog/?example=pathproof). If the weights
+    of each edge are given (`edge(a, b, w)`), then Egglog can also compute shortest
+    paths; see [page 6 of the Egglog paper for an example](https://arxiv.org/pdf/2304.04332.pdf#page=6).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, in recent years there has been a trend to use Datalog to compute [program
+    analyses](https://en.wikipedia.org/wiki/Program_analysis). This is because most
+    program analysis algorithms involve traversing program graphs. These traversals
+    are often mutually recursive: for example, in order to determine whether a variable
+    points to an object, a program needs to traverse the control flow graph—but in
+    order to traverse the control flow graph, an analysis needs to resolve virtual
+    methods, which requires points-to analysis! Datalog makes it much easier to express
+    complex, mutually recursive graph algorithms in a declarative manner.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What about performance? Surely, a graph traversal algorithm hand-written in
+    Rust would beat a database engine in raw speed? You might be surprised. When program
+    analyses have been rewritten to use Datalog, the Datalog implementations run much
+    faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Doop](https://dl.acm.org/doi/10.1145/1639949.1640108), a points-to analysis
+    framework written in Datalog, performed analyses about an order of magnitude faster
+    than predecessors written in Java (which additionally used sophisticated techniques
+    like [binary decision diagrams](https://en.wikipedia.org/wiki/Binary_decision_diagram)).
+    More recently, [Egglog](https://arxiv.org/abs/2304.04332) is about an order of
+    magnitude faster at equality saturation compared to its predecessor Egg, which
+    was handwritten in Rust.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How can database engines be so fast? First, the execution model of the above
+    Datalog program was simplified for clarity. In practice, there are techniques
+    make Datalog run much faster than the “naïve” execution presented above. The big
+    ones are [semi-naïve evaluation](https://pages.cs.wisc.edu/~paris/cs838-s16/lecture-notes/lecture8.pdf#page=2)
+    and [the demand transformation](https://dl.acm.org/doi/abs/10.1145/1836089.1836094)/[magic
+    sets](https://dl.acm.org/doi/10.1145/28659.28689).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Second, (as Wayne observed) the most efficient representation of a graph and
+    the most efficient algorithms to traverse that graph depends how the graph is
+    structured. This type of data-dependent optimization is exactly what databases
+    are best at. There have been decades and decades of research in database systems
+    on how to best represent datasets ([un]clustered indexes, efficient in-memory
+    data structures) and queries on those datasets (join ordering, types of joins).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These correspond decently well to efficient representations of a graph: for
+    example, an adjacency list is essentially a database index on the edge relation!
+    If your edge relation is small enough, it’s reasonable for a database engine to
+    join on it using (hash)-joins and an in-memory index. This would be essentially
+    the same as a normal in-memory graph traversal in an imperative language—except
+    the database join would probably be much better optimized.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If a graph is huge but sparse, a database could choose to merge-join relations,
+    which has high throughput because of its predictable memory and disk access patterns.
+    If it’s huge but dense, it could possibly encode joins as [matrix multiplications
+    on a GPU…?](https://arxiv.org/abs/2311.02206) And there are all sorts of advanced
+    join techniques (worst case optimal joins: [VAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=22),
+    [IAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=45))
+    that would perform even better on certain graphs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s not to mention that sophisticated database engines can adapt their storage
+    and query strategies as data changes over time. If your graph starts out sparse
+    but gets denser over time, a database system can continuously collect statistics
+    on your graph and switch to a better representation when appropriate. When everything
+    works properly, this requires no extra work from the programmer. (And often databases
+    offer tuning knobs if the chosen representation or join ordering is not appropriate.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: That said, there are still a few performance challenges for Datalog. First,
+    a lot of the databases that support such sophisticated query optimization and
+    fancy join algorithms are not open source, which poses a barrier for widespread
+    adoption. Second, a major assumption of Datalog’s evaluation is that the database
+    must grow monotonically—that is, it never “deletes” a fact. This poses challenges
+    for memory constrained systems (e.g. [traversing a huge filesystem, or searching
+    over trillions of vertices](https://www.hillelwayne.com/post/graph-types/#:~:text=Everyone%20I%20talked,of%20a%20thousand.))
+    but in principle these problems are likely solvable with more research.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wonderful! Except for the “writing Datalog” part.
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If Datalog is so great, why hasn’t it seen more adoption?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The short answer is that Datalog is relatively esoteric outside of academia
+    and some industry applications and, as a result, is not a great language from
+    a “software engineering” perspective. It is hard for programmers accustomed to
+    imperative code to write Datalog programs, and large Datalog programs can be hard
+    to write and understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, in recent years, there has been research in the area of how to
+    make Datalog easier to use in everyday languages. The [Flix](https://flix.dev/)
+    language was originally created as an [extension of Datalog to support lattices
+    for program analysis](https://dl.acm.org/doi/10.1145/2980983.2908096) and nowadays
+    resembles an imperative language that also [natively supports Datalog constraints
+    and fixpoint computation](https://doc.flix.dev/fixpoints.html). The advantage
+    of “melding” Datalog with a traditional programming language is that you can express
+    all the graph traversal/fixpoint algorithms in Datalog with hopefully seamless
+    interop with traditional programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another research paper, [Functional Programming with Datalog (2022)](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2022.7),
+    explored a different approach to integrate Datalog into a traditional language:
+    instead of embedding Datalog into a traditional language, the authors compile
+    a (simple) functional programming language *into* Datalog. The technique is a
+    bit wild; at a high level, they (ab)use the demand transformation to “control”
+    the flow of Datalog evaluation (as traditionally Datalog rules can evaluate in
+    any order, but functional languages usually have an evaluation order defined by
+    control flow).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: And there are other papers that I haven’t mentioned ([Slog](https://arxiv.org/abs/2211.11573))
+    but if I keep listing prior work, I’d just be repeating the entire [reading list
+    of the Declarative Program Analysis and Optimization class being offered at Berkeley
+    this semester](https://inst.eecs.berkeley.edu/~cs294-260/sp24/), so I’ll stop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The point of all of this is: I think it is very possible that some future (mainstream?)
+    programming language will have serious support for Datalog. And this isn’t just
+    because Datalog makes recursive graph traversals easy to express—in recent years
+    there has also been [a lot of exciting research on incremental view maintenance](https://arxiv.org/abs/2203.16684)
+    in database systems. Imagine writing a complex graph traversal (or some other
+    reasonably incrementalizable algorithm) and getting efficient incremental updates
+    *for free*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In summary, the data model for graphs—relations, and the relational algebra—was
+    indeed invented in the ’70s. But recently there have been exciting developments
+    in the field: the adoption of Datalog by the program analysis community, recent
+    advancements in join algorithms ([WCOJ](https://dl.acm.org/doi/10.1145/3180143)),
+    a simple framework for incremental view maintenance ([DBSP](https://arxiv.org/abs/2203.16684)),
+    and in general, a renewed interest in Datalog. The database overlords have shown
+    me the light, and the light says that Datalog go brrr.'
+  prefs: []
+  type: TYPE_NORMAL

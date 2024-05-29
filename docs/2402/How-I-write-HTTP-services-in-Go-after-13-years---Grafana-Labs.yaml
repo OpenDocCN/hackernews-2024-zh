@@ -1,0 +1,803 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:43:25'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How I write HTTP services in Go after 13 years | Grafana Labs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/](https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Nearly six years ago I wrote a blog post outlining [how I write HTTP services
+    in Go](https://pace.dev/blog/2018/05/09/how-I-write-http-services-after-eight-years.html),
+    and I’m here to tell you, once again, how I write HTTP services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That original post went a little viral and sparked some great discussions that
+    have influenced how I do things today. And after years of hosting the [Go Time
+    podcast](https://changelog.com/gotime), discussing Go on [X/Twitter](https://twitter.com/matryer),
+    and gaining more experience maintaining code like this over years, I thought it
+    was time for a refresh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (And for those pedants who notice Go isn’t exactly 13 years old, I started writing
+    HTTP services in Go [version .r59](https://go.dev/doc/devel/pre_go1#r59).)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This post covers a range of topics related to building services in Go, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structuring servers and handlers for maximum maintainability
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips and tricks for optimizing for a quick startup and graceful shutdown
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to handle common work that applies to many types of requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Going deep on properly testing your services
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From small projects to large, these practices have stood the test of time for
+    me, and I hope they will for you too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who is this post for?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is for you. It’s for everybody who plans to write some kind of HTTP
+    service in Go. You may also find this useful if you’re learning Go, as lots of
+    the examples follow good practices. Experienced gophers might also pick up some
+    nice patterns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To find this post most useful, you’ll need to know the basics of Go. If you
+    don’t feel like you’re quite there yet, I cannot recommend [Learn Go with tests](https://quii.gitbook.io/learn-go-with-tests/)
+    by Chris James enough. And if you’d like to hear more from Chris, you can check
+    out the episode of Go Time we did with Ben Johnson on [The files and folders of
+    Go projects](https://changelog.com/gotime/278).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re familiar with the previous versions of this post, this section contains
+    a quick summary of what’s different now. If you’d like to start from the beginning,
+    skip to the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My handlers used to be methods hanging off a server struct, but I no longer
+    do this. If a handler function wants a dependency, it can bloody well ask for
+    it as an argument. No more surprise dependencies when you’re just trying to test
+    a single handler.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I used to prefer `http.HandlerFunc` over `http.Handler` — enough third-party
+    libraries think about `http.Handler` first that it makes sense to embrace that.
+    `http.HandlerFunc` is still extremely useful, but now most things are represented
+    as the interface type. It doesn’t make much difference either way.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I’ve added more about testing including some ‘opinions’.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I’ve added more sections, so a full read through is recommended for everybody.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The `NewServer` constructor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start by looking at the backbone of any Go service: the server. The 
+    `NewServer` function makes the main `http.Handler`. Usually I have one per service,
+    and I rely on HTTP routes to divert traffic to the right handlers within each
+    service because:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`NewServer` is a big constructor that takes in all dependencies as arguments'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It returns an `http.Handler` if possible, which can be a dedicated type for
+    more complex situations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It usually configures its own muxer and calls out to `routes.go`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, your code might look similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In test cases that don’t need all of the dependencies, I pass in `nil` as a
+    signal that it won’t be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `NewServer` constructor is responsible for all the top-level HTTP stuff
+    that applies to all endpoints, like CORS, auth middleware, and logging:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Setting up the server is usually a case of exposing it using Go’s built-in
+    `http` package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Long argument lists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There must be a limit at which point it stops being the right thing to do, but
+    most of the time I am happy adding lists of dependencies as arguments. And while
+    they do sometimes get quite long, I find it’s still worth it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, it saves me from making a struct, but the real benefit is that I get slightly
+    more type safety from arguments. I can make a struct skipping any fields that
+    I don’t like, but a function forces my hand. I have to look up fields to know
+    how to set them in a struct, whereas I can’t call a function if I don’t pass the
+    right arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It’s not so bad if you format it as a vertical list, like I’ve seen in modern
+    frontend code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Map the entire API surface in `routes.go`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This file is the one place in your service where all routes are listed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes you can’t help but have things spread around a bit, but it’s very
+    helpful to be able to go to one file in every project to see its API surface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of the big dependency argument lists in the `NewServer` constructor,
+    you usually end up with the same list in your routes function. But again, it’s
+    not so bad. And again, you soon know if you forgot something or got the order
+    wrong thanks to Go’s type checking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In my example, `addRoutes` doesn’t return an error. Anything that can throw
+    an error is moved to the `run` function and sorted out before it gets to this
+    point leaving this function free to remain simple and flat. Of course, if any
+    of your handlers do return errors for whatever reason, then fine, this can return
+    an error too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`func main()` only calls `run()`'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `run` function is like the `main` function, except that it takes in operating
+    system fundamentals as arguments, and returns, you guessed it, an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I wish `func main()` was `func main() error`. Or like in C where you can return
+    the exit code: `func main() int`. By having an ultra simple `main` function, you
+    too can have your dreams come true:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'EDIT: I used to do the `signal.NotifyContext` bit in `main` but Dave Henderson
+    (and a couple of others) pointed out that `cancel` wouldn’t get called, so I’ve
+    moved it into the `run` function.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The code above calls straight into `run` which creates a context which is cancelled
+    by `Ctrl+C` or equivalent. If `run` returns `nil`, the function exits normally.
+    If it returns an error, we write it to stderr and exit with a non-zero code. If
+    I’m writing a command line tool where exit codes matter, I would return an int
+    as well so I could write tests to assert the correct one was returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Operating system fundamentals are passed into run as arguments. For example,
+    you might pass in `os.Args` if it has flag support, and even `os.Stdin`, `os.Stdout`,
+    `os.Stderr` dependencies. This makes your programs much easier to test because
+    test code can call run to execute your program, controlling arguments, and all
+    streams, just by passing different arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table shows examples of input arguments to the run function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Value** | **Type** | **Description** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Args` | `[]string` | The arguments passed in when executing your program.
+    It’s also used for parsing flags. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Stdin` | `io.Reader` | For reading input |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Stdout` | `io.Writer` | For writing output |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Stderr` | `io.Writer` | For writing error logs |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Getenv` | `func(string) string` | For reading environment variables |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `os.Getwd` | `func() (string, error)` | Get the working directory |'
+  prefs: []
+  type: TYPE_TB
+- en: If you keep away from any global scope data, you can usually use `t.Parallel()`
+    in more places, to speed up your test suites. Everything is self-contained, so
+    multiple calls to `run` don’t interfere with each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I often end up with `run` function signatures that look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we’re inside the `run` function, we can go back to writing normal Go
+    code where we can return errors like it’s nobody’s business. We gophers just love
+    returning errors, and the sooner we admit that to ourselves, the sooner those
+    people on the internet can win and go away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gracefully shutting down
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you’re running lots of tests, it’s important for your program to stop when
+    each one is finished. (Alternatively, you might decide to keep one instance running
+    for all tests, but that’s up to you.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The context is passed through. It gets cancelled if a termination signal comes
+    into the program, so it’s important to respect it at every level. At the very
+    least, pass it to your dependencies. At best, check the `Err()` method in any
+    long-running or loopy code, and if it returns an error, stop what you’re doing
+    and return it up. This will help the server to gracefully shut down. If you kick
+    off other goroutines, you can also use the context to decide if it’s time to stop
+    them or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the environment
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `args` and `getenv` parameters give us a couple of ways to control how
+    our program behaves through flags and environment variables. Flags are processed
+    using the args (as long as you don’t use the global space version of flags, and
+    instead use `flags.NewFlagSet` inside `run`) so we can call run with different
+    values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: If your program uses environment variables over flags (or even both) then the
+    `getenv` function allows you to plug in different values without changing the
+    actual environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: For me, using this `getenv` technique beats using `t.SetEnv` for controlling
+    environment variables because you can continue to run your tests in parallel by
+    calling `t.Parallel()`, which `t.SetEnv` doesn’t allow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique is even more useful when writing command line tools, because
+    you often want to run the program with different settings to test all of its behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `main` function, we can pass in the real things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Maker funcs return the handler
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: My handler functions don’t implement `http.Handler` or `http.HandlerFunc` directly,
+    they return them. Specifically, they return `http.Handler` types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This pattern gives each handler its own closure environment. You can do initialization
+    work in this space, and the data will be available to the handlers when they are
+    called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be sure to only read the shared data. If handlers modify anything, you’ll need
+    a mutex or something to protect it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing program state here is not usually what you want. In most cloud environments,
+    you can’t trust that code will continue running over long periods of time. Depending
+    on your production environment, servers will often shut down to save resources,
+    or even just crash for other reasons. There may also be many instances of your
+    service running with requests load balanced across them in unpredictable ways.
+    In this case, an instance would only have access to its own local data. So it’s
+    better to use a database or some other storage API to persist data in real projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handle decoding/encoding in one place
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Every service will need to decode the request bodies and encode response bodies.
+    This is a sensible abstraction that stands the test of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I usually have a pair of helper functions called encode and decode. An example
+    version using generics shows you that you really are just wrapping a few basic
+    lines, which I wouldn’t usually do, however this becomes useful when you need
+    to make changes here for all of your APIs. (For example, say you get a new boss
+    stuck in the 1990s and they want to add XML support.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Interestingly, the compiler is able to infer the type from the argument, so
+    you don’t need to pass it when calling encode:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But since it is a return argument in decode, you will need to specify the type
+    you expect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: I try not to overload these functions, but in the past I was quite pleased with
+    a simple validation interface that fit nicely into the decode function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I like a simple interface. Love them, actually. Single method interfaces are
+    so easy to implement. So when it comes to validating objects, I like to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `Valid` method takes a context (which is optional but has been useful for
+    me in the past) and returns a map. If there is a problem with a field, its name
+    is used as the key, and a human-readable explanation of the issue is set as the
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The method can do whatever it needs to validate the fields of the struct. For
+    example, it can check to make sure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Required fields are not empty
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Strings with a specific format (like email) are correct
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Numbers are within an acceptable range
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you need to do anything more complicated, like check the field in a database,
+    that should happen elsewhere; it’s probably too important to be considered a quick
+    validation check, and you wouldn’t expect to find that kind of thing in a function
+    like this, so it could easily end up being hidden away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I then use a type assertion to see if the object implements the interface. Or,
+    in the generic world, I might choose to be more explicit about what’s going on
+    by changing the decode method to insist on that interface being implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this code, `T` has to implement the `Validator` interface, and the `Valid`
+    method must return zero problems in order for the object to be considered successfully
+    decoded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s safe to return `nil` for problems because we are going to check `len(problems)`,
+    which will be `0` for a `nil` map, but which won’t panic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The adapter pattern for middleware
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Middleware functions take an `http.Handler` and return a new one that can run
+    code before and/or after calling the original handler — or it can decide not to
+    call the original handler at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example is a check to make sure the user is an administrator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The logic inside the handler can optionally decide whether to call the original
+    handler or not. In the example above, if `IsAdmin` is false, the handler will
+    return an `HTTP 404 Not Found` and return (or abort); notice that the `h` handler
+    is not called. If `IsAdmin` is true, the user is allowed to access the route,
+    and so execution is passed to the h handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Usually I have middleware listed in the `routes.go` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: This makes it very clear, just by looking at the map of endpoints, which middleware
+    is applied to which routes. If the lists start getting bigger, try splitting them
+    across many lines — I know, I know, but you get used to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes I return the middleware
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The above approach is great for simple cases, but if the middleware needs lots
+    of dependencies (a logger, a database, some API clients, a byte array containing
+    the data for “Never Gonna Give You Up” for a later prank), then I have been known
+    to have a function that returns the middleware function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The problem is, you end up with code that looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This bloats out the code and doesn’t really provide anything useful. Instead,
+    I would have the middleware function take the dependencies, but return a function
+    that takes only the next handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The return type `func(h http.Handler) http.Handler` is the function that we
+    will call when setting up our routes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some people, but not I, like to formalize that function type like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is fine. Do it if you like. I’m not going to come around to your work,
+    wait outside for you, and then walk alongside you with my arm around your shoulders
+    in an intimidating way, asking if you’re pleased with yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason I don’t do it is because it gives an extra level of indirection.
+    When you look at the `newMiddleware` function’s signature above, it’s very clear
+    what’s going on. If the return type is middleware, you have a little extra work
+    to do. Essentially, I optimize for reading code, not writing it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An opportunity to hide the request/response types away
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If an endpoint has its own request and response types, usually they’re only
+    useful for that particular handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If that’s the case, you can define them inside the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: This keeps your global space clear and also prevents other handlers from relying
+    on data you may not consider stable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You sometimes encounter friction with this approach when your test code needs
+    to use the same types. And to be fair, this is a good argument for breaking them
+    out if that’s what you want to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use inline request/response types for additional storytelling in tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If your request/response types are hidden inside the handler, you can just declare
+    new types in your test code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an opportunity to do a bit of storytelling to future generations who
+    will need to understand your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let’s say we have a `Person` type in our code, and we reuse it
+    on many endpoints. If we had a `/greet` endpoint, we might only care about their
+    name, so we can express this in test code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s clear from this test that the only field we care about is the `Name` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`sync.Once` to defer setup'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If I have to do anything expensive when preparing the handler, I defer it until
+    that handler is first called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This improves application startup time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`sync.Once` ensures the code is only executed one time, and other calls (other
+    people making the same request) will block until it’s finished.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The error check is outside of the `init` function, so if something does go wrong
+    we still surface the error and won’t lose it in the logs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the handler is not called, the expensive work is never done — this can have
+    big benefits depending on how your code is deployed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Remember that by doing this, you are moving the initialization time from startup
+    to runtime (when the endpoint is first accessed). I use Google App Engine a lot,
+    so this makes sense for me, but your case might be different, so it’s worth thinking
+    about where and when to use `sync.Once` in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing for testability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: These patterns evolved partly because of how easy they are to test the code.
+    The `run` function is a simple way to run your program right from test code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You have lots of options when it comes to testing in Go, and it’s less about
+    right and wrong, and more about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How easy is it to understand what your program does by looking at the tests?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How easy is it to change your code without worrying about breaking things?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If all your tests pass, can you push to production, or does it need to cover
+    more things?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the unit when unit testing?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Following these patterns, the handlers themselves are also independently testable,
+    but I tend not to do this, and I’ll explain why below. You have to consider what
+    the best approach is for your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test the handler only, you can:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Call the function to get the `http.Handler` — you have to pass in all the required
+    dependencies (this is a feature).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Call the `ServeHTTP` method on the `http.Handler` you get back using a real
+    `http.Request` and a `ResponseRecorder` from the `httptest` package (see [https://pkg.go.dev/net/http/httptest#ResponseRecorder](https://pkg.go.dev/net/http/httptest#ResponseRecorder))
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Make assertions about the response (check the status code, decode the body and
+    make sure it’s right, check any important headers, etc.)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you do this, you cut out any middleware like auth, and go straight to the
+    handler code. This is nice if there is some specific complexity you want to build
+    some test support around. However, there’s an advantage when your test code calls
+    APIs in the same way your users will. I err on the side of end-to-end testing
+    at this level, rather than unit testing all the pieces inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I would rather call the `run` function to execute the whole program as close
+    to how it will run in production as possible. This will parse any arguments, connect
+    to any dependencies, migrate the database, whatever else it will do in the wild,
+    and eventually start up the server. Then when I hit the API from my test code,
+    I am going through all the layers and even interacting with a real database. I
+    am also testing `routes.go` at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I find I catch more issues earlier with this approach and I can avoid specifically
+    testing boilerplate things. It also reduces the repetition in my tests. If I diligently
+    test every layer, I can end up saying the same things multiple times in slightly
+    different ways. You have to maintain all of this, so if you want to change something,
+    updating one function and three tests doesn’t feel very productive. With end-to-end
+    tests, you just have one set of main tests that describe the interactions between
+    your users and your system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I still use unit tests within this where appropriate. If I used TDD (which I
+    often do) then I usually have a lot of tests done anyway, which I’m happy to maintain.
+    But I will go back and delete tests if they’re repeating the same thing as an
+    end-to-end test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This decision will depend on lots of things, from the opinions of those around
+    you to the complexity of your project, so like all the advice in this post, don’t
+    fight to do this if it just doesn’t work for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing with the run function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I like to call the `run` function from each test. Each test gets its own self-contained
+    instance of the program. For each test, I can pass different arguments, flag values,
+    standard-in and -out pipes, and even environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the `run` function takes a `context.Context`, and since all our code
+    respects the context (right, everyone? It respects the context, right?) We can
+    get a cancellation function by calling `context.WithCancel`. By deferring the
+    `cancel` function, when the test function returns (i.e., when the tests have finished
+    running) the context will be cancelled and the program will gracefully shut down.
+    In Go 1.14 they added the `t.Cleanup` method which is a replacement for using
+    the `defer` keyword yourself, and if you’d like to learn more about why that is,
+    check out this issue: [https://github.com/golang/go/issues/37333](https://github.com/golang/go/issues/37333).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is all achieved in surprisingly little code. Of course, you have to keep
+    checking `ctx.Err` or `ctx.Done` all over the place too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Waiting for readiness
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since the `run` function executes in a goroutine, we don’t really know exactly
+    when it’s going to start up. If we’re going to start hitting the API like real
+    users, we are going to need to know when it’s ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could set up some way of signalling readiness, like a channel or something
+    — but I prefer to have a `/healthz` or `/readyz` endpoint running on the server.
+    As my old grandma used to say, the proof of the pudding is in the actual HTTP
+    requests (she was way ahead of her time).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an example where our efforts to make the code more testable gives us
+    an insight into what our users will need. They probably want to know if the service
+    is ready or not as well, so why not have an official way to find this out?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To wait for a service to be ready, you can just write a loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Putting this all into practice
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Rolling simple APIs using these techniques remains my favorite way to go. It
+    suits my aims of achieving maintainability excellence with code that’s easy to
+    read, easy to extend by copying patterns, easy for new people to work with, easy
+    to change without worrying, and explicitly done without any magic. This remains
+    true even in cases where I use a code generation framework like our own [Oto package](https://github.com/pacedotdev/oto)
+    to write the boilerplate for me based on templates that I customize.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On bigger projects or in larger organizations, especially one like Grafana Labs,
+    you’ll often come across specific technology choices that impact these decisions.
+    gRPC is a good example. In cases where there are established patterns and experience,
+    or other tools or abstractions that are widely used, you will often find yourself
+    making the pragmatic choice of going with the flow, as they say, although I suspect
+    (or is it hope?) that there is still something useful in this post for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My day job is building out the new [Grafana IRM](/products/cloud/irm/) suite
+    with a talented group within Grafana Labs. The patterns discussed in this post
+    help us deliver tools that people can rely on. “Tell me more about these great
+    tools!,” I hear you scream at your monitor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most people use Grafana to visualize the operation of their systems, and with
+    Grafana Alerting they are pinged when metrics fall outside of acceptable boundaries.
+    With Grafana OnCall, your schedules and escalation rules automate the process
+    of reaching out to the right people when things go wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grafana Incident lets you manage those unavoidable all-hands-on-deck moments
+    that most of us are all too familiar with. It creates the Zoom room for you to
+    discuss the issue, a dedicated Slack channel, and tracks the timeline of events
+    while you focus on putting out the fire. In Slack, anything you mark with the
+    robot face emoji as a reaction in the channel will be added to the timeline. This
+    makes it very easy to collect key events as you go along, making debrief or post-incident
+    review discussions much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[Grafana Cloud](/products/cloud/?pg=blog&plcmt=body-txt) is the easiest way
+    to get started with metrics, logs, traces, dashboards, and more. We have a generous
+    forever-free tier and plans for every use case. [Sign up for free now](/auth/sign-up/create-user/?pg=blog&plcmt=body-txt)!*'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,645 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:33:55'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'NIST 800-207A: Implementing Zero Trust Architecture - InfoQ'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.infoq.com/presentations/nist-800-207a/](https://www.infoq.com/presentations/nist-800-207a/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Transcript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Butcher: I''m going to talk a little bit about zero trust. We''re going to
+    cover a few different things. We''re going to cover these four things primarily.
+    We''re going to get a working definition for zero trust that is tangible for folks.
+    I''m really tired of the FUD around zero trust, so we with the SP got a very specific
+    definition. I''m going to introduce that as identity-based segmentation. We''re
+    going to discuss a possible way that we can implement that using a service mesh
+    as one of the architectures. More generally, I''m going to outline how we can
+    move incrementally from network-oriented policy into identity-based policy.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why am I here talking to you all about it? I was one of the early engineers
+    on the Istio project, one of the more popular service meshes. Before then, I worked
+    across Google Cloud on a whole bunch of different stuff. I jokingly say if you
+    do enterprise-y things in Google Cloud, I probably worked on some of that code.
+    Specifically, like projects were my baby for a long time. From there, we actually
+    did very meshy things at Google and deployed that architecture internally, and
+    said, we think this might solve some powerful problems in the Kubernetes space
+    that are coming up. That's when we then started to work on the Istio project.
+    One of the other big hats that I wear, and probably the biggest reason I'm here
+    talking to you is that I co-author a set of security guidelines with NIST. I work
+    on two sets, the series SP 800-204A and SP 800-204B I helped write, which provide
+    guidelines for microservice security. The second one, which is hot off the press,
+    in fact, it was just finalized, it's been in draft for a few months. It was just
+    published, 207A, and that's all about zero trust. The 207 series is NIST series
+    on zero trust. 207A is the second installment in that. That's really what we're
+    going to be digging into. This is relatively new stuff. Again, we're going to
+    break it down in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Does Zero Trust Really Mean?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let's take a step back. What does zero trust actually mean? We'll walk
+    into a definition. The key thing I want you to understand is that a motivated
+    attacker can already be in the network. The question is, how can we limit the
+    damage that they can do? It's all about risk mitigation. I want to take a step
+    back, and then we'll build into a definition. It's something hopefully most folks
+    are familiar with, is something like an API gateway or just serving an application
+    to end users. There are a couple things that we always do. We always authenticate
+    the user when they come in. We hopefully always authorize that user to take some
+    action. If we're talking about an API gateway, maybe we additionally do some rate
+    limiting. Maybe we have some other policy like WAF that we might apply. There's
+    a bunch of different stuff that happen in the front door. Two big ones are that
+    we always authenticate and authorize the user. As we're thinking about somebody
+    can be in the network, somebody can be inside the perimeter, how do we minimize
+    the damage? Then, definitely, we probably want to start to do that same kind of
+    authentication and authorization for the workloads that are communicating as well.
+    Not just, do we have a user in session, but do we know what those users are using.
+    We want to be able to say, the frontend can call the backend, the backend can
+    call the database. On all those hops, there better be a valid end user credential.
+    Maybe we might even go further. We might say, if you're going to do a put on the
+    frontend, you better have the right scope in the end user credential. If you're
+    just going to do a get, then maybe you just need the read. We can build really
+    powerful policies as we start to combine these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, I led off with the attacker is already in the network. Every single time
+    I give a variation on this 207A talk, there's a different example that I can cite
+    of a network breach. In this case, for folks that follow the news, there was a
+    big bulletin put out by CISA in conjunction with Japan, about network breaches
+    driven by China in a variety of networks, for example. That one's very relevant.
+    This one is from a decade ago. Anybody know offhand where that picture is from?
+    That is actually from the Snowden leaks. Where U.S. Government was in the infrastructure.
+    The point here is that a motivated attacker can be inside the network. If our
+    only control, if our only security is at the perimeter, then you're already cooked.
+    This then brings us into zero trust. We want trust that is explicit. I actually
+    hate the phrase zero trust, it really should be called zero implicit trust, because
+    it's all about making where we have trust in the system explicit. Hopefully doing
+    that with a policy, so that we actually have a piece of code that enforces it.
+    We want trust that's not based on the perimeter because it's breachable. Therefore,
+    instead, what we need is a decision that's based on least privilege. We want to
+    do it per request, because requests can be, you may be doing different actions.
+    We want it to be context based. If you're accessing from the U.S. a whole bunch,
+    and then randomly, 5 minutes later, you're accessing from an entirely different
+    geography, something's probably a little fishy there. We want to have context-based
+    decisions. Again, those need to be on identities. More than just service identity,
+    we also want end user identity and potentially also we want device identity. Because
+    all of those factor in to the context for how we want to allow a user to access
+    a system. If I'm on a corporate approved device, and I'm logged in, and I'm coming
+    from my home geography, I probably can have a lot of access. If I'm on an untrusted
+    random device that's popping up in a weird geography like Russia, or Eastern Europe,
+    or something like that, then probably I want to give less access to that, because
+    that's not typical for how the system operates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Identity-Based Segmentation (Zero Trust Segmentation)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With that high-level definition for zero trust, let me bring in identity-based
+    segmentation. This is the main thrust of 207A. We defined a few different things,
+    probably three things in 207A that I'll talk to you about, but identity-based
+    segmentation is the big one. Microsegmentation is isolating workloads at the network
+    level. Ideally, we want to do that down to the individual IP address, so we have
+    pairwise policy for who can access whom. We want to do the same thing at the identity
+    layer. We want tamper proof cryptographically verifiable identities for the user,
+    for the device, for the service. We want to use those identities to make that
+    previous decision that I talked about, this context-based per request, least privilege
+    decision. Ideally, we might use network parameters as part of our risk-based assessment.
+    They should not be the only discriminate that we're making an access decision
+    on. However, again, we're going to be cooked because a privileged spot in the
+    network is not a good enough security boundary today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is identity-based segmentation? It's these five things. If there's anything
+    that you walk out of this talk with, if this is it, these are the five runtime
+    activities you need to be doing at minimum, these things, and you can call yourself
+    a zero-trust posture. There's a lot more we can do besides these, and maybe should
+    do besides these. This is a minimal working definition. We want five things, encryption
+    in transit. Really, we want this for two reasons. One, we want message authenticity.
+    I want to know that somebody can't change the message that I sent. Then, two,
+    we want eavesdropping protection. I want to make sure that somebody else can't
+    look at the data that I'm sending if the data is sensitive. Then, on top of that,
+    we want to know, what are the workloads that are communicating? Is the frontend
+    calling the backend? Is the database calling the frontend? Which parts of our
+    system are communicating from the software perspective we're deploying? Then,
+    with identities, we should authorize that access. Again, we should do that per
+    request. Then, exactly like I said before, we want to additionally incorporate
+    that end user credential and the end user authorization decision as well. We want
+    to do all five of those things. Ideally, we want to do them at every single hop
+    in our infrastructure. If we achieve that, if we're doing this, then our answer
+    to, what happens if there's an attacker on the network? Hopefully, we have a pretty
+    decent answer. Because the answer is, now they need to steal a credential. We'll
+    get into the model a little bit more, but they need to steal an end user credential.
+    They need to compromise a workload or steal a workload credential. Those are very
+    ephemeral credentials too. I'll talk about the service mesh, and Istio in particular,
+    workload identities may last 24 hours or even as little as one hour. End user
+    credentials typically last on the order of 15 minutes or so without refresh. We
+    can start to combine these things, we start to limit an attacker in time and in
+    space. We mitigate the damage that they can do. I'll touch on this more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Service Mesh
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The service mesh is one of the key ways that we discuss implementing this in
+    the SPs. It's not the only way that you can implement these capabilities, but
+    it is a very powerful way to do that. I'll dig into that. If you're interested
+    in some of the other use cases beyond identity-based segmentation, there's some
+    of the other SPs that cover microservice security that go into service mesh a
+    lot more. How can we use a service mesh to do the segmentation? Just to level
+    set for everybody what even is a service mesh, what we do is we take a proxy,
+    a web proxy, a reverse proxy, in Istio we use the implementation Envoy, but you
+    can think of something like an NGINX, or similar as well. We put that beside every
+    instance of every single application, and we force all network traffic into and
+    out of the application through that proxy. What that lets us do is have an application
+    identity and do encryption on behalf of the application. We can make load balancing
+    decisions on behalf of the application. We can do service discovery and load balancing.
+    We can do things like resiliency, timeouts, keepalives, retries on behalf of the
+    application. You can get operational telemetry out of the system to help you close
+    the loop. When you make a change, you can see what the effect of that change is,
+    is it doing what you intended or not? Then change it, again, if it's not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, there's quite a few capabilities here. If you're going to have any distributed
+    system, you have to have these capabilities. The service mesh is not novel in
+    bringing these capabilities into play. What is novel about the service mesh, is
+    that it lets us do all of these consistently across your entire fleet of applications,
+    regardless of the language that we're in, because we're working at the network
+    level, and we're intercepting network traffic. It gives us centralized control,
+    so we have those proxies, that sidecar beside every application instance. We have
+    a central control plane that manages it. We can push declarative configuration
+    to that control plane, and it will enact that configuration on all the sidecars
+    in the order of less than a second, typically. We have a very fast, very responsive
+    system. We can see signals out to see if it's in the state that we want it to
+    be. If it's not, we can push configuration, have it go into effect almost instantaneously.
+    Then watch and see if it is in the state that we want it again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I worked on Istio. Istio is the most widely deployed mesh. Istio is also a CNCF
+    project now. Envoy the CNCF project is the data plane there. Envoy is handling
+    the bits and the bytes of your request. It's the sidecar. Istio is what's programming
+    that Envoy at runtime. A couple key ideas that I want to give you all as well,
+    as we're thinking through this framework of, how do I limit access for zero trust?
+    How might we use a service mesh? The first key idea is that that sidecar forms
+    a policy enforcement point. The idea is because it's intercepting all the traffic
+    in and out, we can use that to put whatever policy we want. I mentioned things
+    like encryption. I mentioned things like observability. We can also do things
+    like integrate with OPA. We can do things like integrate with our identity provider
+    to do SSO on behalf of applications. We can build a custom library that does something
+    that's specific to our business, and enforce that it's called via the service
+    mesh. The idea is that when we have policy that we want to apply across the board,
+    not just to one set of applications, but to most applications in our infrastructure,
+    we can leverage integrating at once with the service mesh to do the enforcement
+    and not have to go app by app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you go back to the old school access control literature from the 1970s, that's
+    where the notion of a kernel comes from. That's where we talk about the idea of
+    a reference monitor, the thing that intercepts all the traffic and enforces policy.
+    Then extending that, the service mesh itself, and this is one of the key ideas
+    why the NIST folks were so interested in the mesh, can potentially be that security
+    kernel for our modern distributed system. If we think of the operating system
+    kernel and the security capabilities it provides for processes that run on our
+    operating system, it provides isolation. These days it provides cgroups and namespaces
+    to provide soft multitenancy with containers. It provides the Unix file permissioning,
+    as another mechanism of access control. There are quite a few access control systems
+    that we build into the operating system kernel, and we leverage them to protect
+    our applications. The idea is that the service mesh can be the same thing in our
+    distributed system. Rather than deploying processes onto a host, we're deploying
+    microservices into our infrastructure. In the same way that the operating system
+    provides a key set of capabilities, regardless of the application, the service
+    mesh can provide a consistent set of security capabilities, regardless of the
+    app that's running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this way, the service mesh facilitates cross-cutting change. I mentioned
+    we can integrate whatever policy it is, whether that's traffic routing, whether
+    that's security, observability, we can integrate that into the service mesh to
+    enforce it. We can change it and manage it centrally, which means that a small
+    group of people can act on behalf of the entire organization to enact policy and
+    make change. There's no free lunch, we can't get rid of the complexity. We want
+    to do encryption everywhere. Somebody still needs to integrate with a PKI, and
+    to get certificates there. The service mesh lets you do that one time, integrate
+    it with the service mesh, and then all apps benefit. One example. It can be a
+    force multiplier that we can use to concentrate the complexity that we need to
+    deal with on a small team that's well equipped to deal with it. Rather than, for
+    example, in the case of encryption, needing to make every app team go and implement
+    some encryption library in their own system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To bring this back, if we look at our five tenets for identity-based segmentation,
+    we can use the service mesh to achieve all of them. First off, we can achieve
+    encryption in transit. The service mesh gives you a strong application identity.
+    We use a system called SPIFFE to do this, and we issue a normal certificate that
+    encodes the application identity, and we can use that to do encryption in transit,
+    mutual TLS, specifically. Then using that certificate, we can authenticate our
+    workloads that are communicating, which means then that we have the opportunity
+    to apply authorization. We know exactly what workloads are communicating, we've
+    authenticated them. We know for real, it's them. Now we can actually decide, is
+    the frontend blob call the database directly? No, probably not, it needs to go
+    through the backend. We can start to enforce that policy. Then we can integrate
+    the sidecar as a policy enforcement point for our existing identity and authorization
+    system for end users. The service mesh itself is not well suited to model user
+    to resource access or that kind of thing. It's good at modeling service-to-service
+    access. We want to delegate out to our existing systems to handle end user authentication
+    and authorization. The service mesh provides tools for integrating with those
+    systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving Incrementally
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final thing that I want to cover then, is how can we start to move incrementally
+    from the current system that we have today, a perimeter-based system, into some
+    of this identity-based policy? What are some of the benefits of doing that? First
+    off, policy at any one layer is going to have shortcomings and pain. If we think
+    about just network policy and identity-based policy, one of the biggest pain points
+    with network-based policy today is it usually takes a long time to change. Who
+    here has like a firewall in their organization that they have to go change when
+    they do stuff? Who here can change the firewall in less than two weeks? Normally,
+    every single organization I think I've ever talked to ever, it's six weeks to
+    change the firewall. I don't know why it is. How long does it take? It's six weeks.
+    Got to go to the spreadsheet, got to find the CIDR. It's not well suited for the
+    highly dynamic environments that we're deploying in today. Cloud, in particular,
+    with auto scalability and things like that are not well suited to traditional
+    network controls. We either need to use more sophisticated and usually more expensive
+    technology to do that, or we need to hamper our ability to use things in cloud,
+    slow down the organization to fit it into the existing process, which is a nonstarter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Identity-based policies, and this is something as an industry, we don't have
+    a lot of experience managing identity-based policy, in this sense, in the same
+    way that we have with network-oriented policy. Some of the challenges people haven't
+    hit yet. One of the more obvious and initial ones that you hit is that even something
+    simple like a service has a different identity in different domains. If I'm running
+    it on-prem on a VM, it probably has a Unix username that we've allocated in our
+    system for it to run as, but if we're in cloud, GCP, it's going to have a service
+    account. If it's in AWS, it's also going to have a service account, in Azure and
+    many of the other ones. The problem is those service accounts aren't the same.
+    If I want to do something like, the frontends can call the backend, and I want
+    to do that regardless of where the two are deployed, then there's some complexity
+    in how I map those identities across different identity universes, like different
+    cloud providers and on-prem. Then, finally, the other big 800-pound gorilla in
+    the room is that even if we totally bought into identity-based policy, and we
+    say, yes, that's the way, in most regulated environments, we can't actually get
+    rid of the network-based policy yet. Because either auditors or regulators expect
+    it, or I have a document that was written in 1992, that sets the security posture
+    for the organization. It says that there have to be network segments. It's more
+    expensive to change that document than it is to pay Cisco millions of dollars
+    to do network segmentation. For a variety of different reasons in organizations,
+    we can't totally eliminate network-oriented policies or network level policies,
+    even if that's desirable. I don't think it necessarily is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-Tier Policies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Instead, we want these two layers to live together. What we would like to do
+    is start to tradeoff between the two, so that we can minimize some types of policy
+    in the network level, offset them with identity-based policies. The hope is that
+    we can get more agility out of our system, as a result. I'll give you some specific
+    examples of doing that. If we talk about multi-tier policies, there's many more
+    layers of policy, actually, but we try and keep the SP very short and focused.
+    It's about 18 pages long, about 12 pages of content, if you want to go read it.
+    Most SPs tend to be 50 or 60 pages long. We really kept it focused. At minimum,
+    two policies, network-tier policies, things like firewall rules, identity-tier
+    policies, things like I just talked to you about, like application based stronger
+    identities with authorization. What we can start to do is, where we need to do
+    things like traverse a firewall, we can start to incorporate identity-based policy,
+    and relax some of our network rules. In particular, today, with a network-oriented
+    scheme, when I have two applications, maybe one's on-prem and one's in cloud,
+    or it's my two on-prem data centers or two different cloud providers, doesn't
+    really matter, and I want them to be able to communicate. I typically need to
+    go change the firewall rules in my organization, pairwise. I need to say App A
+    can now call App B, or Service 1 can call Service 2\. If tomorrow Service 1 needs
+    to call Service 3, I need a new firewall change, and I'm back in the six-week
+    cycle of firewall updates. This is a huge killer of agility in folks that we talk
+    with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, what we can do is deploy identity-aware gateways. Instead of having
+    these pairwise rules that we need to update regularly, we can deploy these identity-aware
+    proxies or gateways, instantiate a single set of firewall rules that say, these
+    two sets of workloads can communicate. Then, when we have pairwise applications
+    that need to consume, we can authorize that with an identity-based policy that
+    says, Service 1 and Service 2 can communicate over the bridge. In this way, what
+    we've done is we still have all of our network controls. Our user requests still
+    traverses all the network controls that the organization already had, but we've
+    been able to offload the policy change from network to identity. The key idea
+    is that a network-based policy is a CIDR range. Who knows what a CIDR is and what
+    app it is. An identity-based policy should correlate very strongly to the application
+    that's running. If your runtime identity doesn't match the application's identity
+    internally, something is probably a little funky. We want these things to line
+    up. Typically, we can change an identity-based policy much more rapidly, because
+    a human can read and understand the frontends in the default namespace, once it's
+    called the backend and the default namespace, a lot more easily than I can understand
+    that 10.1.2.4/30, can call 10.2.5/24\. Who knows what that means? That's why we
+    can get a faster rate of change by offloading here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More than just two layers of policy, typically, we have quite a few layers of
+    policy in our systems. We typically have a coarse-grained segmentation of internet,
+    intranet. Likely we have broad segments there, a DMZ, an app zone, a business
+    zone, the data zone. Again, we already tend to stack these policies today. For
+    folks that implement microsegmentation in their networks, how many of you all
+    did away with your coarse-grained segments when you moved to microsegments? The
+    answer is we tend to keep both and stack them additively. Then Kubernetes brings
+    in a whole additional challenge because it's a virtual network. We have a new
+    set of techniques like the CNI providers to control network policy there. Those
+    have some better tradeoffs versus traditional network rules, because they're built
+    for the dynamism. Fundamentally, there's still a layer 3, layer 4 policy. Whereas
+    we really want to get application identity and end user identity, those are layer
+    7 things. That's why we like to see the service mesh stack on top of all of these.
+    I think of it as almost a layered cake, as we're going up. You can think of it
+    as Swiss cheese, if you really want to think about the defense in depth. We're
+    trying to make it hard to get through.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages of Multi-Tier Policies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Why would we do this? One, if we do it in this way, then we can start to sit
+    these new identity-based policies on top of our existing network policies. It
+    provides a defense in depth because, again, we're still going through our traditional
+    network controls, but we now have this identity layer as well on top of the network
+    controls. Of course, the service mesh already mentioned, can enforce this, because
+    it's non-bypassable, it's verifiable. We talk about this at length in SP 800-204B.
+    The key thing that I want you to take away is that we don't need to get rid of
+    firewalls or WAFs or similar. What you should feel comfortable in justifying to
+    your organization is that you can relax those controls in exchange for introducing
+    identity-based controls. The key is in your organization to get the right balance
+    so that you can still move fast, but keep the security and the risk side where
+    it needs to be for that part of the org.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Define and Deploy Identity-Tier Policies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At a high level, how would we start to do this? What we want to do is begin
+    to implement identity-based segmentation in the subsets of our infrastructure.
+    If we have multiple data centers, start by just trying to implement that policy
+    in data center. Then after you have a good notion of this identity-based segmentation,
+    then we can start to do some of the more advanced patterns, like tiering these
+    gateways together and some of those patterns as well. Certainly, you don't need
+    to have 100% identity-based segmentation rolled out to be able to do some of those
+    gateway style patterns. You do need at least enough to be able to authenticate
+    and authorize the services and the users that are going over that tunnel. Again,
+    same controls that their user app traverses, that's key, because we don't want
+    to have to go change the existing security policy, but we do want to make things
+    better where they are so that we can move faster as an organization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Zero-Trust Mental Model (Bound an Attack in Space and Time)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I mentioned the big mental model when it comes to zero trust. We want to bound
+    an attack in space and in time. We want to minimize what an attacker can do inside.
+    One of the key things there is that by stacking these identity-based policies
+    with the network-based policies, we help bind an attacker in space and in time.
+    Obviously, network-based policies impact when an attacker can pivot to attack
+    when they already control one workload. In the same way, fine-grained authorization
+    policies at L7, help limit the blast radius of what an attacker can get to. Then,
+    like I mentioned, those ephemeral credentials. End user credentials usually have
+    a 15 minutes expiry, and the service mesh service credentials tend to have anywhere
+    from 1 to 24 hours expiry. For an attacker to perpetrate an attack, they need
+    to have both the service credential and an end user credential. They need to have
+    the right scope so that we can actually get through and pivot to the system that
+    we actually want to target. Because of the expiry, I need to either have a persistent
+    control of the workload so that I can continue to re-steal those credentials,
+    or I need to perpetrate an attack repeatedly to re-steal after they expire. Either
+    way, the goal is make it as hard for the attacker as possible. Both of those schemes
+    help increase the difficulty, help bound an attacker in space and in time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions and Answers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Participant 1: With all these identities and [inaudible 00:29:43] with credentials,
+    I think debugging this configuration will be tricky. Do you offer any tooling,
+    like formal tools to verify the credential?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: This is an area that''s still pretty nascent today. The service mesh
+    is not the only way you can implement those controls. There''s a lot of ways that
+    you can implement those. One of the advantages of the service mesh is that it
+    produces metrics out. You can actually observe, what is the state of the system?
+    Let me apply a policy. Is it correct or not? What we''re starting to see then
+    is tooling built on top of that, and it''s still early days there. For example,
+    one of the things we have is a CLI that will basically say, give me 30 days of
+    telemetry data, and I''ll spit out for you fine-grained authorization policies
+    that model that 30 days of access. Tooling is getting there, but it''s still very
+    early days for it. That''s one of the things I think we''ll see mature pretty
+    quickly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Participant 2: Since you mentioned service mesh is just one layer you might
+    drop it for this auth. Service meshes have a big [inaudible 00:30:59] especially
+    at some very large companies'' scale, if you want to run on the same control plane,
+    it can present a large single point of failure. For those of us that will maybe
+    sell us service mesh, if you want, but what recommendations do you have for those
+    [inaudible 00:31:24]?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: In this world, consistency is your biggest asset. If I''m coming at
+    this de novo, I''m either a small organization, or I''m trying to approach this
+    without service mesh. There are some maybe modern deployment things that we can
+    do with the service mesh to mitigate some of the pain you have, but not all of
+    it. In short, what I would start to do is focus on libraries. For example, if
+    you''re in a smaller organization, where, hopefully, we have a consistent set
+    of languages that we''re dealing with, especially if you''re a pretty small shop,
+    you have exactly one language that you''re dealing with. In which case, first
+    off, make it a monolith. Secondly, implement those exact five controls, but just
+    do it in library. Nowadays, you can get pretty far with a framework like gRPC.
+    Even regardless of language, you can get pretty far with a framework like gRPC
+    with respect to implementing all five of those controls. My first piece of advice
+    would be something like that, tackle it with either a library, if you have a very
+    small set of languages. If you''re a small shop with a small number of services
+    and small number of developers, don''t do microservices. Why would you do that?
+    Keep it as a monolith for as long as you can get away with keep things simple
+    for yourself. That''s how I would start.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, again, as we're growing up in scale and heterogeneity, either you allocate
+    a bigger team to do things like that library work in the different languages that
+    developers are developing in. There's a set of challenges there around update
+    and deployment and lifecycle. Eventually, that's where we see the tipping point
+    for service mesh to become interesting for folks, is that the work to maintain
+    a consistent set of libraries updated across the organization, and have compatibility
+    across different versions, and all of that, tends to be expensive. Things like
+    gRPC make it a lot more tractable, and not just gRPC, you could use Spring Boot
+    or other things. Somewhere along that journey, it tends to be that the service
+    mesh starts to become more attractive. There's also a lot of things you can do
+    these days, to have more refined blast radius with your service mesh deployment.
+    In particular, we would recommend keeping them one to one with your Kubernetes
+    clusters, so that you have a refined blast radius there, that is your cluster.
+    Then there's a set of techniques you can do to either shard workloads in the cluster
+    if you're really a huge scale and you need multiple control planes. Or there's
+    a set of configurations that you can use with the service mesh to help limit what
+    config has to flow where. Things like in Istio, the sidecar API resource that
+    gives you much better performance overall. The final thing I'll mention in Istio
+    world is Ambient, that is a node-level proxy that does some of these capabilities.
+    That is yet again a cheaper way to start service mesh adoption in places where
+    you don't have these capabilities yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Participant 3: [inaudible 00:34:32], it''s a very diverse type of shop. The
+    moment we bring up zero trust, it''s always the network thing that comes into
+    the picture, and this and that, now we''ve connected the network. Do you have
+    any recommendations about how we can make the case [inaudible 00:34:51].'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: Show them this 207A, that''s why I wrote it. Legitimately, this is
+    a big problem that we hit all over the place. I''m joking but I''m not. I regularly
+    talk with folks, and people think, or say, or vendors market that zero trust is
+    a network activity. What I talked about is only the runtime side of zero trust.
+    That''s the easy part. The people, process, changes are the hard part. I totally
+    skipped over those. What arguments to make for the network team, one, the agility
+    argument that I made. What is the time to change a policy, and is that hurting
+    development agility? Then you can case it in terms of, what are the features that
+    aren''t getting deployed to our users because of network pain, because of the
+    time it takes for us to do things like policy changes? That''s one angle that
+    I would attack it at. The other one is just that, again, you need these authentication
+    and authorization pieces as well. The network can do only a portion of that. We
+    really need a stronger identity, certainly at the user level. Additionally, we
+    would like that at the service level too. Those are some of the things I would
+    harp on. You can start to get into things like the layer 7 controls. For example,
+    you can say, it''s not just that the frontend can call the backend, I could have
+    a microsegmentation policy that models that. You can say, the frontends can only
+    call put on the backend, only that one method. That''s something that a traditional
+    network policy could not model. Then we can go even further and say, you can only
+    call put in the presence of a valid end user credential, if that end user credential
+    has the right scope, and a put case right scope, for example. Hopefully, it''s
+    pretty clear for folks why that would be a tighter boundary or a better security
+    posture than strictly a network oriented one. That''s how I would start to do
+    it. Legitimately, the reason I helped write some of these with NIST is to move
+    the ball for those teams. For folks, especially that are in banking, for example,
+    the FFIEC has already included some of this stuff in their guidance, and in their
+    IT handbooks. If you''re in the banking or financial spaces, go pull up the FFIEC
+    IT handbook on architecture. There''s a microservices section, and it cites all
+    this stuff. That would be your justification in that industry, for example. It
+    may or may not help yours. In different industries, we''re actually already seeing
+    these guidelines be enforced to standards.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Participant 4: I''m pretty sold on service mesh. We''re using it in production
+    in a couple different places. A lot of what you''re talking about here resonates
+    really well. I''d be curious, you brought all these white papers. One thing we
+    worry about is there''s an obvious tradeoff, you worry about all the power of
+    the centralized control. I think now at this point, if I''m an attacker of the
+    Kubernetes system, what I really want is to take over Istiod. That''s my attack
+    vector I''m looking for. I''ll be straight off and I wanted you to speak to that
+    a little bit. Is that something you guys think about?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: Yes, it definitely is. This goes back to that core idea of the service
+    mesh potentially being in the kernel. One of the implications there is that, in
+    the operating system, the kernel code gets pretty close inspection, it gets a
+    lot of security review. There are a lot of bug bounties. There''s a lot of value
+    in finding a kernel exploit, whether you''re white hat or black hat, there''s
+    a lot of value there. The economics of the environment are set up to hopefully
+    make that so you''re going to turn to them and do that. We do similar things with
+    the service mesh. Would you rather have a service mesh that''s tackling these
+    security postures and one code base that you audit? All the enforcement happens
+    in Envoy, so let''s do security audits on Envoy data path. The control plane configuration
+    happens in the control plane, let''s do audits on that. Or if instead, we could
+    do encryption, the AuthN, the AuthZ for end users and for services in every app.
+    Either that''s AppDevs writing it 10 different times, or 100 different times,
+    or hopefully you use a library or something like that. The point is, there''s
+    one code base that we can audit as opposed to many. Because that''s a shared code
+    base and it''s open source, and things like bug bounties already exist for the
+    Istio code base, we can have some higher level of assurance that it''s secure.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's no magic there. Just like the operating system kernel is the attack
+    vector that people are very interested in, in the distributed world, the service
+    meshes can be too. I think all the service mesh vendors have pretty robust security
+    practices. The Linkerd folks have pretty good practices there. I know firsthand
+    that Istio security practices in response to CVEs is excellent. It is something
+    we think about deeply. We know it's an attack vector, it's the clear thing you
+    want to take over. The point is, we can focus our inspection there, we can focus
+    our security audits there and gain assurance for the whole system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Participant 5: Or definitely, they can add propagating service principles as
+    well as user principle context across the vertical. As you hinted at with Istio''s
+    particular service mesh, you can propagate service identities through DNs, through
+    service mesh encrypt, mutual TLS. What do you think about that versus pushing
+    it up slightly further into layer 7 into say a JWT token, [inaudible 00:41:11]?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: There''s actually prior art in the space. The Secure Production Identity
+    Framework for Everyone, SPIFFE, is what all the service meshes today use for application
+    identity. SPIFFE was created by Joe Beda of Kubernetes creation fame. SPIFFE was
+    actually loosely based on a Google internal technology called LOAS. There was
+    a white paper written on that they called ALTS, Application-Level Transport Security.
+    Exactly what you''re talking about. That has an interesting set of capabilities.
+    If we do it at that layer, we can do things like propagate multiple services.
+    We can propagate like the service chain, the frontend called the backend, called
+    the database. Then we don''t need to look at policy that''s pairwise. We don''t
+    have to say the frontend called the backend, and the backend called the database.
+    We can have the full provenance of the call graph, and we can make a decision
+    on that. We can say, the database can only be written to if the request traverses
+    the frontend and the backend, and only these methods of that. It can only be read
+    if it traverses these paths. There''s a huge amount of power in having an application
+    identity or service identity. One problem there is you still need to handle encryption
+    in transit. That''s fine. There''s a lot of ways to do that. That''s not a huge
+    deal, but you do need to handle it. Then, two, there seems to be more runtime
+    costs there. A lot of folks have not pursued that one, because, due to that chaining,
+    you tend to have to reissue JWTs since there''s a lot of signing pressure on your
+    JWT server. There''s a set of tradeoffs there. Basically, at runtime, we''ve seen
+    that it''s pretty decent to do mTLS for app identity. There''s plenty of prior
+    art for doing service identity in the app level, in a thing like a JWT, and even
+    nesting the JWTs and having end user and service JWTs together. All of those are
+    good and valid. You don''t have to do with SPIFFE and mTLS, like the mesh does.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Participant 6: In terms of the identity security, how do you see the role-based
+    security and the mesh service?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Butcher: How do we see RBAC, role-based access control, and other access control
+    paradigms when it comes to the service mesh?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When it comes to authorizing service-to-service access, use what scheme works
+    well for you. In Istio, there's a native authorization API that is an RBAC style
+    API. In that world, if you're doing just pure upstream Istio, you're just writing
+    straight RBAC, basically. That's the only option you have, when it comes to service-to-service
+    access. There are definitely other schemes out there. Plenty of folks implement
+    it with something like OPA, Open Policy Agent, and they encode their policy about
+    service-to-service access there. That has a very different manifestation and policy
+    language, comparatively. From the point of 207A, we don't really care what the
+    authorization mechanism is. If you go read SP 800-204B, we make the strong argument
+    that next generation access control, NGAC, is the access control system you want
+    to be using for service-to-service access. It's a modern RBAC. That's one of the
+    key areas I do research in, is access control in general and next generation access
+    control specifically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**See more [presentations with transcripts](https://www.infoq.com/transcripts/presentations/)**'
+  prefs: []
+  type: TYPE_NORMAL

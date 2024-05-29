@@ -1,0 +1,247 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:29:45'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does Your Test Suite Account For Weak Transaction Isolation? | Concerning Quality
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://concerningquality.com/txn-isolation-testing/](https://concerningquality.com/txn-isolation-testing/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Transaction isolation is the kind of thing that you learn about and it fills
+    you with fear. Specifically, there are *weak* transaction isolation levels which
+    allow some fairly unexpected behavior. Tools like Jepsen are used to test the
+    general isolation guarantees of databases, but it’s pretty uncommon to check the
+    application layer for issues related to isolation anomalies. These anomalies can
+    impact actual domain logic, so it’s important to understand them as well as how
+    we can test them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Weak Transaction Isolation?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Transaction isolation means that concurrent transactions against a database
+    will be independent of one another. It’s the “I” in ACID. Unfortunately, “independence”
+    in this context is a spectrum, and there are actually different isolation levels
+    that are supported, each with subtly different behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a quick example script which makes concurrent queries against a database
+    (Postgres):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This script executes two transactions concurrently: one that reads the `txn_iso.ival`
+    column two different times, and another which modifies the value of that column.
+    There’s some sleeps sprinkled in so that the second read occurs after the write.
+    The question is: do both reads return the same value?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Postgres, with the default transaction isolation level set, the answer is
+    surprisingly no. This is an example output of running the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first read will return the value of the column at the time that the read
+    transaction begins, but the second read will return the value that was updated
+    by the concurrent write transaction. That’s because the default level is Read
+    Committed, which allows non-repeatable reads. A non-repeatable read means that
+    in the span of the same transaction, queries to the same column may return different
+    results! This isn’t unique to Postgres either - Read Committed is the default
+    isolation level in Oracle and SQL Server as well^.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is surprising to a lot of people, and rightfully so, since it seems to
+    go against the very definition of what a transaction is. But that’s because Read
+    Committed is a *weak* transaction isolation level. Weak isolation means that transactions
+    aren’t truly independent from one another, and the effects of one concurrent transaction
+    can be seen in another. There’s 4 isolation levels defined by the ANSI SQL standard^(.
+    All but Serializable, which is the strictest, are weak and allow some kind of
+    interference between transactions.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hopefully it’s clear why this is an issue. If you have an important column value,
+    say a user’s account balance, you might query multiple different values in the
+    same transaction which will surely result in a domain logic bug. Will our test
+    suites catch such bugs? That depends how we set up the tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simulating Concurrent Connections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The difficulty with coming up with tests that expose transaction isolation anomalies
+    is that the test has to simulate multiple concurrent connections. Test cases almost
+    always have the implicit assumption that they’re being executed by a single user,
+    and isolation anomalies don’t show up in that scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, here’s some oversimplified code for making outbound transfers
+    from an account with overdraft protection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The main logic that we want to test is that overdraft protection adds additional
+    funds when there’s not enough to cover a transfer, and that the final balance
+    is correct. To test this, we’re placing all queries behind a `BalanceRepository`
+    interface and creating a `protectedBalanceRepo` which starts out with insufficient
+    funds but updates the balance based on overdraft protection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the operation from the perspective of a single user and thus a single
+    DB connection, so the insufficient funds error won’t get hit. As we saw with the
+    Read Committed example though, another concurrent transaction can affect a value
+    that’s read multiple times. So one way to simulate a concurrent transaction is
+    to simply ignore the overdraft protection and specify a different balance result
+    directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This test double sets up two different balance results: it’ll first return
+    100, which will bypass overdraft protection, but the next balance check will return
+    90 which will result in an insufficient funds error. One way this would be possible
+    in real life is if multiple people have access to the same account and initiate
+    a transfer in close proximity to one another.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s a simple fix for this failure: just don’t read the balance multiple
+    times, and instead pass in the sampled balance to any function that needs it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now the logic of `checkOverdraftProtection` and `applyFundTransfer` can get
+    changed to use a balance value instead of querying it. This also means that `checkOverdraftProtection`
+    has to return the balance after protection is applied since `applyFundTransfer`
+    used to get this value with the second balance query, and using the pre-protection
+    balance will result in an insufficient funds error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This solves the repeatable read anomaly by avoiding multiple reads, but there’s
+    still a major issue: there’s a race condition between multiple concurrent transactions
+    that can result in an incorrect balance.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Race Conditions and Serializability
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To show the error we can execute two fund transfers concurrently against the
+    actual DB, and we can introduce a write delay so that we can control which one
+    writes last (we’d see errors even without this, but this reduces the non-determinism):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: When this is run, the transfers will see the same initial balance (100), but
+    the one with the write delay will overwrite the balance set in the other one.
+    This also means that neither transfer will trigger overdraft protection, there
+    will be no insufficient funds error, and the resulting balance will be an incorrect
+    value of 20.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a *serialization anomaly*. The Postgres docs define this as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result of successfully committing a group of transactions is inconsistent
+    with all possible orderings of running those transactions one at a time.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'There are only two possible orderings of the two fund transfers here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transfer 80, then transfer 60
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Transfer 60, then transfer 80
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Since the starting balance is 100, both of these cases should trigger overdraft
+    protection on the second transfer, and the resulting balance in both cases should
+    be 60 (100 + 100 - 80 - 60). Race conditions can exist when transactions don’t
+    adhere to serializability, and that’s what’s going on here - two fund transfers
+    are initiated, but only one is accounted for because of a concurrent race. This
+    is known as the “lost update” problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s a few different ways to fix this, but the simplest is to lock the row
+    for the duration of the transaction with `FOR UPDATE`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again from the Postgres docs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: FOR UPDATE causes the rows retrieved by the SELECT statement to be locked as
+    though for update. This prevents them from being locked, modified or deleted by
+    other transactions until the current transaction ends.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This means that each transaction will grab a lock on the `accounts` row and
+    that will block all other transactions from modifying that row until it’s complete,
+    i.e. the transactions will execute in a serializable fashion. It’s worth noting
+    that this is now slower. Without the lock the transactions could truly operate
+    concurrently, but now they have to wait in contention over balance updates to
+    the same account. This is necessary for correct behavior, but it’s worth understanding
+    the tradeoff.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also of note, test doubles alone won’t help with this bug because the fix is
+    in the real Postgres repository implementation. Test doubles are useful for testing
+    application code independent of the database in many cases, but transaction isolation
+    is a case where the different levels are so subtly different that it’s simpler
+    to test against the real thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transaction isolation has a major impact on an application, both in terms of
+    performance as well as its influence on domain logic. It’s important to integration
+    test against the real database to make sure that a weak transaction isolation
+    level isn’t the cause of concurrency bugs. To expose such bugs, we have to execute
+    at least two concurrent transactions in a test case. Unfortunately this can require
+    some amount of time-based coordination which is never ideal, but is often necessary
+    when tools like databases have opaque non-deterministic behavior that’s out of
+    our control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Still, it is something we can and should test for at the application level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

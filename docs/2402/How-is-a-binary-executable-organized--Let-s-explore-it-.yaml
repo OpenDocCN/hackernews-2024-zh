@@ -1,0 +1,358 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:32:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How is a binary executable organized? Let's explore it!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/](https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I used to think that executables were totally impenetrable. I’d compile a C
+    program, and then that was it! I had a Magical Binary Executable that I could
+    no longer read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is not so! Executable file formats are regular file formats that you can
+    understand. I’ll explain some simple tools to start! We’ll be working on Linux,
+    with ELF binaries. (binaries are kind of the definition of platform-specific,
+    so this is all platform-specific.) We’ll be using C, but you could just as easily
+    look at output from any compiled language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s write a simple C program, `hello.c`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we compile it (`gcc -o hello hello.c`), and we have a binary called `hello`.
+    This originally seems impenetrable (how do we even binary?!), but let’s see how
+    we can investigate it! We’re going to learn what **symbols**, **sections**, and
+    **segments** are. At a high level:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**symbols** are like function names, and are used to answer “If I call `printf`
+    and it’s defined somewhere else, how do I find it?”'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: symbols are organized into **sections** – code lives in one section (`.text`),
+    and data in another (`.data`, `.rodata`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: sections are organized into **segments**
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Throughout we’ll use a tool called `readelf` to look at these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, let’s dive into our binary!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Step 1: open it in a text editor!'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is most naive possible way to view a binary. If run `cat hello`, I get
+    something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]H��k����H���5 H�[]�fff.�H�=p'
+  prefs: []
+  type: TYPE_NORMAL
+- en: UH��t�H��]�H`��]Ð�UH����@�����]Ð�����������H�l$�L�d$�H�- L�%
+  prefs: []
+  type: TYPE_NORMAL
+- en: L�l$�L�t$�L�|$�H�\$�H��8L)�A��I��H��I���s���H��t1@L��L��D��A��H��H9�u�H�\H�l$L�d$L�l$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L�t$(L�|$0H��8��Ð�������������UH��SH�H�
+  prefs: []
+  type: TYPE_NORMAL
+- en: H���t�(`DH���H�H���u�H�[]Ð�H��o���H��Penguin!;,����H
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: $ readelf --symbols hello
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Num:    Value          Size Type    Bind   Vis      Ndx Name'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '48: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@@GLIBC_2.2.5'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '59: 0000000000400410     0 FUNC    GLOBAL DEFAULT   13 _start'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '61: 00000000004004f4    16 FUNC    GLOBAL DEFAULT   13 main'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: $ objdump -s hello
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Contents of section .text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Contents of section .interp:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400238 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400248 7838362d 36342e73 6f2e3200           x86-64.so.2\.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Contents of section .rodata:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 4005f8 01000200 50656e67 75696e21 00        ....Penguin!.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: $ readelf --sections hello
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Section Headers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Nr] Name              Type             Address           Offset'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Size              EntSize          Flags  Link  Info  Align
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[13] .text             PROGBITS         0000000000400410  00000410'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 00000000000001d8  0000000000000000  AX       0     0     16
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[15] .rodata           PROGBITS         00000000004005f8  000005f8'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 000000000000000b  0000000000000000   A       0     0     4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[24] .data             PROGBITS         0000000000601010  00001010'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000010  0000000000000000  WA       0     0     8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[25] .bss              NOBITS           0000000000601020  00001020'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0000000000000010  0000000000000000  WA       0     0     8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[26] .comment          PROGBITS         0000000000000000  00001020'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 000000000000002a  0000000000000001  MS       0     0     1
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Key to Flags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: W (write), A (alloc), X (execute), M (merge), S (strings), l (large)
+  prefs: []
+  type: TYPE_NORMAL
+- en: I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  prefs: []
+  type: TYPE_NORMAL
+- en: O (extra OS processing required) o (OS specific), p (processor specific)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Contents of section .text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
+  prefs: []
+  type: TYPE_NORMAL
+- en: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: $ objdump -d ./hello
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Disassembly of section .text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '0000000000400410 <_start>:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '400410:       31 ed                   xor    %ebp,%ebp'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '400412:       49 89 d1                mov    %rdx,%r9'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '400415:       5e                      pop    %rsi'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '400416:       48 89 e2                mov    %rsp,%rdx'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '400419:       48 83 e4 f0             and    $0xfffffffffffffff0,%rsp'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Program Headers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[... removed ...]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: INTERP         0x0000000000000238 0x0000000000400238 0x0000000000400238
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0x000000000000001c 0x000000000000001c  R      1
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0x00000000000006d4 0x00000000000006d4  R E    200000
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: LOAD           0x0000000000000e28 0x0000000000600e28 0x0000000000600e28
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0x00000000000001f8 0x0000000000000208  RW     200000
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[... removed ...]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Section to Segment mapping:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Segment Sections...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 01     .interp
+  prefs: []
+  type: TYPE_NORMAL
+- en: 02 .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym
+  prefs: []
+  type: TYPE_NORMAL
+- en: .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: .text .fini .rodata .eh_frame_hdr .eh_frame
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 03     .ctors .dtors .jcr .dynamic .got .got.plt .data .bss
+  prefs: []
+  type: TYPE_NORMAL
+- en: 04     .dynamic
+  prefs: []
+  type: TYPE_NORMAL
+- en: 05     .note.ABI-tag .note.gnu.build-id
+  prefs: []
+  type: TYPE_NORMAL
+- en: 06     .eh_frame_hdr
+  prefs: []
+  type: TYPE_NORMAL
+- en: '07'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 08     .ctors .dtors .jcr .dynamic .got
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Segments are used to determine how to separate different parts of the program
+    into memory. The first `LOAD` segment is marked R E (read / execute) and the second
+    is `RW` (read/write). `.text` is in the first segment (we want to read it but
+    never write to it), and `.data`, `.bss` are in the second (we need to write to
+    them, but not execute them).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not magic!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Executables aren’t magic. ELF is a file format like any other! You can use `readelf`,
+    `nm`, and `objdump` to inspect your Linux binaries. Try it out! Have fun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Other resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thanks very much to the amazing [Allison Kaptur](http://akaptur.github.io) and
+    [Dan Luu](http://danluu.com) for reading a draft of this.
+  prefs: []
+  type: TYPE_NORMAL

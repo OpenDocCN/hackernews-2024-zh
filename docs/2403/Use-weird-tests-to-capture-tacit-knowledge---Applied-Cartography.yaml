@@ -1,0 +1,99 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:31:57'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use weird tests to capture tacit knowledge · Applied Cartography
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jmduke.com/posts/essays/weird-tests-tacit-knowledge/](https://jmduke.com/posts/essays/weird-tests-tacit-knowledge/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main class="max-w-prose prose prose-neutral mx-auto flex flex-col items-center
+    [&amp;>*]:w-full">
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working on [Buttondown](https://buttondown.email) — or any mature, complex codebase
+    — effectively and quickly requires a lot of tacit knowledge that I've done a hitherto-poor
+    job of documenting, a fact I am learning more and more quickly as I start to scale
+    up the number of folks working on the codebase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Documentation* in the literal sense is a good first step and final step, of
+    course, but when a codebase is in the "process" of being documented writing down
+    "this is how you do X" does often not actually *solve* the problem of making sure
+    everyone can do X safely and quickly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One thing that I''ve found useful, in the spirit of shifting process to the
+    left, is capturing steps in tests. Here''s a simple (but real!) example: adding
+    new Django modules to the codebase. Whenever you run `python manage.py startapp`,
+    you *also* need to add the new app to a bunch of different places:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`pytest.ini`, so tests are run;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pyproject.toml`, so files are linted;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`modules.txt`, so metrics are exported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The *perfect* solution to this problem is creating a script that automatically
+    adds a new app to all the relevant places and stuffing it into a Justfile, but
+    that''s a pretty big piece of work that requires thought and error handling and
+    a whole slew of other stuff. Instead, it''s comparatively easy to just capture
+    these constraints in a test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This approach also works well when you're trying to enforce a norm or invariant
+    for all *new* code. (At Stripe, we called this approach "ratchet testing", though
+    initial Googling seems to indicate that this metaphor has not exactly spread like
+    wildfire.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another example: Buttondown uses Django-Ninja to generate an OpenAPI spec from
+    the live API. OpenAPI is great, but it [sadly lacks an ergonomic ability to document
+    each value of an enum](https://github.com/OAI/OpenAPI-Specification/issues/348),
+    so we maintain a separate `enums.json` file that needs to be updated whenever
+    a relevant enum has a new addition — even though some enum values are undocumented!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A similar approach works well here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: What I find *most* lovely about this approach is that test-driven invariants
+    are self-documenting. A task like "adding a new value to an existing enum" is
+    not obviously a thing that should require searching an internal knowledge base,
+    but a test that captures information about it can contain code pointers, technical
+    explanation, *and* a way to fix it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, a good mental exercise whenever you're reviewing a PR is "could
+    a test have caught this?", and then reminding yourself that a test should be defined
+    less as "a thing that exercises business logic" and more as a "script that exercises
+    your codebase".
+  prefs: []
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

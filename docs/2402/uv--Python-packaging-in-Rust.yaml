@@ -1,0 +1,597 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:52:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'uv: Python packaging in Rust'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://astral.sh/blog/uv](https://astral.sh/blog/uv)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**TL;DR:** [uv](https://github.com/astral-sh/uv) is an **extremely fast Python
+    package installer and resolver**, written in Rust, and designed as a drop-in replacement
+    for `pip` and `pip-tools` workflows.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[uv](https://github.com/astral-sh/uv) represents a milestone in our pursuit
+    of a ["Cargo for Python"](https://blog.rust-lang.org/2016/05/05/cargo-pillars.html#pillars-of-cargo):
+    a comprehensive Python project and package manager that''s fast, reliable, and
+    easy to use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As part of this release, we're also taking stewardship of [Rye](https://github.com/mitsuhiko/rye),
+    an experimental Python packaging tool from [Armin Ronacher](https://github.com/mitsuhiko).
+    We'll maintain [Rye](https://github.com/mitsuhiko/rye) as we expand [uv](https://github.com/astral-sh/uv)
+    into a unified successor project, to fulfill our [shared vision](https://rye-up.com/philosophy/)
+    for Python packaging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At Astral, we build high-performance developer tools for the Python ecosystem.
+    We're best known for [Ruff](https://github.com/astral-sh/ruff), an extremely fast
+    Python [linter](https://notes.crmarsh.com/python-tooling-could-be-much-much-faster)
+    and [formatter](https://astral.sh/blog/the-ruff-formatter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Today, we''re releasing the next tool in the Astral toolchain: **[uv](https://github.com/astral-sh/uv),
+    an extremely fast Python package resolver and installer, written in Rust**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 422 250"><g class="uv-warm-vertical-benchmark_svg__mark-group
+    uv-warm-vertical-benchmark_svg__role-frame uv-warm-vertical-benchmark_svg__root"
+    aria-roledescription="group mark container" fill="none" stroke-miterlimit="10"><g
+    class="uv-warm-vertical-benchmark_svg__mark-group uv-warm-vertical-benchmark_svg__role-scope
+    uv-warm-vertical-benchmark_svg__cell" aria-roledescription="group mark container"><g
+    class="uv-warm-vertical-benchmark_svg__mark-group uv-warm-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0.0 to 3.5"><g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(90.5 105.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(176.214 105.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">1s</text>
+    <text text-anchor="middle" transform="translate(261.929 105.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">2s</text>
+    <text text-anchor="middle" transform="translate(347.643 105.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">3s</text></g></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-group uv-warm-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="Y-axis for a discrete scale with 4 values:
+    uv, poetry, pip-compile, pdm"><g class="uv-warm-vertical-benchmark_svg__mark-text
+    uv-warm-vertical-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="end"
+    transform="translate(80.5 15.25)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-warm-vertical-benchmark_svg__benchmarkLabel" font-weight="bold">uv</text>
+    <text text-anchor="end" transform="translate(80.5 37.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">poetry</text>
+    <text text-anchor="end" transform="translate(80.5 60.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">pip-compile</text>
+    <text text-anchor="end" transform="translate(80.5 82.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">pdm</text></g></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-mark
+    uv-warm-vertical-benchmark_svg__child_layer_1_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.60278702674; tool: poetry; timeFormat:
+    0.60s" aria-roledescription="text mark" transform="translate(147.667 37.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0.60s</text>
+    <text aria-label="Sum of time: 1.55616658094; tool: pip-compile; timeFormat: 1.56s"
+    aria-roledescription="text mark" transform="translate(229.386 60.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">1.56s</text>
+    <text aria-label="Sum of time: 3.37404433084; tool: pdm; timeFormat: 3.37s" aria-roledescription="text
+    mark" transform="translate(385.204 82.75)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">3.37s</text></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-mark
+    uv-warm-vertical-benchmark_svg__child_layer_2_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.0134756369786; tool: uv; timeFormat:
+    0.01s" aria-roledescription="text mark" transform="translate(97.155 15.25)" font-family="Roboto
+    Mono,monospace" font-size="12" font-weight="bold" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0.01s</text></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-group uv-warm-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0 to 5"><g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(90.5 248.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(210.5 248.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">2s</text>
+    <text text-anchor="middle" transform="translate(330.5 248.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">4s</text></g></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-group uv-warm-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="Y-axis for a discrete scale with 4 values:
+    uv, poetry, pdm, pip-sync"><g class="uv-warm-vertical-benchmark_svg__mark-text
+    uv-warm-vertical-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="end"
+    transform="translate(80.5 158.25)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-warm-vertical-benchmark_svg__benchmarkLabel" font-weight="bold">uv</text>
+    <text text-anchor="end" transform="translate(80.5 180.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">poetry</text>
+    <text text-anchor="end" transform="translate(80.5 203.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">pdm</text>
+    <text text-anchor="end" transform="translate(80.5 225.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">pip-sync</text></g></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-mark
+    uv-warm-vertical-benchmark_svg__child_layer_1_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.9872183659; tool: poetry; timeFormat:
+    0.99s" aria-roledescription="text mark" transform="translate(155.233 180.75)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0.99s</text>
+    <text aria-label="Sum of time: 1.8969612492; tool: pdm; timeFormat: 1.90s" aria-roledescription="text
+    mark" transform="translate(209.818 203.25)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">1.90s</text>
+    <text aria-label="Sum of time: 4.6313483826; tool: pip-sync; timeFormat: 4.63s"
+    aria-roledescription="text mark" transform="translate(373.88 225.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">4.63s</text></g>
+    <g class="uv-warm-vertical-benchmark_svg__mark-text uv-warm-vertical-benchmark_svg__role-mark
+    uv-warm-vertical-benchmark_svg__child_layer_2_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.0576289908; tool: uv; timeFormat:
+    0.06s" aria-roledescription="text mark" transform="translate(99.458 158.25)" font-family="Roboto
+    Mono,monospace" font-size="12" font-weight="bold" class="uv-warm-vertical-benchmark_svg__benchmarkLabel">0.06s</text></g></g></g></svg><svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 454 139"><g class="uv-resolve-warm-benchmark_svg__mark-group
+    uv-resolve-warm-benchmark_svg__role-frame uv-resolve-warm-benchmark_svg__root"
+    aria-roledescription="group mark container" fill="none" stroke-miterlimit="10"><g
+    class="uv-resolve-warm-benchmark_svg__mark-group uv-resolve-warm-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0.0 to 3.5"><g class="uv-resolve-warm-benchmark_svg__mark-text uv-resolve-warm-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(106.5 121.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(192.214 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">1s</text>
+    <text text-anchor="middle" transform="translate(277.929 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">2s</text>
+    <text text-anchor="middle" transform="translate(363.643 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">3s</text></g></g>
+    <g class="uv-resolve-warm-benchmark_svg__mark-group uv-resolve-warm-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="Y-axis for a discrete scale with 4 values:
+    uv, poetry, pip-compile, pdm"><g class="uv-resolve-warm-benchmark_svg__mark-text
+    uv-resolve-warm-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="end"
+    transform="translate(96.5 31.25)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-resolve-warm-benchmark_svg__benchmarkLabel" font-weight="bold">uv</text>
+    <text text-anchor="end" transform="translate(96.5 53.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">poetry</text>
+    <text text-anchor="end" transform="translate(96.5 76.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">pip-compile</text>
+    <text text-anchor="end" transform="translate(96.5 98.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">pdm</text></g></g>
+    <g class="uv-resolve-warm-benchmark_svg__mark-text uv-resolve-warm-benchmark_svg__role-mark
+    uv-resolve-warm-benchmark_svg__layer_1_marks" aria-roledescription="text mark
+    container"><text aria-label="Sum of time: 0.60278702674; tool: poetry; timeFormat:
+    0.60s" aria-roledescription="text mark" transform="translate(163.667 53.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">0.60s</text>
+    <text aria-label="Sum of time: 1.55616658094; tool: pip-compile; timeFormat: 1.56s"
+    aria-roledescription="text mark" transform="translate(245.386 76.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">1.56s</text>
+    <text aria-label="Sum of time: 3.37404433084; tool: pdm; timeFormat: 3.37s" aria-roledescription="text
+    mark" transform="translate(401.204 98.75)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">3.37s</text></g>
+    <g class="uv-resolve-warm-benchmark_svg__mark-text uv-resolve-warm-benchmark_svg__role-mark
+    uv-resolve-warm-benchmark_svg__layer_2_marks" aria-roledescription="text mark
+    container"><text aria-label="Sum of time: 0.0134756369786; tool: uv; timeFormat:
+    0.01s" aria-roledescription="text mark" transform="translate(113.155 31.25)" font-family="Roboto
+    Mono,monospace" font-size="12" font-weight="bold" class="uv-resolve-warm-benchmark_svg__benchmarkLabel">0.01s</text></g></g></svg><svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 454 139"><g class="uv-install-warm-benchmark_svg__mark-group
+    uv-install-warm-benchmark_svg__role-frame uv-install-warm-benchmark_svg__root"
+    aria-roledescription="group mark container" fill="none" stroke-miterlimit="10"><g
+    class="uv-install-warm-benchmark_svg__mark-group uv-install-warm-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0 to 5"><g class="uv-install-warm-benchmark_svg__mark-text uv-install-warm-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(84.5 121.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(204.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">2s</text>
+    <text text-anchor="middle" transform="translate(324.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">4s</text></g></g>
+    <g class="uv-install-warm-benchmark_svg__mark-group uv-install-warm-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="Y-axis for a discrete scale with 4 values:
+    uv, poetry, pdm, pip-sync"><g class="uv-install-warm-benchmark_svg__mark-text
+    uv-install-warm-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="end"
+    transform="translate(74.5 31.25)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-install-warm-benchmark_svg__benchmarkLabel" font-weight="bold">uv</text>
+    <text text-anchor="end" transform="translate(74.5 53.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">poetry</text>
+    <text text-anchor="end" transform="translate(74.5 76.25)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">pdm</text>
+    <text text-anchor="end" transform="translate(74.5 98.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">pip-sync</text></g></g>
+    <g class="uv-install-warm-benchmark_svg__mark-text uv-install-warm-benchmark_svg__role-mark
+    uv-install-warm-benchmark_svg__layer_1_marks" aria-roledescription="text mark
+    container"><text aria-label="Sum of time: 0.9872183659; tool: poetry; timeFormat:
+    0.99s" aria-roledescription="text mark" transform="translate(149.233 53.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">0.99s</text>
+    <text aria-label="Sum of time: 1.8969612492; tool: pdm; timeFormat: 1.90s" aria-roledescription="text
+    mark" transform="translate(203.818 76.25)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">1.90s</text>
+    <text aria-label="Sum of time: 4.6313483826; tool: pip-sync; timeFormat: 4.63s"
+    aria-roledescription="text mark" transform="translate(367.88 98.75)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-install-warm-benchmark_svg__benchmarkLabel">4.63s</text></g>
+    <g class="uv-install-warm-benchmark_svg__mark-text uv-install-warm-benchmark_svg__role-mark
+    uv-install-warm-benchmark_svg__layer_2_marks" aria-roledescription="text mark
+    container"><text aria-label="Sum of time: 0.0576289908; tool: uv; timeFormat:
+    0.06s" aria-roledescription="text mark" transform="translate(93.458 31.25)" font-family="Roboto
+    Mono,monospace" font-size="12" font-weight="bold" class="uv-install-warm-benchmark_svg__benchmarkLabel">0.06s</text></g></g></svg>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resolving (left) and installing (right) the [Trio](https://github.com/python-trio/trio)
+    dependencies with a warm cache, to simulate recreating a virtual environment or
+    adding a dependency to an existing project ([source](https://github.com/astral-sh/uv/blob/main/BENCHMARKS.md)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resolving (top) and installing (bottom) the [Trio](https://github.com/python-trio/trio)
+    dependencies with a warm cache, to simulate recreating a virtual environment or
+    adding a dependency to an existing project ([source](https://github.com/astral-sh/uv/blob/main/BENCHMARKS.md)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[uv](https://github.com/astral-sh/uv) is designed as a drop-in replacement
+    for `pip` and `pip-tools`, and is ready for production use today in projects built
+    around those workflows.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like [Ruff](https://github.com/astral-sh/ruff), uv''s implementation was grounded
+    in our core product principles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**An obsessive focus on performance.** In the above [benchmarks](https://github.com/astral-sh/uv/blob/main/BENCHMARKS.md),
+    uv is **8-10x faster** than `pip` and `pip-tools` without caching, and **80-115x
+    faster** when running with a warm cache (e.g., recreating a virtual environment
+    or updating a dependency). uv uses a global module cache to avoid re-downloading
+    and re-building dependencies, and leverages Copy-on-Write and hardlinks on supported
+    filesystems to minimize disk space usage.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Optimized for adoption.** While we have big aspirations for the future of
+    Python packaging, uv''s initial release is centered on supporting the `pip` and
+    `pip-tools` APIs behind our `uv pip` interface, making it usable by existing projects
+    with zero configuration. Similarly, uv can be used as "just" a resolver (`uv pip
+    compile` to lock your dependencies), "just" a virtual environment creator (`uv
+    venv`), "just" a package installer (`uv pip sync`), and so on. It''s both unified
+    and modular.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**A simplified toolchain.** uv ships as a single static binary capable of replacing
+    `pip`, `pip-tools`, and `virtualenv`. uv has no direct Python dependency, so you
+    can install it separately from Python itself, avoiding the need to manage `pip`
+    installations across multiple Python versions (e.g., `pip` vs. `pip3` vs. `pip3.7`).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: While uv will evolve into a **complete Python project and package manager**
+    (a ["Cargo for Python"](https://blog.rust-lang.org/2016/05/05/cargo-pillars.html#pillars-of-cargo)),
+    the narrower `pip-tools` scope allows us to solve the low-level problems involved
+    in building such a tool (like package installation) while shipping something immediately
+    useful with minimal barrier to adoption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can install [uv](https://github.com/astral-sh/uv) today via our standalone
+    installers, or from [PyPI](https://pypi.org/project/uv/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[uv](https://github.com/astral-sh/uv) supports everything you''d expect from
+    a modern Python packaging tool: editable installs, Git dependencies, URL dependencies,
+    local dependencies, constraint files, source distributions, custom indexes, and
+    more, all designed around drop-in compatibility with your existing tools.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[uv](https://github.com/astral-sh/uv) supports **Linux**, **Windows**, and
+    **macOS**, and has been tested at-scale against the public PyPI index.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A drop-in compatible API [#](#a-drop-in-compatible-api)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This initial release centers on what we refer to as uv''s `pip` API. It''ll
+    be familiar to those that have used `pip` and `pip-tools` in the past:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of `pip install`, run `uv pip install` to install Python dependencies
+    from the command line, a requirements file, or a `pyproject.toml`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Instead of `pip-compile`, run `uv pip compile` to generate a locked `requirements.txt`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Instead of `pip-sync`, run `uv pip sync` to sync a virtual environment with
+    a locked `requirements.txt`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By scoping these "lower-level" commands under `uv pip`, we retain space in the
+    CLI for the more "opinionated" project management API we intend to ship in the
+    future, which will look more like [Rye](https://github.com/mitsuhiko/rye), or
+    [Cargo](https://github.com/rust-lang/cargo), or [Poetry](https://github.com/python-poetry/poetry).
+    (Imagine `uv run`, `uv build`, and so on.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: uv can also be used as a virtual environment manager via `uv venv`. It's about
+    80x faster than `python -m venv` and 7x faster than `virtualenv`, with no dependency
+    on Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 454 282"><g class="uv-venv-vertical-benchmark_svg__mark-group
+    uv-venv-vertical-benchmark_svg__role-frame uv-venv-vertical-benchmark_svg__root"
+    aria-roledescription="group mark container" fill="none" stroke-miterlimit="10"><g
+    class="uv-venv-vertical-benchmark_svg__mark-group uv-venv-vertical-benchmark_svg__role-scope
+    uv-venv-vertical-benchmark_svg__cell" aria-roledescription="group mark container"><g
+    class="uv-venv-vertical-benchmark_svg__mark-group uv-venv-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0.00 to 0.08"><g class="uv-venv-vertical-benchmark_svg__mark-text uv-venv-vertical-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(107.5 121.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(182.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0.02s</text>
+    <text text-anchor="middle" transform="translate(257.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0.04s</text>
+    <text text-anchor="middle" transform="translate(332.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0.06s</text>
+    <text text-anchor="middle" transform="translate(407.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0.08s</text></g></g>
+    <g class="uv-venv-vertical-benchmark_svg__mark-text uv-venv-vertical-benchmark_svg__role-mark
+    uv-venv-vertical-benchmark_svg__child_layer_1_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.0744; tool: virtualenv; timeFormat:
+    74.4ms" aria-roledescription="text mark" transform="translate(392 65)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">74.4ms</text>
+    <text aria-label="Sum of time: 0.0241; tool: venv; timeFormat: 24.1ms" aria-roledescription="text
+    mark" transform="translate(203.375 95)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-vertical-benchmark_svg__benchmarkLabel">24.1ms</text></g> <g class="uv-venv-vertical-benchmark_svg__mark-text
+    uv-venv-vertical-benchmark_svg__role-mark uv-venv-vertical-benchmark_svg__child_layer_2_marks"
+    aria-roledescription="text mark container"><text aria-label="Sum of time: 0.0041;
+    tool: uv; timeFormat: 4.1ms" aria-roledescription="text mark" transform="translate(128.375
+    35)" font-family="Roboto Mono,monospace" font-size="12" font-weight="bold" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">4.1ms</text></g>
+    <g class="uv-venv-vertical-benchmark_svg__mark-group uv-venv-vertical-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0.0 to 1.6"><g class="uv-venv-vertical-benchmark_svg__mark-text uv-venv-vertical-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(107.5 264.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(201.25 264.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">0.5s</text>
+    <text text-anchor="middle" transform="translate(295 264.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">1s</text>
+    <text text-anchor="middle" transform="translate(388.75 264.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">1.5s</text></g></g>
+    <g class="uv-venv-vertical-benchmark_svg__mark-text uv-venv-vertical-benchmark_svg__role-mark
+    uv-venv-vertical-benchmark_svg__child_layer_1_marks" aria-roledescription="text
+    mark container"><text aria-label="Sum of time: 0.1414; tool: virtualenv; timeFormat:
+    141.4ms" aria-roledescription="text mark" transform="translate(139.512 208)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">141.4ms</text>
+    <text aria-label="Sum of time: 1.54; tool: venv; timeFormat: 1.54s" aria-roledescription="text
+    mark" transform="translate(401.75 238)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-vertical-benchmark_svg__benchmarkLabel">1.54s</text></g> <g class="uv-venv-vertical-benchmark_svg__mark-text
+    uv-venv-vertical-benchmark_svg__role-mark uv-venv-vertical-benchmark_svg__child_layer_2_marks"
+    aria-roledescription="text mark container"><text aria-label="Sum of time: 0.0182;
+    tool: uv; timeFormat: 18.2ms" aria-roledescription="text mark" transform="translate(116.412
+    178)" font-family="Roboto Mono,monospace" font-size="12" font-weight="bold" class="uv-venv-vertical-benchmark_svg__benchmarkLabel">18.2ms</text></g></g></g></svg><svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 463 139"><g class="uv-venv-seed-benchmark_svg__mark-group
+    uv-venv-seed-benchmark_svg__role-frame uv-venv-seed-benchmark_svg__root" aria-roledescription="group
+    mark container" fill="none" stroke-miterlimit="10"><g class="uv-venv-seed-benchmark_svg__mark-group
+    uv-venv-seed-benchmark_svg__role-axis" aria-roledescription="axis" aria-label="X-axis
+    for a linear scale with values from 0.0 to 1.6"><g class="uv-venv-seed-benchmark_svg__mark-text
+    uv-venv-seed-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="middle"
+    transform="translate(99.5 121.5)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">0s</text> <text text-anchor="middle"
+    transform="translate(193.25 121.5)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">0.5s</text> <text text-anchor="middle"
+    transform="translate(287 121.5)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">1s</text> <text text-anchor="middle"
+    transform="translate(380.75 121.5)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">1.5s</text></g></g> <g class="uv-venv-seed-benchmark_svg__mark-group
+    uv-venv-seed-benchmark_svg__role-axis" aria-roledescription="axis" aria-label="Y-axis
+    for a discrete scale with 3 values: uv, virtualenv, venv"><g class="uv-venv-seed-benchmark_svg__mark-text
+    uv-venv-seed-benchmark_svg__role-axis-label" pointer-events="none"><text text-anchor="end"
+    transform="translate(89.5 35)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel" font-weight="bold">uv</text>
+    <text text-anchor="end" transform="translate(89.5 65)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-venv-seed-benchmark_svg__benchmarkLabel">virtualenv</text>
+    <text text-anchor="end" transform="translate(89.5 95)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-venv-seed-benchmark_svg__benchmarkLabel">venv</text></g></g>
+    <g class="uv-venv-seed-benchmark_svg__mark-text uv-venv-seed-benchmark_svg__role-mark
+    uv-venv-seed-benchmark_svg__layer_1_marks" aria-roledescription="text mark container"><text
+    aria-label="Sum of time: 0.1414; tool: virtualenv; timeFormat: 141.4ms" aria-roledescription="text
+    mark" transform="translate(131.512 65)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">141.4ms</text> <text aria-label="Sum
+    of time: 1.54; tool: venv; timeFormat: 1.54s" aria-roledescription="text mark"
+    transform="translate(393.75 95)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-seed-benchmark_svg__benchmarkLabel">1.54s</text></g> <g class="uv-venv-seed-benchmark_svg__mark-text
+    uv-venv-seed-benchmark_svg__role-mark uv-venv-seed-benchmark_svg__layer_2_marks"
+    aria-roledescription="text mark container"><text aria-label="Sum of time: 0.0182;
+    tool: uv; timeFormat: 18.2ms" aria-roledescription="text mark" transform="translate(108.412
+    35)" font-family="Roboto Mono,monospace" font-size="12" font-weight="bold" class="uv-venv-seed-benchmark_svg__benchmarkLabel">18.2ms</text></g></g></svg><svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 463 139"><g class="uv-venv-no-seed-benchmark_svg__mark-group
+    uv-venv-no-seed-benchmark_svg__role-frame uv-venv-no-seed-benchmark_svg__root"
+    aria-roledescription="group mark container" fill="none" stroke-miterlimit="10"><g
+    class="uv-venv-no-seed-benchmark_svg__mark-group uv-venv-no-seed-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="X-axis for a linear scale with values
+    from 0.00 to 0.08"><g class="uv-venv-no-seed-benchmark_svg__mark-text uv-venv-no-seed-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="middle" transform="translate(99.5 121.5)"
+    font-family="Roboto Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">0s</text>
+    <text text-anchor="middle" transform="translate(174.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">0.02s</text>
+    <text text-anchor="middle" transform="translate(249.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">0.04s</text>
+    <text text-anchor="middle" transform="translate(324.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">0.06s</text>
+    <text text-anchor="middle" transform="translate(399.5 121.5)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">0.08s</text></g></g>
+    <g class="uv-venv-no-seed-benchmark_svg__mark-group uv-venv-no-seed-benchmark_svg__role-axis"
+    aria-roledescription="axis" aria-label="Y-axis for a discrete scale with 3 values:
+    uv, virtualenv, venv"><g class="uv-venv-no-seed-benchmark_svg__mark-text uv-venv-no-seed-benchmark_svg__role-axis-label"
+    pointer-events="none"><text text-anchor="end" transform="translate(89.5 35)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel"
+    font-weight="bold">uv</text> <text text-anchor="end" transform="translate(89.5
+    65)" font-family="Roboto Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">virtualenv</text>
+    <text text-anchor="end" transform="translate(89.5 95)" font-family="Roboto Mono,monospace"
+    font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">venv</text></g></g>
+    <g class="uv-venv-no-seed-benchmark_svg__mark-text uv-venv-no-seed-benchmark_svg__role-mark
+    uv-venv-no-seed-benchmark_svg__layer_1_marks" aria-roledescription="text mark
+    container"><text aria-label="Sum of time: 0.0744; tool: virtualenv; timeFormat:
+    74.4ms" aria-roledescription="text mark" transform="translate(384 65)" font-family="Roboto
+    Mono,monospace" font-size="12" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">74.4ms</text>
+    <text aria-label="Sum of time: 0.0241; tool: venv; timeFormat: 24.1ms" aria-roledescription="text
+    mark" transform="translate(195.375 95)" font-family="Roboto Mono,monospace" font-size="12"
+    class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">24.1ms</text></g> <g class="uv-venv-no-seed-benchmark_svg__mark-text
+    uv-venv-no-seed-benchmark_svg__role-mark uv-venv-no-seed-benchmark_svg__layer_2_marks"
+    aria-roledescription="text mark container"><text aria-label="Sum of time: 0.0041;
+    tool: uv; timeFormat: 4.1ms" aria-roledescription="text mark" transform="translate(120.375
+    35)" font-family="Roboto Mono,monospace" font-size="12" font-weight="bold" class="uv-venv-no-seed-benchmark_svg__benchmarkLabel">4.1ms</text></g></g></svg>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a virtual environment, with (top) and without (bottom) seed packages
+    like pip and setuptools ([source](https://github.com/astral-sh/uv/blob/ea13d94c57149a8fc6ebfcef46149252e869269f/scripts/benchmarks/venv.sh)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a virtual environment, with (left) and without (right) seed packages
+    like pip and setuptools ([source](https://github.com/astral-sh/uv/blob/ea13d94c57149a8fc6ebfcef46149252e869269f/scripts/benchmarks/venv.sh)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: uv's virtual environments are standards-compliant and work interchangeably with
+    other tools — there's no lock-in or customization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Building our own package management stack from scratch also opened up room
+    for new capabilities. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**uv supports alternate resolution strategies.** By default, uv follows the
+    standard Python dependency resolution strategy of preferring the latest compatible
+    version of each package. But by passing `--resolution=lowest`, library authors
+    can test their packages against the lowest-compatible version of their dependencies.
+    (This is similar to Go''s [Minimal version selection](https://go.dev/ref/mod#minimal-version-selection).)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**uv allows for resolutions against arbitrary target Python versions.** While
+    `pip` and `pip-tools` always resolve against the currently-installed Python version
+    (generating, e.g., a Python 3.12-compatible resolution when running under Python
+    3.12), uv accepts a `--python-version` parameter, enabling you to generate, e.g.,
+    Python 3.7-compatible resolutions even when running under newer versions.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**uv allows for dependency “overrides”.** uv takes pip''s “constraints” concepts
+    a step further via overrides (`-o overrides.txt`), which allow the user to guide
+    the resolver by overriding the declared dependencies of a package. Overrides give
+    the user an escape hatch for working around erroneous upper bounds and other incorrectly-declared
+    dependencies.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In its current form, uv won't be the right fit for all projects. `pip` is a
+    mature and stable tool, with extensive support for an extremely wide range of
+    use cases and a focus on compatibility. While uv supports a large fraction of
+    the `pip` interface, it lacks support for some of its legacy features, like `.egg`
+    distributions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, uv does not yet generate a platform-agnostic lockfile. This matches
+    `pip-tools`, but differs from Poetry and PDM, making uv a better fit for projects
+    built around the `pip` and `pip-tools` workflows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For those deep in the packaging ecosystem, uv also includes standards-compliant
+    Rust implementations of [PEP 440](https://peps.python.org/pep-0440/) (version
+    identifiers), [PEP 508](https://peps.python.org/pep-0508/) (dependency specifiers),
+    [PEP 517](https://peps.python.org/pep-0517/) (a build-system independent build
+    frontend), [PEP 405](https://peps.python.org/pep-0405/) (virtual environments),
+    and more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A "Cargo for Python": uv and Rye [#](#a-cargo-for-python-uv-and-rye)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'uv represents an intermediary milestone in our pursuit of a ["Cargo for Python"](https://blog.rust-lang.org/2016/05/05/cargo-pillars.html#pillars-of-cargo):
+    a unified Python package and project manager that is extremely fast, reliable,
+    and easy to use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Think: a single binary that bootstraps your Python installation and gives you
+    everything you need to be productive with Python, bundling not only `pip`, `pip-tools`,
+    and `virtualenv`, but also `pipx`, `tox`, `poetry`, `pyenv`, `ruff`, and more.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Python tooling can be a low-confidence experience: it''s a significant amount
+    of work to stand up a new or existing project, and commands fail in confusing
+    ways. In contrast, when working in the Rust ecosystem, you trust the tools to
+    succeed. The Astral toolchain is about bringing Python from a low-confidence to
+    a high-confidence experience.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This vision for Python packaging is not far off from that put forward by [Rye](https://github.com/mitsuhiko/rye),
+    an experimental project and package management tool from [Armin Ronacher](https://github.com/mitsuhiko).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In talking with Armin, it was clear that our visions were closely aligned,
+    but that fulfilling them would require a significant investment in foundational
+    tooling. For example: building such a tool requires an extremely fast, end-to-end
+    integrated, cross-platform resolver and installer. **In uv, we''ve built that
+    foundational tooling.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We saw this as a rare opportunity to team up, and to avoid fragmenting the Python
+    ecosystem. **As such, in collaboration with Armin, we're excited to be taking
+    over [Rye](https://github.com/mitsuhiko/rye).** Our goal is to evolve uv into
+    a production-ready ["Cargo for Python"](https://blog.rust-lang.org/2016/05/05/cargo-pillars.html#pillars-of-cargo),
+    and to provide a smooth migration path from Rye to uv when the time is right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Until then, we'll be maintaining Rye, migrating it to use uv under-the-hood,
+    and, more generally, treating it as an experimental testbed for the end-user experience
+    we're building towards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While merging projects comes with its own challenges, we're committed to building
+    a single, unified tool under the Astral banner, and to supporting existing Rye
+    users as we evolve uv into a suitable and comprehensive successor project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our Roadmap [#](#our-roadmap)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Following this release, our first priority is to support users as they consider
+    [uv](https://github.com/astral-sh/uv), with a focus on improving compatibility,
+    performance, and stability across platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From there, we''ll look towards expanding uv into a complete Python project
+    and package manager: a single binary that gives you everything you need to be
+    productive with Python.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have an ambitious roadmap for uv. But even in its current form, I think it
+    will feel like a very different experience for Python. I hope you'll give it a
+    try.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acknowledgements [#](#acknowledgements)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Finally, we'd like to thank all those that contributed directly or indirectly
+    to the development of uv. Foremost among them are [Jacob Finkelman](https://github.com/Eh2406)
+    and [Matthieu Pizenberg](https://github.com/mpizenberg), the maintainers of [pubgrub-rs](https://github.com/pubgrub-rs/pubgrub).
+    uv uses PubGrub as its underlying version solver, and we're grateful to Jacob
+    and Matthieu for the work they put into PubGrub in the past, and for the way they've
+    engaged with us as collaborators throughout the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'd also like to thank those projects in the packaging space that've inspired
+    us, especially [Cargo](https://github.com/rust-lang/cargo), along with [Bun](https://github.com/oven-sh/bun),
+    [Orogene](https://github.com/orogene/orogene), and [pnpm](https://github.com/pnpm/pnpm)
+    from the JavaScript ecosystem, and [Posy](https://github.com/njsmith/posy), [Monotrail](https://github.com/konstin/monotrail-resolve),
+    and [Rye](https://github.com/mitsuhiko/rye) from the Python ecosystem. In particular,
+    thanks to [Armin Ronacher](https://github.com/mitsuhiko) for collaborating with
+    us on this effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we'd like to thank the maintainers of [pip](https://github.com/pypa/pip)
+    and the members of the PyPA more broadly for all the work they do to make Python
+    packaging possible.
+  prefs: []
+  type: TYPE_NORMAL

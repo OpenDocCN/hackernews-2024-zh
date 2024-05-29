@@ -1,0 +1,101 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:11:16'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: c++ - Fastest way to get IPv4 address from string - Stack Overflow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string](https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Since we are speaking about maximizing throughput of IP address parsing, I suggest
+    using a vectorized solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is x86-specific fast solution (needs SSE4.1, or at least SSSE3 for poor):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the required precalculation for `shuffleTable`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Full code with testing is avaliable [here](http://pastebin.com/XSiPqHuN). On
+    Ivy Bridge processor it prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It means that the suggested solution is **7.8 times faster** in terms of throughput
+    than the code by OP. It processes **336 millions of addresses per second** (single
+    core of 3.4 Ghz).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now I'll try to explain how it works. Note that on each line of the listing
+    you can see contents of the value just computed. All the arrays are printed in
+    little-endian order (though `set` intrinsics use big-endian).
+  prefs: []
+  type: TYPE_NORMAL
+- en: First of all, we load 16 bytes from unaligned address by `lddqu` instruction.
+    Note that in 64-bit mode memory is allocated by 16-byte chunks, so this works
+    well automatically. On 32-bit it may theoretically cause issues with out of range
+    access. Though I do not believe that it really can. The subsequent code would
+    work properly regardless of the values in the after-the-end bytes. Anyway, you'd
+    better ensure that each IP address takes at least 16 bytes of storage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we subtract '0' from all the chars. After that '.' turns into -2, and zero
+    turns into -48, all the digits remain nonnegative. Now we take bitmask of signs
+    of all the bytes with `_mm_movemask_epi8`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Depending on the value of this mask, we fetch a nontrivial 16-byte shuffling
+    mask from lookup table `shuffleTable`. The table is quite large: 1Mb total. And
+    it takes quite some time to precompute. However, it does not take precious space
+    in CPU cache, because only 81 elements from this table are really used. That is
+    because each part of IP address can be either one, two, three digits long => hence
+    81 variants in total. Note that random trashy bytes after the end of the string
+    may in principle cause increased memory footprint in the lookup table.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*EDIT*: you can find a version modified by @IwillnotexistIdonotexist in comments,
+    which uses lookup table of only 4Kb size (it is a bit slower, though).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ingenious `_mm_shuffle_epi8` intrinsic allows us to reorder the bytes with
+    our shuffle mask. As a result XMM register contains four 4-byte blocks, each block
+    contains digits in little-endian order. We convert each block into a 16-bit number
+    by `_mm_maddubs_epi16` followed by `_mm_hadd_epi16`. Then we reorder bytes of
+    the register, so that the whole IP address occupies the lower 4 bytes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we extract the lower 4 bytes from the XMM register to GP register.
+    It is done with SSE4.1 intrinsic (`_mm_extract_epi32`). If you don't have it,
+    replace it with other line using `_mm_extract_epi16`, but it will run a bit slower.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, here is the generated assembly (MSVC2013), so that you can check that
+    your compiler does not generate anything suspicious:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: P.S. If you are still reading it, be sure to check out comments =)
+  prefs: []
+  type: TYPE_NORMAL

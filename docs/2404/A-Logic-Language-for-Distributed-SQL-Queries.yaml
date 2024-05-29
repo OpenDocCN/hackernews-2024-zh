@@ -1,0 +1,1000 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:31:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Logic Language for Distributed SQL Queries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.osohq.com/post/logic-language-distributed-sql-queries](https://www.osohq.com/post/logic-language-distributed-sql-queries)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you’ve worked with microservices, you know how hard it is to solve for shared
+    capabilities. Authorization is one such capability. Most services will need some
+    kind of authorization, and so you want a clean authorization implementation that
+    every service can reuse. But authorization as a domain is *messy*. Authorization
+    logic blurs with domain-specific information, and data needed to evaluate authorization
+    decisions heavily overlaps with application data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that when trying to extract authorization out into its own service,
+    it ends up being challenging to draw a clean separation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Authorization as a domain blurs lines between multiple applications, making
+    it hard to extract into a service
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our ideal version of authorization as a shared capability sharpens these lines,
+    so you can integrate it with minimal overhead to any given application. A key
+    consideration is that you shouldn’t need to synchronize data to a different service,
+    just to evaluate authorization logic that could have all been handled locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To this end, we built a logic language for expressing authorization called Polar.
+    It’s built to allow multiple teams to build an authorization model expressing
+    both shared and domain-specific logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And then we made it possible to run Polar over multiple data stores, so that
+    it can do authorization using shared data stored centrally, and application data
+    stored alongside the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Distributed Authorization, we extract as much authorization *as possible*
+    into a shared service, but let each service manage some of it on its own
+  prefs: []
+  type: TYPE_NORMAL
+- en: We call the resulting architecture *Distributed Authorization.* Here’s how we
+    built it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scenario: Service-Oriented GitHub'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Imagine you’re building an application like GitHub, but with a service-oriented
+    architecture. It’s common that application-specific functionality like “repository
+    issues” would be decoupled from authorization and permission controls like “managing
+    organizations and user roles”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So let’s say you have two services: **AuthzService** and **IssuesService**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Diagram showing our two services, their databases, and a list of the data they
+    manage
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The AuthzService knows everything authorization-related about Organizations:
+    who belongs to those organizations, what roles they have, what custom roles they’ve
+    created. It also manages authorization data on Repositories, like which organization
+    owns the Repository, who the members are, and what roles they have.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Meanwhile, the IssuesService deals with *everything* issue-related: who created
+    the issue, what repository it belongs to, and so on.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s take as an example: the `user Alice` wants to close `issue #42` on repository
+    `acme/anvil`. The IssuesService wants to know if Alice is allowed to do this,
+    and will make an API request to the AuthzService to find out.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a simple question, but in a mature application like GitHub, the logic
+    gets complex. For example, GitHub has organization roles, customizable default
+    repository roles, custom roles, issue creators, and public/private repositories.
+    All of these impact the authorization logic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Roles, relationships, and attributes impacting whether Alice can close issue
+    #42'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And authorization goes beyond simple yes/no questions like this. As put really
+    nicely by [*wkirby on Hacker News*](https://news.ycombinator.com/item?id=40054080):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Permissions have three moving parts, who wants to do it, what do they want to
+    do, and on what object. Any good permission system has to be able to efficiently
+    answer any permutation of those variables. Given this person and this object,
+    what can they do? Given this object and this action, who can do it? Given this
+    person and this action, which objects can they act upon?
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: which acts a force multiplier on all of the above complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given all this, a shared authorization capability for this application has
+    to be able to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: express the above logic, which spans the Authz and Issues domains
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: use data stored in both the AuthzService and IssuesService
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: support yes/no questions as well as more flexible “list” questions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Let's start with the logic. From there, we'll explain how our approach to logic
+    let us solve some tricky data problems. We’ll demonstrate the concepts with examples
+    that apply them to both yes/no and list questions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Polar: A prolog-inspired language that transpiles to SQL'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Polar is our declarative approach to authorization logic that spans multiple
+    services. Polar is inspired by logic programming languages like Prolog, Datalog,
+    and miniKanren. Under the hood, Polar transpiles to SQL over a custom data model,
+    which does the heavy lifting of query planning and fast data access.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a fairly minimal example of a Polar policy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There’s an `allow` ”rule” that says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: a `user`  (of type `User` ) is allowed to `read` an  `org` (of type `Organization`)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*if* the `user` has the role `member` on that `org`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'There’s also a solitary `has_role` rule with no *if* and no conditions. These
+    are called *facts —* unconditionally true information. In this case, the fact
+    is asserting that the user with `id: alice` is a member of the organization with
+    `id: acme`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This Polar policy expresses:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'a simple piece of role-based access control logic: org members can read that
+    organization'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: a small piece of factual data assigning the member role to alice.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To use this policy, you can *query* it. The theoretical foundations of this
+    come from logic programming and first order logic. For a deeper dive, I’d recommend
+    checking out [The Power of Prolog](https://www.metalevel.at/prolog/introduction).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For today, there are two main facets of logic programming that you’ll want
+    to wrap your head around:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inference logic (how Polar evaluate rules)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unification (the core “pattern-matching algorithm” of Polar)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Interlude: Logic Programming'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Rules express logical properties about the world: “this statement is true if
+    these other things are also true”. The syntax of rules makes them look a little
+    like functions, but they resolve logically/declaratively rather than imperatively.
+    It can still be helpful though to think in terms of “calling” rules.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Inference** says that “Given a user `alice` who has the `member` role on
+    the `acme` organization, it follows that `allow(alice, "read", acme)` is true.
+    That is, we *infer* that the `allow` rule is true based on the fact that the `has_role`
+    condition is satisfied.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Unification** is effectively a fancy pattern matching algorithm that combines
+    variable assignment + comparisons into one operator.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the following are all examples of simple unification:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unification is a process for helping you *solve* those equations. Given x=1
+    and y=x what is y? Well, obviously it’s 1 . That’s what unification is doing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logic Programming in Polar
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Putting the two together — rule inference and unification — you end up with
+    a logic engine that can make simple deductions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logical steps taken to evaluate a query against a Polar policy
+  prefs: []
+  type: TYPE_NORMAL
+- en: Querying a Polar policy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here’s an example of how you query a policy using the `oso-cloud` CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output of `oso-cloud query` is showing the result of logical deductions:
+    it “filled in” the missing argument of `Organization:acme`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And you can extend this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This time there’s an additional fact — user `bob` is a `member` of `megacorp`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And the query is even more generic — what are all the users, with any permission,
+    on any organization. Using the same deduction process as above, Oso Cloud determines
+    that `alice` can read `acme` and `bob` can read `megacorp`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There’s a particularly nice element of logic languages on display here: you
+    use the exact same declarative configuration to answer “can Alice read Organization:acme”
+    as well as “what are all the organizations Alice can access”. Which is exactly
+    what you need for common authorization use cases.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Inference to Remove Redundancy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now suppose you introduce more roles and more permissions by defining a member
+    with the following permissions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And an admin with a slightly increased set of permissions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see that it starts to get a little repetitive. And so you can write
+    logic wherever it makes sense to remove redundancy. In the above case, admins
+    can do whatever members can do, so for the admin permissions you can write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: That is, you use inference logic to say that a user has the “member” role at
+    an organization if they have the “admin” role. Rule inference logic is *recursive*.
+    By adding that one rule, you now know that any rule that relies on a user being
+    a member of an organization will also work for a user who is an admin of the organization.
+    This saves you from needing to repeat all the member permissions on the admin
+    – and from needing to remember to do that every time you add a new permission
+    to members.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Incidentally, the above use case is so common that Polar has some built-in
+    primitives to express it. You would write it as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: which is a little less noisy, while also baking in validation logic to prevent
+    typos of names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Under the hood those `"read" if "member"`  rules expand to the same thing you
+    wrote earlier
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: it’s purely syntactic sugar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pulling it all Together
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Coming back to the GitHub example, the full logic from earlier would look something
+    like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this policy there are effectively *five* different ways (not counting the
+    combinatorial explosions of all of them) that a user might get permission to close
+    an issue:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They are the issue creator, and they have read-access on the repository
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They directly have an appropriate role (e.g. “triage”) on the repository it
+    belongs to
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They directly have a custom role on the repository, and the organization configured
+    that role to have “close_issues” permission on repositories
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They are a member of the organization, and the organization configures members
+    to have at least “triage” level access on all repositories
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: They are an organization admin which grants them admin-level access on all repositories.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Phew!
+  prefs: []
+  type: TYPE_NORMAL
+- en: What makes logic programming a powerful paradigm for authorization is the ability
+    to implement this kind of branching conditional logic, which you typically see
+    in authorization systems, with reusable logical predicates (i.e., more rules).
+    Polar’s logic programming foundations let it represent this logic clearly and
+    concisely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What’s more, by pulling the authorization logic out of the individual services
+    and into a common location, multiple teams can collaborate on the policy. Because
+    the policy language is declarative, the rules are easy to read and the logic is
+    easy to understand, further facilitating collaboration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, to extend the prior policy to make “closing locked issues” a distinct
+    permission, you can make a small policy change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From Logic to Data: Facts as SQL'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Expressing authorization logic in a language like Polar is half the battle.
+    What it gives you is a consistent approach to writing reusable authorization logic
+    that multiple teams can collaborate on building.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we’ve been deliberately skipping over data: where it comes from and
+    how it affects performance.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Earlier, we showed how you can add data by writing facts directly in the policy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the logic programming standpoint, there’s nothing inherently wrong with
+    this. There’s no real need to make a distinction between rules and facts — remember,
+    a fact is just an unconditionally true rule. It’s down to the implementation to
+    provide convenient APIs for modifying the state of our system by adding/removing
+    new facts, and to implement an efficient way to store/index/lookup facts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing facts
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Datalog](https://en.wikipedia.org/wiki/Datalog) illustrates this nicely. Datalog
+    is a logic programming language that distinguishes rules from facts as a fundamental
+    element of its design. One way that different implementations of Datalog are distinguished
+    from one another is the strategies they use for evaluating rules and facts together
+    in optimal ways: [https://en.wikipedia.org/wiki/Datalog#Evaluation](https://en.wikipedia.org/wiki/Datalog#Evaluation).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, we could have used Datalog to achieve our data goals — but that would
+    mean we have to build our own Datalog implementation, backing data store, etc.
+    We don’t want to do that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We *want* to leverage existing tried and true technology — like SQL. And more
+    specifically, SQLite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And so what we decided was: we should have a custom data model purpose-built
+    for Polar and backed by SQL. We’ve been through a few iterations of said data
+    model, and landed on a painfully simple one: we store facts as rows in SQL tables.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Initially we put all facts with the same arity (number of arguments) in one
+    table together. But we realized that with SQLite we would be better served by
+    dynamically creating tables for a given fact *type*, which we defined as the fact
+    name (e.g. “has_role”) and argument types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Polar, values are either raw primitives (strings, integers, booleans), or
+    type + ID pairs, like `{ type: "Organization", id: "acme" }`. And we can represent
+    primitives in that format too (e.g. `{ type: “String”, id: “member”}`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Where this leaves us - for a fact like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: we create an entry in a fact index, which maps an incrementing ID to the fact
+    type, e.g.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and then store the id: portions of the fact value (i.e. the quoted parts) in
+    the fact_1  table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Retrieving Facts
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'So now the question becomes: how should Polar access this data? There are two
+    options worth considering:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make it possible to access the backing datastore as part of query evaluation.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Split evaluation into two phases: query evaluation, and data lookups'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We ultimately opted for (2) because we knew when we started that we were heading
+    towards something that could support data split across multiple services, so we
+    would need those two steps to be separated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How this works is: when Polar evaluates a query like `allow User:alice read
+    Organization:_`, it works *mostly* like a regular logic programming language.
+    It performs unification and applies inference logic to find all possibilities
+    of what the input variables could be – with one important difference.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When Polar sees a condition like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It considers two distinct possibilities:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The condition is satisfied by some other rule, and so should find matching rules
+    and evaluate those
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The condition is satisfied by a concrete fact that is stored in the underlying
+    database. In which case, track this in its internal state as something to be resolved
+    later.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: And so instead of Polar returning concrete results like before, Polar is actually
+    returning an intermediate representation of all the ways the query could be satisfied
+    using facts in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the above example rule of “users can close issues if they have the ‘triage’
+    role on the repository it belongs to”, asking the query “which issues can Alice
+    close” results in the intermediate representation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s no coincidence that this looks a lot like SQL’s `SELECT ... FROM ... WHERE`
+    syntax. The final step in this process is to turn the above into SQL, and query
+    our embedded SQLite database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the facts, indexed `f0` and `f1` , we look up the corresponding fact tables
+    via the index. For simplicity, I’ll assume those tables are `fact_0` and `fact_1`
+    . The SQL output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Interlude: Performance'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given that one of the motivations for using SQL was performance, how well does
+    this perform?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because our facts are in SQL tables, we can generate a bunch of indexes for
+    those tables using simple heuristics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our SQL queries end up being a number of joins, and simple filters on these
+    indexed columns. This makes the SQLite query planner *very* happy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It does exactly what you would expect: it finds all of the repositories that
+    alice is has the “triage” role for, and then gets all of the issues belonging
+    to those repositories.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And in the case where we ask if alice can close a specific issue? The SQLite
+    query planner is smart enough to realize that issues belong to strictly one repository,
+    whereas users might have roles on many repositories and reverses the ordering
+    of the joins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Polar + Facts: An Ideal Combination'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point I’m basically just explaining to you why SQL is cool…But it’s
+    hard to overstate how nice it is for us to be able to focus purely on providing
+    good inputs to a battle-tested SQL engine like SQLite rather than attempt to build
+    this. We get to spend our innovation tokens elsewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We’ve also drawn a relatively clear line in the sand. Polar supports:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Common authorization data: roles, relationships, attributes'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Custom data types expressed as facts
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Arbitrary combinations of facts expressed via `and` and `or`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A handful of comparisons like integer comparisons, and time-based checks (for
+    expiration).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Recursive data lookups (e.g. files and folders hierarchies a la Google Drive).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We think this the ideal combination: flexible enough to represent almost anything,
+    while being structured enough for us to write a robust querying layer using SQLite
+    to do the underlying query planning and data lookups.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking back, it’s unsurprising that SQL works so well in a Datalog-like logic
+    programming language. SQL was itself inspired by logic programming, and Datalog
+    is frequently described as a stepping stone between logic programming and relational
+    algebra. Everything starts blurring together the more you look at it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Distributing Queries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With Polar we have a declarative way to express authorization logic. And we’ve
+    seen that we can use Polar with a custom data model in SQL to evaluate queries
+    fast. We use that to build our central authorization system (Oso Cloud).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Returning to our IssuesService example: if we want to use that central authorization
+    system to decide “can Alice close issue #42”, we’ll need to give it access to
+    the data it needs somehow.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Typically, centralized authorization systems – including Oso Cloud – have achieved
+    this by requiring that any necessary data exist *in the authorization system*
+    at the time the decision is made. This means either:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Duplicating authorization-relevant data between the application and the authorization
+    service
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Moving to event sourcing
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Both of those sound like a lot of extra work just to answer some authorization
+    questions. In the case of duplicating the data, you’re either building a replication
+    process or you’re passing extra data over the wire for every authorization request.
+    If you move to event sourcing, then you’re taking on a major application refactor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However you choose to get the data into the service, some operations will also
+    return a long list of data back out of it. Think back to the case where we asked
+    for all the issues that Alice can close. If Alice has access to hundreds of issues,
+    then the response will include all of them, increasing latency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This led us to consider a different option: distribute the authorization. We
+    can centralize anything that’s shared across multiple services and leave everything
+    else in the application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, in the GitHub example most of a user’s permissions on an issue
+    come from the repository roles, and so one path to implement it would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which, to be frank, is not too bad at all. Most of GitHub runs off of what organization/repository
+    permissions a user has, so you manage that logic and data in the shared authorization
+    service. But you implement domain-specific authorization logic, like “issue creators
+    can close their own issues”, within the service (i.e. IssueService) and use the
+    application data you already have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But we can do better. The above code has one big downside: a significant amount
+    of authorization logic has bled into the IssuesService.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s bad because it creates a coupling between the AuthzService and the IssuesService.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose you want to modify your authorization logic to differentiate between
+    which users can close *locked* issues. That might look something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add code to IssuesService for checking if the user has `"close_locked_issues"`
+    permission. Deploy these changes behind a feature flag.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add the new permission to roles in the AuthzService, redeploy these changes.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Toggle the feature flag for IssuesService to enable the new feature.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Small changes in one service require coordinating code changes across multiple
+    services (and therefore teams).
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the same time, by deferring domain-specific authorization to the associated
+    services, each team is left to “draw the rest of the owl” in their application.
+    For example, it’s fortunate that when implementing “creators can close issues”,
+    the  Issues team remembered to check the issue creator still has read-level access
+    to the repository (employees who left the company shouldn’t be able to close their
+    old issues). But this logic is outside the AuthzService, so you’ve lost most of
+    your tools to make sure that this line is implemented correctly, and tested.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cleaning up the Mess
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As we said at the beginning: authorization is messy.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To decide who can do what to which resources, you need knowledge about what
+    those resources are and how they relate to other resources. But you don’t want
+    authorization logic to leak into your application, and you don’t want to duplicate
+    application data in your authorization service. That means you need a way to distribute
+    authorization decisions across both the AuthzService and IssueService.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code sample above got us close, but a solution that eliminates the leaked
+    authorization logic while maintaining encapsulation of the domain-specific data
+    would be more resilient to changes in logic or data on either end. Practically,
+    this means:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Centralizing all authorization logic in the authorization service
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Centralizing *shared* authorization data (e.g. organization and repository roles)
+    in the authorization service
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Keeping *domain specific* authorization data in the appropriate application
+    database
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Evaluating Polar against an Application DB
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We achieve this by bringing the power of Polar to data stored across multiple
+    data stores. And importantly, to data stored *outside* of Oso Cloud.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have prior experience [turning Polar into SQL](https://www.osohq.com/post/authorization-logic-into-sql)
+    that runs inside an application. However, previously we relied on ORMs to do the
+    query building. We returned an intermediate representation inspired by relational
+    algebra, and used the ORM to turn this into SQL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But given that we are already working with an intermediate representation we
+    know is flexible enough to convert to SQL, we looked at what we already had when
+    thinking about this problem again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to do two things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Turn our intermediate representation into SQL to run it against an application
+    database.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Split the intermediate representation into an Oso part that runs centrally and
+    a local part that runs in the application.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'One way to do (1) which is relatively naive, but close to what we need, is
+    to use [CTEs](https://www.metabase.com/learn/sql-questions/sql-cte) to make the
+    application database “look like” our own internal schema, e.g. in the previous
+    query replace `fact_0` and `fact_1` with a CTE describing how to get that data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: To get this, we just need a configuration file that maps between the Oso data
+    schema and SQL tables, e.g.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Having a simple mapping from an application DB to Oso facts was no accident.
+    We have a simple rule of thumb for mapping data to Oso:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Roles: many-to-many or one-to-many tables which relate two tables/primary keys
+    and have an additional “role” attribute.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Relationships: a primary key + a foreign key'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Attributes: a primary key + a column value'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We tell our customers to use this simple mapping for sending Oso data, and so
+    all of our common patterns for authorization rules are expressed in terms of this
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The “issue” table has a primary key, foreign keys for the parent repository
+    and issue creator, and a column for if its locked. Combinations of these map to
+    relationship and attribute data in Oso.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The mapping that we create is a “virtual” mapping. We don’t actually need to
+    modify the database in any way, nor persist any data. But if we were to convert
+    the data into how Polar sees it, or to expand out the CTEs that we generate into
+    actual tables, it would look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each row in the “issue” table maps to many facts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And just like that* we have a policy language that can run over an application
+    database with minimal configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Note: I would like to clarify that the intent here is to say that it’s that
+    easy for Oso users, and not diminish the effort of the Oso team who implemented
+    this feature 🐻'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting the lookup across two services
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We now have (1) — a way to run SQL against an application database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lets move on to (2) — split the intermediate representation into an Oso part
+    and a local part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we had figured out the configuration and how that would compile to SQL,
+    deciding on how to “split” the intermediate state was clear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We partition the facts we’re searching for into Oso parts and local parts, and
+    create dummy variables to bridge the two, e.g. we know the `issuesService` manages
+    issue data, and therefore the `has_relation` facts between issues and repositories,
+    whereas Oso manages roles
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Before splitting:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**After splitting:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On Oso’s side, we evaluate the Oso part in an identical way to before: we compile
+    it to SQL, run the SQL, and get back a set of results.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To resolve the rest of the authorization result within the application, we’ll
+    need to take:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other half of the intermediate representation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The schema mapping configuration
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The partially evaluated results from Oso
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: And turn them into a SQL query we can run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That is, we combine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'the required lookups:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'plus the configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the inputs from Oso:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'to compute the SQL to perform “the rest of the authorization”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The IssueService can run this SQL against its own database to check authorization
+    of a single entity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: By converting the intermediate polar representation to SQL *that the IssueService
+    can run*, we have built a way to access authorization data that is distributed
+    across multiple services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With all this in place, the `closeIssue`  method gets a whole lot shorter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also use this approach to generate lists of authorized issues. For
+    example, to return all the issues that the current user can close:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because you’re creating the list against the local database, it’s easy to sort
+    and paginate the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Conclusion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Referring back to our initial criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'a shared authorization capability must provide mechanisms for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: expressing the above logic, which spans the Authz and Issues domains
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: using data stored in both the AuthzService and IssuesService
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: supporting yes/no questions as well as more flexible “list” questions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We achieved all three of these! We have Polar to express declarative logic decoupled
+    from any one service. We distribute Polar across services to avoid needing to
+    sync data anywhere, and our approach of compiling Polar to SQL makes it possible
+    to ask *any* kind of question without needing to rewrite any logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try it out here: [https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data](https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ‍
+  prefs: []
+  type: TYPE_NORMAL

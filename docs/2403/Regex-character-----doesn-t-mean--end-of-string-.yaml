@@ -1,0 +1,123 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:31:57'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regex character “$” doesn't mean “end-of-string”
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline](https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This article is about a bit of surprising behavior I recently discovered using
+    Python's regex module (`re`) while [developing SBOM tooling for CPython](https://github.com/python/release-tools/pull/92#discussion_r1484470272).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Folks who've worked with regular expressions before might know about `^` meaning
+    "start-of-string" and correspondingly see `$` as "end-of-string". So the pattern
+    `cat$` would match the string `"lolcat"` but not `"internet cat video"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The behavior of `^` made me think that `$` was similar, but they aren't always
+    symmetrical and the behavior is *platform-dependent*. Specifically for Python
+    with multiline mode *disabled* the `$` character can match either the end of a
+    string *or a trailing newline before the end of a string*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So if you're trying to match a string without a newline at the end, **you can't
+    only use `$` in Python!** My expectation was having multiline mode disabled wouldn't
+    have had this newline-matching behavior, but that isn't the case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next logical question is how does one match the end of a string without a newline
+    in Python?
+  prefs: []
+  type: TYPE_NORMAL
+- en: After doing more research on [Python](https://docs.python.org/3/library/re.html#regular-expression-syntax)
+    and [other regular expression syntaxes](https://www.regular-expressions.info/anchors.html)
+    I also found `\z` and `\Z` as candidates for "end-of-string" characters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Multi-line mode is enabled with [`re.MULTILINE`](https://docs.python.org/3/library/re.html#re.MULTILINE)
+    in Python, the docs have the following to say:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When `re.MULTILINE` is specified the pattern character '$' matches at the end
+    of the string and at the end of each line (immediately preceding each newline).
+    By default, '$' only matches at the end of the string and immediately before the
+    newline (if any) at the end of the string.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Let''s see how these features work together across multiple platforms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Pattern matches `"cat\n"`? | `"cat$"` multiline | `"cat$"` no multiline |
+    `"cat\z"` | `"cat\Z"` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| PHP | ✅ | ✅ | ❌ | ✅ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ECMAScript | ✅ | ❌ | ⚠️ | ⚠️ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Python | ✅ | ✅ | ⚠️ | ❌ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Golang | ✅ | ❌ | ❌ | ⚠️ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Java 8 | ✅ | ✅ | ❌ | ✅ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .NET 7.0 | ✅ | ✅ | ❌ | ✅ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Rust | ✅ | ❌ | ❌ | ⚠️ |'
+  prefs: []
+  type: TYPE_TB
+- en: '✅: Pattern matches the string `"cat\n"`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '❌: Pattern does not match the string `"cat\n"`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '⚠️: Pattern is invalid or character not supported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summarizing the above table, if matching a trailing newline is acceptable then
+    `$` with multiline mode works consistently across all platforms, but if we wanted
+    to *not match* a trailing newline then things get more complicated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To not match a trailing newline, use `\z` on all platforms except Python and
+    ECMAScript where you'll need to use `\Z` or `$` without multiline mode respectively.
+    Hope you learned something about regular expressions today!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note: The table of data was gathered from [regex101.com](https://regex101.com),
+    I didn''t test using the actual runtimes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Thanks for reading!** ♡ Did you find this article helpful and want more content
+    like it? <nobr>Get notified of new posts</nobr> by subscribing to the [RSS feed](/feed)
+    or the [email newsletter](https://buttondown.email/sethmlarson).'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL

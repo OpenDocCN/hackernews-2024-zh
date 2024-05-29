@@ -1,0 +1,260 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:20:18'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: /tmp | Python Generators Are Underutilized
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.slashtmp.io/posts/generators/](https://www.slashtmp.io/posts/generators/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main>
+  prefs: []
+  type: TYPE_NORMAL
+- en: January 12, 2024
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Python Generators Are Underutilized
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'One of my favorite features in the python ecosystem is one I don’t often see
+    utilized:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Generators*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Python generators *generate* values upon reaching yield statements. Unlike
+    loops, generators yield values one at a time. Consider the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will yield the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s bring in a utility library called [tracemalloc](https://docs.python.org/3/library/tracemalloc.html#tracemalloc.get_traced_memory).
+    This is a python built-in library with some very simple utilities for tracking
+    memory allocations in python programs. Let’s modify our program to track the amount
+    of memory allocated for this entire program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we’re seeing the amount of memory allocated at each line, as well as the
+    peak memory. So in this code block, we’re performing the following allocations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`py to_return = [val * val for val in x]` allocates 19616 bytes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`py squares = square_vals(nums_to_square)` allocates 11832 bytes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`py to_return = initial_mem, peak_mem = tracemalloc.get_traced_memory()` allocates
+    64 bytes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In total, we utilized a maximum of 31,468 bytes in this program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now to add a generator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is interesting! Note that, compared to our first example, the act of providing
+    the squared numbers `yield val * val` does not actually lead to any memory allocation,
+    whereas `to_return = [val * val for val in x]` does. Instead, in the latter code
+    block, we end up allocating 208 bytes on the line that calls the `gen_square_values()`.
+    This is the beauty of a python generator!
+  prefs: []
+  type: TYPE_NORMAL
+- en: So what’s happening here?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our first example, when we call `square_vals()`, we create the list containing
+    all the squared values in memory and return that memory block from the method.
+    When we turn this into a generator, we are instead creating a *generator object*.
+    This generator object creates values on-the-fly, that is: we won’t allocate any
+    of the squared values until we’re ready to use them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we go back to our codeblock, we can see this in action by adding a new loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This just block just takes our generator and yields all the values into a list
+    called `gen_to_list`. When we run this, we get additional output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’ve managed to get our peak memory usage back up! Notice that the line that
+    generates values is, once again, allocating 11832 bytes when we yield all of our
+    values into a list. This reveals the underlying functionality of the generator:
+    it exists as a small, lightweight object that *generates* values one by one.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling Up
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So what’s the utility here? Well that becomes more obvious when we change things
+    around a little. Let’s modify our code to generate 100,000 numbers instead of
+    500\. Additionally I’m going to change the line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: in our generator example. (The range builtin in Python acts very similarly to
+    a generator but is slightly different)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running our example using lists give us the following benchmarks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '7,992,416 is a lot of bytes for not doing a lot of work. We’re already at 7MB
+    of memory usage. Let’s instead look at a generator implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '288 bytes? Okay, but we’re not doing anything with those values, let’s actually
+    do something with the generator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s still tiny!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is obviously just an exceptionally simple example of using generators
+    to put data to the console, but generators are exceptionally useful in many applications.
+    Python is often used as a glue language for ETL pipelines and batch jobs, and
+    many engineers implement these by creating massive list objects within their application.
+    Consider a simple JSON schema that we parse into a python object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we’re ingesting hundreds of thousands of these objects, storing those all
+    in memory is going to get expensive quickly. Generators enable us to avoid creating
+    these objects all in memory at once. This can be invaluable in reducing costs
+    and increasing performance in memory limited cloud compute environments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gotchas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Although convenient, generators *do* have some limitations that must be considered
+    before using them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generators can’t be rewound or peeked without additional code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once a value has been generated, it cannot be regenerated from the same generator.
+    Likewise, there is no way to compute the next value of a generator without also
+    consuming it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generators can be tricky to debug
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Line-by-line debuggers often struggle inspecting the underlying object as they
+    are unrewindable by nature. I am not currently aware of a python visual debugging
+    application that allows for the inspection of generated values without also consuming
+    the value. This can be worked around by implementing custom code on top of generators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generators can increase mental load of understanding code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The under utilization of generators means that they are often difficult to
+    understand for those with limited experience with python. It can take some time
+    for people to develop the mental abstraction of “this effectively becomes a list
+    when iterated over”. The apparent “out-of-order” execution can be hard to parse
+    at first. Take the example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: It can be confusing, without a solid understanding of generators, to parse the
+    order of output in this script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

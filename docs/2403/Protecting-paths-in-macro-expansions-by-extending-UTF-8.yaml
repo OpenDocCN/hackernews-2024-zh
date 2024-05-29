@@ -1,0 +1,194 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:38:32'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Protecting paths in macro expansions by extending UTF-8
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://nullprogram.com/blog/2024/03/05/](https://nullprogram.com/blog/2024/03/05/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: March 05, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: nullprogram.com/blog/2024/03/05/
+  prefs: []
+  type: TYPE_NORMAL
+- en: After a year I’ve finally came up with an elegant solution to a vexing [u-config](/blog/2023/01/18/)
+    problem. The pkg-config format uses macros to generate build flags through recursive
+    expansion. Some flags embed file system paths, but to the macro system it’s all
+    strings. The output is also ultimately just one big string, which the receiving
+    shell [splits into fields](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_05).
+    If a path contains spaces, or shell metacharacters, u-config must escape them
+    so that shells treat them as part of a token. But how can u-config itself distinguish
+    incidental spaces in paths from deliberate spaces between flags? What about other
+    shell metacharacters in paths? My solution is to extend UTF-8 to encode metadata
+    that survives macro expansion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As usual, it helps to begin with a concrete example of the problem. The following
+    is a conventional `.pc` file much like you’d find on your own system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It begins by defining the library’s installation prefix from which it derives
+    additional paths, which are finally used in the package fields that generate build
+    flags (`Cflags`, `Libs`). If I run u-config against this configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Typically `prefix` is populated by the library’s build system, which knows
+    where the library is to be installed. In some situations that’s not possible,
+    and there is no opportunity to set `prefix` to a meaningful path. In that case,
+    pkg-config can automatically override it (`--define-prefix`) with a path relative
+    to the `.pc` file, making the installation relocatable. This works quite well
+    [on Windows, where it’s the default](/blog/2020/09/25/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This just works… *so long as the path does not contain spaces*. If so, it risks
+    splitting into separate fields. The `.pc` format supports quoting to control how
+    such output is escaped. Regions between quotes are escaped in the output so that
+    they retain their spaces when field split in the shell. If a `.pc` file author
+    is careful, they’d write it with quotes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The paths are carefully placed within [quoted regions](/blog/2021/12/04/) so
+    that they come out properly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Almost nobody writes their `.pc` files this way*! The convention is not to
+    quote. My original solution was to implicitly wrap `prefix` in quotes on assignment,
+    which fixes the vast majority of `.pc` files. That effectively looks like this
+    in the “virtual” `.pc` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So the important region is quoted, its spaces preserved. However, the occasional
+    library author actively supporting Windows inevitably runs into this problem,
+    and their system’s pkg-config implementation does not quote `prefix`. They soon
+    figure out explicit quoting and apply it, which then undermines u-config’s implicit
+    quoting. The quotes essentially cancel out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The quoted regions are inverted and nothing happens. Though this is a small
+    minority, the libraries that do this and the ones you’re likely to use on Windows
+    are correlated. I was stumped: How to support quoted and unquoted `.pc` files
+    simultaneously?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending UTF-8
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I recently had the thought: What if somehow u-config tracked which spans of
+    string were paths. `prefix` is initially a path span, and then track it through
+    macro-expansion and concatenation. Soon after that I realized it’s even simpler:
+    **Encode the spaces in a path as a value other than space**, but also a value
+    that cannot appear in the input. Recall that [certain octets can never appear
+    in UTF-8 text](/blog/2017/10/06/): the 8 values whose highest 5 bits are set.
+    That would be the first octet of 5-octet, or longer, code point, but those are
+    forbidden.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When paths enter the macro system, special characters are encoded as one of
+    these 8 values. They’re converted back to their original ASCII values during output
+    encoding, escaped. It doesn’t interact with the pkg-config quoting mechanism,
+    so there’s no quote cancellation. Both quoting cases are supported equally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if space is mapped onto `\xff` (255), then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which prints the same regardless of `${includedir}` or `"${includedir}"`. Problem
+    solved!
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s not the only complication. Outputs may *deliberately* include shell metacharacters,
+    though typically these are [Makefile](/blog/2017/08/20/) fragments. For example,
+    the default value of `${pc_top_builddir}` is `$(top_builddir)`, which `make` will
+    later expand. While these characters are special to a shell, and certainly special
+    to `make`, they must not be escaped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What if a path contains these characters? The pkg-config quoting mechanism won’t
+    help. It’s only concerned with spaces, and `$(...)` prints the same quoted nor
+    not. As before, u-config must track provenance — whether or not such characters
+    originated from a path.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `$PKG_CONFIG_TOP_BUILD_DIR` is set, then `pc_top_builddir` is set to this
+    environment variable, useful when the result isn’t processed by `make`. In this
+    case it’s a path, and `$(...)` ought to be escaped. Even without `$` it must be
+    quoted, because the parentheses would still invoke a subshell. But who would put
+    parenthesis in a path? Lo and behold!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again, extending UTF-8 solves this as well: Encode `$`, `(`, and `)` in paths
+    using three of those forbidden octets, and escape them on the way out, allowing
+    unencoded instances to go straight through.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This makes `pc_top_builddir` straightforward: default to a raw string, otherwise
+    a path-encoded environment variable (note: `s8` [is a string type](/blog/2023/10/08/)
+    and `upsert` is [a hash map](/blog/2023/09/30/)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For a particularly wild case, consider deliberately using a `uname -m` command
+    substitution to construct a path, i.e. the path contains the target machine architecture
+    (`i686`, `x86_64`, etc.):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '(Not that condone such nonsense. This is merely a reality of real world `.pc`
+    files.) With `prefix` automatically set as above, this will print:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Path parentheses are escaped because they came from a path, but command substitution
+    passes through because it came from the `.pc` source. Quite cool!
+  prefs: []
+  type: TYPE_NORMAL

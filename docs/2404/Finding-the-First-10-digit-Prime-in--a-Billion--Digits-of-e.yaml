@@ -1,0 +1,588 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:24:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the First 10-digit Prime in (a Billion) Digits of e
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.hanshq.net/eprime.html](https://www.hanshq.net/eprime.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Back in 2004, Google ran a [recruitment campaign](https://googleblog.blogspot.com/2004/07/warning-we-brake-for-number-theory.html)
+    where they posted the following billboard along the main freeway running through
+    Silicon Valley, and later at [other locations](http://web.archive.org/web/20040912012847/http://www.boston.com/business/technology/articles/2004/09/09/comprehension_test/)
+    in the country:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For those who managed to find the answer, a second problem awaited on the secret
+    web site, and those who solved that were then encouraged to send in a job application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Effectively [nerd sniped](http://xkcd.com/356/), I started playing with this
+    problem sometime last year, and it led down a path to some excellent programming
+    exercises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This post describes a few different ways of solving the problem; from a Perl
+    one-liner, to using hand-rolled fixed-point arithmetic (including an implementation
+    of [Improved division by invariant integers](https://gmplib.org/~tege/division-paper.pdf))
+    or using binary splitting with GMP to compute a billion decimals of *e*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code is available in [eprime.c](files/eprime.c).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Table of Contents
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Finding the 10-digit Prime With Perl
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Searching for ["first 10-digit prime in e"](https://www.google.com/search?q=first+10-digit+prime+in+e)
+    quickly yields the answer: 7427466391 is the number we''re looking for. But let''s
+    assume we found this problem early on, and that the solution had yet to be posted
+    online. We can still benefit from the web by searching for ["many digits of e"](https://www.google.com/search?q=many+digits+of+e).
+    The [first hit](https://apod.nasa.gov/htmltest/gifcity/e.2mil) provides two million
+    digits in which we can search for the solution, for example with a Perl one-liner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '(To install the required Perl module on a Debian system: sudo apt-get install
+    libmath-prime-util-perl)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How does this work?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[curl](https://curl.haxx.se/docs/manpage.html) downloads the e.2mil file, which
+    is then piped to the next command. The -s (for silent) flag makes it not print
+    any other output.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[tr](https://linux.die.net/man/1/tr) deletes (-d) all whitespace characters,
+    making sure the digits of *e* from the file end up on one line with no spaces
+    in between them.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With Perl''s [-M](https://perldoc.perl.org/perlrun.html#*-M*%5b*-*%5d_module_)
+    flag, we import two Perl module subroutines: [Math::Prime::Util::is_prime](http://search.cpan.org/~danaj/Math-Prime-Util-0.65/lib/Math/Prime/Util.pm#is_prime)
+    and [List::Util::first](http://search.cpan.org/~pevans/Scalar-List-Utils-1.48/lib/List/Util.pm#first).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[-n](https://perldoc.perl.org/perlrun.html#*-n*) makes Perl loop over the input,
+    executing our code for each line, with the current line in [$_](https://perldoc.perl.org/perlvar.html#%24_).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[-l](https://perldoc.perl.org/perlrun.html#*-l*%5b_octnum_%5d) causes a newline
+    to be added to each print statement.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[-e](https://perldoc.perl.org/perlrun.html#*-e*-_commandline_) specifies the
+    code we want to run.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The /.../g [match operator](https://perldoc.perl.org/perlop.html#%2f_PATTERN_%2fmsixpodualngc)
+    matches a regular expression against $_, which holds the current line. The [/g](https://perldoc.perl.org/perlop.html#Matching-in-list-context)
+    (global matching) modifier makes it return a list of all the strings matched by
+    capture groups.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The capture group in our regex, ([1-9]\d{9}), matches a non-zero digit followed
+    by nine digits, i.e. a ten-digit number (leading zeros wouldn't count).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Perl starts looking for the next regex match where the previous match ends,
+    and since we want to find all ten-digit numbers in the string, including those
+    that overlap, we put the pattern in a [lookahead assertion](https://perldoc.perl.org/perlre.html#Lookaround-Assertions):
+    (?=..). Our regex matches an empty string followed by a ten-digit number; the
+    number isn''t considered part of the match, but it does get captured.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: first returns the first element from the list of regex matches for which is_prime
+    returns true.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, that element is printed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Computing *e* Ourselves
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Computing mathematical constants to a large number of digits has been a popular
+    sport (in select circles) for a long time. Pi is [especially popular](https://en.wikipedia.org/wiki/Chronology_of_computation_of_%CF%80),
+    with the current record at 22.5 trillion digits, but *e* too has been computed
+    to extreme precision ([at least](http://www.numberworld.org/digits/E/) to 5 trillion
+    digits).
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way to approach the computation is from [Taylor's theorem](https://en.wikipedia.org/wiki/Taylor's_theorem),
+    which for *e* gives us
+  prefs: []
+  type: TYPE_NORMAL
+- en: where *R*, the remainder term, is bounded by
+  prefs: []
+  type: TYPE_NORMAL
+- en: The factorial in the denominator of the remainder term means the series converges
+    quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By choosing a large enough *n* and adding the terms of the series, we can approximate
+    *e* to any precision we want. To get *k* correct decimals, we need an *n* such
+    that
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking the logarithm of both sides and using [Stirling's approximation for factorials](https://en.wikipedia.org/wiki/Stirling's_approximation)
+    gives us
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the left-hand side is monotonic, we can use binary search to quickly
+    find the smallest *n* that fulfills the inequality:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: To compute 10,000 decimals, we need 3,249 terms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the computation of *e*, we cannot use the regular double data type, since
+    it only has enough precision for a handful of decimals. Instead, we will use [GMP](https://gmplib.org/)'s
+    arbitrary-precision [floating-point functions](https://gmplib.org/manual/Floating_002dpoint-Functions.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How many bits of precision do we need? Each decimal digit requires
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'bits, so to compute 10,000 decimals we define:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: (Note that we have to be careful not to lose any bits due to the truncating
+    integer division.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need two floating-point variables: one for the sum of the terms (which approaches
+    *e*), and one for the current term. The current term starts at 1, and then we
+    divide it by 1, 2, 3, etc. so that in each loop iteration, its value is *1/i!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We convert the final value to a string of decimal digits using [mpf_get_str](https://gmplib.org/manual/Converting-Floats.html#index-mpf_005fget_005fstr):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The string we get back starts with "2718..", i.e. there is an implicit decimal
+    point after the first character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we iterate over the string, checking for 10-digit primes with [mpz_probab_prime_p](https://gmplib.org/manual/Number-Theoretic-Functions.html#index-Prime-testing-functions):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To install GMP, build and run the program on Debian:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On Mac, to install GMP from [MacPorts](https://www.macports.org/), build and
+    run the program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To print the digits, pass along -DPRINT_E:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result can be compared against for example [this page](http://www-history.mcs.st-andrews.ac.uk/HistTopics/e_10000.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Note that mpf_get_str has rounded the last decimal up to 9, and so has that
+    page. If you print more decimals, you will see that the 10,000th decimal is actually
+    8, followed by 5674..)
+  prefs: []
+  type: TYPE_NORMAL
+- en: As it turns out, the 10-digit prime occurs early in *e*, starting at the 99th
+    decimal (in the second row above), so there is no need to compute all 10,000 decimals.
+    But more decimals is more fun!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computing *e* Ourselves Without GMP
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It seems amazing that just by repeatedly dividing and adding some numbers together,
+    we end up with this sophisticated mathematical constant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: GMP did all the work in the code above. Perhaps if we implemented all of it
+    ourselves, it would be even more satisfying? This seems like a worthwhile programming
+    exercise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fixed-Point Representation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Remember how numbers are represented in our regular decimal system. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As long as we remember the position of the decimal point, we could simply store
+    the number as an array of digits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is called fixed-point representation because the implicit decimal point
+    occurs in a fixed position of the number (as opposed to floating-point, where
+    it can change).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the instructions in modern computers perform arithmetic on 64-bit values,
+    it's much more efficient to store numbers as arrays of 64-bit values rather than
+    decimals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we know that the integer part of *e* is 2, we only concern ourselves with
+    computing and storing the fractional part. We will represent it as an array of
+    *n* 64-bit words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fixed-Point Addition
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To compute *e*, we only need to perform two operations: addition and division
+    (what we did with mpf_add and mpf_div_ui in the GMP version).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Addition is straight-forward; we add the numbers place by place, starting at
+    the least significant end and carrying the one as necessary (this is Algorithm
+    A in The Art of Computer Programming, Section 4.3.1):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Fixed-Point Division
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Performing the division is trickier. Luckily, we only need to divide our n-word
+    term number by a single word. That means the algorithm is straight-forward, essentially
+    how we do [short division](https://en.wikipedia.org/wiki/Short_division) in school.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the algorithm relies on being able to divide a two-word divisor by
+    a one-word dividend (dividing 128 bits by 64 bits in our case), "two-by-one division".
+    Some CPUs have an instruction for that; for example, Intel x86's DIV does exactly
+    what we need as long as the result fits in a single word (which it always will
+    in our case). But it is not possible to express that division in standard C, and
+    many CPUs don't have an instruction for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we will perform two-by-one division using a clever technique that relies
+    on multiplying the divisor with the approximate reciprocal of the dividend. Not
+    only does this solve the division problem for us, it solves it efficiently because
+    we can reuse the reciprocal when dividing by the same value multiple times. Using
+    X86's DIV instruction would be much slower since it can take up to 100 cycles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The algorithm is described in Möller and Granlund "[Improved division by invariant
+    integers](https://gmplib.org/~tege/division-paper.pdf)" (IEEE Trans. Comput. 2011).
+    The paper is an improved version of Granlund and Montgomery "[Division by Invariant
+    Integers using Multiplication"](https://gmplib.org/~tege/divcnst-pldi94.pdf) (PLDI'94)
+    which is also the subject of Chapter 10 in [Hacker's Delight](http://www.hackersdelight.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The approximate reciprocal is defined as
+  prefs: []
+  type: TYPE_NORMAL
+- en: which when *d* is "normalised", meaning that its highest bit is set, fits in
+    a 64-bit word. Basically it's *1/d* shifted up 128 bits, with some adjustments
+    to make it fit in a 64-bit word.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The algorithms in the paper rely on performing 64-bit by 64-bit multiplications,
+    the results of which can be up to 128 bits. Standard C only provides the lower
+    64 bits of such multiplications, which the paper refers to as umullo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Most CPUs do provide the full result of the multiplication. With GCC or Clang
+    we can use the non-standard __uint128_t type to implement umulhi (the high 64-bits
+    of the result) and umul (both the high and low 64-bits). With Microsoft Visual
+    C++ we can use intrinsics, and when none of those options are available, we can
+    compute the result by hand using four 32-bit multiplications:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: With these functions in place, we can proceed to implement reciprocal_word,
+    which computes *v* using carefully implemented (and hard to follow in the paper)
+    [Newton iteration](https://en.wikipedia.org/wiki/Newton's_method).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we do have access to the X86 DIV instruction, it can be used to compute the
+    approximate reciprocal directly. We use this in the assert above to check our
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the reciprocal, 2-by-1 division is implemented as below, using two multiplications
+    and some adjustments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: And with that in place, we can finally implement our n-by-1 division.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To normalize the dividend, it is convenient to have a function for getting the
+    number of leading zeros in a word. Many CPUs have an instruction for that (X86
+    has BSR), and otherwise we can do it ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since we shift the dividend to normalize it, we must also shift the divisor
+    the same amount to get the correct result. We can do this in-place while performing
+    the division (this "short division" algorithm is Exercise 16 in The Art of Computer
+    Programming, Section 4.3.1):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Computing *e* With Our Fixed-Point Routines
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now we can finally proceed to computing *e*. Note that since we''re only computing
+    the fraction, we skip the first terms (which add up to 2), and start with the
+    third one. To initialize efrac and term to 0.5, we need to figure out what that
+    is in the base we''re using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Decimal Conversion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The code above leaves us with an array of carefully computed 64-bit words that
+    represent the fractional part of *e*. How do we turn that into a decimal string?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we multiply it by 10, the most significant digit, 7, gets moved to the integer
+    position (in our case there is no integer position, so the 7 arrives as an overflow
+    of the multiplication). We can repeat the process to extract one decimal at the
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of multiplying by 10 to get one decimal, we can multiply by 100 to get
+    two, or any power of 10 to extract multiple decimals at the time. The largest
+    power of 10 that fits in a 64-bit word is 10^19, so we will use that to extract
+    19 decimals at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '(The time complexity of this is quadratic: *O(n)* multiplications are performed
+    *O(n)* times. GMP implements faster [algorithms](https://gmplib.org/manual/Binary-to-Radix.html#Binary-to-Radix)
+    for binary to decimal conversion.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Back in eprime_manual:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Primality Testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To check whether a number is prime, we will implement Algorithm P from The Art
+    of Computer Programming, Section 4.5.4, also known as the [Miller-Rabin primality
+    test](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a probabilistic test, which means it cannot tell us that a number is
+    prime with absolute certainty, but it's good enough for our purposes, and it's
+    fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The algorithm relies on modular exponentiation, which we can implement with
+    [repeated squaring](https://en.wikipedia.org/wiki/Exponentiation_by_squaring)
+    (also known as binary exponentiation). What makes it a little difficult is that
+    we're dealing with 64-bit numbers, so we need to be able to compute 128-bit products
+    and divide those by a 64-bit dividend. Luckily, we implemented exactly the necessary
+    tools with umul and div2by1 above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Back in eprime_manual:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: A Million Decimals
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can use our program to compute a million decimals:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: On my laptop, the "manual" version takes about 2 minutes. If I use X86's DIV
+    instruction instead of multiplying by the reciprocal, it takes 4 minutes. The
+    GMP version takes just over 1 minute; it uses fancier and more carefully implemented
+    algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computing *e* Using Binary Splitting
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While the algorithms above suffice for computing a million decimals, computing
+    a billion decimals calls for a faster approach. The programs used for calculating
+    *e*, *pi*, and other constants to trillions of decimals normally use a technique
+    called *binary splitting*. My implementation is based on [the description](http://numbers.computation.free.fr/Constants/Algorithms/splitting.html)
+    ([PostScript version](http://numbers.computation.free.fr/Constants/Algorithms/splitting.ps))
+    by Xavier Gourdon and Pascal Sebah.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider the series below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When *a = 0* and *b = n*, it is equivalent to the Taylor series for *e* except
+    that it's missing the first term, *1/0!*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compute the fraction resulting from adding the terms together, we need to
+    rewrite each term to use the common denominator, *Q(a,b)*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To compute *Q(a,b)*, we can use binary splitting. Instead of iteratively multiplying
+    with *a+1*, *a+2*, and so on, we can use a recursive approach, splitting the computation
+    into two halves at each step and combining the results (binary splitting is really
+    just another name for [divide and conquer](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When *Q(a,b)* is small, this isn't any faster than the iterative computation,
+    because binary splitting performs the same number of operations. However, when
+    the numbers are larger, the time required for each operation grows (often super-linearly)
+    with the size of the numbers involved, and then we benefit from the binary splitting
+    method reducing the size of the sub-problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (Besides reducing the size of the sub-problems, binary splitting is also a nice
+    way to parallelize the computation by computing the sub-problems on separate threads.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Computing the numerator of the series, *P(a,b)* is a little trickier. To rewrite
+    each term on the common denominator, we need to multiply them with the factors
+    missing from their denominators. For example, for the first term, we need to multibly
+    by *a+2*, *a+3*, and so on all the way to *b*. For the second term, we start with
+    *a+3*, and so on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we split *P(a,b)* into *P(a,m)* and *P(m,b)*, how can we combine them? Look
+    at what we get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*P(m,b)* matches the last terms of *P(a,b)*, so that seems fine.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*P(a,m)* looks like the first terms of *P(a,b)* except that the numerators
+    are wrong; we need them to be *b!*. To fix this, we can multiply them by *b!/m!*,
+    which we also know as *Q(m,b)*. So, we end up with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order for the computation to be fast, it''s necessary to use a multiplication
+    algorithm with good time complexity (in particular, the naive schoolbook algorithm
+    with *O(mn)* time won''t do). GMP implements [fancy multiplication algorithms](https://gmplib.org/manual/Multiplication-Algorithms.html),
+    so we will rely on that for performance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: A Billion Decimals
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using this version to compute a million decimals is significantly faster than
+    what we saw [above](#million):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'How about a billion decimals? On my laptop, it takes about 20 minutes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL

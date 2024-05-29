@@ -1,0 +1,282 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:00:23'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Patch A Package Source on NixOS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos](https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'This post is part of a series about NixOS. The series is done in support of
+    my upcoming Opus Magnum, "Practical NixOS: the Book", and you can read the [detailed
+    post here](/blog/practical-nixos-the-book).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Should you find this article lacking some information, be sure to tell me in
+    the comments or elsewhere, since it is a living document and I am very keen on
+    expanding it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This article's full code is [available on NixOS Musings GitHub](https://github.com/drakerossman/nixos-musings/tree/main/how-to-patch-a-package-source-on-nixos).
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details open=""><summary class="pt-2 pb-2 ml-6 text-xl font-bold">Table of
+    Contents (Click to Hide/Show)</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[](#introduction)Introduction'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To get an overview of nix formatters ecosystem, please refer to a [previous
+    article](/blog/overview-of-nix-formatters-ecosystem) of mine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To format my nix code, I prefer the `alejandra` formatter (though I'd be switching
+    to [nixfmt](https://github.com/serokell/nixfmt) once it's accepted as the standard).
+    `alejandra` does not provide any configuration options, however I would really
+    like to have the indent set to 4 spaces. `alejandra` is uncompromising, and so
+    am I.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[](#identifying-the-code-of-interest-to-be-patched)Identifying the Code of
+    Interest to be Patched'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''re going to achieve that in a rather simple way: we will replace the hard-coded
+    formatting option of 2 spaces with 4\. For this, let''s check the [sourcecode
+    of `alejandra`](https://github.com/kamadorueda/alejandra/tree/main/src).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By searching for `indentation` throughout the codebase, we identify the file
+    that has the indent size definition - [`/src/alejandra/src/builder.rs`](https://github.com/kamadorueda/alejandra/tree/main/src/alejandra/src/builder.rs).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s the [relevant snippet (line 49)](https://github.com/kamadorueda/alejandra/blob/e53c2c6c6c103dc3f848dbd9fbd93ee7c69c109f/src/alejandra/src/builder.rs#L49C1-L50C1):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: To achieve the 4-space indentation, we will replace `2` with `4` in the line
+    containing `2 * build_ctx.indentation`. Obvious!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[](#modifying-the-source-via-postpatch)Modifying the Source via `postPatch`'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'But first, let''s take a look at how `alejandra` is packaged on `nixpkgs`.
+    Search for `alejandra` at [https://search.nixos.org/packages](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=alejandra),
+    and you''ll find `alejandra` as the first result, and from the web UI you can
+    find the link to the nix package definition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s the [source code](https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/tools/nix/alejandra/default.nix),
+    and the full definition fits just a couple of lines, so I copy it below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: What do we see here?
+  prefs: []
+  type: TYPE_NORMAL
+- en: We build a Rust package (`alejandra` is written in Rust) via `rustPlatform.buildRustPackage`.
+    For that, we declare the package name and its version with `pname = "alejandra"`
+    and `version = "3.0.0";`. Then, we fetch the source code of `alejandra` from its
+    repository via `fetchFromGitHub`, pinned down to a specific commit with `hash
+    = "sha256-xFumnivtVwu5fFBOrTxrv6fv3geHKF04RGP23EsDVaI=";`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we see `cargoHash = "sha256-tF8E9mnvkTXoViVss9cNjpU4UkEsARp4RtlxKWq55hc=";`.
+    It is needed to guarantee the full reproducibility. To be completely sure that
+    you're using the same source code all the time, and there are no changes introduced
+    inbetween different builds, we specify the hash in the build instructions. This
+    hash is derived from the tarball - the downloaded file containing source code
+    - itself. Should the source code change, so will the the hash, and the build would
+    fail upon a detected mismatch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`buildRustPackage` requires either the `cargoSha256` or the `cargoHash` attribute
+    which is computed over all crate sources of this package.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Full documentation for `rustPlatform.buildRustPackage` is available at [Nixpkgs
+    Manual](https://nixos.org/manual/nixpkgs/unstable/#compiling-rust-applications-with-cargo).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The remaining things are self-explanatory: `passthru.tests` runs the tests,
+    and the `meta =` declares the metadata of this package, such as description, mainteners''
+    names, and license.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we''re working with the source code, we''re going to add the following
+    lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nix comes with a neat built-in function called `substituteInPlace`. It allows
+    us to replace a line with some other one in a file where necessary, and do it
+    without the need to write some shell script ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`postPatch` is a build step that instructs our builder to "apply patches",
+    or, in this case, to modify the fetched source in place before compiling the Rust
+    package.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we have modified `alejandra`''s indent level, we should get broken tests
+    now. But it is safe to assume if `alejandra` passed tests successfully for `2`
+    spaces indent already, `alejandra` should also be okay with `4` spaces after such
+    a minor change. We''re not going to modify the entire testing suite. Instead,
+    we''re just going to comment out the now-irrelevant parts: by commenting out `passthru.tests`,
+    we will prevent the builder from running the tests, and that will save us some
+    package compilation and realization time, as well as will not fail the actual
+    build.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re also going to remove the folder containing tests by adding the following
+    line to `postPatch`, so it won''t be copied to the nix store, saving us some storage
+    space:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s the final result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[](#using-patchfiles-in-builder)Using Patchfiles in Builder'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Once we build this via `nix build`, we discover that the resulting binary is
+    named `./result/bin/alejandra`. We would like to change that to `alejandra4`.
+    You may try to adjust the `pname = "alejandra";`, but you''ll soon discover that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: change to `pname = "alejandra4` has no effect on the name of the compiled binary;
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: you would also receive a hash mismatch for `cargoSha256` attribute. Supplying
+    the proper hash still has no effect on the binary's name.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The actual name of the binary is coming from the inner workings of the `rustPlatform.buildRustPackage`,
+    which defines it to match the name of crate in `Cargo.toml`. `alejandra`'s source
+    repo uses a Rust workplace layout with 2 crates - `alejandra` and `alejandra_cli`,
+    with latter depending on the former. After some trial and error we learn, that
+    we would have to change the name in [src/alejandra_cli/Cargo.toml](https://github.com/kamadorueda/alejandra/blob/main/src/alejandra_cli/Cargo.toml).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With such a necssesity arising, we can now also learn how to apply a "true"
+    patch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`rustPlatform.buildRustPackage` provides a `cargoPatches`, which you may use
+    with `Cargo.lock` (not `Cargo.toml`!) to provide newer versions of dependencies
+    for a potentially outdated `Cargo.lock`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, to patch `Cargo.toml` you would need to use an "escape hatch" - a `patches
+    = [ ./some.patch ];` inside the `rustPlatform.buildRustPackage` attrset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get the actual patch, we would do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: clone the `alejandra`'s repo - `git clone https://github.com/kamadorueda/alejandra`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modify the 2nd line `src/alejandra_cli/Cargo.toml` - change `name = "alejandra"`
+    to `name = "alejandra4"`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git add src/alejandra_cli/Cargo.toml`, so git includes the modified file to
+    uncomitted tracked changes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`git diff` to produce the diff, which looks like the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is how a [standard Unix patch file](https://en.wikipedia.org/wiki/Patch_%28Unix%29)
+    should be structured, except we should also remove the top 2 lines attached by
+    git:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have also produced such a patch file without `git` by simply copying
+    the file, modifying the copy, and then running `diff original.toml modified.toml`,
+    but you wouldn't get the header, which has the correct paths to patched files
+    in it - including the arbitrary top-level differing directories names - `a` and
+    `b`
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Without these paths, build would error at the patching step with the message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the patch as `patch-name.diff` in the same directory as the patched source
+    builder definition, and then include it via `patches = [./name-patch.diff];` inside
+    the builder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: That should do the work, and `alejandra4` now has the proper name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[](#conclusion)Conclusion'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: And that was it! You can now use `alejandra4`, e.g. as part of your devShell,
+    or as part of your `environment.systemPackages`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the ease of access to the newly "created" `alejandra4` formatter, I am also
+    providing a flake, which is published [at my GitHub](https://github.com/drakerossman/alejandra4).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example of using said flake with a devShell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: All the Nix code in this article is formatted with `alejandra4` 🙂
+  prefs: []
+  type: TYPE_NORMAL

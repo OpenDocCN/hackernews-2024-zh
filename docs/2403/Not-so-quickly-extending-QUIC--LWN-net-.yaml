@@ -1,0 +1,295 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:00:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not so quickly extending QUIC [LWN.net]
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lwn.net/Articles/964377/](https://lwn.net/Articles/964377/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| **Benefits for LWN subscribers**The primary benefit from [subscribing to
+    LWN](/subscribe/) is helping to keep us publishing, but, beyond that, subscribers
+    get immediate access to all site content and access to a number of extra site
+    features. Please sign up today! |'
+  prefs: []
+  type: TYPE_TB
+- en: By **Daroc Alden**
+  prefs: []
+  type: TYPE_NORMAL
+- en: March 6, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[QUIC](https://en.wikipedia.org/wiki/QUIC) is a UDP-based transport protocol
+    that forms the foundation of [HTTP/3](/Articles/814522). It was initially developed
+    at Google in 2012, and became an [IETF](https://www.ietf.org/) standard in 2021\.
+    Work on the protocol did not stop with its standardization, however. The [QUIC
+    Working Group](https://quicwg.org/) published several follow-up standards. Now,
+    it is working on four more extensions to QUIC intended to patch over various shortcomings
+    in the current protocol — although progress has not been quick.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: QUIC serves as a replacement for TCP and TLS with several interesting benefits.
+    Combining the handshakes involved in establishing a connection and encrypting
+    it allows QUIC to reduce the number of round trips required before applications
+    can send data — to zero, in some cases. Combining encryption with the transport
+    layer also allows QUIC to hide details of connections from intermediate routers
+    ("middleboxes"). QUIC also supports sending multiple independent streams over
+    the same underlying connection. This ability is useful for applications like web
+    servers that want to transfer related resources over the same connection without
+    a dropped packet in one stream delaying the rest — a problem with TCP known as
+    [head-of-line blocking](https://en.wikipedia.org/wiki/Head-of-line_blocking).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load balancing
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'One interesting feature of QUIC is [connection migration](https://www.rfc-editor.org/rfc/rfc9000.html#name-connection-migration),
+    which allows computers to seamlessly change IP addresses while maintaining a connection.
+    QUIC packets all contain a connection identifier, which can be used to determine
+    which connection the packet is part of, even if it comes from an unexpected source
+    address. This poses a challenge for load balancers, which usually determine how
+    to forward packets based on the IP addresses and port numbers of the source and
+    destination. The connection ID is one of the few unencrypted parts of a packet
+    — to allow servers to tell what encryption key should be used with a packet —
+    so a QUIC-aware load balancer can use the connection identifier instead, but this
+    interacts poorly with another aspect of QUIC: [connection ID rotation](https://www.rfc-editor.org/rfc/rfc9000.html#name-privacy-implications-of-con).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: QUIC permits a server to supply a client with a pool of connection IDs for a
+    given connection, in order to reduce "<q>linkability</q>". If a QUIC connection
+    remains open for a long time — for example because it is being used to place an
+    ongoing phone call — an attacker could use the connection ID of the packets to
+    track the user as they move between different networks. To mitigate this, a client
+    that knows it is about to change networks (for example, because it is about to
+    switch from a cellular connection to WiFi) can start using a new connection ID
+    from the pool when it switches. The server, which knows what connection IDs it
+    provided to the client, can continue serving the connection with no interruption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any non-participant in the connection sees the source IP address, port number,
+    and connection ID change simultaneously, making it difficult to recognize the
+    new flow of packets as being part of the same connection. Unfortunately, this
+    includes any load balancers sitting in front of the server, which have no way
+    to recognize that the packets involved ought to be routed to the same server that
+    handled the initial request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The QUIC Working Group is trying to enhance load balancing with [a new standard](https://quicwg.org/load-balancers/draft-ietf-quic-load-balancers.html)
+    for securely encoding load balancing information in the connection ID. Servers
+    using this new standard create connection IDs by combining a server ID and a [cryptographic
+    nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce), and then encrypt the
+    resulting string using a key shared with the load balancer to produce a connection
+    ID. This key needs to be provided to the server and the load balancer by whoever
+    is configuring the system. When the load balancer receives a packet, it attempts
+    to decrypt the connection ID and then forward the packet to the relevant server.
+    The standard also includes provisions for handling version updates or key migration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In June 2023, Martin Duke, one of the authors of the new standard, [said](https://mailarchive.ietf.org/arch/msg/quic/QBT4XU9NWVWRhmJA7ys61doCFHk/)
+    that the draft "<q>is mostly ready, but we''ve put it on ice until it gets deployed
+    somewhere</q>". There have been several small changes since that time, but it
+    is not clear when the draft will be ready to take the next step toward being an
+    IETF standard: being proposed to the Internet Engineering Steering Group (IESG)
+    for consideration.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multipath
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: There are several areas where TCP still has an advantage over QUIC. One of those
+    is [multipath support](/Articles/544399). Multipath TCP connections can send data
+    on different network paths simultaneously — for example, sending via both WiFi
+    and cellular data — to provide better throughput than either path permits individually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [in-progress QUIC multipath extension](https://quicwg.org/multipath/draft-ietf-quic-multipath.html)
+    would adapt QUIC's connection-migration mechanism to allow multiple paths to be
+    in use simultaneously. Currently, when a computer starts sending packets for an
+    existing connection on a new path, that's taken as a sign that the previous path
+    ought to be abandoned. If the connection is set up with the `enable_multipath`
+    option, sending packets on a new path would instead add that path to the connection
+    and permit both to be used simultaneously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One complication is with network address translation (NAT) rebinding. QUIC identifies
+    paths by the IP addresses and ports of the source and destination. Unfortunately,
+    these parameters are not always stable for a given path. Some routers perform
+    NAT, allowing multiple computers to share a single IP address. When a TCP connection
+    passes through such routers, the router can watch the TCP session establishment,
+    and keep the same external port mapped to the same internal IP address for the
+    duration of the connection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This approach doesn''t work with QUIC for two reasons. Firstly, QUIC is a relatively
+    new protocol, and many existing routers do not have code to handle it. Secondly,
+    QUIC encrypts many details about the connection in order to avoid interference
+    and reduce linkability. This means that NATs need to fall back to the same non-connection-aware
+    approach used for other UDP protocols: establishing a mapping when they see an
+    outbound packet, and then expiring that mapping after a timeout. An overloaded
+    computer, lost packet, or misconfigured NAT can cause that timeout to expire even
+    though there is an active QUIC connection. In turn, this causes the NAT to select
+    a different outgoing port for the next packet, making the path appear to change.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In existing QUIC, the server would consider this to be a connection migration,
+    and continue without problems. With the multipath extension, the server would
+    instead add the new path to the connection, but still send some data on the old
+    path, which would be dropped by the NAT. To overcome this, multipath QUIC *requires*
+    that clients changing to a new path use a new connection ID, as described above.
+    Therefore, if the server sees a path change with the same connection ID, it can
+    identify the change as a NAT rebinding event and stop sending packets to the old
+    address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another concern is packet numbering and encryption. QUIC uses the packet number
+    of each packet in a connection as a cryptographic nonce when encrypting the contents
+    of the packet. But with multiple simultaneous paths in use, packet numbering becomes
+    more complicated. Using a single sequence of packet numbers for all the paths
+    in a connection makes it difficult to tell when a packet has been dropped, or
+    when the packet has simply been sent via another path, making calculating the
+    reliability and congestion of different paths difficult. The authors of the multipath
+    extension chose to simplify implementations by using a separate set of packet
+    numbers for each path in a connection. This in turn requires changes to how packets
+    are encrypted, in order to prevent any nonces from being used multiple times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several other considerations that have needed hammering out in order
+    to ensure that multipath QUIC is viable. The draft has gone through many rounds
+    of revision, and is still under development by the working group. There is [a
+    session](https://datatracker.ietf.org/meeting/119/agenda.txt) planned to discuss
+    it in more detail at the upcoming IETF meeting in March.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acknowledgment frequency
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Since QUIC is designed as an alternative to TCP, it needs to take care of data
+    integrity and congestion control itself. To ensure that all sent data is received,
+    both ends of a QUIC connection send acknowledgment messages. Right now, these
+    messages are sent for every second packet. This is a compromise between sending
+    acknowledgments too quickly (wasting resources) and too slowly (preventing the
+    congestion control algorithms from responding promptly to changes in the network).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, not every QUIC connection has equivalent needs. Some asymmetric
+    internet connections have reduced receiving bandwidth when packets are being sent,
+    making acknowledgments more costly. Some devices have constraints on battery power
+    or transmission frequency. Some devices are connected via reliable paths that
+    don't have noticeable jitter or loss. Devices in all of these situations would
+    benefit from sending fewer acknowledgments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, sending fewer acknowledgments cannot be done unilaterally, because
+    the computer on the other end of the connection will interpret this to mean that
+    the data ought to be retransmitted, or at least that the round-trip time of the
+    path is much worse than it is. Omitting acknowledgments can still work if the
+    other participant in the connection is expecting it, however.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The draft [acknowledgment frequency](https://quicwg.org/ack-frequency/draft-ietf-quic-ack-frequency.html)
+    extension allows the participants in a connection to request changes in the acknowledgment
+    mechanism. Systems using the extension can set the maximum number of packets or
+    amount of time that can occur before an acknowledgment is sent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The extension also adds an `IMMEDIATE_ACK` message, to explicitly request that
+    the other side of the connection send an acknowledgment upon receipt. A large
+    section of the document is dedicated to detailing when implementations may want
+    to use `IMMEDIATE_ACK` messages to ensure that delayed acknowledgments don't cause
+    unnecessary slowdowns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The extension is theoretically ready to move on to the next step of standardization,
+    because its last call for comments ended in October 2023 without prompting another
+    revision. The authors of the extension have not moved forward with the next step
+    in the IETF's standardization process, however, [prompting](https://mailarchive.ietf.org/arch/msg/quic/Z5fBhljh2BL9X8C3AFInR3c3GBA/)
+    Gorry Fairhurst — one of the working group members — to ask on the mailing list
+    in mid-February "<q>Is this document finished or is it waiting for action based
+    on issues?</q>", but there has been no response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial delivery
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: QUIC allows separate streams multiplexed over the same connection to fail independently
+    — an eventuality that might occur in, for example, a video conference where one
+    participant has problems while others do not. When only one stream experiences
+    a problem, the server can send a `RESET_STREAM` message to signal to the client
+    that a particular stream was affected. When this happens, QUIC says that the client
+    should discard any data received for that stream so far, and the server should
+    not respond to retransmit requests for the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a problem for protocols like the [draft WebTransport standard](https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-08),
+    which send some initial data that must be received reliably on a stream, but that
+    still wish to have streams be resettable. The QUIC Working Group is addressing
+    this use case with [a draft QUIC extension](https://quicwg.org/reliable-stream-reset/draft-ietf-quic-reliable-stream-reset.html)
+    that defines a `RESET_STREAM_AT` message. This would allow a server to reset a
+    stream, while specifying that data before a particular offset should still be
+    retained or rerequested if it is lost in transmission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The draft is [nearly ready](https://datatracker.ietf.org/doc/draft-ietf-quic-reliable-stream-reset/)
+    to be made a published standard, with the last call for comments ending on February
+    8\. The IETF mandates some additional process before the standard is presented
+    to the IESG for potential publication, so it still may be some time before it
+    is adopted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'These potential improvements to QUIC promise to make the protocol more useful
+    and performant, especially for devices with asymmetric or intermittently available
+    links. Unfortunately, progress on these improvements has not exactly been quick.
+    Christian Huitema, a long-time contributor to QUIC, [expressed frustration](https://www.privateoctopus.com/2024/02/28/long-slow-path-to-quic-multipath.html)
+    with the working group''s progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the old days, the IETF was prone to find a solution that was good enough,
+    ship it, gather experience, and then revise the standard later to fill in the
+    gaps. If we had followed that process, we could probably have published a QUIC
+    Multipath RFC last year, or maybe the year before — the draft 6 was definitely
+    good enough, and the previous draft was probably OK as well. But we have decided
+    instead to discuss all details before approving the draft. The result will probably
+    be better, although gathering experience sooner would also have helped improve
+    quality. In any case, the process is not quick.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: It's uncertain how long it will take the IETF to finalize the new standards.
+    In the meantime, QUIC adoption is [growing](https://pulse.internetsociety.org/technologies),
+    with support available in one form or another in [every major browser](https://caniuse.com/http3).
+    One of the key concerns of QUIC's designers was avoiding [protocol ossification](/Articles/745590),
+    but QUIC's anti-ossification design choices will be of little use if further improvements
+    to the protocol are stymied by the slow-moving nature of the standardization process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Log in](https://lwn.net/Login/?target=/Articles/964377/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: to post comments)
+  prefs: []
+  type: TYPE_NORMAL

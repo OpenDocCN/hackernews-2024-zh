@@ -1,0 +1,316 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:32:39'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing RSA in Python from Scratch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://coderoasis.com/implementing-rsa-from-scratch-in-python/](https://coderoasis.com/implementing-rsa-from-scratch-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Please note that it is essential for me to emphasize that the code and techniques
+    presented here are intended solely for educational purposes and should never be
+    employed in real-world applications without careful consideration and expert guidance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the same time, understanding the principles of RSA cryptography and exploring
+    various implementations is valuable for educational purposes and understanding
+    how to code encryption methods, building secure encryption systems for practical
+    use requires adherence to industry standards, best practices, and thorough security
+    assessments. An inadequate implementation or improper usage of cryptographic techniques
+    can lead to severe vulnerabilities, jeopardizing the confidentiality and integrity
+    of sensitive data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'm sure many programmers, particularly web developers have heard of the RSA
+    cryptography system. RSA is an asymmetric cryptography system, meaning that one
+    key is used for encryption and the other for decryption. I've seen a lot of articles
+    explaining the general principles of asymmetric cryptography, but I have not seen
+    any that give easy-to-understand explanations of the mathematical background behind
+    these algorithms, so I decided to write this article.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Math Behind RSA**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For start, as I''ve mentioned in the paragraph above, to transmit an RSA-encrypted
+    message, you need 2 keys. One that can only encrypt and one that can decrypt.
+    Let encryption key be denoted as `e`, the decryption key will be denoted as `d`
+    and the message will be denoted as `m`. The key principle behind RSA is that in
+    the following notion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The difficulty of finding `d`, knowing `e` and `n` can be very hard if these
+    numbers are chosen properly (as will be demonstrated below).
+  prefs: []
+  type: TYPE_NORMAL
+- en: But first, we need to introduce some new concepts in number theory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`a ≡ b (mod n)` means that there is an integer `x` such that `a + nx = b`.
+    A more intuitive explanation is that the reminder of `a / n` equals the reminder
+    of `b / n`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`gcd(a, b)` is the greatest number that divides both `a` and `b`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`lcm(a, b)` is the smallest number that is a multiple of both `a` and `b`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`λ(n)` is a number such that `x^λ(n) ≡ 1 (mod n)` for any `x` such that `gcd(x,
+    n) = 1`. From this you can conclude that `x^a ≡ x^b (mod n) if a ≡ b (mod λ(n))`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating keys
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's make `n = pq` where `p` and `q` are 2 prime numbers. Since `λ(p) = p -
+    1` and `λ(q) = q - 1` (lookup Fermat's little theorem proof for why), `λ(n) =
+    (p - 1) * (q - 1)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have to solve `ed ≡ 1 (mod λ(n))`. `e` can be some prime number (usually
+    65537) and d can be calculated using extended Euclidian's algorithm (will be written
+    and explained in the code section) from the equation `ed + xλ(n) = gcd(e, λ(n))`
+    (`d` and `x` are coefficients to be calculated).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`pair (e, n)` is used for encryption (`(m^e) % n`) and `pair (d, n)` is used
+    for decryption (`(m^d) % n`)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After computing the keys, p and q can be thrown away. Notice that without `p`
+    and `q`, finding `λ(n)` would mean factorizing `n`, which is not an easy problem
+    to solve for values of n up to 2^2048, which are regularly used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Implementing RSA in Python**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First to list procedures and their steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'keys generation:'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: find 2 random prime numbers, `p` and `q`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: compute `n = p * q` and `λ(n) = (p - 1) * (q - 1)`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: make `e` equal some prime number, e.g. `e = 35537`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: compute `d` from equation `ed + λ(n)x = gcd(e, λ(n)) = 1` using Extended Euclidian
+    Algorithm (from this point on we will call it `eucalg`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Encryption:'
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: divide the message into sections (of 256 bits if n is 2048-bit)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: each section (denoted as `m`) is encrypted as `(m^e) % n`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Decryption:'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: divide the message into sections, same as above
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: each section (denoted as `m`) is decrypted as `(m^d) % n`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extended Euclidian Algorithm
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This algorithm relies on the fact that if `x` divides both `a` and `b`, there
+    will be a pair of coefficients `(k, l)` such that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`a * k + b * l = x`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The algorithm finds these coefficients (and `x`) by repeatedly subtracting the
+    lesser argument from the bigger one, until the lesser one becomes 0\. Instead
+    of repeatedly subtracting, you can calculate how many times `b` can be subtracted
+    from `a` (`k = a // b`) and then subtract `b*k`. This optimization makes the algorithm
+    run in O(log max(a, b)) which is a lot quicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is an implementation of the algorithm in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that the function above can produce negative numbers for coefficients,
+    so in case that happens, all that we need to do is set `d` to `λ(n) - d`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fast Exponentiation with Modulo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some might suggest to just use `(b ** e) % n`, but this approach is not very
+    good time and memory -wise because `b ** e` can be very big despite only the last
+    2000 bits or so being needed. The solution is to reimplement exponentiation with
+    calculating modulo after every division.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exponentiation implementation below has logarithmic time complexity. Instead
+    of iterating from 1 to `e` and multiplying `r` (result) by `b`, it iterates from
+    the most significant bit of `e` to the least significant bit of `e`, and at each
+    bit it does `r = r*r + bit`. This works because if `r` equals `b^x` and you're
+    appending a bit to the end of x, new x will be `x * 2 + bit`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Generation/Encryption/Decryption
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Keys generation, encryption and decryption have all been explained in the math
+    section and the code below is simply implementation of that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Code Testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I stored the code into a file named rsa.py and run the following in Python
+    shell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The Conclusion**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the end of writing this article I realized that implementation of a usable
+    Python RSA program is more complicated than I initially speculated. Because of
+    that, I decided to split the topic up in multiple articles. With the code presented
+    in this article you have all core parts of RSA written. But you still need a random
+    prime generator and plaintext encryption (`numencrypt` and `numdecrypt` are suitable
+    only for numbers `m` smaller in size than `n`). All these will be included in
+    the next article that will be published shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to continue reading, we also have a Part 2 and even a Part 3 to
+    this article for those who are interested in Implementing RSA in Python from Scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Implementing RSA in Python from Scratch (Part 2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing RSA in Python from ScratchI’m sure many programmers, particularly
+    web developers have heard of the RSA cryptography system. RSA is an asymmetric
+    cryptography system, meaning that one key is used for encryption and the other
+    for decryption. I’ve seen a lot of articles explaining the general principles](https://coderoasis.com/implementing-rsa-from-scratch-in-python-part-2/)  [Implementing
+    RSA in Python from Scratch (Part 3)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Side-channel attacks The first 2 articles focused mainly on the idea and implementation
+    of RSA. As such they left out a relevant topic in modern encryption. Side-channel
+    attacks take advantage of data we’d usually brush off as gibberish, such as hardware
+    sounds, electromagnetic waves and timing. Timing attacks are most](https://coderoasis.com/implementing-rsa-in-python-from-scratch-part-3/)  [Implementing
+    RSA from Scratch in Python (Part 4)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please note that it is essential for me to emphasize that the code and techniques
+    presented here are intended solely for educational purposes and should never be
+    employed in real-world applications without careful consideration and expert guidance.
+    At the same time, understanding the principles of RSA cryptography and exploring
+    various](https://coderoasis.com/implementing-rsa-from-scratch-in-python-part-4/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Do you like what you''re reading from the CoderOasis Technology Blog? We recommend
+    reading our [***Hacktivism: Social Justice by Data Leaks and Defacements***](https://coderoasis.com/hacktivism-social-justice-by-data-leaks-and-defacements/) as
+    your next choice.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[Hacktivism: Social Justice by Data Leaks and Defacements'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Around the end of February, a hacktivist that calls himself JaXpArO and My Little
+    Anonymous Revival Project breached the far-right social media platform named Gab.
+    They managed to gain seventy gigabytes of data from the backend databases. The
+    data contained user profiles, private posts, chat messages, and more – a lot](https://coderoasis.com/hacktivism-social-justice-by-data-leaks-and-defacements/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you know we have a [**Community Forums**](https://forums.coderoasis.com/?ref=coderoasis.com) and [**Discord
+    Server**](https://discord.gg/sYNeQAqQZC?ref=coderoasis.com)? which we invite everyone
+    to join us? Want to discuss this article with other members of our community?
+    Want to join a laid back place to chill and discuss topics like programming, cybersecurity,
+    web development, and Linux? Consider joining us today!
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[Join the CoderOasis.com Discord Server!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CoderOasis offers technology news articles about programming, security, web
+    development, Linux, systems admin, and more. | 112 members](https://discord.gg/sYNeQAqQZC?ref=coderoasis.com)  [CoderOasis
+    Forums
+  prefs: []
+  type: TYPE_NORMAL
+- en: CoderOasis Community Forums where our members can have a place to discuss technology
+    together and share resources with each other.](https://forums.coderoasis.com/?ref=coderoasis.com)
+  prefs: []
+  type: TYPE_NORMAL

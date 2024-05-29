@@ -1,0 +1,761 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:29:58'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try ripgrep in Y minutes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://codapi.org/try/ripgrep/](https://codapi.org/try/ripgrep/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[ripgrep](https://github.com/BurntSushi/ripgrep) is a command line tool that
+    searches your files for patterns that you give it. It''s similar to grep, but
+    provides a better user experience and is (generally) faster.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Basics](#basics) · [Recursive search](#recursive-search) · [Useful options](#useful-options)
+    · [Replacements](#replacements) · [Configuration](#configuration) · [Further reading](#further-reading)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ✨ This is an open source guide. Feel free to [improve it](https://github.com/nalgeon/tryxinyminutes/blob/main/try/ripgrep/index.md)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'ripgrep behaves as if it were reading each file line by line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a line matches the pattern given to ripgrep, that line is printed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If a line does not match the pattern, the line is not printed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The best way to see how this works is with an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll try searching [httpurr](https://github.com/rednafi/httpurr) source code,
+    which I have already downloaded to the `/opt/httpurr` directory like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[Search in file](#search-in-file) · [Partial matches](#partial-matches) · [Regular
+    expressions](#regular-expressions) · [Fixed strings](#fixed-strings) · [Multiple
+    patterns](#multiple-patterns)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search in file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s find all occurrences of the word `codes` in `README.md`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE1]
+  prefs: []
+  type: TYPE_NORMAL
+- en: So what happened here? ripgrep read the contents of `README.md`, and for each
+    line that contained `codes`, ripgrep printed it to the terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ripgrep includes the line number for each line by default (use `-n`/`--line-number`
+    to force this) and highlights the matches (use `--color=always` to force this).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial matches
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'ripgrep supports partial matches by default:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE2]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The word `description` matches the `descr` search pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To search for whole words instead, use the `-w` (`--word-regexp`) option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE4]
+  prefs: []
+  type: TYPE_NORMAL
+- en: ripgrep found strings containing the word `code`, but not `codes`. Try removing
+    `--word-regexp` and see how the results change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regular expressions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'By default, ripgrep treats the search pattern as a *regular expression*. Let''s
+    find all lines with a word that contains `res` followed by other letters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE5]
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`\w+` means "one or more word-like characters" (e.g. letters like `p` or `o`,
+    but not punctuation like `.` or `!`), so `response`, `resource`, and `rest` all
+    match.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we are only interested in 4 letter words starting with `res`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE6]
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`\b` means "word boundary" (e.g. a space, a punctuation character, or the end
+    of a line), so `rest` matches, but `response` and `resource` don''t.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, let''s search for 3-digit numbers (showing first 10 matches with `head`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE8]
+  prefs: []
+  type: TYPE_NORMAL
+- en: A full tutorial on regular expressions is beyond the scope of this guide, but
+    ripgrep's specific syntax is documented in the [regex](https://docs.rs/regex/*/regex/#syntax)
+    package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fixed strings
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'What if we want to search for a *literal* string instead of a regular expression?
+    Suppose we are interested in a word `code` followed by a dot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE10]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since `.` means "any character" in regular expressions, our pattern also matches
+    `code` , `codes` and other cases we are not interested in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To treat the pattern as a literal string, use the `-F` (`--fixed-strings`)
+    option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE12]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Much better!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiple patterns
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To search for multiple patterns, list them with the `-e` (`--regexp`) option.
+    ripgrep will output lines matching at least one of the specified patterns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, search for `make` or `run`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE14]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you have many patterns, it may be easier to put them in a file and point
+    ripgrep to it with `-f` (`--file`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE16]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recursive search
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Previously, we used ripgrep to search a single file, but ripgrep is perfectly
+    capable of recursively searching in directories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Search in directory](#search-in-directory) · [Automatic filtering](#automatic-filtering)
+    · [File globs](#file-globs) · [File types](#file-types)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search in directory
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s find all unexported functions (they start with a lowercase letter):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE17]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This search returned matches from both the `cmd` and `src` directories. If
+    you are only interested in `cmd`, specify it instead of `.`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE18]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To search multiple directories, list them all like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE20]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automatic filtering
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'ripgrep is smart enough to ignore some paths when searching:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: patterns from `.gitignore`,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hidden files and directories,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: binary files,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: symlinks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, let''s search for GitHub action jobs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE21]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the GitHub stuff is in a hidden `.github` directory, ripgrep won''t find
+    it. But it will with the `-.` (`--hidden`) option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE22]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, there are options to enable other paths:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`--no-ignore` to search patterns from `.gitignore`;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-a` (`--text`) to search binary files;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-L` (`--follow`) to follow symlinks.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ripgrep allows you to override the ignored paths from `.gitignore` with `.ignore`
+    files. See the [official guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#automatic-filtering)
+    for details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: File globs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s search for `httpurr`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE24]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that I have limited the number of results per file to 5 with the `-m` (`--max-count`)
+    option to keep the results readable in case there are many matches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Quite a lot of results. Let''s narrow it down by searching only in `.go` files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE25]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `-g` (`--glob`) option takes a *glob* (filename pattern), typically containing
+    a fixed part (`.go` in our example) and a wildcard `*` ("anything but the path
+    separator").
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another example — search in files named `http`-something:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE26]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To *negate* the glob, prefix it with `!`. For example, search everywhere except
+    the `.go`, `.md`, and `.rb` files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE28]
+  prefs: []
+  type: TYPE_NORMAL
+- en: All that is left is `go.mod`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To apply multiple filters, specify multiple glob options. For example, find
+    all functions except those in test files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE30]
+  prefs: []
+  type: TYPE_NORMAL
+- en: File types
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Instead of using a glob to filter by extension, you can use ripgrep''s support
+    for file types. Let''s search for `httpurr` in `.go` files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE31]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `-t` (`--type`) option restricts the search results to files of a certain
+    type (Go source files in our example).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To exclude files of a certain type, use `-T` (`--not-type`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE33]
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've excluded Go, Markdown and Ruby files, so all that's left is `go.mod` (personally,
+    I'd consider it a Go file as well, but ripgrep disagrees).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Useful options
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ripgrep supports a number of additional search and output options you may find
+    handy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Ignore case](#ignore-case) · [Inverse matching](#inverse-matching) · [Count
+    matches](#count-matches) · [Show matches only](#show-matches-only) · [Show files
+    only](#show-files-only) · [Show context](#show-context) · [Multiline search](#multiline-search)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ignore case
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember our search for `codes` in the README?
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE34]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It returns `codes` matches, but not `Codes` because ripgrep is case-sensitive
+    by default. To change this, use `-i` (`--ignore-case`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE36]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is also `-S` (`--smart-case`), which behaves like `--ignore-case` unless
+    the search pattern is all caps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE38]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Searching for `HTTP` matches `HTTP`, but not `https` or `httpurr`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inverse matching
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To find lines that *do not* contain the pattern, use `-v` (`--invert-match`).
+    For example, find the non-empty lines without the `@` symbol:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE40]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Count matches
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To count the number of matched lines (per file), use `-c` (`--count`). For
+    example, count the number of functions in each `.go` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE42]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that `--count` counts the number of *lines*, not the number of matches.
+    For example, there are 6 words `string` in `src/cli.go`, but two of them are on
+    the same line, so `--count` reports 5:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE44]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To count the number of *matches* instead, use `--count-matches`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE46]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show matches only
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: By default, ripgrep prints the entire line containing the match. To show only
+    the matching part, use `-o` (`--only-matching`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we want to find functions named `print`-something:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE48]
+  prefs: []
+  type: TYPE_NORMAL
+- en: The results are much cleaner than without `--only-matching` (try removing the
+    option in the above command and see for yourself).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show files only
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If there are too many matches, you may prefer to show only the files where
+    the matches occurred. Use `-l` (`--files-with-matches`) to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE50]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show context
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember when we searched for GitHub jobs?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE52]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These results are kind of useless, because they don''t return the actual job
+    name (which is on the next line after `jobs`). To fix this, let''s use `-C` (`--context`),
+    which shows `N` lines around each match:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE54]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It might be even better to show only the *next* line after the match, since
+    we are not interested in the previous one. Use `-A` (`--after-context`) for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE56]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nice!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiline search
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I have another idea for searching GitHub jobs. Since the job name is always
+    on the next line after the literal `jobs:`, let''s enable multiline searching
+    with `-U` (`--multiline`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE58]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we can see the job names even without using `--context`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replacements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ripgrep provides a limited ability to replace matched text with some other text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Replace matches](#replace-matches) · [Replace entire line](#replace-entire-line)
+    · [Replace groups](#replace-groups)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replace matches
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember our search for `codes` in the README?
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE59]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s replace all `codes` with `ids` using the `-r` (`--replace`) option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE61]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replace entire line
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Replace applies only to the matching portion of text. To replace an entire
+    line of text, include the entire line in the match like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE63]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alternatively, you can combine the `-o` (`--only-matching`) option with `--replace`
+    to achieve the same result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE65]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replace groups
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Replacements can include capturing groups. Let''s say we want to find all occurrences
+    of `status` followed by another word and join them together with a dash. The pattern
+    we might use is `status\s+(\w+)`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: literal string `status`,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: followed by any number of whitespace characters,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: followed by any number of "word" characters (e.g. letters).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We put the `\w+` in a "capturing group" (indicated by parentheses) so that
+    we can reference it later in our replacement string. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" command="aha" editor="basic" template="httpurr.sh"
+    output-mode="html" output="">[PRE67]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our replacement string (`status-$1`) consists of the literal `status-` followed
+    by the contents of the capturing group at index `1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capturing groups actually start at index `0`, but the 0th capturing group always
+    corresponds to the entire match. The capturing group at index `1` always corresponds
+    to the first explicit capturing group found in the regex pattern.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ripgrep **will never modify your files**. The `--replace` flag only controls
+    ripgrep's output. (And there is no flag to let you do a replacement in a file.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ripgrep's has reasonable defaults, but you can change them with configuration
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ripgrep does not automatically look for a config file in a predefined directory.
+    To use a config file, set the `RIPGREP_CONFIG_PATH` environment variable to its
+    path.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example of a configuration file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <codapi-snippet sandbox="shell" editor="basic" template="config.sh" output="">[PRE68]
+  prefs: []
+  type: TYPE_NORMAL
+- en: When specifying a flag that has a value, either put the flag and the value on
+    the same line with a `=` sign (e.g. `--max-columns=40`), or put the flag and the
+    value on two different lines (e.g., `--glob`). Do not put them on the same line
+    without an equal sign (e.g. not `--max-columns 40`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s search using this config:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: <codapi-snippet sandbox="shell" editor="basic" template="config.sh" output="">[PRE70]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ripgrep supports more features, such as explicit handling of encodings or searching
+    binary data. See the [official guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md)
+    for details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use `rg --help` to see all supported options (we have covered less than half
+    of them in this guide).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Andrew Gallant](https://blog.burntsushi.net) + [1 others](#contributors) ·
+    [original](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md) · CC-BY-SA-4.0
+    · 2024-03-19'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Andrew Gallant](https://blog.burntsushi.net), [Anton Zhiyanov](https://antonz.org)</codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet>'
+  prefs: []
+  type: TYPE_NORMAL

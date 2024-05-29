@@ -1,0 +1,300 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:23:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyPy has moved to Git, GitHub | PyPy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html](https://www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PyPy has moved its canonical repo and issue tracker from [https://foss.heptapod.net/pypy/pypy](https://foss.heptapod.net/pypy/pypy)
+    to [https://github.com/pypy/pypy](https://github.com/pypy/pypy). Obviously, this
+    means development will now be tracked in Git rather than Mercurial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Motivation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We still feel Mercurial is a better version control system. The named branch
+    model and user interface are superior. But
+  prefs: []
+  type: TYPE_NORMAL
+- en: foss.heptapod.net is not well indexed in google/bing/duckduckgo search, so people
+    find it harder to search for issues in the project.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since Heptapod has tightened its spam control, we get reports that users create
+    issues only to have them flagged as spam.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Open Source has become synonymous with GitHub, and we are too small to change
+    that.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Much of the current development comes as a reaction to fixing issues. Tracking
+    interlocking issues is easier if all the code is on the same platform.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The [FAQ](https://doc.pypy.org/en/latest/faq.html#why-doesn-t-pypy-use-git-and-move-to-github)
+    presents two arguments against the move. [Github notes](https://git-scm.com/docs/git-notes)
+    solves much of point (1): the difficulty of discovering provenance of commits,
+    although not entirely. But the main problem is point (2), it turns out that **not**
+    moving to GitHub is an impediment to contribution and issue reporting.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: People who wish to continue to use Mercurial can use the same method below to
+    push to GitHub.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: GitHub is more resource rich than foss.heptapod.net. We could add CI jobs to
+    replace some of our aging [buildbot infrastructure](https://buildbot.pypy.org).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Method
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The migration required two parts: migrating the code and then migrating the
+    issues and merge requests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code migration 1: code and notes'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'I used a [fork of git-remote-hg](https://github.com/mnauw/git-remote-hg) to
+    create a local Git repo with all the changesets. Then I wanted to add a Git note
+    to each commit with the branch it came from. So I prepared a file with two columns:
+    the Git commit hash, and the corresponding branch from Mercurial. Mercurial can
+    describe each commit in two ways: either the commit hash or by a number index.
+    I used `hg log` to convert an index `i` to the Mercurial hash, and then `git-hg-helper`
+    from `git-remote-hg` to convert the Mercurial hash to a Git hash:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then I used `hg log` again to print the Mercurial branch for the index `i`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting these two together, I could loop over all the commits by their numerical
+    index to prepare the file. Then I iterated over each line in the file, and added
+    the Git note. Since the `git note add` command works on the current HEAD, I needed
+    to checkout each commit in turn and then add the note:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: I could then use `git push --all` to push to GitHub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code migration 2: prepare the branches'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: PyPy has almost 500 open branches. The code migration created all the branch
+    HEADs, but `git push --all` did not push them. I needed to check them out and
+    push each one. So I created a file with all the branch names
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: and then push each one to the GitHub repo
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the branches were named `branches/XXX` by the migration, not `branch/XXX`.
+    This confuses the merge request migration, more about that later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Issue and merge request migration
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'I used the solution from [node-gitlab-2-github](https://github.com/piceaTech/node-gitlab-2-github)
+    which worked almost perfectly. It is important to do the conversion on a **private
+    repo** otherwise every mention of a sucessfully mapped user name notifies the
+    user about the transfer. This can be quite annoying for a repo the size of PyPy
+    with 600 merge requests and over 4000 issues. Issues transfered without a problem:
+    the script properly retained the issue numbers. However the script does not convert
+    the Mercurial hashes to Git hashes, so the bare hashes in comments show up without
+    a link to the commit. Merge requests are more of a problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Mercurial named branch "disappears" once it is merged, so a merge request
+    to a merged branch does not find the target branch name in Git. The conversion
+    creates an issue instead with the label `gitlab merge request`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For some reason, the branches created by `git-remote-hg` are called `branches/XXX`
+    and not `branch/XXX` as expected by GitLab. This messes up the merge request/PR
+    conversion. For some of the branches (open PRs and main target branches) I manually
+    created additional branches without the `es`. The net result is that open merge
+    requests became open PRs, merged merge requests became issues, and closed-not-merged
+    merge requests were not migrated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Layered conversions
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'PyPy already migrated once from Bitbucket to Heptapod. Many of the issues reflect
+    the multiple transitions: they have lines like "Created originally on Bitbucket
+    by XXX" from the first transition, and an additional line "In Heptapod" from this
+    transition.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Credits
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We would like to express our gratitude to the [Octobus](https://octobus.net/)
+    team who support Heptapod. The transition from Bitbucket was quite an effort,
+    and they have generously hosted our developement since then. We wish them all
+    the best, and still believe that Mercurial should have "won".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next steps
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'While the repo at GitHub is live, there are still a few more things we need
+    to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Documentation needs an update for the new repo and the build automation from
+    readthedocs must be adjusted.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The wiki should be copied from Heptapod.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: buildbot.pypy.org should also look at the new repo. I hope the code is up to
+    the task of interacting with a Git repo.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: speed.pypy.org tracks changes, it too needs to reference the new location
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To keep tracking branches with Git notes on new commits, I activated a [github
+    action](https://github.com/Julian/named-branch-action) by Julian to add a Git
+    branch note to each commit. Please see the README there for directions on using
+    Git notes.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some of the merge requests were not migrated. If someone wants to, they could
+    migrate those once they figure out the branch naming problems.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Additionally, now is the time for all of you to prove the move is worthwhile:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Star the repo, let others know how to find it,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Help fix some of the open issues or file new ones,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Take advantage of the more familiar workflow to get involved in the project,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Suggest ways to improve the migration: are there things I missed or could have
+    done better?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How will development change?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Heptapod did not allow personal forks, so we were generous with a commit bit
+    to the main repo. Additionally, we (well, me) have been using a commit-directly-to-main
+    workflow. We will now be adopting a more structured workflow. Please fork the
+    repo and submit a pull request for any changes. We can now add some pre-merge
+    CI to check that the PR at least passes the first stage of translation. The live
+    and active branches will be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`main`: what was "default" in Mercurial, it is the Python2.7 interpreter and
+    the base of the RPython interpreter,'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`py3.9`: the Python3.9 interpreter, which also includes all RPython changes
+    from `main`. This is exactly like on Mercurial, and'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`py3.10`: the Python3.10 interpreter, which also includes all RPython changes
+    from `main` and all bugfixes from `py3.9`. This is exactly like on Mercurial.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working between the repos
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Finding commits
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'If you want to figure out how a Mercurial commit relates to a Git commit, you
+    can use `git-hg-helper`. You run it in the Git repo. It takes the full long hash
+    from one repo and gives you the corresponding hash of the other repo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finding branches
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: Branches migrated from Mercurial will have a `branches` prefix, not `branch`.
+    While GitLab uses `branch` for its prefix, the `git-remote-hg` script uses `branches`.
+    New work should be in a PR targeting `main`, `py3.9` or `py3.10`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thanks for helping to make PyPy better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Matti
+  prefs: []
+  type: TYPE_NORMAL

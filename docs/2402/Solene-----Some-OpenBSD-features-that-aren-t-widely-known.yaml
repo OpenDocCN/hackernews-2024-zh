@@ -1,0 +1,427 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 13:20:38'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Solene''% : Some OpenBSD features that aren''t widely known'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://dataswamp.org/~solene/2024-02-20-rarely-known-openbsd-features.html](https://dataswamp.org/~solene/2024-02-20-rarely-known-openbsd-features.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 1\. Introduction [§](#_Introduction)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this blog post, you will learn about some OpenBSD features that can be useful,
+    but not widespread.
+  prefs: []
+  type: TYPE_NORMAL
+- en: They often have a niche usage, but it's important to know they exist to prevent
+    you from reinventing the wheel :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD official project website](https://www.openbsd.org)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2\. Features [§](#_Features)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following list of features are not all OpenBSD specific as some can be found
+    on other BSD systems. Most of the knowledge will not be useful to Linux users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.1\. Secure level [§](#_Secure_level)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The secure level is a sysctl named `kern.securelevel`, it has 4 different values
+    from level -1 to level 2, and it's only possible to increase the level. By default,
+    the system enters the secure level 1 when in multi-user (the default when booting
+    a regular installation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s then possible to escalate to the last secure level (2), which will enable
+    the following extra security:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: all raw disks are read-only, so it's not possible to try to make a change to
+    the storage devices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the time is almost lock, it's only possible to modify the clock slowly by small
+    steps (maybe 1 second max every so often)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the PF firewall rules can't be modified, flushed or altered
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This feature is mostly useful for dedicated firewall with rules that rarely
+    change. Preventing the time to change is really useful for remote logging as it
+    allows being sure of "when" things happened, and you can be assured the past logs
+    weren't modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default security level 1 already enable some extra security like "immutable"
+    and "append-only" file flags can't be removed, these overlooked flags (that can
+    be applied with chflags) can lock down files to prevent anyone from modifying
+    them. The append-only flag is really useful for logs because you can't modify
+    the content, but this doesn't prevent adding new content, history can't be modified
+    this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: securelevel](https://man.openbsd.org/securelevel)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: chflags](https://man.openbsd.org/chflags)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This feature exists in other BSD systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: OpenBSD's memory allocator can be tweaked, system-wide or per command, to add
+    extra checks. This could be either used for security reasons or to look for memory
+    allocation related bugs in a program (this is VERY common...).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two methods to apply the changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: system-wide by using the sysctl `vm.malloc_conf`, either immediately with the
+    sysctl command, or at boot in `/etc/sysctl.conf` (make sure you quote its value
+    there, some characters such as `>` will create troubles otherwise, been there...)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: on the command line by prepending `env MALLOC_OPTIONS="flags" program_to_run`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The man page gives a list of flags to use as option, the easiest to use is `S`
+    (for security checks). It is stated in the man page that a program misbehaving
+    with any flag other than X is buggy, so it's not YOUR fault if you use malloc
+    options and the program is crashing (except if you wrote the code ;-) ).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: malloc (search for MALLOC OPTIONS)](https://man.openbsd.org/malloc)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.3\. File flags [§](#_File_flags)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You are certainly used to files attributes like permissions or ownership, but
+    on many file systems (including OpenBSD ffs), there are flags as well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The file flags can be altered with the command `chflags`, there are a couple
+    of flags available:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'nodump: prevent the files from being saved by the command `dump` (except if
+    you use a flag in dump to bypass this)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'sappnd: the file can only be used in writing append mode, only root can set
+    / remove this flag'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'schg: the file can not be change, it becomes immutable, only root can alter
+    this flag'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'uappnd: same as sappnd mode but the user can alter the flag'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'uchg: same as schg mode but the user can alter the flag'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As explained in the secure level section above, in the secure level 1 (default
+    !), the flags sappnd and schg can't be removed, you would need to boot in single
+    user mode to remove these flags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tip: remove the flags on a file with `chflags 0 file [...]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can check the flags on files using `ls -ol`, this would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[OpenBSD manual pages: chflags](https://man.openbsd.org/chflags)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: OpenBSD crontab format received a few neat additions over the last years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'random number for time field: you can use `~` in a field instead of a number
+    or `*` to generate a random value that will remain stable until the crontab is
+    reloaded. Things like `~/5` work. You can force the random value within a range
+    with `20~40` to get values between 20 and 40.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'only send an email if the return code isn''t 0 for the cron job: add `-n` between
+    the time and the command, like in `0 * * * * -n /bin/something`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'only run one instance of a job at a time: add `-s` between the time and the
+    command, like in `* * * * * -s /bin/something`. This is incredibly useful for
+    cron job that shouldn''t be running twice in parallel, if the job duration is
+    longer than usual, you are ensured it will never start a new instance until the
+    previous one is done.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'no logging: add `-q` between the time and the command, like in `* * * * -q
+    /bin/something`, the effect will be that this cron job will not be logged in `/var/cron/log`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's possible to use a combination of flags like `-ns`. The random time is useful
+    when you have multiple systems, and you don't want them to all run a command at
+    the same time, like in a case they would trigger a huge I/O on a remote server.
+    This was created to prevent the usual `0 * * * * sleep $(( $RANDOM % 3600 )) &&
+    something` that would run a sleep command for a random time up to an hour before
+    running a command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: crontab](https://man.openbsd.org/crontab.5)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One cool feature on OpenBSD is the ability to easily create an installation
+    media with pre-configured answers. This is done by injecting a specific file in
+    the `bsd.rd` install kernel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a simple tool named upobsd that was created by semarie@ to easily modify
+    such bsd.rd file to include the autoinstall file, I forked the project to continue
+    its maintenance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to automatically installing OpenBSD with users, ssh configuration,
+    sets to install etc... it's also possible to add a site.tgz archive along with
+    the usual sets archives that includes files you want to add to the system, this
+    can include a script to run at first boot to trigger some automation!
+  prefs: []
+  type: TYPE_NORMAL
+- en: These features are a must-have if you run OpenBSD in production, and you have
+    many of them to manage, enrolling a new device to the fleet should be automated
+    as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[GitHub project page: upobsd](https://github.com/rapenne-s/upobsd)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: autoinstall](https://man.openbsd.org/autoinstall)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.6\. apmd daemon hooks [§](#_apmd_daemon_hooks)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apmd is certainly running on most OpenBSD laptop and desktop around, but it
+    has features that aren't related to its command line flags, so you may have missed
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are different file names that can contain a script to be run upon some
+    event such as suspend, resume, hibernate etc...
+  prefs: []
+  type: TYPE_NORMAL
+- en: A classic usage is to run `xlock` in one's X session on suspend, so the system
+    will require a password on resume.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Older blog post: xlock from apmd suspend script](https://dataswamp.org/~solene/2021-07-30-openbsd-xidle-xlock.html#_Resume_/_Suspend_case)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The man page explains all, but basically this works like this for running a
+    backup program when you connect your laptop to the power plug:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You need to write a regular script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, make it executable
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The daemon apmd will automatically run this script when you connect a system
+    back to AC power.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The method is the same for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: hibernate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: resume
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: suspend
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: standby
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hibernate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: powerup
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: powerdown
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This makes it very easy to schedule tasks on such events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual page: apmd (section FILES)](https://man.openbsd.org/apmd#FILES)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.7\. Using hotplugd for hooks on devices events [§](#_Using_hotplugd_for_hooks_on_devices_events)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A bit similar to what apmd by running a script upon events, hotplugd is a service
+    that allow running a script when a device is added / removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A typical use is to automatically mount an USB memory stick when plugged in
+    the system, or start cups daemon when powering on your USB printer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The script receives two parameters that represents the device class and device
+    name, so you can use them in your script to know what was connected. The example
+    provided in the man page is a good starting point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scripts aren't really straightforward to write, you need to make a precise
+    list of hardware you expect and what to run for each, and don't forget to skip
+    unknown hardware. Don't forget to make the scripts executable, otherwise it won't
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual page: hotplugd](https://man.openbsd.org/hotplugd)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.8\. Altroot [§](#_Altroot)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Finally, there is a feature that looks pretty cool. In the daily script, if
+    an OpenBSD partition `/altroot/` exists in `/etc/fstab` and the daily script environment
+    has a variable `ROOTBACKUP=1`, the root partition will be duplicated to it. This
+    permit keeping an extra root partition in sync with the main root partition. Obviously,
+    it's more useful if the altroot partition is on another drive. The duplication
+    is done with `dd`. You can look at the exact code by checking the script `/etc/daily`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, it's not clear how to boot from this partition if you didn't install
+    a bootloader or created an EFI partition on the disk...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: hier (hier stands for file system hierarchy)](https://man.openbsd.org/hier)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD manual pages: daily](https://man.openbsd.org/daily)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenBSD FAQ: Root partition backup](https://www.openbsd.org/faq/faq14.html#altroot)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '2.9\. talk: local chat in the terminal [§](#_talk:_local_chat_in_the_terminal)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: OpenBSD comes with a program named "talk", this creates a 1 to 1 chat with another
+    user, either on the local system or a remote one (setup is more complicated).
+    This is not asynchronous, the two users must be logged in the system to use `talk`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This program isn't OpenBSD specific and can be used on Linux as well, but it's
+    so fun, effective and easy to setup I wanted to write about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The setup is easy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The communication happens on localhost on UDP ports 517 and 518, don't open
+    them to the Internet! If you want to allow a remote system, use a VPN to encrypt
+    the traffic and allow ports 517/518 only for the VPN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The usage is simple, if you want alice and bob to talk to each other:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: alice type `talk bob`, and bob must be logged in as well
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bob receives a message in their terminal that alice wants to talk
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bob type `talk alice`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: a terminal UI appears for both users, what they write will appear on the top
+    half of the UI, and the messages from recipient will appear on the half bottom
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is a bit archaic, but it works fine and comes with the base system. It
+    does the job when you just want to speak to someone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3\. Conclusion [§](#_Conclusion)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are interesting features on OpenBSD that I wanted to highlight a bit,
+    maybe you will find them useful. If you know cool features that could be added
+    to this list, please reach me!
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,234 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:43:34'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Swift.org - Iterate Over Parameter Packs in Swift 6.0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.swift.org/blog/pack-iteration/](https://www.swift.org/blog/pack-iteration/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Iterate Over Parameter Packs in Swift 6.0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: March 7, 2024
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameter packs, introduced in Swift 5.9, make it possible to write generics
+    that abstract over the number of arguments. This eliminates the need to have overloaded
+    copies of the same generic function for one argument, two arguments, three arguments,
+    and so on. With Swift 6.0, pack iteration makes it easier than ever to work with
+    parameter packs. This post will show you how to make the best use of pack iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let’s review parameter packs. Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above code simply compares two tuples. However, this code wouldn’t work
+    if the tuples contained 7 elements!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Swift standard library provided comparison operators for tuples up to only
+    6 elements for a long time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In each of the generic functions above, every element of the input tuple has
+    to have its type declared in the generic parameter list of the function. Thus,
+    we need to add a new element to the generic parameter list any time we want to
+    support a larger tuple size. Because of this, the artificial limit of 6-element
+    tuples was imposed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Parameter packs added the ability to abstract a function over a variable number
+    of type parameters. This means that we can lift the 6-element limit using an `==`
+    operator written like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s break down the types we see in the above signature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note `each Element` in the list of generic parameters. The `each` keyword indicates
+    that `Element` is a *type parameter pack*, meaning that it can accept any number
+    of generic arguments. Just like with non-pack (*scalar*) generic parameters, we
+    can declare a conformance requirement on the type parameter pack. In this case,
+    we require each `Element` type to conform to the `Equatable` protocol.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This function takes in two tuples, `lhs` and `rhs`, as arguments. In both cases,
+    the tuple’s element type is `repeat each Element`. This is called the *pack expansion
+    type*, which consists of a `repeat` keyword followed by a *repetition pattern*,
+    which has to contain a pack reference. In our case, the repetition pattern is
+    `each Element`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At the call site, the user provides *value parameter packs* for each tuple that
+    will be substituted into their corresponding type parameter packs. At runtime,
+    the repetition pattern will be repeated for each element in the substituted pack.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With the tuple equality operator implemented using parameter packs, let’s look
+    at the call site again to understand these concepts better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The call to `==` substitutes the type pack `{Int, Bool, String}` for the `Element`
+    type pack. Note that both `lhs` and `rhs` have the same type. Finally, the function
+    `==` is called with value packs `{1, true, "hello"}` for the value pack of the
+    `lhs` tuple and `{1, false, "hello"}` for the value pack of the `rhs` tuple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The example with the new signature of the tuple comparison operator looks great,
+    but how do we actually use the values of the `lhs` and `rhs` tuples inside the
+    body of the function? Feel free to take a moment to think about this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It turns out that there is just no concise way of implementing the function
+    prior to Swift 6.0. One solution involves creating a local function that compares
+    a pair of elements from the two tuples, and then using pack expansion to call
+    that function for every pair of elements, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above code doesn’t look great, right? To simply check a condition for each
+    pair of elements, we need to declare a local function `isEqual`, that just compares
+    the given elements. However, this is not enough to make the function return early
+    since the local `isEqual` function will still be called on every pair of elements
+    in the parameter packs `lhs` and `rhs` when expanding them. Because of this, `isEqual`
+    has to be marked `throws` and throw an error once a pair of mismatched elements
+    is found. Then, we catch the error in a `catch` block to return `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Swift 6.0 greatly simplifies this task with the introduction of pack iteration
+    using the familiar `for`-`in` loop syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'More specifically, with pack iteration, the body of the `==` tuple comparison
+    operator simplifies down to a simple `for`-`in repeat` loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above code, we are able to utilize the `for`-`in` loop capability to
+    iterate over the tuples pairwise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that when iterating over packs, we use the new `for`-`in repeat` syntax,
+    followed by a value parameter pack that we are iterating over. At every iteration,
+    the loop binds each element of the value parameter pack to a local variable. This
+    means that in this case, the i^(th) element of `lhs` will be bound to a local
+    variable `left` on the i^(th) iteration. In the body of the loop, you can use
+    the local variable as you normally would. In our case, we compare each pair of
+    elements and return `false` once we find a pair where `left != right`, using a
+    familiar `guard` statement. And, of course, we no longer need to throw any errors
+    as we had to before!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s now explore more ways you can utilize pack iteration in your Swift code
+    with some examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, consider a situation where you need to write a function to check that
+    all arrays in a given value parameter pack are empty:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above function is generic over a type parameter pack `each T` and takes
+    in a value parameter pack `array`, the type of which is declared using `repeat
+    [each T]` pack expansion, where `[each T]` is the repetition pattern. At the call
+    site, it is repeated for each element in the substituted pack, resulting in values
+    expanding into a list of array literals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On each iteration of the `for`-`in repeat` loop, an element of the value parameter
+    pack `array` is bound to a local variable `a`. Note that with pack iteration,
+    elements of the value pack are evaluated on demand, meaning that we are able to
+    return out of the function early without examining all arrays of the value pack.
+    In this case, we utilize the `guard` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is how you might use the `allEmpty` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let’s see an example of advanced usage of parameter packs that is greatly
+    simplified by pack iteration. First, let’s declare the following protocol:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above protocol `ValueProducer` requires the `evaluate()` method that’s return
+    type is the associated type `Value` that conforms to `Codable` protocol.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suppose you get a parameter pack of values of type `Result<ValueProducer, Error>`,
+    and you need to iterate only over the `success` elements and call the `evaluate()`
+    method on its value. Also, suppose you need to save the result of each call into
+    an array. Pack iteration makes this task super easy!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s first note the signature of the `evaluateAll` function. In the generic
+    parameter list, it declares two type parameter packs: `each V: ValueProducer`,
+    and `each E: Error`. Every element of the pack `each V` has to conform to the
+    protocol `ValueProducer` declared above, and every element of the pack `each E`
+    has to conform to the `Error` protocol. The function takes in a single argument
+    `result` with a pack expansion type `repeat Result<each V, each E>`. This means
+    that the pattern `Result<each V, each E>` will be repeated for every element of
+    packs `each V` and `each E` at runtime.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To implement the body of the function, we first initialize the `evaluated` array.
+    Next, note how we can use the `for case` pattern to execute the loop’s body only
+    for the `success` case of the `Result` enum. We can grab the `valueProducer` variable,
+    which will contain a value of the `ValueProducer` type. We can now append the
+    result of the call to the `evaluate()` method to our `evaluated` array, which
+    we finally return.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how you might use this function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are excited to bring pack iteration to Swift 6.0! As seen in this article,
+    pack iteration makes interacting with value parameter packs significantly more
+    straightforward, making such an advanced feature more accessible and intuitive
+    to incorporate into your Swift code.
+  prefs: []
+  type: TYPE_NORMAL

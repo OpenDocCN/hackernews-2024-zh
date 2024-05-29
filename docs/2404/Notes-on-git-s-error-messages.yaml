@@ -1,0 +1,337 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:08:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notes on git's error messages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://jvns.ca/blog/2024/04/10/notes-on-git-error-messages/](https://jvns.ca/blog/2024/04/10/notes-on-git-error-messages/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'While writing about Git, I’ve noticed that a lot of folks struggle with Git’s
+    error messages. I’ve had many years to get used to these error messages so it
+    took me a really long time to understand *why* folks were confused, but having
+    thought about it much more, I’ve realized that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: sometimes I actually *am* confused by the error messages, I’m just used to being
+    confused
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I have a bunch of strategies for getting more information when the error message
+    git gives me isn’t very informative
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So in this post, I’m going to go through a bunch of Git’s error messages, list
+    a few things that I think are confusing about them for each one, and talk about
+    what I do when I’m confused by the message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: improving error messages isn’t easy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Before we start, I want to say that trying to think about why these error messages
+    are confusing has given me a lot of respect for how difficult maintaining Git
+    is. I’ve been thinking about Git for months, and for some of these messages I
+    really have no idea how to improve them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some things that seem hard to me about improving error messages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if you come up with an idea for a new message, it’s hard to tell if it’s actually
+    better!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: work like improving error messages often [isn’t funded](https://lwn.net/Articles/959768/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the error messages have to be translated (git’s error messages are translated
+    into [19 languages](https://github.com/git/git/tree/master/po)!)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: That said, if you find these messages confusing, hopefully some of these notes
+    will help clarify them a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some things I find confusing about this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You get the exact same error message whether the branch is just **behind**
+    or the branch has **diverged**. There’s no way to tell which it is from this message:
+    you need to run `git status` or `git pull` to find out.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It says `failed to push some refs`, but it’s not totally clear *which* references
+    it failed to push. I believe everything that failed to push is listed with `!
+    [rejected]` on the previous line– in this case just the `main` branch.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**What I like to do if I’m confused:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ll run `git status` to figure out what the state of my current branch is.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I think I almost never try to push more than one branch at a time, so I usually
+    totally ignore git’s notes about which specific branch failed to push – I just
+    assume that it’s my current branch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The main thing I think is confusing here is that git is presenting you with
+    a kind of overwhelming number of options: it’s saying that you can either:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: configure `pull.rebase false`, `pull.rebase true`, or `pull.ff only` locally
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: or configure them globally
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: or run `git pull --rebase` or `git pull --no-rebase`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It’s very hard to imagine how a beginner to git could easily use this hint to
+    sort through all these options on their own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If I were explaining this to a friend, I’d say something like “you can use `git
+    pull --rebase` or `git pull --no-rebase` to resolve this with a rebase or merge
+    *right now*, and if you want to set a permanent preference, you can do that with
+    `git config pull.rebase false` or `git config pull.rebase true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`git config pull.ff only` feels a little redundant to me because that’s git’s
+    default behaviour anyway (though it wasn’t always).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What I like to do here:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: run `git status` to see the state of my current branch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: maybe run `git log origin/main` or `git log` to see what the diverged commits
+    are
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: usually run `git pull --rebase` to resolve it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: sometimes I’ll run `git push --force` or `git reset --hard origin/main` if I
+    want to throw away my local work or remote work (for example because I accidentally
+    commited to the wrong branch, or because I ran `git commit --amend` on a personal
+    branch that only I’m using and want to force push)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a little weird because we my intention was to check out a **branch**,
+    but `git checkout` is complaining about a **path** that doesn’t exist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is happening because `git checkout`’s first argument can be either a branch
+    or a path, and git has no way of knowing which one you intended. This seems tricky
+    to improve, but I might expect something like “No such branch, commit, or path:
+    asdf”.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What I like to do here:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: in theory it would be good to use `git switch` instead, but I keep using `git
+    checkout` anyway
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: generally I just remember that I need to decode this as “branch `asdf` doesn’t
+    exist”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`git switch` only accepts a branch as an argument (unless you pass `-d`), so
+    why is it saying `invalid reference: asdf` instead of `invalid branch: asdf`?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I think the reason is that internally, `git switch` is trying to be helpful
+    in its error messages: if you run `git switch v0.1` to switch to a tag, it’ll
+    say:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So what git is trying to communicate with `fatal: invalid reference: asdf`
+    is “`asdf` isn’t a branch, but it’s not a tag either, or any other reference”.
+    From my various [git polls](https://jvns.ca/blog/2024/03/28/git-poll-results/)
+    my impression is that a lot of git users have literally no idea what a “reference”
+    is in git, so I’m not sure if that’s coming across.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What I like to do here:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 90% of the time when a git error message says `reference` I just mentally replace
+    it with `branch` in my head.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a tough one. Definitely a lot of people are confused about this message,
+    but obviously there's been a lot of effort to improve it too. I don't have anything
+    smart to say about this one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What I like to do here:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: my shell prompt tells me if I’m in detached HEAD state, and generally I can
+    remember not to make new commits while in that state
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: when I’m done looking at whatever old commits I wanted to look at, I’ll run
+    `git checkout main` or something to go back to a branch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This isn’t an error message, but I still find it a little confusing on its
+    own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Two things I think could be clearer here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think it would be nice if `You are currently rebasing branch 'main' on 'c694cf8'.`
+    were on the first line instead of the 5th line – right now the first line doesn’t
+    say which branch you’re rebasing.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In this case, `c694cf8` is actually `origin/main`, so I feel like `You are currently
+    rebasing branch 'main' on 'origin/main'` might be even clearer.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**What I like to do here:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: My shell prompt includes the branch that I’m currently rebasing, so I rely on
+    that instead of the output of `git status`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The thing I still find confusing about this is – `index.html` was modified in
+    `HEAD`. But what is `HEAD`? Is it the commit I was working on when I started the
+    merge/rebase, or is it the commit from the other branch? (the answer is “`HEAD`
+    is your branch if you’re doing a merge, and it’s the “other branch” if you’re
+    doing a rebase, but I always find that hard to remember)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I think I would personally find it easier to understand if the message listed
+    the branch names if possible, something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I find this one confusing in exactly the same way as the previous message:
+    it says `deleted by them:`, but what “them” refers to depends on whether you did
+    a merge or rebase or cherry-pick.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: for a merge, `them` is the other branch you merged in
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: for a rebase, `them` is the branch that you were on when you ran `git rebase`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: for a cherry-pick, I guess it’s the commit you cherry-picked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**What I like to do if I’m confused:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: try to remember what I did
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: run `git show main --stat` or something to see what I did on the `main` branch
+    if I can’t remember
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: I just find it a bit confusing that you need to look up what `-i`, `-n` and
+    `-f` are to be able to understand this error message. I’m personally way too lazy
+    to do that so even though I’ve probably been using `git clean` for 10 years I
+    still had no idea what `-i` stood for (`interactive`) until I was writing this
+    down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What I like to do if I’m confused:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually I just chaotically run `git clean -f` to delete all my untracked files
+    and hope for the best, though I might actually switch to `git clean -i` now that
+    I know what `-i` stands for. Seems a lot safer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: that’s all!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Hopefully some of this is helpful!
+  prefs: []
+  type: TYPE_NORMAL

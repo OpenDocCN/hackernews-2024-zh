@@ -1,0 +1,261 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:24:26'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How I destroyed the company's DB - by Anton Zaides
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db](https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: It was on a quiet Saturday.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I received a message from the support team, telling me one of our customers
+    has a problem. I decided it was important enough to start debugging. After 15
+    minutes, I understood the issue - there were some corrupted orders created in
+    our DB, and we needed to delete them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sounds trivial, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*At the end of the article I share my lessons, and how you can apply them to
+    your own team. And welcome to the 600+ new subscribers since last week!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*For those of you not working in startups - please don’t judge* 😅'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There were a few hundred orders to delete, so I decided to not do it manually
+    but to write a short SQL query (red flag 🚩)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It was a bit more complex than that, but to simplify:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`UPDATE orders'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: SET is_deleted = true
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: WHERE id in (1, 2, 3)`
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You can already see the scale of the disaster…
+  prefs: []
+  type: TYPE_NORMAL
+- en: I pressed CTRL+Enter and ran the command. When it took longer than a second,
+    I understood what happened. The program I used (DBeaver) saw the empty 3rd line,
+    and ignored the 4th line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, I deleted all the orders in the DB 😢
+  prefs: []
+  type: TYPE_NORMAL
+- en: I felt physically ill, and helpless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After a deep breath, I knew I had to act, and fast. There was no place to make
+    more mistakes, or waste time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The recovery was done much better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stopping the systems - ~5 minutes
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Creating a clone of our DB from before the change (luckily we had Point-in-time-recovery
+    set up) - ~20 minutes
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Calling my manager during the wait 😨
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Updating the production DB’s information based on the clone* - ~15 minutes
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Starting our systems - ~5 minutes
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '** I decided to not restore the whole DB, because I couldn’t stop ALL systems,
+    as we have multiple independent ones. I didn’t want to lose the changes made during
+    the recovery process. We use managed PostgreSQL by GCP, so I created a new clone
+    from a time before the update. Then I exported just the ‘id’ and ‘is_deleted’
+    columns from the clone, and imported the result into the production DB. Afterwards,
+    it was a simple update+select query.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So 45 minutes of easily avoidable downtime…
+  prefs: []
+  type: TYPE_NORMAL
+- en: This may sound like a very stupid mistake you will never make (or even can’t
+    make - in bigger companies). It might be true. The problem is not the wrong SQL
+    command. **A small human mistake is never the true problem**. Me running that
+    command, is just the end of a whole chain of failures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working on production during the weekend - why? In this case, it was not even
+    that urgent. Nobody asked me to fix it immediately. I could have easily waited
+    for Monday.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Who the hell runs something on a prod DB without running it on QA first?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Why did I manually edit the DB and not use an API call?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: And if there was no API - why didn’t I call a teammate and have ‘4-eyes’ on
+    such a sensitive action?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**And the worst part - why didn’t I use transactions?** It’s as easy as writing
+    ‘Begin’, and then using Rollback in case of a mistake.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The mistakes are built one atop the other. If at least one of them was avoided
+    - the whole thing would have never happened. The answer to most questions is that
+    I was just overconfident.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At least the organized recovery stopped the chain. Imagine the disaster if I
+    couldn’t restore the DB to the correct state…
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A few months ago, I finished reading *‘Chernobyl: The History of a Nuclear
+    Catastrophe’.*The chain of mistakes there, reminded me of that cursed weekend
+    (without underestimating or comparing to the dimensions of the Chernobyl disaster).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There was a root technological problem in the RBMK reactor.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It was not communicated properly. There were previous incidents involving the
+    problem, but Chernobyl’s team was not familiar with them.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The team didn’t follow the procedure during a safety check.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After the explosion - the Soviet government tried to hide it, which greatly
+    increased the severity of the damage.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Who is responsible?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The designers of the reactor? The teams at other power plants who didn’t communicate
+    the issues they had? The team at Chernobyl? The Soviet government?
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of them. **Disasters are never caused by a single mistake,** but by a chain
+    of them. Our job, is to do the best we can to cut the chain as early as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I didn’t know what to expect from the talk with my manager on Monday.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'He surprised me: “Make sure it won’t happen again. But I prefer it that way
+    - you made the mistake because you are dedicated, and love to move fast. People
+    with a bias for action break things.”'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That is exactly what I needed to hear. A too ‘cuddly’ approach saying “That’s
+    ok, don’t worry, thanks for fixing it!” would have felt fake. On the other hand,
+    I already felt like shit, so no point in humiliating me further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We try hard to remove the need for DB access, creating the relevant API calls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I always run queries on QA first (I know.. obvious, right? Nothing makes a lesson
+    stick more than a disaster)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I consult with the PM to understand what’s really urgent, and what can wait.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Any update/insert/delete query on production is done by 2 people. This one actually
+    prevented other mistakes!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I started to use transactions 🤦‍♂️
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: After the incident, I shared a detailed explanation with my team. Not hiding
+    anything, or downplaying my fault.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a thin balance, between shaming people, and not holding them accountable.
+    When YOU make mistakes - it’s a great opportunity to send the right message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**If you apologize** 1000 times, they’ll think you expect the same from them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**If you’ll make fun** of the incident, ignoring the implications, they’ll
+    think it’s ok.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**If you’ll be accountable**, learn, and improve - they’ll behave the same
+    way.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encourage people to **act,** care about the customer, and solve problems. That’s
+    how startups succeed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When mistakes are made, hold the person **accountable**. Together, understand
+    how it could have been avoided.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: No need to make people feel worse than they already do. **Some people need more
+    accountability, some more encouragement**. I always prefer to err on the side
+    of encouragement.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

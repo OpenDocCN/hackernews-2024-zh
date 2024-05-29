@@ -1,0 +1,1193 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:26:12'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Sketch of the Biggest Idea in Software Architecture
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.oilshell.org/blog/2022/03/backlog-arch.html](https://www.oilshell.org/blog/2022/03/backlog-arch.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '| [blog](/blog/) | [oilshell.org](/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Sketch of the Biggest Idea in Software Architecture
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 2022-03-12 (Last updated 2022-05-25)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This post was called *Backlog: Software Architecture* until I edited it and
+    saw a coherent theme emerge.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It elaborates on [narrow waists](/cross-ref.html?tag=narrow-waist#narrow-waist):
+    an idea in #[software-architecture](/blog/tags.html?tag=software-architecture#software-architecture)
+    that relates to networking, operating systems, language design, compilers, and
+    distributed systems.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another title I considered is *An Overview of Software Composition at Runtime*.
+    That is, you can contrast these two styles of building software out of parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fine-grained static types, build-time composition, static linking, [APIs](/cross-ref.html?tag=API#API),
+    and version numbers
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Coarse-grained **"waists"**, runtime composition, [ABIs](/cross-ref.html?tag=ABI#ABI),
+    [IPC](/cross-ref.html?tag=IPC#IPC), and versionless protocols
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Many programmers are familiar with the first style. This post is about the **second
+    style**, which you see at large scales and long time horizons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This post is **long and dense** with links, so you may want to read it in multiple
+    sittings. Let me know what you think [in the comments](https://old.reddit.com/r/oilshell/comments/tcy7ko/a_sketch_of_the_biggest_idea_in_software/?)!
+    I especially welcome references to similar material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Background
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I''m happy that there was great discussion on the last post, [The Internet
+    Was Designed With a Narrow Waist](//www.oilshell.org/blog/2022/02/diagrams.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I wrote about abstract ideas, but readers understood and applied them. And a
+    reader answered my question about the history of the [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist),
+    which I repeat in the *Call to Action* below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the other hand, there were a few responses that exhibited exactly the misconceptions
+    I want to push back on. In particular, the lack of consideration for tradeoffs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Local** convenience vs. **global** economy, flexibility, generality, and
+    extension'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **code** perspective vs. the **system** perspective
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fine-grained **types** vs. coarse-grained **"waists"**
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To be convincing about this, I would dive into examples: show code, analyze
+    existing designs, and propose new designs. I collected a great deal of material
+    on [the wiki](https://github.com/oilshell/oil/wiki/Perlis-Thompson-Principle)
+    and in [Zulip](/cross-ref.html?tag=Zulip#Zulip).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But I probably shouldn''t spend months writing and arguing about #[software-architecture](/blog/tags.html?tag=software-architecture#software-architecture).
+    It''s better to **build** something with the principles I''m espousing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I'm squeezing many topics into this single post. I state the main points,
+    with some justification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Motivating Design Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To be concrete, here are some questions that these ideas will help us with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Should shells have **two tiers**?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Both external processes and internal "functions"? Both pipelines of bytes and
+    pipelines of structured data?
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I argue that processes and byte streams should still be "primary" because it
+    makes the shell more interoperable and useful. They are both fundamental [narrow
+    waists](/cross-ref.html?tag=narrow-waist#narrow-waist). Last January: ["Shells
+    Should Shell Out"](//www.oilshell.org/blog/2021/01/philosophy-design.html#shells-should-shell-out).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is [JSON](/cross-ref.html?tag=JSON#JSON) the new narrow waist for shell?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It's **a** narrow waist, but it's not as universal as text or byte streams.
+    For example, HTML and CSV are not the same as JSON, and they shouldn't be.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How can we design a better distributed OS?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Is [Docker](/cross-ref.html?tag=docker#docker) designed well? How could it be
+    improved?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I bring up this example because I've seen the claim that "the Unix philosophy
+    is obvious" and has been absorbed into standard practice.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This couldn''t be further from the truth: [Docker](/cross-ref.html?tag=Docker#Docker)
+    is a recent design, and its style is profoundly anti-Unix. (Oil''s build now uses
+    [podman](/cross-ref.html?tag=podman#podman), which is a nice, compatible improvement.)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: But despite its design, Docker solved a real problem, and has [notable innovations](https://lobste.rs/s/ftkfnu/secure_containerized_browser#c_r6xgbh).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'So I believe the ideas below are relevant to the biggest forces and developments
+    in the industry. I''m glad that Docker is being "refactored away" into something
+    more Unix-y on two fronts: into [OCI](/cross-ref.html?tag=OCI#OCI) by Red Hat
+    and others, and out of Kubernetes. (Related: [Docker''s Second Death](https://www.tariqislam.com/posts/kubernetes-docker-dep/))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Is a Narrow Waist?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Most readers understood the [last post](//www.oilshell.org/blog/2022/02/diagrams.html):
+    I borrowed the [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist) term
+    from networking and extended it to software.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But it''s become clear to me that not all narrow waists are alike. It''s worth
+    distinguishing these categories, and more:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Small, simple mechanisms like the [Internet Protocol](https://en.wikipedia.org/wiki/Internet_Protocol),
+    [UTF-8](/cross-ref.html?tag=utf8#utf8), and [JSON](/cross-ref.html?tag=JSON#JSON).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: These waists are "narrow" in a strong sense. It's not a coincidence that Jon
+    Postel, Ken Thompson, and Doug Crockford were their "editors" or creators.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Language standards like [POSIX shell](/cross-ref.html?tag=posix-shell-spec#posix-shell-spec),
+    JavaScript, and C++.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: These are big and hard to reimplement. I know this first hand from working on
+    Oil!
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are narrow waists because they solve the interoperability problem of {user
+    programs ...} × {language implementations ...}
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '"Accidental" waists like [Win32](https://en.wikipedia.org/wiki/Windows_API)
+    and [x86](https://en.wikipedia.org/wiki/X86).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Their evolution isn't guided by a standards body. They're also big and hard
+    to reimplement.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs like [LLVM](https://llvm.org). As the home page says, LLVM isn't a virtual
+    machine. It's really a software library that changes with each release, requiring
+    consumers to change their code. This makes it different than the other narrow
+    waists, which are more about runtime composition.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '... ?'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So it's worth being more specific, and the posts below will refine definitions
+    and explore related concepts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The clearest objection I see to the narrow waist idea is that a narrow waist
+    is simply a **standard**! Standards enable interoperability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But standards have to come from somewhere. A narrow waist may or may not become
+    a standard. Also, LLVM is not a standard, and isn't intended to be one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hourglass metaphor also suggests why the idea is powerful, and what to aim
+    for. You want something small that interfaces with many other things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Precisely Defining "The Unix Philosophy"
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I spent a week drafting a post called *Diagrams of Three Narrow Waists in Unix*.
+    The first sentence is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have you heard vague claims about "the Unix Philosophy", and are you confused
+    or skeptical about it?
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This is a valuable post, because surprisingly the [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist)
+    idea **says something new** and more specific about Unix! I justify this with
+    references, including the classic ones [on this Wikipedia page](https://en.wikipedia.org/wiki/Unix_philosophy).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I have diagrams of these 3 narrow waists:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Processes**'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '{native code, shebang script, shell function, ...} × { start, kill, pipe, redirect,
+    run with privileges, ... }'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**File Descriptors**'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '{file, pipe, terminal, socket, ... } × {read, write, ioctl, ... }'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tree-Shaped **Namespaces** of unstructured data (file systems)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '{disk, SSD, memory with tmpfs, file with loopback, ... } × { ls, mount, version
+    with git, serve over HTTP, ... }'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The diagrams show that Unix uses multiple narrow waists to achieve dynamic and
+    extensible **polymorphism**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The file descriptor case shows both sides of the tradeoff. You don''t statically
+    know what syscalls are valid on a descriptor. You also don''t know what errors
+    you''ll get! I re-learned this lesson with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[A bug in Oil 0.9.6](//www.oilshell.org/blog/2022/01/notes-themes.html#oil-096-on-december-30th):
+    `write()` can fail with `EISDIR` if the descriptor returned by `open()` points
+    to a directory.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Bugs in Hello World](https://blog.sunfishcode.online/bugs-in-hello-world/):
+    `write()` can fail with `ENOSPC` if the descriptor points to a disk file. Python
+    2 has the bug but Python 3 fixed it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nevertheless, the polymorphic design of file descriptors makes Unix compose,
+    and is one reason why shell is powerful! I give examples in the post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go addresses this problem with single function interfaces like `Reader` and
+    `Writer`, and more generally the `-er` pattern. Here''s an interesting quote:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It would be nice if Haskell had [open polymorphism], possibly using Go as a
+    model.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '— [Philip Wadler: Featherweight Go](https://youtu.be/Dq0WFigax_c?t=912)'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'More:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I mention the relationship to Plan 9 (fixing the composition bugs in Unix) and
+    REST (the [uniform interface constraint](https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints)).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I link to two important academic papers, and related analysis of Unix.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I also noticed that **Lines of Text** is distinct narrow waist from **Text**,
+    which the [last post](//www.oilshell.org/blog/2022/02/diagrams.html) depicted.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In fact Oil's [QSN](/cross-ref.html?tag=QSN#QSN) format takes advantage of this
+    narrow waist, while the GNU's NUL-delimited format doesn't. (This the format `xargs
+    -0` accepts , mentioned in [the xargs post](//www.oilshell.org/blog/2021/08/xargs.html).)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In particular, `wc -l`, `head`, `tail`, and `tail -f` work "for free" with [QSN](/cross-ref.html?tag=QSN#QSN),
+    but you need more code like to support the NUL-delimited format, like `head -z`
+    and `tail -z`.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This post isn't done, but it's the one I want to publish the most.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Characteristics of Narrow Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In software, the most important characteristic of a [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist)
+    is that it reduces an [O(M x N) code explosion](/cross-ref.html?tag=m-by-n-explosion#m-by-n-explosion),
+    allowing interoperability and code reuse.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I also realized that there are two distinct senses of the word "narrow":'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In terms of architectural **connection** (topology).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For example, applications and physical networks are decoupled by the the Internet's
+    narrow waist. They don't interface directly with each other.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In terms of the **size** of the concept.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: IP is a small concept, and Unix is a small handful of concepts.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: But the web is a large set of concepts (HTTP, HTML, SVG, etc.). C++ and shell
+    are also large.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So this issue deserves some more thought, and perhaps more terminology.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are more ways to characterize narrow waists:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They are **compromises**. They make systems economical and possible, not necessarily
+    optimal.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you have a small or specialized network, you can design something more efficient
+    than the Internet.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: They arise through a mix of explicit **design** and implicit **evolution**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Both the Internet and the web were designed and subject to evolution. But I'd
+    say the web evolved more.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The design can be done **well or poorly**. The evolution can be guided or haphazard.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[JSON](/cross-ref.html?tag=JSON#JSON) was an explicit design, and it''s much
+    better than CSV.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We should try to do better at design, because the resulting network effects
+    mean we often get "stuck" with bad designs.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Regarding evolution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Narrow waists can last for decades, usually evolving in a **versionless** manner.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For example, Unix shell is one of the oldest languages in wide use, and there's
+    continuous compatibility between [Thompson shell](/cross-ref.html?tag=thompson-shell#thompson-shell),
+    [Bourne Shell](/cross-ref.html?tag=bourne-shell#bourne-shell), [Korn shell](/cross-ref.html?tag=ksh#ksh),
+    [bash](/cross-ref.html?tag=bash#bash), [OSH](/cross-ref.html?tag=osh-language#osh-language),
+    and [Oil](/cross-ref.html?tag=oil-language#oil-language).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A narrow waist has an amount of **inertia** that's proportional to the amount
+    of functionality that hinges on it.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: But narrow waists can also **move**!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: TCP/IP → HTTP
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: POSIX C APIs → Linux x86 ABI
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'They''re subject to extreme **economic pressure** and network effects. For
+    example:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The downside of inertia is that narrow waists can **inhibit innovation**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Narrow waists are often **overextended** to new applications.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The web was arguably overextended from a network of hyperlinked documents to
+    an application delivery platform ([single-page apps](https://en.wikipedia.org/wiki/Single-page_application)
+    in JavaScript)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It was also extended to a desktop UI framework via [Electron](https://www.electronjs.org/).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Linux was arguably overextended to embedded devices, especially those with real-time
+    requirements.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some recent narrow waists include [Docker](/cross-ref.html?tag=docker#docker)
+    / [OCI](/cross-ref.html?tag=OCI#OCI), the [Language Server Protocol](https://en.wikipedia.org/wiki/Language_Server_Protocol),
+    and [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly). I should be more
+    specific about their varying degrees of success with respect to design and user
+    adoption. For example, I think WebAssembly is useful, but [less general than what's
+    been recently claimed](https://news.ycombinator.com/item?id=28581634). It's a
+    deep compromise which involves winners and losers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fallacies
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Here are some common objections to the idea.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (1) *Textual data is hard to manipulate with programs*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is **not** an objection to the narrow waist principle! The main claims
+    of the principle are about interoperability and economy of implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I want to make a **Simple vs. Easy** argument. Narrow waists are *simple* in
+    Rich Hickey's terms (not "complected"), but not necessarily *easy* to use. For
+    example, Unix shell can be hard to learn, but its power results in a small, extensible
+    operating system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: (2) *The web is really messy, and thus unreliable*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I make a strong **Messy vs. Stable** distinction. Messy systems aren't necessarily
+    unreliable. Quite the contrary — the need for stability is the **cause of** the
+    mess! Continuous backward compatibility (like the the many iterations of CSS)
+    makes a mess, but keeps the system working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This relates to another concept I''ve been having a hard time describing: **versionless
+    evolution**, which I describe below.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Related Ideas
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can understand the [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist)
+    more precisely by relating it to these ideas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Metcalfe''s Law](https://en.wikipedia.org/wiki/Metcalfe%27s_law) states that
+    the value of a network is proportional to N², where N is the number of nodes.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is related to, but distinct from, the M × N *architectural* connections
+    of a narrow waist. Architectural connections are not network node connections.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Thinking about the architectural hierarchy of narrow waists may clarify this.
+    For example, CSV, JSON, and HTML are narrow waists at "level 1". And each of them
+    **is** literally text, which is at "level 0". Generic operations are "inherited",
+    which makes the system smaller. (This idea really needs diagrams.)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Internet Protocol follows the [End-to-End Principle](https://en.wikipedia.org/wiki/End-to-end_principle)
+    **and** it's a [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This doesn't mean the two principles are the same. I view the narrow waist as
+    more descriptive and predictive when applied to software.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Examples and Elaboration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's apply these principles to real world systems. Again, I claim the [narrow
+    waist](/cross-ref.html?tag=narrow-waist#narrow-waist) is the **most important**
+    idea in software architecture, because it describes the biggest and longest-lived
+    systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Web Evolved In A Versionless Manner
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I''d like to elaborate on the "versionless" property of many narrow waists.
+    You can contrast two philosophies of versioning:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Version numbers that indicate breaking changes, e.g. [Semantic Versioning](https://semver.org/).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Linux distros and package managers [like NPM](https://docs.npmjs.com/about-semantic-versioning)
+    like often pair semantic versioning with ad hoc constraint solvers to find a set
+    of compatible versions for dependencies. This model can be **brittle** because
+    you may end up running a set of versions that's never been tested together.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Continuous backward compatibility, i.e. **versionless** evolution.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are also version numbers here, but they indicate feature additions rather
+    than breaking changes.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For example, the web doesn't have incompatible versions, and [JSON](/cross-ref.html?tag=JSON#JSON)
+    was explicitly designed by Doug Crockford to be versionless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: History proves this rule. In [Don't Break X](//www.oilshell.org/blog/2021/12/backlog-project.html#three-analogies-dont-break-x),
+    I mentioned that XHTML and ECMAScript 4 both tried to **break the web** with radical
+    changes, but they failed because of the inertia of narrow waists.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In contrast, HTML5 and ECMAScript 5 evolved the web in a compatible way. We
+    should study and disseminate the history of the web avoid repeating mistakes we
+    get "stuck with".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a good way of thinking about versionless evolution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relaxing a requirement should be a compatible change. Strengthening a promise
+    should be a compatible change.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: — Rich Hickey in [Maybe Not](https://www.youtube.com/watch?v=YR5WdGrpoug) (2018,
+    YouTube)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 defined `<hr>` and `<hr />` to mean the same thing, whereas previous versions
+    of HTML were stricter. (This is the [self-closing tag issue](http://xahlee.info/js/html5_non-closing_tag.html).)
+    So HTML5 **relaxes a requirement** on web page authors, which is a compatible
+    change.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a new feature **strengthens the promise** that the browser makes to the
+    web page author. For example, HTML5 added a `<video>` tag, which is a compatible
+    change.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bytes and Text Are Essential Narrow Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I have a recurring debate about "text vs. fine-grained types", mostly with
+    people who are frustrated with ad hoc, incorrect #[parsing](/blog/tags.html?tag=parsing#parsing)
+    in shell.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think that a shell with support for [JSON](/cross-ref.html?tag=JSON#JSON),
+    [QSN](/cross-ref.html?tag=QSN#QSN), [QTT](/cross-ref.html?tag=QTT#QTT) and HTML
+    will address this problem. It will reduce the amount of parsing in shell programs,
+    and make it correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also claim that parsing is an O(M + N) problem, while types can create O(M
+    × N) problems — and often do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give more color on that, here''s an important comment which I mentioned
+    in [January](//www.oilshell.org/blog/2021/01/audio-and-graphics.html), [June](//www.oilshell.org/blog/2021/06/hotos-shell-panel.html#conclusion),
+    [July](//www.oilshell.org/blog/2021/07/blog-backlog-1.html#concepts), and [August](//www.oilshell.org/blog/2021/08/history-trivia.html#the-first-paper-about-unix-shell-thompson):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I make the M × N argument, and use concrete examples like IntelliJ and WebAssembly''s
+    text format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have M formats and N operations, and writing M × N tools is infeasible,
+    even for the entire population of programmers in the world.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'I also note the tradeoff:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not an absolute; in reality people do try to fill out every cell in the
+    M × N grid [in certain domains]. They get partway there, and there are some advantages
+    to that for sure.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I also quote Rust designer Graydon Hoare on text. While his "rant" is mostly
+    about the information density of text, it also touches on the wide range of operations
+    that text supports.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Text] can be compared, diffed, clustered, corrected, summarized and filtered
+    algorithmically. It permits multiparty editing. It permits branching conversations,
+    lurking, annotation, quoting, reviewing, summarizing, structured responses, exegesis,
+    even fan fic. The breadth, scale and depth of ways people use text is unmatched
+    by anything.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I note a problematic M × N explosion in code **generated** by protocol buffers
+    (as opposed to source code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, equality becomes **schema-dependent** rather than generic. This
+    is worth it in many systems, but it's a tradeoff.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Slogan: Text Is The Only Thing You Can Agree On'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Here are two variations of a slogan. It's meant to drive home the point of text
+    as a narrow waist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The lowest common denominator between a [PowerShell](https://en.wikipedia.org/wiki/PowerShell),
+    [Elvish](https://elv.sh/), [Rash](https://docs.racket-lang.org/rash/), and [nushell](https://www.nushell.sh/)
+    script is a Bourne shell script (and eventually an Oil script).
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This is because each alternative shell chooses a *different* kind of structured
+    data as its narrow waist (.NET objects, tree-structured data, Racket data structures,
+    and tables, respectively). **Text** is the most structured format they all agree
+    on, and **shell** is the language of coarse-grained composition with text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I predict that this will be a real thing, and isn't theoretical! I have no doubt
+    that there are already bash scripts invoking PowerShell scripts out there, and
+    more complex agglomerations will arise as alternative shells become popular.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It doesn't mean those shells aren't worth using, or more potentially more convenient.
+    But it highlights the need for a better Bourne-style shell.
+  prefs: []
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A second phrasing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The lowest common denominator between a [Common Lisp](https://common-lisp.net/),
+    [Clojure](https://clojure.org/), and [Racket](https://racket-lang.org/) program
+    is a Bourne shell script (and eventually an Oil script).
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Again, these languages are similar, but have incompatible data models. (It's
+    not just the compound data structures; Clojure's notion of numbers and strings
+    is borrowed from the JVM.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These two slogans are really another way of phrasing a slogan from the [last
+    post](//www.oilshell.org/blog/2022/02/diagrams.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unix is equally inconvenient for every programmer, and that's a good thing.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: CSV, JSON, HTML - Tables, Records, Documents
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The full title of this post is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSV, JSON, and HTML are Different Because Tables, Records, and Documents Are
+    Different
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This is again pushing back on the notion that [JSON](/cross-ref.html?tag=JSON#JSON)
+    is "the" new narrow waist of shell. Tables and documents are essential structures
+    in software, and expressing them in JSON is awkward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I can give examples of this, e.g.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This framing comes from the paper [Unifying Tables, Objects, and Documents](https://www.microsoft.com/en-us/research/publication/unifying-tables-objects-and-documents/)
+    (Meijer and Schulte, 2003), but the technical details differ.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tradeoffs Between Dynamic and Static Types (FAQ)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Text as a narrow waist is at odds with fine-grained, static types. My goal is
+    to highlight tradeoffs, and analyze situations where each style is natural and
+    efficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many programmers seem to think there is no tradeoff — or at least they *say*
+    that on the Internet. I believe that when they create working systems they often
+    use the dynamic, coarse-grained view!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[This recent comment](https://old.reddit.com/r/ProgrammingLanguages/comments/t0lzeq/types_considered_harmful_pdf_2008/hyfhhu2/)
+    links to typical responses, which by now form a FAQ:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a related, fantastic video which I want to signal-boost:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I don't know the F# language, but it apparently has a very Clojure-like view
+    of data, despite being statically typed. The "type provider" mechanism addresses
+    the problem of types that are only available runtime, e.g. in SQL schemas, or
+    implicitly in JSON and CSV files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Overall, the fallacy is that we use dynamic typing when we''re "too lazy to
+    write down the types". There are many useful programs that aren''t 100% statically
+    typed, and I claim this trend is increasing. (Slogan: *Poorly Factored Software
+    is Eating the World*.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The real issues are **scale** in space and time, heterogeneity, and extensibility!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refinements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the discussion of the extensibility post, I said that I'm getting at *theory
+    and guidelines for runtime composition and versionless evolution*. Shell is about
+    software composition at runtime, as opposed composition via static linking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So in addition to the [Perlis-Thompson Principle](/cross-ref.html?tag=perlis-thompson#perlis-thompson),
+    [narrow waists](/cross-ref.html?tag=narrow-waist#narrow-waist), and [O(M × N)
+    code explosions](/cross-ref.html?tag=m-by-n-explosion#m-by-n-explosion), here
+    are some more concepts that are worth exploring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Projection to Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I need a name for the idea of **code reuse** by changing the representation
+    of data to a narrow waist. Examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `/proc` file system projects kernel metadata onto the narrow waist of the
+    file system.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now you can use existing tools like `ls` and `open()` to explore the state of
+    processes.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Any system that uses [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
+    is also like this, e.g. Michael Greenberg's [File File System](https://mgree.github.io/ffs/)
+    projects [JSON](/cross-ref.html?tag=JSON#JSON) onto a virtual file system. This
+    allows reuse of tools like `cd` and `ls`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The [gron](https://github.com/tomnomnom/gron) tool projects tree-like [JSON](/cross-ref.html?tag=JSON#JSON)
+    onto the narrow waist of "lines of text". This allows reuse of tools like [grep](/cross-ref.html?tag=grep#grep)
+    and [awk](/cross-ref.html?tag=awk#awk).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Notice that [JSON](/cross-ref.html?tag=JSON#JSON) is a narrow waist, but it''s
+    been projected onto two others: the file system, and lines of text. Which one
+    is appropriate (if any) depends on what set of tools helps you solve a particular
+    problem.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Emulation of Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is the most straightforward one. As mentioned above, there's a big incentive
+    for Windows to emulate Linux, and vice versa. The platform gets thousands and
+    thousands of applications "for free".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another example is when Illumos borrowed FreeBSD's Linux syscall ABI emulation
+    in order to run user-uploaded [Docker](/cross-ref.html?tag=docker#docker) containers.
+    This is **dynamic, runtime** composition with [ABIs](/cross-ref.html?tag=ABI#ABI),
+    not static composition by compiling code against kernel [APIs](/cross-ref.html?tag=API#API)
+    expressed as C header files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extension of Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I think "waist extension" is a good term for the following ideas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The web is a humble and brilliant **extension of Unix**, adding simple networking
+    and hyperlinks (from [this recent comment](https://news.ycombinator.com/item?id=26865164);
+    [a longer comment](https://news.ycombinator.com/item?id=6131335) from 2013).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This design was not obvious! There is a long history of hypertext systems that
+    were **not** built on Unix. It would be nice to research explain the history.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[apenwarr in 2006](https://apenwarr.ca/log/20061201): *The web works because
+    it mostly just paraphrases Unix''s cleverness*. ("Working" is an important property
+    that a lot of software lacks.)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Web Sites Are Naturally Made With Shell Scripts](//www.oilshell.org/blog/2020/02/good-parts-sketch.html#web-sites-are-naturally-made-with-shell-scripts)
+    (2020)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[git](/cross-ref.html?tag=git#git) is a distributed extension of the Unix file
+    system.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Again, earlier systems were **not** like this, e.g. CVS and SVN. As with the
+    web, the idea is only obvious in hindsight. It's obvious when it becomes "air",
+    but someone had to invent it.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'git has a messy UI, but a clean [narrow waist](/cross-ref.html?tag=narrow-waist#narrow-waist).
+    This article seems like a good explanation, but there may be better ones: [Git
+    is a purely functional data structure](https://blog.jayway.com/2013/03/03/git-is-a-purely-functional-data-structure/).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Composition Between Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Unix has multiple waists: processes, file descriptors, file systems, lines
+    of text, unstructured text, and bytes. Each of them allows M × N things to compose,
+    but they also must compose **amongst themselves**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"A few things that compose" is tantamount to the [Perlis-Thompson Principle](/cross-ref.html?tag=perlis-thompson#perlis-thompson).
+    When I started this series, I wasn''t sure if this term and "narrow waist" were
+    necessary — maybe they''re both tantamount to "simplicity".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: But after working through examples, I see them as distinct but related. So it
+    would be nice to write more clearly about how narrow waists relate. This seems
+    like a distinct style of long-lived architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, let me know if you have references. I **don't** want to write about ideas
+    that other people have already explained, or invent new terms when there are existing
+    ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addition of Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's common to create a new, larger narrow waist out of existing smaller ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the [Language Server Protocol](https://en.wikipedia.org/wiki/Language_Server_Protocol)
+    uses JSON-RPC [for notifications and responses](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In turn, [JSON-RPC](https://en.wikipedia.org/wiki/JSON-RPC) is built on top
+    of [JSON](/cross-ref.html?tag=JSON#JSON) and a transport like TCP/IP or pipes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hierarchy Among Waists
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There''s a clear hierarchy among data representations in Unix, which affects
+    which operations are valid:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the [last post](//www.oilshell.org/blog/2022/02/diagrams.html), I mentioned
+    that **text** (ASCII, UTF-8) is a special case of **bytes**, and inherits [operations
+    on bytes](//www.oilshell.org/blog/2022/02/diagrams.html#bytes-flat-files).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I mentioned above the **Lines of Text** is a special case of **text**.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Likewise, JSON, CSV, and HTML are all **text**. and inherit [operations on text](//www.oilshell.org/blog/2022/02/diagrams.html#text-narrow-waist-of-unix-architecture).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Call to Action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Jon Postel Made the Internet's Waist Narrow
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After a very helpful reader e-mail, I added [an appendix to the last post](//www.oilshell.org/blog/2022/02/diagrams.html#addendum-february-28th).
+    I want to transcribe the first 10 minutes of [the video of Van Jacobsen](https://www.youtube.com/watch?v=69p78tfm29o).
+    He describes the role of [Jon Postel](https://en.wikipedia.org/wiki/Jon_Postel)
+    as Internet specification editor — specifically, his **relentless, decades-long
+    drive for minimalism** in the Internet''s design:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This narrow waist is not something that God gives you. It's something that you
+    make. It's hard engineering.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: We unfortunately don't have a lot of Jon Postel's in the world. It would be
+    nice to get one on nearly every project.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'This reminds me of the sentiments by Ken Thompson quoted in [Unix Shell: History
+    and Trivia](//www.oilshell.org/blog/2021/08/history-trivia.html). They share a
+    taste for minimalism that unlocks enormous functionality.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I also enjoyed reading these memorials:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The point is that **people** have to behave differently to create valuable,
+    interoperable systems!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After [more than a year](//www.oilshell.org/blog/2021/12/review-arch.html)
+    of circling these #[software-architecture](/blog/tags.html?tag=software-architecture#software-architecture)
+    topics, I feel pretty good about them. They''ve informed Oil''s design and will
+    continue to. It helps to be precise about definitions and support claims with
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope this outline was also useful to you. I wish I could have written a shorter
+    post, but I didn't have time :-)
+  prefs: []
+  type: TYPE_NORMAL
+- en: And again, [please send](https://old.reddit.com/r/oilshell/comments/tcy7ko/a_sketch_of_the_biggest_idea_in_software/?)
+    related references. They will help with future articles on these ideas. (I was
+    surprised that the [history of the narrow waist in networking](//www.oilshell.org/blog/2022/02/diagrams.html#whats-the-history-of-this-idea)
+    is not well documented or agreed upon.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now I want to switch gears to something more "tactical": translating Oil to
+    C++! That has been on hold for a full year, since [the last milestone in March
+    2021](https://www.oilshell.org/blog/2021/03/release-0.8.8.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also want to expand the project. Please donate to my new [Github Sponsors](https://github.com/sponsors/oilshell)
+    page if you think we need a new, principled shell. I'll ask for donations again
+    in upcoming blog posts. All of the money will go to contributors and "employees",
+    **not** to me!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appendices
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Lambda Calculus Is a Narrow Waist
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This a "fun" post to help us with the definition. It''s based on this quote
+    from chapter 5 of [Types and Programming Languages](https://mitpress.mit.edu/books/types-and-programming-languages):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The importance of the [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus)]
+    arises from the fact that it can be viewed simultaneously as a simple programming
+    language **in which** computations can be described and as a mathematical object
+    **about which** rigorous statements can be proved.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In other words, it reduces an M × N explosion of {arbitrary algorithms ...}
+    × {inductive cases in proofs about them}.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Derived forms** with respect to lambda calculus are like **intermediate representations**
+    in compilers. Proofs about languages are laborious for a very similar reason that
+    implementing compilers is laborious!'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Wiki, Zulip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This post was long, but there are still important things I left out. As mentioned
+    in the *Motivating Design Questions* section, these ideas relate to the design
+    of foundational cloud software like Docker and Kubernetes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But I want Oil to be in better shape before I continue writing about these topics.
+    For now here are my Wiki pages and Zulip links. (I really wish I had a single
+    brainstorming and research app.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I also mentioned the #[containers](https://oilshell.zulipchat.com/#narrow/stream/308821-containers)
+    Zulip stream in December. Here is a (sloppily sketched) overview thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Docker Summary](https://oilshell.zulipchat.com/#narrow/stream/308821-containers/topic/Docker.20Summary/near/264915992).
+    The Value of Docker, and its anti-Unix design. Other threads substantiate these
+    claims with experience.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

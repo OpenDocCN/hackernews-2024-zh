@@ -1,0 +1,270 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:51:05'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: How we switched to Java 21 virtual threads and got a deadlock in TPC-C for PostgreSQL
+    | by Evgeniy Ivanov | YDB.tech blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b](https://blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**How we switched to Java 21 virtual threads and got a deadlock in TPC-C for
+    PostgreSQL**'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Dining Java 21 philosophers have a problem
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our previous [post](/ydb-meets-tpc-c-distributed-transactions-performance-now-revealed-42f1ed44bd73)
+    about TPC-C, we discussed some drawbacks in the original TPC-C implementation
+    from the [Benchbase](https://github.com/cmu-db/benchbase) project (which is great
+    nevertheless). One of the drawbacks was the concurrency limit due to spawning
+    too many physical threads, and we solved it by switching to Java 21 virtual threads.
+    Later we discovered that, as usual, there is no free lunch. In this post, we present
+    a case study on how we encountered a deadlock with virtual threads in TPC-C for
+    PostgreSQL, even without the dining philosophers problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This post might be useful for Java developers who are considering switching
+    to virtual threads. We revise some fundamental background and then highlight an
+    important concern behind virtual threads: deadlocks might be unpredictable because
+    they could happen deep inside the libraries you use. Fortunately, debugging is
+    straightforward and we explain how to find these deadlocks when they happen.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why are we talking about PostgreSQL in the YDB blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: PostgreSQL is an open-source database management system renowned for its high
+    performance, rich feature set, advanced level of SQL compliance, and vibrant and
+    supportive community. It’s great until you take into consideration horizontal
+    scalability and fault tolerance. Then you end up with PostgreSQL-based third-party
+    solutions like Citus, which implement sharded PostgreSQL. Having a single elephant
+    might be fun. Being a mahout of a herd of elephants is a challenge, especially
+    if you want these elephants to maintain multiple consistent replicas and perform
+    distributed transactions with serializable isolation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As opposed to this, [YDB](https://ydb.tech/) is a distributed database management
+    system by its original design. YDB’s distributed transactions are first-class
+    citizens and run at a serializable isolation level by default. Now, we are actively
+    moving towards PostgreSQL compatibility because we see strong demand among PostgreSQL
+    users to make their existing applications automatically scalable and fault-tolerant.
+    That’s why we maintain [TPC-C for PostgreSQL](https://github.com/ydb-platform/tpcc)
+    (we hope to get it merged into upstream Benchbase soon).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A very short background and motivation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let’s recap some fundamental concepts: concurrency, parallel execution, and
+    asynchronous vs. synchronous requests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Concurrency means that tasks are performed at the same time, either in parallel
+    or sequentially. For example, you might have two activities: writing your code
+    in an editor and having a Slack chat with your colleagues. You perform these tasks
+    concurrently, but not in parallel. Or you might take a walk with your dog and
+    speak on the phone with a friend. Again, you perform these two tasks concurrently,
+    but this time, in parallel.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, consider the case when your application wants to make a request to the
+    database. The request is sent through the network, serviced by the database, and
+    the reply is sent back to your application. Note that the network round trip might
+    be the most expensive part of the request and could take several milliseconds.
+    What can you do on the application side while waiting for the reply?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '1\. The request might be synchronous, i.e., it will block the calling thread.
+    This approach is very easy to write code for: on line 1, you have the request;
+    on line 2, you can process the response:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '2\. The request might be asynchronous. Your thread is not blocked and continues
+    the execution, while the request is processed in parallel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In either case, there are two concurrent tasks: your thread is waiting for
+    the reply from the database, and the database is handling the request. Synchronous
+    code is extremely simple to write and read. But what if you need to make thousands
+    of requests to the database simultaneously? You will have to spawn a thread per
+    request. Spawning a thread in Linux is cheap, though there are strong concerns
+    behind spawning too many threads:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each thread requires a stack. You can’t allocate less memory than the page size
+    on your system, which is usually about 4 KiB unless you use hugepages, where the
+    default page size is 2 MiB.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There is the Linux scheduler. You can try to spawn 100,000 threads ready to
+    execute only if you have a reset button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This is why, until Java 21, there was no way to write synchronous code with
+    a high level of concurrency: you can’t spawn many threads. Concurrently (pun intended),
+    the Go language revolutionized this: goroutines provide very lightweight concurrency
+    so that you can write synchronous code *efficiently*. We recommend this [talk](https://youtu.be/-K11rY57K7k?si=XT8mkXL2ypmVj4ig)
+    about the Go scheduler by Dmitry Vyukov. Java 21 introduced virtual threads which
+    are in many senses similar to goroutines. Keep in mind that goroutines and virtual
+    threads are not inventions, but rather a reincarnation of the good old concept
+    of user-level threads.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, you can understand the problem with synchronous database requests in the
+    original Benchbase TPC-C implementation. If your database can handle a high load,
+    you must run many TPC-C warehouses, spawning many threads. With physical threads,
+    we failed to run more than 30,000 terminal-threads, while with virtual threads,
+    we can easily have hundreds of thousands of terminal-vthreads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deadlocks made easy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Imagine that you already have multithreaded Java code. Adding an option to
+    use virtual threads is surprisingly easy and can be incredibly beneficial. By
+    simply replacing your standard thread creation with the new virtual thread builders,
+    your application can handle thousands of concurrent tasks without the overhead
+    associated with physical threads. Here is an [example](https://github.com/ydb-platform/tpcc/blob/c8474bc7cf40456de0fe4c7fb060d867dd985ede/src/main/java/com/oltpbenchmark/ThreadBench.java#L65-L69)
+    from our TPC-C implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s all it takes; now, you’re using virtual threads. Under the hood, the
+    Java Virtual Machine creates a pool of `carrier threads`, which execute your `virtual
+    threads`. This transition appears seamless until, unexpectedly, your application
+    freezes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our PostgreSQL TPC-C implementation utilizes [c3p0](https://www.mchange.com/projects/c3p0/)
+    for connection pooling. [The TPC-C standard](https://www.tpc.org/tpcc/) dictates
+    that each terminal must have its own connection. However, in many real-world scenarios,
+    this isn’t practical, so we’ve included an option to limit the number of database
+    connections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number of terminals is much greater than the number of available connections.
+    Consequently, some terminals must wait for a session to become available, i.e.,
+    released by another terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we initiated the TPC-C run, the application froze. Fortunately, debugging
+    such cases is straightforward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capture the thread stacks using `jstack <PID>`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a more detailed dump of the current state, which includes information
+    about carrier threads and virtual threads, using `jcmd <PID> Thread.dump_to_file
+    -format=text jcmd.dump.1`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Upon investigation, we discovered that some virtual threads waiting for a session
+    had pinned their carrier thread. Here is the stack for one such virtual thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the stack of its carrying thread:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can see, the thread is hanging in `Object.wait()`, a method used in
+    conjunction with `synchronized`. This causes the carrier thread to become pinned,
+    meaning it is not released to execute some other virtual thread. Meanwhile, the
+    session holders have released their carrier threads while they are waiting for
+    I/O operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Thus, we ended up in the following situation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All carrier threads are pinned by session waiters, meaning there are no carrier
+    threads available.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Virtual threads holding the sessions can’t finish their tasks to release the
+    sessions.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Deadlock made easy!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[JEP 444](https://openjdk.org/jeps/444) states that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*There are two scenarios in which a virtual thread cannot be unmounted during
+    blocking operations because it is pinned to its carrier:*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*When it executes code inside a synchronized block or method, or When it executes
+    a native method or a foreign function.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The problem is that this synchronized code might be deeply embedded within
+    the libraries you use. In our case, it was within the c3p0 library. So, the [fix](https://github.com/ydb-platform/tpcc/commit/175f0c03d9c16652c85a6103331fec473017797e)
+    is straightforward: we simply wrapped the connection with a `java.util.concurrent.Semaphore`.
+    With this change, virtual threads are blocked on the semaphore and, crucially,
+    release the carrier thread instead of delving inside c3p0\. Thus, we never block
+    inside c3p0 because we enter c3p0 code only when there is a free session available.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summing up
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This is the front cover art for the book The Mythical Man-Month written by Fred
+    Brooks. The book cover art copyright is believed to belong to the publisher, Addison-Wesley,
+    or the cover artist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It seems that despite decades of progress in software development, there is
+    still [no silver bullet](https://en.wikipedia.org/wiki/No_Silver_Bullet). Yet,
+    Java 21 virtual threads are a remarkable feature, offering significant benefits
+    if used carefully: it’s very easy to write an efficient async code even when concurrency
+    is high.'
+  prefs: []
+  type: TYPE_NORMAL

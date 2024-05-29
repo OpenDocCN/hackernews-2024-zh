@@ -1,0 +1,545 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:58:06'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Improving LoRA: Implementing Weight-Decomposed Low-Rank Adaptation (DoRA) from
+    Scratch'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://magazine.sebastianraschka.com/p/lora-and-dora-from-scratch](https://magazine.sebastianraschka.com/p/lora-and-dora-from-scratch)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Low-rank adaptation (LoRA) is a machine learning technique that modifies a pretrained
+    model (for example, an LLM or vision transformer) to better suit a specific, often
+    smaller, dataset by adjusting only a small, low-rank subset of the model's parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This approach is important because it allows for efficient finetuning of large
+    models on task-specific data, significantly reducing the computational cost and
+    time required for finetuning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Last week, researchers proposed [DoRA: Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353),
+    a new alternative to LoRA, which may outperform LoRA by a large margin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To understand how these methods work, we will implement both LoRA and DoRA in
+    PyTorch from scratch in this article!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we dive into DoRA, here's a brief recap of how [LoRA](https://arxiv.org/abs/2106.09685)
+    works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since LLMs are large, updating all model weights during training can be expensive
+    due to GPU memory limitations. Suppose we have a large weight matrix ***W*** for
+    a given layer. During backpropagation, we learn a ***ΔW*** matrix, which contains
+    information on how much we want to update the original weights to minimize the
+    loss function during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In regular training and finetuning, the weight update is defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***W[updated] = W + ΔW***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The LoRA method proposed by [Hu](https://arxiv.org/abs/2106.09685) *[et al.](https://arxiv.org/abs/2106.09685)*
+    offers a more efficient alternative to computing the weight updates ***ΔW*** by
+    learning an approximation of it, ***ΔW ≈ AB***. In other words, in LoRA, we have
+    the following, where ***A*** and ***B*** are two small weight matrices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***W[updated] = W + A.B***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (The "**.**" in "***A.B***" stands for matrix multiplication.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The figure below illustrates these formulas for full finetuning and LoRA side
+    by side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Figure: An illustration of regular finetuning (left) and LoRA finetuning (right).*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How does LoRA save GPU memory? If a pretrained weight matrix ***W*** is a 1,000×1,000
+    matrix, then the weight update matrix ***ΔW*** in regular finetuning is a 1,000×1,000
+    matrix as well. In this case, ***ΔW*** has 1,000,000 parameters. If we consider
+    a LoRA rank of 2, then ***A*** is a 1000×2 matrix, and ***B*** is a 2×1000 matrix,
+    and we only have 2×2×1,000 = 4,000 parameters that we need to update when using
+    LoRA. In the previous example, with a rank of 2, that's 250 times fewer parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, ***A*** and ***B*** can't capture all the information that ***ΔW***
+    could capture, but this is by design. When using LoRA, we hypothesize that the
+    model requires *W* to be a large matrix with full rank to capture all the knowledge
+    in the pretraining dataset. However, when we finetune an LLM, we don't need to
+    update all the weights and capture the core information for the adaptation in
+    a smaller number of weights than ***ΔW*** would; hence, we have the low-rank updates
+    via ***AB***.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you paid close attention, the full finetuning and LoRA depictions in the
+    figure above look slightly different from the formulas I have shown earlier. That''s
+    due to the distributive law of matrix multiplication: we don''t have to add the
+    weights with the updated weights but can keep them separate. For instance, if
+    ***x*** is the input data, then we can write the following for regular finetuning:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***x.(W+ΔW) = x.W + x.ΔW***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, we can write the following for LoRA:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***x.(W+A.B)** = **x.W + x.A.B***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fact that we can keep the LoRA weight matrices separate makes LoRA especially
+    attractive. In practice, this means that we don't have to modify the weights of
+    the pretrained model at all, as we can apply the LoRA matrices on the fly. This
+    is especially useful if you are considering hosting a model for multiple customers.
+    Instead of having to save the large updated models for each customer, you only
+    have to save a small set of LoRA weights alongside the original pretrained model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make this less abstract and to provide additional intuition, we will implement
+    LoRA in code from scratch in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We begin by initializing a `LoRALayer` that creates the matrices A and B, along
+    with the alpha scaling hyperparameter and the rank hyperparameters. This layer
+    can accept an input and compute the corresponding output, as illustrated in the
+    figure below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Illustration of the LoRA matrices A and B with rank *r*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In code, this LoRA layer depicted in the figure above looks like as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the code above, `rank` is a hyperparameter that controls the inner dimension
+    of the matrices *A* and *B*. In other words, this parameter controls the number
+    of additional parameters introduced by LoRA and is a key factor in determining
+    the balance between model adaptability and parameter efficiency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second hyperparameter, `alpha`, is a scaling hyperparameter applied to the
+    output of the low-rank adaptation. It essentially controls the extent to which
+    the adapted layer's output is allowed to influence the original output of the
+    layer being adapted. This can be seen as a way to regulate the impact of the low-rank
+    adaptation on the layer's output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far, the `LoRALayer` class we implemented above allows us to transform the
+    layer inputs `x`. However, in LoRA, we are usually interested in replacing existing
+    `Linea`r layers so that the weight update is applied to the existing pretrained
+    weights, as shown in the figure below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*LoRA applied to an existing linear layer*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To incorporate the original Linear layer weights as shown in the figure above,
+    we will implement a `LinearWithLoRA` layer that uses the previously implemented
+    `LoRALayer` and can be used to replace existing `Linea`r layers in a neural network,
+    for example, the self-attention module or feed forward modules in an LLM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that since we initialize the weight matrix B (`self.B` in `LoraLayer`)
+    with zero values in the LoRA layer, the matrix multiplication between *A* and
+    *B* results in a matrix consisting of 0's and doesn't affect the original weights
+    (since adding 0 to the original weights does not modify them).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try out LoRA on a small neural network layer represented by a single
+    `Linear` layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, applying LoRA to the `Linea`r layer, we see that the results are the same
+    since we haven''t trained the LoRA weights yet. In other words, everything works
+    as expected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Earlier, I mentioned the distributive law of matrix multiplication:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***x.(W+A.B)** = **x.W + x.A.B***.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, this means that we can also combine or merge the LoRA matrices and original
+    weights, which should result in an equivalent implementation. In code, this alternative
+    implementation to the `LinearWithLoRA` layer looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In short, `LinearWithLoRAMerged` computes the left side of the equation ***x.(W+A.B)**
+    = **x.W + x.A.B*** whereas `LinearWithLoRA` computes the right side -- both are
+    equivalent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can verify that this results in the same outputs as before via the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have a working LoRA implementation let's see how we can apply it
+    to a neural network in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why did we implement LoRA in the manner described above using PyTorch modules?
+    This approach enables us to easily replace a `Linear` layer in an existing neural
+    network (for example, the feed forward or attention modules of a Large Language
+    Model) with our new `LinearWithLoRA` (or `LinearWithLoRAMerged`) layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For simplicity, let''s focus on a small 3-layer multilayer perceptron instead
+    of an LLM for now, which is illustrated in the figure below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple 3-layer multilayer perceptron
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In code, we can implement the multilayer perceptron, shown above, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using `LinearWithLora`, we can then add the LoRA layers by replacing the original
+    `Linear` layers in the multilayer perceptron model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can freeze the original `Linear` layers and only make the `LoRALaye`r
+    layers trainable, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Based on the `True` and `False` values above, we can visually confirm that only
+    the LoRA layers are trainable now (`True` means trainable, `False` means frozen).
+    In practice, we would then train the network with this LoRA configuration on a
+    new dataset or task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To avoid making this a very long article, I am skipping over the boilerplate
+    code to train this model. But if you are interested in the full code, you can
+    find a standalone code notebook here: [https://github.com/rasbt/dora-from-scratch](https://github.com/rasbt/dora-from-scratch).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, if you are interested in a LoRA from scratch explanation and application
+    to an LLM, also check out my Lightning Studio [LoRA From Scratch – Implement Low-Rank
+    Adaptation for LLMs in PyTorch](https://lightning.ai/lightning-ai/studios/code-lora-from-scratch).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may have noticed that we spent a lot of time implementing and talking about
+    LoRA. That's because DoRA ([Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353))
+    can be seen as an improvement or extension of LoRA that is built on top of it,
+    and we can now easily adapt some of our previous code to implement DoRA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DoRA can be described in two steps, where the first step is to decompose a pretrained
+    weight matrix into a magnitude vector (***m***) and a directional matrix (***V***).
+    The second step is applying LoRA to the directional matrix ***V*** and training
+    the magnitude vector ***m*** separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decomposition into magnitude and directional components is inspired by the
+    mathematical principle that any vector can be represented as the product of its
+    magnitude (a scalar value indicating its length) and its direction (a unit vector
+    indicating its orientation in space).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Illustration of the direction and magnitude of a single vector. For example,
+    if have a 2D vector [1, 2], we can decompose it into a magnitude 2.24 and a directional
+    vector [0.447, 0.894]. Then 2.24 * [0.447, 0.894] = [1, 2].
+  prefs: []
+  type: TYPE_NORMAL
+- en: In DoRA, we apply the decomposition into magnitude and directional components
+    to a whole pretrained weight matrix ***W*** instead of a vector, where each column
+    (vector) of the weight matrix corresponds to the weights connecting all inputs
+    to a particular output neuron.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, the result of decomposing ***W*** is a magnitude vector ***m*** that represents
+    the scale or length of each column vector in the weight matrix, as illustrated
+    in the figure below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Illustration of the weight matrix decomposition in DoRA
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, DoRA takes the directional matrix ***V*** and applies standard LoRA,
+    for instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***W'' = m (V + ΔV)/norm = m (W + AB)/norm***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The normalization, which I abbreviated as "norm" to not further complicate
+    things in this overview, is based on the weight normalization method proposed
+    in Saliman''s and Kingma''s 2016 [Weight Normalization: A Simple Reparameterization
+    to Accelerate Training of Deep Neural Networks paper](https://arxiv.org/abs/1602.07868).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DoRA two-step process (decomposing a pretrained weight matrix and applying
+    LoRA to the directional matrix) is further illustrated in the figure from the
+    DoRA paper below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The motivation for developing DoRA is based on analyzing and comparing the LoRA
+    and full finetuning learning patterns. The DoRA authors found that LoRA either
+    increases or decreases magnitude and direction updates proportionally but seems
+    to lack the capability to make only subtle directional changes as found in full
+    finetuning. Hence, the researchers propose the decoupling of magnitude and directional
+    components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In other words, their DoRA method aims to apply LoRA only to the directional
+    component, ***V***, while also allowing the magnitude component, ***m***, to be
+    trained separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the magnitude vector m adds 0.01% more parameters if DoRA is compared
+    to LoRA. However, across both LLM and vision transformer benchmarks, they found
+    that DoRA even outperforms LoRA if the DoRA rank is halved, for instance, when
+    DoRA only uses half the parameters of regular LoRA, as shown in the performance
+    comparison below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As I wrote in another article a few months ago, LoRA requires careful tuning
+    of the rank to optimize performance: [Practical Tips for Finetuning LLMs Using
+    LoRA (Low-Rank Adaptation](https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms)). However,
+    DoRA seems to be much more robust to changes in rank, as shown in the comparison
+    below.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The possibility to successfully use DoRA with relatively small ranks makes this
+    method even more parameter-efficient than LoRA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overall, I am quite impressed by the results, and it should not be too big of
+    a lift to upgrade a LoRA implementation to DoRA, which we will do in the next
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this section, we will see what DoRA looks like in code. Previously, we said
+    that we can initialize a pretrained weight ***W[0]*** with magnitude ***m*** and
+    directional component ***V***. For instance, we have the following equation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(W_0 = m \frac{V}{||V||_c} \)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'where ||***V***||[c] is the vector-wise norm of ***V***. Then we can write
+    DoRA including the LoRA weight update ***BA*** as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(W^{\prime}=m \frac{V+BA}{\|V+BA\|_c}\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, in the DoRA paper, the authors formulate DoRA as follows, where they use
+    the initial pretrained weights *W[0]* as the directional component directly and
+    learn magnitude vector ***m*** during training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \(W^{\prime}={m} \frac{V+\Delta V}{\|V+\Delta V\|_c}={m} \frac{W_0+{B A}}{\left\|W_0+{B
+    A}\right\|_c}\)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, ***ΔV*** is the update to the directional component, matrix ***V***.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the original authors haven't released the official implementation yet,
+    you can find an independent implementation [here](https://github.com/catid/dora/blob/main/dora.py),
+    which loosely inspired my implementation below
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Taking our previous `LinearWithLoRAMerged` implementation, we can upgrade it
+    to DoRA as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `LinearWithDoRAMerged` class is different from our previous `LinearWithLoRAMerged`
+    class in several key aspects, primarily in how it modifies and applies the weights
+    of the Linear layer. However, both classes integrate a `LoRALayer` to augment
+    the original linear layer's weights, but DoRA adds weight normalization and adjustment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The figure below shows a file-diff of both classes side by side:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: File-diff between `LinearWithLoRAMerged` and `LinearWithDoRAMerged`
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we can see in the figure above, `LinearWithDoRAMerged` introduces an additional
+    step involving dynamic normalization of the augmented weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After combining the original weights with the LoRA-adjusted weights (`self.linear.weight
+    + self.lora.alpha*lora.T`), it calculates the norm of these combined weights across
+    columns (`column_norm`). Then, it normalizes the combined weights by dividing
+    them by their norms (`V = combined_weight / column_norm`). This step ensures that
+    each column of the combined weight matrix has a unit norm, which can help stabilize
+    the learning process by maintaining the scale of weight updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DoRA also introduces a learnable vector `self.m`, which represents the magnitude
+    of each column of the normalized weight matrix. This parameter allows the model
+    to dynamically adjust the scale of each weight vector in the combined weight matrix
+    during training. This additional flexibility can help the model better capture
+    the importance of different features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In summary, `LinearWithDoRAMerged` extends the concept of `LinearWithLoRAMerged`
+    by incorporating dynamic weight normalization and scaling to improve the training
+    performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In practice, considering the multilayer perceptron from earlier, we can simply
+    swap existing Linear layers with our `LinearWithDoRAMerged` layers as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before we finetune the model, we can reuse the `freeze_linear_layers` function
+    we implemented earlier to only make the LoRA weights and magnitude vectors trainable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Out:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The full code example, including model training, is available in my GitHub
+    repo here: [https://github.com/rasbt/dora-from-scratch](https://github.com/rasbt/dora-from-scratch).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my opinion, DoRA seems like a logical, effective, and promising extension
+    of LoRA, and I am excited to try it in real-world LLM finetuning contexts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the meantime, I also added the DoRA implementation above to the [LoRA From
+    Scratch – Implement Low-Rank Adaptation for LLMs in PyTorch](https://lightning.ai/lightning-ai/studios/code-lora-from-scratch)
+    Lightning Studio to finetune a DistilBERT language model (see `bonus_02_finetune-with-dora.ipynb`).
+    Even without hyperparameter tuning, I already saw a >1% prediction accuracy improvement
+    over LoRA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This magazine is personal passion project that does not offer direct compensation.
+    However, for those who wish to support me, please consider purchasing a copy of
+    [one of my books](https://sebastianraschka.com/books). If you find them insightful
+    and beneficial, please feel free to recommend them to your friends and colleagues.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Your support means a great deal! Thank you!**'
+  prefs: []
+  type: TYPE_NORMAL

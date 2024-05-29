@@ -1,0 +1,412 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:29:17'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fastest Autograd in the West
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html](https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Who needs fast autograd? Seemingly everyone these days!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And once upon a time I needed an autograd that is **actually fast**. Leaving
+    project details aside, here are the requirements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: we test many computation graphs (graph is changing constantly)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: many-many scalar operations with roughly **10k—100k nodes** in each graph
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: every graph should be compiled and ran around **10k times** both forward and
+    backward
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: this should be done **wicked fast**, and with a convenient pythonic interface
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Path that awaits us ahead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: autograd in torch
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: autograd in jax
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: autograd in python
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: autograd in rust
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: autograd in C
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: autograd in assembly
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Plus a significant amount of sloppy code and timings on M1 macbook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in pytorch
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We start our journey with pytorch — the default autograd engine in research.
+    We’ll create a graph with many nodes, and to keep things simple our benchmark
+    has only several kinds of operations: unary (softplus), binary (multiplication),
+    n-ary (sum) and n-to-n (softmax).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This allows using just a few operations, but resembles a realistic load. All
+    benchmarks in this post will reimplement the same logic as below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run-time for 10k ops x 100 iterations: 11.3 seconds'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time for 10k ops x 10k iterations: **1130 seconds** (estimate)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given we created 100M python objects, it’s actually quite fast. And yes, that’s
+    not going to deliver an interactive experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s also discuss `torch.compile`, a major innovation in pytorch 2.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At 100 operations torch.compile takes 4.5 seconds. Execution gets faster: for
+    100 operations and 10k iterations it takes 4.52 seconds with torch.compile and
+    10.4 seconds without. Compilation + execution are still in the same ballpark.
+    For bigger graphs (1k operations) `torch.compile` crashes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in jax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Jax is the new cool kid… well, not that new anymore. But in some aspects it
+    is very interesting. Jax’s focus on JIT-compiling static graphs is very suitable
+    for the problem at hand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Implementation for benchmark is similar to pytorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Without jit computations are extremely slow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1k ops x 10 iterations => 15.9 seconds
+  prefs: []
+  type: TYPE_NORMAL
+- en: 10k ops x 10k iterations => 159,000 seconds (estimate)
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s a bit longer than forever! But whole point of jax is to JIT-compile stuff.
+    So let’s do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jit: compilation of 1k ops = 47 seconds'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jit: run-time for 1k ops x 10k iterations = 0.66 seconds'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jit: 10k ops x 10k iterations (compilation + run-time) => **470 seconds** (estimate)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speed up in execution time is more than impressive, but we spend >99% of time
+    compiling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tensorflow
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Someone will mention TF anyway. I’ll leave this as an exercise for you, TF fans.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in python
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Done with baselines, time to see if we can speed things up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s create a simplistic pseudo-framework and see how it competes with previous
+    candidates. We’ll implement a tape-like autograd where operations order is explicitly
+    tracked in a tape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary class="code-summary">show autograd engine in plain python</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'and reimplement reference task using our new pseudo-framework:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary class="code-summary">show benchmarking code</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time for 10k ops and 10k iterations: **312 seconds**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Expectably not fast. But compared to previous candidates, that’s actually quite
+    competitive!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in python, again
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This time we move all values into tape instead of keeping in variables. Additionally
+    tape will keep a ‘static graph’ of computations by recording indices of variables
+    participating in every operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details><summary class="code-summary">show code for autograd in plain python</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: and corresponding launching code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time for 10k ops x 10k iterations: **94 seconds**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we see, moving all values into tape and switching to operating on indices
+    is quite an efficient strategy. We still use python, but are now ~5-10 fold faster
+    than `pytorch` or `jax`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, I want to mention one more experiment: code above is organized
+    to be `numba`-friendly. [Numba](https://numba.readthedocs.io/en/stable/) is famous
+    for speeding up number crunching in python with minimal changes by providing just-in-time
+    compilation. Recent addition of `numba.typed.List` makes it possible to efficiently
+    handle list of lists.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time with numba, 10k ops x 10k iterations: **41 second**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we’re >10-fold faster than jax/pytorch (and still writing code
+    in python).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in rust
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once we moved graph tracking to tape, we can now use something fast to run computations
+    for us. For instance, rust. For rust↔python interop I’ve used a small wrapper
+    around [rustimport](https://github.com/mityax/rustimport). `Rustimport` allows
+    to conveniently “import” a single rust file without creating a full-fledged rust
+    project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some optimization remarks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`softmax` was a bottleneck, so I switched to creating temporary arrays on stack
+    instead of Vecs, which required specializing on input sizes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I followed rust-y approach with iterators to reduce number of boundary checks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I wondered if match with multiple options checked one-by-one is slow. In synthetic
+    tests it seemed to be relatively fast, but I wish jump table optimization was
+    implemented here (e.g. it is supported for [enums](https://users.rust-lang.org/t/match-statement-efficiency/4488)
+    in rust, and clang [uses](https://stackoverflow.com/questions/60109992/why-is-a-switch-not-optimized-the-same-way-as-chained-if-else-in-c-c)
+    this optimization in C for switch-case)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <details><summary class="code-summary">show rust code for minimal autograd</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time for 10k ops x 10k iterations: **1.4 seconds**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Success: we are in the realm of interactive experiences.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recall we started from >1000 seconds. But should we stop here?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in C
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Time to implement autograd logic in C. For interop with python I use [python-cffi](https://cffi.readthedocs.io/en/stable/index.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I went bananas on optimization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I used the fact that output nodes are placed consequentially in memory, so we
+    pass only index of the first output
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: number of inputs is limited to 8, and those are baked into struct as `int[8]`,
+    not `int *` to avoid jumps in memory
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dynamic stack allocations of variable size (compared to rust, those are straightforward
+    in C)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-O3`, and unsafe math: `-ffast-math`. Even experimented memory alignment and
+    restrict-ing pointers, but no luck'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: <details><summary class="code-summary">show me some code in C</summary>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]</details>'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run-time for 10k ops x 10k iterations: **0.99 second**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I liked ergonomics of rust better, but achieving high speed in C is way easier.
+    Rust’s interop with python is also way more convenient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s autograd in C (again)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another approach I’ve taken is to ‘compile’ traced graph to C. So python produces
+    a long C file where operations are called one-by-one with explicit indices, something
+    like
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Source code is lengthy, outputs are enormous, and to speed up compilation we
+    can set `-O0` in clang. Using `-O0` produces slower binaries, but interestingly
+    *did not* speed up compilation. Best results I got are around 1 minute for compilation
+    and 1 second for a full run. Surprisingly, eliminating switch/case and memory
+    lookups for arguments did not result in faster execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given that recompilation is needed any time the graph is changed, real time
+    experienced by user is 1 minute. That’s a no go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assembly
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this endeavor to get maximal speed, I decided to go down to assembly. Otherwise
+    it feels like an incomplete journey. We can map a computational graph to just
+    a set of low-level instruction, and avoid “costly” compilation. These days x86/64
+    is not a king anymore, but neither armv7/armv8 is — and writing assembly for several
+    architectures is totally unreasonable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So … how about using webassembly? It is low-level, fast to compile, and still
+    cross-platform. Projects like `wasmer`/`wasmtime` allow interacting with wasm
+    code from other languages. That’s my first encounter with WASM, and I’ve got quite
+    positive impression: WASM mixes lisp-style syntax (for efficient streaming parsing)
+    and execution model of stack machine. Unlike canonical stack machines, and unlike
+    canonical assembly, WASM allows grouping expressions, e.g.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This convenience allows writing significantly more readable code in WASM compared
+    to ye-olde-assembly. Level of abstraction looks just right to me — low-level instructions,
+    but no need to manage register allocations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Webassembly is still very close to assembly in terms of instructions, i.e. there
+    is no `exp`, `log`, let alone `log1p` and alike. Fortunately, there is a WASM
+    [implementation](https://gist.github.com/going-digital/02e46c44d89237c07bc99cd440ebfa43)
+    of `exp2`/`log2` by Peter Knight.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My major question was if speed of exponentiation is going to be sufficient,
+    as `exp` consumes significant time in C implementation. Alas, in a simple benchmark
+    computing just exponents in wasm takes ~1.9 seconds, leaving it behind rust/C.
+    For reference, javascript computes the same number of exponents in 0.7 seconds.
+    Hence, I take WASM branding of ‘near-native speed’ with a grain of salt, at least
+    in the context of number crunching. Hopefully this will improve, but for now WASM
+    is out of competition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So, we achieved a **1000X speed up** compared to leading libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I don’t find this surprising — major usecase for autograd system is manipulating
+    large ndarrays. Memory management, copy elimination, device synchronization, parallelization
+    of computations — these things are the main focus, and throughput of 1 million
+    ops per second is totally reasonable for the vast majority of scenarios and users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not for me though. My scenario is totally different in terms of numbers and
+    setup, and tensor-focused autograds are too slow. For the problem at hand departing
+    from the common autograd systems was the right and the only possible choice. Exploring
+    different options was quite fun, and my expectations were challenged several times
+    along this exploration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 👋
+  prefs: []
+  type: TYPE_NORMAL

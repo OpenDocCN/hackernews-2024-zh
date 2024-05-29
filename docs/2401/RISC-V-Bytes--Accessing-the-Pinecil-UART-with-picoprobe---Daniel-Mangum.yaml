@@ -1,0 +1,256 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:22:09'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'RISC-V Bytes: Accessing the Pinecil UART with picoprobe · Daniel Mangum'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/](https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This post is the second in a RISC-V Bytes subseries on the [PINE64](https://pine64.org/)
+    Pinecil soldering iron and development board. Previous and subsequent posts can
+    be found under the [RISC-V Bytes](https://danielmangum.com/categories/risc-v-bytes/)
+    category.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the [most recent Pinecil post](https://danielmangum.com/posts/risc-v-bytes-soldering-pinecil-breakout-board/),
+    we walked through how to solder the header pins on the Pinecil [breakout board](https://pine64.com/product/pinecil-break-out-board/).
+    With the headers attached, we can now communicate with the Pinecil’s microcontroller
+    via a number of protocols. Today we are going to focus on accessing the Universal
+    Asynchronous Receiver / Transmitter (UART) hardware in order to receive serial
+    data from the microcontroller, such as log messages, on a development machine
+    (e.g. laptop).
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, though the breakout board does allow us to access the UART pins, it
+    is likely that your development machine does not expose its own UART interface.
+    Instead, most machines are equipped with more commonly used ports for peripherals,
+    such as [Universal Serial Bus (USB)](https://en.wikipedia.org/wiki/USB). In order
+    to communicate between the Pinecil microcontroller and the development machine,
+    we’ll need some sort of bridge. While there is plenty of dedicated hardware that
+    can be purchased for a few dollars, such as this [USB to serial converter](https://www.adafruit.com/product/5335),
+    I have been leveraging my small collection of [Raspberry Pi Pico’s](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html)
+    for tasks such as this since [attending Hackaday Supercon 2023](https://danielmangum.com/posts/supercon-2023-day-1/)
+    and [hacking on the conference badge](https://danielmangum.com/posts/supercon-2023-day-2/),
+    which included a Pico [on the back of the PCB](https://hackaday.com/2023/10/18/2023-hackaday-supercon-badge-welcome-to-the-vectorscope/#under-the-hood).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Pico is the first Raspberry Pi product to use in-house silicon, incorporating
+    the [RP2040](https://www.raspberrypi.com/products/rp2040/), a microcontroller
+    with dual ARM [Cortex-M0+](https://developer.arm.com/Processors/Cortex-M0-Plus)
+    processors, and a highly flexible [programmable input / output (PIO)](https://www.raspberrypi.com/news/what-is-pio/)
+    system. The “downside” of using a general purpose microcontroller, rather than
+    dedicated hardware, for our USB-UART bridge is that we’ll need to write or obtain
+    firmware that performs the desired functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, Raspbery Pi explicitly encourages using the Pico for this type
+    of use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appendix A of the [Pico Getting Started Guide](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)
+    introduces the use of the Pico as a programming and debugging device. To support
+    this scenario, they have supplied open source firmware, appropriately [named `picoprobe`](https://github.com/raspberrypi/picoprobe),
+    that is built on [FreeRTOS](https://github.com/FreeRTOS/FreeRTOS-Kernel) and the
+    [Pico C/C++ SDK](https://github.com/raspberrypi/pico-sdk).
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the guide primarily describes its use when working with a second Pico,
+    `picoprobe` can be useful with any other device that exposes UART pins or a [Serial
+    Wire Debug (SWD)](https://developer.arm.com/documentation/ihi0031/a/The-Serial-Wire-Debug-Port--SW-DP-/Introduction-to-the-ARM-Serial-Wire-Debug--SWD--protocol)
+    port. Raspberry Pi also offers a [debug probe](https://www.raspberrypi.com/products/debug-probe/),
+    which is essentially a Pico with `picoprobe` pre-programmed on the RP2040, and
+    dedicated ports and connectors for UART and SWD.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`picoprobe` is configured using a header file, which is then included [in `src/picoprobe_config.h`](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/src/picoprobe_config.h#L68).
+    There are two built-in configurations, one for the [Pico](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_pico_config.h)
+    and one for the [debug probe](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_debugprobe_config.h).
+    We can use the Pico configuration, and because it is the default, the following
+    steps can be used to build `picoprobe` without any updates.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ensure all submodules are up to date.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Create a build directory and enter it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generate build files with `cmake`, specifying that the Pico SDK should be fetched
+    as part of the operation (`PICO_SDK_FETCH_FROM_GIT`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Build the firmware.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the build is complete, we should see a number of artifacts in the `build`
+    directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are multiple ways to program the Pico, but the simplest is by holding
+    down the boot select (`BOOTSEL`) button while you connect it to your development
+    machine. This will cause the Pico to appear as a [USB Mass Storage Device](https://en.wikipedia.org/wiki/USB_mass_storage_device_class),
+    meaning you can access it from your machine’s filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Copying the `picoprobe.uf2` file into the mounted directory will cause the RP2040
+    to reboot and start running the firmware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Pico should now show up as a USB serial device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can use `minicom` to monitor the serial output. Initially we shouldn’t see
+    any output as `picoprobe` is configured to direct its debug information to `UART0`
+    by default. The output we eventually see over USB serial will be the bridged output
+    from the Pinecil microcontroller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Pinecil v2 runs on the [Bouffalo Lab BL706](https://en.bouffalolab.com/product/?type=detail&id=8)
+    chipset, which includes a [32-bit RISC-V processor](https://riscv.org/) based
+    on the [SiFive E24 core](https://sifive-china.oss-cn-zhangjiakou.aliyuncs.com/Standard%20Core%20IP/e24_core_complex_manual_21G2.pdf).
+    It is supported by the open source [IronOS](https://github.com/Ralim/IronOS) project,
+    which was originally developed as alternative firmware for the [TS100](https://www.ifixit.com/products/ts100-soldering-iron)
+    iron. IronOS is the default firmware on the Pinecil.
+  prefs: []
+  type: TYPE_NORMAL
+- en: IronOS is also built on FreeRTOS, and leverages the `bl_mcu_sdk`, which has
+    evolved into [the `bouffalo_sdk`](https://github.com/bouffalolab/bouffalo_sdk).
+    According to the [datasheet](http://download.bl602.fun/BL702_%E5%AE%98%E6%96%B9%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C.pdf),
+    the BL706 has two built-in UARTs, and IronOS [configures](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/peripheral_config.h#L82)
+    `UART0` to run at `2000000` baud, which is why we supplied the `-b 2000000` to
+    `minicom` above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: IronOS has an excellent [Docker-based build flow](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/Documentation/Development.md#building-pinecil-v20),
+    which alleviates the need to install your own RISC-V toolchain. The following
+    steps can be used to build an English binary for the Pinecil v2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start the build container.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run build script.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the build completes, you can type `exit` to exit the container. Build
+    artifacts should be present in `source/Hexfile/`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Pinecil can be programmed, including when connecting via the breakout board,
+    by holding down the button labeled `-` while plugging the USB cable into your
+    development machine. Pine64 offers an [in-system programming (ISP)](https://en.wikipedia.org/wiki/In-system_programming)
+    tool for its Bouffalo Lab devices, appropriately named `blisp`, which can be downloaded
+    from the project’s [releases page](https://github.com/pine64/blisp/releases).
+  prefs: []
+  type: TYPE_NORMAL
+- en: After installing, the following command can be used to flash the IronOS firmware
+    onto the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Connecting the Pinecil to the Pico [*Link to heading*](#connecting-the-pinecil-to-the-pico)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*The last step to see the serial output emitted by the IronOS firmware running
+    on the Pinecil is to connect the UART pins on the breakout board to the Pico running
+    `picoprobe`. `UART1` on the Pico is used for the USB-UART bridge, and pins 6 and
+    7 correspond to `UART1 TX` and `UART1 RX` respectively. The `RX` pin on the Pinecil
+    breakout UART header should be connected to pin 6 on the Pico, while `TX` should
+    be connected to pin 7\. Lastly, the UART `GND` (ground) pin on the breakout board
+    should be connected to a `GND` pin, such as pin 3, on the Pico. The full mapping
+    is provided below.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Pinecil Breakout** | **Pico** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| UART RX | Pin 6 (UART1 TX) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| UART TX | Pin 7 (UART1 RX) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| UART GND | Pin 3 (GND) |'
+  prefs: []
+  type: TYPE_TB
+- en: For a visual representation of the mapping, view the cover image of this post,
+    which is a pin-accurate depiction of the wiring.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: With the wiring in place, the Pico connected to your development machine, and
+    `minicom` running, we can connect the Pinecil to a power source via the breakout
+    board. We should see the following output in our `minicom` session with the Pico.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This information is emitted by [invoking `bflb_platform_init()`](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/bl_mcu_sdk/bsp/bsp_common/platform/bflb_platform.c#L72)
+    on startup. With the ability to build, program, and monitor the firmware, we can
+    start to make changes and test them out on the Pinecil hardware. In our next post,
+    we’ll begin walking through exactly what the Bouffalo Lab SDK and IronOS are doing,
+    then see how we can modify them to include new functionality.*
+  prefs: []
+  type: TYPE_NORMAL

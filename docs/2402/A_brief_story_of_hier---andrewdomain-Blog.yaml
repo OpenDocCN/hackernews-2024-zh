@@ -1,0 +1,774 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:41:32'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: A_brief_story_of_hier - andrewdomain Blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://andrewdomain.com/posts/a_brief_story_of_hier/](https://andrewdomain.com/posts/a_brief_story_of_hier/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Recently Fedora opened [this curious Change proposal](https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin)
+    about the unification of the **/bin** and **/sbin** paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The news was welcomed by the community with short oneline sentences, that didn’t
+    help me understand the connotations of that proposal so I thought about using
+    the occasion to do some little research to make light on this matter…
+  prefs: []
+  type: TYPE_NORMAL
+- en: What I found out is that Fedora was not the first distro to implement this choice,
+    but was one of the first ones to start this 10+ years old discussion about reforming
+    the filesystem hierarchy under Linux, which now is reaching a more advanced state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For several reasons and necessities, the structure of the filesystems that host
+    the binaries and libraries had changed on all the major GNU/Linux distributions,
+    after long and painful internal work, to provide a much cleaner structure and
+    easier administration, with the possible side effect of leaving behind the needs
+    of some users, that will probably migrate towards other systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'NOTE for the reader:'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When I’m talking about “the directories”, or “those directories”, or.. you got
+    it. I’m probably referring to **bin**, **sbin**, and **lib**, no matter if placed
+    under **/** or under **/usr**.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: compliance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I think I should start by making it very clear that a Linux-based system is
+    an animal of its own kind. Linux distributions are not conventional UNIX(SUS-compliant)
+    or POSIX or whatever kind of systems. **They’re just Linux systems**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linux systems pick only the best/most fitted aspects of each specification and
+    incorporate it, while not being 100% compliant with the whole.. maybe sometimes
+    compliance is optionally added etc… But as a general rule, each Linux distro could
+    very easily be very different from the others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The whole ecosystem of Linux distros is kept together thanks to **some conventions**,
+    that can be more or less technically enforced, which become standards. So that
+    in the meantime there is plenty of room for each one to express their own idea
+    on how the system should work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: man 7 hier
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One example of an almost-standardized aspect of Linux distros that kinda survived
+    over the years, is the **FHS (Filesystem Hierarchy Standard)** that is maintained
+    by the Linux Foundation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The FHS describes the purpose of each path in your filesystem, that your distro’s
+    maintainers have probably followed, and that won’t probably hurt the responsible
+    sysadmin to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**man 7 hier** is your local, system-specific (major version, …) reference
+    for the version of the FHS specification that your system supports. Check out
+    the **STANDARDS** section of the manpage to see exactly which version your system
+    is supporting (on this day on Gentoo it’s the 3.0 from March 2015), and while
+    you’re at it, check also the **BUGS** section to remind yourself that yes.. it
+    is just a convention that is not really technically enforced.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because theoretically, you could put your binaries in /etc, mount /home as a
+    tmpfs, or cause whatever degree of mayhem that you wish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’re still (mainly) under GNU/Linux after all, where historically there has
+    been an effort to guarantee to the user the maximum possible degree of freedom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: /usr
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the rest of this article, we will see some vicissitudes around the bin,
+    sbin, and lib* directories over the years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do so, I will start from this chunky first table with descriptions that I’ve
+    copy/pasted from the (**rather traditional**) hier manpage itself, with the purpose
+    of showing how those definitions change later on..
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| PATH | descr |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /bin | This directory contains executable programs which are needed in single
+    user mode and to bring the system up or repair it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /sbin | Like /bin, this directory holds commands needed to boot the system,
+    but which are usually not executed by normal users. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /lib* | This directories should hold those shared libraries that are necessary
+    to boot the system and to run the commands in the root filesystem. (EDIT: In this
+    description we’re gonna also include the architecture-specific variants of /lib
+    (/lib32, /lib64, …) that serve the same purpose) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr | This directory is usually mounted from a separate partition. It should
+    hold only shareable, read-only data, so that it can be mounted by various machines
+    running Linux. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/bin | This is the primary directory for executable programs. Most programs
+    executed by normal users which are not needed for booting or for repairing the
+    system and which are not installed locally should be placed in this directory.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/sbin | This directory contains program binaries for system administration
+    which are not essential for the boot process, for mounting /usr, or for system
+    repair. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/lib* | Object libraries, including dynamic libraries, plus some executables
+    which usually are not invoked directly. More complicated programs may have whole
+    subdirectories there. (EDIT: same as before for the architecture-dependant.) |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The natural question here I think is: “Why do we even have this distinction
+    between those directories”. At first glance, it seems like unnecessary overcomplication,
+    after all, we’re talking about the same entities.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And also: “Why is this filesystem **usually mounted from a separate partition**??”.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by understanding better the purpose of the /usr filesystem, and
+    equally importantly, where it even comes from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: split-usr
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a very interesting mail that people close to where the changes are
+    made keep quoting as a reference to this phenomenon, which provides historical
+    context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m talking about [this mail](http://lists.busybox.net/pipermail/busybox/2010-December/074114.html)
+    from the busybox ml.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The argument is pretty clear: there were technical reasons that made this distinction
+    necessary in the first place.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: The same reasons that made us split the /usr (or split the /, depending on where
+    you see it from), and adopt /bin and /sbin, with their relative dependencies located
+    under /lib*, with the sole purpose of ensuring the mount of the partition where
+    /usr was, at boot time, i.e. **to bring the system from single-user mode, to multi-user
+    mode** (also check this [sysvinit to systemd translation](https://fedoraproject.org/wiki/SysVinit_to_Systemd_Cheatsheet#Runlevels/targets))
+    .
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: You see that here is referred to as **the /bin vs /usr/bin split**, which we
+    may call by the name of **split-usr**, but it would not be entirely correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The term **split-usr** as used today, has a different meaning than the one used
+    in this article and it probably has to do with the necessity of providing more
+    distinction in the possible structure of a system in regard to its use of /usr
+    (check [glossary](#glossary)). It has to be said that this mail also comes from
+    more than 10 years ago, while the pains of the upgrade, reorganizations, implementations,…
+    are much more recent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==**Why not physically place everything under /, instead of /usr**==
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other distributions that detached from a standard filesystem specification like
+    [GoboLinux](https://gobolinux.org/at_a_glance.html) and others, do not have a
+    /usr partition that contains the “os” and seem to not miss it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By following the /usr pattern, as most Linuxes have historically done, we’ve
+    taken the same road as other UNIXes had, like SunOS that in 4.0.3 started adopting
+    a readonly /usr filesystem, and Oracle Solaris, that from version 11 started symlinking
+    for compatibility purposes, the relative directories under / to their counterparts
+    in /usr, where the actual system is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The fact that we have “the operating system”, i.e. the static part of it composed
+    of all the binaries and libraries, that shouldn’t vary between hosts with the
+    same version, under a certain filesystem different from root, opens the doors
+    to interesting scenarios like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: a simple readonly mount of /usr for security reasons.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the easier backup of /usr before upgrades.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the share of /usr between hosts (e.g. using a network share).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: centralized update of this static part, by sharing it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Following those logics, We could host some tiny Linux boxes that require very
+    few resources, by having a rw / with all the (this is a recurring expression)
+    **site specific** files and configurations and sharing a common /usr between all
+    of them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ==**do we need a split-usr configuration to accomplish this?**==
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Good question, from the article above the answer is pretty clear. The message
+    of it is that we clearly maintained unnecessary complexity for decades, only because
+    “if it works, don’t touch it!”. For most scenarios, this mechanism is completely
+    unnecessary and for many people working on Linux, this possibility is also unknown.
+    From my personal experience, you can easily see huge virtualization-based infrastructures,
+    where Linux boxes have a really simple filesystem separation: /var/log separated
+    is a good practice that not everybody follows, but not go as far as mounting /usr
+    ro.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is often not enough to make a change of that magnitude, the condition of
+    “if it works, don’t touch it!” must fail, and it kinda of does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The article that goes by the title [Booting without /usr is broken](https://www.freedesktop.org/wiki/Software/systemd/separate-usr-is-broken/)
+    does a good job of explaining one of the reasons why the **split-usr mechanism**
+    is mostly defective on modern distros.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Another very important reason that is recurrently mentioned in the mlists, and
+    briefly outlined in this other article on freedesktop.org, which goes by the title
+    of [The case for the /usr merge](https://www.freedesktop.org/wiki/Software/systemd/TheCaseForTheUsrMerge/),
+    is that software nowadays is too complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If software A is mainly built with feature A in mind and depends on library
+    A, based on the consensus of the community, gets packaged with support for feature
+    X, with the relative dependency on library X, then it is the maintainer’s burden
+    (if aware of the distinction) to engage with the rest of the community to find
+    a way to put library X, that was previously situated on /usr/lib, into /lib, as
+    a vital dependency of software A, that could be used to bring up /usr during the
+    early boot stages (Check dependencies for the software on your machine with `ldd
+    $(which <BINARY_NAME>)` to have a clearer idea about this).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, the developer of the upstream software (which is not related to your
+    distro’s organization), is not aware of the Linux-specific /usr-split mechanism,
+    and for that matter, the maintainer’s job (the one who is aware of the /usr-split)
+    gets more complicated; it has also been said on various mailing lists, that testing
+    such mechanism (/usr-split) is rather complicated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In conclusion of this topic, those mentioned above have proven to be fairly
+    common issues in all distros, and with all init systems ([ref](https://www.mail-archive.com/debian-devel@lists.debian.org/msg337190.html)),
+    we could say that the **split-usr mechanism** has not been well maintained throughout
+    the decades.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It could be the case to look for a better solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The dilemma is: either we choose to repackage most distros in the classic early-days-UNIX
+    way to repair split-usr, or we accept the current state of things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: binaries are too complex
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: boot-time service startup dependencies issues
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: upstream probably doesn’t care about our concerns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and from now on we unanimously treat distributions in the same way most users
+    have been treating them before, effectively making the whole system much easier
+    to maintain and administer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: merged-usr
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The conversation starting from [this reply](https://lwn.net/Articles/477541/)
+    for the **“The case for the /usr merge”** article on lwn.net, shows some very
+    interesting points about why the initrd can be used as a more reliable, easier
+    to maintain, and generally modern solution, as opposed to the split-usr mechanism
+    to bring the system up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, one could also think that if we decide to use the initrd for
+    this purpose, maintaining the **split-usr mechanism** itself is a duplication
+    of effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So the proposed direction is clear: to move **everything**, i.e. “the directories”
+    that leaked out of /usr (see note at the top), inside /usr again, effectively
+    having **“the whole os”** on that filesystem. The difference here, with the previous
+    split setup, is that **if** /usr is not on the same partition as /, the mount
+    has to be taken care of by the initrd, instead of by the directories in /.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As freedesktop.org’s articles and some other posts pointed out, the adoption
+    of an operating system **entirely** placed under /usr, arguably favors the easier
+    maintenance of those use case shown above, like the shareable /usr. The only difference
+    is that the mount process has to happen inside the initramfs and be transparent
+    for the system during the boot phase, to avoid falling into those chicken-and-egg
+    and dependency issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**FROM** : mounting the operating system during boot using the tools found
+    in /bin and /sbin, i.e. relying on the split-usr mechanism (and how well it has
+    been maintained).'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**TO** : mounting the operating system before the actual boot, relying on the
+    initrd and the content it has been packaged with.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When I say boot, I mean the boot phase as seen by the init (..whatever init),
+    which is different than the expression “the boot process”. The boot process is
+    complex, and from the point at which the bootloader loads the kernel and the initrd,
+    after some kernel work, the initrd takes control (there is a /sbin/init or /usr/sbin/init
+    or whatever, inside the initrd that gets executed) and tries to accomplish its
+    tasks. Only after the initrd decides so, control is given to the actual init daemon
+    and to the final system, and **it is this phase** that has issues to work with
+    the split-usr mechanism (check [glossary](#glossary) again) for the issues discussed
+    above.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: So systems can still have /usr on a separate partition, the only difference
+    is that **in that case**, the initrd is **the only supported way of bringing it
+    up** (check [this](https://forums.gentoo.org/viewtopic-p-8591784.html?sid=6b728f7132cbd104e809c348de60b9c1#8591784)
+    explanation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The initrd solution is however not perfect and 100% victimless. There have
+    been complaints about those use cases that have to do with resource-contstrained
+    environments. I’m talking about the embedded world ([ref](https://lwn.net/Articles/670306/)):
+    where not having to maintain an initrd is a huge benefit.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: The possible first wave of users leaving the community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, [this here](https://lwn.net/Articles/670324/) is a very well-written collection
+    of concerns about the change to merge-usr in Debian, being it a non-subscription-based
+    supported distribution of GNU/Linux.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Other possible losses for the community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That I think is a valid point for those scenarios where we’re updating/upgrading
+    our operating systems in-place, instead of migrating the services deployed on
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: During the years, many poor-quality scripts could have been built by colleagues
+    that maybe are not even part of the company anymore, not to talk about the upgrade
+    process itself, where a lot of things could go wrong, depending on the degree
+    of care that has been taken of that os, by the different people that have worked
+    on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That is a scenario where a handful of administrators can easily not be able
+    to face an important number of systems in such a situation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: …
+  prefs: []
+  type: TYPE_NORMAL
+- en: The /usr-merge has already happened in probably all the major distros, with
+    the relative distro-maintenance-pain and sysadmin-upgrade-pain. From this point
+    on, so as not to leave things unfinished, it would be much easier to introduce
+    new changes in order to apply further simplifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: bin & sbin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: During the same years of the first discussions about the /usr-merge, there were
+    also [discussions](https://lists.fedoraproject.org/pipermail/devel/2011-October/158845.html)
+    about the purpose of the bin and sbin directories and their current state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the ml post linked above, a couple of very interesting and enlightening
+    points have been made, some similar to the ones for the /usr-merge:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: Those above are the recurring “binaries getting too complex”, or “we’ve been
+    using it like this as a majority, for a lot of time” as before. But for this specific
+    matter, there is also more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The “bin vs. sbin separation” is another mechanism that has probably not been
+    maintained well throughout the decades. In modern distributions, you can easily
+    find `PATH=/bin:/sbin:/usr/sbin:/usr/local/bin:/opt/bin:/everything` for all the
+    users, which is not exactly a good practice as per the intended bin/sbin distinction..
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As claimed by Fedora’s [Changes/Unify bin and sbin](https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin),
+    there are many mechanisms for a normal user to gain privileges without them even
+    knowing, and then its PATH already contains all the sbin variants for reasons
+    like systemd’s behavior of setting a PATH for all users and services that has
+    both bins and sbins. This specific mechanism of systemd is quite intricate and
+    rather than trying to find its functioning in systemd itself, it could be better
+    looked at in an application-specific way. The `man 5 environment.d` on your system
+    (or also [here](https://www.freedesktop.org/software/systemd/man/latest/environment.d.html))
+    in the **APPLICABILITY** section, outlines the inner workings of this mechanism:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: In my case for example, I do have a PATH variable defined inside /etc/environment.d/10-gentoo-env.conf
+    (that has been put there by gentoo’s env-update) which looks similar to `echo
+    PATH=$PATH`. But then I also have it in /etc/profile.env, and also distros like
+    fedora and derivates (rocky Linux, …) seem to have this logic entirely contained
+    in /etc/profile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: ==**why having PATH=everything is bad?**==
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Knowing the bin and sbin distinction, this can be seen as a bad practice. The
+    community of [#gentoo-chat](https://www.gentoo.org/get-involved/irc-channels/)
+    has explained it like this to me (not the exact words):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: So ideally there should be a neat distinction between all the binaries that
+    only root can execute, and those that are executable by all the users, but can
+    we even do that given nowadays software?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The categories of executables these days go beyond the split of “thing a user
+    can run” and “thing the admin can run”. [ref](https://pagure.io/fesco/issue/3135#comment-890527)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Personally, I’d like to think more that [this proposal](https://discussion.fedoraproject.org/t/f40-change-proposal-unify-usr-bin-and-usr-sbin-system-wide/99853/16)
+    is the way to go; that is a more romantic way of seeing Linux. But then [the reply
+    to that](https://discussion.fedoraproject.org/t/f40-change-proposal-unify-usr-bin-and-usr-sbin-system-wide/99853/18),
+    is an amazingly well-painted portrait, of the world we’re living in. I’ll probably
+    take this post as a future reference when I’ll have to explain “things that are
+    happening in Linux”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_BQ
+  type: TYPE_PRE
+- en: The second paragraph is also a reference that one should come back to when their
+    software is not behaving the way they thought it would.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I could argue no more about the unification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: my personal view about this
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For how small those changes seem from the outside, they proved to be big, and
+    their reasons and implications are numerous.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the initrd solution to the split-usr issue, an attempt has been made to
+    modernize a workflow that is generally less and less seen in the wild, to not
+    lose the creative part of the community, while maintaining the bigger part happy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replicating and maintaining artistic configurations such as shared ro /usr via
+    NFS over an entire Linux infrastructure, requires inventiveness, effort in testing
+    and maintenance, biting your tongue when the manager buys from a bad vendor,…
+    and generally, time, which is an extremely pricy asset. One thing that I couldn’t
+    stop thinking is that by “playing” with your os that way, you are treating your
+    Linux as something that barely exists anymore in the majority of cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nowadays, especially in the enterprise community, you are much more used to
+    virtual machines than baremetal, and more and more used to containers than virtual
+    machines, and generally more used to treating a Linux system as something **atomic**,
+    and as **disposable** as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happened is that today we don’t really have technical constraints like
+    disk size; on the contrary, today GBs of disk are quite cheap, compared to the
+    cost in time related to the maintenance of an infrastructure as complex as the
+    ones described above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You usually don’t want to maintain, because that is where the effort comes (and
+    the man-months go).
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you **usually** want to do instead, is maintain only the least possible,
+    vital, information on a git server, and deploy your stuff from there using some
+    kind of automation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**When it breaks, you usually toss it, you don’t try to repair it**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do that, it is required to deal with many different technologies, a task
+    that is much easier to accomplish if you are part of a team with a lot of people,
+    each with its own specialization. In that scenario, at the end of the day, you
+    will find yourself with a lot more machines in your infrastructure, that have
+    a cost in resources, but are a lot easier to administer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That is a very DevOps way of seeing it I think, which apparently is not exactly
+    aligned to the UNIX way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: end
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the end, if you’ve been thrown into a world where everything works differently
+    than the way you’re used to seeing them work, and you’re expertise is abandoning
+    you, I think it can be advantageous to be aware of freedesktop’s [efforts](https://www.freedesktop.org/wiki/Specifications/)
+    to maintain compatibility between systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speaking of filesystem hierarchy specifically, I think it can help to give an
+    occasional look when needed, to [this manpage](https://www.freedesktop.org/software/systemd/man/file-hierarchy.html),
+    that you may find in your distro as **man 7 file-hierarchy**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the systemd-specific vision of the filesystem hierarchy under Linux,
+    which is the defacto standard on systemd-based Linux distros and effectively changes
+    the first table at the top of this article like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| PATH | descr |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr | Vendor-supplied operating system resources. Usually read-only, but
+    this is not required. Possibly shared between multiple hosts. This directory should
+    not be modified by the administrator, except when installing or removing vendor-supplied
+    packages. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/bin | Binaries and executables for user commands that shall appear in
+    the $PATH search path. It is recommended not to place binaries in this directory
+    that are not useful for invocation from a shell (such as daemon binaries); these
+    should be placed in a subdirectory of /usr/lib/ instead. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/lib | Static, private vendor data that is compatible with all architectures
+    (though not necessarily architecture-independent). Note that this includes internal
+    executables or other binaries that are not regularly invoked from a shell. Such
+    binaries may be for any architecture supported by the system. Do not place public
+    libraries in this directory, use $libdir (see below), instead. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/lib/arch-id | Location for placing dynamic libraries into, also called
+    $libdir. Legacy locations of $libdir are /usr/lib/, /usr/lib64/. This directory
+    should not be used for package-specific data, unless this data is architecture-dependent,
+    too. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /usr/sbin | A compatibility symlink pointing to /usr/bin/, ensuring that
+    scripts and binaries referencing these legacy paths correctly find their binaries.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /bin | A compatibility symlink pointing to /usr/bin/, ensuring that scripts
+    and binaries referencing these legacy paths correctly find their binaries. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /sbin | A compatibility symlink pointing to /usr/bin/, ensuring that scripts
+    and binaries referencing these legacy paths correctly find their binaries. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /lib | A compatibility symlink pointing to /usr/lib/, ensuring that scripts
+    and binaries referencing these legacy paths correctly find their binaries. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| /lib64 | On some architecture ABIs, this compatibility symlink points to
+    $libdir, ensuring that binaries referencing this legacy path correctly find their
+    dynamic loader. This symlink only exists on architectures whose ABI places the
+    dynamic loader in this path. |'
+  prefs: []
+  type: TYPE_TB
+- en: Glossary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**unmerged-usr** (sometimes also referred to as **split-usr**, see ref 3 below)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A system with bin, sbin, lib* directories, that exist under the / and under
+    the /usr filesystem in parallel, and with distinct content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The intended use for this is the use of the bin,sbin,lib* directories under
+    /, to mount the rest of the filesystem, including /usr where most of the binaries/services
+    are (a.k.a. most of the os).
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: i.e. / can be used in single-user mode, to bring the system to multi-user mode.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**merged-usr**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The bin, sbin, and lib* directories are physically located under the /usr filesystem.
+    They have correspondents under /, which are symlinks provided for compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**split-usr**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A system whose /usr directory is still unpopulated or needs to be mounted during
+    the boot phase. This could also mean a merged-usr system, whose /usr partition
+    was not mounted before init kicks in and the processes start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The /usr filesystem does not have to be on the same partition as /,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: but **it will have** to be mounted during early boot by the initramfs,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: so that when the actual init starts, /usr is ready. ([check](https://lwn.net/Articles/670139/))
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'REFERENCES:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[1] [https://lists.freedesktop.org/archives/systemd-devel/2022-April/047673.html](https://lists.freedesktop.org/archives/systemd-devel/2022-April/047673.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[2] [https://lists.freedesktop.org/archives/systemd-devel/2023-February/048831.html](https://lists.freedesktop.org/archives/systemd-devel/2023-February/048831.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[3] [http://lists.busybox.net/pipermail/busybox/2010-December/074114.html](http://lists.busybox.net/pipermail/busybox/2010-December/074114.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: FAQ - Can I boot a systemd-based Linux distribution without an initrd?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This one is actually a real thing that I heard :) (not in question form tho).
+  prefs: []
+  type: TYPE_NORMAL
+- en: As stated by different articles and posts, the changes about the /usr filesystem
+    are orthogonal to systemd.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Look for harald in [this post](https://lists.fedoraproject.org/pipermail/devel/2011-October/158594.html).
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[tl;dr](https://lists.fedoraproject.org/pipermail/devel/2011-October/158818.html)'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The answer: There is no need to have an initramfs if you don’t use a separate
+    /usr, i.e. if you don’t need to mount /usr at boot time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: References
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Maybe there are things that I wasn’t able to catch, or I didn’t immediately
+    see the implications. Also, interesting points have been made in those resources,
+    that are unrelated to the main topic of this article.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anyway, here is a list of very interesting material to dig into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Blogs,forums,mls**'
+  prefs: []
+  type: TYPE_NORMAL

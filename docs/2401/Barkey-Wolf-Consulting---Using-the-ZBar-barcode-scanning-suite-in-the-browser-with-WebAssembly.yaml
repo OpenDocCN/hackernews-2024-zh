@@ -1,0 +1,422 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:50:20'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Barkey Wolf Consulting - Using the ZBar barcode scanning suite in the browser
+    with WebAssembly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar](https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**I don’t have time for your dry prose, show me the code!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you find any mistakes in the code or in this post, be sure to let me know!
+    You can [create an issue in the github repo](https://github.com/jjhbw/barcode-scanner-webassembly)
+    or send me an email.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Goal
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So I wanted to make a cross-platform barcode scanner for a research project
+    involving inventory management. Ideally, it would end up being a simple library
+    that could be used in the browser of a mid-tier smartphone. Some constraints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: the scanner needed to be able to recognize multiple barcodes in one camera frame
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It would need to work with QR-codes, but also with the older, even more widespread
+    one-dimensional barcodes (EAN-13/UPC-A, UPC-E, EAN-8, etc.), ideally using the
+    same codebase and without user configuration.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Meet ZBar
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To meet the requirements mentioned above, I looked at several Javascript libraries.
+    There were several obvious contenders:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[QuaggaJs](https://serratus.github.io/quaggaJS/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: a very nice barcode scanner, however doesn’t do QR-codes out of the box.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[jsQR](https://github.com/cozmo/jsQR)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Performant, pure JS QR-code scanner with a easy to use API. Only scans QR-codes
+    (and only one per image?).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Instascan](https://github.com/schmich/instascan)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nice *Promise*-based API, but only scans QR-codes. Powered by an Emscripten
+    port of [ZXing](https://github.com/zxing/zxing), so should theoretically be able
+    to handle multiple 1D code formats with some hacking. However, this is not enabled
+    by default.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When broadening my search for libraries by relaxing the ‘Javascript-only’ constraint,
+    I quickly stumbled across [ZBar](https://github.com/ZBar/ZBar), a battle-tested
+    C library that is widely used for barcode scanning. It can work with multiple
+    types of 1D and 2D (QR) barcodes and can detect multiple codes in a single frame.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Considering the fact that ZBar is a C library, I quickly found that some people
+    had already been working on compiling it to Javascript for use in the browser.
+    [ZBarjs](https://github.com/yurydelendik/zbarjs) is a nice example, albeit scarcely
+    documented. ZBarjs uses the amazing [emscripten](http://kripken.github.io/emscripten-site/)
+    compiler to compile the LLVM bitcode derived from ZBar’s C-code to [asm.js](http://asmjs.org/),
+    a *subset* of Javascript aimed at improved performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, this being a ‘research’ project I figured I couldn’t just leave it
+    at that. Why would I skip out of overengineering something with a new awesome
+    technology?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meet WebAssembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WebAssembly
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: WebAssembly is [new](https://webassembly.org/) and *very* shiny. WebAssembly
+    is a low-level language for the browser that can be used as a compile target for
+    LLVM languages ike C, C++, Rust, but also for example for TypeScript (using [Assemblyscript/Binaryen](https://github.com/AssemblyScript/assemblyscript)),
+    all the while promising near-native execution performance. All major browsers
+    [recently started supporting it](https://webassembly.org/roadmap/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think the most awesome thing about WebAssembly is that it has the potential
+    to make web development less dependent on Javascript, opening the realm of the
+    browser up to the vast expertise and time-tested libraries of the languages in
+    the LLVM ecosystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See [here](https://hacks.mozilla.org/2017/02/what-makes-webassembly-fast/) for
+    an interesting series of posts by Mozilla on WebAssembly and its potential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using ZBar in WebAssembly
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The need to use ZBar in the browser is a *great* excuse to try out WebAssembly
+    and explore the nascent ecosystem surrounding it. Moreover, I might just be able
+    to get some performance gains over using the asm.js version of ZBar (I will not
+    go into any performance benchmarks in this post, maybe later).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiling a C function that uses ZBar to detect barcodes to a WebAssembly module
+    is only slightly more complicated than compiling to asm.js, thanks to the magic
+    of Emscripten.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that Emscripten also generates the JS/WebAssembly boilerplate needed to
+    interface with your WebAssembly code. This makes Emscripten so much more than
+    a simple C -> WebAssembly compiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up our development environment
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We need to have emscripten (`emcc`) available on our system. You can install
+    emscripten locally by following [these instructions](https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm),
+    or, if you feel more like using a fast-food solution like I did at the time: use
+    a Docker container as your build environment. I found `trzeci/emscripten` to be
+    easy to use for this purpose.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Spin up the container, mount your local working directory as a volume (reachable
+    at `src`) and enter a bash shell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before compiling ZBar, we need to quickly install some build dependencies. As
+    I had to compile ZBar just once, I did not care that these installs would not
+    be persisted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `trzeci/emscripten` shell, run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we can finally start compiling ZBar from source (instructions partly adapted
+    [from zbarjs](https://github.com/yurydelendik/zbarjs)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: That should do the trick and leave you with a compiled library. Note that you
+    should **keep this container shell alive**, as we will need it later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing the C code to detect barcodes with
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Lets write the C code that uses the ZBar library to detect barcodes in an image.
+    We want to call these functions from the browser’s javascript environment later.
+    The C-file, called `scan.c`, looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Several things to note about this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `EMSCRIPTEN_KEEPALIVE` macro ensures that the functions are not eliminated
+    by the compiler, as they are technically dead code (i.e. are not reachable from
+    something like a `main()` function).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We mark the `js_output_result` function as an external symbol with `extern`.
+    This function will be defined in the javascript glue code, and the Emscripten
+    compiler will splice in a reference to this function at link time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is plenty of room for optimizations, like re-using the scanner across
+    multiple images. Let’s not go into these now.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This code showcases just one combination of methods to get data in and out of
+    the WebAssembly environment from the browser JS environment. Several alternative
+    methods can be found in the [Emscripten documentation.](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Javascript ‘glue’ code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’ll also create a file called `library.js`, in which we define the javascript
+    functions that should be callable from the WebAssembly environment. Emscripten
+    takes care of the nasty bits for us. If you want to read more, check out the [emscripten
+    docs on this topic](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#implement-a-c-api-in-javascript).
+    Note that in the below code, the `Module` and `LibraryManager` objects, along
+    with the `mergeInto` function, are globals provided by Emscripten.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We define a single function: the one we use to extract data about the detected
+    barcodes with. Important to note: before this function is called, a function should
+    be set on the `processResult` key of the `Module` object. This is not a super
+    elegant way to interface with your own code, but it suffices for now.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our `library.js` file contains:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compiling our code to a WebAssembly module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'From your build container shell (`trzeci/emscripten`, see above) run the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A quick rundown of this command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`emcc` calls emscripten'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `-O3` flag tells the compiler to produce highly optimized WebAssembly and
+    Javascript code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-s WASM=1` tells `emcc` to produce WebAssembly'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`—js-library` tells emscripten where it can find your Javascript glue code'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-s EXTRA_EXPORTED_RUNTIME_METHODS` tells Emscripten to inject the `Module`
+    global in the javascript environment with these two utility functions. `crwap`
+    allows us to call our C functions and `Pointer_stringify` will help with moving
+    data from the WebAssembly runtime to JS.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-I` tells it which C libs/code to compile'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This should produce the following files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`a.out.js`, containing the nicely packaged javascript glue code (thanks emscripten!)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`a.out.wasm` containing the WebAssembly module'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing our barcode scanner
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To test our barcode scanning module, lets write a simple `index.html` that opens
+    up a webcam feed and passes image frames to our scanner module and, when a barcode
+    is found, draws its bounding box and the barcode content to a canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that I also included a step for converting the image data to grayscale
+    using a quick bit shifting hack. I expect that this operation can be implemented
+    in a more performant way with WebAssembly, but lets not worry about this right
+    now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You are going to need to run a quick ad-hoc static file server to run test everything
+    in your browser. I am a big fan of the minimalist tool [serve](https://www.npmjs.com/package/serve).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Important:** make sure your webserver sets the `Content-Type` header for
+    the `.wasm` file correctly. Firefox 58 apparently follows this part of the WebAssembly
+    spec to the letter and will refuse to compile the .`wasm` file, causing the Emscripten
+    glue to fall back to a slow polyfill. The latest version of [serve](https://www.npmjs.com/package/serve)
+    handles this properly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Conclusions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There we have it, we compiled some C code that uses ZBar to WebAssembly, wrote
+    some Javascript glue code, and ended up with a nice in-browser barcode scanner.
+    Thanks to ZBar, our scanner is compatible with a wide range of barcode types and
+    can detect multiple codes in a single image frame.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some things need work, however:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Performance is not fantastic yet. There are a few really obvious optimizations
+    that can be applied, though, and I may go into optimizing the scanner in a next
+    post. In short, I would first look at:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: better memory management at the WebAssembly level (destruction of the buffers,
+    re-using the scanner.)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In a more complex application, I would definitely offload as much work as possible
+    (e.g. the WebAssembly/JS interop) to a web worker.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Feeding of webcam frames to the WebAssembly heap can be optimzed. First rendering
+    each frame to a canvas seems convoluted, but I haven’t really quantified this
+    overhead. Currently this is the only way I know of…
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Try all (combinations of) compiler optimizations. Emscripten features a [pretty
+    serious collection of compiler optimizations](http://kripken.github.io/emscripten-site/docs/optimizing/Optimizing-Code.html)
+    at various levels.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reducing the resolution of the input images vastly improves performance. I would
+    like to know what kind of impact this has on the distance at which QR codes can
+    be detected.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The scanner requires barcodes to have a pretty high resolution before it can
+    detect them. This limits detection to barcodes that are near the camera. I don’t
+    necessarily expect other implementations to outperform ours on this point, as
+    I think we are running into the base resolution requirements of confident QR-code
+    detection. There may be some knobs inside ZBar that can be turned to reduce the
+    resolution requirement by sacrificing decoding fidelity, but I didn’t have the
+    time to look into that yet.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Even with the help of Emscripten, the interoperability between Javascript and
+    WebAssembly still has quite a bit of a learning curve to it. However, I expect
+    a lot of nice abstraction layers to be developed as the technology matures.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the future, [access to DOM APIs from WebAssembly](https://github.com/WebAssembly/host-bindings/blob/master/proposals/host-bindings/Overview.md)
+    may obviate the need for performance critical interactions with Javascript glue
+    code. That would be a game changer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In conclusion, this project was a great way to explore the basics of using WebAssembly.
+    Moreover, it showed a glimpse of a future in which we can use WebAssembly to leverage
+    the huge ecosystem of C (and other LLVM languages) to build richer and more performant
+    applications for the web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you find any mistakes in the code or in this post, be sure to let me know!
+    You can [create an issue in the github repo](https://github.com/jjhbw/barcode-scanner-webassembly)
+    or send me an email.
+  prefs: []
+  type: TYPE_NORMAL

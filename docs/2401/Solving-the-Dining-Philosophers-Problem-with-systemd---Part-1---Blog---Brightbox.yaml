@@ -1,0 +1,168 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:54:18'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Solving the Dining Philosophers Problem with systemd - Part 1 - Blog - Brightbox
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Solving the Dining Philosophers Problem with systemd - Part 1
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: by **Neil Wilson** • **10 Jan 2024**
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over the years, developers seem to have forgotten that Unix is a Programming
+    Environment and not just something you must install to access your web server.
+    Unix is a powerful multi-user system with numerous tools that have stood the test
+    of time and, with the advent of systemd, we have a new tool that can easily model
+    state machines. Now, we can address a new class of problems using Unix alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this blog post series, we’ll solve the classic [“Dining Philosophers”](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
+    concurrency problem with some of the forgotten mechanisms and tools within the
+    Unix Programming Environment, some advanced capabilities of systemd and a sprinkling
+    of shell scripts to glue it together - all without a single deadlock.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by building a simple state machine that moves between the `Thinking`,
+    `Hungry`, and `Eating` states using the user-level systemd facilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In these examples, we’ll be using Ubuntu on Brightbox, but any modern distro
+    running systemd running anywhere should work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a server and log in with the default `ubuntu` user:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you log in, systemd automatically starts a user instance to manage user-level
+    units. You can view this via systemctl:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Create the states
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can model the three states of the dining philosophers problem using systemd
+    target units. We can make the targets mutually exclusive by stating that they
+    conflict with each other:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This means only one of the targets can remain active at any point in time. For
+    a target to transition to another, we need a timer unit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We make the timer unit part of the target so that it stops at the same time
+    as the target. This combination of `RandomizedDelay`, `OnActive`, and `Accuracy`
+    distributes the transition time from 0 to 60 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We want to know what the philosopher is thinking about, which we can simulate
+    by running a service to call a script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We log the script’s output to a different syslog facility, which allows us to
+    find them easily in the log later. A `Before` restriction ensures that the philosopher
+    logs their thoughts before dealing with their hunger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create the contemplation script to output an appropriate thought:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we update the target to pull in these new units:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: And repeat the process for the eating and hungry targets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running the state machine
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To start the simulation, put the files in `$HOME/.config/systemd/user` and
+    activate the `thinking` target:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Look in the journal to see the simulation in progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can filter out the state noise by looking just for the output from our scripts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, if we want to see just one particular script, we can filter by identifier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To stop the simulation, stop the targets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: or log out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this blog, we’ve created a simple state machine with systemd that moves neatly
+    between states over time and logs its activity in the journal. It’s hardly a fully
+    modelled philosopher, but it’s a good start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next part, we’ll take this simple model and expand it to cover multiple
+    philosophers, introducing the shared dining room where their contemplations take
+    place.
+  prefs: []
+  type: TYPE_NORMAL

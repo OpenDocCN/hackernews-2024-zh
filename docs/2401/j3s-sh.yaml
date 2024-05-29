@@ -1,0 +1,118 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:23:31'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: j3s.sh
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://j3s.sh/thought/fail2ban-sux.html](https://j3s.sh/thought/fail2ban-sux.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'fail2ban sucks 2020-03-22 -> fail2ban sucks i''ve made this argument countless
+    times on the internet, so i figure i''d write it down so that i can just link
+    to it instead. this tends to be a controversial opinion, i think. critical note:
+    i am not saying that fail2ban sucks for every use-case, i am mostly writing this
+    in such a way to try and counteract the fervant fail2ban recommendations that
+    i see everywhere, which i think are dangerous. if you like fail2ban, fine, use
+    it - but these are my thoughts. for those unfamiliar with fail2ban, generally
+    speaking, it is a piece of software that monitors log files for login failures,
+    and then interacts with your firewall to block the IP addresses belonging to those
+    failures. It is configurable such that one can say "if an IP fails to login via
+    SSH 10 times in a row, block it for 1 hour." i see fail2ban commonly recommended
+    on the internet. typically when someone new to server administration sets up a
+    server and asks about all of these weird SSH attempts, that''s when fail2ban comes
+    up. here are some quotes from fail2ban fans: > One handy service is fail2ban,
+    which will automatically > IP addresses to the firewall if enough failed attempts
+    > are tried > To ban those, you could try to use fail2ban. Seems to be a common
+    approach to > this kind of bot activity. > In this case, a good password with
+    iptables rate limiting, fail2ban & log > monitoring is better. > Non-standard
+    port and/or fail2ban for logspam if you''re having fun. > I find the best/laziest
+    combo is ufw/ssh/fail2ban/f2b-loop/logwatch. i have a few arguments, this is the
+    summary: do not change your standard ports. do not use fail2ban. do harden your
+    applications with their built-in mechanisms. if you need super extra security
+    for certain apps, only allow trusted IP ranges - use an IP whitelist. most everyone
+    else is overengineering. fail2ban sucks, let me count the ways. fail2ban: * will
+    not stop an advanced persistent threat * will inconvinience you at some point
+    * may inconvinience *your users* at some point * opens you up to fail2ban vulnerabilities
+    * may make you feel like your system is more secure than it is * is no more secure
+    than a properly configured application * is actually _less_ secure than a properly
+    configured application at best, fail2ban: does nothing at worst, fail2ban: causes
+    you massive inconvinience or total lockout let''s put ourselves in the mindset
+    of a new system administrator. they spun up a new capsul[1], they''re peeking
+    around their new system. suddenly they notice their SSH logs - hundreds of ip
+    addresses from russia and china attempting to log into their systems over and
+    over. naturally, this triggers what one might call "bad vibes." it makes the system
+    feel less clean. who decided that this was okay? i just finished setting this
+    system up and it''s already under attack!? do not listen to their advice, new
+    admin. simply setup SSH properly, and don''t worry about a thing. here is my rationale.
+    first, let''s think about who exactly those IPs belong to. * bots there are tens
+    of thousands of bots trying common username/password combination against every
+    service known on earth - SSH isn''t special. This goes for every login page on
+    the internet that expects a username and a password. Think email and neocities.
+    Think wordpress admin pages and databases interfaces left wide open. if you do
+    not leave your services listening on public interfaces while they''re configured
+    with usernames like "admin" and passwords like "admin", you have nothing to worry
+    about. * curious users friends looking to prank you, kids with no idea what SSH
+    even is, maybe that one girl at the bar you pissed off who has Kali installed
+    on her laptop. pro tip: these attempts will likely be less successful than the
+    bots. * advanced persistent threads usually state actors, maybe a botnet operator
+    with a grudge. in either case, fail2ban does nothing - these users can scream
+    through proxies like they''re seeing the matrix. they can change their IP address
+    nineteen million times a second without blinking. you can ban a quarter of the
+    IP addresses on earth with fail2ban - the attacker will use another quarter. what
+    i''m saying is, if you''re fucked, you''re fucked. fail2ban will not help. but
+    if you''re secure, you''re secure, fail2ban will not help. see what i''m getting
+    at? OpenSSH i''ll speak about OpenSSH specifically, but only because it''s brought
+    up so often. here are the hardening guidelines that you should abide by. * generate
+    a password protected private/public keypair * use key-based authentication to
+    your system(s) * turn off username/password auth you will still see the failed
+    login messages. ignore them. unless someone hacks your key _and_ the decryption
+    password, they **are not getting in via SSH**. it would take roughly 2,000 years
+    using the dedicated compute power of every computer on earth put together to bruteforce
+    that key. don''t sweat it. they are not getting in. fail2ban is good for freeing
+    up resources though, right? wrong. fail2ban has to fuck with a live firewall.
+    it''ll probably block you out. every second of your time is worth more than a
+    hundred hours of your compute operating properly. setting up fail2ban takes time,
+    and so does getting yourself unblocked from it. the resources consumed by 10 SSH
+    login attempts per minute is staggeringly low. * if someone is trying to DDOS
+    you, sorry, _you are going to get DDOS''d_, fail2ban will not help. but j3s i
+    have a very valid super-dooper good reason for changing the default OpenSSH port
+    of 22 to some other port well, okay fine. go ahead. but please take the following
+    into account: * changing your SSH port to non-root port (>1024) means that if
+    the SSH daemon dies, any userland process can take its'' place. this is bad. *
+    changing your SSH port means that you''ll have to do a bunch of fuckery to get
+    basic functionality working. you will very likely waste hours of your life. you
+    will have to google "rsync ssh non standard port" every time you want to use rsync.
+    you will have to remember scp flags. this is also bad. probably worse. * you will
+    have to tell the port to anyone else who tries legitimately accessing your system.
+    in my mind, the only valid use-case for switching your default SSH port is that
+    flipping it to listen on port 80 or 443 will get around most workplace firewalls.
+    well okay fine, OpenSSH is a special case though, right? any application that
+    is used to being bruteforced will likely have protections implemented that you
+    can use against such bruteforcing. for an interesting read, check out spamd: https://man.openbsd.org/spamd
+    > When a sending host talks to spamd, the reply will be > stuttered. That is,
+    the response will be sent back a > character at a time, slowly. For blacklisted
+    hosts, the > entire dialogue is stuttered. For greylisted hosts, the > default
+    is to stutter for the first 10 seconds of > dialogue only. hilarious. are you
+    okay? not really aka, my recommendations: * understand the security mechanisms
+    built-in to your application/daemon * use those mechanisms * get on with your
+    life misc [1]: https://capsul.org fail2ban CVEs: https://www.cvedetails.com/vendor/5567/Fail2ban.html
+    SSH hardening: https://linux-audit.com/audit-and-harden-your-ssh-configuration/'
+  prefs: []
+  type: TYPE_NORMAL
+- en: follow me on [mastodon!](https://merveilles.town/@j3s)
+  prefs: []
+  type: TYPE_NORMAL
+- en: last updated 2020-03-22T00:00:00.000Z
+  prefs: []
+  type: TYPE_NORMAL

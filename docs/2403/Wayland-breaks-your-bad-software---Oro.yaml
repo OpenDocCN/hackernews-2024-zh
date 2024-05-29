@@ -1,0 +1,755 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:48:53'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wayland breaks your bad software | Oro
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://orowith2os.gitlab.io/posts/wayland-breaks-your-bad-software/](https://orowith2os.gitlab.io/posts/wayland-breaks-your-bad-software/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: X11 is, to put it simply, not at all fit for any modern system. Full stop. Everything
+    to make it work on modern systems are just hacks. Don’t even try to get away with
+    “well, it just works for me” or “but Wayland no worky”. Unless your workflow (and
+    hardware) comes from 20+ years ago, you have almost no reason to stick with Xorg,
+    especially as it continues to get worse and worse when the user experience relies
+    on newer and newer features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almost everything that *didn’t* work even *two months ago* works now, and tons
+    of progress is being made so it works for almost everyone - yes, even you, NVIDIA
+    users. Or, in some cases, it’s not even Wayland’s place to dictate how things
+    are supposed to work - it’s purely the setup you choose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that being said, let’s get on with it. Expect me to be blunt, and wordy.
+    I’ll also be a bit technical. Probably going to devolve into some crying after
+    seeing just how horrible X is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have anything to improve, or find something that’s wrong, file an issue
+    or pull request to (as of the time of writing) [my website repository](https://gitlab.com/OroWith2Os/orowith2os.gitlab.io)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wayland is it[](#wayland-is-it)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Wayland is what newer desktops should look like, and what some *do* look like!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*No more having applications listen to your keystrokes without permission,
+    or messing with your display. Improved battery life. Simpler APIs.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[Marcan](https://marcan.st/), someone who’s helped build [Asahi Linux](https://asahilinux.org),
+    wrote a series of posts detailing things like this, though more on the technical
+    stuff for why Wayland got tagged as It.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Let’s look at [this one](https://social.treehouse.systems/@marcan/110371565062371963),
+    which explains basically everything about this situation:*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A bit of (simplified) X history and how we got here. Back in the 90s and 2000s,
+    X was running display drivers directly in userspace. That was a terrible idea,
+    and made interop between X and the TTY layer a nightmare. It also meant you needed
+    to write X drivers for everything. And it meant X had to run as root. And that
+    if X crashed it had a high chance of making your whole machine unusable.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Then along came KMS, and moved modesetting into the kernel. Along with a common
+    API, that obsoleted the need for GPU-specific drivers to display stuff. But X
+    kept on using GPU-specific drivers. Why? Because X relies on 2D acceleration,
+    a concept that doesn’t even exist any more in modern hardware, so it still needed
+    GPU-specific drivers to implement that.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*The X developers of course realized that modern hardware couldn’t do 2D any
+    more, so along came Glamor, which implements X’s three decades of 2D acceleration
+    APIs on top of OpenGL. Now you could run X on any modern GPU with 3D drivers.
+    And so finally we could run X without any GPU-specific drivers, but since X still
+    wants there to be “a driver”, along came xf86-video-modesetting, which was supposed
+    to be the future. It was intended to work on any modern GPU with Mesa/KMS drivers.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*That was in 2015\. And here’s the problem: X was already dying by then. Modesetting
+    sucked. Intel deprecated their GPU-specific DDX driver and it started bitrotting,
+    but modesetting couldn’t even handle tear-free output until earlier this year
+    (2023, 8 whole years later). Just ask any Intel user of the Ivy Bridge/Haswell
+    era what a mess it all is. Meanwhile Nvidia and AMD kept maintaining their respective
+    DDX drivers and largely insulating users from the slow death of core X, so people
+    thought this was a platform/vendor thing, even though X had what was supposed
+    to be a platform-neutral solution that just wasn’t up to par.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*And so when other platforms like ARM systems came around, we got stuck with
+    modesetting. Nobody wants to write an X DDX. Nobody even knows how outside of
+    people who have done it in the past, and those people are burned out. So X will
+    *always* be stuck being an inferior experience if you’re not AMD or Nvidia, because
+    the core common code that’s supposed to handle it all just doesn’t cut it.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*On top of that, ARM platforms have to deal with separate display and render
+    devices, which is something modesetting can’t handle automatically. So now we
+    need platform-specific X config files to make it work.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*And then there’s us. When Apple designed the M1, they decided to put a coprocessor
+    CPU in the display controller. And instead of running the display driver in macOS,
+    they moved most of it to firmware. That means that from Linux’s point of view,
+    we’re not running on bare metal, we’re running on top of an abstraction intended
+    for macOS’ compositor. And that abstraction doesn’t have stuff like vblank IRQs,
+    or traditional cursor planes, and is quite opinionated about pixel formats and
+    colorspaces. That all works well with modern Wayland compositors, which use KMS
+    abstractions that are a pretty good match for this model (it’s the future and
+    every other platform is moving in this direction).*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*But X and its modesetting driver are stuck in the past. It tries to do ridiculous
+    things like draw directly into the visible framebuffer instead of a back buffer,
+    or expect there to be a “vblank IRQ” even though you don’t need one any more.
+    It implements a software fallback for when there is no hardware cursor plane,
+    but the code is broken and it flickers. And so on. These are all problems, legacy
+    nonsense, and bugs that are part of core X. They just happen to hurt smaller platforms
+    more, and they particularly hurt us.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*That’s not even getting into fundamental issues with the core X protocol,
+    like how it can’t see the Fn key on Macs because Macs have software Fn keys and
+    that keycode is too large in the evdev keycode table, or how it only has 8 modifiers
+    that are all in use today, and we need one more for Fn. Those things can’t be
+    properly fixed without breaking the X11 protocol and clients.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*So no, X will never work properly on Asahi. Because it’s buggy, it has been
+    buggy for over 8 years, nobody has fixed it in that time, and certainly nobody
+    is going to go fix it now. The attempt at having a vendor-neutral driver was too
+    little too late, and by then momentum was already switching to Wayland. Had continued
+    X development lasted long enough to get modesetting up to par 8 years ago, the
+    story with Asahi today would be different. But it didn’t, and now here we are,
+    and there is nothing left to be done.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*That sums up just about everything, so I’ll go more into detail on stuff that
+    wasn’t explained by Marcan.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Architecture and performance[](#architecture-and-performance)*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Some newer hardware, like Apple Silicon, has a good bit of display stuff
+    handled in firmware. As such, it actually ends up looking pretty similar to the
+    abstractions provided by DRM/KMS, and Wayland is a pretty good fit for it. That
+    post that I copied in here from Marcan explains it all in more detail.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**This is actually pretty closely related to the architecture: Wayland is *way*
+    more performant.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**On Xorg, you’ve got several processes: one for the display server, and one
+    or two for the compositor and window manager. Why is that so bad, you might ask?
+    Well, that’s several processes with an inefficient design. There are some extensions
+    to put a bandaid on it, but there are still inherent inefficiencies with X that
+    cause problems. The X server handles a lot, after all. And now you’re adding on
+    even more with a compositor and window manager, that provide effects and window
+    decorations. Xwayland inherits most of the core problems, but it still has one
+    telling difference: there’s a better compositor underneath it, that is better
+    optimized for the system. And most of your apps are likely to not be running through
+    Xwayland, so you get most of the benefits.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**On Wayland, the solution is simple: do less. The protocol is simpler, the
+    compositor does less work, and there are fundamental design changes that allow
+    the compositor to be a bit more flexible and do things like [DMA-BUF access](https://wayland.app/protocols/linux-dmabuf-unstable-v1)
+    and skip most of the compositing process, instead directly scanning out things
+    like games and videos to the screen.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**So, with Wayland, you get back a bit of performance in extreme cases, *and*
+    on mobile systems you can even get better battery life! This is a pretty big deal,
+    especially when it comes to things like the Steam Deck (which uses Gamescope,
+    a Wayland microcompositor) or notebook laptops. Would *you* like your laptop to
+    run out of juice in the middle of class while taking notes? I think not.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Not to mention making it *way* easier to maintain. The Xorg codebase is unmaintainable,
+    and it’s even hit a [development low of all time](https://www.phoronix.com/news/XServer-2022-Development-Pace)
+    recently! That’s *thousands* of bugs, *dozens* of features, all never going to
+    be fixed and added. Oh, the bus factor….. Hell, one of the only things that was
+    recently added to Xorg was [support for libei](https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/975),
+    and even then it was only for *Xwayland*. Look through the list of commits since
+    then, and everything is basically only for Xwayland.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Now look at Wayland compositors, and you can see new features and improvements
+    being made within the last *week!* And you can be sure that they won’t be abandoned
+    for a long while because of the core protocol being so horrible to maintain and
+    work with.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**One could argue that’s because of each compositor needing to do everything
+    themselves, but there’s not really a particular reason as to why you can’t create
+    something like the Xorg architecture. That’s what KDE does, after all. The shell
+    and the compositor are two separate processes. You also have wlroots, which provides
+    quite a few helpers, making it more the Xorg for the Wayland ecosystem.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Security[](#security)**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***If you’ve ever used Xorg, you might’ve noticed that several tools, especially
+    ones that record your screen or listen to your keystrokes, never need permission
+    to do so. That’s a *major* issue.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Arbitrary applications can record any and all content that goes to your
+    screen. Video calls, private messages, web pages. Anything you can see is everything
+    that can be grabbed without your permission…. as well as everything you *can’t*
+    see.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Don’t want to forget your passwords? Don’t worry, keyloggers can save them
+    for you, and all without you needing to tell them to! Aren’t they so nice!***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***If you want to use any of these features on Wayland, you don’t get to just
+    do it without permission. That’s Not Good™. So we have the [ScreenCast](https://flatpak.github.io/xdg-desktop-portal/#gdbus-org.freedesktop.portal.ScreenCast),
+    [GlobalShortcuts](https://flatpak.github.io/xdg-desktop-portal/#gdbus-org.freedesktop.portal.GlobalShortcuts)
+    and [InputCapture](https://flatpak.github.io/xdg-desktop-portal/#gdbus-org.freedesktop.portal.InputCapture)
+    portals for that. Don’t expect to use sensitive APIs without permission, and if
+    you do, then put simply: kindly fuck off :)***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Screensharing[](#screensharing)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Wayland technically has nothing to do with screensharing - this is all handled
+    separately, in [PipeWire](https://pipewire.org) and [xdg-desktop-portal](https://github.com/flatpak/xdg-desktop-portal).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***For applications to get *any* information about what’s being displayed,
+    they *must* go through xdg-desktop-portal - [ScreenCast](https://flatpak.github.io/xdg-desktop-portal/#gdbus-org.freedesktop.portal.ScreenCast),
+    specifically. This presents a prompt to the user asking what windows or screens
+    an application should have access to. From there, the application gets access
+    to *just* the allowed resources, and in an efficient way.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Look at Xorg, and you get a worse UX: applications need access to *everything*
+    in order to see what apps they want to capture, and without any user input. And
+    utilizing the contents of that video stream can be *way* less efficient.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***There *is* an exception to this “Wayland doesn’t do anything” rule - wlroots.
+    Their general rule of thumb is to use Wayland protocols for things. Screensharing,
+    input emulation, remote desktop, all of that is done on top of Wayland protocols
+    on wlroots. Look at GNOME and KDE, and they’ll prefer to go through portals when
+    appropriate. But then, you wouldn’t have any interoperability for things like
+    screensharing. So you have portals which build on top of those protocols; for
+    wlroots, this is [xdg-desktop-portal-wlr](https://github.com/emersion/xdg-desktop-portal-wlr).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Multi-monitor scaling[](#multi-monitor-scaling)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Nonexistent on Xorg. Exists from the start on Wayland. Sadly, this also
+    affects Xwayland.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Xorg, from the very beginning, only ever had to deal with one display. It
+    *did* originate from around the 1980s, after all. Having more than one display
+    wasn’t even a thought in their mind, let alone ones with different resolutions
+    and scales. The official docs even [consider a “Display” to be the entire Xorg
+    server, with all of its screens combined](https://www.x.org/releases/X11R7.7/doc/xproto/x11protocol.html#glossary:Display).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Wayland fixes this with an intentional design decision that *also* makes
+    it a lot easier to work with other features: the windows don’t have any idea of
+    what’s going on outside of their own surfaces. So they just get told what scale
+    to use on their specific surfaces.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***[refi64](https://refi64.com) did some work on this for Xwayland in the past,
+    specifically rebasing and updating [xwayland: Multi DPI support via global factor
+    rescaling](https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/733).
+    This works primarily because X11 properties are window-local, similar to how the
+    scale factor is obtained [on Wayland](https://wayland.app/protocols/wayland#wl_surface:event:preferred_buffer_scale).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***This isn’t the case for getting the scale normally, which doesn’t have one
+    defined spec. There are environment variables, `XSETTINGS`, toolkit-specific configs,
+    and most (or all) of those don’t work with fractional scaling. So the best way
+    to explain how X does scaling is…. it doesn’t.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Fractional scaling[](#fractional-scaling)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***The story of fractional scaling on Linux has been…. weird. Xorg, like Wayland,
+    didn’t have a concept of fractional scaling from the start. Thankfully Wayland’s
+    [gotten that fixed](https://wayland.app/protocols/fractional-scale-v1), but the
+    story with Xorg is still in integer scales. It also affects Xwayland, which I’ll
+    go more into detail in here.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***A solution is to make one giant framebuffer with the largest common scale
+    and downsample it for the necessary displays, which is more or less what GNOME
+    did before on Wayland for fractional scaling - tell clients to render at the next
+    largest integer scale, and downsample to the desired fractional scale. The only
+    difference is that you do this for your entire Xorg framebuffer, which means your
+    entire desktop is rendered at the highest common scale. Not ideal, obviously,
+    but it would get the job done.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Like I mentioned in the previous section, most of the configs don’t work
+    for fractional scaling. It really is more pain than it’s worth. You’d be better
+    off getting Wayland going, and getting the hell off Xorg.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***For what it’s worth, I’ll also quote a snippet from [Kenny Levinsen](https://kl.wtf/)
+    from some discussions about scaling, for a cursed project I’m looking into:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***just skip scaling to begin with, it’s not important for a demonstration***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***later you could hack it by turning the gross font dpi thing into a fractional
+    scale value or something - X11 is a hack, so what you make will in turn also be
+    a hack.***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***No point in fretting over that :)***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***Several refresh rates[](#several-refresh-rates)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***When you have just one monitor, it’s all fine and dandy - your game can
+    go right to the display. But several monitors gives you one giant framebuffer
+    for your compositor that draws to *all* your displays. Xorg doesn’t do normal
+    flipping with double buffering like a “normal” display server would do, as it
+    instead continuously draws to the framebuffer, and expects the hardware to read
+    it once in a while and display it. For a 60Hz display, it reads 60 times a second,
+    for 120Hz it reads 120 times a second, and so on.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***This means that when you don’t have just one monitor, at least on a setup
+    with a compositor (something you would normally want to have), things can get
+    ugly. Tearing, lack of modern features like VRR, and so on, as Xorg needs to give
+    enough frame updates to work for *all* those monitors, all one what’s one giant
+    window - but it can’t do that, so it just updates enough to work for the highest
+    refresh rate monitor. This isn’t likely to get fixed any time soon. You just need
+    to bypass the compositor entirely for any cases where you want any of those nice
+    features.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***I’d like to mention that [pac85](https://gitlab.com/pac85) has a hack that
+    works around the lack of VRR, which just fakes a pageflip - the kernel driver
+    is explicitly told to perform a flip, but is given the same framebuffer.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***It’s like if you continuously drew to a piece of paper and wanted to show
+    it to people, but expected them to know what’s going on on their own. And now
+    do that with multiple drawings, all on the same piece of paper, all being drawn
+    at the same time. To get vsync, you just wouldn’t draw to that piece of paper
+    while someone’s looking. Double buffering, i.e. on a normal Wayland compositor,
+    has the compositor drawing on another piece of paper in the background, and switches
+    it with the first, and repeats whenever updating.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***By explicitly performing a (faked) pageflip, you can get VRR to work with
+    multiple monitors, as the CRTC then knows when a pageflip happens. It doesn’t
+    just update whenever on its own accord. Or, in other words, telling people “hey,
+    here’s my new drawing”, instead of giving them a new one and them *knowing* something
+    changed with it. And that’s what the kernel patch below allows.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****This is a hack, and can and will break at times. Tread with care. It is
+    not suitable for submission anywhere.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***And the thing that breaks is explicit sync The kernel keeps track of what
+    gpu work is acting on which framebuffer So you can imagine things go wrong there***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***Xorg patch: [https://gitlab.com/pac85/xorg-server/-/commit/e2a4d5cf8965f7fcc8f07d04cb1e95f5e62a0094](https://gitlab.com/pac85/xorg-server/-/commit/e2a4d5cf8965f7fcc8f07d04cb1e95f5e62a0094)***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***`|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|`***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***High dynamic range[](#high-dynamic-range)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***HDR is a pretty new thing. It’s still a child (well, closer to teen, really)
+    everywhere but TVs and consoles. macOS is probably the most usable platform in
+    that regard. Windows supports it too, but the experience can be iffy, as well
+    as their automatic SDR -> HDR conversion.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***On Linux, it’s been there for a while, assuming you don’t have something
+    in between you and the display. This means it should, and does, work for Kodi,
+    SDL, and Gamescope, which can run directly on KMS. Since you’ve no doubt seen
+    and heard of it, especially if you’ve looked into HDR on Linux, here’s how *Gamescope*
+    does it - I’ll mostly just copy-paste some bits from [Joshua Ashton](https://github.com/Joshua-Ashton):***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Gamescope works on Wayland***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***It just has its own protocol to send the extra metadata***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***[https://github.com/ValveSoftware/gamescope/blob/7fffcc813c0f1ae48d9f1d4637a508eace889507/protocol/gamescope-xwayland.xml](https://github.com/ValveSoftware/gamescope/blob/7fffcc813c0f1ae48d9f1d4637a508eace889507/protocol/gamescope-xwayland.xml)***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***The swapchain feedback and hdr metadata are the only things needed for HDR
+    from that***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***It uses this protocol to implement a Vulkan layer that converts apps using
+    X11 Vulkan WSI to Wayland Vulkan WSI and creates an override surface behind the
+    scenes***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***And for the OpenGL story, if you were to try and go a similar path:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***if you want to do the same XWayland bypass stuff I do it is going to be
+    painful with GL***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***Need more mangohud style hooking***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***Or actually maybe not idk***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***I generally try to forget how GL WSI works because it’s terrifying***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***The same work necessary to get HDR working on Gamescope would also be, more
+    or less, what would be necessary for any other compositor, and normal Wayland
+    clients; there’s just not an [upstream protocol for that quite yet](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/14).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***And for X? Not happening. There was a [proposal by NVIDIA](https://lists.x.org/archives/xorg-devel/2017-July/054112.html),
+    but nobody’s really interested in working on *and* maintaining HDR support for
+    Xorg. And here’s a quote or two from Joshua Ashton once again:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***I can give you a 3 word quote***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***“Let it die”***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***More detail is uhh***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***X11 visual ids are already a broken mess… lets not touch this shit with
+    a 10ft pole kthx***'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '***NVIDIA[](#nvidia)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Of course, NVIDIA likes to do their own thing, as always. Just use Nouveau
+    if you want to do anything with Xwayland, and you don’t have several GPUs.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***I can’t be assed to go into more detail, so Google around if you’re interested.
+    I *will* link to [this](https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/967)
+    though, which allows Xwayland to work on NVIDIA GPUs without many of the problems
+    it encountered before, and would allow it to work more easily on newer systems
+    like Intel’s new kernel driver, and Asahi Linux.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Thankfully [NVK was recently merged into Mesa](https://www.phoronix.com/news/Mesa-NVK-Vulkan-Merged)
+    so we can finally get off of the proprietary drivers, and not have a worse UX
+    for the NVIDIA users (well, half of them at least. Bug NVIDIA if you’ve got a
+    Maxwell or Pascal card that doesn’t support reclocking).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Application development PoV[](#application-development-pov)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Hell.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***If you’re writing retro software for the 1980s, go for X. If you’re writing
+    something that’s going to be used by anybody that isn’t running decades old hardware,
+    write with Wayland in mind.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***You’ll be spending more time in a fetal position sobbing than doing anything
+    productive if you even *try* and interact with X.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Wayland, less so - you’ll just need an emotional support Blåhaj to keep
+    you company.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Or use something like SDL, and try not to interact with the display server
+    directly. And you get support for other display servers *and* can more easily
+    port your software to other platforms in the process, if that’s what you’re into.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***To get the full experience, I’ll be writing a mini Wayland server and X
+    client, which should teach me a fair bit on how all of this works, and I can feed
+    my masochism.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Accessibility[](#accessibility)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***One major thing to note about Wayland is the lack of accessibility software
+    for it - and this isn’t really solvable by Wayland itself, if you still want security
+    guarantees, or really in scope of the protocol.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***So how do we plan to solve this? With a portal, of course! Specifically,
+    an [accessibility portal](https://github.com/flatpak/xdg-desktop-portal/issues/1046).
+    This would allow accessibility tools to work on a variety of compositors, and
+    even Xorg itself (you *can* use the InputCapture, RemoteDesktop, and ScreenCast
+    portals on X, after all). The main problem is just figuring out the requirements
+    of those accessibility tools, and making an API that they can use.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***There’s already the standard a11y interfaces, and those should mostly work
+    already - so there’s that. Could be better, but they mostly work.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Accessibility in general is in a bit of a sad state on Linux right now,
+    but thankfully people like [Lukáš Tyrychtr](https://gitlab.gnome.org/tyrylu) and
+    [Tait Hoyem](https://tait.tech/) are helping to improve that.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Common complaints[](#common-complaints)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Inevitably, someone is going to complain that *something* doesn’t work.
+    So here’s what’s basically a FAQ of issues with explanations and tips.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Screen recording: already working. Chrome and Firefox support it, OBS works,
+    and Electron just needs apps to update to the newer versions and for a few minor
+    kinks to be worked out. Most apps just need to update their toolkits. If an app
+    you’re using doesn’t work with it, chances are you can work around it by using
+    it in the browser.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***Screen tearing: already has the appropriate protocols available, and there
+    are a number of issues tracking support for it. All that’s needed now is for the
+    kernel drivers to support it.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***X-specific tooling: Not even gonna. X-specific tooling is X-specific, not
+    Wayland-specific or generic. You’d do better to make Wayland-specific tooling,
+    or something that works on both. But don’t expect xrandr or xeyes to work on Wayland.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***Barrier/Synergy/remote desktop: done, and support has already been added
+    to GNOME and xdg-desktop-portal. A Wayland protocol for wlroots to build on top
+    of is TODO. Remote desktop, specifically, has already been working for quite a
+    while now, and it got some improvements thanks to the InputCapture portal (that
+    Barrier/Synergy use).***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***Global keybinds: there’s already an [available portal](https://flatpak.github.io/xdg-desktop-portal/#gdbus-org.freedesktop.portal.GlobalShortcuts)
+    for that.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***Network transparency: use [WayPipe](https://gitlab.freedesktop.org/mstoeckl/waypipe).
+    Wayland, as a protocol, has no business supporting network transparency. That
+    same idea also applies to many other features X11 has that *Wayland* doesn’t.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***Also, please think about if your feature is something *Wayland* needs to
+    handle; in most cases, it isn’t. It’s not Wayland’s job to tell compositors how
+    their window management works, or define how the compositor as a whole is implemented.
+    And it’s not proper to push the workflow from one compositor onto another - they’re
+    different compositors, with different workflows, different designs, different
+    ideologies. If you don’t like how something works, DIY it so that it’s fit to
+    your tastes.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Conclusion[](#conclusion)***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***You could *probably* add all (well, most) of these to Xorg, but not without
+    some pretty fundamental changes, rewrites, and extensions. At that point…. you’ve
+    just made another Wayland. So don’t even *try* to argue that you can just “improve
+    Xorg”. You can’t. The best you’ll get is Xwayland, which barely even functions
+    as-is. You’ve already seen, and been told, just how much of a sinking (more like
+    an already sunk) boat that the X ecosystem is.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***It’s perfectly valid if you’re staying on Xorg because some features don’t
+    quite work just yet, *especially* when it comes to accessibility. But that ship
+    can only keep floating for so long. Try out Wayland every once in a while if it
+    doesn’t work for you, and keep an eye on the relevant discussions. You’ll have
+    to use it eventually, so get used to it. If you can’t live with it as-is, try
+    and improve the situation so you *can*. Toss a few bucks to your local FOSS developer.
+    Learn how to file issues. Improve things where you can, and make it so *others*
+    can improve it where *you* can’t.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***I think I’ll end this off with:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***Xorg: it’s all hacks, and not all of them work.***'
+  prefs: []
+  type: TYPE_NORMAL

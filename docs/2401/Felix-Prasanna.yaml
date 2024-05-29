@@ -1,0 +1,332 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:45:30'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Felix Prasanna
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://fprasx.github.io/articles/type-system-arithmetic/](https://fprasx.github.io/articles/type-system-arithmetic/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Doing First Grade Math in Rust's Type System
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '2024-01-04'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Arithmetic is hard. Luckily, we can fix that using Rust's Expressive Type System™️.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '### Math'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with Church Encodings. There''s this idea in functional programming
+    that functions are good, and type theorists took it pretty far. So far that they
+    sometimes define numbers as functions that look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The nth natural number is *literally* defined as a function that takes a value
+    and function, and applies that function n times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s another concept from math called the Peano Axioms. It''s also an Extremely
+    Useful way to characterize the natural numbers that is basically as follows (omitting
+    some details):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This inductively defines the natural numbers as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: where `S` is called the Successor Function. It doesn't really matter what it
+    actually is, since we're going for a more . . . abstract view of things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice any similarity to the Church Encodings?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main idea is that we can represent a number as a *repeated function application*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enter Rust
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: So how do we replicate this in Rust? And how do we make it performant? We could
+    just do it using regular lambdas, but that would probably be slow since closures
+    are boxed, etc, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The ultimate strategy is to play God and compute our numbers at compile time!
+    After all, that''s the Rust way. But how do we call functions at compile time?
+    Well, we can borrow another idea from type theory, and notice that a generic struct
+    is sort of like a function. Consider: `struct Wrapper<T>(PhantomData<T>)`. Instantiating
+    `T` is sort of like computing a function on types, starting with a type `T` and
+    ending with a type `Wrapper<T>`. And one could conceivably construct a type `Wrapper<Wrapper<Wrapper<T>>>`
+    . . .'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I bet this is starting to get repetitive. Let''s define the following types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Yeah I know `Succ` sounds like a funny word, but it''s really just convention
+    for `Successor`. We can now define some natural numbers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is going to get annoying. Let''s write a little macro to help us out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Basically, we feed this bad boy tokens, and it''ll gobble them up one at a
+    time, each time adding a new layer of `Succ` to the type it''s constructing. Here''s
+    an example expansion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can construct decently large numbers using `encode!(***** ... *****)`,
+    although the compiler will overflow its stack at about 3200 tokens due to recursion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Evaluation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now, remember, we're trying to do arithmetic with these numbers, so we need
+    to be able to extract them out of this encoded form at some point. Hopefully,
+    we can do all our computation at compile time (so infinitely fast?) and then extract
+    them as constants into our final binary. This means we need a function from types
+    to . . . values? Hmm. Well, if you look at them hard enough, traits are kind of
+    like functions from types to values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a sense, we''ve mapped the type `Foo` to `13`, and the type `Bar` to 29\.
+    Let''s keep going with this idea and define the `Value` trait:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can now recursively "evaluate" a type - or get how many time's `Succ` has
+    been applied, since the second case strips off one `Succ` layer each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addition and Subtraction
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Alright, we''re on to something a little juicier. The main idea is still the
+    same though. We''ll use this weird type recursion to construct new types. Instead
+    of using traits to map types to values, we can also use them to map types to other
+    types, using associated constants. Let''s define the trait `Add` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now define some base cases for our recursion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And now for our recursive rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s break it down. We firstly are taking two nonzero numbers - since both
+    type parameters are wrapped in `Succ`, and could also be `Succ<..>` themselves.
+    The idea of this rule is to take one layer of `Succ` off of the first type parameter,
+    and stick it on the other. Then eventually, the second type parameter will have
+    all the `Succ`''s - precisely the total number of `Succ`''s that they both started
+    with, which means it represents the sum of the two starting numbers. Let''s do
+    a small example (I won''t do this for all of them):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, there are also some trait bounds - we're telling rustc we'll only call
+    this trait (weird idea right?) on types that can be added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subtraction is pretty similar (division is where it really goes crazy). We
+    define our base cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only interesting thing here is that we define subtraction as *saturating*.
+    This will help with implementing division. If you leave out that rule completely,
+    the compiler will actually prevent you from having underflows!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Anyways, here''s our recursive rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We basically just peel one layer of `Succ` off of each type parameter until
+    one of them is zero. The remaining one is then our difference. You can think about
+    it pictorially as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: where we got rid of the shared terms in the brackets one at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiplication
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Ok, this task is a bit more complex, but we can use our building blocks from
+    before. As always, we define a trait-function and some base cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We now have to be a little more careful with what we implement `Mul` for. If
+    we were to do the second implementation on `(Zero, T)`, then we would have two
+    implementations covering `(Zero, Zero)`. Thus, we implement it on `(Zero, Succ<T>)`,
+    since `Succ<T>` is never equal to `Zero`. And now for the recursion, we have this
+    baby monstrosity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we're using the fact that `x * y = y + (x - 1) * y`. We recursively calculate
+    the second term, and then add it to the first factor!. Remember that if `Succ<T>`
+    represents `T + 1`, then `T` represents `Succ<T> - 1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And finally . . .
+  prefs: []
+  type: TYPE_NORMAL
+- en: Division
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I won''t lie, this one really is a monstrosity. We''ll first need to define
+    `GreaterThanEq` to check if `x >= y`, since some divisions aren''t clean, e.g.
+    `7 / 3`. I''ll explain more later. We''ll do this similarly to how we did `Subtraction`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With that out of the way, let''s handle division. We''ll first start with perfect
+    quotients, like `6 / 3`. Here''s our boilerplate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once again, we have to be careful with our type arguments. Instead of doing
+    the second implementation on `(T, Succ<Zero>)`, we implement it on `(Succ<T>,
+    Succ<Zero>)` to avoid overlapping with the first implementation on `(Zero, Succ<Zero>)`.
+    We can now make use of the identity `x / y = 1 + (x - y) / y`. Intuitively, this
+    means we just take one copy of `y` out of `x`, and then count the rest recursively.
+    In code, it looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only problem is that this expression is incorrect if `x < y`, and will return
+    1\. The subtraction saturates to 0, so we get `1 + 0 / y = 1 + 0 = 1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We just need to combine this `RawQuotient` with the fact that `x / y` is 0
+    if `x < y`. Since we have this number as a boolean, we can do a trick for replacing
+    a conditional jump with a multiplication (or a cmov in assembly). Observe the
+    following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can just multiply our `RawQuotient` by whether `x >= y`! If `x >= y`, we''ll
+    be left with our `RawQuotient`. If `x < y`, we''ll be multiplying by 0 and get
+    0 no matter what, as desired. This leads to the final form of division:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have a bunch of trait bounds because we have a bunch more subexpressions
+    we need to make sure are evaluatable. At the end of the day though, all this basically
+    comes down to is only passing in chains of `Succ` with a `Zero` at the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You also might notice that we're implementing the recursive case of `Div` on
+    `(Succ<T>, Succ<Succ<U>>)`. This means the denominator is greater than 1, so it
+    doesn't overlap with any other implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In true Rust fashion, this implementation actually won't allow us to divide
+    by 0, since we never implemented `Div` for `(*, Zero)`!
+  prefs: []
+  type: TYPE_NORMAL
+- en: And somewhat anticlimactically . . . that's it! I don't know how to convey the
+    elation of little green test case dots passing, so you can run it yourself by
+    getting the code from [Arithmetic in Rust's Type System](https://github.com/fprasx/arts),
+    or arts for short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I should note I'm not the first person to do this - although I thought I might
+    have been when I first started haha. For prior art, see the [typenum](https://crates.io/crates/typenum)
+    and [peano](https://crates.io/crates/peano) crates. `typenum` is much faster and
+    is what you would actually use in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, I highly recommend running the [code](https://crates.io/crates/peano)
+    for yourself. It's a really cool feeling seeing these abstract traits materialize
+    into numbers on your terminal. Feel free to drop a star as well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's it for me. Have a nice day :)
+  prefs: []
+  type: TYPE_NORMAL

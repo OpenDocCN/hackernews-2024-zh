@@ -1,0 +1,284 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:57:07'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Infrastructure as Code is Not the Answer! | by Luke Shaughnessy | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lukeshaughnessy.medium.com/infrastructure-as-code-is-not-the-answer-cfaf4882dcba](https://lukeshaughnessy.medium.com/infrastructure-as-code-is-not-the-answer-cfaf4882dcba)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Infrastructure as Code is Not the Answer!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You know the sales pitch, of course. If you work in the DevOps, Platform or
+    SRE field you have probably made it yourself. Infrastructure as Code! The benefits
+    are many, varied and self-evident:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It’s reproducible!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It’s self-documenting!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It’s visible!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It prevents mistakes!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It lowers cost!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It prevents drift!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**It prevents toil and increases joy!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Self-Service!**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All of these things, no doubt, can be true. In an ideal world, all of these
+    benefits would be obvious and vastly beneficial to any organization willing to
+    make the up front investment in converting the deployment of infra to code and
+    configuration management. And mostly we all are. But what about things that, let’s
+    say, are not in an ideal world? What are the actual costs, risks and difficulties
+    in adopting IAC? Where does the cool sales pitch begin to melt down under the
+    glaring, hot lights of reality? Let’s take a look at some of the benefits above,
+    and examine some of those assumptions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It’s Reproducible!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, sort of. I would say that infrastructure code is awesomely reproducible
+    — for a while. But then… things get flaky. Packages go out of date. Features are
+    deprecated and stop working. Code syntax changes. Images are no longer available.
+    Dockerhub wants you to pay. Someone’s user account got built in, and they don’t
+    work here any more. Lots of the interlocking dependencies that make a deployment
+    work just change with time. The point is that deployment code has a shelf-life,
+    and if you don’t constantly refresh and update it, it will not work when you suddenly
+    need it to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It’s Self-Documenting!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, sort of. There’s a couple of flaws with this argument, though. The first
+    issue relates to the problem above. Your code starts to get moth-eaten after a
+    while. This means that an engineer who is viewing your code for the first time
+    may start chasing down rabbit holes, trying to get some old module to work in
+    a new cloud environment where a bunch of assumptions about how things are done
+    no longer apply. I have colleagues who have spent days chasing after failed deployments
+    and debugging things step-by-step, and getting totally confused because what they
+    see in the code doesn’t match reality. In truth, it probably would have been faster
+    and better if they had just started over and written new code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second issue is that code is, in my opinion, really not good at being documentation.
+    I have written code myself, and come back to it six months later, and been totally
+    baffled by what I was doing there. There are all sorts of hacks, half-measures,
+    and just plain wrong stuff you can do when writing code, because the odds are
+    good that you were learning about what you are doing as you were doing it. There
+    are plenty of things you learn in the meantime that can make you want to cry when
+    looking at your first couple of attempts. Infrastructure code is no different,
+    and can lock into place all sorts of janky assumptions and approaches that will
+    only serve to confuse future engineers when they come back to look at it in the
+    future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It’s Visible!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, it is visible — the same way it would be visible if I spray painted Cyrillic
+    graffiti on the walls of my CTOs corner office. It would be cool and transgressive,
+    but nobody would know what it said. The issue is that the code is, well, *code*.
+    It’s not something that a non-engineer can easily read, or even an engineer who
+    is not familiar with Terraform or whatever can easily read. It takes practice
+    and training to understand the information contained, and sometimes even experienced
+    engineers may take some time to fully work out where all the info is located,
+    especially if you have lots of nested files and dependencies and scripts that
+    call scripts that call scripts. The point is that, yes, you can see it, but that
+    doesn’t mean that you can quickly or easily understand it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It Prevents Mistakes!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Or, it can amplify them like the deuterium jacket surrounding the core of a
+    hydrogen bomb. I heard a story once of an engineer running a “terraform destroy”
+    on his laptop — in the wrong tab. He was in the Prod directory — and starting
+    nuking production. Realizing his mistake, he Control-C’d out of it, but it was
+    too late. A lot of stuff was already gone, and on top of that, killing the process
+    left the state file in a confused state. They were able to get it back by manually
+    fixing the state file and re-running the terraform, and the issue was resolved
+    in a couple of hours. But it was a really awfully easy mistake that anybody could
+    have made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It Lowers Cost!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If everything works perfectly, and nothing ever changes, and you do the same
+    things all the time, sure. But in my experience, the effort to keep your code
+    up-to-date is a sink for engineering time. It takes hours and hours per day for
+    engineers to debug, troubleshoot, learn and write the code. It might take days
+    of work to automate a task that would only take minutes if you just logged into
+    the Console and clicked some boxes. If you use your code all the time, then yes,
+    it’s worth the investment. But you need to really ask yourself how many times
+    will you actually deploy a new RDS instance, or a new Cloudfront Distro? Many
+    of these tasks are one-offs that you may never do again. Do you really need to
+    spend days automating that?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It Prevents Drift!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is true if and only if, you only ever, ever, ever, create code to change
+    things in your environment. The moment a person has access to the console, you
+    can get drift. So who is this feckless miscreant, logging into the console and
+    making changes out of band? Well, sometimes it’s you. Because there’s an outage
+    and you needed to throw a new certificate in your loadbalancer, or because you’re
+    being DDOSed and you need to add a CloudFront Distro to soak up incoming requests.
+    Or because you need to scale something up to handle unexpected load. Now obviously,
+    you can go back after the fact and retrofit your code to reflect the changes you
+    made. This seems silly, but in my experience this sort of thing happens with some
+    regularity in the real world.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**It Prevents Toil and Increases Joy!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You want toil? How about updating Terraform version 0.10 to Terraform 1.3? There
+    are pretty significant changes in syntax, which some automated tools can handle.
+    But also old versions required lots of wonky workarounds that are improved in
+    newer versions as features got added. This means that automated tools to redo
+    syntax are not enough; you need to refactor the whole repo from end-to-end. I
+    have colleagues who have been working on Terraform migrations for more than a
+    year. It’s a huge job that requires many, many engineering hours to bring up to
+    date. It’s sometimes hard to convince your boss that you need to do this, especially
+    if you have already consumed your ration of goodwill in sinking man-months of
+    effort into creating the code in the first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Self-Service!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Holy Grail of the Platform Team — a self-service PAAS for the whole company.
+    All of your infra and services have been so thoroughly automated, that a non-DevOps
+    engineer can pull a git repo, edit some template files, and push them back up,
+    and your CI/CD system will deploy it automatically. All the logging, alerting,
+    metrics and security policies have been baked in. I frankly love this idea. I’m
+    working on getting my current company to this state right now. But again this
+    bumps against reality. For example, we used to have a quite complicated automated
+    system for managing user accounts in Github. We would edit files, push them to
+    CI, and users and repos would be populated. However, we realized this was needlessly
+    complicated and dramatically slowed down on-boarding new FTEs and contractors
+    while they waited for somebody technical to edit the automation files. It was
+    much easier and faster to just make sure that team managers were vetted and trained
+    in security policies, and given access to Github directly. We trust that they
+    will click around the right way to add new accounts and give them permissions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Conclusion**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So does this mean that we just abandon the whole idea of IAC and go back to
+    clicking around the Console? Well, not always? I think that’s the best answer.
+    Much like good ideas of the past — think Agile, Scrum, DevOps, Serverless, Microservices,
+    all these things can bring a lot of value. You just can’t get tunnel-vision and
+    assume that you need to commit to the idea like it’s your sole meaning in life.
+    IAC has its use case, but that’s just it, a use case. Not every case will be the
+    same, and there are always devilish details to contend with. A good engineer or
+    engineering manager will know when it’s time to let go of the Platonic Ideal of
+    automated perfection and allow people some flexibility when it’s warranted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Addendum September 22, 2023**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wow! I’m amazed that people are still reading and adding this article to their
+    reading lists. And there certainly has been some vigorous feedback in the comment
+    section! So about those comments; allow me to retort ;)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Yes it’s a clickbait headline. You clicked on it, didn’t you? I’ve had more
+    engagement with this article than any other that I’ve written, so ya’ll can deal
+    with it. However, a lot of comments seemed to be from people who read the headline
+    and didn’t get any further. You’ll notice that if you read the whole thing, I’m
+    never saying that IAC should never be used, or that it can’t be the best solution.
+    However, if I’d written a headline that said “IAC Has Risks if Poorly Implemented
+    and May Not Meet Every Use Case” you would probably yawn and skip the whole thing.
+    And as far as it goes, it’s true: IAC is not THE answer in an absolute sense.
+    There are lots of answers, of which IAC is one. My point is that as an engineer,
+    you should think flexibly and not dogmatically. There could always be better solutions,
+    it’s our job to think of those.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: “Where are all the suggestions, smart guy?!” That was like half the comments.
+    Ok it’s true I didn’t include solutions for each of the problems I pointed out.
+    I wrote this targeting engineers whose job it is to think of solutions to problems,
+    so presenting a list of problems should be like catnip to them. I’m sure there’s
+    lot of things you can think of that would address the problems I outlined. For
+    starters, just appending the word “don’t” would go a long way here. Don’t let
+    your code get out of date. Don’t write unclear and obtuse code. Don’t fail to
+    schedule maintenance and upkeep on your codebase. Don’t let engineers do Terraform
+    Destroy from the terminal (Use CI, duh!) See what I mean here? I think most readers
+    got this, but some people got in a twist because it wasn’t spelled out, so here
+    you go.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: “The author has clearly never worked on a complex infra!” Yes, he has. For 20
+    years. I started doing automation with PXE boot scripts on servers written while
+    wearing a coat in the cold isle of the server room because to was too far to walk
+    back to my desk. I’ve seen a lot of these things come and go. Puppet, Chef, Ansible,
+    Terraform, YAML K8s manifests. I actually wrote this when I was just starting
+    as DevOps Manager for a company that had recently lost the majority of it’s engineering
+    staff to due to RIFs, attrition and other Private Equity shenanigans. This meant
+    that us new guys needed to reverse engineer all of the existing infra code from
+    square one; and a while some of it worked, a lot of it did not. In the end, we
+    had to assume that nothing worked, and essentially start over. Getting partially
+    working code to fully working code was harder than just doing it over. The company
+    had bet it’s future on code that was worse than useless; it was a boat anchor
+    that made keeping things running much, much harder that it needed to be. A lot
+    of the issues I mentioned in the article came out of that experience.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Life at the Console — As I said before, use cases vary. There are times when
+    a user friendly GUI is just fine, especially when you don’t really need all the
+    overhead of IAC. User account management is a good example of this. It really
+    shouldn’t be an Ops task to add and remove users, that’s why there are PMs and
+    Managers and Team Leads. Teaching a Sales Manager to use Git to add a new employee
+    is silly. The point is, you need to think carefully about when you actually need
+    things in the scope of your automation code.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Anyway, thanks for all who took the time to read the article over the past couple
+    of years, I hope it was useful to you!
+  prefs: []
+  type: TYPE_NORMAL

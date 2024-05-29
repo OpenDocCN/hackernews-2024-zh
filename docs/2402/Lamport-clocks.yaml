@@ -1,0 +1,454 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:44:15'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lamport clocks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.fponzi.me/2024-02-02-lamport-clocks.html](https://blog.fponzi.me/2024-02-02-lamport-clocks.html)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Lamport clocks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Published on 2024-02-02 | Last update: 2024-05-23 | 12 min read'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <details class="toc-container" open=""><summary>Table of Contents</summary></details>
+  prefs: []
+  type: TYPE_NORMAL
+- en: Last weekend I wanted to get some inspiration to write some TLA+ spec and I
+    got my hands back on the paper [Time, Clocks, and the Ordering of Events in a
+    Distributed System by Leslie Lamport](http://lamport.azurewebsites.net/pubs/time-clocks.pdf).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the most cited paper by Lamport. It introduces the concept of "happened
+    before" and **Logical Clock**, often times referred to as *Lamport clock*, and
+    gives an example on how to use them to solve the distributed mutual exclusion
+    problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This post is a quick summary of the paper and has a walk-through of the specification
+    I've written based on the mutual exclusion algorithm described in the paper. While
+    writing the spec for this post, I've also [contributed](https://github.com/hwayne/learntla-v2/pull/78)
+    with some documentation to the learntla website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What problem are they trying to solve?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An "event" could be created after something important happened in our system,
+    e.g., some instruction is executed. In our distributed system, assume we have
+    a central authority that wants to know which of two events happened first. These
+    events happened on processes running on two different machines. The first thought
+    could be to have both processes append the current timestamp to the event before
+    forwarding it to the central authority. That could work in theory, but the problem
+    is that the timestamp is derived by a physical chip running on two different machines.
+    Even just getting them synchronized is hard; using NTP, for example, it will carry
+    some error. Assuming an operator did not mistakenly set the wrong time, they still
+    are subjected to an effect called "clock drifting" that would cause them to go
+    out of sync over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, the paper tries to answer this question: can we find which event happened
+    first without using a physical clock? As we shall see, the answer is *not always*.
+    The second part of the paper strengthens the properties of the first part by introducing
+    physical clocks.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the "happened-before" relation?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we visualized a sequence of events in a process, "$a$" would show up before
+    "$b$" if "$a$" *happened before* "$b$".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s define the "*happened before*" relation, with symbol "$\rightarrow$":'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If $a$ and $b$ are events in the same process, and $a$ comes before $b$, then
+    $a \rightarrow b$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If $a$ is the sending of a message $m$ by a process and $b$ is the receiving
+    of $m$ by another process, then $a \rightarrow b$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If $a \rightarrow b$ and $b \rightarrow c$ then $a \rightarrow c$. Two distinct
+    events $a$ and $b$ are said to be concurrent if $a \nrightarrow b$ and $b \nrightarrow
+    a$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Assuming that $a \nrightarrow a$ for any event $a$, this relation defines an
+    irreflexive partial ordering of the events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The "not always" from the previous paragraph is derived from the fact that for
+    two concurrent events, we cannot tell which one happened before. The message exchange
+    is a synchronization point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's a logical clock then?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Every process has a number in their local state which can be thought as the
+    current clock. The clock is increased after each event, and every event gets its
+    own timestamp. In this way, if $a \rightarrow b$ then $a$'s timestamp will be
+    smaller than $b$. This concept is made formal by what Lamport calls the Clock
+    condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a process $P_i$, let''s have a function $C_i$ that assigns a timestamp number
+    $C_i\langle a \rangle$ to the event $a$. Then the Clock Condition is defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $For\ any\ events\ a,b:\ if\ a \rightarrow b\ then\ C\langle a \rangle < C\langle
+    b \rangle$
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's also interesting to note that the converse is not true. If $C\langle a
+    \rangle < C\langle b\rangle$, it is possible that $a$ and $b$ are two concurrent
+    events (running at the same time).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To synthesize, a logical clock can be thought as a way to add a timestamp to
+    an event without using a physical clock.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But how can we use it in practice in our algorithms? The paper gives two rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each process $P_i$ increments $C_i$ between two successive events.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If event $a$ is sending a message $m$ by process $P_i$, then the message $m$
+    contains timestamp $T_m = C \langle a \rangle$ . Upon receiving a message m, process
+    $P_i$ sets $C_i$ greater than or equal to its present value and greater than $T_m$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How can we get a total ordering?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Lamport presents a way to arbitrarily extend the → relation to a ⇒ relation
+    that represents a total order. To break the ties, each process gets assigned a
+    unique numeric id. When ordering events, first sort by the timestamps. If the
+    timestamps are equal, then we sort by the process id. This will yield a total
+    ordering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned, this is an arbitrary way to break the ties. It opens up to some
+    anomalies on how the users perceived the passage of time and how the system perceived
+    it. The paper explains that a user could send a request to some service, call
+    their friend on the phone and tell them to send the same request, and the second
+    request could end up with a lower timestamp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, we have only two-way around this. Either, when calling their friend,
+    the first user provides the timestamp attached to their request and the second
+    user attaches it to their request; or we need a system of clocks that can satisfy
+    the following **strong** clock condition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$For\ any\ events\ a,b:\ a \rightarrow b\ \equiv C\langle a \rangle < C\langle
+    b \rangle$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is saying that if $C\langle a \rangle < C\langle b\rangle$, it means that
+    a happened before b. In general, logical clocks don't satisfy the strong clock
+    condition. The rest of the paper is devoted to creating a new system of clocks
+    using physical clocks that is able to satisfy the strong clock condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's interesting to know that a solution to implement such a system of clocks
+    without using physical clocks is by using Vector clocks. Vector clocks keep track
+    of time using a vector of clocks instead of a simple scalar like Lamport clocks.
+    Physical clocks are used in practice in systems like Google's TrueTime and in
+    Hybrid clocks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How can we solve the mutual exclusion problem using Lamport clocks?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The last part that I would like to write about is a practical example of how
+    to use Lamport clocks to solve a mutual exclusion problem as presented in the
+    paper. An instance of this problem would be when two processes need to access
+    a shared resource, like a disk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s put some rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A process which has been granted the resource must release it before it can
+    be granted to another process.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Different requests for the resource must be granted in the order in which they
+    are made.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If every process that is granted the resource eventually releases it, then every
+    request is eventually granted.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The proposed algorithm is decentralized (no one node is more important than
+    others) and doesn't deal with failures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The local state of each process has:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For simplicity, each process can send messages to every other process, messages
+    are never lost, and they arrive in the order in which they are sent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The algorithm solves the mutual exclusion problem using six actions. Each action
+    maps to an event that causes an increase of the local timestamp:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To request the resource, process $P_i$ sends the message $<<RequestResource,\
+    P_i,\ T_m>>$ to every other process, and puts that message on its own request
+    queue, where Tm is the timestamp of the message.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When process $P_j$ receives the message $<<RequestResource,\ P_i,\ T_m>>$ requests
+    resource, (i) it places it on its request queue and (ii) sends a (timestamped)
+    acknowledgment message to $P_i$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Whenever $P_i$ receives the $AckRequestResource$ it appends it to its local
+    acknowledgments set.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To release the resource, process $P_i$ removes any $<<RequestResource,\ P_i,\
+    T_m>>$ message from its request queue and sends a timestamped $P_i$ $ReleaseResource$
+    message to every other process.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When process $P_j$ receives a $P_i$ $ReleaseResource$ message, it removes any
+    $<<RequestResource,\ P_i,\ T_m>>$ requests resource message from its request queue.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Process $P_i$ is granted the resource when the following two conditions are
+    satisfied: (i) There is a $<<RequestResource,\ P_i,\ T_m>>$ in its request queue
+    which is ordered before any other request in its queue by the relation ⇒. (To
+    define the relation " ⇒ " for messages,'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: we identify a message with the event of sending it.) (ii) $P_i$ has received
+    a message from every other process timestamped later than Tm.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The TLA+ specification
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: From this blueprint, I've written a more formal specification using TLA+ and
+    pluscal. I'll provide a short walkthrough here covering only the interesting parts,
+    but you can find the full spec [here](https://github.com/FedericoPonzi/tla-plus-specs/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Constants available are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Processes`: a set of processes like `{0, 1, 2}`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ProcessCanFail`: a boolean, if set to true it will show how liveness property
+    is broken.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`MaxTimestamp`: to keep the model bounded, I''ve set a limit on the max possible
+    timestamp. Otherwise, TLC wouldn''t know when to stop model checking.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The assume statements are helpful for basic typechecking and make sure the configuration
+    is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The resource owner is a set of the current owner of the resource or, in other
+    words, the process currently in its critical section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mailbox is used to communicate across processes. It allows one message at
+    a time; it's simple, but it works. An alternative would be to keep al messages
+    around in a message board in [Linda tuplespaces style](https://en.wikipedia.org/wiki/Linda_(coordination_language)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `define` block has some useful definitions. `SortFunction` is used to create
+    the total order. `Inv` is the safety invariant used to check that only a single
+    process is in the critical section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: These variables are the local state of the process, as explained in the previous
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The body of the process is used to define the actions above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The conditions to enter this block are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All mailboxes are empty or in other words, `p` can deliver a message to all
+    the other processes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`p` hasn''t sent a request resource yet. This works because at the end of this
+    action, `p` has added an `AckRequestResource, self, local_timestamp` to the local
+    set. In this way, the cardinality of ack_request_resources can be used to understand
+    if `p` has sent a `RequestResource` - without keeping additional state around.
+    Avoiding sending multiple requests without having acquired the resource is just
+    a way to simplify the spec.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The mailbox is a "global" map variable. I can use `mailbox[self]` to access
+    p's allocated mailbox. Because a message has shape `msg, proc, ts`, I can access
+    the sender's mailbox using `mailbox[mailbox[self].proc]` .
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `ProcessCanFail` is set to true, the smallest process `p` will never send
+    the ack back, simulating a failure. This halts the system and breaks the liveness
+    property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: To remove the `RequestResource` from the `requests_queue`, it is sufficient
+    to order the requests using the sort function and discard the head of the result.
+    This is safe thanks to the assumptions we made of no lost messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Locally each `p` can now check if they're allowed to access their critical section.
+    The `self \notin resource_owner` is just to reduce the number of state changes.
+    As `resource_owner` is just a set, nothing bad would happen by re-entering this
+    action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This definition can be used as a state constraint to keep the model bounded.
+    With this, I can then add in the cfg file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And now TLC will stop when this constraint returns TRUE. This approach is well
+    described here: [https://learntla.com/topics/unbound-models.html#topic-unbound-models](https://learntla.com/topics/unbound-models.html#topic-unbound-models)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we saw, when `p` sends a `RequestResource` message it will append an ack
+    in the local queue. The liveness property says that for any process that has requested
+    access, eventually they will get ownership of the resource. I had to rule out
+    the case in which we run out of timestamps, because in that case, the system cannot
+    make further progress. This means that I had to disable the `CHECK_DEADLOCK` parameter
+    from the config as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This concludes the walk-through, you can find the full spec on [GitHub](https://github.com/FedericoPonzi/tla-plus-specs/).
+    Interestingly, after the spec was respecting the properties, I was able to refactor
+    it by removing unneeded states and unneeded checks, leading to a short and simpler
+    spec; in a "Test Driven Development" style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A possible improvement would be to specify the mutual exclusion problem in a
+    separate specification, and use refinement to check that this algorithm solves
+    that problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this article, I provided an overview of Logical Clocks introduced by Lamport
+    in his paper *[Time, Clocks, and the Ordering of Events in a Distributed System
+    by Leslie Lamport](http://lamport.azurewebsites.net/pubs/time-clocks.pdf)*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logical clocks can be used to create a partial ordering among a set of events
+    in a distributed system. The relation "happened before" is able to define a logical
+    passage of time by using cause-effect rather than relying on physical clocks.
+    Physical clocks are inaccurate and hard to keep in sync across different machines
+    and long distances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To break ties and get to a total ordering of the events, Lamport suggests ordering
+    by timestamp and then by the process id. This is arbitrary in a sense that we
+    define an ordering on concurrent events that could differ from the real time ordering.
+    This can lead to anomalies. To get rid of them, we need a system of clock that
+    satisfies the strong clock condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I believe that a practical example is very useful to understand how to use Lamport
+    clocks in practice. A TLA+ specification is presented to solve the mutual exclusion
+    problem. TLA+ specs are a very nice and fun way to play with algorithm without
+    having to worry about the irrelevant details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While writing the spec for this post, I've also [contributed](https://github.com/hwayne/learntla-v2/pull/78)
+    with some documentation to the learntla website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: References
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL

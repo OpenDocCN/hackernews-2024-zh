@@ -1,0 +1,299 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:46:56'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Ultimate Docker Cheat Sheet - DevOps Cycle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://devopscycle.com/blog/the-ultimate-docker-cheat-sheet/](https://devopscycle.com/blog/the-ultimate-docker-cheat-sheet/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Get your Docker Cheat Sheet as [PDF](http://devopscycle.com/wp-content/uploads/sites/4/2023/12/the-ultimate-docker-cheat-sheet-1.pdf) or
+    as an [image](http://devopscycle.com/wp-content/uploads/sites/4/2023/11/the-ultimate-docker-cheat-sheet-4.png).
+    To follow this article, make sure your development machine has [Docker installed](https://docs.docker.com/get-docker/).
+    In this blog post, we write our own Dockerfiles, learn how to create images, and
+    finally run them as container. The complete source code is available on [GitHub](https://github.com/aichbauer/the-ultimate-docker-cheat-sheet).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please [download](http://devopscycle.com/wp-content/uploads/sites/4/2023/11/the-ultimate-docker-cheat-sheet-1.pdf) your
+    Docker Cheat Sheet to follow along with this article. You are also welcome to
+    share it with your colleagues and friends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be the first to join our new [community](https://discord.gg/7xpRbG2gY9) and
+    stay up-to-date on the latest DevOps topics (free cookies for the first 42 arrivals!).
+    Don’t miss out on any new resources by signing up for our [newsletter](#newsletter).
+    Get access to our latest resources and insights directly in your inbox!
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these things build on top of each other. You need a Dockerfile to create
+    an image, and you need an Image to create a Container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In conclusion: the Dockerfile is the base for an image, and an image is used
+    to create a container. A container is running as a process on the host machine.
+    Yet, it has its own file system and is separated from the other processes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To generate a Dockerfile, you can create a plain text file. This article will
+    use the command line for it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A Dockerfile holds all the instructions to build, start and run your application.
+    Every command that you otherwise need to execute manually is written in a single
+    file. It starts by using a [base image](https://devopscycle.com/blog/how-do-you-choose-a-docker-base-image/).
+    This is usually a small Linux distribution like alpine. If you have to execute
+    a binary, you should use `FROM [scratch](https://hub.docker.com/_/scratch/)`.
+    This article uses a [Fastify](https://fastify.dev/) server, so it uses an [alpine](https://www.alpinelinux.org/) image
+    configured for [Node.js](https://nodejs.org/en). You can view the complete code
+    on [GitHub](https://github.com/aichbauer/the-ultimate-docker-cheat-sheet). If
+    you are interested in how you should choose base images, you can read our article:
+    [“How Do You Choose A Docker Base Image”](https://devopscycle.com/blog/how-do-you-choose-a-docker-base-image/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we will edit the Dockerfile in Visual Studio Code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can compose a Dockerfile with many stages. You can think of one stage,
+    as one image. Furthermore, you can then use materials like files from one stage
+    in another stage. A new stage always starts with the line `FROM <base-image>`.
+    If you are interested in how you should choose base images, you can read our article:
+    [“How Do You Choose A Docker Base Image”](https://devopscycle.com/blog/how-do-you-choose-a-docker-base-image/).
+    You name a stage using the `as` keyword. This article uses a simple HTML and JavaScript
+    file as our client application. As a web server, we will use [NGINX](https://www.nginx.com/).
+    You can view the complete code on [GitHub](https://github.com/aichbauer/the-ultimate-docker-cheat-sheet).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A typical approach is to have a `builder stage`, with a larger base image. This
+    image holds all executables and libraries needed to build your source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second stage is the `serve stage` and has a small base image. The benefit
+    is fewer dependencies and libraries. Just enough to execute and serve your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this approach, you make your final image both smaller and more secure.
+    As the image size decreases and the image consists of fewer libraries. Fewer system
+    libraries means it has a lower attack surface. Multistage Dockerfiles are not
+    limited to this use case and can have more than two stages as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is an example of a multistage app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We use the Docker CLI to build images out of our Dockerfiles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating an image from a Dockerfile only requires the `docker build` command.
+    Without specifying a name and tag, you can reference the image only by its image
+    ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to give your image a name, you need to use the `--tag` (shorthand
+    syntax: `-t`) flag while building the image. You will need this if you are working
+    with a registry like [Docker Hub](https://hub.docker.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To name and tag your image, use the following pattern: `<name>:<tag>`. This
+    is usually translated into `<username>/<repository>:<version>`. The username corresponds
+    to the username of the registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A container is a running image. You can run images with the CLI command `docker
+    run <image-name>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Every Docker installation comes with a local registry. Docker stores your images
+    here. First, the `docker run` command will look at the local registry and try
+    to find the image. This will happen with our image, since we built it on the same
+    machine we are executing the `docker run` command. If it does not find the image
+    locally, it will take a look at the Docker Hub registry. You can also get images
+    from other registries (e.g., your self-hosted registry). For that, you can use
+    the URL of the self-hosted registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run an image, it starts in a foreground process. The container is running
+    as a process in the terminal where you executed the `docker run` command. If you
+    kill the terminal, it will stop the container immediately. To let your container
+    run on your machine or server, you can run the container as a background process.
+    In that way, you can close your terminal with no worries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `--detached` (shorthand syntax: `-d`) flag will start containers in a background
+    process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will see that the command will exit, and you can use the terminal again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Docker will only show the running containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to see all containers, even the stopped containers, you need to
+    pass the flag `--all` (shorthand syntax: `-a`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Occasionally, you would like to stop containers. When you stop containers, they
+    are still on the system, you can start them again. If you wish to clean the container
+    from the system, you will need to remove it. You can only remove a stopped container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you wish to remove a container as soon as you stop it, you can pass the `--rm` flag
+    when starting a container. Only use this if your container is stateless. If your
+    container has its own state, make sure to use volumes to preserve it. Otherwise,
+    all your data inside the container is lost when your container stops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sometimes signals are not passed to the container properly. Imagine you have
+    killed your terminal because you could not stop the container with CTRL+C. But
+    If you try to restart the container, it tells you that the port is already allocated.
+    This means your old container is still running. To kill a container, run the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Usually, a Docker container exposes one or many ports. You can access the application
+    which is running inside the container via those ports. To have access to these
+    ports, you need to publish those port during the container creation. Another way
+    to access containers from the host system is by executing commands inside them.
+    This is often used for debugging or single use container application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To expose the ports to the host system, you need to add the `--publish` (shorthand
+    syntax: `-p`) flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the first example above, we bind the port 3000 from the container to the
+    port 3000 on the host system. The host system is your development machine or your
+    server. The format is the following `--publish <hostport>:<containerport>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes, you want access to a container. This can be beneficial for debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`--interactive --tty` (shorthand syntax `-it`) instructs Docker to allocate
+    a pseudo-TTY connection. In this way, the containers’ stdin (standard input) creates
+    an interactive shell in the container.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can execute any command that would be possible within the container. If
+    you have a Debian container running, you would be able to list the directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can even create a secure shell like connection with the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Data that is stored inside a container is not persisted by default. When you
+    stop and remove a container, all data from this container is lost. In our application,
+    if you click the button on the website ([http://localhost:80](http://localhost/))
+    we will write “New message” into a JSON file inside the container. Now if we stop
+    and remove the container, all those messages are deleted as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to persist data between container starts, you need to use volumes.
+    There are two different volume types: named volumes and mounted volumes. Named
+    volumes are completely handled by Docker, a mounted volume is managed by you.
+    For a mounted volume, you need to specify the location on the host system where
+    this data will be stored. We use the `--volume` (shorthand `-v`) in our run command.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For our application, we need to use the following command for the server container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can get an overview of all volumes and their metadata by listing them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this article we learned the difference between a Dockerfile, an image and
+    a container. You can now write your Dockerfiles to create images. Furthermore,
+    you can start containers and access them from the host system. Additionally, you
+    also learned how to persist data between container starts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you need help with your containerization, [feel free to contact us](https://calendly.com/devopsberatung/meet),
+    or join our new community for further questions and discussions (free cookies
+    for the first 42 arrivals)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: You liked this article? Share it with your colleagues and friends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not miss out on our latest tips, guides, and updates – sign up for our newsletter
+    now! We promise to only send you the most relevant and useful information. Be
+    part of our journey in exploring the world of Docker and beyond.
+  prefs: []
+  type: TYPE_NORMAL

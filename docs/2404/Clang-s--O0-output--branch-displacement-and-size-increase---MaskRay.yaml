@@ -1,0 +1,281 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:35:53'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clang''s -O0 output: branch displacement and size increase | MaskRay'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase](https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: tl;dr Clang 19 will remove the `-mrelax-all` default at `-O0`, significantly
+    decreasing the text section size for x86.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Span-dependent instructions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In assembly languages, some instructions with an immediate operand can be encoded
+    in two (or more) forms with different sizes. On x86-64, a direct JMP/JCC can be
+    encoded either in 2 bytes with a 8-bit relative offset or 6 bytes with a 32-bit
+    relative offset. A short jump is preferred because it takes less space. However,
+    when the target of the jump is too far away (out of range for a 8-bit relative
+    offset), a near jump must be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A 1978 paper by Thomas G. Szymanski ("*Assembling Code for Machines with Span-Dependent
+    Instructions*") used the term "span-dependent instructions" to refer to such instructions
+    with short and long forms. Assemblers grapple with the challenge of choosing the
+    optimal size for these instructions, often referred to as the "branch displacement
+    problem" since branches are the most common type. A good resource for understanding
+    Szymanski's work is [*Assembling Span-Dependent Instructions*](https://www.complang.tuwien.ac.at/anton/assembling-span-dependent.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '## Start small and grow'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Popular assemblers still used today tend to favor a "start small and grow" approach,
+    typically requiring one more pass than Szymanski's "start big and shrink" method.
+    This approach often results in smaller code and can handle additional complexities
+    like alignment directives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In LLVM, the [MC library](https://blog.llvm.org/2010/04/intro-to-llvm-mc-project.html)
+    (Machine Code) is reponsible for assembly, disassembly, and object file formats.
+    Within MC, "assembler relaxation" deals with span-dependent instructions. This
+    is distinct from [linker relaxation](/blog/2021-03-14-the-dark-side-of-riscv-linker-relaxation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Eli Bendersky provides a detailed explanation in a [2013 blog post](https://eli.thegreenplace.net/2013/01/03/assembler-relaxation)
+    and highlights an interesting behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, when compiling with -O0, the LLVM assembler simply relaxes all
+    jumps it encounters on first sight. This allows it to put all instructions immediately
+    into data fragments, which ensures there's much fewer fragments overall, so the
+    assembly process is faster and consumes less memory.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When `-O0` is enabled and the integrated assembler is used (common by default),
+    [clangDriver](/blog/2021-03-28-compiler-driver-and-cross-compilation) passes the
+    `-mrelax-all` flag to the LLVM MC library. This sets the `MCRelaxAll` flag in
+    `MCTargetOptions`, instructing the assembler to potentially start with the long
+    form (near) for JMP and JCC instructions on the X86 target only. Other instructions
+    like ADD/SUB/CMP and non-x86 architectures remain unaffected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-mrelax-all` tradeoff'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The assembly (`clang -S`) looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The JE instruction assembles to either a short jump (8-bit relative offset)
+    or near jump (32-bit relative offset).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The impact of `-mrelax-all` on text section size is significant, especially
+    when there are many branch instructions. In an x86-64 release build of lld, `-mrelax-all`
+    increased the `.text` section size by 7.9%. This translates to a 5.4% increase
+    in VM size and a 4.6% increase in the overall file size. In a RISC-V rv64gc release
+    build of lld, `-mrelax-all` increased the `.text` section size by 13.7%. This
+    translates to a 9.0% increase in VM size and a 7.2% increase in the overall file
+    size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dean Michael Berris proposed to [remove the `-mrelax-all` default for `-O0`](https://reviews.llvm.org/D21830)
+    in 2016, but it stalled. `-mrelax-all` caused undesired interaction issues with
+    RISC-V's [conditional branch transforms](https://reviews.llvm.org/D108961), leading
+    Craig Topper to [remove `-mrelax-all`](https://github.com/llvm/llvm-project/pull/88538)
+    at `-O0` for RISC-V recently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This actually indicated a size regression when the condition branch transform
+    patch landed in 2023\.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: While `-mrelax-all` might have offered slight compile time benefits in the past,
+    the gains are negligible today. Benchmarking using stage 2 builds of Clang showed
+    no measurable difference between `-mrelax-all` and `-mno-relax-all`. On llvm-compile-time-tracker
+    running the llvm-test-suite/CTMark benchmark, compile time actually [increased
+    slightly](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=instructions%3Au)
+    by 0.62% while the text section size [decreased](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=size-text)
+    by 4.44%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A difference for assembly at different optimisation levels would be quite surprising.
+    GCC/GNU assembler don't exhibit similar expansion of JMP/JCC instructions even
+    at `-O0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These arguments strengthen the case for removing `-mrelax-all` as the default
+    for `-O0`. [My patch](https://github.com/llvm/llvm-project/pull/90013) has landed
+    and will be included in the next major release, LLVM 19.1\. I have also changed
+    Clang to respect `-mrelax-all` for assembly input: `clang -c --target=x86_64 -mrelax-all
+    a.s`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the compile time difference
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I have studied a notorious huge file, `llvm/lib/Target/X86/X86ISelLowering.cpp`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Fragment count**: A significant difference exists in the number of assembler
+    fragments generated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-mrelax-all`: 89633'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-mno-relax-all`: 143852'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With `-mrelax-all`, the number of `MCRelaxableFragment`s is substantially reduced
+    (to zero when building Clang). This reduction likely contributes to the compile
+    time difference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Fixed-point iteration**: `-mrelax-all` ensures the fixed-point iteration
+    algorithm (almost always) converges in a single iteration. In contrast, with `-mno-relax-all`,
+    around 6% of sections require additional iterations. However, this difference
+    is likely not the primary factor affecting compile time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why didn't people complain about the code size increase?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because people generally care less about `-O0` code size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-O0` is frequently used with `-g` to include debugging information. This debug
+    information can overshadow the size increase caused by `-mrelax-all`. (`-O1` or
+    above sacrifices some debuggability.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, not all projects can be successfully built with `-O0` optimization.
+    This is typically due to issues like very large programs or mandatory inlining
+    behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a discussion on size reduction ideas in ELF relocatable files, please check
+    out my blog post about [Light ELF](/blog/2024-04-01-light-elf-exploring-potential-size-reduction).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might also be interested in [my notes](/blog/2023-05-08-assemblers) about
+    GNU assembler and LLVM integrated assembler.
+  prefs: []
+  type: TYPE_NORMAL

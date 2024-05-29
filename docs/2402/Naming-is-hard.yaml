@@ -1,0 +1,149 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:43:06'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Naming is hard
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.dureuill.net/articles/too-dangerous-cpp/](https://blog.dureuill.net/articles/too-dangerous-cpp/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Some patterns are only made practical thanks to Rust's memory safety, and too
+    dangerous to use in C++. Here's a concrete example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working on an internal library written in Rust, I had an error type for a parser
+    that I wanted to be [`Clone`able](https://doc.rust-lang.org/std/clone/trait.Clone.html),
+    without duplicating the data inside. In Rust, this calls for a **r**eference-**c**ounted
+    pointer, like [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: So I wrote my error type, used it as the error variant of the fallible functions,
+    and moved on with my life.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Sometimes later, we noticed that parsing would take a long time to execute on
+    some inputs, so I decided I'd send the input to another thread via a [channel](https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html),
+    and I'd get the response back through another channel, so that long orders wouldn't
+    block the main thread.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, while doing this change, I was greeted with the following error message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As the compiler nicely explained, it is because the [`Rc` type does not support
+    being sent between threads](https://doc.rust-lang.org/std/rc/struct.Rc.html#impl-Send-for-Rc%3CT,+A%3E),
+    as doing so would cause data races. Indeed, the reference count in `Rc` is not
+    manipulated in an atomic manner that would be thread safe, it is using regular
+    integer operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For thread-safe reference counting, Rust offers [another type called `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html),
+    that uses **a**tomic **r**eference **c**ounting. Modifying the code to use `Arc`
+    is a simple matter of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: ([Test this code online](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=b1f40129f7a6c9baf77fde13a4156889))
+  prefs: []
+  type: TYPE_NORMAL
+- en: As long as I didn't need reference counting to be atomic, I could use `Rc`.
+    When I needed thread-safety, the compiler forced me to switch to `Arc` and the
+    overhead of atomic reference counting. This is an illustration of the old principle
+    of "don't pay for what you don't use".
+  prefs: []
+  type: TYPE_NORMAL
+- en: This principle is dear to the heart of C++ developers too, yet in stark contrast
+    to Rust, C++ only has shared pointers with atomic reference counting in its standard
+    library, that is the equivalent to `Arc`, not `Rc`. You always pay for the atomic
+    even if you don't use it. Providing 2 classes was considered, but rejected, notably
+    because [it was deemed too dangerous](https://stackoverflow.com/a/15140227/1614219)
+    ("Code written with the unsynchronized `shared_ptr` may end up being used in threaded
+    code down the road, ending up causing difficult to debug problems with no warning").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because Rust will catch these at compile time, it is not dangerous.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On some C++ standard library implementations, there are attempts to recover
+    the lost performance in some limited situations (e.g. the program as a whole is
+    not multi-threaded), [to hilarious effect on micro-benchmarks](http://snf.github.io/2019/02/13/shared-ptr-optimization/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately the precaution taken by C++ of always having an atomic reference
+    count is still insufficient to make `shared_ptr` safe in a multi-threaded context,
+    as one should pay attention to a couple of the proverbial footguns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a bit of a subtle issue, and honestly I don't think I ever ran into
+    that one, but I include it for clarity because sometimes people mix it with the
+    second one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can take a `shared_ptr` and make a copy of it, calling its copy constructor,
+    in a thread-safe way. What you cannot do, however, is share a single instance
+    of a `shared_ptr` between multiple threads. Imagine having a struct containing
+    a shared pointer that is shared between threads, and a method on that struct that
+    reassigns the shared pointer. If that method is called unsynchronized by multiple
+    threads, then this will result in undefined behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apparently, this is enough of an issue that C++20 added a [partial template
+    specialization to `std::atomic<std::shared_ptr>`](https://en.cppreference.com/w/cpp/memory/shared_ptr/atomic2).
+    My advice, though, would be "don't do that!". Instead, keep your shared pointer
+    in a single thread, and send copies to other threads as needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since assignment requires at an exclusive reference or an owned object, Rust
+    statically forbids assigning to an `Arc` that is shared between multiple threads,
+    avoiding the issue at compile time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a `shared_ptr`, only the reference counting is atomic, but the pointed-to
+    object needs its own synchronization for writing and reading from different threads.
+    This is a bit of a pitfall because it is tempting to simplify "`shared_ptr` is
+    a thread-safely-referenced-counted pointer" to "`shared_ptr` is a thread-safe
+    reference-counted pointer", while only the former is true.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While this may seem obvious to seasoned developers, I saw a lot more of this
+    issue in the wild, probably always by junior developers 🙃 never by experienced
+    developers refactoring their code to introduce threads 😇
+  prefs: []
+  type: TYPE_NORMAL
+- en: Naturally, Rust [imposes the same requirement](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
+    on the content of `Arc`, but [thanks](https://doc.rust-lang.org/std/sync/struct.Arc.html#impl-Send-for-Arc%3CT,+A%3E)
+    to [the `Send`](https://doc.rust-lang.org/std/marker/trait.Send.html) and [the
+    `Sync`](https://doc.rust-lang.org/std/marker/trait.Sync.html) traits, and `Arc`
+    only providing shared reference to its contents, writing and reading the pointed-to
+    object unsynchronized is a compile-time error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust achieves this result entirely thanks to the borrow checker and its type
+    system. It is the only language I used that can statically [prevent data races](https://doc.rust-lang.org/nomicon/races.html).
+  prefs: []
+  type: TYPE_NORMAL

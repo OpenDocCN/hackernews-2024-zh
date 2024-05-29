@@ -1,0 +1,268 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:36:42'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: What if null was an Object in Java? | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://donraab.medium.com/what-if-null-was-an-object-in-java-3f1974954be2](https://donraab.medium.com/what-if-null-was-an-object-in-java-3f1974954be2)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: What if null was an Object in Java?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Brace yourself and get ready to try the red pill.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Brett Jordan](https://unsplash.com/@brett_jordan?utm_source=medium&utm_medium=referral)
+    on [Unsplash](https://unsplash.com/?utm_source=medium&utm_medium=referral)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Object-oriented purity
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Smalltalk is often referred to as a pure object-oriented programming language.
+    Smalltalk was created by Alan Kay, who was also the person who coined the term
+    “object-oriented." Part of the pure object-oriented nature of Smalltalk is that
+    “everything is an object” in Smalltalk. Because everything is an object, you accomplish
+    programming tasks by sending messages to objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Java is also object-oriented, but is not a pure object-oriented programming
+    language. Java has things in it that are not objects (e.g. primitives), that require
+    special mechanisms for handling them. Java also has a special case for handling
+    `null`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this blog, I will demonstrate and explain how Java and Smalltalk deal with
+    *absent* values, referred to as `null` in Java, and `nil` in Smalltalk. This blog
+    will not provide a full explanation of Java or Smalltalk syntax. There are resources
+    available on the internet for both if you want to learn more. The blog will only
+    cover what is necessary to explain the code examples I share. I will do my best
+    to explain the examples in detail so that syntax is not a barrier to understanding.
+    This blog is intended to make you ponder larger possibilities, not struggle with
+    minutiae of language syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the sections that follow, I will compare solutions to the same simple problems
+    using both Java and Smalltalk. I will be using Java 21 with IntelliJ IDEA CE 2023.3.2
+    for the Java code examples. I will be using [Pharo Smalltalk](https://pharo.org/)
+    11.0 for the Smalltalk code examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Null vs. Nil
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The literal null in Java
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Java, there is a literal named `null`. You can assign `null` to any variable
+    that has an `Object` type, but the reference the variable points to is not an
+    instance of an `Object`. I like to think of `null` as an instance of the Spoon
+    in the movie, “The Matrix”. There is no Spoon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following test code illustrates some of the properties of `null` in Java.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this test, I assert that `null` is not an instance of `Object`. I initialize
+    a final variable of type `Set<?>` named `set` to `null`, and further `assert`
+    that `set` , which is `null`, is not an instance of `Set`. I `assert` that when
+    I call `getClass()` or `toString()` on `set`, which is still `null`, a `NullPointerException`
+    is thrown. This happens because `null` is not an `Object`. Note, I made the first
+    declaration of the `set` variable `final` here, in order to reference the variable
+    `set` in the two lambdas in the first section where I `assert` that `NullPointerException`
+    is thrown. I could have left it as “effectively final” by not trying to reset
+    the value, but thought I would just go with having it be explicitly final.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second section, I create a mutable `Set` and store it in a variable named
+    `set2`. I add `null` to the `set`. `Set.of()` will not accept null values, so
+    I had to convert the immutable `Set` to a `HashSet`, which does accept `null`
+    values. I add `null` manually to `set2`. I assert that `set2` is not `null`, that
+    its class is not `null`, and that `set2` is in fact an instance of a `Set` as
+    the compiler says it is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, I `filter` the instances contained in `set2` into a new `set3` as long
+    as they respond true to the method reference `Objects::nonNull`, which references
+    a static method on `Objects` that returns a `Predicate` that checks that `object
+    != null`. Once again, since `null` is not an object, you cannot call any methods
+    on it that could be used to construct a valid method reference as a `Predicate`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the `null` in Java that we are all used to. It is not an `Object`. We’ve
+    all learned to deal with `null` when coding in Java. Former Smalltalkers will
+    know there is a different way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The literal nil in Smalltalk
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Smalltalk, there is a singleton object instance named `nil`. The literal
+    `nil`, is an instance of the class `UndefinedObject`. `UndefinedObject` is a subclass
+    of `Object`. The `Object` class is a subclass of… `nil`. This circular definition
+    has melted many programmers brains, including mine. Somehow, this all just works.
+    It is one of the magical aspects of Smalltalk. There’s a turtle at the top, sitting
+    on top of another turtle, and it’s just turtles all the way down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following test code passes using [Pharo Smalltalk](https://pharo.org/) 11.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Above is what a method definition looks like in Smalltalk. I wrote a unit test
+    method named `testNilIsAnObject`. I define two temporary variables named `set`
+    and `setNoNils` by declaring them between the two vertical pipes after the method
+    name like this `|set setNoNils|`. In the first section of code I assert a few
+    things about `nil`, in order to demonstrate it is in fact an instance of an `Object`.
+    The literal `self` is the equivalent of `this` in Java, and refers to the instance
+    of the class that `testNilIsAnObject` is defined on, which has methods it inherits
+    named `assert:`, `deny:`, and `assert:equals:`. I `assert` that `nil` can respond
+    to messages like any other object in Smalltalk. I `assert` that `nil` responds
+    `true` to `isNil`. I also assert that calling `printString` on `nil` results in
+    the `String` `‘nil’` being returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `:=` operator is used for variable assignment in Smalltalk. I assign the
+    instance referenced by the literal `nil` to the variable named `set`. I assert
+    that `set` responds `true` when sent the message `isNil`. I assert that the object
+    reference contained in the `set` variable is an instance of `UndefinedObject`.
+    I assert that calling the `ifNil:` message on set returns `true`. The code `[
+    true ]` is a zero argument block or lambda. In Java, the equivalent would be the
+    a lambda typed as a `Supplier`. Finally, I assert that set responds to true when
+    sent the message `isEmptyOrNil`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second section of code, I create an instance of a `Set` by using the
+    class method named `with:with:with:with:` which takes four parameters. I then
+    `deny` that the set `isNil`. I `assert` that that the set `isNotNil`. I `assert`
+    the `set` is not equal to `nil`. I deny the set `isEmptyOrNil`, since it it neither
+    `nil` or `isEmpty`. I then `assert` that the class of `set` is `Set`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the third section of code, I `select` all instances contained in `set` into
+    a new `Set` named `setNoNils`, if the instance returns true to the message `isNotNil`.
+    The important thing here is that every subclass of `Object` in Smalltalk responds
+    `true` or `false` to the message `isNotNil`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here’s a final example of one of the methods available to all objects in Smalltalk,
+    including `nil`. The method name is `ifNil:ifNotNil:`. It is a control structure
+    method which takes two block (aka lambda) parameters. The result is determined
+    polymorphically by the type. The `set` here knows it is not `nil`, so it will
+    automatically execute the second block and return the result which here is the
+    `String`, `‘not nil’`. The literal `nil` will know it is `nil`, so it will automatically
+    execute the first block and return the result which here is the `String`, `‘nil’`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: What if null was an Object in Java?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The following code is speculative, won’t compile, is untested, and unproven
+    by Java language experts. But perhaps if `null` were an instance of some class
+    named `Null`, the following code *might* be possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If `null` were an instance of a class named `Null`, it would also be possible
+    to add methods like `ifNull`, `isNotNull`, `ifNotNull`, `isEmptyOrNull` to both
+    `Object` and `Null` as Smalltalk does. The `ifNull` and `ifNotNull` methods would
+    take some functional interface type like `Supplier`, `Consumer`, or `Function`
+    and then work with lambdas and method references. In the example above, I changed
+    the `filter` code to use a `Predicate` formed from a method reference using the
+    method named `isNotNull` which would be defined on `Object`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tricky part would be how to make `null` capable of representing any interface
+    and class, and dispatching calls to a method named `doesNotUnderstand` for any
+    methods from those interfaces that `null` wouldn’t understand. The `Null` class
+    would have to behave like a `Proxy` for any type it is stored in, and forward
+    methods sent to a class like `Set`, to a single method that could handle the “I’m
+    not a Set” response appropriately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps with `null` as an Object in Java, it would be possible to do away with
+    a whole variety of `NullPointerExceptions`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why is nil being an Object useful?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The fact `nil` is an instance of the `UndefinedObject` class in Smalltalk allows
+    it to be treated like all other objects in Smalltalk. It can respond to basic
+    methods that are supported on all objects. The instance `nil` has first class
+    treatment in the Object hierarchy in that every object knows that it is or isn’t
+    `nil`. This brings a nice symmetry to the language and libraries. This does not
+    remove the need to handle `nil` by avoiding or excluding it, but `nil` handling
+    is done using the same mechanisms that you would use to handle or exclude other
+    types, by calling methods like `isNil`, `isNotNil`, `ifNil:`,`ifNotNil:`, `ifNil:ifNotNil:`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a language like Smalltalk where controls structures are not defined as statements
+    in the language, but as methods in the libraries, having `nil` exist like everything
+    else, as an object, leads to a an amazing level of consistency and clarity. In
+    my next blog I will delve more into how some other control structures in Smalltalk
+    are defined in the class library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Final thoughts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I’m not looking to change Java, as the `null` ship sailed a very long time ago.
+    What I am hoping is that I can help illuminate the possibilities for Java developers
+    who may not have seen another way of handling `null` in a different object-oriented
+    programming language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This blog was intended to explain in simple terms the differences between `null`
+    in Java, and `nil` in Smalltalk. Learning multiple languages that use different
+    strategies to address the same problems is useful. Learning a whole new language
+    takes time. My hope is that this bitesize comparison is useful for you to be able
+    to understand the pros and cons of a different approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my next blog, I plan to include two other literal objects in Smalltalk named
+    `true` and `false`., and compare them to their primitive Java equivalent also
+    named `true` and `false`. I will also compare them to the Java Object equivalent
+    named `Boolean`. I will also look to explain how control structures can be defined
+    effectively in a library, and not require special syntax and reserved words for
+    `if`, `for`, `while` statements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stay tuned, and thanks for reading!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*I am the creator of and committer for the* [*Eclipse Collections*](https://github.com/eclipse/eclipse-collections)
+    *OSS project, which is managed at the* [*Eclipse Foundation*](https://projects.eclipse.org/projects/technology.collections)*.
+    Eclipse Collections is open for* [*contributions*](https://github.com/eclipse/eclipse-collections/blob/master/CONTRIBUTING.md)*.*'
+  prefs: []
+  type: TYPE_NORMAL

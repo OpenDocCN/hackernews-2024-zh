@@ -1,0 +1,599 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:00:46'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance Analysis of Python's `dict()` and `{}` - MadeByMe
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://madebyme.today/blog/python-dict-vs-curly-brackets/](https://madebyme.today/blog/python-dict-vs-curly-brackets/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: <main class="main">
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some time ago, during a code review, I had a discussion with a colleague of
+    mine about preferring `dict()` over `{}` in new Python code. They argued that
+    `dict()` is more readable — and expresses intent more clearly — therefore should
+    be preferred. I wasn’t convinced by that, but at that time I didn’t have any counterarguments,
+    so I passed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Yet that made me wonder: what’s the difference between the `dict` type and
+    `{}` literal expression?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s go down the rabbit hole.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#pythons-dictionaries) Python’s dictionaries'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let’s check what’s the performance difference between the two methods.
+    I’ll use the [`timeit`](https://docs.python.org/3.12/library/timeit.html) module
+    for that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: On my MacBook M1 the difference is **almost 2x**. A non-trivial difference,
+    especially knowing that both of these expressions produce the exact same object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where does the difference come from?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we get into that, we need to sidetrack a little bit and talk about what
+    happens when you execute Python code. Python is an [interpreted language](https://en.wikipedia.org/wiki/Scripting_language)
+    — it needs to have an interpreter. [CPython](https://github.com/python/cpython/tree/v3.12.0)
+    is the most wildly used interpreter of Python; it’s a reference implementation,
+    meaning that other interpreters use it to determine the “correct” behavior. If
+    you’ve installed Python from a default distribution, you have CPython installed
+    on your machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interestingly, CPython is both a compiler and an interpreter. When executing
+    Python code it first compiles it into [bytecode](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)
+    instructions and interprets them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To better understand the performance difference between `dist()` and `{}` let’s
+    compare the bytecode instructions they compile into. Python has a built-in module
+    called [dis](https://docs.python.org/3.12/library/dis.html) which does exactly
+    that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although they produce the same end result these two expression, quite clearly,
+    execute different code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#bytecode-instructions) Bytecode instructions'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The output of `dis.dis` isn’t very hard to understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Each column has a purpose:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line number in the source code.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The address of the instruction — byte index in the compiled bytecode.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The bytecode name (opcode).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Operation parameters.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Human-readable interpretation of the operation parameters.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Alright, equipped with this knowledge and by cross-referencing the [opcode
+    set](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)
+    we know that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`RESUME`](https://docs.python.org/3.12/library/dis.html#opcode-RESUME) — does
+    nothing. It performs internal tracking, debugging and optimization checks.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[`LOAD_GLOBAL`](https://docs.python.org/3.12/library/dis.html#opcode-LOAD_GLOBAL)
+    — loads a global variable onto the stack. From the human-readable interpretation
+    of the opcode parameters we know that it loads `dict` (ignore `NULL` for now).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[`CALL`](https://docs.python.org/3.12/library/dis.html#opcode-CALL) — calls
+    a callable object with the number of arguments specified by `argc` — in our case
+    it’s zero.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[`RETURN_VALUE`](https://docs.python.org/3.12/library/dis.html#opcode-RETURN_VALUE)
+    — returns with the last element from the stack to the caller.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Compiling `return {}` yields one more opcode:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`BUILD_MAP`](https://docs.python.org/3.12/library/dis.html#opcode-BUILD_MAP)
+    — pushes a new dictionary object onto the stack. Pops `2 * count` items so that
+    the dictionary holds count entries.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Already we have a few obvious differences between the two cases. The `{}` expression
+    builds a dictionary directly, while `dict()` delegates that to a callable object.
+    Before that can even happen it first needs to load the global value (`dict`) onto
+    the stack — it actually does that every single time we call that function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because `dict` is not constant: it can be overwritten — and therefore — produce
+    a different value.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: It can happen. This is why Python needs to generate this overhead of loading
+    and calling a callable for every call of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: OK, it all sound very neat. Calling a callable does create an overhead and it’s
+    reasonable to assume that the difference we saw at the beginning of this post
+    is a result of this overhead. However, are we sure that `dict()` internally calls
+    the same code, as `{}` does? `dict` is a class and, luckily, the [`dis.dis`](https://docs.python.org/3/library/dis.html#dis.dis)
+    function can compile classes to bytecode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Example*'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*It prints out disassembly for all of the classes’s methods:*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Let’s try this for `dict`:*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*&mldr; it doesn’t print anything? Why?*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Well, the [dis](https://docs.python.org/3.12/library/dis.html) module isn’t
+    very useful for internal types and `dict` is one of those types — defined within
+    the interpreter’s source code.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[#](#getting-lost-in-the-cpython-source-code) Getting lost in the CPython
+    source code*'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '*To tap into the forbidden magic, we need to clone the [CPython repository](https://github.com/python/cpython/tree/main)
+    first. We don’t need all the history, so let’s [`--depth 1`](https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt)
+    this.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Then we need to find what we’re actually looking for — a place where opcode
+    instructions are interpreted. After a cup of coffee and a lot of greps later we
+    find the [`Python/bytecodes.c`](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)
+    file. It consists of a single `switch` statement and it seems like all bytecode
+    instruction are interpreted there.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*[#](#the-dict-type) The `dict` type*'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*Let’s tackle `dict` first. All internal types are defined as `PyTypeObject`
+    objects and the `dict` type is defined in the [`dictobject.c`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3839)
+    file. It has a lot of attributes defined, but only two are of interest for us:*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*The pair (`dict_new` and `dict_init`) will tell us what happens when someone
+    creates a new dictionary.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note**'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '**The constructor in Python is called `__new__`. It’s a static method that
+    returns a new object of its type.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The initializer method is called `__init__`. It takes a newly created object
+    and initializes its attributes. The `__init__`method is called after the `__new__`
+    method.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The `dict_new` function is defined here: [dictobject.c#L3751](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3751).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**We see that first, it allocates a new object via the provided allocator (9^(th)
+    line) and then sets some of its internal fields (15^(th), 19^(th), and 20^(th)).
+    Interestingly for us, it **does not** pre-allocate the dictionary’s internal memory
+    (see marked lines). It might seems strange at first, but please remember: an object’s
+    initialization — like memory pre-allocation — is not a responsibility of the `__new__`
+    method, that what the `__init__` method is for.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**With the new object in memory, the `dict_init` function can insert entries
+    to it. The insertion logic is delegated to the `dict_update_common` function,
+    which can be found here: [dictobject.c#L2678](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2678).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**It updates the dictionary from both args and kwargs.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[#](#args--dict_update_arg) args & `dict_update_arg`**'
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: '**For `args` it calls the `dict_update_arg` function.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The function checks if `arg` is a dictionary, if so it merges the two ([`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)),
+    otherwise it adds new entries from a sequence of pairs ([`PyDict_MergeFromSeq2`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2722)).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[#](#kwargs--pydict_merge) kwargs & `PyDict_Merge`**'
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: '**The `kwargs` path ends in the same place — [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988).
+    Let’s take a look.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Internally, it delegates all logic to the [`dict_merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2807)
+    function.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**From the comment, we know that the function has been optimized for being
+    called with another dictionary as a parameter. If the parameter is not a dictionary,
+    then it’s a generic [`Mapping`](https://docs.python.org/3.12/library/collections.abc.html#collections.abc.Mapping)
+    — a container object that supports arbitrary key lookups.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[#](#the--expression) The `{}` expression**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '**The literal expression should be easier to reason about. Let’s go back to
+    the [bytecode.c](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)
+    file and find mapping for the `BUILD_MAP` opcode.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '***See sources here: [bytecode.c#L1541](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c#L1541).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**We see that the dictionary is fully constructed and returned by [`_PyDict_FromItems`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L1616).
+    Let’s go there.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**I’ve marked the most interesting line: in opposition to `dict_new`, it **pre-allocates**
+    the dictionary, so it already has a capacity for all of its entries. After that
+    it inserts key-value pairs one-by-one.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[#](#conclusions) Conclusions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**To sum things up.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**When you do `dict(a=1, b=2)`, Python needs to:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**allocate a new `PyObject`,**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**construct a `dict` via the `__new__` method,**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**call its `__init__` method, which internally calls [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988),**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**because `kwargs` is not `dict`, [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)
+    needs to use the slower method, which inserts entries one-by-one.**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Whereas doing `{}` causes Python to:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**construct a new **pre-allocated** dictionary,**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**insert entries one-by-one.**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**To be fair, unless you construct dictionaries in a loop, I don’t believe
+    there’s a lot to gain performance-wise by switching from `dict` to `{}`. There’s
+    one thing I’d like you to remember after reading this post:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***tl;dr***'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '***The `{}` is always faster than `dict`.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***[#](#appendix) Appendix***'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '***Similar analysis can be done for lists, sets, and (*possibly*) tuples. However,
+    this post is already too long, so I’ll drop all the other resources I’ve gathered
+    here.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***[#](#lists) Lists***'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '***[#](#list-type) `list` type***'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '***The Python’s `list` type is defined in the `listobject.c` file:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '***`PyType_GenericNew` does nothing — it ignores `args` and `kwargs`, and return
+    an object allocated by `type->typ_alloc`. Source: [https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768](https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768)***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***`PyType_GenericAlloc` allocated a new object and (if it’s garbage-collectable)
+    marks it as “to-be-collected”.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***`list___init__` is a convenience wrapper around the `list___init___impl`
+    function, which does the actual initialization. It does some basic pre-steps:***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***fails if any `kwarg` has been passed,***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***fails if `args` has more than 1 element,***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***converts the first argument of `args` to an iterable.***'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***`list___init___impl` clears the list (if not empty) and extends it by the
+    provided iterable (by calling the `list_extend` function).***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '****Question****'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '****I think the two:****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '****are equivalent in every way (but the generated opcodes sequence) and are
+    calling the same underlying C code.****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '****[#](#-literal-expression) `[]` literal expression****'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '****Opcode `BUILD_LIST` uses the `_PyList_FromArraySteal` function to construct
+    a list object and return it.****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****Note*****'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '****_PyList_FromArraySteal is used since 3.12\. See [3.12 changelog](https://docs.python.org/3.12/whatsnew/changelog.html)
+    and [gh-100146](https://github.com/python/cpython/pull/100147). Before 3.12, the
+    opcode was repeatedly calling `POP()` to get items from the stack, and then inserting
+    them into the list.****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '****See [change in gh-100146 PR](https://github.com/python/cpython/pull/100147/files#diff-729a985b0cb8b431cb291f1edb561bbbfea22e3f8c262451cd83328a0936a342L1447-L1450).****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '****The `_PyList_FromArraySteal` helper creates an empty list (if there are
+    no items), or preallocates the list before inserting items to it.****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '****[#](#sets) Sets****'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '*****Warning*****'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '*****AFAIK there’s no way to construct a new set with a literal expression,
+    hence the following analysis is performed for sets with two elements: `1` and
+    `2`.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****[#](#set-type) `set` type*****'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*****The Python’s `set` type is defined in the `setobject.c` file:*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****`set_new` uses the allocated to create a new empty set object. Internally
+    it calls the `make_new_set` function.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****`set_init` performs some pre-steps:*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****fails if any `kwarg` has been passed,*****'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*****fails if `args` has more then 1 element,*****'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*****converts the first argument of `args` to an iterable,*****'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*****if the set object has already been filled, then it clears it*****'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*****&mldr; and calls the `set_update_internal` function, to insert values
+    into the set object.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****[#](#1-2-literal-expression) `{1, 2}` literal expression*****'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*****The opcode handler has no dedicated helpers. It constructs a new set (empty),
+    and then iterates over all items from the stack and insets them one-by-one.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****Source: [https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627](https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627).*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '******Warning******'
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: '*****Warning The generated bytecode is different if we add another argument
+    to the literal expression: `{1, 2, 3}`. Then it becomes:*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****[#](#tuples) Tuples*****'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '*****This one’s tricky. Constructing a tuple with the `tuple` type requires
+    an iterable. The easiest way of getting one it to create a tuple literal, which
+    is obviously less efficient, than using a tuple literal syntax in the first place.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****It might not make much sense to include this example in the article.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*****[#](#tuple-type) `tuple` type*****'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*****The Python’s `tuple` type is defined in `tupleobject.c`. Interestingly,
+    it has no `tp_alloc`, nor `tp_init`.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*****The `tuple_new` function is responsible for allocating a new tuple object,
+    with the items passed as a parameter.*****'
+  prefs: []
+  type: TYPE_NORMAL
+- en: </main>
+  prefs: []
+  type: TYPE_NORMAL

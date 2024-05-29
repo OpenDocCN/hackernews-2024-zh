@@ -1,0 +1,473 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:57:13'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building For Builders - deven.codes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://deven.codes/posts/building-for-builders/](https://deven.codes/posts/building-for-builders/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Over the course of 2023-ish I wrote two Python frameworks   (1)I’d like to avoid
+    a semantic debate, but for clarity’s sake when I say, “framework” I mean a library
+    that holistically and generically targets the way you write applications (or tests
+    in the case of `sundew`) rather than providing a narrow set of functionality.
+    I think there is some unique consideration you have to have when targeting the
+    whole way a developer builds software, but by I expect these learnings are things
+    that would apply to development of any kind of library that you intend other people
+    to use. You might even notice some similarities with good product development
+    practices in general . The first, an open source testing framework called [sundew](https://github.com/devenjarvis/sundew),
+    that attempts to rethink traditional unit testing with the goal of being both
+    faster and more effective. The second, a closed source actor model framework that
+    I wrote with a team, which we will call `pk`. Currently, `pk` is still under development,
+    but it is actively used in production for user-critical systems. I’ve learned
+    a lot from building both, each with their own successes and failures, and I thought
+    it would be useful to share a personal retrospective on the things I’ve learned
+    from building them this year.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start with a question [#](#start-with-a-question)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you decide to build a new framework or library, you get an empty canvas
+    to start with. And wow, can an empty canvas be freeing! You can do anything! Paint
+    with your own stroke, make your unique mark on the software world, and do things
+    in ways they’ve never been done before   (2)The way they *should’ve* been done
+    all along, amiright? . But also… you could do *anything*. There are a lot of problems
+    to solve in the software world, and usually many ways you could go about solving
+    them. As software engineers we’ve heard time and time again that solving one problem
+    really well is much more effective than trying to solve them all at once. Something
+    about “boiling the ocean”. Yet for some reason many of us find it so hard to find
+    and keep a specific focus when we begin building, especially for projects that
+    are meant to be widely impactful like frameworks. So, how can we get started on
+    the right foot?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before I started on `sundew`, I was working with a large unit test suite that
+    was comprehensive with high code coverage, but it was painfully slow to run and
+    still let many obvious-in-hindsight bugs slip through to consumers. I had just
+    finished leading a book club for “Test-Driven Web Development with Python”   (3)7/10,
+    I largely recommend if you’re looking to [strengthen your testing skills](https://www.obeythetestinggoat.com/pages/book.html)
+    and couldn’t stop asking myself, “How can I make testing faster *and* more effective?
+    There’s got to be a better way!”. I knew that I needed my test suite to be **faster**,
+    because quick feedback loops pay compound interest when developing software, but
+    I also needed it to be **more effective** at catching bugs before the code got
+    to our customers. Additionally, I didn’t want to spend hours crafting the perfect
+    tests to achieve these goals, I needed my testing framework to be **smart** 🧠
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It’s easy to start building a framework or other project with a statement like,
+    “I’m going to build a better testing framework!”, but if you stop and think about
+    it, what does that really tell you about what you plan to build? My experience
+    is that `sundew` shaped up into something powerful because I started with a question
+    instead. More specifically, I believe the very best question you can ask yourself,
+    before writing a line of code, is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the **problem** I want to solve?
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When you ask yourself this, be as specific as you can be. Generic, theoretical
+    problems lead to generic, theoretical solutions that are going to have a much
+    harder time standing the trials of the real world (more on this later). Focus
+    on the pain-points you’ve directly experienced, or *at the least* have directly
+    heard about from others. You should be able to list a few very specific examples
+    where you, or someone you know, hit this problem and the *pain* it caused. The
+    core concepts of `sundew` came from the pain of a slow, incomplete test suite,
+    not from a generic aspiration that I could “do you one better” over the existing
+    options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As another example, `pk` was born when my team recognized a growing need for
+    queue worker services that were well modeled as streaming data pipelines. We knew
+    that we wanted to **reduce rework** and the support burden that comes from multiple
+    services reusing data processing steps, which do the same thing but in *slightly*
+    different ways. We also wanted to maintain and improve our standards for building
+    **robust** and **performant** pipelines. And finally, we wanted to be able to
+    **build new pipelines quicker**! We never said “We need to build an actor model
+    framework for Python!”, we started with the problems that needed to be addressed
+    and asked ourselves the best way to solve those. Our needs and constraints naturally
+    led us to build an actor model framework, which has turned out to be a well fitting
+    solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Define your anti-goals. [#](#define-your-anti-goals)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: “Explicit is better than implicit”
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Tim Peters, The Zen of Python
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Depending on the scope of your problem, you’re likely to find lots of sub-problems,
+    or closely-related problems that you could easily tackle as well. If you aren’t
+    careful, the list of problems you are solving becomes large, and your framework
+    becomes too general to be the *best* solution for your original issue. That’s
+    why at the start of a project I like to define **anti-goals** alongside my goals.
+    These are the things that you explicitly *won’t* solve, not because they aren’t
+    valuable, but because they take away from your focus or expand the scope too far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my experience this is most effective when you are building with/for a team
+    of engineers who may all have their own opinions on the scope of the framework
+    you are building. Being clear upfront where the boundaries are for what you’ll
+    build and support go a long way towards gaining alignment. They also create useful
+    conversations when the boundaries you set don’t align with a team members’s initial
+    expectations. “Explicit is better than implicit”, especially when setting boundaries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anti-goals are helpful for focusing your effort, but they can be even more helpful
+    for defining how you built your framework. Anti-goals represent the closely related
+    problems *you* choose not to tackle, but there’s a good chance these are the same
+    problems your future users are going to come across and they will require a solution.
+    With this in mind your anti-goals can serve as a guide for where you want to build
+    extension points for your framework. For example, when building `pk` we established
+    upfront that we would build the framework based on the actor model, but it would
+    not be the home for any shared actors, nor would it house connectors for external
+    data outside of a small predefined core set. This meant acknowledging and agreeing
+    upfront that while sharing actors and connectors across pipelines was important,
+    they would need to be built by users in separate modules. This not only set clear
+    boundaries for building our framework, but made it obvious that building shareable
+    actors and defining new data connectors would be extension points for the framework
+    that we needed to get right upfront.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, remember that just like goals, anti-goals are not set in stone. They
+    can change and evolve over time as your project matures and you learn more. Keep
+    revisiting them to add new boundaries where needed, or remove old ones when your
+    user’s needs outweigh the cost in expanding scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Know what already exists [#](#know-what-already-exists)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ”Everything that can be invented has been invented.”
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Punch Magazine, vol 116, 1899
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you’ve gotten clear about the problem you are solving, and you’ve fleshed
+    out our anti-goals it’s time to write some code, right? Well.. almost! Now that
+    we know what we want to build, it’s a good idea to make sure someone hasn’t already
+    built it. If it’s a valuable problem you probably aren’t the first one who has
+    hit it and considered solving it so, while solving our own problems is fun and
+    rewarding, it’s worth it to make sure you aren’t reinventing the wheel. You could
+    be tackling the next most important thing on your list instead. That said, there
+    are a couple of ways I recommend *not* going about this process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first wrong way to do this, is to do a search, find a library/framework
+    that says it’ll solve your problem in its tagline, throw up your hands because
+    ”everything that can be invented *has* been invented”, and give up. We just went
+    through **a lot of hard work** to get pretty specific on our problem. So take
+    a few more minutes to dig in and make sure this library or framework actually
+    fits the bill. Oftentimes the developer of that framework either had their own
+    very specific problem they are solving, which may not overlap enough with yours,
+    or they fell into one of the traps above and are solving too general of a problem
+    to make it a good fit for what you need. Take a deeper dive and find out. If it’s
+    exactly what you need, perfect! Don’t despair, thank the open source maintainer(s)
+    for saving you 3-12 months of work, and go ahead `pip/npm/cargo/whatever install`
+    your new found solution! There’s more work to be done, and other unsolved problems
+    you can put your mind to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other bad way to go about this is to immediately nitpick every solution
+    you find, to convince yourself it couldn’t *possibly* solve your problems. NIH
+    (Not-Invented-Here) Syndrome is real and a lot of humans struggle with it   (4)myself
+    included ✋ . We want a sense of ownership, a feeling of “hey, *I* solved that,"
+    and software is a really *really* easy way to scratch that itch. However, as I’ve
+    said, it is likely that you’ve got plenty of other important problems to tackle,
+    so don’t block yourself solving this issue if you don’t absolutely have to. If
+    you find an existing framework that might be a good fit, rejoice! If it’s 99%
+    of the way there, and it’s open source, consider contributing the 1% you need
+    (or at least opening a PR to ask about it!). The best software happens collaboratively,
+    and oftentimes hitching onto someone else’s bandwagon is going to be a much more
+    productive way to get where you want to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you’ve given everything you find a fair shot, and determine they are still
+    missing the mark in significant ways, *then* it’s time to begin the long journey
+    of building your very own framework. Consider adding these to a “Prior Art” section
+    of your README now, and get ready to start building 🔨
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider your interface first [#](#consider-your-interface-first)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Design is really an act of communication, which means having a deep understanding
+    of the person with whom the designer is communicating.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Donald A. Norman, The Design of Everyday Things Quotes
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'It’s finally time to code! But where do we start? At this point, I highly recommend
+    starting by designing the right interface. This is the “frontend” of your framework,
+    and it’s what we mean when we say “Developer Experience” (DX). The way it feels
+    to use your framework is going to be a huge factor in adoption, which is *pretty*
+    important assuming you care about anyone else using it. I’ve learned that the
+    first thing I like to do is mock out and explore the ways someone might use my
+    framework in its hypothetical finished state. It helps start answering questions
+    like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As I start landing on a possible interface, the next question I explore is,
+    “What are **other** interfaces I could build instead?”. It’s easy to take the
+    first interface that came to mind and run with it; you’ve got a solution, let’s
+    code already! I hear you, spending time considering alternative interfaces for
+    your framework can seem like a waste of time when you have so much to do, but
+    consider one of the following possibilities:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your first solution might not be your best 🤷. Remember you are building this
+    framework for other developers too, and what is immediately obvious to you may
+    not resound for your eventual users. Take some time to come up with at least 2
+    or 3 other ways developers might want to interact with your framework, and then
+    assess their merits side-by-side.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Your first solution *is* the best one 🎉. That’s great, good work! However, it’s
+    your users that have to be convinced that you’re on the best path forward. Take
+    the time to consider 2 or 3 other approaches, and solidify your opinions about
+    why the first is the better approach. This gives you much firmer ground to stand
+    on when users come to you with their own vision of how this could be solved in
+    the future. It also builds confidence in your chosen solution, and confidence
+    often translates to focus in my experience.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I’ll note this is an exercise I go through, not just when beginning the framework,
+    but before every big new feature or rearchitecture. Anything that has the potential
+    to dramatically change the way your users can/will use your framework is worth
+    the extra upfront design time to get it right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use it before it’s ready [#](#use-it-before-its-ready)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s fast forward juuust a bit. You’ve written hours of code (maybe spread
+    out over the span of a few weeks) and your framework is starting to do *something*
+    like what you dreamed. It’s still clunky, doesn’t generalize at all, can’t handle
+    a single edge case, and all the documentation on how to use this is in your head
+    (best case scenario). It’s time for you to start using it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: “But wait Deven! This is but a whisper of the final product it’ll be. This *barely*
+    solves just a part of the problem I worked so hard to define. It’s definitely
+    not **ready**”, you protest. That’s perfect, it’s exactly where you want it to
+    be when you start using it. You don’t have to share it with anyone else (yet),
+    but it’s time for you to `pip/npm/cargo/whatever install` your framework into
+    another project and start *using* it. And I don’t mean a trivial made-up project
+    acting as a glorified functional test. I mean a true project that has a real-world
+    use case to deliver value to someone; even better if it’s an existing project
+    that is already delivering value. The reason I say this, is that you are now at
+    the first point where you can determine if your theoretical solution has a chance
+    at solving your real-world problems. If it can’t, you want to know that as **soon**
+    as possible, because the pain of pivoting will never be lower than right now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I mentioned in the opening that I started an open source testing framework called
+    `sundew`, but what I didn’t share is that currently, `sundew` doesn’t have any
+    users 😞. It’s not because `sundew` isn’t good, it has features I would kill to
+    have in my regular testing setup, and ones I’ve yet to come across in any other
+    framework. It really addresses the core problems I had when I sought to build
+    it, and I’m proud of the solutions I landed on. But, in its current form, it just
+    isn’t usable. I took an opinionated stance on how to write tests with `sundew`,
+    and I thought I was assessing my opinionated solution with the great tests I was
+    writing for `sundew` by using `sundew`. However, it wasn’t until after my first
+    public release that I took the step to start using `sundew` with other non-trivial
+    projects. That’s when I realized that it’s just too inflexible to stand up to
+    real world testing needs. Can it be fixed? Absolutely! But the friction for re-architecting
+    `sundew` now is much higher than it would’ve been if I’d realized this and pivoted
+    earlier in the development process. That friction kills momentum, which can be
+    a death blow for a project, especially if it’s something you are building on the
+    side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`pk` is a counter example. Notice in my opening I said, that while it is still
+    under development, it is actively used in **production**. Myself and a team member
+    started using it for two non-trivial, customer-facing projects as soon as the
+    base functionality was, just barely, present. The learnings from those experiences
+    were tremendously valuable, and several major pivots have been made since, maturing
+    the framework rapidly and delivering value to users much sooner. These are pivots
+    that were not planned, and wouldn’t have been identified until we started using
+    it. Pivots that would’ve been much harder to make if we waited for “v1.0” to start
+    using it. Now we’ve expanded use of the framework across the team and into additional
+    products, still before a v1.0 release. Deploying rapidly and getting feedback
+    earlier in the process enabled me to make adjustments at a lower cost, and increased
+    my chances of building a quality solution over the long term.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sample size of 1 isn’t significant [#](#sample-size-of-1-isnt-significant)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using your framework yourself early on will tell you if your solution is viable,
+    but it won’t be a good test for if your framework can generalize or if it’s actually
+    enjoyable to anyone else. You are naturally building the solution that makes the
+    most sense to you for the specific problem you have in mind. However, by definition,
+    if you are taking the time to build a framework this isn’t a one-off problem you
+    are solving, and you need to generalize it enough to still be useful within some
+    meaningful range of flavors that your problem comes in. At this point it’s good
+    to get out of your own head, and start getting your framework in the hands of
+    early adopters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These may be coworkers, developer friends, or strangers on the internet who
+    happen to have the exact problem you have. Doesn’t really matter where you find
+    them, and you don’t need a lot of them, but you do need *at least* 2 or 3 people
+    who are excited and willing to try out what you’ve built so far. You want to do
+    this early, so make sure these are people who understand this doesn’t come with
+    the polish and production-guarantees of a fully baked answer. You also want to
+    make sure these people actually have the problem you are looking to solve, and
+    have a real use case they can try your framework out with. Then, once they are
+    on board, you want to get as much feedback as possible from them. Their reward
+    for using your half-baked solution, is the influence they have on what the full-baked
+    version will look like. Ask them things like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What isn’t intuitive to you?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What works, but is painful?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What doesn’t work that you *need* to work?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Also make sure you find out “What do you love about it?”. Criticism can be hard,
+    but if you are driven by a building a great product it’s also easier to get caught
+    up in all the things you can fix or make better. We’ve all come across products
+    that we once loved which eventually changed to be “better”, but ended up losing
+    the thing we actually loved in the first place. Make sure you take the time to
+    understand what’s *really working* and hold on to that when you address what isn’t.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing software is, and always will be, a series of trade-offs. Not all trade-offs
+    are equal though, and losing the things your users love to solve the minorly unintuitive
+    is rarely worth it. Find another path forward that preserves the good and eases
+    the bad or, in some cases, stick to your opinions and be okay with it not being
+    everyone’s cup-o-tea. Just make sure whatever you choose, you make the choice
+    intentionally based on what you’ve learned from actual users. I learned the value
+    of getting what I’m building in front of people as soon as possible with `pk`,
+    and I believe `sundew` would’ve had a lot more initial success if I had done the
+    same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Document, document, document [#](#document-document-document)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is the Curse of Knowledge. Once we know something, we find it hard to imagine
+    what it was like not to know it. Our knowledge has “cursed” us. And it becomes
+    difficult for us to share our knowledge for others, because we can’t really re-create
+    our listeners’ state of mind.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Chip Heath & Dan Heath, Made to Stick, p.20
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The final thing I want to cover seems to also be the bane of many developer’s
+    existence: documentation. Great software documentation regularly gets praised
+    in software engineer circles, but as soon as it’s time to write some no one seems
+    eager to volunteer. We love to think we’ve written “self-documenting” code, or
+    that “using it will be obvious”, but the reality is if you want anyone else to
+    ever use your framework you’ve got to put the legwork in to create documentation.
+    Preferrably **good** documentation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’ve ever searched GitHub, found a repo that sounds like it may be what
+    you need, and then found it has zero documentation (sometimes not even a README)
+    then you know the frustration of being on the receiving end of undocumented software.
+    Even if it was the perfect solution for what you needed, the cost to understand
+    someone else’s code and determine whether it actually meets your needs is much
+    too high. Few people are willing to pay that cost, and honestly we shouldn’t be
+    asking them to. Writing documentation might seem like a big upfront investment,
+    but the payoff down the road in adoption of your framework and the reduced support
+    burden of answering the same questions over and over again is huge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ll wrap up by acknowledging that writing good documentation is *hard*, and
+    I believe that the “Curse of Knowledge” gives us a clue as to why that is. As
+    the creators of a thing, we are de facto the most knowledgeable people in the
+    entire world about said thing, making this curse of knowledge heavier than usual.
+    It’s hard, maybe impossible, to foresee all the questions a future user will have
+    about your framework, because you’ve **never** known as little about it as they
+    will when they start using it. I like to believe I’ve written some pretty good
+    documentation for `sundew` and `pk`, not perfect but at the least comprehensive
+    (`pk` has over a dozen wiki documents dedicated to usage and several more dedicate
+    to it’s inner workings). Yet somehow, every new user brings a question that I
+    never even considered or documented but is obviously critical in hindsight. When
+    it comes to solving this, my best learning so far is to start writing your documentation
+    as soon as possible in your software-building journey. You’ll never know less
+    about your framework than you do today, thus, perhaps unintuitively, you’ll never
+    be closer to your users’ and their perspective than you are now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What I haven’t learned yet [#](#what-i-havent-learned-yet)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building both `sundew` and `pk` have been incredible learning experiences, and
+    I grew a lot as both a software engineer and communicator. What I’d like to learn
+    next is how these concepts scale as the framework, and it’s number of users, grow
+    larger. I’d like to invest some of this year either revisiting `sundew`, or building
+    something new with these learnings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For anyone out there in the early days of building your own framework, I hope
+    my learnings are helpful for you. Best of luck on your journey!
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re a framework-building pro, then I’d love to hear where I got this right,
+    and where I still have blindspots; Check out my “Contact” page and let me know
+    what you think!
+  prefs: []
+  type: TYPE_NORMAL

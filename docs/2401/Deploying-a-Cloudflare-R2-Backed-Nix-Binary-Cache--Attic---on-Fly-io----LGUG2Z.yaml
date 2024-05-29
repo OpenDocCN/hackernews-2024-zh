@@ -1,0 +1,246 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:51:46'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Deploying a Cloudflare R2-Backed Nix Binary Cache (Attic!) on Fly.io :: LGUG2Z'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/](https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I have tried running the [Attic Nix Binary Cache](https://github.com/zhaofengli/attic)
+    on my Hetzner dedicated server in Germany a few times in the past, but the peering
+    issues and the latency to Xfinity in Seattle have always made me throw my hands
+    up in frustration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This morning I noticed [a comment](https://github.com/zhaofengli/attic/issues/1#issuecomment-1368527062)
+    by Zhaofeng on the repo issue tracker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a NixOS aficionado myself, I begrudgingly admit that I’ve been running my
+    instance on fly.io 😛
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I’m not sure if this is comment is still current, but hey, if Zhaofeng is/was
+    running his binary cache on [fly.io](https://fly.io/), there’s no reason why we
+    can’t too, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storage[⌗](#storage)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While Attic does support local storage, I figured I’d use Cloudflare’s R2 as
+    a storage backend, both as an excuse to try out the [free tier](https://developers.cloudflare.com/r2/pricing/)
+    (10GB), and because it’ll be easy enough to lift-and-shift if I ever decide to
+    move the server from fly.io.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s easy enough to create a new R2 bucket and grab a read-write API token scoped
+    to the bucket on the [Cloudflare Dashboard](https://dash.cloudflare.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Server Configuration[⌗](#server-configuration)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once we have our credentials, we can put together a configuration file for the
+    Attic server based on the [example config](https://github.com/zhaofengli/attic/blob/e6bedf1869f382cfc51b69848d6e09d51585ead6/server/src/config-template.toml).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: One thing to note is that we are storing our SQLite database file at `/data/attic.db`
+    - this is going to be a fly volume that we’ll create soon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should probably `git-crypt` this file (or encrypt it with `sops` or `age`)
+    in your configuration repo since it has sensitive credentials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Not sure about how to handle secrets in NixOS configuration repos? I have
+    a big old article all about [handling secrets in NixOS](https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/)!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dockerfile[⌗](#dockerfile)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Luckily, there is an automatically published Docker image available for us to
+    extend. There isn’t much to do here except bring in our configration file, reference
+    it when we start `atticd` and ensure it’s running in `monolithic` mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Fly Config[⌗](#fly-config)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The last piece of the deployment puzzle is to put together a `fly.toml` file
+    for our `atticd` instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by ensuring we have a volume created in our desired region.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The volume can be called whatever we want, we just need to make sure to update
+    the `source` in the `[mounts]` section in our `fly.toml` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s pretty much it, time to `fly deploy`! (I do this with `--ha=false` since
+    I don’t want to create more than one machine)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating an Attic token[⌗](#generating-an-attic-token)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’ll need to execute a command on the newly deployed fly.io machine to generate
+    a “godmode” token for ourselves. Let’s start by getting the machine ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we can call the `atticadm` command on the fly.io machine via `fly machine
+    exec` to generate our token.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We need to keep this token somewhere safe and preferably encrypted. I keep mine
+    encrypted with `sops-nix` in my NixOS configuration monorepo and have it decrypted
+    and mounted to `/run/secrets/attic/token` on machines that have been given access
+    to decrypt it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logging into Attic[⌗](#logging-into-attic)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This part is pretty simple! We can call the server whatever we like in our configuration;
+    here “fly” will do. The final two arguments are the URL generated for our fly.io
+    app and our access token.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pushing to our Attic cache[⌗](#pushing-to-our-attic-cache)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have the `atticd` cache server running on fly.io and our computer
+    authenticated with a token that allows us to push, let’s set up a cache and push
+    our entire(!) system configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note: In my case 256MB of RAM was not enough to keep up with everything I wanted
+    to push! I suggest scaling the RAM to at least 512MB, if not 1GB with `fly scale
+    memory 512`. The snippet below assumes that you have bumped the RAM to 512MB which
+    *should* be able to handle three concurrent jobs (`-j 3`) without the machine
+    giving “out of memory” errors and restarting the `atticd` process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring NixOS to use our Attic binary cache[⌗](#configuring-nixos-to-use-our-attic-binary-cache)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two things that we need to do before we can configure NixOS to use
+    our new binary cache.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we need to get the public key of our `system` cache.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to create a `netrc` file which contains our `attic` token. The
+    format looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since this file once again contains sensitive information, if you want to store
+    this in your configuration repo, I recommend encrypting it. In the example below,
+    I have added the `netrc` file contents via `sops-nix`, which mounts the decrypted
+    contents to `/run/secrets/attic/netrc` for machines that have been given decryption
+    access.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, when our NixOS machines are rebuilt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First the official NixOS cache (with a priority of 40) will be checked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next, the `nix-community` public cache (with a priority of 41) will be checked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next, the `numtide` public cache (with a priority of 42) will be checked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, our private cache (with a priority of 43) will be checked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If there are no cache hits at all, the package will be built from source
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What we have at this point is pretty damn cool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In the next article we’ll make this even cooler still**, by setting up GitHub
+    Actions jobs [to build each of our NixOS system configurations whenever we push
+    a new commit, and push the outputs of each those builds to our private `system`
+    cache](https://hachyderm.io/@LGUG2Z/111767749455052075)!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have any questions or comments you can reach out to me on [Twitter](https://twitter.com/LGUG2Z)
+    and [Mastodon](https://hachyderm.io/@LGUG2Z).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re interested in what I read to come up with solutions like this one,
+    you can subscribe to my [Software Development RSS feed](https://notado.app/feeds/jado/software-development).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’d like to watch me writing code while explaining what I’m doing, you
+    can also [subscribe to my YouTube channel](https://www.youtube.com/channel/UCeai3-do-9O4MNy9_xjO6mg?sub_confirmation=1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you found this content valuable, or if you are a happy user of [`komorebi`](https://github.com/LGUG2Z/komorebi)
+    or my [NixOS starter templates](https://github.com/LGUG2Z), please consider sponsoring
+    me on [GitHub](https://github.com/sponsors/LGUG2Z) or tipping me on [Ko-fi](https://ko-fi.com/lgug2z).
+  prefs: []
+  type: TYPE_NORMAL

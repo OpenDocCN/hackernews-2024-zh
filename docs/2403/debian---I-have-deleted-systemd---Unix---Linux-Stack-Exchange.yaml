@@ -1,0 +1,109 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:38:11'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: debian - I have deleted systemd - Unix & Linux Stack Exchange
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://unix.stackexchange.com/questions/772960/i-have-deleted-systemd](https://unix.stackexchange.com/questions/772960/i-have-deleted-systemd)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'I''ll assume all commands below are run as root user. Either login directly
+    as root, or if you can''t, log instead as the user allowed to use `sudo` and use
+    `sudo -i`: there should be a root prompt with a `#` at its end.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should backup the contents of `/var/log/apt` with
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: so you can later find what other deleted package you might have to install back.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As support for system V is slowly degrading, I can assume that some GUI parts
+    rely on systemd features and thus fail to start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You should reinstall `systemd`, but this might not be enough: to trigger additional
+    needed dependencies, instead you should remove what provides System V''s `/sbin/init`:
+    `sysvinit-core`. The same way removing `systemd` triggered installation of replacement
+    system V packages, removing this one will trigger replacement in the systemd ecosystem.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tested this on an empty LXC container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and later after reboot fixes etc (don''t run this, won''t be enough):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: won't do enough to be useful (it would stay with sys V init).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'appears more useful. At least one suggested package should be installed back:
+    `polkitd` (by appending a `+` at the end, this can be done within a `remove` operation).
+    So in the end run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This requires network. It appears OP (and actually my LXC test) doesn''t have
+    network anymore by default. This should be fixable easily with a wired Ethernet
+    interface named `eth0` (actual name can be retrieved from `ip -br link`''s results,
+    replace `eth0` below with it if needed):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: then try again the previous `apt` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'on a minimal system something like this would be displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and reboot, to switch back to systemd. This might or might not restore the
+    GUI, but this should have switched back to `systemd`. To verify, one can run (as
+    root):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: which should have non-empty output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once above is done, examine the log backup in `/root/log-apt-backup/history.log`
+    and search for a line looking like the commands you did: `Commandline: apt remove
+    systemd` and `Commandline: apt autoremove systemd`. Check all removed packages
+    shown below their respective `Remove:` entry, and add back what might still be
+    missing.'
+  prefs: []
+  type: TYPE_NORMAL

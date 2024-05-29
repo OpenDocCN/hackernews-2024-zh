@@ -1,0 +1,558 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:32:29'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scratch Data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://scratchdata.com/blog/building-a-ledger/](https://scratchdata.com/blog/building-a-ledger/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Building a Scalable Accounting Ledger
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A number of [blog](https://beancount.github.io/docs/the_double_entry_counting_method.html#double-entry-bookkeeping)
+    [posts](https://www.moderntreasury.com/journal/accounting-for-developers-part-i)
+    have come to light explaining the basics of double-entry accounting for developers.
+    I aim to share a simple - and elegant, I think - database schema for recording
+    and tabulating ledger entries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Engineers tend to hand-wave over accounting terminology, dispensing with terms
+    like “debit” and “credit” - after all, why not just use positive and negative
+    numbers? I think this leads to confusing results. Take this example from ledger-cli’s
+    [documentation](https://www.ledger-cli.org/3.0/doc/ledger3.html#Stating-where-money-goes):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"When you look at the balance totals for your ledger, you may be surprised
+    to see that Expenses are a positive figure, and Income is a negative figure. It
+    may take some getting used to, but…"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'I understand the argument: since the normal balance for income is credit, and
+    ledger-cli represents credits as negative numbers, then income would be show as
+    negative. But this is not consistent at all with how financial statements are
+    prepared.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So let’s design a system which can be easily modeled in a database and consistent
+    with how actual accounting is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Database Choice Matters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're building an application with millions of transactions, you'll inevitably
+    find that calling SUM() on these columns is plain old slow. One way to solve this
+    is to pre-aggregate data, perhaps by day, and store it in a separate table. This
+    can be done in the application, materialized views, or triggers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another option is to use a column-oriented database like Clickhouse. That''s
+    what we''ve chosen here: we prefer to keep the data model simple and use the technology
+    to process data quickkly rather than complicate how data gets inserted.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chart of Accounts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first thing we want to define is our list of accounts. Our accounts table
+    has 3 columns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Name**. The name of the account (Assets, Liabilities, etc)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Number**. Often, accounts are assigned a number hierarchy. For example: 100
+    Assets, 101 Cash, 106 Accounts Receivable, etc. The useful thing here is we can
+    roll up the value of sub-accounts by using place value. We’ll get to an example
+    later.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Normal balance**. In our schema, we define `1` for credit and `-1` as debit.
+    The user never sees this! But it is convenient for arithmetic.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here’s our table, using SQLite:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we’ll populate it with some accounts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| name | number | normal |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Assets | 100 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Cash | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Merchandise | 120 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Liabilities | 200 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Deferred Revenue | 210 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Revenues | 300 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Expenses | 400 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Cost of Goods Sold | 410 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Equity | 500 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Capital | 510 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: Note that Cash and Merchandise roll up into Assets (likewise for other sub-accounts.)
+    All Asset accounts are in the “100” range. This is [typical](https://www.accountingtools.com/articles/chart-of-accounts-numbering.html)
+    for how firms set up their chart of accounts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This schema is already useful! Just based on knowing our accounts and their
+    normal balances, we can derive the accounting equation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| expression |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Liabilities + Revenues + Equity + Deferred Revenue + Capital |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Assets + Expenses + Cash + Merchandise + Cost of Goods Sold |'
+  prefs: []
+  type: TYPE_TB
+- en: Each line is one side of the equation. This is a rather, erm, comprehensive
+    rendition of that equation. We can just get the high-level accounts by selecting
+    those which are divisible by 100\. The arithmetic is pretty nifty, and lets us
+    roll up data as granularly as we like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| expression |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Liabilities + Revenues + Equity |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Assets + Expenses |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Much better! With a little more SQL we can output the equation itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Transactions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have a workable chart of accounts, let’s add transactions. Our transactions
+    table is straightforward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Transaction ID**. This will identify all single-entry items (debits+credits)
+    which make up a single transaction.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Date**. The transaction date.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Amount**. The dollar amount for the transaction. This is usually a positive
+    number - we do not use negative numbers to represent credits, there is a separate
+    column for that.)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Account**. This is the account number (ie, 110 for Cash) for this transaction’s
+    line item.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Direction**. We choose `1` for debit and `-1` for credit, as before. This
+    is a handy convention for arithmetic.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Example Transactions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For our example, we’ll record a number of ledger entries to show an opening
+    account balance, buying inventory, and then selling the inventory to a customer.
+    This post won’t go into the accounting explanation for each transaction (stay
+    tuned!) but shows how to use this data to do basic queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our DB, we add the following rows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| id | date | amount | account | direction |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | 500.0 | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | 500.0 | 510 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | 100.0 | 120 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | 100.0 | 110 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | 15.0 | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | 15.0 | 210 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | 15.0 | 210 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | 15.0 | 300 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | 3.0 | 410 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | 3.0 | 120 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: Note there are multiple rows with the same ID. This is because both rows are
+    part of the same transaction - the entirety of that transaction must have debits
+    = credits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Breaking down transaction `0`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The amount is for $500.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first line is a debit, denoted as `direction=1`. The account is Cash, as
+    the account number `110` matches with our accounts table. Because Cash shares
+    the same prefix as “Assets” then this transaction rolls up to the “Assets” account.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second line is a credit, denoted as `direction=-1`. Similarly, the account
+    number `510` is Capital, which is an Equity account.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Querying Transactions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have a full set of ledger entries, let’s run some SQL queries! These
+    are all surprisingly understandable - dare I say elegant. The schema preserves
+    the norms of accounting, the DB operations are cheap, and the output is consistent
+    with any standard accounting statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JOIN Transactions with Account details
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is a basic query to show transaction and account information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| id | date | amount | account | direction | name | number | normal |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | 15.0 | 110 | 1 | Cash | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | 15.0 | 210 | -1 | Deferred Revenue | 210 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | 15.0 | 210 | 1 | Deferred Revenue | 210 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | 15.0 | 300 | -1 | Revenues | 300 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | 100.0 | 110 | -1 | Cash | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | 100.0 | 120 | 1 | Merchandise | 120 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | 3.0 | 120 | -1 | Merchandise | 120 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | 3.0 | 410 | 1 | Cost of Goods Sold | 410 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | 500.0 | 510 | -1 | Capital | 510 | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | 500.0 | 110 | 1 | Cash | 110 | 1 |'
+  prefs: []
+  type: TYPE_TB
+- en: Verifying debits = credits
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This query helps us verify that, overall, debits and credits match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Debits and credits should sum to 0\. We can verify this like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| sum(direction * amount) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: What if we want to find transactions where debits and credits don’t match?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Balances
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Putting together a balance sheet is easy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| a | name | balance |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 110 | Cash | 415.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 120 | Merchandise | 97.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 210 | Deferred Revenue | 0.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 300 | Revenues | 15.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 410 | Cost of Goods Sold | 3.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 510 | Capital | 500.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: The most important part of this query is `SUM(amount * direction * normal)`.
+    This ensures we are correctly increasing and decreasing our balances, and ensures
+    the balance is positive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What if we want a report with the sub-accounts rolled into the main ones? We
+    can use arithmetic to find the parent account number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| a | name | balance |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 100 | Assets | 512.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 200 | Liabilities | 0.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 300 | Revenues | 15.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 400 | Expenses | 3.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 500 | Equity | 500.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: Here, we've rolled up Cash and Merchandise under Assets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, here’s how we can display all transactions in a human-readable way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| id | date | name | DR | CR |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | Cash | 500.0 |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 2022-01-01 | Capital |  | 500.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | Merchandise | 100.0 |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1 | 2022-01-01 | Cash |  | 100.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | Cash | 15.0 |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2 | 2022-02-01 | Deferred Revenue |  | 15.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | Deferred Revenue | 15.0 |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3 | 2022-02-05 | Revenues |  | 15.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | Cost of Goods Sold | 3.0 |  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4 | 2022-02-05 | Merchandise |  | 3.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: Streaming with Scratch Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Finally, one can ask: how do we get all of this data into our database? If
+    using a data warehouse (Clickhouse, Snowflake, etc) then it''s impossible to do
+    individual INSERT statements every time a transaction happens. You end up setting
+    up a nightly bulk load process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What if you could stream journal entries in as transactions happen in real time?
+    You could have up-to-the-minute balance sheets. Thankfully, Scratch Data makes
+    this really easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can stream data to Scratch and we will automatically collect it, create
+    database schemas, and safely batch insert.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Streaming Stripe and Shopify Data
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Stripe and Shopify have webhooks to track every transaction. With our API endpoints,
+    you can set Scratch Data as a webhook destination and every transaction will stream
+    into the database in real time. Check out our blog posts for [Stripe](/blog/stripe-data-ingest/)
+    and [Shopfiy](/blog/shopify-data-ingest/) as examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Streaming From Code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you want to stream data from code - perhaps you have your own webhook, or
+    application code - this is really easy too! Here''s what the JSON would look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And then POST it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: From here, data can be streamed to your application (if you're building a user-facing
+    dashboard) or as an Excel file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is hopefully a starting point on how to design a ledgering system which
+    has a high chance of producing data that can be used by your finance team using
+    correct terminology.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to learn more about how we can help you build such a system, please
+    [reach out](https://q29ksuefpvm.typeform.com/to/baKR3j0p#source=building_a_ledger)!
+  prefs: []
+  type: TYPE_NORMAL

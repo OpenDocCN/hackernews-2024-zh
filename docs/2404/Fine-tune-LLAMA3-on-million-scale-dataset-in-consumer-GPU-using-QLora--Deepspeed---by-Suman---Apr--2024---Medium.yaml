@@ -1,0 +1,356 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:32:39'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
+    | by Suman | Apr, 2024 | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a](https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Highlights,
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Model** : LLAMA-8b-instruct'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Dataset**: Openhermes-2.5(700k training, 300k testing)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**GPU**: 4 RTX 4090, 24GB'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bit of background about me,
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I’m a full-time software engineer 2, at the core of our platform team. In my
+    scarce free time, I explore various aspects of the machine learning world, with
+    interests in tabular data, NLP, and sound. Whatever I’m sharing here are scraps
+    from all over the internet consolidated into one place. I have decent experience
+    in training small NLP models and have submitted a solution in a Kaggle competition
+    using DeBERTa v3, scoring enough to be in the top 50%, but I have never tried
+    working with large language models. This is my first time, so please let me know
+    if there are any oversights. Yes, this is my first blog post. Writing this will
+    definitely help me, and hopefully, it will be useful for any readers as well
+  prefs: []
+  type: TYPE_NORMAL
+- en: LLama
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Who don’t know about this long necked creature revolutionizing the AI field
+    from its birth. Joke apart release of llama where the whole OSS powered LLM kicked
+    of the revolution which don’t seems like stopping in near future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To learn more on llama in depth and technical do checkout this [Post | LinkedIn](https://www.linkedin.com/posts/ujamil_llama-explained-kv-cache-rotary-positional-activity-7100620274642866176-XaKO/)
+    , this is one of the most technically simplified explanation I can found all over
+    the internet. Few things they implemented in their architecture like Grouped Multi
+    Query Attention, KV-Cache, Rotary Positional Embeddings(RoPE) which are very cool.
+    These are not in scope of this article. They continued releasing their versions
+    of LLama with latest version came few days ago. And this time with massive data
+    compacted into few GBs of parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Meta Unveils Llama 3–10 Key Facts About The Advanced LLM (forbes.com)](https://www.forbes.com/sites/janakirammsv/2024/04/19/meta-unveils-llama-310-key-facts-about-the-advanced-llm/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deepspeed
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*DeepSpeed is a deep learning optimization library that makes distributed training
+    and inference easy, efficient, and effective.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[*https://github.com/microsoft/DeepSpeed*](https://github.com/microsoft/DeepSpeed)'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I will be training this model using four RTX 4090 GPUs that I’ve rented from
+    [vast.ai](http://vast.ai/), so we need to take some steps to train the models
+    across multiple GPUs. Training on multiple GPUs is a complex task compared to
+    training on a single GPU. Why? When we train on a single GPU, the Optimizer state,
+    parameters and gradients reside in a single system, which helps iterating over
+    models on one GPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, if we add another GPU, there are two systems that will train the models,
+    each with its own state(Optimizer state, parameters and gradients). After one
+    epoch or several steps, we would like to obtain a single result. Now imagine two
+    systems training two batches of data in parallel; they need to communicate about
+    their state and converge the results with minimal data loss. There are multiple
+    ways to utilize multiple GPUs: we can replicate parameters, gradients, and optimizer
+    state across all GPUs, or we could shard only the optimizer state, or the optimizer
+    state and gradients. DeepSpeed helps in distributing the load over the GPUs without
+    any issues. And accelerate package from Huggingface lets us do this like its piece
+    of cake.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I will use stage 3 which will shard all parameters, gradients and optimizer
+    state which will let us training over less memory requirement,
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'More details in their blog, [ZeRO & DeepSpeed: New system optimizations enable
+    training models with over 100 billion parameters — Microsoft Research](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: QLoRA
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until I write something about QLoRA, please take a look into this blog to get
+    more technical context [What is QLoRA? | QLoRA — Weights & Biases (wandb.ai)](https://wandb.ai/sauravmaheshkar/QLoRA/reports/What-is-QLoRA---Vmlldzo2MTI2OTc5),
+    basically 70B/8B models are very large in size means when you fine tune it you
+    will not be able to fully fine tune with any GPU in normal people’s budget, so
+    we tried to fine tune it with very low resource and came LoRA which helped us
+    just training over parameters with low rank and merging them with original weights,
+    then came QLoRA which helped even more reducing memory consumption by quantizing
+    the pre trained LLM to 4 bit precision, quantizing is a topic in itself so not
+    going beyond this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also take a look into this article [LoRA Fine-tuning & Hyperparameters Explained
+    (in Plain English) | Entry Point AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lets start finetuning LLamA 3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will be finetuning the llama3 instruct model [meta-llama/Meta-Llama-3–8B-Instruct
+    · Hugging Face](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) over
+    [openhermes](https://huggingface.co/teknium/OpenHermes-2.5-Mistral-7B) dataset
+    provided by teknium.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data preparation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meta has their own chat format so tried to follow the format they provided and
+    read their encoding algorithm in their llama3 repository,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Load the dataset**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The encoding utility I took inspiration from** [**llama3 repo**](https://github.com/meta-llama/llama3/blob/af6eedf7042fb51d00b2b26d8ef1ceaab73e1670/llama/tokenizer.py#L202)**,**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remove redundunt columns and split it into train and validation
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**And push it to hub,**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The resultant dataset, [sumandas/openhermes-2.5-llama3 · Datasets at Hugging
+    Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3), example
+    text
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now its time for training LLama3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All of the resources were already available in internet I just fine tuned those
+    for my setup and requirements,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Prerequisites,**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Install cuda dev kit `conda install cuda` or follow [developer.nvidia.com/cuda-downloads?target_os=Linux](https://developer.nvidia.com/cuda-downloads?target_os=Linux)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Install deepspeed
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Install flash-attention *pip install flash-attn — no-build-isolation*
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Install these libraries, I use [uv](https://github.com/astral-sh/uv) for faster
+    dependency resolution,
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Training code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is Swiss knife training code where you can train in multiple mode as per
+    you convenience, found this in this repo [pacman100/LLM-Workshop: LLM Workshop
+    by Sourab Mangrulkar (github.com)](https://github.com/pacman100/LLM-Workshop),'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `training.py` file is the one we will launch using accelerate with proper
+    configs, just putting the training.py gist here, [https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab](https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This training code uses SFTTrainer from huggingface, more details [Supervised
+    Fine-tuning Trainer (huggingface.co)](https://huggingface.co/docs/trl/en/sft_trainer)
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can do multiple thing with this, you can train with loftq, unsloth, FFT,
+    normal lora but I will just use QloRa with Deepspeed ZerO stage 3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**First lets define the accelerate config for using deepspeed**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note, If you increase the number of GPU update number in *num_processes*
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Now lets just run the accelerate command to start training,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Notes,**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set env variable HF_HUB_ENABLE_HF_TRANSFER=1 first
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: output_dir will also be the repo created in huggingface where all the checkpoints
+    will be stored, checkpoints will be created every 500 steps by default
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I set chat template format as `none` , because I already formatted those in
+    my way, if you have other format do use for e.g chatml, zephyr
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`lora_target_modules` is set as all-linear which is QLoRa specific where they
+    published paper to show fine tuning all linear layers gives us comparable result
+    to full fine tune.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For setting up hyperparameters for LoRa, take a look into this awesome blog
+    [LoRA Fine-tuning & Hyperparameters Explained (in Plain English) | Entry Point
+    AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set up WANDB_API_KEY=<key> if you are reporting to wandb else remove `report_to='wandb'`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This should be it and your training should be running in full force, look for
+    GPU utilization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Observation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Ran the fine tuning for only 1 epoch, took around 15 hours. Loss curve
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'fig: training loss [train/loss (24/04/25 02:44:11) | huggingface — Weights
+    & Biases (wandb.ai)](https://wandb.ai/sumandas0/huggingface/reports/train-loss-24-04-25-02-44-11---Vmlldzo3Njg1NzIw?accessToken=hinzctjy4lbm48zwjoamnmhxs5r56zp8l88iqpss2jb0xo2w2bu049jkiqd59btj)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**WandB summary**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Last steps,
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After the finetuning what model you will get is small adapter model not full
+    model that you can just start using just now, we need to add the adapter to the
+    original meta llama3 weights,
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load PEFT adapter model,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now save the adapter model into hf,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inference
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Response,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Do send my model and dataset some love if it has any worth :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[sumandas/openhermes-2.5-llama3 · Datasets at Hugging Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[sumandas/llama3-openhermes-2.5 · Hugging Face](https://huggingface.co/sumandas/llama3-openhermes-2.5)'
+  prefs: []
+  type: TYPE_NORMAL

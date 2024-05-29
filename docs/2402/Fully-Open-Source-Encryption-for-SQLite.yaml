@@ -1,0 +1,150 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:01:26'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fully Open Source Encryption for SQLite
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.turso.tech/fully-open-source-encryption-for-sqlite-b3858225](https://blog.turso.tech/fully-open-source-encryption-for-sqlite-b3858225)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: SQLite is a database trusted by many, but it has a closed community that is
+    not open to contributions. Because of that, despite SQLite’s incredible versatility,
+    improvements that are important outside the central use cases SQLite tend not
+    to get done, even though there are people willing to do them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That was the driving force behind us at [Turso](https://turso.tech) starting
+    the [libSQL](https://turso.tech/libsql) project, an Open Contribution fork of
+    SQLite. Our mission at Turso is to empower users to use SQLite in production to
+    power their applications. So after features like native replication, automatic
+    backups to S3 and a serverless mode, we are adding to libSQL yet another feature
+    that is critical to production workloads: **encryption at rest**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#how-does-it-work-)[](#how-does-it-work)How does it work?'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The new encryption feature is fully Open Source, available to everybody, and
+    doesn’t depend on the Turso platform. To understand how it works, let’s take a
+    quick refresher at how to use libSQL in the first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because SQLite is a library that gets embedded into the application, users of
+    SQLite have to replace their usage of SQLite with our SDK. In the example below,
+    using Typescript, the client is created by passing a URL, which in this case is
+    a file in the local filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This very simple example will just in one pass create a table, add data to
+    it, and query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to SQLite, this creates a file on your local machine, which you can
+    inspect using SQLite itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Encrypting the file is simple. All you have to do is pass one more property
+    in the client constructor, `encryptionKey`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: After executing the same code with the new client configuration, the file is
+    not what it once was!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From SQLite’s point of view, this is just raw bytes, and can’t be read. But
+    passing the right encryption key, our program can read it just fine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[#](#how-does-it-work-)[](#how-does-it-work-1)How does it work?'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of our guiding principles when creating the libSQL fork, is that the community
+    would be better served by a general purpose fork of SQLite that was open to anybody.
+    Forks of SQLite for special purpose operations exist in the open and are nothing
+    new, but due to their narrow nature, they see less distribution than they deserve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encryption is not an exception. In fact, many forks exist that add encryption
+    to SQLite. After some research, code analysis and careful consideration, we decided
+    that just moving the code to our fork would yield better results than writing
+    a whole new batch of encryption code, or requiring users to load extensions. One
+    project in particular was very suitable for us, [SQLite Multiple Ciphers](https://utelle.github.io/SQLite3MultipleCiphers/).
+    Since it is licensed under MIT, we have just moved the code into libSQL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving the code into libSQL allows us to build other things on the foundation
+    of encryption, and to provide the transparent, out-of-the-box experience we have
+    shown in the previous section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cipher is configurable per database. We currently support SQLCipher (default)
+    and wxSQLite3’s AES 256 Bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is not necessary to decrypt the entire file to read data: pages are encrypted
+    individually, and for libSQL in particular, we have extended to work to make sure
+    that the WAL is also encrypted, as well as the backups that are sent to S3.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[#](#what-does-it-mean-for-turso-users-)[](#what-does-it-mean-for-turso-users)What
+    does it mean for Turso users?'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All volumes in the Turso infrastructure are encrypted at rest by our cloud provider.
+    While this is good enough for a variety of cases, the file-level encryption described
+    in this post can be used to provide an extra level of security.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Encryption of embedded replicas is coming soon, and were also planning to add
+    two powerful database security additions in the future:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Bring Your Own Key (BYOK)** for Encryption At Rest: Allows you to encrypt
+    any or all of your databases with a key that is provided by you, and passed to
+    us on every request. The encryption key is never stored at our servers, giving
+    you peace of mind that even in the case of a breach of our infrastructure, your
+    data is safe.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Per-Database Encryption** At Rest: Allows you to use different keys for each
+    of your databases. For users following the pattern of per-tenant database, each
+    tenant can have their own key, making sure that even if you make a mistake, data
+    for your users is never mixed up. We can manage the keys, or you can do it, with
+    BYOK.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you’d like to join an early private beta for these premium features, please
+    fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSd5wRfM214ljUP9W66FhugGiji%5FP45qMchieTqNn1wdNsw8xg/viewform).
+  prefs: []
+  type: TYPE_NORMAL

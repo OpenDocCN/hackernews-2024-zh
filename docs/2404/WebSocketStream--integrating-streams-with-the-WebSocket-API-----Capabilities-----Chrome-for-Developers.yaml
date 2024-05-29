@@ -1,0 +1,335 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:19:15'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'WebSocketStream: integrating streams with the WebSocket API  |  Capabilities
+     |  Chrome for Developers'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://developer.chrome.com/docs/capabilities/web-apis/websocketstream](https://developer.chrome.com/docs/capabilities/web-apis/websocketstream)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Prevent your app from getting drowned in WebSocket messages or flooding a WebSocket
+    server with messages by applying backpressure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Background
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The WebSocket API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The [WebSocket API](https://developer.mozilla.org/docs/Web/API/WebSockets_API)
+    provides a JavaScript interface to the [WebSocket protocol](https://tools.ietf.org/html/rfc6455),
+    which makes it possible to open a two-way interactive communication session between
+    the user's browser and a server. With this API, you can send messages to a server
+    and receive event-driven responses without polling the server for a reply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Streams API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The [Streams API](https://developer.mozilla.org/docs/Web/API/Streams_API) allows
+    JavaScript to programmatically access streams of data chunks received over the
+    network and process them as desired. An important concept in the context of streams
+    is [backpressure](https://developer.mozilla.org/docs/Web/API/Streams_API/Concepts#Backpressure).
+    This is the process by which a single stream or a pipe chain regulates the speed
+    of reading or writing. When the stream itself or a stream later in the pipe chain
+    is still busy and isn't yet ready to accept more chunks, it sends a signal backwards
+    through the chain to slow delivery as appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Problem with the current WebSocket API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Applying backpressure to received messages is impossible
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: With the current WebSocket API, reacting to a message happens in [`WebSocket.onmessage`](https://developer.mozilla.org/docs/Web/API/WebSocket/onmessage),
+    an `EventHandler` called when a message is received from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's assume you had an application that needs to perform heavy data crunching
+    operations whenever a new message is received. You would probably set up the flow
+    similar to the code below, and since you `await` the result of the `process()`
+    call, you should be good, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wrong! The problem with the current WebSocket API is that there is no way to
+    apply backpressure. When messages arrive faster than the `process()` method can
+    handle them, the render process will either fill up memory by buffering those
+    messages, become unresponsive due to 100% CPU usage, or both.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying backpressure to sent messages is non-ergonomic
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Applying backpressure to sent messages is possible, but involves polling the
+    [`WebSocket.bufferedAmount`](https://developer.mozilla.org/docs/Web/API/WebSocket/bufferedAmount)
+    property, which is inefficient and non-ergonomic. This read-only property returns
+    the number of bytes of data that have been queued using calls to [`WebSocket.send()`](https://developer.mozilla.org/docs/Web/API/WebSocket/send),
+    but not yet transmitted to the network. This value resets to zero once all queued
+    data has been sent, but if you keep calling `WebSocket.send()`, it will continue
+    to climb.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the WebSocketStream API?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The WebSocketStream API deals with the problem of non-existent or non-ergonomic
+    backpressure by integrating streams with the WebSocket API. This means backpressure
+    can be applied "for free", without any extra cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suggested use cases for the WebSocketStream API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Examples of sites that can use this API include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: High-bandwidth WebSocket applications that need to retain interactivity, in
+    particular video and screen-sharing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Similarly, video capture and other applications that generate a lot of data
+    in the browser that needs to be uploaded to the server. With backpressure, the
+    client can stop producing data rather than accumulating data in memory.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Current status
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Step | Status |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1\. Create explainer | [Complete](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2\. Create initial draft of specification | [In progress](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 3\. Gather feedback & iterate on design | [In progress](#feedback) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 4\. Origin trial | [Complete](https://developers.chrome.com/origintrials/#/view_trial/1977080236415647745)
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 5\. Launch | Not started |'
+  prefs: []
+  type: TYPE_TB
+- en: How to use the WebSocketStream API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Introductory example
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The WebSocketStream API is promise-based, which makes dealing with it feel natural
+    in a modern JavaScript world. You start by constructing a new `WebSocketStream`
+    and passing it the URL of the WebSocket server. Next, you wait for the connection
+    to be `opened`, which results in a [`ReadableStream`](https://developer.mozilla.org/docs/Web/API/ReadableStream/ReadableStream)
+    and/or a [`WritableStream`](https://developer.mozilla.org/docs/Web/API/WritableStream/WritableStream).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By calling the [`ReadableStream.getReader()`](https://developer.mozilla.org/docs/Web/API/ReadableStream/getReader)
+    method, you finally obtain a [`ReadableStreamDefaultReader`](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader),
+    which you can then [`read()`](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader/read)
+    data from until the stream is done, that is, until it returns an object of the
+    form `{value: undefined, done: true}`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accordingly, by calling the [`WritableStream.getWriter()`](https://developer.mozilla.org/docs/Web/API/WritableStream/getWriter)
+    method, you finally obtain a [`WritableStreamDefaultWriter`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter),
+    which you can then [`write()`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter/write)
+    data to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Backpressure
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: What about the promised backpressure feature? As I wrote above, you get it "for
+    free", no extra steps needed. If `process()` takes extra time, the next message
+    will only be consumed once the pipeline is ready. Likewise the `WritableStreamDefaultWriter.write()`
+    step will only proceed if it is safe to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The second argument to WebSocketStream is an option bag to allow for future
+    extension. Currently the only option is `protocols`, which behaves the same as
+    the [second argument to the WebSocket constructor](https://developer.mozilla.org/docs/Web/API/WebSocket/WebSocket#Parameters:%7E:text=respond.-,protocols):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The selected `protocol` as well as potential `extensions` are part of the dictionary
+    available via the `WebSocketStream.opened` promise. All the information about
+    the live connection is provided by this promise, since it is not relevant if the
+    connection fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Information about closed WebSocketStream connection
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The information that was available from the [`WebSocket.onclose`](https://developer.mozilla.org/docs/Web/API/WebSocket/onclose)
+    and [`WebSocket.onerror`](https://developer.mozilla.org/docs/Web/API/WebSocket/onerror)
+    events in the WebSocket API is now available via the `WebSocketStream.closed`
+    promise. The promise rejects in the event of an unclean close, otherwise it resolves
+    to the code and reason sent by the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All possible status codes and their meaning is explained in the [list of `CloseEvent`
+    status codes](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Closing a WebSocketStream connection
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A WebSocketStream can be closed with an [`AbortController`](https://developer.mozilla.org/docs/Web/API/AbortController).
+    Therefore, pass an [`AbortSignal`](https://developer.mozilla.org/docs/Web/API/AbortSignal)
+    to the `WebSocketStream` constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As an alternative, you can also use the `WebSocketStream.close()` method, but
+    its main purpose is to permit specifying the [code](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes)
+    and reason which is sent to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Progressive enhancement and interoperability
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Chrome is currently the only browser to implement the WebSocketStream API. For
+    interoperability with the classic WebSocket API, applying backpressure to received
+    messages is not possible. Applying backpressure to sent messages is possible,
+    but involves polling the [`WebSocket.bufferedAmount`](https://developer.mozilla.org/docs/Web/API/WebSocket/bufferedAmount)
+    property, which is inefficient and non-ergonomic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feature detection
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'To check if the WebSocketStream API is supported, use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Demo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: On supporting browsers, you can see the WebSocketStream API in action in the
+    embedded iframe, or [directly on Glitch](https://websocketstream-demo.glitch.me/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feedback
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Chrome team wants to hear about your experiences with the WebSocketStream
+    API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tell us about the API design
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Is there something about the API that doesn't work like you expected? Or are
+    there missing methods or properties that you need to implement your idea? Have
+    a question or comment on the security model? File a spec issue on the corresponding
+    [GitHub repo](https://github.com/ricea/websocketstream-explainer/issues), or add
+    your thoughts to an existing issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Report a problem with the implementation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Did you find a bug with Chrome's implementation? Or is the implementation different
+    from the spec? File a bug at [new.crbug.com](https://new.crbug.com). Be sure to
+    include as much detail as you can, simple instructions for reproducing, and enter
+    `Blink>Network>WebSockets` in the **Components** box. [Glitch](https://glitch.com/)
+    works great for sharing quick and easy reproduction cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Show support for the API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are you planning to use the WebSocketStream API? Your public support helps the
+    Chrome team to prioritize features and shows other browser vendors how critical
+    it is to support them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Send a tweet to [@ChromiumDev](https://twitter.com/ChromiumDev) using the hashtag
+    [`#WebSocketStream`](https://twitter.com/search?q=%23WebSocketStream&src=typed_query&f=live)
+    and let us know where and how you're using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Helpful links
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Acknowledgements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The WebSocketStream API was implemented by [Adam Rice](https://github.com/ricea)
+    and [Yutaka Hirano](https://github.com/yutakahirano). Hero image by [Daan Mooij](https://unsplash.com/@daanmooij)
+    on [Unsplash](https://unsplash.com/photos/91LGCVN5SAI).
+  prefs: []
+  type: TYPE_NORMAL

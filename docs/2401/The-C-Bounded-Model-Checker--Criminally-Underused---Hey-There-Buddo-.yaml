@@ -1,0 +1,348 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:20:32'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The C Bounded Model Checker: Criminally Underused | Hey There Buddo!'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.philipzucker.com/cbmc_tut/](https://www.philipzucker.com/cbmc_tut/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Follow along on a google colab: [https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb](https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Whenever I’m tinkering around in C, I would love for some easy way to check
+    my work. There is a variety of options (turn on all warnings, inbuilt compiler
+    [static analyzers](https://developers.redhat.com/articles/2022/04/12/state-static-analysis-gcc-12-compiler#a_taint_mode_for_c),
+    sanitizers ([address](https://clang.llvm.org/docs/AddressSanitizer.html), thread,
+    cfi), [infer](https://fbinfer.com/), going hardcore interactive theorem prover
+    mode), but an undersung one is using automatic static verifiers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’m very impressed by the [Software Verification Competition](https://sv-comp.sosy-lab.org/)
+    style solvers, in particular [CBMC](https://github.com/diffblue/cbmc) ([Documentation](https://diffblue.github.io/cbmc//index.html)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I thought CBMC might be defunct, since it’s [main webpage](https://www.cprover.org/cbmc/)
+    does not show recent development, but actually the [github repo](https://github.com/diffblue/cbmc)
+    is very active. It appears Amazon is investing in it’s usage with a number of
+    significant C projects having CBMC based specs ad verification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s pretty easy to install and use. Just get a release from the [github repo](https://github.com/diffblue/cbmc/releases)
+    (the one in apt is rather stale)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a basic example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously the following program will fail the assert
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: It’s normal code. I can compiler and run it and the assertion triggers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: But I can also run the source through cbmc
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can also compile this program. It runs just fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: CBMC however runs all possible executions, discovering an erroring value the
+    uninitialized variable could take on. We can also track the execution line by
+    line with the `--trace` option
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we put this assertion inside a guarding if, it is no longer possible to trigger
+    the assertion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is a simple functional correctness example. We can write a `myabs` function
+    and ask if indeed the result is always positive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Say whaaaaaaa???? Oh yeah. Going through the trace see it picked negative maxint.
+    In two’s complement, there is one more negative number available than positive
+    number. So it is not clear to me what the compiler should do here actually. I
+    would guess it is allowed to do anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is something you are more likely to care about, checking for common memory
+    bugs like buffer overflows, etc
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Whaaaaa!? Where’s the bug?!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yeah, CBMC requires flags to turn on these default checks, for better or worse.
+    I kind of wish there was a do eveything flag, but to my knowledge there isn’t.
+    Here is a pile of possibly useful bugs to look for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next Time
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I think that’s enough for today, but we’ve only scratched the surface. But to
+    whet some appetite, here’s some uneditted bits about loops and comparative checking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ](https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: VIDEO
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loops
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ok, we’ve painted a rosy picture so far. Obviously CBMC does not scale to arbitrarily
+    large and difficult problems
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic technique is to uniwind them. All is not lost, many loops (for loops
+    in particular) can be completelyb unwound. You can add `--unwinding-assertions`
+    to know if you’ve covered all possible executions. Ever if you can’t, passing
+    these chekcs does give you some confidence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re going to the next level there is also the ability to add invariant
+    annotations. I’m not sure if CBMC can infer these successfully
+  prefs: []
+  type: TYPE_NORMAL
+- en: On bigger problems, I’ve had some success fiddling with the
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparative Checking
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Comparative checking of programs can be useful for reducing both the specification
+    and verification burden. In addition, there are some relational properties (“hyperproperties”)
+    that require talking about two different runs of a program. The canonical example
+    is information security. If you run two programs with identical low security parts
+    of the states, they must end with identical low security parts of the state. This
+    is true if there is only influence or information transferral going from low to
+    high.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Translation validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Refinement
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Security properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bug fixing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The simplest approach to doing comparative verification so is to use the more
+    commonly available single program verifier on the “product program”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are many bits of software out there that have security vulnerabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, the easiest and most likely solution is to change the code in source,
+    recompile, and push out the new version. This is not always possible or desirable
+    however.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even recompiling the original program may introduce bugs due to compiler difference
+    versions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You may not have the source
+  prefs:
+  - PREF_UL
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is in general an interesting problem to consdier the 50 year software stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Worse is better: A use case for dumb compilers'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bits and Bobbles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Here’s a list of serious C projects with CBMC instrumentation, many from Amazon:
+    https://model-checking.github.io/cbmc-training/projects.html. They are playing
+    a similar role to unit tests for library functions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SV Comp https://sv-comp.sosy-lab.org/ - CPAchecker UAutomizer are very successful
+    in the competition. I have not used them as much
+  prefs: []
+  type: TYPE_NORMAL
+- en: Klee, symcc are symbolic executors. Similar in many respects to a bounded model
+    checker. I think the biggest philosophical difference is they aren’t really centered
+    around ensuring bug absence, instead around bug finding, which is a little different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Frama-C VST https://github.com/verifast/verifast graham seemed to like this
+    one
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[esbmc](http://esbmc.org/) is a C bounded model checker.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing a C function to it’s grammar?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nice, fairly easy to use [homepage](https://www.cprover.org/cbmc/) [https://arxiv.org/abs/2302.02384](https://arxiv.org/abs/2302.02384)
+    `sudo apt install cbmc` [https://github.com/diffblue/cbmc](https://github.com/diffblue/cbmc)
+    gitbub [https://diffblue.github.io/cbmc/](https://diffblue.github.io/cbmc/) docs
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/diffblue/aws-training](https://github.com/diffblue/aws-training)
+    [https://model-checking.github.io/cbmc-training/](https://model-checking.github.io/cbmc-training/)
+    [https://github.com/model-checking/cbmc-starter-kit](https://github.com/model-checking/cbmc-starter-kit)
+    starter kit template [https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html](https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html)
+    insstrumenting a maloc [https://github.com/model-checking/cbmc-proof-debugger](https://github.com/model-checking/cbmc-proof-debugger)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[manual](http://www.cprover.org/cprover-manual/) see tutorial'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: All kinds of analysuis options
+  prefs: []
+  type: TYPE_NORMAL
+- en: User defined stuff via `assert` or specialized
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supports lots of different smt and sat backended. Generic dimacs, Could toss
+    into kissat
+  prefs: []
+  type: TYPE_NORMAL
+- en: ESBMC
+  prefs: []
+  type: TYPE_NORMAL
+- en: C++ frontend
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Float support
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Still actually developd
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://awslabs.github.io/aws-proof-build-assistant/](https://awslabs.github.io/aws-proof-build-assistant/)
+    [https://github.com/awslabs/aws-c-common](https://github.com/awslabs/aws-c-common)
+    corejson [https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc](https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc)
+    s2n-tls [https://github.com/aws/s2n-tls/tree/main/tests/cbmc](https://github.com/aws/s2n-tls/tree/main/tests/cbmc)
+    [https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc](https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc)
+    [https://github.com/aws/s2n-quic](https://github.com/aws/s2n-quic)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bounded proof vs harnes vs contracts
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://crates.io/crates/libcprover_rust/5.91.0](https://crates.io/crates/libcprover_rust/5.91.0)
+    rust api'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://dl.acm.org/doi/pdf/10.1145/3551349.3559523](https://dl.acm.org/doi/pdf/10.1145/3551349.3559523)
+    CBMC-SSM: Bounded Model Checking of C Programs with Symbolic Shadow Memory [https://github.com/diffblue/cbmc/issues/7757](https://github.com/diffblue/cbmc/issues/7757)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE

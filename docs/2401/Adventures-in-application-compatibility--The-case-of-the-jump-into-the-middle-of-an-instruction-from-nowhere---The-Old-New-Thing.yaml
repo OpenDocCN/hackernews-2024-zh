@@ -1,0 +1,97 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 15:05:47'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adventures in application compatibility: The case of the jump into the middle
+    of an instruction from nowhere - The Old New Thing'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966](https://devblogs.microsoft.com/oldnewthing/20230324-00/?p=107966)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Adventures in application compatibility: The case of the jump into the middle
+    of an instruction from nowhere'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A spike of Explorer crashes occurred with the release of a particular Windows
+    Insider build. The crash looked like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is most likely a nonsense instruction. There’s no obvious reason to be
+    adding a partial upper register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It looks like this is either a corrupted instruction pointer or corrupted code,
+    because the first code byte is suspicious zero. And since the second byte is `66h`,
+    it looks like an off-by-one, since `66h` is not an uncommon initial instruction
+    byte. (It’s the operand size override prefix.) Another clue is that the calling
+    function, not shown here, has no reason to be calling the `Some­Random­Internal­Function`
+    function, and in fact, checking the alleged caller, it indeed does not call it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Disassembling around the instruction shows that the instruction pointer is
+    indeed in the middle of an instruction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The instruction pointer is one less than the actual start of the instruction,
+    causing the zero byte at the end of the immediate of the previous instruction
+    to be misinterpreted as the start of the instruction to be executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How did we end up in the middle of an instruction?
+  prefs: []
+  type: TYPE_NORMAL
+- en: I did some bulk analysis of all the crash dumps that we received and observed
+    that one third-party DLL was common to all of them. Further investigation shows
+    that this third-party DLL is part of a “shell enhancement” program. This program
+    patches Explorer in order to accomplish its enhancements, and apparently one of
+    its patches went awry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The interesting thing here was how the program decided where to install its
+    patches, and in particular how it managed to patch an function that was never
+    exported or stored in a vtable: It found the function by contacting the Microsoft
+    symbol server to get the names of all the functions in Explorer and their addresses!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What happened is that we recently made changes to this internal function, and
+    apparently those changes were enough to cause the patcher to go haywire. This
+    is unfortunately a regular occurrence: Whenever a new build goes out, there’s
+    a spike of Explorer crashes because all of these patchers start patching the wrong
+    code, and Explorer starts crashing across all the systems that have these “shell
+    enhancement” programs installed. If you’re really unlucky, their rogue patch crashes
+    something in the Explorer startup path, and users finds themselves stuck with
+    an unusable machine due to Explorer crash loops.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This problem is particularly acute with monthly security patches, because we
+    can’t roll the fix back. That would expose systems to the security issues that
+    the monthly security update was intended to fix. (And now that the fix went out,
+    all the bad guys have reverse-engineered the security issue and are probably hard
+    at work trying to weaponizing it and take advantage of unpatched systems.) We
+    have to hope that enough of the users whose systems are crashing realize that
+    it’s due to the “shell enhancement” program (rather than blaming Windows itself,
+    which is the more likely case), and uninstall or disable the programs in order
+    to get their system working again. Unfortunately, these patchers also cause Windows
+    customer satisfaction numbers to plunge every time an update goes out, particularly
+    among users who don’t realize that the problem was caused by that program their
+    computer-savvy nephew installed for them.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,698 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 12:50:19'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'research!rsc: The xz attack shell script'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://research.swtch.com/xz-script](https://research.swtch.com/xz-script)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The xz attack shell script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Posted on Tuesday, April 2, 2024.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updated Wednesday, April 3, 2024.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[## Introduction](#introduction)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Andres Freund [published the existence of the xz attack](https://www.openwall.com/lists/oss-security/2024/03/29/4)
+    on 2024-03-29 to the public oss-security@openwall mailing list. The day before,
+    he alerted Debian security and the (private) distros@openwall list. In his mail,
+    he says that he dug into this after “observing a few odd symptoms around liblzma
+    (part of the xz package) on Debian sid installations over the last weeks (logins
+    with ssh taking a lot of CPU, valgrind errors).”
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At a high level, the attack is split in two pieces: a shell script and an object
+    file. There is an injection of shell code during `configure`, which injects the
+    shell code into `make`. The shell code during `make` adds the object file to the
+    build. This post examines the shell script. (See also [my timeline post](xz-timeline).)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nefarious object file would have looked suspicious checked into the repository
+    as `evil.o`, so instead both the nefarious shell code and object file are embedded,
+    compressed and encrypted, in some binary files that were added as “test inputs”
+    for some new tests. The test file directory already existed from long before Jia
+    Tan arrived, and the README explained “This directory contains bunch of files
+    to test handling of .xz, .lzma (LZMA_Alone), and .lz (lzip) files in decoder implementations.
+    Many of the files have been created by hand with a hex editor, thus there is no
+    better "source code" than the files themselves.” This is a fact of life for parsing
+    libraries like liblzma. The attacker looked like they were just [adding a few
+    new test files](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=cf44e4b7f5dfdbf8c78aef377c10f71e274f63c0).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately the nefarious object file turned out to have a bug that caused
+    problems with Valgrind, so the test files needed to be updated to add the fix.
+    [That commit](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=74b138d2a6529f2c07729d7c77b1725a8e8b16f1)
+    explained “The original files were generated with random local to my machine.
+    To better reproduce these files in the future, a constant seed was used to recreate
+    these files.” The attackers realized at this point that they needed a better update
+    mechanism, so the new nefarious script contains an extension mechanism that lets
+    it look for updated scripts in new test files, which wouldn’t draw as much attention
+    as rewriting existing ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effect of the scripts is to arrange for the nefarious object file’s `_get_cpuid`
+    function to be called as part of a [GNU indirect function](https://sourceware.org/glibc/wiki/GNU_IFUNC)
+    (ifunc) resolver. In general these resolvers can be called lazily at any time
+    during program execution, but for security reasons it has become popular to call
+    all of them during dynamic linking (very early in program startup) and then map
+    the [global offset table (GOT) and procedure linkage table (PLT) read-only](https://systemoverlord.com/2017/03/19/got-and-plt-for-pwning.html),
+    to keep buffer overflows and the like from being able to edit it. But a nefarious
+    ifunc resolver would run early enough to be able to edit those tables, and that’s
+    exactly what the backdoor introduced. The resolver then looked through the tables
+    for `RSA_public_decrypt` and replaced it with a nefarious version that [runs attacker
+    code when the right SSH certificate is presented](https://github.com/amlweems/xzbot).[](#configure)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Configure](#configure)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Again, this post looks at the script side of the attack. Like most complex Unix
+    software, xz-utils uses GNU autoconf to decide how to build itself on a particular
+    system. In ordinary operation, autoconf reads a `configure.ac` file and produces
+    a `configure` script, perhaps with supporting m4 files brought in to provide “libraries”
+    to the script. Usually, the `configure` script and its support libraries are only
+    added to the tarball distributions, not the source repository. The xz distribution
+    works this way too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The attack kicks off with the attacker adding an unexpected support library,
+    `m4/build-to-host.m4` to the xz-5.6.0 and xz-5.6.1 tarball distributions. Compared
+    to the standard `build-to-host.m4`, the attacker has made the following changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: All in all, this is a fairly plausible set of diffs, in case anyone thought
+    to check. It bumps the version number, updates the copyright year to look current,
+    and makes a handful of inscrutable changes that don’t look terribly out of place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking closer, something is amiss. Starting near the bottom,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s see which files in the distribution match the pattern (simplifying the
+    `grep` command):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s surprising! So this script sets `gl_am_configmake=./tests/files/bad-3-corrupt_lzma2.xz`
+    and `HAVE_PKG_CONFIGMAKE=1`. The `gl_path_map` setting is a [tr(1)](https://linux.die.net/man/1/tr)
+    command that swaps tabs and spaces and swaps underscores and dashes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now reading the top of the script,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: extracts the final dot-separated element of that filename, leaving `xz`. That
+    is, it’s the file name suffix, not a prefix, and it is the name of the compression
+    command that is likely already installed on any build machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next section is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We know that `gl_am_configmake=./tests/files/bad-3-corrupt_lzma2.xz`, so this
+    sets the `gl_[$1]_config` variable to the string
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: At first glance, especially in the original quoted form, the `sed` command looks
+    like it has something to do with line endings, but in fact `r\n` is the `sed`
+    “read from file `\n`” command. Since the file `\n` does not exist, the command
+    does nothing at all, and then since `sed` has not been invoked with the `-n` option,
+    `sed` prints each line of input. So `sed "r\n"` is just an obfuscated `cat` command,
+    and remember that `$gl_path_map` is the `tr` command from before, and `$gl_[$1]_prefix`
+    is `xz`. To the shell, this command is really
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: But right now it’s still just a string; it hasn’t been run. That changes with
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final `"eval \$gl_[$1]_config"` runs that command. If we run it on the
+    xz 5.6.0 repo, we get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: I have inserted some line breaks, here and in later script fragments, to keep
+    the lines from being too long in the web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Why the Hello and World? The README text that came with the test file describes
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bad-3-corrupt_lzma2.xz has three Streams in it. The first and third streams
+    are valid xz Streams. The middle Stream has a correct Stream Header, Block Header,
+    Index and Stream Footer. Only the LZMA2 data is corrupt. This file should decompress
+    if `--single-stream` is used.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The first and third streams are the Hello and World, and the middle stream has
+    been corrupted by swapping the byte values unswapped by the `tr` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Recalling that xz 5.6.1 shipped with different “test” files, we can also try
+    xz 5.6.1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first difference is that the script makes sure (very sure!) to exit if not
+    being run on Linux. The second difference is that the long “`export i`” line deviates
+    in the final head command offset (724 vs 939) and then the tail offset and the
+    `tr` argument. Let’s break those down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `head` command prints a prefix of its input. Let’s look at the start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This discards the first kilobyte of standard input, prints the next two kilobytes,
+    discards the next kilobyte, and prints the next two kilobytes. And so on. The
+    whole command for 5.6.1 is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The shell variable `i` is set to this long command. Then the script runs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first `xz` command uncompresses another malicious test file. The `eval`
+    then runs the `head` pipeline, extracting a total of 16×2048+939 = 33,707 bytes.
+    Then the `tail` command keeps only the final 31,233 bytes. The `tr` command applies
+    a simple substitution cipher to the output (so that just in case anyone thought
+    to pull these specific byte ranges out of the file, they wouldn’t recognize it
+    as a valid lzma input!?). The second `xz` command decodes the translated bytes
+    as a raw lzma stream, and then of course the result is piped through the shell.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Skipping the shell pipe, we can run this, obtaining a very long shell script.
+    I have added commentary in between sections of the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: So far, setting up environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A line that only appears in 5.6.1, exiting when not run on Linux. In general
+    the scripts in 5.6.0 and 5.6.1 are very similar: 5.6.1 has a few additions. We
+    will examine the 5.6.1 script, with the additions marked. This line is an attempted
+    robustness fix with a bug (pointed out by Jakub Wilk): there are no spaces around
+    the `=`, making the line a no-op.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first of many odd eval statements, for variables that do not appear to
+    be set anywhere. One possibility is that these are debug prints: when the attacker
+    is debugging the script, setting, say, `zrKcVq=env` inserts a debug print during
+    execution. Another possibility is that these are extension points that can be
+    set by some other mechanism, run before this code, in the future.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If `config.status` exists, we read various variables from it into the shell,
+    along with two extension points. Note that we are still inside the config.status
+    check (let’s call it “if #1”) as we continue through the output.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: This section is entirely new in 5.6.1\. It looks for a single test file to contain
+    the magic texts `'~!:_ W'` and `'|_!{ -'`, extracts the bytes between them, applies
+    a substitution cipher, decompresses the result, and evaluates the output as a
+    shell script. This appears to be an extension mechanism, so that the next time
+    changes are needed in this script, a new script can be added in a different test
+    file, instead of having to [make up reasons to regenerate existing binary test
+    files](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=74b138d2a6529f2c07729d7c77b1725a8e8b16f1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next chunk continues with script that was present in 5.6.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Two different checks that [GNU indirect function](https://maskray.me/blog/2021-01-18-gnu-indirect-function)
+    support is enabled. If not, stop the script. The backdoor requires this functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Require shared library support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Require an x86-64 Linux system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Require all the crc ifunc code (in case it has been patched out?).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Require gcc (not clang, I suppose) and GNU ld.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Require the backdoor-containing test files. Of course, if these files didn’t
+    exist, it’s unclear how we obtained this script in the first place, but better
+    safe than sorry, I suppose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add a bunch of checks when the file `debian/rules` exists or `$RPM_ARCH` is
+    set to `x86_64`. Note that we are now inside two `if` statements: the `config.status`
+    check above, and this one (let’s call it “if #2”).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check that `liblzma/Makefile` contains all the lines that will be used as anchor
+    points later for inserting new text into the Makefile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$O` was set at the very start of the script. This is checking that the libtool
+    file, presumably generated during the build process, configures the compiler for
+    a PIC (position independent code) build.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$U` was also set at the start of the script: `U="bad-3-corrupt_lzma2.xz"`.
+    Real work is starting!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`sed -i` runs an in-place modification of the input file, in this case `liblzma/Makefile`.
+    Specifically, find the `ACLOCAL_M4` line we grepped for earlier (`/$j/`) and insert
+    the `am__test` setting from `$b` (`i$b`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Shell quoting inside a quoted string inside a Makefile really is something special.
+    This is escaping the backslashes in the tr command enough times that it will work
+    to insert them into the Makefile after the `am__install_max` line (`$w`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'More added lines. It’s worth stopping for a moment to look at what’s happened
+    so far. The script has added these lines to `src/liblzma/Makefile`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These look plausible but fall apart under closer examination: for example,
+    `am__test_dir` is a file, not a directory. The goal here seems to be that after
+    `configure` has run, the generated `Makefile` still looks plausibly inscrutable.
+    And the lines have been added in scattered places throughout the `Makefile`; no
+    one will see them all next to each other like in this display. Back to the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Add `liblzma_la_LDFLAGS += -Wl,--sort-section=name,-X` to the Makefile. If the
+    `LDFLAGS` do not already say `-z,now` or `-Wl,now`, add `-z,now`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The “`-Wl,now`” forces `LD_BIND_NOW` behavior, in which the dynamic loader
+    resolves all symbols at program startup time. One reason this is normally done
+    is for security: it makes sure that the global offset table and procedure linkage
+    tables can be marked read-only early in process startup, so that buffer overflows
+    or write-after-free bugs cannot target those tables. However, it also has the
+    effect of running GNU indirect function (ifunc) resolvers at startup during that
+    resolution process, and the backdoor arranges to be called from one of those.
+    This early invocation of the backdoor setup lets it run while the tables are still
+    writable, allowing the backdoor to replace the entry for `RSA_public_decrypt`
+    with its own version. But we are getting ahead of ourselves. Back to the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: We checked earlier that the libtool file said `pic_flag=" -fPIC -DPIC"`. The
+    sed command changes it to read `pic_flag=" -fPIC -DPIC -fno-lto -ffunction-sections
+    -fdata-sections"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is not clear why these additional flags are important, but in general they
+    disable linker optimizations that could plausibly get in the way of subterfuge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Shell quoting continues to be trippy, but we’ve reached the final change. This
+    adds the line
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: to one place in the Makefile, and then adds a long script that sets up some
+    variables, entirely as misdirection, that ends with
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `sed rpath` command is just as much an obfuscated `cat` as `sed "r\n"`
+    was, but `-rpath` is a very common linker flag, so at first glance you might not
+    notice it’s next to the wrong command. Recalling the `am__test` and related lines
+    added above, this pipeline ends up being equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our old friend! We know what this does, though. It runs the very script we are
+    currently reading in this post. [How recursive!](https://research.swtch.com/zip)[](#make)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Make](#make)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Instead of running during `configure` in the tarball root directory, let''s
+    mentally re-execute the script as it would run during `make` in the `liblzma`
+    directory. In that context, the variables at the top have been set, but all the
+    editing we just considered was skipped over by “if #1” not finding `./config.status`.
+    Now let''s keep executing the script.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That `fi` closes “if #2”, which checked for a Debian or RPM build. The upcoming
+    `elif` continues “if #1”, which checked for config.status, meaning now we are
+    executing the part of the script that matters when run during `make` in the `liblzma`
+    directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we see the built objects for the crc code, we are running as part of `make`.
+    Run the following code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start this section with another extension hook. This time the magic strings
+    are `'jV!.^%'` and `'%.R.1Z'`. As before, there are no test files with these strings.
+    This was for future extensibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On to the code shared with 5.6.0:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check that the ifunc-enabled CRC source files look right. Interestingly, Lasse
+    Collin renamed `crc_clmul.c` to `crc_x86_clmul.h` [on 2024-01-11](https://git.tukaani.org/?p=xz.git;a=commit;h=419f55f9dfc2df8792902b8953d50690121afeea).
+    One has to assume that the person or team behind “Jia Tan” had been working on
+    all this code well before then and that the first version checked `crc_clmul.c`.
+    They were probably very annoyed when Lasse Collin accidentally broke their in-development
+    backdoor by cleaning up the file names!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check that the build configuration has the extra flags we added before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Check that no one has added `lazy` to the linker options, which might override
+    the `-Wl,now`. (This code really needs to run before the tables it patches get
+    marked read-only!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is selecting between two different offset values depending on the content
+    of `gettext.m4`. The distributed xz tarballs do not contain that string in `gettext.m4`
+    (it does appear in `build-to-host.m4`), so the `grep` finds nothing, `$Y` is the
+    empty string, and the true case of the `if` executes: `N=0` and `W=88792`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I inserted a line break here. Remember the “corrupt” test file script set `i`
+    to the large head pipeline? It’s still set here, being used inside the script
+    extracted from that pipeline. Before, the pipeline extracted 33,707 bytes and
+    then we used the final 31,233 bytes. Now we are using the entire thing, which
+    probably means just the prefix that we skipped before. The sed command is inserting
+    a newline after every byte of that output, setting up for piping into the remainder
+    of the command line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: I inserted another line break here. What is this? [@nugxperience on Twitter
+    recognized it](https://twitter.com/nugxperience/status/1773906926503591970) as
+    an RC4-like decryption function, implemented in awk! Apparently the `tr`-based
+    substitution cipher wasn’t secure enough for this step. This is the 5.6.1 version;
+    the 5.6.0 version is the same except that the second loop counts to 4096 instead
+    of 8192.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Back to the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: We finally made it to the end of this long line. The decrypted output is piped
+    through xz to decompress it; the `--single-stream` flag says to stop at the end
+    of the first xz EOF marker instead of looking for additional files on standard
+    input. This avoids reading the section of the input that we extracted with the
+    `tail` command before. Then the decompressed data is piped through a `head` pair
+    that extracts either the full 88,792 byte input or zero bytes, depending on `gettext.m4`
+    from before, and writes it to `liblzma_la-crc64-fast.o`. In our build, we are
+    taking the full input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: If all that failed, stop quietly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wait what? Oh! Notice the two different file names `crc64_fast` versus `crc64-fast`.
+    And neither of these is the one we just extracted. These are in `.libs/`, and
+    the one we extracted is in the current directory. This is backing up the real
+    file (the underscored one) into a file with a very similar name (the hyphenated
+    one).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: This string `$V` begins with “`#endif`”, which is never a good sign. Let’s move
+    on for now, but we’ll take a closer look at that text shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: This `if` statement is running a pipeline of sed commands piped into `$CC` with
+    the arguments `liblzma_la-crc64-fast.o` (adding that object as an input to the
+    compiler) and `-x` `c` `-` (compile a C program from standard input). That is,
+    it rebuilds an edited copy of `crc64_fast.c` (a real xz source file) and merges
+    the extracted malicious `.o` file into the resulting object, overwriting the underscored
+    real object file that would have been built originally for `crc64_fast.c`. The
+    `sed` `1i` tells the compiler the file name to record in debug info, since the
+    compiler is reading standard input—very tidy! But what are the edits?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The file starts out looking like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The sed commands add an `_` prefix to the name of the function in the return
+    condition, and then add `$V` after the `include` line, producing (with reformatting
+    of the C code):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: That is, the crc64_resolve function, which is the ifunc resolver that gets run
+    early in dynamic loading, before the GOT and PLT have been marked read-only, is
+    now calling the newly inserted `_is_arch_extension_supported`, which calls `_get_cpuid`.
+    This still looks like plausible code, since this is pretty similar to [the real
+    is_arch_extension_supported](https://git.tukaani.org/?p=xz.git;a=blob;f=src/liblzma/check/crc_x86_clmul.h;h=ae66ca9f8c710fd84cd8b0e6e52e7bbfb7df8c0f;hb=2d7d862e3ffa8cec4fd3fdffcd84e984a17aa429#l388).
+    But `_get_cpuid` is provided by the backdoor .o, and it does a lot more before
+    returning the cpuid information. In particular it rewrites the GOT and PLT to
+    hijack calls to RSA_public_decrypt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But let’s get back to the shell script, which is still running from inside
+    `src/liblzma/Makefile` and just successfully inserted the backdoor into `.libs/liblzma_la-crc64_fast.o`.
+    We are now in the `if` compiler success case:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This does the same thing for `crc32_fast.c`, except it doesn’t add the backdoored
+    object code. We don’t want two copies of that in the build. It is unclear why
+    the script bothers to intercept both the crc32 and crc64 ifuncs; either one should
+    have sufficed. Perhaps they wanted the dispatch code for both to look similar
+    in a debugger. Now we’re in the doubly nested `if` compiler success case:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we can relink the .la file, then...
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the relink succeeded but didn’t write the file, assume it failed and restore
+    the backups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: No matter what, remove the libraries. (The `Makefile` link step is presumably
+    going to happen next and recreate them.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the `else` for the link failing. Restore from backups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we are in the inner compiler success case. Delete backups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the else for the crc32 compilation failing. Restore from backups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the else for the crc64 compilation failing. Restore from backup. (This
+    is not the cleanest shell script in the world!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we are at the end of the Makefile section of the script. Delete the backup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: Close the “`elif` we’re in a Makefile”, one more extension point/debug print,
+    and we’re done! The script has injected the object file into the objects built
+    during `make`, leaving no trace behind.
+  prefs: []
+  type: TYPE_NORMAL

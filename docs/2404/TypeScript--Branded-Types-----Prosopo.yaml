@@ -1,0 +1,239 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 13:29:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'TypeScript: Branded Types 🔧 - Prosopo'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://prosopo.io/articles/typescript-branding/](https://prosopo.io/articles/typescript-branding/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**[PART 1: TypeScript Mapped Type Magic](/articles/typescript-mapped-type-magic/)**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ahoy there TypeScript warriors! 👋 Today we're extending our work in the [TypeScript
+    mapped types article](/articles/typescript-mapped-type-magic/) to provide *branding*.
+    The previous article discussed how to use TypeScript mapped types in a nominal
+    rather than structural nature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a fancy way of saying TypeScript is structural by default, i.e. it will
+    see type `A` and `B` as equal when dealing with types. Making type `A` and `B`
+    nominal would make TypeScript differentiate them apart, even though their structure
+    is the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we're building on that work to produce a way to *brand* a type,
+    providing an automated and easy-to-use way of making a type nominal. Branding
+    focuses on the type system only, rather than introducing runtime fields like in
+    the previous post, which is a major benefit over the previous approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the problem?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Branding, also known as opaque types, enable differentiation of types in TypeScript
+    which otherwise would be classified as the same type. For example
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`A` and `B` are structurally the same, ergo TypeScript accepts any instance
+    of `A` or `B` in place of each other:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function is looking for a value of type `A` as input, whereas we're passing
+    it a value of type `B`. TypeScript compares the types structurally, and because
+    they have exactly the same structure it deems this operation to be fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But what if we need to tell `A` and `B` apart? What if, conceptually speaking,
+    they must be different? What if we're doing something fancy with `A` and `B` which
+    TypeScript is unaware of but we require the types to be different? That's exactly
+    the situation we found ourselves in lately!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need branding to do exactly that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Much like in the [TypeScript mapped types article](/articles/typescript-mapped-type-magic/),
+    the key lies in creating a field with the name of a symbol to act as our *id*.
+    However, with branding we only need this field at a type-level rather than the
+    runtime-level. Since types are erased after compilation, we need to add this field
+    to a type without altering the runtime data whatsoever. Casting, anyone?
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, lets introduce the `brand` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we''re adding the `brand` field to type `A`. The brand field name is a
+    symbol, akin to a UUID. We use a symbol to ensure the `brand` field never clashes
+    with any other field for `A`, because we''d be overwriting a field otherwise and
+    introducing the worse kind of bugs: type bugs 🐛 . We''ve set the brand to `''A''`
+    at the moment, though this could be anything you desire. It''s akin to the type
+    name. Now let''s compare `A` and `B` again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s the error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: TypeScript won't let us pass an instance of `B` to the function accepting `A`
+    because it's missing the `brand` field - brilliant! `A` and `B` are now different
+    types. But what about if `B` had its own brand?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we're using the same `brand` variable from before. It's important
+    to keep this constant, otherwise we're declaring fields with different names!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now lets try the function again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: And here's the error
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: There we go! The error is saying that though both types have a `brand` field,
+    the value for the brand is different for the two types, i.e. `'A' != 'B'`!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see what happens if the `brand` is the same:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: No error! `A` and `B` are seen as interchangeable types because they're structurally
+    the same, having the same fields *and* same brand value of `'foobar'`. Excellent!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make it generic!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Awesome, so that works. But it''s a toy example, not fit for production. Let''s
+    create a `Brand` type which can brand any type you wish:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This type is very simple, it takes your type `T` and adds a `brand` field with
+    `U` being the brand value. Here''s how to use it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So now we can brand any type. For completeness, here''s the same kind of thing
+    to *remove* the brand and go back to plain ol'' TypeScript types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: And this will remove the `brand` field from any branded type. Also note that
+    if the type is not branded, it will not be touched!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Real world usage
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's put this into practice. We've got a class which needs branding to identify
+    its type when dealing with [mapped types](/articles/typescript-mapped-type-magic/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For simplicity, lets boil the class down to a `Dog` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: TypeScript won't let us construct a branded dog 😢 . We're going to need to do
+    some casting using the constructor to brand the *constructor* rather than the
+    *class* itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `addBrand` function takes a constructor of a class and casts it to a branded
+    type. This essentially makes an alias for the `Dog` class which can be used in
+    exactly the same way as the `Dog` class, e.g. calling `new` on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can `export` the `DogBranded` type to allow the outer world to use our class
+    whilst ensuring it''s always branded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Likewise, we can do the same for brand removal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This simply removes the brand by casting the type to a type mapped without the
+    brand field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And there we go: a sure-fire way to brand and un-brand your types in TypeScript
+    😃'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've published this work as a library which you can access via [NPM](https://www.npmjs.com/package/@prosopo/ts-brand)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: At Prosopo, we're using TypeScript branding to fortify our types and do clever
+    type mapping for our soon-to-be-released runtime type validator. Stay tuned for
+    updates!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[PART 1: TypeScript Mapped Type Magic](/articles/typescript-mapped-type-magic/)**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL

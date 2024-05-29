@@ -1,0 +1,174 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:27:22'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Android developers no longer need Windows USB drivers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://fabiensanglard.net/android_windows_driver/](https://fabiensanglard.net/android_windows_driver/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: December 30, 2023
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Android developers no longer need Windows USB drivers
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the early days of the platform, Android developers working from Linux and
+    Mac OS X connected their device via an USB cable and were good to go. Windows
+    users had to find and then install drivers. That was super-annoying.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nowadays there is no more need for drivers. What happened?
+  prefs: []
+  type: TYPE_NORMAL
+- en: USB Driver/OS 101
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you plug an USB device into a port, the operating system needs to load
+    drivers for its interface(s). This is done by inspecting the USB Descriptors hierarchy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Oftentimes, reading the Device Descriptor [Vendor ID (VPI) and Product ID (PID)
+    fields](https://www.keil.com/pack/doc/mw/USB/html/_u_s_b__device__descriptor.html)[^([1])](#footnote_1)
+    is enough to decide which drivers should be loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All three major OSs ship with "default" Device Class drivers so most USB devices
+    work auto-magically[^([2])](#footnote_2). If I connect my ErgoDox EZ keyboard,
+    Windows attaches `hidusb.sys.` to it[^([3])](#footnote_3) and I don't need a driver.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If Windows cannot find a built-in Device Class driver (or if they are better
+    matches), it loads user-installed drivers. e.g. an Apple Magic Trackpad will also
+    get `hidusb.sys` unless Bingxing Wang's [awesome driver](https://github.com/imbushuo/mac-precision-touchpad/tree/master)
+    is installed, in which case Windows loads `AmtPtpDeviceUm.dll` (with support for
+    right-click and multi-finger gestures).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why it did not work
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no driver can be found, Linux loads `usbfs` which lets user-space programs
+    access the device. Mac OS does the same, with `IOKit`. Windows reports an error.
+    No driver is loaded and the Android device cannot be accessed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why it worked with an android driver
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To understand what is going on when a driver is installed, let's inspect the
+    "brain" from [Google USB Driver](usb_driver_r13-windows.zip), `android_winusb.inf`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In `INF` parlance, it instructs "When VID=0x18D1 and PID=0x4E11 (a.k.a: a Google
+    Nexus One), load `winusb` driver".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is WinUSB? Alike Linux's `usbfs` and Mac OS's `IOKit` it is an USB driver
+    which allows user-space programs to enumerate interfaces and write/read into/from
+    the endpoints[^([4])](#footnote_4). That is what `adb` (the [Android Debug Bridge](https://en.wikipedia.org/wiki/Android_Debug_Bridge))
+    uses to chat with an Android device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Android devices no longer need a windows driver
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method previously described has an obvious flaw. If an Android device VID/PID
+    are not listed, `winusb` is not loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows 8 has a better way than `INF` files to discover which driver an interface
+    needs. It asks directly to the device!
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a device is connected, the OS issues a String Descriptors request at index
+    `0xEE`. If the device is Microsoft OS Descriptors (MOD) compatible, it returns
+    the string `M\0S\0F\0T\01\000\0\0`. In this case, Windows requests the [Extended
+    Compat ID OS Feature Descriptor](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-defined-usb-descriptors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can inspect this descriptor on a Pixel 6 with `libusb`'s `xusb`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This device was set up with both Media Transfer Protocol and developer mode
+    enabled. For each of these interfaces, the Feature Descriptor instructs which
+    driver it needs. Respectively `mtp.sys` for the first interface and `winusb.sys`
+    on the second interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With `winusb.sys` loaded, user-space executables such as `adb` can open the
+    device, claim the interface, and get the developer rolling. No need for drivers
+    anymore!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which devices support Microsoft OS Descriptors?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Josh Gao (@jmga, adb developer at the time) pointed out that he introduced MOD
+    support in Android 10 (API 29)[^([5])](#footnote_5). And he also wrote a CTS test
+    for it so all Android devices shipping after API 29 should have it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extended Properties OS Feature Descriptor
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: More recent devices like the Pixel 8 have an Extended Properties OS Feature
+    Descriptor. It can feature GUID, help pages, URLs, and even icons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: References
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '* * *'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*'
+  prefs: []
+  type: TYPE_NORMAL

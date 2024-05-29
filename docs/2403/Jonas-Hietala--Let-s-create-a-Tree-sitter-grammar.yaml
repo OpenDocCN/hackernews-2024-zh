@@ -1,0 +1,398 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:32:10'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Jonas Hietala: Let''s create a Tree-sitter grammar'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/](https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A Tree-sitter parser is actually a C program. The grammar we’ve seen has been
+    described in JavaScript, but it’s only used as a description to generate the parser
+    in C. If you’re a masochist, you can take a look at it in `src/parser.c` after
+    running `tree-sitter generate`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An external scanner is just some custom C code that’s inserted into the parser,
+    and it allows us to override the parser precedence, keep track of a context state,
+    or whatever else we might need or want to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s take a look.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by closing a paragraph early when a `:::` is encountered. This is
+    simpler because we can solve this without storing any state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When parsing `$.paragraph` we’ll give the parser a choice between ending the
+    paragraph on a newline or on our new `$._close_paragraph` token:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$._close_paragraph` is handled by the external scanner, which is specified
+    using the `externals` field:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now let’s turn our attention to `src/scanner.c`. The tokens in `externals` gets
+    assigned an incremented number, starting from 0… Just like an enum in C!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The five functions we need to implement are these:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because we won’t use any state, we’ll only have to update the `scan` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What you’re supposed to do is check `valid_symbols` for the tokens we can return
+    at any point in time, and return `true` if any was found:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: To decide if we’re going to close the paragraph early, we’ll look ahead for
+    any `:::`, and if so we’ll close it without consuming any characters. This might
+    not be the most efficient solution because we’ll have to parse the `:::` again,
+    but it gets the job done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The matched token should be stored in `lexer->result_symbol`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the resulting token will mark any symbol we advance over as owned
+    by that token. So `:::` would be marked as `_close_paragraph` (which will be ignored
+    by the output since it begins with an underscore), instead of `div_marker`. To
+    prevent this, we turn `_close_paragraph` into a zero-width token by marking the
+    end before advancing the lexer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How do we advance the lexer? We call `lexer->advance`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is almost all we can do with the lexer. We only process one character at
+    a time, cannot look behind, and our only tool to look ahead is to `mark_end` at
+    the correct place. (We can also query the current column position.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this we have a working external scanner and div tags now close paragraphs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: To automatically close other open blocks we need to add some context to our
+    parser, which means we’ll need state management.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The small subset we’re implementing is only concerned with closing divs—because
+    it would be a terribly long post otherwise—but I’ll try to implement this in a
+    general manner, to be more indicative of a real-world parser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our strategy is this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A div can have a varying number of `:` that must match.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Therefore we’ll parse colons in an external scanner and store it on a stack.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When we find a div marker, we’ll need to decide if it should start a new div,
+    or close an existing one.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We’ll look at the stack of open blocks and see if we find a match.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If we have need to close a nested div, that is if we want to close a div further
+    down the stack, we need to close the nested div(s) first.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Thus we’ll introduce a `block_close` marker that ends a div, and leave the ending
+    div marker as optional.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: First we’ll ask the grammar to let the external scanner manage the begin and
+    end tokens. We’ll use a `_block_close` marker to end the div, and leave the end
+    marker optional. (You could probably use a `choice()` between the two, but this
+    made more sense to me when I was implementing it.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And remember to update the list of external tokens in the scanner (order matters):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then to our stack of blocks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I used a `Block` type to keep track of the type and number of colons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I know that `level` isn’t the best name, but I couldn’t find a very good general
+    name for the number of colons, indentation level, etc. With sum types you could
+    model it in a clearer way, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: I will, in fact, claim that the difference between a bad programmer and a good
+    one is whether he considers his code or his data structures more important. Bad
+    programmers worry about the code. Good programmers worry about data structures
+    and their relationships.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: But I digress, I’ll go with `level` like a bad programmer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another joy of programming C is that you’ll get to re-implement standard data
+    structures such as a growable stack. It’s not truly difficult, but it’s annoying
+    and bug-prone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, during the time I’m writing this blog post, [tree-sitter 0.22.1](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.22.1)
+    was released with an array implementation. So now I don’t have to show you my
+    shoddy stack implementation, and we can use their array for our stack instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We’ll shove our `Array` of `Block*` into a `Scanner` struct, because we’ll
+    need to track more data later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you manage state in tree-sitter, you need to do some data management in
+    the `tree_sitter_` functions we defined earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Allocations are managed in the `_create` and `_destroy` functions. Also new
+    for 0.22.1 is the recommendation to use `ts_` functions for allocations, to allow
+    consumers to override the default allocator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I allocate the blocks in a `push_block` helper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: You also need to define the serialize functions. These store and retrieve the
+    managed state, to allow tree-sitter to backtrack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that’s the (initial) state management taken care of!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, we haven’t used our state yet. Let’s change that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let’s add the `parse_div` entry point to our scan function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Because advancing the lexer is primitive, and we cannot “go back a char”, it’s
+    important to only advance it if we really need to. Therefore we always need to
+    check `valid_symbols` before we continue:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we’ll need to consume all colons we’re at, and only continue if we see
+    at least three:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Opening a new div is simple; we push the block and register the number of colons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But to the decide if we should open or close a div, we need a way to search
+    through the stack. This function does that, while also returning how many blocks
+    deep into the stack we found the div (which we’ll use shortly):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But we have a problem: when we want to close the div, we want to be able to
+    output multiple tokens.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, with this type of input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’ll have a stack of 3 divs when we see the closing `:::` marker:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the code above, `from_top` will be `3` and we need to output 4 tokens: 3
+    `BLOCK_CLOSE` (one for each div) and 1 `DIV_MARKER_END` (for the last `:::`).
+    But the scanner can only output a single token at a time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way I solved this is by introducing more state to the Scanner. Specifically,
+    I introduced a `blocks_to_close` variable that we’ll use to output `BLOCK_CLOSE`,
+    and some variables to output (and consume) the `DIV_MARKER_END`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: We need to remember to update the create and serialize functions too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Serialize:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Deserialize:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’ll use `IGNORED` as the unused token, so we’ll need to reset it when we
+    create the scanner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now when we scan we should first check `blocks_to_close` and then `delayed_token`,
+    before we scan other things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we see `blocks_to_close > 0`, we should output a `BLOCK_CLOSE` and remove
+    the top block (with some sanity checks for good measure):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With this we can output multiple `BLOCK_CLOSE`, and now to handle delayed tokens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another way to design this is to have a stack of delayed tokens and then just
+    pop that. It’s certainly more powerful, I just happened to choose this way when
+    I was playing around with it because it’s more explicit and it felt a little easier
+    to follow what was happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Either way, we can now implement the div end handling. In `parse_div`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`close_blocks_with_final_token` is a general helper that sets up the number
+    of blocks to close and the final token:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can finally try to close divs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can see that it parses without error, the last marker closes the *second*
+    div correctly, and the last marker captures the final `:::`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While I’m jumping to a working implementation directly in this post, when I
+    first did this that was of course not the case. I found the `-d` argument useful
+    to see what characters are consumed and what token is output in each step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s a part of the output (when scanning the final `:::`), with some comments
+    to point out some interesting things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: While the output seems confusing, when you know what to look for it’s very useful.
+    I’ve found that a deliberate process, where I look at a single character at a
+    time, helps me get through the problems I’ve encountered so far.
+  prefs: []
+  type: TYPE_NORMAL

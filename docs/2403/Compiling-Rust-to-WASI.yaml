@@ -1,0 +1,424 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-29 12:31:51'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiling Rust to WASI
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://benw.is/posts/compiling-rust-to-wasi](https://benw.is/posts/compiling-rust-to-wasi)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Recently I've been taking a bit of a break from building and interacting with
+    Rust compiled to the Webassembly target `wasm32-unknown-unknown`, and instead
+    spending [a lot of time](https://github.com/fermyon/leptos-spin) working with
+    Rust compiled to [WASI](https://wasi.dev/), or the `wasm32_wasi` target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'd be forgiven if you're not sure of the distinction between these two, they're
+    both webassembly right? The answer is yes, but they're different in several crucial
+    ways. I like to think of the `wasm32-unknown-unknown` as analogous to `no_std`.
+    It has no access to anything outside of the webassembly virtual machine. None
+    of the standard system calls for file access, network requests, or the kernel
+    will be available in the traditional way. This is the target that is supported
+    natively by the browser, and is used by Leptos for client side interactivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`wasm32-wasi` is `wasm32-unknown-unkown` plus the missing traditional stuff.
+    It reimplements the traditional system calls like `read()` and provide access
+    to things C expects like `File*` objects. It also fixes a crucial ABI incompatibility
+    with `wasm32-unknown-unknown`, due to an [error in the ABI](https://github.com/rust-lang/rust/issues/83788)
+    used by `wasm-bindgen` that has become a Rust standard. If you want to hear more
+    about that, read on, otherwise you can skip to the next section. I spent far too
+    much time figuring this out, so y''all get to hear about it too.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Way back when, when webassembly support in Rust was young, the Rust developer
+    working on it made a mistake involving how Rust handles structs in wasm-bindgen.
+    LLVM and Clang say passing a struct by value should inline the fields, while for
+    Rust it should be passed by pointer. This becomes a problem when you have Rust
+    code that interacts with C and does this. Whether compiled together with Rust
+    or as a seperate C webassembly module compiled to emscripten, this issue rears
+    it's ugly head.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is also why Rust code compiled to `wasm32_wasi` and `wasm32-unknown-emscripten`
+    can have difficulties talking to each other.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: At some point this issue was fixed for Rust's C ABI, but fixing it for the `wasm32-unknown-unknown`
+    target would break compatibility with Rust apps compiled to webassembly with wasm-bindgen
+    under the old behavior. Which leaves us in a bit of a bind. wasm-bindgen now has
+    [*forward* compatibility](https://github.com/rustwasm/wasm-bindgen/pull/3595)
+    with the possible new ABI, meaning it no longer has an issue, but how to introduce
+    that in the Rust ecosystem has been a matter of debate. Should you create a new
+    target like `wasm32-unknown-unknown2`? Switch it one day? Switch it across an
+    edition boundary?
+  prefs: []
+  type: TYPE_NORMAL
+- en: For now at least, Rust has decided to eventually incorporate an unstable flag
+    that fixes the ABI by switching to the existing C ABI. The [PR](https://github.com/rust-lang/rust/pull/117919)
+    for that is here, and the MCP for it has been approved, so it's likely to get
+    into the language sometime in the future. So that's fun news. Avoiding passing
+    any structs across the ABI boundary is another option, but requires editing all
+    the parties involved. Personally I have no appetite for editing all C dependencies
+    I might want to use, but you do you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a fun fact, the `wasm32-wasi` and `wasm32-unknown-emscripten` targets have
+    fixed this incompatibility. I suppose the first is new enough and the second is
+    unknown/purpose built enough that it was deemed appropriate to do so. For `wasm32-wasi`,
+    here was [the fix](https://github.com/rust-lang/rust/pull/79998).
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the sellings points of Webassembly and WASI is that things compiled to
+    it are supposed to be portable, but the ABI spec for each language is left up
+    to the languages themselves. Perhaps because C is the largest/oldest language,
+    we seem to be coalescing arounding [whatever the C/Clang/llvm folks](https://github.com/WebAssembly/tool-conventions/blob/main/BasicCABI.md)
+    decide to do. This can have [other implications](https://faultlore.com/blah/c-isnt-a-language/),
+    as this lovely article describes for existing systems. At any rate, the Rust folks
+    haven't totally commited to this, with a "wasm" ABI option for Rust compiled to
+    Webassembly in [the works](https://github.com/rust-lang/lang-team/blob/master/design-meeting-minutes/2021-04-21-wasm-abi.md),
+    and I have no idea what any other languages
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you all have learned so much about webassembly and webassembly in Rust(or
+    skipped straight here), let's talk about building a crate. I started out on this
+    journey because I wanted a better editor for blog posts on my blog. For that I
+    use [femark](https://crates.io/crates/femark), a crate that I wrote combining
+    treesitter and pulldown-cmark to compile markdown to HTML with syntax highlighted
+    code blocks. Only trouble with this is that treesitter(and its parsers) are written
+    in C/C++.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Historically I've been converting to html on the server, where the crate can
+    be compiled by Rust quite easily. This time I realized that to get the live preview
+    experience I desired, I'd have to run it in the browser. And I'm happy to say,
+    after much finagling, I was able to get there with the help of Joel Dice and several
+    lovely folks on the WASI Zulip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compile Femark to WASI
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You'd think this part would be easy, just run
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bash
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: and it'd spit out a wasm file right? Wrong! Instead you get this
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: C code
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Turns out the Rust compiler does not know how to handle the C/C++ in the parsers
+    for this target. So I went and downloaded the [wasi-sdk](https://github.com/WebAssembly/wasi-sdk)
+    and install the released binaries to `/opt/wasi-sdk-21.0`. And then set some RUSTFLAGs
+    and env vars to point to things in it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: bash
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We use a special version of clang and other c libs they provide to make wasi/C
+    interop easier. Messing with C/C++ compilers is definitely not my forte, so I
+    was very thankful to have help figuring that out. Thankfully this builds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Convert a WASI preview 1 file to a WASI preview 2 file
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you've been following the development of WASI, you'd know that fairly recently
+    we saw the release of [WASI preview 2](https://component-model.bytecodealliance.org/).
+    WASI preview 2 provides a component model for WASI components, allowing them to
+    talk to each other. Currently, the `wasm32-wasi` target for Rust aims at WASI
+    preview 1\. We want preview 2 to get WASI to run in the browser with the newly
+    released [jco](https://bytecodealliance.org/articles/jco-1.0) transpiler. The
+    linked article mentions allowing WASI preview 2 components to run in node.js,
+    but it also has a bit more experimental support for running them in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The easiest way to convert a wasi preview 1 module to a wasi preview 2 component
+    is to use [cargo-component](https://github.com/bytecodealliance/cargo-component),
+    which basically replaces the command above. You do still need all the RUSTFLAGS
+    and other env vars up there. If you don't use `cargo component new` to handle
+    this for you, I found it works by adding this to your Cargo.toml. The key here
+    is that the part after the colon matches your world defined in the wit file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: TOML markup
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and then setting up the wit bindings. WASI2 defines functions and types that
+    are exported and imported from other components using the [WIT language](https://component-model.bytecodealliance.org/design/wit.html).
+    Cargo component will take those bindings, and then match them to Rust functions
+    defined in a `Guest` trait implementation. For this crate, we only want to export
+    two Rust functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: wit
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: I won't get too far into the WIT language here, but it's fairly Rust like, and
+    I found it functional and fairly easy to pick up. The part that threw me while
+    writing this is that while the functions are mapped to Rust functions, the types
+    defined here will be automatically converted into Rust types. So existing versions
+    of `HighlightError`, `HtmlOutput` and more in Rust needed to be deleted and replaced
+    with generated versions from the autogenerated bindings.rs file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To map the functions, we define a `Component` struct and implement the `Guest`
+    trait for it in `src/lib.rs`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rust code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: With all that done, we can run `cargo component build` and get a WASI preview
+    2 component `.wasm` file with these exported functions and types built in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember all that text I wrote about ABI incompatibility earlier? Well, WASI
+    preview 2 defines a [Canonical ABI](https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md)
+    so that all the languages compiled to WASI can talk to eother WASI components.
+    However, how these types and functions are repesented by their respective languages
+    in the webassembly itself is up to each language. So we'd still have issues with
+    ABI mismatches compiling Rust and C into the same WASI component, but if they
+    were compiled into seperate ones, there'd be a common interface language.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Transpile it for the web with jco
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[jco](https://github.com/bytecodealliance/jco) can transpile the `.wasm` file
+    we generated above into a JS ESM module that node.js and the browser can understand.
+    Using it is actually pretty easy. Before we transpile it, jco has a command to
+    see the imports and exports of a WASI2 module.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bash
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The output for my module is seen below.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: wit
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Looks very similar to our wit file right? The only new stuff here we can see
+    is all of the wasi function imports automatically added by wasi. Pretty neat huh?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bash
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: So now it'll get transpiled into a folder containing a few wasm files and some
+    js glue
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bash
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Let's take a peek in the JS file and see what we see. Probably without the --minify
+    to make it a bit easier to read. It's quite long, so I'll link to it here
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: JavaScript code
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '*It''s definitely interesting to see the shenanigans JS has to jump through
+    to match the type system of Wit or Rust. Returning a `result<htmloutput, highlighterro>`
+    creates a ton of switch cases blocks! At the top we can see a number of imports
+    and at the bottom exports of the named functions we''re looking for!'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Remember how WASI provides all those interfaces to common system functions?
+    Well those are provided through a `@bytecodealliance/preview2-shim`. package If
+    you're using Node or using a JS bundler, you can pretty easily pull in the [npm
+    package](https://www.npmjs.com/package/@bytecodealliance/preview2-shim?activeTab=versions).
+    Since I'm doing neither of those things, I need to serve that library from my
+    web server, and change all the paths in the js file to point towards a local [copy
+    of it](https://github.com/bytecodealliance/jco/tree/main/packages/preview2-shim).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: JavaScript code
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is from the minified version, but you can see I'm setting absolute paths
+    to the folder served by my server. With this in place, we should be ready to move
+    on!*
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**   Serve all the files'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As previously mentioned, we need to serve the `preview2-shim/lib/browser` folder
+    as well as the femark wasm and js files we generated earlier. On Leptos for SSR
+    apps, this is pretty easy, just put them in your assets dir. The more interesting
+    part is how to use it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Use wasm_bindgen to generate Rust bindings to the exported J'S functions for
+    Leptos
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: wasm_bindgen to the rescue! Here we see the wasm functions, exported to JS,
+    and then passed into extern C blocks as required by wasm_bindgen. Since the return
+    types are structs, I redefine the returned types and create helper functions to
+    parse them from `JsValue`. There's probably a better way to do this, but the types
+    are defined in a crate that won't compile to wasm32_unknown_unknown, and I figured
+    this would be easier than defining a seperate types crate.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Rust code
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Use it in a Leptos component
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, the moment of truth! We've compiled our library to WASI preview 2,
+    transpiled it with JCO to generate JS bindings, and shimmed the wasi calls with
+    a locally served copy of the preview2-shim package. The good news is that since
+    those are now regular Rust functions, we can call it as if it was one.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Because I'm using it in wasm_bindgen to process the returned values, you can
+    see I've gated the function imports for our markdown processing functions behind
+    a feature flag
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Rust code
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE13]*'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*If you''ll notice, we crate an `on:input` event handler that will read the
+    value of the textarea, and calls our `process_markdown_to_html_with_frontmatter()`
+    function that we imported from WASI, but only on the client, because it''s only
+    defined there.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Success! You can even try it yourself by adding `/edit` to the end of this post
+    url like [so](https://benw.is/posts/compiling-rust-to-wasi/edit). If I setup auth
+    right, you won't be able to actually commit changes, and if I didn't I'm sure
+    someone will let me know :).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On this journey I learned a lot about webassembly, wasi, and wasi tooling in
+    the Rust ecosystem. I have to say I'm excited, both for what's possible now and
+    what's coming in the future. There idea that we could write programs in our own
+    favorite language, and compile it to a universal format that can executed on almost
+    any platform is truly revolutionary. I'm reminded of this [talk](https://www.destroyallsoftware.com/talks/the-birth-and-death-of-javascript)
+    from DestroyAllSoftware in which he posits that these kinds of virtualized environments
+    might take over the world, and it feels they were somewhat prescient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tooling itself is a bit wonky and experimental, but I expect that'll be
+    resolved in time. If you happen to have a Rust only project, I expect compiling
+    to WASI preview 2 would be somewhat smoother.The Rust project and the people behind
+    the Bytecode Alliance seem to working diligently to make it as easy as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For those who want to take a deeper look at the generated wasi or the Leptos
+    app that uses it, feel free to check out the github repo [here](https://github.com/benwis/benwis_spin).
+    In theory there should be a place where I can post the WASI file as a module for
+    others to use, like crates.io, and if I find one I'll post it there as well. If
+    you're working on a cool WASI project, I'd love to hear about it! Feel free to
+    message me on my Mastodon at @benwis@hachyderm.io or through my other social media
+    methods*
+  prefs: []
+  type: TYPE_NORMAL

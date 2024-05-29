@@ -1,0 +1,328 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:59:40'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vaxry's Blog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://blog.vaxry.net/articles/2024-cursors](https://blog.vaxry.net/articles/2024-cursors)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: As I've recently launched [hyprcursor](https://github.com/hyprwm/hyprcursor),
+    a completely new cursor format for use in a modern desktop aimed at replacing
+    the old standard of XCursor, I think it's a good idea to make a blogpost about
+    how cursors actually work on Linux (and BSD, blah blah) in general to help people
+    understand what's going on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Terminology
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A quick one on the terms used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A "theme" is a pack of cursor shapes.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A "shape" is, well, a shape. E.g. a pointer, a text indicator, a grabbing hand.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An "image" is a single picture of a shape at a set resolution (or an svg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does a cursor work?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*"Well lol just draw a png haha"*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Well, no, it's not that simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rasters are annoying. Raster means an image is stored with pixels, for example
+    a png, or an mp4\. The problem with rasters is that when you resize them, the
+    computer has to take a wild guess at what it should look like. There are various
+    algorithms that do it, but the most used are bilinear and nearest neighbor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nearest neighbor will produce a "pixelated" look, while bilinear will make it
+    more blurry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if we just encoded our cursor in e.g. 128x128, we could just downscale
+    it to the user-requested size and be done with it, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, not exactly. No matter the algorithm, it will almost never produce pixel-perfect
+    results. It will almost always look "odd".
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's why, with raster cursors, the best course of action is to just encode
+    a few common sizes and be done with it. That's what XCursor does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every XCursor shape is just a few images at different sizes. 96, 64, 48, 32,
+    24, 18, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The obvious problem with this is that first, we are storing multiple images
+    per shape, and second, that we can't get anything in-between.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XCursor does not allow for resizing those images, so either the client has to
+    do it or it's not happening. In most cases, it's not happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's not too bad
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Oh wait, we got more!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most cursor sizes have their largest images at 96x96\. That's, on an 8K screen,
+    already considerably smaller than a 32px on a 1080p screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might think that a 1080p PNG is like a megabyte, so why not encode more?
+    like 128px and 256px?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, the reason is simple. XCursor predates PNG. GIF too. JPEG as well. That's
+    why, XCursor images are... uncompressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A max 96x96 Bibata cursor, a single cursor, is about 2MB. That's a lot. The
+    entire theme is 44.1MB. Ouch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Amendment*: A single static cursor in Bibata is almost 170kB, and animated
+    ones are about 16MB each, my bad. The 44.1MB figure is correct.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A modern format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To stop storing uncompressed pixel data like a caveman, I've made hyprcursor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hyprcursor has a few key advantages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cursors can be stored as *either* PNG or SVG image(s).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each cursor has metadata describing how it wants to be presented
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simplified and straightforward API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Way* less space usage.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s elaborate on each point a bit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storage format
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Your cursors can be either PNG, which is an efficient, extremely widely used,
+    lossless raster image format, or SVG, which is the most adopted standard for vector-based
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almost all cursors start out as an SVG, because they are infinitely scalable.
+    An SVG basically describes the "shape" of your cursor instead of the raw pixels,
+    and is then rendered at different resolutions for packing into a theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With hyprcursor, hyprcursor itself can do the rendering, which has two benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can support any and all sizes (For fun I rendered Bibata at 2048px the other
+    day, it looks beautiful)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Way less space usage: SVGs of cursors are usually around 1kB.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some cursors cannot become SVGs, and that's fine. Some cursors are used for
+    more than one shape, and that's fine. Some cursors are animated, and that's fine!
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of a shape's properties are described in a small `meta.hl` file alongside
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For overrides, instead of being a caveman and making symlinks all over the place,
+    a simple `define_override = name` in the meta is enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For raster shapes, you can define what scaling algorithm to use, if any, so
+    that you can control how your cursors scale to sizes outside of the ones you've
+    made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: API
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Rendering a cursor shape with hyprcursor to a png on disk takes about 10 lines
+    of C if we exclude error checking. With it, it's about 25.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also use the C++ API, which does some additional QoL stuff behind the
+    scenes for you :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Space efficiency
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: PNGs are way more efficient than uncompressed data, bringing down Bibata from
+    44.1MB to about 6MB. However, with svg, we get down to **171kB**, which is a 250x
+    reduction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay okay but how is that used?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Who draws the cursor? Well, you might assume it's the, well, display server,
+    the compositor, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, kind of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the beginning, the earth was without form, and void. Wait, a bit too far
+    behind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the beginning of wayland, and in the core design spec, it's the *client's*
+    job to draw the cursor. I mean, it kind of makes sense, as some apps might want
+    to draw a custom cursor (e.g. games)
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, for desktop usage, that kinda sucks. Each app has to support rendering
+    cursors, and some apps might render them differently, leading to inconsistencies.
+    You probably have encountered them especially if using a HiDPI screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recently, we've got the wp_cursor_shape protocol, which allows the apps to just
+    say "hey compositor, render a ~~shape~~", which is miles better, as the compositor
+    can now draw the cursor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are about 35 defined shapes in the protocol, which is, to be honest, enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If your compositor supports hyprcursor (like hyprland), then whenever server-side
+    cursors are being used, hyprcursor will also be utilized. However, if client-side,
+    the classic style, is used, it's up to the app, and most, at the moment, don't
+    support hyprcursors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the support looking like?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Well, right now, not perfect. QT, chromium, electron and hypr* apps support
+    cursor_shape, so in hyprland (or any other compositor using hyprcursors) you will
+    get your pixel-perfect hyprcursors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notably, GTK does not support the protocol, so apps like firefox, or the entire
+    gnome suite will fall back to the ugly XCursor themes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Will this ever be adopted?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I don't know! All I know is that it's a clearly superior system that is easy
+    to implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best path, in my opinion, would be to push for wp_cursor_shape adoption
+    over at gtk. If gtk finally supports the protocol, almost all desktop apps that
+    people might wanna use on Linux will be able to utilize hyprcursors via the compositor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Support from the toolkits themselves for hyprcursor itself is likely not going
+    to happen, as hyprcursor is not made by a million-dollar non-profit entity via
+    a 10-year-long bureaucratic process, unless somehow the developers over there
+    decide it's more beneficial to use hyprcursors now rather than wait and develop
+    their own, new standard. Who knows? :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do I make a hyprcursor theme? Can I use my current themes?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can convert an xcursor theme to a hyprcursor theme in 5 minutes using the
+    `hyprcursor-util` in the hyprcursor repo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, you probably would rather go to the original cursor source and replace
+    all the generated `.png` files with the source `.svg` versions to get the benefits
+    of vector images. This process will take a bit longer, but is surely worth it
+    :) *Remember to update the meta.hl with the new images!*
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to share the theme with other people (and it is allowed via its
+    license), feel free to post it in `#hyprcursor-themes` on the Hyprland discord
+    server :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Check out the docs and the util on the [hyprcursor github page](https://github.com/hyprwm/hyprcursor)
+    for more. You can also find instructions there for the end users and developers
+    wishing to adopt this library in the `docs/` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Closing thoughts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Thanks to everyone for the constant support towards making the Hypr* project
+    better and better!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've got some big plans moving forward so stick around for the journey :)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a small gift, here''s bibata''s left_ptr, rendered with hyprcursor at 4K,
+    just because I thought it was funny:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[click here](../resource/articleCursor/arrow.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*I tried 16K but it almost crashed my computer lol*'
+  prefs: []
+  type: TYPE_NORMAL

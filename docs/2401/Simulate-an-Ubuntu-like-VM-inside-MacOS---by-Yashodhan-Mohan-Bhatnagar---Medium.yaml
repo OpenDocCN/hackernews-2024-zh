@@ -1,0 +1,164 @@
+- en: <!--yml
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'category: 未分类'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'date: 2024-05-27 14:51:00'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -->
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simulate an Ubuntu-like VM inside MacOS | by Yashodhan Mohan Bhatnagar | Medium
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 来源：[https://yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8](https://yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Simulate an Ubuntu-like VM inside MacOS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are times, when you’re working on a remote system that has a Unix system
+    like Ubuntu, RHEL, etc. You want to develop scripts, checkout if some packages
+    exist, prototype command snippets or maybe test out some compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anytime I’ve had to do that I had to spin up a t2 VM from AWS’s free tier and
+    test it out and then close it. Always seemed a hassle especially since I needed
+    Internet to simulate simple commands. It’s not like a system like Ubuntu is very
+    far from what MacOS already has. But sometimes there are very subtle differences
+    and wiggly bugs that absolutely need you to use the original OS. Sometimes simple
+    commands like **date** have different flag behaviours.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recently I had started using a Docker container of Ubuntu as a replacement of
+    the t2 VM. For any testing, I would spin up the container, setup the dependeny
+    packages, test out the commands, scripts, etc. and then let it be. Some times
+    it would get killed, some days I absent mindedly cleaned up all the containers,
+    once or twice I had to remove Docker runtime itself (for unrelated reasons). It
+    would have been swell if I could treat that Docker container like my personal
+    VM, which could maintain some amount of state. I don’t want to install basic packages
+    like wget, curl everytime and officiating every minor change inside a Dockerfile
+    was honestly a maintenance nightmare for me. If I created a symlink inside the
+    OS filesystem, I didn’t want to codify it inside the Dockerfile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To that end, I setup a batch of scripts that can simulate a VM, maintain state
+    and let me treat the container as a VM. This is the story of “Friday”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: State
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are two kinds of states I wanted to maintain —
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'System state: This is the state that gets modified when I install packages,
+    make system changes, add users, change permissions and do all kind of random admin
+    stuff.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Volume state: This was generally heavy duty stuff like files, CSVs, keys, etc
+    that I don’t necessarily want to store in the container image. The files inside
+    it could be small to large to very large. Taking it inside a container image would
+    be, inconvenient, to say the least.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To handle the system state, I used a combination of **“docker export”** and
+    **“docker import”** to routinely, and on-demand, backup the state of the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To handle the volume state, I simply mounted a directory from my MacOS filesystem
+    into the container as “**/root**”. It has the additional side-effect that transferring
+    files from my Mac to my “Ubuntu VM” is as simple as copying it from one directory
+    to another. SFTP of the simplest kind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Friday
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Friday is made of 4 simple scripts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***start-friday.sh***'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This script checks if Friday is already running and if not, starts Friday, and
+    takes an immediate backup of it’s state.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '***freeze-friday.sh***'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This script is used by all other scripts and simply takes a backup of Friday’s
+    state by running “**docker export**” to make a TGZ file and then an immediate
+    “**docker import**” to bring it back into the docker image system.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '***login-into-friday.sh***'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This script runs the docker exec command to enter Friday. The special magic
+    spice is that when you exit the shell cleanly, it’ll take an immediate freeze
+    of Friday. So this makes sure that if you’ve done any changes during your shell
+    session, they’re not lost. Kind of like how applications ask you *“Do you want
+    to save before quitting?”*
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '***stop-friday.sh*** This script takes a backup of Friday and stops it cleanly.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The core spice of Friday is the freeze-friday logic that ensures that each and
+    every minor modification to Friday is backed up similar to how AWS maintains your
+    EBS backups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An additional protection that you can put around Friday is to setup **crontab**
+    to take hourly/half-hourly backups of Friday by running freeze-friday.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ve put up the scripts below which only need you to modify the “ROOT_PATH”
+    variable to a directory where Friday can store its TGZ backups and its Volume
+    state. To setup, only once you need to pull your flavor or favorite OS’s base
+    image from DockerHub or your registry to your local system and tag it as “***friday:latest***”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***The scripts are available as a*** [***Gist here***](https://gist.github.com/yashodhanmohan/2c1b712883dec6dfba8ba2586df1b0cc)***.***'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For instance I wanted my VM to be Ubuntu flavored, so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: setup
+  prefs: []
+  type: TYPE_NORMAL
+- en: start-friday.sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: login-into-friday.sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: freeze-friday.sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: stop-friday.sh
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can also add freeze-friday to crontab like so:'
+  prefs: []
+  type: TYPE_NORMAL
