@@ -1,301 +1,440 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 15:03:56'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:03:56
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Self-contained Linux applications with lone lisp
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用孤立的 Lisp 创建自包含的 Linux 应用程序
 - en: 来源：[https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications](https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications](https://www.matheusmoreira.com/articles/self-contained-lone-lisp-applications)
 - en: Self-contained Linux applications with lone lisp
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用孤立的 Lisp 创建自包含的 Linux 应用程序
 - en: I started [the lone lisp project](https://github.com/lone-lang/lone) to create
     a lisp language and environment exclusively for Linux. I built into it support
     for arbitrary [Linux system calls](/articles/linux-system-calls) so that it would
     be possible to implement any program without need for any external dependencies
     and so that every Linux feature would be available to programmers.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我开始 [孤立 Lisp 项目](https://github.com/lone-lang/lone) 来创建一个专门为 Linux 设计的 Lisp
+    语言和环境。我在其中构建了对任意 [Linux 系统调用](/articles/linux-system-calls) 的支持，以便能够实现任何程序而无需任何外部依赖，并且以便程序员可以使用每个
+    Linux 特性。
 - en: 'Although far from ready for production use, I have achieved a significant milestone
     in the development of the language: it is now possible to create self-contained,
     standalone, freestanding, redistributable Linux applications written entirely
     in lisp.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然还远未准备好用于生产，但我在语言开发中已经取得了重要的里程碑：现在可以完全使用 Lisp 编写自包含、独立、脱离环境、可重新分发的 Linux 应用程序。
 - en: 'Lisp code can now be embedded directly into a copy of the lone interpreter
     which may then be copied to and run on any Linux system of the same architecture,
     unmodified and without any external dependencies. The application is limited only
     by the system calls it uses: newer system calls will naturally require newer kernels.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，Lisp 代码可以直接嵌入到 lone 解释器的副本中，然后可以复制到并在任何相同架构的 Linux 系统上运行，而无需修改或任何外部依赖。该应用程序仅受其使用的系统调用限制：较新的系统调用自然需要较新的内核。
 - en: In this article I will demonstrate this capability, explain how it works and
     the journey to implementing it. Every script bundling tool I've ever seen unpacks
     the code to some file system location and then reads it back in. I came up with
     a different solution.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我将展示这个功能，解释它是如何工作的以及实现它的过程。我见过的每一个脚本捆绑工具都会将代码解压到某个文件系统位置，然后再读取回来。我想出了一种不同的解决方案。
 - en: A simple implementation of `env` in lone lisp
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在孤立的 Lisp 中的 `env` 的一个简单实现
 - en: 'The `env` utility is among the simplest programs available in Unix-like operating
     systems. It''s most fundamental function is to print the user''s environment.
     That function can be trivially implemented in lone lisp:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '`env` 实用程序是类 Unix 操作系统中最简单的程序之一。它最基本的功能是打印用户的环境。这个功能可以在孤立的 Lisp 中轻松实现：'
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Running this simple program produces a table of environment variables and their
     values:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这个简单的程序会产生一个环境变量及其值的表格：
 - en: '[PRE1]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Embedding `env.ln` into the interpreter
+  id: totrans-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 将 `env.ln` 嵌入到解释器中
 - en: 'In order to transform `env.ln` into a self-contained `env` program, the lone
     lisp code must be embedded into a copy of the interpreter. This can be achieved
     by the purpose-built `lone-embed` tool:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了将 `env.ln` 转换为一个自包含的 `env` 程序，必须将 lone Lisp 代码嵌入到解释器的副本中。这可以通过专用的 `lone-embed`
+    工具实现：
 - en: '[PRE2]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The interpreter will then seamlessly load and execute the code:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 解释器将无缝地加载并执行代码：
 - en: '[PRE3]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Elven segments
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 精灵片段
 - en: 'Tracing the system calls of the application with `strace` reveals an interesting
     property:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `strace` 跟踪应用程序的系统调用会揭示一个有趣的属性：
 - en: '[PRE4]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: It begins writing its output immediately. There was no need for it to read from
     the file system. The code must be somewhere else.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 它开始立即写入其输出。它没有必要从文件系统中读取。代码必须在其他地方。
 - en: '[PRE5]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: It's at the very end of the executable itself, at an aligned offset. Through
     some elven magic the interpreter is reflecting upon its own contents at runtime.
     It's loading the code from inside itself and evaluating it. Without using any
     system calls to do it.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 它就在可执行文件的最后，以对齐的偏移量。通过一些精灵魔法，解释器在运行时反射其自身的内容。它从内部加载代码并对其进行评估。而且完全不需要使用任何系统调用。
 - en: The source of this magic is the ELF segment.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种魔法的源头是 ELF 段。
 - en: '[PRE6]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: ELF segments, also called program headers, describe the memory image of the
     program. There are many types of segments but especially interesting are the `LOAD`
     segments which tell Linux which parts of the file must be mapped to which addresses
     in order for the program to work correctly.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: ELF段，也称为程序头，描述了程序的内存映像。有许多类型的段，但特别有趣的是`LOAD`段，它们告诉Linux文件的哪些部分必须映射到哪些地址，以使程序能够正确运行。
 - en: The `lone-embed` tool copies the lisp code into the ELF and then creates a `LOAD`
     segment for it. Linux then maps in the embedded code automatically at load time
     before the interpreter has even started.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '`lone-embed`工具将Lisp代码复制到ELF中，然后为其创建一个`LOAD`段。Linux在解释器甚至启动之前，就在加载时自动映射嵌入的代码。'
 - en: Finding the segment
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 寻找段
 - en: 'The code will be in memory but its location and size are unknown. It could
     be anywhere inside the vastness of virtual address space. To that problem Linux
     provides an ingenious solution: it tells us where it is.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码将会在内存中，但是其位置和大小是未知的。它可能位于虚拟地址空间的任何地方。为了解决这个问题，Linux提供了一个巧妙的解决方案：它告诉我们它在哪里。
 - en: In addition to argument and environment vectors, processes receive the auxiliary
     vector. It's essentially a null terminated array of key-value pairs of various
     types and it's placed right there on the stack just after the environment vector.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了参数和环境向量之外，进程还接收辅助向量。它实质上是一个以空值结尾的各种类型键值对的数组，并且它就位于环境向量之后的栈上。
 - en: '[PRE7]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Through this mechanism, Linux passes various bits of useful information to programs.
     These include things like processor architecture and capabilities, current user
     and group IDs, some random bytes, the location of the [vDSO](https://www.man7.org/linux/man-pages/man7/vdso.7.html),
     the system's page size...
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这种机制，Linux将各种有用的信息传递给程序。其中包括处理器架构和功能、当前用户和组ID、一些随机字节、[vDSO](https://www.man7.org/linux/man-pages/man7/vdso.7.html)的位置、系统的页面大小...
 - en: And the location of the program header table.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及程序头表的位置。
 - en: '[PRE8]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The table is just a contiguous array of [ELF program header structures](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#Program_header).
     Given this pointer, all the program has to do is scan the table and find the correct
     entry. One does not simply search for `LOAD` entries, however. Attempting to do
     it uncovers a couple of problems.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 该表只是一系列连续的[ELF程序头结构](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#Program_header)。有了这个指针，程序只需要扫描表并找到正确的条目。然而，不是简单地搜索`LOAD`条目。尝试这样做会暴露出一些问题。
 - en: The first problem is the fact there are lots of these loadable segments and
     they're all indistinguishable from one another. ELF sections have unique names
     for identification, program headers have nothing.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个问题是有很多这些可加载段，它们彼此之间都无法区分。ELF节具有用于标识的唯一名称，程序头没有任何内容。
 - en: The second problem is their alignment requirements. The addresses and sizes
     are usually aligned to page boundaries. This obfuscates the true size of the data
     they contain.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个问题是它们的对齐要求。地址和大小通常对齐到页面边界。这混淆了它们所包含数据的真实大小。
 - en: The lone segment
+  id: totrans-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 单独段
 - en: 'In order to solve this, I created my own custom segment type: the `LONE` segment.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，我创建了自己的自定义段类型：`LONE`段。
 - en: ELF provides an incredibly generous numeric range for operating system-specific
     segments. All the values between `LOOS` and `HIOS` are free for operating systems
     to allocate. Those definitions represent a range of integers between `0x60000000`
     and `0x6FFFFFFF` inclusive. That's 268,435,455 magic numbers.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: ELF为操作系统特定段提供了非常慷慨的数字范围。`LOOS`到`HIOS`之间的所有值都可以由操作系统分配。这些定义表示介于`0x60000000`和`0x6FFFFFFF`之间的整数范围。那是268,435,455个魔术数。
 - en: So I just picked one. That's what the `LOOS+0xc6f6e65` means. Spelled out `lone`
     in ASCII and it just worked itself out.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我就挑了一个。这就是`LOOS+0xc6f6e65`的意思。按ASCII拼写了`lone`，它就自己解决了。
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: I figured if GNU can do it then I can do it too.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想，如果GNU能做到，那么我也能做到。
 - en: The `LONE` segment is not loadable and thus does not have any alignment requirements,
     allowing it to describe the embedded segment exactly. It also serves as a magic
     number which makes it trivial to search for it in the program header table. Once
     found, it contains all the information lone needs to load and execute the code.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LONE`段不可加载，因此没有任何对齐要求，允许它准确描述嵌入段。它还充当一个魔术数，使得在程序头表中轻松搜索它变得简单。一旦找到，它包含了加载和执行代码所需的全部信息。'
 - en: '[PRE10]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The interpreter now has the address and size of the data embedded into its own
     executable. At this point it's smooth sailing.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 解释器现在已经嵌入了数据的地址和大小到其自己的可执行文件中。此时一切顺利进行。
 - en: All that's left to do is to make sense of the bytes. I chose to simply put a
     descriptor object in there and have the interpreter read it in. Seemed like the
     simplest possible solution.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一剩下的就是理解这些字节。我选择简单地在其中放置一个描述符对象，并让解释器读取它。看起来是最简单的解决方案。
 - en: '[PRE11]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Just a good old hash table in lone lisp syntax. The run key contains the offset
     and size of the code the interpreter should run, relative to the end of the descriptor
     object. It just reads in that slice and evaluates it.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 只是一个普通的哈希表，采用孤独的lisp语法。run键包含解释器应该运行的代码的偏移量和大小，相对于描述符对象的末尾。它只是读取该片段并对其进行评估。
 - en: Since it's just a normal hash table, it's also infinitely extensible with arbitrary
     schemas. I plan to implement a modules key to contain an arbitrary number of lone
     modules so that programs can statically link their libraries into the lone interpreter.
     All I gotta do is place the embedded segment into the module search path, before
     all the others. I suppose I could also allow configuring the interpreter via the
     descriptor object, eliminating the need for command line switches.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于它只是一个普通的哈希表，所以可以使用任意模式进行无限扩展。我计划实现一个模块键，以包含任意数量的单模块，以便程序可以将其库静态链接到单解释器中。我所要做的就是将嵌入式段放入模块搜索路径中，放在其他所有段之前。我想我也可以允许通过描述符对象配置解释器，消除了对命令行开关的需求。
 - en: Special linker features
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 特殊的链接器功能
 - en: Remember the `lone-embed` tool which I briefly mentioned at the beginning of
     the articled? It's an ELF patching tool which I built specifically for this purpose
     and it's doing *a lot of* heavy lifting here.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 还记得我在文章开头简要提到的`lone-embed`工具吗？它是一个我专门为此目的构建的ELF修补工具，在这里承担了*大量的*繁重工作。
 - en: When programs are compiled and linked, the program headers are set in stone.
     Yet to do all of this I needed to append new segments to the program header table.
     This turned out to be *much* harder than anticipated.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 当程序被编译和链接时，程序头部被固定。然而，为了完成所有这些，我需要向程序头表追加新的段。这证明比预期的要*困难得多*。
 - en: The program header table usually follows the ELF header and precedes the contents
     of the file. Appending new items to it would require resizing the table, which
     would require shifting up the addresses of *everything* that comes after it, invalidating
     pointers to the old addresses. As far as I can tell, it just can't be done without
     reinventing the linker itself.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序头表通常位于ELF头部之后，文件内容之前。向其中追加新项目将需要调整表的大小，这将需要将其后的*所有*地址向上移动，使指向旧地址的指针失效。据我所知，如果没有重新发明链接器本身，这是不可能做到的。
 - en: I tried to move the table to the end of the file instead but couldn't get that
     to work either. My program was somehow segfaulting before it even reached the
     entry point, gdb was useless, I couldn't understand what was going on and was
     reduced to desperately dumping `readelf` output on stackoverflow in hopes someone
     would spot the problem. Well *someone* did and quickly at that but clearly this
     was not a sustainable software development strategy.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我试图将表移到文件的末尾，但也无法让它起作用。我的程序在甚至到达入口点之前就出现段错误，gdb毫无用处，我无法理解发生了什么，并被迫绝望地将`readelf`的输出倒出来，希望有人能发现问题。好吧，*有人*确实做到了，而且还很快，但显然这不是可持续的软件开发策略。
 - en: The `mold` linker saves the day
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`mold`链接器拯救了一天'
 - en: The linker is in a privileged position. It knows everything there is to know
     about the program's memory layout and can easily add new ELF segments to it seemingly
     at will. If a solution exists, I was convinced it would be found in the linker.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 链接器处于特权位置。它知道关于程序内存布局的一切，并且似乎可以随意地向其中添加新的ELF段。如果存在解决方案，我相信它将在链接器中找到。
 - en: So I started learning [linker script](https://sourceware.org/binutils/docs/ld/Scripts.html).
     Turns out it has a `PHDRS` command which is exactly what I needed but I couldn't
     figure out how to use it. I just kept getting "unable to allocate headers" errors
     no matter what I tried. I concluded it would be easier to simply *ask* for this
     feature instead.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我开始学习[链接脚本](https://sourceware.org/binutils/docs/ld/Scripts.html)。结果发现它有一个`PHDRS`命令，正是我所需要的，但我无法弄清楚如何使用它。无论我尝试什么，我都只能得到“无法分配头部”的错误。我得出结论，简单地*请求*这个功能会更容易些。
 - en: So I [emailed](https://sourceware.org/pipermail/binutils/2023-November/130640.html)
     the GNU binutils mailing list... Then I created an [LLVM issue](https://github.com/llvm/llvm-project/issues/72386)...
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我给 GNU binutils 邮件列表[发了封邮件](https://sourceware.org/pipermail/binutils/2023-November/130640.html)……
+    然后我创建了一个 [LLVM 问题](https://github.com/llvm/llvm-project/issues/72386)……
 - en: Then I opened a `mold` issue. The maintainer immediately understood what I wanted
     to do and [made it happen](https://github.com/rui314/mold/commit/eb6c213f2a9aa8a101b2b52a791be369d165e6a9)
     with what was essentially a single line of code change. Just *beyond awesome*.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我提了一个 `mold` 的问题。维护者立刻明白了我的意图，并且[让它成为现实](https://github.com/rui314/mold/commit/eb6c213f2a9aa8a101b2b52a791be369d165e6a9)，只需要改变一行代码。真是*太棒了*。
 - en: I waited eagerly for the new release but got so excited I built this huge C++
     project from source *on my smartphone* just to integrate lone with it. All I had
     to do was put `-Wl,--spare-program-headers,2` in the `LDFLAGS`. It gave me two
     `NULL` program headers for my patching utility to edit any way it wanted. It worked
     *perfectly*.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我迫不及待地等待新版本的发布，但是我太兴奋了，居然在我的智能手机上从源代码编译了这个庞大的 C++ 项目，*只是为了与之集成*。我所需要做的就是在 `LDFLAGS`
+    中加入 `-Wl,--spare-program-headers,2`。这给了我两个`NULL`程序头，让我的补丁工具可以随意编辑。它工作得*非常完美*。
 - en: So far `mold` is the only linker with this feature and it's absolutely required
     for `lone-embed` to work. It will outright refuse to patch the ELF if it doesn't
     find at least two `NULL` program headers in it.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，`mold` 是唯一具有这个功能的链接器，而且对于 `lone-embed` 来说绝对是必需的。如果它在 ELF 中找不到至少两个`NULL`程序头，它将彻底拒绝修补。
 - en: Would be nice if the others gained this feature too. Unless I can figure out
     a way to move the program header table to the end of the file without breaking
     everything, I'm pretty much locked into using `mold`. Well, I don't really mind.
     It's an awesome linker *and* it's free software. I'm OK with this!
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果其他人也能获得这个功能就好了。除非我能找到一种方法，将程序头表移动到文件末尾而不会破坏一切，否则我基本上被锁定使用 `mold` 了。嗯，我并不在乎。它是一个很棒的链接器，*而且*它是自由软件。我对此很满意！
