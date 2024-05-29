@@ -1,37 +1,48 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:32:12'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: CellLVM // -dealloc
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://belkadan.com/blog/2023/12/CellLVM/](https://belkadan.com/blog/2023/12/CellLVM/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'A few weeks ago I posted this:'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: <https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4>
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[(screen recording)](https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4)'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Which, if you’re not interested in watching a video right now, is a proof-of-concept
     LLVM to Excel spreadsheet compiler.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: What.
+  id: totrans-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -39,13 +50,16 @@
     in particular joking about alignment charts and what counted as “true” CSV. Someone
     pointed out that assembly, as conventionally printed, could be a CSV, to which
     I responded
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: ooh, asm in Excel nearly wraps around to being a good idea
+  id: totrans-12
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: your labels are row references
+  id: totrans-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -53,9 +67,11 @@
     Forget the CSV part, row references are what let Excel do *computation.* And while
     you could make that work with assembly, there’s an alternative that’s a much better
     fit: LLVM.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: SSA Format
+  id: totrans-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -66,6 +82,7 @@
     for compiling higher-level languages, is that every local variable is assigned
     a value exactly once, as a simple expression that can only depend on the variables
     that come before it. This is called [static single-assignment form](https://en.wikipedia.org/wiki/Static_single-assignment_form).)'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: My insight, which I don’t think is new, is that Excel formulas work the same
@@ -73,13 +90,16 @@
     through the spreadsheet based on the references set in the formulas—just like
     SSA. So it should be possible, for operations supported by both LLVM and Excel,
     to rewrite an LLVM function as an Excel sheet that performs the same computation!
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'I went to sleep excited about that idea. I woke up and realized the primary
     problem with it: what about loops?'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Phi Nodes
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -93,6 +113,7 @@
     predecessors), and even loops: the predecessor of a loop body might be the entry
     of the loop, or it might be the last block in the *previous* time through the
     loop.)'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'But spreadsheets don’t have loops, do they? I searched around a bit and discovered
@@ -100,6 +121,7 @@
     calculation”. As long as the formulas converge on a fixed point within a certain
     number of steps, Excel will find it. So now I need to figure out how to encode
     loops in such a way that they do, in fact, converge.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'At this point I got up from my bed and started messing around in Google Sheets.
@@ -108,40 +130,52 @@
     of blocks you’ve visited, counting repeats, then you always know what the “current”
     block is, and more importantly what the “previous” block was. Which means you
     can implement phi nodes.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s what a phi expression looks like in Excel:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '| `=CHOOSE(` | A phi is a choice… |'
+  id: totrans-24
   prefs: []
   type: TYPE_TB
 - en: '| `XMATCH(` | of values based on a source… |'
+  id: totrans-25
   prefs: []
   type: TYPE_TB
 - en: '| `MAX(` | which is the most recent (max) PC… |'
+  id: totrans-26
   prefs: []
   type: TYPE_TB
 - en: '| `IF(B5=ROW(),C5,0),` | of the branch in row 5, if it was coming here… |'
+  id: totrans-27
   prefs: []
   type: TYPE_TB
 - en: '| `IF(B10=ROW(),C10,0),` | the branch in row 10, if it was coming here… |'
+  id: totrans-28
   prefs: []
   type: TYPE_TB
 - en: '| `C7-0.5),` | and the current row, 7, as a last resort… |'
+  id: totrans-29
   prefs: []
   type: TYPE_TB
 - en: '| `{C5,C10,C7-0.5}),` | which we get as an index with `XMATCH`… |'
+  id: totrans-30
   prefs: []
   type: TYPE_TB
 - en: '| `B4,B8,B7)` | and `CHOOSE` the correct value |'
+  id: totrans-31
   prefs: []
   type: TYPE_TB
 - en: Not pretty but it gets the job done. And with that, I knew it was possible,
     and I set off to build the compiler.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: The Compiler
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -151,6 +185,7 @@
     which [I did have to fork](https://belkadan.com/source/LLVMSwift/)) and [xslxwriter](https://libxlsxwriter.github.io/)
     (and [its own wrapper](https://github.com/damuellen/xlsxwriter.swift)). Without
     these pre-existing libraries, doing this in a day would have been impossible.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'The compiler makes two passes over a single LLVM function: one to assign rows
@@ -158,6 +193,7 @@
     formula, 1:1\. There are only three relevant columns: a label with the instruction
     type, the value of each instruction, and the “program counter” described above.
     [You can read the whole thing if you want.](https://belkadan.com/source/CellLVM/)'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: The result is a command-line tool that takes LLVM bitcode as input and produces
@@ -166,18 +202,23 @@
     But I do consider it a valid proof of concept! And a successful project, of course—which
     is important when [I can’t spend much time on computers outside of work these
     days.](https://belkadan.com/blog/2021/07/Keyboard-Pants/)
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[The output from the video above is on Google Sheets](https://docs.google.com/spreadsheets/d/1_K4gMtS0GGviPAIFkhGZmXXFXvuaAatxcx2ulM1XZXk/edit),
     though you’ll have to make your own copy if you want to “run” it. It adds its
     two inputs, then doubles them until the result is greater than 50\. (Which is
     about all the current implementation knows how to handle.)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[上面视频的输出在Google Sheets上](https://docs.google.com/spreadsheets/d/1_K4gMtS0GGviPAIFkhGZmXXFXvuaAatxcx2ulM1XZXk/edit)，尽管您需要制作自己的副本如果您想要“运行”它。（目前实现的大约所有内容都知道如何处理。）'
 - en: 'Future Directions: alloca'
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 未来方向：alloca
 - en: One thing that’s *not* implemented in this proof-of-concept is alloca, i.e.
     local variables. This is both inconvenient, because that’s the default for a non-optimized
     build, and a definite missing piece for *truly* compiling LLVM to a spreadsheet.
@@ -188,19 +229,28 @@
     based on the most recent basic block”. There’s probably some trickiness around
     loops as well—maybe the “program counter” actually should count instructions and
     not just basic blocks, so “most recent” can include “but not in my future”.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个概念验证中*没有*实现的一件事是alloca，即本地变量。 这既不方便，因为这是非优化构建的默认值，也是真正将LLVM编译为电子表格的*确实缺失的一部分*。
+    问题是，LLVM的加载和存储指令*明显*是命令式的，而电子表格则不是。 因此，要实际表示一个内存位置，我们可能需要将加载表示为“具有匹配位置的最近存储的值”，类似于我们如何表示phi为“基于最近的基本块的数值之一”。
+    关于循环可能存在一些棘手的问题——也许“程序计数器”实际上应该计算指令而不仅仅是基本块，所以“最近的”可以包括“但不包括我的未来”。
 - en: Once here, it’s still a jump to *arbitrary* memory allocation, but maybe not
     as big of one as it could be. As long as stores are broken up into individual
     fields, we could say that column H represents heap memory, and column I the instant
     when it was last modified. This would be a formula involving *every store instruction
     in the program,* but it might work. I haven’t tried to work out the details, though.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦在这里，跳到*任意*内存分配仍然是一件大事，但也许不像它本应该的那样大。 只要将存储器分解为单个字段，我们就可以说H列代表堆内存，I列代表它上次修改的时间。
+    这将是涉及*程序中每条存储指令*的一个公式，但可能有效。 尽管如此，我还没有尝试详细研究这个问题。
 - en: 'Future Directions: A Call Stack'
+  id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 未来方向：调用堆栈
 - en: 'Another major omission is function calls. For non-recursive functions this
     is mostly a weird kind of branch/phi combination, but for recursive functions
     we have a problem: all our local SSA variables need to do double duty! I don’t
@@ -208,11 +258,17 @@
     frames. (In which a stack overflow would be running out of columns that have the
     right formulas.) That would also be neat because you could *see the call stack,*
     but I haven’t thought through if it would actually work.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个重要的遗漏是函数调用。 对于非递归函数，这主要是一种奇怪的分支/phi组合，但对于递归函数，我们有一个问题：我们所有的局部SSA变量都需要双重执行！
+    我没有一个好主意来解决这个问题，除非使用*列*来表示堆栈帧。（其中堆栈溢出将耗尽具有正确公式的列。）这也很好，因为您可以*看到调用堆栈*，但我还没有想清楚它是否实际上有效。
 - en: 'This entry was posted on [December](https://belkadan.com/blog/2023/12) 28,
     [2023](https://belkadan.com/blog/2023) and is filed under [Technical](https://belkadan.com/blog/technical).
     Tags: [Compilers](https://belkadan.com/blog/tags/compilers), [LLVM](https://belkadan.com/blog/tags/llvm),
     [Spreadsheets](https://belkadan.com/blog/tags/spreadsheets), [Source code](https://belkadan.com/blog/tags/source-code)'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 此条目发布于[2023年](https://belkadan.com/blog/2023)年[12月](https://belkadan.com/blog/2023/12)28日，并归档在[技术](https://belkadan.com/blog/technical)下。
+    标签：[编译器](https://belkadan.com/blog/tags/compilers)，[LLVM](https://belkadan.com/blog/tags/llvm)，[电子表格](https://belkadan.com/blog/tags/spreadsheets)，[源代码](https://belkadan.com/blog/tags/source-code)
