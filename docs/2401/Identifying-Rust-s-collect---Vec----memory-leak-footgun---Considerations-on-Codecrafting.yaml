@@ -1,41 +1,59 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:53:57'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:53:57
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Identifying Rust’s collect::<vec>() memory leak footgun | Considerations on
     Codecrafting</vec>
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust的`collect::<vec>()`内存泄漏问题的识别 | 对代码编写的思考
 - en: 来源：[https://blog.polybdenum.com/2024/01/17/identifying-the-collect-vec-memory-leak-footgun.html](https://blog.polybdenum.com/2024/01/17/identifying-the-collect-vec-memory-leak-footgun.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.polybdenum.com/2024/01/17/identifying-the-collect-vec-memory-leak-footgun.html](https://blog.polybdenum.com/2024/01/17/identifying-the-collect-vec-memory-leak-footgun.html)
 - en: Over the weekend, I was working on a personal Rust project when I ran into an
     excessive memory usage problem. After an evening of trial and error, I found a
     workaround to fix the memory usage, but I still didn’t understand how the issue
     was even possible, so I then spent another evening digging through the source
     code of the Rust standard library to understand the root cause.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在周末，我正在进行一个个人的Rust项目，当时遇到了过多的内存使用问题。经过一晚的试错，我找到了一个解决内存使用问题的变通方法，但我仍然不明白问题如何可能出现，所以我又花了一个晚上研究Rust标准库的源代码以理解根本原因。
 - en: 'This is the story of how I identified the bug. (TLDR: `collect::<Vec<_>>()`
     will sometimes reuse allocations, resulting in `Vec`s with large excess capacity,
     even when the length is exactly known in advance, so you need to call `shrink_to_fit`
     if you want to free the extra memory.)'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我如何识别出错误的故事。（简而言之：`collect::<Vec<_>>()`有时会重新使用分配的内存，导致`Vec`具有很大的过剩容量，即使长度事先完全已知，所以如果要释放额外的内存，您需要调用`shrink_to_fit`。）
 - en: Background
+  id: totrans-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 背景
 - en: The project I’m working on involves building a sparse weighted graph and then
     doing various calculations on the graph. I finally finished the initial version
     of the code Monday afternoon and tried running it, only for it to exhaust my computer’s
@@ -44,18 +62,25 @@
     memory already shot up to over 18gb by the time it reached 300k nodes, and it
     would use up the entire RAM soon afterwards, slowing everything to a crawl and
     forcing me to kill the process.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正在开发的项目涉及构建稀疏加权图，然后对图进行各种计算。周一下午，我终于完成了代码的初始版本，并尝试运行它，但在到达任何地方之前，它就耗尽了我计算机的32gb
+    RAM。具体来说，最终的图应该有大约三百万个节点，但在图的构建过程中，当它达到300k个节点时，进程内存已经上升到18gb以上，并且很快会用尽整个RAM，使一切都减速并迫使我杀死进程。
 - en: At first, I assumed that the computations I was trying to do were just too big
     and my project was impossible, but I didn’t give up just yet, and spent the rest
     of the evening trying to figure out which parts were using so much memory and
     whether there was any way to optimize them.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 起初，我以为我尝试做的计算只是太大了，我的项目是不可能的，但我还没有放弃，花了晚上的时间试图弄清楚哪些部分使用了如此多的内存，是否有任何优化的方法。
 - en: Narrowing down the memory leak
+  id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 缩小内存泄漏范围
 - en: There were several places in the code where I used [memoization](https://en.wikipedia.org/wiki/Memoization),
     so I initially suspected those of being the cause of the exploding memory usage.
     I modified the graph construction function to stop after 300k nodes (when memory
@@ -63,64 +88,94 @@
     and added `println!`s to log the estimated total sizes of the memoized results.
     However, they were only in the 100mb range, nowhere near enough to explain the
     observed memory usage.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码中有几个地方我使用了[memoization](https://en.wikipedia.org/wiki/Memoization)，所以我最初怀疑这些是内存使用暴增的原因。我修改了图构建函数，使其在300k个节点后停止（当内存使用量达到18gb时，通过`top`查看，虽然很大，但还不足以使计算机崩溃），并添加了`println!`来记录记忆结果的预计总大小。然而，它们只在100mb范围内，远远不足以解释观察到的内存使用情况。
 - en: Next I tried running graph construction *twice* (but with it set to stop early
     at 300k nodes each time) to try to narrow down the cause. My main function looked
     like this (with `denom` and `optimistic` being parameters for the algorithm).
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我尝试运行图构建*两次*（但每次都设置为在300k个节点时尽早停止），以尝试缩小原因范围。我的主函数看起来像这样（`denom`和`optimistic`是算法的参数）。
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I carefully watched the process memory usage while this ran, to see if it would
     stop at 18gb or not. I thought that perhaps the memoization was using a lot more
     memory than expected due to memory fragmentation exploding the heap.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在运行过程中，我仔细观察了进程的内存使用情况，以查看是否会停留在18gb或不会停留。我认为也许是由于内存碎片化导致记忆使用的内存比预期的要多得多而爆炸性地增加堆。
 - en: Since the code is deterministic, calling `build_graph` twice won’t result in
     any new results being memoized, and thus memory usage should stop at 18gb, even
     when it is run twice. Instead, memory usage continued to rapidly increase during
     the second `build_graph` call, which made no sense.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于代码是确定性的，调用 `build_graph` 两次不会导致任何新的结果被记忆，因此内存使用量应该在 18gb 处停止，即使运行两次也是如此。相反，在第二次
+    `build_graph` 调用期间，内存使用量继续迅速增加，这毫无道理。
 - en: 'Fortunately, I then tried dropping `graph` in between:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，之后我尝试在中间删除了 `graph`：
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Suddenly, this time process memory usage dropped from 18gb to ~500mb after the
     first `build_graph` call, before going back up to 18gb. Clearly, the memory was
     somehow being wasted by `graph` itself. As before, I tried printing out the size
     of the graph, but it was nowhere near enough to explain the memory usage.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 突然，这次时间进程内存使用量在第一次 `build_graph` 调用后从 18gb 下降到了约 500mb，然后又回升到了 18gb。显然，内存某种程度上是由
+    `graph` 本身浪费的。和以前一样，我尝试打印出图的大小，但远远不足以解释内存使用量。
 - en: However, my `graph` data structure consists of `Vec`s, and Vec can use more
     memory than the size would indicate since they preallocate a buffer with up to
     2x capacity in order to make insertion amortized O(1) time. I changed it to log
     the total *capacity* rather than *length* and suddenly the estimated size of the
     graph was 18gb. Bingo! I added `shrink_to_fit()` calls (which remove the excess
     capacity) into the graph construction code and suddenly the memory problems disappeared.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，我的 `graph` 数据结构由 `Vec` 组成，而 Vec 可以使用比大小指示的更多的内存，因为它们预先分配一个缓冲区，最多可容纳 2x 的容量，以使插入的摊销
+    O(1) 时间。我将其更改为记录总 *容量* 而不是 *长度*，突然图的估计大小为 18gb。中了！我在图构建代码中添加了 `shrink_to_fit()`
+    调用（它们删除了过量的容量），突然内存问题消失了。
 - en: Wait, but why?
+  id: totrans-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 等等，但是为什么？
 - en: I’d finally identified the `shrink_to_fit` workaround late Monday night and
     planned to continue work on the project the following weekend. I mentioned my
     experience to my coworkers at work the following morning, as a PSA about the importance
     of `shrink_to_fit`, but they didn’t believe me, and when I thought about it more,
     I couldn’t believe it myself either.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最终确定了 `shrink_to_fit` 的解决方法是在周一晚上晚些时候，并计划在随后的周末继续项目工作。我第二天早上在工作中向同事提到了我的经历，作为关于
+    `shrink_to_fit` 重要性的 PSA，但他们不相信我，当我再仔细考虑时，我自己也不相信。
 - en: First off, `Vec` only grows the buffer by 2x at a time, which means that (ignoring
     the initial allocation for small vecs), the capacity will always be at most double
     the length (assuming you don’t remove elements), so the memory waste from excess
     capacity should always be at most 2x, but I was seeing over 200x.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，`Vec` 每次仅以 2x 的速度增长缓冲区，这意味着（忽略小 vecs 的初始分配），容量最多始终是长度的两倍（假设您不删除元素），因此来自过量容量的内存浪费应该始终最多为
+    2x，但我看到的却是超过 200x。
 - en: Second, the memory leak was coming from the edge lists of the graph, which I
     was storing as `Vec<Vec<(u32, u32)>>` (a table with one `Vec` storing the edge
     list for each node). When I called `shrink_to_fit` on the edge lists before inserting
@@ -129,89 +184,135 @@
     appropriate format. Since `collect` allocates a fresh vector and the length is
     exactly known, it only allocates exactly enough space for the elements and there
     should never be *any* excess capacity at all, let alone 200x excess capacity.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，内存泄漏来自于图的边缘列表，我将其存储为 `Vec<Vec<(u32, u32)>>`（一个表，其中一个 `Vec` 存储每个节点的边缘列表）。在将它们插入之前，当我对边缘列表调用
+    `shrink_to_fit` 时，内存问题消失了。然而，生成边缘列表的最后一步是调用 `vec.into_iter().map(..).collect()`
+    将它们转换为适当的格式。由于 `collect` 分配一个新的向量，并且长度完全已知，它只为元素分配足够的空间，绝不会有 *任何* 多余的容量，更不用说是
+    200 倍的多余容量了。
 - en: The Vec source code
+  id: totrans-25
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Vec 源代码
 - en: Clearly, my assumptions about the implementation of `Vec` were incorrect somehow,
     and so out of curiosity, after work Tuesday evening, I dug into the `Vec` source
     code to try to figure out what was going on. There are several layers of indirection
     and specialization, but it didn’t take long to trace through all the relevant
     code (or so I thought).
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，我的关于 `Vec` 实现的假设在某种程度上是不正确的，因此出于好奇，周二晚上下班后，我深入研究了 `Vec` 源代码，试图弄清楚到底发生了什么。有几层间接和特殊化，但很快就可以追踪所有相关代码（或者我认为是的）。
 - en: When you call `collect()`, it calls `FromIterator::from_iter`. [`Vec`’s `FromIterator`
     impl](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/mod.rs#L2791)
     in turn calls `SpecFromIter`, an internal trait.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您调用`collect()`时，它调用`FromIterator::from_iter`。 [`Vec`的`FromIterator`实现](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/mod.rs#L2791)又调用`SpecFromIter`，这是一个内部
+    trait。
 - en: '[`SpecFromIter`](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter.rs)
     has a specialization for `IntoIter` (i.e. if you call `vec.into_iter().collect()`
     with no intervening iterator adapters, it will just return the original vec instead
     of creating a new one). Otherwise, it calls a second internal trait, `SpecFromIterNested`.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`SpecFromIter`](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter.rs)
+    对于`IntoIter`有一个专门化（即，如果您调用`vec.into_iter().collect()`而没有中间的迭代器适配器，它将直接返回原始 vec
+    而不是创建新的）。 否则，它调用第二个内部 trait，`SpecFromIterNested`。'
 - en: '[`SpecFromIterNested`](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter_nested.rs)
     in turn has two implementations, one for general iterators and one for `TrustedLen`
     iterators (the relevant case here). However, the implementations are pretty much
     what you would expect. It just reserves a capacity equal to the iterator’s `size_hint`,
     with no sign of anything that could result in excess capacity.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`SpecFromIterNested`](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter_nested.rs)
+    又有两个实现，一个用于一般迭代器，一个用于`TrustedLen`迭代器（这里是相关情况）。 但是，这些实现基本上符合您的预期。 它只保留了与迭代器的`size_hint`相等的容量，没有任何可能导致多余容量的迹象。'
 - en: I also checked the Vec allocation code and confirmed that it only grows the
     buffer by 2x each time.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还检查了 Vec 分配代码，并确认每次仅将缓冲区增加 2x。
 - en: Logging before and after
+  id: totrans-31
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 记录前后
 - en: Having reached a dead end in the source code, I tried adding logging to my code
     (and commenting out the `shrink_to_fit` again) to see how bad the problem was.
     I logged the length and capacity of the edge lists before and after the final
     `into_iter().map().collect()` step, as well as a cumulative total of the length
     and capacity. (`get_cull_all` here is the function that calculates the edge lists,
     while `main_edges` is the final list of edge lists.)
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在源代码中达到了死胡同后，我尝试向我的代码添加日志记录（并再次注释掉`shrink_to_fit`）以查看问题有多严重。 我记录了最终的`into_iter().map().collect()`步骤之前和之后边缘列表的长度和容量，以及长度和容量的累积总数。
+    （这里的`get_cull_all`是计算边缘列表的函数，而`main_edges`是边缘列表的最终列表。）
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This produced output like
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这产生了如下输出
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The cumulative wasted space up to 300k nodes was 2330779833/10410485 or over
     **223x** wasted space. This also confirmed that the edge lists had significant
     excess capacity following the `collect()` calls. In fact, the capacity of the
     new vec produced by `collect()` was always exactly three times the capacity of
     the original vec, regardless of length.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 至 300k 节点累积的浪费空间为 2330779833/10410485 或超过**223x**的浪费空间。 这也证实了边缘列表在`collect()`调用后具有显着的多余容量。
+    实际上，由`collect()`产生的新 vec 的容量始终恰好是原始 vec 的容量的三倍，而与长度无关。
 - en: Playground
+  id: totrans-37
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 游乐场
 - en: Having confirmed that `collect()` was somehow producing vecs with excess capacity
     despite this seemingly being impossible per the source code, I next tried to reproduce
     the issue on the Rust playground. I wasn’t able to reproduce the 3x increases
     that I experienced in my code, but I did notice something interesting.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 确认了尽管源代码看起来不可能这样，但`collect()`在某种程度上确实会产生具有多余容量的 vec，我接下来尝试在 Rust 游乐场上重现此问题。
+    我无法复现我在代码中遇到的 3x 增加，但我确实注意到了一些有趣的事情。
 - en: '[PRE4]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[Running this](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=547a67d6857b726120f73e03efd703ed)
     prints out'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '[运行此代码](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=547a67d6857b726120f73e03efd703ed)将打印出'
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: So the vecs do have excess capacity here, even on the playground, although only
     a little bit. Furthermore, the excess capacity goes away if you use `iter().copied()`
     instead of `into_iter()`. Unfortunately, that part sidetracked me for a while,
@@ -219,8 +320,12 @@
     It *shouldn’t* be, because the iterator here is `Map<IntoIter>` rather than `IntoIter`
     itself, but I couldn’t see anything else related and spent a long time staring
     at the source code, willing an answer to materialize.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在这里的向量确实有多余的容量，即使在 playground 上也是如此，尽管只有一点点。此外，如果您使用 `iter().copied()` 而不是
+    `into_iter()`，多余的容量就会消失。不幸的是，这一部分让我分心了一段时间，因为我认为 `SpecFromIter` 的 `IntoIter` 特化可能与之相关。虽然它*不应该*，因为这里的迭代器是
+    `Map<IntoIter>` 而不是 `IntoIter` 本身，但我找不到其他相关内容，花了很长时间盯着源代码，希望能找到答案。
 - en: Since the original issue didn’t show up on the playground, I thought it might
     be version-specific. In my own code, I was using the nightly compiler so I could
     use `Vec::is_sorted`, but fortunately, I was just using that for a couple asserts,
@@ -230,34 +335,52 @@
     (As it turned out, the issue is only present in beta and not stable, so this was
     an unfortunate miss.) I also confirmed that the issue reproduced in non-release
     builds, so it wasn’t optimization related.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于原始问题在 playground 上没有出现，我以为可能是特定版本的问题。在我的代码中，我正在使用夜间编译器，因此可以使用`Vec::is_sorted`，但幸运的是，我只是用它来进行了一些断言，因此在注释掉这些断言之后，我能够切换到了
+    beta 编译器（1.76），在那里出现了完全相同的行为。至于稳定版，由于与 `impl Trait` 的一个无关问题导致的编译器错误，我无法尝试稳定版（1.74）。
+    （事实证明，问题只存在于 beta 版本中，而不是稳定版，所以这是一个不幸的错过。）我还确认了该问题在非发布构建中重现，因此与优化无关。
 - en: Vec type changes
+  id: totrans-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 向量类型变更
 - en: I continued attempting to narrow down and reproduce my issue on the playground.
     After some more trial and error, I discovered that mapping a vec to a *smaller*
     type resulted in excess capacity, even on the playground, but *only* on beta and
     nightly, not stable.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我继续尝试在 playground 上缩小并重现我的问题。经过更多的试验和错误，我发现将向量映射到*更小*类型会导致多余的容量，甚至在 playground
+    上也是如此，但*仅限于* beta 和 nightly 版本，而不是稳定版。
 - en: '[PRE6]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Furthermore, the capacity increased proportionately to the type size reduction.
     In this example, going from `u128` to `u64` to `u32`, etc. doubles the capacity
     each time. On the other hand, *increasing* the type size as in the last example
     (`u8` -> `u16`) immediately removes the excess capacity.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，容量与类型大小的减小成比例地增加。在此示例中，从`u128`到`u64`再到`u32`等，每次都会使容量翻倍。另一方面，正如最后一个示例中（`u8`
+    -> `u16`）所示，增加类型大小会立即删除多余的容量。
 - en: Allocation reuse
+  id: totrans-49
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 分配重用
 - en: Since the capacity was increasing in proportion to the decrease in element size,
     that implied that the size of the backing array for the new vec was suspiciously
     the same as that of the old vec. I hypothesized that it was somehow reusing the
@@ -267,114 +390,175 @@
     In my code, the last step prior to insertion maps the edge lists from `(u64, u128)`
     to `(u32, u32)`, which is a third the size, hence why the capacity always increased
     by 3x after the conversion.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于容量随元素大小的减小而增加，这意味着新向量的支持数组大小可疑地与旧向量相同。我假设它以某种方式重用了旧向量的内存作为优化。这也解释了为什么只在 `into_iter()`
+    中发生这种情况，以及为什么使用 `iter().copied()` 可以消除多余的容量。使用 `iter()` 时，旧向量不会被丢弃，因此其内存无法重用。在我的代码中，插入之前的最后一步将边缘列表从
+    `(u64, u128)` 映射到 `(u32, u32)`，大小为原来的三分之一，这就是为什么转换后容量始终增加了 3 倍的原因。
 - en: The other thing this implied is that while `collect()` was tripling the capacity
     of the vec, the actual memory use was unchanged, which meant that `collect()`
     alone wasn’t the cause of the memory leak. Rather, it was merely *failing to decrease*
     the existing memory usage. In order to understand how this could have exploded
     the process memory usage, a bit of explanation of my code is in order.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 这暗示的另一件事是，尽管 `collect()` 会使向量的容量增加三倍，但实际的内存使用量并未改变，这意味着 `collect()` 本身并不是内存泄漏的原因。相反，它仅仅是*未能减少*现有内存使用量。为了理解这是如何导致进程内存使用量激增的，需要对我的代码进行一点解释。
 - en: My edge list calculation logic internally uses `u128` for increased precision
     before truncating the weights to `u32` at the end. Furthermore, in some cases,
     it generates a list of potential edges and then filters out most of them prior
     to returning, which leads to a large amount of excess capacity. As an extreme
     example, the last iteration in the log output shown above had a length of 2 but
     a capacity of 5520.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的边缘列表计算逻辑在内部使用 `u128` 来增加精度，然后在最后将权重截断为 `u32`。此外，在某些情况下，它会生成一个潜在边缘列表，然后在返回之前过滤掉大部分边缘，这导致了大量的过剩容量。作为一个极端的例子，上面显示的日志输出中的最后一次迭代长度为
+    2，但容量为 5520。
 - en: Ordinarily, that wouldn’t have been a problem, since the `into_iter().map().collect()`
     line used to pack them into `(u32, u32)`s would allocate a new vector with only
     the exact amount of space required. However, thanks to the allocation reuse optimization
     added in Rust 1.76*, the new vec shared the backing store of the input vec, and
     hence had a capacity of 16560, meaning it was using 132480 bytes of memory to
     store only 16 bytes of data.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，这不会成为问题，因为`into_iter().map().collect()` 行用于将它们打包成 `(u32, u32)`，将分配一个新的向量，其空间仅仅是所需的确切量。然而，由于
+    Rust 1.76 添加的分配重用优化，新的 vec 共享了输入 vec 的后备存储器，因此容量为 16560，这意味着它使用 132480 字节的内存来存储仅有
+    16 字节的数据。
 - en: Since the edge list calculation logic is run for one node at a time in sequence,
     the fact that it temporarily uses 132kb of memory would normally not be a problem
     at all. However, the new `collect()` optimization meant that that internal storage
     was being preserved in the final vec which got inserted into the list of edge
     lists, thus keeping around that 132kb of obsolete memory forever. Multiply that
     by 300k nodes and suddenly you’ve leaked the computer’s entire RAM.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于边缘列表计算逻辑是按顺序逐个节点运行的，因此它暂时使用 132kb 的内存通常不会有任何问题。然而，新的 `collect()` 优化意味着内部存储被保留在最终的
+    vec 中，这个 vec 被插入到边缘列表的列表中，因此永远保留着那 132kb 的过时内存。将其乘以 300k 个节点，突然间你就泄露了计算机的整个 RAM。
 - en: '* *Technically, Rust will sometimes reuse the allocation even on stable, as
     shown by the initial len=4,cap=6 example on the playground. Rust 1.76 merely made
     the optimization smarter so it triggers in more cases.*'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '* *从技术上讲，Rust 有时会甚至在稳定版上重用分配，就像在 playground 上显示的初始 len=4,cap=6 的例子一样。Rust 1.76
+    只是使优化更智能，因此在更多情况下触发。*'
 - en: The source code
+  id: totrans-56
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 源代码
 - en: Now that I knew I was looking specifically for a commit added in Rust 1.76,
     it wasn’t hard to look through the recent changes to the `Vec` source code on
     Github and find [the likely culprit](https://github.com/rust-lang/rust/commit/13a843ebcbe536257a8442bf5c26b227d1c2f7c9).
     It turns out that there’s [an entire 412 line file dedicated to implementing this
     optimization](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/in_place_collect.rs)
     that I overlooked previously.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我知道我特别在寻找一个在 Rust 1.76 中添加的提交，查看 Github 上 `Vec` 源代码的最近变化并找到 [可能的罪魁祸首](https://github.com/rust-lang/rust/commit/13a843ebcbe536257a8442bf5c26b227d1c2f7c9)
+    并不困难。原来有 [一个专门用于实现这个优化的 412 行文件](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/in_place_collect.rs)
+    我之前忽略了。
 - en: How was this possible? One of the more annoying features of Rust is that Trait
     impls can be added *anywhere in the same crate*, not just in the files where you
     would logically expect them to be, and there’s no way to find hidden impls other
     than doing a full code search.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是怎么可能的？Rust 中更烦人的特性之一是 Trait impls 可以*在同一个 crate 中的任何地方*添加，而不仅仅是在你逻辑上期望它们的文件中，并且没有办法找到隐藏的
+    impls，除非进行全面的代码搜索。
 - en: In this case, the `SpecFromIter` trait was defined in [spec_from_iter.rs](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter.rs),
     along with two implementations of that trait, so I naturally assumed that that
     was all the implementations there were. I had no way to guess that there was actually
     a *third* implementation that was hidden in a completely different file (in_place_collect.rs).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，`SpecFromIter` trait 在 [spec_from_iter.rs](https://github.com/rust-lang/rust/blob/c58a5da7d48ff3887afe4c618dc04defdee3dab5/library/alloc/src/vec/spec_from_iter.rs)
+    中被定义，连同该 trait 的两个实现，因此我自然而然地假设那就是所有的实现。我没有办法猜测到实际上还有一个*第三个*实现，它隐藏在完全不同的文件中（in_place_collect.rs）。
 - en: 'Technically speaking, there was one slight hint. `spec_from_iter.rs` contains
     the following comment:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 从技术上讲，有一个小小的提示。`spec_from_iter.rs` 包含以下注释：
 - en: '[PRE8]text'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE8]text'
 - en: /// +-------------+
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: /// +-------------+
 - en: /// |FromIterator |
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: /// |FromIterator |
 - en: /// +-+-----------+
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: /// +-+-----------+
 - en: ///   |
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: ///   |
 - en: ///   v
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: ///   v
 - en: /// +-+-------------------------------+  +---------------------+
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: /// +-+-------------------------------+  +---------------------+
 - en: /// |SpecFromIter                  +---->+SpecFromIterNested   |
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: /// |SpecFromIter                  +---->+SpecFromIterNested   |
 - en: '/// |where I:                      |  |  |where I:             |'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '/// |where I:                      |  |  |where I:             |'
 - en: /// |  Iterator (default)----------+  |  |  Iterator (default) |
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: /// |  Iterator (default)----------+  |  |  Iterator (default) |
 - en: /// |  vec::IntoIter               |  |  |  TrustedLen         |
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: /// |  vec::IntoIter               |  |  |  TrustedLen         |
 - en: /// |  SourceIterMarker---fallback-+  |  +---------------------+
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: /// |  SourceIterMarker---fallback-+  |  +---------------------+
 - en: /// +---------------------------------+
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: /// +---------------------------------+
 - en: /// [PRE9]
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: /// [PRE9]
 - en: This comment lists the two impls found in the file as well as a seemingly missing
     third impl for “SourceIterMarker”. I actually did try googling “SourceIterMarker”
     at one point, but the only thing that came up was *that same comment in spec_from_iter.rs*,
@@ -382,18 +566,24 @@
     just a mistake or outdated comment. In retrospect, I should have done a full code
     search for “SourceIterMarker” on Github, just in case it had sneakily been hidden
     in a separate file.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段注释列出了文件中找到的两个impl，以及一个看似缺失的“SourceIterMarker”的第三个impl。事实上，我曾经试图在某个时候搜索“SourceIterMarker”，但唯一找到的东西就是*在spec_from_iter.rs中的相同注释*，由于文件中没有第三个impl的迹象，我认为这只是一个错误或过时的注释。回过头来看，我应该在Github上对“SourceIterMarker”进行全面的代码搜索，以防它被偷偷隐藏在另一个文件中。
 - en: Box<[T]>
+  id: totrans-76
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Box<[T]>
 - en: As mentioned previously, adding a call to `shrink_to_fit()` prior to storing
     the edge lists in the final graph eliminated the memory leak issue. This is fine
     as a quick hack, but it is not the proper solution. The *real* fix is to call
     `into_boxed_slice()` instead.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，在将边列表存储到最终图形中之前添加对`shrink_to_fit()`的调用消除了内存泄漏问题。这在作为一个快速的hack的情况下是可以的，但这并不是正确的解决方案。*真正*的修复方法是调用`into_boxed_slice()`。
 - en: The basic problem is that `Vec`s are optimized for the case of a *mutable* list
     where you’re planning to *add and remove* elements in the future. However, people
     also commonly use them for *fixed-length* list data, even though this is not what
@@ -401,40 +591,53 @@
     way to store list data in Rust. The *proper* data structure for fixed-length lists
     is `Box<[T]>` rather than `Vec<T>`, but it takes a lot of Rust experience to even
     *know* about that as an option, and the syntax looks weirder.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本问题在于`Vec`被优化为*可变*列表的情况，即您计划在将来*添加和删除*元素。然而，人们也经常将它们用于*固定长度*列表数据，即使这不是Vec设计的目的，只是因为Vec是在Rust中存储列表数据的最简单和最*直观*的方式。固定长度列表的*适当*数据结构是`Box<[T]>`而不是`Vec<T>`，但即使*知道*这是一种选择，语法看起来也很奇怪，需要很多的Rust经验。
 - en: In Java, immutable strings are called `String` while mutable strings (the equivalent
     of Rust’s `String`) are called `StringBuilder` instead. This nudges people towards
     the appropriate behavior because you would look really foolish if you stored something
     named “StringBuilder” in long-term immutable data structures. Meanwhile in Rust,
     almost nobody uses `Box<str>` over `String`.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Java中，不可变字符串称为`String`，而可变字符串（类似于Rust的`String`）则称为`StringBuilder`。这会促使人们采取适当的行为，因为如果你将名为“StringBuilder”的东西存储在长期不可变的数据结构中，你看起来会很愚蠢。与此同时，在Rust中，几乎没有人使用`Box<str>`而不是`String`。
 - en: Of course, I’m not saying that Rust should have called `Vec` “ListBuilder” or
     anything. Mutable array lists are an **extremely** commonly needed component of
     algorithms and data structures, so it’s important to keep the name short and memorable.
     It’s just a little unfortunate that a side effect of Rust’s design nudges people
     towards *also* using `Vec` even for fixed-length data.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我并不是说Rust应该将`Vec`称为“ListBuilder”或其他什么。可变数组列表是算法和数据结构的**极其**常见的组件，因此保持名称简短且易记是很重要的。只是有点不幸的是，Rust设计的一个副作用是，它促使人们*也*使用`Vec`来存储固定长度的数据。
 - en: As it turns out, I actually was already using `Box<[T]>` for the saved results
     in one of the functions where I used memoization. My main motivation was to avoid
     wasting an extra word to store capacity on the *value* side, but as a side effect,
     this conveniently also made it immune to any potential excess capacity bugs. (The
     other place where I used memoization did just use `Vec`s out of laziness, but
     fortunately it didn’t end up mattering much there.)
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实证明，我实际上已经在其中一个我使用记忆化的函数中使用了`Box<[T]>`来保存结果。我的主要动机是避免浪费额外的字来存储 *值* 方面的容量，但作为副作用，这也方便地使其免受任何潜在的多余容量错误的影响。（我使用记忆化的另一个地方只是出于懒惰使用了`Vec`，但幸运的是，在那里并不重要。）
 - en: Packed arrays
+  id: totrans-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 紧凑数组
 - en: Another possible optimization which I plan to try out later is to avoid storing
     separate lists in the first place. Instead, have a single “arena” Vec and store
     the data for *all* the lists *continguously* in that Vec and just pass around
     an (index, length) pair into that vec instead of real `Vec`/`Box<[]>`, etc.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 我打算以后尝试的另一个可能的优化是避免首先存储单独的列表。相反，有一个单一的“环境” Vec，并且将 *所有* 列表的数据 *连续地* 存储在该 Vec
+    中，只需传递一个（索引，长度）对到该 Vec 中，而不是真正的`Vec`/`Box<[]>`等。
 - en: This design is only sometimes usable (you can’t free or pass around individual
     lists independently of the arena vec this way) and is much more intrusive in terms
     of code design (you have to somehow pass a reference to the arena vec through
@@ -444,27 +647,38 @@
     you represent your lists as only `(u32, u32)` assuming the total length is less
     than 2³², a 2x saving on the value side as well, albeit at the cost of increased
     bounds checks.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种设计有时可用（以这种方式无法自由地释放或传递单独的列表，并且在代码设计方面更具侵入性（您必须通过所有代码传递对环境vec的引用）），但除了使您自动免受多余容量错误的影响之外，它还避免了具有许多小的单独分配的列表可能引起的潜在内存碎片问题。此外，它还可以让您将列表表示为仅为`(u32,
+    u32)`，假设总长度小于 2³²，在值方面也可以节省 2x，尽管需要增加边界检查的成本。
 - en: This trick has limited applicability, but it is perfect for cases like memoization
     (where the results live forever and are stored in a single place) or the edge
     list of a graph data structure (where you can store the backing vec as part of
     the graph) assuming you don’t need to add or remove edges after creation.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个技巧的适用性有限，但对于诸如记忆化（其中结果永远存在并存储在单个位置）或图数据结构的边列表（在创建后不需要添加或删除边）等情况非常适合。
 - en: Conclusion
+  id: totrans-86
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: This was a surprising and annoying bug to investigate, but at least I learned
     a lot about Rust in the process. I had no idea that the standard library was doing
     this kind of optimization under the hood (and since this is code-based, it happens
     even in debug builds). It’s also an illustration of how an optimization in one
     place can lead to bugs downstream by violating programmers’ expectations.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个令人惊讶和恼人的错误调查，但至少在这个过程中我学到了很多关于 Rust 的知识。我不知道标准库正在底层进行这种优化（并且由于这是基于代码的，所以即使在调试构建中也会发生）。这也说明了一个地方的优化如何通过违反程序员的期望而导致下游错误。
 - en: Anyway, I hope that writing about my experience can help other people avoid
     this footgun in the future, or at least teach people something interesting about
     Rust.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，我希望写下我的经验能帮助其他人避免将来这种“踩坑”，或者至少能教给人们一些有关 Rust 的有趣知识。
