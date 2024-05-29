@@ -1,261 +1,388 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:24:26'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:24:26
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How I destroyed the company's DB - by Anton Zaides
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我是如何摧毁公司的数据库的 - 由 Anton Zaides
 - en: 来源：[https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db](https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db](https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db)
 - en: It was on a quiet Saturday.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 那是一个平静的星期六。
 - en: I received a message from the support team, telling me one of our customers
     has a problem. I decided it was important enough to start debugging. After 15
     minutes, I understood the issue - there were some corrupted orders created in
     our DB, and we needed to delete them.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我收到了支持团队的消息，告诉我我们的一个客户有问题。 我决定这足够重要了，开始调试。 15 分钟后，我明白了问题 - 我们的数据库中创建了一些损坏的订单，我们需要删除它们。
 - en: Sounds trivial, right?
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 听起来很琐碎，对吧？
 - en: '*At the end of the article I share my lessons, and how you can apply them to
     your own team. And welcome to the 600+ new subscribers since last week!*'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '* 在文章的结尾，我分享了我的教训，以及你如何将它们应用到你自己的团队。 欢迎来到自上周以来的 600 多名新订阅者！*'
 - en: '*For those of you not working in startups - please don’t judge* 😅'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '* 对于那些不在初创公司工作的人 - 请不要批评* 😅'
 - en: There were a few hundred orders to delete, so I decided to not do it manually
     but to write a short SQL query (red flag 🚩)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几百个订单要删除，所以我决定不手动处理，而是写了一个简短的 SQL 查询（红旗 🚩）
 - en: 'It was a bit more complex than that, but to simplify:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 比那复杂一些，但简化来说：
 - en: '`UPDATE orders'
+  id: totrans-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`UPDATE orders'
 - en: SET is_deleted = true
+  id: totrans-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: SET is_deleted = true
 - en: ''
+  id: totrans-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: WHERE id in (1, 2, 3)`
+  id: totrans-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: WHERE id in (1, 2, 3)`
 - en: You can already see the scale of the disaster…
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经能看到灾难的规模了……
 - en: I pressed CTRL+Enter and ran the command. When it took longer than a second,
     I understood what happened. The program I used (DBeaver) saw the empty 3rd line,
     and ignored the 4th line.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我按下 CTRL+Enter 并运行了命令。 当它花了超过一秒的时间时，我明白发生了什么。我使用的程序（DBeaver）看到了空的第三行，并忽略了第四行。
 - en: Yes, I deleted all the orders in the DB 😢
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，我删除了数据库中的所有订单 😢
 - en: I felt physically ill, and helpless.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我感到身体不适，无助。
 - en: After a deep breath, I knew I had to act, and fast. There was no place to make
     more mistakes, or waste time.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 深呼吸之后，我知道我必须行动，而且要快。 没有更多的错误发生的地方，也不能浪费时间。
 - en: The recovery was done much better.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 恢复工作做得更好。
 - en: Stopping the systems - ~5 minutes
+  id: totrans-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 停止系统 - 约 5 分钟
 - en: Creating a clone of our DB from before the change (luckily we had Point-in-time-recovery
     set up) - ~20 minutes
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从更改之前创建我们的数据库的克隆（幸运的是我们已经设置了时间点恢复） - 约 20 分钟
 - en: Calling my manager during the wait 😨
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在等待期间打电话给我的经理 😨
 - en: Updating the production DB’s information based on the clone* - ~15 minutes
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 基于克隆更新生产数据库的信息* - 约 15 分钟
 - en: Starting our systems - ~5 minutes
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 启动我们的系统 - 约 5 分钟
 - en: '** I decided to not restore the whole DB, because I couldn’t stop ALL systems,
     as we have multiple independent ones. I didn’t want to lose the changes made during
     the recovery process. We use managed PostgreSQL by GCP, so I created a new clone
     from a time before the update. Then I exported just the ‘id’ and ‘is_deleted’
     columns from the clone, and imported the result into the production DB. Afterwards,
     it was a simple update+select query.*'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '** 我决定不恢复整个数据库，因为我无法停止所有系统，因为我们有多个独立的系统。 我不想在恢复过程中丢失所做的更改。 我们使用 GCP 的托管 PostgreSQL，所以我从更新之前的时间创建了一个新的克隆。
+    然后我只从克隆中导出了‘id’和‘is_deleted’列，并将结果导入生产数据库。 之后，这是一个简单的更新+选择查询。*'
 - en: So 45 minutes of easily avoidable downtime…
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以 45 分钟的易于避免的停机……
 - en: This may sound like a very stupid mistake you will never make (or even can’t
     make - in bigger companies). It might be true. The problem is not the wrong SQL
     command. **A small human mistake is never the true problem**. Me running that
     command, is just the end of a whole chain of failures.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这听起来像是一个你永远不会犯的非常愚蠢的错误（甚至在更大的公司中也不可能犯）。 这可能是真的。 问题不在于错误的 SQL 命令。 **小小的人为错误永远不是真正的问题**。
+    我运行该命令，只是一连串失败的最终结果。
 - en: Working on production during the weekend - why? In this case, it was not even
     that urgent. Nobody asked me to fix it immediately. I could have easily waited
     for Monday.
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 周末在生产环境工作 - 为什么？在这种情况下，甚至不那么紧急。没有人要求我立即修复它。我本可以轻松等到星期一。
 - en: Who the hell runs something on a prod DB without running it on QA first?
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 谁他妈会在生产数据库上跑东西而不先在QA上跑一下？
 - en: Why did I manually edit the DB and not use an API call?
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为什么我手动编辑了数据库而不是使用 API 调用？
 - en: And if there was no API - why didn’t I call a teammate and have ‘4-eyes’ on
     such a sensitive action?
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果没有 API - 为什么我不打电话给队友，让‘4-眼睛’看到这样敏感的操作？
 - en: '**And the worst part - why didn’t I use transactions?** It’s as easy as writing
     ‘Begin’, and then using Rollback in case of a mistake.'
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**最糟糕的是——为什么我不使用事务？**这就像写‘Begin’一样简单，然后在出现错误时使用 Rollback。'
 - en: The mistakes are built one atop the other. If at least one of them was avoided
     - the whole thing would have never happened. The answer to most questions is that
     I was just overconfident.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误一个接一个地累积。如果其中至少有一个被避免了——整件事本来就不会发生。对大多数问题的答案是我只是过于自信了。
 - en: At least the organized recovery stopped the chain. Imagine the disaster if I
     couldn’t restore the DB to the correct state…
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 至少有组织的恢复停止了这一连串的错误。想象一下，如果我不能将数据库恢复到正确的状态......
 - en: 'A few months ago, I finished reading *‘Chernobyl: The History of a Nuclear
     Catastrophe’.*The chain of mistakes there, reminded me of that cursed weekend
     (without underestimating or comparing to the dimensions of the Chernobyl disaster).'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 几个月前，我读完了*‘切尔诺贝利：核灾难的历史’*。那里的一系列错误让我想起了那个被诅咒的周末（不是低估或比较切尔诺贝利灾难的规模）。
 - en: There was a root technological problem in the RBMK reactor.
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: RBMK 反应堆存在根本技术问题。
 - en: It was not communicated properly. There were previous incidents involving the
     problem, but Chernobyl’s team was not familiar with them.
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这并没有得到恰当的沟通。之前发生过类似问题的事件，但切尔诺贝利的团队并不熟悉它们。
 - en: The team didn’t follow the procedure during a safety check.
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 团队在安全检查期间没有遵循程序。
 - en: After the explosion - the Soviet government tried to hide it, which greatly
     increased the severity of the damage.
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 爆炸后——苏联政府试图隐瞒，这极大地加剧了损害的严重程度。
 - en: '**Who is responsible?**'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**谁负责？**'
 - en: The designers of the reactor? The teams at other power plants who didn’t communicate
     the issues they had? The team at Chernobyl? The Soviet government?
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 反应堆的设计者？其他发电厂的团队没有沟通他们遇到的问题？切尔诺贝利的团队？苏联政府？
 - en: All of them. **Disasters are never caused by a single mistake,** but by a chain
     of them. Our job, is to do the best we can to cut the chain as early as possible.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有人。**灾难从来都不是由单一错误引起的**，而是由一连串的错误引起的。我们的工作是尽早尽力地切断这一连串的错误。
 - en: I didn’t know what to expect from the talk with my manager on Monday.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不知道周一与经理的谈话会有什么期待。
 - en: 'He surprised me: “Make sure it won’t happen again. But I prefer it that way
     - you made the mistake because you are dedicated, and love to move fast. People
     with a bias for action break things.”'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 他让我吃惊：“确保不会再次发生。但我更喜欢这样——你犯了错误是因为你很敬业，喜欢快速行动。行动派的人会犯错。”
 - en: That is exactly what I needed to hear. A too ‘cuddly’ approach saying “That’s
     ok, don’t worry, thanks for fixing it!” would have felt fake. On the other hand,
     I already felt like shit, so no point in humiliating me further.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这正是我需要听到的。过于‘婴儿式’的态度说“没关系，别担心，谢谢你修复它！”会感到虚假。另一方面，我已经感觉像个废物了，所以没必要再羞辱我。
 - en: 'Since then:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 自那时以来：
 - en: We try hard to remove the need for DB access, creating the relevant API calls
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们努力消除对数据库访问的需要，创建相关的 API 调用
 - en: I always run queries on QA first (I know.. obvious, right? Nothing makes a lesson
     stick more than a disaster)
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我总是先在 QA 上运行查询（我知道..显而易见，对吧？没有什么比灾难更能让人铭记教训了）
 - en: I consult with the PM to understand what’s really urgent, and what can wait.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我与产品经理商议，以了解什么真正紧急，什么可以等待。
 - en: Any update/insert/delete query on production is done by 2 people. This one actually
     prevented other mistakes!
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 任何在生产环境上的更新/插入/删除查询都由两个人完成。这实际上阻止了其他错误！
 - en: I started to use transactions 🤦‍♂️
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我开始使用事务 🤦‍♂️
 - en: After the incident, I shared a detailed explanation with my team. Not hiding
     anything, or downplaying my fault.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 事发后，我向我的团队分享了详细的解释。不隐瞒任何事情，也不淡化我的错误。
 - en: There is a thin balance, between shaming people, and not holding them accountable.
     When YOU make mistakes - it’s a great opportunity to send the right message.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在羞辱人和不追究责任之间存在着微妙的平衡。当你犯错时，这是发送正确信息的绝佳机会。
 - en: '**If you apologize** 1000 times, they’ll think you expect the same from them.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '**如果你道歉**了1000次，他们会认为你期望他们也这样做。'
 - en: '**If you’ll make fun** of the incident, ignoring the implications, they’ll
     think it’s ok.'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '**如果你会取笑**这件事，忽视其含义，他们会认为这是可以接受的。'
 - en: '**If you’ll be accountable**, learn, and improve - they’ll behave the same
     way.'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**如果你愿意承担责任**，学习并改进——他们也会以同样的方式行事。'
 - en: Encourage people to **act,** care about the customer, and solve problems. That’s
     how startups succeed.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 鼓励人们**行动**，关心客户，解决问题。这就是创业公司成功的方式。
 - en: When mistakes are made, hold the person **accountable**. Together, understand
     how it could have been avoided.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当犯错时，要让人**承担责任**。一起理解如何可以避免这种情况发生。
 - en: No need to make people feel worse than they already do. **Some people need more
     accountability, some more encouragement**. I always prefer to err on the side
     of encouragement.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不需要让人感觉比他们现在更糟。**有些人需要更多的问责，有些人需要更多的鼓励**。我总是更倾向于给予鼓励。
