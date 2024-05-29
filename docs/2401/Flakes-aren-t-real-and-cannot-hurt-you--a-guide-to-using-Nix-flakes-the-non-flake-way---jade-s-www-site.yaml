@@ -1,244 +1,359 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:26:26'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:26:26
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Flakes aren''t real and cannot hurt you: a guide to using Nix flakes the non-flake
     way - jade''s www site'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Flakes 不是真的，也不会伤害到你：一个使用 Nix flakes 的非 flakes 方法的指南 - jade 的 www 站点
 - en: 来源：[https://jade.fyi/blog/flakes-arent-real/](https://jade.fyi/blog/flakes-arent-real/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://jade.fyi/blog/flakes-arent-real/](https://jade.fyi/blog/flakes-arent-real/)
 - en: Inflammatory title out of the way, let's go.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 煽动性的标题已经讲过了，让我们开始吧。
 - en: 'I think that Nix flakes have some considerable benefits, such as:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为 Nix flakes 有一些相当大的好处，比如：
 - en: Convenient pinning of evaluation-time dependencies
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 方便地锁定评估时依赖关系
 - en: Eliminating pointless rebuilds of code by only including tracked files in builds
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过仅在构建中包含跟踪文件来消除代码的无意义重建
 - en: Making Nix code, on average, much more reproducible by pervasive pinning
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过普遍固定使 Nix 代码平均更具可重现性
 - en: Allegedly caching evaluation
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 据称缓存评估
 - en: Possibly making Nix easier to learn by reducing the amount of poking at strange
     attribute sets and general `NIX_PATH` brokenness
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可能通过减少对奇怪属性集的研究和一般的 `NIX_PATH` 错误性来使 Nix 更容易学习
 - en: However, at the same time, there are a few things that one might be led to think
     about flakes that are not the most effective way of doing things. I personally
     use flakes relatively extensively in my own work, but there are several ways I
     use them that are not standard, with reason.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，与此同时，有一些关于 flakes 的事情可能会让人产生不是最有效的方式。我个人在自己的工作中相对广泛地使用 flakes，但我使用的几种方式并不标准，有其原因。
 - en: 'Flakes are *optional*, and as much as some people whose salary depends on it
     might say otherwise, they are not the (only) future of Nix: they are simply a
     special entry point for Nix code with a built in pinning system, nothing more,
     nothing less.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: Flakes 是 *可选的*，尽管一些薪水取决于此的人可能会说得不一样，但它们并不是 Nix 的（唯一）未来：它们只是具有内置固定系统的 Nix 代码的特殊入口点，不多不少。
 - en: Nix continues to gather a reputation for bad documentation, in part because
     the official documentation for nixpkgs and NixOS is *de facto* not allowed to
     talk about flakes, as a policy. This situation is certainly partially due to a
     divide between Nix developers and nixpkgs developers, which are groups with surprisingly
     little overlap.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 继续因文档不佳而声名狼藉，部分原因是因为 nixpkgs 和 NixOS 的官方文档实际上不允许谈论 flakes，作为一种政策。这种情况部分是由于
+    Nix 开发人员和 nixpkgs 开发人员之间存在分歧，而这两个群体之间的重叠程度出奇的少。
 - en: Flakes also are a symptom or cause of much intra-community strife between "pro-flakes"
     and "anti-flakes" factions, but this situation is at some level a sign of broken
     consensus processes and various actors trying to sidestep them, an assumption
     by many people that the docs are "outdated" for not using flakes, and the bizarre
     proliferation of flakes everywhere in blog posts or tutorials leading to a belief
     that they are required for everything.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: Flakes 也是"支持 flakes"和"反对 flakes"派系之间产生很多社区内部冲突的症状或原因，但在某种程度上，这种情况表明了共识过程的破裂以及各种各样的参与者试图规避这些过程，很多人认为文档因不使用
+    flakes 而“过时”，以及 flakes 在博客文章或教程中的异常传播导致人们认为它们是必需的。
 - en: This post is about how to architect Nix projects in general, with a special
     eye on how to do so with flakes while avoiding their limitations. It tries to
     dispel misconceptions that can develop in such a monoculture.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章是关于如何在一般情况下架构 Nix 项目的，特别关注如何在避免其限制的同时使用 flakes。它试图消除在这种单一文化中可能产生的误解。
 - en: '"Flakes are the composition primitive in Nix"'
+  id: totrans-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '"Flakes 是 Nix 中的组合原语"'
 - en: The Nix language, functions, and nixpkgs utilities are an effective composition
     primitive, and are much better suited for putting parts of a project together,
     especially if it is in a monorepo.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 语言、函数和 nixpkgs 实用程序是一种有效的组合原语，更适合将项目的部分组合在一起，特别是如果它在单体库中。
 - en: 'The most flexible way of building large systems with Nix is to merely use flakes
     as an entry point, and develop the rest using "old" tools. This is for multitudinous
     reasons:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Nix 构建大型系统的最灵活方式只是将 flakes 作为入口点，并使用"旧"工具开发其余部分。这有多种原因：
 - en: Flakes couple version control integration, dependency management and lockfile
     management. In medium sized projects, even at the scale of my dotfiles, locking
     dependencies of subprojects is often highly undesirable.
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: flakes 结合了版本控制集成、依赖管理和锁定文件管理。在中等规模的项目中，即使在像我的 dotfiles 这样的规模上，锁定子项目的依赖关系通常也是非常不可取的。
 - en: 'They''re not ideal for either working in the large or in the small: in the
     small, there is too much overhead in writing a separate `flake.nix` for some tiny
     utility, and in the large, for example, in nixpkgs, if flakes were actually used
     for dependency management, `flake.nix` would be 100,000 lines of `inputs` long.'
+  id: totrans-22
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 它们既不适合大规模工作，也不适合小规模工作：在小规模工作中，为了某些微小实用程序编写一个单独的`flake.nix`有太多的开销，而在大规模工作中，例如在
+    nixpkgs 中，如果实际使用 flake 进行依赖管理，`flake.nix`将会有 100,000 行`inputs`长。
 - en: In terms of making flexible builds, flakes don't support configuration [except
     through hilarious abuses of `--override-input`](https://github.com/boolean-option).
     This means that all build configuration variants have to be anticipated ahead
     of time, or that traditional nixpkgs/Nix language primitives need to be used instead.
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在制作灵活的构建方面，flake 不支持配置[除非通过滑稽的滥用`--override-input`](https://github.com/boolean-option)。这意味着所有构建配置变体都必须提前预料到，或者必须使用传统的
+    nixpkgs/Nix 语言基元。
 - en: 'Flakes as a composition primitive is completely incompatible with cross compilation.
     Due to the lack of configuration support, `packages.${system}` cannot be used
     for cross compilation: there is nowhere to specify the architecture to build with.'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 作为组合基元的 flake 与交叉编译完全不兼容。由于缺乏配置支持，`packages.${system}`无法用于交叉编译：没有地方可以指定要使用的体系结构进行构建。
 - en: Because of all of this, even in a flakes world, to compose software in the large
     *and* in the small reusably and efficiently, the other composition primitives
     provided by Nix and nixpkgs remain the best choices to assemble software. A flake
     can then be relegated to merely an entry point and a way of acquiring dependencies
     that are required for evaluation (build-time dependencies should use `pkgs.fetchurl`,
     `fetchFromGitHub`, etc).
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，即使在 flake 的世界中，为了可重用和高效地组合软件，Nix 和 nixpkgs 提供的其他组合基元仍然是组装软件的最佳选择。然后，可以将 flake
+    归为仅仅是一个入口点和获取评估所需依赖项的方式（构建时依赖项应使用`pkgs.fetchurl`、`fetchFromGitHub`等）。
 - en: For example, to expose multiple configurations of a program, one might write
     it the traditional way, using a lambda accepting some configuration parameters,
     then call that lambda multiple times to expose multiple output attributes inside
     the flake itself. This separates the capability to configure the software from
     the actual defined configurations of the software, and avoids letting the configuration
     non-system of flakes define how the internals of the build definition work.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，要公开程序的多个配置，可以传统方式编写它，使用接受一些配置参数的 lambda，然后在 flake 本身内部多次调用该 lambda 以公开多个输出属性。这将软件的配置能力与软件的实际定义配置分离，并避免让
+    flake 的非系统配置定义构建定义的内部工作方式。
 - en: 'One of the largest simultaneous advantages and disadvantages of the Nix language
     is that it is a Turing complete language, which causes pain to static analysis,
     but is also one of its largest assets: you can program it. This can be seen as
     a problem, but it also is awesome: you can programmatically patch packages, define
     configuration dynamically, read files of arbitrary formats and more.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 语言的最大优点和缺点之一是它是一种图灵完备语言，这给静态分析带来了痛苦，但也是其最大的资产之一：你可以对其进行编程。这可以看作是一个问题，但也很棒：你可以对软件进行程序化补丁，动态定义配置，读取任意格式的文件等等。
 - en: Nix is a functional programming language, which means that its fundamental composition
     primitive is the function. Even "fancy" objects like NixOS modules or overlays
     are just functions that can be moved into separate files, imported, or created
     through partial application of other functions (although, since `imports` in modules
     are deduplicated by file name, NixOS modules generally should be imported by path
     instead of generated by functions).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 是一种函数式编程语言，这意味着它的基本组合基元是函数。甚至像 NixOS 模块或覆盖等“花哨”的对象只是可以移到单独的文件中、导入或通过其他函数的部分应用创建的函数（尽管由于模块中的`imports`按文件名去重，因此
+    NixOS 模块通常应通过路径导入而不是通过函数生成）。
 - en: See the next section for concrete ways of composing software together.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 请查看下一节，了解一起编写软件的具体方法。
 - en: '"Flakes are where you put your Nix code"'
+  id: totrans-30
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: “Flakes 是你放置 Nix 代码的地方”
 - en: Flakes are merely a fancy schema for making a standardized entry point into
     Nix code. Most of the Nix code in a project of any significant size should not
     be in `flake.nix`, for several reasons.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Flakes 只是一种制作 Nix 代码的标准化入口点的花哨方案。在任何规模的项目中，大部分 Nix 代码不应该位于`flake.nix`中，原因有几个。
 - en: 'The most trivial reason to put as little code as possible in `flake.nix` is
     maintainability: there is as much rightward drift in `flake.nix` as in recent
     German and Dutch elections (concerningly much!), so from just that perspective,
     it''s useful to move things out of it.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 将尽可能少的代码放入 `flake.nix` 的最微不足道的理由是可维护性：在 `flake.nix` 中存在与最近的德国和荷兰选举一样多的右倾漂移（令人担忧的多！），因此从仅此角度来看，将事物移出是有用的。
 - en: Let's talk about some standard patterns that have existed before flakes did,
     which still are relevant in a flakes world.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们谈谈在 flakes 出现之前就存在的一些标准模式，在 flakes 世界中仍然相关。
 - en: I am using `package.nix` to refer to the standard way for writing packages in
     nixpkgs style, which are invoked with `callPackage`. This is as opposed to writing
     something directly in `flake.nix` using `pkgs`.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正在使用 `package.nix` 来指代 nixpkgs 风格中编写包的标准方式，这些包使用 `callPackage` 调用。这与直接在 `flake.nix`
+    中使用 `pkgs` 编写的方式相对立。
 - en: 'A `package.nix` file looks something like so:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个 `package.nix` 文件大致如下所示：
 - en: '[PRE0]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Package definitions should be written with `callPackage` if possible, rather
     than inline in `flake.nix`, since using `package.nix` makes them into small, composable,
     configurable, and portable units of software. Also, by using `callPackage` and
     writing in nixpkgs style, it becomes a lot easier to move packages between projects,
     and indeed to upstream them to nixpkgs, since they look and work a familiar way.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果可能，应该使用 `callPackage` 编写包定义，而不是在 `flake.nix` 中内联，因为使用 `package.nix` 会使它们成为小型、可组合、可配置和可移植的软件单元。此外，通过使用
+    `callPackage` 并以 nixpkgs 风格编写，将包移到项目之间，甚至将其上游到 nixpkgs，变得更加容易，因为它们看起来和工作方式都是熟悉的。
 - en: Cross compilation
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 跨编译
 - en: A lesser-known fact is that `callPackage` is load-bearing for cross compilation.
     If you write `pkgs.foo` in `nativeBuildInputs`, such a Nix expression will break
     under cross compilation, but `foo` as an argument from `callPackage` will not.
     This is because `callPackage` will magically resolve `foo` appearing inside `nativeBuildInputs`
     to mean `pkgs.buildPackages.foo`; that is, a package built for the build computer.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '`callPackage` 是跨编译中承担重要角色的一个较少被人知晓的事实。如果你在 `nativeBuildInputs` 中写入 `pkgs.foo`，这样的一个
+    Nix 表达式在跨编译时会失败，但是作为 `callPackage` 的参数的 `foo` 不会。这是因为 `callPackage` 会神奇地将出现在 `nativeBuildInputs`
+    内部的 `foo` 解析为意味着为构建计算机构建的 `pkgs.buildPackages.foo`；也就是说，一个为构建计算机构建的包。'
 - en: '`callPackage` evaluates a Nix file multiple times with different arguments
     and splices the results together such that `buildInputs` magically receives target
     packages, and `nativeBuildInputs` receives build packages, even if the same package
     name appears in both. Magic ✨'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '`callPackage` 多次评估一个 Nix 文件，并使用不同的参数将结果拼接在一起，这样 `buildInputs` 神奇地接收到目标包，而 `nativeBuildInputs`
+    接收到构建包，即使相同的包名出现在两者中。魔法 ✨'
 - en: 'That is, in the following intentionally-flawed-for-other-reasons `flake.nix`:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 也就是说，在以下故意有其他原因缺陷的 `flake.nix` 中：
 - en: '[PRE1]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'then `package.nix`:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后是 `package.nix`：
 - en: '[PRE2]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Incidentally, notice anything there? Yeah, it's flakes completely not supporting
     cross compilation. See the next point. :D
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便提一下，有注意到什么吗？是的，是 flakes 完全不支持跨编译。看下一个要点。:D
 - en: It's possible to use the `pkgs.buildPackages` attribute to pull things into
     `nativeBuildInputs`, and `pkgs` for `buildInputs` but it is not conventional to
     do so, and is quite verbose.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以使用 `pkgs.buildPackages` 属性将东西拉入 `nativeBuildInputs`，并且使用 `pkgs` 来用于 `buildInputs`
+    但这样做并不常规，而且相当冗长。
 - en: '[See the manual about these callPackage shenanigans](https://nixos.org/manual/nixpkgs/stable/#ssec-cross-dependency-implementation)
     for more details. See also: [the manual about dependency categories](https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies).'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[查看关于这些 callPackage 奇技淫巧的手册](https://nixos.org/manual/nixpkgs/stable/#ssec-cross-dependency-implementation)
+    以获取更多详情。另请参阅：[关于依赖类别的手册](https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies)。'
 - en: '[An overlay](https://nixos.org/manual/nixpkgs/stable/#sec-overlays-definition)
     is a function overriding nixpkgs which is evaluated until it reaches a [fixed
     point](https://en.wikipedia.org/wiki/Fixed-point_combinator). An overlay takes
     two arguments, `final` and `prev` (sometimes also called `self` and `super`),
     and returns an attribute set that is shallowly replaced on top of nixpkgs with
     `//`.'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[覆盖（overlay）](https://nixos.org/manual/nixpkgs/stable/#sec-overlays-definition)
+    是覆盖 nixpkgs 的函数，它在达到 [不动点（fixed point）](https://en.wikipedia.org/wiki/Fixed-point_combinator)
+    之前进行求值。覆盖接受两个参数，`final` 和 `prev`（有时也称为 `self` 和 `super`），并返回一个属性集，该属性集在 nixpkgs
+    顶部被浅层替换为 `//`。'
 - en: Overlays are useful as a means for distributing sets of software outside of
     nixpkgs, and still are useful in that role in a flakes world, since overlays are
     simple functions that can be evaluated against any version of nixpkgs, and if
@@ -246,8 +361,10 @@
     flake output is not architecture specific, which follows from their definition
     as functions that take package sets and return modifications to make; this is
     why they work properly here.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 叠加层对于在nixpkgs之外分发软件集合是有用的，并且在Flakes世界中仍然是有用的，因为叠加层是简单的函数，可以对任何版本的nixpkgs进行评估，并且如果使用`callPackage`编写，交叉编译也可以工作。人们可能会注意到`overlays`叠加层输出不是特定于架构的，这是因为它们被定义为接受包集并返回修改以进行的函数；这就是它们在这里正常工作的原因。
 - en: 'Evaluation to a fixed point means that it is evaluated as many times as necessary
     until it stops referring to the `final` argument (or overflows the stack). This
     idea appears in many places, including tables of contents in LaTeX, [Typst](https://typst.app)
@@ -255,32 +372,46 @@
     the layout of subsequent pages and change their page numbers, but after the first
     run of that, the layout will probably not change, since the only change is the
     numbers, so *that* iteration likely converges to the final result.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于一个固定点的评估意味着它会被评估多次，直到它不再引用`final`参数（或者溢出堆栈）。这个想法出现在许多地方，包括LaTeX的目录、[Typst](https://typst.app)或其他排版程序中：通过生成目录，你可能会影响后续页面的布局并更改它们的页码，但在第一次运行之后，布局可能不会改变，因为唯一的变化是数字，所以*那次*迭代可能会收敛到最终结果。
 - en: '`final` gives the *final* version of the attribute set, after overlays have
     been evaluated as far as they will go; your overlay may be run multiple times
     in evaluating an attribute in `final`, or even cause infinite recursion. `prev`
     gives the version of nixpkgs prior to the present overlay or any further overlays.'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '`final`给出了属性集的*最终*版本，在叠加层被评估至其最大程度时；你的叠加层可能会在评估`final`中的属性时运行多次，甚至会导致无限递归。`prev`给出了当前叠加层或任何进一步叠加层之前的nixpkgs的版本。'
 - en: 'For example, we could write an overlay to override GNU Hello to be a wrapper
     that makes a [reference to an excellent retrocomputing series](https://www.youtube.com/watch?v=gQ6mwbTGXGQ).
     Content of `overlay.nix`:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们可以编写一个叠加层来重写GNU Hello，使其成为一个包装器，引用一个[优秀的复古计算机系列](https://www.youtube.com/watch?v=gQ6mwbTGXGQ)。`overlay.nix`的内容：
 - en: '[PRE3]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Then:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后：
 - en: '[PRE4]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Here, the attribute `hello` of our modified `nixpkgs` now is our script that
     calls the original `hello` to say "hellorld".
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们修改的`nixpkgs`的属性`hello`现在是我们的脚本，调用原始的`hello`来说“hellorld”。
 - en: It's pretty easy to accidentally cause infinite recursion with overlays if their
     laziness isn't correct. For example, attribute sets' attribute names are evaluated
     strictly, with all names in an attribute set evaluated immediately, but the values
@@ -288,87 +419,129 @@
     but they were canned for performance reasons. Strict attribute names can be a
     foot-gun, causing confusing infinite recursion in some cases using `mapAttrs`
     or similar mechanisms on `prev` to generate the set of things to override.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果叠加层的惰性评估不正确，很容易意外导致无限递归。例如，属性集的属性名称是严格评估的，属性集中的所有名称都会立即评估，但属性的值是惰性评估的。[曾经有人尝试更改此行为](https://github.com/NixOS/nix/issues/4090)，但由于性能原因而被搁置。严格的属性名称可能是一个“足枪”，在某些情况下使用`mapAttrs`或类似机制在`prev`上生成要覆盖的事物集时可能导致令人困惑的无限递归。
 - en: Infinite recursion is not typically a problem if an overlay doesn't actually
     replace anything or contain self-references, as may be the case for overlays distributing
     very simple software, and we can take advantage of that as shown in the next section.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个叠加层实际上并没有替换任何东西或包含自引用，那么无限递归通常不是一个问题，就像叠加层分发非常简单的软件的情况一样，我们可以像下一节中所示的那样利用它。
 - en: The place of overlays in a flakes world
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 叠加层在Flakes世界中的位置
 - en: '*Flakes don''t support cross compilation.*'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Flakes不支持交叉编译。*'
 - en: I am being a little bit tricky with the wording here. Flakes don't *stop* you
     from doing cross compilation, but you have to do an end-run around flakes and
     do it the "old" way.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在这里使用措辞有点狡猾。Flakes并不会*阻止*你进行交叉编译，但你必须绕过Flakes，按照“老”方法来做。
 - en: Because of this design fault in flakes, namely, the lack of support for parameters,
     the most compatible way of writing packaging in a flake project is to write the
     package definitions into an overlay first, then expose the packages from the overlay.
     Consumers that need cross compilation can use the overlay with their own copy
     of nixpkgs, and consumers that don't care can use it through `packages`.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 flakes 的这个设计缺陷，即不支持参数，编写 flake 项目中的包装最兼容的方法是首先将包定义写入一个覆盖层，然后从覆盖层中公开包。需要跨编译的消费者可以使用带有自己的
+    nixpkgs 副本的覆盖层，而不关心的消费者可以通过 `packages` 使用它。
 - en: 'Keeping in mind ["1000 instances of nixpkgs"](https://discourse.nixos.org/t/1000-instances-of-nixpkgs/17347/),
     a reasonable way of writing a flake that *doesn''t modify anything in nixpkgs*
     and just adds stuff is:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到["1000 个 nixpkgs 实例"](https://discourse.nixos.org/t/1000-instances-of-nixpkgs/17347/)，编写一个不修改
+    nixpkgs 中任何内容，只是添加内容的 flake 的合理方式是：
 - en: '[PRE5]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Downstream consumers that need to cross compile in spite of flakes can use the
     overlay, and other consumers can use `packages` as normal.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要跨编译的下游使用者可以使用覆盖层，而其他使用者可以像平常一样使用 `packages`。
 - en: This uses a cute trick of calling the overlay, which is just a function, with
     both `final` and `prev` as the final nixpkgs attribute set. This definitely does
     not work on all overlays, since overlays can make self-references using `final`,
     and indeed often need to do so, if they contain multiple derivations that depend
     on each other.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使用了一个巧妙的技巧，即调用覆盖层（overlay），它只是一个函数，使用 `final` 和 `prev` 作为最终的 nixpkgs 属性集。这绝对不适用于所有的覆盖层，因为覆盖层可以使用
+    `final` 进行自引用，实际上通常需要这样做，如果它们包含相互依赖的多个派生。
 - en: However, with a little bit more work, this can be overcome very cleanly, while
     also avoiding any possibility of name shadowing problems!
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，通过稍微多做一点工作，这个问题可以非常干净地解决，同时也避免了任何可能的名称遮蔽问题！
 - en: 'If you do have to use a real overlay that needs to replace things, import nixpkgs
     again from your flake with the overlay as an argument. It''s fine. It''s just
     a second of gratuitous evaluation time:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果确实需要使用一个真正的覆盖层来替换东西，请从 flake 中再次导入 nixpkgs，并将覆盖层作为参数。没关系。这只是多余的评估时间的一秒钟：
 - en: '[PRE6]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: NixOS modules
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: NixOS 模块
 - en: NixOS modules are, like overlays and `package.nix`, fundamentally just functions
     which are invoked in a fancy way, and are not a flakes construct.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: NixOS 模块，就像覆盖层和 `package.nix` 一样，基本上只是以一种高级方式调用的函数，并不是 flakes 的构造。
 - en: As used in flakes with the `nixosModules.*` output, they are *architecture independent*
     since they are just functions, and if defining a module for software that is built
     by the same flake, one would generally want to use an overlay in [`nixpkgs.overlays`](https://nixos.org/manual/nixos/stable/options#opt-nixpkgs.overlays)
     or the trick above, invoking the overlay with `pkgs` twice, to actually bring
     it in (again, to remain cross compilation compatible).
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 flakes 中与 `nixosModules.*` 输出一起使用时，它们是*与架构无关*的，因为它们只是函数，如果为由同一 flake 构建的软件定义一个模块，通常会想要在
+    [`nixpkgs.overlays`](https://nixos.org/manual/nixos/stable/options#opt-nixpkgs.overlays)
+    中使用覆盖层或上面的技巧，两次调用带有 `pkgs` 的覆盖层，以实际引入它（再次，以保持交叉编译兼容性）。
 - en: To keep with the theme of putting things outside of `flake.nix` to enable reusability,
     the code for the module can be placed in a separate file that is imported. Then,
     `flake.nix` is used to import that module and inject dependencies from its environment.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了与将事物放在 `flake.nix` 外面以实现可重用性的主题保持一致，模块的代码可以放在一个单独的文件中，然后通过导入该模块并从其环境中注入依赖项来使用
+    `flake.nix`。
 - en: Injecting dependencies
+  id: totrans-74
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 注入依赖项
 - en: There are a couple of ways to inject dependencies into NixOS modules from a
     flake, one of which is mildly uglier. Injecting values from `flake.nix` into NixOS
     is required for a couple of reasons, most notably, to use flakes-managed dependencies
@@ -376,17 +549,25 @@
     so `<nixpkgs>` resolves in a flake configuration](https://github.com/NixOS/nixpkgs/pull/254405),
     since you need the actual inputs from `flake.nix` to get a proper reference to
     nixpkgs suitable to create a dependency on the actual flake input.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几种方法可以从一个 flake 将依赖项注入到 NixOS 模块中，其中一种方法稍微有些丑陋。从 `flake.nix` 中注入值到 NixOS 需要有几个原因，其中最重要的是，要在
+    NixOS 配置中使用 flakes 管理的依赖项。同样，为了[正确配置 `NIX_PATH` 以便在 flake 配置中解析 `<nixpkgs>`](https://github.com/NixOS/nixpkgs/pull/254405)，从
+    `flake.nix` 获取实际输入是必要的，以获得适合创建对实际 flake 输入的依赖关系的 nixpkgs 的正确引用。
 - en: 'The simplest (and most reasonable, in my view) way to inject dependencies from
     a flake is to write an inline module that has them in its lexical closure inside
     of `flake.nix`. If you want to be fancy, you could even make an option to store
     the injected dependencies:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单（也是我认为最合理的）注入flakes中的依赖项的方法是编写一个内联模块，在`flake.nix`中将它们放在其词法闭包中。如果你想要花哨一点，甚至可以制作一个选项来存储注入的依赖项：
 - en: '[PRE7]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The uglier and perhaps more well-known way to inject dependencies into NixOS
     modules from flakes is [`specialArgs`](https://nixos.org/manual/nixos/unstable/options#opt-_module.args).
     This is uglier, since it gets dumped into the arguments for every module, which
@@ -394,166 +575,264 @@
     work outside of the flake that''s actually invoking `nixpkgs.lib.nixosSystem`.
     The latter is the much more sinister part, and the reason I would strongly recommend
     inline modules with closures instead of `specialArgs`: they break flake composition.'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 将依赖项注入到NixOS模块中的更丑陋，也许更为人所知的方法是[`specialArgs`](https://nixos.org/manual/nixos/unstable/options#opt-_module.args)。这更丑陋，因为它被转储到每个模块的参数中，这与NixOS中其他数据流工作方式不同，它也无法在实际调用`nixpkgs.lib.nixosSystem`的flake之外工作。后者是更加阴险的部分，也是我强烈推荐使用具有闭包的内联模块而不是`specialArgs`的原因：它们会破坏flake的组合。
 - en: That being said, *either* using `specialArgs` *or* an inline module inside `flake.nix`,
     rather than an option above, is the only way to inject module imports. That is,
     if one uses some option like `imports = [ config.someOption ]`, it will cause
     an infinite recursion error. We would suggest putting the imports inside an inline
     module inside `flake.nix` for this case.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 话虽如此，*要么*使用`specialArgs` *要么*在`flake.nix`中内联模块，而不是在上面的选项中，是注入模块导入的唯一方法。也就是说，如果使用类似`imports
+    = [ config.someOption ]`的选项，它会导致无限递归错误。对于这种情况，我们建议将导入放在`flake.nix`中的内联模块中。
 - en: 'To use `specialArgs`, an attribute set is passed into `nixpkgs.lib.nixosSystem`,
     which then land in the arguments of NixOS modules:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用`specialArgs`，需要将属性集传递到`nixpkgs.lib.nixosSystem`，然后这些属性集会进入NixOS模块的参数中。
 - en: '[PRE8]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Example
+  id: totrans-82
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 例子
 - en: This could be equivalently done with the overlay invocation trick above on pkgs.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可以等效地通过上面对pkgs的覆盖调用技巧来完成。
 - en: 'For example, this defines a very practical NixOS module that meows at the user
     on the console on boot:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，这定义了一个非常实用的NixOS模块，在启动时在控制台上对用户发出咪咪声：
 - en: '[PRE9]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'and `nixos-module.nix` containing the actual code:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 和包含实际代码的`nixos-module.nix`：
 - en: '[PRE10]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: <details><summary>How I tested the above</summary>
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary>我如何测试上述内容</summary>
 - en: 'I put this into `flake.nix` above:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将这些放入了`flake.nix`中：
 - en: '[PRE11]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Then I built the system configuration:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我构建了系统配置：
 - en: '[PRE12]</details>'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE12]</details>'
 - en: '"Flakes are the future of Nix, and the only CLI"'
+  id: totrans-93
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '"Flakes是Nix的未来，也是唯一的CLI"'
 - en: 'Many words have been spilled on the new CLI and its design, mostly focusing
     on flakes. However, this is not the only mode of the new CLI: wherever it makes
     sense, it actually fully supports non-flake usage.'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多文字已经写了关于新CLI及其设计的文章，主要集中在flakes上。然而，这并不是新CLI的唯一模式：在任何有意义的地方，它实际上都完全支持非flakes的使用。
 - en: To get more exact equivalence with the old CLI, `-L` (`--print-build-logs`)
     and `--print-out-path` are useful. Equally, the *old* CLI can have its output
     improved to that of the new CLI by passing `--log-format bar-with-logs`. I would
     be remiss not to mention [nix-output-monitor](https://github.com/maralorn/nix-output-monitor)
     as a much nicer way of watching Nix builds, as well.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 要与旧的CLI获得更精确的等价性，`-L`（`--print-build-logs`）和`--print-out-path`很有用。同样，旧的CLI可以通过传递`--log-format
+    bar-with-logs`来改善其输出到新CLI的输出。我不得不提到[nix-output-monitor](https://github.com/maralorn/nix-output-monitor)作为观察Nix构建的更好方式。
 - en: 'Here is a table of the equivalences:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 下表显示了等价关系：
 - en: '| **Old CLI** | **Equivalent** |'
+  id: totrans-97
   prefs: []
   type: TYPE_TB
+  zh: '| **旧CLI** | **等效** |'
 - en: '|'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE13]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '|'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE14]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '|'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '|'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE15]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '|'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE16]'
+  id: totrans-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '|'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '|'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE17]'
+  id: totrans-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '|'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE18]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '|'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '|'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE19]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '|'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE20]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '|'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '|'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE21]'
+  id: totrans-119
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '|'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE22]'
+  id: totrans-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '|'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '"Flakes are how to manage external dependencies"'
+  id: totrans-123
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '"Flakes是管理外部依赖项的方法"'
 - en: Flakes are one way of managing external dependencies but they have many flaws
     in that role.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: Flakes是管理外部依赖项的一种方式，但在该角色中它们有许多缺陷。
 - en: One flaw is that all the dependencies need to be listed in one file, and there
     is no way of scoping them into groups.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个缺陷是所有依赖项都需要列在一个文件中，并且没有办法将它们限制在组中。
 - en: For fetching things that are needed to build but not needed to evaluate, flake
     inputs suffer from a poorly documented limitation of builtin fetchers, which is
     the reason they are banned in nixpkgs (in addition to [`restrict-eval`](https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-restrict-eval)
@@ -561,8 +840,12 @@
     alternative to this is to use a fixed-output derivation that performs the fetching
     at build time, such as is done with `pkgs.fetchFromGitHub`, `pkgs.fetchurl` and
     so on.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于构建所需但不需要评估的内容，flake 输入存在一个文档不足的内置获取器的限制，这也是它们被禁止在 nixpkgs 中使用的原因之一（除了 [`restrict-eval`](https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-restrict-eval)
+    使其无法工作之外），即它们在获取时阻止了进一步的评估。与此相对的选择是使用在构建时执行获取的固定输出派生物，例如使用 `pkgs.fetchFromGitHub`、`pkgs.fetchurl`
+    等方式。
 - en: The blocking is not necessarily the biggest problem if the dependencies are
     Nix code required to evaluate the build, since you cannot avoid blocking with
     those, but it can be troublesome when the dependencies are not required to evaluate,
@@ -572,22 +855,32 @@
     many build-time inputs such as a pile of tree-sitter grammars, Haskell package
     sources, or such, switching to fixed-output derivation fetchers will save a lot
     of time.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 阻塞并不一定是最大的问题，如果依赖项是用于评估构建所需的 Nix 代码，因为你无法避免与之相关的阻塞，但当依赖项不需要评估时，这可能会造成麻烦，因为它会
+    [减慢和串行化评估](https://jade.fyi/blog/nix-evaluation-blocking/)，一次只下载一个东西。如果依赖项是评估所需的，则没有太多方法可以改善这一点，但例如，对于需要许多构建时输入的构建，比如一堆
+    tree-sitter 语法、Haskell 包源码等，切换到固定输出派生物获取器将节省大量时间。
 - en: If not flakes then what?
+  id: totrans-128
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如果不是 flakes，那么是什么？
 - en: There's a perfectly reasonable argument to be made for just treating dependencies
     the same way as nixpkgs and directly calling `pkgs.fetchurl` and such inside Nix
     source. This works fine, is conventional, and avoids the evaluation-time-build-dependency
     ("import from derivation" (IFD)) problems.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个完全合理的论点可以解释为什么要以与 nixpkgs 相同的方式处理依赖项，并在 Nix 源代码中直接调用 `pkgs.fetchurl` 等。这样做效果很好，是常规做法，并且避免了评估时构建依赖项（“从派生物导入”（IFD））的问题。
 - en: It's nice to have tools to automatically update these and grab the appropriate
     hash, though.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 有自动更新这些并获取适当哈希的工具是很好的。
 - en: 'There are several tools that can maintain a lock file with Nix hashes, such
     as [Niv](https://github.com/nmattia/niv), [npins](https://github.com/andir/npins),
     and [gridlock](https://github.com/lf-/gridlock). The first two sadly ship Nix
@@ -596,203 +889,296 @@
     their primary purpose is in pinning Nix code, for which builtin fetchers are the
     right choice, but it does mean that the code they ship shouldn''t be used for
     build dependencies.'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几个工具可以维护带有 Nix 哈希的锁文件，例如 [Niv](https://github.com/nmattia/niv)、[npins](https://github.com/andir/npins)
+    和 [gridlock](https://github.com/lf-/gridlock)。遗憾的是，前两者都提供了使用内置获取器的 Nix 文件，因此存在评估性能问题，而后者则不提供任何
+    Nix 代码。这并不是对这些项目的抨击：它们的主要目的是固定 Nix 代码，对于这一目的，内置获取器是正确的选择，但这意味着它们提供的代码不应该用于构建依赖项。
 - en: Thus, the solution for build-time dependencies is to ignore any provided Nix
     code for whichever one you choose to use and write some code to read the tool's
     JSON file and pull the package URL and hashes out, and call `pkgs.fetchurl` with
     them. This is quite easy to do and we would recommend it.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，构建时依赖项的解决方案是忽略任何你选择使用的提供的 Nix 代码，并编写一些代码来读取工具的 JSON 文件，并从中提取软件包的 URL 和哈希值，并调用
+    `pkgs.fetchurl`。这样做非常容易，我们建议这样做。
 - en: Why are there five ways of getting software?
+  id: totrans-133
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么会有五种获取软件的方法？
 - en: It's possible to get lost in the sheer number of ways of doing things and lose
     what any of it is for. I think this is actually worsened by flakes, *because*
     they make examples self-contained, making them more easy to just pick up and run
     without contemplation. Often a lot of blogs provide examples in flake form, potentially
     as NixOS modules or other forms which have a lot of fanciness that might be surplus
     to requirements for the desired application.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 很容易迷失在各种做事方式的数量中，并且忘记这其中的任何一个是为了什么。我认为这实际上是由 flakes 造成的 *因为* 它们使示例是自包含的，使它们更容易被直接拿起并运行而不需要深思熟虑。通常，许多博客以
+    flakes 形式提供示例，可能是作为 NixOS 模块或其他形式，这些形式可能具有很多可能对所需应用程序多余的花哨功能。
 - en: If one is new to Nix it gets very easy to think "Nix Nix Nix I shall reduce
     the world to nothingness, Nix" and convert everything to be tangled with Nix,
     and it helps to understand the available mechanisms and why one might need one
     particular one.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个人对 Nix 还很陌生，那么很容易就会想到 "Nix Nix Nix 我要将世界化为虚无，Nix" 并将一切都转换为与 Nix 纠缠在一起，了解可用的机制以及为什么可能需要一个特定的机制是有帮助的。
 - en: The various ways of installing things have different relationships to mutability
     and "effects". By effects, I mean, mutations to the computing system, which other
     systems might use post-install scripts for. Nix derivations don't support post-install
     scripts because "installing" doesn't mean anything. By persistent, I mean that
     they have some lasting effect on the system besides putting stuff in the Nix store.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装事物的各种方式与可变性和 "效果" 有不同的关系。在这里，效果是指对计算系统的修改，其他系统可能使用后安装脚本进行。Nix 衍生物不支持后安装脚本，因为
+    "安装" 没有任何意义。通过持久性，我指的是它们对系统产生某种持久的影响，而不仅仅是将东西放入 Nix 存储中。
 - en: 'This section perhaps deserves its own post, but I will briefly summarize:'
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一部分也许值得单独一篇文章，但我将简要总结一下：
 - en: '`flake.nix` (`default.nix`, `shell.nix`) in project directories'
+  id: totrans-138
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 项目目录中的 `flake.nix` (`default.nix`, `shell.nix`)
 - en: 'These are *developer* packaging of projects: pinned tool versions, not caring
     as much about unifying dependencies with the system, etc. To this end, they provide
     dev shells to work on a project, and are versioned *with* the project. Additionally
     they may provide packaging to install a tool separately from nixpkgs.'
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是项目的 *开发者* 打包方式：固定的工具版本，不太关心与系统统一依赖关系等。为此，它们提供了开发 shell 以用于项目工作，并且与项目一起进行版本控制。此外，它们可能提供打包以从
+    nixpkgs 单独安装工具。
 - en: 'There are a couple of things that make these notable compared to the packaging
     one might see in nixpkgs:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 与可能在 nixpkgs 中看到的打包相比，这些打包有几个显著之处：
 - en: In nixpkgs, more build time is likely tolerated, and there is little desire
     to do incremental compilation. Import from derivation is also banned from nixpkgs.
     For these reasons, packaging outside of nixpkgs likely uses different frameworks
     such as [`crane`](https://github.com/ipetkov/crane), [`callCabal2nix`](https://github.com/NixOS/nixpkgs/blob/bd645e8668ec6612439a9ee7e71f7eac4099d4f6/pkgs/development/haskell-modules/make-package-set.nix#L225)
     and other similar tools that reduce the burden of maintaining Nix packaging or
     speed up rebuilds.
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 nixpkgs 中，更多的构建时间可能是可以容忍的，而且很少有渴望进行增量编译的愿望。从 derivation 导入也被 nixpkgs 禁止。由于这些原因，nixpkgs
+    外的打包可能使用不同的框架，例如 [`crane`](https://github.com/ipetkov/crane)、[`callCabal2nix`](https://github.com/NixOS/nixpkgs/blob/bd645e8668ec6612439a9ee7e71f7eac4099d4f6/pkgs/development/haskell-modules/make-package-set.nix#L225)
+    和其他类似工具，以减轻维护 Nix 打包的负担或加速重建速度。
 - en: 'It''s versioned with the software and so more crimes are generally tolerated:
     one might pin libraries or other such things, and update nixpkgs infrequently.'
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它与软件一起进行版本控制，因此通常会容忍更多的错误：可以固定库或其他类似的东西，并且不经常更新 nixpkgs。
 - en: They include the tools to *work on* a project, which may be a superset of the
     tools required to build it, for example in the case of checked-in generated code
     or other such things.
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们包括 *工作* 项目所需的工具，这可能是构建所需工具的超集，例如，在生成的代码或其他类似内容已检入的情况下。
 - en: They may include things like checks, post-commit hooks and other project infrastructure.
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们可能包括诸如检查、提交后钩子和其他项目基础设施等内容。
 - en: Shells are just made of environment variables and (without building one at least)
     don't create a single `bin` folder of all the things in the shell, for instance.
     Also, since they are made of environment variables, they don't have much ability
     to perform effects such as managing services or on-disk state.
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell 只是由环境变量构成的，并且（至少在不构建一个的情况下）不会创建一个包含所有 shell 中内容的单个 `bin` 文件夹，例如。另外，由于它们由环境变量构成，它们没有太多能力执行管理服务或磁盘状态等效果。
 - en: Use this for tools specific to one project, such as compilers and libraries
     for that project. Depending on taste and circumstances, these may or may not be
     used for language servers. Generally these are not used for providing tools like
     `git` or `nix` that are expected to be on the system, unless they are required
     to actually compile the software.
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于特定于一个项目的工具，例如该项目的编译器和库。 根据口味和情况，这些可能会或可能不会用于语言服务器。 通常不用于提供像`git`或`nix`这样的工具，因为这些工具预期已在系统上，除非它们确实用于实际编译软件。
 - en: Ephemeral shells (`nix shell`, `nix-shell -p`)
+  id: totrans-147
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 临时外壳（`nix shell`，`nix-shell -p`）
 - en: 'The ephemeral shell is one of the superpowers of Nix since it can appear software
     from the ether without worrying about getting rid of it later. This essentially
     has exactly the same power as project-specific `flake.nix` files: you can bring
     packages into scope or do anything else that can be done there.'
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 临时外壳是 Nix 的超能力之一，因为它可以从虚无中呈现软件，而不必担心以后如何清除它。 从这个角度来看，它与项目特定的`flake.nix`文件具有完全相同的功能：你可以将软件包引入范围内，或者执行其他任何可以在那里完成的操作。
 - en: I would consider a project shell file to be simply a case of saving a `nix-shell
     -p` invocation, and the motivation to do so is about the same, just with more
     Software Engineering Maintainability Juice with pinning and such.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为项目外壳文件只是简单地保存了一个`nix-shell -p`调用，这样做的动机大致相同，只是通过固定等更多的软件工程可维护性提升。
 - en: Use this for grabbing tools temporarily for whatever purpose that might have.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于临时获取任何可能有的工具。
 - en: '`nix profile`, `nix-env`'
+  id: totrans-151
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`nix profile`，`nix-env`'
 - en: '`nix profile` and `nix-env` build a directory with `bin`, `share`, and such,
     symlinking to the actual packages providing the files. Under the hood, these are
     mostly `pkgs.buildEnv`, which is a script that builds such a structure out of
     symlinks. They then symlink it somewhere in PATH.'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nix profile`和`nix-env`构建了一个包含`bin`、`share`等的目录，并将其符号链接到提供文件的实际包。 在幕后，这些主要是`pkgs.buildEnv`，这是一个脚本，用符号链接构建这样的结构。
+    然后将其符号链接到 PATH 中的某个位置。'
 - en: Personally, I don't think that `nix profile` and `nix-env` should ever be used
     except when convinced to operate in a declarative manner, because they are the
     exception in the Nix ecosystem as far as being both imperative and persistent,
     and doing it declaratively avoids various brokenness by fully specifying intent
     (they have some ugly edge cases in upgrades which are solved by simply writing
     the Nix code specifying where the packages come from into a file).
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我个人而言，我认为除非被说服以声明性方式运行，否则永远不应该使用`nix profile`和`nix-env`，因为在 Nix 生态系统中，它们作为同时具有命令和持久性的异常情况，通过完全指定意图来避免各种问题（它们在升级中有一些丑陋的边缘情况，通过简单地将指定软件包来自何处的
+    Nix 代码写入文件来解决）。
 - en: Use these for nothing. Or not, I'm not a cop.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于无用。 或者不用，我不是警察。
 - en: '[flakey-profile](https://github.com/lf-/flakey-profile), `nix-env --install
     --remove-all --file`'
+  id: totrans-155
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[flakey-profile](https://github.com/lf-/flakey-profile)，`nix-env --install
+    --remove-all --file`'
 - en: The old Nix profile CLI actually supports declarative package installation,
     although I wouldn't suggest it because [flakey-profile](https://github.com/lf-/flakey-profile)
     is just plainly more pleasant UX wise and is absolutely trivial in implementation.
     These do the same thing as `nix profile` and `nix-env` in terms of building a
     directory with `bin`, `share`, and such, and putting it somewhere in PATH.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 旧的 Nix 配置文件 CLI 实际上支持声明性包安装，尽管我不建议使用，因为 [flakey-profile](https://github.com/lf-/flakey-profile)
+    在用户体验上更加愉悦，而且在实现上绝对是微不足道的。 从功能上讲，它们与`nix profile`和`nix-env`一样，构建了一个包含`bin`、`share`等的目录，并将其放置在
+    PATH 中。
 - en: Use these for lightweight declarative package management, perhaps on non-NixOS
     systems (there's nothing stopping you using it on NixOS but NixOS itself is right
     there).
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于轻量级声明性包管理，也许是在非 NixOS 系统上（在 NixOS 上使用它没有任何限制，但 NixOS 本身就在那里）。
 - en: '`home-manager`'
+  id: totrans-158
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`home-manager`'
 - en: Those who use `home-manager` generally use it to replace dotfile managers, as
     well as configuring services and installing user-specific packages. I don't use
     it because an approach based on symlinks into a git repo avoids adding an unnecessary
     Nix build and much complexity to the config file iteration cycle.
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 那些使用`home-manager`的人通常将其用于替换 dotfile 管理器，以及配置服务和安装特定于用户的软件包。 我不使用它，因为基于符号链接到
+    git 存储库的方法避免了不必要的 Nix 构建，并大大简化了配置文件迭代周期的复杂性。
 - en: '`home-manager` has essentially the power of NixOS in terms of being able to
     have effects such as services, activation scripts, etc, while being scoped to
     one user.'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: '`home-manager` 本质上具有 NixOS 的功能，可以具有服务、激活脚本等效果，同时只针对一个用户。'
 - en: Use this for installing packages on one user, potentially not on a NixOS system,
     in a declarative manner, as well as configuring user-scoped services. Note that
     this overlaps with profiles as described above; it's just a heavier weight mechanism
     built with the same tools.
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于在一个用户上安装软件包，可能不是在 NixOS 系统上，在声明方式下，以及配置用户范围的服务。请注意，这与上述描述的档案存在重叠；它只是使用相同工具构建的更重的机制。
 - en: NixOS/`nix-darwin`
+  id: totrans-162
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: NixOS/`nix-darwin`
 - en: NixOS and `nix-darwin` are system-wide configuration management systems built
     on top of Nix profiles, combined with activation scripts. They allow installing
     and configuring services, and managing config files in a declarative manner. In
     terms of both implementation and usage, these do similar things to `home-manager`,
     but scoped system-wide.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: NixOS 和 `nix-darwin` 是建立在 Nix 档案配置文件和激活脚本之上的系统范围配置管理系统。它们允许以声明方式安装和配置服务，并以声明方式管理配置文件。在实现和使用方面，它们与
+    `home-manager` 做着类似的事情，但作用范围是系统范围的。
 - en: Use this for installing packages system-wide and configuring services.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于系统范围安装软件包和配置服务。
 - en: Conclusion
+  id: totrans-165
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: I hope to have successfully covered why flakes aren't everything, and perhaps
     even why they aren't real. Although nixpkgs isn't always a shining example of
     fabulous Nix project architecture, it is a large project, and there is a lot to
     be learned from how they organize things, which arguably was more than was internalized
     while flakes were designed.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望成功地说明了为什么 flakes 不是万能的，甚至也许说明了它们不是真实存在的。尽管 nixpkgs 并不总是一个令人赞叹的 Nix 项目架构的典范，但它是一个庞大的项目，从他们组织事物的方式中可以学到很多，这可能比在设计
+    flakes 时内化的还要多。
 - en: Even assuming that flakes are good at macro-level composition, they often are
     accompanied by poor use of micro-level composition, which still is best done by
     using the old primitives.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使假设 flakes 在宏观层面的组合方面很好，它们经常伴随着微观层面组合的糟糕使用，而这些微观层面组合最好仍然是使用旧的原语来完成。
 - en: With better architecture, we can work around the limitations of flakes to create
     pleasant-to-work-with and extensible Nix code. We can clarify the meaning of all
     the "just write a flake" blog posts to see the Nix tools within and avoid spurious,
     unnecessary, dependencies on flakes that make code harder to understand.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了更好的架构，我们可以绕过 flakes 的限制，创建易于使用和可扩展的 Nix 代码。我们可以澄清所有“只需写一个 flake”博客文章中的含义，以了解其中的
+    Nix 工具，并避免对使代码难以理解的 flakes 产生错误、不必要的依赖。
