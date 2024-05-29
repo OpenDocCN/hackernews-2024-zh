@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:48:53'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Escaping from isolated networks using Broadcast DNS | by lvj | SensorFu | Medium
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff](https://medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Escaping from isolated networks using Broadcast DNS
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -26,19 +33,23 @@
     queries via a broadcast ethernet packet. We call this the Broadcast DNS escape.
     Our hypothesis was that DNS server or cache could pick those up from the network
     and happily redirect it to another network.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: And our hypothesis has been proven right. We present you two stories of Broadcast
     DNS finding real issues in real networks.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Active Directory, Hidden Server
+  id: totrans-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Our client updated Beacons on their site to the latest version which added our
     new Broadcast DNS test. After the upgrade we were alerted that the Beacon had
     leaked from the site using this new escape.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Beacon was deployed in a production network — a network to monitor and control
@@ -47,6 +58,7 @@
     Beacon had not leaked with unicast DNS before as the firewalls were blocking the
     traffic between the Beacon and the DNS servers. So how could the DNS leak out
     via broadcast?
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: One possibility was that the isolated network containing the Beacon and the
@@ -55,10 +67,12 @@
     at ethernet level could forward ethernet frames within those unintentionally connected
     networks allowing the Beacon to reach the local DNS resolver via broadcast. This
     means that the networks are not isolated and the segmentation has failed.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Other possibility is that the network has an unknown DNS resolver which accepts
     the broadcasted DNS query and is allowed to forward it towards the upstream resolver.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: After investigating the finding it was discovered that the network actually
@@ -67,12 +81,15 @@
     happily processed the broadcasted DNS packets and forwarded them to the upstream
     DNS infrastructure. Firewall also had a rule to allow DNS traffic out from that
     particular DNS server.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: DNS queries from the unknown AD server have an exception in the firewall
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: Interconnected Networks
+  id: totrans-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -83,8 +100,12 @@
     In this case the logical hypotheses were the same; unknown DNS resolver in the
     production network or that the switched network is somehow connected to another
     network which has a DNS resolver processing and resolving the packet.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个广播 DNS 逃逸案例很快就出现了。该公司在生产环境和 IT 网络中已经使用 Beacon 一年多了。在将 Beacon 升级到最新版本后，意外地观察到了在隔离的生产网络中部署的
+    Beacon 发出的广播 DNS 逃逸。在这种情况下，逻辑假设是相同的；生产网络中存在未知的 DNS 解析器，或者交换网络以某种方式连接到另一个具有处理和解析数据包的
+    DNS 解析器的网络。
 - en: After notifying the customer, they quickly investigated the issue and found
     indications that there were two networks accidentally connected together. Two
     networks being connected together, the broadcast packets sent by the Beacon in
@@ -92,21 +113,31 @@
     which then forwarded the query to the upstream DNS resolvers all the way to the
     Beacon Home. The switch ports connecting the networks were identified and the
     networks disconnected after which the Beacon stopped calling Home.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在通知客户后，他们迅速调查了该问题，并发现有迹象表明有两个网络意外连接在一起。两个网络连接在一起后，隔离的生产网络中的 Beacon 发出的广播数据包到达包含
+    DNS 解析器的 IT 网络，然后将查询转发到上游 DNS 解析器，一直到达 Beacon Home。确定了连接网络的交换机端口，并在断开网络连接后，Beacon
+    停止了对 Home 的呼叫。
 - en: Two layer 2 networks accidentally interconnected allowing broadcasted DNS queries
     to escape the isolated network
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 两个二层网络意外连接在一起，允许广播 DNS 查询逃逸出隔离网络。
 - en: Afterthought
+  id: totrans-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 思后记
 - en: This kind of broadcast packets (be it DNS, ICMP or something else) take advantage
     of a weakness in TCP/IP network stacks. The ethernet layer takes the broadcast
     packet and allows it to flow up in the stack to the next network layer. Then the
     next layer inspects their part of the packet and acts accordingly, completely
     missing the fact that it was a broadcast packet and maybe not intended for them
     to process.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种广播数据包（无论是 DNS、ICMP 还是其他什么）利用了 TCP/IP 网络堆栈的弱点。以太网层接收广播数据包并允许其在堆栈中向上流动到下一个网络层。然后，下一层检查数据包的部分并相应地采取行动，完全忽视了这是一个广播数据包，也许不是打算供它们处理的。
