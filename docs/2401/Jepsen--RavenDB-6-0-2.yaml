@@ -359,11 +359,13 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 从中，Jepsen 推断 RavenDB 的默认事务设置应该默认确保快照隔离，并在单节点系统中确保可串行性。集群范围的事务应该在全局范围内确保可串行性。
 - en: Test Design
   id: totrans-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 测试设计
 - en: In 2020 RavenDB [wrote their own Jepsen test](https://github.com/ml054/jepsen/)
     and declared in [a webinar](https://www.youtube.com/watch?v=5ZXBR3croMA&) that
     per that test, “everything works.” Their test checked the linearizability of individual
@@ -373,6 +375,9 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 2020 年，RavenDB [编写了他们自己的 Jepsen 测试](https://github.com/ml054/jepsen/) 并在 [网络研讨会](https://www.youtube.com/watch?v=5ZXBR3croMA&)
+    中宣布，根据该测试，“一切正常”。他们的测试检查了针对单个文档的单个 [读取和写入](https://github.com/ml054/jepsen/blob/08960da98ab9bf7959fce014c63b146b903cbe6c/ravendb/src/jepsen/ravendb.clj#L164-L196)
+    的线性可达性。它没有评估多操作或多文档事务。
 - en: We designed a [new test harness](https://github.com/jepsen-io/ravendb/tree/4431310402f334ffdb18a5a7ec819316847b642b)
     for RavenDB 6.0.2 running on a single Debian Bookworm node. Our test used RavenDB’s
     JVM client library at version 5.0.4\. We did not evaluate multi-node clusters
@@ -380,6 +385,8 @@
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们为运行在单个 Debian Bookworm 节点上的 RavenDB 6.0.2 [设计了一个新的测试工具](https://github.com/jepsen-io/ravendb/tree/4431310402f334ffdb18a5a7ec819316847b642b)。我们的测试使用了
+    RavenDB 的 JVM 客户端库版本为 5.0.4\. 我们没有评估多节点集群或任何类型的故障。
 - en: We wrote a single list-append workload using [Elle](https://github.com/jepsen-io/elle)
     to verify transactional isolation. This workload performs transactions over lists,
     each list identified by a unique integer ID. Each transaction consists of reads
@@ -395,6 +402,13 @@
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们编写了一个使用 [Elle](https://github.com/jepsen-io/elle) 验证事务隔离的单个列表追加工作负载。这个工作负载在列表上执行事务，每个列表由唯一的整数
+    ID 标识。每个事务由对这些列表的读取和/或追加唯一整数组成。测试中的每个工作线程 [打开一个单独的 DocumentStore](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/client.clj#L26-L31C15)
+    连接到同一节点。每个事务创建一个新的 [session](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/client.clj#L54-L62)，执行
+    [读取和/或追加](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/append.clj#L25-L41)，然后调用
+    [`session.saveChanges()`](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/client.clj#L90)
+    进行提交。读取被编码为对 `session.load(java.util.Map, id)` 的 [单个调用](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/append.clj#L26-L28)。追加调用
+    `session.load` 读取当前值，将其整数元素添加到列表末尾，然后调用 [`session.store(map, key)`](https://github.com/jepsen-io/ravendb/blob/8315d6053bf022203a24db74812d2fdfe89b56b7/src/jepsen/ravendb/append.clj#L40)。
 - en: 'RavenDB offers a few knobs for tuning transaction safety: `transactionMode`
     and `optimisticConcurrency`. We ran our tests using the defaults (single-node
     transactions, no optimistic concurrency), with single-node transactions and optimistic
@@ -403,20 +417,24 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: RavenDB 提供了一些用于调整事务安全性的旋钮：`transactionMode` 和 `optimisticConcurrency`。我们使用默认设置运行了我们的测试（单节点事务，无乐观并发），使用单节点事务和乐观并
 - en: Results
   id: totrans-49
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结果
 - en: We found surprising safety errors in all three transaction modes.
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在所有三种事务模式中发现了令人惊讶的安全错误。
 - en: Lost Update with Single-Node Transactions (#17927)
   id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 单节点事务丢失更新 (#17927)
 - en: By default, RavenDB executes transactions with `transactionMode = SINGLE_NODE`
     and `optimisticConcurrency = false`. One might assume that `SINGLE_NODE` transactions
     are safe on single-node clusters. However, we found the default settings caused
@@ -424,12 +442,16 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: RavenDB 默认使用 `transactionMode = SINGLE_NODE` 和 `optimisticConcurrency = false`
+    执行事务。人们可能会认为 `SINGLE_NODE` 事务在单节点集群上是安全的。然而，我们发现默认设置导致 RavenDB 在没有故障的单节点集群中不断丢失更新。
 - en: 'For instance, in this [five-second test run](https://github.com/ravendb/ravendb/files/13794868/20231229T102201.960-0600.zip)
     we performed 12,886 transactions over 975 keys. 81 of those keys exhibited a provable
     lost update. Here are two committed transactions involving key 830:'
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，在这个 [五秒测试运行](https://github.com/ravendb/ravendb/files/13794868/20231229T102201.960-0600.zip)
+    中，我们执行了 12,886 个事务，涉及 975 个键。其中有 81 个键表现出可证明的丢失更新。以下是涉及键 830 的两个已提交事务：
 - en: '[PRE0]'
   id: totrans-54
   prefs: []
@@ -444,6 +466,8 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个事务都读取了键 830 的值作为列表 `[1, 2]`。两者都继续向键 830 添加了一个值：第一个事务添加了 `3`，而第二个事务添加了 `4`。两者都没有看到对方的效果。在一个快照隔离系统中，*先提交者胜出*
+    规则要求这两个事务中的一个必须中止。然而，RavenDB 却允许了这两个事务的提交。这就是丢失更新异常的定义。
 - en: 'In an isolated transaction system which only ever appends elements to lists,
     every observed version of a single list must be a prefix of the longest version
     of that list. However, 454 of the keys in this test violated this prefix property,
@@ -451,58 +475,73 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个孤立的事务系统中，只会对列表追加元素，对单个列表的每个观察版本必须是该列表的最长版本的前缀。然而，这次测试中有 454 个键违反了这个前缀属性，展示了
+    *不兼容的顺序*。例如，以下是对键 116 的所有读取：
 - en: '| 3.01 | 1 | [1 2] |'
   id: totrans-57
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 1 | [1 2] |'
 - en: '| 3.01 | 1 | [1 2] |'
   id: totrans-58
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 1 | [1 2] |'
 - en: '| 3.01 | 0 | [1 2] |'
   id: totrans-59
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 0 | [1 2] |'
 - en: '| 3.01 | 1 | [1 2 3] |'
   id: totrans-60
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 1 | [1 2 3] |'
 - en: '| 3.01 | 0 | [1 2 4] |'
   id: totrans-61
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 0 | [1 2 4] |'
 - en: '| 3.01 | 1 | [1 2 4 5] |'
   id: totrans-62
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 1 | [1 2 4 5] |'
 - en: '| 3.01 | 0 | [1 2 4] |'
   id: totrans-63
   prefs: []
   type: TYPE_TB
+  zh: '| 3.01 | 0 | [1 2 4] |'
 - en: '| 3.02 | 1 | [1 2 4 6] |'
   id: totrans-64
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 1 | [1 2 4 6] |'
 - en: '| 3.02 | 1 | [1 2 4 6] |'
   id: totrans-65
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 1 | [1 2 4 6] |'
 - en: '| 3.02 | 1 | [1 2 4 6 9] |'
   id: totrans-66
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 1 | [1 2 4 6 9] |'
 - en: '| 3.02 | 1 | [1 2 4 6 9 10] |'
   id: totrans-67
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 1 | [1 2 4 6 9 10] |'
 - en: '| 3.02 | 1 | [1 2 4 6 9 10 11 15] |'
   id: totrans-68
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 1 | [1 2 4 6 9 10 11 15] |'
 - en: '| 3.02 | 0 | [1 2 4 6 9 10 11 15] |'
   id: totrans-69
   prefs: []
   type: TYPE_TB
+  zh: '| 3.02 | 0 | [1 2 4 6 9 10 11 15] |'
 - en: Just over three seconds into the test, process 1 observed key 116’s state as
     `[1 2 3]`. However, an immediately following read by process 0 saw `[1 2 4]`,
     and the write of `3` never appeared again. Process 1 then observed `[1 2 4 5]`.
@@ -510,6 +549,8 @@
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试进行到第三秒多一点时，进程 1 观察到键 116 的状态为 `[1 2 3]`。然而，随后进程 0 立即读取到 `[1 2 4]`，并且值为 `3`
+    的写入再也没有出现过。接着进程 1 观察到 `[1 2 4 5]`。这个写入 `5` 被 `6` 替换后再也没有被看到过。
 - en: 'Our lost update checker is conservative: it only infers an anomaly if two transactions
     read the same version of some key *and* both write to it. However, our `append`
     operations are performed by reading the value, then writing back changes. This
@@ -519,6 +560,7 @@
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的丢失更新检查器是保守的：只有当两个事务读取同一键的相同版本 *并且* 都对其进行写入时，它才会推断出异常。然而，我们的 `append` 操作是通过读取值，然后写回更改来执行的。这意味着这些事务包含对检查器来说实际上是不可见的读取。这些不兼容的顺序情况很可能也代表了丢失更新。
 - en: In total, 481 out of the 975 keys in this test exhibited lost updates or incompatible
     orders. These phenomena are prohibited by Serializability, Snapshot Isolation,
     and Repeatable Read. We’ve reported this as [issue 17927](https://github.com/ravendb/ravendb/issues/17927)
@@ -526,11 +568,14 @@
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 总计，这次测试中有 975 个键中的 481 个展示出了丢失更新或不兼容的顺序。这些现象是被串行化、快照隔离和可重复读所禁止的。我们已将此报告为 RavenDB
+    的问题追踪器中的 [issue 17927](https://github.com/ravendb/ravendb/issues/17927)。
 - en: Fractured Reads with Optimistic Concurrency (#17929)
   id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 乐观并发下的断裂读（#17929）
 - en: With the *[optimistic concurrency](https://ravendb.net/docs/article-page/6.0/csharp/client-api/session/configuration/how-to-enable-optimistic-concurrency)*
     feature enabled, RavenDB promises to “generate a concurrency exception (and abort
     all modifications in the current transaction) when the document has been modified
@@ -697,20 +742,24 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 会话代表一个单一的业务事务。
 - en: 'This is echoed by the first sentence of RavenDB’s [session documentation](https://ravendb.net/docs/article-page/6.0/csharp/client-api/session/what-is-a-session-and-how-does-it-work):'
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: RavenDB 的[会话文档](https://ravendb.net/docs/article-page/6.0/csharp/client-api/session/what-is-a-session-and-how-does-it-work)的第一句话也强调：
 - en: The Session, which is obtained from the Document Store, is a Unit of Work that
     represents a single business transaction on a particular database.
   id: totrans-96
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 从文档存储获取的会话是表示特定数据库上的单个业务事务的工作单元。
 - en: '… which goes on to say:'
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: …接着说：
 - en: The batched operations that are sent in the `SaveChanges()` will complete transactionally.
     In other words, either all changes are saved as a Single Atomic Transaction or
     none of them are. So once SaveChanges returns successfully, it is guaranteed that
@@ -719,6 +768,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 发送到`SaveChanges()`的批处理操作将在事务中完成。换句话说，要么所有更改都作为单一原子事务保存，要么都不保存。因此，一旦`SaveChanges`成功返回，就保证所有更改都已持久保存到数据库中。
 - en: RavenDB sessions are clearly not intended to work like sessions in typical databases,
     which are (roughly speaking) [one-to-one with client connections](https://www.postgresql.org/docs/current/tutorial-arch.html).
     They come with a default limit of [30 network requests](https://ravendb.net/docs/article-page/5.4/java/client-api/session/what-is-a-session-and-how-does-it-work#remarks);
@@ -730,6 +780,8 @@
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: RavenDB 会话明显不打算像典型数据库中的会话那样工作，后者（粗略地说）[与客户端连接一一对应](https://www.postgresql.org/docs/current/tutorial-arch.html)。它们带有默认限制[30个网络请求](https://ravendb.net/docs/article-page/5.4/java/client-api/session/what-is-a-session-and-how-does-it-work#remarks)；典型的数据库会话是无限制的。它们缓冲写入；Jepsen
+    不知道有任何其他数据库的会话会这样做。它们缓存读取；大多数会话不这样做。它们包含像防止丢失更新这样的并发控制机制；Jepsen 不知道有任何其他数据库在会话级别这样做。这些都是大多数数据库会称为事务的特点。
 - en: 'RavenDB’s article [ACID Transactions in NoSQL? RavenDB vs MongoDB](https://ravendb.net/articles/acid-transactions-in-nosql-ravendb-vs-mongodb)
     is emphatic: RavenDB has supported ACID transactions over “any combination of
     database operations” for over a decade. It certainly appears as if RavenDB sessions
@@ -737,28 +789,35 @@
   id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: RavenDB 的文章[NoSQL 中的 ACID 事务？RavenDB vs MongoDB](https://ravendb.net/articles/acid-transactions-in-nosql-ravendb-vs-mongodb)强调：RavenDB
+    已经支持了十多年的任何组合的数据库操作的 ACID 事务。看起来 RavenDB 会话的用途就是这个角色！
 - en: 'However, in a [response to issue 17927](https://github.com/ravendb/ravendb/issues/17927#issuecomment-1872912239),
     Eini (a.k.a. Ayende Rahien) explained that sessions are *not* in fact transactions:'
   id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在[对问题17927的回应](https://github.com/ravendb/ravendb/issues/17927#issuecomment-1872912239)中，Eini（又名Ayende
+    Rahien）解释说，会话实际上*不是*事务：
 - en: Crucially, RavenDB does not attempt to provide transactional semantics over
     the entire session, rather it provide[s] transactions over individual requests.
   id: totrans-102
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 重要的是，RavenDB 并不试图在整个会话上提供事务语义，而是在各个请求上提供事务。
 - en: 'And in [response to issue #17928](https://github.com/ravendb/ravendb/issues/17928#issuecomment-1872916841),
     Eini affirms:'
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[对问题#17928的回应](https://github.com/ravendb/ravendb/issues/17928#issuecomment-1872916841)中，Eini确认：
 - en: A transaction in RavenDB is a request - so TX1 and TX2 above aren’t actually
     single transactions, instead, each of them represent 3 independent transactions.
   id: totrans-104
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: RavenDB 中的事务是一个请求 - 因此上述的 TX1 和 TX2 实际上并不是单一事务，相反，它们每个代表了3个独立的事务。
 - en: 'This is a striking viewpoint: the point of transactions is generally to provide
     isolation across multiple requests. Moreover, RavenDB’s optimistic concurrency
     and cluster-wide transaction mechanisms are clearly intended to provide transactional

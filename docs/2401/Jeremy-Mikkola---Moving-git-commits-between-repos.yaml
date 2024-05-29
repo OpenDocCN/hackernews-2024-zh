@@ -1,140 +1,216 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:25:49'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024 年 5 月 27 日 14:25:49
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Jeremy Mikkola - Moving git commits between repos
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Jeremy Mikkola - 将 git 提交移动到不相关的仓库
 - en: 来源：[https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html](https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html](https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html)
 - en: Moving git commits between repos
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将 git 提交移动到不同的仓库
 - en: Posted on July 15, 2017
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 发表于 2017 年 7 月 15 日
 - en: Did you know it is possible to move commits between two unrelated git repositories?
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 你知道吗，可以在两个不相关的 git 仓库之间移动提交吗？
 - en: Doing so relies on an interesting property of Git. It doesn’t have a concept
     of two repositories being the “same,” meaning it allows pushing and pulling between
     any two repositories, regardless of whether they hold the same project.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做依赖于 Git 的一个有趣属性。它没有“相同”的两个仓库的概念，这意味着它允许在任何两个仓库之间推送和拉取，而不管它们是否持有相同的项目。
 - en: (To be fair, git will tell you when the two repositories have no commits in
     common, but that is a warning you can ignore here.)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: （公平地说，git 会告诉您两个仓库没有共同提交时的情况，但这是一个警告，您可以忽略。）
 - en: Generally just moving the commits to another repo is not enough. It is often
     important to move the files to a different path inside that repo. Fortunately,
     git has a command for that. `git filter-branch` allows moving files around in
     git history (and rewriting history in a variety of other ways).
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常仅将提交移动到另一个仓库是不够的。通常，将文件移动到该仓库内的不同路径非常重要。幸运的是，git 有一个命令可以做到这一点。`git filter-branch`
+    允许在 git 历史中移动文件（以及以各种其他方式重写历史）。
 - en: 'I’ll demonstrate two use cases you might have: extracting part of one repository
     out to its own repo, and the reverse, pulling commits in from another repo.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将演示您可能遇到的两种用例：将一个仓库的一部分提取到自己的仓库中，并相反，从另一个仓库拉取提交。
 - en: Let’s say you have some subdirectory of a large project that really should be
     a project on its own. Sure, you could create a new repository and copy over the
     files, but that doesn’t maintain their commit history. To keep the commit history,
     we need to do a little bit more work.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您有一个大型项目的某个子目录，这个子目录实际上应该是自己的项目。当然，您可以创建一个新的仓库并复制文件，但这不会保留它们的提交历史。为了保留提交历史，我们需要做更多的工作。
 - en: 'Start by creating another copy of your project to work in:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，在另一个副本中开始创建您的项目以进行工作：
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This clones the existing project from the `existing_project/` directory into
     the `new_project/` directory. If you don’t have a local copy of `existing_project`,
     substitute the project’s clone URL.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将现有项目从 `existing_project/` 目录克隆到 `new_project/` 目录中。如果您没有 `existing_project`
+    的本地副本，请替换项目的克隆 URL。
 - en: For safety, we’ll remove the git remote that points to the original project.
     This will prevent accidentally pushing the modified version back to the original
     repo.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了安全起见，我们将删除指向原始项目的 git 远程引用。这将防止意外地将修改后的版本推送回原始仓库。
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now, it’s time to filter the repository to just the subdirectory you want.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，是时候将仓库过滤为您想要的子目录了。
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: And you are done! Check the results with a quick `ls` and `git log`.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后您就完成了！用快速的 `ls` 和 `git log` 检查结果。
 - en: Pulling commits in from another repo
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从另一个仓库拉取提交
 - en: Doing the reverse and combining two repos is a little more complicated. For
     this example, the commits will move from a project called `source_repo` and into
     one called `dest_repo`.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 对两个仓库进行相反操作并合并它们要复杂一些。在此示例中，提交将从名为 `source_repo` 的项目中移动到名为 `dest_repo` 的项目中。
 - en: 'Start by adding a git remote to the destination repository that points to the
     source:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，向目标仓库添加一个指向源仓库的 git 远程引用：
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Setting `remote.source.pushurl` to some random value make pushing fail, effectively
     making the remote read-only. This prevents accidentally messing up the source
     repo.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 `remote.source.pushurl` 设置为某个随机值会导致推送失败，从而使远程变为只读。这可以防止意外地破坏源仓库。
 - en: Next, we’ll pull the commits from the source repo into a branch in the destination
     repo.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将从源仓库中将提交拉入目标仓库中的一个分支中。
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This creates a branch called `source_master` that contains an exact copy of
     the history of the master branch in the source repository.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将创建一个名为 `source_master` 的分支，其中包含源仓库中 master 分支的完全副本的历史记录。
 - en: Let’s say you want the files from the source repository in a directory called
     `source_files/`. Like in the other example, `git filter-branch` allows moving
     the files to the new location.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您希望源仓库中的文件位于名为 `source_files/` 的目录中。与其他示例一样，`git filter-branch` 允许将文件移动到新位置。
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: At this point, I like to use `git log --stat` to sanity check the location of
     the files in the commits.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我喜欢使用 `git log --stat` 来检查提交中文件的位置，以确保一切正常。
 - en: Finally, it’s time to combine this history with the original history of this
     project.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，是时候将这段历史与该项目的原始历史结合起来了。
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: If you prefer, you could merge instead of rebasing.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你愿意，你也可以选择合并而不是变基。
 - en: The `source-commits` branch is ready to be merged into master.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '`source-commits` 分支已准备好合并到主分支。'
