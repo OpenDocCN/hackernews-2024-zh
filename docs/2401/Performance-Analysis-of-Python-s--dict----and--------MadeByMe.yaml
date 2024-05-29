@@ -1,59 +1,91 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:00:46'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:00:46
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Performance Analysis of Python's `dict()` and `{}` - MadeByMe
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 的 `dict()` 和 `{}` 的性能分析 - MadeByMe
 - en: 来源：[https://madebyme.today/blog/python-dict-vs-curly-brackets/](https://madebyme.today/blog/python-dict-vs-curly-brackets/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://madebyme.today/blog/python-dict-vs-curly-brackets/](https://madebyme.today/blog/python-dict-vs-curly-brackets/)
 - en: <main class="main">
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="main">
 - en: Some time ago, during a code review, I had a discussion with a colleague of
     mine about preferring `dict()` over `{}` in new Python code. They argued that
     `dict()` is more readable — and expresses intent more clearly — therefore should
     be preferred. I wasn’t convinced by that, but at that time I didn’t have any counterarguments,
     so I passed.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 不久前，在一次代码审查中，我和一个同事就在新的 Python 代码中更喜欢 `dict()` 而不是 `{}` 进行了讨论。他们认为 `dict()`
+    更易读 —— 并且更清晰地表达了意图 —— 因此应该优先使用。我对此并不完全信服，但当时我没有任何反驳的论据，所以我就过去了。
 - en: 'Yet that made me wonder: what’s the difference between the `dict` type and
     `{}` literal expression?'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这让我想知道：`dict` 类型和 `{}` 字面表达式之间有什么区别？
 - en: Let’s go down the rabbit hole.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们深入探讨。
 - en: '[#](#pythons-dictionaries) Python’s dictionaries'
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#pythons-dictionaries) Python 的字典'
 - en: First, let’s check what’s the performance difference between the two methods.
     I’ll use the [`timeit`](https://docs.python.org/3.12/library/timeit.html) module
     for that.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们来看看两种方法之间的性能差异。我将使用 [`timeit`](https://docs.python.org/3.12/library/timeit.html)
+    模块进行。
 - en: '[PRE0]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: On my MacBook M1 the difference is **almost 2x**. A non-trivial difference,
     especially knowing that both of these expressions produce the exact same object.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的 MacBook M1 上，差异几乎是**2倍**。这是一个非常显著的差异，尤其是知道这两个表达式产生的是完全相同的对象。
 - en: Where does the difference come from?
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种差异来自哪里？
 - en: Before we get into that, we need to sidetrack a little bit and talk about what
     happens when you execute Python code. Python is an [interpreted language](https://en.wikipedia.org/wiki/Scripting_language)
     — it needs to have an interpreter. [CPython](https://github.com/python/cpython/tree/v3.12.0)
@@ -61,539 +93,822 @@
     meaning that other interpreters use it to determine the “correct” behavior. If
     you’ve installed Python from a default distribution, you have CPython installed
     on your machine.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们深入讨论之前，我们需要偏离一点，谈谈当你执行 Python 代码时会发生什么。Python 是一种[解释语言](https://en.wikipedia.org/wiki/Scripting_language)
+    —— 它需要一个解释器。[CPython](https://github.com/python/cpython/tree/v3.12.0) 是 Python
+    最广泛使用的解释器；它是一个参考实现，意味着其他解释器使用它来确定“正确”的行为。如果你从默认发行版安装了 Python，那么你的机器上安装了 CPython。
 - en: Interestingly, CPython is both a compiler and an interpreter. When executing
     Python code it first compiles it into [bytecode](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)
     instructions and interprets them.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，CPython 既是编译器又是解释器。在执行 Python 代码时，它首先将其编译成[字节码](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)指令，然后解释它们。
 - en: To better understand the performance difference between `dist()` and `{}` let’s
     compare the bytecode instructions they compile into. Python has a built-in module
     called [dis](https://docs.python.org/3.12/library/dis.html) which does exactly
     that.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解 `dist()` 和 `{}` 之间的性能差异，让我们比较一下它们编译成的字节码指令。Python 有一个内置模块叫做[dis](https://docs.python.org/3.12/library/dis.html)，它正是做这件事情的。
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Although they produce the same end result these two expression, quite clearly,
     execute different code.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管它们产生相同的最终结果，但这两个表达式显然执行不同的代码。
 - en: '[#](#bytecode-instructions) Bytecode instructions'
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#bytecode-instructions) 字节码指令'
 - en: The output of `dis.dis` isn’t very hard to understand.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '`dis.dis` 的输出并不难理解。'
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Each column has a purpose:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 每一列都有一个目的：
 - en: Line number in the source code.
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 源代码中的行号。
 - en: The address of the instruction — byte index in the compiled bytecode.
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 指令的地址 — 编译后字节码中的字节索引。
 - en: The bytecode name (opcode).
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 字节码名称（opcode）。
 - en: Operation parameters.
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 操作参数。
 - en: Human-readable interpretation of the operation parameters.
+  id: totrans-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 操作参数的人类可读解释。
 - en: 'Alright, equipped with this knowledge and by cross-referencing the [opcode
     set](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)
     we know that:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，有了这些知识和通过交叉引用[操作码集](https://docs.python.org/3.12/library/dis.html#python-bytecode-instructions)我们知道：
 - en: '[`RESUME`](https://docs.python.org/3.12/library/dis.html#opcode-RESUME) — does
     nothing. It performs internal tracking, debugging and optimization checks.'
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[`RESUME`](https://docs.python.org/3.12/library/dis.html#opcode-RESUME) — 什么都不做。它执行内部跟踪、调试和优化检查。'
 - en: '[`LOAD_GLOBAL`](https://docs.python.org/3.12/library/dis.html#opcode-LOAD_GLOBAL)
     — loads a global variable onto the stack. From the human-readable interpretation
     of the opcode parameters we know that it loads `dict` (ignore `NULL` for now).'
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[`LOAD_GLOBAL`](https://docs.python.org/3.12/library/dis.html#opcode-LOAD_GLOBAL)
+    — 将全局变量加载到堆栈上。从可读的操作码参数解释中，我们知道它加载了`dict`（暂时忽略`NULL`）。'
 - en: '[`CALL`](https://docs.python.org/3.12/library/dis.html#opcode-CALL) — calls
     a callable object with the number of arguments specified by `argc` — in our case
     it’s zero.'
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[`CALL`](https://docs.python.org/3.12/library/dis.html#opcode-CALL) — 使用由`argc`指定的参数数量调用可调用对象——在我们的情况下是零。'
 - en: '[`RETURN_VALUE`](https://docs.python.org/3.12/library/dis.html#opcode-RETURN_VALUE)
     — returns with the last element from the stack to the caller.'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[`RETURN_VALUE`](https://docs.python.org/3.12/library/dis.html#opcode-RETURN_VALUE)
+    — 将堆栈上的最后一个元素返回给调用者。'
 - en: 'Compiling `return {}` yields one more opcode:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译`return {}`会产生一个额外的操作码：
 - en: '[`BUILD_MAP`](https://docs.python.org/3.12/library/dis.html#opcode-BUILD_MAP)
     — pushes a new dictionary object onto the stack. Pops `2 * count` items so that
     the dictionary holds count entries.'
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[`BUILD_MAP`](https://docs.python.org/3.12/library/dis.html#opcode-BUILD_MAP)
+    — 将一个新的字典对象推送到堆栈上。弹出`2 * count`项，以便字典包含count个条目。'
 - en: Already we have a few obvious differences between the two cases. The `{}` expression
     builds a dictionary directly, while `dict()` delegates that to a callable object.
     Before that can even happen it first needs to load the global value (`dict`) onto
     the stack — it actually does that every single time we call that function.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经有了两种情况之间的几个明显区别。`{}`表达式直接构建字典，而`dict()`将其委托给一个可调用对象。在这之前，它首先需要将全局值（`dict`）加载到堆栈上——实际上每次我们调用该函数都会这样做。
 - en: Why?
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么？
 - en: 'Because `dict` is not constant: it can be overwritten — and therefore — produce
     a different value.'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为`dict`不是常量：它可以被重写——因此——产生不同的值。
 - en: '[PRE3]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: It can happen. This is why Python needs to generate this overhead of loading
     and calling a callable for every call of the function.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能会发生。这就是为什么Python需要为每次函数调用生成加载和调用可调用对象的开销。
 - en: OK, it all sound very neat. Calling a callable does create an overhead and it’s
     reasonable to assume that the difference we saw at the beginning of this post
     is a result of this overhead. However, are we sure that `dict()` internally calls
     the same code, as `{}` does? `dict` is a class and, luckily, the [`dis.dis`](https://docs.python.org/3/library/dis.html#dis.dis)
     function can compile classes to bytecode.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，这听起来非常整洁。调用可调用对象确实会产生额外的开销，合理地假设我们在本文开头看到的差异是这种开销的结果。但是，我们确定了`dict()`内部是否调用了与`{}`相同的代码吗？`dict`是一个类，幸运的是，[`dis.dis`](https://docs.python.org/3/library/dis.html#dis.dis)函数可以将类编译成字节码。
 - en: '*Example*'
+  id: totrans-42
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '*示例*'
 - en: '[PRE4]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '*It prints out disassembly for all of the classes’s methods:*'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '*它打印出所有类方法的反汇编内容：*'
 - en: '[PRE5]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '*Let’s try this for `dict`:*'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '*让我们尝试对`dict`这样做：*'
 - en: '*&mldr; it doesn’t print anything? Why?*'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '*&mldr; 什么也没打印？为什么？*'
 - en: '*Well, the [dis](https://docs.python.org/3.12/library/dis.html) module isn’t
     very useful for internal types and `dict` is one of those types — defined within
     the interpreter’s source code.*'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '*嗯，[dis](https://docs.python.org/3.12/library/dis.html)模块对于内部类型并不是很有用，`dict`就是其中之一——在解释器源代码中定义的类型。*'
 - en: '*[#](#getting-lost-in-the-cpython-source-code) Getting lost in the CPython
     source code*'
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*[#](#getting-lost-in-the-cpython-source-code) 在CPython源代码中迷失*'
 - en: '*To tap into the forbidden magic, we need to clone the [CPython repository](https://github.com/python/cpython/tree/main)
     first. We don’t need all the history, so let’s [`--depth 1`](https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt)
     this.*'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '*要进入禁止的魔法，我们首先需要克隆[CPython存储库](https://github.com/python/cpython/tree/main)。我们不需要所有的历史记录，所以让我们使用[`--depth
+    1`](https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt)。*'
 - en: '[PRE6]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '*Then we need to find what we’re actually looking for — a place where opcode
     instructions are interpreted. After a cup of coffee and a lot of greps later we
     find the [`Python/bytecodes.c`](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)
     file. It consists of a single `switch` statement and it seems like all bytecode
     instruction are interpreted there.*'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '*然后，我们需要找到我们实际正在寻找的东西——一个解释操作码指令的地方。喝一杯咖啡并且进行大量grep之后，我们找到了[`Python/bytecodes.c`](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)文件。它由一个单独的`switch`语句组成，似乎所有的字节码指令都在那里解释。*'
 - en: '*[#](#the-dict-type) The `dict` type*'
+  id: totrans-53
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '*[#](#the-dict-type) `dict`类型*'
 - en: '*Let’s tackle `dict` first. All internal types are defined as `PyTypeObject`
     objects and the `dict` type is defined in the [`dictobject.c`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3839)
     file. It has a lot of attributes defined, but only two are of interest for us:*'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '*首先让我们处理 `dict`。所有内部类型都定义为 `PyTypeObject` 对象，而 `dict` 类型在 [`dictobject.c`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3839)
+    文件中定义。它有许多已定义的属性，但我们只关注两个：*'
 - en: '[PRE7]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '*The pair (`dict_new` and `dict_init`) will tell us what happens when someone
     creates a new dictionary.*'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这对 (`dict_new` 和 `dict_init`) 将告诉我们当有人创建一个新字典时会发生什么。*'
 - en: '**Note**'
+  id: totrans-57
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '**注意**'
 - en: '**The constructor in Python is called `__new__`. It’s a static method that
     returns a new object of its type.**'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在 Python 中，构造函数被称为 `__new__`。它是一个静态方法，返回其类型的新对象。**'
 - en: '**The initializer method is called `__init__`. It takes a newly created object
     and initializes its attributes. The `__init__`method is called after the `__new__`
     method.**'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**初始化方法称为 `__init__`。它接收一个新创建的对象并初始化其属性。`__init__` 方法在 `__new__` 方法之后调用。**'
 - en: '**The `dict_new` function is defined here: [dictobject.c#L3751](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3751).**'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '**`dict_new` 函数在这里定义：[dictobject.c#L3751](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L3751)。**'
 - en: '[PRE8]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**We see that first, it allocates a new object via the provided allocator (9^(th)
     line) and then sets some of its internal fields (15^(th), 19^(th), and 20^(th)).
     Interestingly for us, it **does not** pre-allocate the dictionary’s internal memory
     (see marked lines). It might seems strange at first, but please remember: an object’s
     initialization — like memory pre-allocation — is not a responsibility of the `__new__`
     method, that what the `__init__` method is for.**'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们看到，首先它通过提供的分配器分配一个新对象（第9行），然后设置一些内部字段（第15行、第19行和第20行）。我们对此感兴趣，它 **不会**
+    预先分配字典的内部内存（见标记的行）。这乍一看可能很奇怪，但请记住：对象的初始化 —— 像内存预分配 —— 不是 `__new__` 方法的责任，这就是 `__init__`
+    方法的责任。**'
 - en: '**With the new object in memory, the `dict_init` function can insert entries
     to it. The insertion logic is delegated to the `dict_update_common` function,
     which can be found here: [dictobject.c#L2678](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2678).**'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '**有了新的对象在内存中，`dict_init` 函数可以向其中插入条目。插入逻辑被委托给 `dict_update_common` 函数，可以在这里找到：[dictobject.c#L2678](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2678)。**'
 - en: '[PRE9]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**It updates the dictionary from both args and kwargs.**'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '**它从 args 和 kwargs 更新字典。**'
 - en: '**[#](#args--dict_update_arg) args & `dict_update_arg`**'
+  id: totrans-66
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: '**[#](#args--dict_update_arg) args 和 `dict_update_arg`**'
 - en: '**For `args` it calls the `dict_update_arg` function.**'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '**对于 `args`，它调用了 `dict_update_arg` 函数。**'
 - en: '[PRE10]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '**The function checks if `arg` is a dictionary, if so it merges the two ([`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)),
     otherwise it adds new entries from a sequence of pairs ([`PyDict_MergeFromSeq2`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2722)).**'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**该函数检查 `arg` 是否为字典，如果是，则合并两个（[`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)），否则，它从一系列的键值对中添加新条目（[`PyDict_MergeFromSeq2`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2722)）。**'
 - en: '**[#](#kwargs--pydict_merge) kwargs & `PyDict_Merge`**'
+  id: totrans-70
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: '**[#](#kwargs--pydict_merge) kwargs 和 `PyDict_Merge`**'
 - en: '**The `kwargs` path ends in the same place — [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988).
     Let’s take a look.**'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '**`kwargs` 路径以相同的地方结束 —— [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)。让我们来看看。**'
 - en: '**Internally, it delegates all logic to the [`dict_merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2807)
     function.**'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '**内部，它将所有逻辑委托给 [`dict_merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2807)
+    函数。**'
 - en: '[PRE11]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '**From the comment, we know that the function has been optimized for being
     called with another dictionary as a parameter. If the parameter is not a dictionary,
     then it’s a generic [`Mapping`](https://docs.python.org/3.12/library/collections.abc.html#collections.abc.Mapping)
     — a container object that supports arbitrary key lookups.**'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从注释中，我们知道该函数已被优化为以另一个字典作为参数进行调用。如果参数不是字典，则它是一个通用的 [`Mapping`](https://docs.python.org/3.12/library/collections.abc.html#collections.abc.Mapping)
+    —— 一个支持任意键查找的容器对象。**'
 - en: '**[#](#the--expression) The `{}` expression**'
+  id: totrans-75
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**[#](#the--expression) `{}` 表达式**'
 - en: '**The literal expression should be easier to reason about. Let’s go back to
     the [bytecode.c](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)
     file and find mapping for the `BUILD_MAP` opcode.**'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**字面表达式应该更容易理解。让我们回到[bytecode.c](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c)文件，找到`BUILD_MAP`操作码的映射。**'
 - en: '[PRE12]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '***See sources here: [bytecode.c#L1541](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c#L1541).***'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '***查看源码：[bytecode.c#L1541](https://github.com/python/cpython/blob/v3.12.0/Python/bytecodes.c#L1541)。***'
 - en: '**We see that the dictionary is fully constructed and returned by [`_PyDict_FromItems`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L1616).
     Let’s go there.**'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们看到字典是由[`_PyDict_FromItems`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L1616)完全构建并返回的。让我们去那里看看。**'
 - en: '[PRE13]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '**I’ve marked the most interesting line: in opposition to `dict_new`, it **pre-allocates**
     the dictionary, so it already has a capacity for all of its entries. After that
     it inserts key-value pairs one-by-one.**'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我标记了最有趣的一行：与`dict_new`相反，它**预先分配**了字典，因此它已经为所有条目分配了容量。之后，它逐个插入键值对。**'
 - en: '**[#](#conclusions) Conclusions**'
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**[#](#conclusions) 结论**'
 - en: '**To sum things up.**'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '**总结一下。**'
 - en: '**When you do `dict(a=1, b=2)`, Python needs to:**'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '**当你执行`dict(a=1, b=2)`时，Python需要：**'
 - en: '**allocate a new `PyObject`,**'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**分配一个新的`PyObject`，**'
 - en: '**construct a `dict` via the `__new__` method,**'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**通过`__new__`方法构造一个`dict`，**'
 - en: '**call its `__init__` method, which internally calls [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988),**'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**调用其`__init__`方法，该方法在内部调用[`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)，**'
 - en: '**because `kwargs` is not `dict`, [`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)
     needs to use the slower method, which inserts entries one-by-one.**'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**因为`kwargs`不是`dict`，所以[`PyDict_Merge`](https://github.com/python/cpython/blob/v3.12.0/Objects/dictobject.c#L2988)需要使用更慢的方法，逐个插入条目。**'
 - en: '**Whereas doing `{}` causes Python to:**'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '**而使用`{}`会导致Python：**'
 - en: '**construct a new **pre-allocated** dictionary,**'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**构造一个新的**预先分配**字典，**'
 - en: '**insert entries one-by-one.**'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**逐个插入条目。**'
 - en: '**To be fair, unless you construct dictionaries in a loop, I don’t believe
     there’s a lot to gain performance-wise by switching from `dict` to `{}`. There’s
     one thing I’d like you to remember after reading this post:**'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: '**公平地说，除非你在循环中构造字典，否则我认为从`dict`切换到`{}`在性能上并没有太多好处。在阅读完这篇文章后，有一件事我想让你记住：**'
 - en: '***tl;dr***'
+  id: totrans-93
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '***太长不看***'
 - en: '***The `{}` is always faster than `dict`.***'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '***`{}`始终比`dict`快。***'
 - en: '***[#](#appendix) Appendix***'
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '***[#](#appendix) 附录***'
 - en: '***Similar analysis can be done for lists, sets, and (*possibly*) tuples. However,
     this post is already too long, so I’ll drop all the other resources I’ve gathered
     here.***'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '***类似的分析也可以用于列表、集合和（可能的）元组。然而，这篇文章已经太长了，所以我将放弃我收集的所有其他资源。***'
 - en: '***[#](#lists) Lists***'
+  id: totrans-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '***[#](#lists) 列表***'
 - en: '[PRE14]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '***[#](#list-type) `list` type***'
+  id: totrans-99
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '***[#](#list-type) `list`类型***'
 - en: '***The Python’s `list` type is defined in the `listobject.c` file:***'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '***Python的`list`类型在`listobject.c`文件中定义：***'
 - en: '[PRE15]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '***`PyType_GenericNew` does nothing — it ignores `args` and `kwargs`, and return
     an object allocated by `type->typ_alloc`. Source: [https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768](https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768)***'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '***`PyType_GenericNew`什么也不做 —— 它忽略了`args`和`kwargs`，并返回由`type->typ_alloc`分配的对象。来源：[https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768](https://github.com/python/cpython/blob/main/Objects/typeobject.c#L1768)***'
 - en: '***`PyType_GenericAlloc` allocated a new object and (if it’s garbage-collectable)
     marks it as “to-be-collected”.***'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '***`PyType_GenericAlloc`分配一个新对象，并（如果它是可垃圾收集的）标记为“待收集”。***'
 - en: '***`list___init__` is a convenience wrapper around the `list___init___impl`
     function, which does the actual initialization. It does some basic pre-steps:***'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '***`list___init__`是对`list___init___impl`函数的方便封装，它执行实际的初始化。它执行一些基本的预处理步骤：***'
 - en: '***fails if any `kwarg` has been passed,***'
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***如果传递了任何`kwarg`，则失败，***'
 - en: '***fails if `args` has more than 1 element,***'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***如果`args`有多于1个元素，则失败，***'
 - en: '***converts the first argument of `args` to an iterable.***'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***将`args`的第一个参数转换为可迭代对象。***'
 - en: '***`list___init___impl` clears the list (if not empty) and extends it by the
     provided iterable (by calling the `list_extend` function).***'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '***`list___init___impl`清除列表（如果不为空），并通过提供的可迭代对象扩展它（通过调用`list_extend`函数）。***'
 - en: '****Question****'
+  id: totrans-109
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '****问题****'
 - en: '****I think the two:****'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '****我认为两者:****'
 - en: '[PRE16]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '****are equivalent in every way (but the generated opcodes sequence) and are
     calling the same underlying C code.****'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '****在所有方面都是等价的（但生成的操作码序列不同），并且调用相同的底层C代码。****'
 - en: '****[#](#-literal-expression) `[]` literal expression****'
+  id: totrans-113
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '****[#](#-文字表达式) `[]`文字表达式****'
 - en: '****Opcode `BUILD_LIST` uses the `_PyList_FromArraySteal` function to construct
     a list object and return it.****'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '****操作码`BUILD_LIST`使用`_PyList_FromArraySteal`函数构造一个列表对象并返回它****'
 - en: '*****Note*****'
+  id: totrans-115
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '*****注意*****'
 - en: '****_PyList_FromArraySteal is used since 3.12\. See [3.12 changelog](https://docs.python.org/3.12/whatsnew/changelog.html)
     and [gh-100146](https://github.com/python/cpython/pull/100147). Before 3.12, the
     opcode was repeatedly calling `POP()` to get items from the stack, and then inserting
     them into the list.****'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: '****自3.12版开始使用`_PyList_FromArraySteal`。参见[3.12更新日志](https://docs.python.org/3.12/whatsnew/changelog.html)和[gh-100146](https://github.com/python/cpython/pull/100147)。在3.12之前，操作码重复调用`POP()`从堆栈中获取项目，然后将它们插入列表中。****'
 - en: '[PRE17]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '****See [change in gh-100146 PR](https://github.com/python/cpython/pull/100147/files#diff-729a985b0cb8b431cb291f1edb561bbbfea22e3f8c262451cd83328a0936a342L1447-L1450).****'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '****参见[gh-100146 PR的更改](https://github.com/python/cpython/pull/100147/files#diff-729a985b0cb8b431cb291f1edb561bbbfea22e3f8c262451cd83328a0936a342L1447-L1450)****'
 - en: '****The `_PyList_FromArraySteal` helper creates an empty list (if there are
     no items), or preallocates the list before inserting items to it.****'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '****`_PyList_FromArraySteal`助手函数创建一个空列表（如果没有项目），或在插入项目之前预先分配列表。****'
 - en: '[PRE18]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '****[#](#sets) Sets****'
+  id: totrans-121
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '****[#](#集合) 集合****'
 - en: '*****Warning*****'
+  id: totrans-122
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '*****警告*****'
 - en: '*****AFAIK there’s no way to construct a new set with a literal expression,
     hence the following analysis is performed for sets with two elements: `1` and
     `2`.*****'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****据我所知，没有办法用文字表达构造一个新的集合，因此以下分析是针对包含两个元素的集合进行的：`1`和`2`*****'
 - en: '[PRE19]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '*****[#](#set-type) `set` type*****'
+  id: totrans-125
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '*****[#](#set-type) `set`类型*****'
 - en: '*****The Python’s `set` type is defined in the `setobject.c` file:*****'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****Python的`set`类型在`setobject.c`文件中定义：*****'
 - en: '[PRE20]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '*****`set_new` uses the allocated to create a new empty set object. Internally
     it calls the `make_new_set` function.*****'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****`set_new`使用分配的空间创建一个新的空集合对象。在内部，它调用`make_new_set`函数*****'
 - en: '*****`set_init` performs some pre-steps:*****'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****`set_init`执行一些预先步骤：*****'
 - en: '*****fails if any `kwarg` has been passed,*****'
+  id: totrans-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*****如果传递了任何`kwarg`，则失败*****'
 - en: '*****fails if `args` has more then 1 element,*****'
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*****如果`args`有多于1个元素，则失败*****'
 - en: '*****converts the first argument of `args` to an iterable,*****'
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*****将`args`的第一个参数转换为可迭代的*****'
 - en: '*****if the set object has already been filled, then it clears it*****'
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*****如果集合对象已经被填充，则清除它*****'
 - en: '*****&mldr; and calls the `set_update_internal` function, to insert values
     into the set object.*****'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****...并调用`set_update_internal`函数，将值插入到集合对象中*****'
 - en: '*****[#](#1-2-literal-expression) `{1, 2}` literal expression*****'
+  id: totrans-135
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '*****[#](#1-2-文字表达式) `{1, 2}`文字表达式*****'
 - en: '*****The opcode handler has no dedicated helpers. It constructs a new set (empty),
     and then iterates over all items from the stack and insets them one-by-one.*****'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****操作码处理程序没有专用的帮助程序。它构造一个新的集合（空的），然后迭代堆栈中的所有项目，逐个插入它们。*****'
 - en: '[PRE21]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '*****Source: [https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627](https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627).*****'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****来源：[https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627](https://github.com/python/cpython/blob/main/Python/bytecodes.c#L1627)*****'
 - en: '******Warning******'
+  id: totrans-139
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '******警告******'
 - en: '*****Warning The generated bytecode is different if we add another argument
     to the literal expression: `{1, 2, 3}`. Then it becomes:*****'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****警告：如果我们在文字表达式中添加另一个参数`{1, 2, 3}`，生成的字节码就会不同。然后它变成了：*****'
 - en: '[PRE22]'
+  id: totrans-141
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '*****[#](#tuples) Tuples*****'
+  id: totrans-142
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*****[#](#元组) 元组*****'
 - en: '*****This one’s tricky. Constructing a tuple with the `tuple` type requires
     an iterable. The easiest way of getting one it to create a tuple literal, which
     is obviously less efficient, than using a tuple literal syntax in the first place.*****'
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****这个有点棘手。使用`tuple`类型构造一个元组需要一个可迭代的。获得一个可迭代的最简单的方法是创建一个元组文字表达式，这显然比一开始就使用元组文字表达式语法不高效。*****'
 - en: '[PRE23]'
+  id: totrans-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '*****It might not make much sense to include this example in the article.*****'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****在文章中包含此示例可能没有太多意义*****'
 - en: '*****[#](#tuple-type) `tuple` type*****'
+  id: totrans-146
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '*****[#](#tuple-type) `tuple`类型*****'
 - en: '*****The Python’s `tuple` type is defined in `tupleobject.c`. Interestingly,
     it has no `tp_alloc`, nor `tp_init`.*****'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****Python的`tuple`类型在`tupleobject.c`中定义。有趣的是，它没有`tp_alloc`，也没有`tp_init`*****'
 - en: '[PRE24]'
+  id: totrans-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: '*****The `tuple_new` function is responsible for allocating a new tuple object,
     with the items passed as a parameter.*****'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: '*****`tuple_new`函数负责分配一个新的元组对象，并传递参数作为项目*****'
 - en: </main>
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
