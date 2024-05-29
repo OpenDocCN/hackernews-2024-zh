@@ -1,37 +1,55 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:56:40'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:56:40'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: From 0 to 1 MB in DOS - by Julio Merino - Blog System/5
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从 0 到 1 MB 在 DOS 中 - 作者 Julio Merino - Blog System/5
 - en: 来源：[https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos](https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos](https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos)
 - en: Since the last article on [the text-based IDEs of old](https://blogsystem5.substack.com/p/the-ides-we-had-30-years-ago-and),
     I’ve been meaning to write about the GCC port to DOS, namely [DJGPP](https://www.delorie.com/djgpp/).
     As I worked on the draft for that topic, I realized that there is a ton of ground
     to cover to set the stage so I took most of the content on memory management out
     and wrote this separate post.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 自上次关于[旧文本化 IDE](https://blogsystem5.substack.com/p/the-ides-we-had-30-years-ago-and)的文章以来，我一直想写一篇关于
+    GCC 移植到 DOS 的文章，即 [DJGPP](https://www.delorie.com/djgpp/)。当我为这个主题起草时，我意识到有很多内容需要涵盖，为了确立背景，我剔除了大部分关于内存管理的内容，写了这篇单独的文章。
 - en: This article is a deep dive on how DOS had to pull out tricks to maximize the
     use of the very limited 1 MB address space of the 8086\. Those tricks could exist
     because of the features later introduced by the 80286 and the 80386, but these
     were just clutches to paper over the fact that DOS could not leverage the real
     improvements provided by protected mode.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文深入探讨了 DOS 如何运用技巧来最大化 8086 仅有的极其有限的 1 MB 地址空间。这些技巧之所以存在，是因为后来由 80286 和 80386
+    引入的特性，但这些只是为了掩盖 DOS 无法利用受保护模式提供的真正改进。
 - en: This detour is long but I hope you’ll enjoy it as much as I enjoyed researching
     the topic. I’ll walk you through the changes in the x86 architecture over time,
     starting with the 8086 and ending in the 80386, and how DOS kept up along the
@@ -39,47 +57,67 @@
     omit details to keep the text manageable in size though, so please excuse the
     lack of detail in some areas; just follow the links to external documentation
     to learn more.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个绕道很长，但我希望您会像我研究这个话题一样喜欢它。我将带您了解 x86 架构随着时间的推移所发生的变化，从 8086 开始，到 80386 结束，以及
+    DOS 在此过程中的演变。最后我会简要介绍 DOS 自己的 MEM 和 MemMaker 实用程序。为了保持文本的可管理性，我必须省略一些细节，所以请原谅某些领域缺乏细节；只需跟随外部文档的链接以获取更多信息。
 - en: '*Before we begin, I’d like to thank neozeed from [Virtually Fun](https://virtuallyfun.com/)
     for his in-depth review of this article. Head to his blog for a lot of interesting
     and related content!*'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*在我们开始之前，我要感谢 [Virtually Fun](https://virtuallyfun.com/) 的 neozeed 对本文的深入审阅。请访问他的博客了解更多有趣和相关的内容！*'
 - en: Back in the 1980s, the [Intel 8086](https://en.wikipedia.org/wiki/Intel_8086)
     was *the* processor for PCs (along with its crippled sibling 8088 which I’ll ignore
     throughout this post). The 8086 was a simple chip with significant limitations,
     but it was incredibly successful and is the foundation of the x86 architecture
     that we still use today. Because the 8086 powered PCs, and DOS was the operating
     system that IBM chose for the PC, DOS was designed to work for the 8086.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到 20 世纪 80 年代，[Intel 8086](https://en.wikipedia.org/wiki/Intel_8086)是个人计算机的*处理器*（以及它的残废兄弟
+    8088，在本文中将忽略）。8086 是一个简单的芯片，但具有重大局限性，但它取得了巨大成功，也是我们今天仍在使用的 x86 架构的基础。由于 8086 驱动了个人计算机，而
+    DOS 是 IBM 选择的个人计算机操作系统，因此 DOS 被设计用于 8086。
 - en: 'For the purposes of our article, let’s focus on two details: the 8086 CPU had
     a 20-bit address bus, which means it could only address 1 MB of memory, and it
     was a 16-bit CPU, which means that its internal registers were all 16-bit long.
     Which begs the question: if registers could only represent `2^16 = 64K` different
     values, how could code reference a 20-bit address space?'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们文章的目的，让我们关注两个细节：8086 CPU 具有 20 位地址总线，这意味着它只能寻址 1 MB 的内存，并且它是一款 16 位 CPU，这意味着它的内部寄存器都是
+    16 位长。这就引出了一个问题：如果寄存器只能表示 `2^16 = 64K` 不同的值，那么代码如何引用 20 位地址空间？
 - en: 'The answer is *segmentation*. In the 8086, every instruction that references
     memory does so by specifying an address as two separate 16-bit quantities: a *segment*
     and an *offset* within the segment. Because segments are 16-bit long, there can
     be up to 64KB segments—and if we take the 1 MB total address space and divide
     it by 64KB, we deduce that segments are offset from each other by 16 bytes.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是 *分段*。在 8086 中，每个引用内存的指令都通过指定一个地址来完成，该地址由两个独立的 16 位量组成：*段* 和 *段内偏移*。因为段是
+    16 位长，所以最多可以有 64KB 的段——如果我们将总地址空间的 1 MB 分成 64KB，我们可以推断出各段之间的偏移为 16 字节。
 - en: Representation of the way segmentation slices the 8086 1 MB address space into
     64KB overlapping segments offset by 16 bytes from each other.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示分段如何将 8086 1 MB 地址空间切割成 64KB 的重叠段，每个段相对于其他段偏移 16 字节。
 - en: There are two things of note in the diagram. First, segments overlap, meaning
     that a single memory location can be referenced by many different segment/offset
     combinations. And, second, all segments after `0xF000` reference memory positions
     above the 1 MB address space that don’t exist, which the 8086 chose to wrap around
     by ignoring the 21st bit of an address. After all, there is no 21st line in the
     address bus.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 图中有两个需要注意的地方。首先，段重叠，意味着单个内存位置可以被许多不同的段/偏移组合引用。其次，在`0xF000`之后的所有段引用不存在的 1 MB
+    地址空间的内存位置，8086 选择通过忽略地址的第 21 位来绕过。毕竟，在地址总线中不存在第 21 行。
 - en: 'When accessing a piece of memory with an address of the form `segment:offset`,
     say `81DA:72C3`, the 8086 multiplies `0x81DA` by 16 (a simple 4-bit shift to the
     left) and adds the `0x72C3` offset to the result to obtain address `0x89063`.
@@ -88,30 +126,41 @@
     every memory access can reference any address, and all accesses are legal (including
     those that wrap around!) which means null or dangling pointer dereferences don’t
     cause any sort of crash.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 当访问一个地址形式为`段:偏移`的内存片段，比如`81DA:72C3`，8086 将`0x81DA`乘以 16 (一个简单的左移 4 位) 并将`0x72C3`偏移添加到结果中以获取地址`0x89063`。从那里开始，8086
+    从该内存位置读取或写入并且结束。没有[内存管理单元 (MMU)](https://en.wikipedia.org/wiki/Memory_management_unit)：每个内存访问都可以引用任何地址，所有访问都是合法的（包括环绕访问！）这意味着空指针或悬空指针解引用不会导致任何崩溃。
 - en: This type of MMU-less segmented addressing is known as *real mode*, but this
     name didn’t appear until the 80286 had to give it a name to distinguish it from
     *protected mode*. But before introducing the latter, let’s talk about memory maps
     for a second.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种没有 MMU 的分段寻址方式被称为*实模式*，但这个名字直到 80286 才出现，以便将其与*保护模式*区分开来。但在介绍后者之前，让我们先谈谈内存映射。
 - en: 'Just because the 8086 processor can reference 1 MB of memory does not mean
     that 8086 machines came equipped with 1 full MB of RAM. Machines typically included
     *less* than that for cost reasons, so it’s critical to understand that the *address
     space*—that is, the set of addresses that can be *referenced*—is different from
     the amount of memory installed. No surprise there: the same is true today of modern
     64-bit CPUs.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅仅因为 8086 处理器可以引用 1 MB 的内存并不意味着 8086 机器配备了 1 MB 的完整 RAM。出于成本考虑，机器通常包含*少于*这个数量的内存，所以理解*地址空间*—即可以被*引用*的地址集—与安装的内存量不同是至关重要的。毫不奇怪：现代
+    64 位 CPU 也是如此。
 - en: 'This fact was advantageous because certain system devices prefer to expose
     themselves as part of the address space. For example: the BIOS ROM is accessible
     via a range of addresses in upper memory. Or another example: video cards tend
     to expose their framebuffer as a memory-mapped device so that applications can
     directly write to well-known addresses to manipulate video memory—bypassing the
     separate I/O bus and instruction set.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个事实是有利的，因为某些系统设备喜欢将自己作为地址空间的一部分公开。例如：BIOS ROM 可以通过上层内存中的一系列地址访问。又例如：视频卡倾向于将它们的帧缓冲区公开为内存映射设备，这样应用程序就可以直接写入到已知地址以操纵视频内存—绕过独立的
+    I/O 总线和指令集。
 - en: 'The question is: where do such devices live within the address space? The choice
     is pretty much arbitrary, so what IBM did was split the [address space of the
     original PC](https://wiki.osdev.org/Memory_Map_(x86)) in two parts. The first
@@ -120,45 +169,61 @@
     *Upper Memory Area (UMA)*, were reserved for memory-mapped devices. This assignment
     of *meaning* to portions of the address space for specific purposes is what’s
     called a *memory map*, and this was the memory map of the original PC.'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题是：这些设备存在于地址空间的哪里？选择几乎是任意的，所以 IBM 所做的是将[原始 PC 的地址空间](https://wiki.osdev.org/Memory_Map_(x86))分成两部分。前
+    640 KB，称为*传统内存*，被映射到可用的 RAM 并且可以被应用程序轻松使用。上面的 384 KB，称为*上层内存*或*上层内存区域 (UMA)*，被保留给内存映射设备。为特定目的对地址空间的部分分配*意义*被称为*内存映射*，这就是原始
+    PC 的内存映射。
 - en: Representation of the 8086 PC memory map. Solid blocks correspond to mapped
     memory and dashed parts correspond to unmapped memory.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 8086 PC内存映射的表示。实心块对应于映射内存，虚线部分对应于未映射内存。
 - en: 'Note how conventional memory may not be fully usable: as shocking as it may
     sound today, PCs could have even less than 640 KB of installed RAM. More importantly
     for our purposes, the upper memory is *sparse*: certain address ranges are assigned
     to devices, but there may be gaps between devices. What happens when reading from
     or writing to unmapped addresses is hard to tell as this depends on the chipset—not
     the CPU—but remember that all accesses had to be valid in some form.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意如何可能无法完全使用常规内存：尽管今天听起来可能令人震惊，但PC可能甚至只安装了不到640 KB的RAM。对于我们的目的来说更重要的是，上部内存是*稀疏*的：某些地址范围分配给设备，但设备之间可能存在间隙。读取或写入未映射地址时会发生什么是很难确定的，因为这取决于芯片组——而不是CPU——但请记住，所有访问必须以某种形式有效。
 - en: 'And by the way, there is one teeny tiny exception to the “all first 640 KB
     are free to use to applications”: the very first 1 KB of RAM is reserved for the
     Interrupt Vector Table, which is what the 8086 uses to look for interrupt handlers
     when it receives an interrupt, and a few more bytes after that are used by the
     BIOS to map volatile data. We can ignore these.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一下，“所有前640 KB都可以供应用程序自由使用”有一个极其微小的例外：RAM的第一个1 KB被保留给中断向量表，当8086接收到中断时，它用来查找中断处理程序，再加上一些字节由BIOS用于映射易失性数据。我们可以忽略这些。
 - en: As you can imagine, 640 KB of RAM were soon *not* enough for many programs.
     Applications needed access to more memory, but the limitations of the 8086 20-bit
     address bus made it difficult. Yet there was a need for an immediate solution.
     The [Expanded Memory Specification (EMS)](https://en.wikipedia.org/wiki/Expanded_memory)
     was one of those first solutions and was originally designed by Lotus in order
     to support their star application [1-2-3](https://en.wikipedia.org/wiki/Lotus_1-2-3).
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可以想象的那样，640 KB的RAM很快就*不够用*了。应用程序需要访问更多内存，但8086的20位地址总线的限制使得这很困难。然而，需要一个立即的解决方案。[扩展内存规范（EMS）](https://en.wikipedia.org/wiki/Expanded_memory)是其中的一个最初的解决方案，并最初由Lotus设计，以支持他们的明星应用程序[1-2-3](https://en.wikipedia.org/wiki/Lotus_1-2-3)。
 - en: The idea is simple. Remember how upper memory is *sparse*? What if we could
     map a window in that address space to a different portion of memory? And what
     if we could control, via software, which portion of memory was exposed through
     such window at any given time?
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个想法很简单。记得上部内存是*稀疏*的吗？如果我们能够将该地址空间中的一个窗口映射到内存的不同部分会怎么样？如果我们能够通过软件控制在任何给定时间通过这样的窗口暴露的内存部分，会怎么样？
 - en: Representation of the 8086 PC memory map and an EMS window in upper memory mapped
     to a portion of memory provided by an external ISA card.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 8086 PC内存映射的表示以及上部内存中的一个EMS窗口映射到由外部ISA卡提供的内存部分。
 - en: This is precisely what EMS did. EMS brought the idea of having a software API
     that allowed applications to select views into “other” memory by mapping a 64
     KB window in upper memory to another memory chip. Originally, this other memory
@@ -166,25 +231,33 @@
     hardware support and hardware-specific drivers to perform the window remappings.
     This also means, by the way, that this memory could be much slower than standard
     RAM.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这正是EMS所做的。EMS引入了一个软件API的概念，允许应用程序通过将上部内存的64 KB窗口映射到另一块内存芯片来选择“其他”内存中的视图。最初，这种其他内存是由像下面这样的扩展ISA卡提供的，这意味着EMS需要硬件支持和硬件特定的驱动程序来执行窗口重新映射。顺便说一句，这也意味着这种内存可能比标准RAM慢得多。
 - en: An Emulex Persyst ISA card providing 4 MB of additional memory. It's notable
     how huge this was. Photo taken from the Wikipedia; [see original](https://en.wikipedia.org/wiki/File:EmulexPersyst_4M_ISA.jpeg).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 一张Emulex Persyst ISA卡提供了4 MB额外的内存。这有多么巨大是值得注意的。图片来源于维基百科；[查看原图](https://en.wikipedia.org/wiki/File:EmulexPersyst_4M_ISA.jpeg)。
 - en: As you can imagine, this trick offered the theoretical ability to access *any*
     amount of extra RAM on a machine… at the expense of having to structure your application
     so that it explicitly (re)configured the window. Implementing such applications
     is difficult and is also insufficient when applications need a larger address
     space to function comfortably. EMS was a useful kludge, but still a kludge.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可以想象的那样，这个技巧提供了在机器上访问*任何*额外RAM的理论能力……以在显式（重新）配置窗口的方式来构建你的应用程序为代价。实现这样的应用程序是困难的，而且当应用程序需要更大的地址空间来舒适地运行时，这也是不够的。EMS是一个有用的权宜之计，但仍然是一个权宜之计。
 - en: As the needs of programs and operating systems grew, processors themselves needed
     to grow more advanced features as well. In particular, they needed to gain the
     ability to access much more than just 1 MB of memory, and they needed to offer
     memory protection features to isolate programs from each other.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着程序和操作系统的需求增长，处理器本身也需要增加更先进的功能。特别是，它们需要获得访问远远超过 1 MB 内存的能力，并且它们需要提供内存保护功能以隔离程序。
 - en: 'The 80286, still a 16-bit CPU, grew the address space to 24 bits to support
     up to 16 MB of RAM. It introduced a MMU to offer memory isolation. But there was
     a problem here: the 8086 memory addressing mode of 16-bit `segment:offset` pairs
@@ -192,8 +265,12 @@
     find a different way to reference the RAM beyond 1 MB, also known as *extended
     memory*, and it did so by introducing a completely different operation mode known
     as *protected mode*.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 80286 仍然是一款 16 位 CPU，将地址空间扩展到 24 位，以支持最多 16 MB 的 RAM。它引入了 MMU 以提供内存隔离。但这里有一个问题：16
+    位 `段：偏移` 对的 8086 内存寻址模式不允许寻址超出第 1 MB 以外的内存。因此，80286 必须找到一种不同的方式来引用 1 MB 以外的 RAM，也被称为
+    *扩展内存*，它通过引入一种完全不同的操作模式来实现，即 *保护模式*。
 - en: Once in protected mode, all memory access rules change. For one, the MMU takes
     charge of all memory accesses, ensuring that they are valid according to predefined
     protections. For another, the `segment:offset` addresses change their semantics.
@@ -202,12 +279,18 @@
     (the GDT or LDT) of segment descriptors. Each segment descriptor describes the
     base address of a segment as a 32-bit quantity, the size of the segment as a 20-bit
     quantity, the access protections of the segment, and a bunch of flags.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦进入保护模式，所有内存访问规则都会改变。首先，MMU 接管所有内存访问，确保它们根据预定义的保护是有效的。另外，`段：偏移` 地址改变了它们的语义。地址的段部分不再是一个缩减的内存地址，而是成为了一个
+    *索引* [到一个表中](https://wiki.osdev.org/Global_Descriptor_Table)（GDT 或 LDT）的段描述符。每个段描述符描述一个段的基地址作为
+    32 位量，段的大小作为 20 位量，段的访问保护以及一堆标志。
 - en: Diagram representing the operations that the 80286 does, in hardware, to resolve
     a segment:address memory reference.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示 80286 处理器在硬件上执行的操作的图示，用于解析段：地址内存引用。
 - en: Under this model, instead of having an address like `81DA:72C3`, we might see
     `13:72C3`. To access this address, the MMU looks up entry 13 in the GDT, finds
     a descriptor that says that the segment starts at address `0x81DA` and that it
@@ -215,22 +298,33 @@
     raising a [General Protection Fault](https://en.wikipedia.org/wiki/General_protection_fault)
     hardware exception (your dreaded [“Segmentation fault”](https://en.wikipedia.org/wiki/Segmentation_fault)
     error these days).
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种模式下，我们可能会看到一个地址，而不是 `81DA:72C3`，而是 `13:72C3`。要访问这个地址，MMU 查找 GDT 中的条目 13，找到一个描述符，说段从地址
+    `0x81DA` 开始，长度为 `0x7200` 字节，然后得出 `13:72C3` 引用超出范围，引发一个 [General Protection Fault](https://en.wikipedia.org/wiki/General_protection_fault)
+    硬件异常（你现在可怕的 [“段错误”](https://en.wikipedia.org/wiki/Segmentation_fault) 错误）。
 - en: But this access model is really different from what DOS applications were used
     to in real mode, and DOS itself was only designed to run in real mode. So DOS
     and all of its ecosystem were stuck in the real mode world, limited to addressing
     just 1 MB of memory without the ability to access extended memory… or were they?
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，这种访问模型与 DOS 应用程序在实模式下习惯的模型非常不同，而 DOS 本身只设计用于在实模式下运行。因此，DOS 及其整个生态系统都停留在实模式世界中，仅限于在没有访问扩展内存的能力的情况下访问仅
+    1 MB 的内存… 或者不是吗？
 - en: Avid readers might have noticed in a previous picture that, in real mode, there
     are a few segments that could, in theory, allow access to addresses above the
     1 MB mark. Take `FFFF:0010`, which is `0xFFFF * 0x10 + 0x10 = 0x100000 = 2^20`
     or 1 followed by 20 zeroes in binary form. This is the first address into extended
     memory. The 8086 was able to produce such addresses, but they would wrap around
     because the 8086 had no way to issue the 21st bit to the memory bus.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 热心的读者可能已经注意到在之前的图片中，在实模式下，有一些段理论上可以允许访问超过 1 MB 标记的地址。取 `FFFF:0010` 为例，这是 `0xFFFF
+    * 0x10 + 0x10 = 0x100000 = 2^20` 或者在二进制形式中是 1 后跟着 20 个零的第一个扩展内存地址。8086 能够产生这样的地址，但它们会环绕，因为
+    8086 没有办法向内存总线发出第 21 位。
 - en: For compatibility reasons, the 80286 had to truncate these addresses in real
     mode, and it did so by wiring the 21st line of the address bus (the A20) to zero.
     But what if the addresses *didn’t* wrap around? What if we told the 80286 to *not*
@@ -239,28 +333,40 @@
     for entering protected mode, but if done in real mode, it becomes possible to
     access an extra 64 KB of memory. This extra memory is known as the [High Memory
     Area (HMA)](https://en.wikipedia.org/wiki/High_memory_area).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于兼容性原因，80286必须在实模式下截断这些地址，它通过将地址总线的第21条线（A20）连接到零来实现这一点。但是如果地址**没有**回绕会怎样呢？如果我们告诉80286*不要*截断它们会怎样？事实上，通过启用[A20门](https://zh.wikipedia.org/wiki/A20线#A20门)——需要通过键盘控制器完成的任务。启用A20是进入保护模式的先决条件，但如果在实模式下完成，则可以访问额外的64
+    KB内存。这个额外的内存称为[高内存区（HMA）](https://zh.wikipedia.org/wiki/高内存区)。
 - en: Representation of the way segmentation slices the 80286 real mode 1 MB address
     space into 64KB overlapping segments offset by 16 bytes from each other, and how
     the last few segments can be made to spill into extended memory.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 将80286实模式1 MB地址空间切片为64KB重叠段（相互偏移16字节），并展示如何使最后几个段溢出到扩展内存中的分段表示。
 - en: The HMA isn’t big by any means, but conventional memory was so limited that
     any tricks to gain extra memory were welcome and DOS did precisely that. By loading
     the `HIMEM.SYS` driver and by specifying `DOS=HIGH` in the `CONFIG.SYS` file,
     DOS would relocate parts of itself into the HMA to free up to 64 KB of conventional
     memory.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: HMA（高内存区）的大小并不算大，但是传统内存非常有限，因此任何增加额外内存的技巧都受到欢迎，而DOS正是这样做的。通过加载`HIMEM.SYS`驱动程序，并在`CONFIG.SYS`文件中指定`DOS=HIGH`，DOS会将其部分内容重定位到HMA中，以释放多达64
+    KB的传统内存。
 - en: Unfortunately, 64 KB of extra memory really aren’t that much. This is a nice
     trick, but applications really needed access to more memory.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，额外的64 KB内存并不算多。这是一个不错的技巧，但应用程序确实需要更多的内存。
 - en: Another technique to access extended memory (the memory visible beyond the first
     1 MB) came in the form of the [eXtended Memory Specification (XMS)](https://en.wikipedia.org/wiki/Extended_memory#Extended_Memory_Specification_(XMS)).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种访问扩展内存（超出第1 MB的内存可见部分）的技术以[eXtended Memory Specification (XMS)](https://zh.wikipedia.org/wiki/扩展内存)的形式出现。
 - en: 'The idea of XMS is to provide an API that real mode applications can use to
     allocate chunks of extended memory and to copy data from/to those chunks via explicit
     calls. This is different from EMS because we aren’t talking about a fixed window
@@ -268,40 +374,52 @@
     API that is able to allocate arbitrary chunks of memory and return references
     to them, much like `malloc` and `free` do. Applications then use extra APIs to
     copy memory from/to those extended memory chunks into conventional memory.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: XMS的理念是提供一个实模式应用程序可以使用的API，用于分配扩展内存块的块并通过显式调用复制数据。这与EMS不同，因为我们不是在谈论地址空间中引用某些外部内存的固定窗口：我们在谈论一个能够分配任意内存块并返回对它们的引用的API，就像`malloc`和`free`所做的那样。然后，应用程序使用额外的API将这些扩展内存块中的内存复制到传统内存中。
 - en: Representation of the 80286 memory map with a block of extended memory copied
     into conventional memory by means of XMS.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 用XMS将一个扩展内存块复制到传统内存中的80286内存映射的表示。
 - en: To implement the [XMS API](http://www.phatcode.net/res/219/files/xms30.txt),
     a driver such as `HIMEM.SYS` uses protected mode to manipulate the extended memory
     blocks, but the real mode applications never have to. Because XMS requires protected
     mode, this feature is only available in the 80286 and above processors, whereas
     EMS could be used by the 8086 with the right hardware assistance.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现[XMS API](http://www.phatcode.net/res/219/files/xms30.txt)，诸如`HIMEM.SYS`之类的驱动程序使用保护模式来操纵扩展内存块，但实模式应用程序永远不必这样做。由于XMS需要保护模式，因此该功能仅适用于80286及以上处理器，而EMS则可以由8086在有正确硬件支持的情况下使用。
 - en: Much like EMS, XMS provided the theoretical ability to access an unlimited amount
     of extended memory from real mode at the expense of having to manually transfer
     small pieces of it into the limited 1 MB address space. This is not a trivial
     difficulty and is why even modern architectures like the [Cell processor](https://en.wikipedia.org/wiki/Cell_(processor))
     and its [SPEs](https://en.wikipedia.org/wiki/Cell_(processor)#Synergistic_Processing_Elements_(SPE))
     with a separate and limited address space didn’t succeed.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像EMS一样，XMS提供了理论上从实模式访问无限扩展内存的能力，但要手动将其小片段转移到有限的1MB地址空间中。这并不是一个微不足道的困难，这就是为什么即使像[Cell处理器](https://en.wikipedia.org/wiki/Cell_(processor))及其[特殊处理元素(SPEs)](https://en.wikipedia.org/wiki/Cell_(processor)#Synergistic_Processing_Elements_(SPE))这样的现代架构，即使有单独且有限的地址空间，也无法成功的原因。
 - en: So far so good, but… we can still squeeze some extra memory out of the real
     mode segmented address space. In particular, we still have some gaps in upper
     memory that we haven’t put to use.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止还不错，但是……我们仍然可以从实模式分段地址空间中挤出一些额外的内存。特别是，我们仍然有一些上部内存中的空隙没有得到利用。
 - en: To make further improvements possible, we need the additional processor features
     that came with the 80386\. Compared to the 80286, the 80386 was a 32-bit processor
     capable of addressing up to 4 GB of RAM. More interesting for our discussion,
     however, were the addition of pagination—which is the foundation of any modern
     operating system—and a new execution mode known as *[Virtual 8086](https://en.wikipedia.org/wiki/Virtual_8086_mode)*
     or VM86 for short.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现进一步的改进，我们需要80386所带来的额外处理器功能。与80286相比，80386是一个能够寻址高达4GB RAM的32位处理器。然而，更有趣的是，80386增加了分页机制——这是任何现代操作系统的基础——还有一个被称为*[虚拟8086](https://en.wikipedia.org/wiki/Virtual_8086_mode)*或称为VM86的新执行模式。
 - en: 'VM86 was originally envisioned to fix a major deficiency in the 80286: that
     is, the ability to run *multiple* concurrent real mode applications from within
     a protected mode operating system because that’s what Windows and OS/2 wanted
@@ -311,133 +429,197 @@
     via pagination and all privileged operations trap into protected mode, meaning
     that a hypervisor process can place VM86 tasks anywhere in the 4 GB memory address
     space and can context-switch between them.'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初，VM86的设想是为了解决80286的一个主要缺陷：即在受保护模式操作系统中运行*多个*并发的实模式应用程序的能力，因为这正是Windows和OS/2想要提供的。在今天的术语中，VM86充当着虚拟机监控程序，为处理器提供了一种进入行为类似于实模式但由受保护模式内存管理单元支持的模式的机制。所有内存访问都经过分页翻译，所有特权操作都陷入受保护模式，这意味着虚拟机监控程序可以在4GB内存地址空间中的任何位置放置VM86任务，
+    并且可以在它们之间进行上下文切换。
 - en: But what if our hypervisor only spawned a single VM86 task to run DOS in? What
     if, then, the hypervisor leveraged the MMU to relocate portions of the real mode
     address space into portions of extended memory? That way, we could emulate EMS
     without dedicated hardware, providing applications a trivial way to peek into
     extended memory via 64 KB windows, or we could play other tricks… like UMBs.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，如果我们的虚拟机监控程序只生成一个VM86任务来运行DOS呢？那么，虚拟机监控程序可以利用内存管理单元将实模式地址空间的部分重新定位到扩展内存的部分吗？这样，我们就可以在没有专用硬件的情况下模拟EMS，为应用程序提供一个通过64
+    KB窗口轻松查看扩展内存的方法，或者我们可以使用其他技巧……比如UMBs。
 - en: 'Remember the sparse upper memory area? Those 384 KB of memory wired to hardware
     devices but with gaps in them? What if we could take those gaps in upper memory
     and map them to some extended memory so that they were directly addressable from
     real mode? This is precisely what [Upper Memory Blocks (UMBs)](https://en.wikipedia.org/wiki/Upper_memory_area)
     are: portions of the upper memory area remapped to extended memory by means of
     VM86, transparently offering access to more memory from real mode.'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 还记得稀疏的上部内存区域吗？那384KB被硬件设备所占用却有间隙的内存？如果我们能够将上部内存中的这些间隙映射到一些扩展内存中，这样就可以直接从实模式中寻址。这正是[上部内存块(UMBs)](https://en.wikipedia.org/wiki/Upper_memory_area)的本质：将上部内存区域的部分重新映射到扩展内存中，通过VM86为实模式提供更多内存的透明访问。
 - en: 'As an example, think about the video memory mappings in the original PC specification.
     The memory map reserved two chunks of the address space for video: one for monochrome
     displays and one for color displays. But only one of them can be in use at any
     given time. So whichever video mode is selected leaves the address space of the
     other mode unused, and thus such address space can be leveraged by the system
     as an UMB into which to load drivers or place user data.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 举例来说，想象一下原始 PC 规范中的视频内存映射。内存映射为视频保留了地址空间的两个块：一个用于单色显示，一个用于彩色显示。但在任何给定时间只能使用其中一个。因此，无论选择哪种视频模式，另一模式的地址空间都会闲置，因此系统可以将此类地址空间用作
+    UMB，用于加载驱动程序或放置用户数据。
 - en: Representation of the 80386 VM86 memory map with two UMBs in upper memory mapped
     to extended memory by means of the MMU and its pagination features.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示具有两个 UMBs 的 80386 VM86 内存映射，在 MMU 及其分页功能的帮助下，将上部内存映射到扩展内存。
 - en: In DOS, the `EMM386.EXE` driver is in charge of providing UMBs. In principle,
     the chipset could also implement them in older processors, but the 80386 made
     this all possible in software by entering VM86 and then leveraging pagination
     to map pages of extended memory in the upper memory area.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 DOS 中，`EMM386.EXE` 驱动程序负责提供 UMBs。原则上，芯片组也可以在较早的处理器中实现它们，但是 80386 通过进入 VM86，并利用分页将扩展内存的页面映射到上部内存区域，使这一切成为可能。
 - en: When UMBs are available, DOS offered ways to move load drivers and [TSR programs](https://en.wikipedia.org/wiki/Terminate-and-stay-resident_program)
     into UMBs by specifying `DOS=UMB` in the `CONFIG.SYS` file and then using the
     `DEVICEHIGH` and `LOADHIGH` commands.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 UMBs 可用时，DOS 通过在 `CONFIG.SYS` 文件中指定 `DOS=UMB`，然后使用 `DEVICEHIGH` 和 `LOADHIGH`
+    命令，提供了将加载驱动程序和 [TSR 程序](https://en.wikipedia.org/wiki/Terminate-and-stay-resident_program)
+    移动到 UMBs 中的方法。
 - en: In summary, we have seen four different techniques that evolved over time to
     squeeze the most memory out of the incredibly limited 1 MB address space of the
     8086\. These limitations haunted the PC ecosystem until Windows took over and
     it can be argued that Windows “won” because it made it much easier to take advantage
     of the larger address space of the 80386\. Until that happened, however, users
     had to live with the EMS, XMS, HMA, and UMB mess.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，我们已经看到随着时间的推移，演变出了四种不同的技术，以从 8086 的极其有限的 1 MB 地址空间中挤取最大的内存。这些限制困扰着 PC 生态系统，直到
+    Windows 接管，并且可以认为 Windows “胜利” 是因为它使利用 80386 的更大地址空间变得更容易。然而，直到发生这种情况之前，用户不得不忍受
+    EMS、XMS、HMA 和 UMB 的混乱。
 - en: 'And a mess it was, and it was so pervasive that it leaked to users. Let’s take
     a look at the output of the `MEM` command, which was a very common utility to
     run when trying to maximize free conventional memory. In one of its simplest forms,
     `MEM /C`, the command shows a summary of the memory usage per program and whether
     they are loaded in conventional or upper memory:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且，这确实是一团糟，而且它是如此普遍，以至于泄漏给用户。让我们来看看 `MEM` 命令的输出，这是一个非常常见的实用程序，在尝试最大化自由常规内存时运行。在最简单的形式下，`MEM
+    /C`，该命令显示每个程序的内存使用情况摘要，以及它们是加载在常规内存还是上部内存中：
 - en: First page of the output of the MEM /C /P command.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出 `MEM /C /P` 命令的第一页。
 - en: '`MEM /D`, which I did not know about back in the day, is more interesting.
     I have to show you its output as three separate images due to console size limitations:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '`MEM /D`，我以前不知道的，更有趣。由于控制台大小限制，我必须将其输出显示为三个单独的图像：'
 - en: First page of the output of the MEM /D /P command.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出 `MEM /D /P` 命令的第一页。
 - en: Second page of the output of the MEM /D /P command.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出 `MEM /D /P` 命令的第二页。
 - en: Third page of the output of the MEM /D /P command.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出 `MEM /D /P` 命令的第三页。
 - en: '`MEM /D` shows us the memory map of the machine along with details about the
     location of each program. We can also see mentions of the conventional vs. upper
     address space, whether the HMA is in use, and consumption of XMS memory.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '`MEM /D` 显示了机器的内存映射以及有关每个程序位置的详细信息。我们还可以看到有关常规与上部地址空间的提及，HMA 是否在使用中以及 XMS 内存的消耗。'
 - en: But in all of these outputs, we see that upper memory is not in use *at all*.
     Why is that? Well, because MS-DOS out of the box doesn’t attempt to load drivers
     into it. For that, we have to manually modify `CONFIG.SYS` and `AUTOEXEC.BAT`
     with special commands and reorder entries to maximize the usage of the upper memory
     and the HMA. A black art.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在所有这些输出中，我们看到上部内存根本没有被使用。为什么呢？嗯，因为原装的 MS-DOS 并不尝试将驱动程序加载到其中。为此，我们必须手动修改 `CONFIG.SYS`
+    和 `AUTOEXEC.BAT`，使用特殊命令并重新排列条目，以最大化上部内存和 HMA 的使用。这是一门黑色的艺术。
 - en: Which brings me to MemMaker, a tool that debuted with MS-DOS 6\. This tool attempted
     to automatically reconfigure all drivers and TSRs loaded during boot so that the
     largest/majority of them fit in upper memory, leaving as much conventional memory
     free for application usage.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就把我带到了 MemMaker，一个随 MS-DOS 6 一起推出的工具。这个工具试图自动重新配置启动时加载的所有驱动程序和 TSR，以使其中最大部分/大多数适合于上层内存，为应用程序使用留下尽可能多的传统内存。
 - en: Welcome page to the MemMaker utility.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: MemMaker 实用程序的欢迎页面。
 - en: As automated as it was, however, I’d say that MemMaker was an experts-only tool.
     Take a look at its advanced configuration options page, which I had to fiddle
     with to make the tool work in a KVM virtual machine running MS-DOS 6.22\. You
     really need to understand the intricate details of real mode memory management
     to know what each of these options is about.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管它是自动化的，但我要说 MemMaker 只适合专家使用。看看它的高级配置选项页面，我不得不摆弄这些选项，使工具能在运行 MS-DOS 6.22 的
+    KVM 虚拟机中工作。你真的需要了解实模式内存管理的复杂细节，才能知道每个选项的含义。
 - en: Advanced options in the MemMaker utility.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: MemMaker 实用程序的高级选项。
 - en: But if you made MemMaker run successfully, it would then greet you with a pretty
     cool page after a reboot. This page showed a breakdown of the changes made by
     MemMaker and how it was able to reclaim conventional memory.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果你成功运行了 MemMaker，它将在重新启动后向你展示一个相当酷的页面。这个页面展示了 MemMaker 所做的更改的详细情况，以及它是如何重新获取传统内存的。
 - en: Final report of the changes made by the MemMaker utility.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: MemMaker 实用程序所做的更改的最终报告。
 - en: After that, we can look at the changes that MemMaker applied to the `CONFIG.SYS`
     and `AUTOEXEC.BAT` files. I never truly understood what all of these magic numbers
     meant, but now that I went through the hassle of researching and writing this
     article, I finally do. Just 30 years after I regularly used MemMaker to be able
     to play games in my multimedia 80386.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，我们可以看看 MemMaker 应用到 `CONFIG.SYS` 和 `AUTOEXEC.BAT` 文件的更改。我从来没有真正理解所有这些魔法数字的含义，但现在经过了研究和写作这篇文章的麻烦之后，我终于明白了。就在我经常使用
+    MemMaker 来能在我的多媒体 80386 中玩游戏的 30 年后。
 - en: Content of the CONFIG.SYS and AUTOEXEC.BAT files after MemMaker is done making
     changes.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: MemMaker 完成更改后 `CONFIG.SYS` 和 `AUTOEXEC.BAT` 文件的内容。
 - en: You can much read more in Microsoft’s own now-archived [KB-Q9555 article](https://jeffpar.github.io/kbarchive/kb/095/Q95555/)
     or the [DOS Beyond 640KB book](https://archive.org/details/DOS_Beyond_640K_2nd_edition).
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在微软自己的现已存档的[KB-Q9555 文章](https://jeffpar.github.io/kbarchive/kb/095/Q95555/)或者[DOS
+    Beyond 640KB 书籍](https://archive.org/details/DOS_Beyond_640K_2nd_edition)中阅读更多内容。
 - en: And that’s it for today folks. I intentionally did *not* touch on DPMI—the technology
     that truly allowed DOS applications to break free from the 1 MB memory limitation—because
     I’m saving that for the next article. So, make sure to come back for more!
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天就到这里吧，朋友们。我特意**没有**触及 DPMI——这项技术真正使得 DOS 应用程序摆脱了 1 MB 内存限制——因为我打算留到下一篇文章再详细讲。所以，请务必再回来查看更多内容！
