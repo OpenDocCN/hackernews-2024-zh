@@ -2,61 +2,73 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:40:30'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:40:30
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Error handling in Go web apps shouldn't be so awkward - Boldly Go
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Go Web 应用程序中的错误处理不应该如此笨拙 - 大胆前进
 - en: 来源：[https://boldlygo.tech/posts/2024-01-08-error-handling/](https://boldlygo.tech/posts/2024-01-08-error-handling/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://boldlygo.tech/posts/2024-01-08-error-handling/](https://boldlygo.tech/posts/2024-01-08-error-handling/)
 - en: '*Updated 2024-01-10 to include [Domain-specific errors](https://boldlygo.tech/posts/2024-01-08-error-handling/#domain-specific-error-codes)
     and [limitations](https://boldlygo.tech/posts/2024-01-08-error-handling/#other-limitations)
     sections.*'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更新于 2024-01-10，以包括[领域特定错误](https://boldlygo.tech/posts/2024-01-08-error-handling/#domain-specific-error-codes)和[限制](https://boldlygo.tech/posts/2024-01-08-error-handling/#other-limitations)部分。*'
 - en: '* * *'
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'In this post I’m going to describe an error-handling pattern I’ve found to
     be fairly elegant when writing REST, gRPC, or other services in Go. I have three
     goals in writing this post:'
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我将描述一个我在使用 Go 编写 REST、gRPC 或其他服务时发现相当优雅的错误处理模式。我写这篇文章有三个目标：
 - en: To explain the pattern I’ve implemented for a few clients, so that others developing
     on the same codebase will understand it.
   id: totrans-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了解释我为一些客户端实现的模式，以便在同一代码库上开发的其他人能够理解它。
 - en: To give others a pattern they may wish to implement in their own applications.
   id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了给其他人提供一个他们可能希望在自己的应用程序中实现的模式。
 - en: To solicit feedback. Is there a better pattern out there I haven’t seen yet?
     Are there tweaks I can make to this pattern to make it better?
   id: totrans-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了征求反馈。我是否还没有看到更好的模式？是否有调整可以让这个模式变得更好？
 - en: For simplicty, the examples I’ll be discussing will be part of a REST API, using
     simple HTTP status codes. But the same principles can be used for gRPC services
     as well, or even arbitrary error codes for a CLI tool. Or even all of the above
@@ -64,22 +76,28 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简单起见，我将要讨论的示例将是一个 REST API 的一部分，使用简单的 HTTP 状态码。但是相同的原则也可以用于 gRPC 服务，甚至用于 CLI
+    工具的任意错误代码。或者甚至同时使用所有这些，我可能会在以后的文章中扩展这个内容。
 - en: The problem
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题
 - en: Before I explain the pattern I use, let me explain what it replaces, so that
     we might understand the problems it’s meant to solve.
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我解释我使用的模式之前，让我解释一下它替换了什么，这样我们就可以理解它要解决的问题。
 - en: Let’s look at a simple HTTP handler, using the standard library’s [HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc)
     pattern, which simply fetches a widget record from the database, and serves it
     to the client as JSON
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个简单的 HTTP 处理程序，使用标准库的[HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc)模式，它简单地从数据库中获取一个小部件记录，并将其作为
+    JSON 提供给客户端。
 - en: '[PRE0]'
   id: totrans-16
   prefs: []
@@ -97,10 +115,14 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这应该是一个更真实的例子，但它有意地比我在生产服务中通常发现的简化了。特别是，我从未在真实服务中看到过 [`http.Error`](https://pkg.go.dev/net/http#Error)
+    的使用。更有可能的是，您将拥有一个自定义的错误格式，您希望返回。可能使用 JSON 错误响应，带有一些附加的错误上下文或内部错误代码等。或者也许您希望将错误呈现为
+    HTML。无论如何，我假设您的应用程序将 `http.Error()` 调用替换为更复杂的东西。这很可能意味着您的代码比我上面展示的更烦人和重复。
 - en: 'That aside, let me call out a few specific problems I see with the above code:'
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 除此之外，让我指出上述代码中我看到的一些具体问题：
 - en: The error handling is repetitive, and non-idiomatic. Go is (in)famous for its
     `if err != nil { return err }` idiom. Yet we can’t even use *that* here, because
     the [HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc) signature doesn’t return
@@ -110,6 +132,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 错误处理是重复的，不符合习惯。Go 因其 `if err != nil { return err }` 的习惯而（声名）著称。然而，我们甚至不能在这里使用
+    *那个*，因为[HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc)的签名不返回错误。相反，对于每个错误，我们必须（a）提供错误，并分开（b）返回。
 - en: We must explicitly handle the HTTP status for every error case. If you have
     dozens or hundreds of handlers (and you probably do), this quickly becomes repetitive,
     and error-prone. There’s no DRY here. In a single handler like this, maybe it’s
@@ -347,6 +371,8 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们还想添加一个方法来公开包含的状态。严格来说，这不是*必需的*。您可以通过将错误类型转换回`statusError`类型并使用类型断言，或使用`errors.Is`或`errors.As`来获取状态代码。但这有点麻烦，并且需要导出该字段（除非您的整个应用程序都在一个包中
+    - 我真的希望不是这种情况！）此外，通过接口方法公开状态，我们可以自由地使用我们自定义错误类型的多个实现，这是我几乎总是做的事情。所以让我们添加这个细节：
 - en: '[PRE9]'
   id: totrans-54
   prefs: []
@@ -361,16 +387,20 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，您可以随意命名您的方法。我选择了`HTTPStatus`，最初只是使用`Status()`，因为它不够明确，但仍然不够烦人。您可以随意使用任何其他方法（或多个方法）。例如，也许您想要`JSONRPCStatus()`，如果您正在构建JSON-RPC服务。或者如果您正在构建gRPC服务，已经为您定义了一个接口：`GRPCStatus()
+    *status.Status`。
 - en: Using our custom error type
   id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用我们的自定义错误类型
 - en: 'Now that we have our `statusError` type, let’s incorporate it into our handler,
     to un-break our status code handling:'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了我们的`statusError`类型，让我们将其合并到我们的处理程序中，以解除我们的状态代码处理：
 - en: '[PRE10]'
   id: totrans-58
   prefs: []
@@ -383,6 +413,7 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们（大部分）修复了我们的状态码。唯一的例外是数据库调用。我们将所有错误视为状态500，但当我们应该将丢失的小部件视为404时。这里的解决方案是使我们的数据访问层了解这些新的错误类型：
 - en: '[PRE11]'
   id: totrans-60
   prefs: []
@@ -393,6 +424,7 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一件事：我们需要更新我们的`customHandler`来理解这个新的错误类型：
 - en: '[PRE12]'
   id: totrans-62
   prefs: []
@@ -403,11 +435,13 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 好...现在我们又回到了一个完全功能的小部件处理程序。而且我们还将我们的数据库逻辑与我们的HTTP处理程序解耦了。所以这是一个胜利。
 - en: Further improvments
   id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步改进
 - en: But our handler is still kind of ugly, with a bunch of repeated `customErrror{}`
     structs. We also have both our handler and our data access layer depending on
     a concrete `statusError` type. Which isn’t even exported, which implies that our
@@ -417,6 +451,7 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们的处理程序仍然有点丑陋，有一堆重复的`customErrror{}`结构。我们的处理程序和数据访问层都依赖于具体的`statusError`类型。这甚至没有被导出，这意味着我们的数据访问层和处理程序位于同一个包中。恶心。我们真的不想要那样。所以让我们将我们的自定义错误类型移动到自己的包中。并且我们将添加一个方便和描述性的构造函数。
 - en: '[PRE13]'
   id: totrans-66
   prefs: []
@@ -426,6 +461,7 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们的处理程序可以更新为稍微更易读的形式：
 - en: '[PRE14]'
   id: totrans-68
   prefs: []
@@ -436,10 +472,12 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设置一个默认状态
 - en: 'We can do one other big improvement to this setup: Setting a default status.'
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以对这个设置做一个其他大的改进：设置一个默认状态。
 - en: In fact, you may have noticed that our improved `customHandler` func *has no
     default status*. This means that if we pass it an error that doesn’t include an
     HTTP status, it will try to serve an HTTP response with status of `0`. Probably
@@ -447,11 +485,13 @@
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，您可能已经注意到我们改进的`customHandler`函数*没有默认状态*。这意味着如果我们传递给它不包含HTTP状态的错误，它将尝试提供具有`0`状态的HTTP响应。可能不是理想的。
 - en: 'Let’s solve this problem by adding a helper function to our `apperr` package,
     which can also be used from other places:'
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过在我们的`apperr`包中添加一个帮助函数来解决这个问题，这个函数也可以从其他地方使用：
 - en: '[PRE15]'
   id: totrans-73
   prefs: []
@@ -462,6 +502,7 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个新功能在手，我们的自定义处理程序可以简化和改进：
 - en: '[PRE16]'
   id: totrans-75
   prefs: []
@@ -472,26 +513,31 @@
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的处理程序也可以通过省略调用`apierr.WithStatus`来改进，当我们想要默认状态为500 / 内部服务器错误时。
 - en: Further improvements
   id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步改进
 - en: This is really only the beginning of what using an app-wide standard error extension
     and matching handlers can provide.
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 这实际上只是使用应用程序范围标准错误扩展和匹配处理程序所能提供的开始。
 - en: 'The next areas I usually improve on apps where I implement this pattern is
     to add a couple standard middlewares:'
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 我通常在我实现此模式的应用程序中改进的下一个领域是添加几个标准中间件：
 - en: Logging middleware
   id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 记录中间件
 - en: 'A middleware to log, with an associated error, if relevant, is a great addition.
     And it eliminates the “need” to log an error every time it happens–just pass it
     to your caller, and let the middleware log it for you. Here’s a simplified example,
@@ -499,6 +545,8 @@
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个用于记录日志的中间件，如果有相关错误，则是一个很好的补充。而且它消除了每次发生错误都“需要”记录错误的需要 - 只需将其传递给你的调用方，让中间件为你记录它。以下是一个简化的示例，使用
+    [gitlab.com/flimzy/httpe](https://pkg.go.dev/gitlab.com/flimzy/httpe) 中的函数签名：
 - en: '[PRE17]'
   id: totrans-82
   prefs: []
@@ -510,17 +558,20 @@
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，处理程序仍然可以调用 `w.WriteHeader` 并使用与 `err` 中包含的状态不同的状态（甚至在没有错误的情况下）。因此，一个健壮的实现还会检查这一点。
 - en: Error-serving middleware
   id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 错误服务中间件
 - en: An improvement over the `customHandler` function shown above, is to move the
     error serving into a middleware. This does require the `httpe` package, or a similar
     implemenatation, that can work with middlewares.
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 改进上述显示的 `customHandler` 函数的一种方法是将错误服务移至中间件。这确实需要 `httpe` 包或类似实现，可以与中间件一起工作。
 - en: '[PRE18]'
   id: totrans-86
   prefs: []
@@ -531,12 +582,14 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Panc-recovery 中间件
 - en: 'Most web apps have this (or they should!), but a version that works with error-returning
     handlers can be nice, as it just has to convert panics to errors, rather than
     serving them directly:'
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数 Web 应用程序都有这个（或者应该有！），但是一个与返回错误处理程序一起工作的版本可能很好，因为它只需将 panic 转换为错误，而不是直接服务它们：
 - en: '[PRE19]'
   id: totrans-89
   prefs: []
@@ -547,6 +600,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 领域特定的错误代码
 - en: 'What’s better than having your entire application set HTTP statuses on errors
     all over the place, is to define your own domain-specific error codes. For a small,
     web-only app, maybe HTTP status codes are sufficient, but in most real-world apps,
@@ -557,6 +611,8 @@
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 拥有整个应用程序在各个地方设置 HTTP 状态的错误，定义您自己的特定于域的错误代码会更好。对于一个小型的，仅限 Web 的应用程序，也许 HTTP 状态码就足够了，但在大多数真实世界的应用程序中，它们不够用。关于此模式的其他所有内容仍然可以与您自己的特定于域的错误代码一起使用。只需使您的自定义错误类型也返回适当的
+    HTTP（或 JSON-RPC 或 gRPC 或其他任何 ……）代码。在进行此类更改后，我们上述的数据库方法可能看起来更像是：
 - en: '[PRE20]'
   id: totrans-92
   prefs: []
@@ -566,6 +622,7 @@
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后各种调用方可以根据需要进行自己的错误检查：
 - en: '[PRE21]'
   id: totrans-94
   prefs: []
@@ -576,16 +633,19 @@
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将 `apperror.ErrWidgetNotFound` 的确切实现以及相关函数留给读者作为练习。
 - en: Caveats
   id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: This approach doesn’t come without some drawbacks. It’s worth calling a few
     of them out.
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法并非没有一些缺点。值得一提的有一些。
 - en: It’s non-standard. Obviously. There’s a cost in verbosity to be paid to convert
     from an error-returning handler to a standard handler. Although it seems many
     people are happy to pay this cost, in the form of adopting a heavy framework that
@@ -594,6 +654,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这是非标准的。显然是。将从返回错误的处理程序转换为标准处理程序需要付出冗长的成本。尽管许多人似乎乐意支付这个成本，以采用一个提供此功能（以及其他功能，当然）的庞大框架。
 - en: There are now *two* ways to send responses to the client. This annoys me. But
     I have yet to find any way around it. And in practice, it doesn’t seem to be a
     big problem, but it does require keeping it in mind. You can set the HTTP status
@@ -605,6 +666,9 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在有*两种*向客户端发送响应的方式。这让我很烦恼。但我还没有找到任何解决方法。在实践中，这似乎并不是一个大问题，但确实需要记住这一点。您可以通过调用
+    `w.WriteHeader()` 或通过返回错误来设置响应的 HTTP 状态。每个响应只能有一个状态，显然。如果调用了 `w.WriteHeader()`，那么一般情况下，它将优先执行（除非您已经实现了具有不同行为的自定义
+    `http.ResponseWriter`）。
 - en: It makes certain behaviors implicit. Or at least it can. As an example, the
     shown `apperr.HTTPStatus()` function returns a default status for errors that
     don’t contain a status. While I believe this makes good sense, and is a benefit,
@@ -618,22 +682,27 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 它使某些行为变得隐含。或者至少可以这样。例如，所示的`apperr.HTTPStatus()`函数返回不包含状态的错误的默认状态。虽然我相信这是合理的，并且是一个好处，但它有点“神奇”，并且可能会让不熟悉该模式的人感到惊讶。第一次看到`apperr.WithStatus(err,
+    http.StatusNotFound)`时，这也可能会让人困惑。尽管在纯阅读时明显是包含了 HTTP 状态和错误，但不明显的是其他代码如何使用该状态，或者如何使用它。当然，本文的目的是帮助解决这个缺点。
 - en: Other limitations
   id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 其他限制
 - en: 'This is by no means a one-size-fits-all solution. A couple of obvious limitations
     I have run into on various applications:'
   id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 这绝不是一种适合所有情况的解决方案。我在各种应用程序中遇到的一些明显的限制：
 - en: It doesn’t provide any ergonomic way to specify a non-200, non-error status
     (such as 201). For this, you still must fall back on `w.WriteHeader()`.
   id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它没有提供任何人性化的方法来指定非 200、非错误状态（如 201）。对此，你仍然必须依赖于`w.WriteHeader()`。
 - en: Some applications would be better served with a function signature such as `func(*http.Request)
     (any, error)`, such that a response (likely to be renderd as JSON) is the first
     return argument.
@@ -641,17 +710,20 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有些应用程序最好使用这样的函数签名：`func(*http.Request) (any, error)`，以便响应（很可能会被渲染为 JSON）是第一个返回参数。
 - en: What’s next?
   id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 接下来做什么？
 - en: I mentioned at the outset that this pattern tends to lend itself to additional
     improvements. Let me just mention a few, without going into detail here. If you’d
     like a longer explanation on any of these, [let me know](https://boldlygo.tech/contact).
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在开头提到，这种模式倾向于提供额外的改进。让我简单地提及一些，而不在这里详细说明。如果你想要更长的解释，[请让我知道](https://boldlygo.tech/contact)。
 - en: Include additional metadata in errors. Stack traces are an obvious one, which
     is nicely provided by [`github.com/pkg/errors`](https://pkg.go.dev/github.com/pkg/errors),
     for example. Expand your logging middleware to extract the stack trace and include
@@ -660,6 +732,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在错误中包含附加的元数据。堆栈跟踪是一个明显的例子，可以很好地由[`github.com/pkg/errors`](https://pkg.go.dev/github.com/pkg/errors)提供。扩展你的日志中间件以提取堆栈跟踪并将其包含在日志中。
 - en: Hide error messages for certain HTTP statuses. I typically write my error-serving
     middleware to return simply `Internal Server Error` to the client any time there’s
     a 500 status, to avoid the risk of potentially reporting sensitive information,
@@ -669,6 +742,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 隐藏某些 HTTP 状态的错误消息。我通常编写我的错误服务中间件，以便在出现 500 状态时向客户端简单地返回`Internal Server Error`，以避免潜在地报告敏感信息的风险，这可能会在一些未经过消毒的错误中发生。HTTP
+    状态 401 和 403 也是很好的选择。
 - en: Similar to obscuring certain errors, maybe you want to expose a user-friendly
     version of an error message to the users of your app, while logging the nitty
     gritty details that the error originally included. Add a `Public() string` method
@@ -678,6 +753,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类似于隐藏某些错误，也许你希望向你的应用程序的用户公开一个错误消息的用户友好版本，同时记录错误原始包含的细节。为这样的错误添加一个`Public() string`方法，将`Public()`版本发送给你的用户，将`Error()`版本发送给你的日志。
 - en: HTTP statuses not detailed enough for you? Maybe you need to distinguish between
     `widget not found` and `user not found`? You can create your own internal error
     status/codes, for use internally, which resolve to a common HTTP status.
@@ -685,6 +761,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: HTTP 状态对你来说不够详细吗？也许你需要区分`widget not found`和`user not found`？你可以创建自己的内部错误状态/代码，用于内部使用，并解析为通用的
+    HTTP 状态。
 - en: Look for ways to DRY up your code. For example, from the handler example, consider
     moving the call to `r.ParseForm` and `strconv.Atoi` to a common function—or use
     a validation library such as [github.com/go-playground/validator/v10](https://pkg.go.dev/github.com/go-playground/validator/v10)
