@@ -1,52 +1,76 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:11:34'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:11:34
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: DoS Attacks in Available MQTT Implementations - Security & Trust
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 可用 MQTT 实现中的 DoS 攻击 - 安全与信任
 - en: 来源：[https://st.fbk.eu/complementary/IOTSECFOR2021.html](https://st.fbk.eu/complementary/IOTSECFOR2021.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://st.fbk.eu/complementary/IOTSECFOR2021.html](https://st.fbk.eu/complementary/IOTSECFOR2021.html)
 - en: Complementary Material
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 补充材料
 - en: Slides, test results and configurations are available [here](https://drive.google.com/drive/folders/1YOGKlGiSuHcViDgV3p-7D_QEu2qNY1ck?usp=sharing).
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 幻灯片、测试结果和配置可在[此处](https://drive.google.com/drive/folders/1YOGKlGiSuHcViDgV3p-7D_QEu2qNY1ck?usp=sharing)获得。
 - en: The presentation is on the *ARES & CD-MAKE Conference* [Youtube channel](https://www.youtube.com/watch?v=5xhcJVmdJSI).
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 演示在 *ARES & CD-MAKE 会议*的 [Youtube 频道](https://www.youtube.com/watch?v=5xhcJVmdJSI)上。
 - en: Summary
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: The Internet of Things is a widely adopted and pervasive technology, but also
     one of the most conveniently attacked given the volume of shared data and the
     availability of affordable but insecure products. In most cases, if attackers
     cannot exploit security gaps and privacy issues to exfiltrate data, they can (and
     most probably will) damage the service by performing Denial of Service (DoS) attacks
     towards the backend, the connected clients or external services.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 物联网是一种被广泛采用的技术，但也是最方便攻击的技术之一，因为共享数据的量大，同时易受攻击的廉价但不安全的产品也很多。在大多数情况下，如果攻击者无法利用安全漏洞和隐私问题来外泄数据，他们可以通过向后端、连接的客户端或外部服务执行拒绝服务（DoS）攻击来损害服务。
 - en: In this work we investigated two classes of DoS attacks that target the handling
     of message queues in MQTT, one of the most broadly used IoT protocols; ref. [here](https://www.hivemq.com/mqtt-protocol/)
     for an introduction to MQTT and its capabilities.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这项工作中，我们调查了针对 MQTT 消息队列处理的两类 DoS 攻击，MQTT 是最广泛使用的物联网协议之一；有关 MQTT 及其功能的介绍，请参阅[此处](https://www.hivemq.com/mqtt-protocol/)。
 - en: The first attack attempts to saturate the MQTT broker resources by sending many
     heavy messages on different topics with or without a set of subscribed clients.
     This is due to the broker storing all the messages (up to a queue limit) for each
@@ -54,9 +78,12 @@
     The attack succeeds if the use of queues (associated with subscribed clients)
     impacts the broker resources (disk/RAM/CPU) or if the machine hosting the broker
     reaches 100% usage of CPU or network bandwidth.
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第一种攻击尝试通过在不同主题上发送许多重消息来饱和 MQTT 代理资源，无论是否有一组已订阅的客户端。这是因为代理为每个已订阅的客户端存储所有消息（最多达到队列限制），并且会损害服务，因为代理是单点故障。如果队列的使用（与已订阅的客户端相关联）影响代理资源（磁盘/RAM/CPU），或者如果托管代理的机器达到
+    CPU 或网络带宽的 100％ 使用率，则攻击将成功。
 - en: The second, that can be describe as an [amplification attack](https://www.radware.com/security/ddos-knowledge-center/ddospedia/amplification-attack)
     in the context of MQTT, prescribes sending heavy messages periodically to mount
     a DoS attack towards the resource-constrained clients connected to the broker.
@@ -66,169 +93,243 @@
     the broker will queue all new messages (up to the configured limit) and attempt
     the forwarding once again when they reconnect; including the heavy ones that affect
     clients CPU.
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第二种攻击可以描述为 MQTT 上下文中的一种[放大攻击](https://www.radware.com/security/ddos-knowledge-center/ddospedia/amplification-attack)，它规定定期发送重型消息以向连接到代理的资源受限客户端发起
+    DoS 攻击。如果客户端被阻止接收其他/所有消息并使用 CPU 资源继续尝试接收重型消息，则攻击将成功。值得一提的是，如果具有持久会话的客户端被强制断开连接，则代理将队列所有新消息（最多达到配置的限制），并在重新连接时再次尝试转发；包括影响客户端
+    CPU 的重型消息。
 - en: 'We investigated the effectiveness of the attacks with two testbeds and three
     open-source MQTT broker implementations : [Mosquitto](https://www.mosquitto.org)
     v.1.6.9, [VerneMQ](https://vernemq.com) v.1.11.0 and [EMQ X](https://www.emqx.io/products/broker)
     v.4.1.5\. To simulate clients, we used the MQTT Python library [Paho](https://www.eclipse.org/paho).'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用两个测试平台和三个开源 MQTT 代理实现来研究攻击的有效性：[Mosquitto](https://www.mosquitto.org) v.1.6.9、[VerneMQ](https://vernemq.com)
+    v.1.11.0 和 [EMQ X](https://www.emqx.io/products/broker) v.4.1.5。为了模拟客户端，我们使用了
+    MQTT Python 库 [Paho](https://www.eclipse.org/paho)。
 - en: Results of the DoS against the MQTT brokers under test
+  id: totrans-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 对测试中的 MQTT 代理的 DoS 攻击结果
 - en: 'All brokers RAM usage is affected by the publishing of messages:'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有代理的 RAM 使用都受到消息发布的影响：
 - en: In Mosquitto it is possible to saturate the RAM and swap spaces (and be killed
     by the system) with just one malicious connected client; in VerneMQ and EMQ X,
     it is necessary to use multiple concurrent clients. However, attacking EMQ X requires
     a much longer amount of time due to the limit (by default) on the payload size.
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Mosquitto 中，只需一个恶意连接的客户端即可使 RAM 和交换空间饱和（并被系统杀死）； 在 VerneMQ 和 EMQ X 中，需要使用多个并发客户端。
+    但是，由于有效载荷大小（默认情况下）的限制，攻击 EMQ X 需要更长的时间。
 - en: In VerneMQ it is possible to attack the disk as it stores (by default) received
     messages on the disk.
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 VerneMQ 中，可以攻击磁盘，因为它（默认情况下）在磁盘上存储接收的消息。
 - en: 'To attack the CPU usage, we used up to 400 concurrent clients (400 publishers
     and in the second test run 400 subscribers). When also using the subscribers (that
     connect with a certain quality of service and disconnect before the publishing
     begins), the attack is successful only in EMQ X: starting from 250 concurrent
     publishers, the CPU usage is on average over 80% (93% peak use). In the worst
     case, Mosquitto have an increment of 7.75% and VerneMQ 14.4%.'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了攻击 CPU 使用率，我们使用了多达 400 个并发客户端（400 个发布者，在第二次测试运行中为 400 个订阅者）。 当还使用订阅者（它们以一定的服务质量连接，并在发布开始之前断开连接）时，仅在
+    EMQ X 中攻击成功：从 250 个并发发布者开始，CPU 使用率平均超过 80%（峰值使用率为 93%）。 在最糟糕的情况下，Mosquitto 增加了
+    7.75%，而 VerneMQ 增加了 14.4%。
 - en: During the test, Mosquitto will use only one CPU core being single-threaded;
     VerneMQ and EMQ X will use concurrently all cores at the same CPU level with minimal
     variations.
+  id: totrans-20
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在测试期间，Mosquitto 将只使用一个 CPU 核心进行单线程处理； VerneMQ 和 EMQ X 将在同一 CPU 级别同时使用所有核心，变化极小。
 - en: Results of the Amplification Attack
+  id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 放大攻击的结果
 - en: 'The use of TLS strongly affects the maximum payload size and the processing
     time: a message with a 255MB payload (the maximum supported) was only received
     with the plaintext configuration, and the processing time when using TLS is about
     ten times longer.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 TLS 强烈影响最大有效载荷大小和处理时间：具有 255MB 有效载荷（最大支持）的消息仅在明文配置下接收，并且使用 TLS 时的处理时间约为十倍。
 - en: A connected client is unable to concurrently receive other messages, and it
     uses one of the CPU core for longer periods of times. This enables an attacker
     to prevent the client from receiving (potentially important) messages or overheating
     it by periodically sending one message of the maximum supported size.
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连接的客户端无法同时接收其他消息，并且它会长时间使用一个 CPU 核心。 这使得攻击者可以通过定期发送一个最大支持大小的消息来阻止客户端接收（可能重要的）消息或使其过热。
 - en: There is no difference in terms of performance between TLS 1.2 and 1.3 (in the
     case of Mosquitto), MQTT v.3.1.1 and v.5.0, or if using the ACLs as authorization
     mechanism.
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在性能方面，TLS 1.2 和 1.3（在 Mosquitto 的情况下）、MQTT v.3.1.1 和 v.5.0，或者如果使用 ACL 作为授权机制，没有任何差异。
 - en: The average time required by the subscribers to receive queued messages increases
     linearly.
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 订阅者接收排队消息所需的平均时间呈线性增加。
 - en: To improve the security awareness in MQTT-based deployments, we integrate the
     attacks and mitigations in [MQTTSA](https://github.com/stfbk/mqttsa), a tool that
     detects MQTT (mis)configurations and provides security-oriented recommendations
     and configuration snippets.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了提高基于 MQTT 的部署的安全意识，我们将攻击和缓解措施集成到 [MQTTSA](https://github.com/stfbk/mqttsa)
+    中，这是一个检测 MQTT（错误）配置并提供面向安全的建议和配置片段的工具。
 - en: Finally, we identified the settings in the MQTT brokers under test that would
     preventing or support (if misconfigured) a DoS attack.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们确定了测试中 MQTT 代理的设置，这些设置将阻止或支持（如果配置错误）DoS 攻击。
 - en: Settings associated with Denial of Service attacks in Mosquitto, VerneMQ and
     EMQ x
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 与 Mosquitto、VerneMQ 和 EMQ X 中的拒绝服务攻击相关的设置
 - en: Eclipse Mosquitto
+  id: totrans-29
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: Eclipse Mosquitto
 - en: 'Settings to limit message size:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制消息大小的设置：
 - en: '*max_inflight_bytes*, unbounded by default, sets the total byte limit of messages
     being transmitted.'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_inflight_bytes*，默认情况下不受限制，设置正在传输的消息的总字节限制。'
 - en: '*max_packet_size*, 250MB by the protocol specification (although the real limit
     depends on the hardware capabilities of the clients), sets the maximum packet
     size (headers and payload). In case of MQTT v.5, clients are notified of the limit
     (with the reason code) upon being disconnected by the broker.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_packet_size*，协议规范为 250MB（尽管实际限制取决于客户端的硬件能力），设置最大包大小（头部和有效载荷）。 在 MQTT v.5
+    的情况下，客户端在被代理断开连接时被通知限制（带有原因代码）。'
 - en: '*message_size_limit*, unbounded by default, sets the maximum supported payload
     size in PUBLISH messages.'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*message_size_limit*，默认情况下不受限制，设置 PUBLISH 消息中支持的最大有效载荷大小。'
 - en: 'Settings to limit message rate:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制消息速率的设置：
 - en: '*max_inflight_messages*, 20 by default, sets the maximum number of outgoing
     QoS 1/2 messages that can be in the process of being transmitted.'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_inflight_messages*，默认值为20，设置正在传输中的最大出站QoS 1/2消息数量。'
 - en: 'Settings to limit active connections:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制活跃连接的设置：
 - en: '*max_connections*, unbounded by default but limited by the host OS, limits
     the total number of connected clients.'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_connections*，默认情况下未限制但受主机操作系统限制，限制了已连接客户端的总数。'
 - en: '*persistent_client_expiration*, non-standard as OASIS specifications and set
     to do not expire by default, would allow to expire the session of persistent clients
     if they do not reconnect within a certain time frame.'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*persistent_client_expiration*，作为OASIS规范中的非标准项，默认设置为不过期，将允许在持久客户端在一定时间内不重新连接时到期其会话。'
 - en: 'Settings associated with message queues:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 与消息队列相关的设置：
 - en: '*max_queued_messages*, 1000 as of version 2.0 (100 as of the latest Mosquitto
     1.6.x), sets the maximum number of QoS 1/2 messages to hold in the queue (per
     client) in addition to in-flight messages.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_queued_messages*，从版本2.0开始为1000（在最新的Mosquitto 1.6.x中为100），设置了除了正在传输中的消息之外队列中要保留的QoS
+    1/2消息的最大数量（每个客户端）。'
 - en: '*max_queued_bytes*, also unbounded, sets instead a threshold over queued QoS
     1/2 messages to be sent.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_queued_bytes*，也是无限的，而是设置了要发送的排队QoS 1/2消息的阈值。'
 - en: '*queue_qos0_messages*, non-standard as OASIS specifications and disabled by
     default, would allow to queue QoS 0 messages as supported for QoS 1 and 2.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*queue_qos0_messages*，作为OASIS规范中的非标准项，默认情况下已禁用，允许将支持QoS 1和2的QoS 0消息排入队列。'
 - en: '*upgrade_outgoing_qos*, disabled by-default, would allow to upgrade the QoS
     of published messages in case subscribed clients use an higher QoS value.'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*upgrade_outgoing_qos*，默认情况下禁用，将允许在订阅客户端使用更高QoS值时提升已发布消息的QoS。'
 - en: 'Settings affecting broker disk I/O:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 影响经纪人磁盘I/O的设置：
 - en: '*persistence*, if enabled, allows to store the in-memory database to disk (connections,
     subscriptions and message data); when restarting the broker, it will be initialised
     with all the information. The value *autosave_interval* specifies the time frame
@@ -237,200 +338,285 @@
     of messages (received and queued) and subscription changes. Misconfiguring the
     storing of the database or setting a low threshold might compromise the performance
     of the broker.'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*persistence*，如果启用，则允许将内存数据库存储到磁盘上（连接、订阅和消息数据）；重新启动经纪人时，它将使用所有信息初始化。值*autosave_interval*
+    指定了经纪人在保存内存数据库之前等待的时间段（以秒为单位）。类似地，*autosave_on_changes* 允许在消息（接收和排队）数量和订阅更改数量超过阈值时保存。错误配置数据库的存储或设置低阈值可能会影响经纪人的性能。'
 - en: '*log_dest* would allow to store log entries on the disk and *log_type* sets
     the amount of information to log: the destination is set by default to *stdout*,
     while the type to *error*, *warning*, *notice* and *information*.'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*log_dest* 允许将日志条目存储在磁盘上，*log_type* 设置要记录的信息量：目标默认设置为*stdout*，而类型设置为*error*、*warning*、*notice*和*information*。'
 - en: 'Settings affecting broker memory usage:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 影响经纪人内存使用的设置：
 - en: '*memory_limit*, unbounded by default, sets an hard limit on the memory used
     by the broker.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*memory_limit*，默认情况下未限制，设置了经纪人使用的内存的硬限制。'
 - en: 'Settings preventing the Slow-DoS attack:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 防止慢速拒绝服务（Slow-DoS）攻击的设置：
 - en: '*max_keepalive* allows, in case of MQTT5 clients, to override the keepalive
     value provided by clients; thereby preventing the slow-dos attack reported in
     .'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_keepalive* 允许在MQTT5客户端的情况下覆盖客户端提供的保持活动值；从而防止了慢速拒绝服务（slow-dos）攻击的发生。'
 - en: 'Additional settings that can limit or support DoS attacks:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以限制或支持DoS攻击的其他设置：
 - en: '*check_retain_source*, enabled by default, controls the source of a retained
     message for access rights before republishing it. This prevents, for instance,
     the publishing of messages from malicious clients whose access have been revoked;
     and, for instance, the re-publishing of an heavy retained message to a client
     that keeps attempting the receiving and crashing (due to the message size).'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*check_retain_source*，默认启用，控制保留消息在重新发布之前的访问权限来源。这可以防止恶意客户端发布消息，其访问权限已被撤销；以及，例如，将大型保留消息重新发布给不断尝试接收并因消息大小而崩溃的客户端。'
 - en: '*retain_available* allows to disable retained messages.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*retain_available* 允许禁用保留消息。'
 - en: VerneMQ
+  id: totrans-54
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: VerneMQ
 - en: 'Settings to limit message size:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制消息大小的设置：
 - en: '*max_message_size* as the Mosquitto *message_size_limit*.'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_message_size* 作为Mosquitto的*message_size_limit*。'
 - en: '*tcp.buffer_sizes* allows to set the kernel *send* and *receive* buffer, and
     the user-level buffer for TCP-based connections.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*tcp.buffer_sizes* 允许设置内核的*发送*和*接收*缓冲区，以及基于TCP的连接的用户级缓冲区。'
 - en: 'Settings to limit message rate:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制消息速率的设置：
 - en: '*max_inflight_messages* as in Mosquitto.'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_inflight_messages* 如同Mosquitto。'
 - en: '*max_message_rate*, unlimited by default, specifies the maximum incoming publish
     rate per session per second.'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_message_rate*，默认情况下不受限制，指定每个会话每秒的最大传入发布速率。'
 - en: 'Settings to limit active connections:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 限制活动连接的设置：
 - en: '*max_connections*, as in Mosquitto but 10’000 by default.'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_connections*，与Mosquitto相同，但默认值为10,000。'
 - en: '*persistent_client_expiration* as in Mosquitto.'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*persistent_client_expiration* 如同Mosquitto。'
 - en: '*allow_multiple_sessions*, disabled by default, non-standard as OASIS specifications
     and to be deprecated, allows the connection of multiple clients with the same
     client ID. This would allow an attacker to connect and (mis)use the service without
     triggering any alarm in case of stolen credentials.'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*allow_multiple_sessions*，默认情况下禁用，默认情况下不符合OASIS规范且将被废弃，允许使用相同客户端ID连接多个客户端。这将允许攻击者在盗用凭据的情况下连接和（误）使用服务而不触发任何警报。'
 - en: 'Settings associated with message queues:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 与消息队列相关的设置：
 - en: '*max_online_messages* and *max_offline_messages* (both 1’000 by default) set
     the maximum number of QoS 1/2 messages that can be queued for connected or abruptly-disconnected
     clients, respectively.'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_online_messages* 和 *max_offline_messages*（默认均为1,000）设置为连接或突然断开连接的客户端队列的最大数量。'
 - en: '*upgrade_outgoing_qos* as in Mosquitto.'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*upgrade_outgoing_qos* 如同Mosquitto。'
 - en: 'Settings affecting broker disk I/O:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 影响经纪人磁盘I/O的设定：
 - en: '*log.console* and *log.console.level* are the equivalent to Mosquitto *log_dest*
     and *log_type*. However, they former is set to store the entries in a file.'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*log.console*和*log.console.level*等效于Mosquitto的*log_dest*和*log_type*。然而前者设置为存储条目在文件中。'
 - en: 'Settings affecting broker memory usage:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 影响经纪人内存使用的设定：
 - en: '*nr_of_acceptors* sets the number of concurrent processes waiting for new connections,
     10 by default. This setting is responsible to the use of all CPU cores in the
     tests.'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*nr_of_acceptors*，默认值为10，设置等待新连接的并发进程数。该设置负责测试中所有CPU核心的使用。'
 - en: Erlang-specific settings, such as *async_threads* (that sets the number of asynchronous
     threads in the Erlang VM), that modify the behaviour of the Erlang runtime system
     that runs the broker.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Erlang特定的设置，例如*async_threads*（设置Erlang VM中的异步线程数），修改运行经纪人的Erlang运行时系统的行为。
 - en: '*maximum_memory.percent*, 70 by default configuration file, sets the maximum
     percentage of memory allocated by the in-memory DB (that stores connections, subscriptions
     and message data for persistent sessions). In our tests, however, that threshold
     can be temporarily exceeded (up to 85%) if the broker is under heavy load from
     concurrent publishers.'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*maximum_memory.percent*，默认配置文件为70，设置内存数据库分配的最大百分比（用于存储持久会话的连接、订阅和消息数据）。然而在我们的测试中，如果经纪人在并发发布者的重负载下，则该阈值可能被暂时超过（最多达到85%）。'
 - en: 'Additional settings that can limit or support DoS attacks:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 可限制或支持DoS攻击的其他设置：
 - en: '*retry_interval*, 20 seconds by default, sets the retry interval for unacknowledged
     QoS 1/2 messages. This can affect the performance of the broker (if the treashold
     is too low) or possibly resouce-constrained clients (e.g., if the broker keep
     attempting the sending of an heavy messages each minute and the client is set
     to connect with the same timing).'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*retry_interval*，默认为20秒，设置未确认QoS 1/2消息的重试间隔。这可能会影响经纪人的性能（如果阈值太低），或可能是资源受限的客户端（例如，如果经纪人每分钟尝试重发一条重消息，而客户端设置为以相同的时间连接）。'
 - en: '*max_last_will_delay* allows to specify the maximum delay for last will messages.'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*max_last_will_delay* 允许指定最后遗嘱消息的最大延迟。'
 - en: Further investigation is necessary for the *suppress_lwt_on_session_takeover*
     and *receive_max_client* parameters as possibly related to DoS attacks on connected
     clients but not described in the documentation.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于*suppress_lwt_on_session_takeover*和*receive_max_client*参数，进一步的调查可能与连接的DoS攻击有关，但不在文档中描述。
 - en: EMQ X settings
+  id: totrans-78
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: EMQ X设置
 - en: Considering the amount of parameters available to customize the broker with
     respect to the MQTT protocol and the Erlang runtime environment, in the following
     we provide an high-level description of the EMQ X distinguishing features. Ref.
     [here](/assets/areas/complementary/IOTSECFOR2021/Broker_Parameters_(M)=misconfigurable.xlsx)
     for a comprehensive list.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到用于根据 MQTT 协议和 Erlang 运行时环境自定义代理的参数数量，以下我们提供了 EMQ X 特有功能的高级描述。请参阅[此处](/assets/areas/complementary/IOTSECFOR2021/Broker_Parameters_(M)=misconfigurable.xlsx)以获取详尽的列表。
 - en: Retain messages configuration (enabled by default) allows to specify the destination,
     expiration (replaced by the one in the PUBLISH packet if indicated), and limit
     the number of messages or payload size.
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 保留消息配置（默认启用）允许指定目标、到期时间（如果指示，则由 PUBLISH 数据包中的到期时间替换）以及消息或负载大小的限制。
 - en: Rate limiting allows to set quotas and restrict the number of connection and
     its rate, the number of publish messages and in general TCP packets.
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 速率限制允许设置配额并限制连接数及其速率、发布消息的数量以及通常的 TCP 包数量。
 - en: The monitoring and alarm features supports configuring thresholds on the number
     of triggered alarms, CPU and memory usage (percentage), number of processes and
     default behaviour (log the event or report it to specific topics). In addition,
     it is possible to detect frequent disconnections (ref. to ‘flapping detection’
     in the documentation) and set a ban interval; and monitor the broker status via
     an ‘heartbeat’ signal.
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 监控和报警功能支持在触发的警报数量、CPU 和内存使用率（百分比）、进程数量和默认行为（记录事件或将其报告给特定主题）上配置阈值。此外，还可以检测频繁的断开连接（参考文档中的“抖动检测”）并设置禁止间隔；通过“心跳”信号监视代理状态。
 - en: It is finally possible to set low-level settings, such as the number of threads,
     concurrent processes and memory limits, RPC configuration and TCP buffers. Then,
     to disable the use of wildcards in subscriptions or retain messages, set a limit
     and timeout for MQTT QoS 2 acknowledgements (PUBREL) and configure topic priorities.
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最后，可以设置低级设置，如线程数量、并发进程和内存限制、RPC 配置和 TCP 缓冲区。然后，可以禁用订阅中的通配符或保留消息的使用，设置 MQTT QoS
+    2 确认（PUBREL）的限制和超时，并配置主题优先级。
 - en: logging ( ‘warning’ by default), *max_packet_size* (1MB by default), *upgrade_qos*
     (disabled), *max_inflight* (32 messages), *retry_interval* (30s), *session_expiry_interval*
     (2h), *max_mqueue_len* (1’000), *mqueue_store_qos0* (**true**), connection acceptors
     (in EMQ X specific to the type of connection, and if on the same system or external)
     and *max_connections* (1’024’000), all function as in Verne MQ.
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 记录（默认为“警告”）、*max_packet_size*（默认为 1MB）、*upgrade_qos*（已禁用）、*max_inflight*（32
+    条消息）、*retry_interval*（30 秒）、*session_expiry_interval*（2 小时）、*max_mqueue_len*（1,000）、*mqueue_store_qos0*（**true**）、连接接受者（在
+    EMQ X 中特定于连接类型，并且如果在同一系统或外部，则会起作用）和 *max_connections*（1,024,000）的所有功能都与 Verne
+    MQ 中的功能相同。
