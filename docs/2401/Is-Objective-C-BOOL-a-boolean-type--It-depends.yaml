@@ -1,218 +1,331 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:40:05'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:40:05
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Is Objective-C BOOL a boolean type? It depends
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Objective-C 的 BOOL 类型是布尔类型吗？这取决于具体情况。
 - en: 来源：[https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html](https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html](https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html)
 - en: 'The Objective-C programming language introduces its own type to represent boolean
     values: [`BOOL`](https://developer.apple.com/documentation/objectivec/bool). The
     instances of this type are the constants [`YES`](https://developer.apple.com/documentation/objectivec/yes)
     and [`NO`](https://developer.apple.com/documentation/objectivec/no).'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Objective-C 编程语言引入了自己的类型来表示布尔值：[`BOOL`](https://developer.apple.com/documentation/objectivec/bool)。该类型的实例是常量
+    [`YES`](https://developer.apple.com/documentation/objectivec/yes) 和 [`NO`](https://developer.apple.com/documentation/objectivec/no)。
 - en: 'This is a simple example of invoking a function that takes a `BOOL` value as
     an argument:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简单的例子，调用接受`BOOL`值作为参数的函数：
 - en: '[PRE0]'
+  id: totrans-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: While `BOOL` might look trivial, its definition is rather complex. It depends
     on which Apple platform and architecture you are targeting, which can result in
     unexpected behavior.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然`BOOL`看起来很琐碎，但其定义却相当复杂。它取决于你正在针对哪个苹果平台和架构，这可能导致意外的行为。
 - en: This article is based on Xcode 15.1 (15C65) running on macOS Sonoma 14.2.1 on
     a 2020 M1 MacBook Pro.
+  id: totrans-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 本文基于运行在 2020 M1 MacBook Pro 上的 macOS Sonoma 14.2.1 上的 Xcode 15.1（15C65）。
 - en: An example of unexpected behavior
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 意外行为的一个例子
 - en: 'I write a lot of Objective-C++. A useful feature of C++ is [function overloading](https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170):
     the ability to define multiple functions with the same name that differ only on
     the type of arguments they accept. When you invoke such a function, the compiler
     will automatically determine which overload to call.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我写了很多 Objective-C++。C++ 的一个有用特性是[函数重载](https://learn.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170)：即定义多个函数，它们只在接受的参数类型上有所不同而名称相同。当你调用这样的函数时，编译器会自动确定调用哪个重载。
 - en: 'Recently, I stumbled into a case where for the same code, macOS Intel and macOS
     Apple Silicon invoked different overloads. Here is a minimal reproducible Objective-C++
     example of the issue:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我遇到了一个情况，对于相同的代码，macOS Intel 和 macOS Apple Silicon 调用了不同的重载。以下是该问题的一个最小可复现的
+    Objective-C++ 示例：
 - en: '[PRE1]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'On my Apple Silicon Mac (running Xcode 15.1), the above program invokes the
     `bool` overloads:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的 Apple Silicon Mac 上（运行 Xcode 15.1），上述程序调用了`bool`重载：
 - en: '[PRE2]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'However, on my macOS Intel Mac (running Xcode 14.3.2), the above program invokes
     the `int` overloads:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，在我的 macOS Intel Mac 上（运行 Xcode 14.3.2），上述程序调用了`int`重载：
 - en: '[PRE3]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Exploring the Objective-C runtime
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索 Objective-C 运行时
 - en: This discrepancy between Apple Silicon and Intel is not clarified by the documentation,
     which appears to contradict itself to a certain degree. The [documentation](https://developer.apple.com/documentation/objectivec/bool)
     states that the canonical definition for `BOOL` is a type alias to `bool`. However,
     under *Special Considerations*, the documentation states that *the type of `BOOL`
     is actually `char`.*
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 苹果芯片和 Intel 之间的这种差异在文档中没有明确说明，文档在某种程度上似乎自相矛盾。[文档](https://developer.apple.com/documentation/objectivec/bool)表示`BOOL`的规范定义是`bool`的类型别名。然而，在*特殊注意事项*下，文档说明了*`BOOL`的类型实际上是`char`*。
 - en: 'When documentation doesn’t help, we can take a look under the hood. The `BOOL`
     type is defined by the [Objective-C](https://developer.apple.com/documentation/objectivec/objective-c_runtime?language=objc)
     runtime, whose public headers are distributed by Xcode at the following directory:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 当文档无法帮助时，我们可以深入了解。`BOOL`类型由 [Objective-C](https://developer.apple.com/documentation/objectivec/objective-c_runtime?language=objc)
+    运行时定义，其公共头文件由 Xcode 在以下目录中分发：
 - en: '[PRE4]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: As we can confirm with a quick search, the header that is concerned with booleans
     is `objc.h`, which is included by `runtime.h`, the entry point of the Objective-C
     runtime.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过快速搜索确认，与布尔值相关的头文件是`objc.h`，该文件被`runtime.h`所包含，后者是 Objective-C 运行时的入口点。
 - en: The `YES` and `NO` constants
+  id: totrans-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`YES` 和 `NO` 常量'
 - en: 'These boolean constants are defined in two ways:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些布尔常量有两种定义方式：
 - en: '[PRE5]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The [`__has_feature`](https://clang.llvm.org/docs/LanguageExtensions.html#has-feature-and-has-extension)
     macro is defined by LLVM as a language extension for introspecting on compiler
     features. While not standard, [GCC also supports `__has_feature`](https://gcc.gnu.org/onlinedocs/cpp/_005f_005fhas_005ffeature.html).
     However, the `objc_bool` feature that the Objective-C runtime header references
     is never defined by LLVM. Therefore, the definition we are interested in is the
     second one:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`__has_feature`](https://clang.llvm.org/docs/LanguageExtensions.html#has-feature-and-has-extension)
+    宏被 LLVM 定义为用于内省编译器特性的语言扩展。虽然不是标准，但 [GCC 也支持 `__has_feature`](https://gcc.gnu.org/onlinedocs/cpp/_005f_005fhas_005ffeature.html)。但是，Objective-C
+    运行时头文件引用的 `objc_bool` 特性从未被 LLVM 定义。因此，我们感兴趣的定义是第二个定义：'
 - en: '[PRE6]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If you are curious, the `__objc_yes` and `__objc_no` symbols in the first clause
     of the definition are built-in types [recognized by the LLVM parser](https://github.com/llvm/llvm-project/blob/llvmorg-17.0.6/clang/lib/Parse/ParseObjc.cpp#L2880-L2885)
     and are available for use. For example, this program is valid:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你感兴趣，定义的第一个子句中的 `__objc_yes` 和 `__objc_no` 符号是由 LLVM 解析器识别的内置类型，并可供使用。例如，下面的程序是有效的：
 - en: '[PRE7]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The `BOOL` type alias
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`BOOL` 类型别名'
 - en: 'Now that we know that `YES` and `NO` are defined by casting the numeric constants
     `1` and `0` to `BOOL`, let’s turn our attention to the `BOOL` type. This type
     alias is defined in the `objc.h` header as follows:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道 `YES` 和 `NO` 是通过将数字常量 `1` 和 `0` 强制转换为 `BOOL` 定义的，让我们把注意力转向 `BOOL` 类型。这个类型别名在
+    `objc.h` 头文件中定义如下：
 - en: '[PRE8]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'As we can see, the `BOOL` type is either an alias to `bool` or an alias to
     `signed char` depending on the value of the `OBJC_BOOL_IS_BOOL` preprocessor define.
     Additionally, the Objective-C runtime will define `OBJC_BOOL_IS_CHAR` if `BOOL`
     is set to the latter. This definition is convenient for writing code that must
     make assumptions over the underlying `BOOL` type. For example:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所见，`BOOL` 类型是根据 `OBJC_BOOL_IS_BOOL` 预处理定义的值而别名为 `bool` 或别名为 `signed char`。此外，如果
+    `BOOL` 设置为后者，Objective-C 运行时将定义 `OBJC_BOOL_IS_CHAR`。该定义方便编写必须对底层 `BOOL` 类型做出假设的代码。例如：
 - en: '[PRE9]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The `OBJC_BOOL_IS_BOOL` definition
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`OBJC_BOOL_IS_BOOL` 的定义'
 - en: 'We learnt that whether `BOOL` is a type alias to `bool` or to `signed char`
     depends on the value of the `OBJC_BOOL_IS_BOOL` preprocessor definition. Like
     the other constants and aliases we explored so far, this definition is also declared
     in the `objc.h` header:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们了解到 `BOOL` 是否是别名到 `bool` 或到 `signed char` 取决于 `OBJC_BOOL_IS_BOOL` 预处理定义的值。像我们迄今所探讨的其他常量和别名一样，这个定义也在
+    `objc.h` 头文件中声明：
 - en: '[PRE10]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The first clause is straightforward: if the `__OBJC_BOOL_IS_BOOL` preprocessor
     definition exists, set `OBJC_BOOL_IS_BOOL` to it.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个子句很直接：如果存在 `__OBJC_BOOL_IS_BOOL` 预处理定义，则将 `OBJC_BOOL_IS_BOOL` 设置为它。
 - en: 'However, the second clause is a lot more involved. The code says that the Objective-C
     runtime aliases `BOOL` to `signed char` in one of the following conditions:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，第二个子句涉及的内容更加复杂。代码表明，在以下条件之一下，Objective-C 运行时将 `BOOL` 别名为 `signed char`：
 - en: If you are writing a macOS application (`TARGET_OS_OSX`), independently of the
     target architecture
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果你正在编写一个 macOS 应用程序（`TARGET_OS_OSX`），独立于目标架构
 - en: If you are writing a [Mac Catalyst](https://developer.apple.com/mac-catalyst/)
     application (`TARGET_OS_MACCATALYST`)
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果你正在编写一个 [Mac Catalyst](https://developer.apple.com/mac-catalyst/) 应用程序（`TARGET_OS_MACCATALYST`）
 - en: If you are writing an iOS application (`TARGET_OS_IOS`) that does not make use
     of the [LP64 data model](https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models)
     (`__LP64__`) and is not an ARMv7 chip ([`__ARM_ARCH_7K`](https://opensource.apple.com/source/xnu/xnu-4570.1.46/osfmk/arm/arch.h.auto.html))
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果你正在编写一个不使用 [LP64 数据模型](https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models)
+    (`__LP64__`) 且不是 ARMv7 芯片（[`__ARM_ARCH_7K`](https://opensource.apple.com/source/xnu/xnu-4570.1.46/osfmk/arm/arch.h.auto.html)）的
+    iOS 应用程序（`TARGET_OS_IOS`）
 - en: 'We can deduct that the second clause does not apply here, given we see a discrepancy
     on how `BOOL` is defined in macOS Intel and macOS Apple Silicon. Otherwise both
     architectures would alias `BOOL` to `signed char` given the presence of `TARGET_OS_OSX`.
     Therefore, we can conclude that `__OBJC_BOOL_IS_BOOL` is always set, which we
     can confirm with the following simple program:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以推断出第二个子句在这里不适用，因为我们在 macOS Intel 和 macOS Apple Silicon 中看到了 `BOOL` 的定义存在差异。否则，两种架构都会将
+    `BOOL` 别名为 `signed char`，因为存在 `TARGET_OS_OSX`。因此，我们可以得出结论，`__OBJC_BOOL_IS_BOOL`
+    总是被设置的，我们可以通过以下简单的程序确认：
 - en: '[PRE11]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'As expected, `__OBJC_BOOL_IS_BOOL` is defined on both my Apple Silicon Mac
     and my Intel Mac as 1 and 0, respectively. Additionally, [there is a test](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L23-L25)
     in the [Objective-C runtime source code](https://github.com/apple-oss-distributions/objc4)
     that asserts that `__OBJC_BOOL_IS_BOOL` is always defined:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 如预期，`__OBJC_BOOL_IS_BOOL`在我的Apple Silicon Mac和我的Intel Mac上分别定义为1和0。 此外，[有一个测试](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L23-L25)在[Objective-C
+    runtime源代码](https://github.com/apple-oss-distributions/objc4)中断言`__OBJC_BOOL_IS_BOOL`始终被定义：
 - en: '[PRE12]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Fiddling with `__OBJC_BOOL_IS_BOOL`
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 调整`__OBJC_BOOL_IS_BOOL`
 - en: Now that we know that `__OBJC_BOOL_IS_BOOL` is the preprocessor define that
     ultimately controls the underlying type of the `BOOL` alias, we can try to control
     it.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道`__OBJC_BOOL_IS_BOOL`是最终控制`BOOL`别名的基础类型的预处理器定义，我们可以尝试控制它。
 - en: I’m doing it here for experimentation purposes, but I highly discourage changing
     the `__OBJC_BOOL_IS_BOOL` definition (mainly on production code!), as we don’t
     know how deep its implications can be to frameworks that depends on the Objective-C
@@ -220,204 +333,311 @@
     different platforms and architectures. Instead, if you need to introspect on `BOOL`,
     probably better to make use of the `OBJC_BOOL_IS_CHAR` definition we discussed
     before.
+  id: totrans-50
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我在这里这样做是为了实验目的，但我强烈不建议更改`__OBJC_BOOL_IS_BOOL`的定义（主要是在生产代码中！），因为我们不知道它对依赖Objective-C
+    runtime的框架的影响有多深。 也许Apple为不同的平台和体系结构设置不同别名的好理由。 相反，如果您需要对`BOOL`进行内省，可能最好使用我们之前讨论过的`OBJC_BOOL_IS_CHAR`定义。
 - en: 'On my Apple Silicon Mac, I can successfully build and run the Objective-C++
     [*unexpected behavior* example](#an-example-of-unexpected-behavior) from the beginning
     of this article, forcing the Objective-C runtime to alias `BOOL` to `signed char`
     by explicitly setting `__OBJC_BOOL_IS_BOOL` to `0`:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的Apple Silicon Mac上，我可以成功构建并运行本文开头的[*意外行为*示例](#an-example-of-unexpected-behavior)，强制
+    Objective-C runtime 将`BOOL`别名为`signed char`，方法是将 `__OBJC_BOOL_IS_BOOL` 明确设置为 `0`：
 - en: '[PRE13]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'While it worked and we managed to affect the alias, let’s take a close look
     at the compilation warning. The compiler is warning us that we are overwriting
     `__OBJC_BOOL_IS_BOOL`, which was (as we expected for Apple Silicon) previously
     defined like this:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管它起作用并且我们成功地影响了别名，但让我们仔细查看编译警告。 编译器警告我们正在覆盖`__OBJC_BOOL_IS_BOOL`，而它（正如我们在Apple
+    Silicon上所预期的那样）之前是这样定义的：
 - en: '[PRE14]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'However, this definition is not coming from the Objective-C runtime nor any
     other header. Instead, its coming directly from LLVM, as signified by the source
     location that the compiler is sharing with us:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，这个定义并非来自Objective-C runtime或任何其他头文件。 相反，它直接来自LLVM，正如编译器与我们共享的源位置所示：
 - en: '[PRE15]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Using `grep(1)`, we can confirm that the Objective-C runtime public headers
     never declare (only consume) the `__OBJC_BOOL_IS_BOOL` definition:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `grep(1)`，我们可以确认 Objective-C runtime 公共头文件从不声明（只使用）`__OBJC_BOOL_IS_BOOL`定义：
 - en: '[PRE16]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Digging deeper into LLVM
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 深入挖掘 LLVM
 - en: 'To find the mysterious `__OBJC_BOOL_IS_BOOL` definition, let’s dig into LLVM.
     On my main machine, I’m running AppleClang 1500.1.0.2.5 (Xcode 15.1), which [corresponds
     to LLVM 16](https://en.wikipedia.org/wiki/Xcode). By searching for occurrences
     of `__OBJC_BOOL_IS_BOOL` in such LLVM version, we can find that [`clang/lib/Frontend/InitPreprocessor.cpp`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/lib/Frontend/InitPreprocessor.cpp)
     sets `__OBJC_BOOL_IS_BOOL` based on a method called `useSignedCharForObjCBool`:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 要找到神秘的`__OBJC_BOOL_IS_BOOL`定义，让我们深入挖掘 LLVM。 在我的主要机器上，我正在运行 AppleClang 1500.1.0.2.5（Xcode
+    15.1），它[对应 LLVM 16](https://en.wikipedia.org/wiki/Xcode)。 通过在这种 LLVM 版本中搜索`__OBJC_BOOL_IS_BOOL`的出现，我们可以发现[`clang/lib/Frontend/InitPreprocessor.cpp`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/lib/Frontend/InitPreprocessor.cpp)根据名为`useSignedCharForObjCBool`的方法设置`__OBJC_BOOL_IS_BOOL`：
 - en: '[PRE17]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'In turn, the `useSignedCharForObjCBool` method of the `TargetInfo` class is
     defined in [`clang/include/clang/Basic/TargetInfo.h`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/include/clang/Basic/TargetInfo.h)
     to simply return the `UseSignedCharForObjCBool` boolean class member:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 反过来，`TargetInfo`类的`useSignedCharForObjCBool`方法在[`clang/include/clang/Basic/TargetInfo.h`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/include/clang/Basic/TargetInfo.h)中定义为简单地返回`UseSignedCharForObjCBool`布尔类成员：
 - en: '[PRE18]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'By default, the `UseSignedCharForObjCBool` boolean class member is set to `true`:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，`UseSignedCharForObjCBool`布尔类成员设置为`true`：
 - en: '[PRE19]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The Objective-C to C++ re-writer
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Objective-C 到 C++ 重写器
 - en: 'There is a single method in the `TargetInfo` class that directly affects the
     value of the `UseSignedCharForObjCBool` boolean class member. This method is called
     `noSignedCharForObjCBool`, and as its name implies, sets `UseSignedCharForObjCBool`
     to `false`. Its definition looks like this:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`TargetInfo`类中有一个直接影响`UseSignedCharForObjCBool`布尔类成员值的方法。此方法称为`noSignedCharForObjCBool`，正如其名称所示，将`UseSignedCharForObjCBool`设置为`false`。其定义如下：
 - en: '[PRE20]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Interestingly enough, the only place where this method is invoked is in [`clang/lib/Frontend/CompilerInstance.cpp`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/lib/Frontend/CompilerInstance.cpp),
     to unconditionally alias `BOOL` to `bool` on the Objective-C to C++ re-writer
     that we extensively covered in a [previous post](../../../2023/12/01/understanding-objective-c-by-transpiling-it-to-cpp.html):'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，此方法被调用的唯一位置是[`clang/lib/Frontend/CompilerInstance.cpp`](https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0/clang/lib/Frontend/CompilerInstance.cpp)，在这个位置上，我们广泛讨论了
+    Objective-C 到 C++ 重写器，将`BOOL`无条件别名为`bool`。
 - en: '[PRE21]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: If you are curious, you can read [the LLVM commit](https://github.com/llvm/llvm-project/commit/29898f45657314c7fa7f61e8157a36c832015fcc)
     that initially introduced the `noSignedCharForObjCBool` method and opted for the
     native `bool` type in the Objective-C to C++ re-writer.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你好奇，你可以阅读[LLVM 提交](https://github.com/llvm/llvm-project/commit/29898f45657314c7fa7f61e8157a36c832015fcc)，该提交最初引入了`noSignedCharForObjCBool`方法，并选择了
+    Objective-C 到 C++ 重写器中的本地`bool`类型。
 - en: The Objective-C compiler
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Objective-C 编译器
 - en: Leaving the Objective-C experimental C++ re-writer aside, the supported targets
     of the production-ready Objective-C compiler set the `UseSignedCharForObjCBool`
     boolean class member when subclassing from `TargetInfo`.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 撇开 Objective-C 实验性 C++ 重写器不谈，产品级准备就绪的 Objective-C 编译器支持的目标在从`TargetInfo`派生时设置`UseSignedCharForObjCBool`布尔类成员。
 - en: 'We can use `grep(1)` to find every target subclass that mentions `UseSignedCharForObjCBool`
     as follows:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用`grep(1)`来查找提及`UseSignedCharForObjCBool`的每个目标子类，如下所示：
 - en: '[PRE22]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: Let’s take a closer look at each of these matches.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们仔细看看每个匹配项。
 - en: '`AArch64`'
+  id: totrans-77
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`AArch64`'
 - en: 'The AArch64 target corresponds to 64-bit ARM chips, such as Apple Silicon.
     For this target, `UseSignedCharForObjCBool` is unconditionally set to `false`,
     so the `__OBJC_BOOL_IS_BOOL` preprocessor define is always `1`:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: AArch64 目标对应于 64 位 ARM 芯片，例如 Apple Silicon。对于这个目标，`UseSignedCharForObjCBool`无条件地设置为`false`，因此`__OBJC_BOOL_IS_BOOL`预处理器定义始终为`1`：
 - en: '[PRE23]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'As expected, this matches the behavior we saw at the beginning of the article:
     for Apple Silicon Macs, the Objective-C runtime aliases `BOOL` to `bool`.'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如预期的那样，这与我们在文章开头看到的行为相匹配：对于 Apple Silicon Mac，Objective-C 运行时将`BOOL`别名为`bool`。
 - en: '`X86`'
+  id: totrans-81
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`X86`'
 - en: 'For 32-bit Intel chips, `BOOL` is always an alias to `signed char` except for
     watchOS. For its first 8 versions (until 2022), watchOS shipped with [32-bit support](https://en.wikipedia.org/wiki/WatchOS#watchOS_8),
     so this configuration is for old watchOS simulators running on Intel Macs:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 32 位英特尔芯片，`BOOL`始终是`signed char`的别名，除了 watchOS 外。在其前 8 个版本（直到 2022 年），watchOS
+    附带了 [32 位支持](https://en.wikipedia.org/wiki/WatchOS#watchOS_8)，因此此配置适用于在英特尔 Mac
+    上运行旧 watchOS 模拟器：
 - en: '[PRE24]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'For 64-bit Intel chips, `BOOL` is always an alias to `signed char` except for
     iOS. As the comment clarifies, this configuration is for iOS simulators running
     on Intel Macs:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 64 位英特尔芯片，`BOOL`始终是`signed char`的别名，除了 iOS 外。正如注释所解释的那样，此配置用于在英特尔 Mac 上运行
+    iOS 模拟器的情况：
 - en: '[PRE25]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'As expected, this matches the behavior we saw at the beginning of the article:
     for Intel Macs, the Objective-C runtime aliases `BOOL` to `signed char`.'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如预期的那样，这与我们在文章开头看到的行为相匹配：对于英特尔 Mac，Objective-C 运行时将`BOOL`别名为`signed char`。
 - en: '`ARM`'
+  id: totrans-87
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`ARM`'
 - en: 'Finally, for 32-bit ARM chips, `BOOL` is always an alias to `signed char` except
     for watchOS. The watchOS product always targeted ARM, so this configuration is
     likely for production watchOS deployments until version 8 (after which 32-bit
     support was removed):'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，对于 32 位 ARM 芯片，`BOOL`始终是`signed char`的别名，除了 watchOS 外。watchOS 产品始终定位到 ARM，因此此配置可能用于生产
+    watchOS 部署，直到版本 8（之后移除了 32 位支持）：
 - en: '[PRE26]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: If you are looking for a higher-level view, the test suite of the Objective-C
     runtime has an [interesting case](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L7-L21)
     for determining whether the “real” boolean type should apply or not on the platform
     under test.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要更高层次的视角，Objective-C 运行时的测试套件对于确定在受测试平台上是否应该应用“真实”布尔类型有一个[有趣的案例](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L7-L21)。
 - en: Summary
+  id: totrans-91
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: If you made it this far, you might be wondering how `BOOL` grew so complicated.
     While we cannot tell for sure without Apple insider’s knowledge, I believe the
     reasons are historical.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经读到这里，你可能想知道`BOOL`是如何变得如此复杂的。虽然没有苹果内部人士的知识，我们无法确定，但我认为原因是历史性的。
 - en: Back in 1984, Objective-C was designed to be a strict superset of the C language.
     At the time, the C language didn’t have built-in support for booleans, and Objective-C’s
     decision of re-purposing `signed char` to hold boolean values was sensible. You
     can see an ancient definition of `BOOL` that is unconditionally aliased to `signed
     char` [here](https://opensource.apple.com/source/objc4/objc4-237/runtime/objc.h.auto.html).
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 早在1984年，Objective-C被设计为C语言的严格超集。当时，C语言没有内置支持布尔值，而Objective-C将`signed char`重新用于保存布尔值的决定是合理的。你可以在这里看到一个古老的`BOOL`定义，它无条件地别名为`signed
+    char`。[这里](https://opensource.apple.com/source/objc4/objc4-237/runtime/objc.h.auto.html)。
 - en: More than a decade later, as part of the C99 specification, the C language released
     support for boolean values through the [`<stdbool.h>`](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdbool.h.html)
     header. Then, later versions of the Objective-C runtime started conditionally
     aliasing `BOOL` to the new `bool` type in modern Apple products. It is likely
     that older platform and architecture combinations still use `signed char` for
     legacy reasons.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 十多年后，作为C99规范的一部分，C语言通过[`<stdbool.h>`](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdbool.h.html)头文件发布了对布尔值的支持。然后，Objective-C运行时的更新版本开始有条件地将`BOOL`别名为现代苹果产品中的新`bool`类型。老的平台和架构组合可能仍然出于传统原因使用`signed
+    char`。
 - en: If you want to continue learning about the curiosities of the `BOOL` type, you
     might also enjoy [BOOL’s sharp corners](https://bignerdranch.com/blog/bools-sharp-corners/)
     by the Big Nerd Ranch, and Google’s [Objective-C Styleguide](https://google.github.io/styleguide/objcguide.html#bool-pitfalls).
+  id: totrans-95
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果你想继续了解`BOOL`类型的奇闻趣事，你可能也会喜欢[BOOL的尖锐边缘](https://bignerdranch.com/blog/bools-sharp-corners/)，作者是Big
+    Nerd Ranch，以及Google的[Objective-C样式指南](https://google.github.io/styleguide/objcguide.html#bool-pitfalls)。
 - en: '**HN Discussion**: [https://news.ycombinator.com/item?id=38909377](https://news.ycombinator.com/item?id=38909377).'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '**HN 讨论**：[https://news.ycombinator.com/item?id=38909377](https://news.ycombinator.com/item?id=38909377)。'
