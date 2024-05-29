@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:01:08'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: How we built a fair multi-tenant queuing system - Inngest Blog
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy](https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,20 +28,24 @@
     they're hard to build. There's lots of debate around *how* to build a queueing
     system — with [Postgres](https://news.ycombinator.com/item?id=35526846) and [SKIP
     LOCKED](https://news.ycombinator.com/item?id=37636841) *always* cropping up.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: We've spent a long time researching and building our own distributed queuing
     system, and in this post we'll explain what the challenges are, why we needed
     to build it, and how it works.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Challenges building queueing systems
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We built Inngest as a reliability layer for modern applications. It enables
     developers to write declarative step functions in code by combining durable execution,
     event streams, and queues into a singe serverless platform.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Inngest manages the event streams, queues and state all within the platform.
@@ -43,21 +53,25 @@
     of your codebase](/blog/branch-environments). Teams might deploy *hundreds* of
     functions to Inngest across tens of branches, leading to thousands of functions
     reacting to events in real time (within ~10-100ms).
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: As we scaled to **thousands of users who have triggered billions of functions
     to run**, we learned a great deal about the challenges developing a platform built
     on queues.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Attempting to build a system like this with any off-the-shelf queuing system
     is quickly going to become a struggle. Here are some of the key challenges that
     you will encounter:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '**Fairness**. You send 5,000 events per second. Not hard to manage, but in
     a single queue your jobs will block other users'' work from running. That''s not
     fair. One user should not be able to block another''s work.'
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -65,6 +79,7 @@
     queues a worker should listen to, and the amount of jobs that worker can handle.
     Spinning up new workers for each function is tedious and cumbersome. It''s made
     worse given that development branches are ephemeral and bursty.'
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -72,6 +87,7 @@
     containing parallel steps, at any given time there are millions jobs available
     for work. In typical queueing systems, workers will all contend for the earliest
     job available, leading to *lots* of spinning and wasted effort.'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -80,6 +96,7 @@
     is implemented within the worker polling logic. Within Inngest, you can set multiple
     concurrency settings on a single function using one line of code. This creates
     virtual queues for managing runs.'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -87,51 +104,71 @@
     hundreds of thousands of requests per second: enqueues, "locks" (we''ll get to
     that), dequeues all lead to heavy load on the backing infrastructure that runs
     the queue.'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**读写负载**。每秒处理数万个作业会导致每秒数十万次的请求：入队、"锁定"（我们会解释），出队都会对运行队列的基础设施产生沉重的负载。'
 - en: '**Infrastructure**. The queue needs to be reliable and fault-tolerant, which
     means we need distributed systems built in (which also impacts latency).'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**基础设施**。队列需要可靠和容错，这意味着我们需要构建分布式系统（这也会影响延迟）。'
 - en: '**Observability**. Most queues are opaque, with little or basic observability
     out of the box. It''s hard to build in real-time observability for step functions
     beyond the backlog: eg. number of functions waiting for other events, or a histogram
     of wall time vs execution time.'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**可观测性**。大多数队列都是不透明的，开箱即用的观测性很少或基本。很难为步骤函数构建超越积压的实时可观测性：例如，等待其他事件的函数数量，或者墙上时间与执行时间的直方图。'
 - en: '**Customizability**. It''s difficult and incredibly time intensive to extend
     basic queueing systems with advanced functionality. Customizations include: changing
     backoffs function-by-function, cancelling the backlog based off of job data, batching,
     debounce, smart indexing, and step function parallelism.'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**可定制性**。要扩展基本队列系统的高级功能是困难的且耗时极大的。定制包括：逐个更改退避，基于作业数据取消积压，批处理，去抖动，智能索引和步骤函数并行处理。'
 - en: To solve all of these problems, we developed a brand new queue from the ground
     up for Inngest. It's a fair, low-latency, multi-tenant queue which operates with
     multiple shared-nothing workers that claim jobs in an (almost) contention-free
     way.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决所有这些问题，我们为 Inngest 从头开始开发了一个全新的队列。它是一个公平的、低延迟的、多租户队列，它通过多个共享无状态的 worker
+    以 (几乎) 无争用的方式声明作业。
 - en: In this series of blog posts, we'll explain how the queueing system works and
     the design decisions that solve these problems.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一系列的博客文章中，我们将解释队列系统的工作原理以及解决这些问题的设计决策。
 - en: How reliability layers use queues
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 可靠性层如何使用队列
 - en: 'To set context, let''s walk through how Inngest uses a queue, with an example
     function configuration using our [TS SDK](/docs/reference/typescript) ([Go](https://pkg.go.dev/github.com/inngest/inngestgo)
     and [Python](/docs/reference/python) SDKs are also available, with [more coming
     soon](https://roadmap.inngest.com/roadmap)):'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了设置上下文，让我们通过一个示例函数配置来讲解 Inngest 如何使用队列，我们使用了我们的 [TS SDK](/docs/reference/typescript)（[Go](https://pkg.go.dev/github.com/inngest/inngestgo)
+    和 [Python](/docs/reference/python) SDK 也可用，[更多即将推出](https://roadmap.inngest.com/roadmap)）：
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: If you're familiar with step functions, you probably already see what's happening
     here. This code creates a function which runs automatically when the `clerk/user.created`
     event is received via Clerk's webhooks. It's a step function which uses [durable
@@ -140,178 +177,252 @@
     queue. If the step fails, it retries automatically. Any data returned from the
     step is automatically captured into the function run's state and injected on each
     step call.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你熟悉步骤函数，你可能已经看到这里发生了什么。这段代码创建了一个函数，当通过 Clerk 的 Webhooks 接收到 `clerk/user.created`
+    事件时，它会自动运行。这是一个使用 [持久化执行](/blog/how-durable-workflow-engines-work) 来可靠运行代码的步骤函数。这意味着每个步骤都是由自己的队列作业支持的代码级事务。如果步骤失败，它会自动重试。从步骤返回的任何数据都会自动捕获到函数运行状态中，并在每次步骤调用时注入。
 - en: There are a few extra nuances. The function specifies its own concurrency limits
     along with a debounce. Concurrency limits prevent any more than 15 steps running
     at any one time. The debounce schedules a function run for 5 seconds, and if any
     other matching events are received during that period, Inngest reschedules the
     function to run after another 5 seconds (until the maximum timeout has passed).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一些额外的细微差别。函数指定了自己的并发限制以及一个去抖动。并发限制防止超过 15 个步骤同时运行。去抖动安排一个函数运行 5 秒钟，如果在此期间收到任何其他匹配事件，则
+    Inngest 会将函数重新安排在另外 5 秒后运行（直到最大超时时间过去为止）。
 - en: 'All of this happens automatically, without provisioning queues or infrastructure,
     based off of our queueing system. Here''s what happens:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些都是自动发生的，无需预配队列或基础设施，基于我们的队列系统。以下是发生的情况：
 - en: When an event is received, we *[idempotently](/docs/guides/handling-idempotency)*
     enqueue a job which calls the function handler. This has to be idempotent, as
     [event streams are *at least once*](/blog/message-bus-vs-queues), and we want
     a single function run for one event.
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当接收到事件时，我们*[幂等地](/docs/guides/handling-idempotency)*排队一个作业，该作业调用函数处理程序。这必须是幂等的，因为[事件流至少是*一次*](/blog/message-bus-vs-queues)，我们希望一个事件只对应一个函数运行。
 - en: 'Debounce complicates running functions: the job is scheduled with a 5 second
     delay (or whatever''s in the function config), and any additional events delay
     the job again.'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 防抖会使运行函数变得复杂：作业会被安排在 5 秒延迟（或者函数配置中的任何时间）之后，并且任何额外的事件都会再次延迟该作业。
 - en: When the job becomes "visible", we ensure functions aren't beyond their concurrency
     limits and begin work by calling the function with the incoming event data.
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当作业变得“可见”时，我们确保函数没有超出其并发限制，并通过使用传入的事件数据调用函数开始工作。
 - en: Once a function runs a step, we store the step's result inside the function
     run's state and (worst case) enqueue *another* job to for the next step. There's
     some nuance here for long-running servers, though we'll talk about that in an
     execution deep dive separately.
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一旦函数运行一步，我们就会将步骤的结果存储在函数运行的状态中，并且（在最坏的情况下）为下一步*再次*排队一个作业。对于长时间运行的服务器，这里有一些细微差别，不过我们将在执行深入探讨中另行讨论。
 - en: Essentially, *everything* impacts the queue. Running a function reliably has
     to use a queue. Concurrency, debounce, and batching all have an impact how the
     queue works at an individual job level.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 从本质上讲，*一切*都会影响队列。可靠地运行一个函数必须使用一个队列。并发、防抖和批处理都会对队列在个别作业级别上的工作产生影响。
 - en: With that context, let's talk about how this works in a multi-tenant environment,
     with thousands of users running millions of functions at the same time.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个背景，让我们谈谈在多租户环境中如何运作，同时有成千上万的用户同时运行数百万个函数。
 - en: Unfairness in classic queues
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 经典队列中的不公平性
 - en: Most queues are **not** multi-tenant.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数队列都**不是**多租户的。
 - en: Take SQS. Typically, you'll create a queue to handle a specific job in your
     code. That queue is used across every user in your system. If one of your users
     (say, Mallory) sends 5,000 messages at once and then Alice enqueues something,
     we have to work through Mallory's 5,000 jobs before we can handle Alice's single
     task. That's *unfair*.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 以 SQS 为例。通常，您会创建一个队列来处理代码中的特定作业。该队列在系统中的每个用户中都会使用。如果你的一个用户（比如，Mallory）一次发送了
+    5000 条消息，然后 Alice 将一些东西排队，那么在我们处理 Alice 的单个任务之前，我们必须处理完 Mallory 的 5000 个作业。这是*不公平的*。
 - en: With classic queueing systems, this is almost impossible to easily solve. Randomly
     sharding amongst several queues will lower the chance that blocking happens, but
     it's guaranteed that eventually it happens anyway. You could try do some bookkeeping
     yourself *outside* of the queue and manually requeue jobs as they come in, but
     that increases latency, costs, churn, and doesn't provide actual fairness (along
     with being hard, buggy, and annoying to write).
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于经典的排队系统来说，这几乎不可能轻松解决。在几个队列之间随机分片会降低阻塞发生的机会，但保证最终它仍然会发生。您可以尝试在队列之外进行一些簿记，并在作业到达时手动重新排队作业，但这会增加延迟、成本、流动性，并且不提供实际的公平性（以及编写起来非常困难、容易出错和令人讨厌）。
 - en: In short, it's *really hard* to make something like SQS, BullMQ, or Graphile
     work well in a multi-tenant environment. Hacking around fairness costs a lot,
     increases latency, and without *very complex infrastructure* to provision items
     for each tenant doesn't actually solve the problem.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，要使像 SQS、BullMQ 或 Graphile 这样的东西在多租户环境中良好运行是*非常困难*的。围绕公平性的各种妥协成本很高，增加了延迟，并且没有*非常复杂的基础设施*来为每个租户分配资源，实际上并没有解决问题。
 - en: So, how do we solve fairness?
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们如何解决公平性呢？
 - en: Building a fair multi-tenant queue
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建一个公平的多租户队列
 - en: In an ideal world, fairness happens at both a function level *and* an account
     level. Let's say you have 100 functions running via Inngest, and you push a million
     jobs to a specific function. These jobs should *not* block other functions in
     your account from running.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在理想的情况下，公平性发生在函数级别*和*帐户级别。假设您通过 Inngest 运行了 100 个函数，并向一个特定函数推送了一百万个作业。这些作业不应该阻塞您帐户中的其他函数运行。
 - en: '**This leads to the first requirement: each function you add must get its own
     queue to maximize fairness.**'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**这导致了第一个要求：每添加一个函数都必须有自己的队列，以最大程度地提高公平性。**'
 - en: 'This raises a few questions. How can we make queues cheap enough to create
     for every function, across every branch of your code? And, how do workers subscribe
     to queues created at any point in time, without requiring restarts or new processes?
     Almost every queue that exists today needs you to run workers that subscribe to
     specific queues:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这引出了一些问题。我们如何才能让队列足够便宜，以便为每个函数在代码的每个分支中创建队列？以及，工作人员如何订阅在任何时候创建的队列，而无需重新启动或启动新进程？几乎每个现有的队列都需要你运行订阅特定队列的工作人员：
 - en: '[PRE1]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: If you add a new function to Inngest, we can't recreate workers on the fly.
     It makes our code and infrastructure *far* too messy, and at worst could mean
     that workers cycle every second as new functions are added.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你向 Inngest 添加一个新函数，我们无法动态重建工作人员。这会使我们的代码和基础设施*非常*混乱，最坏的情况下可能意味着工作人员每秒循环一次，因为添加了新函数。
 - en: '**We have another requirement: latency must be as low as possible.**'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们还有另一个要求：延迟必须尽可能低。**'
 - en: This adds a few more needs to the system. We must have a pool of workers that
     auto-scale to make sure we're running jobs as fast as possible. We can't reboot
     workers any time new queues are added.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给系统增加了一些需求。我们必须有一个工作人员池，能够自动扩展，以确保我们尽可能快地运行作业。我们不能在添加新队列时随时重新启动工作人员。
 - en: 'Taking all of these requirements into account, we need to:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到所有这些要求，我们需要：
 - en: Write workers which automatically discover available functions
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编写自动发现可用函数的工作人员
 - en: Have workers automatically take work from each function
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使工作人员自动从每个函数获取工作
 - en: And do this *without contention*
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 并且*无需争用*
 - en: '**Our third requirement: handling contention.**'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们的第三个要求：处理争用。**'
 - en: 'Contention is another key part to fairness: two workers shouldn''t compete
     for the same function. But, at the same time, we can''t assign functions to *specific*
     workers, because they might die at any time. The solution is to create a tiered
     queuing system.'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 争用是公平性的另一个关键部分：两个工作人员不应该为相同的函数竞争。但与此同时，我们又不能将函数分配给*特定*的工作人员，因为它们可能随时死掉。解决方案是创建分层队列系统。
 - en: Each function gets its own queue of outstanding work.
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个函数都有自己的未完成工作队列。
 - en: We create *another* higher level queue, which records each function's earliest
     available job.
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们创建*另一个*更高级别的队列，记录每个函数的最早可用作业。
 - en: All workers scan this queue to discover available work.
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所有工作人员都会扫描此队列以发现可用工作。
 - en: 'This gives us a subset of work that''s available: `[Function A, Function B,
     Function C]` and so on, ordered by *latency* with the oldest job first. This solves
     *multi-tenancy*, but even with this list we still have fairness and contention
     to deal with. 100 separate workers scanning for jobs will all get the same list
     in the same order, leading to 100 workers trying to run jobs for function A. This
     is both unfair and high contention.'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给了我们一个可用的工作子集：`[Function A，Function B，Function C]`等，按*延迟*顺序排列，最旧的作业优先。这解决了*多租户*问题，但即使有了这个列表，我们仍然需要处理公平性和争用。扫描作业的100个独立工作人员将按相同的顺序获取相同的列表，导致100个工作人员尝试运行函数
+    A 的作业。这既不公平，也争用太高。
 - en: There are a few strategies we use to solve this. One key part is that each worker
     priority shuffles the peeked jobs into a weighted random order, taking into account
     latency, capacity, free vs paid, etc. Once shuffled, the worker claims the function's
     job queue to run work. This ensures that every function runs independently and
     guarantees fairness. It also minimizes latency, as priority shuffling still prioritizes
     older work.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决这个问题我们有几种策略。其中一个关键部分是，每个工作优先级都会将预览的作业按照加权随机顺序洗牌，考虑到延迟、容量、免费与付费等因素。洗牌后，工作人员就会声明函数的作业队列来运行工作。这确保了每个函数都能独立运行，并保证公平性。它还能最小化延迟，因为优先级洗牌仍然会优先处理较早的工作。
 - en: Conclusion
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: 'There''s a ton more nuance to the queue, though at a high level this solves
     all key requirements: contention, fairness, and latency. A huge benefit to this
     model: queues become incredibly cheap. It''s the magic that lets you create queues
@@ -320,16 +431,22 @@
     us to create a queue with built-in flow control features to all users in a way
     that is reliable, performant, and scalable. We''re *really* happy with this solution,
     and think it has a lot of legs.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 队列有很多微妙之处，尽管在高层次上，这解决了所有关键要求：争用、公平性和延迟。这种模型的一个巨大优势是：队列变得非常便宜。这是让您为每个功能创建队列的神奇之处，也是*让我们为每个功能添加多个并发级别的虚拟队列的一部分*。这种方法已经让我们以可靠、高性能和可扩展的方式为所有用户创建了一个带有内置流控功能的队列。我们对这个解决方案*非常*满意，认为它有很大的发展空间。
 - en: Even though queues are fundamental to how we work, we think that reliability
     layers like Inngest mean that you never actually need to implement queueing, or
     even think about how it works. The system abstracts everything for you declaratively
     by code, so even the freshest of engineers can productively build reliable systems.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管队列在我们的工作方式中是基础性的，但我们认为像Inngest这样的可靠性层意味着您实际上永远不需要实现队列，甚至不需要考虑它是如何工作的。系统通过代码以声明方式为您抽象了一切，所以即使是最新入职的工程师也能够有效地构建可靠的系统。
 - en: If you found this interesting or you'd like to work on systems like this please
     reach out to us [by email](/contact), [Twitter](https://twitter.com/inngest),
     or on our [Discord](/discord). We'd love to hear your thoughts, and [we're hiring](/careers)!
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您发现这个有趣，或者您想要在这样的系统上工作，请通过[email](/contact)，[Twitter](https://twitter.com/inngest)，或者我们的[Discord](/discord)联系我们。我们很乐意听听您的想法，而且[我们正在招聘](/careers)！
