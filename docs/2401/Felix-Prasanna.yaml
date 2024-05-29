@@ -1,81 +1,125 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:45:30'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:45:30
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Felix Prasanna
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Felix Prasanna
 - en: 来源：[https://fprasx.github.io/articles/type-system-arithmetic/](https://fprasx.github.io/articles/type-system-arithmetic/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://fprasx.github.io/articles/type-system-arithmetic/](https://fprasx.github.io/articles/type-system-arithmetic/)
 - en: Doing First Grade Math in Rust's Type System
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Rust 的类型系统中进行一年级数学
 - en: '2024-01-04'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '2024-01-04'
 - en: Arithmetic is hard. Luckily, we can fix that using Rust's Expressive Type System™️.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 算术很难。幸运的是，我们可以使用 Rust 的表现型系统来解决这个问题™️。
 - en: '### Math'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '### 数学'
 - en: 'Let''s start with Church Encodings. There''s this idea in functional programming
     that functions are good, and type theorists took it pretty far. So far that they
     sometimes define numbers as functions that look like this:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从 Church 编码开始。函数式编程中有一个概念，即函数是好的，类型理论家将其推得相当远。到目前为止，他们有时将数字定义为看起来像这样的函数：
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The nth natural number is *literally* defined as a function that takes a value
     and function, and applies that function n times.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 第 n 个自然数 *字面上* 被定义为一个接受值和函数的函数，并将该函数应用 n 次。
 - en: 'There''s another concept from math called the Peano Axioms. It''s also an Extremely
     Useful way to characterize the natural numbers that is basically as follows (omitting
     some details):'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有数学中的另一个概念叫做 Peano 公理。这也是一种非常有用的方式来表征自然数，基本上如下（省略了一些细节）：
 - en: '[PRE1]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This inductively defines the natural numbers as:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这以归纳的方式定义了自然数：
 - en: '[PRE2]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: where `S` is called the Successor Function. It doesn't really matter what it
     actually is, since we're going for a more . . . abstract view of things.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中`S`称为后继函数。它实际上是什么并不重要，因为我们正在追求更...抽象的事物视图。
 - en: Notice any similarity to the Church Encodings?
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意到与 Church 编码的任何相似之处了吗？
 - en: The main idea is that we can represent a number as a *repeated function application*.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要思想是我们可以将一个数字表示为*重复的函数应用*。
 - en: Enter Rust
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 进入 Rust
 - en: So how do we replicate this in Rust? And how do we make it performant? We could
     just do it using regular lambdas, but that would probably be slow since closures
     are boxed, etc, etc.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么我们如何在 Rust 中复制这个？我们如何使其性能良好？我们可以只是使用常规的 lambda 来做，但那可能会很慢，因为闭包是装箱的，等等等等。
 - en: 'The ultimate strategy is to play God and compute our numbers at compile time!
     After all, that''s the Rust way. But how do we call functions at compile time?
     Well, we can borrow another idea from type theory, and notice that a generic struct
@@ -83,90 +127,138 @@
     `T` is sort of like computing a function on types, starting with a type `T` and
     ending with a type `Wrapper<T>`. And one could conceivably construct a type `Wrapper<Wrapper<Wrapper<T>>>`
     . . .'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终策略是扮演上帝并在编译时计算我们的数字！毕竟，这就是 Rust 的方式。但我们如何在编译时调用函数呢？嗯，我们可以借鉴类型理论的另一个想法，并注意到泛型结构体在某种程度上类似于函数。考虑：`struct
+    Wrapper<T>(PhantomData<T>)`。实例化`T`有点像在类型上计算一个函数，从类型`T`开始，以类型`Wrapper<T>`结束。而且可以想象构造一种类型`Wrapper<Wrapper<Wrapper<T>>>`...
 - en: 'I bet this is starting to get repetitive. Let''s define the following types:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我敢打赌这开始变得重复了。让我们定义以下类型：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Yeah I know `Succ` sounds like a funny word, but it''s really just convention
     for `Successor`. We can now define some natural numbers:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，我知道`Succ`听起来像一个滑稽的词，但它实际上只是`Successor`的惯例。现在我们可以定义一些自然数：
 - en: '[PRE4]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This is going to get annoying. Let''s write a little macro to help us out:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将变得很烦人。让我们写一个小宏来帮助我们：
 - en: '[PRE5]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Basically, we feed this bad boy tokens, and it''ll gobble them up one at a
     time, each time adding a new layer of `Succ` to the type it''s constructing. Here''s
     an example expansion:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本上，我们将令牌传递给这个坏男孩，它将逐个将它们吞噬掉，每次向其构造的类型添加一个新的`Succ`层。这是一个示例扩展：
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now we can construct decently large numbers using `encode!(***** ... *****)`,
     although the compiler will overflow its stack at about 3200 tokens due to recursion.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以使用`encode!(***** ... *****)`构造相当大的数字，尽管编译器由于递归在大约3200个令牌处会溢出其堆栈。
 - en: Evaluation
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 评估
 - en: Now, remember, we're trying to do arithmetic with these numbers, so we need
     to be able to extract them out of this encoded form at some point. Hopefully,
     we can do all our computation at compile time (so infinitely fast?) and then extract
     them as constants into our final binary. This means we need a function from types
     to . . . values? Hmm. Well, if you look at them hard enough, traits are kind of
     like functions from types to values.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，请记住，我们正在尝试使用这些数字进行算术运算，所以我们需要能够在某个时候将它们从编码形式中提取出来。希望我们可以在编译时执行所有计算（所以无限快？），然后将它们作为常量提取到我们的最终二进制文件中。这意味着我们需要一个从类型到...值的函数？嗯。如果你仔细看，特质有点像是从类型到值的函数。
 - en: '[PRE7]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'In a sense, we''ve mapped the type `Foo` to `13`, and the type `Bar` to 29\.
     Let''s keep going with this idea and define the `Value` trait:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 从某种意义上说，我们将类型 `Foo` 映射到 `13`，将类型 `Bar` 映射到 `29`。让我们继续这个想法，定义 `Value` 特性：
 - en: '[PRE8]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: We can now recursively "evaluate" a type - or get how many time's `Succ` has
     been applied, since the second case strips off one `Succ` layer each iteration.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以递归地 "评估" 一个类型 - 或者获取 `Succ` 被应用了多少次，因为第二种情况在每次迭代中剥离一个 `Succ` 层。
 - en: Addition and Subtraction
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 加法和减法
 - en: 'Alright, we''re on to something a little juicier. The main idea is still the
     same though. We''ll use this weird type recursion to construct new types. Instead
     of using traits to map types to values, we can also use them to map types to other
     types, using associated constants. Let''s define the trait `Add` like so:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，我们现在有点有趣的东西了。主要思想仍然是一样的。我们将使用这种奇怪的类型递归来构造新类型。我们可以使用特性将类型映射到值，也可以使用它们将类型映射到其他类型，使用关联常量。让我们这样定义特性
+    `Add`：
 - en: '[PRE9]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'We can now define some base cases for our recursion:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以为我们的递归定义一些基本情况：
 - en: '[PRE10]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'And now for our recursive rule:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在轮到我们的递归规则了：
 - en: '[PRE11]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Let''s break it down. We firstly are taking two nonzero numbers - since both
     type parameters are wrapped in `Succ`, and could also be `Succ<..>` themselves.
     The idea of this rule is to take one layer of `Succ` off of the first type parameter,
@@ -174,159 +266,242 @@
     all the `Succ`''s - precisely the total number of `Succ`''s that they both started
     with, which means it represents the sum of the two starting numbers. Let''s do
     a small example (I won''t do this for all of them):'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来分解一下。我们首先要取两个非零数 - 因为两个类型参数都包含在 `Succ` 中，并且也可能是 `Succ<..>` 本身。这个规则的想法是从第一个类型参数中取下一个
+    `Succ` 层，并将其放在另一个上。然后最终，第二个类型参数将拥有所有的 `Succ` - 正好是它们最初共同拥有的 `Succ` 的总数，这意味着它表示了两个起始数的和。让我们做一个小例子（我不会为所有做这个）：
 - en: '[PRE12]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Finally, there are also some trait bounds - we're telling rustc we'll only call
     this trait (weird idea right?) on types that can be added.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，还有一些特性约束 - 我们告诉 rustc 我们只会在可以相加的类型上调用这个特性（是不是很奇怪？）。
 - en: 'Subtraction is pretty similar (division is where it really goes crazy). We
     define our base cases:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 减法很相似（除法真的很疯狂）。我们定义了我们的基本情况：
 - en: '[PRE13]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: The only interesting thing here is that we define subtraction as *saturating*.
     This will help with implementing division. If you leave out that rule completely,
     the compiler will actually prevent you from having underflows!
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里唯一有趣的事情是，我们将减法定义为 *饱和的*。这将有助于实现除法。如果完全省略这个规则，编译器实际上会阻止您发生下溢！
 - en: 'Anyways, here''s our recursive rule:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，这是我们的递归规则：
 - en: '[PRE14]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'We basically just peel one layer of `Succ` off of each type parameter until
     one of them is zero. The remaining one is then our difference. You can think about
     it pictorially as this:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们基本上只是从每个类型参数中剥离一个 `Succ` 层，直到其中一个为零。剩下的那个就是我们的差异。你可以想象成这样：
 - en: '[PRE15]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: where we got rid of the shared terms in the brackets one at a time.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们逐个消除括号中的共同项。
 - en: Multiplication
+  id: totrans-56
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 乘法
 - en: 'Ok, this task is a bit more complex, but we can use our building blocks from
     before. As always, we define a trait-function and some base cases:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，这个任务有点复杂，但我们可以使用之前的构建块。像往常一样，我们定义一个特性函数和一些基本情况：
 - en: '[PRE16]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'We now have to be a little more careful with what we implement `Mul` for. If
     we were to do the second implementation on `(Zero, T)`, then we would have two
     implementations covering `(Zero, Zero)`. Thus, we implement it on `(Zero, Succ<T>)`,
     since `Succ<T>` is never equal to `Zero`. And now for the recursion, we have this
     baby monstrosity:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们必须更加小心地实现 `Mul`。如果我们对 `(Zero, T)` 进行第二次实现，那么我们将有两个实现涵盖 `(Zero, Zero)`。因此，我们将其实现在
+    `(Zero, Succ<T>)` 上，因为 `Succ<T>` 永远不等于 `Zero`。现在对于递归，我们有了这个宝贝怪物：
 - en: '[PRE17]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Here, we're using the fact that `x * y = y + (x - 1) * y`. We recursively calculate
     the second term, and then add it to the first factor!. Remember that if `Succ<T>`
     represents `T + 1`, then `T` represents `Succ<T> - 1`.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们利用了 `x * y = y + (x - 1) * y` 这个事实。我们递归地计算第二项，然后将其加到第一项上！记住，如果 `Succ<T>`
+    表示 `T + 1`，那么 `T` 表示 `Succ<T> - 1`。
 - en: And finally . . .
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后...
 - en: Division
+  id: totrans-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 除法
 - en: 'I won''t lie, this one really is a monstrosity. We''ll first need to define
     `GreaterThanEq` to check if `x >= y`, since some divisions aren''t clean, e.g.
     `7 / 3`. I''ll explain more later. We''ll do this similarly to how we did `Subtraction`:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不会撒谎，这个真的是个怪物。我们首先需要定义 `GreaterThanEq` 来检查 `x >= y`，因为有些除法不干净，比如 `7 / 3`。稍后我会详细解释。我们将以与我们做
+    `Subtraction` 相似的方式来做这个：
 - en: '[PRE18]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'With that out of the way, let''s handle division. We''ll first start with perfect
     quotients, like `6 / 3`. Here''s our boilerplate:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个，让我们处理除法吧。我们首先从完美商开始，比如`6 / 3`。这是我们的样板代码：
 - en: '[PRE19]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Once again, we have to be careful with our type arguments. Instead of doing
     the second implementation on `(T, Succ<Zero>)`, we implement it on `(Succ<T>,
     Succ<Zero>)` to avoid overlapping with the first implementation on `(Zero, Succ<Zero>)`.
     We can now make use of the identity `x / y = 1 + (x - y) / y`. Intuitively, this
     means we just take one copy of `y` out of `x`, and then count the rest recursively.
     In code, it looks like:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，我们必须小心处理我们的类型参数。我们不是在`(T, Succ<Zero>)`上执行第二个实现，而是在`(Succ<T>, Succ<Zero>)`上实现它，以避免与在`(Zero,
+    Succ<Zero>)`上的第一个实现重叠。我们现在可以利用恒等式`x / y = 1 + (x - y) / y`。直观地说，这意味着我们只需从`x`中取出一个`y`，然后递归计算其余部分。在代码中，它看起来像：
 - en: '[PRE20]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: The only problem is that this expression is incorrect if `x < y`, and will return
     1\. The subtraction saturates to 0, so we get `1 + 0 / y = 1 + 0 = 1`.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一的问题是，如果`x < y`，那么此表达式是不正确的，并且会返回1。减法会饱和到0，所以我们得到`1 + 0 / y = 1 + 0 = 1`。
 - en: 'We just need to combine this `RawQuotient` with the fact that `x / y` is 0
     if `x < y`. Since we have this number as a boolean, we can do a trick for replacing
     a conditional jump with a multiplication (or a cmov in assembly). Observe the
     following table:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只需要将这个`RawQuotient`与`x / y`是0的事实相结合，如果`x < y`。由于我们将此数字作为布尔值，因此我们可以通过用乘法替换条件跳转来进行一个技巧（或者在汇编中进行cmov）。请注意以下表格：
 - en: '[PRE21]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'We can just multiply our `RawQuotient` by whether `x >= y`! If `x >= y`, we''ll
     be left with our `RawQuotient`. If `x < y`, we''ll be multiplying by 0 and get
     0 no matter what, as desired. This leads to the final form of division:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只需将我们的`RawQuotient`乘以`x >= y`的结果！如果`x >= y`，我们将得到我们的`RawQuotient`。如果`x < y`，我们将乘以0，并且无论如何都会得到0，正如我们所期望的那样。这导致了除法的最终形式：
 - en: '[PRE22]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: We have a bunch of trait bounds because we have a bunch more subexpressions
     we need to make sure are evaluatable. At the end of the day though, all this basically
     comes down to is only passing in chains of `Succ` with a `Zero` at the bottom.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有一堆特质边界，因为我们有更多的子表达式需要确保可以计算。但归根结底，所有这些基本上都是将`Succ`链传递到底部的`Zero`。
 - en: You also might notice that we're implementing the recursive case of `Div` on
     `(Succ<T>, Succ<Succ<U>>)`. This means the denominator is greater than 1, so it
     doesn't overlap with any other implementation.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可能注意到我们在`(Succ<T>, Succ<Succ<U>>)上实现了`Div`的递归情况。这意味着分母大于1，因此不会与任何其他实现重叠。
 - en: In true Rust fashion, this implementation actually won't allow us to divide
     by 0, since we never implemented `Div` for `(*, Zero)`!
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 按照真正的 Rust 风格，这个实现实际上不会允许我们除以0，因为我们从未为`(*, Zero)`实现过`Div`！
 - en: And somewhat anticlimactically . . . that's it! I don't know how to convey the
     elation of little green test case dots passing, so you can run it yourself by
     getting the code from [Arithmetic in Rust's Type System](https://github.com/fprasx/arts),
     or arts for short.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 有点令人失望的是……就是这样了！我不知道如何表达小绿色测试用例点通过的喜悦，所以您可以通过从[Arithmetic in Rust's Type System](https://github.com/fprasx/arts)获取代码或简称为
+    arts 来自行运行。
 - en: Note
+  id: totrans-79
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 注：
 - en: I should note I'm not the first person to do this - although I thought I might
     have been when I first started haha. For prior art, see the [typenum](https://crates.io/crates/typenum)
     and [peano](https://crates.io/crates/peano) crates. `typenum` is much faster and
     is what you would actually use in practice.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我应该指出，我不是第一个这样做的人——尽管当我刚开始时可能会认为我是。有关先前的作品，请参阅 [typenum](https://crates.io/crates/typenum)
+    和 [peano](https://crates.io/crates/peano) crates。`typenum`速度要快得多，并且在实践中实际上是您会使用的。
 - en: Once again, I highly recommend running the [code](https://crates.io/crates/peano)
     for yourself. It's a really cool feeling seeing these abstract traits materialize
     into numbers on your terminal. Feel free to drop a star as well!
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，我强烈建议您自行运行[代码](https://crates.io/crates/peano)。看到这些抽象特征在您的终端上转化为数字真是一种很酷的感觉。也请随意给个星星！
 - en: That's it for me. Have a nice day :)
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我就说这么多了。祝您今天愉快 :)
