@@ -1,68 +1,102 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:28:59'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:28:59
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'GCC specs: an introduction'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: GCC规格：简介
 - en: 来源：[https://wozniak.ca/blog/2024/01/02/1/index.html](https://wozniak.ca/blog/2024/01/02/1/index.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://wozniak.ca/blog/2024/01/02/1/index.html](https://wozniak.ca/blog/2024/01/02/1/index.html)
 - en: Have you ever passed `-v` to the driver and studied the output? There's a lot
     of stuff in there that is revealing. It's also a good way to understand what specs
     are and why they exist.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 您是否曾经将`-v`传递给驱动程序并研究其输出？ 其中有很多内容是具有启示性的。 这也是了解规格及其存在原因的好方法。
 - en: Because the output from `-v` is so extensive I'm going to use one example, broken
     up into parts. Not all of it is relevant for understanding specs, but it may be
     of general interest to some.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为`-v`的输出非常广泛，我将使用一个示例，分成几个部分。 并非所有内容都与理解规格有关，但对于某些人可能是一般性的兴趣。
 - en: To get the output, I ran the following command on an amd64 machine running Debian
     12, which is using GCC 12.2.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获得输出，我在运行Debian 12的amd64机器上运行了以下命令，该机器正在使用GCC 12.2。
 - en: '[PRE0]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The content of the source file is not important, only that the program is in
     a single file. (Use `int main (void) {}` if you have nothing sitting around.)
     I've reformatted the output where needed. In some cases I've omitted output and
     indicate it with `(...)`.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 源文件的内容并不重要，只要程序在单个文件中即可。（如果你没有准备好的话，请使用 `int main (void) {}`。）我已根据需要重新格式化输出。
+    在某些情况下，我省略了输出，并用`(...)`表示。
 - en: '[PRE1]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The first line says where the driver is getting its specs. It's possible to
     override the builtin specs but that is for a later discussion.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一行说明了驱动程序从哪里获取其规格。 虽然可以覆盖内置规格，但这是以后讨论的问题。
 - en: What follows are some environment variables that are set by `gcc` to communicate
     with the subprograms and various other information. There is also the "Configured
     with" line that tells you how GCC was configured, which is useful if you want
     to build it yourself.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是一些由`gcc`设置的环境变量，用于与子程序和各种其他信息通信。 还有一行“配置为”告诉您GCC是如何配置的，如果您想自己构建它，则非常有用。
 - en: In our example the driver has to compile the source using the C compiler, assemble
     it into an object file, then link the object into an executable. The first subprogram
     run is the compiler. `cc1` is the C compiler, `cc1plus` is the C++ compiler. Note
     that subprogram invocations in the output are lines that start with a single space.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的示例中，驱动程序必须使用C编译器编译源代码，将其组装成对象文件，然后将对象链接到可执行文件中。 第一个子程序运行是编译器。 `cc1`是C编译器，`cc1plus`是C++编译器。
+    请注意，输出中的子程序调用是以以单个空格开头的行开始的。
 - en: '[PRE2]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We only provided the arguments `-v` and `t.c` to the driver yet the compiler
     has many more. Some are even provided twice. If you look at the [documentation](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Invoking-GCC.html)
     for options you won't find the "dump" ones listed, for example, so the compiler
@@ -71,42 +105,60 @@
     it. `-march` and `-mtune` control what kind of code is generated for the processor.
     These are options specific to the target or host. It would be tedious to specify
     them every time.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只向驱动程序提供了参数`-v`和`t.c`，但编译器有更多选项。 有些甚至提供了两次。 如果您查看[文档](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Invoking-GCC.html)中的选项，例如，您不会找到列出“dump”选项，因此编译器不使用与驱动程序相同的选项。
+    也就是说，其中一些匹配。 `-fasynchronous-unwind-tables`是一个代码生成选项，如果目标机器支持，则在调试时非常有用。 `-march`和`-mtune`控制为处理器生成什么样的代码。
+    这些是特定于目标或主机的选项。 每次都指定它们将是很烦人的。
 - en: I've trimmed all the compiler output because it's mostly version info, although
     it does print the C standard it is using, some of the compiler's heuristic data,
     and the compiler executable checksum. It will also print the search order for
     headers which can be very handy when debugging header problems or just knowing
     where system headers reside.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经删除了所有编译器输出，因为它主要是版本信息，尽管它确实会打印出它正在使用的C标准，一些编译器的启发式数据以及编译器可执行文件的校验和。 它还会打印标题的搜索顺序，这在调试标题问题或仅知道系统标题存放在何处时非常方便。
 - en: As a side note, it's worth pointing out that you can run the compiler directly
     if you want. You can even pass it `--help` to see the extensive set of options
     it accepts. Running the compiler directly isn't something you need to do very
     often, even when debugging it, because `gcc` has a [-wrapper](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Overall-Options.html#index-wrapper)
     option to do this for you.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一个侧面说明，值得指出的是，如果你愿意，你可以直接运行编译器。你甚至可以传递`--help`来查看它接受的广泛的选项集。直接运行编译器并不是你经常需要做的事情，即使在调试时也是如此，因为`gcc`有一个[-wrapper](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Overall-Options.html#index-wrapper)选项可以为您执行此操作。
 - en: The compiler outputs assembler source, so the next step is for the driver is
     to run the assembler.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器输出汇编源代码，所以下一步是驱动程序运行汇编器。
 - en: '[PRE3]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Note that the input is a temporary file, as is the output. The driver has to
     manage all these temporaries and coordinate them across the subprograms. If you
     pass `-save-temps` then it will change the way this is done and use more intuitive
     names.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，输入是一个临时文件，输出也是如此。驱动程序必须管理所有这些临时文件，并在子程序之间协调它们。如果传递了`-save-temps`，则会改变这样做的方式，并使用更直观的名称。
 - en: Finally, we have the linker ^(invocation, complete with the messiest and most
     complex set of arguments.)
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们有链接器的调用，包含最混乱和最复杂的一系列参数。
 - en: '[PRE4]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: What the options mean is beyond the scope of this article, but it's worth noting
     what arguments are needed. There are object files (the `.o` suffix) and libraries
     (`-l` options) and library search paths (`-L` options). The order of these options
@@ -114,14 +166,20 @@
     object files to use (found in `/usr/lib` in this example) can be non-obvious,
     so we should appreciate all the work the driver does behind the scenes. Manually
     specifying a link is tedious.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 选项的含义超出了本文的范围，但值得注意的是需要哪些参数。有目标文件（`.o`后缀）和库（`-l`选项）以及库搜索路径（`-L`选项）。这些选项的顺序也很重要，驱动程序必须正确处理。此外，要使用哪些系统目标文件（在本例中位于`/usr/lib`中）可能并不明显，因此我们应该感谢驱动程序在幕后所做的所有工作。手动指定链接是繁琐的。
 - en: To round out the discussion of the files that the driver has to manage, all
     the temporary files created during the compile/assemble/link sequence are deleted
     before the driver exits.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了完成对驱动程序必须管理的文件的讨论，编译/汇编/链接序列期间创建的所有临时文件在驱动程序退出之前都会被删除。
 - en: All the arguments passed to the subprograms and the management of files are
     done with specs.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有传递给子程序的参数和文件管理都是通过规范完成的。
