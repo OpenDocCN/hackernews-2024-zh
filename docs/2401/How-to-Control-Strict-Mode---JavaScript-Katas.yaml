@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:30:18'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:30:18
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How to Control Strict Mode | JavaScript Katas
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何控制严格模式 | JavaScript Katas
 - en: 来源：[https://jskatas.org/blog/2023/10/16-control-strict-mode/](https://jskatas.org/blog/2023/10/16-control-strict-mode/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://jskatas.org/blog/2023/10/16-control-strict-mode/](https://jskatas.org/blog/2023/10/16-control-strict-mode/)
 - en: I was surprised to see that the worker threads run in non-strict mode by default.
     This should rarely happen, because when using ES modules (ESMs), classes or `"use
     strict"` then the engine forces strict mode. I didn't know this in the beginning.
@@ -35,52 +41,64 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我惊讶地发现，工作线程默认情况下以非严格模式运行。这种情况应该很少见，因为使用 ES 模块（ESMs）、类或`"use strict"`时，引擎会强制使用严格模式。一开始我不知道这一点。我一直在为这个网站使用的卡塔进行工作，这个网站使用[javascript-katas
+    仓库](https://codeberg.org/wolframkriesing/javascript-katas)，它使用 ESMs 和`type=module`，这是我的默认设置。这使得整个
+    nodejs 项目，任何`npm ...`命令都会使用严格模式。逃离严格模式并不容易，但以非严格模式运行代码的一种方法是使用工作线程。
 - en: I always like to understand where things originate, so let's read about strict
     mode.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我总是喜欢了解事物的起源，所以让我们来读一读严格模式。
 - en: Strict Mode – When and Why?
   id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 严格模式 – 何时以及为什么？
 - en: Strict mode was introduced [in ES5 (in 2009)](https://262.ecma-international.org/5.1/#sec-4.2.2).
     In the specification it says strict mode was added
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 严格模式是在[ES5（2009年）](https://262.ecma-international.org/5.1/#sec-4.2.2)中引入的。规范中说严格模式被添加了
 - en: in the interests of security, to avoid what [...] consider to be error-prone
     features, to get enhanced error checking
   id: totrans-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 为了保证安全性，避免[...]认为是容易出错的功能，获得增强的错误检查
 - en: and
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 和
 - en: The strict variant also specifies additional error conditions that must be reported
     by throwing error exceptions
   id: totrans-12
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 严格模式还指定了必须通过抛出错误异常报告的额外错误条件
 - en: So strict mode was introduced for making JS safer.
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 严格模式是为了让 JS 更安全而引入的。
 - en: Strict Mode?
   id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 严格模式？
 - en: Actually the worker I used was just a mean to solve my actual problem, which
     was running tests for the `arguments` kata. In order to do that I needed to run
     the tests in non-strict mode, so let's have a look at the strict mode.
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，我使用的工作线程只是解决我真正问题的一种方法，即运行`arguments`卡塔的测试。为了做到这一点，我需要以非严格模式运行测试，所以让我们来看看严格模式。
 - en: 'Where does the strict mode play a role now? I had been diving deep into the
     "function API", digging in the very first [ES1 spec](https://www.ecma-international.org/wp-content/uploads/ECMA-262_1st_edition_june_1997.pdf)
     and all versions beyond to find out when was what introduced or deprecated (deprecation
@@ -89,6 +107,8 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在严格模式起到什么作用？我一直在深入研究"function API"，深入挖掘最初的[ES1 规范](https://www.ecma-international.org/wp-content/uploads/ECMA-262_1st_edition_june_1997.pdf)和所有后续版本，以找出何时引入或弃用了什么（JavaScript
+    很少被弃用）。所以我找到了`arguments`，当我写下了以下测试时：
 - en: '[PRE0]'
   id: totrans-17
   prefs: []
@@ -103,16 +123,19 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 它以"在严格模式中意外 eval 或 arguments"失败，这不是由于测试代码本身造成的，而是由于我在工作线程中运行的其余代码。上面的测试只是被注入了，只是工作线程中整个代码的一小部分。代码中有一个`import`，它将所有代码都转换为严格模式运行。正如错误所说，在严格模式中不允许使用`arguments`。
 - en: So I want to control when to turn on strict mode. But for that let's understand
     strict mode a bit better first.
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我想要控制何时开启严格模式。但为此，让我们先更好地了解严格模式。
 - en: What forces Strict Mode?
   id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 什么会强制使用严格模式？
 - en: 'As mentioned above `"use strict"` turns on strict mode, but in this case there
     was none in the worker code yet, so what turned it on? In the [ES6 spec chapter
     "Strict Mode Code"](https://262.ecma-international.org/6.0/#sec-strict-mode-code)
@@ -120,11 +143,14 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如上面提到的，`"use strict"`会开启严格模式，但在这种情况下，工作代码中还没有这个，那么是什么打开了它？在[ES6 规范章节"Strict
+    Mode Code"](https://262.ecma-international.org/6.0/#sec-strict-mode-code)中，新增了以下内容，强制开启了严格模式：
 - en: Module code is always strict mode code.
   id: totrans-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 模块代码始终是严格模式代码。
 - en: All parts of a ClassDeclaration or a ClassExpression are strict mode code.
   id: totrans-23
   prefs:
