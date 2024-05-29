@@ -1,79 +1,119 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:16:08'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 15:16:08
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Porffor: Type annotations for performance'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Porffor：性能的类型注释
 - en: 来源：[https://goose.icu/porffor-types/](https://goose.icu/porffor-types/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://goose.icu/porffor-types/](https://goose.icu/porffor-types/)
 - en: My JS engine [Porffor](https://porffor.goose.icu) can now parse TypeScript,
     as I added pluggable parser support which includes Babel’s parser (which can parse
     TS). This itself isn’t that interesting, however I can now use those type annotations
     as compiler hints to optimize!
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的JS引擎[Porffor](https://porffor.goose.icu)现在可以解析TypeScript，因为我添加了可插拔的解析器支持，其中包括Babel的解析器（可以解析TS）。这本身并不那么有趣，但我现在可以将这些类型注释用作编译器提示来进行优化！
 - en: Basic example
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基本示例
 - en: '[PRE0]'
+  id: totrans-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'For the above JS, Porffor has to do several checks of the type of `a`:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于上面的JS，Porffor必须对`a`的类型进行几次检查：
 - en: '`if (a) {`'
+  id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`if (a) {`'
 - en: If string, true if non-blank (not `''`)
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果是字符串，如果非空，则为真（不是`''`）
 - en: If undefined, false
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果未定义，则为假
 - en: '&mldr;'
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '&mldr;'
 - en: '**If number, true if not zero**'
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**如果是数字，为真，如果不是零**'
 - en: '`typeof a`'
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`typeof a`'
 - en: If string, `'string'`
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果是字符串，`'string'`
 - en: If object, `'object'`
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果是对象，`'object'`
 - en: '&mldr;'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '&mldr;'
 - en: '**If number, `''number''`**'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**如果是数字，`''number''`**'
 - en: I already optimize out types which are completely unused in the file. For example,
     all the string checks are removed if the file has 0 strings used in it. But if
     there were any strings, all string checks remain. Porffor could try to infer the
@@ -81,119 +121,178 @@
     do this by presuming the type of something once it has been ran with that type
     several times, etc. But since we are compiling AOT and not JIT, we cannot de-opt/undo
     that guess if it becomes wrong - instead we would just crash.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经优化了文件中完全未使用的类型。例如，如果文件中没有使用字符串，则会删除所有字符串检查。但如果有任何字符串，则所有字符串检查都将保留。Porffor可以尝试自动推断类型，但这很棘手，可能会出错。JIT引擎有时可以通过假定某个东西的类型来推断类型，一旦它以该类型多次运行，等等。但由于我们是AOT编译而不是JIT，如果类型猜测出错，我们无法取消猜测
+    - 相反，我们将会崩溃。
 - en: But we could define the type using type annotations (TS)!
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们可以使用类型注释（TS）定义类型！
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now we have to do **0 checks of the type of `a`**, since we already know it
     at compile-time. This can allow for some big speedups :)
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们不必对`a`的类型进行**任何检查**，因为我们在编译时已经知道了它。这可以实现一些很大的速度提升 :)
 - en: Progressive types
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 渐进类型
 - en: Porffor does not type check itself. You can use your own (with your own config
     too) if you want that. The input also does not have to be completely typed, allowing
     “progressive types”. Types which exist can help speed things up, and untyped things
     will just be treated regularly.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: Porffor本身不进行类型检查。如果你想要的话，你可以使用你自己的（还有你自己的配置）。输入也不必完全类型化，允许“渐进类型”。存在的类型可以帮助加快速度，而未类型化的内容将被正常处理。
 - en: Benchmark
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基准测试
 - en: 'I’m using [a basic Brainf&mldr; interpreter I wrote in JS (`bf.js`)](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.js),
     plus [a typed version (`bf.ts`)](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.ts).
     Here are the times running BF which draws the Mandelbrot set, with different commands
     (`porf` = Porffor):'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在[我写的基本的Brainf&mldr;解释器（`bf.js`）](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.js)上使用了加上[一个带类型的版本（`bf.ts`）](https://github.com/CanadaHonk/porffor/blob/main/bench/bf.ts)。这里是运行绘制曼德勃罗集的BF的时间，使用不同的命令（`porf`
+    = Porffor）：
 - en: '`porf bf.js`: 272s'
+  id: totrans-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`porf bf.js`：272秒'
 - en: This just runs the JS file regularly, with default options.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是正常运行JS文件，使用默认选项。
 - en: '`porf bf.ts -parse-types`: 274s'
+  id: totrans-30
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`porf bf.ts -parse-types`：274秒'
 - en: This runs the TS file, but only parses the types without using them for optimization.
     About the same time as regular JS, within error.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会运行TS文件，但仅解析类型而不使用它们进行优化。与常规JS几乎相同的时间，有一些误差。
 - en: '`porf bf.ts -parse-types -opt-types`: 184s'
+  id: totrans-32
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`porf bf.ts -parse-types -opt-types`：184秒'
 - en: '`-opt-types` tells Porffor to use the type annotations as compiler hints. 1.5x
     speedup, just from using types!'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-opt-types`告诉Porffor将类型注释用作编译器提示。仅仅通过使用类型就提速了1.5倍！'
 - en: '`porf bf.ts -parse-types -opt-types -valtype=i32`: 84s'
+  id: totrans-34
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`porf bf.ts -parse-types -opt-types -valtype=i32`：84秒'
 - en: '`-valtype=i32` also tells Porffor to use `i32`s (32 bit integers) as `number`
     instead of `f64`s. In the future I plan to add a special type to do this instead
     of changing `number` for everything, but the compiler isn’t that smart yet heh.
     Another 2.2x speedup compared to last, or 3.2x in total!'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-valtype=i32`也告诉Porffor使用`i32`（32位整数）作为`number`，而不是`f64`。在未来，我计划添加一个特殊类型来完成这个任务，而不是为所有内容更改`number`，但编译器还不够智能呢。与上次相比，又提速了2.2倍，总共提速了3.2倍！'
 - en: '`porf bf.ts -parse-types -opt-types -valtype=i32 -funsafe-zero-proto-checks=charcodeat`:
     67s'
+  id: totrans-36
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`porf bf.ts -parse-types -opt-types -valtype=i32 -funsafe-zero-proto-checks=charcodeat`：67秒'
 - en: '`-funsafe-zero-proto-checks=charcodeat` additionally informs the compiler to
     do no input out of bounds/etc checks for `String.prototype.charCodeAt`. In the
     future, this should also be able to be automatically detected and done for you.
     Mild 1.3x speedup compared to previously, resulting in 4x compared to original.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-funsafe-zero-proto-checks=charcodeat` 还告诉编译器不对 `String.prototype.charCodeAt`
+    进行任何输入超出界限等检查。在未来，这也应该能够被自动检测并执行。与以前相比，轻微的1.3倍加速，导致相对于原始值的4倍。'
 - en: '`node bf.js`: 66s'
+  id: totrans-38
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`node bf.js`: 66秒'
 - en: For comparison, Node running the same JS file. Obviously, Node is JIT compiled
     so has a big advantage compared to compiling AOT to bytecode. Yet, we still roughly
     match it with the right options! 🚀
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为比较，Node 运行相同的 JS 文件。显然，Node 是 JIT 编译的，因此与编译 AOT 到字节码相比具有很大的优势。然而，我们仍然使用正确的选项大致与其匹配！
+    🚀
 - en: '`quickjs bf.js`: 1812s'
+  id: totrans-40
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '`quickjs bf.js`: 1812秒'
 - en: For comparison, a traditional interpreter running the same benchmark.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为比较，一个传统的解释器运行相同的基准测试。
 - en: Conclusion
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: The best part of this for me is that [the main diff for this feature was small,
     only +131 -25](https://github.com/CanadaHonk/porffor/commit/a6a92e01ac1e09383f5c3f24e55f2648ff714b7a),
     and only took me ~an evening to do; thanks to the great foundation from [the rewrite](/porffor-rewrite/).
     Please note both regular JS and typed will likely speedup even more in the near
     future! This is just today. I haven’t compared to many other engines as I’m saving
     that for a later post when I’ve done more benchmarking and testing.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说最好的部分是，[这个功能的主要差异很小，只有 +131 -25](https://github.com/CanadaHonk/porffor/commit/a6a92e01ac1e09383f5c3f24e55f2648ff714b7a)，而且只花了我大约一个晚上的时间来完成；感谢[重写](/porffor-rewrite/)提供的良好基础。请注意，常规
+    JS 和类型化 JS 很可能在不久的将来会更快！这只是今天。我还没有与许多其他引擎进行比较，因为我把它留到了以后，当我做更多的基准测试和测试时。
 - en: 'Also for comedic relief, this makes the full description of Porffor even more
     complicated:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了增加喜剧效果，这使得 Porffor 的完整描述变得更加复杂：
 - en: A from-scratch experimental AOT optimizing JS/TS -> Wasm/C engine/compiler/runtime
     in JS
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个从零开始的实验性的 AOT 优化 JS/TS -> Wasm/C 引擎/编译器/运行时在 JS 中
 - en: Thanks for reading! :)
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢阅读！ :)
