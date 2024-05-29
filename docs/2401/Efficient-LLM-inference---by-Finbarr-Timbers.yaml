@@ -225,6 +225,9 @@
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，蒸馏的问题在于，它需要从头开始训练一个较小的模型 ***并且*** 用大模型在整个数据集上运行推理。如果您有一个像 GPT-3 那样大小的数据集（500B），这将花费
+    $1M，按公共 API 价格计算（5e11 个令牌 * 2e-6 $/令牌 = $1e6），或者如果我们假设 OpenAI 有 60% 的利润率，那么就是
+    $400k。鉴于最初训练 GPT-3 的成本约为 $5M，这将使已经很高的成本增加 10-20%。不是禁止性的，但很昂贵。
 - en: If you can afford this cost, great! Do it. It’s almost certainly going to give
     you the best performance. If you want something cheaper, you’re deciding between
     training a smaller model from scratch and quantizing an existing model. To help,
@@ -236,23 +239,30 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你能承担这个成本，太好了！去做吧。这几乎肯定会给你最佳的性能。如果你想要更便宜的东西，你需要在从头开始训练一个较小的模型和量化一个现有模型之间做出决定。为了帮助，我们有一篇论文
+    [k 位推理缩放规律](https://arxiv.org/abs/2212.09720)。这个想法是，从推理的角度来看，我们对以一定精度服务一个 30B
+    模型和以两倍精度服务一个 60B 模型之间是中立的，因为大多数 GPU 在运行精度减半的模型时速度是原来的两倍快（例如 [A100s](https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf)）。
 - en: This figure shows the tradeoff between using various model sizes with various
     levels of precision. Let’s compare two points for the [OPT](https://arxiv.org/abs/2205.01068)
     line of work.
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 此图显示了使用不同模型大小和不同精度水平之间的权衡。让我们比较一下 [OPT](https://arxiv.org/abs/2205.01068) 的两个工作点。
 - en: Model precision Bit precision Mean zeroshot accuracy $10^{11}$ 8 0.675 $10^{11}$
     16 0.65 $10^{12}$ 8 0.725 $10^{12}$ 16 0.7
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型精度 位精度 平均零样本准确度 $10^{11}$ 8 0.675 $10^{11}$ 16 0.65 $10^{12}$ 8 0.725 $10^{12}$
+    16 0.7
 - en: 'What we see is that, given a total number of model bits, we prefer the model
     with *fewer* bits per parameter. Intuitively, this makes sense: we don’t see a
     benefit from training half as many parameters with fp64 vs fp32.'
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到的是，给定模型位数，我们更喜欢每个参数*较少*位数的模型。直觉上讲，这是有道理的：使用 fp64 和 fp32 训练一半的参数并没有带来好处。
 - en: 'If we look at another figure, this time from the [OPT paper](https://arxiv.org/abs/2205.01068),
     we can analyze how performance scales with the number of parameters. As OPT uses
     FP16, which uses 2 bytes (or 16 bits) per parameter, 1e11 parameters is equal
@@ -264,6 +274,9 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们看另一张图，这次是来自 [OPT 论文](https://arxiv.org/abs/2205.01068)，我们可以分析性能如何随参数数量变化而变化。由于
+    OPT 使用 FP16，即每个参数使用 2 字节（或 16 位），1e11 个参数相当于 1.6e12 位。通过减少 10 倍的参数，从 1.6e12 降到
+    1.6e11 位，OPT 的平均准确度从 0.7 降到 0.65：准确度下降了 8%，成本减少了 10 倍。虽然不及我们在蒸馏中看到的模型大小/准确度权衡那么好，但我认为大多数企业必须认真考虑这种权衡。
 - en: The other thing to keep in mind about quantization is that it’s remarkably cheap
     to do! The SOTA method for quantization is [GPTQ](https://arxiv.org/abs/2210.17323),
     which can quantize a 175B parameter model in 4 GPU-hours (roughly $4 of cost at
@@ -275,6 +288,9 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于量化的另一点要记住的是，它的成本非常便宜！量化的 SOTA 方法是 [GPTQ](https://arxiv.org/abs/2210.17323)，它可以在
+    4 个 GPU 小时内量化一个 175B 参数模型（在公共云价格下大约为 $4）。然而，从头开始训练模型成本很高；对于训练一个 GPT-3 风格模型的成本的粗略估计是
+    $5M，成本随参数数量线性增加，因此一个 20B 模型的成本将约为 ~$500k，并且需要大量数据（~100B 令牌才能达到 [Chinchilla 最优](https://arxiv.org/abs/2203.15556)）。
 - en: So quantizing is great. But what, exactly, *is* quantization, and how does it
     work?
   id: totrans-36
