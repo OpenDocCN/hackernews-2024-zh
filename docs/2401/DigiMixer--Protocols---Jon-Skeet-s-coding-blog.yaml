@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:29:16'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'DigiMixer: Protocols | Jon Skeet''s coding blog'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://codeblog.jonskeet.uk/2024/01/02/digimixer-protocols/](https://codeblog.jonskeet.uk/2024/01/02/digimixer-protocols/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,41 +28,51 @@
     certainly not been stalled. Over the last year, I’ve added support for various
     additional mixers, as well as improving the support for some of the earlier ones,
     and performing quite a lot of refactoring.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'DigiMixer now supports the following mixers, to a greater or lesser extent:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Behringer X series (tested with XR16, XR18, X-32R) and Midas M series (only
     tested with M32R, but I expect it to be identical to the X series)
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Harman Soundcraft Ui series (tested with Ui24R)
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Allen & Heath Qu series (tested with Qu-SB, including the AR84 stage box)
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Allen & Heath CQ series (tested with CQ-20B)
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: RCF M-18
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Mackie DL series (tested with DL16S and DL32R, which proved significantly difference)
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Yamaha DM series (tested with DM-3)
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: PreSonus StudioLive Series III (tested with 16R)
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -70,11 +86,13 @@
     expect a given MIDI message to mean “play middle C”.) That’s useful in terms of
     integration within a DAW, but none of the mixers I’ve seen so far provide sufficient
     control via MIDI to meet DigiMixer’s needs.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: This post will go into a little detail about the protocols I’ve encountered
     so far, what we actually *need* for DigiMixer, and some practical aspects of how
     I’ve been reverse engineering the protocols.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: I’m hoping to start writing more detailed documentation about each protocol
@@ -84,9 +102,11 @@
     that directory is likely to be entirely unofficial – when I talk about a message
     “chunk size” or “subtype” etc, that’s just what I’ve used in the code for lack
     of a better term.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Very high level categorizations
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -97,8 +117,11 @@
     extent using MIDI (which could be via a USB-MIDI connection, dedicated MIDI hardware,
     or even MIDI over IP) – but I haven’t investigated any mixer protocols that aren’t
     network-oriented.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从协议的最高级别分类开始：DigiMixer支持的所有内容都使用网络进行通信，并且都通过IP进行。可能会有一些数字混音器，其中客户端/混音器连接是通过USB进行的，正如我之前提到的，也可以通过某种程度的MIDI控制一些混音器（可以通过USB-MIDI连接，专用MIDI硬件，甚至MIDI
+    over IP） - 但我还没有调查过不基于网络的混音器协议。
 - en: It’s worth being really clear about the difference between the “client/mixer”
     protocol and any “client/control surface” protocols. In the same repository as
     DigiMixer, I have some libraries for integration with the [Icon Platform](https://github.com/jskeet/DemoCode/tree/main/IconPlatform)
@@ -111,20 +134,30 @@
     an X32 with no changes. This post ignores the control surface aspects entirely,
     other than in terms of what we *want* to be able to do with DigiMixer, focusing
     on the client/mixer protocols.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 很重要的一点是要清楚“客户端/混音器”协议与任何“客户端/控制面板”协议之间的区别。在与DigiMixer相同的代码库中，我有一些与[Icon Platform](https://github.com/jskeet/DemoCode/tree/main/IconPlatform)和[X-Touch
+    Mini](https://github.com/jskeet/DemoCode/tree/main/XTouchMini)控制面板集成的库 - 这两者都通过一个应用程序（目前*不*在公共GitHub上，因为它与At
+    Your Service共享配置）与DigiMixer集成。DigiMixer的抽象之一目的是允许混音器被广泛地视为可互换的 - 因此，使用X-Touch
+    Mini控制（比如）CQ-20B的相同基于DigiMixer的代码 *应该* 能够在不更改任何内容的情况下控制X32。本文完全忽略了控制面板方面的内容，只关注我们*想要*通过DigiMixer实现的客户端/混音器协议方面的内容。
 - en: 'The most obvious initial categorization of the protocols is in terms of transport
     (OSI layer 4) protocol: in our case, always UDP or TCP, or a mixture.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 协议最明显的初始分类是根据传输（OSI第4层）协议来进行的：在我们的情况下，始终是UDP或TCP，或者两者混合使用。
 - en: One fairly common pattern (used by the CQ, DM, Qu, StudioLive mixers) is to
     have a TCP connection for control aspects, but report meter levels over UDP. Meters
     show the point-in-time sound level for a particular input or output; typically
     it doesn’t matter if a meter packet is dropped every so often – so it makes sense
     to use UDP for that. It’s obviously rather more important if a “mute this channel”
     message is dropped, so the reliability of TCP is useful there.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种相当常见的模式（由CQ、DM、Qu、StudioLive混音器使用）是使用TCP连接来控制方面，但通过UDP报告计量级别。计量器显示特定输入或输出的时点音量；通常偶尔丢失一个计量器数据包并不重要
+    - 因此使用UDP是有道理的。如果“静音此通道”消息被丢失，那么TCP的可靠性就显得更加重要了。
 - en: The RCF M-18 and the X/M series of Behringer/Midas mixers use OSC over UDP.
     (The DM-3 also supports OSC over UDP, but doesn’t expose enough functionality
     to meet DigiMixer’s requirements.) The unreliability of UDP is worrying here;
@@ -134,8 +167,10 @@
     experience is that on a wired network with just a single switch between the mixer
     and the client (which would be the common deployment scenario), it’s never *actually*
     caused a problem.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: RCF M-18和Behringer/Midas混音器的X/M系列使用UDP上的OSC协议。（DM-3也支持UDP上的OSC协议，但不提供足够的功能来满足DigiMixer的要求。）UDP的不可靠性在这里令人担忧；可以推测的是您只在足够可靠的网络上操作它们，以至于这不会成为问题，或者客户端周期性地向混音器请求“当前状态”，并检查其与自己期望的状态是否一致。我的经验是，在仅有一个交换机连接混音器和客户端的有线网络上（这将是常见的部署场景），它从未*真正*导致问题。
 - en: 'The DL and Ui series *only* use TCP as far as I’ve seen (or at least as far
     as DigiMixer is concerned). The Ui series is particularly interesting here; its
     manufacturer-provided user interface is just a web UI. The mixer’s built-in web
@@ -146,39 +181,58 @@
     and then it’s just a line-oriented protocol. Each message within the protocol
     (in both directions) is an ASCII line of text. I’ll come back to message formats
     later on.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我所见（或者至少就 DigiMixer 而言），DL 和 Ui 系列**只**使用 TCP。这里 Ui 系列特别有趣；它的制造商提供的用户界面只是一个
+    Web 用户界面。混音器内置的 Web 服务器提供用户界面本身，该用户界面连接回混音器仍然在端口 80 上创建一个 Web 套接字连接。我对 Web 套接字标准了解不够，不知道实现有多“正常”，但是编码起来非常简单：发出“GET
+    /raw HTTP1.1”的请求，读取响应头，然后它只是一个基于行的协议。该协议中的每条消息（在两个方向上）都是一条文本 ASCII 行。稍后我会回到消息格式。
 - en: Sources of information
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 信息来源
 - en: Working on DigiMixer has been a fascinating exercise in piecing together information
     from multiple sources. Typically the *implementation* of each protocol has been
     relatively straightforward when I’ve had enough information of the protocol itself,
     but that information is hard to come by.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 致力于 DigiMixer 的工作是一项迷人的工作，需要从多个来源收集信息。通常情况下，只要我拥有足够的协议信息，每个协议的*实现*就相对简单，但是这些信息很难得到。
 - en: In some cases, the manufacturer has provided the information itself, either
     officially or unofficially. For the Ui series for example, Harman support responded
     to my enquiry really quickly, sending me documentation which was, while not fully
     comprehensive, easily enough to get started with. (They did stress that this documentation
     was in no way a guarantee of future compatibility or support.)
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些情况下，制造商自己提供了信息，无论是官方还是非官方的。例如，对于 Ui 系列，Harman 支持对我的查询做出了非常快速的响应，向我发送了文档，尽管不是完全全面的，但足以开始使用。
+    （他们强调，这些文档绝不是未来兼容性或支持的保证。）
 - en: In other cases, there’s an active community with really strong efforts, including
     a mixture of official and unofficial documentation. The Behringer X series and
     Midas M series (which are basically the same in terms of software, as far as I
     can tell) have lots of active projects to access them via OSC, and the most comprehensive
     documentation comes from [Patrick-Gilles Maillot’s site](https://sites.google.com/site/patrickmaillot/x32).
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其他情况下，有一个活跃的社区，他们非常努力，包括官方和非官方文档的混合。 Behringer X 系列和 Midas M 系列（据我所知，在软件方面基本相同）有很多活跃的项目，可以通过
+    OSC 访问它们，并且最全面的文档来自 [Patrick-Gilles Maillot 的网站](https://sites.google.com/site/patrickmaillot/x32)。
 - en: For the StudioLive mixers, there’s a [GitHub project](https://github.com/featherbear/presonus-studiolive-api)
     and [documentation](https://featherbear.cc/presonus-studiolive-api/#documentation)
     which are strictly unofficial and still at least somewhat incomplete – but invaluable.
     The situation is similar for the RCF M-18, where a [single inactive GitHub repo](https://github.com/Jille/rcf-m18)
     is basically I could find.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 StudioLive 混音器，有一个 [GitHub 项目](https://github.com/featherbear/presonus-studiolive-api)
+    和 [文档](https://featherbear.cc/presonus-studiolive-api/#documentation)，严格来说是非官方的，至少在某种程度上还不完整
+    - 但是非常宝贵。 RCF M-18 的情况类似，这里有一个 [单一的不活跃的 GitHub 存储库](https://github.com/Jille/rcf-m18)
+    基本上就是我找到的。
 - en: For other mixers… there’s [Wireshark](https://www.wireshark.org/). All the digital
     mixers I’ve looked at have manufacturer-supplied clients. When those run on Windows,
     it’s easy to just start Wireshark, open the client and (say) move a fader, then
@@ -188,70 +242,103 @@
     to be really handy – it’s a small, silent, managed switch which supports port
     mirroring. So all I need to do is plug both my laptop and the mixer into the switch,
     mirror traffic from the mixer port to the laptop port, and again run Wireshark.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于其他混音器... 有 [Wireshark](https://www.wireshark.org/)。 我查看过的所有数字混音器都有制造商提供的客户端。
+    当这些客户端在 Windows 上运行时，只需启动 Wireshark，打开客户端（比如移动一个滑杆），然后关闭客户端并查看混音器和客户端之间的通信即可。
+    如果提供的唯一客户端是 Android 或 iOS 应用程序，则稍微麻烦一些，但我发现 [TP-Link TL-SG105E](https://www.tp-link.com/uk/business-networking/easy-smart-switch/tl-sg105e/)
+    非常方便 - 它是一款小巧、无噪音的托管交换机，支持端口镜像。 因此，我所需做的就是将我的笔记本电脑和混音器都插入交换机，将混音器端口的流量镜像到笔记本电脑端口，并再次运行
+    Wireshark。
 - en: '[Mixing Station](https://mixingstation.app/) supports all of these mixers too,
     and sometimes it’s useful to look at the traffic between *that* and the mixer
     and compare it with the traffic between the manufacturer-supplied client and the
     mixer.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Mixing Station](https://mixingstation.app/) 也支持所有这些混音器，并且有时查看混音器和制造商提供的客户端之间的通信，并将其与混音器和制造商提供的客户端之间的通信进行比较是很有用的。'
 - en: Of course, capturing the traffic between the mixer and the client doesn’t generally
     *explain* that traffic at all. We don’t need to understand *all* the traffic though
     – only enough for DigiMixer to be effective. So what does that consist of?
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，通常捕获混音器和客户端之间的通信并不完全解释这种通信。我们并不需要完全理解所有的通信 - 只需了解足够多以使 DigiMixer 生效即可。那包括什么呢？
 - en: DigiMixer requirements for protocol comprehension
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: DigiMixer 对协议理解的要求
 - en: As I’ve said before, DigiMixer doesn’t try to be a full-fidelity mixer client.
     It only aims to provide control in terms of muting and unmuting, and moving faders
     (for either “overall output” or an “input/output combination” so “aux 1 level”
     or “input 2 level to aux 3” for example). Additionally, it attempts to provide
     information about channel names, general mixer information, any channels that
     are linked together to form stereo pairs, and meter information.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我之前所说，DigiMixer 并不试图成为一个完全忠实的混音器客户端。它的目标仅仅是提供静音和取消静音的控制，并移动滑杆（无论是“总输出”还是“输入/输出组合”，比如“辅助
+    1 水平”或“输入 2 水平到辅助 3”）。此外，它还试图提供关于通道名称、一般混音器信息、将通道链接在一起形成立体声对的任何通道以及计量信息的信息。
 - en: 'In protocol terms, that normally means we need to understand:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在协议方面，这通常意味着我们需要理解：
 - en: Initial connection requirements, including any “client handshake”. (For mixer
     TCP + UDP protocols, this handshake over TCP sometimes involves each side telling
     the other which UDP port they’re listening on.)
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 初始连接要求，包括任何“客户端握手”。 （对于混音器 TCP + UDP 协议，这个握手在 TCP 上有时涉及双方告诉对方他们正在监听的 UDP 端口。）
 - en: How to fetch mixer information (model, version, user-specified mixer name)
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何获取混音器信息（型号、版本、用户指定的混音器名称）
 - en: How to fetch the initial state of the mixer (channel names, any stereo links,
     and current fader/mute status)
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何获取混音器的初始状态（通道名称、任何立体声链接以及当前滑块/静音状态）
 - en: How to send “mute/unmute this channel” and “move this fader” commands
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何发送“静音/取消静音此通道”和“移动此滑块”的命令
 - en: What the mixer sends to the client if state is changed by *another* client
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果由*另一个*客户端更改状态，混音器向客户端发送什么
 - en: What the mixer sends to the client to report meter levels (potentially including
     how the client requests these in the first place)
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 混音器向客户端发送报告表计电平的内容（可能包括客户端首次请求这些内容的方式）
 - en: Some protocols make those requirements very easy to fulfil – others are significantly
     more challenging.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些协议使这些要求变得非常容易实现，而其他协议则更具挑战性。
 - en: Protocol layers and steps in reverse-engineering a protocol
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 协议的层次和步骤，在反向工程协议时
 - en: I’ve never fully understood the [OSI model](https://en.wikipedia.org/wiki/OSI_model),
     in terms of being able to clearly place any specific bit of a protocol into one
     of the seven layers. However, the idea of layering *in general* has been very
@@ -262,108 +349,155 @@
     OSI; I think of it in terms of *message framing* then *message decomposition*.
     (I believe that I’m using message framing in a perfectly standard way here. There’s
     probably a better name for message decomposition.)
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我从未完全理解过[OSI 模型](https://en.wikipedia.org/wiki/OSI_model)，无法清楚地将协议的任何特定位放入七个层中的任何一个。但是，分层的*概念*在
+    DigiMixer 中非常有用。大多数混音器的实现都是作为两个项目实现的，一个带有“core”后缀，一个不带，例如 `DigiMixer.Mackie.Core`
+    和 `DigiMixer.Mackie`。每种情况下的“核心”项目都集中在我认为会是 OSI 中表示层（和*有时*会话层）的内容；我把它想象成*消息帧格式*然后*消息解构*。（我相信我在这里使用消息帧格式是完全标准的。消息解构可能有一个更好的名称。）
 - en: 'All of the protocols used by DigiMixer have the idea of a message:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: DigiMixer 使用的所有协议都有消息的概念：
 - en: TCP connections form a bidirectional stream of messages
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: TCP 连接形成双向消息流。
 - en: Each UDP connection forms a unidirectional stream of messages
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个 UDP 连接形成单向消息流
 - en: (In some protocols the mixer uses UDP connections bidirectionally too – basically
     sending packets to whichever UDP port was used to send packets to it. In other
     protocols the two UDP streams are entirely separate.)
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: （在某些协议中，混音器也使用 UDP 连接进行双向通信 – 基本上向发送数据包到其的任何 UDP 端口发送数据包。在其他协议中，这两个 UDP 流完全独立。）
 - en: Message framing
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 消息帧格式
 - en: With the UDP protocols I’ve seen implemented when working on DigiMixer, each
     UDP packet corresponds exactly to one message. There are never UDP packets which
     contain multiple messages, and a message never needs to be split across multiple
     packets.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我在 DigiMixer 上的工作中看到实现的 UDP 协议中，每个 UDP 数据包恰好对应一个消息。从来没有 UDP 数据包包含多个消息，消息也不需要跨多个数据包拆分。
 - en: With TCP, however, it’s a different story. Wireshark allows you to follow a
     TCP stream, showing the flow of data in each direction, but it takes a bit of
     work to figure out how to split each of those streams into messages.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，对于 TCP，情况就不同了。Wireshark 允许您跟踪 TCP 流，显示每个方向的数据流，但需要一些工作来弄清楚如何将每个流分割成消息。
 - en: Here’s part of the traffic I see in Wireshark when opening the DM-3 MixPad app
     in Windows, for example.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是我在 Windows 上打开 DM-3 MixPad 应用程序时在 Wireshark 中看到的部分流量。
 - en: '[PRE0]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I *suspect* that the line break after the third line (between bytes 00000024
     and 00000025 outbound) is due to a packet boundary, but it’s also possible that
     Wireshark is doing a little bit more than that, e.g. only showing a line break
     between packets if the gap between them (in terms of time) is above some threshold.
     I’ve generally ignored that, whereas “conversations” of short messages tend to
     make message boundaries fairly clear.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我*怀疑*第三行后面的换行（在出站字节 00000024 和 00000025 之间）是由于一个数据包边界，但也有可能 Wireshark 做了更多的事情，比如只有在它们之间的间隔（按时间计算）超过某个阈值时才显示包之间的换行。我通常忽略了这一点，而“对话”中的短消息往往能够清楚地显示消息边界。
 - en: In this case, the repeated “MPRO” text at least appears at first glance to indicate
     the start of a message. The four bytes after that “MPRO” then seem to show (in
     big-endian order) the length of the remainder of the message.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，重复出现的“MPRO”文本至少乍一看似乎指示了消息的开始。然后，该“MPRO”之后的四个字节似乎显示了（按大端序顺序）消息剩余部分的长度。
 - en: 'In other words, after looking at a reasonable amount of data like the dump
     above, I was able to guess that the DM3 protocol had a message framing of:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，在查看了类似上面的一定量数据后，我能够猜测 DM3 协议的消息帧格式为：
 - en: '4 bytes: Message type (e.g. “MPRO”, “EEVT”, “MMIX”)'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 4 字节：消息类型（例如“MPRO”、“EEVT”、“MMIX”）
 - en: '4 bytes: Message body length, big-endian'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 4 字节：消息体长度，大端序
 - en: Message body
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息体
 - en: A message framing hypothesis like that is reasonably easy to test, particularly
     after writing a bit of code to parse the text format of a Wireshark hex dump like
     the above. (My experience is that the text format is generally easier than having
     to deal with than the full pcapng files that Wireshark deals with by default.
     The amount of manual work required to follow the TCP stream and then save that
     as text is pretty small.)
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 像这样的消息帧假设相对容易测试，特别是在编写一些代码来解析类似上面的 Wireshark 十六进制转储的文本格式之后。（我的经验是，文本格式通常比 Wireshark
+    默认处理的完整 pcapng 文件更容易处理。跟随 TCP 流并将其保存为文本所需的手工工作量相当小。）
 - en: 'Most of the protocols I’ve worked with have had some sort of “message header,
     message body” format, where the header includes information about the length of
     the body. There are some differences though:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用过的大多数协议都具有某种“消息头、消息体”格式，其中标头包含有关主体长度的信息。但也有一些区别：
 - en: Sometimes there’s some additional state (e.g. a “message counter byte”)
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有时会有一些额外的状态（例如，“消息计数器字节”）
 - en: Sometimes the message header has no information other than framing, unlike the
     example above, where you really still need to keep the “MPRO” part as the “message
     type” – not that we know what “type” really means yet
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有时消息标头除了帧之外没有任何信息，不像上面的示例，您仍然需要将“MPRO”部分保留为“消息类型” - 尽管我们还不知道“类型”真正意味着什么
 - en: Sometimes there’s a trailer (e.g. a checksum)
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有时会有一个尾部（例如，一个校验和）
 - en: Sometimes the length information in the header is *message* length rather than
     *bdoy* length (i.e. the length can include or exclude the header itself, depending
     on the protocol)
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有时标头中的长度信息是*消息*长度而不是*主体*长度（即长度可以包括或不包括标头本身，这取决于协议）
 - en: 'In the case of the Ui series, the framing is just based on line breaks instead.
     These two schemes – “message delimiters” (line breaks) or “headers with length
     information” – are the main approaches to message framing that I’ve seen, not
@@ -373,17 +507,25 @@
     need message framing at all.) Some protocols have a mixture of the two: HTTP/1.1
     uses delimiters for headers, then specifies a content length within one of the
     headers to allow further requests or responses to be sent on the same connection.'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Ui 系列的情况下，帧仅基于换行符。这两种方案 - “消息定界符”（换行符）或“具有长度信息的标头” - 是我在 DigiMixer 中看到的消息帧的主要方法，也是我职业生涯中看到的。
+    （不清楚您是否会包括“每个 UDP 数据包一个消息”或“每个消息后关闭 TCP 连接”消息帧方案，或者只是意味着您根本不需要消息帧的方法。）有些协议混合了这两种方法：HTTP/1.1
+    使用定界符用于标头，然后在其中一个标头中指定内容长度，以允许在同一连接上发送进一步的请求或响应。
 - en: 'Once I’ve validated a message framing hypothesis in quick-and-dirty code (typically
     in another project with a Tools suffix, e.g. `DigiMixer.Mackie.Tools`) I’ll then
     add that framing into the “core” project, in the form of a message type implementing
     `IMixerMessage`:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我在一个快速而粗糙的代码中验证了消息帧假设（通常是在另一个带有工具后缀的项目中，例如`DigiMixer.Mackie.Tools`），我将把该帧添加到“核心”项目中，形成一个实现`IMixerMessage`的消息类型：
 - en: '[PRE1]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The addition of this interface into DigiMixer was a relatively new feature,
     as I was waiting for .NET 8 to land. It was predated by the concept of a “message
     processor” which effectively converts a stream of bytes into a stream of messages
@@ -393,12 +535,16 @@
     I now hardly have any code dealing with `TcpClient` and `UdpClient` directly.
     Lovely. (There are now multiple derived classes with hardly any behaviour, and
     I might refactor those at some point, but at least the logic isn’t repeated.)
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 将这个接口添加到 DigiMixer 中是一个相对较新的功能，因为我在等待 .NET 8 的发布。它的前身是“消息处理器”的概念，有效地将一系列字节转换为适合消费的消息流，但在接口与其具有乐趣的静态抽象`TryParse`方法之前，我必须分别指定消息的各个方面。现在，在消息接口、消息处理器和一些基类之间，我几乎没有任何直接处理`TcpClient`和`UdpClient`的代码。太棒了。（现在有多个派生类几乎没有任何行为，我可能会在某个时候重构它们，但至少逻辑不会重复。）
 - en: Message decomposition
+  id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 消息分解
 - en: Confirming that I’ve understood the message framing for a protocol is immensely
     satisfying, and a necessary first step – but it also tends to be the simplest
     step. It’s often feasible to understand the message framing without understanding
@@ -406,88 +552,127 @@
     the different message types mean, or even how many message types there are. More
     importantly, even if we completely understand the framing, it doesn’t tell us
     anything about the meaning of those messages. They’re just blobs of data.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 确认我已经理解了协议的消息框架是极其令人满足的，也是必要的第一步 - 但它通常也是最简单的步骤。通常可以理解消息框架而不理解整个消息头，就像在上面的例子中，我们不知道不同的消息类型的含义，甚至不知道有多少消息类型。更重要的是，即使我们完全理解了框架，这也并不告诉我们这些消息的含义。它们只是数据块。
 - en: Message decomposition goes *slightly* further, taking the message body apart
     in terms of its constituent parts – potentially *still* without understanding
     the actual meaning of any values.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息分解 *稍微* 进一步，根据其组成部分将消息主体拆开 - 可能 *仍然* 不理解任何值的实际含义。
 - en: 'To take the DM-3 example shown above a bit further, it turns out that every
     message body that I’ve seen consists of:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前面显示的 DM-3 为例，事实证明，我见过的每个消息主体都由以下部分组成：
 - en: Byte 0x11
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 字节 0x11
 - en: 4 bytes, again a big-endian integer representing a length
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 4 字节，再次是表示长度的大端整数
 - en: That length in terms of bytes, as the “real” body
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 以字节为单位的长度，作为“真正”的主体
 - en: 'That’s just an extra (and redundant as far as I can tell) layer of wrapping,
     but within the “real” body we have a 4-byte set of flags (which do have some pattern
     to them, but I haven’t fully figured out) then a sequence of useful data in segments.
     Each segments consists of:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是一个额外的（我认为是多余的）包装层，但在“真正”的主体内部，我们有一组 4 字节的标志（它们确实有一些模式，但我还没有完全弄清楚），然后是一系列有用的数据片段。每个片段包括：
 - en: A type byte (always 0x11, 0x12, 0x14, 0x24 or 0x31 as far as I’ve seen); more
     on this below
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个类型字节（据我所见，始终是 0x11、0x12、0x14、0x24 或 0x31）；关于这一点后面会详细说明
 - en: The number of “units” being represented
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 被表示的“单位”数量
 - en: The units themselves
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单位本身
 - en: The type byte consists of two nybbles – the first is the “kind” of units (1
     for unsigned integers, including bytes; 2 for signed integers; 3 for characters)
     and then a second for “the number of bytes per unit”. So 0x11 is just a sequence
     of bytes, 0x12 is “a sequence of `UInt16` values”, 0x14 is “a sequence of `UInt32`
     values”, 0x24 is “a sequence of `Int32` values, and 0x31 is basically “a string”
     (which is null-terminated despite also having a length, but hey).
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型字节由两个字半字节组成 - 第一个是单位的“类型”（1 表示无符号整数，包括字节；2 表示有符号整数；3 表示字符），然后是“每个单位的字节数”。所以
+    0x11 只是一系列字节，0x12 是“一系列 `UInt16` 值”，0x14 是“一系列 `UInt32` 值”，0x24 是“一系列 `Int32`
+    值”，而 0x31 基本上是“一个字符串”（尽管也有一个长度，但是以空字符结尾，不过没关系）。
 - en: The segments occur one after another, until the end of the “real” body.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个片段依次出现，直到“真正”主体的结束。
 - en: 'So for the piece of hex shown earlier from the DM-3 (including a large message
     that was truncated), we can decompose those messages into:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前显示的 DM-3 的十六进制片段（包括被截断的大消息），我们可以将这些消息分解为：
 - en: '[PRE2]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: (My formatting is somewhat inconsistent here – I should probably get rid of
     the “`*`” in the lengths for UInt16/UInt32/Int32, but it doesn’t actually hurt
     the readability much… and this is just the output of a fairly quick-and-dirty
     tool.)
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: （我的格式有些不一致 - 我应该去掉 UInt16/UInt32/Int32 的长度中的 “`*`”，但这实际上并没有影响可读性太多...而且这只是一个相当快速而粗糙的工具的输出。）
 - en: There’s still no application-level information here, but we can see the structure
     of the traffic – which makes it much, much easier to then discern *bits* of the
     application level protocol.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里仍然没有应用级别的信息，但我们可以看到流量的结构 - 这样就更容易辨别应用级别协议的 *位*。
 - en: Application level protocol
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 应用级别协议
 - en: Nothing I’ve described so far is mixer-specific. At some point, some combination
     of message type, flags and values has to actually *mean* something. Maybe it’s
     “please send me the version information about the mixer” or “this is the meter
     levels for the inputs” or “please mute the connection from input channel 1 to
     output channel 5”.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 我到目前为止描述的内容都不是特定于混音器的。在某些时候，消息类型、标志和值的某种组合实际上必须 *表示* 一些东西。也许是“请给我发送混音器的版本信息”或“这是输入的米级别”或“请将输入通道
+    1 到输出通道 5 的连接静音”。
 - en: The process of reverse engineering the application level protocol involves both
     inspiration and perspiration – usually in that order, and only after working out
     at least a large proportion of the message framing and message decomposition.
@@ -500,20 +685,28 @@
     higher, and moving it a bit higher still?” That’s somewhat tedious, but still
     surprisingly rewarding work – so long as you can pay enough attention to transcribe
     your results to a log carefully enough.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向工程应用层协议的过程既包括灵感又包括毅力——通常是按照这个顺序，而且只有在至少解决了消息的大部分框架和消息分解之后才开始。你不需要知道所有的东西，但*确实*需要知道：“如果我在混音器上移动一个滑块，使用不同的客户端，我会收到类似X的消息。”
+    这需要一些实验和一些信仰的飞跃。但是接下来你需要仔细记录：“那么，在移动输入1、输出1的滑块和移动输入2、输出5的滑块之间有什么区别？”，或者“将滑块从其范围底部移动到稍高一点，与将其移动到更高一点有什么区别？”
+    这有点乏味，但仍然是令人惊讶的有益工作——只要你能够足够注意地将你的结果仔细记录在日志中。
 - en: I’m not going to attempt to describe (here) what the various protocols look
     like at an application level, because they vary so much (even if the lower abstraction
     levels are reasonably similar) – and because there’s so much I still don’t understand
     about them. Once I’ve written up some details, they’ll be on GitHub. But understanding
     how those abstraction levels work at all that’s been really interesting to me
     – and which I suspect will find useful in entirely different scenarios.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不打算在这里尝试描述各种协议在应用层是什么样子，因为它们变化太大（即使较低的抽象级别相对相似）——还有因为我对它们还有很多不了解的地方。一旦我写了一些细节，它们将会在GitHub上。但是理解这些抽象级别的工作方式，对我来说真的很有趣——我相信在完全不同的场景中也会发现它们有用。
 - en: What’s next?
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 接下来是什么？
 - en: 'I think after diving into some of the slightly lower level bits of DigiMixer,
     the next post should *probably* be at a very high level, and back towards the
     goal of the whole blog series: abstraction. Assuming I don’t get distracted by
@@ -521,5 +714,8 @@
     do mixers have in common, and where do they differ, within the scope of DigiMixer?”
     After that, *maybe* the following post will be about what that abstraction looks
     like in code, and some of the trade-offs I’ve made along the way.'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想在深入了解一些DigiMixer的略低级别位后，下一篇文章 *可能* 应该在非常高的层面上，并且回到整个博客系列的目标：抽象。假设我没有被其他事情分心，我会尽量使下一篇文章简单至“混音器在DigiMixer范围内有什么共同之处，又在哪些地方不同？”
+    之后，*也许* 下一篇文章会讨论这种抽象在代码中的实现方式，以及我在这个过程中做出的一些权衡。
