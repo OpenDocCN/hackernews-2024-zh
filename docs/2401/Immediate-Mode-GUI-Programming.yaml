@@ -1,161 +1,235 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:47:31'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:47:31'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Immediate Mode GUI Programming
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 即时模式 GUI 编程
 - en: 来源：[https://eliasnaur.com/blog/immediate-mode-gui-programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://eliasnaur.com/blog/immediate-mode-gui-programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
 - en: Immediate Mode GUI Programming
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 即时模式 GUI 编程
 - en: The initial focus of the [Gio](https://gioui.org) project was to create a simple
     cross-platform Go library for creating user interfaces for mobile and the desktop,
     avoiding the platform bound and often complex native toolkits. This is also the
     apparent selling point of Gio.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Gio](https://gioui.org) 项目最初的关注点是创建一个简单的跨平台 Go 库，用于创建移动设备和桌面的用户界面，避免了平台绑定和通常复杂的本机工具包。这也是
+    Gio 的明显卖点。'
 - en: However, as work progressed it became clear that the immediate mode programming
     model is a key driver for longer term adoption of Gio. After all, there are plenty
     of cross-platform GUI toolkits available, but very few attempt the direct and
     stateless programming model of immediate mode libraries.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，随着工作的进展，很明显，即时模式编程模型是 Gio 长期采用的关键驱动因素。毕竟，有很多跨平台 GUI 工具包可用，但很少有尝试即时模式库的直接和无状态编程模型。
 - en: This article is an introduction to immediate mode programming, comparing Gio’s
     approach with popular retained mode toolkits.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文是对即时模式编程的介绍，比较 Gio 的方法与流行的保留模式工具包。
 - en: What is immediate mode?
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是即时模式？
 - en: In traditional *retained mode* UI toolkits, the state of the user interface
     is owned by the toolkit, and event handling, layout and animation is handled internally.
     The application can only indirectly manipulate the UI state, and responding to
     user input happen in callbacks.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在传统的*保留模式* UI 工具包中，用户界面的状态由工具包拥有，并且事件处理、布局和动画在内部处理。应用程序只能间接操作 UI 状态，并且对用户输入的响应发生在回调中。
 - en: 'The following JavaScript program implements a button and a click event handler:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的 JavaScript 程序实现了一个按钮和一个点击事件处理程序：
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: func main() {
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: func main() {
 - en: go func() {
+  id: totrans-16
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: go func() {
 - en: w := app.NewWindow()
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: w := app.NewWindow()
 - en: loop(w)
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: loop(w)
 - en: '}()'
+  id: totrans-19
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}()'
 - en: app.Main()
+  id: totrans-20
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: app.Main()
 - en: '}'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: func loop(w *app.Window) {
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: func loop(w *app.Window) {
 - en: th := material.NewTheme(gofont.Collection())
+  id: totrans-23
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: th := material.NewTheme(gofont.Collection())
 - en: var ops op.Ops
+  id: totrans-24
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var ops op.Ops
 - en: // UI state.
+  id: totrans-25
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: // UI 状态。
 - en: var btn widget.Clickable
+  id: totrans-26
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var btn widget.Clickable
 - en: var count int
+  id: totrans-27
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var count int
 - en: for e := range w.Events() {
+  id: totrans-28
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: for e := range w.Events() {
 - en: if e, ok := e.(system.FrameEvent); ok {
+  id: totrans-29
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: if e, ok := e.(system.FrameEvent); ok {
 - en: gtx := layout.NewContext(&ops, e)
+  id: totrans-30
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: gtx := layout.NewContext(&ops, e)
 - en: for btn.Clicked() {
+  id: totrans-31
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: for btn.Clicked() {
 - en: count++
+  id: totrans-32
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: count++
 - en: '}'
+  id: totrans-33
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: layout.W.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+  id: totrans-34
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: layout.W.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 - en: 'return layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
+  id: totrans-35
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '返回 layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
 - en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  id: totrans-36
   prefs:
   - PREF_IND
   - PREF_IND
@@ -163,7 +237,9 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 - en: 'return material.H5(th, fmt.Sprintf("Number of clicks: %d", count)).Layout(gtx)'
+  id: totrans-37
   prefs:
   - PREF_IND
   - PREF_IND
@@ -172,7 +248,9 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return material.H5(th, fmt.Sprintf("点击次数：%d", count)).Layout(gtx)
 - en: '}),'
+  id: totrans-38
   prefs:
   - PREF_IND
   - PREF_IND
@@ -180,7 +258,9 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}),'
 - en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  id: totrans-39
   prefs:
   - PREF_IND
   - PREF_IND
@@ -188,7 +268,9 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 - en: return material.Button(th, &btn, "Click me!").Layout(gtx)
+  id: totrans-40
   prefs:
   - PREF_IND
   - PREF_IND
@@ -197,7 +279,9 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return material.Button(th, &btn, "点击我！").Layout(gtx)
 - en: '}),'
+  id: totrans-41
   prefs:
   - PREF_IND
   - PREF_IND
@@ -205,437 +289,672 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}),'
 - en: )
+  id: totrans-42
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: )
 - en: '})'
+  id: totrans-43
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '})'
 - en: e.Frame(gtx.Ops)
+  id: totrans-44
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: e.Frame(gtx.Ops)
 - en: '}'
+  id: totrans-45
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '}'
+  id: totrans-46
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '}'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '[PRE2]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Notice the differences: the program is in control of the main event'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意区别：程序控制主要事件。
 - en: loop, user input is handled as part of program flow, and the
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环，用户输入作为程序流的一部分处理，和
 - en: program state is both minimal and cleanly separated. The counter
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序状态既简洁又清晰地分离。计数器
 - en: doesn’t respond to user input, and so is reduced to a (high-level)
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 不响应用户输入，因此被简化为（高级别的）
 - en: drawing command. The same applies to layout; both the aligning and
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 绘图命令。布局也是如此；对齐和
 - en: listing of the two widgets are stateless.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 两个小部件的列表是无状态的。
 - en: Drawing
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 绘图
 - en: If a user interface is a form of I/O system, drawing is the output part.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果用户界面是一种 I/O 系统，绘图就是输出部分。
 - en: Mixing custom drawing and animation with higher level widgets is where the
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 将自定义绘图和动画与更高级别的小部件混合使用是
 - en: retained model typically struggles.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 保留模型通常会遇到困难。
 - en: Here’s [a program](/include/files/bounce/main.go) that displays a
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是[一个程序](/include/files/bounce/main.go)，显示
 - en: bouncing ball, controlled by a button.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 由按钮控制的弹跳球。
 - en: '[PRE3]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: var root = document.getElementById("bounce");
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: var root = document.getElementById("bounce");
 - en: 'root.style = "display: flex; position: relative; height: 200px";'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 'root.style = "display: flex; position: relative; height: 200px";'
 - en: var ball = document.createElement("div");
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: var ball = document.createElement("div");
 - en: 'ball.style = "background-color: green; position: absolute; width: 40px; height:
     40px; border-radius: 50%";'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 'ball.style = "background-color: green; position: absolute; width: 40px; height:
+    40px; border-radius: 50%";'
 - en: ball.style.bottom = 0;
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: ball.style.bottom = 0;
 - en: var btn = document.createElement("button");
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: var btn = document.createElement("button");
 - en: 'btn.style = "margin: auto";'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 'btn.style = "margin: auto";'
 - en: btn.innerText = "Throw ball";
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: btn.innerText = "扔球";
 - en: root.appendChild(btn);
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: root.appendChild(btn);
 - en: var ballVisible = false;
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: var ballVisible = false;
 - en: var now;
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: var now;
 - en: var animHandle;
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: var animHandle;
 - en: btn.addEventListener("click", function() {
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: btn.addEventListener("click", function() {
 - en: ballVisible = !ballVisible;
+  id: totrans-76
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ballVisible = !ballVisible;
 - en: if (ballVisible) {
+  id: totrans-77
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: if (ballVisible) {
 - en: root.appendChild(ball);
+  id: totrans-78
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: root.appendChild(ball);
 - en: now = performance.now();
+  id: totrans-79
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: now = performance.now();
 - en: btn.innerText = "Hide ball";
+  id: totrans-80
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: btn.innerText = "隐藏球";
 - en: animate(now);
+  id: totrans-81
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: animate(now);
 - en: '} else {'
+  id: totrans-82
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '} else {'
 - en: cancelAnimationFrame(animHandle);
+  id: totrans-83
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: cancelAnimationFrame(animHandle);
 - en: btn.innerText = "Throw ball";
+  id: totrans-84
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: btn.innerText = "扔球";
 - en: ball.remove();
+  id: totrans-85
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ball.remove();
 - en: '}'
+  id: totrans-86
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '});'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '});'
 - en: function animate(time) {
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: function animate(time) {
 - en: var v0 = 50.0;
+  id: totrans-89
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var v0 = 50.0;
 - en: var g = -9.81;
+  id: totrans-90
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var g = -9.81;
 - en: var t = (time - now)/1000;
+  id: totrans-91
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var t = (time - now)/1000;
 - en: t *= 10;
+  id: totrans-92
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: t *= 10;
 - en: var t1 = -v0 / (.5 * g);
+  id: totrans-93
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var t1 = -v0 / (.5 * g);
 - en: var t = t % t1;
+  id: totrans-94
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var t = t % t1;
 - en: var y = v0*t + .5*g*t*t;
+  id: totrans-95
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var y = v0*t + .5*g*t*t;
 - en: ball.style.bottom = y+"px";
+  id: totrans-96
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ball.style.bottom = y+"px";
 - en: animHandle = window.requestAnimationFrame(animate);
+  id: totrans-97
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: animHandle = window.requestAnimationFrame(animate);
 - en: '}'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '[PRE5]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Several redundant state variables appear in the program: the'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序中出现了几个多余的状态变量：包括
 - en: '`innerText` property, the `ball` object, the callback handle'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '`innerText` 属性，`ball` 对象，回调句柄'
 - en: '`animHandle`. As a result, the click listener must reset the extra'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '`animHandle`。因此，点击监听器必须重置额外'
 - en: state and remember to unregister the callback. A lingering callback
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 状态并记得取消注册回调。悬而未决的回调
 - en: may be invoked when the program is unprepared or leak memory.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能在程序未准备好或泄漏内存时调用。
 - en: Layout
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 布局
 - en: The examples so far demonstrate some advantages of immediate mode
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止的示例演示了即时模式的一些优势
 - en: 'layouts such as centering, aligning and listing interface elements:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 诸如居中、对齐和列表化界面元素的布局：
 - en: operations are stateless, and they’re specified and controlled with
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作是无状态的，并且它们是指定和受控的
 - en: regular programming constructs such as functions, loops and
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 常规的编程构造，如函数、循环和
 - en: conditions.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 条件。
 - en: However, state for static layout is about as harmless as having extra
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，对于静态布局的状态就像有额外的一样无害
 - en: program constants in your program; the advantages are clearer for
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序中的常量；对于静态布局的优势更为明显
 - en: dynamic layouts.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 动态布局。
 - en: This program implements a scrollable list of many rows, with a button
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 该程序实现了一个可滚动的包含许多行的列表，带有一个按钮
 - en: to modify their content.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 修改它们的内容。
 - en: '[PRE6]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: type state struct {
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: type state struct {
 - en: btn    widget.Clickable
+  id: totrans-119
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: btn    widget.Clickable
 - en: factor int
+  id: totrans-120
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: factor int
 - en: list   layout.List
+  id: totrans-121
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: list   layout.List
 - en: '}'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: var programState state
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: var programState state
 - en: func (s *state) layout(gtx layout.Context, th *material.Theme) {
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: func (s *state) layout(gtx layout.Context, th *material.Theme) {
 - en: for s.btn.Clicked() {
+  id: totrans-125
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: for s.btn.Clicked() {
 - en: s.factor *= 10
+  id: totrans-126
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: s.factor *= 10
 - en: '}'
+  id: totrans-127
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: 'layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
+  id: totrans-128
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'layout.Flex{Axis: layout.Vertical}.Layout(gtx,'
 - en: layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
+  id: totrans-129
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
 - en: const numRows = 1e6 // A million rows.
+  id: totrans-130
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: const numRows = 1e6 // 一百万行。
 - en: return s.list.Layout(gtx, numRows, func(gtx layout.Context, i int) layout.Dimensions
     {
+  id: totrans-131
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return s.list.Layout(gtx, numRows, func(gtx layout.Context, i int) layout.Dimensions
+    {
 - en: 'txt := fmt.Sprintf("Row #%d", i*s.factor)'
+  id: totrans-132
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'txt := fmt.Sprintf("第 #%d 行", i*s.factor)'
 - en: return material.Body1(th, txt).Layout(gtx)
+  id: totrans-133
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return material.Body1(th, txt).Layout(gtx)
 - en: '})'
+  id: totrans-134
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '})'
 - en: '}),'
+  id: totrans-135
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}),'
 - en: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+  id: totrans-136
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 - en: return layout.S.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+  id: totrans-137
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return layout.S.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 - en: return material.Button(th, &s.btn, "Multiply by 10").Layout(gtx)
+  id: totrans-138
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return material.Button(th, &s.btn, "乘以 10").Layout(gtx)
 - en: '})'
+  id: totrans-139
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '})'
 - en: '}),'
+  id: totrans-140
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}),'
 - en: )
+  id: totrans-141
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: )
 - en: '}'
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '[PRE8]'
+  id: totrans-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: User input
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户输入
 - en: Perhaps the most useful effect of state minimization is the
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许状态最小化最有用的效果是
 - en: elimination of event callbacks. Callbacks are the retained mode answer
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 消除事件回调。回调是保留模式的答案
 - en: 'to the question: given an input event such as a mouse click, where and'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于问题：给定输入事件，如鼠标点击，何时何地
 - en: how should it be delivered? In Gio’s approach filters and unique
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 应该如何传递呢？在 Gio 的方法中，过滤器和唯一
 - en: handler keys replace callbacks for convenient distribution of events
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理器键取代了回调，方便地分发事件
 - en: among widgets.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 在小部件之间。
 - en: The following [implementation](/include/files/checkbox/main.go) of a basic checkbox
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是基本复选框的[实现](/include/files/checkbox/main.go)
 - en: 'demonstrates low-level input handling:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 展示了低级输入处理：
 - en: '[PRE9]'
+  id: totrans-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[PRE13]'
+  id: totrans-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
