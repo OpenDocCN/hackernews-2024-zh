@@ -1,322 +1,481 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:47:21'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:47:21
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Audio Libraries Considered Challenging | Tesselode Labs
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 音频库的挑战 | Tesselode Labs
 - en: 来源：[https://tesselode.github.io/articles/audio-libraries-considered-challenging/](https://tesselode.github.io/articles/audio-libraries-considered-challenging/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tesselode.github.io/articles/audio-libraries-considered-challenging/](https://tesselode.github.io/articles/audio-libraries-considered-challenging/)
 - en: Audio Libraries Considered Challenging
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 音频库的挑战
 - en: Published May 16, 2022 | Updated May 17, 2022
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 发布于 2022 年 5 月 16 日 | 更新于 2022 年 5 月 17 日
 - en: 'Reading time: 16 minutes'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读时间：16 分钟
 - en: I develop a game audio library called [Kira](https://github.com/tesselode/kira/).
     Here's some of the hard parts I've figured out. If you decide to make an audio
     library for some reason, learn from my experimentation!
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我开发了一个名为[Kira](https://github.com/tesselode/kira/)的游戏音频库。以下是我已经摸索出来的一些难点。如果你因某种原因决定制作一个音频库，可以从我的实验中学习！
 - en: Why Audio is Hard
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么音频很难
 - en: When it comes to graphics, different games have different acceptable framerates.
     Most people would consider 60 FPS to look "smooth". But even if the framerate
     dips a little bit below 60 FPS, it's not the end of the world. The game will keep
     displaying the previously rendered frame until the next one is ready. If it's
     a small enough frame drop, the player might not even notice.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图形方面，不同的游戏有不同的可接受帧率。大多数人会认为 60 帧每秒看起来“流畅”。但即使帧率稍微低于 60 帧每秒，也不是世界末日。游戏将继续显示先前渲染的帧，直到下一个帧准备好。如果帧率下降得足够小，玩家甚至可能都不会注意到。
 - en: But if your game can't produce audio as quickly as the operating system wants
     (this is called a buffer underrun), the operating system has no choice but to
     fill the gaps with silence. And the player *will* notice.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是如果你的游戏无法像操作系统期望的那样快速生成音频（这被称为缓冲区不足），操作系统别无选择，只能用沉默填补这些间隙。而玩家*会*注意到的。
 - en: A short piece of music playing back normally
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 一小段音乐正常播放
 - en: A short piece of music playing back with underruns
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 一小段音乐回放时出现了缓冲区不足
 - en: If you can't listen to the example audio, imagine that when a game had frame
     drops, the monitor would display a black screen for all the frames the game couldn't
     produce quickly enough. Audio stuttering is the equivalent of that.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你无法听取示例音频，请想象当游戏帧率下降时，显示器将为游戏无法快速产生的所有帧显示黑屏。音频卡顿就相当于那个。
 - en: When writing audio code, you want to avoid underruns at all costs. This means
     **you have to do your audio processing on a separate thread.** If you tried to
     do audio processing on the same thread as your graphics and input, your audio
     would stutter when the graphics rendering becomes too demanding.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 写音频代码时，你要尽一切可能避免缓冲区不足。这意味着**你必须在一个独立的线程上进行音频处理。** 如果你试图在与图形和输入相同的线程上进行音频处理，当图形渲染变得过于要求时，音频会出现卡顿。
 - en: '**You also can''t block the audio thread.** If something could cause the audio
     thread to pause for an unknown amount of time, you shouldn''t do it. If the audio
     thread pauses for too long, it won''t be able to process audio fast enough, leading
     to buffer underruns.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '**你也不能阻塞音频线程。** 如果有什么事情会导致音频线程暂停未知的时间，那就不应该这样做。如果音频线程暂停时间过长，它将无法快速处理音频，导致缓冲区不足。'
 - en: Notably, this means **you can't allocate or deallocate memory on the audio thread**.
     When you ask the operating system to allocate or deallocate memory, you have to
     pause the thread until the OS is ready to get around to your request. Usually
     it'll do it quickly, but if the system is taxed, the OS might deprioritize the
     audio thread, leading to a long period where you can't process any audio.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，这意味着**你不能在音频线程上分配或释放内存**。当你要求操作系统分配或释放内存时，你必须暂停线程，直到操作系统准备好处理你的请求。通常它会很快完成，但如果系统负担过重，操作系统可能会降低音频线程的优先级，导致长时间内无法处理任何音频。
 - en: Keeping these two constraints in mind, let's look at some problems that come
     up when creating a game audio library.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在牢记这两个约束条件的情况下，让我们看一些在创建游戏音频库时会遇到的问题。
 - en: Communicating Between Threads
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在线程间通信
 - en: 'A game audio library provides functions for playing and modifying audio that
     you can call from gameplay code. It''ll look vaguely like this:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个游戏音频库提供了可以从游戏代码中调用的播放和修改音频的函数。它的结构大致如下：
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: When we play a new sound, we need to load audio data from a file on the gameplay
     thread and send it to the audio thread. (We can't load the audio data on the audio
     thread because that takes too long and could lead to buffer underruns.) To send
     the audio data to the audio thread, we can use a ringbuffer, such as the [`ringbuf`](https://crates.io/crates/ringbuf)
     crate.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们播放新声音时，我们需要在游戏线程上从文件中加载音频数据并将其发送到音频线程。（我们不能在音频线程上加载音频数据，因为那太耗时了，可能会导致缓冲区欠载。）为了将音频数据发送到音频线程，我们可以使用一个环形缓冲区，比如[`ringbuf`](https://crates.io/crates/ringbuf)包。
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: But how do we tell the audio thread to modify an existing sound (e.g. setting
     the volume of a sound that's already playing or setting the playback state of
     a sound)?
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们如何告诉音频线程修改现有声音的状态（例如，设置正在播放的声音的音量或设置声音的播放状态）？
 - en: Shared ownership via `Mutex`es
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 通过`Mutex`共享所有权
 - en: We could allow the gameplay thread to control data on the audio thread directly
     by giving it shared ownership of the data via a `Mutex`.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过使用`Mutex`直接让游戏线程控制音频线程上的数据来实现共享所有权。
 - en: 'On the audio thread, we''ll store the sound state as an `Arc<Mutex<Sound>>`.
     Our sound handle on the gameplay thread will have a clone of that `Arc<Mutex<Sound>>`:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在音频线程上，我们将声音状态存储为`Arc<Mutex<Sound>>`。我们在游戏线程上的声音句柄将具有该`Arc<Mutex<Sound>>`的克隆：
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'To access audio data on the gameplay thread, we just have to lock the `Mutex`:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在游戏线程上访问音频数据，我们只需锁定`Mutex`：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Of course, the audio thread also has to lock the data before it can access it.
     Waiting for other threads to unlock the data does, in fact, block the audio thread,
     which is one of the things we definitely shouldn't do. So `Mutex`es are out.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，音频线程在访问数据之前也必须锁定数据。事实上，等待其他线程解锁数据会阻塞音频线程，这绝对是我们绝不能做的事情之一。所以`Mutex`是不行的。
 - en: Shared ownership via atomics
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 通过原子方式共享所有权
 - en: 'There is a way we can share data among multiple threads without having to lock
     it: atomics. Atomics are special versions of primitive types that the CPU knows
     how to keep synchronized between threads.'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一种方法可以在多个线程之间共享数据而无需锁定它：原子。原子是 CPU 知道如何在线程之间保持同步的基本类型的特殊版本。
 - en: 'We can make each modifiable field of the sound atomic:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使声音的每个可修改字段原子化：
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The sound handle will get clones of each field:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 声音句柄将获得每个字段的克隆：
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'And to set those fields from the gameplay thread:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且要从游戏线程设置这些字段：
 - en: '[PRE6]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Using atomics won't block the audio thread, but it does have some limitations.
     The largest atomic is 64 bits. That's enough space for a volume level or a playback
     state, but what if we want to send a more complex command to the audio thread?
     For example, what if we want to smoothly adjust the volume of a sound over a period
     of time? Maybe even with a user-specified easing curve?
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用原子不会阻塞音频线程，但它确实有一些限制。最大的原子是64位。这足以存储音量级别或播放状态，但是如果我们想要向音频线程发送更复杂的命令怎么办？例如，如果我们想要在一段时间内平滑调整声音的音量？甚至带有用户指定的缓和曲线？
 - en: 'If we represented all the needed information for that command as a struct,
     it would look something like this:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将该命令所需的所有信息表示为结构体，它将类似于这样：
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: That's more than we can fit in one atomic. We could store the command in multiple
     atomics, but then we have to keep them synced up. If we limited the maximum duration,
     maybe we could store it in 16 bits. I'm sure this is a solvable problem, but the
     solution won't be very ergonomic. So what else can we do?
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 那已经超过了我们可以放入一个原子中的内容。我们可以将命令存储在多个原子中，但那么我们就必须保持它们同步。如果我们限制最长持续时间，也许我们可以将其存储在16位中。我确信这是一个可以解决的问题，但解决方案可能不太符合人体工程学。那我们还能做什么呢？
 - en: Use more ringbuffers
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用更多的环形缓冲区
 - en: Why not just send commands via a ringbuffer? We're already using them for sending
     audio data.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么不直接通过环形缓冲区发送命令呢？我们已经在用它们发送音频数据了。
 - en: 'We can describe all of the possible commands with an enum:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以用枚举描述所有可能的命令：
 - en: '[PRE8]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The sound handle will own a command producer that it can push to:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 声音句柄将拥有一个可以推送命令的命令生成器：
 - en: '[PRE9]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'And the audio thread will own a command consumer that it can pop from:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 而音频线程将拥有一个可以从中弹出命令的命令消费者：
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'There is a downside to this approach: every sound has to periodically poll
     for new commands. Most sounds will not be changed at any one time, so it seems
     wasteful that they all have to poll for commands. (And in my unscientific benchmarking,
     all of the polling does make a noticeable difference in performance.)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法也有一个缺点：每个声音都必须定期轮询新命令。大多数声音在任何一个时间点都不会被改变，所以它们都必须轮询命令似乎是一种浪费。（而且在我的非科学基准测试中，所有的轮询确实会对性能产生明显影响。）
 - en: 'Maybe we can just use one ringbuffer to collect the commands for every sound?
     We already have a ringbuffer for sending audio data, so let''s just expand that
     to send a command enum:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许我们可以只使用一个环形缓冲区来收集每个声音的命令？我们已经有一个用于发送音频数据的环形缓冲区，所以让我们将其扩展为发送一个命令枚举：
 - en: '[PRE11]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Of course, we need a way to tell the audio thread which sound we want to change,
     so let's add some unique identifiers to those commands.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我们需要一种方法告诉音频线程我们想要更改哪个声音，所以让我们给这些命令添加一些唯一的标识符。
 - en: '[PRE12]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Every sound handle will need the ID of the sound it''s meant to control. Also,
     every sound handle will need to push commands to the same command producer, so
     we''ll need to wrap it in a `Mutex`:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个声音句柄都需要声音的 ID 来控制。此外，每个声音句柄还需要向相同的命令生成器推送命令，所以我们需要将其包装在 `Mutex` 中：
 - en: '[PRE13]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Unlike the last time we tried using `Mutex`es, this `Mutex` is only shared on
     the gameplay thread, so there's no risk of blocking the audio thread.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 与上次尝试使用 `Mutex` 不同，这个 `Mutex` 只在游戏线程上共享，因此不会阻塞音频线程。
 - en: 'On the audio thread, we''ll have some code along these lines:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在音频线程上，我们会有类似以下代码：
 - en: '[PRE14]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This works! It's reasonably efficient, and we can send arbitrarily complex commands
     to the audio thread without blocking anything.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个方法有效！而且相当高效，我们可以向音频线程发送任意复杂的命令而不会阻塞任何东西。
 - en: 'There''s only one problem: where does the `SoundId` come from?'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '`SoundId` 是从哪里来的呢？'
 - en: Storing Resources on the Audio Thread
+  id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在音频线程上存储资源
 - en: 'We need to store resources (sounds, mixer tracks, etc.) on the audio thread
     in a way that provides:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要以一种提供以下功能的方式在音频线程上存储资源（声音、混音轨道等）：
 - en: Fast iteration
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 快速迭代
 - en: Fast random access to resources via an ID that the gameplay thread also has
     access to
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过游戏线程也能快速随机访问资源的 ID
 - en: 'Solution 1: Arenas'
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 解决方案 1：Arenas
 - en: The arena data structure is a natural fit. An arena is essentially a `Vec` of
     slots that can be occupied or empty. When we insert an item into the arena, the
     arena picks an empty slot to insert the item into and returns a key that contains
     the index of that slot. Accessing individual items is as fast as indexing into
     a `Vec`. Iterating over items is slow if you loop through every slot and filter
     out the empty ones, but you can use a linked list to make iteration much faster.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 竞技场数据结构是一个自然的选择。竞技场本质上是一个可以被占用或为空的 `Vec` 槽的集合。当我们将一个项目插入到竞技场中时，竞技场会选择一个空槽来插入项目，并返回一个包含该槽索引的密钥。访问单个项目就像索引到一个
+    `Vec` 中一样快速。如果你遍历每个槽并过滤出空的槽，那么遍历项目就会很慢，但是你可以使用链表来使迭代更快。
 - en: 'So this will be the flow of sending resources to the audio thread:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是将资源发送到音频线程的流程：
 - en: The user calls a function in the library to send a resource to the audio thread
+  id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用户调用库中的一个函数将资源发送到音频线程
 - en: The library sends a command to the audio thread with the resource to add and
     waits for the audio thread to send back the key
+  id: totrans-73
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 库向音频线程发送一个带有要添加的资源的命令，并等待音频线程发送密钥回来
 - en: Next time the audio thread starts processing, it receives the command to add
     the resource, adds it to the arena, and sends back the key through a separate
     ringbuffer
+  id: totrans-74
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 下次音频线程开始处理时，它会接收到添加资源的命令，将其添加到竞技场中，并通过单独的环形缓冲区发送密钥回来
 - en: Next time the gameplay thread checks for the key, it receives it and returns
     it to the user
+  id: totrans-75
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 下次游戏线程检查密钥时，它会接收到并将其返回给用户
 - en: So we'll have to wait a bit for the audio thread to return the key, but it shouldn't
     take too long, right?
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们将不得不等待一段时间让音频线程返回密钥，但是不会太久，对吗？
 - en: '...right?'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: …对吗？
 - en: Why it takes too long
+  id: totrans-78
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 为什么要花这么长时间
 - en: When you hear audio coming from speakers, you're hearing an analog representation
     of digital samples that are evenly distributed over time. But an application does
     not produce those digital samples at a constant rate. If it did, then if any of
@@ -324,157 +483,231 @@
     wouldn't be able to produce audio fast enough, leading to underruns. Instead,
     the operating system periodically asks the application to produce a batch of samples
     at a time.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你听到扬声器传来的声音时，你听到的是随时间均匀分布的数字样本的模拟表示。但是应用程序不会以恒定的速率产生这些数字样本。如果是这样，那么如果任何样本花费太长时间来计算，应用程序就会落后，并且无法以足够快的速度产生音频，导致欠采样。相反，操作系统周期性地要求应用程序一次生成一批样本。
 - en: Let's say the operating system wants to output audio at 48,000 Hz (or samples
     per second), and it requests 512 samples at a time. The audio thread will produce
     512 samples of audio, then sleep until the operating system wakes it up for the
     next batch of samples. The operating system might not need to wake it up for another
     10 milliseconds, since that's the amount of audio it has queued up.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设操作系统希望以 48,000 Hz（或每秒样本数）输出音频，并请求一次输出 512 个样本。音频线程将生成 512 个音频样本，然后休眠，直到操作系统唤醒它以获取下一批样本。由于操作系统可能不需要再次唤醒它以获取另外
+    10 毫秒的音频，因为它已经排队了足够的音频。
 - en: If the gameplay thread sends a command to play a sound right after the audio
     thread falls asleep, the audio thread won't receive it and send back the sound
     ID until 10ms later. To put that into perspective, in a 60 FPS game, 10ms is more
     than half a frame. So if we played two sounds in a row, blocking the gameplay
     thread each time to wait for the audio thread to send back a sound ID, we could
     end up with a frame drop. That's not acceptable performance for an audio library.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果游戏线程在音频线程入睡后立即发送播放声音的命令，则音频线程将不会收到该命令，并在 10 毫秒后发送回声音 ID。以此为例，在一个 60 FPS 的游戏中，10
+    毫秒已经超过半帧。因此，如果我们连续播放两个声音，每次都阻塞游戏线程以等待音频线程发送回声音 ID，我们可能会出现帧率下降。对于音频库来说，这是不可接受的性能。
 - en: So arenas are out.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以 arena 不再适用。
 - en: 'Solution 2: `IndexMap`'
+  id: totrans-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 解决方案 2：`IndexMap`
 - en: If we store resources in a hash map, we can create keys on the gameplay thread
     and just send them to the audio thread along with the command to add a resource.
     The standard library's `HashMap` isn't very quick to iterate over, but the [`indexmap`](https://crates.io/crates/indexmap)
     crate solves that problem for us.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将资源存储在哈希映射中，我们可以在游戏线程上创建键，并将它们与添加资源的命令一起发送到音频线程。标准库的`HashMap`遍历速度不够快，但[`indexmap`](https://crates.io/crates/indexmap)
+    crate 解决了这个问题。
 - en: 'Here''s the new flow:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是新的流程：
 - en: The user calls a function in the library to send a resource to the audio thread
+  id: totrans-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用户调用库中的函数将资源发送到音频线程
 - en: The library increments an ID internally to use as the key for the resource
+  id: totrans-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 库内部递增一个 ID 以用作资源的键
 - en: The library sends a command to the audio thread to add the resource with the
     ID
+  id: totrans-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 库向音频线程发送命令以添加带有 ID 的资源
 - en: The library immediately returns the ID to the caller
+  id: totrans-89
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 库立即将 ID 返回给调用者
 - en: Problem solved! We don't have to wait for the audio thread to send back an ID.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题解决了！我们不必等待音频线程发送回一个 ID。
 - en: 'There are some downsides to this approach, though:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，这种方法也有一些缺点：
 - en: Hash maps are slower to get items from than arenas, because they have to hash
     the key to get the location of the item in memory
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从哈希映射中获取项比从 arena 中获取项要慢，因为它们必须对键进行哈希以获取内存中项的位置
 - en: '`IndexMap`s lose capacity over time...wait, what?'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`IndexMap` 随时间失去容量……等等，什么？'
 - en: If you're like me, you'd be surprised to learn the latter fact. But I'll prove
     it to you!
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您和我一样，您会惊讶地了解后一种事实。但我会向您证明它！
 - en: '[PRE15]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Here's a small example where I add items to an `IndexMap`. Every 5 items added,
     I remove 3 items at arbitrary indices. Every time I add an item, I print the length
     and total capacity of the map. You can run this code snippet yourself [here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419).
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个小例子，我向`IndexMap`添加项。每添加 5 个项，我会在任意索引处移除 3 个项。每次添加一个项时，我会打印地图的长度和总容量。您可以在[这里](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419)运行此代码片段。
 - en: 'We end up with a result something like this:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们最终得到类似于这样的结果：
 - en: '[PRE16]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Notice the dip from a capacity of 28 to a capacity of 26? This isn't a bug,
     [it's just how the hashbrown algorithm works](https://github.com/bluss/indexmap/issues/183)
     (which both `IndexMap` and the standard library's `HashMap` use).
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意从容量为 28 下降到容量为 26？这不是 bug，[这只是 hashbrown 算法的工作方式](https://github.com/bluss/indexmap/issues/183)（`IndexMap`
+    和标准库的 `HashMap` 都使用了这个算法）。
 - en: 'It turns out there is a workaround: the capacity will never decrease if you
     don''t exceed 50% of the capacity. So we could just allocate twice as much space
     as we need to avoid the problem. Kira v0.5 uses this approach, but I didn''t feel
     comfortable relying on an unspoken implementation detail of a library.'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 原来有一个解决方法：如果不超过容量的 50%，则容量永远不会减少。所以我们可以分配比我们需要的两倍空间来避免这个问题。Kira v0.5 使用了这种方法，但我不太愿意依赖库的一个未明示的实现细节。
 - en: 'Solution 3: Revisiting arenas'
+  id: totrans-101
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 解决方案 3：重新审视 arena
 - en: 'Maybe an arena can work; it would just need to let us generate new keys from
     the gameplay thread. A suggestion from the Rust Audio discord got me thinking
     about how atomics could be used to serve this purpose. I eventually came up with
     an arena that has two components:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许竞技场可以起作用；它只需要让我们从游戏线程生成新的密钥。Rust 音频 Discord 的建议让我想到了原子如何用于实现这个目的。我最终想出了一个具有两个组件的竞技场：
 - en: The arena itself, which holds the resource data and lives on the audio thread
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 竞技场本身，它保存资源数据并位于音频线程上。
 - en: An arena controller, which tracks free and empty slots and can generate keys.
     The controller can be cloned and sent to other threads.
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个竞技场控制器，它跟踪空闲和空槽，并且可以生成密钥。控制器可以克隆并发送到其他线程。
 - en: When we want to add an item to an arena, we first reserve a key from the arena
     controller. If too many keys have been reserved, the controller will tell us the
     arena is full and not give us a key. If there are slots available, we can send
     the key along with the command to add an item and return the key immediately to
     the caller.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们想要向竞技场添加一个项目时，我们首先从竞技场控制器中保留一个密钥。如果保留了太多密钥，控制器会告诉我们竞技场已满并且不会给我们密钥。如果有可用的插槽，我们可以将密钥与添加项目的命令一起发送，并立即将密钥返回给调用者。
 - en: 'I find this to be a really elegant solution, since it solves multiple problems
     at once:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我发现这是一个非常优雅的解决方案，因为它一次解决了多个问题：
 - en: The backing data store is a `Vec`, so there won't be any surprises with the
     capacity
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 后备数据存储是一个`Vec`，因此容量不会有任何意外。
 - en: Looking up resources is fast, since the keys are just indices into the `Vec`
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 查找资源很快，因为密钥只是`Vec`中的索引。
 - en: We can generate new keys direcly from the gameplay thread
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们可以直接从游戏线程生成新的密钥。
 - en: It's easy to get information on the number of allocated resources and remaining
     capacity from the gameplay thread
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从游戏线程很容易获取分配资源和剩余容量的信息。
 - en: This is the solution I'm using for Kira v0.6\. You can see my implementation
     of the arena [here](https://crates.io/crates/atomic-arena).
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我在 Kira v0.6 中使用的解决方案。您可以在[这里](https://crates.io/crates/atomic-arena)查看我的竞技场的实现。
 - en: Conclusion
+  id: totrans-112
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Making audio libraries is hard. I don't know the best way to do it. This is
     just what I've tried and how it went for me.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 制作音频库很困难。我不知道最佳方法是什么。这只是我尝试过的方式以及它对我产生的影响。
