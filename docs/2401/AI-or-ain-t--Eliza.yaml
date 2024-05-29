@@ -1,29 +1,37 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:34:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'AI or ain''t: Eliza'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://zserge.com/posts/ai-eliza/](https://zserge.com/posts/ai-eliza/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'AI or ain''t: Eliza'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In the year 2023, AI took center stage in the media, stirring up discussions
     about whether it was mere hype or real progress.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: However, the concept of [non-human intelligence](https://en.wikipedia.org/wiki/Extraterrestrial_intelligence)
@@ -32,6 +40,7 @@
     seemed plausible to simulate our “intelligence” with similar electronic circuits.
     The term “machine intelligence” was coined in the 1950s, around the same time
     the [Turing test](https://en.wikipedia.org/wiki/Turing_test) was introduced.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: This test (also known as the “imitation game”) suggests that AI can be considered
@@ -41,9 +50,11 @@
     partner is human or not. If the person talking to the computer believes it’s a
     human, even though it’s a machine, that signifies the machine is genuinely artificially
     intelligent.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Eliza
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -52,217 +63,316 @@
     Eliza skillfully emulated the speech patterns of a psychotherapist in its conversations.
     Interestingly, Eliza still [outperforms ChatGPT-3.5](https://arstechnica.com/information-technology/2023/12/real-humans-appeared-human-63-of-the-time-in-recent-turing-test-ai-study/)
     in certain Turing test variations.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Eliza demonstrates how even the simplest algorithm can be just sufficient to
     appear intelligent. Let’s imagine a program that constantly prints “Hello, user!”
     when it starts. We can hardly consider it intelligent and a user will quickly
     start to suspect it’s just a hardcoded behaviour.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Now, imagine a program printing a random greeting from a predefined list. It
     will take more attempts to unveil its artificiality, but as soon as the interrogator
     starts asking questions, such a bot would appear too inadequate in comparison
     to human interaction.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: How Eliza works
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s recreate Eliza just the way it worked 57 years ago. I’ll share some [Go
     code](https://github.com/zserge/aint/tree/main/eliza), but you can easily adapt
     it to the other programming languages.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'We start with a basic chatbot interface:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Here, we’re reading text from stdin line by line and sending each line to the
     `response()` function. This function’s job is to handle what the user says, find
     a suitable reply, and send it back.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Currently, our Eliza is pretty brainless; it doesn’t really understand anything
     the user says and can’t wrap up a conversation properly. So, let’s give it a bit
     more intelligence by introducing some stop words to help Eliza bid a proper goodbye.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，我们的 Eliza 相当愚蠢；它实际上不理解用户说的任何话，并且无法适当地结束对话。因此，让我们通过引入一些停止词来为 Eliza 增加一点智能，以帮助
+    Eliza 适当地结束对话。
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Knowledge base
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 知识库
 - en: To enhance Eliza’s conversational skills, we need to implant some knowledge
     into its brain. In our case knowledge will be stored in a very structured and
     oranised manner – as a sorted list of keywords, each accompanied with a set of
     possible transformation rules.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了增强 Eliza 的对话技能，我们需要向其大脑植入一些知识。在我们的情况下，知识将以非常结构化和组织良好的方式存储 —— 作为一个关键词的排序列表，每个关键词都伴随着一组可能的转换规则。
 - en: Transformation rules are predefined instructions and patterns to help Eliza
     modify and respond to specific user inputs. Each transformation rule consist of
     a pattern to match (decomposition) and instructions on how to reassemble the reply.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 转换规则是预定义的指令和模式，帮助 Eliza 修改和响应特定的用户输入。每个转换规则包括一个用于匹配的模式（分解）和有关如何重新组装回复的指令。
 - en: 'Here’s a simple rule example:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简单的规则示例：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This rule is triggered when the user input contains the word “sorry”. Pattern
     is a wildcard (`*`) that matches all input text. Reassembly rules are just static
     strings and any of them can be returned as a possible reply:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 当用户输入包含单词 “sorry” 时，将触发此规则。模式是一个通配符 (`*`)，匹配所有输入文本。重新组装规则只是静态字符串，任何一个都可以作为可能的回复返回：
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'More complicated examples would use reassembly rules that include parts of
     the user input:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 更复杂的示例会使用包含用户输入部分的重新组装规则：
 - en: '[PRE4]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Consider user input *“I suspect you are a bot”*. Eliza will detect the keyword
     `you` in the input and will start looking for matching patterns belonging to that
     keyword.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑用户输入 *“我怀疑你是一个机器人”*。Eliza 将检测输入中的关键词 `你` 并开始寻找属于该关键词的匹配模式。
 - en: The first pattern `* you * me` will not match the input, but the second one
     will. Given the input *“I suspect you are a bot”* and pattern `* you are *` the
     first wildcard would hold `I suspect` and the second wildcard would hold `a bot`.
     Now, the reassembly rule would replace `(2)` placehodler with the contents of
     the second wildcard replying with *“What makes you think I am a bot?"*.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个模式 `* 你 * 我` 将不匹配输入，但第二个会。给定输入 *“我怀疑你是一个机器人”* 和模式 `* 你是 *`，第一个通配符会保持 `我怀疑`，第二个通配符会保持
+    `一个机器人`。现在，重新组装规则将使用第二个通配符的内容替换 `(2)` 的占位符，并回复 *“你为什么认为我是一个机器人？”*。
 - en: Similarly for the input *“I think you might dislike me”* the reply could be
     *“Really, I might dislike you?"*.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，在输入 *“我想你可能不喜欢我”* 时，回复可能是 *“真的吗，我可能不喜欢你？”*。
 - en: Synonyms
+  id: totrans-33
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 同义词
 - en: 'To avoid duplication of the rules, Eliza uses synonym groups in its patterns.
     For example, category `belief` may include words like “belief”, “feel”, “think”,
     “believe”, “wish” etc. Then in a pattern it becomes possible to refer to the whole
     category instead of individual words:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了避免规则的重复，Eliza 在其模式中使用了同义词组。例如，类别 `belief` 可能包括诸如 “belief”、“feel”、“think”、“believe”、“wish”
+    等词语。然后在模式中，可以引用整个类别而不是单个词语：
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Here for the input *“I feel I am talking to a bot”* the reply could be *“But
     you are not sure you are talking to the bot”*.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此输入 *“我感觉我在和一个机器人交谈”* 时，回复可能是 *“但你并不确定你在和机器人交谈”*。
 - en: You might wonder how “I am” turned into “you are”. Eliza has a list of preprocessing
     and postprocessing rules. Preprocessing helps to convert “I’m” into “I am” or
     fix some common typos. Postprocessing helps to invert the pronouns and verbs,
     i.e. “am → are”, “your → my”, “myself → yourself” etc.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想知道 “我是” 怎么变成了 “你是”。Eliza 有一个预处理和后处理规则列表。预处理有助于将 “I’m” 转换为 “I am” 或修正一些常见的拼写错误。后处理帮助反转代词和动词，即
+    “am → are”、“your → my”、“myself → yourself” 等。
 - en: 'Another trick Eliza uses to handle synonyms is a “goto” reassembly rule. For
     the given keyword some transformation rules might redirect Eliza to a different
     (related) keyword:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Eliza 处理同义词的另一个技巧是 “goto” 重新组装规则。对于给定的关键词，一些转换规则可能会将 Eliza 重定向到一个不同的（相关的）关键词：
 - en: '[PRE6]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Here keyword “apologise” is treated just as if it was “sorry”. For the keyword
     “can” the first reply would be *“You believe I can&mldr;"* and the second attempt
     would navigate Eliza to a generic reply.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里关键词 “apologise” 被视为 “sorry”。对于关键词 “can”，第一个回复将是 *“你相信我能…”*，而第二次尝试将引导 Eliza
+    到一个通用回复。
 - en: 'Finally, there is one last feature that Eliza employed to simulate intelligence:
     memorisation. Some transformation rules would ask Eliza to store replies in a
     memory stack. Later, when no suitable reply could be found these previous replies
     are popped from memory and reused:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，还有一个Eliza用来模拟智能的特性：记忆。一些转换规则会要求Eliza将回复存储在内存堆栈中。后来，当找不到合适的回复时，这些先前的回复会从内存中弹出并重新使用：
 - en: '[PRE7]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Here the first reply about chatbot misbehaving is memorised and repeated when
     Eliza is out of suitable replies.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里关于聊天机器人行为不端的第一个回复被记忆下来，并在Eliza缺少合适的回复时重复使用。
 - en: 'And that’s all Eliza does. Knowledge base can be represented directly with
     Go code, but you can also store Eliza “scripts” as JSON or YAML files and parse
     those on startup:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是Eliza所做的全部。知识库可以直接用Go代码表示，但您也可以将Eliza的“脚本”存储为JSON或YAML文件，并在启动时解析这些文件：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'All of Eliza state can be stored in two variables: an index, pointing to the
     next available decomposition for each rule, and a memory of the latest stored
     replies:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有Eliza状态都可以存储在两个变量中：一个索引，指向每个规则下一个可用的分解，以及最新存储的回复的内存：
 - en: '[PRE9]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Complete Eliza code is no more than three functions: a helper to pre/postprocess
     text, a pattern matching algorithm and a top-level response function to handle
     the rest of Eliza’s logic:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的Eliza代码不超过三个函数：一个用于预处理/后处理文本的辅助函数，一个模式匹配算法和一个顶层响应函数，用于处理Eliza剩余的逻辑：
 - en: '[PRE10]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Pattern matching can be implemented in a number of ways. The obvious one would
     be to use regular expressions, but that’s too high-level for Eliza. Another option
     would be to implement [a 35-line tiny matcher](https://benhoyt.com/writings/rob-pike-regex/)
     by [Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike).
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 模式匹配可以用多种方式实现。显而易见的是使用正则表达式，但对于Eliza来说，那太高级了。另一个选择是通过实现[一个35行的微小匹配器](https://benhoyt.com/writings/rob-pike-regex/)来实现，由[Rob
+    Pike](https://en.wikipedia.org/wiki/Rob_Pike)提供。
 - en: 'But since our text is already split into tokens we can build a similar recursive
     matcher that operates on words rather than characters:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 但由于我们的文本已经被分成了标记，我们可以构建一个类似的递归匹配器，该匹配器操作单词而不是字符：
 - en: '[PRE11]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'After having all the knowledge encoded and these utility functions written
     we can now build the rest of Eliza’s brain:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将所有知识编码并编写这些实用函数之后，我们现在可以构建Eliza的其余大脑了：
 - en: '[PRE12]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Full sources are available [on GitHub](https://github.com/zserge/aint/tree/main/eliza/)
     and you can play around with one of Eliza implementations [online](https://www.masswerk.at/elizabot/)
     to take a Turing test yourself.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的源代码可以在[GitHub上](https://github.com/zserge/aint/tree/main/eliza/)找到，你可以在[线上](https://www.masswerk.at/elizabot/)玩弄其中一个Eliza实现，自己进行图灵测试。
 - en: AI?
+  id: totrans-56
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: AI？
 - en: Clearly, Eliza is not an AI. But it’s been a huge success and caused many people
     treat it as a human. Being empathetic to its users and reflecting their language
     back to them, Eliza seems to be very understanding. Also it doesn’t tend to reveal
     much about itself, making it harder to discover that it’s merely a short list
     of hardcoded phrases. Silence is golden, indeed.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，Eliza并不是人工智能。但它取得了巨大的成功，并导致许多人将其视为人类。对其用户怀有同情心，并将其语言反映回他们，Eliza似乎非常理解人情。此外，它也不倾向于透露太多关于自己的信息，这使得发现它只是一系列硬编码短语更加困难。沉默确实是金子般的。
 - en: 'Next part: [Markov Chains](/posts/ai-markov/)'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一部分：[马尔可夫链](/posts/ai-markov/)
 - en: I hope you’ve enjoyed this article. You can follow – and contribute to – on
     [Github](https://github.com/zserge), [Mastodon](https://mastodon.social/@zserge),
     [Twitter](https://twitter.com/zsergo) or subscribe via [rss](/rss.xml).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望您喜欢本文。您可以在[Github](https://github.com/zserge)、[Mastodon](https://mastodon.social/@zserge)、[Twitter](https://twitter.com/zsergo)上关注并贡献，或通过[rss](/rss.xml)订阅。
 - en: '*Jan 01, 2024*'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '*2024年1月1日*'
