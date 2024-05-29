@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:01:08'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:01:08
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How we built a fair multi-tenant queuing system - Inngest Blog
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我们如何构建一个公平的多租户队列系统 - Inngest 博客
 - en: 来源：[https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy](https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy](https://www.inngest.com/blog/building-the-inngest-queue-pt-i-fairness-multi-tenancy)
 - en: In software development, queueing systems are important for reliability, and
     they're hard to build. There's lots of debate around *how* to build a queueing
     system — with [Postgres](https://news.ycombinator.com/item?id=35526846) and [SKIP
@@ -31,23 +37,28 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在软件开发中，队列系统对于可靠性至关重要，而且很难构建。关于如何构建队列系统存在大量争论 —— [Postgres](https://news.ycombinator.com/item?id=35526846)
+    和 [SKIP LOCKED](https://news.ycombinator.com/item?id=37636841) 总是被讨论得沸沸扬扬。
 - en: We've spent a long time researching and building our own distributed queuing
     system, and in this post we'll explain what the challenges are, why we needed
     to build it, and how it works.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们花了很长时间研究和构建我们自己的分布式队列系统，在这篇文章中，我们将解释其中的挑战是什么，为什么我们需要构建它，以及它是如何工作的。
 - en: Challenges building queueing systems
   id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建队列系统的挑战
 - en: We built Inngest as a reliability layer for modern applications. It enables
     developers to write declarative step functions in code by combining durable execution,
     event streams, and queues into a singe serverless platform.
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将 Inngest 构建为现代应用程序的可靠性层。它使开发人员能够通过将持久执行、事件流和队列组合到一个无服务器平台中，以代码形式编写声明性步函数。
 - en: Inngest manages the event streams, queues and state all within the platform.
     Environments are created and functions are automatically deployed for [every branch
     of your codebase](/blog/branch-environments). Teams might deploy *hundreds* of
@@ -56,18 +67,22 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Inngest 在平台内管理事件流、队列和状态。环境被创建，并且函数会自动部署到 [您代码库的每个分支](/blog/branch-environments)。团队可能会在
+    Inngest 上部署 *数百* 个函数，跨越数十个分支，导致数千个函数对事件实时响应（在约 10-100 毫秒内）。
 - en: As we scaled to **thousands of users who have triggered billions of functions
     to run**, we learned a great deal about the challenges developing a platform built
     on queues.
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们扩展到**数千名触发了数十亿次函数运行的用户**时，我们对在队列构建的平台上开发的挑战有了很多了解。
 - en: 'Attempting to build a system like this with any off-the-shelf queuing system
     is quickly going to become a struggle. Here are some of the key challenges that
     you will encounter:'
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 尝试使用任何现成的队列系统构建这样的系统很快就会变得困难。以下是您将遇到的一些关键挑战：
 - en: '**Fairness**. You send 5,000 events per second. Not hard to manage, but in
     a single queue your jobs will block other users'' work from running. That''s not
     fair. One user should not be able to block another''s work.'
@@ -75,6 +90,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**公平性**。你每秒发送 5,000 个事件。管理起来并不困难，但在一个单一队列中，你的作业会阻塞其他用户的工作运行。这不公平。一个用户不应该能够阻止另一个用户的工作。'
 - en: '**Multi-tenancy**. Most queues operate on a "worker" model: you specify which
     queues a worker should listen to, and the amount of jobs that worker can handle.
     Spinning up new workers for each function is tedious and cumbersome. It''s made
@@ -83,6 +99,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**多租户**。大多数队列都采用“工作者”模型：您指定工作者应该监听哪些队列，以及该工作者可以处理多少作业。为每个函数启动新的工作者是乏味且繁琐的。考虑到开发分支是短暂且突发性的，情况变得更糟。'
 - en: '**Contention**. With thousands of customers running thousands of step functions
     containing parallel steps, at any given time there are millions jobs available
     for work. In typical queueing systems, workers will all contend for the earliest
@@ -91,6 +108,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**竞争**。随着成千上万的客户运行包含并行步骤的数千个步函数，在任何给定时间都有数百万个可用于工作的作业。在典型的队列系统中，工作者们会争抢最早可用的工作，导致大量的自旋和浪费的努力。'
 - en: '**Concurrency**. Customizing concurrency at a function level across distributed
     workers is not possible in other queueing systems. Typically, concurrency management
     is implemented within the worker polling logic. Within Inngest, you can set multiple
@@ -100,6 +118,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**并发性**。在其他队列系统中，跨分布式工作者自定义并发性是不可能的。通常，并发性管理是在工作者轮询逻辑内实现的。在 Inngest 内，您可以使用一行代码在单个函数上设置多个并发设置。这创建了用于管理运行的虚拟队列。'
 - en: '**Read/write load**. Handling tens of thousands of jobs per second leads to
     hundreds of thousands of requests per second: enqueues, "locks" (we''ll get to
     that), dequeues all lead to heavy load on the backing infrastructure that runs
