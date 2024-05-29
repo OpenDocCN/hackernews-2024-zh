@@ -118,14 +118,17 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然蒸馏受到的关注较少，但在历史上一直是服务大规模模型的重要组成部分。这是因为蒸馏通常比量化要好得多，如果你有资源，应该是你做事情的方式。
 - en: 'There’s a key caveat there: if you have the resources.'
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个关键的警告：如果你有资源。
 - en: '[Get 20% off a group subscription](https://www.artfintel.com/subscribe?group=true&coupon=9ee370da)'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '[团体订阅享 20% 折扣](https://www.artfintel.com/subscribe?group=true&coupon=9ee370da)'
 - en: 'Let’s go back to our hypothetical scenario. You’re a hardworking ML engineer
     at CoherentOpenStability, where you’re trying to reduce the inference costs for
     your latest and greatest LLM, StableClaudius-4\. You’ve already profiled your
@@ -133,6 +136,8 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到我们的假设场景。你是一名勤奋的 ML 工程师，在 CoherentOpenStability 工作，在那里，你正在尝试减少最新和最伟大的 LLM，StableClaudius-4
+    的推理成本。你已经对代码进行了分析，并减少了所有可能的开销。现在你有几个选择：
 - en: You come up with a research breakthrough which lets you accomplish the same
     thing, for cheaper. E.g. you design a new sparse attention mechanism which works
     well.
@@ -140,11 +145,13 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你提出了一个研究突破，让你以更便宜的方式完成同样的事情。例如，你设计了一个新的稀疏注意机制，它效果很好。
 - en: You make your model smaller.
   id: totrans-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你使你的模型变小。
 - en: 'If I were to compare these, the obvious winner is #1\. If you can come up with
     a novel research contribution that magically improves your model, you should obviously
     do that. If this is you, stop reading this article, go write a paper, apply to
@@ -154,31 +161,38 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '如果我要比较这些，显而易见的赢家是 #1\. 如果你能提出一个神奇地改进你的模型的新研究贡献，你显然应该这样做。如果你是这样的人，请停止阅读本文，去写一篇论文，申请
+    OpenAI/Anthropic/DeepMind，然后领取一份作为大型语言模型解密者的非常高的工资。大多数人不能做到这一点。所以我们只能设法提出一个较小的模型，以完成相同的事情。'
 - en: 'How should we come up with a smaller model? A few options:'
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该如何提出一个较小的模型？几个选项：
 - en: You train a smaller model in the exact same way as your original model.
   id: totrans-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你按照与原始模型完全相同的方式训练一个较小的模型。
 - en: You distill your big model into a smaller model.
   id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你将你的大模型蒸馏成一个较小的模型。
 - en: You quantize your existing model.
   id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你量化你现有的模型。
 - en: 'In my opinion, the literature indicates a clear & obvious ranking: distillation
     is strictly better than training a smaller model, and quantizing is *probably*
     better than training a smaller model.'
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，文献表明有一个清晰明显的排序：蒸馏比训练一个较小的模型要好，而量化*可能*比训练一个较小的模型要好。
 - en: There aren’t as many distillation papers as I would like, but the two that come
     to mind are [DistilBERT](https://arxiv.org/abs/1910.01108) and the [original distillation
     paper](https://arxiv.org/abs/1503.02531) from Hinton et. al. In DistilBERT, the
@@ -186,6 +200,9 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想要的蒸馏论文不多，但我想到的两篇是 [DistilBERT](https://arxiv.org/abs/1910.01108) 和 Hinton
+    等人的[原始蒸馏论文](https://arxiv.org/abs/1503.02531)。在 DistilBERT 中，作者将模型大小减小了 40%，同时只减少了
+    3% 的性能。
 - en: In the Hinton et. al paper, they’re able to match the performance of an ensemble
     of 10 models with a single, distilled model, and performance only decreases from
     61.1% accuracy to 60.8% accuracy (99.5% of the original performance, with 10%
@@ -196,6 +213,9 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Hinton 等人的论文中，他们能够用一个单一的蒸馏模型匹配 10 个模型集合的性能，并且性能仅从 61.1% 的准确率下降到 60.8% 的准确率（与原始性能的
+    99.5%，仅为原始大小的 10%）。现在，Hinton 的论文正在与一个集合进行比较，这是一种特别浪费模型大小的方式，但这仍然是一个令人印象深刻的结果，比从头开始训练模型执行相同任务要好得多（仅有
+    58.9% 的准确率）。
 - en: The problem with distillation, however, is that it requires training a smaller
     model from scratch ***and*** running inference over your entire dataset with your
     large model. If you have a dataset the size of GPT-3 (500B), this would cost $1M
@@ -260,6 +280,7 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以量化很棒。但是，到底，*什么*是量化，它是如何工作的？
 - en: The idea behind quantization is simple. Computers, due to their discrete nature,
     can’t natively store floating point numbers. digital numerical representations
     are based on **bits**, namely 1s or 0s. These bits are assembled into **binary**.
@@ -267,12 +288,14 @@
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 量化背后的想法很简单。由于计算机的离散性质，它们不能本地存储浮点数。数字表示是基于**位**，即1或0的。这些位被组装成**二进制**。在二进制整数表示中，你可以表示一系列的
 - en: using a signed integer, where n is the number of bits. One bit is reserved to
     represent whether or not the number is positive or negative, and n - 1 bits are
     used to represent the magnitude.
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用带符号整数，其中n是位数。其中一位用于表示数字是正数还是负数，剩下的n - 1位用于表示幅度。
 - en: This works well, and is reasonably efficient. However, the problem comes when
     you want to represent the [real numbers](https://en.wikipedia.org/wiki/Real_number),
     i.e. numbers that can take on values between integers. The most common approach
@@ -282,26 +305,32 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个方法很好，而且相当高效。然而，当你想表示[实数](https://en.wikipedia.org/wiki/Real_number)，即可以取得整数之间值的数字时，问题就来了。最常见的方法是保留1位来指示数字的正负性，m位来表示数字的大小（***指数***），以及（n
+    - m - 1）位来表示数字的精度（尾数）。
 - en: The significand is just a (n-m-1)-bit unsigned integer, and can thus represent
     values up to 2^{n - m - 1}.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 尾数只是一个(n-m-1)位的无符号整数，因此可以表示的值最大为2^{n - m - 1}。
 - en: In a 32-bit floating point number (single precision), 1 bit is used for the
     sign, 8 bits for the exponent, and 23 bits for the significand.
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在32位浮点数（单精度）中，1位用于符号，8位用于指数，23位用于尾数。
 - en: In a 16-bit floating point number (half precision), 1 bit is used for the sign,
     5 bits for the exponent, and 10 bits for the significand.
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在16位浮点数（半精度）中，1位用于符号，5位用于指数，10位用于尾数。
 - en: In a 64-bit floating point number (double precision), 1 bit is used for the
     sign, 11 bits for the exponent, and 52 bits for the significand.
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在64位浮点数（双精度）中，1位用于符号，11位用于指数，52位用于尾数。
 - en: Note where the additional bits are going— they are mostly going to the significand,
     which adds *precision*, rather than *magnitude*. In other words, this lets us
     distinguish between *smaller* numbers, rather than allowing us to represent *bigger*
@@ -309,6 +338,7 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意额外的位都去了哪里——它们大部分都去了尾数，这增加了*精度*，而不是*幅度*。换句话说，这让我们区分了*更小*的数字，而不是允许我们表示*更大*的数字。
 - en: 'By default, all major tensor programming frameworks use 32-bit precision to
     store trainable parameters. There’s a reason for this: 32-bit precision tends
     to be a good default. There are very few applications which benefit from the additional
@@ -317,6 +347,7 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，所有主要的张量编程框架都使用32位精度来存储可训练参数。这样做是有原因的：32位精度通常是一个很好的默认值。很少有应用程序会受益于额外的精度（主要是科学计算应用程序）。然而，在实践中，现在大多数的前沿工作都使用16位。
 - en: But ok. Now that you’ve read through my digression on how precision works in
     floating point numbers, let’s say we’ve chosen a level of precision. How do you
     *actually* lower the precision of your weights? The naive approach is to simply
@@ -325,6 +356,7 @@
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 但好吧。现在你已经读完了我关于浮点数精度工作方式的离题讨论，让我们假设我们已经选择了一个精度级别。你如何*实际地*降低你的权重呢？天真的方法是简单地截断你的权重到给定的精度水平。举个简单的例子，如果你的权重是0.534345，天真地截断权重将把它转换为0.534。
 - en: 'The [SOTA model for quantizing to 4-bits or below](https://twitter.com/Tim_Dettmers/status/1642885684057997313?s=20)
     is GPTQ. Some other methods are LLM.int8() and ZeroQuant. I’ll discuss these in
     depth in a future article, but here, I’ll focus on GPTQ. The basic idea behind
