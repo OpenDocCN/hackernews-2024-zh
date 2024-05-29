@@ -1,153 +1,223 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:39:18'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:39:18'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Soft Deletion Probably Isn't Worth It
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 软删除可能并不值得
 - en: 来源：[https://brandur.org/soft-deletion](https://brandur.org/soft-deletion)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://brandur.org/soft-deletion](https://brandur.org/soft-deletion)
 - en: 'Anyone who’s seen a couple different production database environments is likely
     familiar with the “soft deletion” pattern – instead of deleting data directly
     via `DELETE` statement, tables get an extra `deleted_at` timestamp and deletion
     is performed with an update statement instead:'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何看过几个不同的生产数据库环境的人都可能熟悉“软删除”模式——表格不直接通过 `DELETE` 语句删除数据，而是增加了额外的 `deleted_at`
+    时间戳，并通过更新语句执行删除：
 - en: '[PRE0]'
+  id: totrans-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The concept behind soft deletion is to make deletion safer, and reversible.
     Once a record’s been hit by a hard `DELETE`, it may technically still be recoverable
     by digging down into the storage layer, but suffice it to say that it’s really
     hard to get back. Theoretically with soft deletion, you just set `deleted_at`
     back to `NULL` and you’re done:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 软删除背后的概念是使删除更安全和可逆。一旦记录被硬 `DELETE`，它可能从技术上来说仍然可以通过深入存储层来恢复，但可以说这非常难以实现。理论上，通过软删除，您只需将
+    `deleted_at` 设置为 `NULL`，然后完成：
 - en: '[PRE1]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'But this technique has some major downsides. The first is that soft deletion
     logic bleeds out into all parts of your code. All our selects look something like
     this:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是这种技术有一些主要缺点。首先是软删除逻辑渗透到代码的各个部分。我们所有的选择都看起来像这样：
 - en: '[PRE2]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: And forgetting that extra predicate on `deleted_at` can have dangerous consequences
     as it accidentally returns data that’s no longer meant to be seen.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 忘记 `deleted_at` 上的额外谓词可能会带来危险后果，因为它意外返回了不再应该看到的数据。
 - en: Some ORMs or ORM plugins make this easier by automatically chaining the extra
     `deleted_at` clause onto every query (see [`acts_as_paranoid`](https://github.com/ActsAsParanoid/acts_as_paranoid)
     for example), but just because it’s hidden doesn’t necessarily make things better.
     If an operator ever queries the database directly they’re even more likely to
     forget `deleted_at` because normally the ORM does the work for them.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些 ORM 或 ORM 插件通过将额外的 `deleted_at` 条件自动链接到每个查询上，使这个过程变得更加容易（例如看看 [`acts_as_paranoid`](https://github.com/ActsAsParanoid/acts_as_paranoid)），但仅仅因为它被隐藏了并不一定会使事情变得更好。如果操作员直接查询数据库，他们更有可能忘记
+    `deleted_at`，因为通常 ORM 会为他们完成这项工作。
 - en: Another consequence of soft deletion is that foreign keys are effectively lost.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 软删除的另一个后果是外键实际上会丢失。
 - en: The major benefit of foreign keys is that they guarantee referential integrity.
     For example, say you have customers in one table that may refer to a number of
     invoices in another. Without foreign keys, you could delete a customer, but forget
     to remove its invoices, thereby leaving a bunch of orphaned invoices that reference
     a customer that’s gone.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 外键的主要优势在于它们保证引用完整性。例如，假设您有一个客户在一个表中，可能会引用另一个表中的多个发票。如果没有外键，您可以删除一个客户，但可能会忘记删除其发票，从而留下一堆与已删除的客户相关的孤立发票。
 - en: 'With foreign keys, trying to remove that customer without removing the invoices
     first is an error:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在有外键的情况下，尝试删除该客户而不先删除发票会导致错误：
 - en: '[PRE3]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: As with other relational database features like predefined schemas, types, and
     check constraints, the database is helping to keep data valid.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其他关系型数据库功能（如预定义模式、类型和检查约束）一样，数据库帮助保持数据有效。
 - en: But with soft deletion, this goes out the window. A customer may be soft deleted
     with its `deleted_at` flag set, but we’re now back to being able to forget to
     do the same for its invoices. Their foreign keys are still valid because the customer
     record is technically still there, but there’s no equivalent check that the invoices
     are also soft deleted, so you can be left with your customer being “deleted”,
     but its invoices still live.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是使用软删除，情况就不同了。一个客户可能会被软删除，并将其 `deleted_at` 标志设置，但我们现在又回到了可以忘记对其发票执行相同操作的情况。他们的外键仍然有效，因为客户记录在技术上仍然存在，但没有等效的检查以确保发票也被软删除，因此您可能会发现客户被“删除”，但其发票仍然存在。
 - en: The last few years have seen major advances in terms of consumer data protection
     like the roll out of [GDPR](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation)
     in Europe. As such, it’s generally frowned upon for data to be retained infinitely,
     which by default would be the case for soft deleted rows.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去几年在消费者数据保护方面取得了重大进展，例如在欧洲推出了 [GDPR](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation)。因此，通常情况下不建议数据无限期保留，而软删除行默认情况下会出现这种情况。
 - en: So you may eventually find yourself writing a hard deletion process which looks
     at soft deleted records beyond a certain horizon and permanently deletes them
     from the database.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，你最终可能会编写一个硬删除过程，该过程查看超出某个时间范围内的软删除记录，并从数据库中永久删除它们。
 - en: But the same foreign keys that soft deletion rendered mostly useless now make
     this job more difficult because a record can’t be removed without also making
     sure that all its dependencies are removed as well (`ON DELETE CASCADE` could
     do this automatically, but use of cascade is fairly dangerous and not recommended
     for higher fidelity data).
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是软删除使得这项工作更加困难的是，由于记录不能被删除而不确保其所有依赖项也被删除（`ON DELETE CASCADE` 可以自动完成此操作，但是级联的使用相当危险，不建议用于更高的数据保真度）。
 - en: 'Luckily, you can still do this in systems that support CTEs like Postgres,
     but you end up with some pretty elaborate queries. Here’s a snippet from one that
     I wrote recently which keeps all foreign keys satisfied by removing everything
     as part of a single operation:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，在支持 CTEs（通用表表达式）的系统中仍然可以执行此操作，但是您将得到一些非常复杂的查询。以下是我最近编写的一个片段，它通过一次操作将所有外键满足并删除所有内容：
 - en: '[PRE4]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The unabridged version of this is five times as long and includes a full 30
     separate tables. It’s cool that this works, but is so overly elaborate as to be
     a liability.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整版本的长度是原文的五倍，包括 30 张单独的表。这个工作虽然有效，但是过于复杂，成为一个负担。
 - en: And even with liberal testing, this kind of query can still end up being a reliability
     problem because in case a new dependency is added in the future but an update
     to the query is forgotten, it’ll suddenly start failing after a year’s (or whatever
     the hard delete horizon is) delay.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使进行了大量测试，这种查询仍可能成为可靠性问题，因为如果未来添加了新的依赖项，但忘记了更新查询，那么在一年后（或者硬删除的时间跨度是多长）突然就会开始失败。
 - en: Once again, soft deletion is theoretically a hedge against accidental data loss.
     As a last argument against it, I’d ask you to consider, realistically, whether
     undeletion is something that’s ever actually done.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，软删除理论上是对意外数据丢失的一种防范。作为反对的最后一个论点，我想请你考虑现实中是否真的有人做过恢复删除的事情。
 - en: When I worked at Heroku, we used soft deletion.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我在 Heroku 工作时，我们使用了软删除。
 - en: When I worked at Stripe, we used soft deletion.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我在 Stripe 工作时，我们使用了软删除。
 - en: At my job right now, we use soft deletion.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我工作的这个岗位上，我们使用软删除。
 - en: As far as I’m aware, never *once*, in ten plus years, did anyone at any of these
     places ever actually use soft deletion to undelete something.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 据我所知，在过去的十多年里，任何一个地方都从未真正使用软删除来恢复已删除的内容。
 - en: The biggest reason for this is that almost always, **data deletion also has
     non-data side effects**. Calls may have been made to foreign systems to archive
     records there, objects may have been removed in blob stores, or servers spun down.
     The process can’t simply be reversed by setting `NULL` on `deleted_at` – equivalent
     undos need to exist for all those other operations too, and they rarely do.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 最大的原因是几乎总是**数据删除还会产生非数据副作用**。可能已经调用外部系统来存档那里的记录，对象可能已经在 blob 存储中被移除，或者服务器已经关闭。该过程不能简单地通过在
+    `deleted_at` 上设置 `NULL` 来撤消 —— 所有这些其他操作也需要等价的撤消，而这些撤消很少存在。
 - en: We had a couple cases at Heroku where an important user deleted an app by accident
     and wanted to recover it. We had soft deletion, and theoretically other delete
     side effects could’ve been reversed, but we still made the call not to try because
@@ -156,58 +226,87 @@
     leave the user in a bad state. Instead, we rolled forward by creating a new app,
     and helping them copy environment and data from the deleted app to it. So even
     where soft deletion was theoretically most useful, we still didn’t use it.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Heroku 有几个案例，其中一个重要的用户不小心删除了一个应用并希望恢复它。我们有软删除，理论上其他删除副作用可以被撤消，但我们还是决定不去尝试，因为以前从未有人这样做过，而在紧急情况下尝试这样做是完全错误的时间
+    —— 我们几乎肯定会出错，让用户处于糟糕的状态。相反，我们通过创建一个新应用并帮助他们将已删除应用的环境和数据复制到新应用中来前进。因此，即使在理论上软删除最有用的地方，我们仍然没有使用它。
 - en: Although I’ve never seen an undelete work in practice, soft deletion wasn’t
     completely useless because we would occasionally use it to refer to deleted data
     – usually a manual process where someone wanted to see to a deleted object for
     purposes of assisting with a support ticket or trying to squash a bug.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我从未见过实际中的未删除操作，但软删除并不是完全无用的，因为我们偶尔会使用它来引用已删除的数据 - 通常是一个手动过程，有人想要查看一个已删除的对象，以帮助解决支持票证或尝试消除错误。
 - en: And while I’d argue against the traditional soft deletion pattern due to the
     downsides listed above, luckily there’s a compromise.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我会因为上述列出的缺点而反对传统的软删除模式，但幸运的是，有一个折衷方案。
 - en: 'Instead of keeping deleted data in the same tables from which it was deleted,
     there can be a new relation specifically for storing all deleted data, and with
     a flexible `jsonb` column so that it can capture the properties of any other table:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 不是将删除的数据保留在删除的表中，可以有一个专门用于存储所有删除的数据的新关系，并且具有灵活的`jsonb`列，以便可以捕获任何其他表的属性：
 - en: '[PRE5]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'A deletion then becomes this:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，删除变成了这样：
 - en: '[PRE6]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: This does have a downside compared to `deleted_at` – the process of selecting
     columns into `jsonb` isn’t easily reversible. While it’s possible to do so, it
     would likely involve building one-off queries and manual intervention. But again,
     that might be okay – consider how often you’re really going to be trying to undelete
     data.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 与`deleted_at`相比，这确实有一个缺点 - 选择列到`jsonb`的过程并不容易逆转。虽然这是可能的，但可能涉及构建一次性查询和手动干预。但再次，这可能没关系
+    - 考虑一下你真正要尝试恢复数据的频率。
 - en: 'This technique solves all the problems outlined above:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种技术解决了上面概述的所有问题：
 - en: Queries for normal, non-deleted data no longer need to include `deleted_at IS
     NULL` everywhere.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于正常的、非删除的数据的查询不再需要在各处包含`deleted_at IS NULL`。
 - en: Foreign keys still work. Attempting to remove a record without also getting
     its dependencies is an error.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 外键仍然有效。尝试删除记录而不获取其依赖项是一个错误。
 - en: 'Hard deleting old records for regulatory requirements gets really, really easy:
     `DELETE FROM deleted_record WHERE deleted_at < now() - ''1 year''::interval`.'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了符合监管要求，删除旧记录变得非常非常容易：`DELETE FROM deleted_record WHERE deleted_at < now()
+    - '1 year'::interval`。
 - en: Deleted data is a little harder to get at, but not by much, and is still kept
     around in case someone needs to look at it.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 删除的数据稍微难以获取，但并不多，并且仍然保留在以防有人需要查看它的情况下。
