@@ -1,30 +1,45 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:22:09'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:22:09'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'RISC-V Bytes: Accessing the Pinecil UART with picoprobe · Daniel Mangum'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: RISC-V Bytes：使用picoprobe访问Pinecil UART · Daniel Mangum
 - en: 来源：[https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/](https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/](https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/)
 - en: This post is the second in a RISC-V Bytes subseries on the [PINE64](https://pine64.org/)
     Pinecil soldering iron and development board. Previous and subsequent posts can
     be found under the [RISC-V Bytes](https://danielmangum.com/categories/risc-v-bytes/)
     category.
+  id: totrans-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 本帖是关于[PINE64](https://pine64.org/) Pinecil焊接熨斗和开发板的RISC-V Bytes子系列的第二篇文章。 可以在[RISC-V
+    Bytes](https://danielmangum.com/categories/risc-v-bytes/)类别下找到之前和之后的帖子。
 - en: In the [most recent Pinecil post](https://danielmangum.com/posts/risc-v-bytes-soldering-pinecil-breakout-board/),
     we walked through how to solder the header pins on the Pinecil [breakout board](https://pine64.com/product/pinecil-break-out-board/).
     With the headers attached, we can now communicate with the Pinecil’s microcontroller
@@ -32,8 +47,12 @@
     Asynchronous Receiver / Transmitter (UART) hardware in order to receive serial
     data from the microcontroller, such as log messages, on a development machine
     (e.g. laptop).
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[最新的Pinecil帖子](https://danielmangum.com/posts/risc-v-bytes-soldering-pinecil-breakout-board/)中，我们介绍了如何在Pinecil
+    [分机板](https://pine64.com/product/pinecil-break-out-board/)上焊接标题引脚。 通过连接标题引脚，我们现在可以通过多种协议与Pinecil的微控制器通信。
+    今天我们将专注于访问通用异步收发器/转换器（UART）硬件，以便在开发机器（例如笔记本电脑）上接收来自微控制器的串行数据，例如日志消息。
 - en: However, though the breakout board does allow us to access the UART pins, it
     is likely that your development machine does not expose its own UART interface.
     Instead, most machines are equipped with more commonly used ports for peripherals,
@@ -45,8 +64,13 @@
     for tasks such as this since [attending Hackaday Supercon 2023](https://danielmangum.com/posts/supercon-2023-day-1/)
     and [hacking on the conference badge](https://danielmangum.com/posts/supercon-2023-day-2/),
     which included a Pico [on the back of the PCB](https://hackaday.com/2023/10/18/2023-hackaday-supercon-badge-welcome-to-the-vectorscope/#under-the-hood).
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，尽管分机板确实允许我们访问UART引脚，但你的开发机器可能不会暴露自己的UART接口。 相反，大多数机器配备了更常用的外围设备端口，例如[通用串行总线（USB）](https://en.wikipedia.org/wiki/USB)。
+    为了在Pinecil微控制器和开发机器之间进行通信，我们需要某种桥接设备。 虽然有很多可以花几美元购买的专用硬件，例如这个[USB转串口转换器](https://www.adafruit.com/product/5335)，但自从[参加了2023年Hackaday
+    Supercon](https://danielmangum.com/posts/supercon-2023-day-1/)并且[在会议徽章上进行了黑客攻击](https://danielmangum.com/posts/supercon-2023-day-2/)，我一直在利用我的小型[Raspberry
+    Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html)收藏来执行此类任务，其中包括将Pico[安装在PCB的背面](https://hackaday.com/2023/10/18/2023-hackaday-supercon-badge-welcome-to-the-vectorscope/#under-the-hood)。
 - en: The Pico is the first Raspberry Pi product to use in-house silicon, incorporating
     the [RP2040](https://www.raspberrypi.com/products/rp2040/), a microcontroller
     with dual ARM [Cortex-M0+](https://developer.arm.com/Processors/Cortex-M0-Plus)
@@ -54,161 +78,247 @@
     system. The “downside” of using a general purpose microcontroller, rather than
     dedicated hardware, for our USB-UART bridge is that we’ll need to write or obtain
     firmware that performs the desired functionality.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Pico是第一个使用内部硅芯片的树莓派产品，其中包含了[RP2040](https://www.raspberrypi.com/products/rp2040/)，一个带有双ARM
+    [Cortex-M0+](https://developer.arm.com/Processors/Cortex-M0-Plus)处理器和高度灵活的[可编程输入/输出（PIO）](https://www.raspberrypi.com/news/what-is-pio/)系统的微控制器。
+    使用通用微控制器而不是专用硬件的“缺点”是我们需要编写或获取执行所需功能的固件。
 - en: Fortunately, Raspbery Pi explicitly encourages using the Pico for this type
     of use case.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，Raspbery Pi明确鼓励使用Pico进行这种类型的用例。
 - en: Appendix A of the [Pico Getting Started Guide](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)
     introduces the use of the Pico as a programming and debugging device. To support
     this scenario, they have supplied open source firmware, appropriately [named `picoprobe`](https://github.com/raspberrypi/picoprobe),
     that is built on [FreeRTOS](https://github.com/FreeRTOS/FreeRTOS-Kernel) and the
     [Pico C/C++ SDK](https://github.com/raspberrypi/pico-sdk).
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Pico 入门指南](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)的附录
+    A 介绍了 Pico 作为编程和调试设备的使用。为了支持这种情况，他们提供了开源固件，名为`picoprobe`，构建在[FreeRTOS](https://github.com/FreeRTOS/FreeRTOS-Kernel)和[Pico
+    C/C++ SDK](https://github.com/raspberrypi/pico-sdk)之上。'
 - en: While the guide primarily describes its use when working with a second Pico,
     `picoprobe` can be useful with any other device that exposes UART pins or a [Serial
     Wire Debug (SWD)](https://developer.arm.com/documentation/ihi0031/a/The-Serial-Wire-Debug-Port--SW-DP-/Introduction-to-the-ARM-Serial-Wire-Debug--SWD--protocol)
     port. Raspberry Pi also offers a [debug probe](https://www.raspberrypi.com/products/debug-probe/),
     which is essentially a Pico with `picoprobe` pre-programmed on the RP2040, and
     dedicated ports and connectors for UART and SWD.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管该指南主要描述了在使用第二个 Pico 时的使用情况，但`picoprobe`可以与任何暴露 UART 引脚或[串行线调试（SWD）](https://developer.arm.com/documentation/ihi0031/a/The-Serial-Wire-Debug-Port--SW-DP-/Introduction-to-the-ARM-Serial-Wire-Debug--SWD--protocol)端口的设备一起使用。树莓派还提供了一个[调试探针](https://www.raspberrypi.com/products/debug-probe/)，它本质上是一个预先在
+    RP2040 上预编程了`picoprobe`的 Pico，并具有专用的端口和连接器用于 UART 和 SWD。
 - en: '`picoprobe` is configured using a header file, which is then included [in `src/picoprobe_config.h`](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/src/picoprobe_config.h#L68).
     There are two built-in configurations, one for the [Pico](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_pico_config.h)
     and one for the [debug probe](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_debugprobe_config.h).
     We can use the Pico configuration, and because it is the default, the following
     steps can be used to build `picoprobe` without any updates.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '`picoprobe` 是使用头文件配置的，然后在[src/picoprobe_config.h](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/src/picoprobe_config.h#L68)中包含。有两个内置配置，一个是[Pico](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_pico_config.h)，另一个是[调试探针](https://github.com/raspberrypi/picoprobe/blob/721b69cf5c8535e57995dbdd2e74f1bbc2f36944/include/board_debugprobe_config.h)。我们可以使用
+    Pico 配置，因为它是默认的，以下步骤可以用来构建`picoprobe`而不需要任何更新。'
 - en: Ensure all submodules are up to date.
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 确保所有子模块都是最新的。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Create a build directory and enter it.
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个构建目录并进入。
 - en: Generate build files with `cmake`, specifying that the Pico SDK should be fetched
     as part of the operation (`PICO_SDK_FETCH_FROM_GIT`).
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`cmake`生成构建文件，指定 Pico SDK 应该作为操作的一部分进行获取（`PICO_SDK_FETCH_FROM_GIT`）。
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Build the firmware.
+  id: totrans-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 构建固件。
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: After the build is complete, we should see a number of artifacts in the `build`
     directory.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建完成后，我们应该在`build`目录中看到一些构件。
 - en: '[PRE3]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: There are multiple ways to program the Pico, but the simplest is by holding
     down the boot select (`BOOTSEL`) button while you connect it to your development
     machine. This will cause the Pico to appear as a [USB Mass Storage Device](https://en.wikipedia.org/wiki/USB_mass_storage_device_class),
     meaning you can access it from your machine’s filesystem.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 有多种方法可以编程 Pico，但最简单的方法是在连接到开发机器时按住引导选择（`BOOTSEL`）按钮。这将导致 Pico 出现为[USB 大容量存储设备](https://en.wikipedia.org/wiki/USB_mass_storage_device_class)，这意味着您可以从您机器的文件系统访问它。
 - en: '[PRE4]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Copying the `picoprobe.uf2` file into the mounted directory will cause the RP2040
     to reboot and start running the firmware.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 将`picoprobe.uf2`文件复制到挂载的目录中将导致 RP2040 重新启动并开始运行固件。
 - en: '[PRE5]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The Pico should now show up as a USB serial device.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Pico 现在应该显示为一个 USB 串行设备。
 - en: '[PRE6]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We can use `minicom` to monitor the serial output. Initially we shouldn’t see
     any output as `picoprobe` is configured to direct its debug information to `UART0`
     by default. The output we eventually see over USB serial will be the bridged output
     from the Pinecil microcontroller.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用`minicom`来监视串行输出。最初，我们不应该看到任何输出，因为`picoprobe`默认将其调试信息定向到`UART0`。我们最终在
+    USB 串行上看到的输出将是 Pinecil 微控制器的桥接输出。
 - en: '[PRE7]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The Pinecil v2 runs on the [Bouffalo Lab BL706](https://en.bouffalolab.com/product/?type=detail&id=8)
     chipset, which includes a [32-bit RISC-V processor](https://riscv.org/) based
     on the [SiFive E24 core](https://sifive-china.oss-cn-zhangjiakou.aliyuncs.com/Standard%20Core%20IP/e24_core_complex_manual_21G2.pdf).
     It is supported by the open source [IronOS](https://github.com/Ralim/IronOS) project,
     which was originally developed as alternative firmware for the [TS100](https://www.ifixit.com/products/ts100-soldering-iron)
     iron. IronOS is the default firmware on the Pinecil.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Pinecil v2 运行在[Bouffalo Lab BL706](https://en.bouffalolab.com/product/?type=detail&id=8)芯片组上，其中包括基于[SiFive
+    E24 核心](https://sifive-china.oss-cn-zhangjiakou.aliyuncs.com/Standard%20Core%20IP/e24_core_complex_manual_21G2.pdf)的[32位
+    RISC-V 处理器](https://riscv.org/)。它受到开源项目[IronOS](https://github.com/Ralim/IronOS)的支持，最初是作为[TS100](https://www.ifixit.com/products/ts100-soldering-iron)铁的替代固件开发的。IronOS
+    是 Pinecil 的默认固件。
 - en: IronOS is also built on FreeRTOS, and leverages the `bl_mcu_sdk`, which has
     evolved into [the `bouffalo_sdk`](https://github.com/bouffalolab/bouffalo_sdk).
     According to the [datasheet](http://download.bl602.fun/BL702_%E5%AE%98%E6%96%B9%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C.pdf),
     the BL706 has two built-in UARTs, and IronOS [configures](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/peripheral_config.h#L82)
     `UART0` to run at `2000000` baud, which is why we supplied the `-b 2000000` to
     `minicom` above.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: IronOS 也是基于 FreeRTOS 构建的，并利用了`bl_mcu_sdk`，它已经演变成了[bouffalo_sdk](https://github.com/bouffalolab/bouffalo_sdk)。根据[数据手册](http://download.bl602.fun/BL702_%E5%AE%98%E6%96%B9%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C.pdf)，BL706
+    有两个内置 UART，并且 IronOS [配置](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/peripheral_config.h#L82)
+    `UART0` 的波特率为 `2000000`，这就是我们在上面提供 `-b 2000000` 给 `minicom` 的原因。
 - en: '[PRE8]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: IronOS has an excellent [Docker-based build flow](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/Documentation/Development.md#building-pinecil-v20),
     which alleviates the need to install your own RISC-V toolchain. The following
     steps can be used to build an English binary for the Pinecil v2.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: IronOS 有一个优秀的[基于 Docker 的构建流程](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/Documentation/Development.md#building-pinecil-v20)，这消除了安装自己的
+    RISC-V 工具链的必要性。以下步骤可用于为 Pinecil v2 构建英文二进制文件。
 - en: Start the build container.
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 启动构建容器。
 - en: '[PRE9]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Run build script.
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行构建脚本。
 - en: '[PRE10]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: After the build completes, you can type `exit` to exit the container. Build
     artifacts should be present in `source/Hexfile/`.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建完成后，您可以键入 `exit` 退出容器。构建产物应该存在于 `source/Hexfile/` 中。
 - en: '[PRE11]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The Pinecil can be programmed, including when connecting via the breakout board,
     by holding down the button labeled `-` while plugging the USB cable into your
     development machine. Pine64 offers an [in-system programming (ISP)](https://en.wikipedia.org/wiki/In-system_programming)
     tool for its Bouffalo Lab devices, appropriately named `blisp`, which can be downloaded
     from the project’s [releases page](https://github.com/pine64/blisp/releases).
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过按住标有`-`的按钮，同时将 USB 电缆插入开发计算机，即可在连接至 Breakout 板时对 Pinecil 进行编程。Pine64为其 Bouffalo
+    Lab 设备提供了一个名为`blisp`的[系统内编程工具（ISP）](https://en.wikipedia.org/wiki/In-system_programming)，可以从该项目的[发布页面](https://github.com/pine64/blisp/releases)下载。
 - en: After installing, the following command can be used to flash the IronOS firmware
     onto the device.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装后，可以使用以下命令将 IronOS 固件刷新到设备上。
 - en: '[PRE12]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Connecting the Pinecil to the Pico [*Link to heading*](#connecting-the-pinecil-to-the-pico)
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将 Pinecil 连接到 Pico [*链接到标题*](#connecting-the-pinecil-to-the-pico)
 - en: '*The last step to see the serial output emitted by the IronOS firmware running
     on the Pinecil is to connect the UART pins on the breakout board to the Pico running
     `picoprobe`. `UART1` on the Pico is used for the USB-UART bridge, and pins 6 and
@@ -217,40 +327,64 @@
     be connected to pin 7\. Lastly, the UART `GND` (ground) pin on the breakout board
     should be connected to a `GND` pin, such as pin 3, on the Pico. The full mapping
     is provided below.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '*查看 Pinecil 上运行的 IronOS 固件发出的串行输出的最后一步是将 Breakout 板上的 UART 引脚连接到运行 `picoprobe`
+    的 Pico 上。 Pico 上的 `UART1` 用于 USB-UART 桥接器，引脚 6 和 7 分别对应 `UART1 TX` 和 `UART1 RX`。
+    Pinecil Breakout UART 头上的 `RX` 引脚应连接到 Pico 上的引脚 6，而 `TX` 应连接到引脚 7。 最后，Breakout
+    板上的 UART `GND`（地）引脚应连接到 Pico 上的 `GND` 引脚，例如引脚 3。下面提供了完整的映射。'
 - en: '| **Pinecil Breakout** | **Pico** |'
+  id: totrans-46
   prefs: []
   type: TYPE_TB
+  zh: '| **Pinecil Breakout** | **Pico** |'
 - en: '| --- | --- |'
+  id: totrans-47
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| UART RX | Pin 6 (UART1 TX) |'
+  id: totrans-48
   prefs: []
   type: TYPE_TB
+  zh: '| UART RX | 引脚 6 (UART1 TX) |'
 - en: '| UART TX | Pin 7 (UART1 RX) |'
+  id: totrans-49
   prefs: []
   type: TYPE_TB
+  zh: '| UART TX | 引脚 7 (UART1 RX) |'
 - en: '| UART GND | Pin 3 (GND) |'
+  id: totrans-50
   prefs: []
   type: TYPE_TB
+  zh: '| UART GND | 引脚 3 (GND) |'
 - en: For a visual representation of the mapping, view the cover image of this post,
     which is a pin-accurate depiction of the wiring.
+  id: totrans-51
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 要查看映射的可视化表示，请查看本文的封面图片，其中包含了布线的引脚准确描述。
 - en: With the wiring in place, the Pico connected to your development machine, and
     `minicom` running, we can connect the Pinecil to a power source via the breakout
     board. We should see the following output in our `minicom` session with the Pico.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成布线，将Pico连接到开发机器，并运行`minicom`后，我们可以通过连接板将Pinecil连接到电源源。在我们的`minicom`会话中，我们应该看到以下输出。
 - en: '[PRE13]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: This information is emitted by [invoking `bflb_platform_init()`](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/bl_mcu_sdk/bsp/bsp_common/platform/bflb_platform.c#L72)
     on startup. With the ability to build, program, and monitor the firmware, we can
     start to make changes and test them out on the Pinecil hardware. In our next post,
     we’ll begin walking through exactly what the Bouffalo Lab SDK and IronOS are doing,
     then see how we can modify them to include new functionality.*
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些信息在启动时通过[调用`bflb_platform_init()`](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/bl_mcu_sdk/bsp/bsp_common/platform/bflb_platform.c#L72)来发出。有了构建、编程和监控固件的能力，我们可以开始在Pinecil硬件上进行更改和测试。在我们的下一篇文章中，我们将逐步解释Bouffalo
+    Lab SDK和IronOS的确切操作，然后看看我们如何修改它们以包含新功能。
