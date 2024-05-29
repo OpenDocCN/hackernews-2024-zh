@@ -2,55 +2,66 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:50:20'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:50:20
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Barkey Wolf Consulting - Using the ZBar barcode scanning suite in the browser
     with WebAssembly
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Barkey Wolf Consulting - 使用 ZBar 条形码扫描套件在浏览器中使用 WebAssembly
 - en: 来源：[https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar](https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar](https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar)
 - en: '**I don’t have time for your dry prose, show me the code!**'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我没时间看你干瘪的散文，给我看代码！**'
 - en: If you find any mistakes in the code or in this post, be sure to let me know!
     You can [create an issue in the github repo](https://github.com/jjhbw/barcode-scanner-webassembly)
     or send me an email.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在代码或本文中发现任何错误，请务必告知我！您可以[在 github 仓库中创建一个问题](https://github.com/jjhbw/barcode-scanner-webassembly)或发送邮件。
 - en: Goal
   id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标
 - en: 'So I wanted to make a cross-platform barcode scanner for a research project
     involving inventory management. Ideally, it would end up being a simple library
     that could be used in the browser of a mid-tier smartphone. Some constraints:'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我希望为涉及库存管理的研究项目开发一个跨平台的条形码扫描器。理想情况下，它将成为一个简单的库，可用于中档智能手机的浏览器中。一些约束条件：
 - en: the scanner needed to be able to recognize multiple barcodes in one camera frame
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扫描器需要能够在一个摄像头帧中识别多个条形码
 - en: It would need to work with QR-codes, but also with the older, even more widespread
     one-dimensional barcodes (EAN-13/UPC-A, UPC-E, EAN-8, etc.), ideally using the
     same codebase and without user configuration.
@@ -58,32 +69,38 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它需要能够处理 QR 码，也需要能够处理更广泛的一维条形码（如 EAN-13/UPC-A，UPC-E，EAN-8 等），最好使用相同的代码库，无需用户配置。
 - en: Meet ZBar
   id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 遇见 ZBar
 - en: 'To meet the requirements mentioned above, I looked at several Javascript libraries.
     There were several obvious contenders:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了满足上述要求，我查看了几个 Javascript 库。有几个明显的竞争者：
 - en: '[QuaggaJs](https://serratus.github.io/quaggaJS/)'
   id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[QuaggaJs](https://serratus.github.io/quaggaJS/)'
 - en: a very nice barcode scanner, however doesn’t do QR-codes out of the box.
   id: totrans-15
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个非常好的条形码扫描器，但是原生不支持 QR 码。
 - en: '[jsQR](https://github.com/cozmo/jsQR)'
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[jsQR](https://github.com/cozmo/jsQR)'
 - en: Performant, pure JS QR-code scanner with a easy to use API. Only scans QR-codes
     (and only one per image?).
   id: totrans-17
@@ -91,11 +108,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Performant，纯 JS QR 码扫描器，带有易于使用的 API。仅扫描 QR 码（每张图片只扫描一个？）。
 - en: '[Instascan](https://github.com/schmich/instascan)'
   id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Instascan](https://github.com/schmich/instascan)'
 - en: Nice *Promise*-based API, but only scans QR-codes. Powered by an Emscripten
     port of [ZXing](https://github.com/zxing/zxing), so should theoretically be able
     to handle multiple 1D code formats with some hacking. However, this is not enabled
@@ -105,6 +124,8 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不错的 *Promise* 基础 API，但仅扫描 QR 码。由 [ZXing](https://github.com/zxing/zxing) 的 Emscripten
+    移植驱动，理论上应该能够通过一些修改处理多种一维码格式。但是，默认情况下不支持。
 - en: When broadening my search for libraries by relaxing the ‘Javascript-only’ constraint,
     I quickly stumbled across [ZBar](https://github.com/ZBar/ZBar), a battle-tested
     C library that is widely used for barcode scanning. It can work with multiple
@@ -112,6 +133,8 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我放宽‘仅限 Javascript’的限制，扩大寻找库时，我很快就遇到了[ZBar](https://github.com/ZBar/ZBar)，这是一个经过多次测试的
+    C 库，广泛用于条形码扫描。它可以处理多种类型的一维和二维（QR）条形码，并且可以在单个帧中检测到多个码。
 - en: Considering the fact that ZBar is a C library, I quickly found that some people
     had already been working on compiling it to Javascript for use in the browser.
     [ZBarjs](https://github.com/yurydelendik/zbarjs) is a nice example, albeit scarcely
@@ -121,21 +144,28 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到 ZBar 是一个 C 库，我很快发现一些人已经开始将其编译为 Javascript 以供在浏览器中使用。[ZBarjs](https://github.com/yurydelendik/zbarjs)
+    是一个很好的例子，尽管文档不多。ZBarjs 使用了令人惊叹的 [emscripten](http://kripken.github.io/emscripten-site/)
+    编译器，将从 ZBar 的 C 代码中得到的 LLVM 位码编译为 [asm.js](http://asmjs.org/)，这是一种旨在提高性能的 Javascript
+    子集。
 - en: Obviously, this being a ‘research’ project I figured I couldn’t just leave it
     at that. Why would I skip out of overengineering something with a new awesome
     technology?
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，这是一个‘研究’项目，我觉得不能就此罢手。我为什么要错过利用新的强大技术进行过度工程的机会呢？
 - en: Meet WebAssembly.
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 遇见 WebAssembly。
 - en: WebAssembly
   id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: WebAssembly
 - en: WebAssembly is [new](https://webassembly.org/) and *very* shiny. WebAssembly
     is a low-level language for the browser that can be used as a compile target for
     LLVM languages ike C, C++, Rust, but also for example for TypeScript (using [Assemblyscript/Binaryen](https://github.com/AssemblyScript/assemblyscript)),
@@ -284,6 +314,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`EMSCRIPTEN_KEEPALIVE` 宏确保函数不会被编译器消除，因为它们在技术上是死代码（即无法从诸如 `main()` 函数之类的地方到达的代码）。'
 - en: We mark the `js_output_result` function as an external symbol with `extern`.
     This function will be defined in the javascript glue code, and the Emscripten
     compiler will splice in a reference to this function at link time.
@@ -291,12 +322,15 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们使用 `extern` 将 `js_output_result` 函数标记为外部符号。此函数将在 JavaScript 粘合代码中定义，并且 Emscripten
+    编译器将在链接时插入对此函数的引用。
 - en: There is plenty of room for optimizations, like re-using the scanner across
     multiple images. Let’s not go into these now.
   id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有很多优化的空间，比如在多个图像上重用扫描器。现在我们不去讨论这些。
 - en: This code showcases just one combination of methods to get data in and out of
     the WebAssembly environment from the browser JS environment. Several alternative
     methods can be found in the [Emscripten documentation.](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/index.html)
@@ -304,11 +338,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这段代码展示了从浏览器 JS 环境中将数据输入和输出到 WebAssembly 环境的方法之一。在 [Emscripten 文档中](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/index.html)
+    可以找到几种替代方法。
 - en: The Javascript ‘glue’ code
   id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: JavaScript 的‘粘合’代码
 - en: We’ll also create a file called `library.js`, in which we define the javascript
     functions that should be callable from the WebAssembly environment. Emscripten
     takes care of the nasty bits for us. If you want to read more, check out the [emscripten
@@ -318,6 +355,9 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将创建一个名为 `library.js` 的文件，其中定义了应该从 WebAssembly 环境中调用的 JavaScript 函数。Emscripten
+    为我们处理了繁琐的部分。如果您想了解更多，请查阅[这个主题的 emscripten 文档](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#implement-a-c-api-in-javascript)。请注意，在下面的代码中，`Module`
+    和 `LibraryManager` 对象以及 `mergeInto` 函数都是由 Emscripten 提供的全局对象。
 - en: 'We define a single function: the one we use to extract data about the detected
     barcodes with. Important to note: before this function is called, a function should
     be set on the `processResult` key of the `Module` object. This is not a super
@@ -325,10 +365,13 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们定义了一个单一的函数：用于提取检测到的条形码数据的函数。需要注意的是：在调用此函数之前，应在 `Module` 对象的 `processResult`
+    键上设置一个函数。这并不是一种非常优雅的与自己代码交互的方式，但目前足够了。
 - en: 'Our `library.js` file contains:'
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的 `library.js` 文件包含：
 - en: '[PRE4]'
   id: totrans-54
   prefs: []
@@ -339,11 +382,13 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将我们的代码编译成 WebAssembly 模块
 - en: 'From your build container shell (`trzeci/emscripten`, see above) run the following
     command:'
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 从您的构建容器 shell（`trzeci/emscripten`，请参见上文）运行以下命令：
 - en: '[PRE5]'
   id: totrans-57
   prefs: []
@@ -353,27 +398,32 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 对此命令的快速概述：
 - en: '`emcc` calls emscripten'
   id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`emcc` 调用 emscripten'
 - en: The `-O3` flag tells the compiler to produce highly optimized WebAssembly and
     Javascript code.
   id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-O3` 标志告诉编译器生成高度优化的 WebAssembly 和 JavaScript 代码。'
 - en: '`-s WASM=1` tells `emcc` to produce WebAssembly'
   id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-s WASM=1` 告诉 `emcc` 生成 WebAssembly'
 - en: '`—js-library` tells emscripten where it can find your Javascript glue code'
   id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`—js-library` 告诉 emscripten 在哪里可以找到您的 JavaScript 粘合代码'
 - en: '`-s EXTRA_EXPORTED_RUNTIME_METHODS` tells Emscripten to inject the `Module`
     global in the javascript environment with these two utility functions. `crwap`
     allows us to call our C functions and `Pointer_stringify` will help with moving
@@ -382,36 +432,45 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-s EXTRA_EXPORTED_RUNTIME_METHODS` 告诉 Emscripten 在 JavaScript 环境中注入 `Module`
+    全局对象，以及这两个实用函数。`crwap` 允许我们调用我们的 C 函数，`Pointer_stringify` 将有助于将数据从 WebAssembly
+    运行时移动到 JS 中。'
 - en: '`-I` tells it which C libs/code to compile'
   id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-I` 告诉它要编译哪些 C 库/代码'
 - en: 'This should produce the following files:'
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该产生以下文件：
 - en: '`a.out.js`, containing the nicely packaged javascript glue code (thanks emscripten!)'
   id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`a.out.js`，包含了精心打包的 JavaScript 粘合代码（感谢 emscripten！）'
 - en: '`a.out.wasm` containing the WebAssembly module'
   id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 包含 WebAssembly 模块的 `a.out.wasm`
 - en: Testing our barcode scanner
   id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 测试我们的条形码扫描器
 - en: To test our barcode scanning module, lets write a simple `index.html` that opens
     up a webcam feed and passes image frames to our scanner module and, when a barcode
     is found, draws its bounding box and the barcode content to a canvas.
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试我们的条形码扫描模块，让我们编写一个简单的 `index.html`，打开网络摄像头并将图像帧传递给我们的扫描器模块，当找到条形码时，在画布上绘制其边界框和条形码内容。
 - en: Note that I also included a step for converting the image data to grayscale
     using a quick bit shifting hack. I expect that this operation can be implemented
     in a more performant way with WebAssembly, but lets not worry about this right
