@@ -326,6 +326,7 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 有限状态机当然是计算机科学的基础。其思想是给定程序可以表示为一组离散状态，并在它们之间进行转换。确定有限自动机（DFA）初始化为起始状态。当给定输入符号时，一个状态会转移到另一个状态。一些状态被标记为*接受状态*。也就是说，从起始状态开始，消耗了输入中的所有符号后，达到的状态是接受状态之一，那么我们说该输入被机器*接受*了。
 - en: Given this information, how would we go about reconstructing the machine? An
     intuitive approach is to recognize that a state is represented by exactly two
     sets of strings. The first set of strings (the prefixes) is how the state can
@@ -338,6 +339,7 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些信息，我们将如何重建这台机器？一种直观的方法是认识到一个状态由恰好两组字符串表示。第一组字符串（前缀）是从起始状态到该状态的到达方式。第二组字符串是当前状态输入的延续，可以区分此状态与所有其他状态。也就是说，当且仅当有至少一个后缀字符串时，这两个状态可以由DFA区分，将其输入到状态对中时，会产生不同的答案-即对于其中一个，机器接受（或达到接受状态之一），而对于另一个，机器被拒绝（或结束状态不是接受状态）。
 - en: Given this information, a data structure for keeping track of our experiments
     presents itself – the *observation table* where we keep our prefix strings as
     rows, and suffix strings as columns. The cell content simply marks whether program
@@ -345,11 +347,13 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些信息，一个用于跟踪我们实验的数据结构就呈现出来了 - 观察表，我们将前缀字符串作为行，将后缀字符串作为列。单元格内容简单地标记程序是否接受了前缀+后缀字符串。因此，这是我们的数据结构。
 - en: ObservationTable
   id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 观察表
 - en: We initialize the observation table with the alphabet. We keep the table itself
     as an internal dict `_T`. We also keep the prefixes in `P` and suffixes in `S`.
     We initialize the set of prefixes `P` to be \({\epsilon}\) and the set of suffixes
@@ -357,15 +361,19 @@
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们用字母表初始化观察表。我们将表本身保留为内部字典 `_T`。我们还将前缀保留在 `P` 中，将后缀保留在 `S` 中。我们将前缀集合 `P` 初始化为
+    \({\epsilon}\)，将后缀集合 `S` 也初始化为 \({\epsilon}\)。我们还添加了一些实用函数。
 - en: Using the observation table with some pre-cooked data.
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用观察表和一些预先准备的数据。
 - en: Convert Table to Grammar
   id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 将表转换为文法
 - en: Given the observation table, we can recover the grammar from this table (corresponding
     to the DFA). The unique cell contents of rows are states. In many cases, multiple
     rows may correspond to the same state (as the cell contents are the same). The
@@ -374,6 +382,8 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定观察表，我们可以从该表中恢复出文法（对应于DFA）。行的唯一单元格内容是状态。在许多情况下，多个行可能对应于相同的状态（因为单元格内容相同）。*起始状态*由对应于
+    \(\epsilon\) 行的状态给出。如果一个状态在查询 \(\epsilon\) 即 `''` 时返回 1，则它是接受的。
 - en: The formal notations are as follows. The notation \([p]\) means the state corresponding
     to the prefix \(p\). The notation \([[p,s]]\) means the result of oracle for the
     prefix \(p\) and the suffix \(s\). The notation \([p](a)\) means the state obtained
@@ -384,16 +394,21 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 正式的符号如下所示。符号 \([p]\) 表示与前缀 \(p\) 对应的状态。符号 \([[p,s]]\) 表示前缀 \(p\) 和后缀 \(s\) 的oracle结果。符号
+    \([p](a)\) 表示通过将输入符号 \(a\) 提供给状态 \([p]\) 而获得的状态。我们将导致特定状态的第一个前缀作为其*访问前缀*，并将状态
+    \(s\) 的访问前缀表示为 \(\lfloor{}s\rfloor\)（这在此帖子中未使用）。以下是我们表格的DFA。
 - en: 'states: \(Q = {[p] : p \in P}\)'
   id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '状态集：\(Q = {[p] : p \in P}\)'
 - en: 'start state: \(q0 = [\epsilon]\)'
   id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 起始状态：\(q0 = [\epsilon]\)
 - en: 'transition function: \([p](a) \rightarrow [p.a]\)'
   id: totrans-54
   prefs:
