@@ -1,246 +1,381 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:51:46'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:51:46
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Deploying a Cloudflare R2-Backed Nix Binary Cache (Attic!) on Fly.io :: LGUG2Z'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '在 Fly.io 上部署基于 Cloudflare R2 的 Nix 二进制缓存（Attic！）:: LGUG2Z'
 - en: 来源：[https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/](https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/](https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/)
 - en: I have tried running the [Attic Nix Binary Cache](https://github.com/zhaofengli/attic)
     on my Hetzner dedicated server in Germany a few times in the past, but the peering
     issues and the latency to Xfinity in Seattle have always made me throw my hands
     up in frustration.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我曾试过在我位于德国的 Hetzner 专用服务器上运行 [Attic Nix 二进制缓存](https://github.com/zhaofengli/attic)
+    几次，但是与西雅图的 Xfinity 的连接问题和延迟总是让我感到沮丧。
 - en: This morning I noticed [a comment](https://github.com/zhaofengli/attic/issues/1#issuecomment-1368527062)
     by Zhaofeng on the repo issue tracker.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天早上我注意到 [一个评论](https://github.com/zhaofengli/attic/issues/1#issuecomment-1368527062)，是
+    Zhaofeng 在存储库问题跟踪器上的评论。
 - en: As a NixOS aficionado myself, I begrudgingly admit that I’ve been running my
     instance on fly.io 😛
+  id: totrans-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 作为一个 NixOS 爱好者，我不情愿地承认我一直在 fly.io 上运行我的实例 😛
 - en: I’m not sure if this is comment is still current, but hey, if Zhaofeng is/was
     running his binary cache on [fly.io](https://fly.io/), there’s no reason why we
     can’t too, right?
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不确定这条评论是否仍然有效，但是嘿，如果 Zhaofeng 正在或曾经在 [fly.io](https://fly.io/) 上运行他的二进制缓存，那我们也没理由不能，对吧？
 - en: Storage[⌗](#storage)
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 存储[⌗](#storage)
 - en: While Attic does support local storage, I figured I’d use Cloudflare’s R2 as
     a storage backend, both as an excuse to try out the [free tier](https://developers.cloudflare.com/r2/pricing/)
     (10GB), and because it’ll be easy enough to lift-and-shift if I ever decide to
     move the server from fly.io.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 Attic 支持本地存储，但我想我会使用 Cloudflare 的 R2 作为存储后端，既是尝试 [免费套餐](https://developers.cloudflare.com/r2/pricing/)（10GB）的借口，也因为如果我决定将服务器从
+    fly.io 迁移，这将很容易搬迁。
 - en: It’s easy enough to create a new R2 bucket and grab a read-write API token scoped
     to the bucket on the [Cloudflare Dashboard](https://dash.cloudflare.com).
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建新的 R2 存储桶并在 [Cloudflare 控制台](https://dash.cloudflare.com) 上获取针对存储桶的读写 API
+    令牌非常简单。
 - en: Server Configuration[⌗](#server-configuration)
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[服务器配置](#server-configuration)'
 - en: Once we have our credentials, we can put together a configuration file for the
     Attic server based on the [example config](https://github.com/zhaofengli/attic/blob/e6bedf1869f382cfc51b69848d6e09d51585ead6/server/src/config-template.toml).
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们有了凭据，我们就可以根据 [示例配置](https://github.com/zhaofengli/attic/blob/e6bedf1869f382cfc51b69848d6e09d51585ead6/server/src/config-template.toml)
+    为 Attic 服务器组装一个配置文件。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: One thing to note is that we are storing our SQLite database file at `/data/attic.db`
     - this is going to be a fly volume that we’ll create soon.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要注意的一点是，我们正在将 SQLite 数据库文件存储在 `/data/attic.db` - 这将是我们即将创建的一个 fly 卷。
 - en: You should probably `git-crypt` this file (or encrypt it with `sops` or `age`)
     in your configuration repo since it has sensitive credentials.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该在你的配置存储库中 `git-crypt` 这个文件（或使用 `sops` 或 `age` 加密），因为它包含敏感凭据。
 - en: '**Not sure about how to handle secrets in NixOS configuration repos? I have
     a big old article all about [handling secrets in NixOS](https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/)!**'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**不确定如何处理 NixOS 配置存储库中的机密？我有一篇关于[在 NixOS 中处理机密](https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/)的大文章！**'
 - en: Dockerfile[⌗](#dockerfile)
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Dockerfile[⌗](#dockerfile)
 - en: Luckily, there is an automatically published Docker image available for us to
     extend. There isn’t much to do here except bring in our configration file, reference
     it when we start `atticd` and ensure it’s running in `monolithic` mode.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，我们可以扩展的自动发布的 Docker 镜像可供我们使用。这里没什么要做的，除了引入我们的配置文件，当我们启动 `atticd` 时引用它，并确保它以
+    `monolithic` 模式运行。
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Fly Config[⌗](#fly-config)
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Fly 配置[⌗](#fly-config)
 - en: The last piece of the deployment puzzle is to put together a `fly.toml` file
     for our `atticd` instance.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 部署拼图的最后一块是为我们的 `atticd` 实例组装一个 `fly.toml` 文件。
 - en: Let’s start by ensuring we have a volume created in our desired region.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先确保我们在所需区域创建了一个卷。
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The volume can be called whatever we want, we just need to make sure to update
     the `source` in the `[mounts]` section in our `fly.toml` file.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷可以被我们随意命名，我们只需要确保在我们的 `fly.toml` 文件的 `[mounts]` 部分更新 `source`。
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: That’s pretty much it, time to `fly deploy`! (I do this with `--ha=false` since
     I don’t want to create more than one machine)
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这样了，该是 `fly deploy` 的时候了！（我使用 `--ha=false`，因为我不想创建多台机器）
 - en: Generating an Attic token[⌗](#generating-an-attic-token)
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 生成一个阁楼令牌[⌗](#generating-an-attic-token)
 - en: We’ll need to execute a command on the newly deployed fly.io machine to generate
     a “godmode” token for ourselves. Let’s start by getting the machine ID.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要在新部署的 fly.io 机器上执行一个命令来生成一个“godmode”令牌供我们使用。让我们从获取机器 ID 开始。
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Then we can call the `atticadm` command on the fly.io machine via `fly machine
     exec` to generate our token.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以通过 `fly machine exec` 在 fly.io 机器上调用 `atticadm` 命令生成我们的令牌。
 - en: '[PRE5]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: We need to keep this token somewhere safe and preferably encrypted. I keep mine
     encrypted with `sops-nix` in my NixOS configuration monorepo and have it decrypted
     and mounted to `/run/secrets/attic/token` on machines that have been given access
     to decrypt it.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要将这个令牌保存在一个安全的地方，最好是加密的。我将我的加密令牌存储在我的 NixOS 配置 monorepo 中，使用 `sops-nix` 进行加密，并在授予解密权限的机器上解密并挂载到
+    `/run/secrets/attic/token`。
 - en: Logging into Attic[⌗](#logging-into-attic)
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 登录到阁楼[⌗](#logging-into-attic)
 - en: This part is pretty simple! We can call the server whatever we like in our configuration;
     here “fly” will do. The final two arguments are the URL generated for our fly.io
     app and our access token.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这部分非常简单！我们可以在配置中随心所欲地命名服务器；这里使用“fly”即可。最后两个参数是为我们的 fly.io 应用生成的 URL 和我们的访问令牌。
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Pushing to our Attic cache[⌗](#pushing-to-our-attic-cache)
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 推送到我们的阁楼缓存[⌗](#pushing-to-our-attic-cache)
 - en: Now that we have the `atticd` cache server running on fly.io and our computer
     authenticated with a token that allows us to push, let’s set up a cache and push
     our entire(!) system configuration.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们在 fly.io 上运行着 `atticd` 缓存服务器，并且我们的计算机已经使用允许我们推送的令牌进行了身份验证，让我们设置一个缓存并推送我们的整个(!)
+    系统配置。
 - en: 'Note: In my case 256MB of RAM was not enough to keep up with everything I wanted
     to push! I suggest scaling the RAM to at least 512MB, if not 1GB with `fly scale
     memory 512`. The snippet below assumes that you have bumped the RAM to 512MB which
     *should* be able to handle three concurrent jobs (`-j 3`) without the machine
     giving “out of memory” errors and restarting the `atticd` process.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：在我的情况下，256MB 的 RAM 不足以跟上我想要推送的一切！我建议将 RAM 扩展至至少 512MB，如果可能的话，甚至扩展至 1GB，使用
+    `fly scale memory 512`。下面的片段假定你已将 RAM 扩展至 512MB，*应该*能够处理三个并发作业（`-j 3`），而不会因为内存不足而导致机器重新启动
+    `atticd` 进程。
 - en: '[PRE7]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Configuring NixOS to use our Attic binary cache[⌗](#configuring-nixos-to-use-our-attic-binary-cache)
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 配置 NixOS 使用我们的阁楼二进制缓存[⌗](#configuring-nixos-to-use-our-attic-binary-cache)
 - en: There are two things that we need to do before we can configure NixOS to use
     our new binary cache.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在配置 NixOS 使用我们的新二进制缓存之前，有两件事情我们需要做。
 - en: First, we need to get the public key of our `system` cache.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要获取我们 `system` 缓存的公钥。
 - en: 'Next, we need to create a `netrc` file which contains our `attic` token. The
     format looks like this:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要创建一个包含我们的 `attic` 令牌的 `netrc` 文件。格式如下：
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Since this file once again contains sensitive information, if you want to store
     this in your configuration repo, I recommend encrypting it. In the example below,
     I have added the `netrc` file contents via `sops-nix`, which mounts the decrypted
     contents to `/run/secrets/attic/netrc` for machines that have been given decryption
     access.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这个文件再次包含敏感信息，如果你想将其存储在配置仓库中，我建议对其进行加密。在下面的示例中，我通过 `sops-nix` 添加了 `netrc` 文件内容，它会将解密后的内容挂载到授予解密权限的机器上的
+    `/run/secrets/attic/netrc`。
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Now, when our NixOS machines are rebuilt:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，当我们的 NixOS 机器重新构建时：
 - en: First the official NixOS cache (with a priority of 40) will be checked
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 首先将检查官方的 NixOS 缓存（优先级为40）
 - en: Next, the `nix-community` public cache (with a priority of 41) will be checked
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 接下来，将检查 `nix-community` 的公共缓存（优先级为41）
 - en: Next, the `numtide` public cache (with a priority of 42) will be checked
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 接下来，将检查 `numtide` 的公共缓存（优先级为42）
 - en: Finally, our private cache (with a priority of 43) will be checked
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最后，我们的私有缓存（优先级为43）将被检查
 - en: If there are no cache hits at all, the package will be built from source
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果根本没有缓存命中，包将从源代码构建
 - en: What we have at this point is pretty damn cool.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前我们所拥有的是相当酷的。
 - en: '**In the next article we’ll make this even cooler still**, by setting up GitHub
     Actions jobs [to build each of our NixOS system configurations whenever we push
     a new commit, and push the outputs of each those builds to our private `system`
     cache](https://hachyderm.io/@LGUG2Z/111767749455052075)!'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在下一篇文章中，我们将使这更加酷炫**，通过设置 GitHub Actions 作业[在我们推送新提交时构建我们的每个 NixOS 系统配置，并将这些构建的输出推送到我们的私有
+    `system` 缓存](https://hachyderm.io/@LGUG2Z/111767749455052075)!'
 - en: If you have any questions or comments you can reach out to me on [Twitter](https://twitter.com/LGUG2Z)
     and [Mastodon](https://hachyderm.io/@LGUG2Z).
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有任何问题或意见，你可以通过[Twitter](https://twitter.com/LGUG2Z)和[Mastodon](https://hachyderm.io/@LGUG2Z)联系我。
 - en: If you’re interested in what I read to come up with solutions like this one,
     you can subscribe to my [Software Development RSS feed](https://notado.app/feeds/jado/software-development).
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对我阅读的内容以及提出类似这样解决方案感兴趣，你可以订阅我的[软件开发 RSS 订阅](https://notado.app/feeds/jado/software-development)。
 - en: If you’d like to watch me writing code while explaining what I’m doing, you
     can also [subscribe to my YouTube channel](https://www.youtube.com/channel/UCeai3-do-9O4MNy9_xjO6mg?sub_confirmation=1).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想看我边写代码边解释我在做什么，你也可以[订阅我的 YouTube 频道](https://www.youtube.com/channel/UCeai3-do-9O4MNy9_xjO6mg?sub_confirmation=1)。
 - en: If you found this content valuable, or if you are a happy user of [`komorebi`](https://github.com/LGUG2Z/komorebi)
     or my [NixOS starter templates](https://github.com/LGUG2Z), please consider sponsoring
     me on [GitHub](https://github.com/sponsors/LGUG2Z) or tipping me on [Ko-fi](https://ko-fi.com/lgug2z).
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你觉得这篇内容有价值，或者你是[`komorebi`](https://github.com/LGUG2Z/komorebi)或者我的[NixOS
+    初始模板](https://github.com/LGUG2Z)的快乐用户，请考虑在[GitHub](https://github.com/sponsors/LGUG2Z)上赞助我或在[Ko-fi](https://ko-fi.com/lgug2z)上给我打赏。
