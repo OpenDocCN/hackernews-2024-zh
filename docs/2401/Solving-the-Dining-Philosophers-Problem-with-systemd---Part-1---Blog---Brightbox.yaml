@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:54:18'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Solving the Dining Philosophers Problem with systemd - Part 1 - Blog - Brightbox
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Solving the Dining Philosophers Problem with systemd - Part 1
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: by **Neil Wilson** • **10 Jan 2024**
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Over the years, developers seem to have forgotten that Unix is a Programming
@@ -30,139 +38,195 @@
     Unix is a powerful multi-user system with numerous tools that have stood the test
     of time and, with the advent of systemd, we have a new tool that can easily model
     state machines. Now, we can address a new class of problems using Unix alone.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: In this blog post series, we’ll solve the classic [“Dining Philosophers”](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
     concurrency problem with some of the forgotten mechanisms and tools within the
     Unix Programming Environment, some advanced capabilities of systemd and a sprinkling
     of shell scripts to glue it together - all without a single deadlock.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s start by building a simple state machine that moves between the `Thinking`,
     `Hungry`, and `Eating` states using the user-level systemd facilities.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Create the server
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In these examples, we’ll be using Ubuntu on Brightbox, but any modern distro
     running systemd running anywhere should work.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create a server and log in with the default `ubuntu` user:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'When you log in, systemd automatically starts a user instance to manage user-level
     units. You can view this via systemctl:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Create the states
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'We can model the three states of the dining philosophers problem using systemd
     target units. We can make the targets mutually exclusive by stating that they
     conflict with each other:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This means only one of the targets can remain active at any point in time. For
     a target to transition to another, we need a timer unit.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: We make the timer unit part of the target so that it stops at the same time
     as the target. This combination of `RandomizedDelay`, `OnActive`, and `Accuracy`
     distributes the transition time from 0 to 60 seconds.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: We want to know what the philosopher is thinking about, which we can simulate
     by running a service to call a script.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We log the script’s output to a different syslog facility, which allows us to
     find them easily in the log later. A `Before` restriction ensures that the philosopher
     logs their thoughts before dealing with their hunger.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create the contemplation script to output an appropriate thought:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Now, we update the target to pull in these new units:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: And repeat the process for the eating and hungry targets.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: Running the state machine
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To start the simulation, put the files in `$HOME/.config/systemd/user` and
     activate the `thinking` target:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Look in the journal to see the simulation in progress:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'We can filter out the state noise by looking just for the output from our scripts:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Or, if we want to see just one particular script, we can filter by identifier:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，如果我们只想查看特定的一个脚本，我们可以按标识符进行过滤：
 - en: '[PRE10]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'To stop the simulation, stop the targets:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 要停止模拟，请停止目标：
 - en: '[PRE11]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: or log out.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者退出。
 - en: Summary
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this blog, we’ve created a simple state machine with systemd that moves neatly
     between states over time and logs its activity in the journal. It’s hardly a fully
     modelled philosopher, but it’s a good start.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇博客中，我们使用 systemd 创建了一个简单的状态机，它可以在一段时间内整洁地在各个状态之间移动，并将其活动记录在日志中。这几乎不是一个完全建模的哲学家，但这是一个很好的开端。
 - en: In the next part, we’ll take this simple model and expand it to cover multiple
     philosophers, introducing the shared dining room where their contemplations take
     place.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一部分中，我们将扩展这个简单的模型，涵盖多个哲学家，并介绍共享的用于他们思考的餐厅。
