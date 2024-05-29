@@ -1,30 +1,46 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:47:39'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024 年 5 月 27 日 14:47:39
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A universal lowering strategy for control effects in Rust - Abubalay
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust 中控制效果的通用降级策略 - Abubalay
 - en: 来源：[https://www.abubalay.com/blog/2024/01/14/rust-effect-lowering](https://www.abubalay.com/blog/2024/01/14/rust-effect-lowering)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.abubalay.com/blog/2024/01/14/rust-effect-lowering](https://www.abubalay.com/blog/2024/01/14/rust-effect-lowering)
 - en: A universal lowering strategy for control effects in Rust
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Rust 中控制效果的通用降级策略
 - en: January 14, 2024
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024 年 1 月 14 日
 - en: The Rust language has incrementally grown a set of patterns to support *control-flow
     effects* including error handling, iteration, and asynchronous I/O. In [The registers
     of Rust](https://without.boats/blog/the-registers-of-rust/), boats lays out four
@@ -32,15 +48,21 @@
     typically used in isolation, or at most combined in bespoke ways, but the Rust
     project has been working on ways to integrate them more deeply with each other,
     such as [`async gen` blocks](https://github.com/rust-lang/rust/pull/118420).
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 语言已逐步发展了一套模式来支持*控制流效果*，包括错误处理、迭代和异步 I/O。在 [Rust 寄存器](https://without.boats/blog/the-registers-of-rust/)
+    中，boats 阐述了这种模式的四个方面，这种模式是 Rust 的三个效果共享的。如今，这些效果通常是孤立地使用，或者最多以定制的方式组合在一起，但 Rust
+    项目一直致力于找到更深入地将它们彼此整合的方法，比如 [`async gen` 块](https://github.com/rust-lang/rust/pull/118420)。
 - en: The theory of algebraic effects and handlers has explored this design space
     and offers answers to many of the questions that the Rust project has encountered
     during this work. This post will relate the patterns employed by Rust to the terminology
     and semantics of effects, to help build a shared vocabulary and understanding
     of the implications of combining multiple effects.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 代数效果和处理程序的理论探索了这个设计空间，并提供了对 Rust 项目在这项工作中遇到的许多问题的答案。本文将相关 Rust 使用的模式与效果的术语和语义联系起来，以帮助建立共享词汇和对组合多个效果的影响的理解。
 - en: This connection suggests an API pattern that can be instantiated for arbitrary
     combinations of effects. It generalizes Rust’s existing `Iterator` and `Future`
     traits in a way that supports existing Rust idioms while remaining a zero-cost
@@ -48,20 +70,28 @@
     hand-written version, with no extra heap allocation or indirection.) It is also
     forward-compatible with, but does not require, hypothetical features like `async
     Drop`, (un)pinning, lending, or effect polymorphism.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种联系暗示了一个 API 模式，可以为任意组合的效果实例化。它以一种支持现有 Rust 习惯用法的方式概括了 Rust 现有的 `Iterator`
+    和 `Future` 特性，同时由于结构而保持了零成本抽象。 （换句话说，它与一个专门手写的版本的方式相同，没有额外的堆分配或间接性。）它还与假设的特性（如
+    `async Drop`、（取消）固定、借贷或效果多态性）向前兼容，但不需要。
 - en: Some definitions and how they apply to Rust
+  id: totrans-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一些定义及其在 Rust 中的应用
 - en: Consider the platonic concept of a “function,” independent of programming language.
     At this level, the idea of a function is defined primarily by how it interacts
     with the rest of the program, rather than by any particular syntax or implementation
     strategy. That is, when we call something a function, we are talking about a sub-program
     that can be applied to some argument values, at which point its parameters are
     bound to those values, and it runs to produce a result.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个“函数”的形式概念，独立于编程语言。在这个层面上，函数的概念主要是通过它与程序的其他部分的交互来定义的，而不是通过任何特定的语法或实现策略。也就是说，当我们称呼某个东西为函数时，我们指的是一个子程序，它可以应用于一些参数值，此时它的参数绑定到这些值，然后运行以产生结果。
 - en: Algebraic effects are a similarly abstract idea. Where functions are defined
     in terms of parameters and application, effects are defined in terms of effect
     operations and handlers. Performing one of these operations suspends execution
@@ -69,14 +99,19 @@
     receives a first-class value representing the suspended computation (a “continuation”),
     which can be used to transfer control flow back and resume execution after the
     operation.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 代数效果是一个类似抽象的概念。在函数是以参数和应用为基础定义的地方，效果是以效果操作和处理程序为基础定义的。执行其中一个操作会暂停执行，并将控制流转移到调用栈中的某个处理程序。处理程序接收代表挂起计算（一个“续延”）的一流值，该值可以用于在操作后传递控制流并恢复执行。
 - en: Type and effect systems
+  id: totrans-14
   prefs:
   - PREF_BQ
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 类型和效果系统
 - en: ''
+  id: totrans-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -88,124 +123,178 @@
     is performed. Another reason is to drive code generation, potentially producing
     more efficient output when the compiler knows precisely which interactions are
     possible. However, this post focuses on the dynamic aspect of effects.
+  id: totrans-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 效应和函数都是纯粹动态的构造。它们可以完全不需要类型，就像动态类型语言中那样存在。然而，带有类型系统的效应语言通常会将其扩展为“类型和效应系统”，以跟踪每个子程序可能执行的效应操作集合。这样做的一个原因是确保在执行操作时始终有一个适当的处理程序可用。另一个原因是驱动代码生成，当编译器精确知道哪些交互可能发生时，可能会产生更有效的输出。然而，本文侧重于效应的动态方面。
 - en: 'An effect can be described with a signature that specifies how values are passed
     back and forth between the effectful computation and its handler. For example,
     we might invent a notation where effect operations look like functions:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以用签名来描述一个效应，该签名指定了效应计算和其处理程序之间如何传递值。例如，我们可以发明一种符号，其中效应操作看起来像函数：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The effectful computation performs `operation_x` by supplying an `A`. The handler
     receives this `A`, and to resume the computation it supplies a `B`, which appears
     as the result of `operation_x`. In our notation, this process looks like this:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过提供`A`来执行`operation_x`的效应计算。处理程序接收这个`A`，为了恢复计算，它提供了一个`B`，这个`B`看起来就像是`operation_x`的结果。在我们的符号中，这个过程看起来像这样：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: An effectful computation like this is a running sub-program that performs a
     sequence of effect operations. Importantly, for each operation in this sequence,
     the handler is free to choose when to resume the computation, and even whether
     to resume it at all. This is what distinguishes effect handlers from first class
     functions that must always resume their caller (or diverge).
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的效应计算是执行一系列效应操作的运行子程序。重要的是，对于这个序列中的每个操作，处理程序都可以自由选择何时恢复计算，甚至是否完全恢复计算。这就是效应处理程序与必须始终恢复其调用者（或发散）的一流函数之间的区别。
 - en: By desugaring Rust programs into our notation, we can map Rust’s concrete effects
     to these abstract definitions. This is not any kind of proposal for Rust itself—merely
     a concise way to describe Rust’s behavior, before we consider its implementation.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将Rust程序解糖成我们的符号，我们可以将Rust的具体效应映射到这些抽象定义上。这并不是针对Rust本身的任何提议——仅仅是一种简洁地描述Rust行为的方式，在我们考虑其实现之前。
 - en: 'Here is the signature of Rust’s iteration effect:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是Rust迭代效应的签名：
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The proposed `yield` operator is its one operation. It passes an `Item` to
     the handler, which resumes it with a `()`. The `for` loop is Rust’s dedicated
     syntax for handling this effect. Here is its desugaring:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 提出的`yield`运算符是它的一种操作。它将一个`Item`传递给处理程序，处理程序使用`()`恢复它。`for`循环是Rust用于处理这种效应的专用语法。以下是它的解糖过程：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The handler may choose not to resume the computation by `break`ing out of the
     loop. It may also choose to resume a different computation first, as with the
     `zip` combinator. Rust’s choice of external iteration is equivalent to the first-class
     control flow of algebraic effects.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理程序可以选择通过`break`中断循环而不恢复计算。它也可以选择先恢复另一个计算，就像`zip`组合器一样。Rust选择外部迭代等同于代数效应的一流控制流。
 - en: 'Here is the signature of Rust’s failure effect:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是Rust的失败效应的签名：
 - en: '[PRE5]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The computation passes an error `E` to the handler, which never resumes the
     computation. Rust has no dedicated syntax just for handling this effect, but it
     does have the `?` operator.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算将错误`E`传递给处理程序，该处理程序永远不会恢复计算。Rust没有专门的语法来处理这种效应，但它确实有`?`运算符。
 - en: At the abstract level, the reason for this comes from how Rust chooses the boundary
     of a suspendable computation. Typical languages with effects treat the whole chain
     of stack frames between handler and operation as a single computation to be suspended
     and resumed all at once—for example, this is how exceptions (which share this
     effect signature) work in other languages. Rust instead treats individual function
     bodies and blocks as distinct computations to be handled individually.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在抽象层面上，这一点的原因来自于Rust如何选择可中断计算的边界。具有效应的典型语言将处理程序和操作之间的整个堆栈帧链视为一次要挂起和恢复的单个计算——例如，这就是其他语言中异常（与此效应签名相同）的工作方式。相反，Rust将单个函数体和块视为需要单独处理的不同计算。
 - en: 'To make this convenient, the `?` operator is used to *propagate* this effect
     across a chain of computations, until it reaches an actual handler. It behaves
     as a sort of no-op handler that immediately re-performs the effect:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了方便起见，`?` 操作符被用于*传播*此效果穿过一系列计算，直到它到达实际处理程序。它的行为类似于一种立即重新执行效果的空操作处理程序：
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The signature of Rust’s `async` effect is slightly more obscured, because of
     its flexibility for interacting with arbitrary external events. One possibility
     would be to give it multiple operations, like this:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 的 `async` 效果的签名稍微有些模糊，因为它具有与任意外部事件交互的灵活性。一种可能性是给它多个操作，就像这样：
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'However, this makes the handler responsible for implementing all these operations,
     while in Rust the set is open for extension. (It also ignores its interaction
     with the failure effect, addressed below.) A more precise signature, adapted from
     [Structured Asynchrony with Algebraic Effects](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/05/asynceffects-msr-tr-2017-21.pdf),
     looks like this:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这使得处理程序负责实现所有这些操作，而在 Rust 中，该集合是可以扩展的。（它还忽略了其与故障效果的交互，下面会讨论。）从[使用代数效果进行结构化异步](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/05/asynceffects-msr-tr-2017-21.pdf)改编的更精确签名如下所示：
 - en: '[PRE8]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Now the computation supplies the handler with a callback that arranges for
     the `Waker` to be signaled when the I/O completes. The `.await` operator is, like
     `?`, used for propagation:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，计算提供了一个回调函数，该函数安排在 I/O 完成时发出 `Waker` 信号。`.await` 操作符与 `?` 类似，用于传播：
 - en: '[PRE9]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Combining effects
+  id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 合并效果
 - en: So far we have only considered computations with a single kind of effect, but
     many computations can perform multiple kinds of effects. For example, an iterator
     may perform some asynchronous I/O to produce its output, or an asynchronous computation
     may fail. The abstract definition of effects accommodates this without any trouble—operations
     from different effects simply transfer control to different handlers.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们只考虑了具有单一类型效果的计算，但许多计算可以执行多种类型的效果。例如，迭代器可能会执行一些异步 I/O 来生成其输出，或者异步计算可能会失败。效果的抽象定义可以毫无困难地适应这一点——来自不同效果的操作简单地将控制传递给不同的处理程序。
 - en: As a result, the combined effects of a computation form a flat, unordered set.
     This is an extremely useful property, because it means programs can deal with
     each effect uniformly and in isolation, regardless of how they are composed. Adding
@@ -214,35 +303,51 @@
     one of the Rust project’s high-level goals for `async` (i.e. it is a generalization
     of portability between sync and async) making algebraic effects an attractive
     way to think about this language feature.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果，计算的合并效果形成了一个扁平的、无序的集合。这是一个极其有用的特性，因为它意味着程序可以统一且独立地处理每个效果，而不管它们是如何组合的。向计算添加新效果不需要改变其余计算的编写方式，也不需要改变其余效果的处理方式。这种可移植性是
+    Rust 项目对 `async` 的高级目标之一（即它是同步和异步之间可移植性的一般化），使代数效果成为思考此语言特性的一种吸引人的方式。
 - en: 'Consider the combination of `async` and `gen`. The first effect is handled
     by an executor while the second is handled by a `for` loop. The two handlers can
     be specified in either order, without changing anything about the computation,
     which freely interleaves `.await`s and `yield`s. For example, here is a desugaring
     for the proposed `for await` loop, handling the `gen` effect and propagating the
     `async` effect:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑 `async` 和 `gen` 的组合。第一个效果由执行器处理，而第二个效果由 `for` 循环处理。这两个处理程序可以以任何顺序指定，而不改变计算的任何内容，它自由地交错
+    `.await` 和 `yield`。例如，这是一个为拟议的 `for await` 循环进行解糖处理，处理 `gen` 效果并传播 `async` 效果的示例：
 - en: '[PRE10]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Conversely, here is a combinator that converts an asynchronous iterator to
     a synchronous one by handling the `async` effect and propagating the `gen` one:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，这是一个组合器，通过处理 `async` 效果并传播 `gen` 效果将异步迭代器转换为同步迭代器的组合器：
 - en: '[PRE12]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Both of these can also be written with the opposite handler nesting, with the
     propagating handler on the inside and the non-propagating handler on the outside,
     without changing behavior. Handling one effect merely produces a larger computation
     with that effect removed from its set.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两者也可以用相反的处理程序嵌套方式编写，将传播处理程序置于内部，而非传播处理程序置于外部，而不改变行为。处理一个效果只会产生一个更大的计算，其中该效果已从其集合中移除。
 - en: 'This commutativity has an important implication for how these imaginary `handle`
     expressions are evaluated. A good place to see this is the combination of `async`
     and `try`. An API like Tokio’s [`AsyncReadExt::read`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncReadExt.html#method.read)
@@ -252,11 +357,19 @@
     effects today: `f.read(buf).await?`. But this restriction is merely an artifact
     of how Rust lowers these effects, not something dictated by the effects themselves.
     For example, here is a desugaring for `f.read(buf)?.await`:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种可交换性对于如何评估这些虚构的 `handle` 表达式有着重要的影响。一个好的例子是 `async` 和 `try` 的组合。像 Tokio 的
+    [`AsyncReadExt::read`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncReadExt.html#method.read)
+    这样的 API 可能执行 `sleep` 或 `throw` 操作中的任何一个。在内在层次结构方面进行思考是很诱人的，外层的 `Future` 驱动至完成以达到内部的
+    `Result`，事实上这也是今天传播这些效果的唯一方式：`f.read(buf).await?`。但是这种限制仅仅是 Rust 如何降低这些效果的产物，而不是由这些效果本身所决定的。例如，这里是对
+    `f.read(buf)?.await` 的展开：
 - en: '[PRE13]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: The key here is that the scrutinee of a `handle` expression is not fully evaluated
     before the `handle` expression itself, the way a `match` scrutinee would be. Instead,
     the scrutinee and the `handle` arms are evaluated together, switching back and
@@ -264,8 +377,13 @@
     the inner `handle` expression to reach the outer one in the same way that a `break`
     crosses any number of containing expressions to reach a loop, or a `return` crosses
     its containing expressions to reach a `fn`.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '`handle` 表达式的关键在于，在 `handle` 表达式之前，对于 `handle` 表达式的 `scrutinee` 并不完全进行评估，就像对于
+    `match` 的 `scrutinee` 一样。相反，`scrutinee` 和 `handle` 分支同时进行评估，以便进行效果操作时来回切换。由 `read`
+    执行的 `sleep` 操作穿越内部的 `handle` 表达式，以达到外部的 `handle` 表达式，就像 `break` 穿越任意数量的包含表达式以达到循环，或者
+    `return` 穿越其包含的表达式以达到 `fn` 一样。'
 - en: In most contexts, effectful computations in Rust “decay” to their lowering,
     such that expressions like `async { 42 }` or a call to an `async fn() -> i32`
     have type `impl Future<Output = i32>` rather than `i32`. But as the scrutinee
@@ -274,8 +392,12 @@
     non-decaying computation. Properly handling multiple effects means deferring this
     decay until the point that the program actually demands it, for a containing expression
     that is not a handler.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数情况下，Rust 中的具有效果的计算“衰变”为它们的降级，例如 `async { 42 }` 或调用 `async fn() -> i32` 的表达式的类型为
+    `impl Future<Output = i32>` 而不是 `i32`。但是作为 `async` 效果的 `handler` 的 `scrutinee`，这些表达式保持未衰变状态，并且移除最后效果的最外层
+    handler 表达式成为非具有效果、非衰变的计算。正确处理多种效果意味着推迟此衰变，直到程序实际要求为不是 handler 的包含表达式的点。
 - en: 'If this deferred behavior feels strange or magical, consider the behavior of
     place and value expressions (also called lvalues and rvalues). A place expression
     like `obj.field`, `*expr`, or `slice[i]` does not immediately do anything beyond
@@ -285,92 +407,130 @@
     from the location; an assignment `expr = v` will write to the location. Like reading
     vs writing, the choice of running vs lowering is a property of how the expression
     is used.'
+  id: totrans-54
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果此推迟行为感觉奇怪或神奇，请考虑位置和值表达式（也称为左值和右值）的行为。像 `obj.field`、`*expr` 或 `slice[i]` 这样的位置表达式不会立即执行任何操作，而只会计算位置。如何处理该位置的选择要推迟到包含表达式需要特定行为的时候：取地址运算符
+    `&expr` 将该位置实现为引用；调用 `f(expr)` 将从该位置移动；赋值 `expr = v` 将向该位置写入。就像读取 vs 写入一样，运行 vs
+    衰变的选择是表达式使用的特性。
 - en: How Rust implements effects
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Rust 如何实现效果
 - en: Rust implements effectful computations by lowering them to stackless coroutines.
     (More precisely, this is Rust’s most general strategy; some effects use a subset
     or specialization of this approach.) The compiler transforms each computation
     into an object to hold its state while suspended, with a method to resume the
     computation. In Rust this object is often called a “state machine,” but to avoid
     ambiguity I will use the more specific term *coroutine frame.*
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust通过将效果计算降级为无栈协程来实现效果。 （更准确地说，这是Rust的最一般策略；一些效果使用此方法的子集或特殊化。）编译器将每个计算转换为一个对象以保存其在挂起时的状态，并具有恢复计算的方法。在Rust中，此对象通常称为“状态机”，但为了避免歧义，我将使用更具体的术语
+    *协程帧*。
 - en: 'In [Why async rust?](https://without.boats/blog/why-async-rust/), boats covers
     the history of and motivation for this choice: while typical implementations of
     effects use continuation passing or stackful coroutines, these implementations
     also introduce allocation and indirection that Rust cannot afford. Rust’s coroutine
     frames exhibit two key characteristics that satisfy these requirements:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [为什么选择异步 Rust？](https://without.boats/blog/why-async-rust/) 中，boats 讨论了这一选择的历史和动机：尽管效果的典型实现使用传递或有栈协程，但这些实现也引入了Rust无法承受的分配和间接性。Rust的协程帧具有满足这些要求的两个关键特征：
 - en: They are ordinary value types, with a statically-knowable layout and statically-dispatchable
     resumption method, that can be composed into into larger computations that are
     themselves ordinary value types. The entire chain of frames, from handler to effect
     operation, uses only a single allocation which may come from anywhere—the heap,
     the stack, a global, a struct field, etc.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们是普通的值类型，具有静态可知的布局和静态可分派的恢复方法，可以组合成更大的计算，这些计算本身也是普通的值类型。从处理器到效果操作的整个帧链只使用一个分配，可以来自任何地方——堆、栈、全局、结构体字段等。
 - en: They are mutated in-place, giving a stable address to the local variables of
     the computation. If the coroutine frame were re-constructed or moved at each suspension,
     then live references to locals would force those locals to live in a separate
     allocation despite the previous point.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们在原地被改变，为计算的局部变量提供了一个稳定的地址。如果协程帧在每次暂停时重新构建或移动，则对局部变量的活动引用会迫使这些局部变量生活在一个单独的分配中，尽管前面的观点如此。
 - en: 'Rust’s lowering gives each effect a trait method corresponding to its signature.
     Effectful computations (encoded as coroutine frames) implement the trait; handlers
     invoke the method repeatedly and match on the result. Thus, an effect signature
     with operation `e(A) -> B` becomes a trait method `fn m(Pin<&mut Self>, B) ->
     Either<A, Output>` to be invoked until the computation completes by returning
     `Output`. This picture is complicated by three factors:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust的降级过程为每个效果都提供了与其签名相对应的特质方法。将具有效果的计算（编码为协程帧）实现为该特质；处理器重复调用该方法并匹配结果。因此，带有操作
+    `e(A) -> B` 的效果签名将成为一个特质方法 `fn m(Pin<&mut Self>, B) -> Either<A, Output>`，直到通过返回
+    `Output` 完成计算为止。这一情景受到三个因素的影响而变得复杂：
 - en: This method is also used to kick off the computation before it has performed
     any effects. The `B` parameter does not make sense for this initial call. Because
     of this, Rust iterators and futures are said to be “lazy,” while failure (with
     `B = !`) cannot use this method for its initial call and is “eager.”
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在执行任何效果之前，此方法也用于启动计算。对于此初始调用，参数 `B` 没有意义。因此，Rust的迭代器和 futures 被称为“懒惰”，而失败（使用
+    `B = !`）无法在其初始调用中使用此方法，因此是“急切”的。
 - en: Computations with the `async` effect do not literally pass an `impl FnOnce(&Waker)`
     to the handler. Instead, the handler preemptively supplies a `&Waker` as an additional
     parameter to the resumption method, and computations are expected to use it before
     transferring control to the handler. This relies on the point above—the initial
     part of the computation needs a `&Waker` just as later parts do.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 带有 `async` 效果的计算并不会字面上将 `impl FnOnce(&Waker)` 传递给处理器。相反，处理器主动将 `&Waker` 作为附加参数提供给恢复方法，并期望计算在将控制权转移给处理器之前使用它。这依赖于上面的观点——计算的初始部分与后续部分一样需要
+    `&Waker`。
 - en: The trait for the iteration effect was designed long before the language added
     support for self-referential coroutine frames. The `Pin<&mut Self>` parameter
     becomes `&mut self` in this case.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 迭代效果的特质是在语言添加对自引用协程帧的支持之前设计的。在这种情况下，`Pin<&mut Self>` 参数变为 `&mut self`。
 - en: 'The `Either<A, Output>` return type is also instantiated to a distinct `enum`
     for each effect, giving us the current form of Rust’s three effect lowerings as
     specializations of this general recipe:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Either<A, Output>`返回类型也被实例化为每种效果的不同`enum`，将我们现有的Rust三种效果降低的形式作为此一般配方的特殊化：'
 - en: '[PRE14]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[PRE15]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '[PRE16]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'An alternate history: zero-cost continuation passing'
+  id: totrans-68
   prefs:
   - PREF_BQ
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 另一种历史：零成本的继续传递
 - en: ''
+  id: totrans-69
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -380,10 +540,13 @@
     with linearity to enable contiguous allocation and in-place mutation. Restricting
     continuations further to a static depth makes their layout statically-knowable,
     in the same way as a chain of coroutine frames.
+  id: totrans-70
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 随着更深层次的语言和编译器集成，一种语言可以将无栈协程的效率带入继续传递风格。相关的见解是，传统的调用堆栈已经是一种继续传递的形式，通过线性限制来实现连续分配和原地变异。进一步限制继续传递到静态深度使得它们的布局在静态上是可知的，就像协程帧的链条一样。
 - en: ''
+  id: totrans-71
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -393,72 +556,95 @@
     by a tail-call to a callee, a caller, or a handler. The handler supplies a fixed-size
     space from which to allocate these objects, and each leaf suspension point lends
     its object back to the handler.
+  id: totrans-72
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 每个悬停点可以降低为一个包含实时值的不同闭包样式匿名结构体，其动态大小的尾部表示其调用者链。每个结构体的`resume`方法以对继续的调整结束，然后尾调用到调用者、调用者或处理器。处理器为这些对象提供了固定大小的空间，并且每个叶子悬停点将其对象借给处理器。
 - en: ''
+  id: totrans-73
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'This approach has several nice properties:'
+  id: totrans-74
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这种方法具有几个优点：
 - en: ''
+  id: totrans-75
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Resumption bypasses the chain of callers, jumping directly to the leaf frame.
+  id: totrans-76
   prefs:
   - PREF_BQ
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 恢复绕过调用者链，直接跳转到叶子帧。
 - en: Propagation operators like `?` or `.await` do not generate any glue code.
+  id: totrans-77
   prefs:
   - PREF_BQ
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类似`?`或`.await`的传播运算符不会生成任何粘合代码。
 - en: '`Waker`s are not constructed or passed around until an effect is performed.'
+  id: totrans-78
   prefs:
   - PREF_BQ
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Waker`在执行效果之前不会构造或传递。'
 - en: The type system prevents handlers from resuming completed computations.
+  id: totrans-79
   prefs:
   - PREF_BQ
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类型系统防止处理程序恢复已完成的计算。
 - en: ''
+  id: totrans-80
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Rust’s coroutine frames are essentially an emulation of this approach, necessitated
     by the language’s lack of tail calls. The complications above are part of this
     emulation, not essential to zero-cost effects.
+  id: totrans-81
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Rust的协程帧本质上是这种方法的一种仿真，是由于语言缺乏尾调用而必需的。上述复杂情况是这种仿真的一部分，不是零成本效果的关键。
 - en: 'A detour: combining effects by layering'
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一种绕行：通过分层结合效果
 - en: 'Because these lowerings are so specialized, it is not always obvious how they
     should be combined. Haskell lowers effects in a way that is related to Rust: effectful
     computations are defined in terms of an ordinary in-language interface, making
     the lowering observable to other parts of the program. This interface, the `Monad`
     typeclass, is implemented by the handler rather than the computation, and has
     what Rust would call an `and_then` method.'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这些降低是如此专业化，它们如何组合并不总是明显的。Haskell以一种与Rust相关的方式降低效果：效果计算是根据一个普通的语言内接口来定义的，使得降低对程序的其他部分可观察。这个接口，`Monad`类型类，由处理器而不是计算实现，并且具有Rust称为`and_then`方法。
 - en: 'One other interesting detail that is not directly relevant here: while Rust’s
     effectful computations can be reused with any handler, monadic programs essentially
     bake in their choice of handler by default. It is possible to write them in a
     way that does not do this, e.g. by using a particular implementation of the `Monad`
     typeclass (known as the “free monad”) that saves all the invocations of `and_then`
     in an AST-like structure to be interpreted later by an arbitrary handler.'
+  id: totrans-84
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 另一个在这里不直接相关的有趣细节：虽然Rust的效果计算可以与任何处理程序一起重复使用，但单子程序本质上默认情况下固定了它们的处理程序选择。可以以不这样做的方式编写它们，例如使用`Monad`类型类的特定实现（称为“自由单子”），将所有`and_then`的调用保存在AST样式的结构中，以便稍后由任意处理程序解释。
 - en: For computations with multiple effects, Haskell makes this `and_then` method
     generic over a “wrapper” monad representing an outer handler. These generics,
     or “monad transformers,” can then be nested in arbitrary ways. Unfortunately,
@@ -466,16 +652,21 @@
     computations and handlers. Handlers must implement a `lift` method alongside their
     generic `and_then`, and computations must use the appropriate number of `lift`
     calls when performing an outer effect operation.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于具有多个效应的计算，Haskell使`and_then`方法对表示外部处理程序的“包装”单子通用化。这些泛型，或“单子变换器”，然后可以以任意方式嵌套。不幸的是，这引入了一种对效应集的任意排序，这影响了计算和处理程序。处理程序必须在他们的泛型`and_then`旁实现一个`lift`方法，并且计算在执行外部效应操作时必须使用适当数量的`lift`调用。
 - en: Notably, this layering approach is very similar to the one proposed by Rust’s
     keyword generics initiative. There, traits like `Iterator` would become generic
     over any additional effects their method might perform, supporting instantiations
     like `async Iterator`. This has a similar unfortunate implication for handlers,
     which must use an appropriate number of nested `map` calls to get at the representation
     of the effect they care about.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，这种分层方法与Rust的关键字泛型倡议所提出的方法非常相似。在那里，像`Iterator`这样的特征将变得通用，以适应其方法可能执行的任何附加效应，支持诸如`async
+    Iterator`的实例化。这对处理程序有类似的不幸含义，处理程序必须使用适当数量的嵌套`map`调用来获取他们关心的效应的表示。
 - en: This layering also interferes with Rust’s lowering of coroutine frames. While
     Haskell’s monadic computations pass a new closure to the handler for each place
     they can resume, Rust relies on these continuations (represented as coroutine
@@ -483,8 +674,10 @@
     is lowered one effect at a time, each effect is forced to produce a separate coroutine
     frame to satisfy the API. Each frame must borrow from the next, and must be reconstructed
     after any of the frames it borrows from is resumed.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种层次化也干扰了Rust对协程帧的降低。虽然Haskell的单子计算为每个可以恢复的地方传递一个新的闭包给处理程序，但Rust依赖于这些续延（表示为协程帧）被线性使用，以便可以原地修改它们。当计算一次降低一个效应时，每个效应都被强制产生一个单独的协程帧来满足API。每个帧都必须从下一个借用，并且在任何它借用的帧被恢复后必须重建。
 - en: When a coroutine frame is used as a trait object, things get even worse. An
     effectful resumption method returns an associated type for the next frame in the
     chain—where should it be allocated? The number of resumption calls increases from
@@ -495,8 +688,10 @@
     of resumptions and reconstructions statically, but this is not something we can
     ever expect the compiler to do automatically, because it changes observable behavior
     and the type of the trait object.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 当协程帧被用作特征对象时，情况变得更糟。一个具有效应的恢复方法返回链中下一个帧的相关类型——它应该分配在哪里？每个效应操作的恢复调用数量从每个效应操作增加到最坏情况下的总效应数量*乘以*效应操作数量——这些都是动态分派的吗？可以通过预留足够的空间来缓解这些成本，以一次性地静态调度整个链的帧，并同时单态化一个新的方法，该方法调度恢复和重建链，但这不是我们可以期望编译器自动执行的事情，因为它会改变可观察的行为和特征对象的类型。
 - en: Do we at least get any benefits in exchange for dealing with this complexity
     everywhere? No—neither the computation nor the handler can really do anything
     with the layering, because it carries no semantic meaning and is purely an artifact
@@ -505,98 +700,138 @@
     algebraic effects in any order we choose! For example, we can produce an `async
     fn next` from a lowered `poll_next`, and vice versa produce a `poll_next` from
     a hand-written `async fn next`, with just a few lines of code.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 处处都要处理这种复杂性，我们至少能得到一些好处吗？不——计算和处理程序都不能真正利用层次化，因为它没有语义含义，纯粹是降低的副产品。相反，如果我们因为任何原因想要它，我们总是可以从未分层的降低中恢复这种层次化，通过利用我们选择的任意顺序处理代数效应的能力！例如，我们可以仅用几行代码从降低的`poll_next`生成一个`async
+    fn next`，反之亦然，从手写的`async fn next`生成一个`poll_next`。
 - en: This is not to say that effectful traits are necessarily a bad idea in general.
     Traits like `Read` and `Write` do not represent coroutine frames, and thus do
     not run into these problems in quite the same way. But this post is about how
     effects are lowered, not general API design.
+  id: totrans-90
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这并不意味着带效果的特性在一般情况下是一个坏主意。`Read` 和 `Write` 等特性不代表协程帧，因此不会以完全相同的方式遇到这些问题。但本文讨论的是如何降低效果，而不是一般的
+    API 设计。
 - en: Precisely because of this sort of type tetris, the Haskell ecosystem has grown
     several libraries designed to represent effects without this layering, and the
     Haskell compiler recently [gained support](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/7942)
     for delimited continuations to make these kinds of libraries more efficient. Rust
     should learn from this work and skip the layering.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 正是因为这种类型俄罗斯方块的情况，Haskell 生态系统已经发展出了几个旨在表示效果的库，而不需要这种分层，并且 Haskell 编译器最近还[支持](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/7942)了限定续延的功能，以使这类库更加高效。Rust
+    应该从这项工作中学习，并跳过这种分层。
 - en: Lowering combined effects
+  id: totrans-92
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 组合效果的降级
 - en: A running computation produces a sequence of effects drawn from a set. Its handler
     (or equivalently, set of handlers) must be prepared to accept any of them. Rust’s
     single-effect lowering already uses an `enum` with one variant for the effect
     operation and another to signal that the operation has completed. This naturally
     extends to a larger `enum` with one variant for each effect, plus one for the
     initial call and final return.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行的计算会产生一系列从集合中抽取的效果。它的处理程序（或等效地，处理程序集合）必须准备好接受其中的任何一个。Rust 的单效果降级已经使用具有一种变体用于效果操作和另一种变体用于信号操作已完成的`enum`。这自然地扩展到具有每种效果一个变体的更大的`enum`，以及一个用于初始调用和最终返回的变体。
 - en: 'Given a set of effect signatures, their combined lowering looks like this:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定一组效果签名，它们的组合降级如下所示：
 - en: '[PRE17]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: This does lean further into the design choice not to enforce appropriate use
     of this protocol at the type level. Just as it is possible to call `Iterator::next`
     after it has returned `None`, it is possible to pass the wrong variant to `resume`.
     It is, of course, possible to prevent this with increasingly-elaborate type system
     machinery like ZST tokens and existential or generative lifetimes, but that is
     really beside the point here.
+  id: totrans-96
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这进一步倾向于不在类型级别强制执行此协议的设计选择。就像在`Iterator::next`返回`None`后仍然可以调用一样，在`resume`中传递错误的变体也是可能的。当然，可以通过日益复杂的类型系统机制（如ZST标记和存在性或生成式生命周期）来防止这种情况，但这在这里真的不是重点。
 - en: 'The `AsyncIterator` (formerly known as `Stream`) trait which combines the `async`
     and `gen` effects is, once again, a specialization of this pattern:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '`AsyncIterator`（以前称为`Stream`）特性结合了`async`和`gen`效果，再次是这种模式的一个特例：'
 - en: '[PRE18]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: It can be tempting to read a return type like `Poll<Option<Item>>` as more nesting,
     especially when Rust programmers are so used to simply wrapping `Output` in a
     `Result` when writing the `try` lowering by hand, but this is a red herring. `Poll<Option<Item>>`
     is isomorphic to an enum with the three variants `Pending` (the `sleep` operation),
     `Some(Item)` (the `yield` operation), and `None` (a completed computation). The
     general recipe is to add more variants, not to add more layers.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 读取返回类型`Poll<Option<Item>>`时可能会很诱人，尤其是当 Rust 程序员习惯于在手动编写`try`降级时简单地在`Result`中包装`Output`时，但这是一个红色警告。`Poll<Option<Item>>`与一个具有三种变体`Pending`（`sleep`操作）、`Some(Item)`（`yield`操作）和`None`（已完成计算）的枚举是同构的。通用的做法是添加更多的变体，而不是添加更多的层次。
 - en: Similarly, `impl Future<Output = Result>` has a return type `Poll<Result<Output,
     E>>` which is isomorphic to the three variants `Pending` (`sleep`), `Err(E)` (`throw`),
     and `Ok(Output)` (completion). Even `impl Iterator<Item = Result>`’s return type
     `Option<Result<Item, E>>` is isomorphic to the three variants `Ok(Item)` (`yield`),
     `Err(E)` (`throw`), and `None` (completion), though this one collides with the
     type of an iterator yielding `Result`s.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，`impl Future<Output = Result>`的返回类型是`Poll<Result<Output, E>>`，它与三种变体`Pending`（`sleep`）、`Err(E)`（`throw`）和`Ok(Output)`（完成）是同构的。即使`impl
+    Iterator<Item = Result>`的返回类型`Option<Result<Item, E>>`也与三个变体`Ok(Item)`（`yield`）、`Err(E)`（`throw`）和`None`（完成）是同构的，尽管这个迭代器产生的`Result`的类型冲突。
 - en: This recipe is not merely a “god trait” that indiscriminately accumulates everything
     we need in one place. It is a more faithful representation of the commutative
     semantics of effects and handlers, which avoids the complexities that come from
     layering and restores the flexibility to handle effects without regard for where
     they sit in an irrelevant ordering.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个配方不仅仅是一个“上帝特性”，它不加区分地将我们需要的一切累积在一个地方。它是对效果和处理器的可交换语义更忠实的表示，避免了由分层引起的复杂性，并恢复了处理效果的灵活性，而不必考虑它们在一个无关的排序中的位置。
 - en: Other variations we might want, like (un)pinning or lending, are not themselves
     effects, but aspects or modes of effects that involve the coroutine frame. If
     we extend our notation to include an explicit continuation type (analogous to
     an explicit receiver type like `&self`), we can express these variations as part
     of an effect’s signature.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能想要的其他变体，比如（不）固定或借出，它们本身并不是效果，而是涉及协程帧的效果的方面或模式。如果我们将符号扩展到包括显式的继续类型（类似于显式接收器类型，如`&self`），我们可以将这些变体表达为效果签名的一部分。
 - en: 'For example, we might write the un-pinned iteration effect like this:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们可能会这样写未固定迭代效果：
 - en: '[PRE19]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Similarly, we might write a pinned, lending iteration effect like this:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，我们可能会这样写一个固定的、借出的迭代效果：
 - en: '[PRE20]'
+  id: totrans-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Combining these continuation types calls for a different approach than adding
     variants. Because `Pin` guarantees that its target stays pinned, we can’t use
     an `enum` with `&mut self` and `Pin<&mut Self>` variants (though this might work
@@ -605,20 +840,27 @@
     of them are lending, add a lifetime. For example, this justifies the use of `Pin<&mut
     Self>` for async iterators—the iteration effect signature does not use pinning
     but the async one does.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合这些继续类型需要与添加变体不同的方法。因为`Pin`保证其目标保持固定，所以我们不能使用带有`&mut self`和`Pin<&mut Self>`变体的`enum`（尽管这在另一种语言中可能有效）。相反，我们需要一个单一的接收器类型，将所有效果的限制组合在一起。如果其中任何一个被固定，则使用`Pin`；如果其中任何一个是借出，则添加一个生命周期。例如，这正是为异步迭代器使用`Pin<&mut
+    Self>`的理由-迭代效果签名不使用固定，但异步效果签名确实使用固定。
 - en: Finally, the use of a single coroutine frame also simplifies the design of features
     like `async Drop` or `poll_progress`, which do interesting things to the effectful
     computation’s control flow graph. Where a chain of layered frames would require
     the cooperation of the handler to propagate these signals across the layers, the
     states of a single combined coroutine frame represent the whole control flow graph
     in one place.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，使用单个协程帧还简化了设计`async Drop`或`poll_progress`等功能的设计，这些功能会对效果计算的控制流图执行有趣的操作。如果是分层帧的链条，那么需要处理器的合作才能在层之间传播这些信号，而单个组合的协程帧的状态则表示了一个地方的整个控制流图。
 - en: Future possibilities
+  id: totrans-109
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 未来的可能性
 - en: One of the motivations for the keyword generics initiative to consider the layered
     approach is a desire to avoid a combinatorial explosion of traits. The un-layered
     lowering already reduces this number because it does not differentiate between
@@ -626,8 +868,11 @@
     approach by using more modest and more widely-applicable extensions to the language,
     many of which are already implemented on nightly or have been repeatedly proposed.
     Allow me to engage in some wild speculation and play fast and loose with syntax.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键字通用性倡议考虑分层方法的动机之一是希望避免特性的组合爆炸。非分层的降低已经减少了这个数量，因为它不区分顺序。但如果必要，它甚至可以比`async
+    Iterator`方法更进一步，通过使用更为适度和更广泛适用的语言扩展，其中许多已经在夜间实现或已被反复提出。请允许我进行一些狂野的推测，并随意地处理语法。
 - en: As Rust’s existing effect traits are already instantiations of the pattern described
     above, they could be given bridge `impl`s to or from a generic trait along the
     lines of the unstable `Coroutine`. Going further, they could be made into aliases
@@ -635,8 +880,10 @@
     Doing this compatibly would additionally require the ability to `impl` a trait
     alias, as well as the ability to remap associated types and method names the way
     same aliases can remap generic parameters.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于Rust现有的效果特性已经是上面描述的模式的实例化，它们可以被赋予到或从类似于不稳定的`Coroutine`的通用特性的桥接`impl`。进一步地，它们可以被制作成该特性的别名，使用类似于不稳定的特性别名功能的东西。要兼容地执行此操作，还需要能够`impl`一个特性别名，以及能够重新映射关联类型和方法名称，方式与相同别名可以重新映射通用参数的方式相同。
 - en: Is replacing a combinatorial explosion of traits with a combinatorial explosion
     of aliases good enough? Maybe! But the cosmetics of these aliases could be improved
     in a similar way to the `Fn` trait bound sugar. Instead of using names like `AsyncIterator`,
@@ -646,8 +893,13 @@
     `try<E> async T` would mean `Future<Output = Result<T, E>>` or equivalently `Coroutine<Yield
     = Pending + Err(E) + Ok(T)>`. This treats all the effects uniformly, unlike `async
     Iterator` which singles one out as the base trait.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 用别名的组合爆炸来替换特质的组合爆炸足够好吗？也许！但是这些别名的外观可以用类似于`Fn`特质边界糖一样进行改进。不是使用像`AsyncIterator`这样的名称，通用特质的适当实例化可以使用其效果关键字来引用。例如，`async
+    gen<I> ()`会意味着`AsyncIterator<Item = I>`，或者等效地说是`Coroutine<Yield = Pending + Some(Item)
+    + None>`，而`try<E> async T`会意味着`Future<Output = Result<T, E>>`，或者等效地说是`Coroutine<Yield
+    = Pending + Err(E) + Ok(T)>`。这样会对所有效果进行统一处理，而不像`async Iterator`将其中一个作为基本特质。
 - en: 'What about sharing combinators across multiple instantiations? This would involve
     being generic over some of the variants while specifying others concretely. We
     can do this with another language extension called open `enum`s, sometimes known
@@ -655,44 +907,65 @@
     feature. For example, here is `Iterator::map` generalized to any computation with
     the `yield` effect, using the notation `Ts...` to declare an open `enum` generic
     parameter, and `A + Bs` to add a variant to one:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何在多个实例之间共享组合器？这涉及到对一些变体进行泛化，同时具体指定其他变体。我们可以使用另一种语言扩展称为开放`enum`，有时也称为开放多态变体，并与现有的`#[non_exhaustive]`特性相关联。例如，这里是`Iterator::map`以任何具有`yield`效果的计算进行泛化，使用`Ts...`来声明开放`enum`泛型参数，并使用`A
+    + Bs`来添加一个变体：
 - en: '[PRE21]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Another sense in which a function can be polymorphic over effects is to support
     effectful closures. Here is `Iterator::map` generalized in this way instead:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个函数可以在效果上多态的意义是支持有效果的闭包。这里是`Iterator::map`以这种方式进行泛化：
 - en: '[PRE22]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Of course, there is little reason to write either of these by hand when we
     have the ability to handle effects selectively, so here is a version generalized
     in both ways simultaneously, using one final language extension in the form of
     a `do` operator for propagating unknown effects:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，当我们有能力有选择性地处理效果时，没有必要手动编写这两者中的任何一个，因此这里同时以两种方式进行泛化，使用最后的一种语言扩展形式——`do`运算符来传播未知效果：
 - en: '[PRE23]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'For good measure, here it is again using `handle` expressions:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了好玩，这里再次使用`handle`表达式：
 - en: '[PRE24]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: At this point, I am still unconvinced that this sort of generality is actually
     important for Rust. My point is rather that the un-layered effect lowering strategy
     (represented by `poll_next`) is forward-compatible with mechanisms for reducing
     trait proliferation, and indeed that it does this more directly than the layered
     strategy. This is what algebraic effects were designed for, after all.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，我仍然不确定这种普适性对Rust是否真的很重要。我的观点是，非分层效果降级策略（由`poll_next`表示）与减少特质蔓延的机制是向前兼容的，并且它比分层策略更直接地实现了这一点。毕竟，代数效果就是为此而设计的。
 - en: Conclusion
+  id: totrans-122
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 结论
 - en: Algebraic effects are an attractive framework for designing these features of
     Rust, because they are more composable than approaches like monad transformers
     or effectful coroutine traits. Many of their affordances come from the way that
@@ -700,5 +973,8 @@
     have already covered similar ground. We can learn from their experience to unblock
     features like `async gen` and `for await` now, while retaining a path toward greater
     flexibility.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 代数效果是设计Rust这些特性的一个吸引人的框架，因为它们比单子变换器或有效果的协程特质更具有可组合性。它们的许多便利性都来自效果是*可交换*的，并且可以以任何顺序处理。像Haskell这样的语言已经涵盖了类似的地盘。我们可以从他们的经验中学习，以解锁像`async
+    gen`和`for await`这样的特性，同时保留通向更大灵活性的路径。
