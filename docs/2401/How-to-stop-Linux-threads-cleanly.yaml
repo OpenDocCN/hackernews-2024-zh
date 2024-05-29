@@ -1,571 +1,834 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:36:38'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:36:38
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How to stop Linux threads cleanly
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何干净地停止 Linux 线程
 - en: 来源：[https://mazzo.li/posts/stopping-linux-threads.html](https://mazzo.li/posts/stopping-linux-threads.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://mazzo.li/posts/stopping-linux-threads.html](https://mazzo.li/posts/stopping-linux-threads.html)
 - en: '*2024-01-07* How to stop Linux threads cleanly'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '*2024-01-07* 如何干净地停止 Linux 线程'
 - en: Let’s say you’re writing a long running multi-threaded application, on Linux.
     Maybe it’s a database or a server of some sort. Let’s also imagine that you’re
     not running on some managed runtime (maybe the JVM, Go, or BEAM), but rather managing
     threads spawned using the [`clone`](https://man7.org/linux/man-pages/man2/clone.2.html)
     syscall. Think of threads created in C with [`pthread_create`](https://man7.org/linux/man-pages/man3/pthread_create.3.html),
     or using C++’s [`std::thread`](https://en.cppreference.com/w/cpp/thread/thread/thread).
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你正在编写一个长时间运行的多线程应用程序，在 Linux 上。也许它是一个数据库或某种服务器。让我们想象一下，你不是在一些受控运行时（也许是 JVM、Go
+    或 BEAM）上运行，而是管理使用 [`clone`](https://man7.org/linux/man-pages/man2/clone.2.html)
+    系统调用产生的线程。想象一下用 C 创建的线程，使用 [`pthread_create`](https://man7.org/linux/man-pages/man3/pthread_create.3.html)，或者使用
+    C++ 的 [`std::thread`](https://en.cppreference.com/w/cpp/thread/thread/thread)。
 - en: Once you get into the business of starting threads, you’re probably also in
     the business of stopping them. However the former is much easier than the latter.
     With “stopping” I mean stopping the thread while giving it a chance to run some
     cleanup operations before fully terminating. Or in other words, we want to terminate
     a thread while ensuring that memory is freed, locks are released, logs are flushed,
     and so on.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你开始创建线程，你可能也要停止它们。但前者比后者要容易得多。所谓的“停止”，是指在完全终止之前给线程一个运行一些清理操作的机会。换句话说，我们希望在确保释放内存、释放锁、刷新日志等的情况下终止线程。
 - en: This task is sadly not as straightforward as it should be, and there definitely
     isn’t a one-size-fits-all solution. This blog post aims to give an overview of
     the problem space and to highlight some pitfalls in an area with no shortage,
     and present [a little magic trick at the end.](#rseq)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个任务遗憾地并不像应该的那样简单，也绝对没有一种大小适合所有的解决方案。本文旨在概述问题空间，并强调一些没有短缺的陷阱，并在最后展示一点[小魔术技巧。](#rseq)
 - en: (Quasi-)busy looping [#](#quasi-busy-looping)
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: (准)忙等待 [#](#quasi-busy-looping)
 - en: 'If you can afford it, you can structure each thread as such:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你负担得起的话，可以将每个线程结构化如下：
 - en: '[PRE0]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '`stop` here is a per-thread boolean. When we want to stop a thread, we set
     `stop` to `true`, and then call [`pthread_join`](https://man7.org/linux/man-pages/man3/pthread_join.3.html)
     or equivalents to ensure that the thread has actually terminated.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '`stop` 在这里是一个每个线程的布尔值。当我们想要停止一个线程时，我们将 `stop` 设置为 `true`，然后调用 [`pthread_join`](https://man7.org/linux/man-pages/man3/pthread_join.3.html)
+    或其等价物以确保线程实际上已经终止。'
 - en: 'Here’s a contrived but working example in C++:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个虚构但可行的 C++ 示例：
 - en: '[PRE1]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Which prints:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出：
 - en: '[PRE2]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: If you can write or refactor your code to work in such time slices, then terminating
     threads is very easy.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你可以编写或重构你的代码以在这样的时间片段内工作，那么终止线程就非常容易。
 - en: Note that the loop body does not need to be fully non blocking – it just needs
     to be terminated as quickly as we want our termination to be quick. For instance,
     if our thread is reading from a socket, we could set `SO_TIMEOUT` to be 100 milliseconds
     so that we know that every iteration of the loop will terminate quickly.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，循环体不需要完全非阻塞——它只需要在我们希望终止迅速的时间内被终止。例如，如果我们的线程正在从套接字读取数据，我们可以将 `SO_TIMEOUT`
+    设置为 100 毫秒，这样我们就知道循环的每次迭代都会迅速终止。
 - en: What if I want to block forever? [#](#what-if-i-want-to-block-forever)
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如果我想永久阻塞怎么办？[#](#what-if-i-want-to-block-forever)
 - en: Quasi-busy loops are all well and good, but they’re sometimes not desirable.
     The most common roadblock is foreign code that we don’t control which does not
     fit this pattern – think of a third-party library doing some blocking network
     call.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 准忙等待很好，但有时并不理想。最常见的障碍是我们无法控制的外部代码，它不符合这种模式——比如一个进行阻塞网络调用的第三方库。
 - en: As we’ll see later, there’s essentially no clean way to stop a thread running
     code we don’t control, but there are other reasons to not want to write all our
     code with the quasi-busy loop pattern.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们将在后面看到的，没有干净的方式来停止一个运行我们无法控制代码的线程，但还有其他原因不想要以准忙等待模式编写所有代码。
 - en: If we have many threads even relatively slow timeouts might cause significant
     scheduling overhead due to spurious wakeups, especially on an already busy system.
     The timeouts will also make debugging and inspecting the system considerably more
     annoying (e.g. imagine what the output of `strace` would look like).
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有很多线程，即使相对较慢的超时也可能因为虚假唤醒而导致显著的调度开销，特别是在已经繁忙的系统上。超时还将使调试和检查系统变得相当麻烦（例如，想象一下`strace`的输出会是什么样子）。
 - en: So it is worth thinking about how to stop a thread while it is blocked on a
     syscall. The most straightforward way to do that is through signals.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，值得考虑如何在线程在系统调用时被阻塞时停止线程。最直接的方法是通过信号。
 - en: We need to talk about signals [#](#we-need-to-talk-about-signals)
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们需要讨论信号 [#](#we-need-to-talk-about-signals)
 - en: Signals are the main way to interrupt execution of a thread without explicit
     coordination of the interrupted thread, and are therefore very relevant to the
     topic of this blog post. They’re also a bit of a mess. These two facts generate
     unhappiness.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 信号是中断线程执行而无需显式协调中断线程的主要方式，因此与本博客文章的主题非常相关。它们也有点混乱。这两个事实引发了不快。
 - en: For a good overview on signals I recommend the surprisingly informative [man
     page](https://man7.org/linux/man-pages/man7/signal.7.html), but I’ll give a sufficient
     overview here. If you already know how signals work, you can skip to [the next
     section](#thread-cancellation).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于信号的良好概述，我推荐出乎意料的信息丰富的[man页面](https://man7.org/linux/man-pages/man7/signal.7.html)，但我会在这里给出足够的概述。如果您已经了解信号的工作原理，可以跳转到[下一节](#thread-cancellation)。
 - en: Signals can arise because of some hardware exception or be initiated by software.
     The most familiar instance of a software-initiated signal is your shell sending
     SIGINT to the foreground process when you press `ctrl-c`. All signals initiated
     by software originate from a handful of syscalls – for instance [`pthread_kill`](https://man7.org/linux/man-pages/man3/pthread_kill.3.html)
     will send a signal to a thread.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 信号可以由某些硬件异常引发，也可以由软件发起。最熟悉的软件发起信号的实例是当您按下`ctrl-c`时，您的shell向前台进程发送SIGINT。所有由软件发起的信号都源自于少数几个系统调用
+    - 例如[`pthread_kill`](https://man7.org/linux/man-pages/man3/pthread_kill.3.html)会向线程发送一个信号。
 - en: 'Hardware initiated signals are generally handled immediately, while software
     initiated signals are handled when a CPU is about to re-enter user mode after
     the kernel has done some work. In any event, when a signal needs to handled in
     a given thread:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 硬件发起的信号通常会立即处理，而软件发起的信号会在 CPU 在内核完成一些工作后即将重新进入用户模式时处理。无论如何，当一个信号需要在给定的线程中处理时：
 - en: If the signal has been blocked by the receiving thread, it’ll wait to be handled
     until it is unblocked;
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果信号被接收线程阻塞，它将等待处理直到被解除阻塞；
 - en: 'If the signal is not blocked, it might be:'
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果信号没有被阻塞，它可能会：
 - en: ignored;
+  id: totrans-32
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 忽略；
 - en: handled in the “default” manner;
+  id: totrans-33
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 以“默认”方式处理；
 - en: handled using some custom signal handler.
+  id: totrans-34
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用一些自定义的信号处理器进行处理。
 - en: Which signals are blocked is controlled by modifying the *signal mask* using
     [`sigprocmask`](https://man7.org/linux/man-pages/man2/sigprocmask.2.html)/[`pthread_sigmask`](https://man7.org/linux/man-pages/man3/pthread_sigmask.3.html),
     and which action is taken if the thread is not blocked is controlled by [`sigaction`](https://man7.org/linux/man-pages/man2/sigaction.2.html).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 哪些信号被阻塞由修改*信号掩码*来控制，使用[`sigprocmask`](https://man7.org/linux/man-pages/man2/sigprocmask.2.html)/[`pthread_sigmask`](https://man7.org/linux/man-pages/man3/pthread_sigmask.3.html)，如果线程没有被阻塞，则采取的操作由[`sigaction`](https://man7.org/linux/man-pages/man2/sigaction.2.html)来控制。
 - en: Assuming that the signal is *not* blocked, paths 2.a and 2.b will be managed
     entirely by the kernel, while path 2.c will cause the kernel to pass control to
     a user-space signal handler which will do something with the signal.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设信号*没有*被阻塞，路径 2.a 和 2.b 将完全由内核管理，而路径 2.c 将导致内核将控制权传递给用户空间信号处理程序，该处理程序将对信号执行某些操作。
 - en: Importantly, if some thread is in a syscall (for instance blocked while reading
     from a socket), and a signal needs to be handled, the syscall will return early
     with error code `EINTR` after the signal handler has run.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 重要的是，如果某个线程在系统调用中（例如在从套接字中读取时被阻塞），并且需要处理信号，则在信号处理程序运行后，系统调用将提前返回错误代码`EINTR`。
 - en: The signal handler code is subject [to various constraints](https://man7.org/linux/man-pages/man7/signal-safety.7.html),
     but otherwise it can do as it pleases, including deciding to not give back control
     to the code that was executing before. By default, most signals just cause the
     program to stop abruptly, possibly with a core dump. In the next few sections
     we’re going to explore various ways to use signals to stop our threads.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 信号处理程序代码受[各种约束](https://man7.org/linux/man-pages/man7/signal-safety.7.html)约束，但除此之外，它可以随意操作，包括决定不将控制权返回给执行之前的代码。默认情况下，大多数信号只会导致程序突然停止，可能会出现核心转储。在接下来的几节中，我们将探讨使用信号停止线程的各种方法。
 - en: Thread cancellation, a false hope [#](#thread-cancellation)
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 线程取消，一个虚假的希望 [#](#thread-cancellation)
 - en: 'Let’s first examine a way to stop threads, implemented through signals, which
     would seem to do exactly what we want: thread cancellation.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先检查一种通过信号实现的停止线程的方法，这似乎正是我们想要的：线程取消。
 - en: 'The API for thread cancellation is very promising. [`pthread_cancel(tid)`](https://man7.org/linux/man-pages/man3/pthread_cancel.3.html)
     will “cancel” thread `tid`. The way `pthread_cancel` works boils down to:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 线程取消的API非常有前途。[`pthread_cancel(tid)`](https://man7.org/linux/man-pages/man3/pthread_cancel.3.html)会“取消”线程`tid`。`pthread_cancel`的工作方式归结为：
 - en: A special signal is sent to thread `tid`;
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个特殊的信号被发送到线程`tid`；
 - en: The libc you’re using (say [glibc](https://en.wikipedia.org/wiki/Glibc) or [musl](https://en.wikipedia.org/wiki/Musl))
     sets up a handler so that when the cancel signal is received the thread winds
     down.
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你正在使用的libc（比如[glibc](https://en.wikipedia.org/wiki/Glibc)或[musl](https://en.wikipedia.org/wiki/Musl)）设置了一个处理程序，以便在接收到取消信号时线程会停止。
 - en: There are additional details, but that’s essentially all there is to it. However,
     trouble lies ahead.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有其他细节，但基本上就是这样了。然而，困难在前方。
 - en: Resource management + thread cancellation = 😢 [#](#resource-management-thread-cancellation)
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 资源管理 + 线程取消 = 😢 [#](#resource-management-thread-cancellation)
 - en: Recall that signals can essentially arise anywhere in your code. So if we have
     code such as
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，信号实质上可以在您的代码的任何地方出现。所以如果我们有这样的代码
 - en: '[PRE3]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: we might get a signal in the critical section. In the case of thread cancellation,
     our thread might get cancelled while we’re holding a lock as above, or with some
     memory to be freed, or in general with some outstanding resource, and our cleanup
     code will never run. This is not good.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能在关键部分收到一个信号。在线程取消的情况下，我们的线程可能在我们持有锁的情况下被取消，或者有一些要释放的内存，或者总之有一些未完成的资源，并且我们的清理代码永远不会运行。这不好。
 - en: 'There are some mitigating circumstances, although none sufficient:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然有一些缓解情况，但都不足够：
 - en: Thread cancellation can be temporarily disabled. So we could disable it any
     time we are in such a critical section.
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 线程取消可以被暂时禁用。所以我们可以在任何时候禁用它当我们处于这样一个关键部分。
 - en: However some “critical sections” are very long (consider the lifespan of some
     allocated memory), and moreover we’d have to make sure to decorate all relevant
     code by enabling/disabling cancellation at the right time.
+  id: totrans-51
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 然而，一些“关键部分”非常长（考虑一些分配内存的寿命），而且我们还必须确保在正确的时间启用/禁用取消来装饰所有相关代码。
 - en: Linux threads include facilities to add/remove global cleanup handlers with
     [`pthread_cleanup_push`](https://man7.org/linux/man-pages/man3/pthread_cleanup_push.3.html)
     and `pthread_cleanup_pop`. These cleanup handlers *are* run when a thread is cancelled.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Linux线程包括使用[`pthread_cleanup_push`](https://man7.org/linux/man-pages/man3/pthread_cleanup_push.3.html)和`pthread_cleanup_pop`添加/删除全局清理处理程序的设施。当线程被取消时，这些清理处理程序*会*运行。
 - en: However to ensure safety using these functions one would have to again decorate
     every critical section with not only with a push/pop, but also temporarily disabling
     cancellations to avoid races as we setup the cleanup.
+  id: totrans-53
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 然而，为了确保使用这些函数的安全性，一个人必须再次用不仅仅是一个推/弹出，而且还要暂时禁用取消来避免竞争，因为我们设置了清理。
 - en: Again, this would be very error prone and would slow down our code considerably.
+  id: totrans-54
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 再次强调，这样做会非常容易出错，并且会显著减慢我们的代码。
 - en: By default the signal sent by thread cancellation is only received at “cancellation
     points”, which to a first approximation are the syscalls that might block – see
     [`pthreads(7)`](https://man7.org/linux/man-pages/man7/pthreads.7.html).
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 默认情况下，线程取消发送的信号只在“取消点”接收到，大致上是可能阻塞的系统调用 - 请参阅[`pthreads(7)`](https://man7.org/linux/man-pages/man7/pthreads.7.html)。
 - en: So really we would only run into trouble if we have such a syscall in the critical
     sections. But again, we’d have to manually ensure that either critical section
     have no cancellation points, or that they’re made safe otherwise (possibly with
     the two measures described above).
+  id: totrans-56
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 所以我们只有在关键部分有这样的系统调用时才会遇到麻烦。但是再次强调，我们必须手动确保要么关键部分没有取消点，要么通过其他方式（可能是上述两种措施之一）使其安全。
 - en: Thread cancellation is incompatible with modern C++ [#](#thread-cancellation-is-incompatible-with-modern-c)
+  id: totrans-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 线程取消与现代 C++ 不兼容 [#](#thread-cancellation-is-incompatible-with-modern-c)
 - en: 'If you’re a C++/Rust programmer, you might have sneered at the explicit locking
     above – you’ve got RAII to handle such cases:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你是 C++/Rust 程序员，你可能会对上面的显式锁定感到不屑一顾 - 你有 RAII 来处理这种情况：
 - en: '[PRE4]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You might have also been wondering what happens if a thread cancellation arrives
     in the RAII-managed critical section here.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能也在想，在这里由 RAII 管理的关键部分中如果线程取消到达会发生什么。
 - en: The answer is that thread cancellation will trigger a stack unwinding very much
     like throwing an exception would (in fact it’s implemented with a special exception),
     which means that destructors *will* be run on cancellation. This mechanism is
     known as *forced unwinding*. Great, right?
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是线程取消将触发类似于抛出异常的堆栈解除的机制（实际上它是用一个特殊的异常实现的），这意味着析构函数 *将* 在取消时运行。这种机制称为 *强制解除*。很棒，对吧？
 - en: Well, since thread cancellation is implemented using exceptions, and thread
     cancellation can happen in arbitrary places, [we’re always liable to a cancellation
     happening in a `noexcept` block](https://gcc.gnu.org/legacy-ml/gcc/2017-08/msg00121.html),
     which will cause your program to crash via [`std::terminate`](https://en.cppreference.com/w/cpp/error/terminate).
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，由于线程取消是使用异常实现的，并且线程取消可能发生在任意位置，[我们总是可能在 `noexcept` 块中发生取消](https://gcc.gnu.org/legacy-ml/gcc/2017-08/msg00121.html)，这将通过
+    [`std::terminate`](https://en.cppreference.com/w/cpp/error/terminate) 使你的程序崩溃。
 - en: So since C++11, and especially since C++14 where destructors are marked as `noexcept`
     by default, thread cancellation is essentially useless in C++.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以自从 C++11，特别是自从 C++14 开始，在 C++ 中线程取消基本上是无用的，因为析构函数默认标记为 `noexcept`。
 - en: Forced unwinding is unsafe anyway [#](#forced-unwinding-is-unsafe-anyway)
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 强制解除本身就是不安全的 [#](#forced-unwinding-is-unsafe-anyway)
 - en: 'However note that even if this mechanism worked in C++, it’d still not be safe
     in many situations. Consider situations like:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是请注意，即使在 C++ 中这种机制运行良好，它在许多情况下仍然不安全。考虑以下情况：
 - en: '[PRE5]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If we get forcefully unwound after `balance_1 += x`, our invariants go out of
     the window. This is why Java’s form of forced unwinding, [`Thread.stop`](https://docs.oracle.com/javase/8/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html),
     was deprecated.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在 `balance_1 += x` 之后强制解开我们的不变性就会失效。这就是为什么 Java 的强制解开形式 [`Thread.stop`](https://docs.oracle.com/javase/8/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html)
+    被废弃的原因。
 - en: You can’t cleanly stop threads running code you don’t control [#](#you-cant-cleanly-stop-threads-running-code-you-dont-control)
+  id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 你无法干净地停止运行你无法控制的代码的线程 [#](#you-cant-cleanly-stop-threads-running-code-you-dont-control)
 - en: As a brief aside, the nature of signals (and by extension thread cancellation)
     implies that it’s impossible to cleanly stop code that you don’t control. You
     cannot guarantee that memory isn’t leaked, files are closed, global locks are
     released, and so on.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，信号的性质（以及由此引申出的线程取消）意味着无法干净地停止你无法控制的代码。你无法保证内存不会泄漏，文件被关闭，全局锁被释放等等。
 - en: If you need to interrupt foreign code reliably, it’s better to isolate it in
     its own process. It might still leak temporary files and other such persistent
     resources, but most relevant state would be cleaned up by the operating system
     when the process dies.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你需要可靠地中断外部代码，最好将其隔离在自己的进程中。它可能仍然会泄漏临时文件和其他持久性资源，但当进程终止时，操作系统将清理掉大部分相关状态。
 - en: Controlled thread cancellation [#](#controlled-thread-cancellation)
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 受控线程取消 [#](#controlled-thread-cancellation)
 - en: 'Hopefully you’re now convinced that unrestricted thread cancellation is not
     a great idea in most circumstances. However we can pick the circumstances explicitly
     by enabling thread cancellation only at specific times. So our event loop becomes:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望现在你已经确信在大多数情况下无限制的线程取消并不是一个好主意。然而，我们可以通过只在特定时间启用线程取消来明确选择情况。因此我们的事件循环变成了：
 - en: '[PRE6]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We turn off thread cancellation by default, but turn it back on as we do our
     blocking syscall.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们默认关闭线程取消，但在进行阻塞系统调用时重新打开它。
 - en: Refactoring our code to fit this pattern might seem onerous. However many applications
     with long lived threads already contain loops with a blocking syscall at the beginning
     (reading from a socket, sleeping on a timer, and so on), followed by some work
     that will not block indefinitely.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 重构我们的代码以适应这种模式可能看起来很繁琐。但是，许多具有长时间运行线程的应用程序已经包含了以阻塞系统调用开始的循环（从套接字读取，定时器休眠等），然后是一些不会无限期阻塞的工作。
 - en: Homegrown thread cancellation [#](#homegrown-thread-cancellation)
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 自制线程取消 [#](#homegrown-thread-cancellation)
 - en: However once we’ve done this, it might be worth getting rid of thread cancellation
     entirely. Relying on the stack unwinding to free resources would not be portable
     to alternative libcs, and we’d need to be [fairly careful](https://udrepper.livejournal.com/21541.html)
     if we wanted to perform some explicit cleanup actions outside destructors.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是一旦我们这样做了，或许值得完全摆脱线程取消。依赖堆栈展开来释放资源不会在可选的 libcs 上是可移植的，而且如果我们想在析构函数外执行一些显式清理操作，我们需要[相当小心](https://udrepper.livejournal.com/21541.html)。
 - en: So instead we can work with signals directly. We can pick SIGUSR1 as our “stopping”
     signal, install a handler which sets our stopping variable, and check the variable
     before doing blocking syscalls.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以直接使用信号。我们可以选择 SIGUSR1 作为我们的“停止”信号，安装一个设置我们停止变量的处理程序，并在执行阻塞系统调用之前检查变量。
 - en: '[Here’s a worked out example in C++.](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/7f5a705198f5f9c3c250d24ec085bb75796a4752)
     The interesting parts of the code are setting up the signal handler:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[这是一个在 C++ 中的示例。](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/7f5a705198f5f9c3c250d24ec085bb75796a4752)
+    代码的有趣部分是设置信号处理程序：'
 - en: '[PRE7]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'And the code checking the flag before running the syscall:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 和在运行系统调用之前检查标志的代码：
 - en: '[PRE8]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'However, the code checking the flag and starting the syscall is racy:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，检查标志并启动系统调用的代码存在竞争条件：
 - en: '[PRE9]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: There’s no easy way to check the flag and run the syscall atomically.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有简单的方法来检查标志并原子地运行系统调用。
 - en: '[Another approach to this problem](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/139cc58cbdbba88ef311f7ea1b47a06050f03016)
     would be to have USR1 blocked normally, and unblock it only when the syscall runs,
     similarly to what we did with the temporary thread cancellation. If the syscall
     terminates with `EINTR`, we know that we should quit.'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '[解决这个问题的另一种方法](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/139cc58cbdbba88ef311f7ea1b47a06050f03016)是正常阻止
+    USR1，并仅在系统调用运行时解除阻止，类似于我们在临时线程取消时所做的。如果系统调用以 `EINTR` 终止，我们知道我们应该退出。'
 - en: 'Sadly the race is still there, just between the unblocking and running the
     syscall:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，竞争仍然存在，只是在解除阻塞和运行系统调用之间：
 - en: '[PRE10]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Changing the sigmask atomically [#](#changing-the-sigmask-atomically)
+  id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 原子地更改 sigmask [#](#changing-the-sigmask-atomically)
 - en: 'However, there often *is* an easy to atomically change the sigmask and run
     a syscall:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，通常有一种简单的方法来原子地更改 sigmask 并运行系统调用：
 - en: '[`select`](https://man7.org/linux/man-pages/man2/select.2.html)/[`poll`](https://man7.org/linux/man-pages/man2/poll.2.html)/[`epoll_wait`](https://man7.org/linux/man-pages/man2/epoll_wait.2.html)
     have `pselect`/`ppoll`/`epoll_pwait` variants which take a `sigmask` argument;'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`select`](https://man7.org/linux/man-pages/man2/select.2.html)/[`poll`](https://man7.org/linux/man-pages/man2/poll.2.html)/[`epoll_wait`](https://man7.org/linux/man-pages/man2/epoll_wait.2.html)有带有
+    `sigmask` 参数的 `pselect`/`ppoll`/`epoll_pwait` 变体；'
 - en: '`read`/`write` and similar syscalls can be replaced by their non-blocking versions
     and a blocking `ppoll`;'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`read`/`write` 和类似的系统调用可以被它们的非阻塞版本替代，并使用阻塞的 `ppoll`；'
 - en: To sleep one can use [`timerfd`](https://man7.org/linux/man-pages/man2/timerfd_create.2.html)
     or just `ppoll` with no file descriptors but with a timeout;
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可以使用[`timerfd`](https://man7.org/linux/man-pages/man2/timerfd_create.2.html)或只是使用没有文件描述符但有超时的
+    `ppoll` 来睡眠；
 - en: The newly added [`io_uring_enter`](https://man7.org/linux/man-pages/man2/io_uring_enter.2.html)
     supports this use case out of the box.
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 新添加的[`io_uring_enter`](https://man7.org/linux/man-pages/man2/io_uring_enter.2.html)直接支持这种用例。
 - en: The syscalls above already cover a very large footprint.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述系统调用已经涵盖了非常广泛的范围。
 - en: 'In this style, the [receive loop of the program becomes](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/9bd6b18f6329a0b07cba5cb38d3c45bbf27ae968):'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种风格中，程序的[接收循环变得](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/9bd6b18f6329a0b07cba5cb38d3c45bbf27ae968)：
 - en: '[PRE11]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Making it work with any syscall [#](#rseq)
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使其与任何系统调用一起工作 [#](#rseq)
 - en: Sadly, not all syscalls have variants which let us atomically change the sigmask
     as they execute. [`futex`](https://man7.org/linux/man-pages/man2/futex.2.html),
     the main syscall used to implement userspace concurrency primitives, is a notable
     example of a syscall which does *not* include such a facility.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 遗憾的是，并非所有的系统调用都有变体能让我们在执行过程中原子性地改变sigmask。[`futex`](https://man7.org/linux/man-pages/man2/futex.2.html)，用于实现用户空间并发原语的主要系统调用，是一个例子，该系统调用*没有*包括这样的设施。
 - en: In the case of `futex` one can interrupt threads through `FUTEX_WAKE`, but it
     turns out we can setup a mechanism to safely check the boolean stop flag atomically
     with starting *any* syscall.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于`futex`，可以通过`FUTEX_WAKE`中断线程，但事实证明我们可以建立一个机制，可以安全地用*任何*系统调用原子性地检查布尔停止标志。
 - en: 'To recap, the problematic code [looks like this](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/7f5a705198f5f9c3c250d24ec085bb75796a4752):'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾一下，有问题的代码[看起来像这样](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9/7f5a705198f5f9c3c250d24ec085bb75796a4752)：
 - en: '[PRE12]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: If we could know that no signal handler is ran between the flag check and the
     syscall, then we’d be safe.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们能确定在标志检查和系统调用之间没有运行信号处理程序，那么我们就会安全。
 - en: 'Linux 4.18 introduced a syscall, [`rseq`](../assets/other/rseq.html) (“restartable
     sequences”), which lets us achieve this, although with some effort. The `rseq`
     machinery works as follows:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: Linux 4.18引入了一个系统调用，[`rseq`](../assets/other/rseq.html)（“可重启序列”），让我们可以实现这一点，尽管需要一些努力。`rseq`机制的工作如下：
 - en: You write some code which you want to run atomically with regards to preemption
     or signals – the critical section.
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您编写一些您想要原子运行的代码，用于抢占或信号 - 临界区。
 - en: Before the critical section is entered, we inform the kernel that the critical
     section is about to run by writing to a bit of memory shared between the kernel
     and userspace.
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在进入临界区之前，我们通过在内核和用户空间之间共享的一小块内存中写入来通知内核即将运行临界区。
 - en: 'This bit of memory contains:'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这块内存包含：
 - en: '`start_ip`, the instruction pointer which marks the begin of the critical section;'
+  id: totrans-108
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`start_ip`，标记临界区开始的指令指针；'
 - en: '`post_commit_offset`, the length of the critical section;'
+  id: totrans-109
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`post_commit_offset`，临界区的长度；'
 - en: '`abort_ip`, the instruction pointer to jump to if the kernel needs to preempt
     the critical section.'
+  id: totrans-110
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`abort_ip`，如果内核需要抢占临界区，则要跳转到的指令指针。'
 - en: If the kernel has preempted a thread, or if a signal needs to be delivered to
     the thread, it checks if the thread is in a `rseq` critical section, and if it
     does sets the program counter for the thread to `abort_ip`.
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果内核抢占了一个线程，或者需要向线程交付信号，它会检查线程是否处于`rseq`关键部分，并且如果设置了程序计数器到`abort_ip`。
 - en: The process above forces the critical section to be a single contiguous block
     (from `start_ip` to `start_ip+post_commit_offset`) which we must know the address
     of. These requirements force us to write it in inline assembly.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述过程强制临界区成为一个连续的块（从`start_ip`到`start_ip+post_commit_offset`），我们必须知道其地址。这些要求迫使我们以内联汇编的方式编写它。
 - en: Note that rather than disabling preemption entirely, `rseq` lets us specify
     some code (the code starting at `abort_ip`) to perform some cleanup if the critical
     section is interrupted. The correct functioning of the critical section therefore
     often depends on a “commit instruction” at the very end of the critical section
     which makes the changes in the critical section visible.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，`rseq`并非完全禁用抢占，它让我们指定一些代码（从`abort_ip`开始的代码）在临界区被中断时执行一些清理工作。因此，临界区的正确工作通常取决于临界区末尾的“提交指令”，使临界区中的更改可见。
 - en: In our case the “commit instruction” is `syscall` – the instruction which will
     invoke the syscall that we’re interested in.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的情况下，“提交指令”是`syscall` - 将调用我们感兴趣的系统调用的指令。
 - en: 'Which leads us to the following x86-64 widget for a 6-argument syscall stub
     which atomically checks a stop flag and executes a `syscall`:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致了以下用于6个参数系统调用存根的x86-64小部件，用于原子性地检查停止标志并执行`syscall`：
 - en: '[PRE13]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: We’re using glibc’s [recently added support for `rseq`](https://lwn.net/Articles/883104/),
     which provides a `__rseq_offset` variable containing the offset where the critical
     section information lives, relative to the thread pointer. All we need to do in
     the critical section is check the flag, skip the syscall if it’s set, and perform
     the syscall if it is. If the flag is set we pretend the syscall has failed with
     `EINTR`.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在使用 glibc 最近添加的对 `rseq` 的支持，它提供了一个 `__rseq_offset` 变量，其中包含关键部分信息相对于线程指针的偏移量。在关键部分中，我们只需检查标志，如果设置了，则跳过系统调用，如果未设置，则执行系统调用。如果标志已设置，则假装系统调用失败，并显示
+    `EINTR`。
 - en: You can find the full code for the previous example using this trick to call
     `recvfrom` [here](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9).
     I’m not necessarily advocating the use of this technique, but it’s definitely
     an interesting curiosity.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在[这里](https://gist.github.com/bitonic/d3281b2d0fd95b4fd788aa7e013d1fb9)找到先前示例的完整代码，使用这种技巧调用`recvfrom`。我并不一定主张使用这种技术，但它绝对是一个有趣的奇特之处。
 - en: Wrapping up [#](#wrapping-up)
+  id: totrans-119
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结束 [#](#wrapping-up)
 - en: It’s quite frustrating that there’s no agreed upon way to interrupt and stack
     unwind a Linux thread and to protect critical sections from such unwinding. There
     are no technical obstacles to such facilities existing, but clean teardown is
     often a neglected part of software.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Linux 线程中，中断和堆栈展开以及保护关键部分免受此类展开的方式尚未达成一致，这令人相当沮丧。虽然不存在技术障碍来实现这样的功能，但是清理拆卸通常是软件的被忽视的部分。
 - en: Haskell is one language where these capabilities do exist in the form of [asynchronous
     exceptions](https://hackage.haskell.org/package/base-4.19.0.0/docs/Control-Exception.html#v:throwTo),
     although one still needs to be careful to protect critical sections appropriately.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: Haskell 是一种语言，其中存在这些功能，以[异步异常](https://hackage.haskell.org/package/base-4.19.0.0/docs/Control-Exception.html#v:throwTo)的形式存在，尽管仍然需要小心地适当地保护关键部分。
 - en: Acknowledgements [#](#acknowledgements)
+  id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 致谢 [#](#acknowledgements)
 - en: '[Peter Cawley](https://twitter.com/corsix) provided input on many details treated
     in this blog post and read its draft. He also suggested `rseq` as a possible solution.
     Many thanks also go to [Niklas Hambüchen](https://nh2.me/), [Alexandru Sçvortov](https://scvalex.net/),
     [Alex Sayers](https://www.asayers.com/), and Alex Appetiti for reading drafts
     of this blog post.'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Peter Cawley](https://twitter.com/corsix) 在本博客文章中讨论的许多细节上提供了意见并阅读了其草稿。他还提出了
+    `rseq` 作为可能的解决方案。还要非常感谢[Niklas Hambüchen](https://nh2.me/)、[Alexandru Sçvortov](https://scvalex.net/)、[Alex
+    Sayers](https://www.asayers.com/) 和 Alex Appetiti 读过本博客文章的草稿。'
