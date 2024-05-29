@@ -1,77 +1,111 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:04:36'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:04:36
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Loading...
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 加载中...
 - en: 来源：[https://bugs.openjdk.org/browse/JDK-8321133](https://bugs.openjdk.org/browse/JDK-8321133)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://bugs.openjdk.org/browse/JDK-8321133](https://bugs.openjdk.org/browse/JDK-8321133)
 - en: Summary
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: Enhance the Java language with derived creation for records. Records are immutable
     objects, so developers frequently create new records from old records to model
     new data. Derived creation streamlines code by deriving a new record from an existing
     record, specifying only the components that are different. This is a [preview
     language feature](https://openjdk.org/jeps/12).
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过派生创建增强Java语言的记录。记录是不可变对象，因此开发人员经常从旧记录创建新记录以建模新数据。派生创建通过从现有记录派生新记录，并仅指定不同的组件来简化代码。这是一个[预览语言特性](https://openjdk.org/jeps/12)。
 - en: Goals
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标
 - en: Provide a concise means to create new record values derived from existing record
     values.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 提供一种简洁的方式来创建从现有记录值派生的新记录值。
 - en: Streamline the declaration of record classes by eliminating the need to provide
     explicit *wither* methods, which are the immutable analogue of setter methods.
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过消除提供显式的*wither*方法来简化记录类的声明，这些方法是不可变的setter方法的类比。
 - en: Non-Goals
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 非目标
 - en: It is not a goal to provide a Pascal-style [<code class="prettyprint" >with</code>]
     construct that simplifies access to arbitrary complex expressions.
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 目前不打算提供一种类似帕斯卡风格的[<code class="prettyprint" >with</code>]构造，简化对任意复杂表达式的访问。
 - en: It is not a goal to provide support for a distinguished class of wither methods.
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 目前不打算为一类特殊的wither方法提供支持。
 - en: It is not a goal to provide derived creation expressions for ordinary, non-record
     values; this may be the subject of a future JEP.
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 目前不打算为普通的非记录值提供派生的创建表达式；这可能是未来JEP的主题。
 - en: Motivation
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 动机
 - en: Immutability is a powerful technique for creating safe, reliable code that is
     easy to reason about. Writing immutable classes in the Java language was traditionally
     a tedious exercise involving considerable boilerplate, but record classes ([JEP 395](https://openjdk.org/jeps/395)),
     introduced in Java 16, make it easy to declare (shallowly) immutable data-centric
     classes.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 不可变性是一种创建安全、可靠代码并且易于理解的强大技术。在Java语言中编写不可变类传统上是一项繁琐的任务，涉及相当多的样板代码，但是记录类（[JEP 395](https://openjdk.org/jeps/395)），在Java 16中引入，使得声明（浅层）不可变的数据中心类变得简单。
 - en: 'The immutability of record classes ensures both safety and predictability.
     It also enables a number of features that make them easy to use, including canonical
     constructors, accessor methods, and well-defined `Object` methods. But the systems
@@ -79,48 +113,70 @@
     of this state. Unfortunately, it can be quite cumbersome to evolve state modeled
     by record classes. For example, consider a record class modeling a state which
     is a location in three-dimensional space:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 记录类的不可变性确保了安全性和可预测性。它还启用了一些功能，使它们易于使用，包括规范构造函数、访问器方法和明确定义的`Object`方法。但是，我们需要建模的系统仍然具有状态，因此我们需要对这种状态的自然演变进行建模。不幸的是，通过记录类建模的状态的演变可能非常麻烦。例如，考虑一个记录类，它对应于三维空间中的位置：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Suppose we want to evolve the state by doubling the `x` coordinate of a `Point`
     `oldLoc`, resulting in `Point` `newLoc`:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们想通过将`Point` `oldLoc`的`x`坐标加倍来演变状态，得到`Point` `newLoc`：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This code, while straightforward, is laborious. Deriving `newLoc` from `oldLoc`
     means extracting every component of `oldLoc`, whether it changes or not, and providing
     a value for every component of `newLoc`, even if unchanged from `oldLoc`.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码虽然直接，但很繁琐。从`oldLoc`派生`newLoc`意味着提取`oldLoc`的每个组件，无论它是否改变，并为`newLoc`的每个组件提供一个值，即使与`oldLoc`相同也是如此。
 - en: 'It would be a constant tax on productivity if developers had to repeatedly
     deconstruct a record value, extracting all its components, in order to instantiate
     a new record value with mostly the same components. Accordingly, the authors of
     record classes often hide the deconstruction and instantiation inside such classes
     by declaring so-called *wither* methods:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果开发人员必须反复解构记录值，提取其所有组件，以便用大部分相同的组件实例化新的记录值，那将是对生产力的持续损失。因此，记录类的作者经常通过声明所谓的*wither*方法来隐藏解构和实例化：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'It is now possible to derive `Point` `newLoc` from `oldLoc` concisely, and
     to chain method calls in order to change more than one component:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在可以简洁地从`oldLoc`派生`Point` `newLoc`，并且可以链接方法调用以更改多个组件：
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'However, wither methods have two problems:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，wither方法有两个问题：
 - en: They add boilerplate to the record class, which is unfortunate given that record
     classes aim to eliminate boilerplate such as JavaBean getter and setter methods.
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们为记录类添加样板代码，这是不幸的，因为记录类的目标是消除诸如 JavaBean getter 和 setter 方法之类的样板代码。
 - en: Some record classes have semantic constraints that involve more than one component,
     enforced in the canonical constructor. This means that special care must be taken
     when writing wither methods. For example, if a record class has two `List` components
@@ -130,32 +186,48 @@
     in one go. Put another way, wither methods are not always simple boilerplate —
     we need to take semantic constraints into account to determine exactly what kind
     of boilerplate is required.
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一些记录类具有涉及多个组件的语义约束，由规范构造函数强制执行。这意味着在编写 wither 方法时必须特别小心。例如，如果一个记录类有两个必须具有相同长度的
+    `List` 组件，则不能有仅更新一个 `List` 组件的 wither 方法；我们必须仔细声明一个 wither 方法，以便以一种同时更新两个组件的方式调用规范构造函数。换句话说，wither
+    方法并不总是简单的样板代码 —— 我们需要考虑语义约束来确定需要什么样的样板代码。
 - en: A better way to derive new record values from old record values would be to
     let developers focus on transforming the components, and have the Java compiler
     handle the deconstruction and instantiation of record values automatically.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 从旧记录值派生新记录值的更好方法是让开发人员专注于转换组件，并让 Java 编译器自动处理记录值的解构和实例化。
 - en: Description
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 描述
 - en: A *derived record creation expression* has the form
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '*派生记录创建表达式* 的形式为'
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'For example, to create a new `Point` value whose `x` component is set to `0`,
     but whose `y` and `z` values are derived from an existing `Point` value `oldLoc`,
     a derived record creation expression can be used as follows:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，要创建一个新的 `Point` 值，其中 `x` 组件设置为 `0`，但 `y` 和 `z` 值派生自现有 `Point` 值 `oldLoc`，可以使用派生记录创建表达式如下：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The expression to the left of the `with` keyword, namely `oldLoc`, is the initial
     record value. The block to the right of the `with` keyword is a transformation
     of the state of the initial record value. The state consists of three local variables,
@@ -165,98 +237,134 @@
     in the block to transform some or all of `x`, `y`, and `z`, and then creates a
     new record value by passing those variables to the canonical constructor, i.e.,
     `new Point(x, y, z)`.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`with` 关键字左侧的表达式，即 `oldLoc`，是初始记录值。 `with` 关键字右侧的块是对初始记录值状态的转换。 状态由三个局部变量 `x`、`y`
+    和 `z` 表示，它们对应于初始记录值的组件，并且会从这些组件自动初始化；例如，`x` 的值为 `oldLoc.x()`。评估派生记录创建表达式会运行块中的代码以转换
+    `x`、`y` 和 `z` 中的一部分或全部，然后通过将这些变量传递给规范构造函数，即 `new Point(x, y, z)`，来创建新的记录值。'
 - en: 'The state of the initial record value is represented by mutable local variables
     so that the state can be both queried and updated within the block, which can
     update some or all of the components. For example, to scale the point `nextLoc`
     by a factor of two:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 初始记录值的状态由可变局部变量表示，以便可以在块中查询和更新状态，该块可以更新一部分或全部组件。例如，要将点 `nextLoc` 的比例放大两倍：
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The new state is validated by automatically invoking the canonical constructor
     at the end of the block. This ensures that any cross-component semantic constraints
     are respected by the code in the block. In the example of a record class with
     two `List` components of equal length, the canonical constructor will detect whether
     the block appended to one local `List` variable but not the other.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 新状态通过在块末尾自动调用规范构造函数来验证。这确保了块中的代码遵守任何跨组件的语义约束。在具有两个等长 `List` 组件的记录类的示例中，规范构造函数将检测到是否将块附加到了一个局部
+    `List` 变量而不是另一个。
 - en: 'To try the examples in JDK 23 you must enable preview features:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 要尝试 JDK 23 中的示例，必须启用预览特性：
 - en: Using derived record creation expressions
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用派生记录创建表达式
 - en: Derived record creation expressions are an important part of the programming
     model for record classes. Using `with` to derive new record values is good for
     readability, since it focuses only on the changed state. It is also good for correctness,
     since it engages the canonical constructor automatically.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: The block to the right of the `with` keyword need only mention the components
     that are transformed; thus the common situation of deriving a new record value
     by making only small changes to an existing record value is expressed succinctly.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: If the block to the right of the `with` keyword is empty, then the result of
     the derived record creation expression is a fresh copy of the initial record value.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'Derived record creation expressions can be chained. This allows a large transformation
     to be split into a series of smaller steps, aiding readability:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Record values can be nested, with components which are themselves record values.
     Derived record creation expressions can likewise be nested in order to transform
     nested record values:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Derived record creation expressions can also be used inside record classes
     to simplify the implementation of basic operations:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Syntax and semantics
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The grammar for a derived record creation expression is:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The expression on the left-hand side is the *origin expression*. The type of
     the origin expression must be a record class type which is then taken to be the
     overall type of the derived record creation expression.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'The block on the right-hand side is the *transformation block*. It is a normal
     block containing arbitrary block statements, but it has two control flow restrictions:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: It may not contain a `return` statement, and
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It may not contain a `yield`, `break`, or `continue` statement whose target
     contains the derived record creation expression.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: In other words, control can be transferred out of a transformation block only
     by completing normally or by completing abruptly, throwing an exception.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: For each record component, if any, in the header of the record class named by
@@ -264,69 +372,90 @@
     is implicitly declared immediately before the content of the transformation block
     and initialized to the component's value. These local component variables can
     shadow any local variables whose declarations are in scope.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'Any assignment statements that occur within the transformation block have the
     following constraint: If the left-hand side of the assignment is an unqualified
     name then that name must be either the name of a local component variable or the
     name of a local variable that is declared explicitly in the transformation block.'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'A derived record creation expression is not a statement expression; in other
     words, it cannot be used as a statement by following it with a semicolon:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Evaluation, in detail
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'A derived record creation expression is evaluated as follows:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: Evaluate the origin expression, whose compile-time type names a record class
     *R*. If evaluation completes abruptly then evaluation of the derived record creation
     expression completes abruptly for the same reason.
+  id: totrans-64
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 评估原始表达式，其编译时类型命名记录类*R*。如果评估突然完成，则由于相同的原因，派生记录创建表达式的评估也会突然完成。
 - en: If the value of the origin expression is `null` then evaluation of the derived
     record creation expression completes abruptly with a `NullPointerException`.
+  id: totrans-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果原始表达式的值为`null`，则派生记录创建表达式的评估将以`NullPointerException`突然完成。
 - en: 'Before executing the content of the transformation block, execute a sequence
     of implicit local variable declaration statements derived from the record components
     in the header of record class *R*, in order, such that:'
+  id: totrans-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在执行转换块的内容之前，按顺序执行从记录类*R*的头部派生的隐式本地变量声明语句序列，以便：
 - en: The local variable declaration has the same name and declared type as the record
     component.
+  id: totrans-67
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 本地变量声明具有与记录组件相同的名称和声明类型。
 - en: The local variable declaration has an initializer which is given as if by invoking
     the corresponding component accessor method on the value of the origin expression.
+  id: totrans-68
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 本地变量声明具有初始值，初始值是通过在原始表达式的值上调用相应的组件访问器方法来给出的。
 - en: If evaluation of any of these local variable declaration statements completes
     abruptly then evaluation of the derived record creation expression completes abruptly
     for the same reason.
+  id: totrans-69
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如果任何这些本地变量声明语句的评估突然完成，则由于相同的原因，派生记录创建表达式的评估也会突然完成。
 - en: Execute the content of the transformation block. If execution completes abruptly,
     evaluation of the derived record creation expression completes abruptly for the
     same reason.
+  id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 执行转换块的内容。如果执行突然完成，则由于相同的原因，派生记录创建表达式的评估也会突然完成。
 - en: Create a new instance of record class *R* as if by evaluating a new class instance
     creation expression (`new`) with the compile-time type of the origin expression
     and an argument list containing the local component variables, if any, in the
@@ -336,81 +465,114 @@
     derived record creation expression. If evaluating the new class creation expression
     completes abruptly then evaluation of the derived record creation expression completes
     abruptly for the same reason.
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 像通过评估一个新的类实例创建表达式（`new`）一样创建记录类*R*的新实例，其编译时类型为原始表达式的编译时类型，并且参数列表包含本地组件变量（如果有的话），按照它们在记录类*R*的头部中出现的顺序。（这确保调用规范构造函数以创建记录类的实例。）记录类*R*的结果实例被视为派生记录创建表达式的整体值。如果评估新类创建表达式突然完成，则由于相同的原因，派生记录创建表达式的评估也会突然完成。
 - en: Analogy to pattern matching
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 类似于模式匹配
 - en: A derived record creation expression such as
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 诸如此类的派生记录创建表达式
 - en: '[PRE12]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: can be thought of as the `switch` expression
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以被视为`switch`表达式
 - en: '[PRE13]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: This makes it clear that a derived record creation expression essentially pattern
     matches the value of `nextLoc` against a record pattern — thereby deconstructing
     it and initializing the pattern variables `x`, `y`, and `z` — and then executes
     the statements in the transformation block, and then creates a new instance of
     `Point` by invoking the canonical constructor with the final values of the pattern
     variables as the arguments.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这清楚地表明，派生记录创建表达式基本上将`nextLoc`的值与记录模式进行模式匹配——从而对其进行解构并初始化模式变量`x`、`y`和`z`——然后执行转换块中的语句，然后通过以模式变量的最终值作为参数调用规范构造函数来创建`Point`的新实例。
 - en: Enforcing constraints
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 强制执行约束
 - en: 'If the canonical constructor of a record class enforces constraints — as it
     should — then a derived record creation expression implicitly enforces them when
     constructing the new record value. For example:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果记录类的规范构造函数强制执行约束——正如它应该的那样——那么在构造新的记录值时，派生记录创建表达式隐式地强制执行它们。例如：
 - en: '[PRE14]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Evaluating this derived record creation expression initializes the local variables
     `num` to 3 and `denom` to 1, and then assigns `denom` to 0, and then invokes the
     canonical constructor via `new Rational(num, denom)`. This throws an exception
     just as if we had tried to evaluate `new Rational(3, 0)` explicitly.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 评估此派生记录创建表达式将本地变量`num`初始化为3，并将`denom`初始化为1，然后将`denom`赋值为0，然后通过`new Rational(num,
+    denom)`调用规范构造函数。这会抛出一个异常，就像我们明确尝试评估`new Rational(3, 0)`一样。
 - en: (Transformation blocks in derived record creation expressions are similar to
     the body of a compact constructor in a record class in the sense that they both
     have the same control flow restrictions (must complete normally or throw an exception),
     and both have a set of implicitly declared variables in scope, which are expected
     to be assigned by the block.)
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: （派生记录创建表达式中的变换块类似于记录类中紧凑构造函数的主体，因为它们都具有相同的控制流限制（必须正常完成或引发异常），并且都有一组在范围内的隐式声明变量，这些变量预计将被块分配。）
 - en: Alternatives
+  id: totrans-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 替代方案
 - en: Instead of supporting an expression form for use-site creation of new record
     values, we could support it at the declaration site with some form of special
     support for wither methods. We prefer the flexibility of use-site creation because
     declaring wither methods would add bloat to record class declarations, which currently
     enjoy a high degree of succinctness.
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们可以在声明处支持使用现场创建新记录值的表达式形式，而不是在使用现场支持它，并使用某种特殊支持形式的with方法。我们更喜欢使用现场创建的灵活性，因为声明with方法将为记录类声明添加废话，而记录类当前享有高度的简洁性。
 - en: Instead of supporting transformation blocks, we could instead support only a
     list of variable declarators on the right-hand side of a derived record creation
     expression, e.g., `e with { x1 = e1; ..., xn = en; }`. This would serve to discourage
     impure code, but would likely be cumbersome and unnecessarily restrictive.
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 而不是支持变换块，我们可以只支持派生记录创建表达式右侧的变量声明列表，例如，`e with { x1 = e1; ..., xn = en; }`。这样做有助于抑制不纯的代码，但可能会笨拙且不必要地限制。
 - en: Risks and Assumptions
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 风险和假设
 - en: There is a very small risk that the interaction of record components and local
     variables inside a transformation block can lead to surprising behavior. For example,
     if a transformation block refers to a local variable, and the relevant record
@@ -418,6 +580,8 @@
     variable could be shadowed by the local variable implicitly declared in the transformation
     block. We assume this scenario is rare, and that compilers will warn about it
     as necessary.
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 记录组件与变换块内部局部变量的交互可能导致意外行为的风险非常小。例如，如果变换块引用了一个局部变量，然后相关的记录类被修改为具有相同名称的组件，那么局部变量可能会被变换块隐式声明的局部变量所遮蔽。我们假设这种情况很少见，并且编译器会在必要时发出警告。
