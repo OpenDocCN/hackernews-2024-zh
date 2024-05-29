@@ -2,53 +2,65 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:51:51'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:51:51'
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Meta reveals their serverless platform processing trillions of function calls
     a day
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Meta披露他们的无服务器平台每天处理数万亿个函数调用
 - en: 来源：[https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)
 - en: '*Engineer’s Codex is a newsletter explaining real-world software engineering.*'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Engineer’s Codex是一封解释实际软件工程的新闻简报。*'
 - en: '* * *'
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Meta’s [XFaaS](https://dl.acm.org/doi/abs/10.1145/3600006.3613155) is their
     serverless platform that “processes trillions of function calls per day on more
     than 100,000 servers spread across tens of datacenter regions.”
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Meta的[XFaaS](https://dl.acm.org/doi/abs/10.1145/3600006.3613155)是他们的无服务器平台，“在数十个数据中心地区的10万台服务器上每天处理数万亿次函数调用。”
 - en: XFaaS is Meta’s internal version of public Function-as-a-Service (FaaS) options,
     such as AWS Lambda, Google Cloud Functions, and Azure Functions.
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: XFaaS是Meta内部版本的公共Function-as-a-Service（FaaS）选项，例如AWS Lambda、Google Cloud Functions和Azure
+    Functions。
 - en: I was lucky enough to get an early look at [the paper](https://drive.google.com/file/d/1FXejqjUgBfW_OSy3Q6FfwgnHEoV4FZPC/view)
     they wrote about it.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很幸运能够提前阅读他们写的[论文](https://drive.google.com/file/d/1FXejqjUgBfW_OSy3Q6FfwgnHEoV4FZPC/view)。
 - en: '*Computer scientists aren’t really the most creative at naming, as there are
     two papers this year introducing “XFaaS.” One is by Meta, the other by IISC Bangalore
     scientists.*'
@@ -56,6 +68,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*计算机科学家在命名方面并不是最有创意的，因为今年有两篇论文介绍了“XFaaS”。一篇是Meta发表的，另一篇是IISC班加罗尔的科学家发表的。*'
 - en: ''
   id: totrans-12
   prefs:
@@ -67,22 +80,26 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*两者完全是不同的系统，所以如果你谷歌“XFaaS”，请知道这篇论文是在谈论Meta的系统版本。*'
 - en: 'In this article, I start off with the high-level takeaways and lessons, for
     those who want a quick summary. *(estimated read time: 3 minutes)*'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我从高层次的摘要和教训开始，针对那些想要快速了解的人。 *(预计阅读时间：3分钟)*
 - en: 'Then, I do a more detailed walkthrough of the paper for those who want to understand
     the architecture behind XFaaS. *(estimated read time: 5 minutes)*'
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我会对那些想要了解XFaaS背后架构的人进行更详细的论文解读。 *(预计阅读时间：5分钟)*
 - en: A key point of the paper is that hardware usage can be optimized by software
     to improve serverless performance.
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这篇论文的一个关键点是硬件使用可以通过软件优化以提高无服务器性能。
 - en: Meta recognizes the wastage of startup overhead for serverless functions and
     aims to emulate **a universal worker, i.e., any worker can execute any function
     instantly without startup overhead.**
@@ -90,18 +107,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Meta意识到了无服务器函数的启动开销浪费，并旨在模仿**通用工作人员，即任何工作人员都可以立即执行任何函数而无需启动开销。**
 - en: XFaaS is **only used for non-user-facing functions**. Serverless functions have
     too much variable latency to be consistently used for user-facing functions.
   id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: XFaaS **仅用于非用户界面函数**。无服务器函数的可变延迟太大，无法一致地用于用户界面函数。
 - en: The clients of XFaaS submit function calls in a highly spiky manner. **The peak
     demand is 4.3 times higher** than the off-peak demand.
   id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: XFaaS的客户以高度峰值的方式提交函数调用。 **高峰需求比低峰需求高4.3倍。**
 - en: One example of load they demonstrate has **20 million function calls submitted
     to XFaaS within 15 minutes.**
   id: totrans-20
@@ -109,6 +129,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们展示的负载示例之一是**在15分钟内向XFaaS提交了2000万次函数调用。**
 - en: Meta found that even their spiky functions had patterns, which they leveraged
     to make spiky functions more predictable on their workload.
   id: totrans-21
@@ -116,35 +137,42 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Meta发现即使是他们的高峰函数也有模式，他们利用这些模式使高峰函数在其工作负载上更加可预测。
 - en: '**XFaaS has achieved a daily average CPU utilization of 66%,**  **much better
     than the industry average.**'
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '**XFaaS的日均CPU利用率达到了66%，** **比行业平均水平要好得多。**'
 - en: It efficiently **spreads the load using time (by delaying functions) and space
     (by sending it to a less-loaded datacenter).**
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 它通过时间（延迟函数）和空间（将其发送到负载较轻的数据中心）有效地**扩散负载。**
 - en: '*Meta is continuing to transition as many of their functions to being scheduled
     during off-peak hours, where the load and cost is more predictable.*'
   id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*Meta正在继续将他们的许多功能过渡到非高峰时段进行调度，这样负载和成本更可预测。*'
 - en: Since it’s an internal cloud, Meta is able to perform a lot of unique optimizations,
     such as running multiple functions from different users in the same process.
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这是内部云，Meta能够执行许多独特的优化，例如在同一进程中运行来自不同用户的多个函数。
 - en: Most functions execute in less than a second, but not all.
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数函数在不到一秒的时间内执行，但并非所有函数都是如此。
 - en: '* * *'
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'Friendly plug: **[SWE Quiz](https://swequiz.com/?utm_source=codex) is a compilation
     of 450+ software engineering and system design questions covering databases, authentication,
     caching, etc.**'
@@ -327,23 +355,27 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**最后，XFaaS 在不同区域具有不同的硬件容量，因此负载均衡必须考虑这一点。**'
 - en: 'Meta has three types of workloads on XFaaS: **queue-triggered functions**,
     **event-triggered functions** (from data-change events in data warehouse and data-stream
     systems), and **timer-triggered functions** (auto-fired on a pre-set timing).'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Meta 在 XFaaS 上有三种工作负载类型：**队列触发函数**、**事件触发函数**（来自数据仓库和数据流系统中的数据更改事件）、以及**定时触发函数**（在预设时间自动触发）。
 - en: XFaaS is used for non-user-facing functions, such as async recommendation systems,
     logging, productivity bots, notifications, and more.
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: XFaaS 用于非用户界面的功能，例如异步推荐系统、日志记录、生产力机器人、通知等。
 - en: Clients initiate function calls by sending a request to a submitter, which applies
     rate limits before passing it to the QueueLB (queue load balancer).
   id: totrans-59
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 客户端通过向提交者发送请求来发起函数调用，在将其传递给 QueueLB（队列负载均衡器）之前应用速率限制。
 - en: ''
   id: totrans-60
   prefs:
@@ -354,6 +386,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: QueueLB 将函数调用指向 DurableQ 进行存储，直到完成。
 - en: ''
   id: totrans-62
   prefs:
@@ -365,6 +398,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 定期，调度器将这些调用移动到其 FuncBuffer（内存中的函数缓冲区），按重要性、截止日期和配额进行排序。
 - en: ''
   id: totrans-64
   prefs:
@@ -376,53 +410,63 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 就绪执行的调用会移动到 RunQ 中，然后 WorkerLB（工作负载均衡器）将其分派给适当的工作者。
 - en: The submitter, QueueLB, scheduler, and WorkerLB are all stateless, unsharded,
     and replicated without a designated leader, so their replicas play equal roles.
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 提交者、QueueLB、调度器和 WorkerLB 都是无状态的、非分片的，并且没有指定的领导者，因此它们的副本发挥相同的作用。
 - en: DurableQ is stateful and has a sharded, highly available database.
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: DurableQ 是有状态的，并且拥有分片式、高可用的数据库。
 - en: Scaling a stateless component is easy by just adding more replicas. If a stateless
     component fails, it’s work can just be taken over by a peer.
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过仅添加更多副本，扩展无状态组件变得很容易。如果无状态组件失败，它的工作可以被同级接管。
 - en: Central controllers are separate from the function execution path. They **continuously
     optimize the system** by updating key configuration parameters, which are consumed
     by critical-path components like workers and schedulers.
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 中央控制器与函数执行路径分开。它们通过更新关键配置参数来**持续优化系统**，这些参数由关键路径组件（如工作者和调度器）使用。
 - en: These configs are cached in the components themselves, so if the central controllers
     fail, the system keeps running just fine (but it cannot be reconfigured).
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些配置被缓存在组件本身中，因此如果中央控制器失败，系统仍然正常运行（但无法重新配置）。
 - en: This allows for central controller downtime for tens of minutes. It’s an example
     of how Meta has built resilience into this system.
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使得中央控制器可以停机数十分钟。这是 Meta 如何将弹性构建到该系统中的一个例子。
 - en: Functions that require strong isolation for security or performance are assigned
     to different namespaces, each using distinct worker pools to achieve physical
     isolation.
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要强隔离以确保安全性或性能的函数被分配到不同的命名空间，每个命名空间使用不同的工作者池实现物理隔离。
 - en: Multiple functions can operate in a single Linux process due to trust within
     a private cloud, mandatory peer reviews, and existing security measures. Data
     can only flow from lower to higher classification levels.
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于私有云中的信任、强制同行审查和现有的安全措施，多个功能可以在单个 Linux 进程中运行。数据只能从较低的分类级别流向较高的分类级别。
 - en: The client sends calls to the submitter. The submitter improves efficiency by
     batching calls and writing them to DurableQ as one operation.
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端通过向提交者发送调用来发送调用。提交者通过批处理调用并将其作为一个操作写入 DurableQ 来提高效率。
 - en: The submitter manages large argument storage through a distributed key-value
     store and has built-in rate-limiting policies. To manage the variation in client
     submission rates, regions have two submitter sets for regular and high-frequency
@@ -430,11 +474,13 @@
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 提交者通过分布式键值存储管理大型参数存储，并具有内置的速率限制策略。为了管理客户端提交速率的变化，各区域都有两个提交者集用于常规和高频客户端。
 - en: XFaaS actively monitors high-frequency clients, and human intervention is required
     for throttling or Service Level Objective (SLO) adjustments.
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: XFaaS 积极监控高频客户端，需要人工干预来进行限流或服务水平目标（SLO）调整。
 - en: The submitter then sends function calls to the QueueLB. The [Configerator](https://research.facebook.com/publications/holistic-configuration-management-at-facebook/)
     (Configuration Management System central controller) provides routing policies
     to the QueueLB to balance loads across different regions, as DurableQ hardware
