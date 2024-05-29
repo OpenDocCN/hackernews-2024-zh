@@ -1,105 +1,153 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 17:09:36'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 17:09:36
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A* Tricks for Videogame Path Finding | Tim Mastny
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: A*寻路的小技巧 | Tim Mastny
 - en: 来源：[https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/](https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/](https://timmastny.com/blog/a-star-tricks-for-videogame-path-finding/)
 - en: Here’s a few tricks to make the algorithm faster and easier to implement.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一些小技巧，可以使算法运行更快，实现更容易。
 - en: Implicit Graph Data Structure
+  id: totrans-7
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 隐式图数据结构
 - en: In textbooks, graphs are represented by a list of nodes and an adjacency matrix
     or adjacency list. But you can be a little more flexible about representing adjacency
     nodes.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在教科书中，图形由节点列表和邻接矩阵或邻接列表表示。但是，您可以在表示邻接节点方面更加灵活一些。
 - en: 'For example, let’s say our game screen has 256 * 240 pixels. We’ll call the
     coordinates of each pixel a node. Then we can say there are 8 adjacent pixels:
     up, down, left, right, and the 4 diagonals. The cardinal directions have a weight
     of 1, while the diagonals have a weight of the square root of 2 (~1.4).'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，假设我们的游戏屏幕有256 * 240个像素。我们将每个像素的坐标称为一个节点。然后，我们可以说有8个相邻像素：上、下、左、右以及4个对角线。基本方向的权重为1，而对角线的权重为根号2（约1.4）。
 - en: 'We don’t need to create a huge adjacency list: we can generate it on the fly.
     Moreover, not every pixel is a valid position for the monster: it might be on
     a wall or occupied by another sprite. In that case, we can dynamically exclude
     that pixel from the adjacency list.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不需要创建一个庞大的邻接列表：我们可以动态生成它。此外，并非每个像素都是怪物的有效位置：它可能在墙上或被其他精灵占用。在这种情况下，我们可以动态地从邻接列表中排除该像素。
 - en: 'Here’s how this might look:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能会是这样的：
 - en: '[PRE0]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: So we only need to generate the adjacency list for the nodes we are actually
     going to visit, and we don’t have to manually exclude adjacent nodes with a map
     editor.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们只需要为我们实际要访问的节点生成邻接列表，而不必使用地图编辑器手动排除相邻节点。
 - en: Geometry Informed Heuristics
+  id: totrans-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 基于几何信息的启发式
 - en: You can also manually tune aspects of the algorithm based on the geometry of
     your map.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以根据地图的几何结构手动调整算法的某些方面。
 - en: Step size
+  id: totrans-16
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 步长
 - en: Above I talked about using the pixels as nodes, but in a 2d tile based game,
     you can use the tiles as nodes. This speeds up the search dramatically, since
     the monster can find a path to the player in fewer iterations.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前面我讨论了将像素用作节点的方法，但在二维基于瓦片的游戏中，您可以将瓦片用作节点。这将大大加速搜索，因为怪物可以在较少的迭代次数内找到通往玩家的路径。
 - en: 'With this method, the path really isn’t an exact sequence of steps: your monster
     likely isn’t moving at a speed of 1 tile per frame. Now the path is a series of
     *directions* the monster should go.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种方法，路径实际上不是一系列精确的步骤：您的怪物很可能不是以每帧1个瓦片的速度移动。现在路径是怪物应该走的一系列*方向*。
 - en: And that’s okay! As I said in the Dijkstra section, our monster doesn’t actually
     care about the exact path, which is changing each frame as the player moves. It
     just needs to move in a direction that could possibly reach the player (i.e. not
     straight into a wall).
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 没问题！正如我在Dijkstra部分中所说的，我们的怪物实际上并不关心确切的路径，因为路径每帧都在变化，玩家移动时也在变化。它只需要朝着可能到达玩家的方向移动（即不要直接撞墙）。
 - en: Iteration depth
+  id: totrans-20
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 迭代深度
 - en: 'One cool feature about A*: once a node comes off the priority queue, we know
     that that node represents the last step in the best path we’ve seen so far. Therefore,
     if we stopped the algorithm at some fixed number of iterations, we would know
     that the resulting path is our best guess for the shortest path to the destination.
     So we can get reasonable progress without the running the algorithm to completion.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: A*算法的一个很酷的特性：一旦一个节点从优先队列中移除，我们就知道该节点代表了到目前为止我们见过的最佳路径的最后一步。因此，如果我们在固定的迭代次数内停止算法，我们就会知道得到的路径是到达目的地的最佳猜测路径。因此，即使不运行完整的算法，我们也可以取得合理的进展。
 - en: 'You need to tune this maximum iteration depth to the geometry of the level.
     For example, if the depth is too small you can still have monsters get stuck behind
     a wall:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 您需要调整这个最大迭代深度以适应关卡的几何形状。例如，如果深度太小，怪物仍然可能被困在墙后面：
 - en: '![](img/3e5f1df81a892e847c511804471ebf12.png)'
+  id: totrans-23
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/3e5f1df81a892e847c511804471ebf12.png)'
 - en: With a fixed iteration depth of 30 tiles, we can position the player so the
     monster gets traps and can’t make progress towards the player. How does this happen?
     Remember that A* is recomputed each frame. On the first frame once reaching the
@@ -107,21 +155,31 @@
     it calculates that it should move up. This casuses the monster to get stuck in
     a loop. However, as soon as the player moves into it’s range, the monster is able
     to correctly find a path to the player.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 当固定迭代深度为`30`个瓷砖时，我们可以将玩家定位在怪物被陷阱困住且无法朝向玩家前进的位置。这是怎么发生的？请记住，每帧都会重新计算A*。在第一帧达到墙壁时，怪物计算应该向下移动。但在下一帧，它计算应该向上移动。这导致怪物陷入循环。但是，一旦玩家移动到它的范围内，怪物就能够正确地找到通往玩家的路径。
 - en: 'You can see this effect exaggerated with a fixed depth of `1`:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 当固定深度为`1`时，您可以看到这种效果被夸大了：
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The monster always returns to pxiel 2 because it’s the shortest (Euclidean)
     distance to the player.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 怪物总是返回到像素2，因为它是与玩家之间的最短（欧几里得）距离。
 - en: If you wanted to be really fancy, you could pre-compute the maximum depth A*
     needs to find a path from any position on the map. Unlike the pre-computed Dijkstra,
     you only have to save that maximum, since you know A* will find a valid path in
     real time, given that maximum depth.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要真正花哨，你可以预先计算A*需要从地图上任意位置找到路径的最大深度。与预先计算的Dijkstra不同，您只需保存该最大值，因为您知道A*会在实时中找到有效路径，给定该最大深度。
