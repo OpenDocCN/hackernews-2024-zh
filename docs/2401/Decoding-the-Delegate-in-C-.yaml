@@ -1,188 +1,279 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:44:59'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:44:59'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Decoding the Delegate in C#
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 C# 中解码委托
 - en: 来源：[https://blog.upperdine.dev/decoding-the-delegate-in-csharp](https://blog.upperdine.dev/decoding-the-delegate-in-csharp)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.upperdine.dev/decoding-the-delegate-in-csharp](https://blog.upperdine.dev/decoding-the-delegate-in-csharp)
 - en: Delegates are a language feature of C# that have been around for a few years
     now, and by utilising them we can make our codebases more composable and adaptable.
     You may or may not have encountered these in the codebases you work in, but they
     are more common in general-purpose code such as library or framework code.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 委托是 C# 的一种语言特性，已经存在了几年，通过利用它们，我们可以使我们的代码库更具组合性和适应性。您可能已经在您工作的代码库中遇到过这些，也可能没有，但是它们在通用代码中更为常见，例如库或框架代码。
 - en: So, what exactly do I mean when I talk about delegates? Let me start to explain
     by talking about Functional Programming.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，当我谈到委托时，我到底是什么意思呢？让我开始解释一下，先从谈论函数式编程开始。
 - en: Functional Programming
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 函数式编程
 - en: Functional programming is a **programming paradigm**, or programming philosophy
     that emphasises the use of functions as the primary building blocks of your application.
     Another paradigm you are probably familiar with is **Object-oriented programming**,
     which alternatively emphasises the use of objects as the primary building blocks
     of an application.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数式编程是一种 **编程范式**，或者说是一种强调将函数作为应用程序的主要构建块的编程理念。您可能熟悉的另一种范式是 **面向对象编程**，它反之强调使用对象作为应用程序的主要构建块。
 - en: For example, when designing a system using OOP we generally think in terms of
     various objects interacting with one another. Using a Functional approach, we
     think in terms of functions.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，在使用 OOP 设计系统时，我们通常会考虑各种对象之间的相互作用。使用功能性方法时，我们会考虑函数。
 - en: In functional programming, there is a concept known as **First Class Functions**.
     This means that functions are a type just like any other and as such can be passed
     around as values.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在函数式编程中，有一个称为 **一级函数** 的概念。这意味着函数和任何其他类型一样，并且因此可以作为值传递。
 - en: Functions can be passed in as arguments to other functions, or even returned
     from other functions. Functions that either take functions as a parameter, or
     return functions are called **Higher Order Functions**.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数可以作为参数传递给其他函数，甚至可以从其他函数返回。接受函数作为参数或返回函数的函数称为 **高阶函数**。
 - en: Because C# is a strongly-typed language, we need a name for the type representing
     a first class function- and in this case that name is a **Delegate.**
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 C# 是一种强类型语言，我们需要一个表示一级函数的类型的名称-在这种情况下，该名称是 **Delegate**。
 - en: 'This may sound strange if the concept is new to you, but if you''ve been using
     C# professionally you have more than likely used these before without even knowing.
     For example, when you use LINQ to query collections, you are usually providing
     a lambda expression for filtering or transformation:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您对这个概念感到陌生，那么当您专业地使用 C# 时，您很可能在以前甚至不知道的情况下使用过这些。例如，当您使用 LINQ 查询集合时，通常会提供一个
+    lambda 表达式进行过滤或转换：
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Remember that lambda expressions are just functions without a name, so the `Where`
     method in LINQ is an example of a higher order function.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，lambda 表达式只是没有名称的函数，因此 LINQ 中的 `Where` 方法是高阶函数的一个示例。
 - en: So what if we wanted to write our own Higher Order Functions?
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，如果我们想要编写自己的高阶函数怎么办呢？
 - en: Func
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Func
 - en: 'The **Func** type is the most common delegate type that you will encounter
     and is for functions that return a value. For example, if we wanted to take a
     function as an argument that took an argument of type *string* and return an *integer*
     (like **int.Parse**), we would declare it as such:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Func** 类型是您将遇到的最常见的委托类型，用于返回值的函数。例如，如果我们想要接受一个函数作为参数，该函数接受一个类型为 *string*
+    的参数并返回一个 *integer*（例如 **int.Parse**），我们将其声明为如下所示：'
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: A **Func** type doesn't require any input parameters, but it *does* require
     a return type, so as a minimum you'll need to provide a single type parameter.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Func** 类型不需要任何输入参数，但是*确实*需要一个返回类型，因此至少需要提供一个类型参数。'
 - en: Action
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Action
 - en: In the cases where you require a function that doesn't return a value, you can
     use the **Action** type.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在需要一个不返回值的函数的情况下，您可以使用 **Action** 类型。
 - en: 'As an example, imagine that we are writing a method and we want to be able
     to pass in **Console.WriteLine** as an argument. We can use the Action type as
     such:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 举个例子，想象一下我们正在编写一个方法，并且我们希望能够将 **Console.WriteLine** 作为参数传递进去。我们可以使用 Action 类型如下所示：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The beauty of this implementation is that we can swap out **Console.WriteLine**
     for any void method that takes a string as an argument. In production, we may
     want to replace this with a logger call, and because we **programmed to an interface
     instead of a concrete implementation** - we won't need to modify the method signature.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种实现的美妙之处在于，我们可以将**Console.WriteLine**替换为任何接受字符串作为参数的 void 方法。在生产中，我们可能希望将其替换为日志记录器调用，并且因为我们**编程到接口而不是具体实现**-
+    我们不需要修改方法签名。
 - en: 'What about functions that neither return a value or take any arguments? These
     are commonly referred to as **Thunks**, and can be modelled simply by omitting
     the type parameters from **Action** :'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么什么样的函数既不返回值也不接受任何参数呢？这些通常被称为**Thunks**，可以通过从**Action**中省略类型参数来简单地建模：
 - en: '[PRE3]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: There are a few other types of Delegate provided in .NET, such as **EventHandler**,
     **Predicate, MethodInvoker** and **ThreadStart** .These are either for niche use
     cases or mostly internal use, so I won't spend time going into them in this blog
     post.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: .NET 还提供了一些其他类型的委托，例如**EventHandler**、**Predicate**、**MethodInvoker**和**ThreadStart**。这些要么是用于特定用例，要么主要用于内部使用，因此我不会在本博客文章中花时间详细介绍它们。
 - en: Returning Functions
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 返回函数
 - en: As I touched upon earlier, a higher order function not only can take a function
     as an argument, but also return a function.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我之前提到的，高阶函数不仅可以将函数作为参数传递，还可以返回一个函数。
 - en: 'Now that we know the main types of Delegates, returning a function is as simple
     as changing the return type of a function to be a delegate type:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们知道了委托的主要类型，那么将函数返回就像将函数的返回类型更改为委托类型一样简单：
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: It's a fairly simple example, but our **MultiplyBy** method allows us to create
     a new function that takes an integer and multiplies it by the specified value.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个相当简单的例子，但是我们的**MultiplyBy**方法允许我们创建一个新的函数，该函数接受一个整数并将其乘以指定的值。
 - en: Creating your own Delegate types
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建自己的委托类型
 - en: If you would like to create common classes of Delegate to use throughout a codebase
     without having to repeat type signatures over and over again, there is a built
     in **delegate** keyword in C#.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要在代码库中创建通用的 Delegate 类型，而不必一遍又一遍地重复类型签名，C# 中有一个内置的**delegate**关键字。
 - en: 'For an example, lets imagine that we want to add some uniformity to the object
     mapping code in our codebase. We need our Product type to be mappable to any type
     provided using a supplied function, but we want a centralised definition of what
     a mapping function should look like:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 举个例子，假设我们想要在代码库中为对象映射代码添加一些统一性。我们需要我们的产品类型能够通过提供的函数映射到任何类型，但我们希望一个集中定义的映射函数应该是什么样子：
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You *could* use a **Func** here instead- which actually uses the delegate keyword
     itself under the hood, but I find it nicer to call our delegate class something
     related to the domain.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 你*可以*在这里使用**Func**- 它实际上在内部使用委托关键字，但我觉得将我们的委托类命名为与域相关的内容更好。
 - en: Conclusion
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: By utilising delegates, we are able to treat functions just like any other type
     and write code that is adaptable.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过利用委托，我们能够将函数视为任何其他类型，并编写具有适应性的代码。
 - en: Object-oriented programming utilises overriding and overloading to accomplish
     polymorphism, but a similar effect can be achieved by composing an object or function
     to have the behaviour we want via injecting a function in.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 面向对象编程利用重写和重载来实现多态性，但通过将对象或函数组合起来，通过注入函数来获得我们想要的行为，也可以实现类似的效果。
 - en: An important thing to remember with delegates is that while they are very powerful,
     overusing them will add unnecessary complexity to your codebase so use them sparingly.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 委托的一个重要事项是，虽然它们非常强大，但过度使用它们会给代码库增加不必要的复杂性，因此要节制使用它们。

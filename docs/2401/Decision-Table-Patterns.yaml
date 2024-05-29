@@ -1,0 +1,1190 @@
+- en: <!--yml
+  id: totrans-0
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <!--yml
+- en: 'category: 未分类'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类别：未分类
+- en: 'date: 2024-05-27 14:25:07'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:25:07
+- en: -->
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: -->
+- en: Decision Table Patterns
+  id: totrans-4
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 决策表模式
+- en: 来源：[https://www.hillelwayne.com/post/decision-table-patterns/](https://www.hillelwayne.com/post/decision-table-patterns/)
+  id: totrans-5
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 来源：[https://www.hillelwayne.com/post/decision-table-patterns/](https://www.hillelwayne.com/post/decision-table-patterns/)
+- en: Decision tables are easy, simple, and powerful. You can teach them in five minutes
+    and write one in half that time. You can look at a table and understand what it’s
+    saying, see if it matches your problem, and check for design flaws. So it’s kinda
+    weird that there’s basically nothing about them online. I wrote an [introduction](https://www.hillelwayne.com/post/decision-tables/)
+    a while back, but I want something a little more formal. So this post will reintroduce
+    the core ideas in a more formal way and then talk about some of the techniques
+    you can apply to make better tables.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表简单、易懂、而且功能强大。你可以在五分钟内教会别人，并在半分钟内写下一个。你可以看着表格理解它在说什么，看看它是否符合你的问题，并检查设计缺陷。所以很奇怪，在线上基本上没什么关于它们的内容。我以前写过一个[介绍](https://www.hillelwayne.com/post/decision-tables/)，但我想要更正式一点的东西。因此，本文将以更正式的方式重新介绍核心思想，然后讨论一些你可以应用来制作更好表格的技术。
+- en: Note that this is a theorycrafting post. I haven’t tested all of the content
+    in production and can’t guarantee that they work well in practice. Caveat emptor.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这是一篇理论性的文章。我还没有在生产环境中测试过所有的内容，并且不能保证它们在实践中表现良好。买方自负。
+- en: Basics
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基础知识
+- en: 'A decision table maps finite enumerated inputs to outputs. The outputs can
+    be anything: returned values, side effects, whatever, but all possible inputs
+    must map to an output. By looking at the table, you know what’s supposed to happen.
+    This makes them good for case analysis and examining requirements.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表将有限枚举的输入映射到输出。输出可以是任何东西：返回的值，副作用，不管是什么，但所有可能的输入都必须映射到一个输出。通过查看表，您就知道应该发生什么。这使它们非常适合进行案例分析和审查需求。
+- en: '| A | B | C | O |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| A | B | C | O |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| T | T | T | **1** |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | T | **1** |'
+- en: '| T | T | F | **3** |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | F | **3** |'
+- en: '| T | F | T | **7** |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | T | **7** |'
+- en: '| T | F | F | **0** |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | F | **0** |'
+- en: '| F | - | - | **2** |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | - | - | **2** |'
+- en: For all of these examples we’ll assume one output, O, unless otherwise specified.
+    There is more technique involved in encoding inputs than outputs.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于这些例子，我们将假设有一个输出 O，除非另有说明。在编码输入方面，涉及更多的技巧，而非输出。
+- en: A decision table is **complete** if every possible combination of inputs is
+    represented by a row. It is **sound** if a row of inputs doesn’t appear twice
+    with two different outputs. It is **valid** if it is both complete and sound.
+    A valid table, then, will have exactly one row for each possible combination of
+    inputs. If we have two boolean inputs and one 3-value enumeration, then the table
+    will have 12 rows.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果每一个可能的输入组合都由一行表示，那么决策表就是**完整**的。如果一行输入没有两次出现并带有两个不同的输出，那么它就是**sound**的。如果它既完整又sound，那么它就是**valid**的。因此，一个有效的表会对应每个可能的输入组合有且只有一行。如果我们有两个布尔型输入和一个3值枚举，那么表将有12行。
+- en: Because decision tables must satisfy rules to be considered valid, they are
+    considered a form of **formal specification**. By being formalized, 1) we can
+    analyze correctness of a table with automated tooling, and 2) errors in the construction
+    of the table often map to errors in our design itself.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于决策表必须符合规则才能被视为有效，它们被认为是一种**正式规范**的形式。通过形式化，1）我们可以用自动化工具分析表的正确性，2）表的构建错误经常映射到设计本身的错误中。
+- en: Decision tables are also called Parnas tables, especially when they’re used
+    as part of formal verification.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表也被称为帕纳斯表，特别是当它们作为正式验证的一部分时。
+- en: vs. Pattern Matching
+  id: totrans-21
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: vs. 模式匹配
+- en: 'A common question asked about decision tables is “why not pattern match?” In
+    many languages we can do something like this:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于决策表的一个常见问题是“为什么不使用模式匹配？”在许多语言中，我们可以做一些类似这样的事情：
+- en: '[PRE0]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In which case we already have an execution. So why use decision tables if they
+    don’t map to execution?
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么在已经有执行的情况下。那么为什么使用决策表呢？如果它们不能映射到执行的话？
+- en: 'This is because decision tables are *specification*, not code. Pattern matching
+    is good for representing a single decision in the code. Decision tables represent
+    a decision at any abstraction level, whether for the code or the entire system.
+    They can even represent high-level non-code decisions:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为决策表是*规范*，而不是代码。模式匹配适用于在代码中表示单个决策。决策表可以表示在任何抽象级别上的决策，无论是针对代码还是整个系统。它们甚至可以表示高级别的非代码决策：
+- en: '| PR passed review? | PR passed tests? | O |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: PR 通过审核？| PR 通过测试？| O |
+- en: '| --- | --- | --- |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | T | Merge |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | 合并 |'
+- en: '| T | F | Fix tests |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | 先修复测试 |'
+- en: '| F | T | Fix review comments |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | 修复审查意见 |'
+- en: '| F | F | Fix tests first |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | 先修复测试 |'
+- en: Pattern matching is part of the language implementation. Decision tables are
+    more to help you with the design.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 模式匹配是语言实现的一部分。决策表更多地是帮助你设计的。
+- en: That said you also see decision tables as a control-flow construct. Decision
+    tables are pretty popular in both rules engines and automated QA tools that large
+    enterprises use. SAP advertises their automated decision tables. I am much more
+    interested in their use as specification tools and will not discuss their use
+    as an implementation construct further.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 话虽如此，你也可以将决策表看作控制流构造。决策表在规则引擎和大型企业使用的自动化 QA 工具中非常流行。SAP 宣传他们的自动化决策表。我对它们作为规范工具的用途更感兴趣，不会进一步讨论它们作为实现构造的用途。
+- en: Representing Infinite States
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 表示无限状态
+- en: 'The system can have an infinite number of states as long as they map to a finite
+    number of values. We can do this by grouping the states into “effectively similar
+    inputs”, or **equivalence classes**. Then we replace the raw input with the class.
+    As an instructive example, we *cannot* make a “naïve” odd-or-even table, as there
+    are infinite positive numbers:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要将其映射到有限数量的值，系统可以具有无限数量的状态。我们可以通过将状态分组为“有效相似输入”或**等价类**来实现这一点。然后我们用类替换原始输入。作为一个示例，我们*不能*制作一个“天真”的奇数或偶数表格，因为有无限个正数：
+- en: '| N | O |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| N | O |'
+- en: '| --- | --- |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| 1 | odd |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 1 | 奇数 |'
+- en: '| 2 | even |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| 2 | 偶数 |'
+- en: '| 3 | odd |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 3 | 奇数 |'
+- en: '| 4 | even |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| 4 | 偶数 |'
+- en: '| … | … |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| … | … |'
+- en: Since not every possible input can be represented, this table is not complete
+    and so not valid. What we can do is replace the number N with the equation `N
+    % 2`. That has only a finite number of inputs and leads to a valid table.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于不是每一个可能的输入都可以表示，这个表格不完整，因此也不有效。我们可以用方程`N % 2`替换数字N。这只有有限数量的输入，并导致一个有效的表格。
+- en: 'Another thing we can do is partition inputs into **intervals**: giving lower
+    and upper bounds for the numbers in each class. Another trite example, “can this
+    person drink in the US?”'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们还可以将输入划分为**区间**：为每个类别的数字给出下限和上限。另一个老生常谈的例子，“这个人在美国可以喝酒吗？”
+- en: 'Intervals can be ambiguous: does `0-21` include 0, 21, or both? If both, how
+    do you express the real numbers between 0 and 21, exclusive? We can adapt some
+    math notation here: `(0, 21)` excludes both while `[0, 21]` includes both.'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 区间可能是模糊的：`0-21`是否包括0、21或两者？如果两者，如何表示0到21之间的实数，不包括0和21？我们可以在这里适应一些数学符号：`(0, 21)`排除两者，而`[0,
+    21]`包括两者。
+- en: '| Age | O |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| 年龄 | O |'
+- en: '| --- | --- |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `[0, 21)` | F |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[0, 21)` | F |'
+- en: '| `[21, ∞)` | T |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[21, ∞)` | T |'
+- en: Conventionally a missing bound is implied to extend to infinity, so we write
+    `[21, ∞)` as `[21, )`.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 惯例上，缺失的边界被认为延伸到无穷大，所以我们将`[21, ∞)`写成`[21, )`。
+- en: Aesthetics
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 美观性
+- en: These are habits that make decision tables more visually pleasing. I have no
+    idea if they actually make them better or are just decoration.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些习惯使决策表看起来更加舒适。我不知道它们是否实际上使它们更好，还是只是装饰。
+- en: Row ordering
+  id: totrans-53
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 行排序
+- en: 'Rows should be ordered by column value. The leftmost column is the most significant
+    key, then the second leftmost, all the way forward. In other words:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行应该按照列值排序。最左边的列是最重要的键，然后是第二左边的列，依此类推。换句话说：
+- en: This makes it easier to read the table. If you know your inputs and are looking
+    for the output, you can binary search the values.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样可以更容易地阅读表格。如果你知道你的输入并正在寻找输出，你可以二分查找值。
+- en: Values should all be sorted the same way. If one column places T before F, other
+    columns shouldn’t place F before T. I strongly prefer to sort with T first.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的值应该以相同的方式排序。如果一列将T放在F之前，其他列不应该将F放在T之前。我强烈倾向于先排序T。
+- en: Column Ordering
+  id: totrans-57
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 列排序
+- en: The order of the columns should match the order someone would naturally reason
+    through the decision. If you’re making the table for a login flow, you might have
+    conditions for `valid_user?` and `correct_password?`. Since it doesn’t make sense
+    to talk about the password before you have the user, most people would think about
+    finding the user first. The column for that condition should appear before the
+    password column.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列的顺序应该与某人通过决策时的顺序相匹配。如果你正在为登录流程制作表格，你可能有`valid_user?`和`correct_password?`的条件。由于在拥有用户之前谈论密码没有意义，大多数人会先考虑找到用户。该条件的列应该出现在密码列之前。
+- en: A lesser consideration is handling `Any` fields (see below). Columns with `-`
+    values matter less in the table and should be placed later.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更小的考虑是处理`Any`字段（见下文）。表格中具有`-`值的列在表格中的重要性较低，应该放在后面。
+- en: I don’t think the `-` rule is as aesthetically valuable as the “most important
+    columns first” rule, and neither rule is as important as the row rule.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我认为`-`规则并不像“最重要的列放在前面”规则那样美观，而且两个规则都不如行规则重要。
+- en: Legends
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 图例
+- en: If one of your fields isn’t a boolean, explicitly enumerate the possibilities.
+    It might be implicitly defined in the table, but that’s too easy to confuse.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你的字段之一不是布尔值，请显式列出可能性。它可能在表中被隐式定义，但这太容易混淆了。
+- en: Is this table complete? We don’t know. It could be missing the row `|F, Yellow|`!
+    The legend doesn’t have to be part of the table itself, as long as the reader
+    can infer it from the surrounding context. Let the reader know that Q can have
+    values `{red, blue}`.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表完整吗？我们不知道。它可能缺少了行`|F, Yellow|`！传说本身不一定要成为表格的一部分，只要读者能从周围的上下文中推断出来即可。让读者知道Q可以取值`{red,
+    blue}`。
+- en: Techniques
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 技术
+- en: 'The most common problem with decision tables is bloat: if you have five boolean
+    columns, your table will have 32 rows. Add a sixth and then you’re at 64\. Most
+    techniques are about reducing bloat, such as by compressing rows or decomposing
+    tables.'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表最常见的问题是膨胀：如果你有五列布尔值，那么你的表将有32行。再加上第六列，你就会有64行。大多数技术都是关于减少膨胀，比如压缩行或者分解表格。
+- en: Any/-
+  id: totrans-66
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 任何/-
+- en: 'Pretty much everybody does this. `-` means “for any value”. These two tables
+    are equivalent:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几乎每个人都这样做。`-`表示“对于任何值”。这两个表是等价的：
+- en: '| P | Q | O |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | T | 1 |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | 1 |'
+- en: '| T | F | 1 |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | 1 |'
+- en: '| F | T | 2 |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | 2 |'
+- en: '| F | F | 3 |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | 3 |'
+- en: '`-` is great for simplifying tables. It’s easy to check for completeness, as
+    you can map the compact version to the full version. If a table consists of four
+    booleans, then `|T - - -|` maps to 8 rows.'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-`对于简化表格很有用。检查完整性很容易，因为你可以将紧凑版本映射到完整版本'
+- en: Aesthetically it looks more pleasant when values don’t follow `-`. `|T - - F|`
+    just looks funny. Sometimes I shuffle around the columns to make the dashes line
+    up. This isn’t always possible, though, and it might obscure the natural flow
+    of the rules.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在值不遵循`-`的情况下，审美上看起来更愉快。`|T - - F|`看起来很滑稽。有时我会重新排列列以使破折号对齐。但这并不总是可行的，并且可能会使规则的自然流动变得不明显。
+- en: 'There’s a couple pitfalls to `-`. First, you can accidentally be unsound, as
+    each `-` expands to several rows. For example:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-`存在一些缺陷。首先，你可能会不小心地不严谨，因为每个`-`都会扩展成多行。例如：'
+- en: This is complete but unsound, as `|T T|` maps to both 1 and 2\. The other pitfall
+    is implicit ordering. We might have
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是完整但不严谨的，因为`|T T|`对应于1和2。另一个问题是隐式排序。我们可能会有
+- en: It’s tempting to write this as
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很容易将其写成
+- en: Now the order of the rows matters! Someone can figure out what you mean here,
+    but now it’s no longer explicit. Prefer to list things out here.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在行的顺序很重要！有人可以弄清楚你在这里的意思，但现在不再是显式的了。最好在这里列出事物。
+- en: 'Notation note: `-` usually means “any”, but that’s not always clear. It’s easy
+    to think the symbol means “unknown” or “n/a”. If you have concerns then prefer
+    to be explicit. You should probably use a different symbol if you’re using `+`
+    as a value.'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注释：`-`通常表示“任何”，但这并不总是清楚的。很容易认为该符号表示“未知”或“n/a”。如果你有疑虑，最好是明确表示。如果您将`+`用作值，则可能应该使用不同的符号。
+- en: Input Elimination
+  id: totrans-81
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 输入消除
+- en: Often by using `-` we find that a column is unnecessary. Given the table
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`-`通常会发现某一列是不必要的。考虑下表
+- en: '| P | Q | O |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-84
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | T | 1 |'
+  id: totrans-85
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | 1 |'
+- en: '| T | F | 1 |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | 1 |'
+- en: '| F | T | 2 |'
+  id: totrans-87
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | 2 |'
+- en: '| F | F | 2 |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | 2 |'
+- en: We can simplify this as
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以将其简化为
+- en: In this way decision tables can help us determine if some inputs are unnecessary
+    for our logic.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样决策表可以帮助我们确定某些输入是否对我们的逻辑不必要。
+- en: Table Decomposition
+  id: totrans-91
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 表格分解
+- en: An output is **dependent** on an input if that input plays “some role” on that
+    output. Not all outputs may be dependent on all inputs.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出依赖于输入，如果该输入对该输出起到“某种作用”。并非所有输出都可能依赖于所有输入。
+- en: '| P | Q | O1 | O2 |'
+  id: totrans-93
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O1 | O2 |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| T | T | F | T |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | F | T |'
+- en: '| T | F | F | F |'
+  id: totrans-96
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | F | F |'
+- en: '| F | T | T | T |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | T | T |'
+- en: '| F | F | T | F |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | T | F |'
+- en: 'O1 only depends on P and O2 only depends on Q. We can decompose this table
+    into two smaller ones:'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: O1仅依赖于P，而O2仅依赖于Q。我们可以将这个表拆分成两个较小的表：
+- en: Decomposing tables makes them simpler but isn’t always the right choice. If
+    O1 and O2 are conceptually related, this might things less clear to the reader.
+    Nor does decomposing always reduce the size of your table. An outcome might be
+    dependent on one value while the other might be dependent on both.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分解表格使其更简单，但并不总是正确的选择。如果 O1 和 O2 在概念上相关，这可能会使读者感到困惑。分解也不总是能减小表格的大小。一个结果可能取决于一个值，而另一个可能取决于两个值。
+- en: '| P | Q | O1 | O2 |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O1 | O2 |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| T | T | T | T |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | T | T |'
+- en: '| T | F | T | F |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | T | F |'
+- en: '| F | T | T | T |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | T | T |'
+- en: '| F | F | F | F |'
+  id: totrans-106
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | F | F |'
+- en: Decomposing this table would give you two tables with a total of six rows. On
+    the other hand, if O1 and O2 are totally conceptually distinct it might be clearer
+    to break them into separate tables. As always, what’s best is highly context-dependent.
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分解此表格将给您带来两个共计六行的表格。另一方面，如果 O1 和 O2 完全是概念上不同的，将它们拆分成单独的表格可能更清晰。正如始终如此，最好的方法高度依赖于具体情况。
+- en: Input Dependence
+  id: totrans-108
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 输入依赖
+- en: 'Inputs are dependent if one can restrict the values of another. Take the following
+    three business rules:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个输入可以限制另一个输入的值，那么它们之间存在依赖关系。接下来我们来看看下面三个业务规则：
+- en: If a form doesn’t exist, redirect them to the “start” page.
+  id: totrans-110
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表单不存在，则将其重定向到“开始”页面。
+- en: If the form exists and hasn’t been submitted, redirect to “continue”.
+  id: totrans-111
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表单存在但尚未提交，则重定向到“继续”。
+- en: If the form exists and has been submitted, redirect to “review”.
+  id: totrans-112
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表单存在并且已经提交，则重定向到“审阅”。
+- en: 'We could write this as two booleans: `form_exists?` and `submitted?`. Submitted
+    is only a meaningful boolean if the form already exists. We can instead fold these
+    two booleans into a single column, such as `form_status`:'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以将其写成两个布尔值：`form_exists?` 和 `submitted?`。只有在表单已经存在时，提交才是一个有意义的布尔值。我们可以将这两个布尔值折叠成一个单独的列，比如
+    `form_status`：
+- en: '| `form_status` | O |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| `form_status` | O |'
+- en: '| --- | --- |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `not_started` | “start” |'
+  id: totrans-116
+  prefs: []
+  type: TYPE_TB
+  zh: '| `not_started` | “start” |'
+- en: '| `incomplete` | “continue” |'
+  id: totrans-117
+  prefs: []
+  type: TYPE_TB
+  zh: '| `incomplete` | “continue” |'
+- en: '| `submitted` | “review” |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '| `submitted` | “review” |'
+- en: 'This breaks down for larger tables. Consider a login table with three values:
+    `password_correct?`, `2auth_enabled?`, and `2auth_correct?`. Whether or not you
+    have 2auth is irrelevant if you don’t know the password, and asking if you passed
+    the 2auth is nonsensical if you have it disabled. There’s a few different ways
+    to model this, all awkward. The simplest is probably to use another symbol, like
+    `/`, to tell the reader that it’s impossible:'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于更大的表格，这种方法就行不通了。考虑一个具有三个值的登录表格：`password_correct?`、`2auth_enabled?` 和 `2auth_correct?`。如果你不知道密码，那么你是否启用了
+    2auth 是无关紧要的，如果你禁用了 2auth，那么询问你是否通过了 2auth 就是无意义的。有几种不同的建模方式，都很笨拙。最简单的方法可能是使用另一个符号，如
+    `/`，告诉读者这是不可能的情况：
+- en: '| `password-correct?` | `2auth-enabled?` | `2auth-correct?` | O |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| `password-correct?` | `2auth-enabled?` | `2auth-correct?` | O |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| T | T | T | 4 |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | T | 4 |'
+- en: '| T | T | F | 3 |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | F | 3 |'
+- en: '| T | F | / | 2 |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | / | 2 |'
+- en: '| F | - | / | 1 |'
+  id: totrans-125
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | - | / | 1 |'
+- en: If you’d prefer to not introduce a new symbol and turn your booleans into trileans
+    then another alternative is to use `any`. This is a little deceptive, as it implies
+    the column *has* a value, we just don’t care what it is. It works but make logicians
+    very sad.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望不引入新符号并将布尔值转换为三值逻辑，那么另一种选择是使用 `any`。这有点欺骗性，因为它暗示这一列*有*一个值，只是我们不关心它是什么。它可以工作，但会让逻辑学家感到很悲伤。
+- en: Pitfalls
+  id: totrans-127
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 陷阱
+- en: When handling dependent inputs, it matters whether the dependence is a **fact**
+    or if it’s an **assertion**. A fact is something that *cannot possibly* be false.
+    If we run into a case where it is false, then a software bug is the least of our
+    worries. This most often happens when the conditions are incompatible and only
+    one of them can be true. In this case, we can fold the columns into an enumeration.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理相关输入时，重要的是了解依赖是一个**事实**还是一个**断言**。事实是一种*不可能是*错误的东西。如果我们遇到它是错误的情况，那么软件错误就是我们最不用担心的问题了。这种情况最常见于条件不兼容，只有一个条件可以为真的情况。在这种情况下，我们可以将列折叠成一个枚举。
+- en: '| `thread1_lock?` | `thread2_lock?` | O |'
+  id: totrans-129
+  prefs: []
+  type: TYPE_TB
+  zh: '| `thread1_lock?` | `thread2_lock?` | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | F | 1 |'
+  id: totrans-131
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | F | 1 |'
+- en: '| F | T | 2 |'
+  id: totrans-132
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | T | 2 |'
+- en: '| … | … | … |'
+  id: totrans-133
+  prefs: []
+  type: TYPE_TB
+  zh: '| … | … | … |'
+- en: '| `lock_held_by` | O |'
+  id: totrans-134
+  prefs: []
+  type: TYPE_TB
+  zh: '| `lock_held_by` | O |'
+- en: '| --- | --- |'
+  id: totrans-135
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| None | 1 |'
+  id: totrans-136
+  prefs: []
+  type: TYPE_TB
+  zh: '| None | 1 |'
+- en: '| Thread 1 | 2 |'
+  id: totrans-137
+  prefs: []
+  type: TYPE_TB
+  zh: '| Thread 1 | 2 |'
+- en: '| Thread 2 | 3 |'
+  id: totrans-138
+  prefs: []
+  type: TYPE_TB
+  zh: '| Thread 2 | 3 |'
+- en: An assertion, by contrast, is something we build the system to guarantee. It
+    can, in reality, be false, but ideally it’s never false in our system.
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，断言是我们构建系统来保证的东西。实际上它可能是假的，但理想情况下它在我们的系统中永远不是假的。
+- en: Ideally is a dangerous word. In this case I’d want to be clear that the odd
+    combination is not something that *can’t possibly* happen, it’s something that
+    *shouldn’t* happen. That means if it *does* happen, there’s something wrong and
+    we should stop and figure that out. Perhaps we wrote our own locking mechanism
+    and aren’t completely sure it’s correct, maybe we’re worried about cosmic rays,
+    whatever. These possibilities should be explicitly enumerated, and the output
+    should be clearly marked as unspecified or an error.
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '"理想"是一个危险的词。在这种情况下，我想要明确指出奇异组合不是一件*绝对不可能*发生的事，而是*不应该*发生的事情。这意味着如果*确实*发生了，那就有问题了，我们应该停下来弄清楚。也许我们写了自己的锁定机制而且并不完全确定它的正确性，也许我们担心宇宙射线，无论是什么，这些可能性都应该被明确列举，并且输出应该明确标记为未指定或错误。'
+- en: '| `thread1_lock?` | `thread2_lock?` | O |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_TB
+  zh: '| `thread1_lock?` | `thread2_lock?` | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | T | **???** |'
+  id: totrans-143
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | T | **???** |'
+- en: '| F | F | **error** |'
+  id: totrans-144
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | F | **错误** |'
+- en: '| … | … | … |'
+  id: totrans-145
+  prefs: []
+  type: TYPE_TB
+  zh: '| … | … | … |'
+- en: The simplest answer here is to redesign your system to handle it, but that might
+    not be feasible.
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最简单的答案是重新设计系统来处理它，但这可能是不可行的。
+- en: Subtables
+  id: totrans-147
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 子表
+- en: If many inputs or outputs are dependent on a single input, it makes sense to
+    break this into a separate table. The two tables should refer to each other. See
+    for example [here](https://help.sap.com/viewer/2754875d2d2a403f95e58a41a9c7d6de/1911/en-US/2bccc3ed722d1014a688d77c71096543.html).
+    I’ve struggled to find a good teaching example so am only mentioning this for
+    completeness.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果许多输入或输出依赖于一个单独的输入，将其拆分成一个单独的表是有意义的。这两个表应该相互引用。例如请看[这里](https://help.sap.com/viewer/2754875d2d2a403f95e58a41a9c7d6de/1911/en-US/2bccc3ed722d1014a688d77c71096543.html)。我一直在寻找一个好的教学示例，所以只是在此提及以供完整性。
+- en: More difficult situations
+  id: totrans-149
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更困难的情况
+- en: Independent Intervals
+  id: totrans-150
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 独立间隔
+- en: When working with intervals we run into a problem where different conditions
+    may depend on distinct partitions of the interval into ranges.
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理间隔时，我们会遇到一个问题，不同的条件可能取决于间隔被划分为不同范围的分区。
+- en: '| P | Q | O |'
+  id: totrans-152
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-153
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | `[0, 2]` | 1 |'
+  id: totrans-154
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `[0, 2]` | 1 |'
+- en: '| T | `(2, 10]` | 2 |'
+  id: totrans-155
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `(2, 10]` | 2 |'
+- en: '| F | `[0, 4)` | 3 |'
+  id: totrans-156
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `[0, 4)` | 3 |'
+- en: '| F | `[4, 10]` | 4 |'
+  id: totrans-157
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `[4, 10]` | 4 |'
+- en: This is especially common when working with date intervals, as we saw with the
+    [Rose Kata](https://www.hillelwayne.com/requirements/). The problem is ensuring
+    completeness. If we have two separate sets of interval covers, we lose our direct
+    mapping between the possible values and the total number of rows. It’s also easy
+    to accidentally miss something.
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这在处理日期间隔时特别常见，就像我们在[Rose Kata](https://www.hillelwayne.com/requirements/)中看到的一样。问题在于确保完整性。如果我们有两组不同的间隔覆盖，我们就失去了可能值与总行数之间的直接映射。而且很容易意外忽略某些情况。
+- en: A thorough-but-bloaty solution is to combine all of the intervals into one superset
+    with no overlaps.
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一种彻底但臃肿的解决方案是将所有间隔合并为一个没有重叠的超集。
+- en: '| P | Q | O |'
+  id: totrans-160
+  prefs: []
+  type: TYPE_TB
+  zh: '| P | Q | O |'
+- en: '| --- | --- | --- |'
+  id: totrans-161
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| T | `[0, 2]` | 1 |'
+  id: totrans-162
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `[0, 2]` | 1 |'
+- en: '| T | `(2, 4)` | 2 |'
+  id: totrans-163
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `(2, 4)` | 2 |'
+- en: '| T | `[4, 10]` | 2 |'
+  id: totrans-164
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `[4, 10]` | 2 |'
+- en: '| F | `[0, 2]` | 3 |'
+  id: totrans-165
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `[0, 2]` | 3 |'
+- en: '| F | `(2, 4)` | 3 |'
+  id: totrans-166
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `(2, 4)` | 3 |'
+- en: '| F | `[4, 10]` | 4 |'
+  id: totrans-167
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `[4, 10]` | 4 |'
+- en: This makes the table more formalized at the cost of bloat and concealing the
+    underlying logic. You also need to watch for mistakes in translating to the new
+    partitions, especially at the boundaries of intervals.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使得表更加形式化，但也付出了臃肿和隐藏了底层逻辑的代价。您还需要注意在转换为新分区时的错误，特别是在间隔的边界处。
+- en: State
+  id: totrans-169
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 状态
+- en: Really you should be using transition tables or state machines to formalize
+    state, but we can handle small problems with decision tables. If we want a decision
+    table to represent a mutation, we need to make explicit the difference between
+    the old and new values on the table. The convention is write the variable with
+    a prime. If the table mutates `x`, we write the original value as `x` and the
+    new value as `x'`.
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，你应该使用转换表或状态机来形式化状态，但我们可以用决策表处理小问题。如果我们想要一个决策表来表示一个变异，我们需要在表上明确表示出旧值和新值之间的差异。惯例是使用带撇号的变量。如果表变异了`x`，我们写原始值为`x`，新值为`x'`。
+- en: '| `x % 2 == 0` | `x''` |'
+  id: totrans-171
+  prefs: []
+  type: TYPE_TB
+  zh: '| `x % 2 == 0` | `x''` |'
+- en: '| --- | --- |'
+  id: totrans-172
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| T | `x/2` |'
+  id: totrans-173
+  prefs: []
+  type: TYPE_TB
+  zh: '| T | `x/2` |'
+- en: '| F | `3x+1` |'
+  id: totrans-174
+  prefs: []
+  type: TYPE_TB
+  zh: '| F | `3x+1` |'
+- en: 'Each table should only model one step. In the body of the table, `x` always
+    refers to the old value and `x''` should not appear at all. Multiple outputs can
+    depend on `x`, though, making this useful for representing simultaneous mutations:'
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个表应该只模拟一个步骤。在表的正文中，`x`总是指旧值，而`x'`根本不应该出现。但是，多个输出可能取决于`x`，因此这对于表示同时变异非常有用：
+- en: 'If we need to represent a more complex update, we can break it down into one
+    table that defines `x''` and one that defines `x''''`:'
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们需要表示更复杂的更新，我们可以将它分解成一个定义`x'`的表和一个定义`x''`的表：
+- en: '| `x''` | `x''''` |'
+  id: totrans-177
+  prefs: []
+  type: TYPE_TB
+  zh: '| `x''` | `x''''` |'
+- en: '| --- | --- |'
+  id: totrans-178
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `(, 0]` | 0 |'
+  id: totrans-179
+  prefs: []
+  type: TYPE_TB
+  zh: '| `(, 0]` | 0 |'
+- en: '| `[1, 50]` | `x''` |'
+  id: totrans-180
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[1, 50]` | `x''` |'
+- en: '| `[51, )` | 50 |'
+  id: totrans-181
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[51, )` | 50 |'
+- en: Representing state in decision tables gets awkward quickly and it doesn’t quite
+    scale to complex state.
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在决策表中表示状态很快会变得笨拙，并且它不适用于复杂的状态。
+- en: More Complex State
+  id: totrans-183
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 更复杂的状态
+- en: Make a damn state machine
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 搞一个该死的状态机
+- en: When you’re going too far
+  id: totrans-185
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 当你走得太远时
+- en: Decision tables have minimal syntax and semantics. They are easy to use. They
+    also quickly hit limits.
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表的语法和语义最小。它们易于使用。但它们也很快就会遇到限制。
+- en: I don’t like saying “don’t use them when they’re inappropriate”, because that
+    sounds like smug avoidance to me. That answer doesn’t give you any insight into
+    when they are inappropriate. We want to be specific about when they become inappropriate.
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我不喜欢说“在不适当的时候不要使用它们”，因为那听起来对我来说是一种自满的避免。这个答案并未给你任何有关它们何时不适用的见解。我们希望明确指出它们何时不适用。
+- en: 'Decision tables work best when the entire problem can be modeled as discrete,
+    independent inputs. Break that and everything falls apart. Sometimes you can refine
+    the problem space like we did with intervals, but that only gets you so far. Other
+    signs that decision tables are inappropriate include:'
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表在整个问题可以被离散独立输入建模时效果最好。一旦打破这一点，一切都会崩溃。有时你可以像我们在间隔中所做的那样，细化问题空间，但这只能让你走得更远一点。决策表不适用的其他迹象包括：
+- en: When you have complex data structures. If one of the inputs is a list of integers,
+    your table is going to be huge.
+  id: totrans-189
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当你有复杂的数据结构时。如果其中一个输入是整数列表，你的表格会非常庞大。
+- en: When the decision is made “over time”, where you have to perform some effects
+    in order to complete the decision. DTs model instantaneous decisions. Consider
+    a flowchart instead.
+  id: totrans-190
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当决策在“时间上”做出时，你必须执行一些效果才能完成决策。决策表模拟瞬时决定。考虑使用流程图。
+- en: When there’s no easy way to encode your data in a way that the table is “obviously”
+    complete. If your input is “three events with a ranking”, a complete table will
+    still look like it is missing rows.
+  id: totrans-191
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当没有简单的方法将你的数据编码为“显然”完整的表时。如果你的输入是“三个带有排名的事件”，一个完整的表仍然看起来像是缺少了一些行。
+- en: When the table gets extremely large.
+  id: totrans-192
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当表格变得非常庞大时。
+- en: When a table layout doesn’t make anything clearer.
+  id: totrans-193
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当表格布局并没有让一切变得更清晰。
+- en: Shortcuts
+  id: totrans-194
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 捷径
+- en: How strict you need to be about your decision tables depends on what you’re
+    using them for. If your goal is to have a specification artifact then you want
+    to be as rigorous as possible. You want to be strict if you’re trying to explicitly
+    shakeout design issues or plan to high-level project-level decisions based on
+    the table. If you’re using the decision table as a mental augmentation tool, then
+    taking shortcuts is fine. The goal is to help you think better and excessive formalism
+    doesn’t always lead to insight.
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你对决策表的严格程度取决于你使用它们的目的。如果你的目标是有一个规范工件，那么你希望尽可能严格。如果你试图明确解决设计问题或基于表格进行高层次项目决策，那么你需要严格。如果你将决策表作为一种思维增强工具，那么可以采取捷径。目标是帮助你更好地思考，过度的形式主义并不总是导致洞察力。
+- en: Final Thoughts
+  id: totrans-196
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 最后的思考
+- en: Decision tables are easy, simple, and powerful. You can teach them in five minutes
+    and write one in half that time. And while they have a low expressiveness ceiling,
+    there’s no opportunity cost to trying them first. Worst case is you lose a few
+    minutes before realizing they’re inappropriate for your problem.
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决策表是简单易懂且功能强大的。你可以在五分钟内教会别人，并在半个小时内写出来。虽然它们的表达能力有限，但先尝试它们是没有机会成本的。最坏的情况是你花了几分钟才意识到它们不适合你的问题。
+- en: If you want to see decision tables used in the wild, two good examples are [here](https://github.com/rails/rails/pull/36795#issuecomment-515914165)
+    and [here](https://twitter.com/jesterxl/status/1222728288117972992).
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想看到决策表在实际应用中的例子，两个很好的例子是[这里](https://github.com/rails/rails/pull/36795#issuecomment-515914165)和[这里](https://twitter.com/jesterxl/status/1222728288117972992)。
+- en: I hope this made decision tables more accessible to you. If you’re interested
+    in my other writing, in addition to this site I have a twice-weekly [newsletter](https://buttondown.email/hillelwayne/)
+    on software and a [Twitter](https://twitter.com/hillelogram) that’s a mix of tech,
+    math, confectioning, and general Twitter inanery.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 希望这能让决策表对你更易于理解。如果你对我的其他写作感兴趣，除了这个网站外，我每周还有两次 [newsletter](https://buttondown.email/hillelwayne/)
+    关于软件，以及一个 [Twitter](https://twitter.com/hillelogram)，内容涵盖技术、数学、糖果制作和一般的 Twitter
+    无聊。
+- en: '*Thanks to [Nicolas Rinaudo](https://nrinaudo.github.io/) for feedback.*'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*感谢 [Nicolas Rinaudo](https://nrinaudo.github.io/) 的反馈。*'
