@@ -1,49 +1,73 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:03:57'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:03:57
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Announcing the Saber Virtual Machine - Ryan Brewer
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 宣布 Saber 虚拟机 - Ryan Brewer
 - en: 来源：[https://ryanbrewer.dev/posts/announcing-svm.html](https://ryanbrewer.dev/posts/announcing-svm.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://ryanbrewer.dev/posts/announcing-svm.html](https://ryanbrewer.dev/posts/announcing-svm.html)
 - en: Announcing the Saber Virtual Machine
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 宣布 Saber 虚拟机
 - en: January 18, 2024
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024 年 1 月 18 日
 - en: In this post I'm excited to announce the [Saber Virtual Machine](https://github.com/RyanBrewer317/SaberVM),
     or SaberVM. It's a project I've been working hard on for the past month, with
     fascinating properties and an in-progress MVP implementation that's coming along
     well. If you like writing functional languages and want a portable backend to
     target that's fast and/or safe, you may be very interested in SaberVM, especially
     in its upcoming AOT-compile-to-optimized-native form.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我很高兴宣布 [Saber 虚拟机](https://github.com/RyanBrewer317/SaberVM)，或称为 SaberVM。这是我过去一个月努力工作的项目，具有引人入胜的特性和正在进行中的
+    MVP 实现进展顺利。如果您喜欢编写函数式语言，并且希望有一个可移植的后端目标，那么 SaberVM 可能会引起您的极大兴趣，尤其是在即将推出的 AOT 编译为优化的本地形式方面。
 - en: What is it?
+  id: totrans-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 这是什么？
 - en: SaberVM is a compiler backend for functional languages. Specifically, it is
     an abstract stack machine, with many possible implementations. It takes in CPS
     code that's been closure-converted and hoisted, and executes it or AOT compiles
     it to a native binary. My current implementation is a naive bytecode VM in Rust,
     without JITing, mostly for rapid prototyping as the design settles.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: SaberVM 是函数式语言的编译器后端。具体来说，它是一个抽象的堆栈机器，有许多可能的实现。它接收经过闭包转换和提升的 CPS 代码，并执行它或将其
+    AOT 编译为本机二进制文件。我的当前实现是 Rust 中的一个简单的字节码虚拟机，没有 JIT，主要用于快速原型设计，因为设计正在稳定。
 - en: The goals of the project are safety, expressivity, portability, and reliability.
     To give a very quick overview, safety is achieved through a carefully designed
     type system, and primarily includes memory safety. Expressivity is preserved by
@@ -53,23 +77,33 @@
     on a variety of platforms. Lastly, SaberVM is reliable because of a built-in crash
     recovery system you can use to microreboot without the whole program terminating,
     like Erlang's BEAM.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 该项目的目标是安全性、表现力、可移植性和可靠性。简单概述一下，通过精心设计的类型系统实现了安全性，主要包括内存安全。通过使用运行时检查和标记来保留表现力以实现某些安全性保证，因此您可以使用任何复杂的内存方案，只要您不解引用悬空指针即可。SaberVM
+    提供可移植性，因为它被设计为在各种平台上实现简单。最后，由于内置的崩溃恢复系统，SaberVM 是可靠的，您可以使用该系统进行微重启，而不会整个程序终止，就像
+    Erlang 的 BEAM 一样。
 - en: The two main systems of SaberVM are *regions* and *exceptions.*
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: SaberVM 的两个主要系统是*区域*和*异常*。
 - en: Regions
+  id: totrans-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 区域
 - en: A region can be thought of as an arena with a malloc/free-style internal memory
     management system. To read or write from the heap, you need a region. It can be
     the heap itself. Regions have statically-checked lifetimes, and a [capability](https://dl.acm.org/doi/10.1145/292540.292564)-based
     system for checking that values within that region are only read or written to
     during the lifetime of the region. When a region's lifetime ends, it is freed
     like an arena.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个区域可以被视为一个带有 malloc/free 风格内部内存管理系统的竞技场。要从堆中读取或写入，您需要一个区域。它可以是堆本身。区域具有静态检查的生命周期，并且具有基于[能力](https://dl.acm.org/doi/10.1145/292540.292564)的系统，用于检查该区域内的值是否在该区域的生命周期内仅读取或写入。当区域的生命周期结束时，它会像竞技场一样被释放。
 - en: 'This structure of memory is important because in a safe compilation the values
     in the heap are tagged with information about which inhabitant is at that place
     in memory, so pointers can check that they''re pointing at the thing they think
@@ -82,8 +116,13 @@
     bytes used to tag `B`! That means a nefarious program could potentially cause
     `&B` to think that `B` is still there, leading dereferences to not crash but instead
     to read memory controlled by `C` but think that it''s `B`.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 内存的这种结构很重要，因为在安全编译中，堆中的值标记了有关哪个成员在内存中的位置的信息，因此指针可以在解引用时检查它们是否指向它们认为的东西。这引入了内存碎片问题：“槽位”在以后只能由大小相同或更小的值使用；它们具有不可改变的“最大大小”。要证明这一点，请考虑内存中相邻的两个值
+    `A` 和 `B` 及其指针 `&A` 和 `&B`。现在假设我们释放了两者，并在与 `A` 曾经相同的地址处分配 `C`（即 `&C == &A`）。如果
+    `C` 比 `A` 大，则它将任意控制用于标记 `B` 的字节！这意味着一个恶意程序可能会导致 `&B` 认为 `B` 仍然存在，导致解引用不会崩溃，而是读取由
+    `C` 控制的内存，但认为它是 `B`。
 - en: If allocating something in memory fixes a certain max-size for that chunk of
     memory for the rest of the program's lifetime, that can cause issues from a poor
     use of memory. Therefore, SaberVM puts its values in regions so there are certain
@@ -93,12 +132,16 @@
     significant fragmentation issues, you can do some light region inference to fix
     it. In addition, since regions are freed like arenas, regions offer a way to deallocate
     a bunch of memory instantly, and improve cache locality.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在内存中分配某些东西为该内存块的余生设定了某个最大大小，这可能会导致内存使用不当的问题。因此，SaberVM 将其值放在区域中，因此在某些静态已知的点上，可以确定永远不会再次解引用某些指针，因此它们的引用内存可以真正释放，对其未来使用没有限制。作为一名语言编写者，如果发现您的输出程序存在重大的碎片化问题，您可以进行一些轻量级的区域推断来解决它。此外，由于区域像竞技场一样被释放，区域提供了一种立即释放大量内存并提高缓存局部性的方法。
 - en: Exceptions
+  id: totrans-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 异常
 - en: 'SaberVM''s other interesting system is exceptions. Exceptions in SaberVM are
     not like normal exceptions, though there''s nothing stopping a compiler writer
     from building a normal exception system on top of SaberVM. Instead, SaberVM exceptions
@@ -111,35 +154,55 @@
     exception handler), restart the crashed function (in a microreboot or Erlang style,
     without information about what caused the exception), or release held resources
     (currently SaberVM doesn''t have locks, only CAS, but this is likely to change).'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: SaberVM 的另一个有趣系统是异常。虽然 SaberVM 中的异常不像普通异常，但没有什么能阻止编译器编写者在 SaberVM 之上构建普通的异常系统。相反，SaberVM
+    的异常不带参数。每个函数必须有一个万能异常情况，只有一个。为什么？将这个内置到 SaberVM 中意味着运行时失败的指令不会使程序崩溃，它们只是跳转到异常处理程序。然后，目标定位到
+    SaberVM 的语言预期产生至少四种操作之一的异常处理程序：使程序崩溃（使用显式停止指令）、重新抛出异常（即，跳转到调用者的万能异常处理程序）、重新启动崩溃的函数（以微重启或
+    Erlang 风格，不提供有关导致异常的信息）或释放持有的资源（目前 SaberVM 没有锁，只有 CAS，但这可能会改变）。
 - en: Note that SaberVM exceptions are *not* expected to be how your own language
     handles its exceptions! For example, if you prefer a `Result`-style exception
     handling, you can write functions that attempt single fallible instructions with
     an exception handler that produces the corresponding `Err` value.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，SaberVM 的异常*不*预期成为您自己语言处理异常的方式！例如，如果您更喜欢 `Result` 风格的异常处理，您可以编写尝试执行单个易出错指令的函数，其异常处理程序会生成相应的
+    `Err` 值。
 - en: Conclusion
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 结论
 - en: SaberVM is carefully designed but still a very young project. I have an in-progress
     [implementation](https://github.com/RyanBrewer317/SaberVM) in Rust that I call
     the MVP, a subset of the final SaberVM that isn't even necessarily forwards-compatible,
     just to play with the ideas and their interactions and see how they really work
     in practice. I'm sure as I learn more the design will change somewhat but the
     core ideas and goals are very strong.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: SaberVM 虽然精心设计，但仍然是一个非常年轻的项目。我在 Rust 中有一个正在进行中的 [实现](https://github.com/RyanBrewer317/SaberVM)，我称之为
+    MVP，这是最终 SaberVM 的一个子集，甚至不一定向前兼容，只是为了玩弄这些想法及其相互作用，并看看它们在实践中真正如何工作。我相信随着我学到更多，设计会有些改变，但核心想法和目标非常坚定。
 - en: I've gotten most of the typechecker done in just a few days, which is really
     promising, and the algorithms are very simple. (I'll post more about them soon!)
     I think the VM runtime will be easier to write than the typechecker, since it'll
     be a naive prototype (without, say, JIT compiling), so I'd say the implementation
     is about halfway done, which is very exciting.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只用了几天时间就完成了大部分类型检查器，这真的很有希望，而且算法非常简单。（我会尽快发布更多有关它们的内容！）我认为 VM 运行时会比类型检查器更容易编写，因为它将是一个天真的原型（没有，比如说，JIT
+    编译），所以我想说实现大约完成了一半，这非常令人兴奋。
 - en: If you've read this far and think that the project sounds interesting, consider
     starring it on [github](https://github.com/RyanBrewer317/SaberVM), or even sponsoring
     my work on [github](https://github.com/sponsors/RyanBrewer317) or [ko-fi](https://ko-fi.com/ryanbrewer)!
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经读到这里，并且觉得这个项目听起来很有趣，考虑给它点个星星 [github](https://github.com/RyanBrewer317/SaberVM)，甚至在
+    [github](https://github.com/sponsors/RyanBrewer317) 或者 [ko-fi](https://ko-fi.com/ryanbrewer)
+    上赞助我的工作！
