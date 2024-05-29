@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:26:26'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:26:26
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: blog/entries/parallelising_hnsw.md at main · GavinMendelGleason/blog · GitHub
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: blog/entries/parallelising_hnsw.md at main · GavinMendelGleason/blog · GitHub
 - en: 来源：[https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md](https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md](https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md)
 - en: HNSW (Hierarchical Navigable Small World graphs) were introduced in an excellent
     and very readable paper [Yu A. Malkov, D. A. Yashunin](https://arxiv.org/abs/1603.09320)
     which has given rise to a large number of implementations which are at the core
@@ -31,6 +37,8 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: HNSW（Hierarchical Navigable Small World graphs）是在一篇极好且非常易读的论文中引入的[Yu A. Malkov,
+    D. A. Yashunin](https://arxiv.org/abs/1603.09320)，这篇论文产生了许多流行向量数据库核心中的实现。
 - en: The HNSW is a method of searching for vectors in a dataset which are *close*
     to a given query vector. The basic idea of an HNSW is to make a series of proximity
     graphs, organized in a stack which allows us to zoom-in as we approach ever closer
@@ -38,6 +46,7 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: HNSW 是一种在数据集中搜索与给定查询向量*接近*的向量的方法。HNSW 的基本思想是制作一系列接近图，这些图被组织成一个堆栈，允许我们随着接近越来越近的邻域而缩小范围。
 - en: The top layer of the HNSW has relatively few elements, and we can quickly find
     our best match in this layer greedily, and then we drill down to the next layer
     down. Each layer down is an order of magnitude larger, but contains all of the
@@ -46,17 +55,20 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: HNSW 的顶层具有相对较少的元素，我们可以贪心地快速在这一层中找到我们的最佳匹配，然后向下钻取到下一层。每一层下来都是数量级更大，但包含了上层的所有点。在这个过程中，我们可以对一个更接近的替代方案进行更深入的探索，并向下再钻取一层。
 - en: Finally, when we reach the bottom, we search around a bit for candidates in
     our neighborhood and end up with an priority queue of candidates ordered by distance.
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，当我们到达底部时，我们在附近搜索一下候选对象，并最终得到一个按距离排序的候选对象的优先队列。
 - en: The HNSW approach is essentially probabilistic. We try to find candidates to
     match by choosing randomly, in the hopes that being pretty well connected via
     super-nodes, we will not end up getting too far from matches in our local minimum.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: HNSW 方法本质上是概率性的。我们尝试通过随机选择候选对象来匹配，希望通过超级节点之间的相当良好连接，我们不会远离我们本地最小值的匹配。
 - en: This makes the structure very appealing from the point of view of incremental
     indexing. We can simply roll a die to see which layer we are first inserted into,
     with a distribution putting everything in the lowest layer, and increasingly seldomly
@@ -66,6 +78,7 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 从增量索引的角度来看，这使得这种结构非常吸引人。我们只需掷骰子来确定我们首先插入的层级，采用一种将所有内容放入最低层的分布，并逐渐将其放入以对数方式递增的更高层的方式。希望这样做，随着新向量进入系统，我们将它们随机地提升为树的超级节点以进行路由，这应该是一种自我平衡的过程。
 - en: This approach of creating tiered proximity graphs radically cuts down on the
     computation which is necessary to do full distance calculations over a set as
     new elements are added. Vector distance computations over large vectors, such
@@ -74,15 +87,18 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种创建分层接近图的方法显著减少了必须在添加新元素时进行完全距离计算所需的计算量。当向量数量很大时，如嵌入中存在的大向量，向量距离计算可能会非常昂贵。
 - en: Parallelising the approach
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 并行化该方法
 - en: '[](#parallelising-the-approach)'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#parallelising-the-approach)'
 - en: The algorithm outlined in the Malkov, Yashunin paper is however not very ameanable
     to parallelisation. It relies on the previously constructed index to search its
     way to good neighbors. There is a lot of opportunity for contention over resources
@@ -90,6 +106,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Malkov, Yashunin 论文中提出的算法对并行化不太适用。它依赖于先前构建的索引来搜索优良的邻居。在并行化时，如果简单地进行并行化（正如作者所发现的那样），资源之间可能存在很多争用的机会。
 - en: However, if we have a large batch job of vectors to add simultaneously, there
     are very clear methods of building the index faster using parallelism. This can
     play well with the above incremental approach. In addition we can think of a mixed-incremental
