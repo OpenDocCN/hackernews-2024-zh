@@ -1,23 +1,35 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:39:21'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:39:21
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: An Approach to Sound Synthesis with L-Systems | Nathan Ho
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用L-系统进行声音合成的一种方法 | Nathan Ho
 - en: 来源：[https://nathan.ho.name/posts/sound-synthesis-with-l-systems/](https://nathan.ho.name/posts/sound-synthesis-with-l-systems/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://nathan.ho.name/posts/sound-synthesis-with-l-systems/](https://nathan.ho.name/posts/sound-synthesis-with-l-systems/)
 - en: An early obsession of mine when I was first learning about music tech was a
     paper by Stelios Manousakis titled “Non-Standard Sound Synthesis with L-Systems,”
     published 2009 in Leonardo Music Journal. At the time I was a snob about making
@@ -29,107 +41,148 @@
     make a cool alien soundscape from another dimension if you can’t make a nice snare
     from scratch? Every good post-tonal composer understands tonality, if only to
     know how to avoid it. You have to know what rules you’re breaking.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我刚开始学习音乐技术时，我最初的痴迷之一是一篇由Stelios Manousakis撰写的论文，题为“使用L-系统进行非标准声音合成”，2009年发表在《Leonardo音乐期刊》上。当时，我对纯粹“学术”电子音乐（想象一下斯托克豪森或赛尼亚基斯）很挑剔，而且认为FM和减法等合成方法太庸俗，所以标榜自己为“非标准”的合成方法非常吸引人。如果我能给年轻的自己一些建议，我会告诉他，你必须首先作为声音设计师建立基础，然后才能尝试疯狂的实验性东西。如果你连一个好听的敲鼓声都无法从头开始制作，那么你如何制作来自另一个维度的酷炫外星人风景呢？每个好的后调式作曲家都了解调性，即使只是为了知道如何避免它。你必须知道你打破的规则。
 - en: With more artistic maturity under my belt, I revisited Manousakis’ paper recently
     and still found it interesting, so I decided to do some riffing on it. In this
     post, I’ll quickly explain what L-systems are (there are lots of better explanations
     online) and walk through a complete, “minimum viable” system for generating sound
     with them. Sound examples are embedded.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我积累了更多的艺术成熟经验后，我最近重新阅读了Manousakis的论文，并仍然觉得它很有趣，所以我决定对它进行一些思考。在本文中，我将简要介绍什么是L-系统（网上有很多更好的解释），并演示一个完整的、“最小可行”的系统来用它们生成声音。声音示例已嵌入。
 - en: L-systems and turtle graphics
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: L-系统和海龟图形
 - en: 'Briefly, L-systems (short for “Lindenmayer systems”) generate a sequence of
     words (strings) using rewriting rules applied repeatedly to an initial word called
     the axiom. A classic L-system is given by the rules `a → ab` and `b → a` with
     the axiom `a`. At each iteration, each symbol in the word is replaced by the right-hand
     side of its corresponding rule. The first few iterations of this L-system are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，L-系统（“Lindenmayer系统”的简称）使用反复应用于称为公理的初始词的重写规则生成一个词序列（字符串）。一个经典的L-系统由规则`a
+    → ab`和`b → a`以及公理`a`给出。在每次迭代中，单词中的每个符号都被其相应规则的右侧替换。这个L-系统的前几次迭代是：
 - en: '[PRE0]'
+  id: totrans-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Most L-systems that are objects of study undergo approximately exponential growth
     in this way. L-systems can produce simple patterns like `abababab` as well as
     aperiodic results like the above, generating apparent randomness while being completely
     deterministic.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数被研究的L-系统都以这种方式经历了近似指数增长。L-系统可以产生像`abababab`这样的简单模式，也可以产生类似上面的非周期性结果，生成明显的随机性，而完全是确定性的。
 - en: A popular use of L-systems is to apply them to turtle graphics. To do so, each
     symbol in the L-system corresponds to an instruction to a turtle in 2D space,
     such as “move forward one unit” or “turn left 30 degrees.” Following the instructions
     sequentially from one string and plotting the turtle’s trajectory in space produces
     a drawing. Organic-looking fractals may result.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: L-系统的一个常见用途是将它们应用于海龟图形。为此，L-系统中的每个符号对应于2D空间中海龟的一个指令，例如“向前移动一个单位”或“左转30度”。按顺序从一个字符串中执行指令并在空间中绘制海龟的轨迹会产生一幅图。可能会产生有机的外观分形。
 - en: In “Non-Standard Sound Synthesis with L-Systems” as well as his more detailed
     2006 master’s thesis *Musical L-Systems*, Manousakis proposes a lot of different
     possibilites to explore, but the basic idea is that he’s sonifying turtle graphics
     produced by L-systems and mapping the turtle’s state over time (position, orientation,
     etc.) to synthesis parameters. These L-systems operate at different time scales,
     from microsound to the form of an entire piece.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在“使用L-Systems进行非标准声音合成”以及他更详细的2006年硕士论文*音乐L-Systems*中，Manousakis提出了很多不同的探索可能性，但基本思想是他正在将L-Systems产生的海龟图形音效化，并将海龟的状态随时间（位置、方向等）映射到合成参数上。这些L-Systems在不同的时间尺度上运行，从微声音到整个作品的形式。
 - en: L-systems and microsound
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: L-Systems和微声音
 - en: At first impression, this all may sound rather boring, as one can take any synthesis
     algorithm and use turtle graphics to modulate its parameters over time. As there
     is a separation of concerns between the L-system and the synthesis method, calling
     this “nonstandard synthesis” may be an overstatement of its novelty. You could
     argue that the L-system with turtle graphics are effectively a random LFO generator.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 乍一看，这一切可能听起来相当无聊，因为可以采用任何合成算法，并使用海龟图形随时间调制其参数。由于L-Systems和合成方法之间有责任分离，称之为“非标准合成”可能有些夸张其新颖性。你可以争辩说，具有海龟图形的L-Systems实际上是一个随机LFO生成器。
 - en: 'The key to averting this criticism is to use an L-system deeply integrated
     into the synthesis algorithm using microsound techniques. Take for example an
     L-system with symbols interpreted as follows:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 避免这种批评的关键是使用深度集成到合成算法中的L-Systems，并使用微声音技术。举个例子，一个L-Systems，符号解释如下：
 - en: '`p`: output one cycle of a sine wave'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`p`: 输出正弦波的一个周期'
 - en: '`.`: output one cycle of silence'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`.`: 输出一周期的静音'
 - en: '`F`: increase sine wave frequency'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`F`: 增加正弦波频率'
 - en: '`f`: decrease sine wave frequency'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`f`: 减小正弦波频率'
 - en: '`+`: increase amplitude'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`+`: 增加幅度'
 - en: '`-`: decrease amplitude'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-`: 减小幅度'
 - en: Depending on the L-system’s rules and axiom, a variety of sounds may result.
     A long uninterrupted sequence of `p`’s will generate a static tone, patterns like
     `pFpFpF` and `pfpfpf` will produce sweeps and chirps, and patterns like `p.p.p.`
     can even output distinct timbres by periodically alternating between pulses of
     audio and silence.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据L-Systems的规则和公理，可能会产生各种各样的声音。一长串连续的`p`会产生一个静态音调，像`pFpFpF`和`pfpfpf`这样的模式会产生扫过和啁啾声，而像`p.p.p.`这样的模式甚至可以通过周期性地在音频和静音之间交替来输出独特的音色。
 - en: There are a few issues with this toy example that make it unmusical. First,
     the synthesis method is too simple, and it mostly produces wandering sine wave
     tones. Second, the symbols that decrease and increase frequency and amplitude
     can cause those parameters to rocket off to positive or negative infinity.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个玩具示例存在一些问题，使其不具音乐性。首先，合成方法过于简单，主要产生游走的正弦波音调。其次，减小和增加频率和幅度的符号可能导致这些参数飙升至正或负无穷。
 - en: A functional L-system synthesizer
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个功能性的L-Systems合成器
 - en: 'To upgrade the synthesis technique, let’s use windowed oscillator hard sync.
     In this synthesis method, there are two frequencies: the *sync frequency* and
     *intrinsic frequency*. A sine wave runs at the intrinsic frequency, and every
@@ -137,40 +190,58 @@
     is multiplied by a signal that starts at 1, decreases to 0, and resets to 1 every
     1 / sync frequency seconds. There are now three synthesis parameters to modulate:
     the two frequencies, and the amplitude. The new set of symbols is as follows:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 要升级合成技术，让我们使用窗口振荡器硬同步。在这种合成方法中，有两个频率：*同步频率*和*内在频率*。一个正弦波运行在内在频率上，每1/同步频率秒，它的相位被重置为0。结果波形乘以一个信号，从1开始，减少到0，并且每1/同步频率秒重置为1。现在有三个合成参数要调制：两个频率和幅度。新的符号集如下：
 - en: '`p`: output one cycle of a sine wave'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`p`: 输出正弦波的一个周期'
 - en: '`.`: output one cycle of silence'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`.`: 输出一周期的静音'
 - en: '`S`: increase sync frequency'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`S`: 增加同步频率'
 - en: '`s`: decrease sync frequency'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`s`: 减小同步频率'
 - en: '`I`: increase intrinsic frequency'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`I`: 增加内在频率'
 - en: '`i`: decrease intrinsic frequency'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`i`: 减小内在频率'
 - en: '`+`: increase amplitude'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`+`: 增加幅度'
 - en: '`-`: decrease amplitude'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-`: 减小幅度'
 - en: 'To solve the out-of-range problem, one approach is to clamp the frequencies
     and amplitude to minimum and maximum values. However, this causes another problem:
     words that contain a lot of `S`’s and not many `s`’s will immediately max out
@@ -180,8 +251,12 @@
     instead. In other words, the six symbols `SsIi+-` have the effect of stepping
     the phases of three random LFO’s forward or backward. LFO shapes other than sine
     waves are possible too.'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决超出范围的问题，一种方法是将频率和振幅夹紧到最小和最大值。然而，这会引起另一个问题：包含许多 `S` 但没有多少 `s` 的单词将立即使同步频率达到最大值，这让我感觉不像音乐。我想到的主意是将频率和振幅折叠成正弦波形状，因此，如果单词一直重复输出
+    `S`，同步频率最终会开始减小。换句话说，六个符号 `SsIi+-` 的效果是将三个随机 LFO 的相位向前或向后移动。除了正弦波之外，还可以使用其他形状的
+    LFO。
 - en: We now have a solid system for interpreting the output of the L-system. The
     remaining work to make this a complete sound-generation system is to design the
     L-system itself. This is pretty easy, as it turns out that randomly generating
@@ -189,8 +264,11 @@
     as the right-hand side of each rule, and voila, we have an L-system. As a special
     provision, the rule corresponding to the symbol `.` must generate at least one
     `p` to reduce the chance of long stretches of silence.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在有一个可靠的系统来解释 L 系统的输出。使其成为一个完整的声音生成系统的剩余工作是设计 L 系统本身。事实证明，这相当容易，因为随机生成规则效果出奇地好。为此，我们将
+    2-3 个随机符号的单词分配为每个规则的右侧，然后，我们就有了一个 L 系统。作为一个特殊规定，与符号`.`对应的规则必须生成至少一个 `p`，以减少长时间的沉默的机会。
 - en: As a loose end, there are a few ways to approach generating the word iteratively.
     We can start with an axiom, iterate the L-system until the word is long enough,
     and synthesize the final word. Alternatively, we can iterate the L-system and
@@ -199,48 +277,70 @@
     might hear the iterative process, although I’m not sure how much it actually matters.
     I also cut off each word to a maximum of 1500 symbols; it will become clear why
     I did this later.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一个未完成的部分，有几种方法可以生成迭代的单词。我们可以从一个公理开始，迭代 L 系统直到单词足够长，然后合成最终单词。或者，我们可以迭代 L 系统并合成每一代的结果，将所有合成的波形串联起来。我更喜欢后一种方法，因为听者可能会听到迭代过程，尽管我不确定这实际上有多重要。我还将每个单词截断为最多
+    1500 个符号；稍后我会解释我为什么这样做。
 - en: 'We have completely described an approach to sound generation with L-systems
     and windowed oscillator sync. It has the following parameters:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经完全描述了使用 L 系统和窗口振荡器同步进行声音生成的方法。它具有以下参数：
 - en: minimum and maximum sync frequency
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最小和最大同步频率
 - en: amount sync frequency is increased or decreased with the `S` and `s` symbols
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `S` 和 `s` 符号增加或减少同步频率量
 - en: minimum and maximum intrinsic frequency
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最小和最大固有频率
 - en: amount intrinsic frequency is increased or decreased with the `I` and `i` symbols
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `I` 和 `i` 符号增加或减少固有频率量
 - en: amount amplitude is increased or decreased with the `+` and `-` symbols
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `+` 和 `-` 符号增加或减少振幅量
 - en: 'So, how’s it sound? Here’s the result of randomizing the above parameters and
     generating some uncurated sounds:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，听起来如何？这是随机化上述参数并生成一些未经筛选的声音的结果：
 - en: The windowed oscillator sync algorithm and the sine wave LFOs very much imprint
     on the resulting sounds, possibly more so than the L-system. Still, we get a mix
     of obvious patterns and aperiodic noisy motions that clearly sonify the systematic
     way the symbols are produced. To me, the sounds are pretty interesting and many
     seem like they’d be fairly difficult to produce without L-systems, so I’d declare
     this experiment a modest success.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 窗口振荡器同步算法和正弦波 LFO 在结果声音上留下了深刻的印记，可能比 L 系统更多。尽管如此，我们得到了明显模式和非周期性噪声运动的混合，清晰地使符号被生产的系统方式声音化。对我来说，这些声音相当有趣，许多声音似乎很难在没有
+    L 系统的情况下产生，所以我认为这个实验是一个温和的成功。
 - en: Mutating the rules
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 变异规则
 - en: One problem is that the results get pretty repetitive and boring after around
     10 seconds. For sounds that display long-term evolution, we can try changing the
     L-system’s rules over time. Every generation, we take each rule and randomly remove
@@ -248,29 +348,40 @@
     to rule mutations (which is a good thing – it means the thing we’re sonifying
     is really impacting the sound), so it suffices to mutate each rule with only a
     10% chance and add and delete only one symbol.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个问题是在大约10秒后，结果变得相当重复和乏味。对于显示长期演变的声音，我们可以尝试随时间改变L系统的规则。每一代，我们取每个规则，并随机删除和添加符号。我发现声音的演变对规则变异非常敏感（这是一件好事
+    - 这意味着我们所声化的东西真正影响声音），因此每个规则只需以10%的概率变异，并且只添加和删除一个符号就足够了。
 - en: As the L-system process exponentially amplifies the number of symbols, it’s
     necessary to cut the words from each generation short to ensure that mutations
     happen in a timely manner. Otherwise the mutations will become sparser and sparser.
     The maximum word size becomes a parameter that determines how quickly the L-system
     evolves. I’ve set this to 1500.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于L系统过程呈指数级增加符号的数量，有必要从每一代的单词中截取部分以确保变异及时发生。否则，变异会变得越来越稀疏。最大单词长度成为决定L系统演化速度的参数。我将其设置为1500。
 - en: 'Here are some results, again uncurated:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一些结果，再次未经筛选：
 - en: Assessment and further directions
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估和进一步方向
 - en: I went with the simplest possible synthesis method because I wanted to get as
     close to “hearing the L-system” as possible while still being sort of musical.
     As such, the sounds I got are raw, digital, and shamelessly granular. I wouldn’t
     use them as a final piece, but they could serve as raw materials for sampling
     and adding post-effects.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我选择了最简单的合成方法，因为我想尽可能接近“听到L系统”的声音，同时还有点音乐性。因此，我得到的声音是原始的、数字的，而且毫不掩饰地颗粒化。我不会把它们作为最终作品，但它们可以作为采样和添加后处理的原材料。
 - en: To make this more musical, the first thing I’d try is a more sophisticated synthesis
     algorithm. Pulsar synthesis would be my top pick, as it is very general. I’m envisioning
     using a buffer of recorded sound as the source for the pulsarets, modulating the
@@ -278,8 +389,11 @@
     chunks (0.1 seconds) to extracting timbre as a wavetable (< 0.02 seconds). If
     a pure synthesis approach is preferred, having multiple symbols corresponding
     to multiple types of synthesized pulsarets could help with the diversity of output.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使这更具音乐性，我会尝试一个更复杂的合成算法。脉冲星合成将是我的首选，因为它非常通用。我设想使用录制音频的缓冲区作为脉冲星的源，用海龟图形调制缓冲区位置，并模糊采样可识别的小块（0.1秒）和提取波表作为音色（<
+    0.02秒）的界限。如果更倾向于纯合成方法，则具有多个符号对应多种类型的合成脉冲星可以帮助增加输出的多样性。
 - en: The sine wave LFOs are very distinctive and wear themselves out rather quickly.
     To reduce fatigue, it may be wise to expose the minimum and maximum values of
     those LFOs as user parameters (or targets for random modulation). Maybe there
@@ -288,8 +402,10 @@
     which could be exploited to produce a wider variety of modulations that avoid
     the “rocketing” problem. However, as much as possible I prefer complexity to come
     from the L-system rather than its interpretation.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 正弦波LFO非常独特且易于磨损。为了减少疲劳，将LFO的最小和最大值公开为用户参数（或目标随机调制）。也许有更好的方法来使用符号来调制参数。在图形L系统中，通常会有执行小块条件逻辑的符号，这可以利用来产生避免“火箭”问题的更广泛的调制方式。然而，尽可能地，我更希望复杂性来自L系统本身而不是其解释。
 - en: Rule mutation is a big deal. It upgrades this system from a static texture synthesizer
     to an algorithmic music generator that allows for a balance between coherence
     and change. If you wait long enough (or set mutation to happen fast enough), the
@@ -297,14 +413,18 @@
     running this in real time and allowing the user to save and recall the L-system
     to create repetition and formal structure rather than just letting the thing do
     a random walk.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 规则变异是个大问题。它将这个系统从静态纹理合成器升级为允许在连贯性和变化之间取得平衡的算法音乐生成器。如果等待足够长的时间（或者设置变异速度足够快），系统可以到达一个完全不同的地方。我设想实时运行它，并允许用户保存和回溯L系统，以创建重复和形式结构，而不仅仅是让它随机漫步。
 - en: As-is, rules are generated and mutated in a mostly nondiscerning way. The rule
     generation system could be biased to produce more musical results. Alternatively,
     instead of using random generation, the rules could be exposed to the user for
     direct editing as a mode of expression.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，规则的生成和变异主要是无差别的。规则生成系统可以被偏向于产生更多音乐性结果的方式所偏好。或者，规则也可以暴露给用户以直接编辑作为一种表达方式，而不是使用随机生成。
 - en: There are many variations to L-systems, including stochastic L-systems and context-sensitive
     L-systems. One significant one is “branched” L-systems where, for instance, the
     symbol `[` stores and pushes the current state of the turtle to a stack and the
@@ -312,20 +432,28 @@
     when creating fractals. Manousakis proposes an interpretation of branched L-systems
     as producing polyphony, with appropriate limits on the number of simultaneous
     voices.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: L系统有许多变体，包括随机L系统和上下文相关L系统。其中一个重要的变体是“分支”L系统，例如，符号`[`将当前海龟状态存储并推送到堆栈，而符号`]`则弹出并恢复状态。在创建分形图形L系统时，这些在图形L系统中很常见。Manousakis提出了将分支L系统解释为产生多声部的方法，并对同时声部数量施加适当的限制。
 - en: I’m not yet clear on how to use L-systems to generate macro-level structure
     in a way that’s musically compelling and transparent with respect to the L-system’s
     behavior. To throw out an idea, the mutation process could itself be commandeered
     by an L-system.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还不清楚如何使用L系统以一种在音乐上引人入胜且透明地生成宏观结构，以响应L系统的行为。丢出一个想法，突变过程本身可以被L系统控制。
 - en: Conclusions
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Admittedly, the sound examples in this post demonstrate more potential than
     musicality. I’m fine with that. I don’t know if I’ll end up incorporating L-systems
     into a more serious artistic pursuits, but it’s good to know that they show promise.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 无可否认，本文中的声音示例展示了比音乐性更多的潜力。我对此感到满意。我不知道最终是否会将L系统纳入更严肃的艺术追求中，但知道它们显示出了潜力是件好事。
