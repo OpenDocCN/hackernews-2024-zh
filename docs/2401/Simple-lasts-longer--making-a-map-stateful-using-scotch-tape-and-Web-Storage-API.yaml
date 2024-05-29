@@ -1,174 +1,252 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:38:53'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:38:53
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Simple lasts longer: making a map stateful using scotch tape and Web Storage
     API'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 简单持久：使用胶带和Web Storage API使地图有状态
 - en: 来源：[https://newsletter.pnote.eu/p/simple-lasts-longer](https://newsletter.pnote.eu/p/simple-lasts-longer)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://newsletter.pnote.eu/p/simple-lasts-longer](https://newsletter.pnote.eu/p/simple-lasts-longer)
 - en: '*This is less useful than I thought.*'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这比我想象的要不那么有用。*'
 - en: I [made a map](https://newsletter.pnote.eu/p/mapping-space-invader-mosaics-in-paris)
     of the collectible [Space Invader](https://en.wikipedia.org/wiki/Invader_(artist))
     mosaics and [put it online](https://pnote.eu/projects/invaders/). I thought it
     would be helpful for planning walks (and runs 🚀) with some Space Invader hunting
     along the way.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我[制作了一张地图](https://newsletter.pnote.eu/p/mapping-space-invader-mosaics-in-paris)，展示了可收集的[太空入侵者](https://en.wikipedia.org/wiki/Invader_(artist))马赛克，并[将其放在线上](https://pnote.eu/projects/invaders/)。我认为这会有助于计划散步（和跑步🚀）的时候顺便寻找一些太空入侵者。
 - en: But I missed one problem. Can you spot the issue?
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我错过了一个问题。你能发现问题吗？
 - en: Wow, so many mosaics! And yes, that’s the problem.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 哇，好多马赛克！是的，这就是问题所在。
 - en: With almost 1500 invaders in Paris, to use a map to *actually* plan your walks,
     you need to keep track of the invaders you already collected. It’s no fun to run
     in circles :). (And the official app doesn’t give you any points for repeatedly
     taking photos of the same mosaic. It actually mocks you and asks if you’re drunk
     🙃)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 有将近1500个入侵者在巴黎，如果要使用地图*实际*规划你的步行路线，你需要跟踪你已经收集到的入侵者。光是绕圈跑一点都不好玩 :). （而且官方应用不会给你重复拍摄同一马赛克的照片任何积分。它实际上会嘲笑你，并问你是否喝醉了🙃）
 - en: My map couldn’t track what's already "collected”. It was perfectly simple and
     perfectly “stateless”.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的地图无法跟踪已经“收集到”的内容。它完全简单，完全“无状态”。
 - en: Stateless websites are easy to manage. You just need to publish a few static
     files on the Internet. The website looks the same to every user and it never changes
     (unless you publish an update).
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 无状态网站易于管理。您只需要在互联网上发布一些静态文件。网站对每个用户都是相同的，它永远不会更改（除非您发布更新）。
 - en: To keep track of the mosaics flashed by each user, I need to teach the website
     to store the list of what’s already collected … somewhere. But where?
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了跟踪每个用户闪过的马赛克，我需要教会网站将已收集到的列表存储在……某个地方。但是在哪里？
 - en: The traditional answer is to run a **database** and store the collection of
     each user there.
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 传统的答案是运行一个**数据库**，并将每个用户的收藏品存储在那里。
 - en: A more trendy, newer option is to use a 3rd party **service** that acts like
     a database, but runs on someone else’s server. [Firebase](https://firebase.google.com/docs/database)
     is a well-known example.
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一种更时髦、更新的选择是使用第三方**服务**，它充当数据库，但在别人的服务器上运行。[Firebase](https://firebase.google.com/docs/database)是一个众所周知的例子。
 - en: The second approach is less work than the first one (the website can directly
     talk to Firebase, I don’t need to set up any servers myself), but both require
     some work. Worse yet, they increase the complexity of the project, adding a dependency
     on another service.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二种方法比第一种方法少了一些工作（网站可以直接与Firebase通信，我不需要自己设置任何服务器），但两者都需要一些工作。更糟糕的是，它们增加了项目的复杂性，增加了对另一个服务的依赖。
 - en: Complexity kills projects 🔪 (especially the fragile hobby projects of distracted
     minds 💫), so let’s do something simpler. Could we store the list of collected
     invaders directly in the browser of each user?
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 复杂性会毁掉项目🔪（尤其是那些分心的脆弱的业余项目💫），所以让我们做一些更简单的事情。我们是否可以直接在每个用户的浏览器中存储已收集的入侵者列表？
 - en: Thanks to the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API),
     any website can store a small amount of data on your computer/phone, and it will
     be persisted through reboots. That’s promising!
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于[Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)的存在，任何网站都可以在您的计算机/手机上存储少量数据，并且通过重新启动后会持久存在。这很有前途！
 - en: I modified the map website to include buttons for marking each invader as flashed,
     and made it persist the state in the local Web Storage.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我修改了地图网站，包括为每个入侵者标记闪过的按钮，并使其在本地Web Storage中持久保存状态。
 - en: 'This works by default, without any permission prompts. Using Chrome developer
     tools, we can inspect the state the map stores in the browser. It’s just the list
     of invader IDs:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，此功能无需任何权限提示即可使用。使用Chrome开发者工具，我们可以检查地图在浏览器中存储的状态。这只是入侵者ID的列表：
 - en: This is very simple and it works! You can see the published updated map **[here](https://pnote.eu/projects/invaders/map/).**
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很简单，它有效！您可以在**[此处](https://pnote.eu/projects/invaders/map/)查看发布的更新地图**。
 - en: No state on the server needed. No user accounts, no authentication, no “I forgot
     my password” problem. Also, when we don’t store any data on the server, we cannot
     lose or leak it. ([Local-first software](https://www.inkandswitch.com/local-first/).)
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器上不需要状态。没有用户帐户，没有认证，没有“我忘记了我的密码”问题。此外，当我们不在服务器上存储任何数据时，我们不能丢失或泄漏它。（[本地优先软件](https://www.inkandswitch.com/local-first/)。）
 - en: If this solution is so nice, why all the major websites insist on creating an
     account and storing our state server-side?
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果这个解决方案如此好，为什么所有主要网站都坚持要求创建帐户并在服务器端存储我们的状态？
 - en: For many reasons, one of which is that when the data is stored locally in the
     browser, it’s not synced across devices and not backed up. If the user re-installs
     their browser, they lose all state.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 有很多原因，其中之一是，当数据存储在浏览器本地时，它不会在设备之间同步，也不会备份。如果用户重新安装他们的浏览器，他们将丢失所有状态。
 - en: Since we’re into simplicity, maybe we can allow users to take care of backup
     themselves?
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们追求简单，也许我们可以允许用户自己处理备份？
 - en: 'It only took 50 lines of code to add a little popup with a feature to import/export
     the list of collected mosaics. And ChatGPT was happy to practically write all
     of it:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需要50行代码就可以添加一个小弹出窗口，具有导入/导出收集的马赛克列表的功能。ChatGPT很高兴几乎全部编写它：
 - en: We ended up with a solution that tries to be the best of all worlds. The website
     remains simple and it doesn’t have to manage user state. But the users can still
     mark them as collected, and even export and backup their collection if they want
     to.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们最终得到了一个试图成为所有领域最好的解决方案。网站保持简单，不必管理用户状态。但用户仍然可以将它们标记为已收集，并且甚至可以导出和备份他们的收藏品。
 - en: Hobby projects are fragile. They can only last if they’re simple to maintain,
     otherwise keeping them working becomes tedious and the author eventually gives
     up.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 业余项目是脆弱的。它们只有在简单易维护的情况下才能持续存在，否则让它们正常工作会变得乏味，作者最终会放弃。
 - en: I’m still maintaining a database-based hobby project I started 15 years ago.
     It ended up growing a small community that relies on it. I’m happy about it, but
     I feel the ongoing maintenance cost of keeping the app running and up to date.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我仍在维护一个基于数据库的业余项目，我在15年前开始的。它最终发展成了一个依赖它的小型社区。我对此感到高兴，但我感到维护应用程序的持续成本和保持最新状态的压力。
 - en: Wiser from this experience, these days I try to build all hobby projects in
     a way that minimizes dependencies and general fragility. If needed, the app should
     keep running with zero modifications for the decade to come 🤞.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这次经历中更加聪明，如今我尽量以最小化依赖和通用脆弱性的方式构建所有的业余项目。如果需要，这个应用应该在未来十年内保持零修改的运行🤞。
 - en: '**Simple is not only faster to launch, it also lasts longer.**'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '**简单不仅启动更快，而且持续时间更长。**'
 - en: Are you thinking of starting any hobby project in 2024? How simple can you make
     it for the initial version?
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 你是否考虑在2024年开始任何业余项目？你能使它的初始版本多简单？
 - en: '📝 [Enso](https://write.sonnet.io/), a text editor where you can only write,
     but not edit. Great for breaking through writer’s block: just let the thoughts
     flow'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 📝 [Enso](https://write.sonnet.io/)，一个文本编辑器，你只能写作，而不能编辑。对于突破写作障碍非常有帮助：只需让思绪流淌。
 - en: 🎶 [muted.io](https://muted.io/), a toolkit of music theory tools, running in
     the browser
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 🎶 [muted.io](https://muted.io/)，一个运行在浏览器中的音乐理论工具包
 - en: 💻 [Turing Complete](https://turingcomplete.game/), a computer science game where
     you build a computer from increasingly complex components, starting with logic
     gates
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 💻 [Turing Complete](https://turingcomplete.game/)，一个计算机科学游戏，你可以从逻辑门开始，逐渐构建一个计算机，越来越复杂。
 - en: A wave of cold weather is expected in Paris anytime now. Great time for reading
     and writing with a cup of tea. Or maybe looking up that mulled wine recipe.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 巴黎随时可能迎来一波寒冷天气。是阅读和写作的好时机，配上一杯茶。或者看看那个热红酒的食谱。
 - en: Stay warm! 💫
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 保持温暖！💫
 - en: – Przemek
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: – Przemek
