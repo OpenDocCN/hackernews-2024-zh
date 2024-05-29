@@ -1,73 +1,111 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 15:09:19'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:09:19
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Proposed Windows NT sync driver brings big Wine / Proton performance improvements
     | GamingOnLinux
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 提议的 Windows NT 同步驱动程序带来了 Wine / Proton 的大幅性能改进 | GamingOnLinux
 - en: 来源：[https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/](https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/](https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/)
 - en: Zeb Figura of CodeWeavers [has proposed](https://lore.kernel.org/lkml/20240124004028.16826-1-zfigura@codeweavers.com/)
     a Windows NT synchronization primitive driver to help performance of running games
     and applications designed for Windows on Linux with Wine / Proton.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: CodeWeavers 的 Zeb Figura [提出了](https://lore.kernel.org/lkml/20240124004028.16826-1-zfigura@codeweavers.com/)
+    一个 Windows NT 同步原语驱动程序，以帮助在 Linux 上使用 Wine / Proton 运行的针对 Windows 的游戏和应用的性能。
 - en: 'As per the RFC (request for comments) posted onto the Linux kernel mailing
     list Figura notes: "This patch series introduces a new char misc driver, /dev/ntsync,
     which is used to implement Windows NT synchronization primitives."'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据发布到 Linux 内核邮件列表的 RFC（请求评论）的内容，Figura 指出：“此补丁系列引入了一个新的 char 杂项驱动程序，/dev/ntsync，用于实现
+    Windows NT 同步原语。”
 - en: 'Then giving some background on it: "The Wine project emulates the Windows API
     in user space. One particular part of'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后对此进行了一些背景介绍：“Wine 项目在用户空间模拟 Windows API。其中一个特定的部分是
 - en: that API, namely the NT synchronization primitives, have historically been implemented
     via RPC to a dedicated "kernel" process. However, more recent applications use
     these APIs more strenuously, and the overhead of RPC has become a bottleneck.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 该 API，即 NT 同步原语，过去是通过 RPC 实现到专用的“内核”进程的。但是，最近的应用程序更加强烈地使用了这些 API，RPC 的开销已经成为一个瓶颈。
 - en: The NT synchronization APIs are too complex to implement on top of existing
     primitives without sacrificing correctness. Certain operations, such as NtPulseEvent()
     or the "wait-for-all" mode of NtWaitForMultipleObjects(), require direct control
     over the underlying wait queue, and implementing a wait queue sufficiently robust
     for Wine in user space is not possible. This proposed driver, therefore, implements
     the problematic interfaces directly in the Linux kernel."
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: NT 同步 API 太复杂，无法在现有原语的基础上实现而不损失正确性。某些操作，如 NtPulseEvent() 或 NtWaitForMultipleObjects()
+    的“等待全部”模式，需要直接控制底层的等待队列，并且在用户空间为 Wine 实现足够强大的等待队列是不可能的。因此，该提议的驱动程序直接在 Linux 内核中实现了有问题的接口。”
 - en: 'Figura did a presentation on it at the Linux Plumbers Conference in 2023 that
     you can see below:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Zeb Figura 在 2023 年的 Linux Plumbers Conference 上做了一次关于此事的演讲，您可以在下面看到：
 - en: 'What kind of performance difference might we see with something like this?
     The difference depends on your hardware and what you''re trying to run but some
     FPS examples were given from multiple users including:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能会看到类似这样的性能差异？差异取决于您的硬件和您要运行的内容，但是多个用户提供了一些 FPS 的示例：
 - en: '*What hardware and software each was tested on was not noted.*'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '*测试的硬件和软件没有注明。*'
 - en: Some impressive numbers but again it's hardware dependent, but even so any performance
     uplift would be welcome, so hopefully the patch series gets some good comments
     and approval after any tweaks are done that may be needed. Looks like we could
     end up seeing a nice future performance improvement for Linux and Steam Deck gaming
     with Wine and Proton.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些令人印象深刻的数字，但是又再次取决于硬件，但即便如此，任何性能提升都将受欢迎，因此希望在进行可能需要的任何调整后，这个补丁系列得到一些良好的评论和批准。看起来我们可能会在
+    Linux 和 Steam Deck 上通过 Wine 和 Proton 看到一个不错的未来性能提升。
 - en: '*Source: [Phoronix](https://www.phoronix.com/news/Windows-NT-Sync-RFC-Linux)*'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '*来源：[Phoronix](https://www.phoronix.com/news/Windows-NT-Sync-RFC-Linux)*'
 - en: Article taken from [GamingOnLinux.com.](https://www.gamingonlinux.com/)
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 文章来自[GamingOnLinux.com.](https://www.gamingonlinux.com/)
