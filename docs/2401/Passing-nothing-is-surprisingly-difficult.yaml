@@ -1,0 +1,675 @@
+- en: <!--yml
+  id: totrans-0
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <!--yml
+- en: 'category: 未分类'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分类：未分类
+- en: 'date: 2024-05-27 14:49:21'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:49:21
+- en: -->
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: -->
+- en: Passing nothing is surprisingly difficult
+  id: totrans-4
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么也不传递出奇地困难
+- en: 来源：[https://davidben.net/2024/01/15/empty-slices.html](https://davidben.net/2024/01/15/empty-slices.html)
+  id: totrans-5
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 来源：[https://davidben.net/2024/01/15/empty-slices.html](https://davidben.net/2024/01/15/empty-slices.html)
+- en: Passing nothing is surprisingly difficult
+  id: totrans-6
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么也不传递出奇地困难
+- en: '[David Benjamin](/) (2024-01-15)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[David Benjamin](/)（2024-01-15）'
+- en: 'My day job is in [browsers](https://www.chromium.org/) and [cryptography](https://boringssl.googlesource.com/boringssl/),
+    not compilers, yet I often find that I need to spend more of my time working through
+    the semantics of programming languages than using them. This post discusses a
+    thorny cross-language issue between C, C++, and Rust. In short:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我的日常工作是在[浏览器](https://www.chromium.org/)和[加密](https://boringssl.googlesource.com/boringssl/)方面，而不是编译器，然而我经常发现我需要花更多的时间来解决编程语言的语义问题而不是使用它们。本文讨论了
+    C、C++ 和 Rust 之间的一个棘手的跨语言问题。简而言之：
+- en: C’s rules around pointers and `memcpy` leave no good ways to represent an empty
+    slice of memory.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: C 语言关于指针和 `memcpy` 的规则没有好的方法来表示空的内存切片。
+- en: C++’s pointer rules are fine, but `memcpy` in C++ inherits the C behavior.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: C++ 的指针规则是可以的，但是 C++ 中的 `memcpy` 继承了 C 的行为。
+- en: Rust FFI is not [zero-cost](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html).
+    Rust picked a C/C++-incompatible slice representation, requiring a conversion
+    in each direction. Forgetting the conversion is an easy mistake and unsound.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Rust FFI 并非[零成本](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html)。Rust
+    选择了一种与 C/C++ 不兼容的切片表示，每个方向都需要进行转换。忘记转换是一个容易犯的错误，而且是不安全的。
+- en: 'Rust slices appear to *also* be incompatible with Rust pointer arithmetic,
+    to the point that the standard library’s slice iterator is unsound. (Update 2024-01-16:
+    It sounds like this is [in the process of being fixed](https://github.com/rust-lang/rust/issues/117945)!)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Rust 切片似乎*也*与 Rust 指针算术不兼容，以至于标准库的切片迭代器是不安全的。（更新 2024-01-16：听起来这正在[修复过程中](https://github.com/rust-lang/rust/issues/117945)！）
+- en: As FFI challenges inherently span multiple languages, I wrote this mostly to
+    have one common reference that describes the mismatch.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于 FFI 的挑战本质上涉及多种语言，我大部分是为了有一个共同的参考来描述不匹配。
+- en: Slices
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 切片
+- en: All three languages allow working with *slices*, or contiguous sequences of
+    objects in memory. (Also called [spans](https://en.cppreference.com/w/cpp/container/span),
+    but we’ll use “slices” here.) A slice is typically a pointer and a length, `(start,
+    count)`, giving `count` objects from `start`, of some type `T`.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这三种语言都允许使用 *切片*，或者内存中连续的对象序列。（在这里也称为[跨度](https://en.cppreference.com/w/cpp/container/span)，但我们这里将使用“切片”）切片通常是一个指针和一个长度，`(start,
+    count)`，从 `start` 开始，有 `count` 个对象，类型为 `T`。
+- en: A slice can also be specified by two pointers, `(start, end)`, giving the objects
+    from `start` (inclusive) to `end` (exclusive). This is better for iteration because
+    only one value needs to be adjusted to advance, but the length is less available.
+    C++ iterator pairs are a generalization of this form, and Rust slice iterators
+    use this internally. The two forms can be converted with `end = start + count`
+    and `count = end - start`, using C-style pointer arithmetic where everything is
+    scaled by the object size. We’ll primarily discuss `(start, count)`, but this
+    duality means slices are closely related to pointer arithmetic.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 切片也可以用两个指针 `(start, end)` 来指定，从 `start`（包含）到 `end`（不包含）的对象。这对于迭代来说更好，因为只需要调整一个值来推进，但长度不太容易得到。C++
+    的迭代器对就是这种形式的一般化，而 Rust 的切片迭代器在内部使用这种形式。这两种形式可以用 `end = start + count` 和 `count
+    = end - start` 进行转换，使用 C 风格的指针算术，其中一切都按照对象的大小来缩放。我们主要讨论 `(start, count)`，但这种双重性意味着切片与指针算术密切相关。
+- en: In C and C++, slices are, at best, library types built out of pointers and lengths.
+    Sometimes functions just take or return pointer and length separately, but still
+    use it to represent a slice of memory. In Rust, slices are language primitives,
+    but the underlying components are exposed for unsafe code and FFIs. To work with
+    each of these, we must understand what combinations of pointers and lengths are
+    valid.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 C 和 C++ 中，切片最多是由指针和长度构建的库类型。有时函数只是单独获取或返回指针和长度，但仍然使用它来表示内存切片。在 Rust 中，切片是语言原语，但底层组件对于不安全代码和
+    FFI 是暴露的。要处理每个这些，我们必须理解哪些指针和长度的组合是有效的。
+- en: 'This is straightforward for a positive-length slice: `start` must point within
+    an allocation where there are at least `count` objects of type `T`. But suppose
+    we want an empty (length zero) slice. **What are the valid representations of
+    an empty slice?**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于正长度的切片来说这很简单：`start` 必须指向一个至少包含 `count` 个 `T` 类型对象的分配内存。但是假设我们想要一个空（长度为零）切片。**空切片的有效表示是什么？**
+- en: 'Certainly we can point `start` within (or just past) some array of `T`s and
+    set `count` to zero. But we may want to make an empty slice without an existing
+    array. For example, a default-constructed `std::span<T>()` in C++ or `&[]` in
+    Rust. What are our options then? In particular:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，我们可以将 `start` 指向（或刚好超出）某些 `T` 类型数组，并将 `count` 设置为零。但我们可能希望创建一个没有现有数组的空切片。例如，在
+    C++ 中默认构造的 `std::span<T>()` 或者在 Rust 中的 `&[]`。那么我们有哪些选项呢？特别地：
+- en: Can an empty slice be `(nullptr, 0)`?
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 空切片可以是 `(nullptr, 0)` 吗？
+- en: Can an empty slice be `(alignof(T), 0)`, or some other aligned address that
+    doesn’t correspond to an allocation?
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 空切片可以是 `(alignof(T), 0)`，或者是一些不对应于分配的对齐地址吗？
+- en: The second question may seem odd to C and C++ folks, but Rust folks may recognize
+    it as `[std::ptr::NonNull::dangling](https://doc.rust-lang.org/std/ptr/struct.NonNull.html#method.dangling)`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个问题对 C 和 C++ 的人来说可能看起来有点奇怪，但 Rust 的人可能会将其识别为 `[std::ptr::NonNull::dangling](https://doc.rust-lang.org/std/ptr/struct.NonNull.html#method.dangling)`。
+- en: C++
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: C++
+- en: C++ is the easiest to discuss, as it has a formal specification and is (almost)
+    self-consistent.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C++ 是最容易讨论的，因为它有一个正式的规范并且（几乎）是自洽的。
+- en: 'First, `(nullptr, 0)` is a valid empty slice in C++. The STL’s types [routinely
+    return it](https://eel.is/c++draft/span.cons#2), and the language is compatible
+    with it:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，`(nullptr, 0)` 是 C++ 中的一个有效的空切片。STL 的类型 [经常返回它](https://eel.is/c++draft/span.cons#2)，而且语言与之兼容：
+- en: '`(T*)nullptr + 0` is [defined](https://eel.is/c++draft/expr.add#4.1) to be
+    `(T*)nullptr`'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`(T*)nullptr + 0` 被 [定义](https://eel.is/c++draft/expr.add#4.1) 为 `(T*)nullptr`'
+- en: '`(T*)nullptr - (T*)nullptr` is [defined](https://eel.is/c++draft/expr.add#5.1)
+    to be `0`'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`(T*)nullptr - (T*)nullptr` 被 [定义](https://eel.is/c++draft/expr.add#5.1) 为
+    `0`'
+- en: C++ defines APIs like `std::span` in terms of [pointer addition](https://eel.is/c++draft/span.cons#4.1)
+    for the `(start, count)` form, and iterator pairs in terms of [pointer subtraction](https://eel.is/c++draft/iterator.operations#5)
+    for the `(start, end)` form, so this is both necessary and sufficient.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C++ 用 `(start, count)` 形式的 [指针加法](https://eel.is/c++draft/span.cons#4.1) 定义了像
+    `std::span` 这样的 API，用迭代器对在 `(start, end)` 形式的 [指针减法](https://eel.is/c++draft/iterator.operations#5)
+    定义了迭代器对，因此这既是必要的也是充分的。
+- en: 'Moreover, it would be impractical for C++ to forbid `(nullptr, 0)`. C++ code
+    routinely needs to interact with APIs that specify slices as individual components.
+    Given such an API, *no one* writes code like this:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，C++ 禁止 `(nullptr, 0)` 是不现实的。C++ 代码经常需要与指定切片为单独组件的 API 进行交互。给定这样的 API，*没有人*会编写这样的代码：
+- en: '[PRE0]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'It is much more natural to use `nullptr`:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `nullptr` 更加自然：
+- en: '[PRE1]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This means, to be practical, functions like `takes_a_slice` must accept `(nullptr,
+    0)`. For implementing such functions to be practical, the underlying language
+    primitives must then also accept `(nullptr, 0)`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着，为了实用，诸如 `takes_a_slice` 这样的函数必须接受 `(nullptr, 0)`。为了实现这样的函数是实用的，底层语言原语也必须接受
+    `(nullptr, 0)`。
+- en: As for the `(alignof(T), 0)` question, pointer [addition](https://eel.is/c++draft/expr.add#4.2)
+    and [subtraction](https://eel.is/c++draft/expr.add#5.2) require the pointers point
+    to some object and that the operation stays within the bounds of that object (or
+    one past the end). C++ does not define there to be an object at `alignof(T)`,
+    so this is not allowed, instead producing Undefined Behavior. This has no immediate
+    usability concern (no one is going to write `reinterpret_cast<uint8_t*>(1)` to
+    call `takes_a_slice`), but we’ll see later that it has some consequences for Rust
+    FFIs.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至于 `(alignof(T), 0)` 的问题，指针 [加法](https://eel.is/c++draft/expr.add#4.2) 和 [减法](https://eel.is/c++draft/expr.add#5.2)
+    要求指针指向某个对象并且操作保持在该对象的边界内（或者超出末尾的一个位置）。C++ 并没有定义在 `alignof(T)` 处有一个对象，因此这是不允许的，而是产生未定义的行为。这并没有直接的可用性问题（没有人会写
+    `reinterpret_cast<uint8_t*>(1)` 来调用 `takes_a_slice`），但我们将会在后面看到它对 Rust FFI 有一些后果。
+- en: '(Update 2024-01-16: Added the following paragraph, as this shorthand seems
+    to have been unclear.)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （2024-01-16 更新：添加了以下段落，因为这种简写似乎不太清楚。）
+- en: Of course, *in principle*, nothing stops `takes_a_slice` from defining its own
+    unique rules for these corner cases. Beyond what the type system naturally provides,
+    user code will rarely formally define semantics, and we must instead look to fuzzier
+    conventions and expectations. Sadly, in C and C++, these fuzzier aspects often
+    include well-definedness. When all the slice-adjacent language primitives consistently
+    use the same preconditions for slice components, a naively written function will
+    match. This is then a reasonable default interpretation for `takes_a_slice`’s
+    preconditions. When this post discusses “the” rules for slices for C++ or C, it
+    is in part a shorthand for this emergent convention.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，**原则上**，`takes_a_slice` 可以定义其自己独特的规则来处理这些边缘情况。除了类型系统自然提供的内容之外，用户代码很少会正式定义语义，因此我们必须转而寻求更模糊的惯例和期望。不幸的是，在
+    C 和 C++ 中，这些更模糊的方面通常包括明确定义的特性。当所有与切片相邻的语言原语一致地使用相同的切片组件前提条件时，一个简单写的函数将匹配。这时，对于
+    `takes_a_slice` 的前提条件来说，这是一个合理的默认解释。当本文讨论 C++ 或 C 的切片规则时，部分意思是这种出现的惯例的简写。
+- en: However, C++ is merely *almost* self-consistent. C++ picks up `memcpy` and other
+    functions from C’s standard library, complete with C’s semantics…
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，C++ 只是*几乎*自洽的。C++ 从 C 的标准库中获取 `memcpy` 和其他函数，包括 C 的语义...
+- en: C
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: C
+- en: C is messier. For the same reasons discussed above, it is impractical to reject
+    `(NULL, 0)`. However, C’s language rules make it difficult for a function to accept
+    it. C does not have C++’s special cases for `(T*)NULL + 0` and `(T*)NULL - (T*)NULL`.
+    See clauses 8 and 9 of section 6.5.6 of [N2310](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf).
+    `memcpy` and the rest of the C standard library similarly [forbid](https://www.imperialviolet.org/2016/06/26/nonnull.html)
+    `(NULL, 0)`.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C 更混乱。出于上述相同的原因，拒绝 `(NULL, 0)` 是不切实际的。然而，C 的语言规则使函数难以接受它。C 没有 C++ 对于 `(T*)NULL
+    + 0` 和 `(T*)NULL - (T*)NULL` 的特殊情况。参见[N2310](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf)第
+    6.5.6 节的第 8 和 9 条款。`memcpy` 和 C 标准库的其余部分同样[禁止](https://www.imperialviolet.org/2016/06/26/nonnull.html)`(NULL,
+    0)`。
+- en: I think **this should be considered a bug in the C specification**, and compilers
+    should not [optimize based on it](https://gcc.gnu.org/gcc-4.9/porting_to.html).
+    In [BoringSSL](https://boringssl.googlesource.com/boringssl/), we found the C
+    rules so unusable that we resorted to [wrapping the standard library](https://boringssl.googlesource.com/boringssl/+/17cf2cb1d226b0ba2401304242df7ddd3b6f1ff2%5E%21/)
+    with `n != 0` checks. The pointer arithmetic rules are similarly a [tax](https://boringssl.googlesource.com/boringssl/+/6be491b7bb57c3950d4fbb97fdd4a141e3fa4d63%5E%21/)
+    [on](https://boringssl.googlesource.com/boringssl/+/4984e4a6325e9c6302f846c7bf2b75e8ea3fd9dd%5E%21/)
+    [development](https://boringssl.googlesource.com/boringssl/+/3c6085b6ae982a80633bf5369c274036702c6848%5E%21/).
+    Moreover, C++ inherits C’s standard library (but not its pointer rules), including
+    this behavior. In Chromium’s C++ code, `memcpy` has been the single biggest blocker
+    to [enabling UBSan](https://bugs.chromium.org/p/chromium/issues/detail?id=1394755).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我认为**这应该被视为 C 规范中的一个 bug**，编译器不应该基于此进行[优化](https://gcc.gnu.org/gcc-4.9/porting_to.html)。在[BoringSSL](https://boringssl.googlesource.com/boringssl/)中，我们发现
+    C 规则如此难以使用，以至于我们不得不[包装标准库](https://boringssl.googlesource.com/boringssl/+/17cf2cb1d226b0ba2401304242df7ddd3b6f1ff2%5E%21/)并使用
+    `n != 0` 检查。指针算术规则同样是[开发](https://boringssl.googlesource.com/boringssl/+/6be491b7bb57c3950d4fbb97fdd4a141e3fa4d63%5E%21/)的[负担](https://boringssl.googlesource.com/boringssl/+/4984e4a6325e9c6302f846c7bf2b75e8ea3fd9dd%5E%21/)。此外，C++
+    继承了 C 的标准库（但不是它的指针规则），包括这种行为。在 Chromium 的 C++ 代码中，`memcpy` 是阻止[启用 UBSan](https://bugs.chromium.org/p/chromium/issues/detail?id=1394755)的最大障碍。
+- en: Fortunately, there is hope. [Nikita Popov](https://www.npopov.com/2024/01/01/This-year-in-LLVM-2023.html#zero-length-operations-on-null)
+    and Aaron Ballman have written a [proposal](https://docs.google.com/document/d/1guH_HgibKrX7t9JfKGfWX2UCPyZOTLsnRfR6UleD1F8/edit)
+    to fix this in C. (Thank you!) While it won’t make C and C++ safe by any stretch
+    of imagination, this is an easy step to fix an unforced error.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 幸运的是，还有希望。[Nikita Popov](https://www.npopov.com/2024/01/01/This-year-in-LLVM-2023.html#zero-length-operations-on-null)
+    和 Aaron Ballman 提出了一份[提案](https://docs.google.com/document/d/1guH_HgibKrX7t9JfKGfWX2UCPyZOTLsnRfR6UleD1F8/edit)来修复这个问题。
+    （谢谢！）虽然这不会使 C 和 C++ 安全到任何程度，但这是一个简单的步骤来修复一个非强制性的错误。
+- en: 'Note that, apart from contrived examples with deleted null checks, the current
+    rules do not actually help the compiler meaningfully optimize code. A `memcpy`
+    implementation cannot rely on pointer validity to speculatively read because,
+    even though `memcpy(NULL, NULL, 0)` is undefined, slices at the end of a buffer
+    are fine:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，除了带有删除的空检查的人为示例外，当前的规则实际上并没有帮助编译器有意义地优化代码。`memcpy` 的实现不能依赖指针的有效性进行推测性读取，因为即使
+    `memcpy(NULL, NULL, 0)` 是未定义的，缓冲区末尾的切片也是可以的。
+- en: '[PRE2]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: If `buf` were at the end of a page with nothing allocated afterwards, a speculative
+    read from `memcpy` would break.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果 `buf` 在页面的末尾，之后没有分配任何内容，从 `memcpy` 进行的推测性读取会中断。
+- en: Rust
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Rust
+- en: Rust does *not* allow `(nullptr, 0)`. Functions like `std::slice_from_raw_parts`
+    [require the pointer to be non-null](https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html).
+    This comes from Rust treating types like `&[T]` and `*[T]` as analogous to `&T`
+    and `*T`. They are “references” and “pointers” that are represented as `(start,
+    count)` pairs. Rust requires every pointer type to have a “null” value outside
+    its reference type. This is used in `enum` layout optimizations. For example,
+    `Option::<&[T]>` has the same size as `&[T]` because `None` uses this null value.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rust 不允许 `(nullptr, 0)`。诸如 `std::slice_from_raw_parts` 这样的函数[要求指针是非空的](https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html)。这来自于
+    Rust 将类型像 `&[T]` 和 `*[T]` 视为类似于 `&T` 和 `*T`。它们是“引用”和“指针”，表示为 `(start, count)`
+    对。Rust 要求每种指针类型在其引用类型之外都有一个“空”值。这在 `enum` 布局优化中使用。例如，`Option::<&[T]>` 与 `&[T]`
+    具有相同的大小，因为 `None` 使用此空值。
+- en: 'Unfortunately, Rust chose `(nullptr, 0)` for the null slice pointer, which
+    means the empty slice, `&[]`, cannot use it. That left Rust having to invent an
+    unusual convention: some non-null, aligned, but otherwise dangling pointer, usually
+    `(alignof(T), 0)`.'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，Rust 选择了 `(nullptr, 0)` 作为空切片指针，这意味着空切片 `&[]` 不能使用它。这使得 Rust 必须发明一种不寻常的约定：一些非空的、对齐的、但是否则悬空的指针，通常是
+    `(alignof(T), 0)`。
+- en: 'Is pointer arithmetic defined for this slice? From what I can tell, the answer
+    appears to be no! (Update 2024-01-16: It sounds like this is [in the process of
+    being defined](https://github.com/rust-lang/rust/issues/117945)!)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个切片是否定义了指针算术？从我所了解的情况来看，答案似乎是否定的！（更新 2024-01-16：听起来这个问题正在[被定义中](https://github.com/rust-lang/rust/issues/117945)！）
+- en: Pointer arithmetic in Rust is spelled with the methods `[add](https://doc.rust-lang.org/std/primitive.pointer.html#method.add)`,
+    `[sub_ptr](https://doc.rust-lang.org/std/primitive.pointer.html#method.sub_ptr)`,
+    and `[offset_from](https://doc.rust-lang.org/std/primitive.pointer.html#method.offset_from)`,
+    which the standard library defines in terms of [allocated objects](https://doc.rust-lang.org/std/ptr/index.html#allocated-object).
+    That means, for pointer arithmetic to work with `alignof(T)`, there must be zero-size
+    slices allocated at every non-zero address. Moreover, `offset_from` requires the
+    two dangling pointers derived from the same slice to point to the “same” of these
+    objects. While the third bullet [here](https://doc.rust-lang.org/std/ptr/index.html#safety),
+    second sentence, says casting literals gives a pointer that is “valid for zero-sized
+    accesses”, it says nothing about allocated objects or pointer arithmetic.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rust 中的指针算术用方法 `[add](https://doc.rust-lang.org/std/primitive.pointer.html#method.add)`、`[sub_ptr](https://doc.rust-lang.org/std/primitive.pointer.html#method.sub_ptr)`
+    和 `[offset_from](https://doc.rust-lang.org/std/primitive.pointer.html#method.offset_from)`
+    表示，标准库以 [allocated objects](https://doc.rust-lang.org/std/ptr/index.html#allocated-object)
+    的术语定义了它们。这意味着，为了使指针算术与 `alignof(T)` 协同工作，必须在每个非零地址分配零大小的切片。此外，`offset_from` 要求从同一切片派生的两个悬空指针指向这些对象的“相同”部分。虽然[这里](https://doc.rust-lang.org/std/ptr/index.html#safety)的第三条，第二句，说将字面量转换为指针是“有效的零大小访问”，但它没有提到分配的对象或指针算术。
+- en: Ultimately, these semantics come from LLVM. The Rustonomicon has [more to say
+    on this](https://doc.rust-lang.org/nomicon/vec/vec-alloc.html#:~:text=The%20other%20corner%2Dcase%20we%20need%20to%20worry%20about%20is%20empty%20allocations)
+    (beginning “The other corner-case…”). It concludes that, while there are infinitely
+    many *zero-size* types at `0x01`, Rust conservatively assumes alias analysis does
+    *not* allow offsetting `alignof(T)` with zero for *positive-sized* types. This
+    means **Rust pointer arithmetic rules are incompatible with Rust empty slices.**
+    But recall that slice iteration and pointer arithmetic are deeply related. The
+    Rustonomicon’s [sample iterator](https://doc.rust-lang.org/nomicon/vec/vec-into-iter.html)
+    uses pointer arithmetic, but needs to guard addition with `cap == 0` in `into_iter`
+    and cast to `usize` in `size_hint`.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最终，这些语义来自 LLVM。Rustonomicon 在[这方面有更多内容](https://doc.rust-lang.org/nomicon/vec/vec-alloc.html#:~:text=The%20other%20corner%2Dcase%20we%20need%20to%20worry%20about%20is%20empty%20allocations)（开始于“The
+    other corner-case…”）。它得出的结论是，虽然在`0x01`处有无限多个*零大小*类型，但 Rust 保守地假设别名分析不允许对*正大小*类型的`alignof(T)`进行零偏移。这意味着**Rust
+    指针算术规则与 Rust 空切片不兼容。**但请记住，切片迭代和指针算术是密切相关的。Rustonomicon 的[示例迭代器](https://doc.rust-lang.org/nomicon/vec/vec-into-iter.html)使用指针算术，但需要在`into_iter`中用`cap
+    == 0`进行保护，并在`size_hint`中进行`usize`转换。
+- en: This is too easy for programmers to forget. Indeed the real Rust slice iterator
+    does pointer arithmetic unconditionally ([pointer addition](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter.rs#L94),
+    [pointer subtraction](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter/macros.rs#L57),
+    behind [some](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter/macros.rs#L141)
+    [macros](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter.rs#L132)).
+    This suggests **Rust slice iterators are unsound.**
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这对程序员来说太容易忘记了。实际上，真正的 Rust 切片迭代器无条件地进行指针算术（[指针加法](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter.rs#L94)，[指针减法](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter/macros.rs#L57)，在[一些](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter/macros.rs#L141)
+    [宏](https://github.com/rust-lang/rust/blob/76101eecbe9aa80753664bbe637ad06d1925f315/library/core/src/slice/iter.rs#L132)的后面）。这表明**Rust
+    切片迭代器是不安全的。**
+- en: FFIs
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: FFIs
+- en: Beyond self-consistency concerns, all this means Rust and C++ slices are incompatible.
+    Not all Rust `(start, count)` pairs can be passed into C++ and vice versa. C’s
+    issues make its situation less clear, but the natural fix is to bring it in line
+    with C++.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了自洽性的问题之外，这一切意味着 Rust 和 C++ 的切片是不兼容的。并非所有的 Rust `(start, count)` 对都可以传递到 C++
+    中，反之亦然。C 的问题使得情况不太明确，但自然的解决方法是使其与 C++ 保持一致。
+- en: This means Rust FFI is not [“zero-cost”](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html).
+    **Passing slices between C/C++ and Rust requires conversions in both directions
+    to avoid Undefined Behavior.**
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着 Rust FFI 不是[“零成本”](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html)。**在
+    C/C++ 和 Rust 之间传递切片需要双向转换，以避免未定义行为。**
+- en: More important (to me) than performance, this is a safety and ergonomics problem.
+    Programmers cannot be expected to memorize language specifications. If given a
+    `&[T]` and trying to call a C API, the natural option is to use `[as_ptr](https://doc.rust-lang.org/std/primitive.slice.html#method.as_ptr)`,
+    but that will return a C/C++-incompatible output. Most Rust crates I’ve seen which
+    wrap C/C++ APIs do not convert and are unsound as a result.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对我来说比性能更重要的是安全性和人性化问题。程序员不能指望记住语言规范。如果给定一个`&[T]`并尝试调用一个 C API，自然的选择是使用[as_ptr](https://doc.rust-lang.org/std/primitive.slice.html#method.as_ptr)，但那会返回一个不兼容
+    C/C++ 的输出。我见过的大多数包装 C/C++ API 的 Rust 包都不进行转换，因此是不安全的。
+- en: This is particularly an issue because C and C++’s (more serious) safety problems
+    cause [real user harm](https://security.googleblog.com/2021/09/an-update-on-memory-safety-in-chrome.html)
+    and need addressing. But there is half a century of existing C and C++ code. We
+    cannot realistically address this with a new language without good FFI. What makes
+    for good FFI? At a bare minimum, I think **calling a C or C++ function from Rust
+    should not be dramatically less safe than calling that function from C or C++.**
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这尤其是一个问题，因为 C 和 C++（更严重的）安全问题会导致[真实用户受到损害](https://security.googleblog.com/2021/09/an-update-on-memory-safety-in-chrome.html)，需要解决。但是存在半个世纪的现有
+    C 和 C++ 代码。我们无法实际上通过一个新语言来解决这个问题，而没有良好的 FFI。什么是良好的 FFI？至少，我认为**从 Rust 调用 C 或 C++
+    函数的安全性不应该明显低于从 C 或 C++ 中调用该函数的安全性。**
+- en: Wishlist
+  id: totrans-57
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 愿望清单
+- en: 'Empty lists should not be so complicated. We could change C, C++, and Rust
+    in a few ways to improve things:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 空列表不应该如此复杂。我们可以通过几种方式改进 C、C++ 和 Rust：
+- en: Make C accept `nullptr`
+  id: totrans-59
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使 C 接受 `nullptr`
+- en: See Nikita Popov and Aaron Ballman’s [proposal](https://docs.google.com/document/d/1guH_HgibKrX7t9JfKGfWX2UCPyZOTLsnRfR6UleD1F8/edit).
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参见 Nikita Popov 和 Aaron Ballman 的[提案](https://docs.google.com/document/d/1guH_HgibKrX7t9JfKGfWX2UCPyZOTLsnRfR6UleD1F8/edit)。
+- en: Fix Rust’s slice representation
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 修复 Rust 的切片表示
+- en: All the `alignof(T)` problems ultimately come from Rust’s unusual empty slice
+    representation. This falls out of Rust’s need for a “null” `*[T]` value that is
+    not a `&[T]` value. Rust could have chosen any of a number of unambiguously unused
+    representations, such as `(nullptr, 1)`, `(nullptr, -1)`, or `(-1, -1)`.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有 `alignof(T)` 问题最终都来自 Rust 不寻常的空切片表示。这是 Rust 需要一个不是 `&[T]` 值的 “null” `*[T]`
+    值的结果。Rust 可以选择任意数量的明确未使用的表示，例如 `(nullptr, 1)`、`(nullptr, -1)` 或 `(-1, -1)`。
+- en: While this would be a significant change now, with compatibility implications
+    to work through, I think it is worth seriously considering. It would address the
+    root cause of this mess, fixing a soundness hazard in not just Rust FFI, but Rust
+    on its own. This hazard is real enough that Rust’s standard library hits it.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这现在将是一个重大变化，需要解决兼容性问题，但我认为值得认真考虑。这将解决这个混乱的根本原因，在不仅是 Rust FFI 中，而且是 Rust 本身的
+    soundness 风险。这种风险足以让 Rust 的标准库受到影响。
+- en: This is also the only option I see that fully meets Rust’s “zero-cost” FFI [goals](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html).
+    Even if we make C and C++ accept `(alignof(T), 0)` from Rust (see below), any
+    slices passed from C/C++ to Rust may still be `(nullptr, 0)`.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这也是我看到的唯一完全符合 Rust “零成本” FFI [目标](https://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html)的选项。即使我们让
+    C 和 C++ 接受 Rust 的 `(alignof(T), 0)`（见下文），从 C/C++ 传递给 Rust 的任何切片仍可能是 `(nullptr,
+    0)`。
+- en: Define pointer arithmetic for invalid pointers
+  id: totrans-65
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 为无效指针定义指针算术
+- en: If Rust leaves its slice representation as is, we instead should define pointer
+    arithmetic for `NonNull::dangling()`. Expecting low-level Rust code to guard all
+    pointer offsets is impractical.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果 Rust 保留其切片表示，我们应该为 `NonNull::dangling()` 定义指针算术。期望低级 Rust 代码保护所有指针偏移量是不切实际的。
+- en: 'Update 2024-01-16: Happily, it sounds like this is already [in the process
+    of being defined](https://github.com/rust-lang/rust/issues/117945)!'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更新 2024-01-16：令人高兴的是，听起来这已经[正在定义过程中](https://github.com/rust-lang/rust/issues/117945)!
+- en: 'Where `nullptr` is a single value which could just be special-cased, there
+    are many `alignof(T)` values. It seems one would need to define it in terms of
+    the actual allocated objects. This is well beyond my expertise, so I’ve likely
+    gotten all the details and terminology wrong, but one possibility is, in the vein
+    of [PNVI-ae-udi](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2364.pdf):'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `nullptr` 是一个单一值可以特殊处理的情况下，有许多 `alignof(T)` 值。似乎需要根据实际分配的对象来定义它。这远远超出了我的专业知识范围，所以我可能把所有细节和术语都搞错了，但一个可能性是，沿着
+    [PNVI-ae-udi](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2364.pdf) 的路线：
+- en: '`cast_ival_to_ptrval` returns a special `@empty` provenance when casting garbage
+    values (unchanged from PNVI-ae-udi)'
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`cast_ival_to_ptrval` 在转换垃圾值时返回特殊的 `@empty` 追溯（与 PNVI-ae-udi 保持不变）'
+- en: Adding zero to a pointer with the `@empty` provenance is valid and gives back
+    the original pointer
+  id: totrans-70
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 `@empty` 追溯的指针加零是有效的，并且返回原始指针
+- en: Two pointers with `@empty` provenance can be subtracted to give zero if they
+    have the same address
+  id: totrans-71
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果两个具有相同地址的 `@empty` 追溯的指针，它们可以相减为零。
+- en: One subtlety, however, is that `cast_ival_to_ptrval` might not give back `@empty`
+    if there is an object at that address. Giving back a concrete provenance means
+    picking up [pointer-zapping](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2443.pdf)
+    semantics, which would be undesirable here. For `alignof(T)`, that shouldn’t happen
+    if the maximum alignment is under a page and the bottom page is never allocated.
+    But Rust allows not just `alignof(T)` but [any non-zero integer literal](https://doc.rust-lang.org/std/ptr/index.html#safety),
+    *even if some allocation happens to exist at that address*. (Perhaps we could
+    use the “user-disambiguation” aspect and say all integer-to-pointer casts may
+    additionally disambiguate to `@empty`? Would that impact the compiler’s aliasing
+    analysis?)
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但有一个微妙之处，`cast_ival_to_ptrval`如果该地址上有对象，则可能不会返回`@empty`。 返回具体的来源意味着采用[指针清除](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2443.pdf)语义，这在这里是不可取的。
+    对于`alignof(T)`，如果最大对齐小于一页且底部页面从未被分配，则不应发生这种情况。 但是Rust不仅允许`alignof(T)`而且允许[任何非零整数字面量](https://doc.rust-lang.org/std/ptr/index.html#safety)，*即使该地址上存在某些分配*。（也许我们可以利用“用户消歧义”方面，并说所有整数到指针的转换可能额外消除歧义为`@empty`？那会影响编译器的别名分析吗？）
+- en: I think this complexity demonstrates why `nullptr` is a much better choice for
+    an empty slice than a dangling pointer. Pointer arithmetic with `nullptr` is easy
+    to define, and `nullptr` cannot alias a real allocation.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我认为这种复杂性说明了为什么`nullptr`比悬空指针更好地选择为空切片。 使用`nullptr`进行指针算术很容易定义，并且`nullptr`不能与真实分配别名。
+- en: If Rust (and LLVM) accepted invalid pointers, it would fix the soundness issues
+    within Rust, but not with FFIs. If the C and C++ standards *also* picked this
+    up, it would *partially* fix FFIs. We could then directly pass Rust slices into
+    C and C++, but not in the other direction. Directly passing C and C++ slices into
+    Rust can only be fixed by changing Rust to accept `(nullptr, 0)` form.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果Rust（和LLVM）接受无效指针，它将修复Rust内部的完整性问题，但不包括FFI。 如果C和C++标准*也*采用了这一点，那么这将*部分*修复FFI。
+    然后我们可以直接将Rust切片传递给C和C++，但反之则不行。 直接将C和C++切片传递给Rust只能通过改变Rust以接受`(nullptr, 0)`形式来修复。
+- en: '~~(Outside of Rust FFI, there’s no reason to use `alignof(T)` as a pointer
+    in C/C++, so I do not know how plausible it would be for C/C++ to accept it.)~~
+    Update 2024-01-16: Nelson Elhage reminded me that non-null sentinel pointers are
+    sometimes used to [allocate zero bytes](https://github.com/torvalds/linux/blob/ffc253263a1375a65fa6c9f62a893e9767fbebfa/include/linux/slab.h#L167-L178).
+    While C forbids `malloc` from doing this (`malloc(0)` must return either `nullptr`
+    or a *unique* non-null pointer), other allocators might reasonably pick this option.
+    It makes error checks more uniform without actually reserving address space. So
+    there is a non-Rust reason to allow these pointers in C and C++.'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ~~（除了Rust FFI之外，在C/C++中使用`alignof(T)`作为指针没有理由，所以我不知道C/C++接受这一点的可能性有多大。）~~ 更新2024-01-16：Nelson
+    Elhage提醒我，有时会使用非空标记指针来[分配零字节](https://github.com/torvalds/linux/blob/ffc253263a1375a65fa6c9f62a893e9767fbebfa/include/linux/slab.h#L167-L178)。
+    虽然C禁止`malloc`这样做（`malloc(0)`必须返回`nullptr`或*唯一*非空指针），但其他分配器可能合理地选择此选项。 这样做可以使错误检查更加统一，而不必实际保留地址空间。
+    因此，存在一个非Rust的原因可以允许这些指针在C和C++中使用。
+- en: FFI helpers in Rust standard library
+  id: totrans-76
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: Rust标准库中的FFI辅助工具
+- en: 'If the languages’ slice representations cannot be made compatible, we’re still
+    left with safety hazards in Rust FFI. In that case, Rust’s standard library should
+    do more to help programmers pick the right operations: Add analogs of `slice::from_raw_parts`,
+    `slice::as_ptr`, etc., that use the C and C++ representation, converting internally
+    as needed. Document existing functions very clear warnings that they cannot be
+    used for FFI. Finally, audit all existing calls in crates.io, as the majority
+    of existing calls are likely for FFI.'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果语言的切片表示不能兼容，那么我们仍然会在Rust FFI中留下安全隐患。 在这种情况下，Rust的标准库应该更多地帮助程序员选择正确的操作：添加类似于`slice::from_raw_parts`、`slice::as_ptr`等的模拟，使用C和C++表示法，根据需要进行内部转换。
+    对于无法用于FFI的现有函数，文档中应清楚警告。 最后，在crates.io中审计所有现有的调用，因为现有调用的大多数可能是为了FFI。
+- en: For `slice::from_raw_parts`, we could go further and fix the existing function
+    itself. This would be backwards-compatible, but adds unnecessary conversions to
+    non-FFI uses. That said, if the crates.io audit reveals mostly FFI uses, that
+    conversion may be warranted. For non-FFI uses, a type signature incorporating
+    `[std::ptr::NonNull](https://doc.rust-lang.org/std/ptr/struct.NonNull.html)` would
+    have been more appropriate anyway.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`slice::from_raw_parts`，我们可以进一步修复现有的函数本身。这将是向后兼容的，但会向非 FFI 用途添加不必要的转换。也就是说，如果
+    crates.io 的审核显示主要是 FFI 用途，那么这种转换可能是必要的。对于非 FFI 用途，一个包含`[std::ptr::NonNull](https://doc.rust-lang.org/std/ptr/struct.NonNull.html)`的类型签名本来更合适。
+- en: This would improve things, but it’s an imperfect solution. We’d still sacrifice
+    zero-cost FFI, and we’d still rely on programmers to read the warnings and realize
+    the natural options are incorrect.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将改善事情，但这是一个不完美的解决方案。我们仍然会牺牲零成本 FFI，并且我们仍然依赖程序员阅读警告并意识到自然选项是不正确的。
+- en: Acknowledgements
+  id: totrans-80
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 致谢
+- en: Thanks to Alex Chernyakhovsky, Alex Gaynor, Dana Jansens, Adam Langley, and
+    Miguel Young de la Sota for reviewing early iterations of this post. Any mistakes
+    in here are my own.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 感谢 Alex Chernyakhovsky、Alex Gaynor、Dana Jansens、Adam Langley 和 Miguel Young
+    de la Sota 在审阅本文早期版本时提供的帮助。这里的任何错误都是我自己的。
