@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:50:34'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Exploring object file formats | MaskRay
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://maskray.me/blog/2024-01-14-exploring-object-file-formats](https://maskray.me/blog/2024-01-14-exploring-object-file-formats)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,35 +29,43 @@
     object file formats and shaping LLVM's relevant components. Though my interests
     have since broadened, object file formats remain a personal fascination, often
     drawing me into discussions around potential changes within LLVM.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: This article compares several prominent object file formats, drawing upon my
     experience and insights.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: At the heart of each format lies the representation of essential components
     like symbols, sections, and relocations. For each control structure, We'll begin
     with ELF, a widely used format, before venturing into the landscapes of other
     notable formats.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '## History of object file formats'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Before delving into the technical side, I will share some notes about my archaeological
     journey.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: a.out
+  id: totrans-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The a.out format was designed for PDP-11 and appeared on the first version of
     Unix. The quantities were 16-bit, but can be naturally extended to 32-bit or 64-bit.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'In Proceedings of the Summer 1990 USENIX Conference, *ELF: An Object File to
     Mitigate Mischievous Misoneism* by James Q. Arnold provided some description.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: For 32-bit machines, the a.out format was extended in several ways. Most obviously,
@@ -60,34 +74,41 @@
     Larger programs and different relocation conventions made it necessary to associate
     a relocation entry with an explicit address, instead of relying on the implicit
     correspondence between program sections and relocation records.
+  id: totrans-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Many Unix and Unix-like operating systems, including SunOS, HP-UX, BSD, and
     Linux, used a.out before switching to ELF.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'The most noticeable extension is dynamic shared library support. (This feature
     is distinct from static shared library, where each shared library needs a fixed
     address in the address space.) There are two flavors:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[FreeBSD a.out(5)](https://man.freebsd.org/cgi/man.cgi?a.out(5)) provides a
     nice description.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: If you follow recent years' Linux kernel news, there were some discussions when
     Linux eventually [removed a.out support](https://git.kernel.org/linus/987f20a9dcce3989e48d87cff3952c095c994445)
     in 2022.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: COFF
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'a.out supports three fixed loadable sections TEXT, DATA, and BSS, which is
     too restrictive. COFF introduces custom section support and allows up to 32767
     sections. The ELF paper contains some remarks:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Common Object File Format (COFF), was designed primarily to support electronic
@@ -95,56 +116,68 @@
     sections (text, data, uninitialized memory, reserved memory, overlays, etc.),
     some support for multiple target processors, defined structures for symbol tables
     and relocations, and debugging information tailored for the C language.
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: According to `scnhdr.h` in System V Release 2 for NS32xxx, COFF was designed
     no later than 1982\. Then, System V Release 3 adopted COFF, which motivated a
     lot of follow-ups.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Windows extended COFF to the [Portable Executable (PE) format](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format).
     Symbian OS before 9 used PE as well.
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Texas Instruments [modified COFF](https://software-dl.ti.com/ccs/esd/documents/sdto_cgt_A-Brief-History-of-TI-Object-File-Formats.html)
     for its TI toolset and then switched to ELF.
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: ECOFF used by Tru64 UNIX changed symbol representation.
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: IBM developed XCOFF (COFF combined with the TOC module format concept, CSECT,
     etc) and used it for AIX.
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Key drawbacks:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Hard-wiring debugging information tailored for the C language into the symbol
     structure is complex, space-inefficient, and ugly.
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The auxiliary symbol record design is inflexible and inefficient.
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Not 32-bit-aligned symbol and section structures caused performance issue to
     earlier systems.
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: No support for [weak symbols](/blog/2021-04-25-weak-symbol). PE implemented
     an inflexible weak definition mechanism called "weak externals".
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Mach-O
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -152,36 +185,44 @@
     concept. The operating system used a format derived from a.out with minor modifications,
     named the Mach object file format. The abbreviation, Mach-O, is often used instead.
     The NeXTSTEP operating system and then Darwin adopted Mach-O.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: Dynamic shared library support on Mach-O came later than other object file formats.
     In a NeXTSTEP manual released in 1995, I can find `MH_FVMLIB` (fixed virtual memory
     library, which appears to be a static shared library scheme) but not `MH_DYLIB`
     (used by modern macOS for .dylib files).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Key drawbacks:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: No [COMDAT](/blog/2021-07-25-comdat-and-section-group) support.
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Scarcity of relocation types.
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 255 section limit. `.subsections_via_symbols` has some downsides (discussed
     later).
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: In my opinion, Mach-O is the most limited among Mach-O/PE/ELF. However, I want
     to acknowledge certain innovative features like `.subsections_via_symbols` and
     `S_ATTR_LIVE_SUPPORT`.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: ELF
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -190,44 +231,57 @@
     Format (ELF). ELF revisited fixed content and hard-wired concepts in previous
     object file formats, removed unnecessary elements, and made control structures
     more flexible.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: This pivotal shift was embraced by System V Release 4, marking a new era in
     object file format design. In the 1990s, many Unix and Unix-like operating systems,
     including Solaris, IRIX, HP-UX, Linux, and FreeBSD, switched to ELF.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Symbols
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The minimum of a symbol control structure needs to encode the name, section,
     and value. We can require that every symbol is defined in relation to some section.
     We can use a section index of zero to represent an undefined symbol.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: In a minimum object file format with only few hard-coded sections (a.out), the
     section field can be omitted. A type field can be used to decide whether the symbol
     can reference a function or a data object.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: The symbol name is represented as a 32-bit index into the string table. A 32-bit
     integer suffices, while a 16-bit integer would be too small.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: '`st_shndx` uses a size-saving trick. The 16-bit member encodes a section index.
@@ -235,6 +289,7 @@
     the associated section of type `SHT_SYMTAB_SHNDX`. This is a very nice trick because
     the number of sections are almost always smaller than 0xff00\. In pathologic cases,
     there can be more sections, where a section of type `SHT_SYMTAB_SHNDX` is needed.'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: '`st_info` specifies the symbol''s type (4 bits) and binding (4 bits) attributes.
@@ -245,55 +300,74 @@
     symbol''s binding is for the local/weak/global distinction. The reserved 4 bits
     can accommodate more values, but only GNU reserves one value (`STB_GNU_UNIQUE`)
     (a misfeature in my opinion).'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: In COFF, function symbols can use an auxiliary symbol record to encode the size
     of function (`x_fsize`; `TotalSize` in PE). In ELF, `st_size` is a fixed member,
     used for copy relocations and symbolizers. If we eliminate copy relocations and
     don't need the symbolization heuristics, this field will become garbage.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: Here is a demonstration if we remove `st_size`.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: Symbols (a.out)
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '|'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: a.out uses a `nlist` to represent a symbol table entry. In the original format
     for PDP-11, the assembler generates symbols of at most 7 bytes. `n_name[8]` can
     hold the name with a NUL end. Unix's appreciation of shorter identifier names
     is related to this:)
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: To support longer names, extensions add a string table after the symbol table,
@@ -301,55 +375,71 @@
     This member then becomes a size-saving trick by inlining a short name (8 bytes
     or less) into the structure. Some variants, like binutils' 64-bit a.out format,
     use an index exclusively and removed `n_name`.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: '`n_type`, broken down into three sub-fields, describes whether a symbol is
     defined or undefined, external or local, and the symbol type. The values listed
     on the FreeBSD manpage are also used on PDP-11.'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: For a defined symbol, `n_type` describes whether it is relative to TEXT, DATA,
     or BSS.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: Symbols (COFF)
+  id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '|'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '|'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: COFF adopts a.out's approach to save space in symbol names. This likely made
     sense when most symbols were shorter. However, with today's often lengthy symbol
     names, this inlining technique complicates code and increases the control structure
     size (from 4 to 8 bytes).
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'The section number is a 16-bit signed integer, supporting up to 32,767 sections.
     Positive values indicate a section index, while special values include:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: '`N_UNDEF` (0): Undefined symbol (distinct from a.out''s `n_type` representation).'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`N_ABS` (-1): Symbol has an absolute value.'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`N_DEBUG` (-2): Special debugging symbol (value is meaningless).'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -357,25 +447,30 @@
     PE assigns longer names to these types and storage classes longer names, e.g.,
     `IMAGE_SYM_TYPE_CHAR/IMAGE_SYM_TYPE_SHORT`, `IMAGE_SYM_CLASS_AUTOMATIC/IMAGE_SYM_CLASS_EXTERNAL`.
     While values are mostly consistent, minor differences exist:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: PE's `IMAGE_SYM_TYPE_VOID` (1) is different from System V Release 3's `#define
     T_ARG 1 /* function argument (only used by compiler) */`.
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: PE's `IMAGE_SYM_CLASS_WEAK_EXTERNAL` (105) is different from System V Release
     3's `#define C_ALIAS 105 /* duplicate tag */`.
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Symbols with `C_EXT` (`IMAGE_SYM_CLASS_EXTERNAL`) are global and added to the
     linker's global symbol table, akin to ELF's `STB_GLOBAL` symbol binding.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: System V ships a symbolic debugger (sdb), which utilizes `n_type` and `n_sclass`.
     If we acknowledge that the debugging information format is outdated, `n_type`
     and `n_class` serve as a wasteful counterpart to to ELF's `st_info`.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: '`n_numaux` relates to Auxiliary Symbol Records, allowing extra information
@@ -383,43 +478,60 @@
     their use cases are limited and could often be encoded using separate sections.
     In PE, an auxiliary symbol record can represent weak definitions, but weak references
     are not supported. They can also provide extra information to section symbols.'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: ECOFF defines Local Symbol Entry (SYMR) and External Symbol Entry (EXTR).
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '|'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '|'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: Symbols (Mach-O)
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '|'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '|'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: Mach-O's `nlist` and `nlist_64` are not that different from a.out's, with `n_other`
@@ -427,42 +539,55 @@
     representable sections to 255 without out-of-band data (discussed later). If we
     extend `n_sect` to 32-bit, with alignment padding the structure size will increase
     to 24 bytes, the same as `Elf64_Sym`.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: Like a.out, the `N_EXT` bit of `n_type` indicates an external symbol. The `N_PEXT`
     bit indicates a private external symbol.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: Key bits in `n_desc` are `N_WEAK_DEF`, `N_WEAK_REF`, and `N_ALT_ENTRY`.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: Sections
+  id: totrans-103
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '|'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '|'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: The section name is represented as a 32-bit index into the string table. If
     we use a 16-bit integer, a large number of section names with a symbol suffix
     (e.g. `.text.foo` `.text.bar`) could make the index overflow.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '`sh_type` categorizes the section''s contents and semantics. It avoids hard-coding
     magic names in many scenarios. Technically a 16-bit type could work pretty well
     but was deemed insufficient for flexibility.'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '`sh_flags` describe miscellaneous attributes, e.g. writable and executable
@@ -470,6 +595,7 @@
     member is 32-bit in `Elf32_Shdr` while 64-bit in `Elf64_Shdr`. In practice no
     architecture defines flags for bits 32 to 63, therefore this member is somewhat
     wasteful.'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
 - en: Location and size. `sh_offset` gives the byte offset from the beginning of the
@@ -477,6 +603,7 @@
     this member has to be 64-bit. `sh_size` gives the section's size in bytes. A section
     type of `SHT_NOBITS` occupies no space in the file. To support sections larger
     than 4GiB, this member has to be 64-bit.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: Address and alignment. `sh_addr` describes the address at which the section's
@@ -487,129 +614,172 @@
     an alignment larger than the page size (or the largest huge page size, if huge
     pages are enabled) does not make sense, and a maxiumm value of 2**31 is sufficient.
     Therefore, we could use a log2 value to hold the alignment.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: Connection information. `sh_link` holds a section index. `sh_info` holds either
     a section index or a symbol index. If you recall that `st_shndx` is 16 bits for
     very solid reason, you will know that the two fields are somewhat wasteful.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
 - en: For a table of fixed-size entries, `sh_entsize` holds the entry size in bytes.
     In some use cases this member is not a power of two. In practice, one byte suffices.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
 - en: While ELF's section header structure is designed for flexibility, potential
     optimizations could reduce its size without significant loss of functionality.
     By using smaller data types for `sh_flags`, `sh_link`, `sh_info`, and `sh_entsize`
     based on practical needs, we could make the structure significantly smaller.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '|'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '|'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: Reducing `sh_type` into 2 bytes loses flexibility a bit. If this deems insufficient,
     we could take 3 bits from `sh_addralign` (by turning it into a bitfield) and give
     them to `sh_type`.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
 - en: Sections (COFF)
+  id: totrans-123
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '|'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '|'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: PE's section control structure demonstrates a minor modification compared to
     COFF, `s_paddr => VirtualSize`.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
 - en: The presented structure measures as 40 bytes when `long` is 4 bytes. If we extend
     `s_paddr, s_vaddr, s_size, s_scnptr, s_relptr, s_lnnoptr` to 8 bytes, the structure
     will be of 64 bytes.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: The section name supports up to 8 bytes. A longer name would require an extension
     similar to the symbol control structure.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
 - en: Encoding both `s_paddr` and `s_vaddr` is wasteful. ELF encodes the physical
     address in the segment and therefore removes the member from its section structure.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
 - en: COFF embeds the location and size of relocations into the section structure.
     This is actually pretty nice. A 16-bit `s_nreloc` may appear restritive but is
     sufficient for relocatable files. In practice, the number of relocations can exceed
     65536 for a single section using relocatable linking.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: '`s_lnnoptr` and `s_nlnno` point to line number entries, which relate addresses
     to source file line numbers. The embedded nature is inflexible.'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '|'
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '|'
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
 - en: This simple format is deprecated. In DWARF, special opcodes in line number information
     can encode the information in a more space-efficient way and present more information
     like the column number.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
 - en: Sections (Mach-O)
+  id: totrans-141
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '|'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '|'
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
 - en: How does Mach-O end up with such a huge section structure? Let's find out...
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
 - en: A Mach-O binary is divided into segments, each housing one or more sections.
@@ -617,11 +787,13 @@
     be up to 16 bytes. This representation allows the section names to be read without
     a string table, but restrictive for descriptive names. Section semantics are derived
     from the name (unlike ELF).
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
 - en: The segment name is redundantly encoded within the section structure. We could
     derive the segment from the section name and flags, e.g., `S_ATTR_SOME_INSTRUCTIONS
     => __TEXT` , `S_ZEROFILL => ZeroFill __DATA` .
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: 'There is a severe limitation: maximum of 255 sections due to `nlist::n_sect`
@@ -631,58 +803,75 @@
     is more size-efficient than ELF''s `-ffunction-sections -fdata-sections -fno-unique-section-names`.
     However, there are assembler limitations, relocation processing complexity, and
     potential loss of ability to ensure that two non-local symbols are not reordered.'
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
 - en: Like COFF, Mach-O embeds the location and size of relocations into the section
     structure.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
 - en: '`reserved1` and `reserved2` are used similarly to ELF''s connection information.'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: '`__TEXT,__stub` (like ELF''s `.plt`), `__TEXT,__got` (like ELF''s `.got`),
     `__TEXT,__la_symbol_ptr` (like ELF''s `.got.plt`), and `__DATA,__thread_ptrs`
     set `reserved1` as an index into the indirect symbol table (the offset is specified
     by `indirectsymoff` in a `LC_DYSYMTAB` command).'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
 - en: For `__TEXT,__stub`, `reserved2` is the size of one entry, e.g., 6 for x86-64
     (`jmpq *__la_symbol_ptr(%rip)`). This is analogous to ELF x86-64's [`DT_X86_64_PLTSZ`](/blog/2023-02-19-linker-notes-on-x86#mark-plt).
     For other sections, `reserved2` is zero.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
 - en: Relocations
+  id: totrans-155
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '|'
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-159
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '|'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: '`r_info` specifies the symbol table index with respect to which the relocation
     must be made, and the type of relocation to apply.'
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
 - en: 'ELFCLASS32: 8-bit type, 24-bit symbol index'
+  id: totrans-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'ELFCLASS64: 32-bit type, 32-bit symbol index'
+  id: totrans-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'There are two variants, REL and RELA. Let''s quote the generic ABI:'
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
 - en: As specified previously, only Elf32_Rela and Elf64_Rela entries contain an explicit
@@ -691,21 +880,25 @@
     the other might be necessary or more convenient. Consequently, an implementation
     for a particular machine may use one form exclusively or either form depending
     on context.
+  id: totrans-165
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Relocatable files need a lot of relocatable types while executables and shared
     objects need only a few. The former is often called static relocations while the
     latter is called dynamic relocations.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
 - en: Of the few dynamic relocation types, most do not need the addend member. lld
     provides an option `-z rel` to use `SHT_REL/DT_REL` dynamic relocations.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
 - en: If we disregard the REL dynamic relocation scenario, then all modern architectures
     use RELA exclusively. Most architectures encode the immediate with only few bits,
     which are inadequate for many relocatable file uses.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
 - en: ELFCLASS64, with its 64-bit members, doubles the size compared to ELFCLASS32's
@@ -714,166 +907,217 @@
     24-bit symbol index is often sufficient, even in 64-bit contexts. Therefore, if
     a 64-bit architecture's relocation type requirements are less than 256, ELFCLASS32
     can be a viable and more size-efficient option.
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
 - en: In March 2024, I proposed [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf)
     as an alternative relocation format.
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
 - en: Relocations (a.out)
+  id: totrans-171
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-173
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: '|'
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-175
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '|'
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
 - en: '`r_symbolnum` mirrors ELF''s `ELF32_R_SYM`.'
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
 - en: 'The other bitfields, resembling ELF''s `ELF32_R_TYPE`, but split into distinct
     fields:'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
 - en: Reserving dedicated semantics for individual bits can limit adaptability. COFF
     and ELF opted to remove bitfields in favor of a type to provide greater flexibility.
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
 - en: Relocations (COFF)
+  id: totrans-180
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-181
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-182
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: '|'
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-184
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: '|'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
 - en: This format resembles ELF's `Elf32_Rel`.
+  id: totrans-186
   prefs: []
   type: TYPE_NORMAL
 - en: '`r_vaddr` gives the virtual address of the location at which to apply the relocation
     action. If we interpret `r_vaddr` as an offset (as PE does) and restrict section
     size to 32 bits, we could reuse this structure for 64-bit architectures.'
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
 - en: '`r_symndx` is a 32-bit symbol table index.'
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
 - en: '`r_type` is a 16-bit relocation type, limited in number compared to ELF.'
+  id: totrans-189
   prefs: []
   type: TYPE_NORMAL
 - en: COFF generally supports fewer relocation types than ELF. System V Release 3
     defines very few relocations for each architecture. In binutils, `include/coff/*.h`
     files define relocations for more architectures.
+  id: totrans-190
   prefs: []
   type: TYPE_NORMAL
 - en: While ELF uses the REL/RELA for both relocatable files and executables, in PE
     image files, the import address table and base relocation table (`.reloc`) are
     a completely different design.
+  id: totrans-191
   prefs: []
   type: TYPE_NORMAL
 - en: Relocations (Mach-O)
+  id: totrans-192
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-194
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: '|'
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-196
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '|'
+  id: totrans-197
   prefs: []
   type: TYPE_NORMAL
 - en: Mach-O's relocation structure closely mirrors a.out's with adapted `r_symbolnum`
     meaning. When `r_extern == 0` (local), the `r_symbolnum` member references a section
     index instead of a symbol index. This is to support custom sections, breaking
     the three-section limitation (text, data, and bss) of traditional a.out.
+  id: totrans-198
   prefs: []
   type: TYPE_NORMAL
 - en: As aforementioned, dedicating bits to bitfields (`r_pcrel`, `r_length`, and
     `r_scattered` greatly restricted the number of relocation types.
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
 - en: Related to the relocation type limitation, a `.long foo - .` in a data section
     requires a pair of relocations, `SUBTRACTOR` and`/UNSIGNED`. I have some notes
     on [Port LLVM XRay to Apple systems](/blog/2023-06-18-port-llvm-xray-to-apple-systems).
+  id: totrans-200
   prefs: []
   type: TYPE_NORMAL
 - en: Mach-O uses a number of sections in the `__LINKEDIT` segment to communicate
     information to dyld.
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
 - en: Dennis MacAlistair Ritchie's [`A.OUT (V)` manpage](https://www.bell-labs.com/usr/dmr/www/man51.pdf)
     (1971) describes the original a.out format. The header contains 6 words.
+  id: totrans-202
   prefs: []
   type: TYPE_NORMAL
 - en: a "br .+14" instruction (205(8))
+  id: totrans-203
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The size of the program text
+  id: totrans-204
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The size of the symbol table
+  id: totrans-205
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The size of the relocation bits area
+  id: totrans-206
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The size of a data area
+  id: totrans-207
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A zero word (unused at present)
+  id: totrans-208
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The text relocations are implicit.
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
 - en: Later versions introduced new magic numbers, separated text relocations and
     data relocations, and added an entry point (`a_entry`).
+  id: totrans-210
   prefs: []
   type: TYPE_NORMAL
 - en: Size comparison
+  id: totrans-211
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: TODO
+  id: totrans-212
   prefs: []
   type: TYPE_NORMAL
 - en: Size reduction opportunities
+  id: totrans-213
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -881,6 +1125,7 @@
     ELFCLASS64 structures, while flexible, can be optimized by sacrificing some flexibility
     (64-bit quantities). The 64-bit symbol control structure is compact, but section
     and relocation's are quite wasteful if we can sacrifice some flexibility.
+  id: totrans-214
   prefs: []
   type: TYPE_NORMAL
 - en: As the ELF paper acknowledges, "Relocatable and executable files do not necessarily
@@ -889,6 +1134,7 @@
     There are more tools inspecting executables than relocatable files. So, naturally,
     we might want to change just relocatable files. Can we use ELFCLASS32 relocatable
     files for 64-bit architectures?
+  id: totrans-215
   prefs: []
   type: TYPE_NORMAL
 - en: Well, x86-64 and AArch64 make a clear distinct of ELFCLASS32 and ELFCLASS64\.
@@ -896,6 +1142,7 @@
     the discontinued Itanium architecture sets a precedent that ELFCLASS32 can be
     used for LP64 programs. Quoting its psABI (*Intel Itanium Processorspecific Application
     Binary Interface (ABI)*).
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
 - en: For Itanium architecture ILP32 relocatable (i.e. of type ET_REL) objects, the
@@ -903,43 +1150,52 @@
     objects, the file class value may be either ELFCLASS32 or ELFCLASS64, and a conforming
     linker must be able to process either or both classes. ET_EXEC or ET_DYN object
     file types must use ELFCLASS32 for ILP32 and ELFCLASS64 for LP64 programs.
+  id: totrans-217
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: ''
+  id: totrans-218
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Addresses appearing in ELFCLASS32 relocatable objects for LP64 programs are
     implicitly extended to 64 bits by zero-extending.
+  id: totrans-219
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: ''
+  id: totrans-220
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Note: Some constructs legal in LP64 programs, e.g. absolute 64-bit addresses
     outside the 32-bit range, may require use of an ELFCLASS64 relocatable object
     file.'
+  id: totrans-221
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Given the prior art, it seems promising to allow ELFCLASS32 when the code size
     concerns people. Ideally there should be a marker to distinguish ILP32 and LP64-using-ELFCLASS32
     object files.
+  id: totrans-222
   prefs: []
   type: TYPE_NORMAL
 - en: The primary changes reside in the assembler and linker. It's also important
     to ensure that binary manipulation programs (like objcopy) and dump tools are
     happy with them.
+  id: totrans-223
   prefs: []
   type: TYPE_NORMAL
 - en: Further optimization potential lies in exploring the use of `Elf32_Rel` instead
     of `Elf32_Rela` for even smaller relocations.
+  id: totrans-224
   prefs: []
   type: TYPE_NORMAL
 - en: Replacing control structures
+  id: totrans-225
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -948,36 +1204,47 @@
     and redefinition for other control structures." However, caution is warranted
     due to the significant impact on the ecosystem as many tools rely on the existing
     structures.
+  id: totrans-226
   prefs: []
   type: TYPE_NORMAL
 - en: One promising example is `Elf32_Shdr_minimized`, a custom structure reduced
     to 32 bytes from the standard `Elf32_Shdr`'s 40 bytes. While I would be nervous,
     but if we reduce `sh_type` to a `uint16_t`, the structure size can reduce to 28
     bytes.
+  id: totrans-227
   prefs: []
   type: TYPE_NORMAL
 - en: stabs
+  id: totrans-228
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Earlier debuggers operated using a debugging information format called "stabs"
     (short for symbol table entries; dating back to at least UNIX/32V in 1979). Stabs
     is encoded using extra symbol table entries in the a.out object file format.
+  id: totrans-229
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-230
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-231
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: '|'
+  id: totrans-232
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-233
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: '|'
+  id: totrans-234
   prefs: []
   type: TYPE_NORMAL
 - en: Stabs was ported to COFF for System V Release 2, used on some machines. System
@@ -986,23 +1253,28 @@
     was no longer supported. (The first version of DWARF was later published by the
     UNIX International Programming Languages Special Interest Group (SIG) in January
     1992.)
+  id: totrans-235
   prefs: []
   type: TYPE_NORMAL
 - en: However, stabs continued to be used in other operating systems, including *BSD,
     AIX, and IRIX. For example, the GNU assembler added stabs support for ELF (`n_strx`
     is 32-bit).
+  id: totrans-236
   prefs: []
   type: TYPE_NORMAL
 - en: GCC 13 [removed stabs support](https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=7e0db0cdf01e9c885a29cb37415f5bc00d90c029).
+  id: totrans-237
   prefs: []
   type: TYPE_NORMAL
 - en: Stabs is less efficient than DWARF. When compiling a non-trivial program (so
     that the boilerplate in DWARF is less significant), you may observe that `.stab`
     and `.stabstr` consume more space than `.debug_*` sections, even if DWARF is more
     expressive and contains more information.
+  id: totrans-238
   prefs: []
   type: TYPE_NORMAL
 - en: Heterogeneity and challenge
+  id: totrans-239
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1010,6 +1282,7 @@
     for application developers, the object file format heterogeneity presents a unique
     challenge for toolchain development, probably not very tangible by application
     developers and users.
+  id: totrans-240
   prefs: []
   type: TYPE_NORMAL
 - en: Integrating features like Link Time Optimization (LTO), Profile-Guided Optimization
@@ -1017,12 +1290,18 @@
     and nuances. While most developers primarily concern themselves with a specific
     format, they still need to tread carefully during development to avoid disruptions
     to other platforms.
+  id: totrans-241
   prefs: []
   type: TYPE_NORMAL
+  zh: 集成诸如链接时间优化（LTO）、基于配置文件的优化（PGO）和消毒剂等功能存在着复杂性，因为目标文件格式特定的限制和细微差别。虽然大多数开发者主要关注特定的格式，但他们在开发过程中仍需要谨慎行事，以避免对其他平台造成干扰。
 - en: TODO
+  id: totrans-242
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 待办事项
 - en: WebAssembly
+  id: totrans-243
   prefs: []
   type: TYPE_NORMAL
+  zh: WebAssembly
