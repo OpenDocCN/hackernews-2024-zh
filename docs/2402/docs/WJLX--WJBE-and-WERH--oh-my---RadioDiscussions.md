@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:11:28
+-->
+
+# WJLX, WJBE and WERH, oh my | RadioDiscussions
+
+> 来源：[https://www.radiodiscussions.com/threads/wjlx-wjbe-and-werh-oh-my.769948/#post-6697751](https://www.radiodiscussions.com/threads/wjlx-wjbe-and-werh-oh-my.769948/#post-6697751)
+
+I hope I'm not going to incur the ire of the mods for resurrecting this subject, but I've come across some new information that isn't the same AP newswire story told over and over. It's not investigative reporting from
+
+*The New York Times*
+
+, either, but it is interesting nonetheless.
+
+Some folks took interest in this story and put together
+
+[a little video](https://www.youtube.com/watch?v=78PvlGCqM84)
+
+after they took a roadtrip to the WJLX tower site to see it for themselves. Now, the guy doing this is not a broadcaster or even a radio enthusiast, so do take their narration with a grain of salt. He does botch one important fact at the end of the video, but what I think is newsworthy is the actual video shot on the WJLX tower site.
+
+Three things stood out to me. First, the weeds were pretty overgrown right at the door, which was hanging by just one hinge and open to the elements. Second, the interior looked like it had been empty and exposed to the elements for quite some time. Third, the power meter on the exterior of the shack was disconnected and missing. It appears to me that it's been that way for a while. Months? Years? Who knows.
+
+There were also some guy wires strewn about the property, but I honestly couldn't tell if they were laid down recently or not.
+
+***
+
+Next, I was looking at the CP for WJBE, licensed to Five Points. I realized that the station has not been transmitting from its licensed site, which is a cell phone tower about a block north of the Curry VFD in the town of Curry, north of Jasper. Instead, according to Street View, there's a one bay vertically polarized antenna mounted to the Curry water tower which is probably a few tenths of a mile from the licensed site. Interestingly, the WJBE CP
+
+*is*
+
+for that water tower. It was filed back in 2009, expired, and was filed again in 2021 and then again in 2024 but they never filed any licenses to cover for the water tower site.
+
+Now, if you're wondering why I'm mentioning this here, it's because Big South Community Broadcasting has Brett Elmore as a officer of the organization and is the primary contact for them. So I guess cheating on the AM rules isn't enough, he also skirts the licensed site rules.
+
+Finally, Big South Community Broadcasting has won another noncomm permit, for 90.1 in Hamilton. It's been granted the WERH call sign that was on stations in Hamilton for years prior. Makes me wonder if they'll skirt some rules there as well just because it seems to be a pattern. Allegedly, of course.

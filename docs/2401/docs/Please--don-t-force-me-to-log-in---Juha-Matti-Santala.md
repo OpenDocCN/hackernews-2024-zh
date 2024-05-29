@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:13:58
+-->
+
+# Please, don’t force me to log in : Juha-Matti Santala
+
+> 来源：[https://hamatti.org/posts/please-dont-force-me-to-log-in/](https://hamatti.org/posts/please-dont-force-me-to-log-in/)
+
+It feels like everything these days needs you to create an account and log in to use them. **Philips Hue** announced you [need to plug your home’s light automation to their cloud](https://www.theverge.com/2023/9/28/23892761/philips-hue-app-account-changes), even if you just use it locally. They claim it’s for security.
+
+> “Up until this point, the mechanism we’ve used to identify who is the owner of the Hue system and can do this [control your bridge], is by physical access to the device — and pressing the button on the bridge,” says Yianni. “This approach is inadequate going forward, and we need a more robust way to identify the owner of the system and enable them to manage their system — the Hue account is how we will do this.”
+
+If someone breaks into my apartment, them pushing a button on my Hue bridge is the least of my worries. Them being connected to my online account is way higher threat.
+
+**Yle - The Finnish Public Service Media Company** - [announced that in 2024, to use their mobile app to watch the TV shows and movies from streaming service Areena requires login (in Finnish).](https://yle.fi/a/74-20051958)
+
+They do it so they can provide better algorithm recommendations. I don’t really care about those.
+
+All the content is free as it’s public service and they will keep the browser use free of login (at least for now). But it adds another step of having to log in whenever any of the devices forgets my login.
+
+I installed **Adobe’s Acrobat Reader** to my dad’s phone during Christmas to help him open PDFs he received via email. It can be used without login but it keeps pestering about the login every time, confusing my dad who’s not sure what services need to be logged into and which not. It’s a god damn PDF reader, no need for accounts or logins.
+
+**Arc Browser** requires you to create an account so that [they can send you update emails](https://web.archive.org/web/20230926131852/https://resources.arc.net/en/articles/8129702-why-do-i-need-an-account-for-arc):
+
+(I had to dig into an Internet Archive page since Arc deleted that answer from their site somewhere between me writing and publishing this post. They still require an account but don't anymore say why)
+
+> **Why do I need an account for Arc?**
+> 
+> Arc currently requires an account so the team can communicate with members about product updates, feedback, and questions. Arc also has collaborative features, like Easel, and multi-device syncing, both of which require an Arc identity.
+
+Once again, perfectly fine for opt-ins but I don’t want one.
+
+**Windows 10/11** have been really bad at pushing constant “please login” screens that are annoying to users who are not sure which pop ups on their computer are safe and not and what they mean. I don’t own Windows PC but I help family who has those and I hate it.
+
+I was excited to test the **[Warp](https://www.warp.dev/)** [terminal](https://www.warp.dev/) until I learned it requires login:
+
+> **Why is login required for a terminal app?**
+> 
+> The primary reason is that login allows us to build cloud-oriented features that make the terminal have a concept of “your stuff” and “your team’s stuff” – for example Block Sharing.
+> 
+> This is the same reason other collaborative apps like Figma and Github require login – identity is the basis of building cloud-native apps. That said, we understand the desire to try Warp before logging in, and are exploring product experiences that will allow users to preview Warp before signup.
+
+It’s a terminal. All the extra features like sharing and AI can be great but why make everything go through it rather than making it extra for those who need those features?
+
+These examples go on and on and on. What’s common with all of them, is that they are all services and software that don’t **need** logins and accounts. They are extra features, forced to everyone, instead of opt-in for those who want to use these features.
+
+I’m sick and tired of this being more and more the trend with everything. I understand that the business of building software is tough but this is not the solution.
+
+On an adjacent note, social media platforms becoming “the default” causes a lot of problems too.
+
+Facebook, Instagram, X and others made a similar move after years of luring everyone and their dog to their platform. A lot of companies like pubs and restaurants went with the crowds and only had pages on these platforms instead of building their own sites and now the customers can’t see their opening hours or menus without signing up to these platforms owned by mega corporations.
+
+Recently I applied for a job that had LinkedIn link as a requirement to apply. Not a “if you want, you can share your LinkedIn”. Not a “share link to your CV”. A required membership to a social media platform owned by Microsoft.
+
+These are examples of accounts required on third-party platforms. It sucks too.
+
+So please, stop with these hostile account requirements that make your products worse for the users.

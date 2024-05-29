@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:54:21
+-->
+
+# Air Canada is responsible for chatbot's mistake: B.C. tribunal | CTV News
+
+> 来源：[https://bc.ctvnews.ca/air-canada-s-chatbot-gave-a-b-c-man-the-wrong-information-now-the-airline-has-to-pay-for-the-mistake-1.6769454](https://bc.ctvnews.ca/air-canada-s-chatbot-gave-a-b-c-man-the-wrong-information-now-the-airline-has-to-pay-for-the-mistake-1.6769454)
+
+Air Canada has been ordered to compensate a B.C. man because its chatbot gave him inaccurate information.
+
+The Civil Resolution Tribunal's decision on the dispute was [posted online Wednesday](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do), finding in favour of a man who relied on information provided by the bot about fares when he was booking a flight to attend his grandmother's funeral.
+
+"I find Air Canada did not take reasonable care to ensure its chatbot was accurate," tribunal member Christopher C. Rivers wrote, awarding $650.88 in damages for negligent misrepresentation.
+
+"Negligent misrepresentation can arise when a seller does not exercise reasonable care to ensure its representations are accurate and not misleading," the decision explains.
+
+Jake Moffatt was booking a flight to Toronto and asked the bot about the airline's bereavement rates – reduced fares provided in the event someone needs to travel due to the death of an immediate family member.
+
+Moffatt said he was told that these fares could be claimed retroactively by completing a refund application within 90 days of the date the ticket was issued, and submitted a screenshot of his conversation with the bot as evidence supporting this claim.
+
+He submitted his request, accompanied by his grandmother's death certificate, in November of 2022 – less than a week after he purchased his ticket. But his application was denied and the tribunal decision said emails submitted as evidence showed that Moffatt's attempts to receive a partial refund continued for another two-and-a-half months.
+
+The airline refused the refund because it said its policy was that bereavement fare could not, in fact, be claimed retroactively.
+
+In February of 2023, Moffatt sent the airline a screenshot of his conversation with the chatbot and received a response in which Air Canada "admitted the chatbot had provided 'misleading words.'"
+
+But Moffatt was still unable to get a partial refund, prompting him to file the claim with the tribunal.
+
+Air Canada, for its part, argued that it could not be held liable for information provided by the bot.
+
+"In effect, Air Canada suggests the chatbot is a separate legal entity that is responsible for its own actions. This is a remarkable submission. While a chatbot has an interactive component, it is still just a part of Air Canada’s website," Rivers wrote.
+
+"It should be obvious to Air Canada that it is responsible for all the information on its website. It makes no difference whether the information comes from a static page or a chatbot."
+
+The airline also argued that the chatbot's response to Moffatt's inquiry included a link to a section of its website that outlined the company's policy and said that requests for a discounted fare are not allowed after someone has travelled.
+
+Rivers rejected this argument as well.
+
+"While Air Canada argues Mr. Moffatt could find the correct information on another part of its website, it does not explain why the webpage titled 'Bereavement travel' was inherently more trustworthy than its chatbot. It also does not explain why customers should have to double-check information found in one part of its website on another part of its website," he wrote.
+
+"Mr. Moffatt says, and I accept, that they relied upon the chatbot to provide accurate information. I find that was reasonable in the circumstances. There is no reason why Mr. Moffatt should know that one section of Air Canada’s webpage is accurate, and another is not."
+
+The compensation the tribunal awarded was the equivalent of the difference between what Moffatt paid for his flight and a discounted bereavement fare.
+
+In addition, the airline was ordered to pay $36.14 in pre-judgment interest and $125 in fees.
+
+<sra-advert class="sraAdvert" ad-site="/5479/ctv.ctvnewsbc/home/stories" title-position="hidden" type="slimCut" google-tag-environment="prod" permutive-timeout="0" size="[[30,1]]" mobile-size="[[30,1]]" magnite-enable="true"></sra-advert>

@@ -1,0 +1,108 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:18:46
+-->
+
+# Meta's new LLM-based test generator is a sneak peek to the future of development
+
+> 来源：[https://read.engineerscodex.com/p/metas-new-llm-based-test-generator](https://read.engineerscodex.com/p/metas-new-llm-based-test-generator)
+
+*Engineer’s Codex is a publication about real-world software engineering.*
+
+* * *
+
+Meta recently released a [paper called “Automated Unit Test Improvement using Large Language Models at Meta”](https://arxiv.org/abs/2402.09171). It’s a good look at how Big Tech is using AI internally to make development faster and software less buggy. For example, [Google is using AI to speed up code reviews](https://read.engineerscodex.com/i/139414745/critique-googles-code-review-tool).
+
+A major win of this paper is that while it integrates LLMs into a developer’s workflow, it also recommends fully-formed software improvements that are verified to be both correct and an improvement to current code coverage. This is **not a magic pill, but it’s a good start on making LLMs more useful**. Compare this to ChatGPT, where suggestions still have to be manually verified to work - and we all know that [debugging code is twice as hard as writing it](https://read.engineerscodex.com/p/clever-code-is-probably-the-worst).
+
+Meta claims that “this is the first paper to report on LLM-generated code that has been developed independent of human intervention (other than final review sign off), and landed into large scale industrial production systems with guaranteed assurances for improvement over the existing code base.” (Bleh! That was a mouthful.)
+
+Furthermore, there are solid principles that developers can take away in order to use AI effectively themselves.
+
+**Table of Contents:**
+
+* * *
+
+***[SWE Quiz](http://swequiz.com)** is for ambitious developers who want to make sure their software fundamentals are rock solid. Reveal gaps in your knowledge and make sure you really know what you’re doing both at work and while interviewing.*
+
+*Take the tests for [authentication](https://www.swequiz.com/learn/authentication-roadmap), [caching](https://swequiz.com/learn/caching-roadmap), [databases](https://www.swequiz.com/learn/databases-roadmap), [API Design](https://www.swequiz.com/learn/api-design-roadmap), and [more](https://www.swequiz.com/learn).*
+
+[Check out SWE Quiz](https://swequiz.com)
+
+* * *
+
+TestGen-LLM uses an approach called ‘Assured LLM-based Software Engineering’ (Assured LLMSE), using private, internal LLMs that are probably fine-tuned with Meta’s codebase. This means that it uses LLMs to generate code improvements that are backed by “**verifiable guarantees”of improvement and non-regression.**
+
+TestGen-LLM uses an **ensemble approach** to generate code improvements. This means that it uses **“LLMs, prompts, and hyper-parameters”** to generate a set of candidate improvements, and then selects the best one. This approach can help to improve the quality of the generated improvements.
+
+TestGen-LLM is specifically designed to **improve existing human-written tests** rather than **generate code from scratch**. A good way to think about this LLM is: it's a junior dev with the task of creating more comprehensive tests for existing code. Other devs have more important things to work on, so this LLM gets the fun task of improving unit tests.
+
+The tests that it creates in its pull requests are often good, and sometimes trivial or pointless. Occasionally, a test it produces is really good or uncovers a bug inadvertently. Regardless, this work wouldn't have been done by humans anyways due to priorities. All of its pull requests require a human reviewer before pushed into the codebase.
+
+TestGen-LLM has been **integrated into Meta's software engineering workflows**. This means that it can be used to automatically improve tests as part of the development process. It would be cool to see some screenshots of how exactly it’s integrated, but the paper doesn’t provide any.
+
+These stats are either direct quotes or paraphrased quotes from the paper. A short reminder that all tests that were landed required a final sign-off by human reviewers.
+
+*   The image above shows that: in an evaluation on Reels and Stories products for Instagram, 75% of TestGen-LLM test cases that were generated built correctly, 57% passed reliably, and *25% increased coverage*.
+
+*   TestGen-LLM was able to improve **10% of all classes to which it was applied and 73% of its test improvements were accepted by developers**, and landed into production.
+
+*   In a “test-a-thon” between engineers, where various Meta engineers created tests in order to increase Instagram’s test coverage, “**the median number of lines of code added by a TestGen-LLM test was 2.5**.”
+
+*   However, one test case “hit the jackpot” and covered 1,326 lines.
+
+*   All improved cases generated during the “test-a-thon” did “cover at least one additional valid corner case, such as an early return and/or special processing for special values such as null and empty list.”
+
+**TestGen-LLM is a good example of how LLMs can be used to improve dev productivity and software reliability in a time-efficient manner.** (Note: many of these are my own personal opinions that I’ve taken away from the paper.)
+
+Small context windows and scattered dependencies make LLMs nearly unusable for non-boilerplate solutions in large codebases. Aside from any privacy concerns, it’s not feasible to paste in multiple files of code into an LLM when there could be 20+ dependencies from across a codebase in a C++ header file (as an example). Even if you do paste in multiple files, there is a time and cognitive cost to actually using and trying the code outputted by an LLM in a chat window or even in the code editor by GitHub Copilot.
+
+The price of extra cognitive load cannot be understated. [Hacker News commenters find the inaccuracies of GPT-based tooling exhausting and unreliable.](https://news.ycombinator.com/item?id=39460788) This is where the **verification of outputs being both valid and non-regressive is extremely important.** Each test by TestGen-LLM requires a human sign-off anyways, so any programmatic guarantees are useful here.
+
+This means that for a long-term productivity boost in large codebases, **improvements will probably come in incremental, specialized use cases**, like test generation and [automatic suggestions during code reviews](https://blog.research.google/2023/05/resolving-code-review-comments-with-ml.html). These are also low risk ways to save cumulative developer time. Basically, “GPT wrappers” will continue to be useful 🙂.
+
+**The real value of LLMs here are displayed through the edge cases**. The paradox of writing good code is that [nobody ever gets credit for fixing problems that never happened](https://web.mit.edu/nelsonr/www/Repenning=Sterman_CMR_su01_.pdf).
+
+[Will Wilson writes](https://antithesis.com/blog/is_something_bugging_you/):
+
+> *“The fundamental problem of software testing… is that software has to handle many situations that the developer has never thought of or will never anticipate. This limits the value of testing, because if you had the foresight to write a test for a particular case, then you probably had the foresight to make the code handle that case too. This makes conventional testing great for catching regressions, but really terrible at catching all the “unknown unknowns” that life, the universe, and your endlessly creative users will throw at you.”*
+
+**LLMs can’t really “think outside the box” because they only really know their training data. However, their box can be larger than a human’s, so they have the potential to think about cases that a human might miss.**
+
+Most of the test cases created by Meta’s TestGen-LLM only covered an extra 2.5 lines. However, one test case covered 1326 lines! There are two ways to think about this case:
+
+*   The optimistic case is that the LLM possibly caught an important edge case that was missed by humans when testing.
+
+*   The more realistic case is that the LLM caught a codepath that was just missed altogether, rather than catching an edge case.
+
+**More code coverage != better code**. We don’t want to use lines covered as a chaseable metric, though it would be any bad engineering manager’s dream. More code coverage is gameable, but the downsides of rote coverage created by LLMs is that bugs are also codified, which means they can go unnoticed until they appear in production.
+
+The value here is mostly bringing edge cases that lie outside of the developer’s immediate context, but still within the LLM’s training data, to the developer’s attention.
+
+The Blue Box signifies the space where LLMs can come in handy.
+
+Like I mentioned earlier, a good way to think about this LLM is that it's a junior dev with the task of creating more comprehensive tests for existing code. **LLMs may not generate perfect code on the first try, but it at least provides options that otherwise may not have been thought of.** Other devs have more important things to work on, so this LLM gets the fun task of improving unit tests. The tests that it creates in its pull requests are often good, and sometimes trivial or pointless. Occasionally, a test it produces is really good or uncovers a bug inadvertently.
+
+In fact, it’s so high that the creator of FoundationDB’s startup, [Antithesis](https://antithesis.com/), is entirely based on the fact that software testing edge cases are best found by continuously searching software for problems. [For reference, FoundationDB was acquired by Apple and is the basis for Apple iCloud’s billions of databases.](https://read.engineerscodex.com/p/how-apple-built-icloud-to-store-billions)
+
+Base model LLMs aren’t “plug-n-play" and shouldn’t reasonably ever be expected to. Sure, they might output pristine React and Tailwind CSS code, but that’s a narrow use case in most production codebases. They need a fair amount of processing and filtering for code generation tasks that require correctness. Part of this processing means grounding LLMs with examples. Google and Meta both make **suggestions based on existing code**, where the results are much, much better than raw generation.LLMs used in production should take ideas from how Meta processes and filters LLM outputs, and most outputs should be expected to be discarded.
+
+LLMs do work best integrated into workflows. This is a reason why GitHub Copilot is so popular and another reason why Google’s Workspace integrations are a great idea. Asking a chatbot works great for certain use cases, like boilerplate code generation, but chatbots can often fail at more complex use cases.
+
+TestGen-LLM applies a series of semantic filters to candidate solutions generated by Meta’s internal LLMs, making sure that only the most valuable tests are preserved. Here’s how it works:
+
+**Filter 1: Buildability:** Initially, TestGen-LLM checks if the generated code can be built within the app's existing infrastructure. Any code that fails to build is immediately discarded.
+
+**Filter 2: Execution (does the test pass?):** Next, the system runs the tests that passed the buildability filter. Any test that doesn't pass is discarded. This step is crucial because, without a way to automatically determine the validity of a failing test (whether it's due to a bug or an incorrect assertion), TestGen-LLM opts to keep only those tests that can be used for regression testing (aka making sure they can protect current code against future regressions). 
+
+**Filter 3: Flakiness:** To address the issue of [flakiness](https://www.swequiz.com/learn/what-are-flaky-tests) (tests that pass or fail inconsistently under the same conditions), TestGen-LLM employs repeated execution. A test must pass consistently across multiple (five) executions to be considered non-flaky.
+
+**Filter 3: Coverage Improvement:** Finally, to ensure that new tests actually add value, TestGen-LLM evaluates them for their contribution to test coverage. Tests that do not enhance coverage by exploring new code paths or conditions are discarded. Only tests that provide new insights or protect against regressions are kept.
+
+These processing filters are pretty important as they guarantee improvements to a test suite. It also shows that LLMs are very far from being “plug-and-play.”
+
+The tests that successfully pass through all these filters are guaranteed to enhance the existing test suite, offering reliable regression testing capabilities without duplicating effort or wasting resources. Pre- and post-processing steps in TestGen-LLM facilitate the extraction and reconstruction of test classes, streamlining the integration of new tests into the software development workflow.
+
+This paper is a good formalization of an use case that many devs probably already use LLMs like ChatGPT, Gemini, and Mistral/LLaMA for. Keeping it in writing is a good way of tracking the progress of future improvements on LLMs in the software reliability space. So far, we see that LLMs work best as an extension of the human, best thought of as a junior dev that needs assistance and prodding. As time goes on, we’ll definitely see LLMs be able to catch and test for bugs in increasingly complex software systems.
+
+The question is - will that make software easier to develop in the long run or will it lead to a proliferation of software complexity in the future?

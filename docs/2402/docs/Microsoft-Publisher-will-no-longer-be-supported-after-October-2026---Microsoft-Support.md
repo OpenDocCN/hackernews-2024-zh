@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:50
+-->
+
+# Microsoft Publisher will no longer be supported after October 2026 - Microsoft Support
+
+> 来源：[https://support.microsoft.com/en-us/office/microsoft-publisher-will-no-longer-be-supported-after-october-2026-ee6302a2-4bc7-4841-babf-8e9be3acbfd7](https://support.microsoft.com/en-us/office/microsoft-publisher-will-no-longer-be-supported-after-october-2026-ee6302a2-4bc7-4841-babf-8e9be3acbfd7)
+
+At Microsoft, we are dedicated to providing our customers with the tools they need to achieve what matters, in their work and life. In order to focus on new benefits, we occasionally remove features and products. 
+
+In October 2026, Microsoft Publisher will reach its end of life. After that time, it will no longer be included in Microsoft 365 and existing on-premises suites will no longer be supported. Until then, support for Publisher will continue and users can expect the same experience as today. 
+
+Many common Publisher scenarios including the creation of professionally branded templates, envelope and label printing, and producing customized calendars, business cards, and programs are already available in other Microsoft 365 apps such as Word and PowerPoint. You can find a wide array of customizable templates at [Microsoft Create](https://create.microsoft.com/en-us?ocid=oo_create_visitors_templates_publisher). 
+
+As we look ahead to the retirement of Microsoft Publisher, we are exploring modern ways to achieve common Publisher scenarios across applications like Microsoft Word, PowerPoint, and Designer.  We will update as we have more to share.   
+
+ *You can continue to use Publisher with its current functionality until October 2026.
+
+Support for the perpetual version of Publisher will end in October 2026, when Office LTSC 2021 reaches end of support. Microsoft 365 customers will not be able to access Publisher from that date forward. 
+
+We will provide updates as the date approaches.*  **No action is required.  This information is to allow you sufficient time to plan and we will share additional updates as the date approaches.**

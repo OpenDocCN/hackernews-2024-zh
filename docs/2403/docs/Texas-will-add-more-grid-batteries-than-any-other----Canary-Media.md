@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:53
+-->
+
+# Texas will add more grid batteries than any other… | Canary Media
+
+> 来源：[https://www.canarymedia.com/articles/energy-storage/texas-will-add-more-grid-batteries-than-any-other-state-in-2024](https://www.canarymedia.com/articles/energy-storage/texas-will-add-more-grid-batteries-than-any-other-state-in-2024)
+
+These policy measures paid dividends when batteries [helped Southern California’s grid survive gas shortages](https://www.theguardian.com/sustainable-business/2017/sep/15/californias-big-battery-experiment-a-turning-point-for-energy-storage) after the 2015 Aliso Canyon gas storage leak. Over the years, the technology has helped solar development continue after the sunny hours became saturated with renewable energy; the batteries shift solar generation into more valuable nighttime hours. They also deliver vital capacity when heat waves push the state’s grid to the brink of collapse.
+
+Texas got into the game much more recently, but for different reasons. When battery costs fell, private developers started seeing opportunities to make money in the competitive ERCOT wholesale markets. Unlike California, Texas does not award specific contracts to ensure sufficient grid capacity; instead, the price spikes from moments of scarce supply are meant to incentivize private developers to build power plants and make money.
+
+Developers have found that acquiring land, obtaining permits and connecting to the grid is easier in Texas than in California’s regulatory regime. The payoffs can be huge, both for developers and residents. For developers, rapidly responding batteries are well suited to making money off the sudden swings in ERCOT’s increasingly renewables-inflected markets. But more batteries help the broader community, too, as they [keep the grid functional](https://www.canarymedia.com/articles/energy-storage/grid-batteries-have-never-been-more-abundant-or-more-useful) in dicey situations, like during a string of heat waves last summer.
+
+Battery construction [picked up in Texas around 2020](https://www.greentechmedia.com/articles/read/broad-reach-power-starts-building-biggest-batteries-in-texas), when firms like Plus Power, Broad Reach Power and Key Capture Energy moved forward with 100-megawatt projects, which were unheard of in that market at the time. Now Plus Power, for instance, lists [multiple Texas energy storage projects](https://www.pluspower.com/projects/) in construction with capacity in the hundreds of megawatts. Key Capture lists [580 megawatts in operation or construction](https://keycaptureenergy.com/projects/) in Texas. Broad Reach has more than [300 megawatts operating](https://broadreachpower.com/projects/texas/), with another 800 MW in the design-and-build phase.
+
+And as these early movers on Texas grid batteries keep doubling down, new entrants are rushing in to compete. The entrepreneurial influx has made Texas in 2024 the liveliest grid storage market the U.S. has ever seen.

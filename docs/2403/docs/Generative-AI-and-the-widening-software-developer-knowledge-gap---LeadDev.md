@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:38:17
+-->
+
+# Generative AI and the widening software developer knowledge gap | LeadDev
+
+> 来源：[https://leaddev.com/team/generative-ai-and-widening-software-developer-knowledge-gap](https://leaddev.com/team/generative-ai-and-widening-software-developer-knowledge-gap)
+
+AI tools are already automating large parts of the software engineering role – but are we sleepwalking into a future where no one knows the basics?
+
+Whether you like it or not,  generative AI tools like GitHub Copilot and [OpenAI’s ChatGPT](https://leaddev.com/tech/how-openai-fought-security-threats-and-gpu-shortages-scale-chatgpt) are already part of the[software developer’s toolkit](https://leaddev.com/tech/11-generative-ai-programming-tools-developers), and are even [changing how computer science is taught](https://leaddev.com/team/generative-ai-changing-how-computer-science-taught) to future devs. While we are still some way from these tools[entirely replacing developer roles](https://leaddev.com/tech/researchers-say-generative-ai-isnt-replacing-devs-any-time-soon), there is growing concern that they will erode the foundations of the craft.
+
+## **The paradox of automation**
+
+Aircraft manufacturers have long been aware of the [paradox of automation](https://personalmba.com/paradox-of-automation), where an overreliance on automation makes the human in the loop even more critical than before. Modern airline pilots increasingly rely on autopilot systems, but must be experienced enough to know when to intervene if something goes wrong. Blindly following the instruments in this scenario [can lead to loss of life](https://thewalrus.ca/the-deadly-price-of-the-automation-paradox/). But in a world where more and more basic operational tasks can be offloaded to an AI system, how can we expect the operators of these systems to know when things aren’t right?
+
+As developers blindly copy and paste code snippets from their generative AI assistant into production environments, their ability to interrogate that work, and fix issues, shrinks.
+
+“There is a risk that AI hollows out software engineering expertise,” explains Angus Allan, senior product manager at xDesign. “We are already seeing continued demand for software developers, but the [demand is skewing towards more senior engineers](https://leaddev.com/team/senior-engineers-are-weathering-layoffs-storm), creating a glut of junior talent and not enough roles to fill them.”
+
+As senior engineers age out of the industry, and AI increasingly takes on the routine tasks that gave junior developers their start, a potentially critical knowledge gap starts to open up.
+
+## **The impact of AI on junior engineer growth**
+
+The instant appeal of coding assistants – in which Simon Willison, co-creator of Django says is giving him a “three to four times personal productivity improvement” – needs to be balanced with the long-term viability of the profession. 
+
+“If you rush and don’t consider how it is deployed, and how it helps your engineers grow, you risk degrading your engineering talent over time,” fears Allan. “Leaders shouldn’t be complacent and should have a proper knowledge strategy, which includes training in-house AI on their own practices and standards. AI should be a force multiplier for senior engineers to 10x their impact within their team and practice.”
+
+The problem runs deeper than the current moment, argues Michal Szymczak, head of AI strategy at digital services provider Zartis. “Every business has a prerogative to ensure business continuity, and this is best ensured through in-person, hands-on practical experience with emerging tools and technology – which also means we need a greater degree of vocational educational programs similar to Germany's model,” he says. Famously, German businesses often provide [mid-career training](https://www.raconteur.net/insights/germanys-industrial-skills-shortage-challenges-and-solutions), and schools tailor their curriculums much more closely to various industry needs.
+
+## **Is it a real hitch?**
+
+The big question is if these tools will cause a generational shift in how software is developed, or are just the latest in a long line of productivity enhancers to be resisted and eventually embraced. “Developers are not strangers to the concept of lifelong learning,” points out Michael Erquitt, senior security engineer at Security Journey. “There will always be new technologies and techniques in this industry.”
+
+Erquitt believes the likely outcome for how AI models are deployed within the sector is that, over the next five to 10 years, the technology will become “a great force multiplier for augmenting the developer process”. That’ll allow developers to focus on other elements of the job. 
+
+“My very strong intuition is that, at least for the people who actually want to learn this stuff, this is a learning accelerant,” says Willison. “If you're just getting started coding right now, and you're not the kind of person who just cheats, you actually do want to learn things, these are basically rocket fuel for the rate at which you can learn things.”
+
+## **How to deploy AI responsibly**
+
+Managing the paradox of automation will boil down to how developers are trained, both in formal education and the workplace. 
+
+“The danger from an engineering perspective is that copy pasting code is inherently bad, as it still needs to be checked,” says Claus Jepsen, chief product and technology officer at Unit4\. “Badly done software can have a material impact on an organization, so I doubt that today’s software engineers are using generative AI to automate development for critical medical applications or space flights to Mars.”
+
+This creates a greater need than ever for developers to be able to not just write code, but interrogate it. “The critical part of the role is to understand what the code needs to do. What is the expectation? What is the performance requirement? What are the underlying architectural and operational requirements? All of this thinking is integral to software engineering,” Jepsen says.
+
+The temptation to offload the basic elements of any job can be compelling, but the risk lies in losing that connection to the complex systems underpinning those tasks. “Writing the code is a smaller part of the discipline,” says Jepsen, “but if you start sacrificing the code writing skills you’ll be in trouble.”

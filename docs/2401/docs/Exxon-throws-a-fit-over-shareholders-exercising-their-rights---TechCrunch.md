@@ -1,0 +1,84 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:05:59
+-->
+
+# Exxon throws a fit over shareholders exercising their rights | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/01/22/exxon-sues-activist-investors/](https://techcrunch.com/2024/01/22/exxon-sues-activist-investors/)
+
+It’s a dirty little secret in business that everybody has a boss, even the bosses. Top executives report to the CEO, the CEO answers to the board, and the board serves at the whim of the shareholders.
+
+Exxon’s management has now decided that it doesn’t like what its bosses have to say.
+
+On Sunday evening, the oil supermajor filed a lawsuit in federal court asking for permission to ignore a shareholder resolution at its next annual meeting. The resolution was proposed by [Arjuna Capital](https://arjuna-capital.com) and [Follow This](https://www.follow-this.org), two activist investors that are seeking to compel Exxon to rein in its vast carbon emissions.
+
+Hang on a minute, aren’t shareholders supposed to be sacrosanct? Isn’t the whole point of a corporation to please its shareholders? That’s what Milton Friedman said when he [argued](https://www.nytimes.com/1970/09/13/archives/a-friedman-doctrine-the-social-responsibility-of-business-is-to.html) in favor of shareholder primacy back in 1970:
+
+> In a free‐enterprise, private‐property system, a corporate executive is an employee of the owners of the business. He has direct responsibility to his employers. That responsibility is to conduct the business in accordance with their desires, which generally will be to make as much money as possible *while conforming to the basic rules of the society*, both those embodied in law *and those embodied in ethical custom.* (Emphases added.)
+
+The new shareholder resolution calls on the oil company to reduce its Scope 3 emissions or those that result from the use of its products. In Exxon’s case, that’s mostly the burning of fossil fuels.
+
+The problem Exxon faces is that the “basic rules of society,” specifically “those embedded in ethical custom,” are changing, and the company now finds itself on the wrong side of them. Two-thirds of Americans say we should prioritize alternative energy over fossil fuels, and 69% say the U.S. should move toward net-zero emissions by 2050, according to the [Pew Research Center](https://www.pewresearch.org/short-reads/2023/08/09/what-the-data-says-about-americans-views-of-climate-change/). Internationally, [most people](https://climatecommunication.yale.edu/publications/international-public-opinion-on-climate-change-2022/toc/5/) want their governments to do something about climate change.
+
+Exxon would normally take its grievances to the SEC, filing a request with the regulator to omit the proposal from this year’s proxy statement. But under the Biden administration, the SEC has been siding more frequently with shareholders. After all, who’s the boss?
+
+Years ago, the only shareholders who were a thorn in managements’ sides were activist investors who would amass substantial positions in a bid to gain board seats and steer company strategy. Other shareholders tended to be deferential to management, letting them run their business as they saw fit.
+
+But as shareholder primacy took root in the public consciousness, more shareholders began to [exercise their rights](https://www.bu.edu/bulawreview/files/2019/06/FAIRFAX.pdf). Even larger asset managers, including BlackRock, Vanguard and State Street, have [warmed](https://www.cnn.com/2019/01/30/investing/activist-shareholders/index.html) to shareholder proposals that seek to push companies to adhere to what Friedman called “ethical custom.”
+
+Exxon’s management seems to be chafing under the new regime. It’s unhappy with the fact that shareholders are exercising their rights in a way that acknowledges the realities of climate change and seeks to guide the company to a true net-zero future so that it can continue to be a going concern in 2050 and beyond.
+
+## What’s in Exxon’s lawsuit
+
+The company makes a lot of [arguments in its filing](https://www.documentcloud.org/documents/24371024-exxon-vs-arjuna-capital), but only one really has a chance of succeeding. Let’s dive into them.
+
+> We buy shares in order to work on our mission to stop climate change, not to make a financial profit.
+
+Not sure why this is in a lawsuit filing. Companies have no obligation to pursue profit for their shareholders if those shareholders don’t care about profit.
+
+As evidence, I’ll [cite](https://supreme.justia.com/cases/federal/us/573/682/) U.S. Supreme Court Justice Samuel Alito of all people: “Modern corporate law does not require for-profit corporations to pursue profit at the expense of everything else, and many do not do so,” Alito wrote in the majority opinion of Burwell v. Hobby Lobby Stores Inc. “So long as its owners agree, a for-profit corporation may take costly pollution-control and energy-conservation measures that go beyond what the law requires.”
+
+Seems pretty cut and dry. If Exxon shareholders want it to get out of the fossil fuel business, then that’s their right. Let them vote on it.
+
+> The 2024 Proposal does not seek to improve ExxonMobil’s economic performance or create shareholder value. Like the previous proposals, it is designed instead to serve Arjuna’s and Follow This’s agenda to “shrink” the very company in which they are investing by constraining and micromanaging ExxonMobil’s ordinary business operations.
+
+On the first point, see Alito. But in addition, the company should acknowledge that shareholder value is a subjective opinion. If the world really is moving in the direction of net-zero carbon emissions, then long-term shareholder value would be increased if Exxon ditches fossil fuels in favor of other business lines.
+
+> This sweeping intrusion into ExxonMobil’s ordinary business operations is designed to substitute Defendants’ preferences for the judgment of ExxonMobil’s management and board in determining how best to operate the company in an efficient and environmentally-conscious way.
+
+Management is clearly not happy with shareholders exercising their rights. This new regime does not suit them.
+
+> The 2024 Proposal is excludable under Rule 14a-8(i)(7) because it “deals with a matter relating to the company’s ordinary business operations.”
+
+This one is in the weeds a bit, but the key point is what defines “ordinary business operations.” Like many laws, that’s subject to interpretation. I would argue that reducing Scope 1, 2 and 3 emissions is high-level strategy, not day-to-day tactics.
+
+If the court finds that this new resolution would meddle in “ordinary business operations,” then pretty much every shareholder resolution could be considered “a matter relating to the company’s ordinary business operations.” Exxon’s argument is so broad that it would strip shareholders of one of their key rights.
+
+> Arjuna and Follow This pursue a shared agenda at the expense of ExxonMobil shareholders.
+
+Why not let the shareholders decide that for themselves? Seems a bit patronizing for Exxon to decide for them.
+
+> Setting goals for Scope 3 GHG emissions is a matter of significant business judgment because it requires the company to make assumptions about other people’s activities, which can make Scope 3 goals challenging to set.
+
+Wait, I thought setting Scope 1, 2 and 3 targets would interfere in “ordinary business operations”? This point argues that Scope 3 emissions are actually high-level strategy.
+
+On Exxon’s second point: Inferring Scope 3 emissions for many products is hard, but it’s not for fossil fuels. In fact, calculating those is about as simple as it gets. What else are customers going to do with them besides light them on fire and dump the pollution into the atmosphere?
+
+> Scope 3 does not account for critical technologies such as removals achieved by carbon capture and storage and negative emission technologies (such as direct air capture) and their potential impact in reducing GHG emissions at scale, which are considered essential to achieve a net-zero outcome for society.
+
+Oh, I see. Exxon thinks that some customers are going to light their products on fire and then capture the pollution. Problem is, they don’t. Carbon capture is niche; it’s so small that I couldn’t find statistics on how much carbon was captured last year. Suffice it to say, it’s probably a very, very small portion of Exxon’s total carbon pollution.
+
+Plus, carbon capture is an expensive and energy-intensive operation that’s best used to address historical emissions or hard-to-abate sectors, not to give companies like Exxon a license to continue operating as normal.
+
+Finally, the vast majority of the finished products Exxon sells are fuels; [nearly 90% of its petroleum products](https://d1io3yog0oux5.cloudfront.net/_d1e4ab5f254a314903d16c85853eb81c/exxonmobil/db/2289/22023/file/2022-financial-and-operating-data---final.pdf) are intended to be burned in engines, usually for transportation. Nobody captures carbon from their car, plane or boat, nor is anyone actually considering it. Nobody. Exxon’s arguments about carbon capture fall flat.
+
+> It is irrelevant that the wording is slightly different and the granular details of the three proposals [2022, 2023, and 2024] vary slightly. Each addresses substantially the same subject matter and seeks the same end result.
+
+This is Exxon’s best argument, to be honest. Arjuna and Follow This have filed proposals in previous years asking Exxon to address its carbon pollution, both of which were rejected. But it’s also something the SEC should be able to address quickly and quietly.
+
+So why not go that route? For one, under the Biden administration, the SEC has been more willing to allow shareholders to voice their concerns. Exxon probably wants to send a message to other shareholders that it’s not keen on listening to them.
+
+Furthermore, the oil company would no doubt like a federal judge to set a precedent that would make it harder for shareholders to make proposals. After all, that’s why instead of filing in the Southern District of Texas, where its headquarters are, it filed in the Northern District of Texas, where Judge Reed O’Connor has a record of issuing rulings friendly to businesses.
+
+Exxon clearly wants to stifle the voice of shareholders, especially when it comes to those who are concerned about the company’s carbon pollution. Yet ironically, by filing this lawsuit, it has brought even more attention upon itself than a voted-down shareholder proposal would. Even before the judge has issued a ruling, Arjuna and Follow This have won the first round.

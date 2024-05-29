@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:00:28
+-->
+
+# Sam Altman Says AI Using Too Much Energy, Will Require Breakthrough Energy Source
+
+> 来源：[https://futurism.com/sam-altman-energy-breakthrough](https://futurism.com/sam-altman-energy-breakthrough)
+
+It's no secret that AI models like those behind OpenAI's ChatGPT require an [astronomical amount of electricity](https://futurism.com/the-byte/ai-electricity-use-spiking-power-entire-country).
+
+The process is ludicrously energy intensive, with experts [estimating](https://www.nytimes.com/2023/10/10/climate/ai-could-soon-need-as-much-electricity-as-an-entire-country.html) that the industry could soon suck up as much electricity as an entire country.
+
+So it shouldn't come as a surprise that OpenAI CEO Sam Altman is looking for cheaper alternatives. During a *Bloomberg* event at the annual World Economic Forum in Davos, Switzerland, the billionaire suggested that the AI models of tomorrow may require even *more* power — to the degree that they'll need a whole new power *source*.
+
+"There's no way to get there without a breakthrough," Altman told audiences, as [quoted by *Reuters*](https://finance.yahoo.com/news/openai-ceo-altman-says-davos-173636736.html). "It motivates us to go invest more in fusion," adding that we need better ways to store energy from solar power.
+
+Altman is conjuring up one of the most hotly discussed topics in energy production today. Fusion energy has long been seen as the holy grail, representing a hypothetically limitless source of energy without the risks associated with nuclear fission.
+
+Despite many decades of research, though, scientists have yet to figure out a way to fuse atoms in a way that produces a net positive amount of energy at scale.
+
+Unperturbed, billionaires including [Jeff Bezos, Peter Thiel and Bill Gates](https://www.wsj.com/articles/tech-billionaires-bet-on-fusion-as-holy-grail-for-business-9a48a2ac) have poured substantial amounts of money into the idea.
+
+Altman himself invested [some $375 million](https://www.cnbc.com/2021/11/05/sam-altman-puts-375-million-into-fusion-start-up-helion-energy.html) in a nuclear fusion company called Helion Energy back in 2021\. Conveniently, the company has since [signed a partnership](https://www.helionenergy.com/articles/helion-announces-worlds-first-fusion-ppa-with-microsoft/) with Microsoft, the tech giant that invested [$13 billion in OpenAI](https://www.cnbc.com/2023/04/08/microsofts-complex-bet-on-openai-brings-potential-and-uncertainty.html). Altman [has also suggested](https://futurism.com/sam-altman-agi-fusion-world) that AI itself could crack the case on how to make fusion a practical energy tech.
+
+However, while the emergent crop of startups like Helion has [repeatedly](https://futurism.com/startup-year-practical-fusion-power) [claimed](https://futurism.com/the-byte/fusion-power-imminent) that fusion energy is right around the corner, we have yet to see any concrete results.
+
+Of course, if Altman's rosy vision of the future of energy production were to turn into a reality, we'd have a considerably greener way to power these AI models.
+
+In the meantime, however, Altman should probably focus his efforts on sustainable sources of energy that already exist.
+
+And instead of relying on future breakthroughs and moonshots, we need action now. The carbon footprint of the AI industry is really starting to rear its ugly head. According to an [October paper](https://www.sciencedirect.com/science/article/abs/pii/S2542435123003653?dgcid=author) published in the journal *Joule*, adding generative AI to Google Search alone balloons its energy uses by more than tenfold.
+
+"The energy consumption of something like ChatGPT inquiry compared to some inquiry on your email, for example, is going to be probably ten to 100 times more power hungry," Professor of electrical and computer engineering Sajjad Moazeni [told *Yahoo Finance*](https://finance.yahoo.com/news/energy-consumption-to-dramatically-increase-because-of-ai-114541309.html) last year.
+
+And our reliance on these tools is likely to increase if AI cements itself as an everyday piece of tech.
+
+"We’re maybe at one percent of where the AI adoption will be in the next two to three years,"Arijit Sengupta, founder and CEO of enterprise AI company Aible told *Yahoo Finance*. "The world is actually headed for a really bad energy crisis because of AI unless we fix a few things."
+
+That means we need to come up with viable alternatives to run these processing farms before it's too late.
+
+"Let’s not make a new model to improve only its accuracy and speed," University of Florence assistant professor Roberto Verdecchia [told the *New York Times*](https://www.nytimes.com/2023/10/10/climate/ai-could-soon-need-as-much-electricity-as-an-entire-country.html). "But also, let’s take a big breath and look at how much are we burning in terms of environmental resources."
+
+**More on Altman:** *[Sam Altman Says Muslim Colleagues Are Afraid to Speak Up](https://futurism.com/sam-altman-muslim-colleagues-afraid-speak-up)*

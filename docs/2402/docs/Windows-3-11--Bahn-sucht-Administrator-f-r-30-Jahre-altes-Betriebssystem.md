@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:40:59
+-->
+
+# Windows 3.11: Bahn sucht Administrator für 30 Jahre altes Betriebssystem
+
+> 来源：[https://t3n.de/news/windows-3-11-bahn-sucht-administrator-1604711/](https://t3n.de/news/windows-3-11-bahn-sucht-administrator-1604711/)
+
+Uraltsysteme sind in vielen Unternehmen, auch im Infrastrukturbereich, sicher noch weitverbreitet. Im Jahr 2015 etwa hatte ein Fehler in einem unter [Windows](https://t3n.de/tag/windows/ "Weitere News zu Windows") 3.1 laufenden Computer den Flughafen Paris Orly lahmgelegt.
+
+## DB oder Partnerfirma suchen Windows-3.11-Admin
+
+Auch die [Deutsche Bahn](https://t3n.de/tag/deutsche-bahn/ "Weitere News zu Deutsche Bahn") beziehungsweise ein IT-Partner oder der Zugbauer Siemens setzen offenbar noch immer auf das 1993 erschienene Microsoft-Betriebssystem. Das geht aus einer [Stellenanzeige](https://www.gulp.de/gulp2/g/projekte/agentur/C00929028#09) hervor, die Caschys Blog [entdeckt](https://stadt-bremerhaven.de/bahn-administrator-fuer-windows-3-11-gesucht/) hat.
+
+Empfehlungen der Redaktion
+
+Demnach wird ein:e Windows-3.11-Administrator:in gesucht. Wer den Job haben will, sollte für eine „hochwertige Display-Software“ sorgen können, „deren Schnittstellen zur Fahrzeugsteuerung bzw. Fahrzeugleittechnik reibungslos funktionieren“.
+
+## Treiber aktualisieren und „Altsystem“ pflegen
+
+Und weiter heißt es in der Stellenanzeige: „Auf den [sic!] Führerstand-Displaysystem der Hochgeschwindigkeits- und Regionalzüge werden dem Fahrer die wichtigsten technischen Daten in Echtzeit angezeigt.“ Im Rahmen des Projekts gilt es, Treiber zu aktualisieren und das „Altsystem“ zu pflegen.
+
+Immerhin hat Windows 3.11 nicht nur schon gut 30 Jahre auf dem Buckel, sondern wird auch seit mindestens 15 Jahren (Windows for Workgroups 3.11) nicht mehr von Microsoft unterstützt. Das Supportende für Windows 3.1 war sogar schon Ende 2001 erreicht.
+
+## MS-DOS und Sibas-Kenntnisse von Vorteil
+
+Neben Kenntnissen in Windows 3.11 sollten Bewerber:innen übrigens auch Kenntnisse zu Legacy-Betriebssystemen und zu Windows-Managern (MS DOS und Windows for Workgroups) mitbringen. Wer sich mit dem von Siemens entwickelten Steuerungssystem für Schienenfahrzeuge, Sibas, und bildgebenden Systemen oder im Bahnbereich auskennt, hat wahrscheinlich schon einen Stein im Brett.
+
+Diese Retro-Technik hat heute Sammlerwert
+
+Sich mit alten Betriebssystemen auszukennen, ist also kein Nachteil. Vor allem im militärischen Bereich wird gern noch [auf Windows XP](https://t3n.de/news/windows-xp-2024-video-altes-betriebssystem-heute-1600838/) gesetzt. So läuft Windows XP auf vier britischen Atom-U-Booten. Ersatz ist erst für 2028 geplant.
+
+## Disketten und Uraltsysteme noch im Einsatz
+
+In der Industrie, etwa im Werkzeugbau, kommen dagegen [noch immer Disketten zum Einsatz](https://t3n.de/news/unverwuestliche-floppy-disks-disketten-einsatz-1592024/). Damit werden Geräte gefüttert, die lange vor der Jahrtausendwende gebaut wurden, heute aber noch funktionieren. Nicht umsonst heißt es: „Repariere nichts, was nicht kaputt ist“.
+
+Fast fertig!
+
+Bitte klicke auf den Link in der Bestätigungsmail, um deine Anmeldung abzuschließen.
+
+Du willst noch weitere Infos zum Newsletter? [Jetzt mehr erfahren](https://t3n.de/info/t3n-newsletter/ "Jetzt mehr erfahren")

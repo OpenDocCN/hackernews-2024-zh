@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:15
+-->
+
+# It Can Be Done
+
+> 来源：[https://multicians.org/andre.html](https://multicians.org/andre.html)
+
+Tom Van Vleck
+
+The late [André Bensoussan](multicians.html#Bensoussan "Multician: Designer (GE/CISL): File manager, Initialization, AIM, NSS.") worked with me on the Multics operating system at Honeywell in Cambridge. We were working on a [major change](mgn.html#NSS "glossary: New Storage System. MR 4.0 included a rewritten storage...") to the file system, which required a subsystem, the [VTOC](mgv.html#VTOC "glossary: Volume Table of Contents. Region of a physical volume...") manager, to manage file description information. It had to transport the file information between disk and memory, manage a shared memory buffer pool, and manage space on disk for the information. In other words, it was a small virtual memory manager.
+
+André took on the job of design, implementation, and test of the VTOC manager. He started by sitting at his desk and drawing a lot of diagrams. I was the project coordinator, so I used to drop in on him and ask how things were going. "Still designing," he'd say. He wanted the diagrams to look beautiful and symmetrical as well as capturing all the state information. I was getting nervous about the schedule, so I was glad when he finally began writing code. He wrote in pencil, at his desk, instead of using a terminal. He declined offers of typing help, and just kept writing away in pencil. He rewrote parts, copied things over, erased and rewrote.
+
+Finally André took his neat final pencil copy to a terminal and typed the whole program in. His first compilation attempt failed; he corrected three typos, tried again, and the code compiled. We bound it into the system and tried it out, and it worked the first time.
+
+In fact, [the VTOC manager](vtoc_man.html "PL/I source of the Multics storage system VTOC manager.") worked perfectly from then on. Only one bug was ever found in it, and that was my fault: André had asked me the calling sequence for an error procedure, and I'd guessed instead of looking it up, so it crashed the first time it hit an error. Beyond that the program was perfect.
+
+How did André do this, with no tool but a pencil?
+
+IEEE Computer, April 1994 (Updated November 2003)

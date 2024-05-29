@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:09
+-->
+
+# West Midlands Police rapped for data snafu • The Register
+
+> 来源：[https://www.theregister.com/2024/03/01/west_midlands_police_data_protection/](https://www.theregister.com/2024/03/01/west_midlands_police_data_protection/)
+
+The UK's Information Commissioner's Office has put the West Midlands Police (WMP) on the naughty step after the force was found to have repeatedly mixed up two people's personal data for years.
+
+Britain's data watchdog says the force "incorrectly linked and merged the records" of the individuals that share the same name and date of birth on multiple occasions during 2020, 2021 and 2022.
+
+The unnamed pair were both victims of crime, although one had been a suspect was well, "meaning WMP didn't make a clear distinction between the personal information of victims and suspects of crime, a breach of the Data Protection Act 2018," the ICO said in a statement today.
+
+The series of unfortunate events led to inaccurate personal data being processed and culminated in a litany of mistakes, including officers going to the wrong address when trying to find a person "regarding serious safeguarding concerns." Officer also "incorrectly" visited the school of a wrong person's child.
+
+In another incident, one of the individuals was sent a letter by WMP about the other, revealing they had been there victim of serious assault, and at the time the recipient was aware of the data mix-up mess.
+
+"WMP didn't take steps to rectify the error quickly enough and there was a failure to stop the inaccurate linking of records reoccurring, both breaches of data protection law. " said the ICO.
+
+The data privacy watchdog found WMP hadn't provided regular data protection training or done enough to make employees aware of their role in reporting inaccurate personal information. The force has since launched Data Quality Policy, and launched the "Think before you link" campaign - so catchy that maybe the cops will even remember it.
+
+WMP compensated one of the individuals and sent a letter to "help them address similar data accuracy issues with other organisations," the reprimand states.
+
+The remedial action taken by the force since the ICO launched its probe means the body decided not to fine the police service.
+
+David Doodson, civil investigations manager at the ICO, said:
+
+"It is essential that police forces handle personal information with the utmost respect to maintain people's trust and confidence in the police. Sharing the same name and birthday as someone else should not mean your personal information is jeopardised, especially given the sensitive nature of the information held.
+
+"This case highlights the importance of training to ensure officers understand data protection law to avoid mistakes like this occurring again."
+
+The data protection body gave the force four recommendations, saying it should "maintain relevant records of its processing activities and take steps to improve governance measures, take "appropriate action to distinguish the records of the two individuals and prevent further inaccurate linking and merging of records containing personal data. This should include completing the technical changes needed to unmerge the records on the system in a timely manner." It should also ensure "learnings" from security incidents are shared across the org and remind employees of security policies; and, finally, the ICO said, ensure employees attend mandatory data protection training as well as considering "implementing clear policies, procedures and training that is specific to the use of the system."
+
+The force told *The Reg*: "We acknowledge and accept the reprimand and thank the ICO for their recommendations. We have already fully completed the three recommendations with the fourth being an ongoing responsibility that we take seriously and are investing in.
+
+"We have already apologised to the individuals affected and taken action to minimise the likelihood of this or anything similar happening again."
+
+It added that it handles "millions of records each day" and said "thankfully these data errors are incredibly infrequent." ®

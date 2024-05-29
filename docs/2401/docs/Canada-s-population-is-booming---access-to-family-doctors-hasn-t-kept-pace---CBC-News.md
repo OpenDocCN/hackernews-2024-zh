@@ -1,0 +1,126 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:30
+-->
+
+# Canada's population is booming — access to family doctors hasn't kept pace | CBC News
+
+> 来源：[https://www.cbc.ca/news/politics/canada-popuation-booming-family-doctor-access-1.7087794](https://www.cbc.ca/news/politics/canada-popuation-booming-family-doctor-access-1.7087794)
+
+Canada is going through an unprecedented growth spurt, having added well over a million people last year after a similarly historic intake in 2022.
+
+Some economists have argued this record-setting surge could be a boon to an economy heavily dependent on immigration. A recent [Desjardins report](https://www.desjardins.com/qc/en/savings-investment/economic-studies/canada-population-jan-10-2024.html) cautioned the federal government against slamming the door on non-permanent residents like students and temporary workers, who make up most of the recent newcomers.
+
+But this breakneck pace is bringing with it some major growing pains — particularly in a health-care sector perpetually starved for resources.
+
+The country isn't producing nearly enough homegrown primary care doctors to keep up with the country's health needs, said Dr. Kathleen Ross, a B.C. family doctor and president of the Canadian Medical Association (CMA).
+
+"The truth is our health-care system is on its knees. We're not meeting the needs of the population. Our workers are burning out in droves," Ross told CBC News.
+
+"There are definitely not enough physicians working and training. We need to train more. We are simply not keeping up with the demand and with the number of people who are retiring."
+
+***WATCH: Canada is losing out on hundreds of qualified doctors each year. Here's why***    ### Canada is losing out on hundreds of qualified doctors each year. Here’s why
+
+Canada is losing out on hundreds of qualified Canadian doctors trained abroad who can’t practice because they find it difficult to get residencies here due to a combination of red tape and bias.
+
+Many Canadians were struggling to find a family doctor already when the federal government allowed the number of new arrivals to increase so dramatically.
+
+While Ottawa sets limits on the number of permanent residents, other demand-driven streams — like international students — are not capped.
+
+Data from the [OurCare initiative](https://www.ourcare.ca/nationalsurvey) suggests the number of Canadians without regular access to a family doctor or nurse practitioner has spiked from 4.5 million in 2019 to an estimated 6.5 million in 2023.
+
+That means millions of Canadians don't have face-time with a primary care physician who can help ensure longer life expectancy, prevent hospitalizations and premature deaths, foster better health outcomes and improve quality of life.
+
+That lack of access has consequences. Unscheduled emergency room visits jumped from about 14 million in 2021-22 to 15.1 million in 2022-23, according to Canadian Institute for Health Information (CIHI) [data](https://www.cihi.ca/en/nacrs-emergency-department-visits-and-lengths-of-stay#:~:text=Key%20findings,14.0%20million%20in%202021%E2%80%932022.).
+
+Limited access to a family doctor for many Canadians may be behind the recent spike in unplanned emergency room visits. (Eric Gay/AP Photo)
+
+The number of people entering a residency — the post-graduate training required in order to be licensed to practice medicine in Canada — may explain why so many people are struggling to get the primary care they need.
+
+A CBC News review of medical school data shows the number of medical residents has been stagnant for the past decade — a 10-year period when the Liberal government dramatically ramped up the number of newcomers above existing immigration targets.
+
+In 2014, 3,255 people entered postgraduate medical training, according to [data](https://www.carms.ca/pdfs/carms-forum-2023.pdf) from the Canadian Resident Matching Service (CaRMS).
+
+In 2023, the number was 3,422 — a five per cent increase in 10 years.
+
+The population growth rate, meanwhile, was three times higher than that. Canada's population spiked from 35.4 million to over 40 million over the same time period, according to [Statistics Canada estimates](https://www150.statcan.gc.ca/n1/daily-quotidien/231219/dq231219c-eng.htm).
+
+Canada's medical schools are admitting only 167 more doctors for mandatory postgraduate training than they did 10 years ago, even as the population added about five million people.
+
+Federal data suggests Canada will need roughly [48,900 more family doctors](https://occupations.esdc.gc.ca/sppc-cops/.4cc.5p.1t.3onsummaryd.2tail@-eng.jsp?tid=105) by 2031.
+
+Some provincial governments — which are largely responsible for physician training and licensing — are working to expand medical school capacity after years of low growth.
+
+Ontario has promised to add 449 postgraduate medical training spaces over the next five years; 154 are expected to come online later this year at some of the province's medical schools.
+
+The University of P.E.I. will [open a medical school](https://www.cbc.ca/news/canada/prince-edward-island/pei-medical-school-update-1.6856591) in the fall of 2025\. Simon Fraser University plans to establish a new medical school at its Surrey, B.C. campus [in 2026](https://www.cbc.ca/news/canada/british-columbia/medical-school-simon-fraser-university-1.6550687).
+
+But even with those added spaces, the numbers suggest fewer new doctors are training to practice family medicine — a crucial gatekeeper role in our publicly funded system.
+
+The most recent [CaRMS report](https://www.carms.ca/pdfs/carms-forum-2023.pdf) says 37.8 per cent of Canadian medical graduates (CMGs) picked family medicine as their discipline for residency training in 2014.
+
+That number slumped to 30.3 per cent last year.
+
+The data indicates more doctors are choosing to train for other non-surgical disciplines like anesthesiology, pediatrics and psychiatry.
+
+"The numbers are staggering when you think about how many we need and how big the gap is," Ross said of the family doctor deficit.
+
+The CMA estimates the gap between the number of family doctors leaving the profession and new ones coming into the workforce is about 1,000 every year.
+
+"We are simply not graduating enough family medicine residents to meet that need," Ross said.
+
+The number of residencies on offer does not tell the whole story — and there are competing numbers that paint a different picture.
+
+CIHI, an independent, mostly federally funded organization that collects health information, suggests the number of family doctors actually has been [increasing](https://www.cihi.ca/sites/default/files/document/supply-distribution-migration-physicians-2022-meth-notes-en.pdf) over the last ten years — sometimes outpacing population growth.
+
+Ivy Lynn Bourgeault is a professor at the University of Ottawa and director of the Canada Health Workforce Network. She told CBC News the raw data on the number of physicians can be "misleading" because it lacks nuance.
+
+There are more family doctors than there were 10 years ago, she said, but some of them are not delivering traditional primary care.
+
+More and more family doctors are obtaining credentials to work in emergency and sports medicine and anesthesiology, for example, which takes them out of the clinic environment normally associated with those practitioners, she said.
+
+There are also more physicians working part-time. More family doctors working less doesn't solve the system's capacity issues, Bourgeault said.
+
+Canada just doesn't have the right mix of health care providers to serve the country's evolving needs as the population grows and ages, she argued.
+
+"The indication that we don't have it right is that there are so many people who don't have access," she said.
+
+Ivy Lynn Bourgeault, a professor at the University of Ottawa and the director of the Canada Health Workforce Network, said existing practitioners need to be better deployed to address primary care demands. (Marc Robichaud/CBC News)
+
+"We have so many areas where there are shortages. There are so many increased wait times. There are so many people that don't have access to comprehensive primary care."
+
+Redeploying existing physicians and other health providers to work in primary care could be a solution to the current staffing gap, she said.
+
+"There are a lot of practitioner groups out there that are not being fully utilized. In a time of crisis of access and a crisis of burnout, we really do need to make a remarkable shift in how we utilize all of those different roles," Bourgeault said.
+
+The government has touted its health-care worker immigration program as one solution to bolster the physician ranks over the longer term.
+
+Ottawa has announced an immigration program that brings in more foreign doctors — but that doesn't mean those newcomers will work in that field when they get here. (Jeff McIntosh/Canadian Press)
+
+Last year, Ottawa announced [a new dedicated "express entry" stream](https://www.cbc.ca/news/politics/canada-doctor-shortage-immigration-1.6891603) for health professionals.
+
+While that program does bring in more foreign doctors, it can't ensure those newcomers will work in that field when they get here. There's a mismatch between what Ottawa promises and what provincially regulated professional bodies allow.
+
+It's [difficult for international medical graduates (IMGs) to get a residency](https://www.cbc.ca/news/politics/canadian-doctors-trained-abroad-practice-1.6749553) because there are [quotas](https://www.cbc.ca/news/politics/canada-turning-away-home-grown-doctors-1.6743486) on how many foreign-trained doctors can get a spot in a system run by medical schools that favour their own graduates.
+
+Last year, for example, only 555 IMGs were placed with a residency — a figure that [includes both Canadian-born doctors](https://www.cbc.ca/news/politics/canada-turning-away-home-grown-doctors-1.6743486) who went to school abroad and new permanent residents and citizens who were trained in other countries.
+
+Internationally trained physicians have to fight their way through a tangle of red tape before they can practice here — even if they don't have to finish or repeat the years-long residency training in Canada.
+
+The credential verification, exam and licensing process can take well over a year to complete even for [well-qualified Canadians](https://www.cbc.ca/news/politics/canadian-doctor-gets-license-to-practice-1.6912617) who went to medical school and practiced in a Commonwealth country like Australia.
+
+***WATCH: Canadians trained abroad losing residency spots to 'visa trainee' doctors***  ### Canadians trained abroad losing residency spots to ‘visa trainee’ doctors
+
+Canadian medical students trained abroad are struggling to get a residency in Canada, while the number of foreign nationals, or ‘visa trainees,’ getting a spot has increased by 70 per cent, a trend that advocates say needs to end.
+
+Speaking after a meeting with his provincial and territorial counterparts on Tuesday, Employment Minister Randy Boissonnault said Ottawa is rolling out more money to better integrate foreign-trained health professionals.
+
+Boissonnault announced roughly $86 million to help integrate 6,600 international professionals in the coming years — a figure that includes not just doctors but dentists, radiologists, nurses and others.
+
+He said all levels of government are committed to "reducing the barriers that have been put in place so there's no static."
+
+"We've put up artificial barriers to people accessing the labour market. We can't afford that anymore. Getting rid of that red tape, getting rid of those inefficiencies in the system, are actual conversations we had today," Boissonnault said.
+
+Bourgeault, the health researcher, said if all levels of government don't marshal their resources to improve access, popular support for Canada's medicare system will decline.
+
+"The health-care system is part of the fabric of Canadian society. We feel proud to have a publicly accessible system. If we don't have access, that wears down our sense of pride," she said.

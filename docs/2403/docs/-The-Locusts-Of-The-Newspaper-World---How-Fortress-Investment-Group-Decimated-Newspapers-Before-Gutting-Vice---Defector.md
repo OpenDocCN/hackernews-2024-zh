@@ -1,0 +1,146 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:51:08
+-->
+
+# "The Locusts Of The Newspaper World": How Fortress Investment Group Decimated Newspapers Before Gutting Vice | Defector
+
+> 来源：[https://defector.com/the-locusts-of-the-newspaper-world-how-fortress-investment-group-decimated-newspapers-before-gutting-vice](https://defector.com/the-locusts-of-the-newspaper-world-how-fortress-investment-group-decimated-newspapers-before-gutting-vice)
+
+Vice News [laid off hundreds of workers last month](https://www.nytimes.com/2024/02/22/business/vice-media-layoffs.html). It stopped [publishing news on its website](https://www.msn.com/en-us/money/companies/vice-media-says-several-hundred-staff-members-will-be-laid-off-vice-com-news-site-shut-down/ar-BB1iJWs5), and the company laid off workers [from Vice-owned Refinery29](https://x.com/KathleenNB/status/1762241346947932341?s=20), too. Vice Media CEO Bruce Dixon's confusion about basic media industry dynamics in a meeting held after the bloodbath [did not inspire confidence](https://twitter.com/maxwelltani/status/1762880618239586420) in leadership going forward among those who remained employed. All of this at a company [once valued by investors in the billions,](https://www.npr.org/2023/05/15/1173260377/vice-media-bankruptcy) with an editorial voice so strong that it got the mockumentary treatment in [IFC's *Documentary Now!* series](https://www.youtube.com/watch?v=91Dy-Ud8bHY&ab_channel=VICE)—their fake version of Vice was called Dronez—and leadership so confident in its swashbuckling role as the future of media, or at least the future of media for cool kids, that then-CEO Shane Smith once [tried and failed to big-time the late, legendary *New York Times* reporter David Carr on camera](https://www.youtube.com/watch?v=92JCleCaCj4&t=3s&ab_channel=CoreyBaarck), saying Vice would cover cannibalism while the *Times* covered surfing.
+
+But cool and profitable are two different things. Layoffs at Vice have been the norm for years now as verticals [came and went](https://www.thedrum.com/news/2019/05/07/vice-commences-masterbrand-strategy-folding-standalone-waypoint-and-broadly-brands), as [did TV shows](https://www.cnn.com/2023/11/09/media/vice-end-news-shows-layoffs/index.html), though the cable channel [launched with the input of filmmaker Spike Jonze](https://www.vice.com/en/article/exqqd4/were-launching-a-tv-channel-194) is [still broadcasting](https://www.vicetv.com/en_us/page/about-vice-tv). Vice filed for bankruptcy [last year](https://www.npr.org/2023/05/15/1173260377/vice-media-bankruptcy), and those documents reveal what did not change at the company over the years of constant layoffs and buyouts: Executives paying themselves [well over $700,000 apiece](https://hellgatenyc.com/vice-bankruptcy-executive-salary).
+
+Bankruptcy also brought a new name into the Vice ecosystem: [Fortress Investment Group](https://www.nytimes.com/2023/06/22/business/fortress-vice-bankruptcy.html), which headed up the consortium of investors that bought the former media empire for about [$350 million](https://www.reuters.com/markets/deals/vice-medias-sale-fortress-investment-led-group-gets-court-approval-2023-06-23/). Fortress might be a new name to digital media observers, but it's entirely too familiar to anyone following the decimation of local news, in which Fortress played a significant role.
+
+That's why I called Margot Susca. Susca is an assistant professor of journalism, accountability, and democracy at American University. She recently published a book called [*Hedged: How Private Investment Funds Helped Destroy American Newspapers and Undermine Democracy*](https://bookshop.org/p/books/hedged-how-private-investment-funds-helped-destroy-american-newspapers-and-undermine-democracy-margot-susca/19975375?ean=9780252087561), and Fortress came up a lot in her reporting for it. She's also a friend and former colleague of mine; we worked together as reporters in the St. Lucie County, Fla., bureau of Treasure Coast Newspapers in the mid-2000s. We talked about Fortress, how it operates, the role of private equity in killing newspapers, what Fortress's presence meant for Vice, and what private equity firms like Fortress mean for media in general. And, yes, there's a little hope in there too (plus a reference to my early career nickname). We talked twice; the interviews have been edited together for brevity and clarity.
+
+* * *
+
+**What is the quick and dirty explanation that you would give someone asking, "What's Fortress? Who are these people that did the Vice layoffs?"**
+
+Fortress is a New York City–based private equity firm. Which, if that isn't a satisfactory explanation, I would describe them as the locusts of the newspaper world. But maybe the best way to describe it is what one person told me in an interview. Fortress were the owners of the GateHouse newspaper chain. And, as it was described to me, after they purchased GateHouse, the chain became known as "OutHouse."
+
+**How did they get into newspapers?**
+
+They became newspaper owners in 2005\. Between 2006 and 2013, they acquired [$1.7 billion in assets](https://www.sec.gov/Archives/edgar/data/1579684/000119312514106565/d694452d10k.htm). Between 2014 and 2019, another [$1 billion in acquisitions](https://s202.q4cdn.com/162862548/files/doc_financials/2018/ar/2018-NEWM-Annual-Report.pdf). And they openly say [in their SEC documents](https://www.sec.gov/Archives/edgar/data/1579684/000119312514344401/d674261ds1a.htm), "Our manager does not have any prior experience directly managing our company or media-related assets," which I always say is their way of saying: *Sorry, we are a financial company, we don't know shit about operating a newspaper chain*. But that didn't stop them from becoming one of America's largest newspaper chains.
+
+By 2007, less than two years into Fortress's newspaper ownership, they had a circulation of [above 4.7 million in 23 states](https://www.sec.gov/Archives/edgar/data/1368900/000114420408015835/v096277_10k.htm). 
+
+**Wow**.
+
+Yeah. They owned dailies, they owned weeklies, and they owned shoppers. And when they bought dailies, they basically laid off people almost immediately. They were known for laying off staff.
+
+In my book, I open a chapter on layoffs with a managing editor who had worked her way up at what was once a [family-owned newspaper](https://www.timesonline.com/story/news/2012/09/26/calkins-media-since-1937-it/18420595007/) in Beaver County, Penn. And I wrote that the last layoff she made was her own because, after GateHouse bought that newspaper, she just couldn't handle it. They kept wanting deeper and deeper and deeper cuts. She said they just couldn't operate the newspaper to any standard that would serve the community anymore. And she finally just said "I'm leaving, it's me, I'm gone."
+
+So that was the playbook when private equity and hedge funds get involved in the newspaper market.
+
+**Why did Fortress suddenly decide to own newspapers?**
+
+The reason why they wanted to get involved in newspapers is that in 2005—before the [Great Recession](https://en.wikipedia.org/wiki/Great_Recession), before there was a dramatic shift online—you could still load up newspapers with debt. And you still had a lot of markets in the United States where print was king. So let's say you owned a furniture store in Peoria, Ill. You probably were advertising in that local newspaper. There weren't many other avenues for you. And if you owned that local newspaper, you could load it up with debt.
+
+**So private equity firms take an interest in newspapers because they can load them up with debt and cut them to the bone and still get really high profit margins?**
+
+Correct.
+
+**But then the Great Recession happens, and [GateHouse files for Chapter 11 bankruptcy](https://www.wsj.com/articles/SB10001424052702304526204579101353655855062) in 2013.**
+
+And that year they also did [a $149 million dividend](https://www.sec.gov/Archives/edgar/data/1579684/000119312514106565/d694452d10k.htm)!
+
+Look, a business professor might have a different opinion but, to me, you have taken a company, liquidated it, extracted from it and, at this point, you have cut thousands of positions. So how is it possible that—in the same year, in the same SEC document—you say you have a [$149 million dividend payment](https://www.sec.gov/Archives/edgar/data/1579684/000119312514106565/d694452d10k.htm). How is that?
+
+And then, to add insult to injury, the bankruptcy goes through. It takes [about six weeks,](https://www.democratandchronicle.com/story/money/business/2013/11/26/gatehouse-media-officially-done-with-bankruptcy/3758479/) and a [new parent company is spun off](https://www.jaxdailyrecord.com/news/2017/aug/14/the-basch-report-new-media-created-to-control-bankrupt-gatehouse/). And then GateHouse goes back on another newspaper-buying spree.
+
+Maybe I didn't go to enough finance classes in college. Maybe that's just the way Capitalism 101 works. But when you look at Fortress's essentially 14 years in the newspaper market—how they were able to own the GateHouse chain from 2005 to 2013, when they took it into bankruptcy, and then restart in 2013 and 2014 as New Media Investment Group, before finally merging with Gannett in 2019—when you look at that trajectory, to me it's an astounding failure. The largest owner of newspapers in the country cut thousands of positions and decimated newspapers. I just don’t understand how this is a system that treated newspapers and their staff like any other widget on a *Monopoly* board. That's what it seems like to me.
+
+[*In her book, Susca calls this "overharvesting," writing: "But like any field that has been overworked and undernourished, overharvesting eventually leads to a barren wasteland. Over the last twenty years, overharvesting has decimated local newspapers. Profit in the name of democracy looks much different from profit made in spite of it."*]
+
+Even after GateHouse and Gannett merged in 2019, Fortress [was still extracting fees from Gannett](https://www.nytimes.com/2019/11/19/business/media/gannett-gatehouse-merger.html). You're taking in [tens of millions of dollars in fees](https://www.usatoday.com/story/money/2020/12/22/gannett-fortress-buyout-michael-reed-ceo/4004347001/) while hundreds of reporters are being laid off. For doing what? For doing *nothing*. Doing nothing. But there's also another factor.
+
+**Of course.**
+
+The other reason that has become a real concern of mine is I think there also is a very clear business interest. And by that, I mean I think that these private equity firms—firms like Fortress Investment Group, or one of Gannett’s largest shareholders, BlackRock, a firm that has [$10 trillion in assets under management](https://www.wsj.com/livecoverage/stock-market-today-dow-jones-bank-earnings-01-12-2024/card/blackrock-now-manages-10-trillion-in-assets-for-the-second-time-GL23Jawyj1lfx55YGNhg), as large as some nations in the world—are actually benefiting from having a press that is hamstrung. I believe that.
+
+This is something to remember about Fortress Investment Group. If you think of Fortress Investment Group as an octopus, then each of its LLCs, or each of its subsidiaries, is kind of like an arm of the octopus. So I've been able to track, through different databases and different forms over the years of doing research for the book, the arms of the octopus, if you will.
+
+For example, Fortress is invested in [for-profit rail in Florida](https://defector.com/the-good-the-bad-and-the-unreachable-a-world-cup-transit-report-ranking). Fortress also, at one point, owned *The Palm Beach Post*, where Fortress operates. [Now, look at the disclosure on this *Post* story](https://www.palmbeachpost.com/story/lifestyle/travel/2019/06/24/billionaire-behind-brightline-says-hes-very-very-happy-with-rail-services-performance/4837766007/) about one for-profit rail project: "All Aboard Florida, which operates Brightline, is owned by an affiliate of Fortress Investment Group LLC, a global investment management firm. Fortress Investment Group LLC is contracted to manage and advise New Media Investments Inc., which owns GateHouse Media, the parent company of *The Palm Beach Post*." You need a PhD just to be able to read this tagline. 
+
+So my issue, getting back to your initial question, I want to be very clear: I think that there is a monetary reason that private equity got involved in the newspaper market in United States. I also think that there is a very clear business interest. I think that these firms are actually benefiting from having a press that is hamstrung. I believe that. Because why if you are involved in [for-profit hospitals](https://arstechnica.com/health/2024/01/hospitals-slash-staff-services-quality-of-care-when-private-equity-takes-over/), in [for-profit rail](https://www.bnnbloomberg.ca/fortress-backed-rail-company-brightline-gets-an-ally-in-california-s-treasurer-1.1698943), in [for-profit nursing homes](https://www.newyorker.com/news/dispatch/when-private-equity-takes-over-a-nursing-home)—I just saw a news headline yesterday for [for-profit childcare](https://www.nytimes.com/2022/12/16/us/child-care-centers-private-equity.html), God forbid—anything that is for-profit, why would you want a robust newspaper system that has the investigative capacity to actually monitor those types of industries, or the government officials that you could potentially put in your pocket? 
+
+You know, I've become quite a cynic, the more I research, and the more I look into this. That is the quite long answer to your question. I think that there's a two-pronged reason that private equity wanted in on newspapers. 
+
+**And now Fortress is part of Vice's ownership, which also has been decimated.**
+
+This, I think, speaks directly to Vice. The private equity playbook is something called a [2-and-20](https://www.investopedia.com/terms/t/two_and_twenty.asp). Generally, you take a 2 percent management fee and 20 percent of the profits. So that 2 percent fee sometimes is one percent, sometimes it's 1.5 percent, but it's called the 2-and-20\. If Fortress didn't take a 2-and-20, it would be like a Major League Baseball team not taking spring training. So their extraction from Vice would have been substantial, there's no question in my mind. And it would have had an effect on the day-to-day operations. There's no question.
+
+**It did. One former [Vice employee wrote about](https://hellgatenyc.com/vice-bankruptcy-executive-salary) them not having access to basic reporting tools like Slack or LexisNexis or transcription. And Vice was very loaded with debt.**
+
+And Fortress [was their lender](https://www.nytimes.com/2023/06/22/business/fortress-vice-bankruptcy.html), Fortress was the one they were in debt to. When I saw that, yeah, it was not a shock.  
+
+The other question is, how did Vice ever put itself in that situation? It is a Faustian bargain to go to Fortress Investment Group. The fact that I know that? If you're the management at Vice, you *must* have known that. I don't understand how they wouldn’t have known that. I don't know how you didn't know that. You know what they're gonna do.
+
+**This is the thing I still keep trying to wrap my brain around. I don't want to ignore the way the internet has changed the industry. But there's always been, and I really want your thoughts on this, this narrative in the past that the internet killed journalism. But I refuse to believe it's just, "Oh, the internet happened." No. It's not just that. I think Fortress is one of those examples where there's clearly other things at work.**
+
+Yes. So, for so many years I heard—and this has become conventional wisdom—"The internet got plugged in, and then Craigslist came along, Monster.com came along, and then newspapers went *Oh, no, that's it for us.*" It's so oversimplified. And then, not only was the internet the boogeyman, but the internet was also supposed to be this path of our reinvention as well. 
+
+So I wanted to understand more, and that really became a big part of the book research—what were the economic and the executive conditions that existed when the internet was coming. We knew it was coming. I remember my first newsroom internship in 1998, we had one computer that had internet access. I know, that's how old I am. That's how old I am, Defector! And only the interns would go over and try to use it. But it's not as if people and newsrooms didn't understand that the internet was going to be this massive disrupter. 
+
+So I interviewed 36 editors and reporters for the book to get their take on that key period, to talk about the digital transition that wasn't—and to talk about the pressure that these private equity investors put on newspaper managers. And, instead of innovation, mergers and acquisitions were chosen as the strategy to forge ahead. In the newspaper market, that's what led to the debt.
+
+Fortress Investment Group, as the GateHouse owner, they were living their own newspaper situation with mergers and acquisitions and laying off reporters. But there were a number of other firms that were there, too. There's a Chicago-based firm named [Ariel Capital Management](https://niemanreports.org/articles/hedge-funds-local-news-book/) that was there. There was another one that was very notable in the lead-up to [the Knight Ridder-McClatchy sale](https://www.npr.org/templates/story/story.php?storyId=5260417). But there was a lot of pressure from private equity investors because they started to go, *Whoa, why aren't we making 20 and 25 percent profit margins anymore? What's happening? *
+
+The internet *was* disruptive, of course, but there also should have been investment in digital, understanding audience changes, understanding audience trends. We could have competed with Craigslist. Anyone who knows what Craigslist was knows it was a bunch of [a-tags](https://www.w3schools.com/tags/tag_a.asp). It wasn't even [CSS](https://www.w3schools.com/Css/css_intro.asp).
+
+**It wasn’t even CSS**!
+
+My god, there weren't even graphics. You could have done that after two days of HTML. It is so laughable. I wish people would stop telling me that newspapers got beat by this force of the internet. We got beat by a guy who put free apartment listings up, which we also could have done because we had a monopoly on classifieds. We had a monopoly.
+
+**But classified ads were expensive**.
+
+That’s it! And we didn’t want to give that up.
+
+**OK, let's talk about the effects of all this, what happened at newspapers and now at Vice. Numbers tell us that about [4-8 percent of all journalists](https://www.nytimes.com/2020/03/01/business/media/ben-smith-journalism-news-publishers-local.html) in the United States now work for the *New York Times*. And I don't mean this as a slight on the *Times*. But I don't think anyone would feel it's a good idea to have so many reporters concentrated in one newsroom, regardless of which newsroom that is.**
+
+**You and I started out as reporters in a deeply competitive environment with multiple news outlets, including two competing newspapers, and that was part of what kept you honest on the beat. **
+
+Can't you remember the feeling of getting beat? I remember my first job in Connecticut, and I competed against the *Hartford Courant*. Now, maybe they didn't feel that way because we were such a small paper, but that feeling ... I can remember my editor walking over to my desk when I got beat by the *Hartford Courant*. I can feel that in my stomach. And the pain of what that felt like, you *did not want*. It made you better. It made you work harder. It made you work smarter. But let me say one other thing. 
+
+I'm not fully nostalgic about everything from the newspaper market. We were attracting news for audiences that advertisers wanted. I don't know that I was really trained in doing stories that were really engaged with minoritized and marginalized groups the way that I would be today. And I think that there are a crop of digital news outlets today that are really focused on telling those stories, and journalists from communities that are not only white and upper middle class telling those stories, and that's a really positive development of the last 20 years. That is something that the digital news environment has provided that the chain newspaper market didn't.  
+
+**It never did.**
+
+Exactly.
+
+**I was thinking about how, coming up, and for most of my career, with really only one exception, I've worked for media companies. That was the bread and butter. These places thought like a media company, and it felt like a media company, and we were media workers working for a media company. So there were just things that were always understood, like you said, if somebody dropped beat coverage, how can we take on that beat, move into that zone, pick up a few more readers?**
+
+**I'm thinking about how, especially with private equity, but not even just private equity, when media is not owned by media companies anymore that changes things. And I just keep coming back to, when I analyze these problems, telling myself, "Oh, you're thinking like a media worker who has worked for media companies, but these people don't care." The answer is just they don't care.**
+
+I think that your assessment is correct. Does Alden Global Capital or Fortress Investment Group care if there is a functioning *Beaver County Times* in Pennsylvania, or even a functioning *Miami Herald* or *El Nuevo Herald*? And if not, what does that mean? 
+
+Yes, of course, profit has been a part of media since Benjamin Franklin was making it rain in Philadelphia. Profit has been a part of the news ecosystem since colonial times, there's no question. 
+
+But I think that your point is actually a really fascinating one. It's been media owners or news owners, and there often was this sense of mission that drove news companies. And I don't mean to be so naive as to suggest that Hearst and Pulitzer didn't have their clubby, wealthy friends, and they weren't influenced by them. Katharine Graham was hated by unionized press people. 
+
+**Yes, she was very anti-union, a union buster. **
+
+She was [burned in effigy](https://en.wikipedia.org/wiki/1975%E2%80%931976_Washington_Post_pressmen%27s_strike)! But I think that the point, the mission, is a really important one. So what's troubling about today's media ecosystem is that the owners just don't care about the closure or the complete decimation of that news organization. And then what's happening to those readers or viewers. They're moving in the void. 
+
+My understanding is that when *El Nuevo* is losing its readers in Miami, they're turning to [conservative radio](https://www.huffpost.com/entry/miami-spanish-language-radio-misinformation_n_616dbd3ee4b005b245c0b57e), and to [very ultra–right-wing conservative radio](https://www.npr.org/2021/11/08/1053647192/misinformation-on-spanish-talk-radio-in-miami-is-tearing-families-apart) channels. Or they're turning to WhatsApp, or other platforms where misinformation and disinformation thrives. And that should trouble all of us. 
+
+**I’m thinking of the reader who is thinking, *Is there any hope?* And I’m curious because, you and me, and we’re both such dyed-in-the-wool reporters. It's not our instinct to go there, to hope. But is there anything out there that's giving you hope? Or is it just, well, we're in a bleak time**.
+
+Let me tell you what gives me hope. OK. So I just wrote an academic book, which means it's a university press book, which means you can't walk into Barnes & Noble and see this on a display shelf.
+
+**It would be in my personal Barnes & Noble if I had my way, but yes.**
+
+You're not reading this, probably, on the beach. Yet I have been doing interviews about this almost every day for a month. What that tells me is the fact that these locusts, like Fortress Investment Group, and the kind of absolute democratic hazard they pose in the journalism industry, and the threats they pose in *other* industries—like health care, like child care, like housing—is starting to get the kind of attention [it deserves]. And maybe we can no longer, as citizens, turn away from this. And that provides me with some hope.
+
+When I started doing research for the book in early 2018, I was looking at the newspaper chains. I really wasn't tuned in to, you know, the investor, the institutional investors that were kind of calling the shots. 
+
+So, you know, I think that is the mark of hope: I think that there has been some movement toward, like, what is the solution? And the other thing I'll say to you, Moskie, is that even with all of these layoffs, my students are still coming. They're still interested in journalism as a major.
+
+They are coming from high schools with regular school-shooting drills, growing up worried about climate change, and they've seen their parents struggle with paying their mortgages or their rent payments during COVID. They've seen the effects of, I think, a power structure that has failed them, and maybe a political system that in some respects has failed them. I think they understand that, without a robust journalism industry, it gets worse. And these are the kinds of students that are coming, or at least that are coming to American University, where I teach, and they want to know: How can we be watchdogs? How can we be investigative journalists? 
+
+So my work has transitioned into trying to create more opportunities. Not just training journalists, but now trying to create opportunities and to think about saving the industry. That's where my work is going to start to turn. And I wish I could say I knew exactly what that looked like. But there are a number of us around the country for whom that is where our work is turning. It is trying to say: *What's next? *
+
+**Correction (7:28 p.m. ET):** The article previously misstated the name of the Chicago-based private investment fund that invested in newspapers. It's Ariel Capital Management.

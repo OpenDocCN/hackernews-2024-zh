@@ -1,0 +1,61 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:23
+-->
+
+# Multiple time dimensions - Wikipedia
+
+> 来源：[https://en.wikipedia.org/wiki/Multiple_time_dimensions](https://en.wikipedia.org/wiki/Multiple_time_dimensions)
+
+Concept that there might be more than one dimension of time
+
+The possibility that there might be **more than one dimension of time** has occasionally been discussed in [physics](/wiki/Physics "Physics") and [philosophy](/wiki/Philosophy "Philosophy"). Similar ideas appear in folklore and fantasy literature.
+
+## Physics[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=1 "Edit section: Physics")]
+
+Speculative theories with more than one time dimension have been explored in physics. The additional dimensions may be similar to conventional time,^([[1]](#cite_note-craig-1)) [compactified](/wiki/Compactification_(physics) "Compactification (physics)") like the additional spatial dimensions in [string theory](/wiki/String_theory "String theory"),^([[2]](#cite_note-2)) or components of a [complex](/wiki/Complex_number "Complex number") time (sometimes referred to as kime).^([[3]](#cite_note-dinov-3))
+
+[Itzhak Bars](/wiki/Itzhak_Bars "Itzhak Bars") has proposed models of a two-time physics, noting in 2001 that "The 2T-physics approach in *d* + 2 dimensions offers a highly symmetric and unified version of the phenomena described by 1T-physics in *d* dimensions."^([[4]](#cite_note-4))^([[5]](#cite_note-5))
+
+[F-theory](/wiki/F-theory "F-theory"), a branch of modern [string theory](/wiki/String_theory "String theory"), describes a 12-dimensional spacetime having two dimensions of time, giving it the [metric signature](/wiki/Metric_signature "Metric signature") (10,2).^([[6]](#cite_note-6))
+
+The existence of a well-posed initial value problem for the [ultrahyperbolic equation](/wiki/Ultrahyperbolic_equation "Ultrahyperbolic equation") (a wave equation in more than one time dimension) demonstrates that initial data on a mixed (spacelike and timelike) hypersurface, obeying a particular nonlocal constraint, evolves deterministically in the remaining time dimension.^([[1]](#cite_note-craig-1))
+
+Like other [complex number](/wiki/Complex_number "Complex number") variables, complex time is two-dimensional, comprising one [real time](/wiki/Real_number "Real number") dimension and one [imaginary time](/wiki/Imaginary_time "Imaginary time") dimension, changing time from a real number line into a complex plane.^([[3]](#cite_note-dinov-3)) Introducing it into [Minkowski spacetime](/wiki/Minkowski_spacetime "Minkowski spacetime") allows a generalization of [Kaluza–Klein theory](/wiki/Kaluza%E2%80%93Klein_theory "Kaluza–Klein theory").^([[7]](#cite_note-7))
+
+[Max Tegmark](/wiki/Max_Tegmark "Max Tegmark") has argued that, if there is more than one time dimension, then the behavior of physical systems could not be predicted reliably from knowledge of the relevant [partial differential equations](/wiki/Partial_differential_equation "Partial differential equation"). In such a universe, intelligent life capable of manipulating technology could not emerge. Moreover [protons](/wiki/Proton "Proton") and [electrons](/wiki/Electron "Electron") would be unstable and could decay into particles having greater mass than themselves. (This is not a problem if the particles have a sufficiently low temperature.)^([[8]](#cite_note-tegmark-dim-8))
+
+## Philosophy[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=2 "Edit section: Philosophy")]
+
+Multiple time dimensions appear to allow the breaking or re-ordering of cause-and-effect in the flow of any one dimension of time. This and conceptual difficulties with multiple physical time dimensions have been raised in modern [analytic philosophy](/wiki/Analytic_philosophy "Analytic philosophy").^([[9]](#cite_note-9))
+
+As a solution to the problem of the subjective passage of time, [J. W. Dunne](/wiki/J._W._Dunne "J. W. Dunne") proposed an infinite hierarchy of time dimensions, inhabited by a similar hierarchy of levels of consciousness. Dunne suggested that, in the context of a "block" spacetime as modelled by [General Relativity](/wiki/General_Relativity "General Relativity"), a second dimension of time was needed in order to measure the speed of one's progress along one's own timeline. This in turn required a level of the conscious self existing at the second level of time. But the same arguments then applied to this new level, requiring a third level, and so on in an [infinite regress](/wiki/Infinite_regress "Infinite regress"). At the end of the regress was a "superlative general observer" who existed in [eternity](/wiki/Eternalism_(philosophy_of_time) "Eternalism (philosophy of time)").^([[10]](#cite_note-10)) He published his theory in relation to [precognitive](/wiki/Precognition "Precognition") dreams in his 1927 book *[An Experiment with Time](/wiki/An_Experiment_with_Time "An Experiment with Time")* and went on to explore its relevance to contemporary physics in *The Serial Universe* (1934). His infinite regress was criticised as logically flawed and unnecessary, although writers such as [J. B. Priestley](/wiki/J._B._Priestley "J. B. Priestley") acknowledged the possibility of his second time dimension.^([[11]](#cite_note-11))^([[12]](#cite_note-12))
+
+The [Esoteric](/wiki/Esoteric "Esoteric") [J. G. Bennett](/wiki/J._G._Bennett "J. G. Bennett") described three dimensions or aspects of time: a) Time – Causal or determinate influences on the present moment, b) Eternity – The influences of forms and values, c) Hyparxis – The influences of the Will (freedom) to choose within the present Moment. The physical world, life and consciousness lie in intermediate zones between these dimensions.^([[13]](#cite_note-13)) Physicist [David Bohm](/wiki/David_Bohm "David Bohm") corresponded with Bennett and they influenced each other's ideas.^([[14]](#cite_note-14))
+
+## Literary fiction[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=3 "Edit section: Literary fiction")]
+
+Multiple independent timeframes, in which time passes at different rates, have long been a feature of [fairy tales](/wiki/Fairy_tale "Fairy tale").^([[15]](#cite_note-Flieger-15)) Fantasy writers such as [J. R. R. Tolkien](/wiki/J._R._R._Tolkien "J. R. R. Tolkien") and [C. S. Lewis](/wiki/C._S._Lewis "C. S. Lewis") have made use of these and other multiple time dimensions, such as those proposed by Dunne, in some of their most well-known stories.^([[15]](#cite_note-Flieger-15)) It has been argued that Tolkien borrowed his ideas for [Lórien](/wiki/Lothl%C3%B3rien "Lothlórien") time in [The Lord of the Rings](/wiki/The_Lord_of_the_Rings "The Lord of the Rings"),^([[15]](#cite_note-Flieger-15)) and that Lewis adopted them for his [Chronicles of Narnia](/wiki/Chronicles_of_Narnia "Chronicles of Narnia").^([[16]](#cite_note-16))
+
+## See also[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=4 "Edit section: See also")]
+
+## References[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=5 "Edit section: References")]
+
+1.  ^ [^(***a***)](#cite_ref-craig_1-0) [^(***b***)](#cite_ref-craig_1-1) Craig, Walter; Weinstein, Steven (2009-07-15). ["On determinism and well-posedness in multiple time dimensions"](https://doi.org/10.1098%2Frspa.2009.0097). *Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences*. **465** (2110). The Royal Society: 3023–3046\. [arXiv](/wiki/ArXiv_(identifier) "ArXiv (identifier)"):[0812.0210](https://arxiv.org/abs/0812.0210). [Bibcode](/wiki/Bibcode_(identifier) "Bibcode (identifier)"):[2009RSPSA.465.3023C](https://ui.adsabs.harvard.edu/abs/2009RSPSA.465.3023C). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1098/rspa.2009.0097](https://doi.org/10.1098%2Frspa.2009.0097). [ISSN](/wiki/ISSN_(identifier) "ISSN (identifier)") [1364-5021](https://www.worldcat.org/issn/1364-5021).
+2.  **[^](#cite_ref-2)** Terning, J; Bars, I (2009). [*Extra Dimensions in Space and Time*](https://doi.org/10.1515/9783110697827). New York: Springer. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1515/9783110697827](https://doi.org/10.1515%2F9783110697827). [ISBN](/wiki/ISBN_(identifier) "ISBN (identifier)") [<bdi>9780387776385</bdi>](/wiki/Special:BookSources/9780387776385 "Special:BookSources/9780387776385").
+3.  ^ [^(***a***)](#cite_ref-dinov_3-0) [^(***b***)](#cite_ref-dinov_3-1) Dinov, Ivo; Velev, Milen (2021). [*Data Science - Time Complexity, Inferential Uncertainty, and Spacekime Analytics*](https://doi.org/10.1515/9783110697827). Boston/Berlin: De Gruyter. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1515/9783110697827](https://doi.org/10.1515%2F9783110697827). [ISBN](/wiki/ISBN_(identifier) "ISBN (identifier)") [<bdi>9783110697803</bdi>](/wiki/Special:BookSources/9783110697803 "Special:BookSources/9783110697803").
+4.  **[^](#cite_ref-4)** Marcus Chown, "Time gains an extra dimension!", *New Scientist*, 13 October 2007.([Subscription link](https://www.newscientist.com/article/mg19626251-400-time-gains-an-extra-dimension/))
+5.  **[^](#cite_ref-5)** Itzhak Bars; "U*(1,1) noncommutative gauge theory as the foundation of 2T-physics in field theory", *Phys. Rev.* D 64 (2001) 126001 [ArXiv copy](https://arxiv.org/abs/hep-th/0106013.pdf).
+6.  **[^](#cite_ref-6)** Penrose, Roger. (2004). *The Road to Reality*. Jonathan Cape. Page 915.
+7.  **[^](#cite_ref-7)** Chodos, Alan; Freund, PGO; Appelquist, Thomas (1987). *Modern Kaluza-Klein Theories*. United Kingdom: Addison-Wesley. [ISBN](/wiki/ISBN_(identifier) "ISBN (identifier)") [<bdi>9780201098297</bdi>](/wiki/Special:BookSources/9780201098297 "Special:BookSources/9780201098297").
+8.  **[^](#cite_ref-tegmark-dim_8-0)** [Tegmark, Max](/wiki/Max_Tegmark "Max Tegmark") (April 1997). ["On the dimensionality of spacetime"](http://space.mit.edu/home/tegmark/dimensions.pdf) (PDF). *Classical and Quantum Gravity*. **14** (4): L69–L75\. [arXiv](/wiki/ArXiv_(identifier) "ArXiv (identifier)"):[gr-qc/9702052](https://arxiv.org/abs/gr-qc/9702052). [Bibcode](/wiki/Bibcode_(identifier) "Bibcode (identifier)"):[1997CQGra..14L..69T](https://ui.adsabs.harvard.edu/abs/1997CQGra..14L..69T). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1088/0264-9381/14/4/002](https://doi.org/10.1088%2F0264-9381%2F14%2F4%2F002). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [15694111](https://api.semanticscholar.org/CorpusID:15694111). Retrieved 2006-12-16.
+9.  **[^](#cite_ref-9)** Weinstein, Steven. ["Many Times"](http://www.fqxi.org/community/essay/winners/2008.1#Weinstein). Foundational Questions Institute. Retrieved 5 December 2013.
+10.  **[^](#cite_ref-10)** McDonald, John Q. (15 November 2006). ["John's Book Reviews: An Experiment with Time"](http://sprg.ssl.berkeley.edu/~jmcd/book/revs3/aewt.html). Retrieved 8 December 2012.
+11.  **[^](#cite_ref-11)** J.A. Gunn; *The Problem of Time*, Unwin, 1929.
+12.  **[^](#cite_ref-12)** J.B. Priestley, *Man and Time*, Aldus, 1964.
+13.  **[^](#cite_ref-13)** [Bennett, J. G.](/wiki/John_G._Bennett "John G. Bennett") (1956). *Dramatic Universe*.
+14.  **[^](#cite_ref-14)** Anthony Blake (Ed). *The Bohm-Bennett Correspondence*, 2016\. [Online version](https://www.duversity.org/PDF/BBcorrespondence.pdf).
+15.  ^ [^(***a***)](#cite_ref-Flieger_15-0) [^(***b***)](#cite_ref-Flieger_15-1) [^(***c***)](#cite_ref-Flieger_15-2) Flieger, V.; *A Question of Time: JRR Tolkien's Road to Faerie*, Kent State University Press, 1997.
+16.  **[^](#cite_ref-16)** Inchbald, Guy; "The Last Serialist: C.S. Lewis and J.W. Dunne", *Mythlore*, Issue 137, Vol. 37 No. 2, Spring/Summer 2019, pp. 75–88.
+
+## External links[[edit](/w/index.php?title=Multiple_time_dimensions&action=edit&section=6 "Edit section: External links")]

@@ -1,0 +1,81 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:14:22
+-->
+
+# Physics - Feynman’s Reversed Sprinkler Puzzle Solved
+
+> 来源：[https://physics.aps.org/articles/v17/15](https://physics.aps.org/articles/v17/15)
+
+# Feynman’s Reversed Sprinkler Puzzle Solved
+
+January 26, 2024&bullet; *Physics* 17, 15
+
+Which direction would an S-shaped lawn sprinkler rotate if it were submerged and the flow were reversed? Experiments now provide a definitive answer.
+
+ </assets/05e8ed49-fbd2-4e1f-ba7f-442cf0bf1eba/video1.mp4>
+
+</assets//video1.ogv> 
+
+A fluorescent dye traces out the flow pattern as the submerged part of the device, resembling a sprinkler, expels water. (Video is sped up by 2<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>×</mo></mrow></math>. See another video and a schematic image of the device below.)
+
+Physicist Richard Feynman wondered what would happen if an S-shaped lawn sprinkler, which rotates as water squirts out, were placed underwater and had its flow direction reversed, so that it sucked water in. Which direction would it rotate? Experiments have given conflicting answers, but now researchers have provided what appears to be a definitive resolution [[1](#c1)]. When sucking water in, the sprinkler reverses its rotational direction, and the motion is unsteady and much slower. The explanation involves the details of fluid flow in the sprinkler geometry.
+
+“The answer is perfectly clear at first sight,” wrote Feynman about this puzzle in his 1985 book, *Surely You’re Joking, Mr. Feynman*. “The trouble was, some guy would think it was perfectly clear [that the rotation would be] one way, and another guy would think it was perfectly clear the other way.” Since then, some experiments have shown steady reverse rotation [[2](#c2), [3](#c3)], some showed only transient rotation [[4](#c4)–[6](#c6)], and some situations led to unsteady rotation that changed direction [[3](#c3)] or proceeded in a direction that depended on the experimental geometry [[4](#c4)–[6](#c6)].
+
+ </assets/8127330d-bcb0-49a2-8b62-106d3d18b937/video2.mp4>
+
+</assets//video2.ogv> 
+
+Light-scattering microparticles reveal the flow pattern for the reverse (sucking) mode, showing vortices and complex flow patterns forming inside the central chamber. Here the device is prevented from rotating in order to improve the visualization of the flow.
+
+Applied mathematician Leif Ristroph of New York University and his colleagues set out to resolve the matter, which meant taking careful account of all of the confounding factors. “As we worked on this problem, we got pulled in deeper and deeper and had to develop methods at every step,” says Ristroph.
+
+To get to the heart of Feynman’s challenge, the sprinkler must be able to rotate with as little friction as possible, which was a major challenge for previous experiments. The team devised a system in which the rotating hub containing the submerged S-shaped arms floats freely in a tank of water. They could reverse the flow direction by raising or lowering a side tank connected by a siphon tube to the center of the hub.
+
+Given previous arguments about whether any motion was truly a steady state or just transient, the researchers needed to run the experiment for long times (several hours). These long time frames also allowed them to measure the motions with high accuracy. To understand the results theoretically, they obtained detailed maps of the fluid flow patterns using colored dyes and suspended microparticles that scatter laser light.
+
+****This device sucks.**** The low-friction “floating sprinkler” used to study how rotation depends on the direction of water flow through the sprinkler arms. The top ring is about 6 cm in diameter.
+
+******This device sucks.**** The low-friction “floating sprinkler” used to study how rotation depends on the direction of water flow through the sprinkler arms. The top ring is about 6 cm in diameter.**
+
+**×** **Ristroph and colleagues concluded that both the forward and the reverse sprinklers are driven by jet propulsion. Ristroph compares the forward case to a rotational version of a rocket with S-shaped thrusters. But the reverse case isn’t simply a time-reversed version: as water is sucked into the arms, the flow pattern is quite different. Although this flow drives reverse rotation, the motion is not steady but shows constant fluctuations in velocity. The overall average rate of rotation is about 50 times slower than when water flows outward.
+
+In this “reverse flow” case, it is rather surprising that a rocket-like propulsion still operates at all, since at first glance the jets are just directed at the center of the device and don’t generate any net torque. But the researchers found that the jets aren’t directed exactly at the center because of distortion of the flow as it passes through the curved arms. As the water flows around the bends in the arms, it is slung outward by centrifugal force, which gives rise to asymmetric flow profiles. “This is what makes the reverse case hard and subtle,” says Ristroph, “since one cannot easily infer what will happen based on the forward case.” Nonetheless, the flow pattern seen experimentally closely matched that predicted by the team’s mathematical model.
+
+The study “would seem to be the first serious attempt to address the Feynman sprinkler problem directly with precision experiments,” says fluid dynamicist John Bush of the Massachusetts Institute of Technology. The carefully designed geometry and low friction, he says, help to pin down the mechanisms involved.
+
+Mechanical engineer Michael Païdoussis of McGill University in Canada, who has previously conducted experiments on the Feynman sprinkler problem, agrees that the reverse rotation is confirmed by these experiments. “The degree of agreement between the experiment and model results is quite remarkable,” he adds.
+
+It might seem that reversing a sprinkler is not of much practical interest, admits Ristroph, “since we don’t need to ‘unwater’ our lawns.” But he says that there are applications in fluid mechanics in which it is important to be able to precisely control flows ejected from devices and to understand how this process modifies the forces they experience, for example, in technologies that harvest energy from flowing air or water.
+
+–Philip Ball
+
+Philip Ball is a freelance science writer in London. His latest book is *[How Life Works](https://www.amazon.com/dp/1529095980)* (Picador, 2024).
+
+## References
+
+1.  K. Wang *et al.*, “Centrifugal flows drive reverse rotation of Feynman’s sprinkler,” [Phys. Rev. Lett. **132**, 044003 (2024)](http://dx.doi.org/10.1103/PhysRevLett.132.044003).
+2.  J. Beals, “New angles on the reverse sprinkler: Reconciling theory and experiment,” [Am. J. Phys. **85**, 166 (2017)](http://dx.doi.org/10.1119/1.4973374).
+3.  M. P. Païdoussis and M. Tétreault-Friend, “Aspirating cantilevers and reverse sprinklers,” [Am. J. Phys. **77**, 349 (2009)](http://dx.doi.org/10.1119/1.3078416).
+4.  W. Rueckner, “The puzzle of the steady-state rotation of a reverse sprinkler,” [Am. J. Phys. **83**, 296 (2015)](http://dx.doi.org/10.1119/1.4901816).
+5.  A. T. Forrester *et al.*, “Inverse sprinklers: A lesson in the use of a conservation principle,” [Am. J. Phys. **54**, 798 (1986)](http://dx.doi.org/10.1119/1.14448).
+6.  C. E. Mungan, “A primer on work-energy relationships for introductory physics,” [Phys. Teach. **43**, 10 (2004)](http://dx.doi.org/10.1119/1.1845983).
+
+* * *
+
+## Related Articles
+
+Computational PhysicsMay 16, 2024
+
+A deep-sea sponge’s intricate skeleton converts the horizontal flow of ocean currents into a vertical flow through the sponge’s body—a mechanism that helps with the sponge’s filter feeding. [Read More »](/articles/v17/81)
+
+Fluid DynamicsMay 10, 2024
+
+Experiments show the effects on combustion of adding hydrogen to natural gas—a fuel mixture that could reduce carbon emissions from power plants. [Read More »](/articles/v17/79)
+
+Fluid DynamicsMay 3, 2024
+
+A new model provides an improved description of the flow of the ocean’s kinetic energy by including friction with the coasts. [Read More »](/articles/v17/77)
+
+[More Articles](/browse)**

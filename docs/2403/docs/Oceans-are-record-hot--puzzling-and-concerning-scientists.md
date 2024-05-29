@@ -1,0 +1,66 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:47
+-->
+
+# Oceans are record hot, puzzling and concerning scientists
+
+> 来源：[https://www.nbcnews.com/science/environment/oceans-record-hot-rcna143179](https://www.nbcnews.com/science/environment/oceans-record-hot-rcna143179)
+
+Every day for the last 12 months, the world’s sea surface temperatures have broken records.
+
+Ocean scientists are growing increasingly concerned. 
+
+“It’s not just an entire year of record-breaking ocean temperatures, but it’s the margin it’s breaking them by — it’s not even close to what the previous record was,” said Brian McNoldy, a senior research associate at the University of Miami Rosenstiel School of Marine, Atmospheric, and Earth Science. “That’s what’s raising the eyebrows of a lot of people.”  
+
+Average sea surface temperatures today are roughly 1.25 degrees Fahrenheit higher than they were from 1982-2011, [according to the University of Maine’s Climate Reanalyzer](https://climatereanalyzer.org/clim/sst_daily/). It’s a huge anomaly that could have significant effects on weather and ecosystems. 
+
+Human-caused climate change is likely playing a role, researchers said, but is probably not the only factor. Climate models predict a steady rise in sea surface temperatures, but not this quickly, and ocean surface temperatures also fluctuate and can be affected by natural climate variability, including patterns such as El Niño and La Niña.  
+
+So scientists don’t yet know precisely why sea surface temperatures have climbed so high. 
+
+“I pray we’re having a once-in-a-lifetime year of hot sea surface temperatures, but I do fear there may be something else going on that is causing a long-term change in sea surface temperatures we hadn’t predicted,” said John Abraham, a professor at the University of St. Thomas who studies ocean temperatures. “All bets are off now, this is something that is so unusual, it’s challenging our past expectations.” 
+
+If ocean temperatures continue to break records, that could bleach corals, generate more intense and fast-developing hurricanes, drive coastal temperatures up and make extreme precipitation more likely — events scientists already observed in 2023.
+
+Temperatures first soared to record levels in mid-March last year, according to the Climate Reanalyzer, which tracks average measures of sea surface temperature data from across the globe. The data used to measure these trends dates back more than 40 years and comes from networks of monitoring buoys and robotic devices designed to help meteorologists make weather forecasts.
+
+Abraham suspects the main cause of the trend is climate change, with some natural ocean processes that aren’t well understood playing a role, as well.
+
+Average air temperatures are roughly [1.8 F higher](https://climatereanalyzer.org/clim/t2_daily/?dm_id=world) today than they were from 1979-2000, but water has a greater capacity to absorb and store heat — the ocean has absorbed about 90% of the heat created by global warming. So, seas were not expected to warm this much already.
+
+“It takes a lot of heat to raise water’s temperature,” Abraham said. 
+
+He and McNoldy both acknowledged, however, that it’s possible that an ocean system has crossed a critical threshold because of global warming. 
+
+Last year, some scientists also pointed to El Niño, a natural pattern that involves warm ocean water in the tropical Pacific Ocean, as a factor driving average sea surface temperatures up.
+
+But now El Niño is dissipating, so they suspect something else is at play. 
+
+“What we see now driving high temperatures is something in addition to El Niño and can’t be explained by the arguments being given six months ago or 12 months ago,” Abraham said. “Sea surface temperatures are higher elsewhere and very far from El Niño locations.”
+
+McNoldy listed other dynamics that may play a small role, including the weakening of trade winds in the North Atlantic, which has reduced the amount of dust blowing from Africa’s Sahara Desert  toward North America. Dust absorbs the sun’s energy over the Atlantic Ocean, so it’s possible that more radiation is being absorbed into the ocean. 
+
+“That could be a factor, but I don’t have a good sense of being able to quantify it,” McNoldy said. 
+
+Some researchers have also suggested that changes to maritime shipping regulations may have reduced sulfur pollution in ship exhaust, ultimately reducing cloud cover and allowing the oceans to absorb more energy. 
+
+“All these little ingredients by themselves don’t explain what we’re seeing, but maybe in a combined sense, they do,” McNoldy said, though he added that he’s skeptical of the theory but can’t rule it out.
+
+Whatever the reason, higher sea surface temperatures can pose dire threats. Warmer water provides more energy for storms to feed on, so “the ones that form often become stronger,” Abraham said.
+
+Warmer waters also increase the risk of rapid intensification — when hurricane winds intensify suddenly as they near the shore. Last year, [Hurricane Idalia went from a Category 1 to a Category 4 in 24 hours](https://www.nbcnews.com/science/environment/hurricane-idalia-went-category-1-category-4-overnight-rcna102545). 
+
+Some of the largest sea surface temperature anomalies are in the Atlantic and off the west coast of Africa, where the hurricanes that rattle the East Coast of the United States often start. What’s more, the National Weather Service’s Climate Prediction Center says that there is a 62% chance of a La Niña —  which is [associated with active and damaging hurricane seasons](https://www.climate.gov/news-features/blogs/enso/impacts-el-ni%C3%B1o-and-la-ni%C3%B1a-hurricane-season) —  [developing in late](https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml) spring. 
+
+”Not ideal for a calm hurricane season,” McNoldy said, noting that the extra ocean warmth could also lengthen the season. 
+
+High sea surface temperatures can contribute to more intense coastal rainstorms, as well, Abraham said, by helping to build a more moist and hot atmosphere. 
+
+McNoldy said he’s also concerned about corals, which took a beating last year. 
+
+Warm waters caused some of the [worst bleaching events ever observed in Florida and the Caribbean Sea](https://www.nbcnews.com/science/environment/extreme-ocean-temperatures-threaten-wipe-caribbean-coral-rcna120594), with stressed corals turning white and expelling the photosynthetic algae that lives in their tissue. 
+
+“If the anomalies we’re seeing now are in place during the hot months, the oceans will be warmer than 2023 and we’ll see even worse coral bleaching events,” McNoldy said. 
+
+Among ocean scientists, he added: “We’re kind of all just observing something strange happening. At some point, someone will come up with an answer, but I haven’t seen that answer yet.”

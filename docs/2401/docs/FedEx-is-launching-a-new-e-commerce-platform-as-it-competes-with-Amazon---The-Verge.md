@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:03
+-->
+
+# FedEx is launching a new e-commerce platform as it competes with Amazon - The Verge
+
+> 来源：[https://www.theverge.com/2024/1/14/24038042/fedex-fdx-e-commerce-platform-amazon-rival-shoprunner](https://www.theverge.com/2024/1/14/24038042/fedex-fdx-e-commerce-platform-amazon-rival-shoprunner)
+
+FedEx [announced](https://newsroom.fedex.com/newsroom/global-english/fedex-announces-first-of-its-kind-data-driven-commerce-platform) today that it will launch a new “data-driven commerce platform” this fall [called fdx](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fwww.fedex.com%2Fen-us%2Fdigital-transformation.html) that it says will give online merchants “end-to-end e-commerce solutions.” The company’s new platform is aimed at helping businesses manage their supply chain, sell to customers, and manage deliveries.
+
+The company wrote in its announcement that fdx will combine existing FedEx commerce tools, like access to members of ShopRunner, an e-commerce marketplace FedEx [acquired in 2020](https://www.forbes.com/sites/retailwire/2020/12/14/why-fedexs-shoprunner-deal-wont-help-much-with-its-amazon-problem/), with features debuting in the fall like the ability to create a “custom post-purchase experience” so brands can give customers more accurate shipment information or use insight from FedEx’s shipment network data for order management.
+
+Christina Meek, FedEx’s global relations manager, told *The Verge* in an email that FedEx isn’t in the marketplace business, and that it’s offering businesses “digital capabilities and insights” while they control their customer experience.
+
+The new platform comes as the company competes in logistics with Amazon, a company FedEx has seen as [a threat to its business](https://www.cnbc.com/2019/09/18/fedex-now-calls-amazon-a-competitor.html) for years. In 2019, FedEx [declined to renew](/2019/6/7/18656813/amazon-prime-fedex-express-delivery-logistics-network-contract-termination-usps-ups) a contract to fly Amazon cargo through FedEx Express. Later that year, Amazon [forbade its sellers from using FedEx](https://www.forbes.com/sites/richardkestenbaum/2019/12/18/amazon-blocked-sellers-from-using-fedex-and-now-we-know-why/?sh=c009ae32da13) for Prime deliveries during the holidays, blaming declining performance — a ban it [lifted the next year](/2020/1/14/21065900/amazon-ban-fedex-ground-shipping-lifted-holiday-season).
+
+FedEx has been losing ground to Amazon, as has UPS, so much so that Amazon [made more home package deliveries](https://www.wsj.com/business/amazon-vans-outnumber-ups-fedex-750f3c04) in the US in 2022 than either of them. That’s just a few years after the online retail giant built up a logistics operation that largely uses tightly controlled third-party contractors that Amazon [insists aren’t its employees](/2023/6/18/23765330/amazon-delivery-drivers-union-teamsters).
+
+***Update January 14th, 2024, 3:43PM ET:** Updated to add clarity.*
+
+***Update January 14th, 2024, 11:50PM ET:** Updated with clarification on the tools FedEx is offering businesses and a statement from FedEx.*

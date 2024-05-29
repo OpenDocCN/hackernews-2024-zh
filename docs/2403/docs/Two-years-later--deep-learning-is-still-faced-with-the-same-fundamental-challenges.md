@@ -1,0 +1,76 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:57
+-->
+
+# Two years later, deep learning is still faced with the same fundamental challenges
+
+> 来源：[https://garymarcus.substack.com/p/two-years-later-deep-learning-is](https://garymarcus.substack.com/p/two-years-later-deep-learning-is)
+
+Two years ago today I published [my most infamous article](https://nautil.us/deep-learning-is-hitting-a-wall-238440/):
+
+I don’t think many people read it (except for the title), but a lot of people expressed opinions. On Twitter, as it was called in those days, hundreds loved it. Thousands hated it. A month later, after Dall-E came out, Sam Altman ridiculed it (note the clever artwork!)
+
+How well did [the article](https://nautil.us/deep-learning-is-hitting-a-wall-238440/) stand the test of time?
+
+On the one hand, there’s been obvious and immense progress, GPT-4, Sora, Claude-3, insanely fast consumer adoption. On the other hand, that’s not really what the paper was about. The article was about obstacles to general intelligence and why scaling wouldn’t be enough.
+
+Let’s consider some of what I said, following the structure of the article:
+
+*   Hinton, in 2016 projected that deep learning would replace radiologists. I wrote “Fast forward to 2022, and not a single radiologist has been replaced”. **Still true**
+
+*   “At least for now, humans and machines [complement each other’s strengths.](https://pubmed.ncbi.nlm.nih.gov/30325645/)^”  **Still true**.
+
+*   “Few fields have been more filled with hype and bravado than artificial intelligence. It has flitted from fad to fad decade by decade, always promising the moon, and only occasionally delivering” **Still true.**
+
+*   “In November 2020, Hinton [told](https://www.technologyreview.com/2020/11/03/1011616/ai-godfather-geoffrey-hinton-deep-learning-will-do-everything/) *MIT*  *Technology Review* that “deep learning is going to be able to do everything.” I seriously doubt it. **My skeptical stance remains true thus far, arguably still open.**
+
+*   “We are still a long way from machines that can genuinely understand human language”. **Still tru**e, though some have argued there is some superficial understanding.
+
+*   “we nowhere near the ordinary day-to-day intelligence of Rosey the Robot, a science-fiction housekeeper that could not only interpret a wide variety of human requests but safely act on them in real time.” **Still true**
+
+*   “Elon Musk recently said that the new humanoid robot he was hoping to build, Optimus, would someday be bigger than the vehicle industry”. I expressed skepticism. **Still early days, but certainly domestic humanoid robots are not in the near term expected to be a big business for anyone.**
+
+*   “ Google’s latest contribution to language is a system (Lamda) that is so flighty that one of its own authors recently acknowledged it is prone to producing “[bullshit](https://medium.com/@blaisea/do-large-language-models-understand-us-6f881d6d8e75).”⁵“ **Still true.**
+
+*   “In time we will see that deep learning was only a tiny part of what we need to build if we’re ever going to get trustworthy AI” **Conjecture still open**, but note that techniques like RAG import symbolic techniques as I urged. We are still far from trustworthy AI.
+
+*   “Deep learning, which is fundamentally a technique for recognizing patterns, is at its best when all we need are rough-ready results, where stakes are low and perfect results optional“ **Still true**
+
+*   “Current deep-learning systems frequently succumb to stupid errors.” **Still true.**
+
+*   “Another team briefly considered turning GPT-3 into automated suicide counselor chatbot, but found that the system was prone to [problematic] exchanges”. **Likely still a concern, especially with open-source bots that may have less carefully constructed guardrails**; there has been at least one chatbot related death.
+
+*   “GPT-3 is prone to producing toxic language, and promulgating misinformation” **Still true, with some progress. (**Toxic language can easily be elicited by jailbreaks, but less so in ordinary use; misinformation is still common, even without jailbreaks.)
+
+*   “new effort by OpenAI to solve these problems wound [still] fabricat[ing] authoritative nonsense ” **Still true**.
+
+*   “In 2020, Jared Kaplan and his collaborators at OpenAI [suggested](https://arxiv.org/abs/2001.08361) that there was a set of “scaling laws” for neural network models of language; they found that the more data they fed into their neural networks, the better those networks performed.^(10) The implication was that we could do better and better AI if we gather more data and apply deep learning at increasingly large scales.” **Scaling has undeniably helped, but not solved any of the problems I pointed to above**.
+
+*   “There are serious holes in the scaling argument. To begin with, the measures that have scaled have not captured what we desperately need to improve: genuine comprehension…. Scaling the measures Kaplan and his OpenAI colleagues looked at—about predicting words in a sentence—is not tantamount to the kind of deep comprehension true AI would require” **Still true, and increasingly acknowledged.**
+
+*   “scaling laws aren’t universal *laws* like gravity but rather mere observations that might not hold forever, much like Moore’s law, a trend in computer chip production that held for decades but arguably [began to slow](https://www.nytimes.com/2015/09/27/technology/smaller-faster-cheaper-over-the-future-of-computer-chips.html) a decade ago.” **Still true**, and recently publicly acknowledged by Altman, who noted that we wouldn’t really know what GPT-5 could do till we got there..
+
+*   The company’s charismatic CEO Sam Altman wrote a triumphant [blog post](https://moores.samaltman.com/)trumpeting “Moore’s Law for Everything,” claiming that we were just a few years away from “computers that can think,” “read legal documents,” and (echoing IBM Watson) “give medical advice.”Maybe, but maybe not.” **Pending/still true**. Two years later we don’t have reliable versions of any of that.
+
+*   “If scaling *doesn’t* get us to safe autonomous driving, tens of billions of dollars of investment in scaling could turn out to be for naught”. **Pending/still true.** Turns out out it was over 100B, still no commercial rollout , testing still limited. Multiple companies failed or declined.
+
+*   Neurosymbolic might be a promising alternative. **Pending/still true**, and DepMind just has published a nice Nature paper on a neurosymbolic system, AlphaGeometry.
+
+*   Implict through the essay: scaling might not solve the problems not above. **Pending/Still true,** and people like [Bill Gates](https://indianexpress.com/article/technology/artificial-intelligence/bill-gates-feels-generative-ai-is-at-its-plateau-gpt-5-will-not-be-any-better-8998958/), [Demis Hassabis](https://www.wired.com/story/deepmind-ceo-demis-hassabis-interview-artificial-intelligence-scale/), [Yann LeCun](https://x.com/ylecun/status/1621805604900585472?s=20), and [Sam Altman](https://www.wired.com/story/openai-ceo-sam-altman-the-age-of-giant-ai-models-is-already-over/) have all recognized that a plateau might be coming. Here’s Hassabis, last month, echoing the central thrust of my 2022 article:
+
+§
+
+None of this means we won’t eventually have new innovations, of some sort or another. Or that AGI is impossible.
+
+But I still think we need a paradigm shift. And it is increasingly looking like LLMs on their own are not the answer to AGI — which is exactly what I was arguing..
+
+Overall, I would say that the article was right on the money. Two years later there is not much I would change, aside updating the examples, and slightly softening the title, to clarify that progress in some directions doens’t mean progress in all directions. I would absolutely raise the same concerns.
+
+To close, I will quote from the last paragraph, also still true.
+
+*With all the challenges in ethics and computation, and the knowledge needed from fields like linguistics, psychology, anthropology, and neuroscience, and not just mathematics and computer science, it will take a village to raise to an AI. We should never forget that the human brain is perhaps the most complicated system in the known universe; if we are to build something roughly its equal, open-hearted collaboration will be key.*
+
+[Share](https://garymarcus.substack.com/p/two-years-later-deep-learning-is?utm_source=substack&utm_medium=email&utm_content=share&action=share)
+
+***Gary Marcus** still feels like the field is mostly chasing ladders to the moon.*

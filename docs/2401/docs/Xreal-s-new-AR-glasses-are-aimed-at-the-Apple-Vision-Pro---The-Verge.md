@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:39
+-->
+
+# Xreal’s new AR glasses are aimed at the Apple Vision Pro - The Verge
+
+> 来源：[https://www.theverge.com/2024/1/7/24024442/xreal-air-2-ultra-developer-ar-glasses-6dof-tracking-pricing-availability](https://www.theverge.com/2024/1/7/24024442/xreal-air-2-ultra-developer-ar-glasses-6dof-tracking-pricing-availability)
+
+Augmented reality company Xreal has revealed a new entry in its Air glasses lineup: the $699 Air 2 Ultra. The Air 2 Ultra glasses, which developers can preorder today for shipment starting in March, are ultimately meant to compete with Meta’s Quest 3 and Apple’s Vision Pro headsets. They’re more full-featured than the $399 Air 2 model that Xreal — formerly Nreal — [launched late last year](/2023/10/24/23928925/xreal-air-2-pro-ar-glasses-pricing-availability-preorders-open), offering full positional (six degrees of freedom, or 6DOF) tracking in Xreal’s typical sunglasses-style form factor. That makes them ripe for not just watching TV or playing flat-screen games on a projected screen but also running immersive AR apps, which is exactly what Xreal hopes developers will do with them.
+
+Xreal pitches the Air 2 Ultra as a full-fledged “spatial computing” device similar to its earlier [Light mixed reality device](/22791981/nreal-light-augmented-mixed-reality-glasses-review), which also featured 6DOF tracking. Like the rest of the Air lineup, the Air 2 Ultra projects a floating image in front of users’ eyes. But it adds dual 3D cameras, one on each side of the glasses, that can map the wearer’s environment and enable special features like hand tracking. That allows developers to build apps that blend physical and digital space rather than simply displaying a conventional game, application, or video feed like the Air 2.
+
+The Air 2 Ultra offers a 52-degree field of view compared to the 46-degree Air 2; both products feature 500 nits of brightness, a 1080p screen for each eye, and a refresh rate of up to 120Hz. The Ultra glasses are a touch heavier, though, weighing 80 grams compared to 72 grams for the standard Air 2\. Like the Air 2, they can be plugged into a range of computing devices, including macOS and Windows-based computers, Samsung Android phones, and the iPhone 15\. On Android, macOS, and Windows, they will support Xreal’s Nebula AR environment.
+
+The Air 2 Ultra is aimed primarily at developers for now, but it will be sold through Xreal’s site to anyone who’s interested, shipping in the US, the UK, China, Japan, Korea, France, Germany, Italy, the Czech Republic, and the Netherlands. (The Air 2 is currently available to consumers in the US, Europe, and Asia.) It was unveiled shortly after Xreal announced it had shipped 350,000 pairs of AR glasses to date and would be expanding Air 2 availability to more countries in 2024.
+
+The mixed reality options of the older Light glasses were fairly rudimentary, and stripping them out to save some weight and money made sense. But re-adding 6DOF tracking lets Xreal more directly compete with its best-known US competitors: Apple and Meta. Apple’s $3,499 Vision Pro is [rumored to launch in February](/2023/12/20/24010038/apple-vision-pro-launch-planned-february), and Apple has promised that developers will be able to create spatially immersive experiences alongside projected flat screens. Meta’s $499 Quest 3, which [debuted last October](/23906313/meta-quest-3-review-vr-mixed-reality-headset), combines full-fledged virtual reality with mixed reality apps like digital tabletop games. Both headsets use passthrough mixed reality, which overlays digital objects on a video feed, rather than the direct projection that Xreal offers — although Meta is working on [projection-based AR glasses](/2023/2/28/23619730/meta-vr-oculus-ar-glasses-smartwatch-plans) more similar to the Air 2 Ultra, and Apple is likely doing the same.
+
+***Correction:** The Air 2 Ultra was originally described by Xreal as being exclusively for developers; shortly after publication, Xreal told us it would be made available to consumers through its site as well. We’ve updated the story to reflect this.*

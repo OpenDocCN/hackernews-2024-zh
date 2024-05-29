@@ -1,0 +1,88 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:49
+-->
+
+# Fastest road from CentOS Linux to Red Hat Enterprise Linux
+
+> 来源：[https://www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux](https://www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux)
+
+**June 30th, 2024**. Before you read anything else, commit that date to memory.
+
+June 30th, 2024, will bring the End of Life (EOL) of CentOS Linux, and Red Hat Enterprise Linux 7 (RHEL 7) will be reaching End of Maintenance (EOM). The good news is that these events won’t require a complete infrastructure overhaul. Tools are available to move from your current configuration to a place where you’ll have years of support.
+
+While June of ‘24 may sound a ways off, do not delay. It will be here faster than you think. Start planning now. Start moving soon. Give yourself plenty of runway, and don’t forget that we aren’t just your software vendor at Red Hat. We are your partners and are here to help you with these transitions.
+
+If you’re like me when looking at a long-term, intensive project, some time is required to stare at a blank screen and process the task before me. Let me see if I can help drive you into action.
+
+## The hard way
+
+In my days as a systems administrator, we didn’t consider in-place conversions or upgrades. For one thing, it wasn’t the straightforward process we have today. Secondly, new operating systems and hardware retirements went hand in hand. New OS? Time for a new server model! There are specific environments where that is the case. 
+
+You can certainly buy new hardware (or spin up new cloud instances) on the latest versions of RHEL and do a “rip-and-replace,” moving over only your application data. But for many, this isn’t an ideal approach. What other options are there?
+
+If you want to keep your application on the same version and focus solely on the operating system for this project, you can do that too. Look at setting up a RHEL 8 or 9 server and running it as a container host for Podman. Put your applications into a container, and viola. You can build your applications into pre-built application images or [Universal Base Images (UBI)](https://catalog.redhat.com/software/containers/search?vendor_name=Red%20Hat&p=1&q=UBI).
+
+However, this will require a fair amount of work as well. There is an easier way. In what amounts to a 2-phase process, we can convert your CentOS Linux systems onto a supported version of RHEL and then execute an in-place upgrade. 
+
+## Convert from CentOS Linux
+
+**Pop Quiz**: When does CentOS Linux 7.9 go EOL?
+
+If you said June 30th, 2024, then I can write the rest of this blog post feeling accomplished! 
+
+Red Hat has created a way for users to move to a supported operating system in place using a supported process.
+
+Why in-place? Think of all the configurations, user home directories, processes and packages you already have running on these systems. An in-place upgrade means all that customization doesn’t go away. The other piece of good news is that the conversion process and the resulting server image are both supported by Red Hat! In other words, if something breaks during or after the conversion, you can open a support ticket and get the help you need.
+
+Now, we are looking at the final days of CentOS Linux. You’ve got hundreds (or even thousands) of servers running various minor releases of CentOS Linux 7\. Let’s walk through what a conversion process looks like:
+
+[https://www.youtube.com/embed/xX7P4BzOcNg](https://www.youtube.com/embed/xX7P4BzOcNg)
+
+VIDEO
+
+1.  The first thing to do, if you are running anything older than CentOS Linux 7.9, is to upgrade all of your packages to the latest minor release. 
+2.  Once you are running CentOS Linux 7.9 with all the packages on their latest available version, you can configure the convert2rhel repository.
+3.  Run the conversion!
+4.  Validate your applications and register your systems to [Red Hat Insights](/en/technologies/management/insights).
+5.  Brace yourself— we aren’t done just yet.
+
+If you want to get your hands dirty, we have a [Convert2RHEL lab](/en/interactive-labs/migrate-red-hat-enterprise-linux-centos-linux) on our website to try for yourself!
+
+## In-place upgrade
+
+Time for a review! When does RHEL 7 go EOM? If you said June 30th, 2024, you nailed it!
+
+Now, you should be looking at a fleet of systems running RHEL 7.9\. Perhaps you already had a group of systems running earlier releases of RHEL 7\. Now would be an excellent time to patch those to the latest available package set and the recently converted CentOS Linux systems. 
+
+Much like CentOS Linux, RHEL 7 has limited life left. Red Hat does offer Extended Lifecycle Support (ELS) subscriptions if that is a path of interest. However, these entitlements come with an added cost. For today’s thought exercise, we are looking at how to keep your systems feeling fresh (read supported) without added expense or the need to rip-and-replace later.
+
+[https://www.youtube.com/embed/VVVwg9IyqwQ](https://www.youtube.com/embed/VVVwg9IyqwQ)
+
+VIDEO
+
+1.  Once the ‘yum’ command says there are no available packages left to update, your RHEL systems are ready to upgrade to the latest version of RHEL 8.
+2.  Install the Leapp tools.
+3.  Run the pre-upgrade assessment and remediate any identified issues.
+4.  Run the in-place upgrade.
+5.  Validate the upgraded systems and their applications.
+
+That is all there is to it! Sit back and take a deep breath. Even after June 2024, RHEL 8 will still have five years of maintenance support. 
+
+If you’d like to try an in-place upgrade for yourself, we have a [self-paced lab](/en/interactive-labs/perform-in-place-upgrade-with-leapp) over on our website.
+
+## Wrap up
+
+June 30th, 2024…
+
+Set a countdown on your phone. Put a reminder on your desktop. Grab a sticky note and put it on your mirror. Whatever you have to do. The date is rapidly approaching, and as a former sysadmin, I don’t want to see you having to scramble at the last minute to find ways to support your systems.
+
+June 30th, 2024…
+
+My experiences were always building a new server, with a new OS, on a new hardware platform. In the perfect world that exists only in my imagination, I might consider one last full-scale replacement and go straight to RHEL 9, then keep pace with the in-place upgrades for RHEL 10 and beyond.
+
+Sadly, technology, applications, industries and organizations don’t always march to that drum. Complex dependencies, processes and resource availabilities limit our ability to stay on the “latest and greatest.”
+
+If that is the position you find yourself in, follow the links in this blog, watch our videos and engage our [Support](https://access.redhat.com/) and [Services](/en/services/consulting) organizations. Red Hat is your partner in this.
+
+## Further reading

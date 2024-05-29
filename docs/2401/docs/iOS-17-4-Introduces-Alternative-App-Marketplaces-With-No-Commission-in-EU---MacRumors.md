@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:09:11
+-->
+
+# iOS 17.4 Introduces Alternative App Marketplaces With No Commission in EU - MacRumors
+
+> 来源：[https://www.macrumors.com/2024/01/25/ios-17-4-alternative-app-marketplaces-eu/](https://www.macrumors.com/2024/01/25/ios-17-4-alternative-app-marketplaces-eu/)
+
+Apple today announced major changes to its app ecosystem in the European Union, implementing updates that will allow [iPhone](https://www.macrumors.com/guide/iphone/) and [iPad](https://www.macrumors.com/roundup/ipad/) users to download and install apps outside of the [App Store](https://www.macrumors.com/guide/app-store/) through alternative app marketplaces.
+
+Alternative app marketplaces will function as an iOS app that is able to install other iOS apps on an ‌iPhone‌ or ‌iPad‌. Any developer can create an app marketplace, so long as they meet Apple's criteria for customer experience, fraud prevention, customer support, and more. Apple is creating new APIs to build marketplaces on iOS to distribute apps to users.
+
+In the EU, when an app developer submits an app to Apple for distribution, they can choose the ‌App Store‌ or any alternative app marketplaces. This includes distribution through multiple alternative app marketplaces or through both the ‌App Store‌ and an app marketplace.
+
+Apps installed through alternative app stores will need to go through a notarization process that includes safety and security checks, which is how Mac apps work.
+
+Apple will not charge a commission on apps installed through alternative marketplaces, nor will it charge commission for alternative payment systems, which are also allowed under the ‌App Store‌ updates in the European Union. Developers can integrate an alternative payment processor into their app that allows a user to make a purchase and check out entirely in an app, or developers can link out to their websites where users can make a purchase.
+
+While there are no commissions for alternative app marketplaces and alternative payment systems, there is a Core Technology Fee that is .50 euros per install per account on an annual basis. The first 1 million installs are free for all developers, but after 1 million installs, the fee comes into play.
+
+App developers who choose to continue to distribute under the ‌App Store‌ will pay Apple reduced commission with the new terms. Apple is dropping the 30 percent commission to 17 percent, and the 15 percent commission paid for subscriptions over a year old or by small businesses will drop to 10 percent. Apple says the vast majority of apps will qualify for the 10 percent rate.
+
+Developers have a choice between opting into the new business terms in the EU or sticking with the ‌App Store‌ terms as they are today. Developers who choose to maintain the status quo will pay the fees they pay now -- 15 to 30 percent commission.
+
+Developers who opt for the updated business terms will pay the reduced commissions, will have access to alternative app stores, and will also be subject to the Core Technology Fee. There is an also optional 3 percent payment processing fee for those who choose to continue to use Apple's integrated payment system rather than an alternative payment system under the new terms.
+
+Apple's Core Technology Fee will be paid annually, and Apple says that the fee reflects the value that developers get from Apple's tools and platform. Apps distributed by government agencies, non-profits, and educational institutions will be exempt from the Core Technology Fee. To help developers decide between the existing policies and the new system, Apple is providing a fee calculator and analytics report for the first annual install metric.
+
+Apple believes that allowing for alternative app installations will bring a major risk to platform integrity, but the measures that it is taking with notarization are aimed at reducing the risk of malware and other issues as much as possible. Apple's automated notarization checks will scan for known viruses and malware, plus there will be a baseline human review to ensure an app meets platform policies for security and privacy.
+
+Unlike ‌App Store‌ review, notarization will not enforce quality or content standards.There will be a system sheet for a notarized app that displays the app's name, screenshots, and more so that a user can verify an app's information before choosing to install it.
+
+Users will be able to install multiple app marketplace apps, and they will need to give permission before an app marketplace can install apps on a device. There is a management system in the Settings app that allows users to revoke permissions for app marketplaces and also, set a default app marketplace on their device.
+
+There are other changes coming as well. Users in the European Union will have an option to choose a default browser after updating to iOS 17.4, with Apple providing a list of the most downloaded browsers.
+
+Apple is giving app developers in the EU access to NFC and allowing for alternative browser engines, so WebKit will not be required for third-party browser apps. Apps will be able to offer NFC payments without using [Apple Pay](https://www.macrumors.com/roundup/apple-pay/) or the Wallet app through Host Card Emulation. Apps can also access field detect, and a default app can be set to activate when an ‌iPhone‌ is placed near a terminal.
+
+‌App Store‌ rules around [iCloud](https://www.macrumors.com/guide/icloud/) gaming are being updated globally to make it easier for users to download and enjoy games.
+
+Developers worldwide have access to expanded analytics, with more than 50 new reports on commerce, user engagement, and more. Data is still anonymized, but developers will have more information to work with.
+
+Apple is making these changes to comply with the European Union's Digital Markets Act, which tech companies need to adhere to by March 6, 2024\. iOS 17.4 is coming out as a beta update today, and it is set to see a public release in March.

@@ -1,0 +1,136 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:54:39
+-->
+
+# TikTok crackdown passes U.S. House: What to know about today's vote | CBC News
+
+> 来源：[https://www.cbc.ca/news/world/tiktok-vote-house-5-things-1.7142043](https://www.cbc.ca/news/world/tiktok-vote-house-5-things-1.7142043)
+
+The U.S. Congress has moved a big step closer to a crackdown on a popular platform that could have far-reaching implications for social media in the country.
+
+It involves a bill with major implications for the fast-growing site TikTok, renowned for addictive videos and used by [hundreds of millions](https://newsroom.tiktok.com/en-us/150-m-us-users) around the world, including [millions](https://socialmedialab.ca/2022/09/14/survey-finds-canadians-are-spending-less-time-on-social-media-but-tiktok-is-the-exception/) in Canada.
+
+At issue are alleged concerns about risks to national security and young users. The counter-claim: American politicians are unfairly picking on a Chinese-owned company.
+
+Here's what's happening.
+
+## House vote passes Wednesday
+
+The House of Representatives voted overwhelmingly Wednesday in favour of [a bill](https://www.congress.gov/bill/118th-congress/house-bill/7521/text?s=1&r=1&q=%7B%22search%22%3A%22Protecting+Americans+from+Foreign+Adversary+Controlled+Applications+Act%22%7D) called the Protecting Americans from Foreign Adversary Controlled Applications Act. It passed in a largely bipartisan vote, supported by more than three-quarters of the chamber in a 352-65 vote.
+
+The bill specifically cites TikTok. But it could apply to apps owned in countries designated as foreign adversaries under [U.S. law](https://www.law.cornell.edu/uscode/text/10/4872) — meaning Iran, Russia, North Korea and China.
+
+The bill presents two options: China-based ByteDance would have to sell TikTok within 180 days, or TikTok would be banned in the U.S. This would make it illegal for app stores and web servers there to host, maintain, distribute or feature the site.
+
+"This is my message to TikTok: break up with the Chinese Communist Party or lose access to your American users," said the bill's original sponsor, Republican Congressman Mike Gallagher. 
+
+The lawmakers [voting against](https://clerk.house.gov/Votes/202486) the bill constituted an unusual alliance: progressives like Alexandria Ocasio-Cortez teamed up with certain Donald Trump allies, like Marjorie Taylor Greene, and libertarians.
+
+One opponent stood out in particular: As the top Democrat on the chamber's intelligence committee, Jim Himes [said](https://www.facebook.com/photo/?fbid=1025367408958741&set=a.409585047203650&locale=sw_KE) he has better insight than most into online threats. 
+
+But as he voted against the bill, he said one of the U.S.'s defining features is that, unlike certain countries, it does not shut down media.
+
+***WATCH | House vote a 'surprising and strong' show of bipartisanship, analyst says: *** ### Why do U.S. lawmakers care who owns TikTok?
+
+Vivek Chilukuri, with the Center for a New American Security, says the vote in the U.S. House of Representatives over the ownership of online behemoth TikTok was a 'surprising and strong' show of bipartisanship.
+
+## Fate in Senate: TBD
+
+To become law, the bill still needs to pass the U.S. Senate. This is by no means guaranteed.
+
+In fact, it's common for bills to pass one chamber and stall in the other. It's happened on [gun control](https://www.nytimes.com/2013/04/18/us/politics/senate-obama-gun-control.html), [climate change](https://www.americanprogress.org/article/anatomy-of-a-senate-climate-bill-death/), [immigration](https://www.pbs.org/newshour/politics/boehner-pulls-house-border-bill-amid-conservative-revolt) and, lately, on [Ukraine aid](https://apnews.com/article/congress-ukraine-aid-israel-taiwan-5cc94d69691ed8f26d6e4ff614cf12fc).
+
+To date, the U.S. Senate is non-committal.
+
+It's notable that the Senate has its own social media bill that would force all large platforms to reform their practices.
+
+The Senate's [Kids Online Safety Act](https://www.congress.gov/bill/118th-congress/senate-bill/1409/text) does not target TikTok specifically. It requires all platforms to install new safeguards against bullying, sexual exploitation and talk of suicide; to open up their algorithms to researchers; allow parental monitoring; and to produce annual reports on risks and harms.
+
+That broader bill appears to have enough support to pass the Senate. 
+
+"[This bill is] just incredibly important," said Josh Golin, executive director of [Fairplay For Kids](https://fairplayforkids.org/mission-impact/), an online-safety advocacy group.
+
+"Right now, the only way these platforms make decisions about their design is, 'Is this going to increase a young person's time and activity on our site — so we can make more money?' "
+
+His group fears Congress might pass the TikTok bill then ignore the other, broader one.
+
+If both chambers pass either bill, they would require U.S. President Joe Biden's signature. The president has already indicated he would sign the TikTok bill.
+
+China, by the way, restricts, western apps. Major platforms, even news sites, are [routinely banned](https://www.scmp.com/tech/big-tech/article/3226962/metas-twitter-rival-threads-tops-chinas-app-store-despite-great-firewall-censorship) under that country's so-called Great Firewall.
+
+Giovanna Gonzalez, a TikTok supporter from Chicago, demonstrates outside the U.S. Capitol on Tuesday. (Craig Hudson/Reuters)
+
+## The complaints about TikTok
+
+U.S. officials do not believe [assurances](https://newsroom.tiktok.com/en-us/delivering-on-our-us-data-governance) that TikTok's data is [kept](https://www.theverge.com/2022/6/19/23174775/tiktok-oracle-team-up-concerns-data-privacy-remain) from the Chinese government just because its servers are outside China.
+
+Under [Chinese law](https://www.wiley.law/newsletter-Mar-2021-PIF-US-Businesses-Must-Navigate-Significant-Risk-of-Chinese-Government-Access-to-Their-Data), they say, the parent company, ByteDance, must take orders from the central government; its staff even includes [personnel](https://www.fdd.org/analysis/2024/03/12/5-things-to-know-about-bytedance-tiktoks-parent-company/) from China's government and ruling party.
+
+Leaked audio from internal TikTok meetings shows that user data is [repeatedly accessed](https://www.buzzfeednews.com/article/emilybakerwhite/tiktok-tapes-us-user-data-china-bytedance-access?scrolla=5eb6d68b7fedc32c19ef33b4) from China. TikTok's parent company allegedly [helped build](https://www.washingtonpost.com/opinions/2023/03/29/tiktok-china-party-danger-uyghurs-congress/) China's system for cracking down on Uyghurs, a mostly Muslim ethnic group in the Xinjiang province. A former employee [alleges](https://apnews.com/article/tiktok-china-bytedance-user-data-d257d98125f69ac80f983e6067a84911) it also helped authorities track protesters in Hong Kong.
+
+American law enforcement agencies are [reportedly investigating](https://www.forbes.com/sites/emilybaker-white/2023/03/16/fbi-doj-investigating-bytedance-tiktok-surveillance-journalists/?utm_medium=social&utm_campaign=socialflowForbesMainTwitter&utm_source=ForbesMainTwitter&sh=d01f1f7a6fc2) after the company confirmed it had [monitored](https://www.forbes.com/sites/emilybaker-white/2022/12/22/tiktok-tracks-forbes-journalists-bytedance/?sh=450e6a6b7da5) the whereabouts and data of U.S. journalists. 
+
+ByteDance officials resigned and were fired over the incident. 
+
+The just-released [annual report](https://url.uk.m.mimecastprotect.com/s/UTHBCpzqqTnpXQ1QSDwJVh?domain=odni.gov) by the U.S. Director of National Intelligence alleges a Chinese propaganda arm used TikTok accounts to target candidates from both political parties in the 2022 U.S. midterm elections.
+
+The company further angered U.S. politicians last week — by encouraging their tens of millions of users to bombard members of Congress with complaints about the potential ban.
+
+"And that's just the beginning. Imagine when China wants to use it more nefariously? Imagine when they want to truly engage in psychological warfare against the American people," said Republican Dan Crenshaw.
+
+"That's why we are so concerned about this. It's not because we're old and grumpy, and we don't understand TikTok." 
+
+U.S. lawmakers were deluged with messages earlier this month after TikTok sent this note to its U.S. users. Several lawmakers said it made them angry, calling it dishonest and noting that it proved their concerns about the foreign company's influence in the U.S. (CBC)
+
+The company says it's privately owned and is spending more than $1 billion US to partner with U.S.-based company Oracle to store user data in [Texas](https://usds.tiktok.com/usds-about/).
+
+On child safety, Golin said social-media giants are all doing damage. 
+
+As an example, he cited an [allegation against Facebook](https://nypost.com/2023/11/27/business/mark-zuckerberg-vetoes-proposal-to-ban-plastic-surgery-filters-lawsuit/) contained in a lawsuit. Staff warned CEO Mark Zuckerberg that a photo filter mimicking plastic surgery was damaging the mental health of young girls — but he overruled them.
+
+Golin said he's seen anecdotes — but no hard evidence — that TikTok is especially addictive.
+
+He cited one such anecdote from a major personal-injury [lawsuit](https://url.uk.m.mimecastprotect.com/s/yis3CG922f12YJYYcKECHK?domain=cand.uscourts.gov). It describes a common social media strategy based on behavioural psychology developed from old experiments with [lab mice](https://www.psychologytoday.com/us/blog/brain-wise/201311/use-unpredictable-rewards-to-keep-behavior-going).
+
+TikTok allegedly uses that technique, "intermittent variable rewards," to keep users from logging off; the algorithm has a sense of which videos a user wants, and doesn't show them all at once, but spaces them out, according to the suit.  
+
+"All [sites are] using the same techniques. It's just a question of whose secret sauce is maybe a little bit more effective at this point," Golin said.
+
+"[TikTok] seem to be perhaps even more Machiavellian and successful," he said. "What people constantly report is, like, 'I didn't even know I wanted to watch that video until TikTok sent it to me. And the next thing I knew, it was three hours later.' "
+
+When he was president, Donald Trump tried banning TikTok, but the courts stopped him. He now opposes a crackdown, announcing the about-face after meeting a top TikTok investor and political donor. (Alyssa Pointer/Reuters)
+
+## Trump's surprise flip-flop
+
+There's one famous Republican who has opposed the bill, much to his party's surprise. In a sudden announcement, Donald Trump [came out against it](https://www.cbc.ca/news/world/trump-tiktok-us-ban-pushback-1.7138066) last week.
+
+Trump [tried banning the app](https://www.politico.com/news/2020/08/06/trump-tiktok-wechat-executive-order-392528) as president. He still maintains there are security concerns, but says he now opposes the move because it would help [Facebook](https://truthsocial.com/@realDonaldTrump/posts/112058087970558736), another Trump [nemesis](https://www.wate.com/news/nexstar-media-wire/trump-says-he-considers-facebook-an-enemy-of-the-people/).
+
+Here's an element Trump didn't mention: money.
+
+Jeff Yass, the [biggest donor](http://www.opensecrets.org/political-action-committees-pacs/club-for-growth-action/C00487470/donors/2024) to Club For Growth, one of the [biggest-spending](http://www.opensecrets.org/orgs/club-for-growth/summary?id=D000000763) political-donation groups in the country, also happens to be the largest U.S. investor in TikTok with shares [worth billions](https://www.nbcnews.com/tech/tech-news/jeff-yass-billionaire-donor-investments-tiktoks-parent-company-rcna142531). He has reportedly threatened to [cut off funds](https://nypost.com/2024/03/07/us-news/billionaire-tiktok-investor-bullies-lawmakers-to-stop-sale/) to politicians who back the TikTok bill.
+
+Though the two reportedly had a falling out, Trump said several weeks ago that he's back on good terms with Yass and Club For Growth.
+
+The bill has split Trump's allies.
+
+One of his staunchest defenders in Congress, Elise Stefanik, [signed onto the bill](https://x.com/RepStefanik/status/1766473253969653963?s=20) as a co-sponsor; other pro-Trump groups are staunchly [supportive](https://twitter.com/Heritage_Action/status/1767256449296511359?s=20).
+
+But some [libertarians](https://x.com/MikeNeedham/status/1767534894501011736?s=20), and public personalities like [Tucker Carlson](http://x.com/TuckerCarlson/status/1767636879677984822?s=20) and [Elon Musk](https://www.businessinsider.com/elon-musk-sides-with-donald-trump-tiktok-ban-2024-3) are on Trump's side here. As is Trump ally Kellyanne Conway, who has reportedly been [hired](https://www.politico.com/news/2024/03/09/kellyanne-conway-tiktok-trump-00146144) to lobby for TikTok.
+
+***WATCH | What to know about TikTok security concerns:***  ### Breaking down TikTok security concerns
+
+The National's Ian Hanomansing asks cyber security experts Brian Haugli and Alana Staszcyszyn about how worried TikTok users should be about having the app on their devices.
+
+## Unprecedented? Yes and no
+
+Has there ever been a comparable case of a massive information platform used by hundreds of millions being forced to divest or disappear? Not quite.
+
+But it's a new twist on an old practice. 
+
+According to a piece in the [Stanford Law](http://review.law.stanford.edu/wp-content/uploads/sites/3/2022/05/Sitaraman-74-Stan.-L.-Rev.-1073.pdf) [Review](http://review.law.stanford.edu/wp-content/uploads/sites/3/2022/05/Sitaraman-74-Stan.-L.-Rev.-1073.pdf), the U.S. has periodically cited national security to restrict foreign presence in certain industries since the dawn of the republic — touching banking, shipping, radio, aeronautics and energy, starting from the 1790s. 
+
+The U.S. has also blocked foreign ownership bids for U.S. companies [a handful of times](https://crsreports.congress.gov/product/pdf/IF/IF10177) over the last decade. In virtually every case it involved Chinese [attempts](https://www.cnbc.com/2017/09/13/trump-blocks-sale-of-us-chipmaker-to-chinese-investors.html) to [purchase](https://www.nytimes.com/2020/03/06/business/economy/trump-administration-blocks-chinese-acquisition-cfius.html?smid=nytcore-ios-share&referringSource=articleShare&sgrp=c-cb) U.S.-based technology companies. 
+
+The context for all this? The U.S. rivalry with China, and [fears](https://www.cbc.ca/news/world/u-s-china-meeting-diplomatic-peace-1.6883345) that it could someday break into open conflict over Taiwan.

@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:36
+-->
+
+# communication - How to get coworkers to stop giving me ChatGPT-generated suggestions - The Workplace Stack Exchange
+
+> 来源：[https://workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions](https://workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions)
+
+Thank for your clarifying in the comments, and to bring them up here:
+
+> I take the time to understand and consider each suggestion, not rejecting anything out of hand, and share them with my team members (of which there are 17). Their advice has been, thus far, to "just ignore". However, I would not like to treat my co-workers that way.
+
+Sounds like you need to break that pattern, but also you don't necessarily want to be the hammer that drops in order to break it - as that rarely gets received in a friendly fashion, especially when they are used to just getting you to answer and consider the ideas.
+
+The solution in that case is quite simple - reach out to your boss/manager, explain that while you appreciate the suggestions, they are not helpful (have example or two ready here), they drain a lot of your time and focus (example or two) but also that you do not wish to be rude to your well-meaning co-workers (keep your face straight saying that) and ask them to step in and be the hammer to curtail the flow of unhelpful and uneducated advice. Focus on the points you can easily prove - that the advice is wrong and it's a time drain - don't go into motives or anything else.
+
+Ultimately that's the best way, as you are not in the place to tell them what to do, just as they cannot really tell you how to resolve an issue, and trying to pull some imaginary rank would likely alienate relationships further, and speaking in friendly way for them to see error of their way was dismissed. So time to call the actual powers to be, and let them manage as they are hired to do.
+
+If the drain then continues, raise it with your boss/manager again.
+
+Small addendum because it got almost as many upvotes as the answer somehow
+
+> Only do this though if you’re certain your manager won’t side with the artists.
+
+If you have a boss that will not act on well documented time waste (even if its coming from a good place) and instead will drive you towards the time waste, that's a great thing to find out as soon as possible, and a whole other problem to rectify. But at least you will be aware that the problem exists now, and can address it.

@@ -1,0 +1,43 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:20
+-->
+
+# Are electric vehicles really cheaper to own? Maybe not. - Big Think
+
+> 来源：[https://bigthink.com/the-present/are-electric-vehicles-really-cheaper/](https://bigthink.com/the-present/are-electric-vehicles-really-cheaper/)
+
+Electric vehicles (EVs) have undeniably entered the mainstream in the United States. [According to estimates from Kelley Blue Book](https://www.coxautoinc.com/market-insights/q4-2023-ev-sales/), more EVs were sold last year than were sold between 2011 and 2018\. The roughly 1.2 million new EVs put into service in 2023 represented 7.6% of the total U.S. car market. Cox Automotive’s Economics and Industry Insights team boldly [predicted](https://www.coxautoinc.com/market-insights/q4-2023-ev-sales/) that this share will climb to 10% in 2024.
+
+EVs’ impressive growth has played out even though they remain significantly more expensive to purchase than gasoline-powered cars, with only a handful of options priced below $40,000\. EV proponents counter this drawback by [claiming that EVs](https://www.realclearscience.com/2022/06/14/the_biggest_myths_about_electric_vehicles_837234.html) are actually cheaper to own over the long term, with lower fuel and maintenance costs making up for the higher sticker price. Studies examining cars’ total cost of ownership back their assertions.
+
+However, these studies (and there are many) are only as reliable as their completeness. After all, a wide variety of expenses factor into a vehicle’s lifetime cost, and excluding or miscalculating one could drastically skew the calculation. That’s why researchers at the University of Michigan’s Center for Sustainable Systems reviewed the dozens of “total cost of ownership” studies to craft their own. Published on January 3rd in the *Journal of Industrial Ecology*, their [analysis](https://onlinelibrary.wiley.com/doi/10.1111/jiec.13463) aimed to correct for the shortcomings of previous research.
+
+## A closer look at EV costs
+
+Maxwell Woody, a research assistant pursuing Ph.Ds in resource policy and behavior and mechanical engineering, led the effort. He and his colleagues accounted for all the usual costs, such as purchase price, fuel, maintenance, repairs, insurance, annual fees, and financing. Unlike prior analyses, however, they also:
+
+*   adjusted for the effect of [temperature on fuel efficiency](https://www.realclearscience.com/blog/2022/08/13/a_common_situation_where_evs_fail_miserably_847082.html)
+*   tracked vehicles over 25-year lifetimes
+*   categorized vehicles by size, range, and type
+*   accounted for different EV charging behaviors, and explored the cost of ownership in [14 cities](https://bigthink.com/strange-maps/parking-lots-eat-american-cities/) from across the U.S.
+
+The findings broadly challenge the optimistic cost-of-ownership assessments frequently touted by EV enthusiasts. The researchers found that while small and low-range EVs capable of traveling around 200 miles are indeed less expensive to own than their gas-powered counterparts, larger, long-range EVs that can cover 400 miles are more expensive. Midsize SUV EVs — currently the top-selling models by far — only reach cost parity if government incentives are applied.
+
+“EVs are more competitive in cities with high gasoline prices, low electricity prices, moderate climates, and direct purchase incentives, and for users with home charging access, time-of-use electricity pricing, and high annual mileage,” the researchers summarized.
+
+Since EVs are broadly more expensive to purchase upfront than comparable gas vehicles, the best way to assess whether an EV will ultimately be cheaper to own over the long term is by looking at its break-even time: when its lower recurring costs make up for its higher upfront cost. Woody and his team found that 200-mile range compact and midsize electric sedans reach this point in 3 to 7 years, while 300-mile range variants take nine to 20 years to break even. Electric SUVs and trucks with 300 miles of range generally take more than 20 years, while 400-mile range EVs will never break even over their lifetimes.
+
+Keep in mind, however, that this assessment did not include the Federal EV tax credit, which reduces the purchase price of [certain EVs](https://www.consumerreports.org/cars/hybrids-evs/electric-cars-plug-in-hybrids-that-qualify-for-tax-credits-a7820795671/) by $3,750 or $7,500\. When included, the affordability scale tips decidedly toward EVs.
+
+“For 200-mile range BEVs, the breakeven time is under 2 years for compact vehicles and sedans, and under 5 years for small and midsize SUVs in each city,” the researchers reported. “Small 300-mile range vehicles break even in under 10 years in each city, and larger 300-mile range vehicles break even in under 10 years in many cities…there are a few cities in which 400-mile BEV compact and midsize sedans will break even with [gas-powered] counterparts after 15−20 years.”
+
+## Cost parity down the road
+
+Still, there are numerous unknowns in the assessment, such as whether a substantial number of EVs will require battery replacements outside of their warranties, mandated to be a minimum of 8 years and 100,000 miles. Also unknown is how the costs of gasoline and electricity will change in the future. The study also didn’t compare vehicle costs in rural areas.
+
+Overall, the greatest factor in determining whether an EV will be cheaper to own than a gas vehicle is the ability to charge at home, where electricity is cheapest. (In their analysis, the researchers assumed that EV owners charge at home 80% of the time and at public charging stations 20% of the time.) Without home charging, an EV will likely never be cheaper over its lifetime.
+
+“Home charging access reduces the lifetime cost by approximately $10,000 on average, and up to $26,000,” Woody and his team reported.
+
+The study is just a snapshot in time, the researchers noted. An EV’s battery constitutes a significant portion of its upfront cost. With battery prices predicted to continue steadily declining in the coming years, the math is likely to shift more in favor of EVs.

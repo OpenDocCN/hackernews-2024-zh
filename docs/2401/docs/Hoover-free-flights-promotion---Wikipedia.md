@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:21:26
+-->
+
+# Hoover free flights promotion - Wikipedia
+
+> 来源：[https://en.wikipedia.org/wiki/Hoover_free_flights_promotion](https://en.wikipedia.org/wiki/Hoover_free_flights_promotion)
+
+Marketing promotion by Hoover Company
+
+The **Hoover free flights promotion** was a [marketing](/wiki/Marketing "Marketing") [promotion](/wiki/Promotion_(marketing) "Promotion (marketing)") run by the British division of [the Hoover Company](/wiki/The_Hoover_Company "The Hoover Company") in late 1992\. The promotion, aiming to boost sales during the [global recession of the early 1990s](/wiki/Early_1990s_recession "Early 1990s recession"), offered two complimentary round-trip plane tickets to the [United States](/wiki/United_States "United States"), worth about [£](/wiki/Pound_sterling "Pound sterling")600, to any customer purchasing at least £100 in Hoover products.^([[1]](#cite_note-thehustle-1)) Hoover had been experiencing dwindling sales as a result of the economic downturn and a sharp increase in competing brands. Hoover was counting on most customers spending more than £100, as well as being deterred from completing the difficult application process, and not meeting its exact terms.
+
+Consumer response was much higher than the company anticipated, with many customers buying the minimum £100 of Hoover products to qualify. It was perceived as two US flights for just £100 with a free [vacuum cleaner](/wiki/Vacuum_cleaner "Vacuum cleaner") (or other product) included. The resulting demand was disastrous for the 84-year-old company. Hoover cancelled the ticket promotion after consumers had already bought the products and filled in forms applying for millions of pounds' worth of tickets. Reneging on the offer resulted in protests and [legal action](/wiki/Lawsuit "Lawsuit") from customers who failed to receive the tickets they had been promised. The campaign was a financial disaster for the company and led to the loss of Hoover's [Royal Warrant](/wiki/Royal_Warrant_of_Appointment_(United_Kingdom) "Royal Warrant of Appointment (United Kingdom)") after the airing of a 2004 BBC documentary. The European branch of the company was eventually sold to one of its competitors, [Candy](/wiki/Candy_(company) "Candy (company)"), having never recovered from the losses, the promotion and the subsequent scandal.
+
+## Prior to the promotion[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=1 "Edit section: Prior to the promotion")]
+
+Prior to the incident, [The Hoover appliance company](/wiki/The_Hoover_Company "The Hoover Company") had held a 50% share of its corner of the market for almost 40 years. In the 1980s, Hoover was owned by parent company [Maytag](/wiki/Maytag "Maytag") and was rapidly expanding with the potential to claim a larger share of a growing market. This period of expansion, however, coincided with the UK's entry into a major economic [recession](/wiki/Recession "Recession"), and Hoover was beginning to face competition from newly established British vacuum cleaner companies such as [Dyson](/wiki/Dyson_(company) "Dyson (company)"). From 1987 to 1992, Hoover's profits fell from [US$](/wiki/US%24 "US$")147 million to US$74 million, and its share of the UK vacuum-cleaning market dropped. When several attempts at creating novel products (such as a talking vacuum cleaner) failed to stimulate interest, to correct its financial trajectory, Hoover's executives decided to create an exciting marketing [promotion](/wiki/Promotion_(marketing) "Promotion (marketing)") that would encourage the public to purchase what were quickly becoming mounting piles of unsold products. In order to do this, Hoover would offer free round-trip [airline tickets](/wiki/Airline_ticket "Airline ticket") to the United States to individual customers who had bought at least £100 worth of the unsold wares.
+
+## Free flights promotion[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=2 "Edit section: Free flights promotion")]
+
+Starting in August 1992, Hoover promised two free airline tickets to any customer who purchased a Hoover product worth at least [£](/wiki/Pound_sterling "Pound sterling")100\. This meant that, on top of their cleaning appliance, the customer would also receive two round trip tickets to the United States. The promotion garnered a huge response from the public and Hoover was not able to keep up with the demand. Expecting modest engagement, Hoover had partnered with a small (now defunct) airline company called JSI Travel, which was in a similar position: struggling under the weight of the recession and desperate to unload cheap flights. Hoover and JSI arranged a deal in which Hoover would unload huge amounts of excess products, while JSI Travel would sell bulk flights to Hoover while handling bookings.
+
+Hoover made the application process as arduous as possible in the hope that only a minor percentage of those who bought an appliance would get the flights. Specifically, the company instituted the following process for redeeming the offer:
+
+*   When a customer purchased a Hoover appliance for at least £100 at certain select department stores, they had to mail in their receipt along with their application within 14 days of making their purchase.
+*   Hoover then sent back a registration form which needed to be completed and returned within 14 days.
+*   Hoover would then send out a travel voucher. The customer then had 30 days to choose three combinations of departure airports, dates and destinations.
+*   Hoover retained the right to refuse the combinations selected by the customer, subsequently insisting that the customer select a further three alternatives.
+*   Additionally, Hoover reserved the right to also refuse the alternatives and offer a combination of their own choosing. This meant that the customer's flight would take place on a date and from a location that was likely to be inconvenient, rendering the customer less likely to use the tickets.^([[1]](#cite_note-thehustle-1))
+
+Hoover's slogan for their new promotion was "Two free flights! Unbelievable!", which immediately caught the attention of the British public. As it became increasingly apparent that Hoover did not have the means necessary to fulfill the promotion, it began to receive negative attention from the British press.
+
+The initial approach was to offer two round-trip tickets to European destinations; this promotion proved extremely popular with customers. Few customers used the vouchers, so in November 1992 Hoover expanded the options to include destinations in the United States. The addition of American locations caused a surge in consumer response because the airline tickets held an approximate retail value of £600 and could apparently be obtained for an outlay of just £100\. Consumers were increasingly purchasing the cheapest products available to satisfy the £100 requirement, sometimes not returning to pick up their order. Hoover had to increase their production and hire new employees to meet the increased demand.^([[2]](#cite_note-chan-2)) Hoover had estimated that it would receive 50,000 applications, but the final total was around 300,000.^([[3]](#cite_note-bm-3))
+
+JSI Travel folded as Hoover decided to extend ticket offers to the United States. Hoover increased complexity of the process to redeem the vouchers.^([[3]](#cite_note-bm-3)) Public response was vocal and resulted in protests and an extended court case that continued until 1998.^([[2]](#cite_note-chan-2))
+
+## Public response, repercussions and legal action[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=3 "Edit section: Public response, repercussions and legal action")]
+
+The British public reacted angrily to the fiasco. One man, David Dixon, claimed that in addition to not receiving airline tickets, the Hoover [washing machine](/wiki/Washing_machine "Washing machine") he had purchased to obtain a trip to the USA had broken down. He claimed that a Hoover technician who had come to fix the machine had said, "If you think buying a washing machine's going to get you two tickets to America, you must be an idiot",^([[2]](#cite_note-chan-2)) which led him to take action against Hoover.
+
+In 1993, the Hoover Holidays Pressure Group was formed, led by Harry Cichy and Sandy Jack, to protest against the company's broken promises. After buying some shares in Hoover's parent company, [Maytag](/wiki/Maytag "Maytag"), the [pressure group](/wiki/Advocacy_group "Advocacy group") went to the Maytag [annual general meeting](/wiki/Annual_general_meeting "Annual general meeting") in [Newton, Iowa](/wiki/Newton,_Iowa "Newton, Iowa"). Jack expressed his concerns to the [CEO](/wiki/CEO "CEO") of Maytag, [Len Hadley](/wiki/Len_Hadley "Len Hadley"), which made headline news.^([[4]](#cite_note-4)) In 1994, Jack took Hoover to court over the free flight promotion. The [BBC](/wiki/BBC "BBC") *[Watchdog](/wiki/Watchdog_(TV_programme) "Watchdog (TV programme)")* programme's investigation of customer complaints about the promotion brought the matter to even wider public attention.
+
+A number of Hoover executives lost their jobs as a result of the fiasco, including William Foust, the managing director and president of Hoover; Brian Webb, vice-president of marketing; and Michael Gilbey, director of marketing services. Despite the sell of the European division of the company to Candy in 1995, lawsuits concerning the fiasco continued into 1998.
+
+## BBC documentary[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=4 "Edit section: BBC documentary")]
+
+In 2004, a [BBC](/wiki/BBC "BBC") documentary was made on the anniversary of Cichy and Jack's visit to Newton in 1994\. Part of the *[Trouble at the Top](/wiki/Trouble_at_the_Top "Trouble at the Top")* series, the "Hoover Flights Fiasco" was watched by 1.7 million viewers. As a result, the [British royal family](/wiki/British_royal_family "British royal family") withdrew Hoover's [Royal Warrant](/wiki/Royal_Warrant_of_Appointment_(United_Kingdom) "Royal Warrant of Appointment (United Kingdom)").^([[5]](#cite_note-5))
+
+## See also[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=5 "Edit section: See also")]
+
+*   [David Phillips](/wiki/David_Phillips_(entrepreneur) "David Phillips (entrepreneur)"), an American engineer who bought and donated thousands of pudding cups to exploit a frequent flyer miles promotion
+
+## References[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=6 "Edit section: References")]
+
+## Further reading[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=7 "Edit section: Further reading")]
+
+## External links[[edit](/w/index.php?title=Hoover_free_flights_promotion&action=edit&section=8 "Edit section: External links")]

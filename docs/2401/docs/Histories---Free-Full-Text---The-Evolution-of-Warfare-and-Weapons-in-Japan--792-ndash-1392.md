@@ -1,0 +1,552 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:05:25
+-->
+
+# Histories | Free Full-Text | The Evolution of Warfare and Weapons in Japan, 792–1392
+
+> 来源：[https://www.mdpi.com/2409-9252/4/1/2](https://www.mdpi.com/2409-9252/4/1/2)
+
+## 2\. Armaments and Tactics: What Did Soldiers Use in Battle, and How Did They Fight?
+
+One of the most enduring images of pre-modern Japan is that of the fearsome samurai, for whom, allegedly, the sword was his soul and hand-to-hand combat his trade. Yet despite the prevalence of this image, for nearly all of Japanese history, the premier warrior was not the swordsman but the mounted archer. Pre-conceived notions of what terms like “war” or “shield” or “army” or “light cavalry” and so forth mean can seriously hinder understanding the nature of life as a warrior in eighth-, tenth-, or fourteenth-century Japan and with this in mind, I will examine the historiography on the weapons, armor, and tactics used by Japanese warriors during the 600 years from 792–1392.
+
+William Wayne Farris is one of the best-known scholars of warfare in pre-Tokugawa Japan, and in his book Heavenly Warriors: the Evolution of Japan’s Military, 500–1300, he devotes considerable time and attention to analyzing the military technology and tactics of the day, noting when new weapons or tactics appeared and suggesting why. For example, he asserts that mounted archers, especially from the horse-rich Kanto (where they may have originally become skilled as game hunters), predominated in Japan until the late seventh century but were then briefly supplanted by mass infantry formations, some of whom were armed with crossbows.
+
+The crossbow—like the idea of mass infantry formations in general—was a Chinese technology introduced from the Korean kingdom of Koguryŏ in 618, popularized by 672, and already disappearing by 914\. None have been recovered in archaeological digs in Japan, so Farris argues that they must not have been too widely used (
+
+[Farris 1992, p. 116](#B5-histories-04-00002)
+
+). This is one of many points in his book that Farris jumps to conclusions that are, on the surface, plausible but not in the end well-supported by evidence, as Jeffrey Mass’s 1994 review also asserts (
+
+[Mass 1994, pp. 245–50](#B11-histories-04-00002)
+
+). Karl Friday, on the other hand, has contended that the large, stationary type of crossbow, the
+
+ōyumi
+
+(ballista), was what actually ensured ultimate victory against the
+
+emishi
+
+, the “northeastern barbarians” (
+
+[Friday 1992, p. 42](#B6-histories-04-00002)
+
+). Farris speculates that the handheld crossbow failed to catch on in Japan because it was difficult to manufacture (
+
+[Farris 1992, p. 116](#B5-histories-04-00002)
+
+), whereas Friday argues that despite its initial adoption, as time passed, fewer and fewer people knew how to use the larger ballista properly; these two explanations together account for the disappearance of the crossbow from Japan by no later than the early tenth century (
+
+[Friday 1992, pp. 42–43](#B6-histories-04-00002)
+
+).
+
+Farris asserts that a great deal of military innovation occurred during the campaigns of conquest and colonization (774–812) against the
+
+emishi
+
+. The initial failures of the infantry against the more mobile
+
+emishi
+
+prompted certain technological changes, notably a shift from iron breastplates to leather armor for mounted warriors in 781 and the gradual adoption of the
+
+emishi
+
+’s
+
+warabite tō
+
+, a curved sword for slashing, in the eighth century (
+
+[Farris 1992, pp. 101–2](#B5-histories-04-00002)
+
+). Thus, the
+
+emishi
+
+-inspired panoply of later (mounted archer) samurai was, by the late eighth century, already complete: (large) bow and arrow, curved sword, and fairly light armor to maximize mobility.
+
+These assertions, particularly about the curved sword, are not universally accepted, however. Karl Friday has argued in
+
+The First Samurai
+
+that the evolution of the sword from the straight continental type to the curved type is shrouded in mystery due to very few surviving examples (themselves somewhat ambiguous)
+
+[2](#fn002-histories-04-00002)
+
+of early curved blades and further declares that the curved sword had not fully proliferated even in the mid-tenth century so that some men of Taira no Masakado’s day would probably still have been carrying straight swords, and some would have carried curved swords (
+
+[Friday 2008, p. 72](#B7-histories-04-00002)
+
+). Nor is the sword issue the only area in which he pointedly differs from Farris.
+
+Farris’ book makes heavy and essentially uncritical use of literary “military romances” though he does include a few caveats on such tales’ propensity to exaggerate numbers of combatants by a factor of ten. Yet these caveats do not stop Farris himself from engaging in methods of calculating the number of combatants even he admits are “fanciful” in order to determine the prevailing tactical approach to warfare in each period he addresses.
+
+[3](#fn003-histories-04-00002)
+
+One cannot shake the sense that he began his project expecting to find confirmation that samurai (mounted archers) often engaged in ritualized, one-on-one combat. As such, there is a serious circularity to his argument: he cites later (highly stylized) literary accounts, many of which are at best historical fiction, as ‘evidence’ that this is the case, then justifies thus using these literary accounts by arguing that they are consistent with his theory that samurai fought one-on-one, and with the accounts of other literary sources. In one such instance, where he uses a story written in 1171 about a war in 1087 to ‘prove’ that this war was the same tactically as those preceding it, he argues:
+
+> “The samurai style of single, mounted combat had already evolved; storytellers would not have had much trouble understanding and preserving [such] tales…Second, Japan has a strong tradition of oral literature, and veterans probably drifted to the capital to tell their stories, which literate persons would then have written down. Thus, although storytellers undoubtedly glorified individual acts of valor and enhanced descriptions of fighting styles, it seems likely that [they]…contain a kernel of truth about contemporary military technology, much like Homer’s Iliad.”
+
+However, this argument simply does not hold. Where is the evidence for this style of one-on-one mounted combat except in
+
+other
+
+literary sources? Furthermore, he cites a written account of the Latter Three Years’ War, a late eleventh-century conflict (though the account was written ninety years after the fighting) elsewhere in his book as ‘proof’ that “The samurai style of ritualized, one-on-one combat had at last become prominent” (
+
+[Farris 1992, p. 205](#B5-histories-04-00002)
+
+). But in trying to determine, say, the tactics used in the Trojan War, one cannot rate episodes of heroism in the
+
+Iliad
+
+as believable simply because they are consistent with other, equally fanciful accounts of the same type of conflict elsewhere, nor can one then circle around and say that any similar accounts are trustworthy because they are consistent with the
+
+Iliad
+
+.
+
+Karl Friday dismisses this entire view of samurai combat as ritualized duel as a revisionist and romanticized reimagining of history by poets and writers of later ages. He cites more contemporary sources from the time around Taira no Masakado’s rebellion to show that, far from riding out and shouting a challenge, then beginning a recitation of one’s pedigree before launching an ineffective exchange of whistling arrows to formally begin the battle, one of the key tactics employed by tenth-century combatants was ambush (
+
+[Friday 2008, p. 43](#B7-histories-04-00002)
+
+). It is indeed hard to imagine a successful ambush given the laborious preconditions ritualized combat would demand.
+
+Yet Farris makes it clear he is convinced men of Masakado’s era employed this style of heroic dueling in his descriptions of Masakado’s battles: “The two sides abandoned fixed positions, taking to individual combat” (
+
+[Farris 1992, p. 147](#B5-histories-04-00002)
+
+). After refuting this assertion, Friday goes on to point out telling features of the logistics of mounted combat. All other things being equal, it is hard to ride down a fleeing enemy when they can scatter to the winds at full speed, especially since the pursuers must stay in some sort of formation while tracking them, reducing their own speed; in that sense, successfully evading a more powerful pursuing foe was in a sense a kind of victory for the other side. In contrast to Farris’ assertion that already by Masakado’s day, combat was becoming individual and ritualized, tenth-century warrior bands relied most heavily on the element of surprise (ambushes), scorched earth tactics, and night attacks (
+
+[Friday 2008, p. 59](#B7-histories-04-00002)
+
+).
+
+Ambushes were particularly useful. In an episode from the
+
+Shōmonki
+
+(the Tale of Masakado), Masakado laid something of an ambush for his uncle Yoshikane, who was pursuing him with a much larger force. It seems Masakado relied on his opponent Yoshikane to be overconfident due to his superior numbers and rush in blindly, which he obligingly did. Friday speculates that Masakado may have stood in plain view with his 100 cavalry and stationed his 100–200 foot soldiers, the bulk of whom were surely archers, out of sight (and as we shall see, given the short kill range of the bow, it is hard to imagine foot archers as having any success at all against mounted archers unless they could conceal themselves until the enemy drew within range), in fact as what would later be called
+
+nobushi
+
+(bandits, literally “hiders in fields”) (
+
+[Friday 2008, p. 55](#B7-histories-04-00002)
+
+). Perhaps this is the “Chinese-style” mass tactic to which Farris was referring when he claimed Masakado’s army used both infantry and cavalry in mass tactics. But Masakado is credited merely with directing several dozen foot soldiers to hide and then fire at will when the enemy approached—and may not actually have provided even that much direction—so this hardly seems like evidence of drilling in formation, nor do the numbers justify the label of “mass” tactics (
+
+[Farris 1992, p. 161](#B5-histories-04-00002)
+
+).
+
+Friday also implicitly argues that the weapons of the tenth century, especially the bow and arrow, did shape and limit tactics as well as spur the development of defensive technology. It turns out that by the mid-tenth century, even bowmen on foot could not prevail against mounted archers, though their rate of fire and accuracy were higher than that of the cavalry, and despite the fact that they could take refuge behind the standing shields common in pre-modern Japan. Their ineffectiveness was due to two factors: the fact that the kill range of arrows was only 10 to 20 m, and the fact that right around the time of Masakado, a new medium-heavy type of armor, very effective at warding off arrows, had been developed, rendering mounted warriors nigh invulnerable while remaining light enough to preserve their mobility (
+
+[Friday 2008, p. 53](#B7-histories-04-00002)
+
+).
+
+With regard to tactics, it is true that the individual skill of warriors was more important than coordinated mass maneuvers, because the composition of armed forces at the time meant there would be no chance to drill and plan maneuvers as an army. Forces were drawn together from a web of relationships and mutual self-interest, the most enduring or “loyal” being families and immediate retainers, who would certainly have trained and may even have had experience fighting together in concert.
+
+Thus, battles in the tenth century were neither a clash of mass infantry plus a few brave mounted archers nor a series of ritualized duels; instead, they were a complicated jumble of small bands that internally worked extremely well in concert, but were essentially autonomous from the “commander” and his strategic vision, if any (
+
+[Friday 2008, p. 69](#B7-histories-04-00002)
+
+). Furthermore, as both Friday and Farris note, each mounted archer would typically have two or three attendants/foot soldiers with him, making the warfare of the tenth and later centuries a combined-arms affair (
+
+[Farris 1992, p. 302](#B5-histories-04-00002)
+
+). Each vertical grouping of leader, mounted retainers, and semi-dependents on foot would be more or less autonomous from the rest of their allies during a battle. Hence, the emphasis was on neither mass tactics nor individual heroism but on the maneuvers and training of the small band.
+
+From the beginning of their use in mounted warfare until the breeding programs of Date Masamune and others in the sixteenth century, horses in Japan were of pony size, an average of 130 cm tall, and much lighter than the warhorses of Europe. Even given the smaller size of Japanese combatants and the somewhat lighter armor and weapons, such pony-horses would tire within a few minutes if forced to gallop, as an experiment run by NHK has demonstrated. Furthermore, horses were unshod, though they were sometimes fitted with straw sandals for long journeys (
+
+[Friday 2008, p. 67](#B7-histories-04-00002)
+
+). It seems clear that horses of that stature could not carry extremely heavy plate armor, which may be why such heavy armor was never developed. This may be an instance of resource limitations constraining technological development. Yet even if that is the case, Japanese armor-makers adapted to the demands of the day and began to make a new kind of armor that was very effective against both arrows and sword slashes.
+
+Farris does not mention
+
+ōyoroi
+
+(great armor), which came into fashion in the mid-tenth century, at all, a serious oversight as this was an important development for Masakado’s revolt. The heavy (30 kg) lamellar armor provided excellent protection against arrows, especially with the
+
+ōsode
+
+(great sleeves) that hung down to protect the warrior’s arms but swung out of the way when he was ready to release an arrow. Since mounted archers had no hand free to use a shield, the
+
+ōsode
+
+was developed as a substitute. Helmets were mainly conical, made of overlapping iron plates (
+
+[Friday 2008, p. 71](#B7-histories-04-00002)
+
+). Given this defensive panoply, one can well imagine the difficulty archers on foot—since anyone without mounts would have been unable to wear such heavy armor even if they could afford it—faced in bringing down one of the mounted archers. Crossbows might have been effective, but they had already fallen out of use, and indeed, the rise of the warrior class to dominance in the fourteenth century may only have been possible because foot soldiers had no weapon (like the crossbow) readily available to neutralize their superior armor and mobility.
+
+Out in the great muddle of small groups battles would have quickly become, how did warriors distinguish friend from foe on the battlefield? One major way was in the coloration and pattern of the braided silk lacing holding the armor together, as well as in individual flourishes like kuwagata (flat metal antlers) adorning some combatants’ helmets (Ibid., p. 71).
+
+Bows were very simple, typically made of a single sapling (trunk) of catalpa, zelkova, sandalwood, or mulberry, or from staves split from larger tree trunks, and occasionally lacquered or wrapped in bark thongs, but non-composite bows of this type cannot bend very deeply and consequently must be very large, with bows of two meters being common in Japan (
+
+[Friday 2008, p. 71](#B7-histories-04-00002)
+
+). Unlike the famous English longbow, however, the grip is a third of the way up from the bottom of the bow, facilitating use from horseback, as well as apparently (1) balancing the stress on both sides evenly, (2) maximizing rebound power, and (3) minimizing fatigue to the archer (Ibid., p. 71).
+
+Swords were less relevant since, aside from the great difficulty involved in wielding large swords from horseback—into enemy arrows—it is very difficult to cut through ōyoroi. So combat consisted largely of mounted archers circling each other, trying to get into the optimal position (45 degrees on the left side of their horse’s head) to shoot at the weak spots in enemies’ armor, swooping in and out of kill range (20 m). Friday compares this to dog-fighting; it is also quite similar to naval warfare techniques like crossing the T (Ibid., pp. 73–74). The rather low casualty rates in wars from the tenth century were due, in large part, to this significant advance in defensive technology, giving wearers near-invulnerability.
+
+Another, later predatory conflict, and one in which armor may well have been an important factor in evading defeat was regional in nature: the invasions by the Mongols in the late thirteenth century. The first invasion occurred in 1274 and was a meeting of two very different modes of fighting. The Mongol/Chinese army advanced methodically in formation and employed new and fearsome weapons: poisoned arrows and exploding devices, with which the Japanese had no experience (
+
+[Ishii 1995, p. 55](#B9-histories-04-00002)
+
+;
+
+[Jansen 1995](#B10-histories-04-00002)
+
+). Furthermore, the Japanese emphasis on performance and personal glory, collecting heads and so forth was ill-suited to fighting an invading army. Farris, quoting the late fourteenth-century
+
+Hachiman gudō kun
+
+, has this to say about the 1274 engagement:
+
+> “The Mongols disembarked, mounted their horses, raised their banners, and began to attack…[One Japanese]…shot a whistling arrow to open the exchange. All at once the Mongols down to the last man started laughing…Whereas we [Japanese] thought about reciting our pedigrees to each other and battling man-to-man in glory or defeat as was the custom of Japanese armies, in this battle the Mongols assembled at one point in a great force.”
+
+Yet the Japanese were sufficiently satisfied with their mounted archery to keep the invasions of the late thirteenth century from spurring any new innovations in weaponry or tactics, let alone the composition of armed forces. Unlike the last time Japan was threatened by an invasion from China—in the seventh century—there was no rush to copy Chinese tactics and technology. This is perhaps a mark of complacency and/or evidence that Japanese tactics—and armor—must have been considered fairly effective after all.
+
+The issue of armor is key in understanding developments in the fourteenth century, as well. Protection from arrows—the primary weapon of pre-sixteenth century Japan—while wearing
+
+ōyoroi
+
+, coupled with the armor’s weight, may be what led to certain compensatory measures in military technology in later centuries. Thomas Conlan, writing about the Nanbokuchō era (1336–1392), reveals new technological innovations that both shaped and responded to changed tactics in war. For example, in the fourteenth century, arrows still offered no guarantee of success in incapacitating enemies and were not even particularly lethal (
+
+[Conlan 2003, p. 59](#B2-histories-04-00002)
+
+), so a new tool designed to unhorse retreating combatants was developed: the bear claw, a long hooked pole which pursuers could use to swipe those fleeing. Some fighters also mastered the difficult technique of riding up behind a fleeing enemy and stabbing him in the throat from behind. In response to such tactics, defensive technology also advanced: the backs of helmets were strengthened to ward off just such blows, and a leather helmet liner was added, undergoing incremental improvement in order to keep soldiers from being knocked out or incapacitated when they were knocked from their mounts (
+
+[Conlan 2003, p. 38](#B2-histories-04-00002)
+
+). These innovations, needless to say, present serious problems for those clinging to an overly heroic image of warfare in medieval Japan. Yet such devices and techniques remained less common than the tried-and-true method of peppering enemies with arrows.
+
+In medieval Japan, trophy-taking (most often claiming heads) was ubiquitous. This practice has been all too common in warfare throughout human history, from hoplites in ancient Greece ripping off fallen opponents’ armor as trophies to the more gruesome practice of taking slain combatants’ ears or bones and turning them into ornaments or useful objects. The savagery of war has always been with us, and has extended even into modern times. For example, bone trophies were often taken by American soldiers from fallen Japanese in World War II.
+
+[4](#fn004-histories-04-00002)
+
+In fourteenth- (or tenth-) century Japan, as in other places and times, the act of taking a trophy was not without peril in the midst of a still raging battle, yet waiting until the battle was decided carried risks of its own; another could claim to have brought the enemy down and take the slain warrior’s head as proof.
+
+Since bringing the heads of identifiable (i.e., high-ranking) enemies to friendly hegemons was the quickest way to ensure a rich reward in Japan’s performance-based wars of the fourteenth century, there was a strong incentive to interrupt combat at opportune moments in order to harvest the heads of those one had killed (and thus to keep careful tally of individual accomplishments and performance), or alternatively to be seen doing something valorous by someone of importance who could later verify the deed. It was just such deeds as taking many heads that would strengthen warriors’ attempts to gain recompense for their pains. Fortunately for the historian, about 1300 petitions for reward (gunchūjō) submitted by autonomous warriors survive from the fourteenth century. Conlan conducted a statistical analysis of all of these documents to determine the number of named combatants, fatalities, and wounds and then subdivided reports of wounds by weapon, in the process revealing much about the nature of combat in the fourteenth century.
+
+Splitting the war years of 1331–1392 into four periods based on the intensity of conflict in each, Conlan reveals that two six-year periods, 1333–1338 and 1350–1355, were the most combat-intensive, especially the former, in which 60% of the fatalities of the entire 62 years occurred.
+
+[5](#fn005-histories-04-00002)
+
+But fatalities proportional to the number of combatants fell precipitously after this period, which Conlan attributes to two factors: (1) the change in the political situation in 1350–1355, when the
+
+bakufu
+
+splintered into two factions, and thus perhaps “former comrades-in-arms fought against each other with less intensity” (
+
+[Conlan 2003, p. 57](#B2-histories-04-00002)
+
+), and (2) compensating advances in defensive technology.
+
+He focuses on the twin statistical anomalies of the sudden decline in leg wounds after 1355 and the gradual decrease in wounds to the face starting in 1350 and proposes that in each case, pictorial and literary evidence provides tentative support for the idea that leg armor and
+
+hōate
+
+(face guards) were introduced starting in the mid-to-late fourteenth century. This trend holds true even for cases where slain horses are mentioned; casualties were much higher in 1333–1338, though instances of arrows laying horses low virtually disappeared after 1338, leading Conlan to suggest horse barding may have been introduced (
+
+[Conlan 2003, p. 68](#B2-histories-04-00002)
+
+).
+
+It must be acknowledged, however, that Conlan’s methods raise a number of red flags. He divides the 62-year period into four sub-periods that are not equal in length yet compares them as though they were. He uses the surviving petitions for reward to extrapolate on the fatality rate, etc., but the sample size is small enough that his results might well be thrown into immediate doubt should a new cache of petitions come to light. Can we be sure the decline in face wounds is really from the hōate and not merely a statistical anomaly due (though naturally not out of choice) to a small sample size?
+
+Similarly, Conlan judges how widely used each type of weapon was based on the prevalence of wounds (since for slain human combatants, a specific cause of death is not listed in the petitions). His methodology suggests, for example, that pikes were barely used at all, but can we be entirely sure? Perhaps pikes were simply almost always fatal and thus would not show up much on charts of wounds. Such concerns notwithstanding, however, we can make certain tentative conclusions based on his statistical analysis about the popularity of weapons, correlations between more sword wounds and higher fatalities, and so forth.
+
+What sorts of weapons, then, does Conlan suggest were being used most in the wars of the fourteenth century? Were they the same as those of the tenth, or had new weapons become popular? Some Japanese scholars have argued that the fourteenth century saw the rise of the pike, which put a bloody end to the dominance of cavalry and forced a shift back to commoner-based infantry, a picture that is perfectly consistent with the history of Western Europe—but not at all consistent with the sources in Japan. Conlan refutes this view, pointing out that there do not seem to have been any major tactical shifts during the fourteenth century, nor were pikes wielded solely by lowly commoners (
+
+[Conlan 2003, p. 69](#B2-histories-04-00002)
+
+).
+
+Conlan was able to analyze wound prevalence by weapon type and thereby give us a general picture of the popularity of the weapons in question because, luckily, almost half the petitions for reward that mention wounds describe the weapon that dealt the blow as well. Statistically, the bow was responsible for almost 75% of all the wounds with named weapons over this 62-year period, with the sword accounting for almost 25%. But one interesting feature that emerges from this sort of analysis is that the period from 1333–1338 (which was responsible for half the wounds mentioned for the entire decades-long period) stands out for its greater prevalence of sword wounds (33%), thus suggesting that warfare over this six-year period had a greater incidence of hand-to-hand combat (which was somewhat more lethal than archery), whereas war afterward tended to be overwhelmingly ranged combat (Ibid., p. 58).
+
+In particular, the vast majority of wounds in 1350–1355 came by arrow, suggesting that this period, in particular, was characterized by long-distance combat by scattered bands of skirmishers, not glorious sword-wielding cavalry charges. Unfortunately, the (weapon that was the) cause of death is not specified for warriors in these documents, but it seems clear from looking at these statistics, given the higher percentage of fatalities and sword wounds in 1333–1338 and the lower percentage of both in 1350–1355, that hand-to-hand combat was more lethal than arrows, and it was more commonly resorted to in the tumultuous early years of 1333–1338 (
+
+[Conlan 2003, pp. 60–65](#B2-histories-04-00002)
+
+).
+
+Tactically, it was (and is) very difficult for mounted warriors to wield swords effectively because (among other reasons) their horses could panic after seeing the shadow of the blade pass them. Consequently, it seems hard to believe, as Conlan hazards, that mounted warriors could have been using ōdachi (great swords) as lances or anything at all; it seems much more likely that warriors dismounted almost invariably when fighting hand-to-hand. Furthermore, it is possible tentatively to reconstruct how swords were typically wielded by looking at the archaeological evidence; in the sack of Kamakura in 1333, over a hundred men, women, and children were killed, many of them by swords, and of this group, most wounds were to the forehead or the top of the head (Ibid., pp. 60–62).
+
+Other hand-to-hand weapons had a difficult time competing with the tachi since axes and halberds (naginata) had a major weakness: their wooden handles. Slash off part of the handle, and the weapon becomes difficult or impossible to use. Furthermore, and perhaps for the same reason, pike wounds were rare, and by implication, pike use was also rare; pikes are only useful in large, disciplined companies of infantry in formation, something Japan appears to have completely lacked in the fourteenth century but was to develop in the late fifteenth and sixteenth centuries (Ibid., p. 63). Indeed, pikemen make little sense in an age where the primary offensive weapon is the mounted archer, essentially light cavalry skirmishers, rather than heavy cavalry. Japan had no ground-shaking mass cavalry charges; instead, small bands of horsemen relied on their maneuverability and marksmanship to harass and defeat the enemy.
+
+G. Cameron Hurst defends the more romantic view that the sword replaced the bow for mounted warriors during the fourteenth century, citing literary evidence (
+
+Taiheiki
+
+,
+
+Heike monogatari
+
+) as well as an increase in sword manufacturing. He demonstrates that in the 150-year Kamakura period, there were 1550 known sword makers, whereas in the Nanbokuchō and Muromachi periods (almost 250 years total), there were a total of 3550, going on to claim this proves swords were replacing bows as the primary weapon of mounted combat (
+
+[Hurst 1997, pp. 209–33](#B8-histories-04-00002)
+
+;
+
+[Mass 1997, p. 232](#B13-histories-04-00002)
+
+).
+
+There are a number of problems with Hurst’s approach, however. Firstly, we have already seen how dangerous it can be to rely on “contemporary” literary sources like the
+
+Taiheiki
+
+that intend to portray a romanticized recent past. Perhaps to the author of the
+
+Taiheiki
+
+, fighting hand-to-hand with swords sounded more heroic than skirmishing via mounted archery. Moreover, Karl Friday has convincingly argued how difficult it would be to wield swords effectively from horseback (
+
+[Friday 2008, p. 73](#B7-histories-04-00002)
+
+). But finally—discounting the obvious problem that Hurst’s second period is about 60% longer than period one, making the increase in swordsmiths not +129% but +37%—there is another explanation that does not require or indeed even allow us to jump to the conclusion that swords must have supplanted bows.
+
+Charlotte von Verschauer, in her book
+
+Across the Perilous Sea
+
+, has explained the tremendous importance to the Japanese economy of international trade, especially with China, and the pride of place Japanese swords had earned in that trade by the fourteenth century. She points out that demand for Japanese swords skyrocketed in the markets of China (even though it was apparently illegal for the potent weapons to be sold to ordinary citizens), so much so that the Ming government began to be alarmed at the influx of Japanese swords into the country and eventually instructed the Japanese emissaries to limit the numbers of swords they brought each mission. This increase in demand began during the reign of Ashikaga Yoshimitsu and peaked during the tally trade missions of the early fifteenth century (See
+
+[von Verschuer and Hunter 2006, pp. 74–77, also pp. 114, 123, and passim](#B14-histories-04-00002)
+
+). Increased demand must have led to increased numbers of swordsmiths to provide the supply.
+
+Consequently, even what evidence there was for Hurst’s assertion does not stand up to close scrutiny. Based on Conlan’s analysis, the premier military technology of Japan in the fourteenth century was incontrovertibly the bow and arrow, as it had been for centuries, and there is good reason to believe it remained so until the introduction and proliferation of firearms in the mid-sixteenth century. As such, tactics seem to have remained much the same after the serious fighting of 1333–1338: skirmishing light cavalry riding close to their enemies and trying to fill their enemies with arrows before they were hit by too many arrows themselves. Tactics and weapons would not undergo dramatic change until the introduction of firearms in the mid-sixteenth century.
+
+## 3\. Composition and Motivation of Armies: Who Was Going to War, and Why?
+
+Some might be wondering why I have chosen to begin a discussion of warfare in pre-Tokugawa Japan in 792, despite battles aplenty before this date. The answer hinges upon a key question: who was doing the fighting? Specifically, were armies typically huge masses of drilled infantry, modeled after the Chinese military system, or much smaller groups of light cavalry, elite masters of the ways of the horse and bow? For almost a century prior to 792, the answer appears to have been the former: infantry-based armies.
+
+Farris, in his book
+
+Heavenly Warriors
+
+, describes the era of mass infantry combat as follows. The first serious adoption of the Chinese model for the army of “Japan” (which at this time was a rather loosely defined political entity centered around the province of Yamato, in central Honshu, not a fully unified “nation” by any means) began after the 663 battle of Paekch’ōn River in Korea, at which, according to continental sources, the Japanese army may have lost as many as 10,000 men, 1000 horses, and 400 ships (
+
+[Farris 1992, p. 39](#B5-histories-04-00002)
+
+). The Japanese were seeking to aid their ally on the Korean peninsula, the kingdom of Paekche, which was under attack by hostile Silla and Tang China.
+
+Yet, there was a significant disparity in the fighting styles and army composition of the two opposing armies. The Japanese fighters, who rode into battle with emphasis on individual bravery, skills, and performance, were badly defeated by the organized (and very large) infantry armies of Tang China and were thus forced to recognize the value of mass tactics and well-trained formations of infantry (Ibid., p. 40). Thereafter, in 702, the imperial court of Japan adopted the Chinese system with their promulgation of the Taihō Codes, stressing peasant conscription and also the raising of provincial militias, armies of infantry drilled in mass tactics.
+
+These provincial militias were divided into squads of five and companies of fifty. The companies could be either cavalry or infantry, but the two were never mixed within a single fifty-man group (
+
+[Friday 1992, p. 17](#B6-histories-04-00002)
+
+). Thus, armies in the eighth century were not combined-arms forces of both cavalry and infantry in quite the same way that forces in later centuries would be; the units were organized horizontally by social status (most peasants became infantry, people rich enough to own horses—i.e., mostly nobles—became cavalry), not by vertical allegiance to a local warrior.
+
+For several decades, the provincial militia remained in place, but in the wars of expansion and colonization (774–812) against the warriors of northeastern Honshu (the
+
+emishi
+
+), large infantry armies based upon the provincial militia structure initially proved quite ineffective against their faster, mounted opponents (
+
+[Farris 1992, pp. 90–94](#B5-histories-04-00002)
+
+). And so, according to Farris, warfare adapted: the Chinese (drilled infantry) system fell into gradual decline in the ninth century, with peasant conscription largely abandoned in 792\. The provincial militias were replaced by local military strongmen,
+
+kondei
+
+(whom he calls Strong Fellows), mounted warriors who were officially assigned to guard provincial storehouses (
+
+[Farris 1992, p. 108](#B5-histories-04-00002)
+
+). Farris further argues that the failure of the Chinese model (armies of infantry) prompted a return to more individualistic, Homeric heroism by local mounted archers like the
+
+kondei
+
+. This strategic shift yielded better success against opponents in later conflicts.
+
+Yet Karl Friday presents a different perspective on this transition from infantry to mounted combat. Mounted archery was the elite technology of the day, and though its origins in Japan are unclear—it began sometime in the third to fifth centuries—it would seem to have been quite pervasive prior to the Taihō Codes, judging from the prevalence of
+
+haniwa
+
+(clay funerary figurines) showing warriors wearing
+
+keikō
+
+, a very heavy full-body type of armor that would only be practical from horseback (
+
+[Friday 1992, p. 36](#B6-histories-04-00002)
+
+). The
+
+ritsuryō
+
+(Chinese-style legal) state in the eighth century wanted a large cavalry but inducted only those who were already skilled mounted archers with their own access to horses into their cavalry companies. Since the ability to keep horses “did not spread beyond the provincial nobility and the very top tiers of the peasantry until the middle years of the Heian period” [which is usually considered to be from 794–1185], the elite military technology of the day was kept in the hands of the elite (
+
+[Friday 1992, p. 40](#B6-histories-04-00002)
+
+).
+
+One area in which Friday disagrees with Farris quite clearly is in his differing treatment of the kondei phenomenon. Friday considers the “stalwart youths,” as he translates the term, to have been not a replacement for the disbanded provincial militias and conscripted peasants but exactly what they were officially: guards for provincial facilities. This may even have been a ritualized, formal position with no real connection to military prowess at all; what is clear is that kondei almost never worked in a military capacity and cannot be considered the “replacement” in any strict military sense of the provincial militias (Ibid., p. 56).
+
+Even if the
+
+kondei
+
+did not really replace conscription armies, however, because they were entirely or at least mostly mounted, they did represent an important transition. The court had realized that peasant conscription was a serious social problem. Taking one in four or even one in three adult males of up to 59 years of age away from the fields to fight was a serious burden on the peasantry, especially in times of famine, and caused some peasants anxious to avoid service to abscond entirely, leaving fields untilled—and thus, taxes unpaid. But the court had also noticed that large infantry forces were not very useful in or well suited to Japan. “Increasing reliance on the martial skills of the lower nobility and other provincial elites in parallel with a diminishing use of troops conscripted from the ordinary peasantry is a dominant theme in the evolution of Japanese military institutions between the eighth and tenth centuries” (
+
+[Friday 1992, p. 30](#B6-histories-04-00002)
+
+).
+
+Friday offers what Farris could not: a cogent explanation of the composition of armies after 792 and, indeed, of the rise of the warrior class in general. The key for Friday is the development of vertical alliances between elites in the capital and elites in the provinces. In the Heian period, provincial families had a great deal to gain by mastering the difficult skills of the way of horse and bow, either as a legitimate pathway to courtly appointment and success or merely as bandits, and court-appointed provincial governors certainly found themselves in need of skilled bodyguards when journeying to their new provinces, as did regular officials, for symbolic reasons, at court (Ibid., pp. 81–85). That military prowess could lead to courtly success is attested to by the kun’i (merit rank) system, which awarded points to stand-out warriors for their battlefield accomplishments; a certain number of points would cause a person to rise in rank, and the system is known to have been used by at least some warriors to climb the social ladder (Ibid., pp. 66–67).
+
+Hence, in the ninth century, private armed bands gradually sprang up out of this general militarization of provincial and courtly life. Nevertheless, it was not until Minamoto no Yoritomo (in the late twelfth century) that a regional hegemon was able to create a military network that extended into several different provinces and survived its creator’s death. Yet what drew the members of these bands together? It sometimes seems to have been kinship, especially nuclear family members, though, of course, merely being distantly or even quite closely related to a specific branch of a family was no guarantee that intra-familial rivalries would not flare into open conflict (
+
+[Friday 1992, pp. 113–14](#B6-histories-04-00002)
+
+).
+
+Indeed, the most likely explanation for what prompted certain men to join a warrior band while others refused was simply self-interest—whether it was more to their benefit to join and fight or remain aloof (or join a rival band) (Ibid., p. 116). This strong current of self-interest pervaded warfare and warriors at least through the mid-fourteenth century and can go a long way toward explaining the constantly shifting “loyalties” of combatants. To Friday, after the abolition of conscription, warriors were professional mercenaries.
+
+These ninth-century bands, to some degree at least, gradually gave way to “military” families (most notably specific branches of the Minamoto and Taira, though as Jeffrey Mass pointed out these two famous families were probably far less cohesive than is commonly assumed
+
+[6](#fn006-histories-04-00002)
+
+) and the hereditization of military skills until by Yoritomo’s time, certain families had acquired an unshakable reputation for military prowess, thus further reinforcing their ability to attract new mercenary fighters to join their warrior networks (Ibid., p. 99). As Farris has pointed out, one of the key factors in the rise of the Minamoto (specifically, the Seiwa) and the Taira (especially the Ise branch) were the roles played by Minamoto no Tsunemoto and Taira no Sadamori in putting down the 935–940 rebellion of Taira no Masakado (
+
+[Farris 1992, p. 162](#B5-histories-04-00002)
+
+).
+
+Masakado’s revolt, discussed by both Farris and Friday, is a useful mid-tenth-century case study in determining the composition and motivation of armies. Methodologically, both scholars draw heavily on the same near-contemporary literary source, the Shōmonki (the Tale of Masakado, as Farris styles it), to construct their accounts of the revolt but arrive at fundamentally different conclusions. At pains to emphasize the continuity of the ritsuryō system of mass infantry, Farris presents Masakado as a transitional figure who combined both mass infantry and cavalry in his army.
+
+Yet despite noting the importance of cavalry, Farris insists at numerous places that in Masakado’s era, armies were still composed of “a large majority of peasant foot soldiers…sources reveal some evidence of coordinated, Chinese-style, mass tactics. Masakado’s forces had characteristics of both the Taihō armies and the samurai of the twelfth century” (
+
+[Farris 1992, p. 229](#B5-histories-04-00002)
+
+). But is this really the case? And indeed, even if so, it is debatable how important the infantry usually was to the fate of the battle, as they “fled as soon as the tide of battle turned against them; it is doubtful that they ever drilled as units” (
+
+[Farris 1992, p. 152](#B5-histories-04-00002)
+
+).
+
+Farris defines Masakado’s revolt as a transition to an “intraspecific” form of warfare, in contradistinction to the “predatory” conflicts against a foreign other (Tang China, the emishi) theretofore. Farris further argues that mounted warfare, starting from about at the time of Masakado’s last battle, was becoming highly ritualized, a Homeric mounted archery duel between two specific combatants, often preceded by lengthy, boastful challenges and recitations of pedigree.
+
+> “From the early tenth century on, such ‘intraspecific’ violence became more frequent in Japan, and combat tended to become increasingly ritualized and individualized, until one reaches the elaborate one-on-one battles of the samurai age. Because of its intraspecific causes and goals, Masakado’s rebellion deserves consideration as Japan’s first samurai conflict.”
+
+For Farris, then, battles in Masakado’s era were fought predominantly by large armies of infantry combined with a smaller force of heroic, highly individualized mounted archers. He fails to explain the relationship between the two, however, and despite the admittedly prominent mention given to infantry in the
+
+Shōmonki
+
+in one battle (see
+
+[Friday 2008, p. 55](#B7-histories-04-00002)
+
+), it is difficult to accept this infantry-heavy characterization for the early tenth century.
+
+Farris’ distinction between intraspecific and predatory warfare is nonetheless useful, even though the conclusions he draws from the case of Masakado miss the mark entirely. It is precisely because Masakado was fighting an intraspecific feud, and in fact, in some ways a family conflict, that large numbers of infantry seem so unlikely. Rather, only those immediate family members and retainers who saw in his forceful protest of the court’s various decisions an opportunity for personal gain would ride with him. Each horseman would be accompanied by two, or at most three, foot soldiers, commoners who were residents of or near their estates, meaning they were dependents whose loyalty was often just as loose as their connection to the elite leader (Ibid., p. 47).
+
+It goes without saying that a single mounted archer would be a lot more valuable in battle than a single infantryman. Except in a narrow numerical sense, therefore, it is difficult to accept Farris’ view that armies of this period were predominantly infantry, especially when the cavalry were master warriors and the infantry, by his own admission, probably did not train as a body. But most importantly of all, “infantry” as such did not exist; foot soldiers served as auxiliaries in mixed units with mounted troops and concentrated on distracting enemy cavalry (
+
+[Friday 2008, p. 54](#B7-histories-04-00002)
+
+).
+
+It seems clear that armies in the tenth century were made up of the same sorts of vertically aligned, mostly mounted bands that had emerged in the eighth and ninth centuries. Moreover, these were people brought together out of common self-interest, not unbreakable bonds of loyalty. Foot soldiers did participate in battles, but not as separate troops of “infantry” since their main purpose seems to have been to harass the enemy’s mounted archers and keep them from being able to focus entirely on their own mounted warriors. Furthermore, what foot soldiers there were had less to gain by fighting since (nameless as they were) no glory would accrue to them even if they fought bravely, and they could hold out no hope of a formal reward since they were not of sufficient status to request one. Even when the Shōmonki lauds Masakado’s foot soldier forces for saving the day in one battle in 936, no mention is made of individuals or of any rewards (Ibid., p. 55).
+
+Regarding the battle in question, between Masakado and his uncle Yoshikane, the Shōmonki does credit Masakado’s un-mounted soldiers with his victory against a numerically superior force, though as usual, no numbers are given for the size of his infantry contingent. His cavalry is declared to be over one hundred men, and given the typical ratio of mounted to un-mounted, he may have had up to two hundred foot soldiers with him, though not all of them were necessarily involved directly in the fighting (Ibid., pp. 54–55). But foot soldiers were incorporated into mixed units, so it is hard to see in the age of Masakado any remnants at all of the large infantry-based Taihō armies.
+
+After reading the historiographic account above, some readers may be puzzled as to why I chose this particular 600-year range for my analysis. Just as the first date, 792, may initially have seemed a strange beginning point for a discussion of war, so too the second, 1392, might strike many as odd, especially considering the desultory nature of fighting between the two courts by this late date. However, one key goal of this essay was to determine the degree of continuity within this 600-year period and the degree of change. How, then, did the composition of armies and the motivations of soldiers change over the 600 years from the end of conscription to 1392?
+
+Surprisingly, when one examines the historiography, the answer seems to be ‘very little.’ An interesting example is the Mongol invasions of 1274 and 1281, which one might reasonably expect to have been seen in a different light than the internal squabbles of the previous centuries. It was the invasion of a foreign enemy, yet Japanese soldiers displayed little magnanimity after they were fortunate enough to win; the Kamakura
+
+bakufu
+
+received a large number of requests for reward (which could only be submitted by
+
+gokenin
+
+, relatively autonomous, high-status warriors), 120 of which it granted (
+
+[Ishii 1995, p. 57](#B9-histories-04-00002)
+
+;
+
+[Jansen 1995](#B10-histories-04-00002)
+
+).
+
+Under normal circumstances, the giving of rewards was simple—the rebel/loser in the quarrel would have his lands confiscated and given to the victor. However, the conflict with the Mongols did not free up any new land, making reward-giving extremely problematic. Nevertheless, it would seem Japanese soldiers did not voluntarily forego the chance at reward; instead, they demanded it, indicating quite clearly that in the late thirteenth century, the main motivation of high-ranking soldiers remained self-interest (
+
+[Ishii 1995, pp. 55–56](#B9-histories-04-00002)
+
+).
+
+The composition of armies appears to have changed little as well. There is no evidence of massed infantry in the frequent conflicts of the fourteenth century, despite the use of the term
+
+nobushi
+
+(those who hide in fields), which some have (probably incorrectly) interpreted to mean commoner infantrymen. In reality, as Conlan explains, “those who hide in fields” were skirmishers of different social stations, not a peasant class of footmen (
+
+[Conlan 2003, pp. 70–71](#B2-histories-04-00002)
+
+). War was fought, in large part, by the very same bands the tenth century saw; in the fourteenth century as in the tenth, familial and local (that is, proximity to the local warrior, whether dependents or commoners were living on his land or merely nearby) bonds, but above all self-interest and the possibility of reward (as Conlan documents in his study of the
+
+gunchōjō
+
+, petitions for reward, filed by those eligible to do so), far outweighed whatever nascent horizontal class consciousness there may have been.
+
+The initial wars of the 1330s, seeking to topple the Kamakura bakufu (“tent” or military government), were what Farris might call “predatory” in that an external political organization, the bakufu, was targeted for elimination, making the us-them distinction relatively clear. Starting in 1339, however, combat in the fourteenth century became more often intraspecific, in which combatants were primarily fighting not to defeat an external other but rather approached armed conflict as a sort of forceful negotiation for status, lands, and other rewards, fully aware of the competitive opportunities available thanks to the two courts. In such a state of affairs, one would have no compunction calling most of the warrior bands unabashed mercenaries, which might go a long way toward explaining the more lackluster fatality rate in combat between the factions after 1338, as well as the constantly shifting allegiances and jockeying for position during the period, as the two courts bargained to gain new allies and retain existing ones.
+
+Conlan analyzes the transition during the Kamakura period (1185–1333) from
+
+gokenin
+
+(guards) to
+
+tozama
+
+(outsider, or in other words, autonomous) warriors, contrasting them with
+
+miuchi
+
+(retainers). His key argument is that many
+
+tozama
+
+warrior families carefully guarded their autonomy since having the choice of whether to fight—and for whom—was instrumental in winning rewards for service. Yet maintaining autonomy required enormous resources, and so as the wars of the fourteenth century continued, more and more
+
+tozama
+
+warriors capitulated and became retainers of powerful interregional hegemons or regional leaders (
+
+[Conlan 2003, pp. 109–11](#B2-histories-04-00002)
+
+). After the
+
+Kannō
+
+disturbance of 1350–52, various
+
+shugo
+
+(regional governors) began to utilize new taxation practices in order to harness regional identity and forge large, cohesive regional military forces (
+
+[Conlan 2003, p. 77](#B2-histories-04-00002)
+
+).
+
+The change from autonomous mercenary warriors to retainers, bound to fight for a certain lord not for rewards but out of loyalty, spelled the end of the age of self-interest in war. The change from performance-based combat by autonomous
+
+tozama
+
+mercenaries to warriors fighting out of loyalty is documented in the precipitous decline in petitions for reward filed by such warriors in the fifteenth century (
+
+[Conlan 2003, pp. 228–29](#B2-histories-04-00002)
+
+). Loyal fighting was now a matter of course, not an exceptional matter to be richly rewarded. By the end of the fourteenth century, a new type of army had arisen: one founded not on familial or mercenary ties but on regional loyalty. This new phenomenon of large, relatively loyal, regional forces heralded the coming of chaos: the Ōnin War (1467–1477) and the ensuing Warring States Period. Yet the critical change had occurred in the late fourteenth century and was complete by 1392: the warrior’s relationship to society and his motivations had altered, shifting from self-interest to regional loyalty. The age of the mercenary warrior was over.

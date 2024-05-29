@@ -1,0 +1,274 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:19:30
+-->
+
+# Lableak truther loses $100,000 in his own debate
+
+> 来源：[https://protagonistfuture.substack.com/p/lableak-truther-loses-100000-in-his](https://protagonistfuture.substack.com/p/lableak-truther-loses-100000-in-his)
+
+* * *
+
+**Background:**
+
+The false myth of a research-related accident being at the root of the COVID-19 pandemic has become endemic in society. Despite a [large and detailed body of scientific evidence](https://protagonistfuture.substack.com/p/natures-neglected-gof-laboratory) contradicting or disproving most circulating ideas, many proponents are reluctant to give up even the most unsustainable notions of genetic engineering or gain-of-function research. This gap between scientific knowledge and public belief is dangerous for any democratic society.
+
+> However — and this will be the topic of today — it is also not exactly fantastic for most “Lab Leak”-advocates to be captured by a false myth.
+
+One of them, an Israeli investor and poker player named **Saar Wilf,** has for years been working on a little but pompous side project he christened “**Rootclaim**”, a method promising to use probabilistic inference and math to get to the truth of any conflict.
+
+> “Humans are [bad at reasoning](https://www.rootclaim.com/white-paper), clumsily trying to force the complexity and uncertainty of our world into a logical-deterministic model.
+> 
+> The problem is made worse by bad information inputs: dishonest and inaccurate journalism, state censorship, and culture wars.
+> 
+> Together, the result is that humans are left in the dark. [International disputes go unsolved](https://www.rootclaim.com/analysis/Who-carried-out-the-chemical-attack-in-Ghouta-on-August-21-2013), [cold cases lay dormant](https://www.rootclaim.com/claims/what-happened-to-barry-and-honey-sherman-19972), and [potentially life-saving drugs go unused](https://www.rootclaim.com/analysis/does-vitamin-d-reduce-the-severity-of-covid-19-outcomes). The public is left bereft of reliable sources of information to make sense of the world, and worse decisions are made.
+> 
+> Rootclaim provides the solution. We overcome the flaws of human reasoning with our probabilistic inference methodology, and correct faulty inputs through transparency in our evidence and analysis.” *—  Rootclaim mission statement*
+
+Now reducing human biases and providing aid to reasoning are certainly lofty goals one can and ought to agree with. But the devil is, as often, in the details and implementation.
+
+**How it works:** Rootclaim defines basically a set of hypotheses, then takes all available evidence and groups them into evidence clusters (evidence that is conditionally dependent on each other is in the same cluster, whereas independent evidence would be in a new cluster) and then runs the probabilistic numbers to “update their priors”. Here is an example of their calculation:
+
+Saar Wilf is very confident that his approach outperforms any other way to make sense of our often complex and chaotic world that has contradictory or incomplete information layered on top of motivated reasoning and human fallibility.
+
+Even for a scientific question such as to the origin of SARS-CoV-2, he believes his epistemological approach more reliable than anything else, including the scientific method.
+
+And that is where the trouble started for him.
+
+Saar Wilf has been somebody who experienced a lot of luck in his career. As a training programmer, he created successful start-ups during the early 2000’s and leveraged them into significant wealth before becoming a successful investor and multi-millionaire. Since 2005, he had also turned into a semi-professional poker player with what appears to be robust winnings. Accordingly with such a background of achievement, he was confident in his ability to devised a supreme debate system that would allow challengers to win 100.000$ by putting themselves an equal amount on their side into an escrow; and independent judges would decide the debate winner, ideally based on probabilistic criteria and Rootclaim’s methodology which in this case the judges did.
+
+Now the idea of putting up a fast 100.000$ for an internet debate is probably his idea of “fun”, but for most people, this format makes it inaccessible and just more of the “(financial) might is right” type of exercise. Accordingly, Rootclaim has not seen many challengers of the years. (*Update March 4: Saar contests that the $100,000 does not make the challenge inaccessible. "We are also willing to reduce the stakes as low as **$10,000 for applicants already involved in public debate** on the issue.”…* so I guess if you are famous, he is willing to reduce down to 10k to debate you on it)
+
+None of these monetary details stopped Saar Wilf to issue a verdict on the likelihood on one of the most contested issues of today: **Where exactly did SARS-COV-2 come from?**
+
+Rootclaim assessed the likelyhood of a gain-of-function research escape at 89%, followed by a bioweapon at 4.5%, a lab accident with a natural virus at 3.2%, and a non-research related accident only at 3.2%
+
+Anybody who has followed my writing or the scientific discourse on this topic will probably be shell-shocked to see a zoonotic origin featured only at a 3.2% likelihood, whereas the “bioweapon” scenario gets 4.5%, and a “gain-of-function lab leak” scenario gets 89%.
+
+**Clearly, whatever Saar Wilf’s methodology, he came to hold a belief in strong contradiction of scientific evidence and expert consensus.** Is he a lone maverick that has figured something out they have not? Or could it be that maybe he is not as lucky in science as he has been in business and gambling?
+
+For years, his assessment stood unchallenged, garnering quite a following in the lableak truther community including DRASTIC amateurs.
+
+This is not surprising, because who in their right mind would put up 100.000$ of their own money to debate a multimillionaire in his wonky debate format?
+
+Peter Miller is a software engineer, extreme rock climber and hobby blogger who got a bit too deep into the origin topic. An avid reader of Scott Alexander’s popular Astral Codex Ten blog, he came upon Saar Wilf in the comment section. Saar was arguing that while most conspiracy theories are false, the lab leak idea proves that they should still be taken seriously. The two started a conversation, which after some back and forth eventually resulted in Peter wanting to set up a rootclaim debate.
+
+“If at any point I thought the process was rigged, I would have pulled out”, he told me yesterday in an interview. He liked Saar Wilf, because the Israeli investor had also set up a Rootclaim bet against notorious anti-vaccine lunatic Steve Kirsch and Peter “really, really” wanted this debate to happen before.
+
+For months, they have rested in a sort of limbo about whether to debate the origin topic or Steve Kirsch first, with Peter even offering Saar help against Kirsch and the two of them building a friendly rapport. As Kirsch kept running away, Peter eventually wanted to get his own debate started; so they tried to find judges by just writing some famous people, including Scott Alexander. Most of them did not want to invest the time; but eventually, by looking through the “rationalist” community, Peter and Saar found a shortlist of people to interview who would serve as independent judges to the debate (with a small compensation for their efforts).
+
+The debate could begin, and Peter — who was already well read in the topic — spend pretty much every waking moment over the next two months trying to sharpen his arguments and systematically assess all possible lab leak claims he could find. “If I had found anything that would have made me go like: Uh, this is compelling, or puts the odds of lab leak higher, I would have pulled out at this stage”, he told me.
+
+However: “After looking deeper behind hundreds of lab leak arguments, kinda the opposite happened, I became more convinced to go forward with the debate”
+
+That does not mean that he was comfortable at all. 
+
+> “I have never done a debate in my life. I was super nervous. The night before the first debate, I only slept one hour” —* Peter Miller (private communication)*
+
+The Rootclaim debate was structured over 3 days with 3 thematic blocks; 
+
+*   the first block was about the geographic location and the evidence for the Huanan market versus the Wuhan Institute of virology being where the virus came from
+
+*   the second block was about the SARS-CoV-2 genome and whether its genetic features more likely arose in nature versus gain-of-function research
+
+*   the third block was about probability; how can the evidence be grouped and what probabilistic assumptions should be taken to accurate reflect odds of the evidence occurring
+
+Each side first got 90 minutes to lay out their cases, then another 90 minutes together to respond to questions. No matter how you slice it, this is a serious effort and time investment, as the preparation alone of materials and research into it probably consumed hundreds of hours from speakers and judges alike.
+
+The assumptions for this large timeframe are simple: Both parties get to present the best version or case for their hypothesis and explain in minute detail how they have come to their conclusions. The judges get to hear all the arguments, see all the materials, and then will use the **probabilistic framework of the Rootclaim method to calculate the odds of zoonotic spillover versus a gain-of-function lab leak.**
+
+Saar spend considerable time to guide the judges through a set of real or supposed oddities, coincidences, anomalies or facts that seem counterintuitive for a “natural” pandemic; elaborating on classics such as: Wuhan is a very unlikely place for the pandemic to have started, the Chinese response of obfuscation is very likely if one assumes a lab leak, the odds of SARS-CoV-2 to include furin cleavage site that other bat sarbecoviruses do not have is minimal at best, and so on. All backed up with his probability estimates. On top of that, he had an interesting habit we will look later at again, which is to **find “probabilistic” reasons to discard informative evidence as irrelevant**.
+
+Saar Wilf using his “probabilistic reasoning” to say ALL the data pointing towards the Huanan Seafood Market can be ignored because he believes the first patients being noticed there might have had another reason.
+
+Saar was very confident at the end of the third day. According to his final statement, given all odd circumstances he laid out, a zoonotic origin would be just too hard to explain probabilistically. Whereas:
+
+> “For the lab leak to be correct, all you need to assume is that people are people. They did bad modeling, they manipulated data, they made mistakes in their codes. […] That is guaranteed to happen given the politics” —* Saar Wilf*
+
+So basically, this was Saar’s approach: Look at all the weird coincidences but do not trust the science nor the scientists. All available evidence for a zoonotic origin is a mirage, a mistake, or a manipulation and can thus be discarded. All you really need is your intuition about priors and some grandiose probabilistic inference to calculate the odds together. That’s the Rootclaim method.
+
+In contrast, **Peter Miller took quite a different approach, painstakingly doing high quality science communication to explain the key findings of published scientific papers** on the topic and putting them in the context of the larger question.
+
+Peter Miller explaining phylogenetic evidence for two lineages, and how they relate to a market origin.
+
+Peter also humbly shows limitations of the data and offers his own analysis in areas that are somewhat unclear and need contextualization; one particular example coming to mind was when he created his own “conspiracy theory about HCoV-HKU1”, where **he highlighted how easy it is to cherry-pick “suspicious” genomic oddities even from a natural virus** to fabricate a theory about how its features look man-made. An illustrative counterfactual.
+
+For his last statement, he really wanted judges to focus on the difference between a scientific theory supported by evidence, and an amalgamation of mutually incompatible speculations and allegations:
+
+> “I think it is important that the judges cut through the noise here. The lab leak side can’t stick to their argument, even during this debate. […] They retreat to a tabloid story, believing it is a 100% true, while thinking the WHO mission report is a 100% false.” — *Peter Miller*
+
+ → You can find [the whole debate split into 9 videos on Peter Miller’s youtube channel](https://www.youtube.com/@tgof137/videos).
+
+So, after all this time and effort, who would the judges find offered the better argument? A maverick investor, multi-millionaire gambler and devisor of the very debate format judgement will be placed in? Or a scientifically literate software engineer who spend his efforts in explaining scientific results?
+
+As mentioned earlier, both debaters were involved in finding judges, they created a short list and invited them for an interview before converging together on two. Both judges were independent junior academics with no bias in the topic, and a willingness to sit through hours of the debate. Both were ask to evaluate probabilities based on Rootclaim’s format and methodologies, and both wrote very long summary statements explaining their decision. Here are their conclusions:
+
+The PhD molecular biologist Will van Treuren:
+
+> “I viewed this debate as a truth-seeking exercise with my vote reflecting what I found to be the most plausible origin of SARS-CoV-2 […] I concluded that there is approximately a 1 in 300 chance that SARS-CoV-2 was the result of a lab leak.” 
+> 
+> *— [Judge Will van Treuren](https://www.youtube.com/watch?v=YlxTztAkdGQ)*
+
+and the applied mathematician and Earth Science PhD Eric Stansifer:
+
+> “The resolution of the debate was relatively simple. […] On the basis of the evidence and arguments presented during the debate, I find with high confidence that zoonotic spillover is the more likely origin of sars-cov-2\. The most important basis for this decision is the relative epidemiological proximity of the earliest indicators of covid to a plausible animal source rather than a potential laboratory source.”
+> 
+>  — [Judge Eric Stansifer](https://www.youtube.com/watch?v=OKwunTJ1b40)
+
+Using Rootclaim’s calculation method, Eric even came to a number as low as 0.07%, so odds of 1 in 1300 that this was a lab leak; albeit he as mathematician was not too happy with their method of calculation. His full final statement is 70 pages, while judge Will offered around 30 pages of explanation how they reached their conclusions.
+
+Overall, both judges went deep into the detail and assessed the presented evidence as objectively as possible and independent of each other. Both ended up not only agreeing on what origin hypothesis is more likely, they both put the odds of a gain-of-function lab leak scenario well below 1%.
+
+I have to say, for the laymen involved, I was pleasantly surprised that although they did not get every scientific nuance completely correct, they reached a conclusion that is consistent with more expert assessment on the issue as well. (*Note: the actual odds of SARS-CoV-2 being a gain-of-function construct are of course way less likely still*)
+
+Either way, Saar Wilf’s original estimation of a GoF lab escape being around 89% certain was deemed far off and false, ergo he lost the debate and Peter Miller is the rightful winner of Saar’s 100.000$ stake money.
+
+So all is legit! Why have we not heard about it?
+
+In the alternate “sense-making” sphere of the internet, betting markets are considered a source for truth often better than ordinary expert assessments. Maybe because Saar is a poker player, some people in that community have made a bet on the outcome of the debate, and giving [lableak the better odds for months and months](https://manifold.markets/chrisjbillington/will-bsp9000-win-the-rootclaim-chal) in the lead up.
+
+But after the debate finished, a sudden quietness started surrounding the debate. The winner announcement was suspiciously delayed. The betting odds for a zoonotic win kept rising sharply. All while the judges and Peter Miller were awfully quiet, having signed NDAs that Saar seemed to be suddenly enforcing. Many on the betting website took this as a cue that something went wrong; maybe the judges did decide against Saar? But why not come out straight and announce the results?
+
+“He used the time to work the refs” — Peter Miller told me in an interview. According to him, Saar had been shocked that he had lost the debate, and spend a long time trying to change their assessment. He “calm and politely” *(see article update: March 4 below)* demanded they correct their analysis because they allegedly made so many mistakes. The judges however had integrity and would not alter their assessment. Saar then immediately wanted to re-challenge Peter and have another debate; or that both parties write a rebuttal to the judges assessment. But the judges said that no matter what, they will not be swayed. For weeks and weeks, an increasingly desperate Saar tried to shift the result or neutralize the outcome. Since early on, he offered to pay Peter the 100.000$ for winning the debate, both parties agree that there was never a question whether Peter would get his money (*see article update: March 4 below).* But Saar still needed the judges to change their assessment for posteriority.
+
+Was he just a sore loser, or is something else going on?
+
+For me, it seemed pretty clear that Saar did not care about losing 100.000$ on a bad call, he is a poker player, after all. But the loss had confronted him with two bad choices:
+
+*   either he had to let go of the belief that his baby —  the Rootclaim format — is actually the best method to assess truth of controversial topics
+
+*   or he had to let go of his belief that the gain-of-function lab leak theory is true, given the result of the debate in his own superior format
+
+Both of these outcomes were much more unacceptable to him than losing money, because they are deeply personal, part of his identity. He was in a conundrum and for weeks of trying to play the refs behind the scenes to save them. The NDA agreement gave him extra time to spin his public defeat as something other than a loss, but eventually it ran out and the announcement of the winner was inevitable.
+
+**Here is the excuse that Saar came up with:**
+
+> We believe two things tilted the debate in favor of our opponent and we will correct them in future debates: First, the debate structure provided a major advantage to the debater with more memorized knowledge of the issue. The debate was live (via video) and Miller exemplified extensive knowledge and superb memory for many details, which we could not compete with. 
+> 
+> Future debates will be held in an offline text format. 
+> 
+> The second issue was that we failed to incorporate a process of ongoing feedback from the judges, spending most of our time on issues that had little impact on their final decision. In their ruling, we found major mistakes in their understanding of our analysis, which could have been easily corrected had we built the debate with more direct ongoing feedback from the judges. — *Saar Wilf*
+
+So basically, Peter just won because he memorized details that swayed the judges, who did not really understand Saar’s probabilistic analysis. Uh-huh.
+
+Anything else?
+
+> Unfortunately, the result of our steelmanning was that when our hypothesis’ explanation was favored, the effect on the final likelihood was much smaller than when Miller’s was. When the judges did not have the tools to conclude between the sides, their result was some average of the two, which of course, given the extreme, strawmanned numbers offered by Peter, favored zoonosis. — *Saar Wilf*
+
+Oh, Saar was just “too fair” steelmanning zoonosis, while mean Peter was just strawmanning numbers to mess up the probabilistic inference in favor of zoonosis. Of course.
+
+> “[Rootclaim’s $100,000 challenge is still open to anyone](https://www.rootclaim.com/rootclaim-challenge), including on the COVID-19 origins issue, as we’re still standing behind our analysis and willing to put our money where our mouth is” — *Saar Wilf*
+
+Now Saar Wilf is of course not a very gracious loser, blaming everybody else but his poor arguments and lack of technical knowledge on the science. **In best lab leak truther fashion, he uses the announcement to double down, issuing another 100.000$ for anybody willing to challenge him again**, this time with a different debate format (*that he believes will favor his outcome next time*). Somehow magically, his odds of a lab leak have also increased to 99.8% as well, which is beyond ridiculous.
+
+A hopeless case, if you ask me.
+
+Before we move on, there is one last thing that Saar Wilf brought up in his justification barrage on Twitter that is worth mentioning, giving us a clue where it all went wrong for him.
+
+Because he lacks technical knowledge and can not assess technical claims made by scientists as well as lab leak advocates, he developed this idea of “cancelling” out evidence with “counter-evidence”.
+
+Rootclaim (Saar Wilf) believes that scientific evidence can be “canceled” out with “counter-evidence”; meaning that because the Huanan market evidence leans zoonosis, he can take the FCS evidence (which leans lab leak for him) and just “cancel” them out against each other so they would not influence his probabilistic inference calculation. Absurd.
+
+Now you know me, this type of arguments is not something I could let slide easily. 
+
+The idea that published scientific evidence can be “canceled” out probabilistically by taking any baseless argument from the lab leak side off the table is just bizzare. It is absurd and tortured reasoning that really highlight a profound lack of scientific literacy. A scientific theory has to account for ALL available evidence, and is rejected even if one piece of hard evidence disproves it. 
+
+I guess these examples are quite illuminating to understand why Saar failed to convince the judges. “Saar seems to believe that scientists are fundamentally corrupt”, Peter Miller offered his impression. 
+
+As a result, Saar Wilf never bothered to understand why the scientists believed a zoonotic origin more likely; never bothered to understand the pesky scientific details on the topic, and never bothered to understand how the scientific method actually produces knowledge. His opponent, Peter Miller, however did.
+
+> Scientific literacy is a superpower, putting those who lack it at a dramatic disadvantage.
+
+**Just to hammer home this point, here is a little insider anecdote from my side:**
+
+Months before the debate happened, Peter Miller reached out to me to ask whether I might be up for assisting him. I strongly advised against taking the debate, but said that I will try to pitch in if needed. Peter was nervous that Saar will have deep technical arguments that he as a software engineer might not be able to address scientifically. Yet when he got the Saar’s arguments in advance of the debate in September, he contacted me again with a very telling email:
+
+> “Not sure I’m gonna need any help with this, their arguments are bad…” — *Peter Miller (private correspondence)*
+
+I found this little exchange illuminating and hopeful. If a smart laymen could reach such an understanding of the origin debate by simply immersing himself in the scientific literature as to make him feel confident enough to address all the weird, confused and irrelevant arguments commonly thrown up lableak advocates, there is hope for our shared public discourse. So what is stopping journalists, influencers and other amplifiers doing the same thing as Peter on this issue? 
+
+After familiarizing himself with the scientific research, Peter was so confident in fact that he could not be talked out of waging 100.000$ of his own money on winning a dodgy debate (*and believe me, I tried*). Guess he is not exactly risk averse.
+
+> “The real bet that Peter Miller took was that Saar Wilf is a lableak truther”
+
+…a scientist involved in origin research who rather not be named here told me. I liked this comment because I think it is correct. When somebody is as captured by a false belief as Saar Wilf, they unfortunately become **an easy mark for bad actors** and **bad reasoning** that poisons their understanding of reality. Saar showed this by inviting the conspiracy theorist and well-known DRASTIC member Yuri Deigin to argue his case for the second debate about genetics. Yuri and I have of course a bit of a history, with me getting tired of his amateurish BS and motivated cherry-picking; so of course he gets an honorary mention.
+
+DRASTIC member Yuri Deigin — often hailed one of the more serious lab leak proponents — took over the second part of the debate for Saar Wilf. He did not fare better than the Israeli investor captured by a false belief.
+
+Peter Miller took advantage of Saar Wilf’s lack of scientific literacy and reliance on charlatans like Yuri on the topic.
+
+> “Conspiracy theories can be monetized, their debunking usually not. I saw the debate as a possible unique opportunity that rewards debunking” — Peter Miller (private communication)
+
+In any forum that allows for evidence-based discourse with independent judges, Saar never stood a chance arguing against a scientific consensus with his broken epistemology driving his own motivated reasoning.
+
+The interesting part is that with Rootclaim, Saar Wilf had created a debate format that actually did encourage evidence-based discourse, rather than exchanging rhetorical tricks and pre-tested talking points. If he could have overcome his loss with grace, he could have doubled down on Rootclaim itself as being a good thing and expand it to host future public debates in this format. That would have been the move to save face and turn a loss into a learning experience for growth.
+
+However, the sad reality is that Saar Wilf can not even acknowledge where he went wrong. He rather saw fault in the “superior memorization and detail knowledge” of Peter Miller, as well as the “judges focusing on the wrong facts” and he himself being “too fair to zoonosis probabilities” than his own biased reasoning. Hopefully, he will eventually overcome his false belief that made the successful businessman and poker player become an obsessed lab leak fool.
+
+For all of us, Saar Wilf serves as a cautionary tale about the emotional power the false lab leak myth holds over people, twisting their perception of reality and ability to make sense of it; without them being aware of its hidden pull.
+
+Peter Miller delivered a fantastic science communication experience in the debate that he can be more than proud of. Maybe he even changed some minds before the whole ordeal will vanish into the annuls of internet history. All credit to him.
+
+And yet, despite his valiant efforts, overwhelming win of evidence-based reasoning and a very lucrative payout, I would still advise everybody against taking lableak truthers up for debate. Here is why:
+
+Let us imagine for a second what would have happened if Peter Miller actually lost the debate (for whatever reason), or the judges were swayed by Saar`s relentless efforts after.
+
+The lab leak myth has already started multiple information cascades based on nothing but rumors and willing amplifiers; from entirely made up allegations of patients zero, to alleged whistleblowers at the WIV being thrown of roofs; to faulty insinuations about Chinese scientists deleting critical data, to secret Chinese party speak that only a western maverick could decipher… on and on it goes. It really does not take much for these narratives to go viral. What all of these stories have in common is usually a sensationalist headline, a rehashing of common lab leak talking points, and the aspect of “novelty”; a new twist in the genre.
+
+Having an “Israeli multi-millionaire maverick win a 100.000$ debate by defeating a zoonotic origin proponent” would deliver just enough substance and salacious headline to really cascade well to the top of the attention economy on social media. 
+
+Conspiracy theorists dominate discourse on social media because there is an “asymmetry of passion” they exhibit on the emotional myths they care about. If Saar won, they would be relentless in their activism to push the debate to larger and larger audiences; and because many people will talk about it, journalists, influencers and other amplifiers will feel a need to cover it as well. All of them will feel enticed to come up with their own spin and hot takes on the event; hailing the debate as an important step forward in public discourse, or chastising scientists for dodging debates, or how Saar Wilf has put his money where his mouth is an won against the “flimsy” arguments of science. I could see a million ways how this debate could and would have been weaponized if Saar Wilf had indeed been declared the winner.
+
+The reality is that most citizens will ever watch the 18hours, nobody will care whether Peter Miller presented a good or bad argument, whether the judges were reasonable or unreasonable in their assessment; whether Saar Wilf played the refs or rigged the debate. All that matters is how amplifiers would react to it, and most citizens would take their clues from them. Superficial clues like: After 18h of debate, “lab leak” won and science lost. 
+
+A great headline for anti-science activists, propagandists, politicians and other information combatants alike who want to sow doubt and distrust about science and scientists. The opposite is however not true. No amplifier will hail the debate outcome as proof of zoonosis, no journalist or influencer will cue up and watch 18 hours of debate to make some hot takes about it, because there is no audience demand for it. We want to hear about a maverick proving the scientists wrong; to confirm our own suspicious. Nobody wants to deal with the reality that they might have been misled and the pesky experts were right all along. This just doesn’t sell in the attention economy.
+
+That is why I advised Peter Miller against the debate; lots to lose but almost nothing to gain for the public understanding of science.
+
+> Peter Miller took a big risk with very little gain for science.
+
+In his very last statement, he acknowledges that he has created an asymmetrical pay-off. He decided to go forward anyways.
+
+Peter Miller acknowledging that if he wins, few will change their minds, and virtually nobody will hear about the debate, and public discourse will remain unaltered. If he loses however, there would be an outsized impact on the public discourse, with activists using his loss for information warfare.
+
+In our interview, Peter told me he is a mountain climber where sometimes there is a 5% chance to die, and the stakes are just not that high for a debate. He is an optimist and believe it can have an impact, despite the odds.
+
+I believe he was reckless, and yet I am reluctant to blame him for taking the risk. Science has already largely lost the public discourse surrounding the origins of COVID since 2021, with most citizens being successfully misled by a mixture of influencers, activists, information combatants and our own human biases. 
+
+> Taking a risk in science communication, even throwing a Hail Mary in a 100.000$ debate to wake citizens up is something I deeply sympathize with.
+
+It is not Peter Miller’s fault that our information environment is so broken that anti-scientific falsehoods and activism flourish, nor that the stakes for communication errors are made so high that it effectively silences scientists or bullies them out of public conversation.
+
+**To truly change public discourse for the better, we have to change the incentives and asymmetries in our shared information spaces.**
+
+Until then, maybe it is up to all of us to be a bit more like Peter; to do the legwork to deeply understand a scientific topic and then be not afraid to stand up for science in its dire hour of need, however that might look for you personally. He was just being courageous, defending science and an evidence-based discourse the best way he knew how, and doing so by putting the money where his mouth was.
+
+I hope courageousness is infectious.
+
+Please consider sharing his win.
+
+This post is public so feel free to share it.
+
+[Share](https://www.protagonist-science.com/p/lableak-truther-loses-100000-in-his?utm_source=substack&utm_medium=email&utm_content=share&action=share)
+
+As expected, Saar Wilf was not happy with this article about the Rootclaim debate, trying to get Peter Miller to influence my writing by giving him a long list of his objections and contestations.
+
+Some minor nitpicks about him not being “angry” when demanding the judges change their assessment, but he was “calm and polite” doing so. Since I can not infer state of mind, I will correct this.
+
+The main thrust of his objections was about how he did not “try to work the refs” by exerting influence on the judges in the aftermath, and that the two months delay of winner announcement was supposedly up to the judges, not him running interference. He also contested that the judges never said they would not change their assessment, that I’d better clarify that “*there is no integrity involved here*”, that he merely “a*sked them politely if they would be interested in working together to improve their verdicts*” and that they “*had some discussions about this but could not conclude in time, but might still do so in the future*”. **All of Saar’s objections here are however contested by other parties to say the least.** And what better way to rebut my characterization of his backhanded actions then to “try to work Peter Miller” to demand of me to change my assessment in the article, right? :)
+
+**Seriously Saar, you will have to deal with the fact that reality does not always conform to what you want to believe it to be. Neither do people.**
+
+I understand this can be frustrating, but see it as an opportunity to align your beliefs with reality, rather than double down on a losing proposition and challenging everyone who has not bought into your version of the world.
+
+I wish for your success with this format on debating anti-vaxxers, where *- spoiler alert -* you are actually aligned with the scientific reality, and a swift recovery from the false myths that hold you down.
+
+* * *
+
+Peter Miller’s debate videos can be found here:
+
+Part 1: [Evidence for Huanan market](https://www.youtube.com/watch?v=Y1vaooTKHCM)
+
+Part 2: [Genetic evidence for natural virus](https://www.youtube.com/watch?v=FLnXVflOjMo)
+
+Part 3: [Probabilistic assessment of evidence](https://www.youtube.com/watch?v=6sOcdexHKnk)

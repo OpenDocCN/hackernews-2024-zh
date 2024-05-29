@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:48
+-->
+
+# Los Angeles Becomes First U.S. City to Outlaw Digital Discrimination – The Markup
+
+> 来源：[https://themarkup.org/still-loading/2024/02/01/los-angeles-becomes-first-us-city-to-outlaw-digital-discrimination](https://themarkup.org/still-loading/2024/02/01/los-angeles-becomes-first-us-city-to-outlaw-digital-discrimination)
+
+Last week, the city council in Los Angeles, Calif. passed a [motion](https://clkrep.lacity.org/onlinedocs/2020/20-0761-s1_misc_12-12-23.pdf) banning “digital discrimination,” which is when internet service providers (ISPs) inequitably deploy high-speed internet connections or disproportionately withhold the best deals for their services from racially or socio-economically marginalized neighborhoods.
+
+The legislation, authored by Councilmember Marqueece Harris-Dawson, [expanded](https://broadbandbreakfast.com/2024/01/los-angeles-passes-resolution-banning-digital-redlining-by-isps/) the types of discrimination the city could investigate to include digital discrimination. Members of the public will be able to submit complaints alleging digital discrimination, which the city’s Civil, Human Rights and Equity Department will investigate. The department will be required to collect demographic information about the people making complaints and report on any trends.
+
+The Bureau of Street Lighting is also tasked with delivering a report on what work the city has done to close the digital divide. 
+
+ [Still Loading
+
+### Dollars to Megabits, You May Be Paying 400 Times As Much As Your Neighbor for Internet Service
+
+An investigation by The Markup found that AT&T, Verizon, EarthLink, and CenturyLink disproportionately offered lower-income and least-White neighborhoods slow internet service for the same price as speedy connections they offered in other parts of town
+
+October 19, 2022 06:51 ET](https://themarkup.org/still-loading/2022/10/19/dollars-to-megabits-you-may-be-paying-400-times-as-much-as-your-neighbor-for-internet-service)
+
+“It’s so important for everyone to have broadband access for full participation in modern society and no one should be charged more based on their neighborhood,” Harris-Dawson wrote in a statement to supporters. “This is a big win and we’ll keep pushing equity on all fronts forward!”
+
+“There have been multiple studies showing the impact of industry pricing practices that worsen the digital divide by exacerbating the challenge of affordability,” the legislation reads. “Studies demonstrate that providers systematically offer worse service – slower, delivered over older technology – to low-income communities at the same price that they offered fast, reliable service to higher income communities.”
+
+In 2022, The Markup published an [investigation](https://themarkup.org/still-loading/2022/10/19/dollars-to-megabits-you-may-be-paying-400-times-as-much-as-your-neighbor-for-internet-service) showing how ISPs in 38 U.S. cities, including AT&T in Los Angeles, were offering high-speed broadband connections for the same price as sluggish ones to different households in the same city. In almost every case, lower-income, less White, and historically redlined neighborhoods tended to disproportionately get offered the worst deals. 
+
+AT&T, our investigation found, was 21 percentage points [more likely](https://themarkup.org/show-your-work/2022/10/19/how-we-uncovered-disparities-in-internet-deals) to offer slow service to households in L.A.’s poorest neighborhoods than the company was in the city’s richest areas. An AT&T spokesperson called our analysis “fundamentally flawed.”
+
+A [report](https://www.calfund.org/wp-content/uploads/Pricing-Disparities-Report.pdf) released around the same time by the California Community Foundation found Charter Communications, L.A.’s dominant cable provider, engaging in similar conduct. “People who live in higher poverty neighborhoods are not only routinely offered slower service at higher prices, but are offered contracts with worse terms and conditions,” the report read. “For example, Charter’s…promotional offers – guaranteeing a period of time before prices will increase – are for two years in wealthy communities, but for just one year in high-poverty communities.”
+
+In an email to the Los Angeles Times, Charter [insisted](https://www.latimes.com/business/story/2022-10-13/broadband-internet-not-equally-available-to-la-county-low-income-residents-report-says) the California Community Foundation’s report was “intentionally misleading.” 
+
+To close the digital divide and ensure equitable access to the fast, reliable, and affordable internet necessary to access education and health care and to fully participate in the City’s economic opportunities and civic life, we must address the disparate outcomes of provider decisions (regardless of whether providers intended those outcomes.) Tackling digital discrimination is not the only action needed to ensure digital equity, but it is a necessary action.
+
+Since Los Angeles has never codified exactly what “digital discrimination” means, the legislation asked city officials to strongly consider using the Federal Communication Commission’s (FCC) definition of the term.
+
+ [Still Loading
+
+### See the Neighborhoods Internet Providers Excluded from Fast Internet
+
+Explore The Markup’s interactive map to see where AT&T, CenturyLink, and Verizon offered only slow internet speeds in major U.S. cities
+
+May 11, 2023 09:00 ET](https://themarkup.org/still-loading/2023/05/11/see-the-neighborhoods-internet-providers-excluded-from-fast-internet)
+
+Last November, the FCC [approved](https://themarkup.org/still-loading/2023/11/15/fcc-approves-rules-to-prevent-digital-discrimination) rules prohibiting digital discrimination at the national level–defining it as “Policies or practices, not justified by genuine issues of technical or economic feasibility, that (1) differentially impact consumers’ access to broadband internet access service based on their income level, race, ethnicity, color, religion, or national origin or (2) are intended to have such differential impact.” 
+
+A crucial [element](https://themarkup.org/hello-world/2023/04/08/whos-afraid-of-disparate-impact) of the FCC’s definition of digital discrimination is that it allows for finding actions to be discriminatory even if the intent behind them wasn’t explicitly to treat different groups inequitably. Instead, all that would be necessary is showing that a decision made by an ISP caused the groups to be impacted differently. 
+
+Digital Equity LA, a coalition of 70 nonprofit organizations, urged the city to incorporate the FCC’s standard into its enforcement process. “To close the digital divide and ensure equitable access to the fast, reliable, and affordable internet necessary to access education and health care and to fully participate in the City’s economic opportunities and civic life, we must address the disparate outcomes of provider decisions (regardless of whether providers intended those outcomes),” the coalition wrote in a [letter](https://www.documentcloud.org/documents/24399804-11924-la-digital-discrimination-ordinance-sign-on-letter) to that council that cited digital divide investigations by the California Community Foundation and The Markup. “Tackling digital discrimination is not the only action needed to ensure digital equity, but it is a necessary action.”
+
+While the Los Angeles legislation passed without a dissenting [vote](https://clkrep.lacity.org/onlinedocs/2020/20-0761-s1_CAF_1-24-24.pdf), it wasn’t without controversy. In a [letter](https://www.documentcloud.org/documents/24397705-central-city-association-letter) sent to the city council in mid-January, the Central City Association of Los Angeles–an advocacy group [representing](https://www.ccala.org/index.php?submenu=AboutMembership&src=membership&srctype=membership_lister_2019&submenu=Membership) businesses and professional associations, including AT&T and Charter–urged the city to focus its digital inclusion efforts elsewhere. 
+
+“Instead of duplicating the FCC’s system, we believe that City resources would be more prudently used by focusing on the areas that the FCC advised in their best practices for states and localities, such as digital education, affordability programs and device availability,” wrote Central City Association President & CEO Nella McOsker.
+
+As the Institute For Local Self-Reliance [noted](https://communitynets.org/content/la-leads-way-push-leverage-fccs-new-digital-discrimination-rules-local-action), with the passage of this legislation Los Angeles became the first city in the United States to tackle digital discrimination locally.
+
+*Correction: An earlier version of this story misidentified the Central City Association.*

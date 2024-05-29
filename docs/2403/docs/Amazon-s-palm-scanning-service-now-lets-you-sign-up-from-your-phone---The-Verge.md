@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:45:38
+-->
+
+# Amazon’s palm-scanning service now lets you sign up from your phone - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/28/24114499/amazon-one-palm-scanning-mobile-app](https://www.theverge.com/2024/3/28/24114499/amazon-one-palm-scanning-mobile-app)
+
+Amazon now lets you sign up for its palm recognition service directly from your phone. [It’s launching](https://www.aboutamazon.com/news/retail/amazon-one-app) a new Amazon One app on [iOS](https://go.skimresources.com/?id=1025X1701640&xs=1&url=https%3A%2F%2Fapps.apple.com%2Fus%2Fapp%2Famazon-one%2Fid6452192521%3Futm_source%3DWeb%26utm_medium%3D%26utm_campaign%3DOB_Blog_2024) and [Android](https://go.skimresources.com/?id=1025X1701640&xs=1&url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.amazon.amazonone.androidapp%26utm_source%3DWeb%26utm_medium%26utm_campaign%3DOB_Blog_2024%26pli%3D1) you can use to take a photo of your palm and set up your account, allowing you to start scanning your palm at locations that support the verification tech.
+
+Previously, Amazon required users to visit physical locations to enroll in Amazon One, which [lets you make a purchase](/2020/9/29/21493094/amazon-one-palm-recognition-hand-payments-amazon-go-store) or [verify your age](/2023/5/22/23732823/amazon-one-palm-scanning-technology-age-verification) based on the palm print linked to your Amazon account. The service is available at all [Whole Foods stores](/2023/7/20/23801571/amazon-one-whole-foods-pay-palm-scan) across the US and some [Panera Bread locations](/2023/3/22/23651843/amazon-one-panera-bread-palm-scanning-biometrics-payment-loyalty), as well as more than 150 stadiums, airports, fitness centers, and convenience stores.
+
+Amazon One uses generative AI to analyze your palm vein structure to create a “unique numerical, vector representation” of your palm that it recognizes when you scan your hand in-store. It [doesn’t use raw palm images](https://www.aboutamazon.com/news/retail/5-facts-you-may-not-know-about-amazon-one) to identify you.
+
+On mobile, Amazon says it uses AI to match the photo from a phone’s camera to the “near-infrared imagery” from an Amazon One device. You’ll need to add a payment method to the app and upload a photo of your ID if you plan to use the service for age verification. You can also link loyalty programs, season passes, and gym memberships.
+
+Although the technology has raised [some privacy concerns](https://www.cnbc.com/2023/08/26/amazon-biometric-payments-privacy-concerns.html), Amazon [says](https://www.aboutamazon.com/news/retail/5-facts-you-may-not-know-about-amazon-one) that your palm and vein images are “immediately encrypted” and sent to a “highly secure zone” in the AWS Cloud that’s specifically built for Amazon One. There, Amazon creates your palm signature.
+
+Amazon also says the new app “includes additional layers of spoof detection,” adding that you can’t save or download the palm images to your phone. That still might not be enough to convince some users (myself included) to hand over their, well, *hands*, for the sake of convenience. Because, unlike a password, [you can’t get a new palm print](/2020/10/1/21496673/amazon-one-palm-reading-vein-recognition-payments-identity-verification).
+
+***Update March 28th, 2:43PM ET:** Added additional details of Amazon’s palm matching technology and security protocols.*

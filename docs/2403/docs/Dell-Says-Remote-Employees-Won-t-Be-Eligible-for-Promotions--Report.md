@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:29:43
+-->
+
+# Dell Says Remote Employees Won't Be Eligible for Promotions: Report
+
+> 来源：[https://gizmodo.com/dell-remote-employees-eligible-promotions-1851347699](https://gizmodo.com/dell-remote-employees-eligible-promotions-1851347699)
+
+Michael Dell, the CEO of the technology company that bears his surname, has long been an advocate of remote work and not so long ago called it [“the future of work.”](https://www.linkedin.com/pulse/culture-key-hybrid-work-michael-dell/) But it seems that even Dell (the company), can’t help but follow the trend among technology companies suddenly convinced that in-office work is the best work.
+
+The Dell XPS Looks Great, Doesn’t Feel Great
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22349.vtt" srclang="en">
+
+Most recently, that mindset has led to changes in the company’s promotion policy, according to a report from [Business Insider](https://www.businessinsider.com/dell-remote-workers-promotion-return-office-push-flexible-work-2024-3). The outlet found that Dell is telling remote employees they will no longer be considered for promotions. In order to qualify for promotions, employees must go in to work at their nearest “approved office” at least three days a week, according to documents seen by Business Insider.
+
+“For remote team members, it is important to understand the trade-offs: Career advancement, including applying to new roles in the company, will require a team member to reclassify as hybrid onsite,” [reads a memo](https://www.businessinsider.com/dell-remote-workers-promotion-return-office-push-flexible-work-2024-3) Dell sent to its staff cited by the outlet.
+
+In an emailed statement, Dell told Gizmodo that it had shared its updated hybrid work policy with its team, though it did not provide details on the changes made.
+
+“In today’s global technology revolution, we believe in-person connections paired with a flexible approach are critical to drive innovation and value differentiation,” Dell said. “This expectation is being implemented in stages in compliance with local laws and regulations and is subject to engagement with employee representation where applicable.”
+
+Dell joins a [long list](https://gizmodo.com/mark-zuckerberg-meta-facebook-remote-work-hybrid-1850499508) of tech companies that embraced remote work during the covid-19 pandemic, only to pull back and demand previously remote employees return to the office. Last August, Amazon CEO [Andy Jassy reportedly told employees](https://gizmodo.com/amazon-ceo-tells-workers-to-return-to-office-or-fired-1850783235) that if they didn’t want to go back to the office, “It’s not going to work out for you” at the company. Even Zoom, the company that became a household name due to remote work, [called its employees back in](https://gizmodo.com/zoom-ceo-return-to-office-leaked-audio-1850769660).
+
+While Dell has been gradually chipping away at its remote work policy in recent years, requiring employees living within an hour of one of its offices to [go in at least three days a week](https://www.theregister.com/2023/05/10/dell_remote_work_revision/) in 2023, none of the changes appeared designed to be punitive until now. The new promotion policy for remote workers stands out among tech companies—and goes against what Dell itself has said in the past.
+
+In a [LinkedIn post published in September 2022](https://www.linkedin.com/pulse/culture-key-hybrid-work-michael-dell/), less than two years ago, CEO Michael Dell pushed back against the idea that working in an office was the key to a good company culture. Dell (the man) even referred to in-office work as “forced hours.”
+
+“[S]everal of my fellow tech industry CEOs have pushed to get their teams back into physical offices ‘to engage more fully’ or be a more visible presence,” the CEO wrote in a LinkedIn post that’s still online. “But from my experience, if you are counting on forced hours spent in a traditional office to create collaboration and provide a feeling of belonging within your organization, you’re doing it wrong.”
+
+Dell (the man) went on to tout that his company offered equal opportunities for career advancement for the overwhelming majority of employees, with 90% stating in a company survey that everyone had the opportunity to develop and learn new skills regardless of whether they worked in-office or remotely.
+
+The Dell CEO was echoing a survey shared by Jennifer Saavedra, the company’s chief human resources officer, just months earlier. In a [LinkedIn post](https://www.linkedin.com/pulse/busting-myths-hybrid-work-culture-team-members-can-thrive-saavedra/?trackingId=DJEDawuHSymj%2F6kOTGRstQ%3D%3D) titled “Busting myths on hybrid work: Culture, team members and companies can thrive,” Saavedra pointed out that Dell had been providing remote work options for 12 years, long before the pandemic forced tech companies to adopt it. She said that Dell “believe[d] in providing more options, not less.”
+
+Saavedra also pointed out that the idea that in-office workers had more promotion opportunities than remote employees was a myth.
+
+“Our high-performing culture and wide array of on-demand virtual learning solutions has enabled us to help individuals achieve their career goals‒no matter where they work,” Saavedra wrote in her August 2022, [also still available](https://www.linkedin.com/pulse/busting-myths-hybrid-work-culture-team-members-can-thrive-saavedra/?trackingId=DJEDawuHSymj%2F6kOTGRstQ%3D%3D) online.
+
+That’s clearly no longer the case at Dell.
+
+***Update 3/21/2024, 4:28 p.m. ET:*** *This post has been updated with additional comment from Dell.*

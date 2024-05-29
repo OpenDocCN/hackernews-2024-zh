@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:12
+-->
+
+# The loudest cities in the world, and their quietest places - earth.fm
+
+> 来源：[https://earth.fm/the-quietest-places-in-the-worlds-loudest-cities/](https://earth.fm/the-quietest-places-in-the-worlds-loudest-cities/)
+
+Using academic and official sources, we began by reviewing data and research exploring noise levels in cities across the US, UK, and mainland Europe. Instead of absolute values showing how loud each city is, these sources explained what share of each city’s population is exposed to high noise levels during an average day.
+
+The results shown on this page are ordered by the percentage of the population experiencing [the day–evening–night noise level](https://g.co/kgs/wn3AQ4) (or Lden, a European standard for expressing noise levels over an entire day) of up to 65 dB. You’ll notice a huge disparity between the figures for US cities, compared to those in mainland Europe and the UK. That’s because of differences between how noise data is collected and measured, meaning that these regions should be considered separately.
+
+Next, we identified which parks and nature spots are considered quiet by those who visit them. We did this by searching visitors’ reviews for mentions of ‘quiet’, ‘relaxing’, ‘tranquil’, ‘calm’, and ‘peaceful’. This gave us a ‘Quiet Score’, a metric we created based on three factors: the share of each location’s reviews that mention these words; the location’s average visitor rating; and its popularity, and whether that impacts its peacefulness (a place with many reviews may be more crowded and less peaceful, while one with only a few reviews may not accurately represent the typical visitor experience). The higher the ‘Quiet Score’, the more peaceful the place is. In total, we looked into over 3,000 parks and nature spots across 245 cities.
+
+Only cities with a population of 250,000 or more have been considered in the results published here. We hope to expand this research to other world cities in the future. In the meantime, please [contact us](https://earth.fm/contact-us/) if you have any feedback, comments, or suggestions about this research.
+
+**Notice: We’re currently receiving a high volume of enquiries about this research – thank you so much for your interest!**
+
+**Press enquiries: If you’re a member of the press and would like more information about this research, please [get in touch](https://earth.fm/contact-us/) and we’ll get back to you.**

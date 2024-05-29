@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:54
+-->
+
+# united states - Deleting Software I Wrote Upon Leaving Employment of a Company - Law Stack Exchange
+
+> 来源：[https://law.stackexchange.com/questions/101283/deleting-software-i-wrote-upon-leaving-employment-of-a-company](https://law.stackexchange.com/questions/101283/deleting-software-i-wrote-upon-leaving-employment-of-a-company)
+
+(USA) This gets complicated quickly and depends entirely on the particulars of your situation and your jurisdiction. At a high level, there are several distinct issues:
+
+1.  Destruction of Data
+
+This is the easy one. The Computer Fraud and Abuse Act provides civil and criminal penalties when you "intentionally cause damage without authorization" to your employer's computers. This includes the unauthorized destruction of data, even if you're the one who put that data there in the first place, and even if your employer doesn't know about it right now. Once the data is on your employer's computer and being used for any length of time, then it becomes their data.
+
+The definition of damage is subjective, but if you know that your employer depends on your data, and that deleting it would negatively impact their operations, then deletion probably means damage in this case.
+
+None of this means that your employer owns your software, just that they own the data on their devices. If you felt that your employer improperly has copies of your software, then you need to go through proper channels to have it removed.
+
+2.  Copyright and Ownership of Intellectual Property
+
+Copyright is the legal authority to determine how a created work can be used. If you own the copyright to your software, then your employer probably needs your permission to use it. If your employer owns the copyright, then they can do whatever they want with it, and in fact, you would need your employer's permission to continue using the software.
+
+In general, copyright belongs to the author, except in the case of a "work for hire." The work for hire doctrine states that an employer owns the copyright of anything an employee makes within the "scope of employment" for that employee. An easy example would be a software developer: developers are explicitly hired to develop software, so any software they create that is even tangentially related to their employer automatically becomes the property of their employer. There is no clear line, but the courts have found many factors that influence whether or not something is within the scope of your employment:
+
+a. Were the skills required for the software related to your job expectations. If you're hired to move boxes in a warehouse, software development is not related to that job.
+
+b. Where and how was the work created. Did you create the software on a company computer, while you were on the clock, or while you were in your company workspace? If so, then your employer has a strong claim of ownership.
+
+c. Were you compensated in any way for the software?
+
+d. Was the software created as a part of your usual tasks assigned by the employer? Do other employees create similar works in the course of their employment?
+
+e. Do you have an employment contract that assigns copyright to your employer?
+
+Note that this is not an "all of the above" list, it's an "any of the above." If any of the above are true, then your employer likely has a strong claim of ownership.
+
+3.  Licensing
+
+Even if you think you own the software, your employer may have a right to use it depending on your actions.
+
+a. Did you include a license in the software? This can be done easily with many software development platforms, and it can be as simple as clicking a button or even may be included automatically. If you already distributed your software under license, you typically can't revoke an existing license easily.
+
+b. Again, do you have an employment contract? Even if you own the copyright, your contract may grant your employer a license to use it.
+
+c. If your software has been in use at your employer for any length of time, you may have granted your employer an implied license by your actions. If you are the one who put the software on the employer's computer and shared it with curious coworkers when they asked about it, you have implicitly given them permission to use the software.
+
+4.  What to do next.
+
+If you're at all uncertain about what to do, consult a lawyer in your jurisdiction. IP can be messy at the best of times, and in cases like this without a clear contract up front things only get worse. If it turns out you don't own the copyright to your software, take it as a hard-learned life lesson and know better next time.
+
+One potential thing you could do is to show your software to the higher ups in the company and explain yourself. If you can show how your software makes the warehouse more efficient, you can make a business case about the value of the software. If you save the company 10 hours a week of warehouse labor, that might be $150 a week or $7,800 a year. Maybe they're looking for someone to help streamline their warehouse operations and would hire you into a different role. Or, you could say that you're willing to sign a contract that unambiguously assigns the ownership of the software to the company for a reasonable sum of $2,000 or $5,000 or whatever number you think makes sense and see if they bite.
+
+You haven't described the scope or function of your software, but beware that most hobbyist projects are not actually that valuable, if at all. Maybe you've struck gold, but probably not. Unless there's some "secret sauce" that's especially hard to comprehend, it's likely that your employer could hire a developer on contract for a few weeks or a few months to build a similar application if they really wanted their own copy. But, a developer on contract might be $10,000-$20,000 a month or more depending on location and skill, so your goal would be to seem like a bargain compared to that while still adding value to the company.

@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:30:12
+-->
+
+# 2023, a year with no fatal accidents in commercial aviation | Airbus
+
+> 来源：[https://www.airbus.com/en/newsroom/stories/2024-03-2023-a-year-with-no-fatal-accidents-in-commercial-aviation](https://www.airbus.com/en/newsroom/stories/2024-03-2023-a-year-with-no-fatal-accidents-in-commercial-aviation)
+
+***A Statistical Analysis of Commercial Aviation Accidents 1958 - 2023, *****the publication which provides Airbus’ annual analysis of aviation accidents, is now available. It includes a commentary on the year 2023, as well as a review of the commercial aviation safety record evolution over the previous decades.**
+
+The 2023 edition of *A Statistical Analysis of Commercial Aviation Accidents* reveals some good news. No fatal accidents and no hull losses were recorded in commercial aviation last year even though air traffic increased by 20% compared to 2022, reaching more than 32 million flights.
+
+This  confirms a long-term trend; the commercial aviation industry has achieved huge improvements in safety over recent decades. It also underlines how technology contributes to improving safety when taking a flight in a commercial jet aircraft.
+
+The safety record for 2023 is a good result. However, it is important to remember that statistics for one year are not always indicative of the overall safety trends. This analysis uses accident rates calculated as a 10-year moving average to provide a more consistent trend. 
+
+Safety is a never-ending effort and preventing accidents is a constant quest for all those involved. This is why the runway collision between an A350 and a Dash-8 turboprop aircraft that occurred on 2 January 2024 in Tokyo, which claimed the lives of 5 people on board the Dash-8, is also mentioned in this 2023 edition. It is a stark reminder: we need to avoid the trap of complacency and remain vigilant in the reinforcement of all safety barriers to prevent accidents. 
+
+For more information on commercial aviation accidents and what the statistics tell us about our continual efforts to improve safety, visit the [accident statistics website](https://accidentstats.airbus.com/).
+
+Explore the new interactive features, which allows you to customise the information displayed on the graphs and explore the four generations of commercial jets using the immersive [360𝆩 Cockpit Viewer](https://accidentstats.airbus.com/generations-360/).

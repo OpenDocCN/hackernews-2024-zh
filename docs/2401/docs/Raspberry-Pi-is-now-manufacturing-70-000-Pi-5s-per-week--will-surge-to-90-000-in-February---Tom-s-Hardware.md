@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:51
+-->
+
+# Raspberry Pi is now manufacturing 70,000 Pi 5s per week, will surge to 90,000 in February | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february](https://www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february)
+
+After a rough couple of years where all models of Raspberry Pi (except the Pico microcontroller) were in short supply, it's now relatively easy to find most SKUs in stock. However, the new Raspberry Pi 5 can still be a slight challenge; at press time, it was sold out at the authorized U.S. retailers but in stock at the UK outlets. 
+
+That's all about to change as Raspberry Pi Ltd is currently producing 70,000 Raspberry Pi 5 boards a week with plans to scale up to as many as 90,000 units per week in the near future. 
+
+Raspberry Pi CEO Eben Upton shared the promising news with us, along with the picture above, which he says he took during a recent factory visit. It shows dozens of panels filled with completed Raspberry Pi 5 boards that are about to be tested and packed for shipping. Each panel in the picture (shown uncropped below) contains nine individual Pi boards.
+
+(Image credit: Raspberry Pi)
+
+"Uplift to 90ku is mostly due to bringing more test heads online in the auto test pods," Upton told us. "[Sony](https://www.tomshardware.com/tag/sony) really are quite remarkable."
+
+Sony runs the factory in Pencoed, Wales where Raspberry Pi boards are manufactured. Upton noted that the process is highly automated, with everything from the testing to the packing being done by machine. 
+
+The CEO said he didn't have a precise number of Pi 4 boards produced weekly to share with us, but estimated that it was about the same as the Pi 5\. He also promised that Raspberry Pi would maintain its aggressive manufacturing pace until  "backlogs are fulfilled and the channel (Approved Resellers and others) is in a good stock position."
+
+At publishing time, Raspberry Pi 4 boards were widely in stock at all the U.S. and UK outlets we checked. However, given that the Pi 5 models with 4GB and 8GB of RAM cost only $5 more than their Pi 4 equivalents, most individual makers would be right to prefer the new model.
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.
+
+The Raspberry Pi 5 offers a significant speed bump, faster USB and Wi-Fi speeds, the ability to connect M.2 SSDs, dual camera ports and more. Who wouldn't want those benefits for their next [Raspberry Pi project](https://www.tomshardware.com/features/best-raspberry-pi-projects)?
+
+However, companies that are using Pi 4 either within products or for [enterprise](https://www.tomshardware.com/tag/enterprise) use cases may want to buy more of the older board, because the Pi 5 isn't a drop-in replacement. It requires new chassis, a higher-wattage power supply and (in most use cases) an active cooler.

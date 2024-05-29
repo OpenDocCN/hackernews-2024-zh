@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:28:48
+-->
+
+# Google Maps: New Generative AI feature coming to Local Guides
+
+> 来源：[https://blog.google/products/maps/google-maps-generative-ai-local-guides/](https://blog.google/products/maps/google-maps-generative-ai-local-guides/)
+
+You've finally found a day the whole crew can hang out. The problem? Everyone has different preferences: one friend's vegan, another won't venture uptown, and one has a dog that never leaves their side. With so much to consider, you’re going to need help figuring out the perfect place to go.
+
+Today, we're introducing a new way to discover places with generative AI to help you do just that — no matter how specific, niche or broad your needs might be. Simply say what you’re looking for and our large-language models (LLMs) will analyze Maps’ detailed information about more than 250 million places and trusted insights from our community of over 300 million contributors to quickly make suggestions for where to go.
+
+Starting in the U.S., this early access experiment launches this week to select [Local Guides](https://maps.google.com/localguides/), who are some of the most active and passionate members of the Maps community. Their insights and valuable feedback will help us shape this feature so we can bring it to everyone over time.
+
+## A new way to discover places with generative AI
+
+Let’s say you’re visiting San Francisco and want to plan a few hours of thrifting for unique vintage finds. Just ask Maps what you’re looking for, like “places with a vintage vibe in SF.” Our AI models will analyze Maps’ rich information about nearby businesses and places along with photos, ratings and reviews from the Maps community to give you trustworthy suggestions.
+
+You’ll see results organized into helpful categories — like clothing stores, vinyl shops and flea markets — along with photo carousels and review summaries that highlight why a place might be interesting for you to visit.
+
+Maybe you also want to grab a bite to eat somewhere that keeps those vintage vibes going. Continue the conversation with a follow-up question like “How about lunch?” Maps will suggest places that match the vintage vibe you’re looking for, like an old-school diner nearby. From there, you can save the places to a list to stay organized, [share with friends](https://blog.google/products/maps/google-maps-updates-november-2023/) or revisit in the future.

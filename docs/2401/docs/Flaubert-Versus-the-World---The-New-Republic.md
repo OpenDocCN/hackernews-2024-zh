@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:38
+-->
+
+# Flaubert Versus the World | The New Republic
+
+> 来源：[https://newrepublic.com/article/177834/flaubert-versus-world-nyrb-letters-review](https://newrepublic.com/article/177834/flaubert-versus-world-nyrb-letters-review)
+
+From an early age, Flaubert preferred the beautiful vistas he discovered in books, and yet he could never avoid the most awful truths of human existence: disease, disintegration, illness, and death. He felt both a cynical distrust of bourgeois fantasies—that individuals could, through education and hard work, rise above the animal limitations of their bodies—and a deep abiding sympathy for those human beings foolish enough to believe them.
+
+His parents wanted Flaubert to pursue everything about bourgeois professional life that he despised; and it is perhaps only because of several illnesses and tragedies that Flaubert escaped the fate they mapped out for him. In the midst of his miserable adventures as a law student in Paris (“What a marvelous idea it was of somebody’s to invent the Law School for the express purpose of boring the shit out of us!”), he began suffering a series of epileptic seizures that sent him home for weeks at a time; he was afflicted with huge painful boils on his neck and body, bad teeth, gout, and very probably syphilis; then, over a miserable couple of years, those closest to him began dying—first his father, then his beloved sister, and finally the dearest friend of his youth, Alfred Le Poittevin. Without these misfortunes and ailments, he might never have cultivated his solitary nature. As he wrote Le Poittevin in May 1845, “The only way not to be unhappy is to shut yourself up in Art and count all the rest as nothing.”
+
+> I have said an irrevocable farewell to the practical life. My nervous illness was the transition between two states. From now until a day that is far distant I ask for no more than five or six quiet hours in my room, a good fire in winter, and a pair of candles to light me at night.
+
+By shutting himself up with “Art” (a word he always capitalized), he could just as firmly shut his door on the world. “I hate life,” he wrote to another youthful friend, Maxime Du Camp. “There: I have said it; I’ll not take it back. Yes, life; and everything that reminds me that life must be borne. It bores me to eat, to dress, to stand on my feet, etc. I have dragged this hatred everywhere, wherever I have been: at school, in Rouen, in Paris, on the Nile.” The world’s temptations stopped being so tempting as Flaubert grew older. Partly it was his faulty body falling apart. But in reading his letters, it is clear that much of the passion was simply knocked clean out of him.

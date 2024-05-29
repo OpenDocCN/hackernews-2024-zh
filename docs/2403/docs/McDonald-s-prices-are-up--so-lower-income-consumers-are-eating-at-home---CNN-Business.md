@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:56:11
+-->
+
+# McDonald’s prices are up, so lower-income consumers are eating at home | CNN Business
+
+> 来源：[https://www.cnn.com/2024/03/13/business/mcdonalds-inflation-low-income-consumers/index.html](https://www.cnn.com/2024/03/13/business/mcdonalds-inflation-low-income-consumers/index.html)
+
+New York CNN  — 
+
+Some lower-income Americans are rejectingMcDonald’s and opting to cook at home instead, the fast food chain’s chief financial officer said at an investor conference on Wednesday.
+
+“It’s a challenging consumer environment,” said Ian Borden, McDonald’s CFO, noting that many consumers are trying to manage inflation, higher interest rates and dwindling savings.
+
+Inflation’s sting has pushed Americans to cut back on small luxuries. That includes their spending on food at restaurants such as McDonald’s, fast-food restaurants that historically prize value and affordability as core business values.
+
+Dining out has become [more of a luxury.](https://www.cnn.com/2024/02/13/economy/food-prices-cpi-inflation/index.html) According to February inflation data in the Consumer Price Index, food at home prices grew 1% year over year, while restaurant prices rose 4.5% over the last year.
+
+But the current surge in restaurant prices has flipped the script from a year ago, when it was cheaper to dine out. [At that time](https://www.cnn.com/2024/02/13/economy/food-prices-cpi-inflation/index.html), restaurant prices were up 8.4% and grocery prices were up 10.2% year over year.
+
+“Some of those consumers are just choosing to eat at home more often,” Borden said.
+
+To win back these customers, Borden said McDonald’s is offering themmore bang for their buck at the drive-thru, including bundles priced at $4 and below at 90% of its US locations.
+
+“We want to make sure the consumer knows what’s available and obviously is thinking of us when they’re making their choices,” Borden said.
+
+McDonald’s [has faced financial troubles internationally as well](https://www.cnn.com/2024/02/05/investing/mcdonalds-full-year-earnings-2023?cid=ios_app). For example,the fast-food chain hasnoted that turmoil in the Middle East has weighed on sales in the region.
+
+Sales in its licensed markets business, of which most of its Middle East locations are a part, grew just 0.7% in the last quarter, far worse than the more-than 4% growth in the United States and other international businesses.
+
+Whether a customer is grocery shopping or eating out, prices are looking better than they have in years since the onset of the pandemic. Food inflation overall is rising at its slowest pace since May 2021, according to CPI data. Price hikes at the grocery store are at their lowest level since June 2021, while food inflation at restaurants is up by the least amount since July 2021.
+
+Consumers have also pulled back on their spending at discount chain Family Dollar, whose parent company [said Wednesday it will close nearly 1,000 stores](https://www.cnn.com/2024/03/13/investing/family-dollar-dollar-tree-closing-stores/index.html).Company executives said decades-high inflation has keptcustomers away, impacting its profits and exacerbating its competition with Dollar General and Walmart. Family Dollar also faced years of mismanagement and poor conditions in stores.
+
+[McDonald’s](https://www.cnn.com/markets/stocks/MCD) stock was down by roughly 3% in afternoon trading.

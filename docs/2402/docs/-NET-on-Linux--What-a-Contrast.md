@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:24
+-->
+
+# .NET on Linux: What a Contrast
+
+> 来源：[https://two-wrongs.com/dotnet-on-linux-update.html](https://two-wrongs.com/dotnet-on-linux-update.html)
+
+Almost five years ago I wrote [a brief history about .net on non-Windows platforms](dotnet-on-non-windows-platforms-brief-historic-summary.html). I stumbled over that article now and it resurfaced traumatic memories of navigating .net development on Linux and MacOS.
+
+Even back in 2019, it was mostly fine to *run* .net code on Linux (in production) but the documentation and tooling for development was not there at all.¹ I got into .net development when my then-new employer was in the middle of transitioning from .net Framework to .net Core, so my non-Windows work computer ended up being a lab rat for all sorts of unexpected compatibility problems. I still don’t fully understand why I thought it was a good idea to try to port applications I wasn’t even able to *compile* – much less run – to the new framework, but it worked out fine in the end. (It was not just that these applications used the fcl, they also integrated with Windows functionality.)
+
+That experience was, and the article was written, when .net Core 2.1 was the latest production-friendly release. In some sense, it was just yesterday, but in another, it’s a world away. Even just two or three years later, the tooling and documentation had improved to levels I didn’t anticipate. Today, I still write .net code (for a different employer) and I can barely tell whether I’m on Windows or Linux.
+
+It speaks to how much an organisation with a big wallet and willingness to invest can shift things in a brief amount of time – but also, I think, how other companies (I’m looking at you, JetBrains) can set a standard for cross-platform tooling that the original company is forced to live up to in order not to lose too much market share.

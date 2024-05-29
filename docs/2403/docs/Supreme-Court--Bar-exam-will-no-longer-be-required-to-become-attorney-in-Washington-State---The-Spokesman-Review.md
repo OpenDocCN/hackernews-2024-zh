@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:49
+-->
+
+# Supreme Court: Bar exam will no longer be required to become attorney in Washington State | The Spokesman-Review
+
+> 来源：[https://www.spokesman.com/stories/2024/mar/15/supreme-court-bar-exam-will-no-longer-be-required-/](https://www.spokesman.com/stories/2024/mar/15/supreme-court-bar-exam-will-no-longer-be-required-/)
+
+The bar exam will no longer be required to become a lawyer in Washington, the state Supreme Court ruled in a pair of orders Friday.
+
+The court approved alternative ways to show competency and earn a law license after appointing a task force to examine the issue in 2020.
+
+The Bar Licensure Task Force found that the traditional exam “disproportionally and unnecessarily blocks” marginalized groups from becoming practicing attorneys and is “at best minimally effective” for ensuring competency, according to a news release from the Washington Administrative Office of the Courts.
+
+Washington is the second state to not require the bar exam, following Oregon, which [implemented the change at the start of this year](https://www.reuters.com/legal/government/no-bar-exam-required-practice-law-oregon-starting-next-year-2023-11-07/#:~:text=No). Other states, including Minnesota, Nevada, South Dakota and Utah, are examining alternative pathways to licensure.
+
+“These recommendations come from a diverse body of lawyers in private and public practice, academics, and researchers who contributed immense insight, counterpoints and research to get us where we are today,” Washington Supreme Court Justice Raquel Montoya-Lewis, who chaired the task force, said in a statement. “With these alternative pathways, we recognize that there are multiple ways to ensure a competent, licensed body of new attorneys who are so desperately needed around the state.”
+
+There will be three experiential-learning alternatives to the bar exam, each for people following a different path of legal study. The specifics, scale and implementation plan for the pathways have yet to be developed.
+
+Law school graduates can complete a six-month apprenticeship while being supervised and guided by a qualified attorney, along with finishing three courses.
+
+Law students can become practice-ready by completing 12 qualifying skills credits and 500 hours of work as a licensed legal intern. Upon completion of those requirements, they would submit a portfolio of that work to waive the bar exam.
+
+Typically, students will complete an internship between their second and third years of law school, gaining about 400 hours of experience, according to the task force’s report. Then, if they do about three hours a week of legal work through their final year of law school, students could have 500 hours of experience upon graduation, leaving the portfolio to complete before licensure.
+
+Lastly, law clerks can become lawyers without enrolling in law school by completing standardized educational materials and benchmarks under the guidance of a mentoring attorney, along with the 500 hours of work as a licensed legal intern.
+
+While people always have been able to study law under another attorney, then become licensed themselves by taking the bar exam, this new pathway creates standardized education materials and removes the examination requirement.
+
+Gonzaga School of Law Dean Jacob Rooksby said he is supportive of alternative pathways but hopes they will be implemented at a smaller scale first.
+
+“I’m on board with it in concept,” Rooksby said. “The devil is in the details.”
+
+The pathway for law students supposes that law schools will be involved in some level, Rooksby said. It’s unclear how that will impact Gonzaga at this point, he said.
+
+“I urged that we move in this direction cautiously and viewing it almost as a case study or a trial to see: How could the different schools implement it but in a small scale?” he said.
+
+He proposed allowing no more than 5% of an incoming class to pursue the experiential pathway at first until the profession can gauge interest from students and employers. Rooksby also has some concerns that this pathway would be of particular interest to people with family connections in the legal field, which likely wouldn’t be contributing to the goal of diversifying the profession.
+
+He hopes for “guardrails” so that the goal of increasing diversity and meeting legal needs in marginalized communities is met.
+
+Rooksby expects the earliest an alternative pathway process could be implemented at Gonzaga would be in 2025.
+
+The Supreme Court called for the investigation and adoption of assessments and programs to help ensure lawyers remain competent throughout their careers, not just at initial licensure.
+
+These changes are in addition to Washington adopting the new National Conference of Bar Examiners’ NextGen bar exam, which focuses more on practice and real-world skills. That exam will be implemented in summer 2026.
+
+The court also lowered the bar exam minimum passing score from 270 to 266, a reduction previously made during the COVID-19 pandemic.
+
+Rooskby said first-year students at Gonzaga would be taking the new exam, and the school has begun working on an adjusted curriculum. He’s happy the exam focuses more on practical skills than the traditional standardized test memorization.
+
+“The combination of adopting the NextGen bar exam and lowering the score are positive steps to close the access to justice rate that we have in Washington state and other states have as well,” he said.
+
+The Washington State Bar Association will implement the changes. A timeline has yet to be set. The bar association did not immediately respond to a request for comment.
+
+The task force, made up of representatives from more than 30 groups and areas of practice, also examined the character and fitness process for lawyer licensure. The state Supreme Court plans to discuss and potentially make decisions on the task force’s recommendations in that arena next month.

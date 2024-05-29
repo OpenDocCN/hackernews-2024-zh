@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:48:47
+-->
+
+# Chris's Wiki :: blog/web/FirefoxMediaAutoplaySettingsIV
+
+> 来源：[https://utcc.utoronto.ca/~cks/space/blog/web/FirefoxMediaAutoplaySettingsIV](https://utcc.utoronto.ca/~cks/space/blog/web/FirefoxMediaAutoplaySettingsIV)
+
+I've been buying digital music from one of the reasonably good online sources of it (the one that recently got acquired, again, making people nervous about its longer term future). In addition to the DRM-free lossless downloads of your purchases, this place lets you stream albums through your web browser, which in my case is an instance of Firefox. Recently, I noticed that my Firefox instance at work would seamlessly transition from one track to the next track of an album I was streaming, regardless of which label's sub-site I was on, while my home Firefox would not; when one track ended, the home Firefox would normally pause rather than start playing the next track.
+
+(I listen to both albums I've purchased and albums I haven't and I'm just checking out. The former play through the main page for my collection, while the latter are scattered around various URLs, because each label or artist gets a <label>.<mumble>.com sub-domain for its releases, and then each release has its own page. For the obvious reasons, I long ago set my home Firefox to allow my collection's main page to autoplay music so it could seamlessly move from one track to the next.)
+
+Both browser instances were set to disallow autoplay in general in the Preferences → Privacy & Security (see [Allow or block media autoplay in Firefox](https://support.mozilla.org/en-US/kb/block-autoplay)), and inspection of the per-site settings showed that my work Firefox actually had granted no autoplay permissions to sites while my home Firefox had a list of various subdomains for this particular vendor that were allowed to autoplay. After spelunking my about:config, I identified this as a difference in [`media.autoplay.blocking_policy`](/~cks/space/blog/web/FirefoxMediaAutoplaySettingsIII), where the work Firefox had this set to the default of '0' while my home Firefox had a [long-standing setting of '2'](/~cks/space/blog/web/FirefoxMediaAutoplaySettingsIII).
+
+As discussed in [Mozilla's wiki page on blocking media autoplay](https://wiki.mozilla.org/Media/block-autoplay), the default setting for this preference [allows autoplay once you've interacted with that tab](https://wiki.mozilla.org/Media/block-autoplay#Sticky_user_gesture_activation_.28default.29), while my setting of '2' requires that you always click to (re)start audio or video playing (unless the site has been granted autoplay permissions). Historically I set this to '2' to try to stop Youtube from autoplaying a second video after my first one had finished. In practice this usage has been rendered functionally obsolete by Youtube's own 'disable autoplay' setting in its video player (although it still works to prevent autoplay if I've forgotten to turn that on in this Firefox session or if Youtube is in a playlist and ignores that setting).
+
+(For both Youtube and this digital music source, a setting of '1', a [transient user gesture activation](https://wiki.mozilla.org/Media/block-autoplay#Transient_user_gesture_activation), is functionally equivalent to '2' for me because it will normally be more than five seconds before the video or track finishes playing, which means that the permission will have expired by the time the site wants to advance to the next thing.)
+
+Since I check out multi-track albums much more often than I look at Youtube videos (in this Firefox), and Youtube these days does have a reliable 'disable autoplay' setting, I opted to leave `media.autoplay.blocking_policy` set to '0' in the work Firefox instance I use for this stuff and I've just changed it to '0' in my home one as well. I could avoid this if I set up [a custom profile for this music source](/~cks/space/blog/web/FirefoxExtraProfilesHack), but I haven't quite gotten to that point yet.
+
+(I do wish Firefox allowed, effectively, per-site settings of this as part of the per-site autoplay permissions, but I also understand why they don't; I'm sure the Preferences and per-site settings UI complexity would be something to see.)
+
+(If I'd thought to check [my previous notes on this](/~cks/space/blog/web/FirefoxMediaAutoplaySettingsIII) I probably would have been led to `media.autoplay.blocking_policy` right away, but it didn't occur to me to check here, even though I knew I'd fiddled a lot with Firefox media autoplay over the years. My past self writing things down here doesn't guarantee that my future (present) self will remember that they exist.)
+
+PS: I actually go back and forth on automatically moving on to the next track of an album I'm checking out, because the current 'stop after one track' behavior does avoid me absently listening to the whole thing. If I find myself unintentionally listening to too many albums that in theory I'm only checking out, I'll change the setting back.

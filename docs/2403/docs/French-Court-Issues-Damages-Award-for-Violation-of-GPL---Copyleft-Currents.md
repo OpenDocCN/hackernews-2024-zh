@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:32
+-->
+
+# French Court Issues Damages Award for Violation of GPL – Copyleft Currents
+
+> 来源：[https://heathermeeker.com/2024/02/17/french-court-issues-damages-award-for-violation-of-gpl/](https://heathermeeker.com/2024/02/17/french-court-issues-damages-award-for-violation-of-gpl/)
+
+On February 14, 2024, the Court of Appeal of Paris issued an order stating that [Orange](https://www.orange.com/en), a major French telecom provider, had infringed the copyight of Entr’Ouvert’s Lasso software and violated the GPL, ordering Orange to pay €500,000 in compensatory damages and €150,000 for moral damages.
+
+This case has been ongoing for many years.
+
+Entr’ouvert is the publisher of [Lasso](https://lasso.entrouvert.org/), a reference library for the Security Assertion Markup Language (SAML) protocol, an open standard for identity providers to authenticate users and pass authentication tokens to online services. This is the open protocol that enables single sign-on (SSO). The Lasso product is [dual licensed by Entr’Ouvert under GPL or commercial licenses](https://lasso.entrouvert.org/).
+
+In 2005, Orange won a contract with the French Agency for the Development of Electronic Administration to develop parts of the [service-public.fr](http://service-public.fr) portal, which allows users to interact online with the government for administrative procedures. Orange used the Lasso software in the solution, but did not pass on the rights to its modifications free of charge under GPL, or make the source code to its modifications available.
+
+Entr’Ouvert [sued Orange](https://www.entrouvert.com/actualites/2019/entrouvert-versus-orange/) in 2010, and the case wended its way through the courts, turning on, among other things, issues of proof of Entr’Ouvert ‘s copyright interest in the software, and whether the case properly sounded in breach of contract or copyright infringement.
+
+On March 19, 2021, the Appeals Court first rejected Entr’Ouvert’s claims for copyright infringement, saying that the case was a breach of contract claim. The Court of Cassation, which is the supreme court of France, reviewed the case and issued an order on October 5, 2022 overturning the decision of the Court of Appeal. The case was then remanded to the Court of Appeal, which issued its order this week.
+
+The compensatory damages were based on both lost profits of the plaintiff and disgorgement of profits of Orange. Moral damages compensate the plaintiff for harm to reputation or other non-monetary injury.
+
+*Note: I patched this information together from various articles, mostly read in translation. The dates in the lawsuit process were inconsistent in those sources. If I find any errors, I will update this post.*
+
+*Update 2/22/24: [Here](https://www.courdecassation.fr/decision/65cdbcdf2425a70008258563) is the decision in French.*
+
+### Like this:
+
+Like Loading...

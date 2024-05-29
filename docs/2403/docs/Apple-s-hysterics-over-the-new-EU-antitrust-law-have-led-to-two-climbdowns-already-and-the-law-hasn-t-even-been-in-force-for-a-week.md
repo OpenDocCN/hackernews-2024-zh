@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:50
+-->
+
+# Apple’s hysterics over the new EU antitrust law have led to two climbdowns already—and the law hasn’t even been in force for a week
+
+> 来源：[https://finance.yahoo.com/news/apple-hysterics-over-eu-antitrust-153713345.html](https://finance.yahoo.com/news/apple-hysterics-over-eu-antitrust-153713345.html)
+
+European Commission 2–Apple 0.
+
+The EU’s Digital Markets Act has been in place for less than five days, and its enforcers have already pushed Apple into two humiliating U-turns. If Apple has been trying to test how much it can throw its weight around in its increasingly hilarious hissy fit over [the new Big Tech antitrust law](https://fortune.com/2024/03/07/dma-digital-markets-act-europe-eu-big-tech-antitrust-law/), it’s had its answer now.
+
+The first reversal came earlier this month when Apple meekly agreed to let home-screen web apps continue functioning as intended on iPhones. It had previously killed off the entire category on the basis of protecting users’ security under a [rather odd reading](https://mashable.com/article/apple-kills-home-screen-web-apps-pwas-in-eu-dma) of the DMA. The Commission threatened an investigation, and Apple retreated.
+
+Then, on Friday, Apple agreed to reinstate a developer account for archnemesis Epic Games, effectively allowing it to roll out a third-party iOS app store (an actual DMA demand) and also finally return *Fortnite* to iOS devices in the EU.
+
+Apple’s [reason for axing Epic’s account](https://fortune.com/2024/03/07/a-serious-violation-why-apple-just-killed-off-epics-eu-app-store-and-why-the-fortnite-maker-will-probably-prevail/) was that Epic had previously violated Apple’s policy by launching an alternative to Apple’s payment system for in-app payments (which is why Apple banned *Fortnite* from the App Store in 2020). Apple had also argued that Epic’s criticism of Apple’s new EU business model meant it couldn’t be trusted to follow the terms for third-party app stores, even though Epic had promised to abide by them. Apple’s reasoning was doubly ludicrous because a) the Commission *wants* affected companies to give feedback on Big Tech’s attempts to comply with the DMA, and b) Apple claimed a California court ruling gave it the ability to cancel Epic’s developer accounts anytime it wanted, anywhere in the world.
+
+After the Commission again threatened an investigation—and presumably after Apple’s lawyers googled “jurisdiction”—the company again backed down. “I take note with satisfaction that following our contacts Apple decided to backtrack its decision on Epic exclusion,” cackled Commission digital chief Thierry Breton in an [X post](https://twitter.com/ThierryBreton/status/1766167580497117464). “From Day 2, [[the] DMA](https://twitter.com/hashtag/DMA?src=hashtag_click) is already showing very concrete results!”
+
+I think at this point it’s fair to say that Tim Cook’s team has been massively overreaching in its response to the DMA. But hey, nobody ever said compliance with EU tech law was easy.
+
+You know who else just learned that lesson? The European Commission.
+
+This morning, the European Data Protection Supervisor (EDPS)—the privacy regulator that specifically keeps an eye on big EU institutions—slammed the Commission for breaking a 2018 data-protection law in how its staff use Microsoft 365\. The watchdog said the Commission had failed to implement safeguards to ensure that people’s personal data is only being sent to countries whose data-protection rules are equivalent to the EU’s. What’s more, the Commission hadn’t been properly specifying what types of personal data would be collected in the use of Microsoft 365, and what the data would be used for, as the law demands. (This isn’t the well-known General Data Protection Regulation or GDPR, but rather a special companion law that only applies to the EU institutions.)
+
+As a result, the Commission will have to “suspend all data flows resulting from its use of Microsoft 365 to Microsoft and to its affiliates and sub-processors located in countries outside the [EU and European Economic Area]” that lack adequate privacy protections. It’s unclear which countries the watchdog means. The EDPS has given the Commission until early December to comply, reflecting how difficult it will be to comply with the decision without majorly disrupting the Commission’s work.
+
+The Commission insists that its use of Microsoft 365 is legally compliant; it’s studying the EDPS order before deciding how to respond. But, it said in a statement, “compliance with the EDPS decision unfortunately seems likely to undermine the current high level of mobile and integrated IT services. This applies not only to Microsoft but potentially also to other commercial IT services.”
+
+Fairly or not, I suspect quite a few Silicon Valley regulatory officers will be chuckling at the irony of the situation. More news below.
+
+**David Meyer**
+
+*Want to send thoughts or suggestions to Data Sheet? Drop a line [here](mailto:david.meyer@fortune.com).*
+
+This story was originally featured on [Fortune.com](https://fortune.com/2024/03/11/apple-eu-dma-hysterics-two-climbdowns-and-counting/)

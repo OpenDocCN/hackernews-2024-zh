@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:21
+-->
+
+# Oklahoma skyscraper gets redesign to become USA's new tallest building
+
+> 来源：[https://newatlas.com/architecture/legends-tower-ao/](https://newatlas.com/architecture/legends-tower-ao/)
+
+Oklahoma's [Boardwalk at Bricktown skyscraper](https://newatlas.com/architecture/boardwalk-at-bricktown-skyscraper/) was recently revealed as the upcoming second-tallest skyscraper in the United States. Designer AO is now aiming for even greater heights, however, and has carried out an ambitious redesign in a bid to make it the country's new tallest building.
+
+Assuming all goes ahead as planned, the supertall skyscraper, now named the Legends Tower, will reach a maximum height of 1,907 ft (581 m), instead of the originally planned 1,750 ft (533 m). This figure is symbolic, marking the year Oklahoma became the [USA's 46th state](https://www.archives.gov/legislative/features/oklahoma).
+
+The new height will make it over 130 ft (39 m) taller than the USA's current tallest building, New York City's [One World Trade Center](https://newatlas.com/one-world-trade-center-tallest-building-us/29762/). It will also put it at sixth-tallest in the world rankings, just behind China's [Ping An Finance Center](https://newatlas.com/kpf-ping-an-finance-centre/48698/).
+
+Alongside the main skyscraper there will be three smaller towers, each of which will rise to 345 ft (105 m). Between all four buildings, they will include 1,776 residential units, while one of the smaller towers will be called the Dream Tower and contain a luxury hotel branded the Dream Hotel.
+
+The Legends Tower will include three smaller towers reaching a height of 345 ft (105 m)
+
+AO
+
+"Spanning approximately 5 million square feet [around 460,000 sq m], the project is a mixed-use marvel, including a 480-key Dream Hotel by Hyatt with 85 residential serviced condominiums in the Dream Tower; an additional 350-key Hyatt hotel with 100 serviced condominiums in the Legends Tower; 1,776 residential units ranging from market-rate to affordable workforce and luxury options; and a vibrant retail and restaurant scene with over 110,000 square feet [roughly 1,000 sq m] of space designated for commercial use, food and beverage, and a workforce development center for the community at the street and second levels," explained AO's press release. "The top floors of the supertall tower will consist of a public observatory, restaurant and bar where visitors will be able to enjoy the sweeping city views."
+
+AO and developer Matteson Capital are currently requesting permission from the relevant authorities to increase the skyscraper's height. Estimated construction timelines have not been shared at this time.
+
+Source: [AO](https://www.aoarchitects.com/project/the-boardwalk-at-bricktown/)

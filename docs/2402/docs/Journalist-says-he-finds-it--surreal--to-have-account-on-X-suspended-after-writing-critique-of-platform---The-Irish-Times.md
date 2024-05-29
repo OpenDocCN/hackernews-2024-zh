@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:26
+-->
+
+# Journalist says he finds it ‘surreal’ to have account on X suspended after writing critique of platform – The Irish Times
+
+> 来源：[https://www.irishtimes.com/culture/books/2024/02/12/journalist-says-he-finds-it-surreal-to-have-account-on-x-suspended-after-writing-critique-of-platform/](https://www.irishtimes.com/culture/books/2024/02/12/journalist-says-he-finds-it-surreal-to-have-account-on-x-suspended-after-writing-critique-of-platform/)
+
+Journalist and author Séamas O’Reilly has said he finds it “very, very funny” that his account on X, formerly Twitter, was suspended just hours after he posted about an article he wrote for the Irish Examiner in which he said the platform was unusable due to bots.
+
+The author’s account had over 100,000 followers and was around 14 years old, he said. Having gone through his posts from Saturday, which is when the account was suspended, he has come to the conclusion that the post that caused the suspension was to do with his article on bots.
+
+“So, to me, it’s pretty blatant and obvious that [an] Irish-headquartered tech behemoth, operated by the world’s most famous man, has suspended an Irish journalist for making those points in an Irish newspaper,” O’Reilly said.
+
+“I don’t actually think that the removal of my personal account is actually riveting and important global news in and of itself; I’m not that arrogant. But I do think it is a pretty hilarious bit of overreach from the guy who is a self-proclaimed free speech absolutist. So I do think it is quite noteworthy and quite surreal, to be honest.”
+
+O’Reilly appealed the first notification he got to say his account was suspended immediately. The suspension cited platform manipulation and spam as its reasoning, which he wrote in his appeal that he had nothing to do with.
+
+> Specifically the charge was spam and platform manipulation so I mean, I don’t even really know what they could say that involves, but it really couldn’t involve anything that I was doing
+
+The journalist heard nothing back from his appeal so he sent another one on Monday morning, to which he had received “nothing”.
+
+O’Reilly has a Saturday column in the Irish Examiner, and formerly had a column with The Irish Times. He posted about his most recent column on Saturday, February 10th, “around midday, and then five hours later I was banned,” he said.
+
+“Specifically the charge was spam and platform manipulation... I don’t even really know what they could say that involves, but it really couldn’t involve anything that I was doing.”
+
+In the Examiner article, O’Reilly made reference to a “scam bot [that] had a blue check mark, meaning that, unlike me, it pays money every month to Elon Musk’s vastly indebted and unprofitable platform, a situation which would greatly disincentive his company taking proactive measures to weed them out”.
+
+[ [How Elon Musk changed Twitter’s Dublin operation: ‘He broke the culture in a week’](https://www.irishtimes.com/ireland/2023/10/28/he-broke-the-culture-in-a-week-how-elon-musk-changed-twitters-dublin-operation/) ]
+
+O’Reilly said if he did not get his account back it would be “personally, quite annoying but professionally quite depressing” as Twitter was his route into his current profession as a journalist and author. He used it as a “shop front” in ways, he said.
+
+“I was very, very reluctant to be a Twitter doomer because it had done so much for me... But it’s really at the point where it doesn’t really work in practical terms. It is not as useful as an object as it used to be. It incentivises lots of extremely negative and hateful speech and has really made that a big kind of calling card of its business for the last year or two... that you can go on there and say anything.”
+
+The Irish Times contacted X about the suspension of O’Reilly’s account and received an automatic response which said: “Busy now, please check back later.”
+
+*   *Sign up for* [*push alerts*](https://www.irishtimes.com/media/2023/11/07/stay-informed-with-push-alerts-from-the-irish-times-delivered-straight-to-your-phone/) *and have the best news, analysis and comment delivered directly to your phone*
+*   *Find* [*The Irish Times on WhatsApp*](https://www.irishtimes.com/media/2023/10/27/find-the-irish-times-on-whatsapp-and-stay-up-to-date/) *and stay up to date*
+*   *Our In The News podcast is now published daily – Find the latest episode* [*here*](https://www.irishtimes.com/podcasts/in-the-news/)

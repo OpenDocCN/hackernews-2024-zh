@@ -1,0 +1,164 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:17
+-->
+
+# Introducing the Galaxy S24 Camera/Gallery! - Samsung Members
+
+> 来源：[https://r2.community.samsung.com/t5/CamCyclopedia/Introducing-the-Galaxy-S24-Camera-Gallery/ba-p/15350511](https://r2.community.samsung.com/t5/CamCyclopedia/Introducing-the-Galaxy-S24-Camera-Gallery/ba-p/15350511)
+
+Hello,
+
+I am excited to announce the unveiling of the Galaxy S24, featuring an exceptional camera and gallery experience that reflects the dedicated efforts of our talented camera/Galaxy developers.
+
+Our team meticulously tested and reviewed the camera with internal employees, experts, and gathered valuable feedback from users, including Samsung members. The Galaxy S24 camera/gallery aims to deliver the ultimate user experience with new features and optimizations.
+
+Key enhancements from the previous generation's galaxy models include rich, vivid color expression and three-dimensional image quality. The resolution has been significantly improved with the introduction of four Tele Camera (Quad Tele) lenses, providing enhanced zoom capabilities at x2, x3, x5, and x10 magnifications. AI Zoom technology further elevates image quality during zooming.
+
+Moreover, the camera ensures faster shooting experiences compared to previous models for instant memories and introduces enhanced features through the Downloadable Camera App, allowing for more diverse and creative filming opportunities.
+
+The gallery experience is equally enriched with convenient editing options recommended by the system. Generative AI assists in editing scenes and compositions, offering a seamless editing experience across Galaxy devices equipped with Samsung Studio.
+
+While we strive for a smooth camera experience, please note that only specific models support certain functions, and details can be found in the CamCyclopedia.
+
+We hope the passion of our camera/Galaxy developers and your support will converge to deliver an unparalleled filming experience with the completed Galaxy S24\. We are confident that you will find the new features and improvements truly enjoyable.
+
+Thank you for your support.
+
+**Camera**
+
+**1\. Performance**
+
+Experience faster shooting with improved AP performance and optimized software, applicable to all lenses for quick shooting even under HDR conditions with backlight.
+
+**2\. Image Quality**
+
+1) **Professional Quality Experience**
+
+The S24 camera delivers natural and realistic colours based on consumer trends and expert advice. AI object recognition engines are applied to both front and back cameras, ensuring expert-level quality with enhanced detail and three-dimensionality.
+
+2) **Nightography Photo & Video**
+
+Night Solution's AI technology has been significantly strengthened with software improvements, enabling faster shooting and brighter, clearer night shots. When capturing night videos, the phone's movement information is utilized to distinguish between phone shake and subject movement. Additional noise removal treatments are applied to the background and moving subjects, enhancing overall noise removal performance.
+
+**3\. Zoom**
+
+1) **Space Zoom**
+
+Quad Tele enhances the resolution of the 1x to 10x zoom section, and AI Zoom improves the image quality beyond 10x by upscaling resolution reduced by digital zoom through AI learning. The zoom image quality for all sections from 1x to 100x is improved through Quad Tele and AI Zoom technology.
+
+* Quad Tele (2x/3x/5x/10x): 3x/5x - Optical zoom, 2x/10x - High pixel crop-based optical level zoom
+
+**2) Spatio-Temporal Video Zoom**
+
+Video now offers a new zoom experience.
+
+ ① **Spatio Video Zoom**
+
+Supporting 3x and 5x optical zoom to capture clear images of distant objects, and providing optical quality crop zoom at 2x and 10x using high-resolution sensors. Video Super Resolution technology can be applied at a magnification of more than 1x when shooting a video, ensuring improved image quality at any magnification.
+
+ ② **Temporal Video Zoom**
+
+introducing the "Instant Slow-mo" function, allowing smooth playback of regular videos. Instead of simply slowing down playback speed, AI creates an interpolation frame between video frames for a seamlessly smooth slow-motion experience. This feature is applicable not only to videos taken but also to downloaded or shared videos. Additionally, you can edit/save the section after viewing and share it instantly.
+
+**4\. Character**
+
+1) **Portrait Mode**
+
+implementing a natural forward blur effect by learning from DSLR lenses based on AI.
+
+2) **Character Video Mode**
+
+Mimicking the effect of a video taken with a shallow-depth lens, gradual blur is implemented based on the distance from the subject. S24 Ultra utilizes two cameras to achieve a more natural front/rear blur effect.
+
+5.  **Enhancement of Expert Experience**
+
+    **1) Video**
+
+    Introduce a lens switching function during 4K 60fps recording, offering 5x zoom at 8K 30fps for a versatile video shooting experience. Additionally, support UHD 120fps for pro video. (Please note that this feature presently available in S24 Ultra only amongst the Galaxy S24 series.)
+
+    **2) Expert RAW**
+
+    Collaborate with nightography technology to enhance image quality and tone in low light. Improve basic resolution from 12MP to 24MP. Introduce the Digital ND filter, previously supported as a beta in S23, now officially provided, with an additional Auto mode. Utilize the multiple exposure function using images from the gallery.
+
+    **3) Camera Assistant**
+
+    Provide a DOF adapter correction function in Pro/Pro video mode when an external lens is attached, correcting the 180-degree image rotation phenomenon based on optical characteristics. Support anamorphic lens correction in pro video mode for a wider angle of view and unique flare effects. Introduce an audio monitoring function for real-time audio input monitoring.
+
+    **6\. High-Resolution**
+
+    Apply a new 50MP sensor to the 5x telephoto lens, enhancing resolution and noise reduction. Improve the processing speed for 50MP/200MP high-resolution. (Please note that this feature presently available in S24 Ultra only amongst the Galaxy S24 series.)
+
+    **7\. Shooting Experience Enhancement**
+
+    1**) Motion Photo**
+
+    Provide 3-second videos and photos of Motion Photo with consistent image quality. Introduce an editing function to transform missed moments into cover photos. Recommend long exposure effects for videos through the gallery editing suggestion function.
+
+    2) **Single-Take**
+
+    Offer various zoom magnifications (0.6x/1x/2x/3x/5x/10x) for preferred lens selection. Analyze real-time poses of people and pets, providing various edited videos such as Pet Best photos and slow motion.
+
+    3) **Dual Recording**
+
+    Rename the existing "Director’s View" to enable dual recording of any desired camera combination, such as front+rear or rear+rear. Provide separate storage for each lens, allowing simultaneous saving of images from different angles as mp4 files. (*S24 Ultra supports video recording in UHD resolution.*)
+
+    4) **Hyperlapse**
+
+    Hyperlapse Night 300x speed, initially introduced in S23, now supports additional ultra-wide-angle lenses and telephoto lenses.
+
+    **8\. Social Camera**
+
+    Experience improved in-app camera image quality with high-performance S/W solution, along with H/W functions exclusive to Samsung cameras. When viewing photos and videos on social app cameras, enjoy richer camera quality with the Super HDR effect, currently available only on Instagram.
+
+**Gallery/Edit**
+
+**1\. Edit Suggestion**
+
+When you press the ⓘ button (details) on the photo or video you are viewing, applicable editing effects are recommended.
+
+**2\. Generative Edit *¹***
+
+Upon entering the photo editor, the generative editing button on the left provides scene editing and composition editing to fill in the external area by moving and deleting the subject.
+
+**3\. Samsung Studio**
+
+You can adjust the video speed by specifying up to two areas in the desired section. Additionally, through "Export Project" or "Share Project," you can transfer the project you are working on between Galaxy devices or between devices and PC so that it can be edited on another device.
+
+**Downlodable App**
+
+**1\. Expert RAW**
+
+The basic resolution has been improved from 12MP to 24MP, and image quality and tone in low light have been improved through nightography technology collaboration.
+
+In addition, Digital ND filter, which was supported as beta in previous S23, is officially provided and Auto mode is provided for user convenience.
+
+Additionally, storage capacity has been reduced while maintaining image quality by providing JPEG XL format.
+
+2. **Enhance-X**
+
+It provides a camera change (Camera shift) feature that simulates the effect of a full-body photo taken by changing the camera position (flip, tilt, height adjustment) using AI, eliminating the hassle of physically changing the lens position. Additionally, a colorization function has been added, using AI algorithms to apply natural colors to black-and-white/grayscale images, estimating colors that match the image, bringing back the sense of color.
+
+**3\. Camera Assistant**
+
+**1) DOF Adapter Correction**
+
+It provides a DOF adapter correction function, allowing you to attach an external lens that compensates for the limitations of mobile lenses in pro/pro video mode.
+
+**2) Anamorphic Lens Correction**
+
+Pro Video Mode provides a correction function for the use of anamorphic lenses, offering wider angles of view and unique flare and bokeh effects in 16:9 video.
+
+**3) Audio Monitoring**
+
+It features an audio monitoring function that allows you to monitor audio input through the microphone in real-time.
+
+**4) Crop Zoom Button**
+
+An option to add a 10x/100x zoom button has been included. (Please note that this feature presently available in S24 Ultra only amongst the Galaxy S24 series.)
+
+**Video Sponsored by Samsung
+
+   [I tried using the new technologies of the Galaxy S24 by Mate Choi - Youtube](https://www.youtube.com/watch?v=OTeWcsn9iig)** 
+
+*¹ Generative Edit requires a network connection and Samsung Account login. Editing with Generative Edit results in a resized photo up to 12MP. A visible watermark is overlaid on the image output upon saving in order to indicate that the image is generated by AI. The accuracy and reliability of the generated output is not guaranteed.*

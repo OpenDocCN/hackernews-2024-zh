@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:29:24
+-->
+
+# The Steve Jobs difference – AtaDistance
+
+> 来源：[https://atadistance.net/2024/03/19/the-steve-jobs-difference/](https://atadistance.net/2024/03/19/the-steve-jobs-difference/)
+
+The iPhone and iPod development stories and how they changed Apple are well known but I’ve enjoyed watching the *[NO WIRES: How the Apple Airport Changed Everything](https://www.youtube.com/watch?v=EhBxWHrG7K8&t=688s)* YouTube video posted by [The Serial Port](https://www.youtube.com/@theserialport). It’s covers the development of the slowly emerging [IEEE 802.11 WiFi standard](https://en.wikipedia.org/wiki/IEEE_802.11) and how the Steve Jobs Apple beat everybody else in the market in making WiFi standard in personal computers. The lesser known Apple AirPort story is a great reminder of how Steve Jobs saved Apple and made it relevant again by innovating with small groups of highly focused people and a highly focused product line. He elegantly distilled the essence of this simple strategy in his [last All Things D appearance in 2010](https://youtu.be/i5f8bqYYwps?si=_g63RMhG7y-XhmCm&t=256):
+
+> Apple is a company that doesn’t have the most resources of everybody in the world, and the way we’ve succeeded is by choosing what horses to ride really carefully, technically. We look for these technical vectors that have a future…We try to pick things that are in their (technological) springs. And if you choose wisely, you can save yourself an enormous amount of work versus trying to do everything. And you can really put energy into making those new emerging technologies be great on your platform rather than just okay because you’re spreading yourself too thin.
+
+Spreading yourself too thin. The disease of trying to do everything versus choosing wisely and staying focused. When I read about the [10 billion disaster that was the failed Apple Car development effort](https://www.bloomberg.com/news/features/2024-03-06/apple-car-s-crash-design-details-tim-cook-s-indecision-failed-tesla-deal), I can’t help but think that current Apple leadership has abandoned all the entrepreneurship wisdom of their former CEO and co-founder.
+
+### *Related*

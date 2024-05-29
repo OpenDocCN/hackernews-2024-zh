@@ -1,0 +1,52 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:56
+-->
+
+# Filtering out the vague business advice - Josip Crnković
+
+> 来源：[https://crnkovic.me/filtering-out-vague-business-advice](https://crnkovic.me/filtering-out-vague-business-advice)
+
+If you're a software developer, at some point in your career, you probably had an idea for an app or a SaaS that you wanted to build. You dreamed of making more than your job, so that you could focus on it full-time, or just have some disposable income. And that's great! You can (most likely) build the product from the development perspective, but you have zero idea where to go from there. You have no idea where and how to get people to use your product and have even less clue on how to get them to actually pay you for the product.
+
+It can be especially overwhelming if you're a solo founder, and the majority of content online truly doesn't help to make things easier.
+
+You probably have 100 followers on Twitter, and maybe 10 out of those 100 are actual people who want to follow your content and interact with you. Your network is tiny, so, of course, you rely on posts from other people on Twitter, Reddit, and the internet in general to learn how to do this thing. Or at least to get you going. By browsing those sites, you might have noticed (*usually containing 🧵 emoji in the post*) a lot of business advice similar to:
+
+*   "Reach out to customers"
+*   "Validate the idea"
+*   "Build the landing page and pre-sell before building the product"
+*   "Build an audience"
+*   "Do X/Y/Z until you reach product-market fit"
+*   "Explore different marketing channels"
+*   "Build the community"
+*   "Do cold outreach"
+*   "Focus on SEO"
+*   "Run ads"
+
+You might have noticed something about all of these: **They don't really tell you anything**. All of these are so vague that they don't really help you at all, especially if you're just a solo developer doing this for the first time. You need actionable tips and suggestions, something you can do today. Advice like "Reach out to potential customers" means absolutely nothing to you; you have no clue where to find them. For example, for each of these, you could (and will) have a handful of follow-up questions:
+
+*   ~~"Reach out to customers"~~ *Alright, but where do I find customers? Even if I have customers, how do I ask the right questions when reaching out?*
+*   ~~"Validate the idea"~~ *How? By talking to people? Where do I find people? How do I talk to them about the idea?*
+*   ~~"Build the landing page and pre-sell before building the product"~~ *But how do I structure the landing page that will convert people into customers? How do I price the product? How do I get traffic to the website?*
+*   ~~"Build an audience"~~ *Then what? Sell to the audience?*
+*   ~~"Do X/Y/Z until you reach product-market fit"~~ *How will I know when I reach the product-market fit? I don't have any customers.*
+*   ~~"Explore different marketing channels"~~ *Okay, which ones?*
+*   ~~"Build the community"~~ *How, where?*
+*   ~~"Do cold outreach"~~ *Okay, but how do I create good enough emails that people will want to talk to me? How do I sell them the product if they do decide to talk to me? What tools do I use to reach out to people?*
+*   ~~"Focus on SEO"~~ *How exactly?*
+*   ~~"Run ads"~~ *Which platform? What are good metrics for ads? How much money do I spend?*
+
+I recently saw an analogy for something else that I think works well here: **To fly a plane — know where you want to go, get in the airplane, and fly it.** You're not really told how to fly a plane; you're just told to fly it. There are thousands of things you need to know before actually flying the plane. It's hard if you don't know how to do it. And making a profitable business is no different — it's hard, especially if you're doing this for the first time, and alone.
+
+Why do I keep seeing vague advice all over the internet? I have no clue. I can only guess that many of these are happening because the founders who shared this advice got lucky with a $3k MRR product and now assume they know what they did, when in reality they wouldn't be able to do it again. It's kind of similar to how some who invested a few thousand in Tesla stock a few years ago are now sharing investing advice when, in reality, they got lucky. Or do people just lie about the MRR as a method of gaining a larger audience? If you're asked about what did you do to grow it to $5k a month and your answer is *"I talked about it online and now I just do social media for marketing,"* then I'm sorry but I don't believe that you know what got you to make that money and don't know if I should listen to you.
+
+I could be totally wrong, though; I could just be a dummy for this, and everyone else naturally knows and understands how to make a side-project profitable. Of course, hats off to people who can actually make money (and continue making money) from selling products online.
+
+**Before anyone screams at me, I'm not saying that you should be handed a step-by-step playbook on how to build a profitable SaaS or that someone should hold your hand and do everything for you**. I'm not even saying that it's easy to build a product that people want to pay for nor that there is a single piece of advice that can be applied everywhere to grow a startup. It takes time to learn this for yourself, to explore different things, listen to podcasts and read books, **learn and fail**, and of course to understand that if something worked for someone on the other side of the Earth, it may or may not work for you.
+
+My point is that you should probably know how to filter out the noise and listen to people who truly know what they're doing and what they're talking about. It makes things a whole lot easier. People who could repeat building a profitable business, and people who give out concrete content. I'm also not saying that you should only listen to advice from the likes of Steve Jobs and Mark Zuckerberg because, in reality — you're not them and will most likely never build a business like theirs. To me, their wisdom is purely motivational. These people have built a multi gazillion dollar empires, and you are trying to find a few dozen people/businesses to pay for your poorly designed app. Can their advice really help you?
+
+I like to consume content from people who give out **actionable tips and advice**, something that I can listen to and go do; people like:
+
+Or read books such as [The Mom Test by Rob Fitzpatrick](https://www.amazon.com/Mom-Test-customers-business-everyone/dp/1492180742) and [Traction by Gabriel Weinberg and Justin Mares](https://www.amazon.com/Traction-Startup-Achieve-Explosive-Customer/dp/1591848369). I'm sure I missed a few, but all these people I respect very much and they have built profitable startups and now share incredible content that you can learn from and apply to your potential startups. I resonate with some of these guys as they are developers who are/were trying to do the same thing as I do, only a long time ago, and now they have some stories to tell.

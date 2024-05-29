@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:36:26
+-->
+
+# Fresno School Tracks Students’ Bathroom Breaks With Countdown App
+
+> 来源：[https://www.thedailybeast.com/fresno-school-tracks-students-bathroom-breaks-with-countdown-app](https://www.thedailybeast.com/fresno-school-tracks-students-bathroom-breaks-with-countdown-app)
+
+[Fresno](https://www.thedailybeast.com/fresno-slammed-for-stalling-on-plan-to-rename-racist-ballpark-named-after-kkk-leader-john-euless) High School has a new way of ensuring students don’t spend more than a second over their allotted seven minutes for bathroom breaks: by meticulously tracking and timing breaks with an app. Students get only two bathroom breaks a day for seven minutes each during classtime, and in order to request “bathroom privileges,” they must key in their student ID numbers to the app. It only green-lights them if there are fewer than 25 students taking restroom breaks, and when they return to class, they must key in again or risk losing the right to relieve themselves. “If you have the tendency to take eight minutes in the bathroom, instead of the seven that you’re getting, ‘We’re gonna take away your bathroom,’” one 10th grader told the *Fresno Bee*. Though teachers generally like the app because it keeps their pupils in the classroom, students pointed out concerns about data privacy. And not all students need the bathroom equally—one girl was frustrated the app didn’t give her enough time while she was on her period.
+
+[Read it at Fresno Bee](https://www.fresnobee.com/news/local/education-lab/article286882795.html?te=1&nl=california-today&emc=edit_ca_20240322)

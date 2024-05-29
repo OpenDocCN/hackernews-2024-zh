@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:16
+-->
+
+# Toyota Was Right About Hybrid Cars All Along. Detroit Owes It an Apology.
+
+> 来源：[https://www.businessinsider.com/toyota-hybrid-cars-ev-sales-growth-prius-bz4x-2024-2](https://www.businessinsider.com/toyota-hybrid-cars-ev-sales-growth-prius-bz4x-2024-2)
+
+Toyota, the originator of the hybrid-car craze in the early 2000s, is poised to reclaim its crown as the king of green cars.
+
+After years of being labeled an EV laggard among its peers in the industry, customers don't appear to care that Toyota has so far released only one pretty unpopular electric car in the US (you know, the one with the [wheels that literally fell off](https://www.businessinsider.com/toyota-recalls-2700-electric-suv-because-wheels-may-come-off-2022-6)).
+
+The Japanese automaker actually tops the list of brands most considered by EV shoppers in a recent survey — beating out [Ford and Elon Musk's Tesla](https://www.businessinsider.com/ev-demand-still-strong-despite-slowdown-hybrids-survey-2024-1). It would appear Toyota's more hybrid-heavy approach to electric cars is alluring for the new breed of electric-car shopper, more frugal and practical than the early adopters that came before them.
+
+"Toyota has been talking more about this bridge between where we're at on the transition from internal combustion to fully electric," Jeremy Korst, president of GBK, a consulting firm that did the survey, told Business Insider. "Other manufacturers — until as of late, of course — have made pretty strong positions on EVs only."
+
+Korst said the latter position wasn't resonating well with customers.
+
+Toyota's chairman, [Akio Toyoda](https://www.businessinsider.com/toyota-electric-cars-ceo-hybrids-plug-in-silent-majority-resistance-2022-12), has long been a skeptic of the industry's all-in attitude on battery-powered vehicles, preaching instead the importance of Toyota's "multipathway approach," in which the automaker is researching and developing a variety of alternatives to the internal-combustion engine.
+
+Toyoda has pushed back on proclamations that EVs will one day become the dominant powertrain. Most recently, [he predicted](https://toyotatimes.jp/toyota_news/1055_1.html#anchorTitles) in January that "no matter how much progress BEVs make," these cars would still eventually account for only 30% of global market share at most.
+
+## Detroit may owe Toyota an apology
+
+Toyota's competition — particularly in Detroit — has plowed [billions of dollars into new electric lineups](https://www.businessinsider.com/electric-vehicle-revolution-hits-delays-production-sales-tesla-china-2023-4) and promised an all-electric future is just around the corner. This, paired with the success of Tesla and overall investor enthusiasm for EV technology, left Toyota looking like a laggard.
+
+Despite years of criticism, it appears Toyota may have had the right idea after all.
+
+[Hybrid sales rose](https://www.nytimes.com/2024/01/17/business/hybrid-cars-electric-vehicles.html) much more quickly than EV sales last year, up 65% to more than 1.2 million, according to Cox Automotive. While Americans bought the same number of purely battery-powered EVs, that segment's growth was just 46% year-over-year.
+
+Shoppers in the market for a hybrid are also much more likely to pony up [more cash for these cars](https://www.businessinsider.com/car-buyer-interest-hybrids-as-electric-vehicle-adoption-slowing-2023-10).
+
+That leaves Toyota in a winning position right now. The Japanese car company has been adding hybrid versions of its most popular models to its lineup for the last several years, including hybrid versions of its highly profitable SUVs. The [Camry](https://www.businessinsider.com/toyota-camry-america-best-selling-car-hybrid-only-2023-11), America's best-selling car for the past 20 years, is set to be hybrid-only by next year.
+
+Companies such as Ford and General Motors had been relying on high-priced, luxury EVs to carry them to profitability in that segment. That strategy is harder to pull off in the current EV market, forcing these companies to [rethink their longer-term EV goals](https://www.businessinsider.com/automakers-back-to-the-drawing-board-ev-plans-2024-2).
+
+In a move that vindicated Toyota's commitment to hybrids, [GM recently went back on its plans](https://www.businessinsider.com/gm-hybrids-plan-good-for-car-dealers-and-shopper-2024-1) to skip hybrids in North America, with CEO Mary Barra telling investors the company was bringing some hybrid options to the region this year. (Ford already sells an array of hybrids in the US, including the popular [F-150 hybrid](https://www.businessinsider.com/2021-ford-f-150-hybrid-powerboost-gas-mileage-efficiency-epa-2020-12))
+
+Toyota has spent the past several years [releasing more hybrids](https://www.businessinsider.com/toyota-camry-america-best-selling-car-hybrid-only-2023-11) and plug-in hybrids while refusing to give up on the nascent hydrogen-fuel-cell technology that many of its competitors have largely abandoned.
+
+It appears this long game on EVs is working for customers right now.

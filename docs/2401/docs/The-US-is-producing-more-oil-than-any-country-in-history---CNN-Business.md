@@ -1,0 +1,70 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:07:41
+-->
+
+# The US is producing more oil than any country in history | CNN Business
+
+> 来源：[https://www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html](https://www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html)
+
+New York CNN  — 
+
+As the world grapples with [the existential crisis of climate change](https://www.cnn.com/2023/11/02/climate/the-planet-is-heating-up-faster-than-predicted-says-scientist-who-first-warned-the-world-about-climate-change/index.html), environmental activists want President Joe Biden to [phase out](https://www.vox.com/climate/2023/9/21/23879312/climate-protests-activism-un-climate-week) the oil industry, andRepublicans argue he’salready doing that. Meanwhile, the surprising reality is the United States is pumping oil at a blistering pace and is on track to produce more oil than any country has in history.
+
+The United States is set to produce a global record of 13.3 million barrels per day of crude and condensate during the fourth quarter of this year, according to a report published Tuesday by S&P Global Commodity Insights.
+
+Last month, [weekly US oil production hit 13.2 million](https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?f=W&n=PET&s=WCRFPUS2) barrels per day, according to the US Energy Information Administration. That’s just above the Donald Trump-era record of 13.1 million set in early 2020 just before theCovid-19 crisis sent output and prices crashing.
+
+That’s been helping to keep a lid on crude and gasoline prices.
+
+US output – led by shale oil drillers in Texas and New Mexico’s Permian Basin – is so strong that it’s sending supplies overseas. America is exporting the same amount of crude oil, refined products and natural gas liquids as Saudi Arabia or Russia produces, S&P said.
+
+“It’s a reminder that the US is endowed with enormous oil reserves. Our industry should never be underestimated,” said Bob McNally, president of Rapidan Energy Group.
+
+Record-shattering US production is helping to offset aggressive supply cuts meant to support high prices by OPEC+, mainly Saudi Arabia and Russia. Other non-OPEC oil producers including Canada and Brazil are also pumping more oil than ever before. (Brazil is [set to join OPEC+](https://www.cnn.com/2023/11/30/energy/saudi-arabia-extend-production-cut-opec/index.html) next year.)
+
+The strength of US output has caught experts off guard. Goldman Sachs analysts on Sunday cut their forecast for oil prices next year. The bank said the “key reason” behind the lowered forecast is the abundance of US supply.
+
+Global demand for crude oil is set to hit a record in 2024 – but it will “easily be met” by the growth in supply, according to S&P’s projections.
+
+All of this has helped to keep oil prices relatively in check. After flirting with $100 a barrel earlier this year, crude has since tumbled back to the $70 to $75 range.
+
+Energy prices have jumped this week after BP halted shipments through the Red Sea [due to security concerns](https://www.cnn.com/2023/12/18/politics/commercial-ships-red-sea-gulf-of-aden-houthi-attacks/index.html). Still, US oil is trading below $74 a barrel, well below where it was when Hamas attacked Israel on October 7.
+
+Gas prices neared the psychologically important level of $4 a gallon in September. But prices at the pump have since fallen sharply, helping to ease inflationary pressure on the US economy.
+
+The national average for a gallon of regular gas [stood at $3.08 a gallon](https://gasprices.aaa.com/) on Tuesday, down from $3.14 a year ago, according to AAA.
+
+Despite record-setting production, Biden has come under fire for his energy policy.
+
+“Unfortunately, this Administration continues to pursue policies designed to limit access to new production—most notably on federal lands and waters. The world will continue to demand more energy, not less, and we urge policymakers to recognize the role American energy production can play as a stabilizing force for consumers here at home and around the world,” American Petroleum Institute Senior Vice President of Policy, Economics and Regulatory Affairs Dustin Meyer, said in a statement on Tuesday.
+
+In September, the House subcommittee on Energy and Mineral Resources [held a hearing](https://naturalresources.house.gov/news/documentsingle.aspx?DocumentID=414861) titled: “Biden’s War on Domestic Energy Threatens Every American.”
+
+Republican Sen. Dan Sullivan of Alaska warned in a [floor speech](https://www.sullivan.senate.gov/newsroom/press-releases/sullivan-bidens-war-on-american-energy-is-a-gift-to-our-adversaries) that the Biden administration’s war on energy is a “gift to our adversaries.”
+
+Earlier this month at a [GOP presidential primary debate](https://www.cnn.com/2023/12/07/politics/fact-check-gop-debate-december/index.html), Florida Gov. Ron DeSantis vowed to “open up all of our domestic energy for production” to “lower your gas prices.” DeSantis made a similar comment at the CNN town hall last week.
+
+That the US is about to produce more oil than any country ever before undercuts the argument that Biden has waged a war on American energy.
+
+Of course, that doesn’t mean it’s Biden policies that have paved the way for record USoil production, nor that the White House would rush to take credit for that.
+
+McNally, a former energy official to former President George W. Bush, said there isn’t that much presidents can do about US oil production, short of taking drastic emergency powers.
+
+Unlike OPEC nations, the United States oil output is largely set by the free market.
+
+“It’s not like President Biden or any president has a dial in the Oval Office to increase production,” McNally said.
+
+Instead, the spike in US output has been driven by smarter and more efficient operations by oil companies. Energy firms have figured out ways to squeeze more and more oil out of the ground – often without increasing drilling dramatically.
+
+The shale oil revolution has been driven by new drilling techniques that have unlocked new resources. But this technique can be more complex and requires vast amounts of water.
+
+## ‘Kicking and screaming’
+
+Yet McNally said the White House has been forced to shift its tone on fossil fuels from the climate-focused stance of 2020 and early 2021 to something more neutral.
+
+Last year, gas prices spiked above $5 a gallon following Russia’s invasion of Ukraine, which set off a panic in the oil market. Biden [urged US oil companies to pump more oil](https://www.cnn.com/2022/05/25/business/gas-prices-biden-inflation-spr/index.html) – exactly the opposite of what climate scientists are calling for.
+
+In March, the Biden administration even [approved the Willow oil drilling project](https://www.cnn.com/2023/03/14/politics/inside-willow-project-approval-biden-haaland-climate/index.html), a controversial ConocoPhillips drilling venture in Alaska that had been stalled for decades. That green light came in the face of [deep criticism from climate groups](https://www.cnn.com/2023/03/13/politics/willow-project-alaska-oil-biden-approval-climate/index.html) worried about the environmental and health risks.
+
+“President Biden has been dragged kicking and screaming from his initial keep-it-in-the-ground strategy towards a more pragmatic policy,” McNally said, noting the administration was “mugged by the reality of high gas prices and Russia’s invasion of Ukraine.”

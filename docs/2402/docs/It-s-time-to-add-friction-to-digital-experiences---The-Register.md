@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:53:26
+-->
+
+# It's time to add friction to digital experiences • The Register
+
+> 来源：[https://www.theregister.com/2024/02/14/friction_is_good/](https://www.theregister.com/2024/02/14/friction_is_good/)
+
+Column Before he woke up on the first day of February, one of my friends was robbed.
+
+Thieves came in, found more than $90,000 in cash stuffed into a few wallets, helped themselves to it, and escaped.
+
+My friend never heard a thing – because this heist happened electronically. A combination of poor password hygiene and weak security on his Windows laptop gave the intruders unfettered access to the digital wallets in which he stored cryptocurrency. By the time my friend knew he'd been robbed, the thieves had likely “washed” the coins using sophisticated cryptographic tools that made those coins – if not quite anonymous – very difficult to trace.
+
+Similar incidents happen every day at scale: people get robbed; organizations have their [data lakes drained](https://www.theregister.com/2024/01/17/extortion_bot_is_autopwning_postgresql/); nations find themselves [under threat](https://www.theregister.com/2023/11/29/water_authority_ciso_iran/). We reckon this as the price of a connected world.
+
+Our answer? Throw a few “speed bumps” onto the road with 2FA and hope for the best. Sometimes that works – but sometimes that mobile's SIM has been [cloned](https://www.theregister.com/2009/07/10/comic_book_sim/) and it's all for naught. Speed bumps provide the illusion of safety and security, without actually doing much to slow the escape vehicle. To do that requires a bit more of a rethink.
+
+For sixty years, computing has emphasized speed – low latency, transactions per second, megahertz and the like. (Twenty-four years ago, at the famed Game Developers Conference, I remember seeing the very first AMD Athlon [running at 1GHz](https://www.theregister.com/2000/03/03/how_amd_beat_intel/) – and thought it a wonder.)
+
+The singular focus has us prioritizing the accuracy of granular operations – load, store, move, add, subtract, test, jump – over the systemic product of those operations – such as moving data between machines (and owners) across a network. Our relentless optimization for speed has us [valuing a 120Gbit/sec](https://www.theregister.com/2022/10/19/intel_nextgen_thunderbolt/) Thunderbolt port over a more thoughtful consideration of how we might be far better served by an operation more complex, secure – and slower. Thinking fast has left us vulnerable.
+
+Even suggesting that slower might be better seems like an anathema. If computing can't be fast, then what's the point?
+
+Perhaps the point should not be which chip or algorithm renders the fastest or most accurate operation, but which systemic approach offers the greatest level of safety and security. Systems that have no friction in them – running unsupervised, without speed bumps, with no skeptical humans in the loop judging and grading – are hurtling down the highway to hell. That we also happen to be *in* these vehicles seems to occur to no one – until after the inevitable crash.
+
+If we want to avoid the unpleasant consequences of collisions, we urgently need to consider how we might make all of our key IT infrastructure “slow”.
+
+Some criteria appear immediately obvious: friction should be proportionate to the danger inherent in the transaction. A private message between two close confidantes needs very little friction. On the other hand, a massive financial transaction or data migration could include baked-in “breakpoints” that require human intervention before automated work continues. Making those big and dangerous transactions slow and expensive, studded with human oversight, makes them less likely to suddenly spiral out of control.
+
+We're already accustomed to the idea of “slow food” and “slow fashion” – even “slow television”. “Slow computing” could provide the safety belt, airbags and crumple zones needed to keep us from becoming digital roadkill. Speed can be useful, but physics tells us that the damage of a crash increases with the square of the velocity. We need to hit the brakes – before we hit the wall. ®

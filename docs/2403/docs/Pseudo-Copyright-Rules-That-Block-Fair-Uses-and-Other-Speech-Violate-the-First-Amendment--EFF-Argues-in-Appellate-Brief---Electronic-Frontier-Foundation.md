@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:06
+-->
+
+# Pseudo-Copyright Rules That Block Fair Uses and Other Speech Violate the First Amendment, EFF Argues in Appellate Brief | Electronic Frontier Foundation
+
+> 来源：[https://www.eff.org/press/releases/licensing-scheme-fair-uses-and-other-speech-violates-first-amendment-eff-argues](https://www.eff.org/press/releases/licensing-scheme-fair-uses-and-other-speech-violates-first-amendment-eff-argues)
+
+WASHINGTON, DC—A 1998 federal law that criminalizes access to digital works for lawful purposes—chilling free expression and impeding scientific research—is unenforceable because it’s too broad and violates the First Amendment, the Electronic Frontier Foundation (EFF) and co-counsel Wilson Sonsini Goodrich & Rosati argued in [an appeals court brief filed today](https://www.eff.org/document/green-v-doj-opening-brief-11-29-2023). 
+
+The brief, filed in the U.S. Court of Appeals for the District of Columbia Circuit in the case of *Green v. Department of Justice*, argued Section 1201(a) of the Digital Millennium Copyright Act (DMCA) is constitutionally invalid on its face. The case arises after 25 years of people having to petition the Copyright Office for permission to exercise their fair use and other rights in copyrighted works that have been put under digital locks.  
+
+“It has burdened Americans’ First Amendment-protected right to access and learn from digital works, including works they already own or embedded in physical objects they own,” the brief argued. “It has also burdened their rights to create their own protected expression, whether that expression includes fair-use copying of portions of others’ works, or reflects the uncopyrightable facts and ideas in those works.” 
+
+EFF and co-counsel filed this lawsuit in 2016 against the U.S. government on behalf of security researcher Matthew Green and technologist Andrew “bunnie” Huang, both of whom pursue projects that benefit the public and are perfectly lawful except for DMCA’s anti-speech provisions, which block their ability to develop and publish their work based upon fair use and other copyright exemptions.  
+
+The appeals court [issued a narrow ruling](https://www.eff.org/document/green-dc-circuit-opinion) in December 2022 on whether the First Amendment protected the plaintiffs’ rights to publish code that included instructions for circumventing encryption in order to read and build upon lawfully-acquired software and video. But no court has yet considered whether the law overall creates an unconstitutional speech-licensing regime, nor considered the 25 years of accumulated evidence that the law—passed in 1998 before the web became as ubiquitous as it is now—is overbroad because its impact falls predominantly on legitimate and important speech.  
+
+Section 1201’s anti-circumvention and anti-trafficking provisions make it illegal for people to access even lawfully-purchased copyrighted material such as films, songs, and the computer code that controls vehicles, devices, and appliances, whenever such access requires bypassing encryption or another access-control technology. Enacted out of a belief that it was necessary to combat copyright infringement, this ban applies even where people want to make non-infringing fair uses of such materials or engage in speech that has nothing to do with copyright. Since infringers already face steep civil and criminal penalties, the primary impact of this law has been to stifle lawful speech. 
+
+Congress knew that the ban would impact legitimate speech, reaching far beyond copyright infringement. But instead of narrowing the provision, it created a process that required people wishing to exercise their rights to petition the Librarian of Congress for an exemption—a process accessible only once every three years. EFF argues that this provision is also unconstitutional, since it allows the Copyright Office to decide that some completely legal speech is still not allowed. 
+
+“This supposed ‘safety valve’ is not only onerous, slow, and biased, it is an unconstitutional speech-licensing regime,” the brief argued. “And because it lacks clear, definite standards and the procedural safeguards required by the First Amendment, it has generated rules that improperly discriminate against certain types of expression and certain speakers.” 
+
+Green, a professor of computer science and applied cryptography at the Johns Hopkins Information Security Institute, studies the security of computer systems and teaches others how to do the same; his work requires finding weaknesses in code, which requires that he read the code in question. Huang, a prominent computer scientist and inventor, and his company Alphamax LLC, are developing devices for editing and analyzing digital video streams that would let people make innovative, real-time uses of their paid video content, such as automatically identifying video subjects, improving accessibility, or captioning a presidential debate with a running comment field from social media—all of which are easy to do if you are able to read the video data into a computer but impossible to do at the same quality otherwise.  
+
+**For the brief:**  [https://www.eff.org/document/green-v-doj-opening-brief-11-29-2023](https://www.eff.org/document/green-v-doj-opening-brief-11-29-2023)
+
+**For more about this case:** [https://www.eff.org/cases/green-v-us-department-justice](https://www.eff.org/cases/green-v-us-department-justice)

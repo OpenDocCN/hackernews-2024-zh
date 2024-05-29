@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:49
+-->
+
+# To all the newspapers I loved - by Branko Milanovic
+
+> 来源：[https://branko2f7.substack.com/p/to-all-the-newspapers-i-loved](https://branko2f7.substack.com/p/to-all-the-newspapers-i-loved)
+
+I was always in love with (in-print) newspapers.
+
+In the past you did not have to write “in print”. There were no other newspapers. Writing “in print” was redundant; and incomprehensible.  
+
+But now things are different. Today, we chatted (among older people) and observed that no one in the New York subway reads print newspapers any longer. People listen to podcasts, look at their smart phones, read a paper copy of a book (yes, they do that too), watch others around them.  A friend said she has not seen anyone reading a newspaper on a subway in years.
+
+Neither have I. But I love the print newspapers, and this evening, as I do two or three times per week, I went to the nearby convenience store to buy the last copy of “The Wall Street Journal” (it costs five dollars). I like it not only for its content (which with the exception of the editorial pages where they hire only lunatics to write them) is excellent. I love it because the smell of the paper is the same as what I remember from many years ago.
+
+When I was a kid, there were two dailies in Belgrade. One is/was called “Politika”. It is the Serbian equivalent of the “New York Times”. It was founded in 1904 by a rich liberal family. It has survived all regimes and has been and remains the “newspaper of record”. It has always been close to the government, whatever that government was: royalist, communist, nationalist, but never just a mere mouthpiece. It has a unique font, designed at its foundation and not changed since.
+
+The other daily was “Borba” (The Struggle), the underground newspaper of the banned Communist Party. When the said party came to power, the newspaper became a daily and went very official. Very few people read it, but it was always displayed in government offices.
+
+My family bought it on Sundays, when its heading was published in red. Whenever I think of the Sundays of the yesteryear I see these five big letters, all in red upper cases.
+
+During my high school in Belgium, I adored “Le Monde”. It was the same: the newspaper of the thinking ruling class. Not a primitive ruling class, not even the conservative ruling class. But the liberal, bien-pensant ruling class. I thought it could never go wrong. When I would see a mistake or a typo, I believed I was wrong. “Le Monde” could not be wrong. But it was—at times.
+
+It was nevertheless a great newspaper. My views of the Soviet Union were influenced by its correspondent Jacques Amalric; as my views of China were influenced by an extraordinarily gifted “Politika” journalist of the 1970s, Dragoslav Rančić. The fact that I can still easily remember their names half-a-century later, while I have forgotten many others, says something about the nearly religious attention with which I read them.
+
+When I came to England, I was struck by the type of paper (like: real paper) and print used: newspapers always smudged your hands, and you had to wash them practically every time after you read the paper. I thought that it was some cool British custom, poorly understood by the barbarians. But rather quickly I changed my opinion. It must have been related to the cost of printing. Yet I do not know exactly why only in England have I experienced this.
+
+My first ever evening in America was at a New York airport hotel where I grabbed a copy of a New York tabloid, without knowing anything about the newspapers in the New World. I still remember the title displayed across the whole front page: “Top Cop Fired”. I could not believe that a newspaper could print such a disrespectful title. In the newspapers I knew, this kind of news would be buried on page 4 (that is, on an even-numbered page to which people always pay less attention) under the title “The head of the New York police department released from his duties”. The directness and irreverence of New York tabloids impressed me then and still impresses me now. They do not mind publishing “Trump is a Bump” or ”Hillary, the Deplorable”. When the domestic political scene heats up, they take no prisoners: they are in-your face, brutal. I buy them, from time to time, when I take Amtrak, just to enjoy their freedom from convention. It is not the “All the news fit to print”. Often, it is the news not fit to print, but precisely for that reason more important to print.
+
+Anwar Shaikh, the most left-wing economist in the world, introduced me to “The Wall Street Journal”.  I met him in his office as he was writing the monumental “Capitalism: Competition, Conflict, Crises”. He told that he reads the WSJ because it tells the truth about what is happening in the economy. It struck me then by the seeming oddity of the most left-wing economist in the world praising the most right-wing daily in the world. But Anwar was right. An economics daily has, in the part that deals with the real life, to be as objective as possible because if it spreads fairy tales people who believe them will lose money. Then no capitalist will buy it. For they do not like to lose money. In the trade-off between the fairy tales and cash, they chose the latter. Other dailies that appeal to the “pensée unique” do not need to worry about that kind of elemental truth. They can make things up.
+
+I am one of the last Mohicans who reads the print news. I used to buy “China Daily” in New York and Washington for 25 cents but the booths that sell the paper have largely closed now. I think it is because the Chinese government sees it as a waste of money (it is true that at times the dailies were not “renewed”; so on a Thursday morning the most recent issue would be the one from Monday). Several years ago in Moscow I challenged my Russian friend to find a single newspaper kiosk in a thirteen-million-people city. He could not. But luckily in the hotel where I was staying they were distributing the “Kommersant” an excellent Russian version of “The Financial Times”.
+
+One of the few countries that is resisting the onslaught of the digital print and where one can still, every day, find all the print newspapers and magazines, is Spain. I like to hang around the kiosks, deciding which newspaper’s font, color, and smell I like the most. Then I grab the paper, open it, smell its print, and think nothing has changed in fifty years.

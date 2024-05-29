@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:15
+-->
+
+# IBM CEO pay jumps 23% in 2023 • The Register
+
+> 来源：[https://www.theregister.com/2024/03/15/ibm_ceo_pay_jumps_23/](https://www.theregister.com/2024/03/15/ibm_ceo_pay_jumps_23/)
+
+IBM chairman and CEO Arvind Krishna bagged a double digit pay bump in 2023 as he met the major financial objectives outlined by the board. The average compensation of employees that helped Big Blue achieve those targets? Up by single digits.
+
+Krishna’s total compensation went up 23 percent year-on-year to $20.398 million, including an unchanged base salary of $1.5 million, stock awards of $11.483 million, with the rest comprised of non-equity incentive plans, travel and security expenses.
+
+The revenue goal for 2023 was $62.3 billion – IBM actually generated $61.9 billion, a 99 percent attainment. However, operating cash flow of $12.7 billion was higher than the targeted $12.3 billion. Both metrics determined the Annual Incentive Plan payout.
+
+The Performance Share Unit payout - held within the stock awards - was scored against revenue, operating earnings per shares, and free cash flow targets from 2021 to 2023.
+
+Other metrics pertained to business results: IBM's Software division revenue grew five percent and Consulting revenue was up six percent; IBM continued to shift to higher margin growth revenues, with 75 percent of revenue now in Software and Consulting; free cash flow generation was $11.2 billion, up $1.9 billion year-on-year.
+
+IBM also completed nine acquisitions in the year, spent $7 billion on R&D and engineering, and paid out $6 billion to shareholders.
+
+Some 282,000 staff were employed at IBM at the end of December 2023, and their average total compensation was $65,463, 6.89 percent higher than at the end of 2022\. The base salary of staff was flat at $45,197\. The CEO to median employee pay ratio was 312:1, higher than the 271:1 [recorded](https://www.sec.gov/ixviewer/ix.html?doc=/Archives/edgar/data/51143/000110465923029014/tm231774d2_def14a.htm) last year.
+
+The pay stats were included in a [proxy statement](https://www.sec.gov/ixviewer/ix.html?doc=/Archives/edgar/data/0000051143/000110465924032641/tm2329614-d3_def14a.htm) filed with SEC ahead of an Annual Meeting of Stockholders on April 30, where shareholders will have the opportunity to have their say on pay. Other things up for a vote include appointing an independent accounting firm, requesting a report on lobbying activities, and more.
+
+In terms of the other IBM execs' pay awards, CFO James Kavanaugh got $11.68 million, RD Thomas, Chief Commercial Officer, got $10.3 million, and Vice Chairman Gary Cohn was paid $9.53 million. ®

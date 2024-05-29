@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:54:57
+-->
+
+# Each Facebook User Is Monitored by Thousands of Companies - Consumer Reports
+
+> 来源：[https://www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/](https://www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/)
+
+In the report, Consumer Reports calls for a number of policy proposals covering data collection practices, some of which could be part of a national digital privacy law, something that the organization has long advocated for. The recommendations specifically aimed at Meta’s technology and the advertisers who use it include: 
+
+**• Requiring companies to adopt “data minimization” strategies**, which call for the collection of the absolute minimum amount of data needed to provide the service being offered.
+
+****•** Expanding the powers of “authorized agents” to act on behalf of consumers to act on their rights.** [Permission Slip](https://www.permissionslipcr.com/) is a mobile app by Consumer Reports that allows users to quickly opt out of and delete data from a long list of companies and data brokers on behalf of users; the app takes advantage of state privacy laws’ authorized agent provisions.
+
+****•** Increasing ad transparency** by creating ad archives that allow the public to see all ads that have been served to users on a platform, following the lead of the European Union’s [Digital Services Act](https://husovec.eu/wp-content/uploads/2022/10/Official-Version-OJ_L_2022_277_FULL_EN_TXT.pdf). 
+
+**• Improving the quality and readability of the data** that Meta makes available in its existing transparency tools, so that consumers can actually act on the information they review.
+
+Fitzgerald echoed these recommendations, saying the problem lies with the fact that the burden is on the consumer to take action to prevent this data collection. Even a “global opt-out” mechanism allowing users to avoid having their data shared is not enough because “that still requires the user to take an action to protect their privacy. A lot of people are not going to have the time or knowledge to do that,” Fitzgerald said. 
+
+Vazquez, Meta’s spokesperson, said the company would “continue to invest in data minimization technologies to keep up with evolving expectations. As we cover in our terms, businesses are responsible for getting permission to share people’s information with companies like ours.”
+
+For now, the lack of a federal privacy law leaves consumers in most states with few options. “I think people should be encouraging their elected officials to pass privacy laws that require businesses to change some of these business practices to stop this ubiquitous tracking of our every click and every movement,” Fitzgerald said.

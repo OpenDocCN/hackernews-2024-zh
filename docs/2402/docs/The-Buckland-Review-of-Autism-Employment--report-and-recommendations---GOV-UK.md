@@ -1,0 +1,1306 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:28:43
+-->
+
+# The Buckland Review of Autism Employment: report and recommendations - GOV.UK
+
+> 来源：[https://www.gov.uk/government/publications/the-buckland-review-of-autism-employment-report-and-recommendations/the-buckland-review-of-autism-employment-report-and-recommendations](https://www.gov.uk/government/publications/the-buckland-review-of-autism-employment-report-and-recommendations/the-buckland-review-of-autism-employment-report-and-recommendations)
+
+A report of research and recommendations led by Sir Robert Buckland KC MP, supported by Autistica, with secretariat provided by the Department for Work and Pensions.  
+
+Crown copyright 2024. 
+
+You may re-use this information (not including logos) free of charge in any format or  medium, under the terms of the Open Government Licence. To view this licence, visit  [http://www.nationalarchives.gov.uk/doc/open-government-licence/](http://www.nationalarchives.gov.uk/doc/open-government-licence/) or write to the  Information Policy Team, The National Archives, Kew, London TW9 4DU, or email  [psi@nationalarchives.gov.uk](mailto:psi@nationalarchives.gov.uk). 
+
+This document/publication is also available on our website at:  [https://www.gov.uk/government/organisations/department-for-work-pensions/about/research#research-and-analysis-publications](https://www.gov.uk/government/organisations/department-for-work-pensions/about/research#research-and-analysis-publications) 
+
+First published February 2024. 
+
+ISBN 978-1-78659-625-3 
+
+Views expressed in this report are not necessarily those of the Department for Work  and Pensions or any other government department.
+
+## Foreword by Sir Robert Buckland  
+
+I have had a long-standing interest in promoting employment as an essential element in building full and meaningful lives for autistic people. At the moment only 3 in 10 autistic people of working age are in employment. This means that 7 in 10 of them are unable to access the independence and fulfilment that employment can bring. It also means that employers, and the wider economy, are missing out on the skills and energy that autistic people could be contributing, to the detriment of us all.  
+
+I was therefore delighted when the Secretary of State for Work and Pensions agreed to this review identifying the barriers to autistic people securing sustained and fulfilling employment and exploring how we can overcome those barriers. We launched the review on 2 April 2023, World Autism Awareness Day, and over the months since we have spoken to hundreds of organisations and individuals, and drawn all their experience, ideas and good practice into the report and recommendations you will find here.  
+
+I have been very impressed by the level of support and engagement from stakeholders, particularly from employers and employer representative groups – the key target for the review. My sincere thanks for all the excellent ideas you have brought forward.  
+
+I also extend my thanks to Autistica for their support and to the Department for Work and Pensions for providing the secretariat and organising the review process. Both organisations have been invaluable. And my thanks to the Secretary of State, Mel Stride, the previous Minister for Disabled People, Tom Pursglove, and to the current Minister, Mims Davies, for their support and advice. 
+
+Above all, I would like to thank the very many autistic people we have spoken to. We have been careful to ensure that you have had the opportunity to give your views on issues that will be so important to you. I am so grateful for your support.  
+
+I believe this report provides a way forward that does not require vast sums of public money but that can produce a radical improvement of autistic employment rates and a radical transformation of autistic people’s lives. I call on everyone to now make this happen. 
+
+Sir Robert Buckland KC MP 
+
+## Executive summary and recommendations  
+
+e.1 Autistica estimates that around 1 in 70 people is autistic, so about 1 million people in the UK. In 2022/2023 (the latest available figures) the number of people of working age in the UK who reported autism as either a main or secondary long-term health condition was 680,000\. Neurodiverse people do not consistently identify as having a long-term health condition therefore these numbers are likely to be an undercount of the true population. Not all working age autistic people will be able to work, but NAS’s research found that the vast majority want to.  
+
+e.2 Despite their wish to work, the latest official statistics show that only around 3 in 10 working age autistic disabled people are in employment, compared with around 5 in 10 for all disabled people and 8 in 10 for non-disabled people.  
+
+e.3 Autistic people face the largest pay gap of all disability groups, receiving a third less than non-disabled people on average. Autistic graduates are twice as likely to be unemployed after 15 months as non-disabled graduates, with only 36% finding full time work in this period. Autistic graduates are most likely to be overqualified for the job they have, most likely to be on zero-hours contracts, and least likely to be in a permanent role.  
+
+e.4 There is a wide range of potential barriers to work for autistic people; poor preparation by employers, unfair hiring practices, unclear processes and outdated attitudes all play a role. From a young age, autistic people are less likely than their peers to have the time, connections or support to seek out work-related experiences and career advisors are often poorly equipped to support autistic people. This has knock-on effects for later employment prospects.   
+
+e.5 Autistic people have far more negative experiences of interviews, group tasks and psychometric tests. Autistic jobseekers must navigate vague, generic job descriptions, ambiguous interview questions and challenging sensory environments, often with an emphasis on social skills rather than job skills. Many feel they must mask their autistic traits to succeed.  
+
+e.6 Even after finding work, maintaining long-term employment remains a challenge for autistic people. Many do not receive the necessary support or adjustments to enable them to fulfil their role in the face of inaccessible sensory and social environments. Many autistic adults are not aware of their legal rights around reasonable adjustments. Only around 35% of autistic employees are fully open about being autistic, with 1 in 10 not disclosing to anyone at work. For those who do disclose, the most common time to do so is after starting a job – highlighting a persistent and well-founded fear of discrimination during the recruitment process. 
+
+e.7 Access to adjustments is still highly variable, with the onus usually on the autistic employee to identify and advocate for adjustments. Around one third of autistic employees felt unable to discuss their adjustment needs at all, and of those who did request adjustments, over a quarter were refused and more than 1 in 10 found the adjustment was poorly implemented. 
+
+e.8 Employers and managers often report poor knowledge of autism and feel under-prepared to identify and implement adjustments for autistic people. 
+
+e.9 The Buckland Review of Autism Employment was launched on 2 April 2023 to consider how this situation can be improved. Over the summer of 2023 the review received views from employers, employer organisations, autistic people, autism charities, specialist support groups and other stakeholders. It explored how employers recruit, retain and develop autistic people, identifying barriers to this happening and developing effective ways to overcome those barriers, with the aim of significantly improving the autism employment rate over the next 5 years.   
+
+e.10 We explored the issues under five themes: 
+
+1\. What initiatives can help to raise awareness, reduce stigma and capitalise on the productivity of autistic employees 
+
+2\. What more could be done to prepare autistic people effectively for beginning or returning to a career 
+
+3\. How employers can adjust recruitment practices to meet the needs of autistic applicants   
+
+4\. How employers can support autistic people already in their workforce 
+
+5\. How employers can encourage and support autistic staff to develop and progress their career.   
+
+e.11 There was a high level of consensus from all stakeholders about the best ways to address each of these issues. We have condensed their views into 19 recommendations, presented under the relevant theme. These recommendations are mostly aimed at changing employer behaviour and are for the multidisciplinary task group to take forward.  
+
+e.12 As well as the specific recommendations, the report notes that many developments that can help autistic jobseekers are already under way. These include the new Universal Support programme, the review and reinvigoration of Disability Confident, Access to Work developments and systems improvements, and the launch of the Autistica Neurodiversity Employers Index. These will require some steering as they are developed to ensure the needs and lived experiences of autistic people are taken fully into account. 
+
+e.13 The report notes that many of the changes employers could make that would help recruit, retain and develop autistic people would also benefit people with other types of neurodiversity and disability, and non-disabled people. Adopting a universal “inclusion by design” approach, so an autistic person need not disclose their autism to secure the support they need, could reduce the need for separate workplace adjustments and the stigma this can sometimes entail, as well as improving overall productivity and reducing costs.  
+
+e.14 The report recognises that the transformational change needed cannot be done all at once and everywhere. Instead, we are seeking to generate a wave of improvement: starting from ripples of good practice, building into small waves of change, and finally growing into a sea change in accepted good practice which any employer would both want to and be expected to follow. We recognise that this could take some years to follow through: this argues for the creation of a task group to carry on the work.  
+
+e.15 Finally, we note that the evidence in some areas is slim or non-existent, and as the wave of improvement grows, we will wish to evaluate the effects and use that evaluation to adjust further developments. There will therefore be a need for continued evidence gathering and analysis.  
+
+## Recommendations  
+
+### Initiatives to raise awareness, reduce stigma and capitalise on productivity 
+
+1\. Work with autistic people, autism organisations, and employer-facing organisations to create a national campaign aimed at employers. Build a package of good news stories and testimonials from employers who employ autistic people and can speak about the benefits it brings to their businesses. Include examples of autistic people with successful careers, ideally in a range of industries, occupations, and levels, from entry level up to senior management. Highlight the availability and sources of advice and support that helped these employers. Include statistics showing that for certain jobs autistic staff can be more productive than neurotypical staff (with some statistics showing productivity improvements in some areas of work ranging from 45–145%). This campaign could start with a high-profile public launch of this report.   
+
+2\. Promote the Autistica Neurodiversity Employers Index, which will enable organisations to measure themselves against best practice, highlight areas of strength and areas for improvement and include an annual awards programme. The Index will also provide guidance on how employers can design fully inclusive processes, procedures and premises so all staff can receive the support they need without autistic staff needing to disclose their condition. The Index had a limited release as a proof of concept with selected employers in autumn 2023, with a full launch open to employers from all market sectors scheduled for spring 2024. 
+
+3\. Work with larger national or multinational organisations to develop small pilots of good practice, developing processes and support mechanisms that enable autistic staff to be recruited and to succeed. Assess the success of these pilots so that organisations have evidence for rolling them out more widely. Work with industry representative bodies to take the evidence from these pilots and disseminate it across other businesses in that industry. 
+
+### Supporting autistic people to begin or return to a career 
+
+4\. Identify and promote cross-industry autism employment support groups, including opportunities for volunteering and work shadowing, that autistic jobseekers can join to build their knowledge of employment and their confidence.  
+
+5\. Ensure that the design of the new Universal Support programme meets the varied needs of autistic people, including access to a supported employment programme for those who need help to prepare them for mainstream employment.  
+
+6\. Promote supported internships as a good route for autistic young people to develop work experience and skills. Ensure providers are aware of the range of needs of autistic young people and are equipped to meet those needs. The Department for Education is piloting an entry route to supported internships for disabled people without an EHC plan. Push for a speedy rollout of that change across the country.  
+
+7\. Promote apprenticeships as another good route to develop work experience and skills, highlighting the additional funding and support available. Many autistic young people will struggle to achieve the maths and English skills required to gain a higher-level apprenticeship. Although there are flexibilities in apprenticeship rules for young people with learning difficulties and disabilities, these may require an EHC plan. Accepting that EHC plans can be difficult to obtain, remove this requirement and allow exemption on self-declaration. 
+
+8\. Work with autism charities and other relevant groups to ensure autistic people know about Access to Work and the support it can provide to meet their individual recruitment and employment needs. Continue to improve the Access to Work programme: if the Adjustment Passport and Access to Work Plus pilots produce positive results, these should be rolled out nationally as soon as possible.   
+
+### Recruitment practices that appropriately support autistic applicants 
+
+9\. Ensure careers advisers in schools, colleges, the National Careers Service in England and equivalents in devolved administrations all have a good understanding of autism, know how to support autistic customers appropriately and can provide appropriate advice to autistic people seeking a first job or a career change.  
+
+10\. Continue to develop Disability Confident, increasing the rigour of developmental work needed to achieve the higher Disability Confident levels, increasing the frequency and rigour of Disability Confident assessments and building in strong links to the Autistica Neurodiversity Employers Index, so autistic jobseekers can seek out Disability Confident organisations knowing they will offer support.  
+
+11\. Consider how the online Support with Employee Health and Disability (SEHD) service can link employers to appropriate and accessible advice on best practice for recruiting and supporting autistic staff.  
+
+12\. Engage with the Recruitment and Employment Confederation, advising on the benefits autistic candidates can bring to businesses, how to remove barriers to recruiting them, and how these improved processes can be applied to the recruitment of all candidates. Explain how this will produce better matches and improved business performance. Share with the Confederation and individual recruitment agencies strong case histories of successful autistic staff that they can use in conversations with client employers.  
+
+13\. Identify and promote sources of information and support on becoming self- employed or establishing a social enterprise or Community Interest Company. Work with the Access to Work team to ensure application processes for support with self-employment are reasonably accessible.  
+
+### Supporting autistic people already in the workforce 
+
+14\. Work with the Disability Confident Business Leaders Group and staff team to identify Disability Confident firms who have experience in successfully employing autistic people and achieving culture change. They can act as role models and guides for other Disability Confident organisations.  
+
+15\. Work with the Chartered Institute of Personnel and Development (CIPD) to ensure the 2018 Neurodiversity at Work guidance is publicised and accessible to employers. Developed in collaboration with Uptimize, this provides good practice guidance on developing a neuroinclusive organisation. 
+
+16\. Work with autism charities to produce “autism design guides” for a range of industries. Show how to create appropriate and supportive design of premises, furnishings, equipment and procedures, and include examples of where these have worked well.  
+
+17\. Work with software suppliers and suppliers of adaptive technology to develop IT systems that meet autistic people’s needs. Where these systems are already in place, work with the suppliers to promote them widely and include guidance on how to access them.  
+
+### Encouraging and supporting career progression 
+
+18\. Promote the value of employee resource groups and support networks within larger organisations, helping to develop new skills and a network of contacts to succeed at the next level up. Promote the use of mentors and buddies to support staff in developing the skills and behaviours needed to progress.  
+
+19\. Work with autism charities, CIPD, management training organisations and other advisors to develop packages of strength-based training focused on helping autistic staff to progress. These packages should identify skills mismatches and gaps and suggest ways of dealing with these – for example, by building existing skills, or by reshaping jobs within the team to better match staff skill sets to roles.  
+
+## Introduction
+
+1.1 The Buckland Review of Autism Employment was launched on 2 April 2023\. The full Terms of Reference for the review are set out at Annex 1.
+
+1.2 The review sought views from autistic people, employers, employer organisations, and specialist support groups. It explored how employers recruit, retain and develop autistic people, identifying barriers to this happening and developing effective ways to overcome those barriers, with the aim of significantly improving the autism employment rate over the next 5 years.
+
+Although some of the programmes referred to are England-only, the review covered autism employment across the UK, and we received representations from the Scottish and Welsh Governments and from organisations working in all parts of the UK. We recognise that many recommendations may have territorial impacts and we will look at the precise way they could be applied in the devolved administrations as recommendations are worked through.
+
+1.3 As we have been receiving evidence and developing recommendations, we have followed the terms of reference in seeking solutions that:
+
+*   Are likely to be acceptable to autistic people
+*   Are likely to be effective at improving autistic people’s outcomes
+*   Would be feasible for employers or public services to deliver, including integrating with existing initiatives.
+
+1.4 We also heard clearly that autistic people’s experiences and needs vary widely, so we have sought solutions that can be adapted and personalised around each individual.
+
+1.5 The review was structured around 5 themes:
+
+*   What initiatives can help to raise awareness, reduce stigma and capitalise on the productivity of autistic employees
+*   What more could be done to prepare autistic people effectively for beginning or returning to a career
+*   How employers can adjust recruitment practices to meet the needs of autistic applicants
+*   How employers can support autistic people already in their workforce
+*   How employers can encourage and support autistic staff to develop and progress their career.
+
+1.6 This report summarises the evidence the review team has gathered and contains recommendations for action. These recommendations are for the multidisciplinary task group to take forward. Most are aimed at changing employer behaviour.
+
+1.7 The report begins with an overview of the current situation for autism employment, then covers the evidence and recommendations for each theme. Many of the recommendations fit into more than one theme but they are presented under the theme to which they are most relevant. The report ends with suggested next steps.
+
+## 2\. The current situation
+
+### Language
+
+2.1 There is a range of views within the community about the language that should be used to describe autism. In this report, we use identity-first language (“autistic” rather than “with autism”) to reflect the language most autistic people use to describe themselves.^([[footnote 1]](#fn:1)),^([[footnote 2]](#fn:2))
+
+### Definitions and numbers affected
+
+2.2 Autism is a lifelong developmental condition that can occur at all levels of ability, across all social classes and ethnicities. It is a spectrum condition and often occurs in combination with other conditions, including ADHD, learning disability, dyslexia, dyspraxia, dyscalculia, speech and language difficulties and mental health conditions. Most autistic people see autism as a part of their identity that cannot and should not be separated from other aspects of who they are.
+
+2.3 Autistica estimates that around 1 in 70 people is autistic, which means there are about 1 million autistic people in the UK. In 2022/2023 (the latest available figures) the number of working age people in the UK who report autism as either a main or secondary long-term health condition was 680,000\. Neurodivergent people do not consistently identify as having a long-term health condition, so these numbers are likely to be an underestimate of the true population. Not all working age autistic people will be able to work, but research by the National Autistic Society found that the vast majority want to.
+
+2.4 Despite their wish to work, the latest data from the Labour Force Survey shows that only around 3 in 10 working age autistic people are in employment, compared with around 5 in 10 for all disabled people and 8 in 10 for non-disabled people.
+
+### The National Autism Strategy
+
+2.5 This government document, published on 21 July 2021, builds on and replaces the preceding adult autism strategy Think Autism. It extends the scope of the strategy to young people in recognition of the importance of ensuring they are diagnosed and receive the right support as early as possible and across their lifetime.
+
+2.6 The strategy depicts the changes the government wishes to make and the approach it is taking towards delivering on this in 2021 to 2026\. The changes will be in 6 areas:
+
+1\. Improving understanding and acceptance of autism within society
+
+2\. Improving autistic children and young people’s access to education, and supporting positive transitions into adulthood
+
+3\. Supporting more autistic people into employment
+
+4\. Tackling health and care inequalities for autistic people
+
+5\. Building the right support in the community and supporting people in inpatient care
+
+6\. Improving support within the criminal and youth justice systems
+
+2.7 The Department for Work and Pensions (DWP) is leading on supporting more autistic people into employment.
+
+The strategy says the government will make progress on closing the employment gap. This will ensure more autistic people who want to work can do so, and that those who have found a job are more likely to stay in work. The government wants more employers to be confident in hiring and supporting autistic people and to improve autistic people’s experiences of being in work.
+
+### Current government support for autistic jobseekers
+
+2.8 Jobcentres delivering good quality services to autistic people is a key part of meeting the autism strategy’s employment objectives. DWP employs approximately 85 work psychologists who operate in Jobcentres. They use occupational psychology expertise to support DWP customers whose health and disability circumstances are impacting their progress towards employment. A significant proportion of referrals to a work psychologist are autistic people.
+
+2.9 This support aims to help people secure or move closer towards work, and to have the skills needed to maintain effective job performance when in work. Work psychologists deliver support both directly (face to face, either individually or in a group setting) and indirectly. Direct work is through a referral from a work coach or Disability Employment Advisor. It involves a range of work-based psychological interventions over a longer term with claimants.
+
+2.10 An autism accreditation framework tested by DWP showed how to build a toolkit to better support autistic jobseekers who use Jobcentres. Designed to improve processes and develops the skills of work coaches, DWP is now exploring how this accreditation can be rolled out across all Jobcentres.
+
+2.11 DWP also runs a series of programmes to support autistic people into employment.
+
+#### Access to Work and Access to Work Plus
+
+*   The most relevant and widely used programme for supporting autistic people to secure and retain employment is Access to Work (AtW). This is a demand-led, discretionary grant that contributes to the extra costs of working faced by disabled people and those with a long-term health condition.
+
+*   The grant can help fund personalised support. This includes workplace assessments, travel to or for work, support workers, specialist aids and equipment to help people move into or retain employment. AtW can fund up to £66,000 worth of flexible, personalised support per person per year.
+
+*   AtW also has a Blended Support Offer, which complements support provided by employers. This provides a combination of support that can be tailored to meet individual working arrangements, such as hybrid working.
+
+*   DWP is delivering a series of Access to Work Adjustment Passport pilots to understand whether a passport can support a more coherent journey of adjustment support. This could reduce the need for assessments where needs remain the same and empower the passport holder to have a more confident conversation with potential employers about their workplace adjustments.
+
+*   DWP is keen to do more to support disabled people who have the most significant barriers to employment. The new Access to Work Plus will provide disabled employees with enhanced personal funding. This will be complemented with funding for employers who are willing to make workplace adjustments in excess of reasonable adjustments or shape job roles to accommodate disability requirements and will test whether this opens up job opportunities for disabled people who need additional support to work.
+
+*   The Access to Work Plus employer element has two funding streams. The workplace adjustment stream provides a one-off payment of up to £1,000 for adaptions the employer has made to the working environment to enable the disabled employee to work; the job role stream is available if the employer shapes or flexes the job role to enable the disabled employee to work. The total yearly amount of funding available is £3,000\. This amount is banded to reflect the number of hours the employee works.
+
+#### Other DWP support programmes
+
+*   The Work and Health Programme provides voluntary contracted employment support in England and Wales. It is for disabled people and disadvantaged groups who are motivated to work and expect to find work within 12 months. Participants receive up to 15 months’ pre-employment support and up to six months light-touch in-work support. The type of support is personalised to the needs of each participant.
+
+*   Intensive Personalised Employment Support (IPES) is voluntary provision for unemployed and economically inactive disabled people who have complex barriers to employment, are motivated to work, but need more than 12 months’ intensive support before they can enter the labour market. The objective of IPES is to address these barriers and provide participants with the skills to either engage with, or move into, employment. IPES was launched in England and Wales in December 2019 to run for four years. Over 11,000 disabled people were supported on the programme by the time referrals ended in December 2023.
+
+*   Since autumn 2022 DWP has been delivering Local Supported Employment services, working with 28 local authorities to help more learning disabled and autistic social care users get into and remain in employment. The aim of these pilots is to develop a model for delivering supported employment that can eventually be delivered by a wide range of local authorities.
+
+2.12 DWP is also working with employers through Disability Confident to increase their capacity to recruit, retain and support disabled employees, including autistic people.
+
+### Previous research into autism employment
+
+2.13 Only around 3 in 10 autistic people are in any kind of employment, defined as at least one hour of paid work per week.^([[footnote 3]](#fn:3)) This is one of the worst employment rates of all disability groups, second only to people with learning disabilities (many of whom are also autistic). Contrary to stereotypes, even highly educated autistic people face significant barriers to work. Data from 2022 (the most recent available) from the Association of Graduate Careers Advisory Services (AGCAS) shows that autistic graduates are twice as likely to be unemployed after 15 months as non-disabled graduates, with only 36% finding full time work in this period.^([[footnote 4]](#fn:4))
+
+2.14 Autistic people are also more likely to be underemployed and held back from reaching their full potential. They face the largest pay gap of all disability groups, receiving on average a third less than non-disabled people.^([[footnote 5]](#fn:5)) This gap narrows significantly when controlling for type of occupation, suggesting that a key driver is lack of representation in more senior roles. Autistic graduates also experience the worst outcomes of all disability groups across a range of measures used by AGCAS. They are the most likely to be overqualified for the job they have, the most likely to be on zero-hours contracts, and the least likely to be in a permanent role.  
+
+2.15 There is a wide range of potential barriers to work for autistic people: poor employer preparation, unfair hiring practices, unclear processes and outdated attitudes all play a role. From a young age, autistic people are less likely than their peers to have the time, connections or support to seek out work-related experiences,^([[footnote 6]](#fn:6)) and career advisers are often poorly equipped to support them,^([[footnote 7]](#fn:7)) with knock-on effects for later employment prospects. Research from Autistica and University College London’s Diverse Minds Employment Survey^([[footnote 8]](#fn:8)) found that autistic people have far more negative experiences of interviews, group tasks and psychometric tests. Autistic jobseekers must navigate vague, generic job descriptions, ambiguous interview questions and challenging sensory environments, often with an emphasis on social skills rather than job skills. Many feel they must mask their autistic traits to succeed.
+
+2.16 Even after finding work, maintaining the employment remains a challenge for autistic people. Many do not receive the necessary support or adjustments to fulfil their role in the face of inaccessible sensory and social environments. Many autistic adults may not be aware of their legal rights around reasonable adjustments. Others may be aware but reluctant to ask for them for fear of discrimination. Research from the Diverse Minds Employment Survey found that only 35% of autistic employees were fully open about being autistic across their organisation, with 1 in 10 not disclosing to anyone at work. Those who do disclose usually do so after starting a job – highlighting a persistent fear of discrimination during the recruitment process. Unfortunately, only 4 in 10 participants who disclosed to their employer said this had a positive impact. ^([[footnote 9]](#fn:9))
+
+2.17 Access to adjustments is still highly variable, with the onus usually on the autistic employee to identify and advocate for adjustments. In the Diverse Minds Employment Survey, almost one-third of autistic employees felt unable to discuss their adjustment needs at all. Of those who did request adjustments, over a quarter were refused and over 1 in 10 found the adjustment was poorly implemented.^([[footnote 10]](#fn:10)) Likewise, employers and managers often report poor knowledge of autism and feel underprepared to identify and implement adjustments for autistic people.^([[footnote 11]](#fn:11))
+
+2.18 Research has consistently shown the importance of employment for autistic people’s mental wellbeing and overall quality of life,^([[footnote 12]](#fn:12)),^([[footnote 13]](#fn:13)) and autistic people are more likely to experience many of the worst outcomes associated with unemployment. Unemployment is a known risk factor for suicide,^([[footnote 14]](#fn:14)),^([[footnote 15]](#fn:15)) and Autistica-funded research has found that up to 11% of people who die by suicide in England may be autistic.^([[footnote 16]](#fn:16)) Autistic people are more than twice as likely to lack the necessary income to meet their basic needs compared with non-autistic people.^([[footnote 17]](#fn:17)) They are less likely to own their own home and more likely to live with their parents than any other disability group.^([[footnote 18]](#fn:18)) The autism employment gap is also hugely detrimental to the UK economy, costing approximately £14.5 billion every year.^([[footnote 19]](#fn:19)),^([[footnote 20]](#fn:20)),^([[footnote 21]](#fn:21))
+
+2.19 Autistic people can introduce different ways of thinking and working. A neurodiverse team is more likely to generate a wider range of ideas and avoid cognitive biases.^([[footnote 22]](#fn:22)) Businesses are beginning to recognise this, with some of the world’s biggest companies now explicitly targeting recruitment of autistic and other neurodivergent people, although at this stage this is mainly confined to higher level, tech-based jobs.^([[footnote 23]](#fn:23)),^([[footnote 24]](#fn:24)),^([[footnote 25]](#fn:25)),^([[footnote 26]](#fn:26))
+
+## 3\. Initiatives to raise awareness, capitalise on productivity and reduce stigma
+
+### Evidence and discussion with stakeholders
+
+#### Productivity
+
+3.1 Many of those consulted in this review reported that autistic staff can be more tightly focused and dedicated to the task than their neurotypical colleagues, and so quite often can be much more productive overall. Yet for many autistic staff, this high productivity does not necessarily result in job security and progression, with other issues holding them back.
+
+#### Overcoming stigma and raising awareness
+
+3.2 Respondents all reported that stigma and a lack of understanding of autism is a key factor in preventing autistic people from succeeding with their lives and careers. The effects can be cumulative. A lack of understanding among school, college or university staff could lead to poor educational outcomes, making it more difficult to secure work experience, construct a good CV or gain the entry-level qualifications required by many employers. A lack of understanding can lead to care workers wrongly advising autistic people that employment is not an achievable goal, and to public transport staff unknowingly making it difficult and stressful for them to travel to work.
+
+3.3 Respondents noted that, despite the work of autism charities and other related organisations, there is still significant work to do in raising awareness amongst employers and the public of what autism is. Dispelling inaccurate and unhelpful stereotypes and making clear the value autistic people can bring to an organisation is vital.
+
+3.4 Educational organisations, senior leaders and social influencers need to raise awareness of what autism is, how it might present in an individual autistic person and how autistic people can be supported to succeed in employment and in society. The right campaign along with education and training could help remove outmoded views and deep-seated stereotypes and focus attention on the strengths autistic people can bring rather than the “problems” that they might have.
+
+3.5 Ambitious about Autism developed the Employ Autism network as an initiative to:
+
+*   Offer paid internships for autistic young people
+*   Ensure autistic people are visible in workplace systems, with work experiences suited to their abilities and strengths
+*   Provide tailored training and support for partner employers.
+
+3.6 The interim evaluation of the Employ Autism project showed that while direct training is an important foundational step in improving employers’ understanding and inclusion practices, it should be part of a broader package of initiatives available to support autistic people. If that broad support is not provided to the employer or autistic employee, then what might start as relatively minor issues can escalate to the point where the employment breaks down. Such negative experiences can compound stigma and lead to both wariness on the employer’s part in taking on another autistic employee and a further deterioration in the autistic person’s confidence.
+
+#### Perceived barriers to employment
+
+3.7 While employers must treat all candidates equally under the Equality Act, research has highlighted that disabled people often face discrimination and negative attitudes when looking for work. Indeed, one in five employers is less likely to hire a disabled person.^([[footnote 27]](#fn:27)) In a 2020 study by the Institute of Leadership and Management, 50% of managers expressed discomfort with the idea of hiring disabled people.^([[footnote 28]](#fn:28))
+
+3.8 Employers’ perceived barriers to hiring disabled people included: 
+
+*   The cost of making workplace adjustments (69%)
+*   Practicalities of making workplace adjustments (67%)
+*   Accessibility of the application process (44%)
+*   Concern about whether a disabled person could do the job (29%)
+*   Concern about whether a disabled person would be mistreated by other employees (11%).
+
+3.9 This study was about wider disability. Regarding autism more specifically, recent studies have identified perceived barriers to employing autistic people and the wider neurodivergent community. Biases, stigma and stereotypes about autism and autistic people are related to:
+
+*   Personal factors such as differences in communication style or information processing
+*   Lack of understanding and knowledge about autism and neurodiversity
+*   Environmental factors, such as how the environment can trigger specific behaviours, stress or anxiety
+*   Social or system factors, for example myths about autism, and openness to difference and perceived experience of engaging with autistic people.
+
+The Autistica Autism Attitudes Index (currently in development) will directly target these issues and inform metrics of systemic issues and changes in attitudes over time.
+
+3.10 Concerns about the cost of workplace adjustments should not be serving as a substantial deterrent to employers, given that many adjustments for autistic staff would be very low cost or even free, and that programmes such as Access to Work can help with costs it would be unreasonable to expect an employer to meet. Some employers and individuals may still be unaware of the existence of Access to Work, and even if they are aware may be experiencing delays in securing it.
+
+3.11 There are other schemes that can also help to tackle these barriers. Disability Confident was introduced in 2016 to educate employers on the processes needed to recruit, retain, and develop disabled people in their careers, as well as the confidence and skills to do so. However, research from Leonard Cheshire suggests that Disability Confident is not supporting employers to meet one of the key commitments of the programme: providing inclusive and accessible recruitment practices. Among employers, ensuring the interview and application processes were accessible were seen as considerable barriers to employing disabled people (40% and 44% respectively). These figures were higher among employers who were Disability Confident accredited (52% and 54% respectively).
+
+#### Inclusion by design
+
+3.12 Best practice involves not only making “reasonable” adjustments for disabled staff, but also adapting the working environment to meet the needs of all staff, leading to better team performance overall. For example:
+
+*   Adapting the work timetable of an individual team that includes an autistic employee might also benefit others in the team
+*   Noise-cancelling headphones that reduce sensory overload for autistic staff can also help other staff trying to concentrate in a noisy environment
+*   A quiet space where an autistic staff member can take a few minutes’ “time out” to recover from stress and anxiety can also benefit other staff.
+
+3.13 Many employers are looking for examples of practices that have worked well for others and that they can apply in their own workplace. Access to Work, Disability Confident and other government initiatives can help to provide information and financial support to employers. Ultimately it will be up to individual employers to recognise the benefits autistic people can deliver, understand what needs to be done to support them to do their best and consistently deliver that support. But they would be helped by a comprehensive, easily accessible framework of advice and best practice that they can use as both a guide and a measure of their progress.
+
+### Recommendations
+
+1\. Work with autistic people, autism organisations, and employer-facing organisations to create a national campaign aimed at employers. Build a package of good news stories and testimonials from employers who employ autistic people and can speak about the benefits it brings to their businesses. Include examples of autistic people with successful careers, ideally in a range of industries, occupations, and levels, from entry level up to senior management. Highlight the availability and sources of advice and support that helped these employers. Include statistics showing that for certain jobs autistic staff can be more productive than neurotypical staff (with some statistics showing productivity improvements in some areas of work ranging from 45–145%). This campaign could start with a high-profile public launch of this report.     
+
+2\. Promote the Autistica Neurodiversity Employers Index, which will enable organisations to measure themselves against best practice, highlight areas of strength and areas for improvement and include an annual awards programme. The Index will also provide guidance on how employers can design fully inclusive processes, procedures and premises so all staff can receive the support they need without autistic staff needing to disclose their condition. The Index had a limited release as a proof of concept with selected employers in autumn 2023, with a full launch open to employers from all market sectors scheduled for spring 2024.
+3\. Work with larger national or multinational organisations to develop small pilots of good practice, developing processes and support mechanisms that enable autistic staff to be recruited and to succeed. Assess the success of these pilots so that organisations have evidence for rolling them out more widely. Work with industry representative bodies to take the evidence from these pilots and disseminate it across other businesses in that industry.
+
+## 4\. Supporting autistic people to begin or return to a career
+
+### Evidence and discussion with stakeholders
+
+#### Moving from education into employment
+
+4.1 Navigating the education system can be a complex and challenging experience for all young people. It entails attempting to conform to a curriculum that is designed with numerous sessions, constant changes, socialisation requirements, and the establishment of social norms and cues. These aspects of the educational system often prove particularly difficult for autistic young people. Studying subjects that may not be relevant to their interests and abilities further adds to their challenges.
+
+4.2 Some autistic young people may struggle with rules that seem illogical or nonsensical to them. Sensory overload and discomfort caused by elements like school uniforms or excessive noise may exacerbate their difficulties. The normal environment of a mainstream school presents a huge hypersensitivity challenge for many autistic children which, without the correct reasonable adjustments or resources, can contribute heavily to a negative educational experience.
+
+4.3 It is important to note that these points are not exhaustive, as experiences can vary significantly between individual autistic people. Throughout the evidence gathering for this review, respondents from the education sector suggested that mainstream schools are finding it increasingly hard to adapt to the needs of autistic children. In a 2021 National Autistic Society Survey, 74% of 4,000 parents and carers stated that their child’s school did not fully meet their child’s needs.^([[footnote 29]](#fn:29))
+
+4.4 When these challenges become the day-to-day reality for a young person, the concepts of inclusion and guidance become increasingly difficult to reconcile. Consequently, a high proportion of autistic people do not complete secondary education, leaving without the Grade 4 in both Maths and English often specified in job advertisements. For those who have not completed secondary education, and who have been outside education for several years, attempting to re-enter a social environment such as employment can remind them of the frightening and confusing educational environment.
+
+4.5 There can be a disparity in male and female experiences of education. Autistic girls will often stay in education longer, as they can sometimes mask their symptoms  more effectively, but to the detriment of their own mental health.
+
+4.6 Preparation for adulthood and employment needs to be a key part of the education autistic children receive. Not only does this help to raise their aspirations that employment can be a pathway for them; it also begins their understanding of what reasonable adjustments are and what adjustments they might need. The importance of integrating social skills training programmes within the education curriculum has been stressed by respondents throughout this review. Building effective communication, teamwork, and networking skills through these programmes can help autistic people navigate professional relationships more effectively.
+
+4.7 There are already many successful initiatives in areas of England, Scotland and Wales that help autistic people understand all the paths available to them, and these initiatives can be replicated elsewhere.
+
+#### Supported internships
+
+4.8 Supported internships are available for 16- to 24-year-olds with special educational needs and disabilities (SEND) and who have an education, health and care (EHC) plan, to support them to move from education into work. The core aim of a supported internship study programme is completion of a substantial work placement, facilitated by the support of an expert job coach who provides one-to-one support. As an example, [DFN Project SEARCH](https://www.dfnprojectsearch.org/about-us/) is a charity providing one-year supported internships. Of Project SEARCH graduates:^([[footnote 30]](#fn:30))
+
+*   94% complete the programme
+*   60% move into full-time jobs
+*   Those who are employed work on average 25.4 hours per week
+*   The average starting salary for graduates is above minimum wage.
+
+### Apprenticeships
+
+4.9 Apprenticeships are intended to be a core part of the government’s skills agenda, helping to grow the economy by improving the skills pipeline. Apprenticeships can give employees high-quality, hands-on training to start and progress in work, and can help employers train and develop their workforces to address industry skills gaps.
+
+4.10 Apprentices undertaking a level 3 or higher apprenticeship are required to hold approved level 2 qualifications in English and maths before they can complete the apprenticeship.
+
+4.11 For people with learning difficulties and disabilities who meet the occupational standard of their apprenticeship but do not have the English and maths minimum requirements, there is an option to complete entry level 3 functional skills instead. There are no industry-specific minimum requirements, but this option is considered on an individual basis where the following conditions are met:
+
+*   The apprentice has either an existing or previously issued Education, Health and Care (EHC) plan, a Statement of Special Educational Needs (SEN) or a Learning Difficulty Assessment (LDA)
+
+*   The provider holds or has conducted an evidenced assessment demonstrating that, even with support, reasonable adjustments and stepping stone qualifications, the apprentice is not able to achieve the minimum level in English or maths as a result of their learning difficulty or disability
+
+*   The employer and provider reasonably expect that the apprentice will be able to achieve all other aspects of the apprenticeship requirements, become occupationally competent and achieve entry level 3 in the adjusted subject(s) before the end of their apprenticeship.
+
+4.12 The Department for Education is running a pilot to test the use of other evidence for determining the eligibility of apprentices with special education needs to access alternatives to the English and maths requirements. The outcome will be used to determine next steps, including possible changes to the funding rules.
+
+#### Confidence and support
+
+4.13 Research by the National Autistic Society found that the most common reason autistic people gave for not looking for work was a lack of confidence.^([[footnote 31]](#fn:31)) This can be a result of poor prior experiences of work, but also of negative educational or life experiences.
+
+4.14 The National Autistic Society’s Employment Team reported that autistic people are coming to the recruitment process without confidence that they can secure and keep employment. This is often caused by a lack of information about the workplace. Autistic young people may not have had the opportunity to gain work experience during their time at school, and may not be able to cope with volunteering, “Saturday jobs” and other ways that neurotypical people first experience work. They may not know what the workplace is like, how the recruitment process works or what jobs they would be suited for or would enjoy.
+
+4.15 For many autistic people, some of the anxiety surrounding applying for a job can come from the need to decide whether to disclose that they are autistic. In a recent survey by the National Autistic Society’s Autism Insight Panel, 68% of respondents said they did not disclose their diagnosis in their most recent job application.^([[footnote 32]](#fn:32)) Autistica has also funded research on disclosure in the workplace. This study found that 1 in 10 had not disclosed to anyone at work at all, and 65% were not open to their whole organisation about being autistic.
+
+4.16 These results are fundamental in understanding the employment experiences of autistic people. They are representative of a collective anxiety: not an anxiety about their ability to do the job, but one which fears that their employment experience will be worse if they are known to be autistic.
+
+4.17 Anxiety associated with the employment process can also be seen in the parents and carers of autistic people. As well as anxiety about the treatment their child will receive in the workplace, parents and carers may be anxious about the potential loss of benefits and given the low levels of confidence referred to above, anxious that their child can never succeed in securing stable employment bringing in earnings good enough to achieve independence. 
+
+> It’s not that we should just prepare autistic people to go to work, we should also prepare workplaces to receive autistic people.
+
+– Ashraf, autistic employee at a major account firm
+
+#### Assistive technology
+
+4.18 Assistive technology can play a vital part in supporting someone with a learning disability or autism to excel in a role. From specialist communications equipment to simple tools such as a vibrating watch to remind a person of break times, it is important that autistic people have access to the tools they need.
+
+4.19 The key barrier to accessing assistive technology is affordability. Where an individual has a care package or EHC plan, that package should include funding for assistive technology. If it is funded through Access to Work, the assistive technology should be portable to different workplaces (that is, a person should not need to return their assistive technology if they change employers).
+
+4.20 There is also a lack of awareness of assistive technology among disabled people, those who support them (such as job coaches) and employers. It is often difficult to find out what equipment is available and appropriate. There is also low awareness of the accessibility tools that are already available and built into many standard pieces of technology.
+
+#### Coaching support
+
+4.21 For many autistic people seeking initial employment or returning to work, support from a coach will be essential. The coach can support an autistic person by:
+
+*   Helping them match their skills to a role, including understanding that they don’t necessarily need to have every skill in the job specification
+*   Helping them to write engaging and confident personal statements
+*   Preparing for the interview with site visits to ensure the autistic person is aware of the location, building layout, interview room, number of people involved in the interview, map of the site and so on
+*   Giving advice on dress codes, bus routes and local amenities to support them getting to the job location and coping with it.
+
+4.22 As each autistic person will have different needs, this support needs to be flexible and adaptable.
+
+4.23 There are issues in many parts of the country with availability and quality of coaches. These are related to the difficulty in building a career as a coach when demand and funding is uncertain.
+
+#### Access to Work support
+
+4.24 Using specialist job coaches may be problematic for some autistic people, as they may need financial support. Although this may be available from Access to Work, awareness of the scheme is low, with just one in five disabled adults in the UK stating they currently receive or have previously received Access to Work support (the figure is not known for adults with a learning disability or autism). The application process can be difficult for an autistic person and there are often delays in funding being awarded, with almost two-thirds (61%) of disabled people stating that it took over three months for their application to be processed and 20% saying it took over six months. This means that for most disabled people, necessary equipment or support is not in place from day one, making it more difficult for them to start and stay in work.
+
+> Support resources like Access to Work are there, but people don’t know that they exist. Even if they know, the packages are so difficult to access that sometimes people don’t bother.
+
+– Karen-Anne, autistic mentor to autistic students and employees
+
+### Recommendations
+
+1.  Identify and promote cross-industry autism employment support groups, including opportunities for volunteering and work shadowing, that autistic jobseekers can join to build their knowledge of employment and their confidence.
+
+2.  Ensure that the needs of autistic people are built into the design of the new Universal Support programme so they can receive a supported employment programme to prepare them for mainstream employment. Design entry routes to ensure a significant proportion of entrants are referred by autism-related organisations.
+
+3.  Promote supported internships as a good route for autistic young people to develop work experience and skills. Ensure providers are aware of the range of needs of autistic young people and are equipped to meet those needs. The Department for Education is piloting an entry route to supported internships for disabled people without an EHC plan. Push for a speedy rollout of that change across the country.
+
+4.  Promote apprenticeships as another good route to develop work experience and skills, highlighting the additional funding and support available. Many autistic young people will struggle to achieve the maths and English skills required to gain a higher-level apprenticeship. Although there are flexibilities in apprenticeship rules for young people with learning difficulties and disabilities, these may require an EHC plan. Accepting that EHC plans can be difficult to obtain, remove this requirement and allow exemption on self-declaration.
+
+5.  Work with autism charities and other relevant groups to ensure autistic people know about Access to Work and the support it can provide to meet their recruitment and employment needs. Continue to improve the Access to Work programme: if the Adjustment Passport and Access to Work Plus pilots produce positive results, these should be rolled out nationally as soon as possible.
+
+##### Case study: the Legal Neurodiversity Network
+
+The Legal Neurodiversity Network originated in mid-2022 from conversations between passionate neurodiversity advocates from several law firms and the Law Society. In just over 12 months there were over 100 volunteer participants across more than 50 organisations. The Network hosts events which bring together individuals with lived experience and allies across the industry, focusing on improving representation and progression of neurodivergent professionals. Some events are themed around specific conditions and roles. While there is still room for improvement in recruitment practices, accommodations and mental health support across the sector, members are encouraged to see more new and existing legal professionals disclosing neurodivergent conditions as well as more employers introducing adjustments and tailored support packages.
+
+## 5\. Making recruitment practices meet the needs of autistic applicants
+
+### Evidence and discussion with stakeholders
+
+#### Training and awareness for employers
+
+5.1 Recruitment can be a real challenge for many businesses. They can struggle to recruit for certain skills, and many industries face significant labour shortages. Making a business neuro-inclusive can widen the pool of people to recruit from, enable neurodiverse people to reach their potential at work, and aid retention. Ignoring neurodiversity means businesses are overlooking and underutilising a substantial talent pool.
+
+> My CV is littered with the word ‘autism’, because it’s either support work, or tutoring, or mentoring, or it’s my education, it’s all autism-centric. But that’s generated a load of transferable skills, soft skills, knowledge skills, that employers just don’t see. A lot of autistic people start this way – we cut our teeth on what’s closest to us and develop all these rich skills.
+
+– Jack, autistic researcher and doctoral teaching assistant
+
+#### Disclosure and reasonable adjustments
+
+5.2 Under the Equality Act 2010, employers have a legal duty to make reasonable adjustments to the interview process. Adjustments such as sending the interview questions in advance can be vital in reducing anxiety for autistic applicants and making the process more accessible. It is important that autistic people feel comfortable disclosing their needs so that they can request, or be offered, these adjustments.
+
+5.3 Making inclusion the default, so an autistic person need not disclose their autism to secure the support they need, has been suggested by many respondents to the review; especially as many autistic adults have never had a diagnosis and may not know they are autistic. The aim of the Autistica Neurodiversity Employers Index is to help organisations adopt best practice so that the recruitment process is accessible to every applicant and appropriate support is available to meet all needs. This removes the onus on autistic people to disclose and ask for adjustments. More inclusive practices would help employers more generally, ensuring all applicants can show their best and their skills and experience can be matched most appropriately to a job.
+
+5.4 A 2022 paper on autistic adults’ experiences of workplace adjustments found that: ^([[footnote 33]](#fn:33))
+
+*   Around a third of autistic employees did not request adjustments at work but would have found them useful
+*   Almost a third reported feeling unable to discuss their adjustment needs at all, and fewer than 1 in 5 felt comfortable discussing this across their whole organisation
+*   There were difficulties requesting adjustments including: the onus being on the autistic employee to identify and advocate for adjustments; the risk of repercussions from the employer or colleagues; unclear organisational pathways; and perceived detrimental impact on others
+*   Where employees did request adjustments, over a quarter were refused
+*   More than 1 in 10 respondents said the adjustment was poorly implemented (for example, they had to continually fight to keep it in place).
+
+5.5 The National Autistic Society Autism Insight Panel showed that of applicants who had disclosed their needs, just 11% were offered reasonable adjustments.  This contributes to the unwillingness of people to disclose their autism. If they are already fearful of prejudice, they see no point in disclosing if they believe they will not get any adjustments anyway.
+
+5.6 If employers advertise that they are willing to make reasonable adjustments  autistic people would feel more confident disclosing their need for extra support. It is also important that employers engage in conversation with autistic people to see what methods will work for them. However, the onus should not always be on the autistic person to know exactly what they will need and to have to advocate for it.
+
+5.7 Training and awareness of autism as a spectrum condition is particularly important. Not all autistic people will have communication difficulties; many will be able to communicate well with others.
+
+5.8 Many autistic people will have learnt to mask their needs, as autistic traits aren’t always obvious. An autistic person who appears engaged and attentive might still have difficulty fully understanding what is being said to them or communicating everything they want to say. For those autistic people who do have information processing challenges, employers need to understand that taking time to answer questions and complete tasks at interview is not a reflection on cognitive ability or on the ability to undertake a role, but rather reflects a different way of thinking and interpreting information before responding.
+
+5.9 Despite many employers being understanding and supportive, most autistic people have negative experiences from previous interviews. This means many expect injustice or discrimination and therefore choose to not disclose. This is a difficult issue to tackle and will only be remedied by consistent and committed work to improve the understanding of autism across the entire country.
+
+> My message to potential employers: be flexible to my changing needs. Be aware I will have off days. I will also have great days which will absolutely make up for this.
+
+– Vicky
+
+#### Modernising recruitment practices
+
+5.10 The traditional model of sending a curriculum vitae (CV) against a generic job specification, being shortlisted, attending a face-to-face interview with strangers, and being asked questions they have not seen before does not work well for autistic people.
+
+5.11 Research suggests interviews may not be a fair or necessary way to recruit autistic candidates.^([[footnote 34]](#fn:34)) Ambitious about Autism surveyed over 500 autistic young people and their parents and carers: 73% felt that being anxious about the application and the interview process not being accessible to them were the biggest barriers to finding work.^([[footnote 35]](#fn:35))
+
+5.12 Interviews of the “tell us about yourself and your achievements” sort can put neurodivergent people at a disadvantage. For example, some autistic people may be overly honest about weaknesses, struggle with eye contact, or lack confidence because of previous bad experiences. Asking hypothetical or abstract questions can put autistic applicants into a stressful and anxious state, further impairing their interview performance.
+
+5.13 Respondents suggested that tools such as practical tests, assignments to be completed before interview and short-term attachments to the organisation would better allow autistic candidates to demonstrate the skills and aptitudes required for the job role. As one autistic respondent put it: “If someone is applying for a job as a violinist in an orchestra, they are not asked to tell the interviewer something about their achievements playing the violin: they are asked to play the violin.”
+
+5.13 Every team wants members who interact, collaborate and work together well. But if an individual struggles with small talk and “team building” it does not mean they will be a poor team member or unable to work collaboratively. This means interviews need to focus more on the range of skills needed to take on the role, and less on social skills.
+
+> In almost every job spec, you get things like ‘must be a team player’. This debars people who are not team players, but not every job needs a team player.
+
+– David, diagnosed as autistic after retiring from a career in IT-enabled business strategy and transformation
+
+#### Job descriptions
+
+5.14 Job descriptions can present a huge barrier to autistic people. They are often too long and cover every single possible element of a role. Many autistic people rule themselves out because they think the role is beyond their capabilities. The language used within most traditional job descriptions also presents a huge challenge. Confusing jargon, overlapping and ambiguous statements and “generic” sections in a job description may exclude autistic participants from submitting applications.
+
+#### Artificial intelligence and automated filtering processes
+
+5.15 Many organisations are now outsourcing their recruitment filtering to companies using automated filtering or are themselves using artificial intelligence packages to screen candidates. This can prove to be equally challenging and limiting for autistic candidates. Autistic and neurodivergent candidates can be penalised by artificial intelligence packages that analyse eye contact and mannerisms to measure social interaction ability. Software can also rule out candidates with significant gaps in their employment history, which will include many autistic people.
+
+> Many large and medium-sized companies have outsourced the first stage of recruitment via agencies, and the agencies have outsourced it to bots. So what’s happening is that the consideration of CVs and completed forms is a tick-box exercise, and I think autistic people are often disadvantaged in that process
+
+– David, diagnosed as autistic after retiring from a career in IT-enabled business strategy and transformation
+
+> No HR bot in the world looking at my CV would ever give me an interview. My CV is eight pages long and has gaps all the way through it, because that was how I coped.
+
+– Chris, autistic IT consultant
+
+### Recommendations
+
+9\. Ensure careers advisers in schools, colleges, the National Careers Service in England and equivalents in devolved administrations all have a good understanding of autism, know how to support autistic customers appropriately and can provide appropriate advice to autistic people seeking a first job or a career change.
+
+10\. Continue to develop Disability Confident, increasing the rigour of developmental work needed to achieve the higher Disability Confident levels, increasing the frequency and rigour of Disability Confident assessments and building in strong links to the Autistica Neurodiversity Employers Index, so autistic jobseekers can seek out Disability Confident organisations knowing they will offer support
+
+11\. Consider how the online Support with Employee Health and Disability (SEHD) service can link employers to appropriate and accessible advice on best practice for recruiting and supporting autistic staff.
+
+12\. Engage with the Recruitment and Employment Confederation, advising on the benefits autistic candidates can bring to businesses, how to remove barriers to recruiting them, and how these improved processes can be applied to the recruitment of all candidates. Explain how this will produce better matches and improved business performance. Share with the Confederation and individual recruitment agencies strong case histories of successful autistic staff that they can use in conversations with client employers.
+
+13\. Identify and promote sources of information and support on becoming self- employed or establishing a social enterprise or Community Interest Company. Work with the Access to Work team to ensure application processes for support with self-employment are reasonably accessible.
+
+## 6\. Supporting autistic people already in the workforce
+
+### Evidence and discussion with stakeholders
+
+#### Understanding autism
+
+6.1 One of the biggest barriers to autistic employees being appropriately supported in the workplace is a lack of understanding of autism amongst employers. In research conducted by the National Autistic Society, 50% of autistic people said that support, understanding or acceptance would be the biggest thing that would help them in employment. 
+
+6.2 In a YouGov survey conducted on behalf of the National Autistic Society, 34% of employers said that they thought an autistic person would be unlikely to fit into their team, and 28% said that autistic people would be unlikely to be a team player. These are damaging stereotypes, which can impact the ability of autistic people to find employment. It can make them less likely to disclose their diagnosis to either a prospective or current employer, and so not get access to crucial reasonable adjustments.
+
+6.3 Stereotypes and a lack of understanding in the workplace can lead to negative experiences of employment. In a National Autistic Society 2016 report, 48% of respondents said that they had experience of bullying or harassment in the workplace. This statistic demonstrates the unwelcoming environment that many autistic people experience at work.
+
+#### Building an inclusive and safe working culture and practices
+
+6.4 All respondents emphasised that disclosing their autism should always remain the autistic person’s voluntary decision. Some autistic people will not want to be identified as autistic because it will set them apart from colleagues, others may be afraid of the consequences of speaking up, and some may never have had a diagnosis and may not know they are autistic. However, many autistic people are proud of their identity and are comfortable disclosing it.
+
+6.5 It is vital that employers create a safe space where those autistic employees who wish to disclose can feel comfortable in doing so, and the right culture is fundamental in enabling this.
+
+6.6 A fully inclusive working culture and practices can also reduce the need to disclose autism and ask for special workplace adjustments. These fully inclusive workplaces can then enable all staff – including autistic, other neurodiverse and neurotypical staff – to be fully productive.
+
+6.7 Respondents agreed that having the right culture is a prerequisite for identifying autistic employees who need support. The right culture is one that:
+
+*   Accepts and understands autistic people without judgement or stigma, and treats them as part of the workforce regardless of what support they need, if any
+*   Listens to autistic employees and values their input
+*   Values the contribution that autistic people make to the organisation and its success, and celebrates this in ways which are proportionate, consonant with wider workplace culture, and which do not patronise or unnecessarily elevate
+*   Normalises adaptations so these are part of working practice by default
+*   Prioritises the mental health of autistic employees, both in making adaptations and in providing access to appropriate support when required
+*   Deals immediately and sensitively with the challenges some autistic staff may be facing, taking a personalised approach to understanding an autistic person’s needs and drawing on external support when this is appropriate.
+
+#### Providing appropriate support
+
+6.8 Many of the employers who spoke to the review said that they generally want to support autistic employees, but often don’t know how. In a YouGov survey for the National Autistic Society 60% of employers said they would worry about getting support for autistic people wrong, and the same number said they did not know where to go for support or advice about employing an autistic person. 
+
+> ”Now that I have a formal diagnosis and can legally request reasonable adjustments, I find myself wondering how much I can request to give myself a fair chance without being perceived as difficult.
+
+– Sarah
+
+#### Company training
+
+6.9 It is vital that employers have a good understanding of autism so they understand how to make adaptations for autistic staff. Internal staff training can help with this but some respondents reported that training on autism run by employers and training providers is often poor. Oversimplification, reliance on the medical model and a one-size-fits-all approach are not only outdated but are now doing more harm than good, reinforcing stereotypes and low expectations for autistic people.
+
+6.10 There is also too often an absence of detailed training on how to provide the right support for autistic staff, such as what constitutes a workplace adjustment, how these can help, and how they can be implemented. This training is either unavailable or very basic, making inappropriate assumptions about what autistic people may need and failing to take account of individual differences.
+
+#### The role of line managers
+
+6.11 For most autistic staff, their immediate line manager is the person they will turn to for understanding and support. Whatever the level of understanding among company directors or senior staff, if the immediate line manager is not able or willing to provide support then the autistic staff member will struggle and perhaps be unable to continue in their employment.
+
+6.12 The National Autistic Society has found that the best employment situations result from autistic staff having strong relationships with their colleagues, especially line managers. A strong, supportive work relationship between line manager and employee also allows more autistic employees to feel confident in disclosing their autism.
+
+6.13 It is very important that autistic people feel comfortable asking questions of their line manager or asking for clarification of tasks or instructions without fear of being judged. Line managers should be able to adapt their management style to meet the needs of individual staff members. They should also have a good understanding of what adjustments can be made, an understanding of the (often simple) adjustments they themselves can make, and a willingness to act as advocates for their autistic staff in securing more substantial adjustments.
+
+6.14 For many line managers, there is no easily accessible guide they can use or best practice they can follow to develop a support package for their autistic staff. Without this guidance many line managers will be afraid of getting the support wrong and will believe they are at risk of legal challenge.
+
+> I have worked in a large number of different organisations, of different sizes and with different ethics. Each of them is different. In every office I’ve been in, there’s a whole set of unwritten rules, and they really don’t make sense to me. It’s like starting a new game and not being given the rules while everyone else has them.
+
+– Chris, autistic IT consultant
+
+#### Work environment
+
+6.15 Aspects of the work environment can be distracting or contribute to sensory overload – for example bright lighting, hotdesking or high noise levels. Some autistic people may find constant attendance in an office stressful. Flexibility with start and finish times, quiet spaces for “down time” and working at home at least part of the time can reduce this stress. Individuals will have their own preferences and should be able to ask for these to be implemented without fear of repercussions.
+
+> Put me in an open-plan office and it’s a nightmare – always has been, but I didn’t know why when I was younger.
+
+– Geoff
+
+6.16 Too often, autistic people needed to disclose their autism in order to access adjustments to the work environment, with a perceived risk of doing so. Some organisations, however, were implementing “inclusion by design”, with highly flexible workspaces and practices where any employee could organise their own work environment to suit them without needing to disclose anything. This was seen as an example of good practice that other organisations should follow.
+
+#### Other support
+
+6.17 As well as support from line managers, autistic employees might also need support from other channels within and outside of an organisation, such as Human Resources professionals, job coaches, vocational support providers, mentors or external networks. Many autistic people will struggle to understand who they might need to speak to and how to put these things together.
+
+> My biggest challenge at work is peer relationships and the social expectations to fit in. Being autistic means that work uses up more of my energy than most other people. The additional expectations to socialise with work colleagues uses even more of this precious energy.
+
+– Sarah
+
+6.18 We heard many good examples of organisations providing extensive and effective support for their autistic and neurodiverse staff which could be replicated more broadly. Firms such as SAP and Microsoft have developed a “support circles” model that combines elements within the organisation such as the line manager, relevant HR professional, and mentor or “buddy” (collectively, the “internal circle”) with external elements such as job coaches, mentors, family, and friends. This effectively acts as a support ecosystem for all employees and can be accessed without having to disclose any particular condition.
+
+6.19 A particularly good example of encouraging and supporting neurodiverse staff came from the Government Communications Headquarters (GCHQ). Its recruitment advertisements say it is looking for people who think differently. For example: “We’ll really value how you solve unique problems in your own unique way”. This helps to build an overall culture where neurodiversity is seen as an asset to be welcomed rather than a problem to be overcome.
+
+6.20 GCHQ has established a Disability and Neurodiversity (DAN) team, which is a funded business unit. The DAN team has created comprehensive guidance organised by issues rather than diagnosis: for example, problems with concentration and focus, relating to colleagues, or understanding instructions. Staff with difficulties are advised to refer first to this guidance which can often resolve the problem.
+
+6.21 Where this is not enough, any staff member can ask for a meeting with a specialist neurodiversity advisor. This is a highly knowledgeable and experienced agent engaged on an external contract who will prepare a report identifying ways to overcome the difficulties, including any special adjustments that might help. The report goes to the staff member and, with their agreement, to their line manager. The line manager can then ask for advice and coaching on how to support the staff member. If adjustments are needed the DAN team advises on sources of funding and how to procure them. The adjustments are then recorded in an Adjustments Passport, which the staff member can take with them if they move roles.
+
+6.22 This formal process is supplemented with a range of voluntary staff “affinity groups” where staff who have something in common can advise and support each other. One of these affinity groups is focused on autism.
+
+### Recommendations
+
+14\. Work with the Disability Confident Business Leaders Group and staff team to identify Disability Confident firms who have experience in successfully employing autistic people and achieving culture change. They can act as role models and guides for other Disability Confident organisations.
+
+15\. Work with the Chartered Institute of Personnel and Development to ensure the 2018 Neurodiversity at Work guidance is publicised and accessible to employers. Developed in collaboration with Uptimize, this provides good practice guidance on developing a neuroinclusive organisation.
+
+16\. Work with autism charities to produce “autism design guides” for a range of industries. Show how to create appropriate and supportive design of premises, furnishings, equipment and procedures, and include examples of where these have worked well.
+
+17\. Work with software suppliers and suppliers of adaptive technology to develop IT systems that meet autistic people’s needs. Where these systems are already in place, work with the suppliers to promote them widely and include guidance on how to access them.
+
+##### Case study: HMRC
+
+HMRC is committed to modern, inclusive working environments that are welcoming for all. To make this a reality, HMRC has a department-wide community of neurodivergent colleagues and holds monthly departmental autism support calls. Autism advocates raise awareness, running weekly autism cafés and signposting support. HMRC has also piloted autism awareness learning for customer facing teams, held two autism conferences, and started hosting “Project Search” interns. Research conducted evaluated the employee experience of neurodivergent colleagues to inform strategic priorities.
+
+Design experts for HMRC’s new regional centres worked with its neurodiverse communities to develop sensory-muted design. This included a variety of wall and desk finishes and sensory-muted “pods”. The Construction Industry Council has since awarded HMRC thirteen “Inclusive Environments Recognition” awards.
+
+## 7\. Supporting autistic staff to develop their careers
+
+### Evidence and discussion with stakeholders
+
+7.1 Respondents noted that progression should not be forced on those who are happy in their roles and happy with the tasks that their role entails.
+
+7.2 For those autistic employees who do wish to progress, however, there are several reasons why they could miss out on progression opportunities, including lack of confidence, poor self-advocacy, wrong assumptions being made about their career goals, and established but mistaken views about what a manager or a leader is like.
+
+7.3 There are few examples of senior managers or executives who are autistic and prepared to be open about their condition. For many autistic people, this lack of champions and role models will have a negative effect on their confidence and aspirations.
+
+7.4 There are common negative stereotypes that autistic people are better suited to certain roles, such as data checking or coding, and are not well suited to working with or managing other people. These incorrect and negative stereotypes can hold back autistic people who are looking to progress in their career.
+
+7.5 The National Autistic Society’s Autism at Work team reports that many autistic people feel they are being overlooked for promotion or progression due to misunderstanding by their employers. Autistic people told the team that they feel these opportunities often go to their colleagues who are more comfortable with networking. Furthermore, autistic people can struggle when emphasis is placed on the social part of a job, such as team socials or after work drinks. Autistic people are likely to find this harder to navigate than the more structured parts of the working environment.
+
+7.6 The [Association of Graduate Careers Advisory Services publishes an annual report on employment of disabled graduates](https://www.agcas.org.uk/write/MediaUploads/Resources/Research%20and%20knowledge/WHN_2022.pdf),^([[footnote 36]](#fn:36)) which goes into more detail on type and stability of employment – autistic people fare worst in virtually all outcomes.
+
+7.7 [Office for National Statistics data on the disability pay gap](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/articles/disabilitypaygapsintheuk/2021#pay-gaps-by-impairment-severity-and-type) ^([[footnote 37]](#fn:37)) shows that autistic people face the largest pay gap of all disability groups, earning on average a third less than non-disabled people. However, this gap reduces considerably when controlling for other factors such as type of employment. This suggests that the pay gap is largely due to autistic people being unable to get into more senior, better paid roles.
+
+7.8 In most sectors, progression coincides with new responsibilities to manage staff. Some autistic people may find this difficult or overwhelming: but each autistic person is different. Many autistic people want to manage or would like to do so with the appropriate support in place. In the absence of any support, many skilled autistic people will lack confidence and will not seek promotion opportunities.
+
+#### Appraisals and goal setting
+
+7.9 Expectation setting is important in helping autistic people develop and progress in their careers. Managers too often neglect to talk openly with their staff about their career goals or to create a structured plan that supports their development towards those goals.
+
+7.10 For any employee, clear and structured appraisals by line managers give them the information they need to improve their performance and overcome weaknesses. Autistic staff benefit particularly by this appraisal being regular and structured. With busy workloads regular feedback and appraisals can be swept aside, often to the detriment of autistic employees. Ensuring one-to-one meetings are regular and structured is important, as is the way they are handled. Issues autistic people have faced during these meetings include:
+
+*   Feedback too direct – offering no reassurance that the employee is successful in other areas of work
+*   Negative feedback not given explicitly and left for the employee to pick up through social cues
+*   Timings for tasks not adequately specified
+*   Well-being checks not forming part of the discussion – solely work-based conversations that do not review the autistic person’s work/life balance, do not consider if an autistic employee needs any further adjustments or if their adjustments are currently working, and do not consider overall workloads when combined with coping with issues outside work.
+
+> Autistic people have brilliant skills and ways of thinking. In my career I have been promoted several times and moved into senior positions very quickly as I am able to problem solve and think outside the box but without proper support it makes it difficult to maintain and burnout is a real issue. As I am high masking, I am able to hide my differences and difficulties fairly well which means I am often overlooked for support. If I reach out for help it’s often assumed that I’ll just figure it out and I can be left feeling overwhelmed and confused.
+
+– Jasmine, recently diagnosed with autism and ADHD and now getting support
+
+### Recommendations
+
+18\. Promote the value of employee resource groups and support networks within larger organisations, helping to develop new skills and a network of contacts to succeed at the next level up. Promote the use of mentors and buddies to support staff in developing the skills and behaviours needed to progress.
+
+19\. Work with autism charities, CIPD, management training organisations and other advice organisations to develop packages of strength-based training focused on helping autistic staff to progress. These packages should identify skills mismatches and gaps and suggest ways of dealing with these – for example, by building existing skills, or by reshaping jobs within the team to better match staff skill sets to roles
+
+##### Case study: Auticon
+
+Auticon is a consulting company solely employing autistic people as data and cyber consultants. Beginning in the Nordic countries in 2008, Auticon now employs over 450 autistic IT consultants in 15 countries. Over 80% of their workforce is autistic.
+
+Auticon launched in London in 2016 and has expanded into Scotland with the launch of an Edinburgh site in 2019\. Currently they employ over 60 people in the UK, with 41 consultants.
+
+Auticon’s business model is based on the concept of classic IT consultancy: highly talented IT experts are employed at Auticon on a permanent basis. Each person’s individual skill set is matched to a specific client project. Corporate clients include PWC, Zurich, Johnson & Johnson, Deloitte and KPMG and are charged a day rate that matches industry standards.
+
+Auticon believe that autistic adults often have extraordinary technical or cognitive abilities such as pattern recognition, sustained concentration and exceptional attention to detail. Yet many find it difficult to secure or maintain mainstream employment. Auticon offers a range of support to their consultants including job coaching, autism training for clients and career development opportunities. Its impact goes beyond consultants, with client teams reporting that their understanding of the potential of autistic people to strengthen teams had increased and they recognise the potential for unconscious bias in talent acquisition.
+
+Auticon is clear that it is not providing tokenistic roles and is not a charity. Consultants are employed on their capabilities, but Auticon helps them to navigate the elements of employment they may find challenging.
+
+## 8\. Summary and next steps
+
+### Summary of the review
+
+8.1 Dr Anne Collis, the co-founder of the NeuDICE Community Interest Company working to improve self-employment and entrepreneurial opportunities for autistic people, and autistic herself, gives this summary of why this review matters:
+
+> The UK needs us. It needs us as part of co-designing solutions. It needs us for a strong, stable economic future. It needs us for stronger communities. As long as we are shut out or only allowed to play if we follow the existing rules, the UK as a whole is poorer and weaker.
+
+8.2 Autistic people, like any other group, have a wide range of skills, interests, and experience. But they will tend to think, communicate and act differently from neurotypical people. Those different approaches to cognition and communication can be a real source of strength at a time when the country is seeking to grow its economy and cope with the many challenges posed by inflation, climate change, an ageing population, and constraints on natural resources. However, all too often autistic people are prevented from using their skills, experience and different approach by unhelpful processes and a lack of appropriate support.
+
+8.3 This situation can be changed. It will not need vast sums of government money or enormous new programmes. It will instead require changes to ways of thinking and working, which can often be small, cheap and capable of rapid implementation. Many of these changes will not only benefit autistic people but all employees, jobseekers and employers. We hope that this review and the recommendations it contains can be a start down that path.
+
+### Next steps
+
+#### Connecting with existing work
+
+8.4 The recommendations set out in this report have been selected to be practically achievable in a short to medium timeframe. None requires any new legislation. None requires massive injections of government funding. Many of the developments are already under way and will just require some steering to ensure the lived experience and needs of autistic people are fully taken into account. These include:
+
+*   The new Universal Support programme
+*   The review and reinvigoration of Disability Confident
+*   Access to Work developments and systems improvements
+*   The Autistica Neurodiversity Employers Index
+*   Creating a long-term wave of improvement
+
+8.5 We recognise that the transformational change needed cannot happen everywhere all at once. Instead, we are seeking to generate a wave of improvement: starting from small ripples (proof of concept work, demonstration projects within particular geographical areas of smaller companies), then using these as the evidence on which to build small waves of change (rolling out across the larger company, public sector organisations, or a particular industry). Finally we aim to produce a sea change in accepted good practice which any employer would want to and be expected to follow. We are aware this could take some years to complete and will need a dedicated team to make it happen.
+
+#### Task group to drive the work
+
+8.6 Many of the recommendations will be long-term projects and will require continual monitoring, adjustment and prompting. This argues for the creation of a task group to oversee the work. Although the recommendations are aimed mainly at changing employer behaviour, they are structured as activities for the task group to promote and monitor.
+
+8.7 The task group should be chaired by a respected independent person who is separate from government and clearly represents autistic people and their needs. The collaboration between Autistica and DWP has worked very well for the review, with Autistica able to broker strong involvement from other autism charities, and DWP able to connect to employers and other government departments and bodies. The secretariat to the task group should therefore comprise a similar mix of voluntary sector and government representatives.
+
+#### Evidence-based development and the need for further research
+
+8.8 Our aim in creating this review has been to base it firmly on available evidence. We know that the evidence in some areas is slim or non-existent and, as the wave of improvement grows, we wish to evaluate the effects and use that evaluation to further develop the evidence base. This means continued evidence gathering and analysis. We will explore with autism charities and other stakeholders how this can best be managed and funded.
+
+## 9\. Evidence contributors
+
+### Roundtable events
+
+#### Cabinet Office: Disability Unit
+
+Disability Unit Colleagues
+
+East Midlands Regional Stakeholder Network Chair
+
+Greater London Regional Stakeholder Network Chair
+
+Northwest Regional Stakeholder Network Chair
+
+Southeast Regional Stakeholder Network Chair
+
+Southwest Regional Stakeholder Network Chair
+
+West Midlands Regional Stakeholder Network Chair
+
+### Autism charities
+
+Ambitious about Autism
+
+Autism Alliance
+
+Autistica
+
+Employment Autism
+
+National Autistic Society
+
+United Response
+
+#### Microlink Organised Roundtable: Employer groups
+
+Amazon UK
+
+Brew House and Kitchen
+
+Burch House
+
+CBRE
+
+City of London Corporation
+
+DFN Project Search
+
+Google UK
+
+Iasme
+
+Lend Lease
+
+Microlink
+
+Microsoft UK
+
+Travers Smith
+
+VM/O2
+
+#### Neurodiversity in Business organised roundtable
+
+Amazon UK
+
+Ambassador Theatre Group
+
+Anglo American
+
+Arm
+
+AstraZeneca
+
+Balfour Beatty
+
+BaxterStorey
+
+Capco
+
+Churchill
+
+Churchill Group
+
+Cisco
+
+Colombia Threadneedle
+
+Crayon Ltd
+
+CubeLynx
+
+Cyberfort
+
+Directline Group
+
+Dyer & Butler
+
+EIB
+
+Experian
+
+Global Centre of Rail Excellence
+
+Green Park
+
+IBM United Kingdom Ltd
+
+Investments
+
+Lexis Nexis Risk Solutions
+
+Liberty Specialty Markets
+
+Lloyds Banking Group
+
+Made Tech
+
+MBDA UK Ltd
+
+Motor Insurers’ Bureau
+
+Mott MacDonald
+
+Orange
+
+PageGroup
+
+PeoplePlus
+
+Protiviti
+
+PwC
+
+Rolls-Royce SMR
+
+RSM UK
+
+Shawbrook Bank
+
+Stanton Chase
+
+Starling Bank
+
+Thales
+
+The Bank of Nova Scotia
+
+The Go-Ahead Group
+
+The Phoenix Group
+
+The Walt Disney Company
+
+Virgin Active
+
+#### Autistica organised roundtable
+
+Auticon
+
+Buckinghamshire, Oxfordshire and Berkshire West NHS Trust
+
+City University of London
+
+Deutsche Bank
+
+Fourth Floor
+
+Ashraf Al-Fosaiel – KPMG
+
+Chris Lever – Auticon
+
+David Henderson – Personal development mentor
+
+Dom Shaw (UKIE)
+
+Geoff Dunbar – Retired
+
+Jack Whitfield – University of Plymouth
+
+Karen-Anne Manghan – ASC Mentoring
+
+#### Disability Confident Business Leaders Group
+
+AdviserPlus
+
+Channel 4
+
+Coca Cola European Partners plc
+
+Fearless Adventures
+
+Ford of Britain
+
+GSK
+
+John Lewis Partnership
+
+Kier Highways
+
+KPMG
+
+Leathwaite
+
+M & G plc
+
+Microsoft UK
+
+PurpleSpace
+
+Scope UK
+
+Sodexo
+
+#### DWP Health model offices
+
+Aberdare Job Centre Staff
+
+Croydon Job Centre Staff
+
+Gosport Job Centre Staff
+
+Grantham Job Centre Staff
+
+Leeds Eastgate Job Centre Staff
+
+National Employer and Partnership Team
+
+Paisley & Fraserburgh Job Centre Staff
+
+Slough Job Centre Staff
+
+Stourbridge Job Centre Staff
+
+Sunderland Job Centre Staff
+
+Wigan Job Centre Staff
+
+Within the mentioned Job Centres: Disability Employment Advisers, Disability Employment Advisor Leaders, Employment Advisers, Work Coaches and Work Coach Team Leaders
+
+HMO Operational Project Team
+
+#### Education groups
+
+Ambitious About Autism Employability Lead
+
+Catcote Academy
+
+Chadsgrove School, Worcestershire
+
+City College Norwich, Paston College and Easton College
+
+Leicester and Leicestershire Enterprise Partnership
+
+Limpsfield Grange School
+
+St Giles School, Retford
+
+The Westminster School, West Midlands
+
+West Midlands Combined Authority
+
+Weston College
+
+Worcestershire County Council – Worcestershire SEND & NDTi Internships Work
+
+#### Local authorities
+
+Barking & Dagenham
+
+Bradford
+
+Chester West & Chester
+
+Durham
+
+Gloucestershire
+
+Hertfordshire
+
+Kirklees
+
+Lancashire
+
+Leicester
+
+Lincolnshire
+
+Norfolk
+
+Oxfordshire
+
+Pembrokeshire
+
+Salford
+
+Sandwell
+
+Southampton
+
+Surrey
+
+Tower Hamlets
+
+Wakefield
+
+#### Insurance industry
+
+Ageas
+
+Beazley
+
+EY
+
+Gain
+
+Guardian FS
+
+Legal and General
+
+Liberty Global
+
+Monica Garcia Consulting
+
+QBE
+
+RSA
+
+Saga
+
+Swiss RE
+
+Zurich
+
+#### Technology organisations and experts
+
+Achieve Ability
+
+Ace Centre
+
+Assistive Technology Journal
+
+ATech
+
+Avanade
+
+Barry Sheerman MP
+
+BBC Cape
+
+Bournemouth University
+
+Brain in Hand
+
+British Association for Support Employment
+
+Business Disability Forum
+
+Cumbria, Northumberland, Tyne and Wear NHS Foundation Trust
+
+DFN Project SEARCH
+
+eQS
+
+London South Bank University
+
+Microsoft
+
+National Association of Disability Practitioners in HE
+
+Open University
+
+Policy Connect
+
+Tech for Disability
+
+The Oaks Specialist College
+
+#### Legal Neurodiversity Network
+
+AS Mentoring
+
+Autism Forward
+
+Eversheds Sutherland LLP
+
+Freshfields
+
+Herbert Smith Freehills
+
+Julie West Solicitors
+
+Law Society Disabled Solicitors Network
+
+Neurodiversity in Law
+
+No5 Chambers
+
+Pinsent Masons
+
+Simmons & Simmons
+
+Stephenson Harwood LLP
+
+The Law Society of England and Wales
+
+### Other evidence engagement
+
+#### Government
+
+Cross Government Autism Network
+
+Department for Business and Trade
+
+Department for Education
+
+Department of Health and Social Care
+
+Department for Work and Pensions Human Resources
+
+Department for Work and Pensions policy colleagues
+
+Government Communications Headquarters
+
+Home Office
+
+Minister for Children, Families and Wellbeing: Claire Coutinho (at time of consultation)
+
+National Employment Partnership Team
+
+Scottish Government policy colleagues
+
+Welsh Government policy colleagues
+
+#### Organisations and individuals
+
+Active Oxfordshire
+
+Adriel Yap – lived experience
+
+Alfie Wolf – lived experience
+
+ASPIE, a social, support and therapy group for adults with Asperger’s Syndrome
+
+Aubilities
+
+Autism Wales
+
+Aviva Investors
+
+Barndale Special School
+
+British Association of Supported Employment (BASE)
+
+British Association of Social Workers: Neurodivergent Social Workers Special Interest Group
+
+Chartered Institute of Personnel and Development (CIPD)
+
+David Downes – lived experience
+
+DFN Project Search – St George’s Hospital
+
+Dimensions
+
+Down Syndrome Association
+
+Dr Anna Remington: An internship programme for Autistic Graduates at Deutsche Bank
+
+Dr Graham Webb – lived experience
+
+Dr Jonathan Vincent – Lancaster University
+
+Dr Louise Nash – University of Essex
+
+Dr Marc Fabri – Leeds Beckett University
+
+Dr Mitzi Walts – Free University Amsterdam
+
+Dr Peter Tyerman – Retired GP
+
+Elizabeth Pellicano: An internship programme for Autistic Graduates at Deutsche Bank
+
+EY Lane 4
+
+GAIN
+
+Helen Mariner – lived experience
+
+HFT
+
+Hidden Disabilities: Sunflower
+
+Institute of Government and Public Policy
+
+James Cheriton – Education sector consultant
+
+Jan Lawler MA – University of Sheffield
+
+Jane Appleton – lived experience
+
+Joyfully Different Limited
+
+Liam P Rigby –lived experience
+
+Max J Green – lived experience
+
+Martin Bloomfield: Dyslexia Bytes and Autism Spectrum Pathways
+
+Mary Ann Liebert, Inc
+
+Nationwide Building Society
+
+Neurodiversity Together – Steven Ingram
+
+NeuDice
+
+NHS
+
+Nimmi Shah – lived experience
+
+Professor Richard Mills
+
+Rangam
+
+Recruitment and Employment Confederation
+
+Royal College of Speech and Language Therapists
+
+Samuel Robinson – lived experience
+
+SeeAbility
+
+Sir Robert Buckland constituents – South Swindon
+
+Social Firm Wales
+
+TalkTalk
+
+The Association of Graduate Careers Advisory Services
+
+The London School of Economics and Political Science
+
+The Mason Foundation
+
+The Pennyhooks Farm Trust
+
+The Salvation Army
+
+Tim Fallowfield
+
+University of Reading
+
+Youth Futures Foundation
+
+## Annex 1: Terms of reference for the Buckland Review of Autism Employment
+
+### Context
+
+Data from the Office of National Statistics shows that autistic people have amongst the lowest employment rate of any disabled group in the UK. In the year 2020/21 only around 26% of working age autistic people are in employment, compared to around half of disabled people generally and eight in 10 of the general population. (The latest data for 2021/22 shows a slight improvement but only to around 30%). Similarly, the Association of Graduate Careers Advisory Services report that just over a third (36.2%) of autistic graduates are in full-time employment, the lowest rate of all disabled groups. More generally, neurodivergent people are greatly under-employed, with those considered to have “severe or specific learning difficulties” or “mental illness or nervous disorders” also facing amongst the lowest employment rates across disability groups.
+
+The impacts of the employment gap are serious and multifaceted:
+
+For autistic people: Employment can be critical to a person’s mental wellbeing, financial stability, independence and overall quality of life. Many of the worst outcomes associated with unemployment and under-employment are rife across autistic people, including poverty, poor mental health, limited independence and harrowing suicide rates. Compared to almost any other disabled group, autistic people are less likely to report feeling happy, satisfied with their life or that “the things I do in life are worthwhile”.
+
+For employers: Neurodiversity is a vital but too often under-utilised resource for employers across the private, public and voluntary and community sectors. We know that autistic people have certain strengths that can help them outperform their non-autistic peers, particularly those requiring attention to detail, focus and information processing. At an organisational level, autistic people introduce different ways of thinking and working. For complex tasks that involve problem solving or creative thinking, like developing new products or business strategies, a neurodiverse team is more likely to avoid cognitive biases, generate a wider range of ideas to consider and confer a competitive advantage over other organisations.
+
+For the economy: The best economic models suggest that the UK economy loses approximately £14.5 billion every year because autistic people are unemployed or otherwise unable to participate in the workforce. The Institute for Fiscal Studies predicts that changes to the labour market will be the “lynchpin” that determines the UK’s economic recovery from the pandemic. As our economy adjusts, many sectors are facing shortages in labour which are harming economic growth and disrupting voters’ lives. Approximately 1 in 10 people has a neurodevelopmental condition, while the Labour Force Survey indicates there are approximately half a million autistic people not in employment.
+
+### Focus, format, secretariat and timing of the review
+
+Focus: The review will focus specifically on autistic people. However, many of the adjustments and initiatives that would benefit autistic people could also benefit a wider group of people who think differently, including those with other neurodevelopmental conditions such as ADHD, dyslexia and dyspraxia.
+
+The review is intended to complement, rather than duplicate, the government’s [national strategy for autistic children, young people and adults: 2021-26](https://www.gov.uk/government/publications/national-strategy-for-autistic-children-young-people-and-adults-2021-to-2026/the-national-strategy-for-autistic-children-young-people-and-adults-2021-to-2026), which also recognises employment as a priority. Whereas the autism strategy covers a breadth of issues that impact autistic people, this review will focus on providing depth to the commitment to significantly increase the number of autistic people in high-quality and sustainable employment. Specifically, it will focus on identifying effective solutions to the problems of identifying and supporting existing autistic staff; encouraging and supporting autistic people to take up employment; encouraging and supporting autistic people in employment to secure promotions and grow their careers; and identifying systemic barriers that prevent these things happening.
+
+Out-of-scope: The Review will not examine the overall organisation or performance of education, inpatient healthcare and adult social care services for autistic people as these topics are already the subject of the government’s [SEND Review](https://www.gov.uk/government/consultations/send-review-right-support-right-place-right-time), the [Building The Right Support](https://www.england.nhs.uk/learning-disabilities/natplan/) programme and [Build Back Better](https://www.gov.uk/government/publications/build-back-better-our-plan-for-health-and-social-care/build-back-better-our-plan-for-health-and-social-care) plan respectively. The Review may, however, make limited recommendations for specific interventions that concern these settings, if they are deemed to be critical with regard to employment and unlikely to be affected by wider policy changes in those areas.
+
+Format: The Review will put out a targeted call for evidence on different aspects of these challenges, with a particular focus on evidence from employers and employer groups including the Disability Confident Business Leaders Group and Neurodiversity in Business; and will hold a series of meetings and conferences to gain the views of experts in the field.
+
+In considering prospective solutions the Review should look for evidence that they:
+
+*   are likely to be acceptable to autistic people
+*   are likely to be effective at improving autistic people’s outcomes
+*   would be feasible for employers or public services to deliver, including integrating with existing initiatives such as Access to Work and Disability Confident.
+
+Review leader terms and Secretariat: The leader of the review will be an unpaid position, although DWP will be able to reimburse reasonable expenses.
+
+DWP officials will provide a small secretariat, introducing the review leader to relevant officials and employer groups, setting up virtual and face to face meetings, building links to other relevant DWP initiatives and programmes, producing draft text, and such other duties as relevant to the functions of the Review.
+
+Timing and reporting: The review will begin in April/May 2023 and will aim to have completed evidence gathering by the end of June 2023, with a draft report aimed for by the end of July and circulated to DWP officials for comments, and a final report issued to the Secretary of State for Work and Pensions by September 2023, recommending actions that could significantly increase the autism employment rate. The Review may also recommend areas where further evidence gathering or developmental work could be fruitful.
+
+The Secretary of State for Work and Pensions will then consider the report and consider what form the response would take.
+
+### Detailed activity
+
+Encouraging neurodiverse workforces and removing barriers that disadvantage autistic people from securing and retaining work or progressing their careers.
+
+Several barriers make it harder for autistic people to succeed in the workplace. Many of these are easy to address individually, but together they put autistic people at a serious disadvantage. Autistic teenagers often have more to deal with in school years and so miss out on chances to build work-related skills and experiences, making it harder for them to compete with other early-career candidates.
+
+Recruitment processes often let employers down. Recycled job adverts, unstructured interviews and impromptu group tasks can tend towards the status quo and bias recruitment towards skillsets and personalities that bear little resemblance to the role.
+
+Workplace environments, working cultures and stigmatising misconceptions can create barriers that autistic people are forced to overcome in their careers, meaning employers inadvertently miss out on the potential of their autistic staff.
+
+The review will consider the following questions:
+
+1\. How can employers identify autistic staff already in their workforce and support them to stay and succeed?
+
+2\. What more could be done to prepare autistic people effectively for beginning or returning to a career?
+
+3\. What changes could help employers more accurately assess the aptitude and needs of autistic candidates?
+
+4\. What working practices or initiatives can reduce stigma and improve the productivity of autistic employees?
+
+5\. What will enable and encourage employers to make suitable changes for autistic candidates and employees?
+
+* * *

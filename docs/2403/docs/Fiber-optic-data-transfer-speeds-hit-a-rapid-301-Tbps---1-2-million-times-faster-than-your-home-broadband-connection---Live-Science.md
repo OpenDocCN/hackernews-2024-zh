@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:46:44
+-->
+
+# Fiber-optic data transfer speeds hit a rapid 301 Tbps — 1.2 million times faster than your home broadband connection | Live Science
+
+> 来源：[https://www.livescience.com/technology/communications/fiber-optic-data-transfer-speeds-hit-a-rapid-301-tbps-12-million-times-faster-than-your-home-broadband-connection](https://www.livescience.com/technology/communications/fiber-optic-data-transfer-speeds-hit-a-rapid-301-tbps-12-million-times-faster-than-your-home-broadband-connection)
+
+Scientists have achieved fiber-optic data transfer speeds 1.2 million times faster than the average fixed broadband line by tapping into a previously unstable transmission band for the first time.
+
+The researchers hit a rate of 301 terabits per second (Tbps) — equivalent to transferring 1,800 4K movies over the [internet](https://www.livescience.com/20727-internet-history.html) in one second. The median fixed broadband speed in the U.S. in comparison, is 242.38 megabits per second (Mbps), according to [Speed Test](https://www.speedtest.net/global-index/united-states#fixed).
+
+They achieved this breakneck speed by sending [infrared light](https://www.livescience.com/50260-infrared-radiation.html) through tubular strands of glass — which is how fiber-optic broadband works generally. But they tapped into a spectral band that has never been used in commercial systems, called "E-band," using new, custom-built devices.
+
+The results of the test — which were conducted using the kind of fiber cables already laid in the ground — were published in March by the Institute of Engineering and Technology (IET), the scientists said in a [statement](https://www.aston.ac.uk/latest-news/aston-university-researchers-send-data-45-million-times-faster-average-broadband#:~:text=Aston%20University%20researchers%20have%20sent,used%20in%20fibre%20optic%20systems.). The team also presented the research at the European Conference on Optical Communication (ECOC) in Glasgow in October 2023 — but the paper has not been made public.
+
+## A new frontier for fiber-optic connections
+
+All commercial fiber-optic connections beam data through cables in the C-band and L-band portions of infrared in the [electromagnetic spectrum](https://www.livescience.com/38169-electromagnetism.html) — with the particular infrared region used for internet connections occupying a range of [1,260 to 1,675 nanometers (nm](http://www.tarluz.com/optical-fiber/pros-and-cons-of-fiber-transmission-bands/)). For reference, [visible light](https://www.livescience.com/50678-visible-light.html) occupies wavelengths between approximately 400 nm and 700 nm on the spectrum.
+
+C-band and L-band — which range between 1,530 nm and 1,625 nm — are commonly utilized in commercial connections because they're the most stable, meaning the least amount of data is lost during transmission. But the scientists speculated that one day the sheer volume of traffic will result in these two bands being congested — meaning additional transmission bands will be needed to increase capacity.
+
+**Related:** [**Project Kuiper: Amazon's answer to Starlink passes 'crucial' test**](https://www.livescience.com/technology/communications/project-kuiper-amazons-answer-to-spacexs-starlink-passes-crucial-test)
+
+Get the world’s most fascinating discoveries delivered straight to your inbox.
+
+S-band, which is adjacent to the C-band and occupies the range 1,460 nm to 1,530 nm, has been commercially used in combination with the other two in a system known as ["wavelength division multiplexing"](https://www.fiberlabs.com/glossary/wavelength-division-multiplexing/) (WDM), in which all three bands are used to reach much higher speeds.
+
+Scientists have never been able to emulate E-band connections before, however, because the data loss in this region shoots up to extremely high levels — roughly five times the rate of loss of transmission in the C-band and L-band regions.
+
+Specifically, fiber-optic cables are susceptible to exposure to hydroxyl (OH) molecules that can enter the tubes and disrupt connections, either through manufacturing or naturally in the environment. E-band is called the "water peak" band because extremely high transmission loss is caused by the absorption of OH molecules by infrared light in this region.
+
+## Stabilizing connections at the "water peak" band
+
+In the new research, scientists built a system that made stable E-band transmission possible. They demonstrated successful and stable data transfer at high speeds using both the E-band and the adjacent S-band.
+
+To maintain a stable connection in this region of the electromagnetic spectrum, the researchers created two new devices called "[optical amplifiers](https://www.globalspec.com/reference/21554/160210/chapter-4-4-2-optical-amplifiers-and-regenerators)" and "[optical gain equalizers](https://www.globalspec.com/reference/21556/160210/chapter-4-4-4-optical-gain-equalizers)." The former helps to amplify the signal over distances while the latter monitors each wavelength channel and adjusts the amplitude where needed. They deployed them in the fiber-optic cables to ensure the infrared light transmitted data without the instability and loss that normally plagues connections in these bands.
+
+"Over the last few years Aston University has been developing optical amplifiers that operate in the E-band, which sits adjacent to the C-band in the electromagnetic spectrum but is about three times wider," said [Ian Phillips](https://research.aston.ac.uk/en/persons/ian-phillips), professor of electronics and computer engineering at Aston University in the U.K. and one of the scientists working on the project. "Before the development of our device, no one had been able to properly emulate the E-band channels in a controlled way."
+
+Although 301 Tbps is extremely fast, other scientists have tapped into fiber-optic connections to demonstrate even faster speeds in recent years. A team at NICT, for example, hit the world record of [22.9 petabits per second](https://www.nict.go.jp/en/press/2023/11/30-1.html) in November 2023 — 75 times faster than the speed Aston University team achieved. They used WDM technology but did not access E-band wavelengths. They demonstrated this high-speed connection over a distance of 8 miles (13 kilometers).

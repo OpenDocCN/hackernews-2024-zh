@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:11
+-->
+
+# Welcome to the Valley of the Creepy AI Dolls | WIRED
+
+> 来源：[https://www.wired.com/story/ai-dolls-for-older-adults/](https://www.wired.com/story/ai-dolls-for-older-adults/)
+
+But these are the inherent risks that come when companies ask people to turn to their products in their most vulnerable moments. Moyle says she’s of two minds about the issue.
+
+“If we give somebody an opportunity to talk to AI, does that remove all other social opportunities?” Moyle says. “Does that mean that families stop visiting? Does that mean that the staff stops talking to the person?” It’s a risk, but she says, in her experience, many older adults in care facilities are often left by themselves for the vast majority of their days and nights as it is. “Giving them something, if it makes them happy, is much better than giving them nothing at all.”
+
+Of course these devices aren’t the same as a human. Large language models don’t understand the person interacting with them; they’re just very good at predicting what will sound like a good response. And they certainly don’t know how to fully understand a person’s emotions or mental state.
+
+“People can be displaying quite challenging emotions that are not being picked up by the AI,” Moyle says. “As AI becomes more sophisticated, that probably will get better, but at the moment it’s certainly not.” She pauses, then laughs and adds, “But a lot of humans can't assess emotions very well either, so …”
+
+For lots of people, it doesn’t really matter if a robot can’t love them back. It’s why we still mourn our robots dying [slow, somber deaths](https://www.wired.com/story/jibo-is-dying-eulogy/), and hold funerals for [robot dogs](https://www.theguardian.com/world/2018/may/03/japan-robot-dogs-get-solemn-buddhist-send-off-at-funerals). It’s why we want [personalities in our sexbots](https://www.wired.com/story/henry-the-sexbot-wants-to-know-all-your-hopes-and-dreams/) and trust them with our [deepest desires](https://www.wired.com/story/replika-chatbot-sexuality-ai/). When a human interacts with a robot, it’s less about whether the robot can love you back, and more so about how people derive value from the act of pouring their own feelings into someone (or something) else.
+
+“What the cat and what the baby gave us is a sense that they need our love, and that's what we are longing for as humans,” Hung says. If someone is looking to interact with a cute and cuddly robot, it’s often to fulfill that same function. “We buy these robots because we want to give our love to them—so we feel that the robot needs our love, so we feel that there's something who needs us. That’s the nature of humans.”
+
+*Update March 20, 2024 at 4:01 pm: This story has been updated to include statements from Hyodol that the company sent after this story was originally published.*

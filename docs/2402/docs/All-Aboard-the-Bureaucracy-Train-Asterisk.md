@@ -1,0 +1,180 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:24:00
+-->
+
+# All Aboard the Bureaucracy Train—Asterisk
+
+> 来源：[https://asteriskmag.com/issues/05/all-aboard-the-bureaucracy-train](https://asteriskmag.com/issues/05/all-aboard-the-bureaucracy-train)
+
+**Asterisk:** *The overarching question in your transit policy career has been: Why is America so bad at building transit systems? Earlier this year, your team at NYU released a massive report comparing transit costs in Istanbul, Italy, Sweden and Boston, and then, of course, New York. It culminates in your fantastic case study of the Second Avenue subway line. And that’s where I wanted to start. What went wrong?*
+
+**Alon Levy:**Let’s go back to John Hylan.
+
+Hylan was a populist mayor between 1918 and 1925\. He ran against various corporate interests, which at the time included private streetcar companies. Hylan was hostile to the private operators. This led to bustitution — using buses to undercut the streetcar companies, though even then it was clear that the buses were providing inferior service that cost more to provide.
+
+And he was also against the private companies that were running the subway. So the city started building something called the Independent Subway System, commonly known as IND (because the private companies were called IRT, Interborough Rapid Transit). It was built by the city with the express purpose of driving the privates out of business — so the lines were kind of duplicative of the older lines. Only in two places did they truly expand into new places that were not served before. One is the G train, the Crosstown Line between Long Island City and downtown Brooklyn. The other is the Queens Boulevard line.
+
+It added value. But it was also redundant on purpose — and it culminated in the city buying out the private operators at Depression prices. 
+
+**A:** *And what they built also had strong impacts on construction costs that continue today.*
+
+**AL:**Yes. The IND was built to very high standards. These standards meant that, for example, the stations were somewhat farther apart. They had more exits because they were planned around longer trains than the IRT. 
+
+They also decided to build full-length mezzanines, which has since become an American tradition, which everyone tells me is necessary because of the fire code. It is not, in fact, necessary, but it’s a tradition, and telling an American that a tradition is wrong and they should learn, for example, from how Germans build, is not that much different from telling an American that they should ceremonially shred the Constitution and the entire body of American law and adopt the governance standards of Nigeria.
+
+**A:** *So let’s skip ahead to the 21st century and the Second Avenue subway line. How does this history tie into the high construction costs New York is still seeing for contemporary projects?*
+
+**AL:**As I mentioned, the existing standards in New York were very overbuilt. For example, London started building cut and cover subways in the 1860s and then switched to deep boring — 
+
+**A:** *Cut and cover?*
+
+**AL:**Cut and cover means you cut the street open, put down tracks and then cover them up. With deep boring you use a tunnel boring machine. The tunneling machine goes horizontally, and you don’t disturb the surface except to build stations, which are usually still cut and cover. The merchants will hate you, but after a couple of years of this, they get a station. You can even build the stations from underground, but it’s about 50% more expensive. Generally, cut and cover is superior to deep boring because the stations are closer to the surface, so passengers have less time to travel down to them. It’s also cheaper because you don’t remove as much earth and the stations are easier to build. It does create more surface disturbance. But if you can get away with cut and covering everything, you should cut and cover everything. 
+
+**A:** *And the standard set in the 1930s was to use deep boring?*
+
+**AL:**No — into the 1930s the IND used cut and cover, but among their high standards were wider curves, curves that were, in most cases, wider than the turn radius of the streets themselves. And because of that, something had to give. If it was in Brooklyn or in Queens, it didn’t matter very much. But in Manhattan they had to shave corners off of buildings, which meant demolishing buildings in midtown. This made everything much more expensive, and it meant they could not do cut and cover in a way that was cost effective.
+
+And between that and the fact that cut and cover really is disruptive, the change to deep boring was made — not just the tunnels, which is pretty standard globally, but also the stations at 72nd and 86th Street, which is not standard. This is an example of how you start doing something right, but it’s compromised in a way that makes everything collapse. And as a result, instead of fixing the one bad thing, you replace the paradigm.  
+
+Now, most low-cost places use deep boring, not cut and cover. Cut and cover is cheaper. But if you’re, let’s say, Italy, and you have very low construction costs, you don’t want to deal with the surface disturbance, right? Since surface disturbance scales with income or population density.
+
+**A:** *And Rome, obviously, is a dense city with a lot of buildings in it.*
+
+**AL:**Yeah. In Rome you can’t do cut and cover because you will cause the collapse of ancient ruins. The parts of the city that are near the classical core are especially expensive because they have to do a lot of deep mining just to protect them. And of course in New York they don’t have to do any of that, but they think that it’s harder. 
+
+The other thing is how to do project delivery. With some variation, in all places with low construction costs and in most places with medium construction costs, the state does planning. They can contract consultants to help, but the state supervises them. The state owns the design. You almost always do two contracts, one for design and one for construction. It’s called, in American terminology, “Design-Bid-Build.” 
+
+New York subways. Hagstrom Company, Inc., 1951\. Courtesy David Rumsey
+
+**A:** *So there’s two different sets of contractors involved here* — *one group that does the design process, one group that actually builds it.*
+
+**AL:**Yeah. Exactly.
+
+**A:** *Okay. And then the alternative is Design-Build* — *where it’s the same people building who are designing.*
+
+**AL:**Right. There’s a belief that Design-Build is more modern and more advanced. But every time a place switches from Design-Bid-Build to Design-Build, their construction costs go up, which is usually taken as evidence that that place is uniquely difficult to build in. 
+
+Now, the right way to do Design-Bid-Build requires a bunch of elements that are not present in the United States. Some of them have never been present. Some of them have atrophied. The first element, that’s the one that used to be present but isn’t anymore, is a large public sector, because you need a large enough bureaucracy that can supervise all the contractors.
+
+**A:** *I want to zoom in on this point a bit, because it’s not like the U.S. doesn’t have a large public service bureaucracy. But reading your report, it seems like the bureaucracy just doesn’t have the institutional knowledge that it needs to build cost-effectively. One line that hit me over the head was how some of the contractors had worked on projects in D.C. and Boston, but no one had immediate experience managing a project like Second Avenue. These are the people whose job it is to build transit in New York! How do they not have experience building transit in New York?*
+
+**AL:**I mean, New York hadn’t built in a while. And they’re New Yorkers. Do you think they’re really going to try to learn from a village like D.C. or Boston or Paris? It’s actually kind of striking, who learns from whom on this? One of the things that we figured out while doing the database is — 
+
+**A:** *The database, just to clarify for readers —*
+
+**AL:**The database shows the construction costs of, I’m guessing, 80 to 90% of the world’s subways by route length, with construction costs inflated to 2021 dollars. This required getting information in a bunch of different languages. One of our contractors is Arab-Israeli. And so he added a lot of Arab world data for us. And one of the things that he pointed out to us was that it was difficult for him to get information
+out of Tunisia, Algeria and Morocco because a lot of the work there is done in French. These three countries specifically use French so much that they kind of try to be France. I mean, they’re very proud of their culture. They’re proud of anticolonialism, but they do imitate France in many ways.
+
+**A:** *This is another interesting point* — *and I do want to get back to American civil service bureaucracy* — *but you have written about how former colonies tend to copy transit practices from the metropole.*
+
+**AL:**In Asia a lot of countries are trying to copy Japan, and they’re copying Japan in a very turnkey style. They use methods that require a lot of expensive capital and not a lot of cheap labor, because in Japan, capital is cheap and labor is expensive. It’s very visible in Indian construction costs. The stuff they do domestically, like their electrification project — you know, Indian railways are about to complete electrifying the entire country, right?
+
+**A:** *Yes.*
+
+**AL:**Yeah, the construction costs for that are rather low, maybe $750,000 per route kilometer, and the Euro norm is probably about $2.5 million. So in India it’s maybe one-third as expensive. And then you look at mega-projects like metros of high-speed rail that those countries outsource to Japanese designers or that they learn from Japanese designers, and their construction costs are rather high. Often, the learning is toxic. That is to say, you learn from the wrong people or you learn from people who are the right people, but not for your circumstance. That’s absolutely a problem.
+
+**A:** *So even though Japan has built efficiently for Japan, the methods that are efficient in Japan are not methods that are efficient in India.*
+
+**AL:**Exactly. This is a problem throughout the Third World. Now, bear
+in mind that construction costs per kilometer and country GDP per capita are positively correlated, but that’s entirely because poor countries tend to build more elevated and inferior underground lines, which are cheaper. If you strip that away, the correlation, I think, was very low — 0.04\. So that’s fascinating.
+
+**A:** *You’d expect it to be cheaper because labor costs should be lower.*
+
+**AL:**Right. But labor is not a large proportion of cost. Labor in most places is 25% of the cost. 
+
+**A:** *But not in the U.S.?*
+
+**AL:**Yes, in the U.S., just not in the northeast. Labor issues are northeast specific. They don’t even exist in California. 
+
+**A:** *So bringing us back to Second Avenue —*
+
+**AL:**Yeah. So let’s pop the stack. In New York, they do have an in-house bureaucracy, but it’s atrophied. So what do we mean by “it’s atrophied”? First of all, the United States has, over the generations, developed a parallel civil service, which is an overclass of political appointees. The number that’s stuck in my head is 13,000 state level direct. For example, the head of the MTA is a political appointment of the governor.
+
+**A:** *Does that mean there are 13,000 political appointees in transit?*
+
+**AL:**No, 13,000 people in the United States work for a state government who are appointed by the governor or lower-level official. The governor may choose to appoint a technocrat, but it’s not expected. And then there’s also the indirect people, the people who these appointees hire as their personal staff. When these people walk into the room, the experienced civil servants lower their heads a little bit. When you tell the civil service that it’s always going to be on the lower end of the class system, you’re going to lose the best people. The best people will pick a career path that lets them be on top, which in this system means they’re doing many different things and never learn one thing well. 
+
+**A:** *Spain and Italy are low-cost countries, right? And when I think of innovative, disruptive organizations, I don’t think of Italian bureaucrats.*
+
+**AL:**Right. Because the social innovations that you see in low-cost countries are really difficult to export. 
+
+**A:** *What features of these bureaucracies make them more effective? What really works in Italy or Turkey or Spain?*
+
+**AL:**Good question. I started complaining about American badness with things like the class system. So let’s look at the mirror image. Southern European bureaucracy is one where, first of all, they all have cultures of respect for engineers. The idea that a public policy grad from Harvard or Oxford gets to tell a scientist what to do — that’s a very American and British thing. In Germany, forget about it. In Italy, forget about it. The same with Spain and Portugal. And this is also carried over to Latin America — not all of which has low construction costs. Brazil kind of sucks at this, but there’s still a culture in which the engineers get a lot of respect. I hear this from students: “Oh yeah, the engineers get the nicest buildings.” The engineer can rise to the top. 
+
+Tokyo subway map. Wiki commons
+
+**A:** *This lack of effective leadership from the public sector comes up over and over again in your discussions of American transit, both internally and in their relationships with other actors. They struggle at cooperating with other agencies* — *with the Department of Transportation, with the Department of Environmental Protection, with parks, with buildings, with the fire department. And they’re also quite inefficient at managing consultants because they don’t have enough technical in-house knowledge to really understand how to.*
+
+**AL:**Exactly. So then they’ll hire a consultant to manage the consultants — it’s the most ridiculous thing.
+
+**A:** *They don’t really know what asks to make of other actors. So, as an example of communication issues, the interfacing with public utilities just blew my mind. In New York, nobody knows where utilities are in the street, where an electric line is or a sewage line is. They’re constantly renegotiating to get them moved or get them integrated. In these low-cost countries we’ve been talking about, the transit agencies themselves are more centralized. So instead of having New York City Transit versus the Metropolitan Transit Authority versus, I don’t know, a state agency, there is one central agency that does planning. And obviously this makes things more streamlined internally, but they also seem to handle integration with other non-transit agencies better. And I’m curious how they manage that.*
+
+**AL:**Okay. So first of all, the MTA is actually rather integrated, and the same is true of the MBTA in Boston and SEPTA in Philadelphia.
+
+However, there’s also an American tradition, which is very difficult to question, that commuter rail is separate. There was this former head of the MBTA, Frank DePaola, I think this was very recently in 2016, who said that commuter rail is not mass transit, it’s its own thing. And so there’s no cooperation. This means that, for example, East Side Access did not have any coordination between the Long Island Rail Road and Metro-North. 
+
+And again, they won’t learn because the U.S. finds it difficult to learn from others, especially if they don’t speak English, especially if they’re not Canada. We see this also with Design-Bid-Build versus Design-Build. To make them work, you need a large in-house bureaucracy. You can just pretend Design-Build works if you don’t have one, because the consultants will do everything. And then when they submit a large bill, they say, “Oh, it’s just hard to build here. It’s because we’re so rich.” But New Zealand and Ireland, which are not especially rich, have British construction costs. But again, you also need to have flexibility. You need to make sure that the builders can be flexible and do variations from design. They’re good at it in Turkey. 
+
+**A:** *This idea of flexibility is also interesting to me, because when you look at these projects, one of the major drivers of increased costs is that something always needs to be redesigned mid-project* — *a neighbor objects to something about the station or there’s a utility hookup that needs to be changed, and that always adds cost. It seems like American transit agencies are really bad at predicting cost overruns. You’d think that given that this seems to happen every time they’re doing an initial estimate, some of that would be priced in.*
+
+**AL:**This isn’t just an American thing. There’s no difference between cost overruns in the U.S. and Europe.
+
+**A:** *So the U.S. is just worse on base costs, not overruns?*
+
+**AL:**Yeah, exactly. So actually the U.S. figured out that they had a cost overrun problem in the ’80s. What they started doing is acquiring contingencies. And the problem with contingencies is that the money will pretty much always be spent. A contingency is when — let’s say a project is going to cost $150 million. So instead of saying it’s $150, you say it’s $200 so that when the cost inevitably rises, you can say you went below budget. And this has been pretty deleterious because if you’re optimizing for cost overruns, you will just say that the costs are higher. You will include several layers of contingency. The Federal Transit Administration requires some ridiculously large numbers, I think almost 40%.
+
+**A:** *So once you’ve said that your budget is $300 million, even if you only expect it to be $200 million, the money will get spent.*
+
+**AL:**I mean, a local neighborhood says they want a signature station, a station with art, where the artist got paid a couple hundred thousand dollars for the entire installation. Or they want to make a space very big, so they need to move the escalators and much more electrical wiring. It’s things like that: the special bespoke designs that don’t actually make the station nicer. Second Avenue Subway had, I think, two different escalator contractors.
+
+**A:** *Another recurring theme. Every local actor that could be involved in this process has an ask, and it seems like a lot of the skill of managing a transit project is being able to have the requisite engineering knowledge and also the political skill to fend off all of the different requests the different agencies and municipalities and individuals will be making of you.*
+
+**AL:**Yeah, exactly. One of the issues is that if the civil service says, “Oh, these are our designs; they meet the fire code,” and a fire department official says, “No, they don’t,” the civil service is not going to back their own designers.
+
+**A:** *I’m from Los Angeles, and mostly in the 1950s, L.A. standardized plans for schools across the city. And then they just built them a bunch of times, and they’re beautiful buildings and much cheaper than designing from scratch every time, which is what happens now.*
+
+**AL:**That’s the right way to do it. Just build the same thing, and if you need to customize, art does not cost a lot of money. But instead of doing that or painting the bare tunnels like in Stockholm, they have way too many people in the room. These people are typically nongovernmental actors, or from a local government. But I don’t want to make this entirely about federalism because Canada is federal but has a much stronger provincial government than the American state government. Canada has almost the same construction costs as the United States. They kind of imported the American parallel party state, where they’re going to politicize engineering decisions. In New York it’s essentially the same problem. By the way, Italy and Greece both have a lot of clientelism but enough engineering procedure that it doesn’t hit the engineers. Spain and Portugal have much less clientelism than Italy and Greece. Spain and Portugal also have lower construction costs.
+
+Istanbul subway map. istanbulmap360.com
+
+**A:** *When you talk about clientelism, is that separate from appointments being politicized?*
+
+**AL:** Clientelism and political appointments usually come from different traditions, but they’re very similar. Clientelism is when people vote for a party with the expectation that they will get jobs that way. In the United States, before the civil service system, they had the spoils system, where if you wanted to literally be the person digging things to build a road, you needed to be a member of the party that won the election. And so a lot of American civil service dysfunction is people being too rigid because they passed these laws in the 1900s and 1910s and didn’t update them correctly. Instead of, say, letting construction contractors make changes, they always keep the risk in the public sector. The thinking is that if the risk is privatized, the private concessionaire will just raise the prices. Because they assume the civil service means a set of federal regulations for the first third of the 20th century, the errors keep accumulating. Whereas a place like Southern Europe can build. 
+
+**A:** *This complicates the idea of corruption, because I do think of Italy as being more corrupt than the U.S.*
+
+**AL:**Oh yeah. Italy and corruption, it’s like America and racism. Italians are aware of their reputation for corruption. In the ’90s, the entire political system was upended in a series of highly mediagenic prosecutions by nonpolitical prosecutors, who at one point put half of the Italian parliament under indictment. They also passed a lot of anticorruption rules. Italian construction costs in the 1970s were not especially low. They were the same as Britain, same as Germany. They’ve fallen since the ’90s because they cracked down on corruption. There are a lot of remaining corruption issues in Italy, but they’re not about that. 
+
+**A:** *This ties back to something you were saying earlier* — *there’s learning from people who are doing things right, and then there’s learning the right lessons from your context. Italy’s problem was corruption, and they’ve taken steps to fix it. You talk a lot about the U.S. being resistant to learning from countries in Europe and Asia with low construction costs. But what are the lessons that the U.S. should be learning that are appropriate for our context?*
+
+**AL:**Good question. First of all, I’m going to start with very abstract things before I concretize. Don’t fixate on small differences within the core. Instead, pay attention to things that the core has in common. 
+
+**A:** *Which countries are the core in transit?*
+
+**AL:**Construction and operations are different. For example, Britain is good at operations, at least in London. It’s terrible at construction. In construction the best are Spain and Portugal, and I think also Turkey. Southern Europe in general is good. The Nordic countries used to be excellent. They no longer are. They’ve anglicised a little too much. Germany is decent. France is decent. Parts of Latin America are very good. 
+
+**A:** *Okay.*
+
+**AL:**So the narrow point is, try to learn from as many different places as possible and see what the commonalities are, not the differences. This is where you can talk about the civil service. Scandinavia has a culture of respect for the civil service. The same is true of Germany. The same is true of France, though it’s somewhat more classist. The same is true of Southern Europe, with engineers especially. So you definitely want that. I don’t know enough about Korea to tell you whether that’s how it differs from Taiwan. Taiwan has very high construction costs. 
+
+So first of all, the public sector needs to be empowered to make planning decisions. Again, you can outsource the design to consultants, but the consultants need to be supervised by civil servants, not political appointees and not other consultants. The most complex and the most sensitive projects are the ones that require the most public supervision, not the least. Another place we see this issue in the U.S. is with which contractor to pick. In the United States there is a legal framework for what’s called lowest responsible bid, which means the civil service is required to pick the lowest bid. Usually they can reject a bid if it’s unrealistic. But, for example, in California, they can’t even do that.
+
+The correct way to do it is have the in-house engineers score every proposal technically for how good it looks to them, and then hire based on a combination of the technical score and the price. In California, they erred by having too little weight on the technical score, only 30%. The norm in the European low- and medium-cost countries that we have seen is that the technical score ranges from 50 to 70%. But this means you need to have an in-house bureaucracy that can technically score things. Another thing low-cost countries do is publicly itemize costs so that whenever you have disputes over changes, they’re prepriced. If someone says, say, “We’ve had a six month delay, and the prices of the concrete walls are higher than we expect because the prices of concrete have risen,” it’s priced in. It means that you want to constantly deprivatize risk as much as possible, because the state can bear the risk much more than a private contractor.
+
+**A:** *In other words, the more risk that contractors are asked to take on, the more they’ll charge. And this adds up.*
+
+**AL***:* Exactly. And this means that the state needs to be less hardline about changes. Again, the changes should be priced in. 
+
+**A:** *These places that have good civil service bureaucracies didn’t always. So how did they build them?*
+
+**AL:**First of all, you stop running against it. You stop calling them a deep state. At this point in the United States, it often happens to the parallel party governance. So Beto O’Rourke in the 2018 Senate race went to, I forget which college, maybe UT Austin, but a very left-leaning electorate to try to get out the vote. And he said the consultants would never let us go to a college. We go here because we didn’t hire any. Now, Beto, like every other American political candidate of note, hires consultants. He hires from the same pool of consultants as everyone else in the Democratic Party. But he runs against his own consultants doing something that is completely anodyne. He’s not an especially populist politician. He’s not an especially outsider politician. And even he ran against his own consultants. Politicians do it all the time, and it cascades downward. The political appointees do not trust the civil service because the civil service is constantly told that they’re not allowed to talk back. Do you think the head of the MTA knows which civil servants to fire? He doesn’t know the difference between them. 
+
+**A:** *And is there anything else concrete that you think the U.S. could implement that would help improve that culture?*
+
+**AL:**Get leaders who don’t talk to the civil service like a king talks to his servants. Andy Byford, head of the New York City Transit Authority from 2017 to 2020, was a political appointee in the sense that his appointment was a political decision by Andrew Cuomo. But he was an outsider to the United States, and he had experience as a professional in the industry his entire life. 
+
+The United States needs to start understanding that you guys are behind countries that you guys look down on. Turkey is the biggest example, not even Italy. Learn from the right places. It’s not like the United States does not have a civil service, okay? It’s not Uganda. There are a lot of people who are, let’s say, my age, give or take a couple years, who have very good ideas. They’re just not being listened to. Stop trying to polarize against the civil service. Hire people who are not generalists or political appointees. If you need to hire an outsider, hire an outsider. 
+
+And over time, I think it would succeed and create a tradition where you have to hire someone who’s a professional because all the successes will come from that. Byford is considered to have been a success in New York, and he became a superstar as a result. But if there are many like him in various parts of the United States, people will notice.

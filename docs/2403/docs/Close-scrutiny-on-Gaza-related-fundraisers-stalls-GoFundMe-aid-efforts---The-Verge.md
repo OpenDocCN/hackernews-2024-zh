@@ -1,0 +1,84 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:45
+-->
+
+# Close scrutiny on Gaza-related fundraisers stalls GoFundMe aid efforts - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/29/24085175/gofundme-gaza-palestine-fundraiser-under-review-esims](https://www.theverge.com/2024/2/29/24085175/gofundme-gaza-palestine-fundraiser-under-review-esims)
+
+By the end of January, more than 25,000 Palestinians had been reported killed as a result of Israel’s military assault on Gaza. Just a handful of doctors remained at the largest medical facility in the Gaza Strip, where [every day, 10 children lost one or both of their legs](https://www.cnn.com/2024/01/08/middleeast/gaza-children-losing-legs-disease-intl-hnk/index.html) amid the Israeli military’s siege. A weeklong communications blackout — [the longest since October 7th](https://www.cnn.com/2024/01/18/middleeast/gaza-communications-blackout-one-week-israel-hamas-intl/index.html) — cut off civilians from their families and journalists from the rest of the world. 
+
+A. wanted to help. With a small group of friends, they set up a GoFundMe campaign with a modest goal of $300\. They hoped to donate that money to organizers sending eSIMs, a digital version of a SIM card connecting devices to mobile networks, to Gaza. In the months since October 7th, when Hamas launched an attack on Israel, eSIMs have become an essential — though patchwork — method of keeping Gaza online. 
+
+“The eSIMs give people a way to continue to connect with their loved ones and continue to report on the ground and let the world know what’s happening,” A. told *The Verge.* “I really believe in [journalists’] right to continue to report, and everybody’s right to communication.” (A. requested anonymity due to fear of harassment.)
+
+**Are you a current GoFundMe employee?** I’d love to hear from you. Contact me at mia@theverge.com, and I’ll share my Signal. You can be anonymous.
+
+A.’s community came through, blowing past the $300 goal in under a day. But shortly after the GoFundMe campaign was launched, the campaign was placed “under review” by the crowdfunding platform. A. and fellow organizers couldn’t withdraw the funds that were coming in, which surpassed $3,000 by the end of the seven-day fundraising period, nor could they begin refunding donors. The money was in limbo. A., who has donated to several GoFundMe campaigns in the past, found themself in the middle of a maze of customer service email chains, along with back-and-forths with donors and organizers — all while the need in Gaza grew ever more urgent.
+
+“I felt like there was a trust with GoFundMe. I felt like I knew it well enough,” A. says. “They have these other fundraisers that they’re showcasing for other countries like Ukraine. I felt like it was a safe place to do a fundraiser.”
+
+Since 2010, GoFundMe campaigns have [raised a combined $30 billion](https://apnews.com/article/gofundme-crowdfunding-tim-cadogan-classy-nonprofits-e89b4e9871b8e8bdc0173d4dce22272d) for everything from wildfires and emergency hospital bills to gender-affirming healthcare and small business relief. GoFundMe has become part of the fabric of mutual aid and charity efforts, and people around the world have turned to the platform as Israel’s bombardment of Gaza stretches into its fourth month. 
+
+But what fundraiser organizers see as heavy-handed moderation has slowed down aid efforts, and inconsistent policies have left organizers and donors confused. Multiple organizers for fundraisers related to Palestine have received the same form email from GoFundMe referring to “the crisis unfolding in the Middle East,” requiring them to provide additional information and documentation. These additional hurdles are baffling to the organizers, many of whom have run GoFundMe campaigns for other causes and have never encountered this extra red tape. 
+
+Even after A. sent additional information about the original beneficiary, the fundraiser didn’t meet GoFundMe’s requirements. Securing a new beneficiary would lead to even more time under review and a delay in aid. Finally, after weeks of corresponding with GoFundMe to try to find a solution, A. and their fundraising team ultimately decided to refund all donors: instead, they walked donors through how to purchase eSIMs themselves to be donated to people in Gaza.
+
+The issues with A.’s fundraiser underscore the tension between the resources that Gaza urgently needs and the legal bureaucracy platforms work within. 
+
+While A.’s fundraiser was under review by GoFundMe, the campaign was visible and open to donations — another point that has caused confusion and unease. Typically, GoFundMe [hides campaigns](https://support.gofundme.com/hc/en-us/articles/360036225632-Why-is-my-fundraiser-under-review) that are being reviewed and turns off the ability for the public to donate. But in Gaza-related campaigns, the fundraisers appeared to be up and running as usual. GoFundMe didn’t answer *The Verge*’s questions about this discrepancy. 
+
+“There’s now been so much distrust between me as an organizer and them as the platform, and there’s been so much distrust between our group doing this fundraiser and a number of people in our community that even if we wanted to do another fundraiser, I don’t even think it would serve the purpose that it needs to,” A. says. Donors and other community members criticized the fundraising effort and questioned the campaign’s legitimacy.
+
+Despite its global reach, GoFundMe only operates in a handful of countries
+
+One issue stems from the fact that despite its global reach, GoFundMe only operates in a handful of countries: people creating fundraisers (and those that are able to withdraw directly from GoFundMe) must be based [in one of 19 countries](https://support.gofundme.com/hc/en-us/articles/360001972748-Countries-supported-on-GoFundMe), which excludes entire continents like Asia, Africa, and South America. Money raised for beneficiaries outside of the 19 countries must be transferred to the creator of the fundraiser and then passed on to beneficiaries off of the platform.
+
+But even with a plan in place to get money safely to beneficiaries, fundraisers for Gaza have been under intense scrutiny. A. was asked to provide personal information for people involved in eSIM donations as well as a list of individuals who would receive an eSIM — a potentially impossible request to fulfill given the grassroots nature of the effort and the emergency state on the ground. 
+
+“Thank you for your efforts to help those affected by the crisis unfolding in the Middle East. Due to recent developments within the region, we’re carefully reviewing fundraisers related to this crisis,” the form email received by multiple organizers reads. “This is an important step to help ensure fundraisers are in compliance with all applicable laws and strictly enforced policies from our payment partners and our Terms of Service.” 
+
+Like all US companies, GoFundMe must comply with recent government sanctions against Hamas officials and other “facilitators” in the wake of the October 7th attacks. In requiring extensive information about who and what money is going to, GoFundMe is likely running names against lists of sanctioned individuals and groups, says Aaron Martin, assistant professor at the University of Virginia with expertise in humanitarian organizations and tech policy. There are government-run lists as well as private services used by banks for things like anti-money laundering or terrorist financing screenings, Martin says, but these are often incomplete or inaccurate, and false positives can occur in regions where people have similar names.
+
+“For [GoFundMe’s] own internal due diligence and risk management processes, they need to be able to say at least we checked, and we either cleared the names or we’re still investigating because these are common names, and we simply don’t know.”
+
+Other humanitarian organizations like the UN Refugee Agency or the World Food Programme have what’s known as privileges and immunities, allowing them to dole out food or other aid while being protected from government pressure or other interference. A company like GoFundMe, meanwhile, is subject to local laws.
+
+“This kind of compliance is really just an ass-covering exercise, because you don’t want to be in a position where money went to a quote, unquote bad guy,” Martin says. 
+
+“This kind of compliance is really just an ass-covering exercise, because you don’t want to be in a position where money went to a quote, unquote bad guy.”
+
+GoFundMe spokesperson Jalen Drummond didn’t respond to specific questions about how the company flags and reviews campaigns or what tools it uses to review beneficiaries.
+
+“Our top priority is protecting the generosity of our donors. Just as we have done with past crises, we have a team of experts reviewing and vetting fundraisers through our standard verification process to ensure they are verified, and compliant with relevant international laws, global regulations, and the requirements dictated by our payment processors,” Drummond said in a statement. “Any suggestion of discrimination is wholly without merit, baseless, and contrary to the values that guide our platform.”
+
+Even campaigns benefitting US-based organizations working on Palestinian causes have been placed under review without explanation. Slow Factory, a 501(c)3 nonprofit, [launched a program](https://slowfactory.earth/media-justice) to buy billboards in an effort to, in the words of co-founder Colin Vernon, “bring visibility to the ongoing injustices and genocide being committed against Gaza.”Actor and activist Poppy Liu, who is not affiliated with the organization but had admired its work, [set up a GoFundMe campaign in support of the project](https://www.instagram.com/p/C2N3KTmy7tK/). Liu’s campaign reached its goal within a day — and just as quickly, was placed under review.
+
+“[I felt] incredibly mad, because it feels incredibly apparent that this is part of a national trend of censoring anything that talks about Palestine,” Liu told *The Verge*. “It feels explicitly racist. It feels anti-Arab.” Liu says they complied with GoFundMe’s requests for additional information — including specifying multiple times that Slow Factory was a US-based nonprofit — and waited days until the review was finally lifted.
+
+“I’ve never had an issue before and I’ve fundraised for things that were not even registered 501(c)s,” Liu says. 
+
+Vernon, co-founder of Slow Factory, hasn’t experienced this type of review before, either.
+
+“This was positioned as ‘routine’ verification but haven’t heard of any such validation in the past, so we were of course suspicious that it is because of the content of the campaign,” Vernon told *The Verge* in an email. “We have seen so many instances where ‘routine’ bureaucracy is only deployed in specific cases, which points to a political motivation.”
+
+“It feels incredibly apparent that this is part of a national trend of censoring anything that talks about Palestine”
+
+In emails, GoFundMe notifies campaign organizers that reviews will take anywhere from five to seven business days. For Zoe, whose GoFundMe campaign for a friend in Gaza was also placed under review, that delay feels unbearably long. (Zoe requested that *The Verge* use her first name only in order to speak freely.)
+
+“I understand that there are very valid fraud concerns, or misappropriation of fund concerns. But also, I feel like if there were a greater sense of urgency for what’s at stake, these things would be, at least, accelerated,” Zoe says. “Five to seven business days — in the face of death, that’s not even guaranteed for anybody right now.”
+
+While under review, Zoe’s campaign languished at $10; she refrained from sharing the campaign, unsure of whether she would ever get access to the money. The conditions of her friend in Gaza, meanwhile, were dire: one of their children was injured by shrapnel, and food, water, and medicine were scarce. The friend in Gaza, who asked *The Verge* not to identify them, hopes to evacuate to Egypt.
+
+Nearly two weeks after initially setting up the fundraiser and then providing GoFundMe with more information, Zoe was notified the freeze was lifted. She says she didn’t receive any explanation for why it was flagged for review in the first place or details about GoFundMe’s findings.
+
+The roadblocks — both [literal](https://www.npr.org/2024/02/12/1230362633/gaza-food-hunger-israel-protests) and digital — that prohibit Palestinians from receiving aid reveal what otherwise might go unnoticed: there’s a complex web of red tape and corporate interests that undergird the supposedly seamless digital transfers that happen online every day. PayPal, for example, has [refused to allow Palestinians to use its service](https://www.reuters.com/world/middle-east/palestinians-urge-paypal-offer-services-west-bank-gaza-2021-10-21/) for years, even as Israelis in illegal West Bank settlements are able to. In 2021, when violence broke out between Israel and Hamas, Venmo (which is owned by PayPal) was found to be [delaying payments](https://restofworld.org/2021/venmo-palestinian-relief/) that included terms like “Palestinian emergency relief fund” and “emergency Palestinian relief fund.” 
+
+Martin, who studies tech policy, says that humanitarian organizations have historically wrestled with the tension between verifying that funds or other types of aid are not reaching sanctioned groups or individuals. The task is “practically impossible,” Martin says.
+
+“It’s amazing how some of these very basic concerns around money laundering, terrorist financing can sort of trip up what most of us recognize as an important cause — helping people who are in desperate need,” he says.
+
+When A., who was fundraising for eSIMs, decided to refund their donors, they knew that asking people to buy eSIMs themselves would result in less money being contributed — but they couldn’t bear to delay aid any longer.
+
+“Even if we wanted to do another fundraiser, I don’t even think it would serve the purpose that it needs to because of what’s happened now,” A. told *The Verge* as they were weighing their options. “It is really heartbreaking and just hurts the people who need it most.”

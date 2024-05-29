@@ -1,0 +1,47 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:34
+-->
+
+# Computer and Network Security by Avi Kak
+
+> 来源：[https://engineering.purdue.edu/kak/compsec/](https://engineering.purdue.edu/kak/compsec/)
+
+| **Lecture Notes** |
+| 1. |   Introductory material, course administration handout, etc. |
+| 2. |   [Some Basic Vocabulary of Computer and Network Security   and a Brief Review of Classical Encryption Techniques](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture2.pdf) | Updated January 11, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture2Code.tar.gz) Updated: January 13, 2016 |
+| 3. |   [Block Ciphers and the Data Encryption Standard](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture3.pdf) | Updated January 16, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture3Code.tar.gz) Updated: January 15, 2018 |
+| 4. |   [Finite Fields (PART 1): Groups, Rings, and Fields](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture4.pdf) | Updated January 25, 2024 |  |
+| 5. |   [Finite Fields (PART 2): Modular Arithmetic](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture5.pdf) | Updated January 25, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture5Code.tar.gz) Updated: February 28, 2016 |
+| 6. |   [Finite Fields (PART 3): Polynomial Arithmetic](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture6.pdf) | Updated January 29, 2024 |  |
+| 7. |   [Finite Fields (PART 4): Finite Fields of the Form *GF*(*2^n*)](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture7.pdf)   | Updated January 30, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture7Code.tar.gz) Updated: February 5, 2016 |
+| 8. |   [AES: The Advanced Encryption Standard](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture8.pdf) | Updated February 7, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture8Code.tar.gz) Updated: February 2, 2018 |
+| 9. |   [Using Block and Stream Ciphers for Secure Wired and WiFi   Communications](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture9.pdf) | Updated February 7, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture9Code.tar.gz) Updated: February 11, 2016 |
+| 10. |   [Key Distribution for Symmetric Key Cryptography and   Generating Random Numbers](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture10.pdf) | Updated February 8, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture10Code.tar.gz) |
+| 11. |   [Prime Numbers and Discrete Logarithms](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture11.pdf) | Updated February 13, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture11Code.tar.gz) Updated: February 28, 2016 |
+| 12. |   [Public-Key Cryptography and the RSA Algorithm](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture12.pdf) | Updated February 15, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture12Code.tar.gz) Updated: February 28, 2016 |
+| 13. |   [Certificates, Digital Signatures, and the Diffie-Hellman   Key Exchange Algorithm](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture13.pdf) | Updated February 20, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture13Code.tar.gz) Updated: February 28, 2016 |
+| 14. |   [Elliptic Curve Cryptography and Digital Rights Management](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture14.pdf) | Updated February 22, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture14Code.tar.gz) Updated: February 28, 2016 |
+|   15. |   [Hashing for Message Authentication](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture15.pdf) 
+[(Starting in 2018, this lecture now includes material on crypto currencies that I explain
+   with the help of my Python-based   CeroCoinClient  module that you can access
+   by clicking here.)](https://engineering.purdue.edu/kak/distCC/CeroCoinClient-2.0.1.html)  |   Updated March 24, 2024 |   [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture15Code.tar.gz)
+Updated: April 8, 2018 |
+| 16. |   [TCP/IP Vulnerabilities and DoS Attacks: IP Spoofing, SYN      Flooding, and The Shrew DoS Attack](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture16.pdf) | Updated February 29, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture16Code.tar.gz) Updated: March 12, 2016 |
+| 17. |   [DNS and the DNS Cache Poisoning Attack](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture17.pdf) | Updated March 7, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture17Code.tar.gz) Updated: March 23, 2016 |
+| 18. |   [Packet Filtering Firewalls (Linux)](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture18.pdf) | Updated March 7, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture18Code.tar.gz) |
+| 19. |   [Proxy-Server Based Firewalls](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture19.pdf) | Updated March 21, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture19Code.tar.gz) Updated: March 24, 2016 |
+| 20. |   [PGP, IPSec, SSL/TLS, and Tor Protocols](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture20.pdf) | Updated March 21, 2024 |  |
+| 21. |   [The Buffer Overflow Attack](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture21.pdf) | Updated March 26, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture21Code.tar.gz) Updated: April 3, 2017 |
+| 22. |   [Malware: Viruses and Worms](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture22.pdf) | Updated March 28, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture22Code.tar.gz) Updated: April 6, 2022 |
+| 23. |   [Port and Vulnerability Scanning, Packet Sniffing, Intrusion   Detection, and Penetration Testing](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture23.pdf) | Updated April 9, 2024 |  |
+| 24. |   [Dictionary Attacks and Rainbow-Table Attacks on Password   Protected Systems](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture24.pdf) | Updated April 11, 2024 |  |
+| 25. |   [Security Issues in Structured Peer-to-Peer Networks](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture25.pdf) | Updated April 18, 2024 |  |
+| 26. |   [Small-World Peer-to-Peer Networks and Their Security Issues](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture26.pdf) | Updated April 18, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture26Code.tar.gz) |
+| 27. |   [Web Security: PHP Exploits, SQL Injection, and the Slowloris   Attack](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture27.pdf) | Updated April 16, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture27Code.tar.gz) Updated: April 14, 2017 |
+| 28. |   [Web Security: Cross-Site Scripting and Other Browser-Side   Exploits](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture28.pdf) | Updated April 16, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture28Code.tar.gz) |
+| 29. |   [Bots, Botnets, DDoS Attacks, and DDoS Attack Mitigation](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture29.pdf) | Updated April 9, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture29Code.tar.gz) Updated: April 11, 2018 |
+| 30. |   [Mounting Targeted Attacks for Cyber Espionage with Trojans   and Social Engineering](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture30.pdf) | Updated April 9, 2024 |  |
+| 31. |   [Filtering Out Spam](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture31.pdf) | Updated Apil 4, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture31Code.tar.gz) |
+| 32. |   [Security Vulnerabilities of Mobile Devices](https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture32.pdf)  | Updated April 11, 2024 | [download code](https://engineering.purdue.edu/kak/compsec/code/Lecture32Code.tar.gz) Updated: April 25, 2015 |
+| 33. |   [Index   (HTML)](https://engineering.purdue.edu/kak/compsec/compsecIndex.html) | Updated July 23, 2023 |  |

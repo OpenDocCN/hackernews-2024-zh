@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:27
+-->
+
+# RIP: Software design pioneer Niklaus Wirth • The Register
+
+> 来源：[https://www.theregister.com/2024/01/04/niklaus_wirth_obituary/](https://www.theregister.com/2024/01/04/niklaus_wirth_obituary/)
+
+Obit Swiss computer scientist Professor Niklaus Wirth died on New Year's Day, roughly six weeks before what would have been his 90th birthday.
+
+[Wirth](https://people.inf.ethz.ch/wirth/) is justly celebrated as the creator of the Pascal programming language, but that was only one step in a series of important languages and research projects. Both [asteroid 21655](https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=21655) and a [law of computer design](https://www.techslang.com/definition/what-is-wirths-law/) are named after him. He won computer-science boffinry's highest possible gong, the Turing Award, [in 1984](https://amturing.acm.org/award_winners/wirth_1025774.cfm), and that page has some short English-language clips from a [2018 interview](https://www.youtube.com/watch?v=SUgrS_KbSI8).
+
+[Youtube Video](https://www.youtube.com/embed/SUgrS_KbSI8)
+
+Niklaus Emil Wirth was born in Wintherthur in Switzerland, the day after St Valentine's Day 1934. In 1959 he got his bachelor's degree from [ETH Zürich](https://ethz.ch/en.html), to which he returned later in life and from which much of his important research emerged.
+
+He changed countries several times in his life – his 1960 master's degree was from the [Université Laval](https://www.ulaval.ca/en) in Canada, and his 1963 doctorate from [UC Berkeley*](https://www.berkeley.edu/) – the home of [Berkeley Unix](https://www.theregister.com/2022/02/09/section_8_unix_user_manual/), or BSD as it's usually known. He stayed in California for the next four years as assistant professor of computer science at [Stanford University](https://www.stanford.edu/about/). During this time, he worked on his first two programming languages: [Euler](http://pascal.hansotten.com/niklaus-wirth/euler-2/) in 1965, and [PL/360](https://dl.acm.org/doi/10.1145/321439.321442), published in 1968.
+
+Partly as a result of this work, he was invited into the Working Group planning the next iteration of the ALGOL programming language, to replace [ALGOL 60](https://www.theregister.com/2020/05/15/algol_60_at_60/). Along with [British computer scientist Sir Tony Hoare](https://www.theregister.com/2004/06/14/grand_challenge_compsci/), he presented a proposal called [ALGOL-W](http://pascal.hansotten.com/niklaus-wirth/algol-w/). However, this was rejected in favour of a more complex proposal from Adriaan van Wijngaarden, which became ALGOL-68.
+
+As described in C H Lindsey's [History of ALGOL-68](https://dl.acm.org/doi/pdf/10.1145/234286.1057810) [PDF], when the ALGOL-W proposal was rejected, Wirth resigned from the committee, contributing a strong ["Closing Word"](https://archive.computerhistory.org/resources/text/algol/algol_bulletin/A29/P32.HTM) to the November 1968 [Algol Bulletin 29](https://archive.computerhistory.org/resources/text/algol/algol_bulletin/), containing gems such as:
+
+Instead, Wirth took his proposal, changed it to be somewhat less compatible with ALGOL, and released it in 1970 under the name Pascal.
+
+In this way, the story of Pascal's creation has two, different, parallel impacts. It was, of course, a [big hit](https://www.theregister.com/2020/05/29/happy_50th_pascal/) and is still used today. The flipside of this, though, is that the overcomplicated ALGOL-68 was a flop: as the *ALGOL-60 Forever* page [puts it](https://www.algol60.org/15algolw.htm):
+
+It's not much of an exaggeration to say that ALGOL-60 influenced every programming language invented afterwards, but its influence ended with the version released after Wirth's departure. His own languages were successful, in research and also commercially – Delphi is still on sale, and the [Free Pascal project](https://www.freepascal.org/) just released Version 3.0 of its cross-platform [Lazarus IDE](https://www.lazarus-ide.org/). However, the complexity of ALGOL-68 opened up the opportunities for newer, simpler languages such as C, Simula-67, and their offspring C++, and the legions of other languages and OSes implemented in them.
+
+You can get a hint of the relationship between the leaders of the rival ALGOL proposals from the way that Van Wijngaarden introduced Wirth on stage at the [International Federation for Information Processing](https://www.ifip.org/) congress in 1965\. He made a joke which became famous:
+
+If Wirth had continued to work on ALGOL, its huge influence might well have continued. Similarly, if he had stuck with the well-known Pascal brand, his later projects might have replaced it, rather than it surviving alongside its intended replacements.
+
+In 1976, Wirth named his next language [Modula](https://www.research-collection.ethz.ch/bitstream/20.500.11850/68669/1/eth-3057-01.pdf) [PDF], but it was quickly replaced with Modula-2 in 1977\. This added cooperating processes called *coroutines* to the language, using his former co-worker C A R Hoare's [Communicating Sequential Processes](https://dl.acm.org/doi/10.1145/359576.359585) model. (These days, these feature in Erlang, Go, and Clojure, and [were lampooned](https://www.theregister.com/2009/12/10/verity_stob/) by our own Verity Stob.) In the 1980s and 1990s, Modula-2 was an important language across the industry, as we discussed when [GCC 13 gained support for it](https://www.theregister.com/2022/12/16/gcc_13_will_support_modula2/) last year.
+
+Wirth spent two one-year sabbaticals back in California at Xerox PARC, the first in 1976-1977 and the second in 1984-1985\. Inspired by what he saw there, on his return to Zürich he created the much more ambitious Oberon System. Oberon is a programming language, and a tiled-window development environment, and a complete operating system implemented in itself. The introduction to the [Oberon manual](http://www.projectoberon.net/wirth/ProjectOberon/PO.System.pdf) [PDF] contains what came to be known as *Wirth's Law,* although he modestly [credited it to Martin Reiser](https://www.theregister.com/2023/01/11/software_versus_hardware/):
+
+The project is described very readably in [Oberon – the Overlooked Jewel](https://people.cis.ksu.edu/~danielwang/Investigation/System_Security/download.pdf) [PDF], which is just 13 pages long. Oberon has inspired multiple successors, including Oberon-2, Oberon 07, and [Component Pascal](https://blackboxframework.org/index.php?cID=home,en-us).
+
+The Oberon System is a sort of existence proof of how software can be very capable while being almost unbelievably tiny: the `inner`, `outer` and `systools` archives from the 2013 edition total some 4,623 lines of code, in 262kB of text. That's the entire core environment. But if that were not enough, Wirth explained the idea in a famous 1995 paper, ["A Plea for Lean Software"](https://blog.frantovo.cz/s/1576/Niklaus%20Wirth%20-%20A%20Plea%20for%20Lean%20Software%20-%20OCR.pdf) (The original is a PDF, but I have put a text version [here](https://liam-on-linux.dreamwidth.org/88032.html).)
+
+His *alma mater* ETH Zürich interviewed him in 2021, and the German-language videos have English subtitles: [Part 1](https://inf.ethz.ch/news-and-events/spotlights/infk-news-channel/2021/11/niklaus-wirth-video-interview.html), [Part 2](https://inf.ethz.ch/news-and-events/spotlights/infk-news-channel/2021/12/niklaus-wirth-video-interview.html) and [Part 3](https://inf.ethz.ch/news-and-events/spotlights/infk-news-channel/2021/12/niklaus-wirth-video-interview-part3.html).
+
+From many accounts, he was approachable, friendly, and witty; we particularly liked [this tribute](https://mastodon.online/@raph/111693863925852135) from Googler [Raph Levien](https://levien.com/). Wirth retired in April 1999, although in 2013, shortly before he turned 80, he reappeared to publish an updated version of [Project Oberon](http://www.projectoberon.net/).
+
+In his work, the languages and tools he created, in his eloquent plea for smaller, more efficient software – even in the projects from which he quit – his influence on the computer industry has been almost beyond measure. The modern software industry has signally failed to learn from him. Although he has left us, his work still has much more to teach. ®
+
+*A previous version of this story had that as "UCSD" Pascal, which a member of that project was kind enough to remind us was a derivative of the P2 compiler from ETH Zürich.

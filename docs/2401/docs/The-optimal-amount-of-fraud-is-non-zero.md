@@ -1,0 +1,110 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:06
+-->
+
+# The optimal amount of fraud is non-zero
+
+> 来源：[https://www.bitsaboutmoney.com/archive/optimal-amount-of-fraud/](https://www.bitsaboutmoney.com/archive/optimal-amount-of-fraud/)
+
+I was recently interviewed by NPR’s Planet Money ([podcast](https://www.npr.org/2022/08/26/1119606931/wake-up-and-smell-the-fraud), [transcript](https://www.npr.org/transcripts/1119606931)) regarding a particular form of credit card fraud. One comment which tragically ended on the cutting room floor: "the optimal amount of fraud is greater than zero."
+
+This is counterintuitive and sounds like it is trying a bit too hard to be clever. You should believe it.
+
+## Crime rates are a policy choice
+
+If you enjoy simulation games, you might be familiar with the mechanic where you click a button and some statistic in your civilization moves radically in response. In real life, cause and effect is more subtle, but this relationship exists, and there are (both historically and at this very moment) legal regimes which are radically different than your status quo, and which achieve(d) very different outcomes as a direct consequence of policy decisions.
+
+A glib way to phrase this is that crime is a policy choice, both definitionally (you could simply agree something was not a crime anymore and bam, crime down) and, more interestingly, because crime responds directly to things which are within your control. Most of the world has taken most of the easy policy choices which have few tradeoffs available! But there are still arbitrarily severe options to control crime from where you are, from “increase the police budget” to “ban alcohol totally” to “implement an Orwellian dystopia.”
+
+Fraud is a unique subset of crime which occurs, to a major degree, subject to the enforcement efforts of non-state actors. A commanding majority of all fraud which is stopped, detected, adjudicated, and even punished (!) gets those done to it by one or more private sector actors. And the private sector has, in this case, policy decisions to make, which, like the public sector’s decisions, balance the undesirability of fraud against the desirability of social goods such as an open society, easy access to services, and (not least!) making money.
+
+## Scoping down to payments fraud
+
+To prevent this conversation from being painfully abstract, let’s scope it to one particular type of fraud against one particular type of actor: the bad guy steals a payment credential, like a credit card number, and uses it to extract valuable goods or services from a business. This is an extremely common fraud, costing the world something like $10 to $20 billion a year, and yet it is actually fairly constrained relative to all types of fraud.
+
+This fraud is possible *by design*. The very best minds in government, the financial industry, the payments industry, and business have gotten together and decided that they want this fraud to be possible. That probably strikes you as an extraordinary claim, and yet it is true.
+
+Before we get into the how, let’s get into the why.
+
+## Who pays for payments fraud?
+
+Liability for payments fraud happens in a waterfall, established by a combination of regulation, contracts, and business practice. The specifics get complicated but, for ability to concretely visualize this, consider the case of consumer credit card users in the United States.
+
+You might assume that, if a credit card is stolen/hacked and used by a bad actor to buy something, the cardholder would be liable. They will suffer the first loss, certainly, but society has decided by regulation (specifically, [Regulation E](https://www.consumerfinance.gov/rules-policy/regulations/1005/)) that that loss should flow to their financial institution, less a $50 I-can’t-believe-it’s-not-deductible. As a marketing decision, the U.S. financial industry virtually universally waives that $50.
+
+The card issuer will, following the credit card brand’s rules (which developed in symbiosis with regulation), automatically seek recovery of the loss from the business’s payments processor. It will, similarly, automatically seek recovery of the loss from the business itself.
+
+In the overwhelming majority of cases, that is where the waterfall ends. While insurance is available (both specialized chargeback insurance and general business insurance), overwhelmingly businesses simply absorb fraud costs in the same way that they absorb their office rent, staff salaries, and marketing expenses.
+
+That $10 to $20 billion number we threw around earlier? This is what happens to it, in the ordinary course of business. This allocation of loss is mostly automatic, virtually never involves a court or lawyer, and only sometimes takes human effort at the margin at all.
+
+## Fraud as a necessary business expense
+
+Pretend you are the newly hired Director of Fraud for Business, Inc. You know you are ultimately liable for most fraud that happens in this pattern. What target do you take to the CEO for how much fraud you should suffer?
+
+Zero?! Do you think the Director of Marketing desires to spend zero on marketing!? That would be an objectively silly goal. They would clearly be fired and replaced with someone who understands marginal returns.
+
+**The marginal return of permitting fraud against you is plausibly greater than zero, and therefore, you should** ***welcome*** **greater than zero fraud.** You can think of it as a necessary expense, just like rent or salary or advertising is. You can even write it off on your taxes. (Ask your accountant; businesses frequently misunderstand the rules here.)
+
+The reason for this is that Directors of Fraud are aware that the policy choices available to them impact the user experience of *fraudsters* *and legitimate users alike*. They want to choose policies which balance the tradeoff of lowering fraud against the ease for legitimate users to transact.
+
+## Costs and benefits of policy choices around trust
+
+Maybe the frame of talking about fraud predisposes people to view the space of choices here negatively. Here’s an equivalent function with different emotional valence: how much do you trust people, and under what circumstances?
+
+All fraud is a) an abuse of trust causing b) monetary losses for the defrauded and c) monetary gain for the fraudster. You could zero fraud by never trusting anyone in any circumstance.
+
+Trust, though, is an immensely socially useful technology. Human civilization has a fundamental limitation in that all humans can be trivially killed while sleeping. Huge portions of society’s efforts go toward establishing conditions where this trivial vulnerability virtually never gets exploited. God has, reportedly, closed all bug reports claiming that it is a feature and won’t be patched any time soon.
+
+Anyhow, trust is also fundamental in commerce, where it’s a layered concept, with different people having different levels of trust in different situations. To increase trust generally tends to frontload the cost to generate that trust, and decrease transactional friction afterwards. You trust your accountant more than most regular employees, you trust your employees more than your customers, you trust your customers more than a person you’ve never met, etc.
+
+This cost falls on both parties in a trust relationship. To employ an accountant, you (the business) need to identify and interview several prospective accountants and employ one winner for years, and you (the accountant) need to have spent years of your life to get a professional credential and then to have worked your entire career to demonstrate yourself worthy of trust. This is one reason why accountants are routinely trusted with the holiest-of-holies secrets of companies and governments.
+
+Clearly, e-commerce would cease if, prior to buying a pair of sneakers online, you required someone to go to that degree of effort. You’d almost never lose a pair of sneakers to a fraudster again, but you’d also sell very few sneakers.
+
+## Making a customer of someone you’ve never met
+
+The payments industry has to solve many foundational problems. One of the core ones is quickly bootstrapping a business over the decision to trust someone they’ve never met, enough to allow them to consume valuable goods and services, based on nothing more than a promise of future payment.
+
+A promise! Mere words! Billions upon billions of dollars have been spent on marketing to make you think that a payment is more than a promise. It’s a lie, and it’s a lie we all choose to believe in part because it’s a vastly more effective model to run the world under than the truth is.
+
+Businesses prefer attracting new customers to not attracting new customers, citation hopefully not needed. They have a choice as to how much friction they want that new customer to need to go through prior to being offered goods and services. Many businesses have found that decreasing friction results in getting more new customers, who spend more, and who stick around for more transactions. (These are, incidentally, the “only three goals of marketing.”)
+
+You could subject first-time customers (or even repeat customers), to an elaborate underwriting process, in part to increase your trust in them / decrease your perception of the risk that they would defraud you. You could, for example, ask them to give you a firm handshake as a condition of doing business.
+
+The requirement for a firm handshake is, actually, an effective anti-fraud measure. The requirement that it happen face-to-face decreases the number of international professionalized fraud gangs which can target you, because they’re not physically close enough to shake your hand. Unfortunately, for the same reason, it also decreases how many customers you can sell to; most people don’t live within commuting distance of your retail presence.
+
+## Anti-fraud loops used in online commerce
+
+You’ve probably had a shopping experience impacted by an anti-fraud loop, though you might not have recognized it as such. Ever been asked for billing address in addition to shipping address? That’s for AVS verification. There is an obvious user-experience hit there, and it’s quantifiable; removing fields from checkout forms increases conversion rates nearly as a rule. (Conversion rates are an industry term-of-art describing the percentage of prospects who successfully purchase something.)
+
+Wonder why everyone under the sun wants you to have an account on their site? One major reason is that it gives customers a history that allows a business to direct more of its anti-fraud attention to (more risky) first-time users than (less risky) multi-year regular customers. Allowing guest checkouts is a business decision to accept more fraud (and less ability to market to the customer) in return for marginal sales.
+
+Some of the savvier interventions operate in the background or don’t surface for all users. For example, you could imagine asking the purchasers of especially high-risk orders to first confirm possession of a phone number (via typing in a code you text them), or even to talk to a human in your fraud department before completing the transaction. Both of these are aimed at breaking the economics of scaled fraud; phone numbers and voice calls are expensive relative to synthetic identities and tend to leak information about fraud operations, which can further inform defenses.
+
+We’ll talk about this some other time; risk scoring and marginal interventions is a fascinatingly deep topic.
+
+## Different businesses have different tolerance for fraud
+
+Margins create margins. A business with high margins will, all else equal, tend to spend more on marketing and sales than a business with low margins; if they don’t, their competitors will “bid up” the cost of attracting customers out of their own fat margins.
+
+Businesses with high margins also tend to be more accepting of payments fraud than businesses with low margins. Consider businesses which sell IP, like video game companies, streaming services, or SaaS. Because their margins are often 90%+, if you were to present them with a menu of strategies which traded off conversion rate and fraud rate, they’d maximize for conversion rates until fraud at the margin reached levels not seen in even the most corrupt places imaginable.
+
+Businesses selling valuable resalable goods with much lower margins, such as Apple hardware or game consoles, have to be *much* more careful about who they transact with. When they’re offered a conceptual slider for who to do secondary transaction screening on, they screen more marginal orders. They accept painful tradeoffs like, “We’ll have a fraud department review every new order and hold every first-time order for shipping until we can talk to the purchaser.”
+
+Between these two there exists a spectrum of fraud regimes, and this is broadly a good thing. Society gets to make choices, and here it is choosing through the activities of private agents. It is optimizing for how many resources to let leak to bad actors and much societal effort to burn on policing them versus how much low-friction commerce to enable by good actors. This is often missed in discussions of fraud; one reason it has increased over the past few decades is that legitimate commerce has *exploded*, as the world becomes richer and as barriers to commerce have come down.
+
+## This extends beyond payments
+
+So hopefully you buy that Internet merchants can happily accept non-zero levels of fraud. This argument generalizes, and it has some important ethical considerations. We should, as a society, accept non-zero amounts of benefits fraud. We should accept non-zero amounts of cheating on taxes. You personally have benefited from the financial industry’s decision to not expend the maximum possible effort on defending against so-called identity theft.
+
+These tradeoffs are often *intensely* difficult to pursue openly. Who wants to be known as the politician in favor of benefits fraud or the financial CEO who thinks they are not laundering enough money?
+
+One of the interesting questions here is who gets to resolve tensions like this. Generally speaking, it will be private actors applying their own cost-benefits decisions. There is substantial space for regulations to help with cases, like identity theft, where actors can choose to spend other people’s risk budgets to maximize for their own interests.
+
+If you have other fraud subtopics you’d love to cover, drop me a line.
+
+## Want more essays in your inbox?
+
+I write about the intersection of tech and finance, approximately biweekly. It's free.

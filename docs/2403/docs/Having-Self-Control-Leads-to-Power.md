@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:44:15
+-->
+
+# Having Self-Control Leads to Power
+
+> 来源：[https://today.ucsd.edu/story/having-self-control-leads-to-power](https://today.ucsd.edu/story/having-self-control-leads-to-power)
+
+## Article Content
+
+Out-of-control behavior by CEOs and other powerful people constantly makes headlines – so much so that some might consider impulsivity a pathway to power. New research from the UC San Diego Rady School of Management and Texas A&M University finds that having self-control is often what leads to power.
+
+In a paper published in the Journal of Personality and Social Psychology, researchers find that showing self-control influences how powerful an individual is perceived to be by their peers, as well as how much power they are granted by those peers. In a series of seven experiments with roughly 3,500 participants, both students and working adults read about or interacted with individuals with varying levels of self-control, which the researchers define as how much people tend to behave in ways aligned with their goals. Across all experiments, individuals with high self-control were seen as more powerful, and as better suited for powerful roles, than individuals with low self-control.
+
+In one experiment, working adults imagined a scenario where a colleague with the goal of being fit either ate a large dessert or abstained from dessert altogether. Researchers found that the colleague was seen as being better suited for high-power roles when they abstained from indulging, an indication of self-control.
+
+“It did not matter whether the colleague seemed to deliberate before acting, or just acted without thinking,“ said Pamela Smith, associateprofessor of management at the Rady School of Management and co-author of the study. “What mattered for participants’ judgments was whether the colleague acted in line with their goals. This pattern held across a variety of goals in our experiments, including saving money, being healthy and reading books.”
+
+The researchers also found that people are perceived as less powerful and less suited for powerful roles when they fail to meet ambitious goals, even if their performance is the same as their peers. In an experiment investigating how self-control often leads to power, a group of undergraduate students interacted with individuals who set various reading goals. Some set an ambitious goal of reading 200 pages each week, while others set a more moderate goal of reading 50 pages per week. All of these individuals read the same amount – 100 pages – but those who didn’t meet their goal were seen as less powerful by study participants. Furthermore, study participants were less interested in having those who didn’t meet their goal as the group leader in later tasks.
+
+“To motivate their employees, organizations often want employees to set stretch goals – goals that are challenging and hard-to-reach. However, we found that setting a stretch goal and not meeting it makes someone look less powerful than setting an easy goal and surpassing it,” said Rady School PhD student Shuang Wu, the first author of the paper.
+
+The paper, [“Self-Control Signals and Affords Power,”](https://psycnet.apa.org/record/2024-47709-001) was also co-authored with Texas A&M University associate professor Rachel Smallman.

@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:18
+-->
+
+# Scientists discovered perfectly preserved dinosaur embryo inside fossilized egg
+
+> 来源：[https://www.unilad.com/news/world-news/dinosaur-egg-embryo-fossil-213524-20231107](https://www.unilad.com/news/world-news/dinosaur-egg-embryo-fossil-213524-20231107)
+
+Published 19:41 7 Nov 2023 GMT
+
+# Scientists discovered perfectly preserved dinosaur embryo inside fossilized egg
+
+## The embryo was thought to date back as far as 72 million years
+
+**Scientists discovered a perfectly formed dinosaur embryo sat in a storage cupboard of a Chinese museum.**
+
+The embryo had been sat in the cupboard for over a decade without anyone realising that the egg could help reveal an incredible link between [modern birds](https://www.unilad.com/animals) and [dinosaurs](https://www.unilad.com/dinosaurs).
+
+The unborn specimen discovered in 2015 is an oviraptorosaurs (a group of Osterich-looking, feathered maniraptoran dinosaurs from the Cretaceous Period) and, upon its analysis, was estimated to date back as far as 72 million years.
+
+It was first found in Shahe Industrial Park in 2000 and donated to Yingliang Stone Natural History Museum in Nan'an, [China](https://www.unilad.com/china).
+
+As you'd expect, the embryo was only tiny and measured just 27cm long.
+
+At the time, the embryo was dubbed 'Baby Yingliang' and has gone down in history as one of the most complete dinosaur embryos ever found.
+
+It was the embryo's posture in particular that scientists found interesting as it wasn't like others that had been seen.
+
+In a 2021 study conducted by the University of Birmingham and China University of [Geosciences](https://www.unilad.com/science) (Beijing), the embryo was described as having a bird-like posture as its head was lying below the body, with the feet on either side and the back curled along the blunt end of the egg.
+
+This is known as 'tucking' - something which is associated with modern day birds.
+
+In the 2021 study, it was said that such posture was 'previously unrecognized in a non-avian dinosaur, but reminiscent of a late-stage modern bird embryo'.
+
+"This little prenatal dinosaur looks just like a baby bird curled in its egg, which is yet more evidence that many features characteristic of today’s birds first evolved in their dinosaur ancestors," said Professor Steve Brusatte from the University of Edinburgh, who was part of the research team.
+
+Brusatte went on describe Baby Yingliang as 'one of the most beautiful fossils I have ever seen'.
+
+Wang Dongming/China News Service via Getty Images
+
+Fion Waisum Ma, joint first author and PhD researcher at the University of Birmingham, added at the time: "We are very excited about the discovery of 'Baby Yingliang' - it is preserved in a great condition and helps us answer a lot of questions about dinosaur growth and reproduction with it.
+
+“It is interesting to see this dinosaur embryo and a chicken embryo pose in a similar way inside the egg, which possibly indicates similar prehatching behaviours.”
+
+Featured Image Credit: Lida Xing/Wang Dongming/China News Service via Getty Images
+
+Topics: [China](/china), [News](/news), [Science](/science), [World News](/world-news), [Animals](/animals)

@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:48:36
+-->
+
+# Statement on backdoor in xz library - UnitedBSD
+
+> 来源：[https://www.unitedbsd.com/d/1321-statement-on-backdoor-in-xz-library](https://www.unitedbsd.com/d/1321-statement-on-backdoor-in-xz-library)
+
+Recently, [a backdoor was discovered in the xz compression library](https://www.openwall.com/lists/oss-security/2024/03/29/4). xz/liblzma are included as a part of NetBSD and used by the project for distribution of new releases and packages.
+
+The version of xz shipped in all stable (and unstable) versions of NetBSD predates any code changes by the author of the backdoor. NetBSD is therefore safe and **unaffected** by the recent discoveries. It is believed that the attack only targets Linux/glibc, but checking this allowed us to rule out any other attempts at compromising the library by the author.
+
+The version of xz shipped in pkgsrc, however, is affected. Using xz from pkgsrc is a non-default setting on NetBSD, and requires explicit opt-in. Most users of NetBSD will not install xz from pkgsrc because the version from the base system is preferred. However, users of pkgsrc on other platforms will need to take precautions.
+
+Regardless of NetBSD being affected or not, the discovery of the backdoor is a wake-up call and further discussion will be happening internally over how to proceed.

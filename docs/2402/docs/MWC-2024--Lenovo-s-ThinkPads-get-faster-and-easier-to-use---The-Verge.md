@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:24:28
+-->
+
+# MWC 2024: Lenovo’s ThinkPads get faster and easier to use - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/25/24081225/lenovo-thinkpad-thinkbook-laptops-mwc-2024](https://www.theverge.com/2024/2/25/24081225/lenovo-thinkpad-thinkbook-laptops-mwc-2024)
+
+While the [ThinkBook Transparent Display Laptop](/e/23846285) Lenovo showed off at MWC 2024 is just a proof of concept, the company also announced refreshed versions of several ThinkPads and ThinkBooks as well as a few accessories.
+
+That includes three refreshed ThinkPad T-series laptops: the ThinkPad T14 Gen 5, ThinkPad T14s Gen 5, and ThinkPad T16 Gen 3, all with Intel Core Ultra processors (or an AMD Ryzen 8040 option for the T14 Gen 5). All three get Lenovo’s communication bar, which extends aportion of the top bezel to house the camera and microphones,giving those laptops slimmer top bezels and taller display ratios. Lenovo previously added this feature to other ThinkPad laptops, like the [X1 Carbon and X1 Nano](/2022/1/5/22868089/lenovo-thinkpad-x1-carbon-nano-yoga-laptops-ces-2022).
+
+*The keyboard on the ThinkPad T14 Gen 5 includes more homing bars, swapped Ctrl and Fn keys, and the new Copilot key between right Alt and Ctrl.*
+
+Image: Lenovo
+
+The T-series keyboards also now have the same tactile markings, (homing bars) on the Fn, Insert, Enter, and volume keys as the ThinkPad X1 Carbon Gen 12 and ThinkPad X1 2-in-1 Gen 9 laptops to make typing more accessible to those who are visually impaired. Lenovo also broke with its long-standing tradition of putting the Fn key on the outermost edge and swapped it with Ctrl, where the majority of laptop and keyboard manufacturers put them. There’s [a physical Microsoft Copilot key](/2024/1/4/24023809/microsoft-copilot-key-keyboard-windows-laptops-pcs) between right Alt and Ctrl, too, but Lenovo left the Windows key alone. (Phew!)
+
+Lenovo also collaborated with [iFixit](https://www.ifixit.com/) to make it easier to replace certain hardware components on the ThinkPad T14 Gen 5 and T16 Gen 3\. This includes a move back to fully socketed DIMM slots instead of soldered RAM, user-replaceable cable-free batteries (with fewer screws to remove them), and accessible SSD and wireless adapter slots.
+
+*The ThinkPad T14 Gen 5 makes it easy to replace the battery, SSD, RAM, and the display assembly.*
+
+Image: iFixit
+
+For users who are super new to laptop repairs, the SSD and RAM slots are clearly marked, and Lenovo now includesQR codes inside the laptop body near each repairable component with instructional videos about the process. There are also indicators that point to the specific screws to remove if you’re looking to just replace the keyboard and trackpad.
+
+There is one more ThinkPad laptop up Lenovo’s sleeve: the ThinkPad X12 Detachable Gen 2\. [We liked the first-gen model](/22376272/lenovo-thinkpad-x12-detachable-review) a lot when it was released in April 2021; this upcoming version will have an Intel Core Ultra U processor, 32GB LPDDR5x soldered RAM, a 5MP front-facing webcam that supports Windows Hello, an 8MP outward-facing cam, and support for a 4G LTE wireless adapter.
+
+*The ThinkPad X12 Detachable Gen 2.*
+
+Photo by Lenovo
+
+Lenovo has made some adjustments to its ThinkBook 14 2-in-1 laptop, too, by shortening the key travel to 1.5mm and enlarging the touchpad. It also has new peripherals and accessories, including the ThinkVision M14t Gen 2 Mobile touch monitor and a USB-C Slim travel dock.
+
+All Intel-configured ThinkPads hit stores starting April 2024, with pricing expected to start at $1,199\. (The ThinkPad T14 Gen 5 AMD configuration will be available in May 2024, starting at $949.) The ThinkBook and USB-C dock arrive in March 2024, starting at $1,169 and $89.99, respectively. The portable monitor ($399) arrives in July 2024.

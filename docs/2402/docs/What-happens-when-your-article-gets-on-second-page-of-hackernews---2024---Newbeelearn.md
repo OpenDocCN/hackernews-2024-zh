@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:05:12
+-->
+
+# What happens when your article gets on second page of hackernews - 2024 · Newbeelearn
+
+> 来源：[https://newbeelearn.com/blog/what-happens-when-you-get-2nd-page-hn-2024/](https://newbeelearn.com/blog/what-happens-when-you-get-2nd-page-hn-2024/)
+
+This is unrelated, but I thought [this article](/blog/using-org-mode-in-hugo/) would do well on Hacker News, since I am a long-time lurker and this article squarely fits in HN's interest zone. However, for some reason, it didn't.
+
+**German Timezone:** All of a sudden, I started getting traffic from Germany. I was wondering what was happening; was the article shared on some German list? But the referrer was pointing to Hacker News. The mystery was solved when I tallied it with the German timezone-it was just Germans waking up! 😉
+
+**Viewing habits:** Another interesting thing was that Hacker News users were laser-targeted on the article itself and didn't explore other articles. This is different from other social media traffic where at least **20%** of the users explore other related links; it was less than **1%** in the case of Hacker News.
+
+**Web of HN:** Once an article gets featured on Hacker News, it is picked up by multiple sites that use Hacker News to filter quality posts. Some of them are country-specific; for example, I discovered [Dizkaz](https://dizkaz.com), which primarily serves Chinese readers. There are also alternate Hacker News readers like [Hckrnews](https://hckrnews.com) and specialized developer forums like [Daily dev](https://daily.dev). It was quite fascinating to discover these secondary sources.
+
+**Diverse Viewers:** I also managed to get one viewer using FreeBSD OS and another viewer with the PaleMoon browser. I'll be careful about making assumptions about user's operating systems and browsers from next time onwards.

@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:58
+-->
+
+# How to avoid picking terrible metrics
+
+> 来源：[https://www.elliotcsmith.com/how-to-avoid-picking-terrible-metrics/](https://www.elliotcsmith.com/how-to-avoid-picking-terrible-metrics/)
+
+The only sure fire way I know to change something, is to start by measuring it. That’s true at a personal level for things like a 5k time as well as in a professional setting for SMART goals, OKRs or whatever variant is currently in fashion. While wanting to measure things is easy, picking what to measure is not. You can easily spend months finding the perfect correlation to success but if your metrics are changing every quarter, this is almost certainly a waste of time.
+
+There are three general rules of thumb I use to judge a metric. They all come down to the lifetime of that metric. Some measures are just fine for a quarter but would steer us off track if followed for a year. Conversely some metrics make sense when thinking about a ten year plan but are meaningless on a day to day scale.
+
+**How to avoid feeling powerless:** Sometimes there is a really obvious metric. Something like ‘Raise our EBITDA to $2M by the end of the calendar year’. At face value that is a pretty good metric. It’s precise, well defined and has a timeline. If that was an annual goal it’d be ideal. If you’re in a big company however, you may have a good portion of the company wondering how on earth they can do anything today to make that happen. Typically called lagging metrics, these are the outcome, they’re great for targets but not great for in the moment action. To correct for them, we need leading indicators.
+
+*   For this metric within a sales team, we might look at something like new cold calls or follow up meetings. That’s a number that an individual can optimise on a daily basis that should help move towards the long term goal.
+*   For other teams it might be completing a smaller project. Maybe there are customers waiting for a new paid feature, getting that feature shipped might be close enough to track. If that project is huge, the tickets or tasks within it might work too.
+*   OKRs try to get this done with lower objectives feeding into higher ones. That can help but only if there is also a shift from lagging to leading as you move downwards through objectives.
+
+**How to avoid optimising the wrong thing:** Track leading metrics for too long and you’ll start to see them lose meaning. Anything you measure runs the risk of eventually losing its meaning and becoming a goal in itself. Take the sales cold calls objective above, if that becomes the primary incentive for a sales team you may start to see meaningless calls being made just to hit a quota. In order to avoid your metrics becoming pointless you can try one of two things. One, let your metrics expire. Two, pair quantity metrics with quality metrics.
+
+*   When you pick leading indicators it’s fine to pick metrics with only a loose correlation. They’re around to be day to day sign posts that things are moving in the right direction. As soon as they become more than that they lose their value.
+*   Given these metrics are often loosely correlated and somewhat arbitrary, one method to avoid them becoming meaningless is to let them expire. If there is a similar, but not identical measure of leading success each quarter it will be much harder for anyone to game the numbers.
+*   Be warned though that changing the metrics too often can make things feel chaotic. It’s a balance of ensuring metrics are around long enough to let people optimise but not too long to have people over-optimise.
+*   Pairing metrics means finding a counter balance. For cold calls that might be cold-call to meeting conversion rate. The goal here is to ensure that any increase in the volume of calls isn’t coming at the expense of the quality.
+*   If you take this route it’s important to make sure both metrics are equally valued. It’s easy to have a quality metric that becomes an afterthought if incentives are still aligned solely to quantity.
+
+**How to avoid measurement becoming a time sink:** Sometimes it becomes tempting to try and find the perfect metric, or to find enough metrics to get perfect visibility over every aspect of what you’re trying to optimise. Collecting, collating and displaying metrics can be a full time job. It’s important to make sure that work doesn’t become a distraction. At the end of the day, the metrics, dashboards and goals you’re setting are signposts for the value, not the value itself.
+
+*   A dashboard with a thousand metrics will tell any story you like. You can find evidence for or against your gut feeling. That comfort is a trap sometimes. Depending on your personality that might paint a far too optimistic picture, or one filled with signs of failure at every turn.
+*   On the other end of the spectrum is the quest for the one perfect measure. The combined, weighted, maybe even AI generated signal that should drive all behaviour. Beyond being at major risk of being impossible to influence, it can create an endless workload of collecting and cleaning data just to keep the metric up to date.
+*   Sign posts, as most metrics should be, are there for a quick glance to confirm things are moving in the right direction. Or as an early signal to stop and check what’s taking things off course.
+
+**Going Deeper:** Given the time of year, new metrics and new goals are a hot topic. There is far more written on this than I could consolidate here. Broadly I would suggest the following resources as decent further reading into how to pick metrics in a business context. There is likely a whole blog post (or more) I could also write about statistics and how to avoid making decisions on random noise, but that is for another time.

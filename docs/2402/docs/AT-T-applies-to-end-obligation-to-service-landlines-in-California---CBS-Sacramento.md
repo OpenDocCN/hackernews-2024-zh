@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:27
+-->
+
+# AT&T applies to end obligation to service landlines in California - CBS Sacramento
+
+> 来源：[https://www.cbsnews.com/sacramento/news/at-t-applies-to-end-obligation-to-service-landlines/](https://www.cbsnews.com/sacramento/news/at-t-applies-to-end-obligation-to-service-landlines/)
+
+CAMPO SECO — AT&T doesn't want to be in charge of landlines anymore. If another company doesn't step up, this could mean the end of landlines as we know them.
+
+"I'm not exactly a helpless 80-year-old, but I deserve to have a phone that works," said Campo Seco resident Patricia Pereira.
+
+AT&T is applying to end its obligation to service landlines in certain areas of California. The application is pending under the California Public Utilities Commission, but the end of a landline means the end of communication for some people.
+
+"Now I have no phone and they would not reconnect my landline because they said they're out of the business," Pereira said.
+
+Pereira has relied on her landline for 58 years. She got a cell phone for the first time last year when her landline got disconnected, but she lives in a dead zone for cell phones. CBS13 had a hard time getting in touch with her because the call kept dropping.
+
+"I had no safety. I had nothing to call law enforcement, an ambulance, anything that was an emergency. I had no way to get out," Pereira said.
+
+She explained that she's been without a landline for more than a year.
+
+"I retired from the Post Office. I came up here. I could not get a new landline. They said they can't install it so I said let's transfer the landline down there to up here. It's across the street," Pereira said.
+
+Instead, it was disconnected altogether and she's been desperately asking for it back. AT&T doesn't want that obligation anymore.
+
+The company said in a statement to CBS13:
+
+> "Our application seeks approval from the CPUC to remove outdated regulations in California and to help the limited remaining landline consumers transition to modern, alternative services to replace their current outdated ones. All AT&T California customers will continue to receive their traditional landline services until an alternative service becomes available by AT&T or another provider."
+
+"Look what they did to me," Pereira said. "How many little old ladies out there has this happened to, and they didn't know how to fight it? I'm a fighter."
+
+Pereira said that most people in her rural area use a landline and calls it the most reliable form of communication.
+
+"I'm just a customer who wants to have communication, and they've done it for 58 years. What is the problem?" she said.
+
+The CPUC will be holding four public hearings on the matter through March.

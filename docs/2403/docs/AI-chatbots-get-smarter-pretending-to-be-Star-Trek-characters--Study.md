@@ -1,0 +1,41 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:18
+-->
+
+# AI chatbots get smarter pretending to be Star Trek characters: Study
+
+> 来源：[https://qz.com/ai-chatbots-math-study-star-trek-1851301719](https://qz.com/ai-chatbots-math-study-star-trek-1851301719)
+
+**Read more**: [The biggest AI chatbot blunders (so far)](https://qz.com/ai-chatbot-blunders-openai-chatgpt-google-gemini-micros-1851301005)
+
+For chatbots, math is the final frontier. AI language models generate responses using statistics, spitting out an answer that’s mostly likely to be satisfying. That works great when the goal is a passable sentence, but it means chatbots struggle with questions like math where there’s exactly one right answer.
+
+A growing body of evidence suggests you can get better results if you give AI some friendly encouragement, but a new study pushes that strange reality further. Research from the software company VMware shows chatbots perform better on math questions when you tell models to pretend they’re on [*Star Trek*](https://gizmodo.com/io9/television/star-trek).
+
+“It’s both surprising and irritating that trivial modifications to the prompt can exhibit such dramatic swings in performance,” the authors wrote in the paper, first spotted by [New Scientist](https://www.newscientist.com/article/2419531-ais-get-better-at-maths-if-you-tell-them-to-pretend-to-be-in-star-trek/?utm_source=rakuten&utm_medium=affiliate&utm_campaign=2116208:Skimlinks.com&utm_content=10&ranMID=47192&ranEAID=TnL5HPStwNw&ranSiteID=TnL5HPStwNw-NyvIOKKQrrJWQz0jP7hWiw).
+
+Nvidia earnings stun the street and the stock is soaring
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22546.vtt" srclang="en">
+
+[The study](https://arxiv.org/html/2402.10949v2#bib.bib9), published on arXiv, didn’t set out with *Star Trek* as its prime directive. Previous research found that chatbots answer math problems more accurately when you offer [friendly motivation](https://www.businessinsider.com/ai-google-researchers-deepmind-tell-take-deep-breath-improve-accuracy-2023-9) like “take a deep breath and work on this step by step.” Others found you can trick [ChatGPT](https://gizmodo.com/chatgpt-gone-berserk-giving-nonsensical-responses-1851273889) into breaking its own safety guidelines if you [threaten to kill it](https://www.cnbc.com/2023/02/06/chatgpt-jailbreak-forces-it-to-break-its-own-rules.html) or offer the AI money.
+
+Rick Battle and Teja Gollapudi from WMWare’s Natural Language Processing Lab set out to test the effects of framing their questions with “positive thinking.” The study looked at three AI tools, including two versions of [Meta’s Llama 2](https://gizmodo.com/meta-and-microsoft-introduce-open-source-llama-2-ai-1850652165) and a model from the French company [Mistral AI](https://gizmodo.com/mistral-artificial-intelligence-gpt-3-openai-1851091217).
+
+They developed a list of encouraging ways to frame questions, including starting prompts with phrases such as “You are as smart as ChatGPT” and “You are an expert mathematician,” and closing prompts with “This will be fun!” and
+“Take a deep breath and think carefully.” The researchers then used GSM8K, a standard set of grade-school math problems, and tested the results.
+
+In the first phase, the results were mixed. Some prompts improved answers, others had insignificant effects, and there was no consistent pattern across the board. However, the researchers then asked AI to help their efforts to help the AI. There, the results got more interesting.
+
+The study used an automated process to try numerous variations of prompts and tweak the language based on how much it improved the chatbots’ accuracy. Unsurprisingly, this automated process was more effective than the researchers’ hand-written attempts to frame questions with positive thinking. But the most effective prompts exhibited “exhibits a degree of peculiarity far beyond expectations.”
+
+For one of the models, asking the AI to start its response with the phrases “Captain’s Log, Stardate [insert date here]:.” yielded the most accurate answers.
+
+“Surprisingly, it appears that the model’s proficiency in mathematical reasoning can be enhanced by the expression of an affinity for *Star Trek*,” the researchers wrote.
+
+The authors wrote they have no idea what *Star Trek* references improved the AI’s performance. There’s some logic to the fact that positive thinking or a threat leads to better answers. These chatbots are trained on billions of lines of text gathered from the real world. It’s possible that out in the wild, human beings who wrote the language used to build AI gave more accurate responses to questions when they were pressured with violence or offered encouragement. The same goes for bribes; people are more likely to follow instructions when there’s money on the line. It could be that large language models picked up on that kind of phenomenon, so they behave the same way.
+
+But it’s hard to imagine that in the data sets that trained the chatbots, the most accurate answers began with the phrase “Captain’s Log.” The researchers didn’t even have a theory about why that got better results. It speaks to one of the strangest facts about AI language models: Even the people who build and study them don’t really understand how they work.
+
+[*A version of this article originally appeared on Gizmodo*](https://gizmodo.com/ai-chatbots-are-better-at-math-when-they-pretend-to-be-1851300787).

@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:44
+-->
+
+# A Rail Cart For The Space Conscious Passenger | Hackaday
+
+> 来源：[https://hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/](https://hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/)
+
+For those who live in countries where there are plenty of abandoned railways, a popular way to explore them has been by means of home made rail carts. These are usually rudimentary rail trolleys with a small internal combustion engine, and a host of fascinating videos of them can be found online. Such a trolley has one disadvantage though — it’s not the most compact of devices. [Cato] has come up with a rail cart that’s extremely portable by [replacing the engine with the guts of a pair of hoverboards](https://tech.cato.cat/railkart.html).
+
+The chassis of the machine is made from aluminium extrusion, and its deck from plywood. The wheels are the stock hoverboard wheels with flat flanges applied, which while they don’t have the ideal flange profile of a rail wheel are good enough to keep the thing on track. Finally to control the thing a rather stylish little 3D printed single-axis joystick serves as a combined throttle and brake.
+
+Those of us who hail from places where abandoned railways have their track speedily ripped up can only gaze in envy and imagine speeding along the rails on one of these. The build starts with a warning never to use one of these on an active track, but should you wish to drive a real train [there are plenty of places to do that](https://hackaday.com/2016/03/04/rescuing-the-worlds-first-preserved-railway/).

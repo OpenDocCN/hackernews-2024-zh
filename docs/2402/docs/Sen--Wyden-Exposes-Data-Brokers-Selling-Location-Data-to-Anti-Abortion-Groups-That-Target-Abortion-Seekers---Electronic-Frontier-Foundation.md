@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:26:35
+-->
+
+# Sen. Wyden Exposes Data Brokers Selling Location Data to Anti-Abortion Groups That Target Abortion Seekers | Electronic Frontier Foundation
+
+> 来源：[https://www.eff.org/deeplinks/2024/02/sen-wyden-exposes-data-brokers-selling-location-data-anti-abortion-groups-target](https://www.eff.org/deeplinks/2024/02/sen-wyden-exposes-data-brokers-selling-location-data-anti-abortion-groups-target)
+
+*This post was written by Jack Beck, an EFF legal intern*
+
+[In a recent letter to the FTC and SEC](https://subscriber.politicopro.com/f/?id=0000018d-a362-dda8-abff-b377b49a0000), Sen. Ron Wyden (OR) details new information on data broker Near, which sold the location data of people seeking reproductive healthcare to anti-abortion groups. Near enabled these groups to send targeted ads promoting anti-abortion content to people who had visited Planned Parenthood and similar clinics.
+
+In May 2023, the *Wall Street Journal* [reported](https://www.wsj.com/articles/antiabortion-group-used-cellphone-data-to-target-ads-to-planned-parenthood-visitors-446c1212) that Near was selling location data to anti-abortion groups. Specifically, the *Journal* found that the Veritas Society, a non-profit established by Wisconsin Right to Life, had hired ad agency Recrue Media. That agency purchased location data from Near and used it to target anti-abortion messaging at people who had sought reproductive healthcare.
+
+The Veritas Society detailed the operation on its website (on a page that was taken down but [saved by the Internet Archive](https://web.archive.org/web/20211203103204/https:/veritassociety.com/digital-technology/)) and stated that it delivered over 14 million ads to people who visited reproductive healthcare clinics. These ads appeared on Facebook, Instagram, Snapchat, and other social media for people who had sought reproductive healthcare.
+
+When contacted by Sen. Wyden’s investigative team, Recrue staff admitted that the agency used Near’s website to literally “draw a line” around areas their client wanted them to target. They drew these lines around reproductive health care facilities across the country, using location data purchased from Near to target visitors to 600 Planned Parenthood different locations. Sen. Wyden’s team also confirmed with Near that, until the summer of 2022, no safeguards were in place to protect the data privacy of people visiting sensitive places.
+
+Moreover, as Sen. Wyden explains in his letter, Near was selling data to the government, though it claimed on its website to be doing no such thing. As of October 18, 2023, Sen. Wyden’s investigation found Near was still selling location data harvested from Americans without their informed consent.
+
+Near’s invasion of our privacy shows why Congress and the states must enact [privacy-first legislation](https://www.eff.org/wp/privacy-first-better-way-address-online-harms) that limits how corporations collect and monetize our data. We also need privacy statutes that prevent the government from sidestepping the Fourth Amendment by purchasing location information—as Sen. Wyden has [proposed](https://www.eff.org/deeplinks/2021/04/tell-congress-support-fourth-amendment-not-sale-act). Even the government [admits this is a problem](https://www.eff.org/deeplinks/2023/07/even-government-thinks-it-should-stop-buying-corporate-surveillance-data).  Furthermore, as Near’s misconduct illustrates, safeguards must be in place that protect people in sensitive locations from being tracked.
+
+[This isn’t the first time](https://www.eff.org/deeplinks/2022/05/safegraphs-disingenuous-claims-about-location-data-mask-dangerous-industry) we’ve seen data brokers sell information that can reveal visits to abortion clinics. We need laws now to strengthen privacy protections for consumers. We thank Sen. Wyden for conducting this investigation. We also commend [the FTC’s recent bar on a data broker selling sensitive location data](https://www.eff.org/deeplinks/2024/01/ftc-bars-x-mode-selling-sensitive-location-data). We hope this represents the start of a longstanding trend.

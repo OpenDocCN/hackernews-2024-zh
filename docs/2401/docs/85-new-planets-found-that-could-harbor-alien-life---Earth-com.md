@@ -1,0 +1,78 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:16:33
+-->
+
+# 85 new planets found that could harbor alien life • Earth.com
+
+> 来源：[https://www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/](https://www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/)
+
+Scientists have identified 85 new [exoplanets](https://www.earth.com/news/nasa-finds-17-exoplanets-that-have-oceans-and-possibly-alien-life/), a major advancement in the search for extraterrestrial life.
+
+The study was led by Faith Hawthorn, a PhD student in the [University of Warwick](https://warwick.ac.uk/)‘s Astronomy and Astrophysics department.
+
+Utilizing data from NASA’s [Transiting Exoplanet Survey Satellite](https://exoplanets.nasa.gov/tess/) (TESS), the research team made significant discoveries about these planets outside our solar system.
+
+## Unique planetary systems
+
+“All of the [exoplanets](https://www.earth.com/news/lifting-the-veil-on-alien-exoplanets-with-hazy-atmospheres/) are in 85 unique systems – one planet per star,” Hawthorn explained. The diversity of these exoplanets is notable, with some potentially rocky and others gaseous. The habitability of these planets remains a subject of further research. 
+
+“It’s quite rare for habitable planets to be discovered – you need a very specific set of conditions for habitability, and would need future work to confirm this,” said Hawthorn.
+
+## Looking for transits
+
+The TESS mission’s methodology involves looking for “transits,” periodic dimming in a star’s light caused by a planet crossing in front of it.
+
+This approach allows astronomers to infer details like a planet’s size and its orbital period around the star. 
+
+The distance of a planet from its star is crucial in determining its potential [habitability](https://www.earth.com/news/microbial-life-thats-8-billion-years-old-may-exist-on-nearby-exoplanets/), particularly if it falls within the ‘[habitable zone](https://www.earth.com/news/study-expands-the-habitable-zone-where-we-may-find-alien-life/),’ where conditions may be suitable for life.
+
+## Orbital periods 
+
+“There is plenty of scope for continued research into these exoplanets – to learn more about their exact orbital periods, whether or not they have moons, and what exactly they are made of,” Hawthorn said. 
+
+The orbital periods of these new exoplanets are estimated to be between 20 and 700 days, indicating cooler temperatures compared to most TESS-observed exoplanets, which have much shorter orbital periods.
+
+## Future research on exoplanet life
+
+Among the 85 [exoplanets](https://www.earth.com/news/alien-worlds-unraveling-the-mysteries-of-exoplanets/) discovered, 60 are new, while 25 were also detected by other research groups.
+
+These findings await confirmation by NASA, but the researchers are hopeful that future observations will provide definitive validation.
+
+According to Hawthorn, “future work perhaps by other research groups would confirm the planets – a planet is considered to be ‘confirmed’ when it has a mass (we only have their size, not mass).”
+
+This study represents a significant contribution to our understanding of exoplanets and the ongoing [quest to find life](https://www.earth.com/news/next-generation-telescopes-could-detect-signs-of-life-on-exoplanets/) beyond our solar system.
+
+The research, published in the [*Monthly Notices of the Royal Astronomical Society*](https://academic.oup.com/mnras) *(MNRAS)*, adds to the growing catalog of over 5,500 confirmed exoplanets and underscores the vast potential for discovery in our galaxy and beyond.
+
+## More about the TESS mission
+
+The Transiting Exoplanet Survey Satellite (TESS) is a space telescope for NASA’s Explorer program, designed to search for exoplanets using the transit method. Launched on April 18, 2018, TESS is intended to survey the brightest stars near the Earth for periodic dips in brightness caused by planetary transits.
+
+### Field of view
+
+TESS uses four wide-field cameras to view an area of sky 400 times larger than that covered by the Kepler mission. It surveys different sectors of the sky for about 27 days each, covering 85% of the sky over two years.
+
+### Primary goals
+
+The mission’s primary goal is to identify planets ranging from Earth-sized to gas giants, orbiting a wide range of stellar types and orbital distances. The key focus is on small planets near bright stars, as these are the easiest targets for detailed follow-up studies.
+
+### Follow-up studies
+
+TESS planets are ideal targets for follow-up observations with both ground-based and space-based telescopes. These observations can provide detailed information about the planets’ masses, sizes, densities, and atmospheric properties.
+
+### Legacy of Kepler
+
+TESS builds on the legacy of the Kepler mission, which also used the transit method to discover a large number of exoplanets, many of which were Earth-sized and in the habitable zone of their stars.
+
+The TESS mission represents a significant step forward in our ability to discover and study exoplanets, particularly those that could potentially support life.
+
+—–
+
+Like what you read? [Subscribe to our newsletter](https://www.earth.com/subscribe/) for engaging articles, exclusive content, and the latest updates.
+
+—–
+
+Check us out on [EarthSnap](https://www.earth.com/earthsnap/), a free app brought to you by [Eric Ralls](https://www.linkedin.com/in/eric-ralls/) and [Earth.com](https://www.earth.com/).
+
+—–

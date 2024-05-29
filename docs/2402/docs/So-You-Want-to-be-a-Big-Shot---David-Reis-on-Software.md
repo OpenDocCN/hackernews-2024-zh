@@ -1,0 +1,72 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:20:17
+-->
+
+# So You Want to be a Big Shot - David Reis on Software
+
+> 来源：[https://davidreiscto.substack.com/p/so-you-want-to-be-a-big-shot](https://davidreiscto.substack.com/p/so-you-want-to-be-a-big-shot)
+
+The other day, I was talking to an early career engineer who works at Google, and he asked me:
+
+“Since you got to Sr Staff Engineer here, what advice would you have liked to have heard at the beginning of your career to progress faster?”
+
+**Lots**, in fact. For the benefit of you and yours, the advice will be public rather than only for my junior friend.
+
+Life is not a Super Mario game. You don't **have** to collect all the coins and reach the final level. So first, you should reflect on why you’d want that. Be honest, as no one is watching or judging.
+
+There are several reasons for wanting to grow in your career. You might want more money or more social status. Or maybe you just want to be a master of the craft. All those reasons are valid, even raw ambition is too, as the *want of more* is deeply human, and is what moves us forward. The only dubious reason is “because that’s what you are supposed to do”. Living by other’s script is a recipe for bitterness and regret.
+
+To grow fast in your career, you are going to have to play one of two games: the promotion game or the job-hopping one.
+
+The promotion game is about understanding how your company promotes and playing that game in overdrive over several years. This game is the most honorable one, as it involves building long-term trust relationships and delivering sustained value. Unfortunately, it’s not available in many places since it requires:
+
+1.  Understanding what distinguishes level N from level N+1 work.
+
+2.  Having managers pay attention to those characteristics.
+
+3.  Not having the house on fire enough that growing people can become top of mind.
+
+Job-hopping is working on your image and skills so you can impress people at other companies enough to hire you at the next level. Doing well in your current company can help, as most companies do ref checks, but it’s not required.
+
+The ideal meteoric career likely involves some of both, like stints of 2-3 years at three different companies.
+
+Even if you play the job-hop game you should target getting into somewhere where you can be promoted. Those places are simply better: they pay more, and the work is more interesting.
+
+Understand if the company you are at can promote you and depending on that decide if you want to get promoted there or get the next level job somewhere else.
+
+Irrespective of what game you play, you will grow faster if you are strategic and make choices that optimize your trajectory. Here’s a few examples:
+
+1.  You might prefer to have a healthy work-life balance but will instead get a job in the most important team in the company, widely known to be a meat grinder, because people are promoted there.
+
+2.  Though you prefer living in a rural area and working remotely, you will instead move to *where the action is* and work in person most days because that way you can learn and grow faster.
+
+3.  You will prefer getting a job at a high-prestige local company that pays worse rather than a high paying work-from-home international software-house, because you know it will be a springboard to greater things.
+
+What these examples have in common is that they show a keen understanding of your own situation and sacrifice short-term comfort for long-term success. You will maximize your success by showing those virtues: critical unbiased thinking about your career and willingness to sacrifice now to reap benefits later.
+
+It’s hard to be objective about yourself, so you need help. If you can get a group of competent peers, you will help each other judge companies, opportunities, growth strategies and so on.
+
+To be promoted or to get that next-level job somewhere else you must by definition be better than the average. If your junior coworkers need three rounds of code review you must need only one. If others are shy and reticent in meetings you must be outspoken and helpful. People must think of you as “one of the best we have around here”. You must understand what “normal” looks like, and do much more, better, and more often.
+
+You don’t need to love every job, but you must always be loved. When people call your old boss, they should sing your praises. They should say they were sad to lose you and would hire you again if they could.
+
+Take particular care to be honorable when leaving. It’s how you handle tough situations that most brands you as a good employee, or on the other hand a bad apple. For example, give ample notice, hand-off projects, and **never** badmouth your old company.
+
+Your manager is the person that can most influence the speed of your advancement, so they should be an ally, **never** an adversary.
+
+You should trust that your manager has your best interests at heart and will help you play the game. If you can’t, that’s a strong sign you need to switch jobs. If you have the same experience with manager after manager, there's a problem with you, and a mentor or therapist might be helpful.
+
+Once you trust your manager, *just tell them what you want* - to work in the backend, to lead a project, to be promoted this year. They can’t help you if they don’t know.
+
+Put yourself in the shoes of your manager for a second. They must assign projects in a way that maximizes team impact and morale, but they are also busy and likely not the most socially perceptive person. When you tell them what you want, you are making their life easier, since you are making the constraints for their work clear. With that information it’s more likely they will find some setup that gives you what you want.
+
+There is also a chance that you will be told you can’t get what you want. While that might be demotivating, it’s valuable information to have. For example, your manager might give feedback that will help you grow, or they might tell you the company has no budget for promotions this year. With the cards on the table, you can then have a frank conversation about what’s best for you. Maybe with their blessing and support it’s time to find a new role at another company.
+
+You don’t have to have a meteoric career, but you might still want to. There is no shame in ambition, and being successful can be extremely rewarding. Not only for the money, but also for the respect of your peers and the opportunity to do ever more important and impactful work.
+
+By being strategic you can maximize the speed of your advancement, and I hope this essay was a bit helpful in that regard. Nevertheless, remember that you must not live only for the goal but also for the journey. If you love your job, you will be happy even i fit takes a couple of years more to become a big shot.
+
+If you found this post useful share it on social:
+
+[Share](https://davidreiscto.substack.com/p/so-you-want-to-be-a-big-shot?utm_source=substack&utm_medium=email&utm_content=share&action=share)

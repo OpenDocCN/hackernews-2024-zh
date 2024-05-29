@@ -1,0 +1,243 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:47
+-->
+
+# Failing to Learn Zig via Advent of Code - ForrestTheWoods
+
+> 来源：[https://www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/](https://www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/)
+
+This isn't the blog post I intended to write.
+
+In 2018 I wrote [Learning Rust via Advent of Code](https://www.forrestthewoods.com/blog/learning-rust-via-advent-of-code/). This was supposed to be the exciting sequel where I learn [Zig](https://ziglang.org/). Unfortunately I failed. Zig sparked more frustration than joy and I fizzled out after 6 days.
+
+My biggest failure was a poor decision to solve all Advent of Code puzzles in both Rust and Zig. Unfortunately I lost motivation to reimplement them in Zig. Some mild office competition didn't help. In hindsight I should have gritted my teeth and focused exclusively on Zig. Lesson learned.
+
+I kept pretty good notes on my initial Zig experience. Rather than let it go to waste I want to share it here.
+
+GitHub: [Link](https://github.com/forrestthewoods/aoc2021/blob/master/zig/src/main.zig)
+
+To help paint context here's a little bit about me.
+
+I'm a game/VR developer with 15 years work experience. Most of that time has been spent in C++ and C# (Unity). I've done a mix of gameplay and systems code. I love Rust and [hate Python](https://www.forrestthewoods.com/blog/things-i-like-about-python/). I don't know anything about webdev or JavaScript; and intend to keep it that way. I probably like C++ more than C, but I try to keep my C++ simple and somewhat C-like.
+
+A few months ago I didn't know really anything about Zig. I knew it existed, but not much else.
+
+I attended the awesome [Handmade Seattle](https://handmade-seattle.com/) conference where Zig had a very strong presence. [Andrew Kelley](https://twitter.com/andy_kelley), Zig's benevolent dictator of life, gave a stellar presentation on [A Practical Guide to Data Oriented Design](https://media.handmade-seattle.com/practical-data-oriented-design/). Numerous presentations were for projects built in Zig.
+
+My mental model is:
+
+*   Rust is trying to be a better C++
+*   Zig is trying to be a better C
+
+I don't know if that's entirely accurately. I think it's fair.
+
+I decided to use [Advent of Code](https://adventofcode.com/2021/about) to help learn Zig. I had a great time doing this with Rust back in 2018\. Before AoC I did my best to read Zig docs. Here are some of the more useful pages I found:
+
+Downloading Zig and compiling Hello World was delightfully simple by following the [Getting Started](https://ziglang.org/learn/getting-started/) page.
+
+I took a lot of notes when solving AoC puzzles. I tried to write down every question I had or problem I encountered. It's a long list.
+
+The next few sections contain these notes in semi-raw form. I'll share my takeaways after.
+
+Immediately confused by `anyerror!void`. I think `!` is `Option` / `std::optional`. So I thought `!` was a prefix, but it's also a suffix? Very confused. (Note: I was wrong. `?T` is `Option<T>` and `E!T` is `Result<T,E>`).
+
+Can't figure out how to print an integer. Can't find documentation or an example in ZigLearn. Needed to search for `std.debug.print` not `std.log.info` to find the example. Annoying.
+
+Building is slow. It takes about ~3 seconds minimum which is frustratingly slow when I'm fighting basic syntax errors. I wish there was a fast `zig check`.
+
+Compile error messages are mediocre. They're full of useless information and compiler callstacks I don't care about.
+
+Zig reference documentation badly needs examples. Can't figure out how to use `std.fmt.parseInt`.
+
+Catching memory leaks at run-time by default is very cool! Compiler should be able to trivially detect not calling `nums.deinit()` at compile-time.
+
+Can not figure out how to get the number of items in an `ArrayList`. The [documentation](https://ziglang.org/documentation/0.8.1/std/#std;ArrayList) does not reveal this basic information. The type of `items` is `var`. That is not helpful.
+
+Can't figure out how to array access an `ArrayList`. I get a compile error of: `error: array access of non-array type 'std.array_list.ArrayListAligned(u32,null)'`. That sure seems like an array type to me.
+
+Need to access `myArray.items[idx]` instead of `myArray[idx]`. I get it. But very unintuitive and requires knowledge of implementation details.
+
+Massive callstack on failed `expect` is annoying.
+
+Can't figure out how to compare string. Can't find anything in ZigLearn or reference. Googling "zig string compare" is not helpful. This is a shockingly hard blocker.
+
+Ah hah. There is no such thing as strings. just `[]const u8`. Need to use `std.mem.eql`.
+
+Can't figure out how to make an `ArrayList` of tuples. Never figured this out. Had to make a helper struct.
+
+It's really weird that I can call `myArraylist.push` but need to loop over `for (myArrayList.items)`. It feels inconsistent. I get it, but it's super unintuitive. I've used many programming languages and none behave this way.
+
+I can't actually figure out how to run in release mode. `zig build run` will build and run debug. Eventually figured out that `zig build -Drelease-safe` builds release. The internet told me it needed to be run manually. I didn't figure out until typing this blog post I can build and run via `zig build -Drelease-safe run`.
+
+`std.mem.tokenize` is great. Awesome feature over vanilla C when combined with `foreach`-like `for` loop.
+
+[Documentation](https://ziglang.org/documentation/master/std/#std;builtin.TypeInfo) for `TypeInfo` is beyond worthless.
+
+Should I pass the allocator to every function? Doesn't seem great. Maybe I'm supposed to create a global? Globals are evil and feel bad.
+
+How do I print a number in binary? Googling how to do things in Zig has like a 50% chance of taking you to a [GitHub issue](https://github.com/ziglang/zig/issues/1358) where the feature is being discussed. This happened to me a LOT.
+
+How do I get the length of a tokenized line? What does [tokenize](https://ziglang.org/documentation/master/std/#std;mem.tokenize) return? It returns `anytype`. Cool. Very helpful. Had to compile, fail, and see in error spew the type was `[]const u8`.
+
+Lack of `zig-analyzer` makes learning hard.
+
+How do I make a lambda / closure / local function? There's a too complicated pattern with numerous issues. There is, of course, a [GitHub issue](https://github.com/ziglang/zig/issues/229) discussing this.
+
+```
+const do_thing = (struct {
+    fn call(self: @This(), last_number: u8, tiles: []Tile) ?usize {
+        _ = self;
+        // do stuff
+        return num;
+        }
+    }
+{}).call;
+
+```
+
+Bit-shifting is a monumental pain in the ass. `const mask : usize = @as(usize, 1) << @truncate(u6, i);`. I eventually wound up with: `@truncate(u16, @as(usize, 1) << @truncate(u6, i));`. Blech.
+
+The following line doesn't compile: `const mask = 1 << (num_bits - 1);`. Blech.
+
+Casting seems too complex too: `@as(type, value)`. Blech.
+
+Can't `xor` bools!? Blech.
+
+Can't redirect output of `zig build run`. The following doesn't work: `zig build run > c:/temp/out.txt`. :(
+
+Parsing `i32` is delightful (once I figured it out).
+
+`tokenize` is delightful.
+
+`try` syntax is nice and clean.
+
+Callstack on zig compiler error is too long and not helpful. Have to scroll way up to find actual error.
+
+`zig fmt src/main.zig` is nice. Wish it automatically ran on all files.
+
+Wish there was an easy way to pretty print nested `ArrayList`.
+
+Producing an array of arrays required a lot of painful trial and error.
+
+Struggled to mutably iterate an `ArrayList`. The trick was: `for (board.tiles.items) |*tile| { ... }`. I don't get it. I found understanding value vs reference semantics in Zig very difficult and confusing.
+
+Index checking is cool... but the error message is not helpful. `thread 9888 panic: index out of bounds`. What was the index? What was the slice length? This is important information.
+
+VSCode breakpoint on exception works great.
+
+First-class support for callstacks is stellar. Something sorely missing in C and C++.
+
+My parser isn't working, but not sure why. Omg `tokenize` does not work as expected. Needed to use `split` not `tokenize`. Horrifically insidious.
+
+Wanted to use regular expression. There's nothing built-in. There is a GitHub project. Not sure how to use it.
+
+No standard package manager in Zig. Gyro, zigmod, and submodules all exist. No standard.
+
+No zig tutorial shows how to correctly import external Zig code. This feels like a huge oversight.
+
+VSCode debugging of Zig is easy to setup.
+
+Debugging `ArrayList` is not useful. Only shows first element. :(
+
+Zig templates/generics is interesting. `pub fn max(x: anytype, y: anytype) @TypeOf(x, y) { return if (x > y) x else y; }`
+
+Compile times still frustrating. I wish there was a fast `zig check` similar to `cargo check`.
+
+Hard to cast `i32*i32` to `usize`. (Not sure why I made this note.)
+
+I don't actually know what `@` prefix means. I think "built-in". For some unspecified definition of built-in.
+
+Zig's inability to infer type is annoying. If I create `var count` and return it and the function return type is `usize` then `var count` is obviously a `usize`.
+
+No notes. Simple problem that didn't require learning anything new. Maybe I'm starting to grasp the basics?
+
+Did not complete in Zig.
+
+This is where I fell off the rails. I didn't intend to stop. I said I'll catch back up in a couple of days. I never did. The motivation drained out of me for no particular reason.
+
+The thought of picking Zig back up felt like a chore. There were things I knew I would have to learn in Zig, for example `HashMap` and `HashSet`, and the idea of fighting did not spark joy.
+
+I tried to pick Zig + AoC back up in January after a nice holiday break. Somewhere along the lines [Zig 0.9](https://ziglang.org/download/0.9.0/release-notes.html) released so I decided it would be a good exercise to upgrade.
+
+Upgrading Zig is a manual process. Download a new `zig.exe` and replace your old one in the path. A little tedious.
+
+I immediately encountered new errors about unused function parameters. My overly complex workaround for local functions stopped working, sometimes. I don't know why so I just turned it into a normal function.
+
+Next, I had to deal with [allocgate](https://pithlessly.github.io/allocgate.html). I found the release notes for this really frustrating. The blog post explains in detail why the change was made. But it did not clearly explain what changes I needed to make to my code to make it compile. This was needlessly frustrating to figure out imho.
+
+Once I got my code working I realized something shocking. Zig appears to not report compiler errors for functions that get optimized out. Wat? I needed to explicitly make sure all functions were called for allocgate errors to be detected. Blech.
+
+At this point I simply have other projects that interest me more. Zig is going back on the shelf.
+
+So where does this leave me? I think I have three key impressions.
+
+1.  Zig does not currently spark joy
+2.  Zig may have several profound ideas
+3.  Zig is exciting and I will revisit for Advent of Code 2022
+
+Zig is not ready for primetime. This is not controversial. The Zig team explicitly states it is not ready for production use. I concur.
+
+I don't think Zig is ready for most programmers. It is not as far along as I thought it was.
+
+There is very little info on Zig out there. It's very difficult to use Google to answer questions. r/zig is not active. r/adventofcode solution threads do not have Zig solutions.
+
+The Zig Discord is very active and the #advent-of-code channel is full of very friendly, very helpful people. They answered many questions from me. Without their help I likely would have given up earlier due to frustration.
+
+Zig has poor documentation. The [standard library reference](https://ziglang.org/documentation/0.9.0/std/) is experimental and not useful. The [language reference](https://ziglang.org/documentation/0.9.0/) is pretty good, but it's a reference not a guide or tutorial.
+
+[ZigLearn](https://ziglearn.org/) is the best learning resource I found. It's a good start. It isn't the best at introducing concepts. For example it starts off with a bunch of unfamiliar `test "Do Thing"` function declarations without explaining what that syntax means or how to run tests. The second example introduces the `try` keyword, but it isn't defined. That critically important definition occurs 7 sections later, in the middle, in an off-hand comment that's trivially easy to miss.
+
+Writing documentation is **hard**. I've tried to not compare Zig to Rust. However I simply have to compare Zig's lack of documentation to the absolute stellar [Rust book](https://doc.rust-lang.org/stable/book/) and [Rust Standard Library Documentation](https://doc.rust-lang.org/stable/std/).
+
+I think Zig needs to put significant resources into the "Zig Book" now. It takes years of refinement and waiting for Zig 1.0 is too late IMHO. Start now and by Zig 1.2 it should be pretty good.
+
+I'm going to complain briefly about the Zig page titled [Why Zig When There is Already C++, D, and Rust?](https://ziglang.org/learn/why_zig_rust_d_cpp/).
+
+Zig is a cool language. I think it has a lot of interesting ideas. I think in the future there are numerous reasons why someone might choose to use Zig. Here are the bullet points from "Why Zig":
+
+*   No hidden control flow
+*   No hidden allocations
+*   First class support for no standard library
+*   A portable language for libraries
+*   A package manager and Build System for existing projects
+*   Simplicity
+*   Tooling
+
+This list is not compelling IMHO. Zig is a cool languge with a lot of really cool ideas. This list is not cool and does include most of the features that excite me. "It's like C, but better in every way". Now that's a hell of a sales pitch.
+
+"No hidden control flow" seems to be a rallying cry of the Zig community. That is definitely not what I would put as the #1 most compelling bullet point for a new programming language. I don't know why it's the first feature listed on every page.
+
+I also think it's partially wrong. No one in the history of the world has ever been confused or upset by `a + b` calling a function. Operating overloading can be very evil. Don't allow `operator.` or `operator->` overloads. Overloading basic math operators is fine, not confusing, and a good idea. I do a lot of 3d vector math so I'm willing to die on this hill.
+
+```
+fn lerp(a: Vec3f, b: Vec3f, t: f32) Vec3f {
+    // Obviously good and easy to read
+    return a*(1.0-t) + b*t;
+
+    // Obviously bad and hard to read
+    return add(mul(a, 1.0 - t), mul(b, t));
+}
+```
+
+I think Zig might have several profound ideas.
+
+No language allocator function is profound. Passing allocators into every struct function is somewhat tedious, but profound. In C++ you have the workhorse `std::vector<Foo>`. Specifying the allocator requires specifying a template type, which is a monumental pain in the ass. In Zig you can trivially change the allocator type. `std.heap` contains `ArenaAllocator`, `FixedBufferAllocator`, `GeneralPurposeAllocator`, and `StackFallbackAllocator`. Delightful.
+
+Zig has a seemingly powerful ability to intergrate into existing projects. It's ability to cross-compile for different platforms is enviable. I think that "using Zig for isolated parts of your project" might be profound. I'm not sure. I strongly suspect integrating Zig into real projects is harder than the Zig team suggests.
+
+Zig's comptime generic capabilities are fascinating and profound. I don't fully understand them yet. I'm not entirely sure how they compare to C++ template or Rust generics. Can Zig comptime do anything C++ templates can do? Are there limitations? I'm not sure.
+
+Zig's [error handling](https://ziglang.org/documentation/0.9.0/#Errors) is profound and powerful. It's also super confusing. I failed to grok erors sets which can be merged, inferred, coerced, deferred, and traced. Error tracing is super cool and something I badly wish was in other languages. I don't love syntax such as `anyerror!?u32`.
+
+Zig's [colorblind](https://kristoff.it/blog/zig-colorblind-async-await/) async / coroutine system may be especially profound. I haven't dug deep enough to form an opinion. This could be a huge feature advantage over C and even C++.
+
+Zig did not spark my joy. I found it difficult and frustrating to learn. Lack of documentation, lack of tutorials, poor compiler errors, unintuitive types, confusing syntax, confusing reference vs value, ungoogleable, non-composable iterators, and more.
+
+However Zig has many things I loved and expect in a modern language. Runtime safety, slices, defer, simd, tagged unions (needs syntactic sugar), `foreach` style `for` loops, comptime, a standard build system, a promise of a package manager, basic iterators, and more.
+
+I'm excited for the future of Zig. I love that it is exploring new ideas and pushing forward the next generation of programming languages. I think it will likely be very solid when Zig 1.0 releases. That looks to be several years from now.
+
+I've dipped my toes in the Zig water and it was chilly. I'm not ready to jump in. I will likely give Zig a more exclusive go for Advent of Code 2022\. Next time I'll have a better idea of what I'm signing up for.
+
+Thanks for reading.

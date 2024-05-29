@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:13
+-->
+
+# Midjourney bans all Stability AI employees over alleged data scraping - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/11/24097495/midjourney-bans-stability-ai-employees-data-theft-outage](https://www.theverge.com/2024/3/11/24097495/midjourney-bans-stability-ai-employees-data-theft-outage)
+
+Midjourney says it has banned Stability AI staffers from using its service, accusing employees at the rival generative AI company of causing a systems outage earlier this month during an attempt to scrape Midjourney’s data.
+
+Midjourney posted an update to its Discord server on March 2nd that acknowledged an extended server outage was preventing generated images from appearing in user galleries. In a summary of a business update call on March 6th, Midjourney claimed that “botnet-like activity from paid accounts” — which the company specifically links to Stability AI employees — was behind the outage.
+
+According to Midjourney user [Nick St. Pierre on X](https://twitter.com/nickfloats/status/1765471291300045255), who listened to the call, Midjourney said that the service was brought down because “someone at Stability AI was trying to grab all the prompt and image pairs in the middle of a night on Saturday.” St. Pierre said that Midjourney had linked multiple paid accounts to an individual on the Stability AI data team.
+
+In its [summary of the business update call](https://discord.com/channels/662267976984297473/1037743153471553618/1215042136437686352) on March 6th (which Midjourney refers to as “office hours”), the company says it’s banning *all* Stability AI employees from using its service “indefinitely” in response to the outage. Midjourney is also introducing a new policy that will similarly ban employees of any company that exercises “aggressive automation” or causes outages to the service.
+
+St. Pierre [flagged the accusations](https://twitter.com/EMostaque/status/1765495422561206507) to Stability AI CEO Emad Mostaque, who replied on X, saying he was investigating the situation and that Stability hadn’t ordered the actions in question. “Very confusing how 2 accounts would do this team also hasn’t been scraping as we have been using synthetic & other data given SD3 outperforms all other models,” said Mostaque, referring to the Stable Diffusion 3 AI model [currently in preview](https://stability.ai/news/stable-diffusion-3). He claimed that if the outage *was* caused by a Stability employee, then it was unintentional and “obviously not a DDoS attack.”
+
+Midjourney founder David Holz responded to Mostaque in the same thread, claiming to have sent him “some information” to help with his internal investigation.
+
+The situation is otherwise still developing, and no additional updates have been provided since that conversation on March 6th. At the time of writing, neither Midjourney nor Stability AI have responded to the *Verge*’s request for comment.
+
+It does seem odd that scraping activity from just two accounts allegedly managed to cause such an extended server outage. The irony of this situation also [hasn’t been lost on online creatives](https://www.reddit.com/r/nottheonion/comments/1b9s75z/midjourney_accuses_stability_ai_of_image_theft/), who have extensively criticized both companies (and generative AI systems in general) for training their models on masses of online data scraped from their works without consent. Stable Diffusion and Midjourney [have both](/2023/1/16/23557098/generative-ai-art-copyright-legal-lawsuit-stable-diffusion-midjourney-deviantart) been targeted with [several copyright lawsuits](/2023/2/6/23587393/ai-art-copyright-lawsuit-getty-images-stable-diffusion), with the latter being accused of [creating an artist database for training purposes in December](https://twitter.com/JonLamArt/status/1741545927435784424).

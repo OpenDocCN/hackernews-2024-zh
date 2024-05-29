@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:39:53
+-->
+
+# How to prepare for an Oracle audit, according to former CIO • The Register
+
+> 来源：[https://www.theregister.com/2024/03/06/oracle_audits/](https://www.theregister.com/2024/03/06/oracle_audits/)
+
+A retired CIO has offered advice in dealing with Oracle audits: the vendor will try to work from its current licensing policies, yet users should stick to their contracts with the global tech giant.
+
+"We had to educate them [Oracle] on our arrangement and we had to set our posture based on the Ts and Cs of the signed agreements, not on what their current arrangements [are]," said Michael Cahoon, who recently left the role of CIO at international consumer and industrial products company JM Huber.
+
+A user of Oracle since the 1980s, the company was on the receiving end of an audit from the enterprise application and database supplier in 2019\. With a long history with Oracle, some of the relevant contract arrangements went back to 1999, Cohoon told a webinar hosted by Palisade Compliance, a specialist advisory company helping clients deal with Oracle licenses.
+
+"They had in their mind what the licensing agreements were and they were not based on our agreements or our contracts. We had a 1999 agreement, but they wanted to measure us against you know, 2019 licensing arrangements. So there was a there was a bit of disconnect on expectations," he told the audience.
+
+"It was always our intent to be compliant with our license agreements. It's a part of our ethical fabric," he said.
+
+Dan DeVenio, Palisade Compliance chief client officer, added that customers should take their time over this process, and not allow Oracle to dictate the pace.
+
+"The two things that are contractually obligated: be in compliance and they have the right to audit you. Everything else they tell you to do is subject to interpretation, including the speed of doing things. We always suggest that you take control [of the timetable]. In most cases, people don't understand that you have 45 days before you have to meet with Oracle from the day you get the letter," he said.
+
+"A lot of times Oracle send a letter and the next day someone will call you and say you have to run the [licensing audit] scripts. What you want to do is understand where you are before you give any data to Oracle," he said.
+
+DeVenio warned users that for Oracle, auditing was a revenue generation exercise, and one which might generate up to $3 billion a year.
+
+In the end, Cahoon said, JM Huber managed to get "within a few licenses of being compliant" after the 2019 audit. But it also took the opportunity to prepare for the next quizzing from Oracle.
+
+Oracle began charging for Java, which it acquired in the Sun Microsystems merger, in 2019\. Earlier last year, [it made changes](https://www.theregister.com/2023/01/27/oracle_java_licensing_change/) to the Oracle Java SE subscription model, basing it on a per-employee metric many said would increase costs for users. For example, Gartner estimated the [new subscription model](https://www.theregister.com/2023/07/24/oracle_java_license_terms/) to be two to five times more expensive than the legacy model.
+
+Cohoon said: "When we begin to see some communication on Oracle changing its license and begin to hear some noise in the industry about them becoming very aggressive in auditing, we took a proactive approach."
+
+The IT team wanted to understand how it was using Java and where it might be exposed through third-party software. It also looked at alternative architectures and development environments to Oracle Java.
+
+"We decided that we had a minimal amount [of Java]. We came up with a non-Oracle based architecture for development and we implemented a policy that pointed towards the other development platform and we evaluated methods to discourage or prevent the download of Java software," he said.
+
+*The Register* has asked Oracle to comment. ®

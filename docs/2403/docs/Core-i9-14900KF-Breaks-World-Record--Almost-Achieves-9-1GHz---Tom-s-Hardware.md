@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:38:42
+-->
+
+# Core i9 14900KF Breaks World Record, Almost Achieves 9.1GHz | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/news/core-i9-14900kf-breaks-world-record-almost-achieves-91ghz](https://www.tomshardware.com/news/core-i9-14900kf-breaks-world-record-almost-achieves-91ghz)
+
+The [overclocking team from Asus](https://www.youtube.com/watch?v=fb7pl7PZOYo) has achieved a new CPU frequency world record with Intel's brand-new [Raptor Lake Refresh Core i9-14900KF](https://www.tomshardware.com/news/intel-core-i9-14900k-cpu-review). The team was able to achieve a very impressive 9043.92GHz on a single P-core with liquid helium, breaking the previous world record by 35.1MHz.
+
+The overclocking rig used to hit this new world record included Intel's brand-new Core i9-14900KF flagship CPU (no integrated graphics), 16GB of G.Skill Trident Z memory, an Asus ROG Maximus Z790 Apex Encore motherboard, and a 1200W Enermax PSU. For cooling, the team used liquid helium (rarer, colder, and more expensive than liquid nitrogen) to reach a minimum thermal threshold of negative 235C–240C. According to SkatterBencher, one of Asus' team members, it took the team a whole week to break the (now previous) CPU world record.
+
+35MHz might not sound like a big margin (and it isn't), but in the land of CPU frequency records, any minute gains are huge. The previous world record was held by the same Asus overclocking team, using Intel's previous-generation Core i9-13900KF to hit 9.008 GHz back in December of 2022.
+
+Naturally, the Asus team is not done yet with Intel's latest 14900KF CPU. After scoring their world-record result, the team pushed on and managed to briefly hit 9.1GHz before locking up. Sadly, the system was too unstable to validate the score, making it an unsuccessful 9.1GHz attempt. Nonetheless, their 9.1GHz screenshot shows there may be more in the tank for Raptor Lake Refresh's enhanced overclocking capabilities — we could see another new world record in the not-too-distant future.
+
+Intel's [i9-14900KF](https://www.tomshardware.com/news/intel-core-i9-14900k-cpu-review) is the company's latest flagship CPU, sporting a lightly refreshed flavor of Intel's Raptor Lake CPU architecture. One of the tweaks Intel made for its latest refresh is the inclusion of a revised Intel 7 process node that improves the chip's base/boost frequencies and improves the chip's overclocking potential. The enhancements appear to have paid off, allowing SkatterBencher and his team to (re-)secure a world-record result with the new chip.
+
+It's an exciting time for fans of this very niche CPU overclocking sport. This latest 14900KF result represents the third broken world record in under a year, all with Intel's 13th and 14th Gen chips. Before Intel's Raptor Lake chips stole the show, AMD was on top with a world record result of 8.722 GHz on the old Piledrive [FX 8350](https://www.tomshardware.com/reviews/fx-8350-vishera-review,3328.html), a record that had remained unbroken for eight years.
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:32:29
+-->
+
+# The singing UCI Nobel Laureate who nearly bombed Nevada | UCI Physics and Astronomy
+
+> 来源：[https://www.physics.uci.edu/node/14126](https://www.physics.uci.edu/node/14126)
+
+**From desert to gold mine — Frederick Reines was a larger-than-life physicist who did larger-than-life experiments.**
+
+**Chasing the Ghost: Nobelist Fred Reines and the Neutrino Leonard A. Cole World Scientific (2021)**
+
+In the early 1950s, the physicist Frederick Reines and his colleague Clyde Cowan designed an experiment to detect neutrinos, the tiniest and most elusive of subatomic particles. Theorists were convinced that neutrinos must exist — and that they would be untraceable. And Reines liked nothing better than a challenge.
+
+The experiment was to take place in the Nevada desert. A flux of neutrinos would be created by detonating a 20-kiloton nuclear bomb, comparable to that dropped on Hiroshima, Japan, a few years earlier. A deep hole would be dug 40 metres away from the detonation site, into which a detector would be dropped at the moment of explosion to catch the flux at its maximum.
+
+Eminent physicists enthused about the plan. It was approved by Reines’s employer, the government-funded Los Alamos laboratory in New Mexico. Work began on the detector, nicknamed El Monstro, and on the construction of the shaft. At the last minute, Reines and Cowan transferred the experiment to a nuclear reactor, but not because of environmental or safety concerns. They had worked out that although the reactor would deliver a flux of neutrinos three orders of magnitude lower than that from the bomb, it offered a better option for distinguishing signal from noise.
+
+So they did the work instead at the Savannah River nuclear reactor in South Carolina, and Reines and Cowan became the first scientists to detect neutrinos. In 1995, Reines won a share of the Nobel Prize in Physics. (Cowan had died by then.)
+
+The idea of including a nuclear bomb in a basic-research protocol might sound outlandish, but in Chasing the Ghost, his biography of Reines, Leonard Cole reminds us that attitudes were different then. He also reminds us of this when describing Reines’s work on nuclear bombs during and after the Second World War, and his creation of a neutrino laboratory deep in a gold mine in South Africa in the 1960s, in defiance of academic sanctions against the apartheid state. (However, Cole is hardly an independent voice, being Reines’s admiring younger cousin.)
+
+The neutrino-research community has mushroomed over the decades, as it has become clear that these elementary particles are key to understanding the physics of the Universe. Reines was probably its most rambunctious member. Cole relies on many written sources in his reconstruction of Reines’s life. He also interviewed scientists, many now in their nineties, who worked with him. He builds a picture of a larger-than-life figure who conducted larger-than-life experiments. The man who rises off the page is an inspiring, supportive colleague and an entertainingly boisterous companion, who whistled and sang his way through life.
+
+**Los Alamos**
+Reines was born in New Jersey in 1918, into a family of Eastern European Jewish immigrants. He was a self-confident high achiever from his youth, declaring in his high-school yearbook his ambition “to be a physicist extraordinary”. He was also a gifted gymnast and musician, who considered a career as an opera singer.
+
+As the Second World War raged, he studied the newly identified phenomenon of nuclear fission, a subject so sensitive that publication of his PhD thesis was delayed until after the war. He joined the Los Alamos laboratory in 1944 to work on the Manhattan Project, the US effort to develop an atomic bomb led by some of the world’s top physicists. Most left Los Alamos after the war; not Reines. He continued to work on the radiation emissions of nuclear bombs — above-ground atomic tests were still taking place, in Nevada and on remote atolls in the Pacific Ocean — and on the development of the even more powerful hydrogen bomb.
+
+After the success of the Manhattan Project, the Los Alamos laboratory continued to be well funded, and investigations into fundamental physics were encouraged. Reines’s neutrino fixation began when he took a year’s sabbatical from his daily responsibilities and found a like-minded colleague in Cowan.
+
+Neutrinos were nicknamed ghost particles because of their uncanny properties. They are the most abundant particles in the Universe — around 100 trillion pass harmlessly through your body every second. They are created in many natural processes, including nuclear reactions in the Sun, explosions of stars and processes that generate radioactivity in Earth’s core. They are also made by particle accelerators and nuclear power plants.
+
+But with no charge and a vanishingly small mass, they can be detected only indirectly, when they interact with another particle. Detectors are made from liquids that generate a suitable signal, such as a flash of light, during interactions, and electronics that convert the signal to an electrical pulse. Neutrino interactions are exceedingly rare, however, so the detectors have to be very large, and physicists very patient.
+
+**Project poltergeist**
+As Cole describes, Reines and Cowan began what they named Project Poltergeist at a plutonium-producing reactor in Hanford, Washington. The results were inconclusive. Undeterred, they transported their bulky yet delicate equipment — including a detector tank containing more than 1 tonne of scintillation fluid — in a crawling convoy of 5 oversized trucks, travelling 2,600 kilometres to the more powerful Savannah River reactor, which they expected to deliver a larger flux of neutrinos. In June 1956, they declared their success.
+
+Reines left Los Alamos in 1959 for the Case Institute in Cleveland, Ohio. Seven years later, he moved to the University of California, Irvine. At Case, he began a search for natural-source neutrinos, for which he had to build an underground laboratory, sheltered from interfering cosmic radiation. He targeted the East Rand gold mine near Johannesburg, South Africa, which coiled more than 3.5 kilometres below Earth’s surface.
+
+Cole describes the extraordinary effort to create a lab there, and the harsh and dangerous conditions for the miners, who — unlike the scientists — wore no protective gear beyond a hard hat. It took six months of blasting to create the required horizontal space. They had to transport newly built equipment from the Case Institute, including 20 tonnes of scintillation fluid in 50 containment tanks, which proved a logistical nightmare. But by 1965, the lab was detecting atmospheric neutrinos.
+
+It made diplomatic waves. The apartheid regime in South Africa was widely distrusted. Some other African countries alleged that it intended to test nuclear weapons underground. As that issue faded, problems arose at home, writes Cole. In 1968, colleagues at Irvine openly challenged academic collaboration in an explicitly racist country. Reines countered that, in his view, science transcended politics. Still, he wound down research at the mine soon afterwards, and continued his neutrino studies at US sites.
+
+Cole doesn’t dig deeply enough into these issues, so it is hard understand exactly how they were resolved. He also scatters descriptions of the relevant physics rather unsatisfactorily across chapters.
+
+Nonetheless, Chasing the Ghost nicely describes how successful the derring-do attitude of individual researchers can be. Reines variously comes across as endearing, admirable and irritating. He could alarm his team by tugging on cables to test electronics as he whistled his way through a lab, and was quick to over-interpret results. But he was a hands-off, respectful lab chief who addressed his team with old-fashioned formality as ‘Mr’ (they seem to have all been men) — even as he ignored their rights to holidays. Those interviewed all tell how they fell under his spell, and worked hard to please him. One anecdote has him on one knee, singing an aria at a party. Unlike his neutrinos, it seems, Reines was always an unmistakable presence.

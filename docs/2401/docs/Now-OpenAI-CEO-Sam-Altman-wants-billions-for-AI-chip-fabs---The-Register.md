@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:09
+-->
+
+# Now OpenAI CEO Sam Altman wants billions for AI chip fabs • The Register
+
+> 来源：[https://www.theregister.com/2024/01/20/altman_chip_fabs/](https://www.theregister.com/2024/01/20/altman_chip_fabs/)
+
+OpenAI CEO Sam Altman is reportedly seeking billions of dollars in capital to build out a network of AI chip fabs.
+
+Citing multiple unnamed sources familiar with the matter, Bloomberg [said](https://www.bloomberg.com/news/articles/2024-01-19/altman-seeks-to-raise-billions-for-network-of-ai-chip-factories) on Friday Altman has approached several outfits, including Abu Dhabi-based G42 and Japan's Softbank, to help make it happen.
+
+Microsoft, OpenAI's biggest champion, has reportedly shown interest in the project, which would fund the construction and operation of chip factories around the world to support growing demand for neural network accelerators. The goal of the program appears to be this: build enough assembly lines to ensure there is a healthy supply of AI processors to meet demand.
+
+Altman, whose super-lab is [rumored](https://www.reuters.com/technology/chatgpt-owner-openai-is-exploring-making-its-own-ai-chips-sources-2023-10-06/) to be developing an AI accelerator of its own, has previously expressed concerns that there aren't enough processors to go around. With world-plus-dog jumping on the machine-learning bandwagon, we could agree with that. Meta just indicated it wants 350,000 Nvidia accelerators by the end of year to drive [its AGI work](https://www.theregister.com/2024/01/20/metas_ai_plans/).
+
+If there aren't enough processors to train and run models to meet user demand, remote services may suffer from slow downs, rationing, or limited deployment, which isn't a great customer experience. Those hoping to use the tech on their own infrastructure may be unable to easily source the parts they need.
+
+The certification group Uptime Institute echoed those fears in its latest [analysis](https://uptimeinstitute.com/resources/research-and-reports/five-data-center-predictions-for-2024), warning that while AI will remain hot in 2024, inadequate silicon supply is likely to hamper wide-scale deployments.
+
+Funding a single fab project - let alone a network of facilities - won't be an easy or cheap endeavor. A single chip factory can cost anywhere from $10 billion to $20 billion, depending on the location and planned capacity. Intel's two fabs in Arizona are expected to cost $15 billion apiece, while TSMC expects its factory project, located nearby, to run to about $40 billion.
+
+What's more, these facilities can take anywhere from four to five years to complete, assuming workforce shortages don't cause delays, as we've seen lately.
+
+It doesn't appear that OpenAI is trying to get into the foundry game. Instead, it appears the plan is to funnel any funds raised into leading-edge chip manufacturers like TSMC, Samsung Electronics, and potentially Intel. In effect, OpenAI would be gathering up billions to get these fabrication giants churning out parts for artificial intelligence.
+
+TSMC is likely the prime candidate as Nvidia, AMD, and Intel's GPUs and AI accelerators are all manufactured in its plants. And, while Nvidia has previously used Samsung facilities for some of its last-gen parts, those components haven't relied as heavily on advanced packaging technology.
+
+While demand is expected to outstrip the supply of AI accelerators through much of 2024, it may not be a lack of fab capacity holding things up.
+
+Based on [comments](https://www.theregister.com/2023/09/08/tsmc_ai_chip_crunch/) made by TSMC chairman Mark Liu late last year, investing in advanced packaging facilities rather than additional foundry capacity may address supply bottlenecks faster.
+
+Liu said in September that TSMC has more than enough foundry capacity to keep up with AI chip demand, rather the holdup was a lack of chip-on-wafer-on-substrate (CoWoS) packaging capacity. The packaging tech is used to stitch together compute and high-bandwidth memory modules commonly found on AI accelerators.
+
+It's our understanding that these packaging facilities don't take quite as long to build and are considerably less costly. Last July, TSMC [announced](https://www.theregister.com/2023/07/26/tsmc_29b_chip_plant_taiwan/) an advanced packaging facility in Taiwan valued at $2.9 billion. TSMC says the facility should be fully operational in about three years.
+
+Considering this, we suspect Altman and his partners will need to invest in a combination of fabrication and packaging facilities, if they really want to address AI chip supply constraints. ®

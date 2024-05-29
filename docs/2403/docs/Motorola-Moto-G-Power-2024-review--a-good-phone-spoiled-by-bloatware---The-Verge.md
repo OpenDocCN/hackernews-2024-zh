@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:32:38
+-->
+
+# Motorola Moto G Power 2024 review: a good phone spoiled by bloatware - The Verge
+
+> 来源：[https://www.theverge.com/24105894/motorola-moto-g-power-2024-review-specs-features-apps-bloatware](https://www.theverge.com/24105894/motorola-moto-g-power-2024-review-specs-features-apps-bloatware)
+
+There are some phones that just feel nice to pick up, and the 2024 Moto G Power is one of them. It’s sitting on my desk and even though I don’t need to do anything with it right now, I pick it up anyway. That soft-touch back! The flat-yet-slightly-contoured edges! I turn it to look at the headphone jack on the bottom edge, just to remind myself if it’s there. If the battery is even a little low, I set it on my wireless charging stand just for the thrill. All this on a $300 phone! Imagine!
+
+But after spending a little more time with the Moto G Power, I come crashing back down to reality. The LCD panel isn’t as nice and contrast-y as an OLED (that’s forgivable). The camera is underwhelming and suffers from Motorola’s unusual image processing tendencies (less forgivable). But again, this is a $300 phone in a world where $1,000 is the standard going rate for a top-tier flagship. Much can be forgiven!
+
+Except one thing: the bloatware.
+
+*If you enable the notifications panel in the shopping app you’ll come face to face with this user privacy nightmare.*
+
+Scroll through the app drawer and you’ll see a handful of automatically downloaded “folders.” They are not folders; they are apps. [I first encountered them](/23800535/motorola-g-stylus-5g-2023-review-battery-camera-bloatware-swish-apps) on last year’s Moto G Stylus 5G, and I hate them very much.
+
+There are three main offenders — Shopping, Entertainment, and GamesHub — and each of these apps acts as a little hub. Icons for apps that you have legitimately downloaded will appear in the corresponding “folder.” You’ll also find tons of other suggested apps to download — pages and pages of them! Apps as far as the eye can see!
+
+Dismissing the suggested apps section replaces it with a “Discover” section. In the shopping app, it invites you to “Unlock the power of shopping” with links to buy stuff like kitschy Easter decor from TJ Maxx. Mercifully, there’sa toggle to hide this section.
+
+*Moto got the hardware right. The software is another story.*
+
+These apps are allmade by a company called Swish, and you can’t opt out of downloading any of them during the setup process. You *can* (and should!) opt out of downloading a third-party lock screen from a different service called Glance.
+
+The more I dig into the software on this phone, the more I hate it. The preinstalled weather app is festooned with ads and even more suggested apps, plus pithy insights like “Gotta love air conditioning at these high levels of humidity.” If you tap the option to remove ads, a pop-up asks you to pay $4 for 1Weather Pro.
+
+*Ad-free weather forecasts cost $4, apparently.*
+
+*Honestly, I’m good on personalized recommendations.*
+
+What feels particularly ghoulish is that all of these services are absolutely hungry for your data — they want to be able to send you notifications, track your whereabouts, and download apps on your behalf — and it’s hard to tell exactly what company is behind any of it. The “About” section in the weather app says it comes from [a service called OneLouder](https://pinsightmedia.com/solutions/onelouder). OneLouder, it turns out, is [owned by Pinsight media](https://pinsightmedia.com/), which was formerly owned by Sprint and now owned by [a company called InMobi](https://www.inmobi.com/). To be clear, this app asks for *constant access to your location.* At the very least, it should be clear exactly what company you’re giving that permission to!
+
+You can uninstall all of this garbage — I’m actually begging you to, if you happen to purchase this phone. You can download another weather app from a source your trust, or at least one that you can identify. You can make your own damn app folders. But if you’re not technically savvy, you probably won’t realize you can do all of this. That’s a shame, because there’s a good budget phone underneath all of this crap.
+
+*Photography by Allison Johnson / The Verge*

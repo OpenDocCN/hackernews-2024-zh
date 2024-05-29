@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:35
+-->
+
+# Google Search Technique Used by Police Draws New Legal Challenge - BNN Bloomberg
+
+> 来源：[https://www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433](https://www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433)
+
+(Bloomberg) -- Civil liberties advocates are mounting a new challenge to the use by police of Google search data for help solving criminal cases, as the practice draws greater scrutiny nationwide.
+
+After a Pennsylvania woman was raped in 2016, police submitted a search warrant to Alphabet’s Google for information about users who had typed the victim’s name or address into the search engine in the week leading up to the attack, according to court papers. Google responded with the IP address of a user who had searched for the victim’s address twice shortly before the incident, court papers show. That breakthrough prompted police to begin monitoring a corrections officer, who was ultimately arrested and convicted.
+
+On Friday, the Electronic Frontier Foundation, the National Association of Criminal Defense Lawyers and its Pennsylvania chapter argued in a court filing that the investigative technique used in the case, known as a keyword search warrant, is dangerously broad and threatens to infringe on the privacy rights of innocent people.
+
+“Keyword search warrants are digital dragnets giving the government permission to rummage through our most private information, and the Pennsylvania Supreme Court should find them unconstitutional,” NACDL Fourth Amendment Center Litigation Director Michael Price said in a statement.
+
+A lawyer for the defendant and a representative for Google didn’t immediately respond to requests for comment.
+
+There are few known examples of keyword search warrants, but the practice has come under scrutiny in the wake of the US Supreme Court’s decision to overturn the right to abortion. Privacy advocates have warned that keyword search warrants and geofence warrants, in which police ask Google to produce data about users whose devices were present near the scene of a crime, could be used to prosecute women who obtain abortions in states where it’s illegal.
+
+In October, the Colorado Supreme Court ruled that evidence gleaned from a keyword search warrant could be used in a murder case, sparking concerns the decision may encourage more police to embrace the controversial technique.
+
+But the court stressed that its findings were specific to the facts of the case, and it refrained from weighing in about the use of Google’s search data more broadly. That leaves advocates hopeful for a different outcome in Pennsylvania, said EFF Surveillance Litigation Director Andrew Crocker.
+
+In December, Google ended its practice of responding to geofence warrants. The move came three months after a Bloomberg Businessweek investigation that found police across the US were increasingly using warrants to obtain location and search data from Google, even for nonviolent cases, and even for people who had nothing to do with the crime.
+
+Google’s move on geofence warrants makes it even more important for courts to consider the constitutionality of keyword search warrants, which may grow more popular as police search for new investigative tools, Crocker said. 
+
+“Google’s policy change on geofence warrants raises the stakes for keyword warrants,” he said.
+
+--With assistance from Davey Alba.
+
+©2024 Bloomberg L.P.

@@ -1,0 +1,91 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:10
+-->
+
+# Where I’m at on the whole CSS-Tricks thing – Chris Coyier
+
+> 来源：[https://chriscoyier.net/2024/02/28/where-im-at-on-the-whole-css-tricks-thing/](https://chriscoyier.net/2024/02/28/where-im-at-on-the-whole-css-tricks-thing/)
+
+It was March 2022 when I sold CSS-Tricks to DigitalOcean. So it’s been just about 2 years now.
+
+This was me and my wife’s thinking:
+
+*   The negotiated sale price was fair.
+*   They are a big company (public!) with tons of resources, and their clear stated strategy was to invest in content and community, because that’s where the top of the funnel is, and it’s good for business. They didn’t just talk this way, they were obviously *investing* in content and community. There is a chance CSS-Tricks becomes *better*.
+*   They were already decently well known for good content in DevOps and Back End, but were missing solid Front-End content. Filling this gap makes sense.
+*   They would rip all the ads off the site. There would be only one “ad”: use DigitalOcean. I’m no advertising hater, it’s always been good to me, but the thought of CSS-Tricks as a clean ad-free site was appealing.
+*   They would keep on Geoff, the lead editor, if he wanted it. He did and they did.
+*   I was *way way* too busy trying to run CSS-Tricks and co-run CodePen and it was hard on me.
+
+After the sale, things seemed kinda fine for a bit, and that was encouraging. It was cool seeing new voices publishing new work I had nothing to do with. Then started to limp, using up the momentum that it had.
+
+A year later they [fired Geoff](https://geoffgraham.me/goodbye-css-tricks/) along with everyone else working on content and community. That was the real torpedo.
+
+It seems DigitalOcean got excited when the whole industry started doing huge layoffs, they followed suit and slurped up the profits. The necessary directional change was: screw content and community. A month after that, the last article was published on CSS-Tricks, an overview of Passkeys, which will now apparently be on the homepage forever, a *very* strange bit of content to emblazon the tombstone of the site. They also added a cookie button that looks like a 4th grader designed it?? And started publishing every blog post as a guide???
+
+How do I feel about all that? Well I’m not *stoked*, but I’m an adult I knew the risks. I sold the site. They now control it. They can do whatever they want with it. They could replace the entire site with an `<h1>` tag that says **Chris Coyier smells like donkeys** and that would be their right.
+
+I’ve heard from plenty of people who are pissed. Some are pissed at me. Sellout, yadda yadda. But I’m actually fairly pleased that the site is still online, relatively untouched, and with everybody’s bylines, including my own, intact. That’s a better outcome than scotch.io, purchased from Chris Sev, which was neutered and ultimately turned off. That’s a much more inglorious ending that I hope never happens to CSS-Tricks.
+
+Hopefully that doesn’t happen, although during my 3-month consulting period I know they were very interested in porting the content to their own internal SSG system. As someone who has built a lot of SSG-powered sites and a lot of WordPress-sites, all I can say is CSS-Tricks is WordPress-y*-as-hell,* and I cannot possibly imagine a conversion that maintains any level of quality as being worth the effort.
+
+A lot more people are pissed at DigitalOcean. People saying they’ll never use them again, and generally upset they’d take such a useful asset and do nothing with it. A void in the industry that doesn’t sit right.
+
+Does any of this negative sentiment actually affect DigitalOcean meaningfully? I have no clue. It can’t *help*, but I’m sure if it was *that* big of a deal they would prioritize fixing it somehow. It seems more likely it’s a *oh well you win some you lose some shrug it off situation*. It’s almost certainly not acting as that strong top-of-funnel player they originally were hoping for it.
+
+* * *
+
+I bet you could probably guess all that, or piece it together from things publicly said.
+
+What you probably don’t know is that I tried to get it back.
+
+I got an email from a fella a while back who is now a VP of Content & Community at DigitalOcean who came over from the Cloudways acquisition. I think “ownership” of CSS-Tricks kinda fell is his lap after some internal shifts. Unlike his predecessors, he didn’t have any hangups about just talking directly to me. What he originally wanted was just to learn what it’s going to take to get spun back up and producing again. A “return on investment” is what he was after, understandably. I was as frank with him as I am with anyone: It’s gonna take a lot. They would need a new lead editor, and you might be able to see how people might be squeamish about that role with the last one publicly axed not long ago. *Maybe* that person knows WordPress development pretty well? If not, ideally, you have someone know that knows WordPress pretty well, because the site uses [everything](https://css-tricks.com/css-tricks-is-a-poster-child-wordpress-site/). And maybe that person knows how to wrangle up really good front-end specific writers? If you find that magical person, that’s a developer, writer, community builder, and site-running editor, it’s going to be expensive. More likely you gotta build a team again, and it’s going to take them a while to get things going, so your investment gets deeper and deeper, while the return remains unclear.
+
+This got me thinking.
+
+Maybe a little braggadocious here, *butttt* I’m basically the perfect person for the job. Let’s just say the most perfect person on Earth for the job lolz.
+
+But I’m not even sure I’d want to do it again, and I have no idea if they would even want me to. But I definitely don’t wanna do free consulting work on it.
+
+So I took my big swing.
+
+> Here’s my best (and wildest) idea. 
+> 
+> I run CSS-Tricks again myself. CSS-Tricks is big and complicated. Anybody walking in the door alone is going to have a serious learning curve just in getting comfortable operating the basics. I already know every inch of it. 
+> 
+> I get people reading again. I get people writing again. I get people excited again. I erase any bad mojo against DigitalOcean, fix that brand damage. Get people saying they *want* to use DigitalOcean instead of saying they never will again. (e.g. [1](https://twitter.com/AdamRackis/status/1691928618912387283), [2](https://twitter.com/stolinski/status/1691942771035168887), [3](https://twitter.com/awkroot/status/1692046926211150153))
+> 
+> Then we do the most valuable possible thing for DigitalOcean: get content on there that helps people know about and do things on DigitalOcean. There are some big wins there. Astro is big right now in front-end, why isn’t DigitalOcean on [this list](https://docs.astro.build/en/guides/deploy/)? Let’s get that article written and linked up.
+> 
+> We can make a special section of the site that is just DigitalOcean content, making it easy to browse and find stuff. 
+> 
+> Then we do the second most valuable thing we can do: move the hosting to DigitalOcean and have it be a living, breathing endorsement of DO being a great place to host a WordPress website. 
+> 
+> Now we’re back in action.
+> 
+> Why would I do that?
+> 
+> You transfer ownership of CSS-Tricks back to me. 
+> 
+> Why would *you* do that?
+> 
+> *   You’re trying to get to break even on it. This means you aren’t spending any *more* money and time. You’re now just extracting marketing, branding, and conversion value out of money already spent.
+> *   You don’t have to spend any more time on this, personally or institutionally. Any other internal costs are gone.
+> *   The community will love it.
+> 
+> The trick is in the details. We’d get to an agreement on what has to happen for it to work. For example, no other web host can be advertised on the site for X time, etc.
+
+I’d call that a big swing, anyway. *I’ll just take it back please and thank you.* But I feel like I made the case OK that it’s not completely crazy.
+
+Crickets for a while.
+
+A few back and forth emails like *“still thinking about this…*” later, and the conclusion is that the fella basically doesn’t have the “conviction to push it within the halls at DO”.
+
+Understandable, really. I wouldn’t want to be handed a huge golden nugget by my boss and then ask for a meeting and be like “I think we should give it back to the leprechaun.”
+
+When I pitched that, I wasn’t even 100% sure I wanted it, mainly for stress reasons. But I’m sure I could have figured out a way to run a more minimal ship with reduced stress and the site would be in a much more pleasant place.
+
+Anyway, if you want to know some basic information about Passkeys I know a site you can check out.
+
+### *Related*

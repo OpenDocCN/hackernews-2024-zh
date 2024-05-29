@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:31
+-->
+
+# US military pulls the trigger, uses AI to target air strikes • The Register
+
+> 来源：[https://www.theregister.com/2024/02/27/us_military_maven_ai_used/](https://www.theregister.com/2024/02/27/us_military_maven_ai_used/)
+
+The US Department of Defense has deployed machine learning algorithms to identify targets in over 85 air strikes on targets in Iraq and Syria this year.
+
+The Pentagon has done this sort of thing since at least 2017 when it launched Project Maven, which sought suppliers capable of developing object recognition software for footage captured by drones. Google pulled out of the project when its own employees [revolted](https://www.theregister.com/2018/06/02/ai_roundup/) against using AI for warfare, but other tech firms have [been happy](https://www.theregister.com/2020/07/09/pentagon_ai_report/) to help out.
+
+In 2017, Marine Corps Colonel Drew Cukor, Cukor [said](https://www.defense.gov/News/News-Stories/Article/Article/1254719/project-maven-to-deploy-computer-algorithms-to-war-zone-by-years-end/) that the Pentagon hoped to integrate the software with the government platforms "by the end of the calendar year" to gather intelligence.
+
+Now the US Central Command, operating in the Middle East, Central Asia, and some parts of South Asia, has used the algorithms to help carry out over 85 air strikes on February 2 across seven locations in Iraq and Syria.
+
+Schuyler Moore, CTO for US Central Command, said that the military began deploying Project Maven's computer vision systems in real campaigns after Hamas' surprise attack on Israel last year.
+
+"October 7 everything changed," Moore [told](https://www.bloomberg.com/news/articles/2024-02-26/us-says-it-used-ai-to-help-find-targets-it-hit-in-iraq-syria-and-yemen) Bloomberg. "We immediately shifted into high gear and a much higher operational tempo than we had previously.
+
+The object recognition algorithms are used to identify potential targets. Humans then operate weapons systems. The US has reportedly used the software to identify enemy rockets, missiles, drones, and militia facilities.
+
+"We've certainly had more opportunities to target in the last 60 to 90 days," Moore said. The US Central Command has also tried to run an AI recommendation engine to see if it could suggest the best weapons to use in operations and create attack plans. The technology, however, "frequently fell short.
+
+"There is never an algorithm that's just running, coming to a conclusion and then pushing onto the next step," she said. "Every step that involves AI has a human checking in at the end."
+
+Driven by fears that the US could fall behind more capable adversaries, the DoD is ramping up efforts to integrate and test the AI's warfighting capabilities. Craig Martell, the agency's chief digital and artificial intelligence officer, last week envisioned large language models guiding combat decisions at the Advantage DoD 2024: Defense Data and AI Symposium.
+
+"The DoD has an imperative to responsibly pursue the adoption of generative AI models while identifying proper protective measures and mitigating national security risks that may result from issues such as poorly managed training data," he [said](https://www.theregister.com/2024/02/21/dod_scaleai_contract/). "We must also consider the extent to which our adversaries will employ this technology and seek to disrupt our own use of AI-based solutions." ®

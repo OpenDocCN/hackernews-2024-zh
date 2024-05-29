@@ -1,0 +1,72 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:17
+-->
+
+# Legendary Industry Veterans Get Candid On Ageism In Gaming
+
+> 来源：[https://kotaku.com/activision-ageism-video-games-cliffy-b-warren-spector-1851220345](https://kotaku.com/activision-ageism-video-games-cliffy-b-warren-spector-1851220345)
+
+Video game publisher Activision Blizzard has been embroiled in controversy within the last few years, from [allegations that a culture of sexual harassment](https://kotaku.com/everything-that-has-happened-since-the-activision-blizz-1847401161) was allowed to thrive to [reports of union-busting by management](https://kotaku.com/workers-accuse-activision-blizzard-of-union-busting-1847675870). But in January 2024, when a [new lawsuit was filed](https://www.polygon.com/24029908/activision-blizzard-old-white-age-discrimiantion-lawsuit) against the *Call of Duty* and *Overwatch* publisher, many were shocked to read what it was in reference to: A 57-year-old former ActiBlizz exec alleged that he left the company because of ageism. According to the lawsuit, then-CEO Bobby Kotick said that the company’s problem was that there were “too many old white guys” working there.
+
+Though race and gender traditionally get more attention in calls for a more diverse game industry—one where whiteness and maleness remain the norm—age discrimination is a hot-button issue as well. According to a [2019 survey from the International Game Developers Association](https://www.statista.com/statistics/453780/game-developer-age-distribution-worldwide/), only 9% of game developers are 50 years old or older. As the people behind iconic, genre-defining games approach and surpass middle age, how do their peers treat them? Have they noticed a shift in the way developers work, or how games are made?
+
+I sat down with *Gears of War* designer Cliff Bleszinksi on one call and *Ultima Underworld* creator Warren Spector, Apogee Software founder Scott Miller, and Nightdive Studios head of business development Larry Kuperman on another, to chat about navigating the game world after spending decades in it.
+
+ Photo: Mark Davis (Getty Images) 
+
+## **The demands of game development**
+
+“I’m gonna go on record saying I think I’m the oldest person who isn’t running stuff or on the business side,” Spector, who is 68, proclaims early on in the conversation. He’s referencing the phenomenon by which former developers transition to the business side of game dev, which many chalk up to the intense demands of video game development cycles.
+
+Spector started in the board game world before moving to digital games in 1989, Miller (who pioneered gaming’s episodic release format) shipped his first in ‘85, Kuperman has been involved in games since 2001, and Bleszinski joined Epic Games in ‘92\. Of the four, Spector is the only one solely working on the development side, while the rest are now mostly focused on the business end or, in Bleszinski’s case, out of games almost entirely.
+
+I ask if the volatility and demands of the industry, which has seen more than [6,000 layoffs in the first month of 2024 alone](https://kotaku.com/game-industry-layoffs-how-many-2024-unity-twitch-1851155818), are why companies can’t or won’t retain older talent. “Some people find an ever-changing environment invigorating,” Spector suggests. “That’s one of the reasons I’ve lasted this long…things change so rapidly that you’re constantly acquiring not only new knowledge but new skills.”
+
+But he acknowledges how competitive and tough the games industry can be. “The difficulty of the work, the low pay, drives even young developers away,” he points out while suggesting that, in his experience, the average “lifespan” of a programmer is about five to seven years due to the intense nature of their work.
+
+“There’s a certain type of developer that’s a kind of self-flagellating monk that lives for that [intense] work ethic,” Bleszinski says during our conversation. “And then there’s a certain amount of peer pressure where you have deadlines and then someone goes home at six o’clock at night to their family, and then the other people are still at their desks—they don’t say it, but deep down they’re thinking, ‘I’m gonna be here until midnight, fuck that guy.’ A lot of that comes from the top…my producer on *Gears*, Rod Ferguson, I believe is one of the best in the business, but he lives for the work. He’s just an absolute workaholic.”
+
+With crunch becoming an increasingly popular issue within the industry, and workers campaigning for union protections and a better work/life balance, can studios expect their developers to work the way they once did?
+
+“The industry thrives on hungry game developers that are just happy to get an okay salary and free Mountain Dew and Doritos,” Bleszinski says. “If crunch is enforced, they’ll do it, but they’re gonna be very resentful towards the company…plus you get to a certain age where you hit the point where you’re like, ‘fuck you, pay me’.”
+
+ Image: Apogee Entertainment 
+
+## **The promise of indies, the problem of layoffs**
+
+Though Spector, Miller, and Kuperman don’t hesitate to disagree on the topics we cover (they playfully throw barbs about the validity of the games-as-a-service business model), they wholeheartedly agree on one thing: The nuts and bolts of game development have dramatically shifted since they started their careers, and much of that shift can be attributed to the availability and approachability of today’s game engines.
+
+“We used to have to create engines from scratch, and that limited access,” Spector points out. “Now, youngsters right out of school, in their garage, can actually make games without learning Assembly, like Richard Garriot [the creator of the *Ultima* series] had to. So I think that’s a large reason why you don’t see as many older developers, because the youngsters are using those available tools.”
+
+Miller, who is still “deeply involved” in making games, concurs: “We’re in the era now where two people can do what 20 people did back in the ‘90s.” He brings up last year’s action game, *Turbo Overkill*, which Apogee published. “95% of that game was made by one guy. We helped him up with the music and voiceover, but this is a game that would’ve taken 25 to 30 people back in the ‘90s. It’s just a remarkable piece of work.”
+
+And for them, in today’s game economy, innovation like that can only be found at indie studios. “I like being at the indie level,” Miller says. “I think we can all agree on that,” Kuperman chimes in. “There’s just so much innovation going on at the indie level that you’re not seeing at the big boy level because it’s too costly to take a risk,” Miller suggests.
+
+What about those “big boy” studios, and the thousands of layoffs they’ve doled out in the last month alone? How do industry mainstays feel about the layoffs, and the future of the industry? For Spector, there’s no fear in gaming’s future, just apprehension towards those leading it: “It sounds like [companies] just over-hired during the early days of the pandemic, and it’s bad management that’s resulting in overstaffing. That doesn’t mean there’s a fundamental flaw. It means we have some bad managers at the top of companies.”
+
+Kuperman steps in, pointing out that “Scott [Miller] has been kinda leading the way in hiring back up people from kindred companies.” Miller reiterated Spector’s talking points, suggesting that “games suddenly were selling 30 to 50% better than normal” during covid, and studios went on a hiring spree.
+
+The conversation circles back around, once again, to the promise and allure of indie studios in the modern financial climate. “I don’t have 150 or 200 employees to lay off…but the layoffs are coming at Mega Corp,” Kuperman says. “And in the meantime, there are lots of indie developers that are not only thriving, but are looking to scale up.”
+
+Variety
+
+## **Ageism and diversity in the video game industry**
+
+Though we laugh a bit about how we all came together—thanks to Bobby Kotick (himself a 61-year-old man) allegedly partaking in ageism—the tone does get somewhat serious when discussing the issue of age discrimination. Miller and Spector deny facing any sort of ageism during their decades in the industry, but Kuperman has a personal anecdote that’s stayed with him for years.
+
+After working remotely for GameStop for two years as a business development manager, he was let go at 57 years old. “There I was, with a great resume, you know, successful in games, I had worked with every major company, my client list went from Activision to Zenimax…I sent out my resume, my applications to all of these companies that I had worked with—they all knew what I could do and my capabilities. And they all turned me down,” Kuperman recalls. “And the one that was the most offensive—I won’t say who it was—but they took the time to explain to me that I was not a ‘cultural fit.’ I got this explanation that I was not a cultural fit while I was working from home wearing a Ramones T-shirt. I knew what they meant, right? That I was not gonna fit in with their twenty- and thirty-somethings.”
+
+Bleszinski believes older members of the industry are still in it either because they didn’t get “fuck you” money or because they genuinely love what they do—from our convo, it’s clear that his time churning out AAA games left him somewhat jaded. “Talking about ageism—once a person gets married and has kids and whatnot, you know, they’re going to put in their eight hours and they’re gonna go the fuck home,” Bleszinski says. “I tell people, get ‘fuck you’ money, and then get the fuck out.”
+
+Spector, Miller, and Kuperman are all now indie darlings, so their experience is vastly different from Bleszinski’s, who had to be the face of a massive AAA franchise while still actively working on it. But all of them still agree that game development can often feel like a young person’s, well, game. Part of that has to do with the demands of the work, sure, but there’s an accessibility problem, as well.
+
+“My twitch skills are not what they used to be,” Spector points out. “People don’t believe me that there are physical changes in your body as you get older. But there are, and I am physically not able to work the kinds of hours I used to. I am physically not able to keep up with 12-year-olds, 34-year-olds [referencing my age] playing games anymore. So I need to find a somewhat different role in development, and I’m lucky enough that I’ve been able to carve out a different role. But a lot of people might just say, ‘I don’t want to do that anymore’ and self-select out.”
+
+“The thing is, for me, my vision,” Kuperman says. He struggles with contrast in games, and can get frustrated when he can’t see important features like doors. “But I’m lucky because [my studio] NightDive is now part of Atari, so I now have support mechanisms that I didn’t have before.”
+
+But how does the industry, as a whole, do when it comes to accessibility and diversity?
+
+“It’s not just age and it’s not just physical—divergent thinking is not very well-supported,” Spector says. “Every way you can think about diversity, we do a bad job…we don’t get a lot of resumes from older developers or people who think differently or people of color…that’s an area where I think younger developers are going to have to lead the charge.”
+
+He continues. “I’m only speaking for myself but, I like the past when I was able to work until three in the morning and sleep under my desk and drive home and have no idea how I got home. I kind of miss those days of comradery in the foxhole. Younger developers don’t wanna do that, and it’s a good thing ‘cause I can’t do it anymore. So it’s good that they’re thinking that way…the world has changed for the better.”

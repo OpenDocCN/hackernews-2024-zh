@@ -1,0 +1,63 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:41
+-->
+
+# 23andMe data breach response has been a public relations disaster as it blames customers for data breach | ITPro
+
+> 来源：[https://www.itpro.com/security/data-breaches/23andme-risks-public-relations-disaster-as-it-blames-customers-for-data-breach](https://www.itpro.com/security/data-breaches/23andme-risks-public-relations-disaster-as-it-blames-customers-for-data-breach)
+
+23andMe’s response to customers in the wake of a data breach has been a public relations disaster, experts have told *ITPro*, after the company hit out with claims that users were at fault for poor security practices. 
+
+In response to a looming barrage of lawsuits by affected customers, the genetics testing company sent a letter to victims claiming they “failed to update their passwords following past security incidents unrelated to 23andMe”, according to reports from [*TechCrunch*](https://techcrunch.com/2024/01/03/23andme-tells-victims-its-their-fault-that-their-data-was-breached/).
+
+The firm claimed complainants had “negligently recycled” login credentials from other exposed accounts and that poor cyber hygiene practices were to blame for their exposure during the breach.
+
+“Therefore, the incident was not a result of 23andMe’s alleged failure to maintain reasonable security measures,” the letter reads.
+
+The genetics testing company announced changes to its terms of service in an apparent bid to make it more difficult for affected users to collaborate on legal claims. Despite this, it still faces some 30 lawsuits.
+
+## A public relations disaster for 23andMe
+
+The firm’s response has been a major public relations blunder, according to Yvonne Eskenzi, co-founder of cyber security PR agency, Eskenzi PR.
+
+"From a crisis comms standpoint, 23andMe’s response to its breach misses the mark completely,” she told *ITPro*. “In the wake of a cyber attack, the impacted company needs to act quickly to provide customers with factual, honest, and up-to-date information.”
+
+Receive our latest news, industry updates, featured resources and more. Sign up today to receive our FREE report on AI cyber crime & security - newly updated for 2024.
+
+“In the case of the 23andMe breach, the decision to blame the victims has fueled negative press, dodged responsibility, and failed to express any compassion towards those impacted. While this is probably heavily driven by the company’s legal department, the letter’s tone will likely anger customers and fuel backlash.”
+
+Eskenzi noted that, in many cases, the average individual may not actually be aware their [password had been compromised](https://www.itpro.com/security/370309/surge-in-compromised-credentials-highlights-rampant-cyber-hygeine-failings) elsewhere. In this sense, it is essential that organizations ensure their security measures are robust enough to mitigate any end-user risk.
+
+“Publicly downplaying the risk and deflecting blame is undoubtedly poor PR,” she added.
+
+Lucy Burrows, associate in Keller Postman UK's data breach team, echoed Eskenzi's comments, adding that its tactic appears to be aimed at warding off potential legal action from affected customers. 
+
+"It is extremely damaging for 23andMe to blame their customers, especially in a climate where consumer trust in how companies safeguard data is rapidly eroding," she said. 
+
+"This seems to be an attempt to discourage customers from pursuing legal action against them, which we have already seen through updates to their US terms of service."
+
+## 23andMe data breach: What happened?
+
+23andMe confirmed it suffered a [data breach](https://www.itpro.com/security/data-breaches/358455/10-ways-to-protect-your-company-from-the-next-big-data-breach) in December 2023, revealing that threat actors had stolen genetic and ancestry data belonging to nearly 7 million users, equivalent to roughly half of its entire customer base. 
+
+An investigation by the company found that hackers initially accessed 14,000 accounts, and that threat actors had brute forced accounts via [credential stuffing](https://www.itpro.com/security/theres-only-one-way-to-avoid-credential-stuffing-attacks) techniques using previously exposed credentials.
+
+Attackers then exploited 23andMe’s DNA Relatives feature, a tool that connects users with those who could be related, to access personal data belonging to another 6.9 million users.
+
+In response to the breach, 23andMe reset all customer passwords and now requires users to use [multi-factor authentication](https://www.itpro.com/security/cyber-security/369745/what-is-mfa-fatigue) (MFA) moving forward.
+
+RELATED RESOURCE
+
+(Image credit: Zscaler)
+
+*Learn about the tactics used in phishing attacks and prevent costly data breaches* 
+[DOWNLOAD NOW](https://www.itpro.com/security/phishing/threatlabz-2023-phishing-report)
+
+The company is still insistent that exposed data cannot be abused by hackers, according to a response from 23andMe lawyers to *TechCrunch* inquiries.
+
+“The information that was potentially accessed cannot be used for any harm,” the firm said.
+
+“As explained in the October 6, 2023 blog post, the profile information that may have been accessed related to the DNA Relatives feature, which a customer creates and chooses to share with other users on 23andMe’s platform.”
+
+23andMe added that this information would only be available if individuals “affirmatively elected to share this information with other users” via the DNA relatives feature.

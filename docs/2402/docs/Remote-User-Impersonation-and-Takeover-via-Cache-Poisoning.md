@@ -1,0 +1,107 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:21
+-->
+
+# Remote User Impersonation and Takeover via Cache Poisoning
+
+> 来源：[https://arcanican.is/excerpts/cve-2024-23832/discovery.htm](https://arcanican.is/excerpts/cve-2024-23832/discovery.htm)
+
+The original report (and initial emails sent) submitted can be viewed [here](/excerpts/cve-2024-23832/).
+
+The scheduled, now-public details by the Mastodon team is available [here](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)
+
+I wanted to write sections on:
+
+*   The state of the broader ecosystem
+*   Even more vulnerable/shortsighted code that I found (in a library) of a different type
+*   Strong opinions on the ridiculously hypocritical implementation of HTTP Signatures and associated user keypairs ([where users aren't even allowed to export their private key](https://github.com/mastodon/mastodon/discussions/22315#discussioncomment-4423581), for risk of the *network*, previously)
+*   Some practical solutions that could have minimized this in several ways, of things that can be started as a [working prototype written in a night](https://arcanican.is/tools/proof.php).
+
+..but I ran out of time, I'll maybe work on some of those later tomorrow (or technically 'today').
+
+Nonetheless: this is not meant to be a "the fediverse sucks, it's all just inherently broken", instead it's more of an issue of:
+
+*   people overcrowding to one software, despite the plethora of choice they have available (or creating better/more),
+*   the nature of an ecosystem when one software can steamroll in whatever direction it wants to unimpeded (because again: marketshare) and how this cripples the advancement of careful protocol development when much of it's "behind closed doors" of one vendor (at least to my understanding), outside of actual standards bodies and community-organized efforts
+*   how people seem to only care for the 'gratis' of free software, and seldom the 'libre', and millions of users leaning on the work of primarily a couple developers, assuming they have the attentiveness to catch every mistake themselves alone
+
+Lastly: this is written from my perspective and understanding of things; there could be errors and other sides to the situation, and if so, I'd be glad to make corrections as requested.
+
+## Discovery
+
+*Warning: Most of the content of this is written to having some understanding of the protocol and it's terminology. For code examples, check the [original submitted report](/excerpts/cve-2024-23832/).*
+
+On a very late night (Jan 26) rolling into morning of the next day (~5am), while working on my own fediverse server implementation, I have a few passing idle thoughts on theoretical attacks against my project. Usually, I write down notes in a separate document, or write them as an inline comment the code, to come back to later (for more thorough testing/analysis). Nonetheless, it crossed my mind about whether implementations actually validate against manually-pulled posts, since conceptually it skips HTTP Signatures, etc.
+
+I mocked a simple Note object, set it to a resolvable actor of a different domain, made sure the hostnames matched up too, saved it as a text file, and made sure it was served up with the right media type. My implementation already acts like a combo of active software and a static site generator, so it's a matter of just dumping the text file into the 'posts' directory.
+
+Then I try querying the URL in Mastodon, just for the sheer sake of stupid curiosity, doubting anything will happen at all. The most I expected was that maybe---at most---it would just show the wrong username, or swap the avatar, if ever at all. But it worked. And way too well. In fact, it worked so well, that the post even seemed to permanently stick in the database, and would show up under the impersonated user's post history.
+
+But surely this can't be right, surely this must just be my development environment---my closed local lab of several fediverse applications, under it's own private local TLD and custom certificate authority, etc. Maybe some logic is thrown off because it was from a 192.168.x.x subnet, or something in development that made it more permissive (even though it was running in a production profile).
+
+So, since I don't have an account on any public Mastodon instance myself, whereas the only account on fedi I have is on the Rebased instance that I administer: I ask a friend to double-check this phenomena with a Mastodon instance they're on. I prop up the simple payload on my personal website, give them the link, and right away: same result. It works just *too* well.
+
+So I write out a brief email to the security reporting email address listed for Mastodon. I write the behavior I found, that it's possible to inject posts of remote users, the simple way it's pulled off, and a screenshot of it working. At this point, my eyes are mainly glued to my inbox, expecting something to *maybe* come in after 10-30 minutes or so. It's 7:06am locally (US Central) at this point, which equates to 2:06pm in European Central time, so surely the average core Mastodon dev is going to see this email.
+
+But instead of permanently staring down my inbox, I continue to fidget with this vulnerability inbetween. I test it against my instance: no effect; I test it against Misskey: no effect. But then I continue down my list, with other software installed in my lab and find another implementation that's similarly vulnerable. Jolly...
+
+I fire off a Direct Message (over fedi) to the respective developer, warning that I've found a vulnerability in their software, but that I need a secure medium to transit the info, and asking what their preference is. Meanwhile, for Mastodon, I try querying a developer or two on mastodon.social, but for whatever reason I still can't load any profile updates or posts from mastodon.social for whatever reason, just as it's been for some months now [[footnote 1]](#footnote-1). Given the unrelenting crowd stupidity and cancel culture surrounding fediblock, and people just blindly recirculating blocklists, it wouldn't be too far of a leap if my instance was just blocked by mastodon.social and others entirely, especially when it's commonly confused as a single-user instance (which usually get silently/hidden blocked without notice instead).
+
+So in my private fedi lab, I keep poking with the vulnerability further, and find out it also applies to actors (users/profiles) too, as I first try tweaking the bio description to easy success. Then I try budging other fields, and a few things end up getting rejected. I also try swapping the inbox and sharedInbox endpoints of the actor, and it seems to take those changes just fine. For context, it's a black box: I only know if it accepts the payload, if a visible detail changed, as I change the profile/bio/etc in each payload. So to test if my theory is correct, I write a quick dummy inbox script in my fedi server implementation, tie it to the request debugger to catch the response, and make sure it's coded to always return an 202 Accepted response code.
+
+From the dev Mastodon instance in my private fedi lab, I fire off a Direct Message destined to the remote victim user (that should theoretically have their inbox address overwritten from earlier) and... there it is. Captured right in the *[attacker-controlled]* dummy inbox without any issue, with the contents of the Direct Message as predicted. This is just unfathomable at this point. This is plain horrifying---that for a software allegedly serving anywhere from 2 to 8mil users, that something like this just fumbles into my lap, where all this started just because a passing thought crossed my mind, and I wanted to scratch an itch.
+
+Alright, so---can this get even worse? We have control the injection of public content inbound, we can control where traffic goes outbound, but can we make it easier, and maybe replace that pesky public key we don't have the private key for?
+
+Well, all I've understood is that you can only have one public key per actor, and thus there's been proposed extensions of other ways to represent keys (especially more than one), but maybe there's something else I can try. Can I just have the value be a list of keys instead of directly one object? So I wrap the publicKey object with square brackets, and it seems to take it. Then I try adding another publicKey object into that list. It takes it (as evidenced by the routine of updating profile fields alongside these tests), but did it actually save the 2nd key?
+
+In my software project, I create a script that uses my existing HTTP Signature signing implementation, feed it the private key that corresponds with the public key I'm trying to inject, and try seeing if I can forge S2S traffic using the key I'm trying to inject, to see if it was accepted. But the crafted signed request gets rejected.
+
+Well, since I remember that only one public key is stored per actor in Mastodon, maybe it's only storing the first key? But also: it still needs the old key apparently, otherwise it rejects the change, so maybe that can just be listed as the 2nd key? So I swap the order of the public keys: it accepts it. In fact, I try ommitting the old key in the 2nd try, and it accepts that as well. Wait---all it needed was the *presence* of the old key to imply a key rotation, no actual signed endorsement? Well, I don't know, it could just be anomalous.
+
+Nonetheless, I try prodding it again with the script I wrote earlier, to try forging S2S traffic under the attacker-controlled key...
+
+...And that also worked...
+
+...?
+
+How?
+
+This sequence of findings just doesn't add up. I don't constantly engage in pentesting, auditing, security research, etc. I'm just an average self-taught web developer that just knows the basics of what I'm supposed to do: validate/sanitize untrusted input, validate/sanitize queried content, use prepared SQL statements, use CSRF tokens in forms, use password hashing algorithms for storing passwords, etc). I don't hold any degrees, just a high school diploma.
+
+But yet, Mozilla **paid** for a formal security audit of the Mastodon codebase, missed this, and yet this just tumbles into my lap. Great, I just resent the typical nature of the 'security consultancy' industry even more, as if everything's just a routine of running around with fuzzers and scanners, and calling it a day if nothing snags. Not people actually bothering to pick apart and experiment with the protocol, toying with theoretical attacks, or anything; just treating it as another generic enterprise software project.
+
+I mean, fuck: there's one mega Mastodon instance of over 60,000 registered users (and >15k MAU) that virtues itself as a community for security researchers (or rather, 'security-minded'), running on Mastodon, and none of these people could be bothered to try deeply experimenting with the codebase that part of their online social media presence and identity relies on? A vulnerability that quite possibly existed for many years even? Does nobody find it worrying to be running a platform that's an install size of 1.5GB, and presumably hundreds (possibly cascading into thousands) of dependencies across Ruby, gems, npm, etc? Something that now has: 3 vulns >9.8 severity, 3 vulns at 7.5 severity, and 4 others, within one year?
+
+Should we really be in this monoculture where 1 vulnerability can wreak havoc on >72% of the network, because everyone wants to just crowd around the thing that "everybody's using right now"? Despite all the expansive variety of featureful options available that are very competitive in functionality and performance?
+
+Remember: Pleroma and Misskey were not affected in any way that I found, and Mastodon is, and this is just a simple concept, not some lengthy strategic chain of exploitation. Even the private message leak vulnerability in Lemmy at least took some fragment of wit (making a report on a private message that's not destined to you), while this just doesn't.
+
+To reiterate, I find out that:
+
+*   You can inject a post that is attributed to any remote user
+*   You can overwrite the server's copy of any remote user
+*   You can rekey the server's copy of any remote user, by just listing another key
+
+And the big detail here is: if the authentic user's key isn't trusted anymore (and in my lab, I confirmed this), then that means any genuine traffic from that remote user is going to be rejected too, while the attacker retains control of sending S2S traffic themself, with a keypair they control. And it's not just with other Mastodon servers, it's ANY remote user on the network, from perspective of a vulnerable Mastodon instance. This is what bumps it up from 9.1 severity to 9.8\. Confidentiality (of future traffic) is compromised, Integrity is impacted, and Availability is crippled.
+
+So beyond the mix of delving into this deeper, watching my inbox and nothing arriving, I had ended up finally falling asleep at like 9am or so (which is exceptionally atypical), at some midpoint of the aforementioned findings.
+
+On the next day cycle, I've already got a reply from the dev of the other identified software (within a few hours of sending the DM even, as they replied 9:12am actually), and followed up with the details. Meanwhile, still no response from any Mastodon dev, even after 3 emails, and even after I've checked through everything on deliverability, DKIM, DMARC, etc. So because of the issues of trying to reaching anyone on mastodon.social, I try to Direct Message a different Mastodon dev account on another server, of presumably the flagship instance of a common fork. Pretty much at the end of this [remainder of the] day, I've reached all my findings, and growing more impatient. I poke others to see if they can reach out on my behalf, or reach out to any closer connections they might have, but don't hear anything actionable back.
+
+Two more day cycles pass (technically 2 days total; just a nuked sleep schedule now), and still nothing. So at this point I write out a more detailed post of my findings (even though the initial ones were enough, I didn't want to spill the rest over email, given how much this ramped up, and given they weren't replying anyway), of everything I've found, with simple concepts and screenshots and submit the Github security report. Again, my eyes are mostly glued to the screen to see any movement on this, while I juggle other things, and *try* to do something productive of my day while holding this hot potato.
+
+Then ***finally***, late on January 29th (at 2:34am) I get a response that the report was accepted, they were able to reproduce it, and working on it further, CVE number requested, and to maintain confidentiality because of the significant severity of it, and I acknowledged. I mentioned there was another project I found with a similar vulnerability that I was also in communication with, and they were fine with it, as long as everyone can keep quiet on any details before a patch is pushed out.
+
+The wording for the to-be-published security report had to be minimized, because of how severe it is, and how simple it was to accomplish, thus it had to be reduced to more vague details, otherwise people may have been able to rediscover any part of it on their own. Timeline was established for when it would be released, public announcement made, and fixes were privately tested.
+
+Meanwhile, I poked another developer of another project, wanted to double-check if their project wasn't also affected, but kept vague on the details. Dug on some specifics, and per a brief source code review, it seemed their project could have been affected, only for injecting posts, and they ended up lining up a patch for their project as well. So at this point there was theoretically 3 affected products, but the worst case with Mastodon.
+
+The day came for the Mastodon patch to be released, and a sizable amount of the network had upgraded within a day or two; while I had poked any other adjacent instance admins that hadn't updated yet. The security annoncement was published adjacent to the patches, noting that the deeper details of the vulnerability would be revealed later on February 15th, to avoid making it easier for attackers, so I kept secrecy on the details yet myself. I kept continuing to test through other fedi software in the meantime, and found a 4th affected product, notified the developer, and got it sorted out there as well.
+
+At this point it was getting close to this whole thing being done with, and I wanted to double-check for the exact time when the responsible disclosure period agreeably ends, and if there's any reporting bounty at all, and if so--on what platform. But instead I get a response that there's "insuffient resources" to have any system of paying bounties. Well. Alright. I guess I'll just write-off my past 1-2 weeks of being sidetracked with this finding, and helping other smaller projects as well, as entirely a charity endeavor then. Not that I'm against helping people, as I already tend to burn a hole in my pocket regularly with trying to help others.
+
+* * *
+
+*(Hopefully I'll get more written today/tomorrow)*

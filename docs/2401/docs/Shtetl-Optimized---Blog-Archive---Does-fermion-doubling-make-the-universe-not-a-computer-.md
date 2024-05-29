@@ -1,0 +1,47 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:23:37
+-->
+
+# Shtetl-Optimized » Blog Archive » Does fermion doubling make the universe not a computer?
+
+> 来源：[https://scottaaronson.blog/?p=7705](https://scottaaronson.blog/?p=7705)
+
+**Unrelated Announcement:** The [Call for Papers](https://computationalcomplexity.org/Archive/2024/cfp.php) for the 2024 Conference on Computational Complexity is now out! Submission deadline is Friday February 16.
+
+* * *
+
+Every month or so, someone asks my opinion on the [simulation hypothesis](https://en.wikipedia.org/wiki/Simulation_hypothesis). Every month I give some variant on the same answer:
+
+1.  As long as it remains a metaphysical question, with no empirical consequences for those of us inside the universe, **I don’t care**.
+2.  On the other hand, as soon as someone asserts there *are* (or could be) empirical consequences—for example, that our simulation might get shut down, or we might find a bug or a memory overflow or a floating point error or whatever—well then, *of course* I care. So far, however, none of the claimed empirical consequences has impressed me: either they’re things physicists would’ve noticed long ago if they were real (e.g., spacetime “pixels” that would manifestly violate Lorentz and rotational symmetry), or the claim staggeringly fails to grapple with profound features of reality (such as quantum mechanics) by treating them as if they were *defects* in programming, or (most often) the claim is simply so resistant to falsification as to enter the realm of conspiracy theories, which I find boring.
+
+Recently, though, I learned a new twist on this tired discussion, when a commenter asked me to respond to the quantum field theorist [David Tong](https://www.damtp.cam.ac.uk/user/tong/), who [gave a lecture](https://www.youtube.com/watch?v=QPMn7SuiHP8) arguing against the simulation hypothesis on an unusually specific and technical ground. This ground is the [fermion doubling problem](https://en.wikipedia.org/wiki/Fermion_doubling): an issue known since the 1970s with simulating certain quantum field theories on computers. The issue is specific to [chiral](https://en.wikipedia.org/wiki/Chirality_(physics)) QFTs—those whose fermions distinguish left from right, and clockwise from counterclockwise. The [Standard Model](https://en.wikipedia.org/wiki/Standard_Model) is famously an example of such a chiral QFT: recall that, in her studies of the weak nuclear force in 1956, [Chien-Shiung Wu](https://en.wikipedia.org/wiki/Chien-Shiung_Wu) proved that the force acts preferentially on left-handed particles and right-handed antiparticles.
+
+I can’t do justice to the fermion doubling problem in this post (for details, see [Tong’s lecture](http://youtube.com/watch?v=QPMn7SuiHP8), or [this old paper](http://theory.caltech.edu/~preskill/pubs/preskill-1986-lattice.pdf) by Eichten and Preskill). Suffice it to say that, when you put a fermionic quantum field on a lattice, a brand-new symmetry shows up, which forces there to be an identical left-handed particle for every right-handed particle and vice versa, thereby ruining the chirality. Furthermore, this symmetry *just stays there*, no matter how small you take the lattice spacing to be. This doubling problem is the main reason why Jordan, Lee, and Preskill, in their [important](https://arxiv.org/abs/1111.3633) [papers](https://arxiv.org/abs/1404.7115) on simulating interacting quantum field theories efficiently on a quantum computer (in [BQP](https://en.wikipedia.org/wiki/BQP)), have so far been unable to handle the full Standard Model.
+
+But this isn’t merely an issue of calculational efficiency: it’s a conceptual issue with mathematically defining the Standard Model at all. In that respect it’s related to, though not the same as, other longstanding open problems around making nontrivial QFTs mathematically rigorous, such as the [Yang-Mills existence and mass gap problem](https://www.claymath.org/millennium/yang-mills-the-maths-gap/) that carries a $1 million prize from the Clay Math Institute.
+
+So then, does fermion doubling present a fundamental obstruction to simulating QFT on a lattice … and therefore, to simulating physics on a computer at all?
+
+Briefly: no, it almost certainly doesn’t. If you don’t believe me, just listen to [Tong’s own lecture](http://youtube.com/watch?v=QPMn7SuiHP8)! (Really, I recommend it; it’s a masterpiece of clarity.) Tong quickly admits that his claim to refute the simulation hypothesis is just “clickbait”—i.e., an excuse to talk about the fermion doubling problem—and that his “true” argument against the simulation hypothesis is simply that Elon Musk takes the hypothesis seriously (!).
+
+It turns out that, for as long as there’s been a fermion doubling problem, there have been known methods to deal with it, though (as often the case with QFT) no proof that any of the methods always work. Indeed, Tong himself has been one of the leaders in developing these methods, and because of his and others’ work, some experts I talked to were optimistic that a lattice simulation of the full Standard Model, with “good enough” justification for its correctness, might be within reach. Just to give you a flavor, apparently some of the methods involve adding an extra dimension to space, in such a way that the *boundaries* of the higher-dimensional theory approximate the chiral theory you’re trying to simulate (better and better, as the boundaries get further and further apart), even while the higher-dimensional theory itself remains non-chiral. It’s yet another example of the general lesson that you don’t get to call an aspect of physics “noncomputable,” just because *the first method you thought of* for simulating it on a computer didn’t work.
+
+* * *
+
+I wanted to make a deeper point. Even if the fermion doubling problem *had* been a fundamental obstruction to simulating Nature on a Turing machine, rather than (as it now seems) a technical problem with technical solutions, it *still* might not have refuted the version of the simulation hypothesis that people care about. We should really distinguish at least three questions:
+
+1.  Can *currently-known* physics be simulated on computers using *currently-known* approaches?
+2.  Is the [Physical Church-Turing Thesis](https://en.wikipedia.org/wiki/Church%E2%80%93Turing%E2%80%93Deutsch_principle) true? That is: can any physical process be simulated on a Turing machine to any desired accuracy (at least probabilistically), given enough information about its initial state?
+3.  Is our whole observed universe a “simulation” being run in a different, larger universe?
+
+Crucially, **each of these three questions has only a tenuous connection to the other two!** As far as I can see, there aren’t even nontrivial implications among them. For example, even if it turned out that lattice methods couldn’t properly simulate the Standard Model, that would say little about whether *any* computational methods could do so—or even more important, whether any computational methods could simulate the ultimate quantum theory of gravity. A priori, simulating quantum gravity might be harder than “merely” simulating the Standard Model (if, e.g., Roger Penrose’s [microtubule theory](https://en.wikipedia.org/wiki/Orchestrated_objective_reduction) turned out to be right), but it might also be *easier*: for example, because of the finiteness of the [Bekenstein-Hawking entropy](http://www.scholarpedia.org/article/Bekenstein-Hawking_entropy), and perhaps the Hilbert space dimension, of any bounded region of space.
+
+But I claim that there *also* isn’t a nontrivial implication between questions 2 and 3\. Even if our laws of physics were *computable* in the Turing sense, that still wouldn’t mean that anyone or anything external was *computing* them. (By analogy, presumably we all accept that our spacetime can be curved without there being a higher-dimensional flat spacetime for it to curve in.) And conversely: even if Penrose was right, and our laws of physics were Turing-uncomputable—well, if you still want to believe the simulation hypothesis, why not knock yourself out? Why shouldn’t whoever’s simulating us inhabit a universe full of post-Turing hypercomputers, for which the [halting problem](https://en.wikipedia.org/wiki/Halting_problem) is mere child’s play?
+
+In conclusion, I should probably spend more of my time blogging about fun things like this, rather than endlessly reading about world events in news and social media and getting depressed.
+
+(*Note:* I’m grateful to John Preskill and Jacques Distler for helpful discussions of the fermion doubling problem, but I take 300% of the blame for whatever errors surely remain in my understanding of it.)
+
+This entry was posted on Monday, January 29th, 2024 at 10:37 am and is filed under [Embarrassing Myself](https://scottaaronson.blog/?cat=18), [Metaphysical Spouting](https://scottaaronson.blog/?cat=12), [Physics for Doofuses](https://scottaaronson.blog/?cat=19). You can follow any responses to this entry through the [RSS 2.0](https://scottaaronson.blog/?feed=rss2&p=7705) feed. You can [leave a response](#respond), or [trackback](https://scottaaronson.blog/wp-trackback.php?p=7705) from your own site.

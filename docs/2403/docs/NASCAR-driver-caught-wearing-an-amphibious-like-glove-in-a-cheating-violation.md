@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:40:22
+-->
+
+# NASCAR driver caught wearing an amphibious-like glove in a cheating violation
+
+> 来源：[https://www.wflx.com/2024/03/03/nascar-driver-caught-wearing-an-amphibious-like-glove-cheating-violation/](https://www.wflx.com/2024/03/03/nascar-driver-caught-wearing-an-amphibious-like-glove-cheating-violation/)
+
+LAS VEGAS (AP) — NASCAR on Saturday displayed a clearly altered glove that Joey Logano wore in qualifying at Atlanta Motor Speedway, where aerodynamic-deflecting alterations were so obvious it looked as if he was wearing part of an amphibious costume.
+
+The black glove for Logano’s left hand had webbing made of an unspecified material in between every finger. The theory is that Logano, who qualified second at Atlanta last weekend, had the glove altered in order to place his hand out his window as an aerodynamic blocker during [qualifying](https://apnews.com/article/nascar-atlanta-mcdowell-qualifying-51cd5c3fc350460ff959b71ac51c2761).
+
+At Las Vegas Motor Speedway a week later, NASCAR would not speculate on the motivation of the two-time Cup champion or Team Penske, which did not appeal a penalty imposed on Logano. NASCAR said it discovered the glove during a random inspection — and not, as Denny Hamlin suggested, in a tipoff from a rival team — and that it did not know if Logano was wearing the glove when he [won the pole for the season-opening Daytona 500](https://apnews.com/article/nascar-daytona-500-qualifying-95863156d82cd205a50f55dc93b05af5).
+
+Rival driver Corey Lajoie didn’t flinch when asked Saturday if Logano was wearing the glove in Daytona 500 qualifying — “yes,” he said — and insisted Team Penske would have done computer simulation on the glove before using it on the track. LaJoie estimated the webbed glove was worth three counts of drag for Logano.
+
+Logano, who won the pole for Sunday’s race at Las Vegas wearing legal gloves, declined to comment on if he wore the webbed glove when winning Team Penske’s first Daytona 500 pole. He said he was not forced to wear the glove by his team.
+
+“As a driver, you work with the team and, hey, I’m going to take a portion of responsibility of that too, obviously. I should. I put the glove on,” Logano said. “I didn’t build the glove or make it on my own. I can’t sew. We had conversations about it.
+
+“What I’m proud about with this team is, yeah, that was a tough situation for us,” he continued. “It was hard to go through and embarrassing for sure, but the fact we got through it and just move on and focus on the next week, we showed that we have some speed in our race car and to be able to put it on the pole here, to me, is a statement type lap, so I’m proud of that.”
+
+Joey Logano waves to fans during driver introductions before two Daytona 500 qualifying auto races at Daytona International Speedway, Thursday, Feb. 15, 2024, in Daytona Beach, Fla. (AP Photo/John Raoux)(AP)
+
+Logano turned a lap in Saturday qualifying at 184.357 mph to win his second pole in three races, and the third of his career at Las Vegas. He beat Kyle Larson, winner at Las Vegas in October, who turned a lap at 184.225 in a Chevrolet for Hendrick Motorsports.
+
+Brad Moran, NASCAR Cup Series managing director, said the No. 22 Ford was one of five cars randomly selected for post-qualifying inspection in Atlanta and the in-car camera immediately alerted officials that something was amiss.
+
+“We spotted something that was honestly concerning,” Moran said ahead of Saturday activity at Las Vegas. “As you can see, the entire glove is webbed. The reason for that is you can obviously block more air, the drivers do put their hand up against the (window) opening, which we’ve never really had a rule against.
+
+“This obviously goes one step further, and that glove becomes not only a competition problem but it goes one step further because it becomes a safety violation.”
+
+All equipment must be approved by The SFI Foundation Inc., a nonprofit organization that has administered the standards for the quality assurance of specialty performance and racing equipment since 1978\. NASCAR was unsure if the material used to create the webbing effect was fire retardant.
+
+Logano said at Las Vegas he would never have used the glove if he thought it was dangerous, which “I personally did not.”
+
+“I would never have put myself in a situation where I feel unsafe,” Logano said. “I have kids. I have a wife. I have a family that I care way more about than race cars, so no, I didn’t feel concerned about what we did. I didn’t race with it. Qualifying on speedways is pretty simple.”
+
+Logano was penalized last Sunday morning when he forfeited the second-place starting position and was dropped to the back of the field at Atlanta. He also had to serve a drive-through penalty on pit road once he took the green flag as the competition penalty.
+
+Logano this week was fined $10,000 for violating NASCAR’s safety code, under “Driver Responsibilities & Driver Protective Clothing/Equipment.”
+
+Team owner Roger Penske earlier this week twice told The Associated Press, “I didn’t like that at all,” about Logano’s infraction and expressed his disappointment in the veteran Penske driver.
+
+“It’s not good. Period. I told him,” Penske said. “He’s the leader of the team. Look, we are under so much scrutiny and the last thing we need to do is have any noise like that. It’s not good for us. It’s not good for him.”
+
+Reigning Cup champion Ryan Blaney, who in November gave Penske back-to-back NASCAR championships, said there was no internal conversation among the three Penske cars to try the glove. Blaney said he was unaware Logano was using an altered glove.
+
+But Blaney acknowledged all teams are consistently trying to work within a gray area — but not push the boundaries to the point that their boss, Penske, is irked with the efforts and optics of the organization.
+
+“That was something they found and they just wanted to try, but that wasn’t something they tried to talk about,” Blaney said. “It’s always tricky, you want to be fast. But I feel like we’ve always been very good. We’ve always been very respectful — like we never get in trouble — because that’s Roger’s way, right?
+
+“So it’s a real balance because you are always trying to find speed, but sometimes you have to kind of get a little in that gray area to find it.”
+
+___
+
+AP auto racing: [https://apnews.com/hub/auto-racing](https://apnews.com/hub/auto-racing)
+
+*Copyright 2024 The Associated Press. All rights reserved.*

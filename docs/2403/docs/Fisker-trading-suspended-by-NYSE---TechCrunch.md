@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:38:57
+-->
+
+# Fisker trading suspended by NYSE | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/03/25/fisker-trading-suspended-by-nyse/](https://techcrunch.com/2024/03/25/fisker-trading-suspended-by-nyse/)
+
+The New York Stock Exchange said Monday it will immediately suspend trading shares of EV startup Fisker and is moving to take the company off its stock exchange.
+
+The exchange said Monday that Fisker’s stock is “no longer suitable for listing” because of “abnormally low” price levels. The decision comes a month after Fisker was warned by the NYSE that its stock price had spent 30 days trading below $1, putting it out of compliance with the exchange’s rules.
+
+Fisker can review the NYSE’s determination, but it said in a Monday afternoon [filing](https://www.sec.gov/Archives/edgar/data/1720990/000172099024000032/fsr-20240325.htm) that it expects its stock to be moved to an over-the-counter market such as OTC Pink. It also said the delisting has triggered repayment clauses in two outstanding loans that it cannot currently afford, which could have a “material adverse effect” on the business.
+
+The suspension caps a tumultuous day for Fisker, which saw shares fall more than 28% before trading was halted. Earlier Monday, Fisker announced it [lost a potential deal with a large automaker](https://techcrunch.com/2024/03/25/fisker-nissan-deal-dead-funding-bankruptcy/), reported to be Nissan — a development that has also endangered a recently announced attempt at securing emergency funding.
+
+The company didn’t explain why the automaker terminated the negotiations, which was a critical closing condition for a potential $150 million convertible note announced last week. Fisker said in the filing that it will ask the unnamed investor to waive the closing condition.
+
+Fisker’s problems, which include complaints from customers, lawsuits and federal investigations, have been escalating for months. The imperiled EV startup has struggled to sell its Ocean SUV in the early going, underperforming its own internal sales goals, as TechCrunch reported in January. It pivoted away from a direct sales model and turned to dealerships to help drive sales. It has also [struggled with quality problems](https://techcrunch.com/2024/02/09/fisker-ocean-braking-power-loss-problems-investigation/) — ones that Fisker has, at times, struggled to solve, according to internal documents.
+
+In February, Fisker laid off [15% of its staff](https://techcrunch.com/2024/02/29/fisker-layoffs-cash-going-concern-dealerships/) (around 200 people) and last week reported having just $121 million in the bank. The company has paused production and warned investors it would not survive a year without a fresh infusion of cash.
+
+*This story has been updated to include details from Fisker’s Monday afternoon SEC filing.*

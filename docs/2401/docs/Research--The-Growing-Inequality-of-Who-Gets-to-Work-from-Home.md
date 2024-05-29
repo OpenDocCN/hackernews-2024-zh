@@ -1,0 +1,10 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:53
+-->
+
+# Research: The Growing Inequality of Who Gets to Work from Home
+
+> 来源：[https://hbr.org/2023/12/research-the-growing-inequality-of-who-gets-to-work-from-home](https://hbr.org/2023/12/research-the-growing-inequality-of-who-gets-to-work-from-home)
+
+ There is a large and growing divide in terms of who gets to work from home. Research on job postings found that remote work is far more common for higher paid roles, for roles that require more experience, for full-time work, and for roles that require more education. Managers should be aware of this divide, as it has the potential to create toxic dynamics within teams and to sap morale.  <content js-target="article-content" data-key="M7SNM28Yy4dGo1EDjLzVS566c77tJbryH3dK6VrX3UVxwkxucaHBUzn77vPJpYIb" data-index="BM5l29iJY6Ee+8B2yfNlrdgbvN4VLOJhHh/T44P8lW5E79C1aEAUC2JC22eLVUK3+E6CE4FanSeVoJtpnFz2kQ==" data-waiver="false" data-page-year="2023" data-page-month="12" data-page-seo-title="research-the-growing-inequality-of-who-gets-to-work-from-home" data-page-adunit-locations="" data-page-slug="article" data-piano-verified="false">Remote work has exploded since the pandemic struck, and employees like it. In speaking to hundreds of managers about this development, one concern crops up again and again: The shift to remote work is highly unequal. Front-line staff with modest paychecks rarely enjoy the benefits of working from home. Instead, they commute every workday to engage customers and coworkers, operate machinery, and look after facilities. In contrast, highly paid professionals and managers often work from home two or three days a week — saving time, money, and aggravation. Business leaders rightly worry that this divide could hurt morale among front-line staff, undermine perceived fairness, and create new rifts in the workforce.</content>

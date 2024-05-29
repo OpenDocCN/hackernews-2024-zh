@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:49
+-->
+
+# Ideas Matter II: The Cultural Anxietying
+
+> 来源：[https://www.writingruxandrabio.com/p/ideas-matter-ii-the-cultural-anxietying](https://www.writingruxandrabio.com/p/ideas-matter-ii-the-cultural-anxietying)
+
+In my last [post](https://www.writingruxandrabio.com/p/ideas-matter-how-i-stopped-being) I argued that we are living in an increasingly risk-averse, techno-pessimistic and overly cautious culture. We might call this a “Cultural Anxietying”. Data journalist [John Burn-Murdoch](https://www.ft.com/john-burn-murdoch) from the Financial Times cites my piece in his latest column, in which he also brings some new quantitative evidence for the existence of this culture:
+
+> "Ruxandra Teslo, one of a growing community of progress-focused writers at the nexus of science, economics and policy, argues that the growing scepticism around technology and the rise in zero-sum thinking in modern society is one of the defining ideological challenges of our time."
+
+To recap a bit from my last piece, this culture of risk-aversion rears it ugly head in a range of situations: from interpersonal relationships to worsening outcomes in teenage mental health. These are the kind of consequences that psychologists like [Jonathan Haidt](https://en.wikipedia.org/wiki/Jonathan_Haidt) or [Jean Twenge](https://www.jeantwenge.com/) have been particularly focused on. As a Genomicist, I'm increasingly worried about how this cautious mindset could hinder scientific progress. In my observation, both Millennials and my own generation (Zoomers) display a lukewarm excitement about technological advances. I believe it's crucial to emphasize practical, scientific solutions in crucial areas ranging from healthcare to climate change. Surprisingly, such solutions aren't just unfashionable to talk about; they're sometimes actively opposed, frequently citing safety concerns. A prime example is the opposition to nuclear energy.
+
+So what led me to start writing about this now?
+
+I have been aware for a time about the hypothesis that the Industrial Revolution in Europe, particularly in Britain, was significantly influenced by a "culture of progress" – a collective mindset valuing scientific knowledge and technological innovation, which was nurtured by intellectuals and effectively disseminated to skilled craftsmen. This cultural shift played a crucial role in fostering industrial advancements, diverging from traditional theories that focused mainly on economic and material conditions. What drove me to focus my attention on this topic NOW is recent evidence from a [paper](https://docs.iza.org/dp16674.pdf) using topic analysis on a vast array of English texts from 1500 to 1900\. This work demonstrates a notable increase in progress-oriented language, especially in works at the intersection of political economy and science, indicating a widespread cultural embrace of progress that correlates with the period of Industrialization. If we accept that our cultural attitudes towards progress do actually have a material impact, I argue that the cultural trend towards risk aversion and techno-pessimism does not bode well for the future.
+
+A weakness in my diagnosis of the culture today was its largely vibes-based nature. It was the result of a disorganised and non-coordinated process of perusing top publications and talking to students at elite universities. But the only piece of quantitative evidence I had was some work on the rise of zero-sum thinking among Millennials. In today’s [edition](https://www.ft.com/content/e577411e-3bf2-4fb4-872a-8b7d5e9139d3) of the Financial Times, [John Burn-Murdoch](https://www.ft.com/john-burn-murdoch) brings more weight to the hypothesis that we are living through a Cultural Anxietying. Using data from millions of books digitised as part of the Google Ngram project, John finds that:
+
+> “over the past 60 years the West has begun to shift away from the culture of progress, and towards one of caution, worry and risk-aversion, with economic growth slowing over the same period. The frequency of terms related to progress, improvement and the future has dropped by about 25 per cent since the 1960s, while those related to threats, risks and worries have become several times more common.”
+
+This morning, I was reminded of one of my favourite paintings: 'Young Woman on her Deathbed.' There’s a striking contrast between the opulence of the bed and her physical deterioration. While she lies amidst luxury, her life ebbs away in her youth. This image serves as a metaphor for our civilisation: if we succumb to a state of paralysis, engulfed by fear and apprehension, our fate might mirror hers, surrounded by comfort yet diminishing at our peak
+
+Young Woman on her Dying Bed - 1621

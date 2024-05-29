@@ -1,0 +1,232 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:44:00
+-->
+
+# debugging tokio instrumentation - hēg denu - Hayden Stainsby
+
+> 来源：[https://hegdenu.net/posts/debugging-tokio-instrumentation/](https://hegdenu.net/posts/debugging-tokio-instrumentation/)
+
+I contribute to [`tokio-console`](https://github.com/tokio-rs/console). One of the things that I often find myself doing is matching what is shown in the console with the "raw" [`tracing`](https://docs.rs/tracing) output that comes from Tokio. However, this is pretty hard to read and doesn't actually contain all the information that I need.
+
+There are a couple of things that I'd like to have. Firstly (and most importantly), I need to see Tracing's internal [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) for the spans that are emitted. This is something which the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html) (and underlying Layer) don't support. And rightly so - it's internal information. But it's used heavily in the instrumentation in Tokio and to debug, I really need to have it available.
+
+Normally, to get this information I use a patched version of the `tracing-subscriber` crate. But this is something that can't be checked into the console project, and setting it up each time is a bit tedious.
+
+Secondly, I'd like to be able to visually differentiate the specific spans and events used in Tokio's instrumentation. Unlike the internal span ID, this is entirely domain specific, and has no use outside of this specific use case.
+
+Here's a snippet of output from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html) outputting some of Tokio's instrumentation.
+
+```
+2024-01-31T09:23:11.247690Z  INFO **runtime.spawn{***kind*=task *task.name*= *task.id*=18 *loc.file*="src/bin/initial-example.rs" *loc.line*=11 *loc.col*=5**}**: initial_example: pre-yield *fun*=true
+2024-01-31T09:23:11.247703Z TRACE **runtime.spawn{***kind*=task *task.name*= *task.id*=18 *loc.file*="src/bin/initial-example.rs" *loc.line*=11 *loc.col*=5**}**: tokio::task::waker: *op*="waker.clone" *task.id*=2
+2024-01-31T09:23:11.247717Z TRACE **runtime.spawn{***kind*=task *task.name*= *task.id*=18 *loc.file*="src/bin/initial-example.rs" *loc.line*=11 *loc.col*=5**}**: tokio::task: exit
+2024-01-31T09:23:11.247737Z TRACE tokio::task::waker: *op*="waker.wake" *task.id*=2
+2024-01-31T09:23:11.247754Z TRACE **runtime.spawn{***kind*=task *task.name*= *task.id*=18 *loc.file*="src/bin/initial-example.rs" *loc.line*=11 *loc.col*=5**}**: tokio::task: enter
+2024-01-31T09:23:11.247766Z TRACE **runtime.resource{***concrete_type*="Barrier" *kind*="Sync" *loc.file*="src/bin/initial-example.rs" *loc.line*=9 *loc.col*=39**}**: tokio::sync::barrier: enter
+2024-01-31T09:23:11.247800Z TRACE **runtime.resource{***concrete_type*="Barrier" *kind*="Sync" *loc.file*="src/bin/initial-example.rs" *loc.line*=9 *loc.col*=39**}**:**runtime.resource.async_op{***source*="Barrier::wait" *inherits_child_attrs*=false**}**: tokio::util::trace: new 
+```
+
+There is a lot of information here, and distinguishing different spans types can be complicated (especially when you're scanning through dozens or even hundreds of lines). Additionally, the [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) is completely absent.
+
+Compare this to the output of the same section of logs coloured and including the [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) right after the span name.
+
+```
+**2024-01-31**T**09:23:39**.136879Z  INFO runtime.spawn[**2**]{kind=task, task.name=, task.id=18, loc.file="src/bin/initial-example.rs", loc.line=18, loc.col=5} **initial_example**: fun=true pre-yield
+**2024-01-31**T**09:23:39**.136937Z TRACE runtime.spawn[**2**]{kind=task, task.name=, task.id=18, loc.file="src/bin/initial-example.rs", loc.line=18, loc.col=5} **tokio::task::waker**: op="waker.clone", task.id=2
+**2024-01-31**T**09:23:39**.136995Z TRACE runtime.spawn[**2**]{kind=task, task.name=, task.id=18, loc.file="src/bin/initial-example.rs", loc.line=18, loc.col=5} **exit**
+**2024-01-31**T**09:23:39**.137059Z TRACE **tokio::task::waker**: op="waker.wake", task.id=2
+**2024-01-31**T**09:23:39**.137122Z TRACE runtime.spawn[**2**]{kind=task, task.name=, task.id=18, loc.file="src/bin/initial-example.rs", loc.line=18, loc.col=5} **enter**
+**2024-01-31**T**09:23:39**.137212Z TRACE runtime.resource[**1**]{concrete_type="Barrier", kind="Sync", loc.file="src/bin/initial-example.rs", loc.line=16, loc.col=39} **enter**
+**2024-01-31**T**09:23:39**.137296Z TRACE runtime.resource[**1**]{concrete_type="Barrier", kind="Sync", loc.file="src/bin/initial-example.rs", loc.line=16, loc.col=39} runtime.resource.async_op[**274877906945**]{source="Barrier::wait", inherits_child_attrs=false} **new** 
+```
+
+Having now justified something I wanted to do anyway, let's build our own custom tracing subscriber!
+
+(actually, it's going to mostly be a `Layer`)
+
+## aside: tracing subscribers and layers
+
+If you're already familiar with `tracing`, you may wish to skip this section and go straight to [ari-subscriber](https://hegdenu.net/posts/debugging-tokio-instrumentation/#ari-subscriber).
+
+In the tracing ecosystem, you need a subscriber to actually do anything other than send your traces into the void. Specifically something that implements the [`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html) trait. A subscriber can take the traces and do what it wishes. Write them to `stdout`, to a file, collect them and perform aggregation, send them to another service (maybe via Open Telemetry).
+
+The [`tracing-subscriber`](https://docs.rs/tracing-subscriber) crate provides a number of subscriber implementations. From the outside, this mostly looks like different ways to write traces to a file handle. However, the real heart of [`tracing-subscriber`](https://docs.rs/tracing-subscriber) is the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html). The registry is a subscriber which implements a span store and allows multiple layers to connect to it.
+
+What is a [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)? For the longest time I had real trouble understanding conceptually what a layer is. From the documentation, a layer is *"a composable abstraction for building Subscribers"*. However, I struggled to understand how I may wish to compose layers. It's also confusing because layers don't feed into other layers the way that [`tower`](https://docs.rs/tower) layers do (which are like middleware, in that what one layer does affects what the next layer receives).
+
+Instead, think of layers as mini-subscribers. They can take action on some methods on the [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html) trait, but can fall back to the default implementation for things that they're not interested in. And [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html) has a default implementation for everything.
+
+Most layers need to store information about spans, this is where the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html) comes in (specifically via the [`LookupSpan`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.LookupSpan.html) trait). Layers can store their own data in the registry in the form of span [extensions](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.SpanData.html#tymethod.extensions).
+
+The reason why storing this data in the registry is important may not be immediately obvious.
+
+It's because [`tracing`](https://docs.rs/tracing) itself **doesn't** store this data. This allows [`tracing`](https://docs.rs/tracing) to not allocate for the data and therefore be used in [`no_std`](https://docs.rust-embedded.org/book/intro/no-std.html) environments as well as the giant servers and beefy development machines that many of us are accustomed to.
+
+Here's an example for clarity. When a span is created, a [`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html) receives a call to [`new_span()`](https://docs.rs/tracing/0.1.40/tracing/trait.Subscriber.html#tymethod.new_span). This includes the span [`Attributes`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Attributes.html) which gives the subscriber access to all the information about that span. Its metadata, field names, and also the values of any fields that were set at the time of creation.
+
+This is great, it's everything we could need!
+
+Now let's look at the method that gets called when a span is entered (becomes active), this is called [`enter()`] and all it comes with is... a [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html). No metadata, no field names, and certainly no field values. And this pattern repeats on the trait methods called when a span exits or is closed.
+
+Using the registry to store whatever data a layer might need about a span later on is the solution. This allows the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html) to print out the full data for each span in an event's ancestry.
+
+Now that we understand a bit about what subscribers and layers are, let’s get into implementing some of it!
+
+## ari-subscriber
+
+To meet the needs of my use-case, as described above, I've written the [`ari-subscriber`](https://docs.rs/ari-subscriber/0.0.1/ari_subscriber/index.html) crate. It's currently at version 0.0.1, which indicates that it's probably a bit rough, but so far it's already helped me quickly narrow down the version of Tokio after which `yield_now()` [doesn't get detected as a self wake by Tokio Console](https://github.com/tokio-rs/console/issues/512).
+
+The “ari” in ari-subscriber is for “async runtime instrumentation”.
+
+The interface is simple, you pass an `ari-subscriber` layer to the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html):
+
+```
+use tracing_subscriber::prelude::*; tracing_subscriber::registry()
+ .with(ari_subscriber::layer())
+ .init(); 
+```
+
+This will write output to `stdout` (currently not configurable). And the output will have pretty colours!
+
+Let's look at a simple example of how we can use `ari-subscriber`. Here's the Rust code we'll be using:
+
+```
+#[tokio::main] async fn main() {
+  // Set up subscriber
+  use tracing_subscriber::prelude::*;
+ tracing_subscriber::registry() .with(ari_subscriber::layer())
+ .init();    // Spawn a task and wait for it to complete
+ tokio::spawn(async { tracing::info!(fun = true, "pre-yield");
+ tokio::task::yield_now().await; }) .await .unwrap(); } 
+```
+
+We start in an async context (using the `#[tokio::main]` attribute). First we set up the `ari-subscriber` layer with the registry. Then we spawn a task and wait for it to complete. The task emits a tracing event and then returns control to the runtime by calling the [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html) function from Tokio. After that it ends
+
+If you've been watching closely (and following all the links I've been sprinkling around), you may have realised that I'm looking at the case described in the issue [console#512](https://github.com/tokio-rs/console/issues/512). What we want to look at is where the wake operation occurs.
+
+We're going to fix our version of Tokio to an old one, where we know that Tokio Console detects awaiting on [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html) as a self-wake. So let's specify the following in our `Cargo.toml`:
+
+```
+[dependencies] ari-subscriber = "0.0.1" tokio = { version = "=1.22.0", features = ["full", "tracing"] } tracing = "0.1.40" tracing-subscriber = "0.3.18" 
+```
+
+We set the version of Tokio to `=1.22.0`, this indicates that we want exactly this version. By default, `cargo` would take any `1.x` version where `x` is greater than or equal to 22.
+
+Now let's look at the output (truncated a little bit to remove things that we won't be focusing on).
+
+```
+**2024-01-30**T**15:43:24**.010351Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **new**
+**2024-01-30**T**15:43:24**.010695Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**15:43:24**.010778Z  INFO runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **debugging_tokio_instrumentation**: fun=true pre-yield
+**2024-01-30**T**15:43:24**.010829Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **tokio::task::waker**: op="waker.wake_by_ref", task.id=1
+**2024-01-30**T**15:43:24**.010878Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**15:43:24**.010924Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**15:43:24**.010962Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**15:43:24**.010997Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**15:43:24**.011032Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**15:43:24**.011065Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **close** 
+```
+
+Unfortunately it's way to wide to visualise nicely on this web-site. But let's walk through it.
+
+The date and time and log level is pretty straight forward. I took the log level colours from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html), so those should be familiar.
+
+### trace types
+
+All the lines in the output are prefixed with a span named `runtime.spawn`. Spans with this name instrument tasks, `ari-subscriber` colours them green. There are district types of instrumentation in Tokio, and they each get their own colour.
+
+*   runtime.spawn spans (green) instrument tasks
+*   runtime.resource spans (red) instrument resources
+*   runtime.resource.async_op spans (blue) instrument async operations
+*   runtime.resource.async_op.poll spans (yellow) instrument the individual polls on async operations
+*   tokio::task::waker events (purple) represent discrete waker operations
+*   runtime::resource::poll_op events (orange) represent poll state changes
+*   runtime::resource::state_update events (pink) represent resource state changes
+*   runtime::resource::async_op::state_update events (turquoise) represent async operation state changes
+
+In the case of spans, the value given above is the span name, for events it is the target.
+
+Describing how each of these traces is used within Tokio and how to interpret them would fill several more posts and I won't go into that topic in more detail here. I already wrote a post on the instrumentation for tasks, which covers the `runtime.spawn` spans and the `tokio::task::waker` events. Go read [tracing tokio tasks](https://hegdenu.net/posts/tracing-tokio-tasks/) to learn about those!
+
+### span events
+
+Now let's get back to the output of `ari-subscriber` for our test program. The first line ends in **new**, this is an event representing the creation of a new span. There are equivalent lines for `enter`, `exit`, and `close`; all parts of the span lifecycle. See the [span lifecycle](https://hegdenu.net/posts/tracing-tokio-tasks/#span-lifecycle) section of the post I linked above for a refresher on the lifecycle.
+
+By default, the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html) doesn't output these "span events", but it can be configured to do so with the [`with_span_events()`](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.SubscriberBuilder.html#method.with_span_events) method on the builder. Currently `ari-subscriber` always emits these span events, but I may wish to make this configurable in the future to reduce the amount of output.
+
+### analysing wakes
+
+Let's find our wake operation. You'll notice that there is exactly one line at INFO level. This is the one that we added to our spawned task ourselves. After the `runtime.spawn` span we see the text
+
+```
+debugging_tokio_instrumentation: fun=true pre-yield 
+```
+
+The first bit (`debugging_tokio_instrumentation`) is the target, which by default is the same as the module path so it's the name of our example application. After the colon are the fields (just one field: `fun=true`) and finally the message (`pre-yield`). An event's message is actually just a specially handled field with the name `message`. This event isn't coloured because it isn't part of the instrumentation that `ari-subscriber` knows about.
+
+The next line is the wake operation (it's purple!). We can see that its target is `tokio::task::waker` and then it has 2 fields and no message. The fields are `op="waker.wake_by_ref"` and `task.id=1`.
+
+Let's start with the second field, `task.id=1`. This gives the **instrumentation ID** of the task being woken. The instrumentation ID of a task is not the Tokio [`task::Id`](https://docs.rs/tokio/1.35.1/tokio/task/struct.Id.html), but rather the tracing [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) of the span which instruments that task. That value is the one that appears in brackets after the span name `runtime.spawn` (e.g. `[1]`). This is a bit confusing, because the `runtime.spawn` span also has a field called `task.id`, but that one refers to the Tokio task ID. The important point here is that our span IDs match (both 1), so this operation is being performed from within the task that it is affecting.
+
+The operation `wake_by_ref` indicates that the task is being woken using a reference to the waker. This operation doesn't consume the waker - which is important when Tokio Console counts the number of wakers for a given task to make sure that it hasn't lost all its wakers.
+
+With this information, we can now manually ascertain that this is a self-wake operation. We are waking a task while running within that task.
+
+### what happens next
+
+Let's change our version of Tokio to the latest (at the time of writing), 1.35.1.
+
+```
+tokio = { version = "=1.35.1", features = ["full", "tracing"] } 
+```
+
+And now run exactly the same example. The output is below (truncated in the same way as before).
+
+```
+**2024-01-30**T**16:00:09**.484496Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **new**
+**2024-01-30**T**16:00:09**.484798Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**16:00:09**.484867Z  INFO runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **debugging_tokio_instrumentation**: fun=true pre-yield
+**2024-01-30**T**16:00:09**.484930Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **tokio::task::waker**: op="waker.clone", task.id=1
+**2024-01-30**T**16:00:09**.484998Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**16:00:09**.485073Z TRACE **tokio::task::waker**: op="waker.wake", task.id=1
+**2024-01-30**T**16:00:09**.485150Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**16:00:09**.485208Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**16:00:09**.485261Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **enter**
+**2024-01-30**T**16:00:09**.485313Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **exit**
+**2024-01-30**T**16:00:09**.485361Z TRACE runtime.spawn[**1**]{kind=task, task.name=, task.id=18, loc.file="src/main.rs", loc.line=10, loc.col=5} **close** 
+```
+
+It might not be immediately obvious, but that output is one line longer than the previous one. What jumps out is probably that we can now see a wake operation without scrolling to the right. But first, let's check what happens above that.
+
+Directly below our own `fun=true pre-yield` event line, we see that there is still a `tokio::task::waker` event and it is still operating on the same task (and the same task that we are currently inside), the one with the task instrumentation ID of 1\. However, this isn't a wake operation, instead it has the field value `op=waker.clone`. Somewhere, the waker for that task is being cloned.
+
+Straight afterwards we see that the span exits - which means that the call to poll on that task has returned. After that, the task **is** woken. We see that the operation is `waker.wake` instead of `waker.wake_by_ref`, which means that the waker is consumed (this makes sense, as it was cloned before). More importantly than all of that though, is that this wake operation isn't inside the `runtime.spawn` span for that task, in fact it isn't inside any spans at all, `runtime.spawn` or otherwise.
+
+This confirms what could be observed in Tokio Console, the instrumentation indicates that this is not a self wake!
+
+### what changed?
+
+The reason for this change is the PR [`tokio#5223`](https://github.com/tokio-rs/tokio/pull/5223) (in Tokio itself). This PR changes the behaviour of [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html) to defer the wake. When a task yields to the runtime in this way, it is immediately ready to be polled again (that's the whole point). Any other task which is ready will get precedence to be polled first (except under some specific conditions involving the LIFO slot). However the scheduler won't necessarily poll the resource drivers, this means that a task that is always ready may starve the resource drivers despite doing its best to be well behaved by yielding regularly to the runtime.
+
+The PR changes the behaviour to defer waking tasks which call [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html) until after polling the resource drivers, avoiding the starvation issue.
+
+After some discussion on [console#512](https://github.com/tokio-rs/console/issues/512), we decided that it's OK that Tokio Console can't detect this specific case of self wakes, since the PR on Tokio made them much less likely to result in some performance issue - something which may still occur from other futures self waking.
+
+And that's how I managed to use my very basic subscriber crate to answer a question quicker thanks to pretty colours.
+
+## should I use `ari-subscriber`?
+
+Now that we've had a bit of a look at `ari-subscriber`, the big question is, should anyone be using it?
+
+The answer is **no**.
+
+Aside from missing a bunch of useful features, `ari-subscriber` currently does a lot of things "the easy way", which is not very performant. I know how to make it more performant, but I promised myself I'd write this post before doing any more work on the crate.
+
+Unless you too are trying to debug the instrumentation built into Tokio, you're much better off using the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html) from the `tracing-subscriber` crate.
+
+If you **are** debugging that instrumentation, please [come and say hi](https://hegdenu.net/about/#contact)! I'd be really interested to hear what you're doing and I might even be able to help.
+
+### thanks
+
+Thanks to [Luca Palmieri](https://lpalmieri.com/) and [One](https://github.com/c-git) for feedback on the post!

@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:45:49
+-->
+
+# FBI Agent Says He Hassles People 'Every Day, All Day Long' Over Facebook Posts
+
+> 来源：[https://reason.com/2024/03/29/fbi-agent-says-he-hassles-people-every-day-all-day-long-over-facebook-posts/](https://reason.com/2024/03/29/fbi-agent-says-he-hassles-people-every-day-all-day-long-over-facebook-posts/)
+
+The FBI spends "every day, all day long" interrogating people over their Facebook posts. At least, that's what agents told Stillwater, Oklahoma, resident Rolla Abdeljawad when they showed up at her house to ask her about her social media activity. 
+
+Three FBI agents came to Abdeljawad's house and said that they had been given "screenshots" of her posts by Facebook. Her lawyer Hassan Shibly [posted a video](https://twitter.com/HassanShibly/status/1773160636983496706) of the incident online on Wednesday.
+
+Abdeljawad told agents that she didn't want to talk and asked them to show their badges on camera, which the agents refused to do. She [wrote on Facebook](https://www.facebook.com/rollabd/posts/pfbid02qFjGQtUji99XgjcSJcyHf3Zp79KQwrtH5EUg5wwrsbfYEZovZ4J7aoFSu55UqUFAl) that she later confirmed with local police that the FBI agents really were FBI agents.
+
+"Facebook gave us a couple of screenshots of your account," one agent in a gray shirt said in the video.
+
+"So we no longer live in a free country and we can't say what we want?" replied Abdeljawad.
+
+"No, we totally do. That's why we're not here to arrest you or anything," a second agent in a red shirt added. "We do this every day, all day long. It's just an effort to keep everybody safe and make sure nobody has any ill will."
+
+Shibly says that he doesn't know which Facebook post caught the agents' attention, and that it was the first time he had heard of Facebook's parent company, Meta, preemptively reporting posts to law enforcement. Andy Stone, a spokesman for Meta, and Kayla McCleery, a spokeswoman for the FBI's Oklahoma City office, declined to comment.*
+
+Meta's official policy is to hand over Facebook data to U.S. law enforcement in response to a court order, a subpoena, a search warrant, or an emergency situation involving "imminent harm to a child or risk of death or serious physical injury to any person." The company received 73,956 requests from U.S. law enforcement and handed over data 87.84 percent of the time in the first half of 2023, according to the [Meta website](https://transparency.fb.com/reports/government-data-requests/country/US/).
+
+Abdeljawad's Facebook timeline is public, so the FBI agents could have found it themselves. For the past week, she has made multiple angry posts per day about the war in Gaza, referring to Israel as "Israhell." But none of the posts on her feed call for violence.
+
+Ironically, Abdeljawad had also posted a warning about exactly the kind of government monitoring she was later subjected to.
+
+"Don't fall for their games. Our community is being watched & they are just waiting for any reason to round us up," Abdeljawad [wrote](https://www.facebook.com/rollabd/posts/pfbid02uKBmjqgqGsfFadixpnmMdMPbugRQadykX1NZAV81GkEJveHo8xmga2e2XR8aELDNl). "If you're Muslim and/or pro-pal consider all your media accounts, Google searches, mail, messenger, local mosques & political events monitored. #NYC #usa #PoliceState #FreePalestine"
+
+Shibly claims that Abdeljawad knew how to assert her rights from her time volunteering at the Council on American-Islamic Relations, where Shibly used to be a state-level director. "It's unfortunately normal behavior for the FBI to target the community like this," Shibly says.
+
+In [his caption](https://twitter.com/HassanShibly/status/1773160636983496706) of the video, Shibly added some advice to others: Abdeljawad was right to refuse to speak and right to record the interaction, but should not have stepped outside the house to talk to the FBI agents.
+
+He tells *Reason* that his main goal with Abdeljawad's case is to raise awareness of people's rights when dealing with the FBI.
+
+"It's wrong what they did. Realistically, with where the community's at, I don't know if we have the bandwidth to go after them for it," Shibly says. "Moreso, it's, ok, continue to exercise your rights. If they do contact you again, they're going to be hearing directly from us. We're going to deal with it. We're going to put them in check."
+
+**UPDATE: After publication, McCleery provided the following statement; "Every day, the FBI engages with members of the public in furtherance of our mission, which is to protect the American people and uphold the Constitution of the United States. We can never open an investigation based solely on First Amendment protected activity. The FBI is committed to ensuring our activities are conducted with a valid law enforcement or national security purpose, while upholding the constitutional rights of all Americans."*

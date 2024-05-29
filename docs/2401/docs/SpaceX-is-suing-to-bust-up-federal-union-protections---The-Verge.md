@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:33
+-->
+
+# SpaceX is suing to bust up federal union protections - The Verge
+
+> 来源：[https://www.theverge.com/2024/1/4/24025712/spacex-nlrb-lawsuit-constitutional-violations-elon-musk](https://www.theverge.com/2024/1/4/24025712/spacex-nlrb-lawsuit-constitutional-violations-elon-musk)
+
+SpaceX is suing the National Labor Relations Board (NLRB) after the agency accused the Elon Musk-owned company of illegally firing employees. In [a lawsuit filed in federal court](https://www.documentcloud.org/documents/24253902-af9c7a67-6777-4a7f-9a13-e1e36248c2c3?responsive=1&title=1) on Thursday, SpaceX claims the NLRB’s actions are unconstitutional.
+
+On Wednesday, the [NLRB filed a complaint alleging](/2024/1/3/24024253/spacex-elon-musk-nlrb-complaint-unfair-labor-practices-workers-fired) SpaceX illegally fired a group of employees [for drafting an open letter](/2022/6/16/23170228/spacex-elon-musk-internal-open-letter-behavior) that criticized Musk’s behavior. The NLRB also claims SpaceX interrogated employees about their involvement with the letter and encouraged employees to quit if they participated in organized activities.
+
+Now, SpaceX is responding with a lawsuit that says the open letter was a “distraction to SpaceX employees around the country.” It claims the NLRB’s proceedings, which involve a hearing in front of an NLRB administrative law judge (ALJ), violate SpaceX’s “constitutional right to trial by jury.” The company also accuses NLRB of violating the Constitution’s rules on the separation of powers, stating the agency’s structure “is miles away from the traditional understanding” of the concept. The NLRB declined to comment.
+
+SpaceX is asking the court to deem the provisions restricting the removal of NLRB members and ALJs unconstitutional, as well as declare that the NLRB’s proceedings deprive SpaceX of its right to trial. It’s also asking the court to pause the current proceedings. A hearing is scheduled in front of an NLRB ALJ on March 5th, 2024, but there’s an option to appeal the decision to the board and then a federal appeals court.

@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:48:27
+-->
+
+# How Long Will x86 Endure? - by Babbage - The Chip Letter
+
+> 来源：[https://thechipletter.substack.com/p/how-long-will-x86-endure](https://thechipletter.substack.com/p/how-long-will-x86-endure)
+
+It’s 1979, and Intel has a problem. Its 16-bit [8086](https://en.wikipedia.org/wiki/Intel_8086) microprocessor is losing out to its competitors. To quote from the [Oral History](http://archive.computerhistory.org/resources/access/text/2015/09/102746836-05-01-acc.pdf):
+
+> Dave House: … Motorola was selling the 68000 and Zilog was selling the Z8000, and we were commonly coming in third with the 8086 when it came to design win choices.
+
+Why is it losing?
+
+> Dane Elliot: So any engineer who understood minicomputer architecture was going to appreciate what Motorola and Zilog had to offer!
+> 
+> Dave House: Exactly.
+> 
+> Rich Bader: The software guys!
+
+The 8086 is designed as a stopgap. Intel has focused its attention on the [iAPX432](https://en.wikipedia.org/wiki/Intel_iAPX_432), a 32-bit processor with a whole array of advanced features. But the iAPX432 wouldn’t be ready for several years.
+
+The 8086 project started in 1976 and was first available to buy in 1978, but the design had all sorts of limitations. Top of the list was its segmented memory architecture, which added significant complexity when addressing its full memory space.
+
+So, Crush was born. The not very antitrust friendly name for Intel’s programme to fight off competition from Motorola and Zilog. It focused on the 8086 and its companion chips as a systems solution rather than on the 8086’s architecture or software. Crush soon gained momentum. By 1980 the 8086 had gained over 2,300 design wins.
+
+And the 8086 had a secret weapon. Assembly code for Intel’s popular 8-bit 8080 CPU could be automatically translated to 8086 compatible code. Software writers could take their existing applications and quickly adapt them to run on the 8086.
+
+Then IBM chose the cheaper version of the 8086, the 8088, to create the IBM PC.
+
+And the rest is history.
+
+* * *
+
+Fast-forward to today and the stopgap 8086 has been enhanced, extended, and speeded-up. Intel even had a little help from arch-rival AMD in making a 64-bit version of the architecture. And along the way, the architecture came to utterly dominate first desktop and then datacenter computing.
+
+But now we have credible rivals. Both Arm and RISC-V provide not only viable designs but also attractive alternative business models in the shape of either licensed or open-source architectures.
+
+Apple has switched to Arm on the Mac. Microsoft makes Windows for Arm. Arm instances are available on Amazon, Google, Microsoft, and Oracle clouds. These firms are using Arm because it provides real advantages for many users, notably in cost and power efficiency.
+
+But consider how long architectures last. You can still buy 6502 and Z80 compatible CPUs today. This is fully forty years after these architectures were at their peak. And these designs never had the volumes or the ubiquity of x86\.
+
+And crucially, x86 now has over forty years worth of software written to run on the architecture. Some users will continue to need x86 backwards compatibility just to keep their businesses running.
+
+I think it’s safe to say that we will still be able to buy x86 compatible machines in at the least sixty years time. Maybe very much longer.
+
+Translating x86 to Arm to RISC-V code - no actually, hieroglyphic and Demotic Ancient Egyptian and Ancient Greek on the Rosetta Stone.
+
+But the translation tools that took 8080 assembly code and turned it into 8086 code have their counterparts in the 2020s. Apple’s [Rosetta 2](https://www.computerworld.com/article/3597949/everything-you-need-to-know-about-rosetta-2-on-apple-silicon-macs.html) does ahead of time compilation of 64-bit x86 binary code into Arm code. Microsoft has similar [tools](https://learn.microsoft.com/en-us/windows/arm/arm64ec) to enable 64-bit x86 Windows applications to run on Windows for Arm. And these tools put the ability to change from x86 to Arm in the hands of users rather than developers. We will surely see similar tools that do the same for RISC-V. The chains of backwards compatibility have been broken.
+
+So how long will x86 endure? As the leading architecture on desktops, laptops and servers? I‘m going to venture for at least a decade but not for two. As a practical desktop architecture? I’m going to guess at least thirty years. And x86 code, thanks to translation tools, will very likely be around for even longer after that.
+
+What do you think? Please let me know in the comments.
+
+Thank you for reading The Chip Letter. If you’ve enjoyed this post I’d be incredibly grateful if you could share it.
+
+[Share](https://thechipletter.substack.com/p/how-long-will-x86-endure?utm_source=substack&utm_medium=email&utm_content=share&action=share)
+
+##### #1
+
+For more on Crush see this video of the oral history panel from 2013.
+
+##### #2
+
+Why hasn't Arm made its own x86 to 64-bit Arm translation tool? It has the most to gain from the switch from x86\. It’s probably superfluous now but a few years ago it could have been a useful tool to encourage users to switch. I’m genuinely puzzled.
+
+##### #3
+
+Shortly after drafting this I became aware of [Box86](https://box86.org) which supports running of 64-bit x86 binaries on 64-bit Arm systems. And of course [qemu](https://www.qemu.org) should allow x86 virtual machines to be emulated (slowly) on 64-bit Arm systems.
+
+Do let me know if you know of any others.
+
+*Pentium Pro*
+
+https://commons.wikimedia.org/wiki/File:Ppro512K.jpg
+
+*Rosetta Stone*
+
+© Hans Hillewaert Licensed under CC BY-SA 4.0

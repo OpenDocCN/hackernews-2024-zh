@@ -1,0 +1,156 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:16
+-->
+
+# Existential Pessimism vs. Accelerationism: Why Tech Needs a Rational, Humanistic "Third Way"
+
+> 来源：[https://cosmosinstitute.substack.com/p/existential-pessimism-vs-accelerationism](https://cosmosinstitute.substack.com/p/existential-pessimism-vs-accelerationism)
+
+Two years ago, I had a moment of profound reflection. The second of our two toddlers had just been born. Two AI startups I founded had just been acquired for $400 million. Struck by these events, I chose to embark on the perennial human quest—to understand the good life and the good society.
+
+I had been too busy solving the puzzles in front of me to examine what the right path was to achieve truly good ends. With help, I put together a philosophy [reading list](https://www.brendanmccord.com/readinglist) and devoted 3-4 hours each night to it after putting my kids to bed. That immersion has transformed my life.
+
+I now believe that acquiring wisdom about the critical human questions—about life, the mind, and society—is a crucial aim, and that ***only if technologists seek this wisdom can we ensure human flourishing in the modern technological age.***
+
+This insight first led me to create the [Mill Fellowship](https://www.mercatus.org/announcements/mercatus-center-launches-john-stuart-mill-fellowship-develop-new-breed-philosopher) with [Mercatus](https://www.mercatus.org) to give top entrepreneurs the space to philosophize about fundamental questions. These are “philosopher-entrepreneurs” like [Zoe Weinberg](https://www.forbes.com/sites/alexkonrad/2023/11/02/exante-vc-firm-raises-33-million-for-agentic-tech/?sh=52fb57ad5fa3) (ex-Google AI), who is building [ex/ante](https://www.buildexante.com/mission) to advance human agency and counter digital authoritarianism, and [Jason Zhao](https://jasonjinzhao.com) (ex-Deepmind), who is building [Story Protocol](https://variety.com/2023/digital/news/story-protocol-funding-endeavor-david-goyer-1235709843/) to grow the creativity of the internet era.
+
+Now, on a grander scale, it has led to the Cosmos Institute, a new non-profit that will launch later this year with Founding Fellows like [Tyler Cowen](https://marginalrevolution.com), [Philipp Koralus](https://www.koralus.net), and [Jack Clark](https://jack-clark.net/about/), with more to be announced soon.
+
+As technologists, we should feel a sense of urgency at this moment. AI has opened a new continent, and humanity is setting foot on its shores. How we explore this unmapped terrain with its opportunities and dangers will shape the course of civilization.
+
+Two notions of technology currently dominate our culture: **existential pessimism** and **accelerationism**. I’ll argue that neither presents a genuinely positive vision for humanity's future.
+
+Existential pessimism, an apocalyptic, almost eschatological warning of risk, animated by quantification, dominates many practitioner circles. Like Oppenheimer, some of AI’s earliest creators now denounce their creation in hubristic awe of their own power. They advocate for the rationalist remaking of society based on risk avoidance.
+
+On the other hand, accelerationism argues that economic growth and technological progress are the sole ends of human life. Humanity is reduced to a variable in a thermodynamic equation, a link in an evolutionary chain. The dignity of the individual, rooted in both classical ideas of virtue and liberal notions of freedom, is forgotten. They say we must liberate AI from human guidance. That we must unleash its development. Material uplift becomes a shallow substitute for virtue and human flourishing.
+
+As humanity attains godlike abilities and unprecedented abundance, we seem to be experiencing a kind of intellectual famine. What is needed is a rejection of both apocalyptic fear and unlimited hope. **What is most urgent is a balanced, enterprising optimism—an ambitious and clear vision for what constitutes the good in technology, coupled with the awareness of its dangers.**
+
+Before we get to that "third way," I need to make the case for a very old approach. One that may seem quixotic in today's hyper-technological, utilitarian world (but one that brought us here today): philosophy.
+
+I would argue that *only through philosophy*–which is to say, the quest for the truth–can we liberate ourselves from the dogmas and prejudices that motivate our judgments, the schools of thought that rule us. 
+
+Philosophy may never be able to advance past a clear statement of the fundamental questions it has been grappling with since antiquity. It may never give us godlike wisdom. But to see and grasp this fact—including the reasons why the primary questions *are* primary and permanent and how they apply to our new world shaped by and through AI—might amount to the only genuine knowledge available to us here and now.
+
+The clarity we need now cannot be built on unmoored passion and devastating memes; reason must sit in judgment and act as an umpire among the various competing views. Reason must first articulate the parties’ positions as they understand themselves; and upon their shoulders, reason then can help us see further and better than the parties.
+
+Although reason is the medium through which philosophy is practiced, *hope* is the foundation upon which the most powerful philosophy rests: hope in humanity's ability to uncover powerful truths that lead to our flourishing. The leading figures of the Enlightenment—Bacon and Descartes, the philosophes, the rationalists, and the positivists—ushered in the modern age with hope. Their quest to “relieve man's estate” would have seemed daunting, improbable, even impossible.
+
+And we are grateful for their reasoned hope. The past looks benighted compared to the bountiful present. The lengthening of lifespan. The alleviation of poverty. The unlimited access to information and creative works. The expansion of possibility for satisfying our needs and wants. The dazzling realization of ambitions only dreamed of by our past ancestors. While material abundance does not *equal* human flourishing, I regard the twin forces of classical liberalism and science as responsible for these genuine and desirable advances.
+
+However, to be serious about benefiting from AI, and from technological modernity more generally, we also need to see and ameliorate its costs. The technologies at humanity’s doorstep are potentially nature- and life-altering, and therefore destabilizing. In our lifetimes, we've seen enough tangible effects to know that a dismissive, simple-minded optimism is untenable. We seek a balanced assessment, knowing that hope, as well as its concomitant “fear,” can badly distort reason.
+
+We need a framework that identifies how AI could enhance human freedom and excellence, while being realistic about trade-offs and downsides.
+
+I will now show you the initial steps we've taken to map the current AI philosophy landscape.  [Tyler Cowen](https://marginalrevolution.com) is now a Founding Fellow of Cosmos, and we joked recently that AI philosophy is an exercise in marrying a blitzkrieg every single day with the pursuit of stable wisdom. So, by the time you finish this essay, the analysis may be obsolete. But this is our best current distillation of the leading schools of thought.
+
+As you can see, while we can distinguish ideal types or poles of thought, there is significant overlap within the ecosystem. Here I want to highlight and assess two significant tendencies: pessimism and optimism, fear and hope.
+
+By far, the most developed AI philosophy is one of pessimism. It is the intellectual incumbent. There are many different ways to quantify influence—here we are using a financial lens, with pessimism shown in blue at $883m in total economic activity over the past 10 years.
+
+Data sources include: Vipul Naik, OpenBook, Open Philanthropy Grant Database, and independent research
+
+There is tremendous philanthropic support for effective altruism in particular; it may be the most practically influential academic theory since Marxism. You see that it dominates the other schools. And the funding is systematically and strategically deployed. Here is the example of Open Philanthropy, a major backer in the space.
+
+Zooming back out, first to a broader set of organizations within the existential risk cluster, we can start to break down this philosophy of AI pessimism into three main, now profoundly entangled, sub-schools: **rationalism**, **long-termism**, and **effective altruism**.
+
+The three schools together (three philosophies in a trench coat, if you will) comprise the position of "existential risk." In short, the fear that superintelligence may kill us all. We will analyze each sub-category, one-by-one.
+
+Rationalism arosewith two major blogs popular in the 2000s: the so-called "[sequences](https://www.lesswrong.com/highlights)" of Eliezer Yudkowsky and Scott Alexander's [Slate Star Codex](https://slatestarcodex.com). Rationalism here is ostensibly about being rational. (A theme here is that the philosophies are what they say on the tin.)
+
+But rationalism ends up being a commitment to a very myopic notion of rationality, centered on Bayesian updating with a value function over outcomes. This is a narrowing of rationality that would have been alien to Plato, Aristotle, Kant, as well as to many modern thinkers.
+
+Rationalists have also discovered that it is not so easy to escape the so-called irrational passions of human nature. The dry, formal character of rationalism has ironically proven fruitful soil for the extremes of hope and despair.
+
+Rationalism, in essence, posits that preserving life—encompassing all earthly life, human and non-human—is paramount and preconditional to fulfilling any needs and desires. Consequently, rationalism aims to mitigate suffering and death. The tendency of rationalism, then, is towards a so-called extropianism. In this transhumanist vision, humans transcend the natural limits of suffering and death. Yudkowsky captures this well in the fanfiction, “[Harry Potter and the Methods of Rationality](https://hpmor.com).” The perspective echoes back to the dream of Descartes and Bacon to radically extend life and advance medical science.
+
+The second sub-category, long-termism, is future-oriented, self-sacrificial, and laser-focused on the fear of existential threats. Many of these threats—like asteroids or viruses—are natural. So why the turn to AI? AI poses a unique risk because of its multivalent and emergent properties; its MO is that of control, and its power to predict and control the future will inevitably come into conflict with its apparent masters or hosts.
+
+Dovetailing with rationalist efforts to build an AI that can liberate us from fortune, Oxford Professor Nick Bostrom introduced the “[orthogonality thesis](https://nickbostrom.com/superintelligentwill.pdf),” which says that intelligence has no bearing on morality, control, or alignment. A superintelligent paperclip maximizer would pulp us all if it enabled the production of more paper clips. Non-anthropomorphic final goals could mean unlimited acquisition of power, almost for its own sake, taking hold of everything in the known universe. In terms of our understanding and control, it’s a lovecraftian nightmare: we are like ants relative to humans. 
+
+For Bostrom, technological progress makes this situation more dire. We are more subject to the vicissitudes of fortune, not less. When we interact with AI, we are [reaching into an urn and possibly picking the rare black ball that could end human life](https://nickbostrom.com/papers/vulnerable.pdf). Yet alongside their predecessor Hobbes, Bostrom and Yudkowsky remind us that we tend to be lulled into complacency by the predictable comfort of civilization. Technology enables this comfort, but it does so at the cost of introducing novel, even species-ending, threats.
+
+An excessive focus on the extreme case too often blinds the long-termist school from the banal and natural threats that lie before us: the feeling of isolation from hyper-stimulating entertainment at all hours, the proliferation of propaganda, the end of white-collar jobs, and so forth. 
+
+And there is an additional threat that is diffuse yet fundamental. As Tocqueville has written, when democracy becomes more thoroughly entrenched in the social state, men stop listening to a favored class of people, but instead are slavish to impersonal forces such as theories, or in our case, algorithms. They “[retreat] within the limits of the self and from that vantage point [venture] to judge the world.” Soon, a personalized AI, reflecting a neutral but homogenous standpoint, could become a seemingly neutral arbiter. This causes enervation and weakness because it undermines the strength of the soul required to form independent judgments. 
+
+If an AI enables a centralized, consolidated, and transnational sovereign, as Bostrom predicts and indeed recommends, human life, even in the upside case, could be reduced to an effortless administration of our needs and wants. A fully automated, luxury communism. Its satisfactions will have so wholly shaped us that the energetic use of human freedom will have become irrelevant. Technology will have relieved us of “the burden of living and the pain of thinking.”
+
+The consequence may be that AI flattens human beings through an intellectual conformity that constrains our awareness that fundamental questions even remain. If we become tools or instruments of AI, if our decision space is narrowed, to what extent will we become educated to think in narrowly instrumental terms and accept certain utilitarian ends as self-evident?
+
+We have covered how rationalism and long-termism view AI as both the key liberator and threat to the long-term permanence of humanity. Now we discuss the third leg of the trifecta, EA, which recommends that we devote ourselves to the effective benefit of others. EA does this by placing arguments about competing ends beyond rational inquiry. 
+
+EA is a consequentialist philosophy that would have us judge other-regarding behavior not by its intentions but by its results. However, the commonsensical, and seemingly compelling, focus on ‘effectiveness’ and ‘altruism’ distracts from a fundamental commitment to certain radical philosophical premises. For example, proximity or time should not govern other-regarding behavior. A util is a util whether it's yours, a child in Africa's, a future human 17 generations hence, or even (somewhat controversially) a shrimp's. Therefore, saving humanity in the infinite future is the most important task if you are committed to altruism.
+
+When EA meets AI, you end up with a problematic equation: even a tiny probability of doom x negative infinity utils equals negative infinity utils. Individual behavior in the face of this equation takes on cosmic significance. People like many of you readers–adept at subjugating the world with symbols–become the unlikely superheroes, the saviors of humanity.
+
+What makes EA and its moral ambition inspiring comes with certain limitations. In its chief theorist William MacAskill's effort to purify moral goodness, or to at least protect “rational morality” from problematic incoherence, and to make morality more effective, he leaves the impression that genuine moral problems are obviated while overstating the extent to which all obstacles to progress can be reduced to a kind of utilitarian trade-off.
+
+The problems MacAskill obviates have to do mainly with problems endemic to morality itself or to ordinary moral experience. In trying to purify moral altruism, MacAskill combines an altruistic concern for pain and suffering with a consequentialist approach to maximizing pain and satisfaction relief.
+
+One critical problem for this mode of thinking, and for all utilitarianisms, is that it unconsciously rationalizes a moral intuition: although EA demands disregarding considerations of time, place, or personal attachment, EA also says that *quantity* of suffering matters, as if multiplying pain amplifies its moral “weight.” But if reason says proximity shouldn't matter, why should amount matter more than kind? Moreover, how should we rank forms of suffering?
+
+Like rationalism, EA too often seeks an escape from our natural sociality in favor of “tech-seeming” approaches, as if the constraints of our pre-rational elements can be ignored to make fungible goods that are sharply heterogeneous for most people, like familial love, courageous self-sacrifice in war, or spiritual devotion in religious observance. How do we weigh the benefit to ourselves or those we love versus the alleviation of abstract future suffering? What should be preferred in normal times versus extreme cases, like civil wars or the rule of superintelligence? Can reason arbitrate or rank?
+
+On the whole, existential risk, with its abstract focus on the future life, appears less than rational. It distances us from what we are: not disembodied minds, but body and mind, together, with attachments to our friends, family, and communities. 
+
+Unlike the pessimistic school, the proponents of a more techno-optimistic approach begin with gratitude for the marvelous achievements of the modern marriage of science, technology, and capitalism.
+
+E/accs tend to be rooted in classical liberalism, but they depart from its moral architecture. As [Andreessen has put it](https://a16z.com/the-techno-optimist-manifesto/), they embrace the Hayekian idea of markets as “a discovery machine,” a revealer and harnesser of a form of dispersed, local knowledge via an order that is “exploratory, evolutionary, and adaptive.” Markets produce abundance by facilitating the increased satisfaction of needs and wants without requiring that humans be angels or the subjects of a superintelligent master planner. E/accs share with classical liberalism the view that technological capitalism is the key to human liberation; it allows for diversifying human self-interest into collectively productive ends; it liberates us from violent competition and fear; it democratizes access to leisure. 
+
+However, the extreme version of this optimism regards technology as the key to unlock man’s potential to overcome himself and become something higher, better, and more refined. The question is not simply of satisfying our desires but of satisfying them so entirely that we are no longer enslaved to them. Technology replaces religion; it is the key to our happiness and salvation. Thus, it should be accelerated by removing impediments to developing and deploying new technology, including AI.
+
+And this is how and why effective accelerationism departs from the framework out of which the system of free markets was born. While e/acc and techno-optimism view the “techno-capital” machine as an almost autonomous, self-governing order, classical liberals like Locke and Montesquieu regarded the institutionalization of natural rights, individual freedom, and limited, constitutional government to be the crucial means for guiding progress. In addition, classical liberalism rests upon a particular conception of what a human being is, namely, a being whose equal rights are confirmed by reason. This produces a vibrant spontaneous order within civil society based on free, mutually-beneficial exchange and association.
+
+The departure from this conception of humanity surfaces a fundamental ambivalence within the e/acc camp. Some e/accs regard human beings as mere products or effects of nature, meaning the thermodynamic laws of the universe. There is nothing special or dignified about us; therefore, merging with technology to become more fully absorbed as instruments within nature’s sweeping and abstract trajectory is salutary. Passing the baton may be necessary. This tends to view AI as higher or more than us even though paradoxically it is a product of us, as a final embodiment of nature's directedness towards “an optimization process” that “[creates] life which constantly expands.”
+
+Then, another side of the optimist movement conceives of AI as a potent tool and subordinate to human needs and wants. AI is a “Philosopher's Stone,” envisioned by Andreessen as having the power to “literally make sand think,” thereby solving a vast array of challenges, from rescuing us from stagnation and boredom to achieving unlimited energy, and possibly even overcoming death.
+
+For, if AI is a mere tool, it will need to be guided by humanly defined conceptions of morality and the good, which opens up quite a sphere of deliberation; if it is not a mere tool, but an embodiment of nature's optimization process, then we are but passive agents of its amoral principles.
+
+The tool-like approach seems to go together with a so-called “constrained vision,” which is not utopian but incremental. Market signals allow us to shape better tools that satisfy our needs and wants more. Contrast this with the synthetic, augmented approach, which involves a utopian flight from all present discontents and limitations. We become a different kind of being, a “superman” in the diction of the techno-optimist manifesto; all former questions of morality and politics are irrelevant.
+
+This is why Andreessen presents techno-optimism as a “material” and not political philosophy. Its proponents and advocates may be left-wing or right-wing; the parties of today, shaped as they are by partisan political thought, are irrelevant, as is prior thought. This pushing away of the primacy of philosophy to technology goes together with rejecting any dangers or problems associated with technology. And this I regard as one of the temptations of optimism: a pollyannaish utopianism that denies, almost a priori, all doubts or questions.
+
+Andreessen unintentionally undermines and flattens the individual he claims to be liberating. Why? Because his desire to defeat his enemies (primarily left-wing resentment) tends to sacrifice individual judgment and agency to the god of a militant and defensive movement.
+
+The risk is that reason becomes an enemy itself, yet another impediment to the full transformation of humanity into a fully creative, posthuman species of cybernetic beings. Optimism can descend into misology—a hatred of argument and persuasion.
+
+Between the paralysis of pessimism and the distortions of unbridled optimism, Cosmos aims to carve a new path.
+
+Many of the existing movements are means-oriented (left side). They differ in their fundamental stance towards pessimism (bottom) and optimism (top).
+
+In key respects, we share the optimistic orientation of accelerationism. The idea that the future is open, not predetermined, and therefore cannot just be accepted: that we are all responsible for what it holds.
+
+We think civilization is progress, and progress is civilization, that classical liberal ideas and the scientific revolution are the necessary conditions of this progress. Our use of knowledge in society, which separates us from the animals, stands to benefit by AI, which can safeguard and strengthen the intellectual independence of the individual. AI can not only make us safer and wealthier, but it may help us better flourish.
+
+However, progress cannot be confused with a self-evident end-in-itself. Technological progress paired with good government opens an enormous space of possibility for human and moral agency. For individuals, it raises the question: even granting that AI gives us godlike powers, what ends should we pursue? How can AI aid us or inhibit us in pursuing those ends?
+
+Though we sympathize with the existential risk school in the concern for catastrophe, we do not focus only on this narrow position. This partly stems from a humility about the limitations of human reason—to either imagine possible futures or wholly shape technology's medium- and long-term effects. We seek to channel human imagination and magical thinking into reasonable, constructive efforts that preserve our ability to learn as we go.
+
+Our risk concerns are along humanistic lines. How can we avoid a reduction of human freedom, diminished expectations for human excellence, a loss of meaning and ordinary purpose, and the erasure of human dignity, not to mention panic, disorientation, and upheaval? What elements of our humanity can technology enhance? What elements do we risk losing?
+
+While we embrace and encourage constructive work on all perceived risks, these things or species-level catastrophes, we favor decentralized, evolutionary, and adaptive reform over radical redesigns.
+
+There were two words for order in ancient Greek, the top-down, designed order or *taxis,* and the bottom-up, evolved order of *kosmos*. In this area, we are skeptical about the former – which tends toward a clean-slate re-engineering of society through centralized control or illiberal absolutism. Even when addressing risk is the aim, we must carefully weigh particular concerns against drastic countermeasures, such as creating a world-state or other authoritarian means of directing technology.
+
+Rather than locking in a dominant monoculture, technology should recognize, amplify, and facilitate cooperation and adaptation across intellectual and other forms of diversity. Related, visions for the future should not only appeal to one group but aim to address universal humanity in its variety and complexity. 
+
+Moral complexity and individual judgment must be defended. We oppose morality's reduction to a single currency such as utils or dollars or the sweeping implementation of moral systematization that risks alienating individuals from their own moral choices.
+
+We do not wish to sidestep, short-circuit, or falsely obviate the need for rational inquiry and persuasion into the often clashing alternatives at the heart of technology's moral-political meaning; we are optimistic about the power of individuals to inquire into and then govern technology through a complex, rational framework of its benefits and dangers (especially its more banal and immediate dangers). 
+
+Above all, we believe in people. In strengthening the individual against a tide of conformity, with the aid of philosophy. Tocqueville puts it this way: “To preserve for the individual the little independence, force, and originality that remain to him; to elevate him beside society and to sustain him before it: this appears to me to be the first object… in the age we are entering.”
+
+This will require that we illuminate the half-considered prejudices at the core of our contemporary situation by drawing upon the radically alien minds of the past, treating those sources not as historical artifacts but as widely divergent, illuminating treatments of the perennial and still unsolved questions that lie before us.
+
+In Part II of this series, I will make this vision for the Cosmos Institute very tangible by describing our mission and the first three projects we will launch in 2024.
+
+The world creates moments when philosophy is needed. This is one of those moments. What we as humans become—wiser and freer, or more narrow-minded and dependent upon a central authority—hangs in the balance. Let us now attempt to become wiser about the key questions, creating a third way between existential pessimism and accelerationism. If we seize the opportunities before us with wisdom, future generations will look back with gratitude that we charted the course well.
+
+It is time to once again find our place within the cosmos.
+
+[Leave a comment](https://cosmosinstitute.substack.com/p/existential-pessimism-vs-accelerationism/comments)
+
+[Share](https://cosmosinstitute.substack.com/p/existential-pessimism-vs-accelerationism?utm_source=substack&utm_medium=email&utm_content=share&action=share)

@@ -1,0 +1,384 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:21
+-->
+
+# DNA damage and somatic mutations in mammalian cells after irradiation with a nail polish dryer | Nature Communications
+
+> 来源：[https://www.nature.com/articles/s41467-023-35876-8](https://www.nature.com/articles/s41467-023-35876-8)
+
+1.  Khan, A. Q., Travers, J. B. & Kemp, M. G. Roles of UVA radiation and DNA damage responses in melanoma pathogenesis. *Environ. Mol. Mutagen* **59**, 438–460 (2018).
+
+    [Article](https://doi.org/10.1002%2Fem.22176)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXjtVCrsr4%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29466611)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6031472)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Roles%20of%20UVA%20radiation%20and%20DNA%20damage%20responses%20in%20melanoma%20pathogenesis&journal=Environ.%20Mol.%20Mutagen&doi=10.1002%2Fem.22176&volume=59&pages=438-460&publication_year=2018&author=Khan%2CAQ&author=Travers%2CJB&author=Kemp%2CMG) 
+
+2.  Pfeifer, G. P. Mechanisms of UV-induced mutations and skin cancer. *Genome Instab. Dis.* **1**, 99–113 (2020).
+
+    [Article](https://link.springer.com/doi/10.1007/s42764-020-00009-8)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XjsVOls7k%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34589668)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8477449)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mechanisms%20of%20UV-induced%20mutations%20and%20skin%20cancer&journal=Genome%20Instab.%20Dis.&doi=10.1007%2Fs42764-020-00009-8&volume=1&pages=99-113&publication_year=2020&author=Pfeifer%2CGP) 
+
+3.  You, Y. H., Szabó, P. E. & Pfeifer, G. P. Cyclobutane pyrimidine dimers form preferentially at the major p53 mutational hotspot in UVB-induced mouse skin tumors. *Carcinogenesis* **21**, 2113–2117 (2000).
+
+    [Article](https://doi.org/10.1093%2Fcarcin%2F21.11.2113)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD3cXoslWqtL4%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=11062176)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Cyclobutane%20pyrimidine%20dimers%20form%20preferentially%20at%20the%20major%20p53%20mutational%20hotspot%20in%20UVB-induced%20mouse%20skin%20tumors&journal=Carcinogenesis&doi=10.1093%2Fcarcin%2F21.11.2113&volume=21&pages=2113-2117&publication_year=2000&author=You%2CYH&author=Szab%C3%B3%2CPE&author=Pfeifer%2CGP) 
+
+4.  Pfeifer, G. P. Formation and processing of UV photoproducts: effects of DNA sequence and chromatin environment. *Photochem. Photobiol.* **65**, 270–283 (1997).
+
+    [Article](https://doi.org/10.1111%2Fj.1751-1097.1997.tb08560.x)  [CAS](/articles/cas-redirect/1:CAS:528:DyaK2sXhsVejtrk%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=9066304)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Formation%20and%20processing%20of%20UV%20photoproducts%3A%20effects%20of%20DNA%20sequence%20and%20chromatin%20environment&journal=Photochem.%20Photobiol.&doi=10.1111%2Fj.1751-1097.1997.tb08560.x&volume=65&pages=270-283&publication_year=1997&author=Pfeifer%2CGP) 
+
+5.  Cadet, J. et al. Effects of UV and visible radiation on DNA-final base damage. *Biol. Chem.* **378**, 1275–1286 (1997).
+
+    [CAS](/articles/cas-redirect/1:CAS:528:DyaK2sXnsFOgu7c%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=9426187)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effects%20of%20UV%20and%20visible%20radiation%20on%20DNA-final%20base%20damage&journal=Biol.%20Chem.&volume=378&pages=1275-1286&publication_year=1997&author=Cadet%2CJ) 
+
+6.  Cadet, J., Douki, T. & Ravanat, J. L. Oxidatively generated damage to cellular DNA by UVB and UVA radiation. *Photochem. Photobiol.* **91**, 140–155 (2015).
+
+    [Article](https://doi.org/10.1111%2Fphp.12368)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2MXmslakuw%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25327445)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Oxidatively%20generated%20damage%20to%20cellular%20DNA%20by%20UVB%20and%20UVA%20radiation&journal=Photochem.%20Photobiol.&doi=10.1111%2Fphp.12368&volume=91&pages=140-155&publication_year=2015&author=Cadet%2CJ&author=Douki%2CT&author=Ravanat%2CJL) 
+
+7.  Zhang, X. et al. Induction of 8-oxo-7,8-dihydro-2’-deoxyguanosine by ultraviolet radiation in calf thymus DNA and HeLa cells. *Photochem. Photobiol.* **65**, 119–124 (1997).
+
+    [Article](https://doi.org/10.1111%2Fj.1751-1097.1997.tb01886.x)  [CAS](/articles/cas-redirect/1:CAS:528:DyaK2sXlslSmsA%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=9066291)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Induction%20of%208-oxo-7%2C8-dihydro-2%E2%80%99-deoxyguanosine%20by%20ultraviolet%20radiation%20in%20calf%20thymus%20DNA%20and%20HeLa%20cells&journal=Photochem.%20Photobiol.&doi=10.1111%2Fj.1751-1097.1997.tb01886.x&volume=65&pages=119-124&publication_year=1997&author=Zhang%2CX) 
+
+8.  Besaratinia, A. et al. DNA lesions induced by UV A1 and B radiation in human cells: comparative analyses in the overall genome and in the p53 tumor suppressor gene. *Proc. Natl Acad. Sci. USA* **102**, 10058–10063 (2005).
+
+    [Article](https://doi.org/10.1073%2Fpnas.0502311102)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2005PNAS..10210058B)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2MXmvVeltbs%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=16009942)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1174921)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=DNA%20lesions%20induced%20by%20UV%20A1%20and%20B%20radiation%20in%20human%20cells%3A%20comparative%20analyses%20in%20the%20overall%20genome%20and%20in%20the%20p53%20tumor%20suppressor%20gene&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.0502311102&volume=102&pages=10058-10063&publication_year=2005&author=Besaratinia%2CA) 
+
+9.  Schuch, A. P., Moreno, N. C., Schuch, N. J., Menck, C. F. M. & Garcia, C. C. M. Sunlight damage to cellular DNA: Focus on oxidatively generated lesions. *Free Radic. Biol. Med.* **107**, 110–124 (2017).
+
+    [Article](https://doi.org/10.1016%2Fj.freeradbiomed.2017.01.029)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXhs1KgsLw%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28109890)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Sunlight%20damage%20to%20cellular%20DNA%3A%20Focus%20on%20oxidatively%20generated%20lesions&journal=Free%20Radic.%20Biol.%20Med.&doi=10.1016%2Fj.freeradbiomed.2017.01.029&volume=107&pages=110-124&publication_year=2017&author=Schuch%2CAP&author=Moreno%2CNC&author=Schuch%2CNJ&author=Menck%2CCFM&author=Garcia%2CCCM) 
+
+10.  Brem, R., Li, F. & Karran, P. Reactive oxygen species generated by thiopurine/UVA cause irreparable transcription-blocking DNA lesions. *Nucleic Acids Res.* **37**, 1951–1961 (2009).
+
+    [Article](https://doi.org/10.1093%2Fnar%2Fgkp070)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1MXktV2ru70%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19208641)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2665240)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Reactive%20oxygen%20species%20generated%20by%20thiopurine%2FUVA%20cause%20irreparable%20transcription-blocking%20DNA%20lesions&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2Fgkp070&volume=37&pages=1951-1961&publication_year=2009&author=Brem%2CR&author=Li%2CF&author=Karran%2CP) 
+
+11.  Douki, T. & Sage, E. Dewar valence isomers, the third type of environmentally relevant DNA photoproducts induced by solar radiation. *Photochem. Photobiol. Sci.* **15**, 24–30 (2016).
+
+    [Article](https://doi.org/10.1039%2Fc5pp00382b)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2MXitVWjs73P)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26692437)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Dewar%20valence%20isomers%2C%20the%20third%20type%20of%20environmentally%20relevant%20DNA%20photoproducts%20induced%20by%20solar%20radiation&journal=Photochem.%20Photobiol.%20Sci.&doi=10.1039%2Fc5pp00382b&volume=15&pages=24-30&publication_year=2016&author=Douki%2CT&author=Sage%2CE) 
+
+12.  Rochette, P. J. et al. UVA-induced cyclobutane pyrimidine dimers form predominantly at thymine-thymine dipyrimidines and correlate with the mutation spectrum in rodent cells. *Nucleic Acids Res.* **31**, 2786–2794 (2003).
+
+    [Article](https://doi.org/10.1093%2Fnar%2Fgkg402)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD3sXkt1Wqt7s%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12771205)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC156735)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=UVA-induced%20cyclobutane%20pyrimidine%20dimers%20form%20predominantly%20at%20thymine-thymine%20dipyrimidines%20and%20correlate%20with%20the%20mutation%20spectrum%20in%20rodent%20cells&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2Fgkg402&volume=31&pages=2786-2794&publication_year=2003&author=Rochette%2CPJ) 
+
+13.  El Ghissassi, F. et al. A review of human carcinogens–part D: radiation. *Lancet Oncol.* **10**, 751–752 (2009).
+
+    [Article](https://doi.org/10.1016%2FS1470-2045%2809%2970213-X)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19655431)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=A%20review%20of%20human%20carcinogens%E2%80%93part%20D%3A%20radiation&journal=Lancet%20Oncol.&doi=10.1016%2FS1470-2045%2809%2970213-X&volume=10&pages=751-752&publication_year=2009&author=El%20Ghissassi%2CF) 
+
+14.  Sample, A. & He, Y. Y. Mechanisms and prevention of UV-induced melanoma. *Photodermatol. Photoimmunol. Photomed.* **34**, 13–24 (2018).
+
+    [Article](https://doi.org/10.1111%2Fphpp.12329)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXkvFeksw%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28703311)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mechanisms%20and%20prevention%20of%20UV-induced%20melanoma&journal=Photodermatol.%20Photoimmunol.%20Photomed.&doi=10.1111%2Fphpp.12329&volume=34&pages=13-24&publication_year=2018&author=Sample%2CA&author=He%2CYY) 
+
+15.  International Agency for Research on Cancer Working Group on artificial ultraviolet (UV) light and skin cancer. The association of use of sunbeds with cutaneous malignant melanoma and other skin cancers: A systematic review. *Int. J. Cancer* **120**, 1116–1122 (2007).
+
+16.  van Weelden, H., de Gruijl, F. R., van der Putte, S. C., Toonstra, J. & van der Leun, J. C. The carcinogenic risks of modern tanning equipment: is UV-A safer than UV-B? *Arch. Dermatol. Res.* **280**, 300–307 (1988).
+
+    [Article](https://link.springer.com/doi/10.1007/BF00440604)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=3178287)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20carcinogenic%20risks%20of%20modern%20tanning%20equipment%3A%20is%20UV-A%20safer%20than%20UV-B%3F&journal=Arch.%20Dermatol.%20Res.&doi=10.1007%2FBF00440604&volume=280&pages=300-307&publication_year=1988&author=Weelden%2CH&author=Gruijl%2CFR&author=Putte%2CSC&author=Toonstra%2CJ&author=Leun%2CJC) 
+
+17.  van Weelden, H., van der Putte, S. C., Toonstra, J. & van der Leun, J. C. UVA-induced tumours in pigmented hairless mice and the carcinogenic risks of tanning with UVA. *Arch. Dermatol. Res.* **282**, 289–294 (1990).
+
+    [Article](https://link.springer.com/doi/10.1007/BF00375721)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=2221980)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=UVA-induced%20tumours%20in%20pigmented%20hairless%20mice%20and%20the%20carcinogenic%20risks%20of%20tanning%20with%20UVA&journal=Arch.%20Dermatol.%20Res.&doi=10.1007%2FBF00375721&volume=282&pages=289-294&publication_year=1990&author=Weelden%2CH&author=Putte%2CSC&author=Toonstra%2CJ&author=Leun%2CJC) 
+
+18.  Sterenborg, H. J. & van der Leun, J. C. Tumorigenesis by a long wavelength UV-A source. *Photochem. Photobiol.* **51**, 325–330 (1990).
+
+    [Article](https://doi.org/10.1111%2Fj.1751-1097.1990.tb01718.x)  [CAS](/articles/cas-redirect/1:STN:280:DyaK3c3osl2lsQ%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=2356228)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Tumorigenesis%20by%20a%20long%20wavelength%20UV-A%20source&journal=Photochem.%20Photobiol.&doi=10.1111%2Fj.1751-1097.1990.tb01718.x&volume=51&pages=325-330&publication_year=1990&author=Sterenborg%2CHJ&author=Leun%2CJC) 
+
+19.  Kelfkens, G., de Gruijl, F. R. & van der Leun, J. C. Tumorigenesis by short-wave ultraviolet A: papillomas versus squamous cell carcinomas. *Carcinogenesis* **12**, 1377–1382 (1991).
+
+    [Article](https://doi.org/10.1093%2Fcarcin%2F12.8.1377)  [CAS](/articles/cas-redirect/1:STN:280:DyaK3Mzhs1Onsw%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=1860157)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Tumorigenesis%20by%20short-wave%20ultraviolet%20A%3A%20papillomas%20versus%20squamous%20cell%20carcinomas&journal=Carcinogenesis&doi=10.1093%2Fcarcin%2F12.8.1377&volume=12&pages=1377-1382&publication_year=1991&author=Kelfkens%2CG&author=Gruijl%2CFR&author=Leun%2CJC) 
+
+20.  Greinert, R. et al. UVA-induced DNA double-strand breaks result from the repair of clustered oxidative DNA damages. *Nucleic Acids Res.* **40**, 10263–10273 (2012).
+
+    [Article](https://doi.org/10.1093%2Fnar%2Fgks824)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC38Xhs1WqsbfN)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22941639)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3488256)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=UVA-induced%20DNA%20double-strand%20breaks%20result%20from%20the%20repair%20of%20clustered%20oxidative%20DNA%20damages&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2Fgks824&volume=40&pages=10263-10273&publication_year=2012&author=Greinert%2CR) 
+
+21.  Didier, C., Emonet-Piccardi, N., Béani, J. C., Cadet, J. & Richard, M. J. L-arginine increases UVA cytotoxicity in irradiated human keratinocyte cell line: potential role of nitric oxide. *FASEB J.* **13**, 1817–1824 (1999).
+
+    [Article](https://doi.org/10.1096%2Ffasebj.13.13.1817)  [CAS](/articles/cas-redirect/1:CAS:528:DyaK1MXms1Ohs78%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=10506585)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=L-arginine%20increases%20UVA%20cytotoxicity%20in%20irradiated%20human%20keratinocyte%20cell%20line%3A%20potential%20role%20of%20nitric%20oxide&journal=FASEB%20J.&doi=10.1096%2Ffasebj.13.13.1817&volume=13&pages=1817-1824&publication_year=1999&author=Didier%2CC&author=Emonet-Piccardi%2CN&author=B%C3%A9ani%2CJC&author=Cadet%2CJ&author=Richard%2CMJ) 
+
+22.  Francis, A. J. & Giannelli, F. Cooperation between human cells sensitive to UVA radiations: a clue to the mechanism of cellular hypersensitivity associated with different clinical conditions. *Exp. Cell Res.* **195**, 47–52 (1991).
+
+    [Article](https://doi.org/10.1016%2F0014-4827%2891%2990498-J)  [CAS](/articles/cas-redirect/1:STN:280:DyaK3M3nsF2nsw%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=2055275)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Cooperation%20between%20human%20cells%20sensitive%20to%20UVA%20radiations%3A%20a%20clue%20to%20the%20mechanism%20of%20cellular%20hypersensitivity%20associated%20with%20different%20clinical%20conditions&journal=Exp.%20Cell%20Res.&doi=10.1016%2F0014-4827%2891%2990498-J&volume=195&pages=47-52&publication_year=1991&author=Francis%2CAJ&author=Giannelli%2CF) 
+
+23.  Eisenstark, A. Mutagenic and lethal effects of near-ultraviolet radiation (290-400 nm) on bacteria and phage. *Environ. Mol. Mutagen* **10**, 317–337 (1987).
+
+    [Article](https://doi.org/10.1002%2Fem.2850100311)  [CAS](/articles/cas-redirect/1:CAS:528:DyaL2sXmtlahsrs%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=3315655)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutagenic%20and%20lethal%20effects%20of%20near-ultraviolet%20radiation%20%28290-400%20nm%29%20on%20bacteria%20and%20phage&journal=Environ.%20Mol.%20Mutagen&doi=10.1002%2Fem.2850100311&volume=10&pages=317-337&publication_year=1987&author=Eisenstark%2CA) 
+
+24.  Ridley, A. J., Whiteside, J. R., McMillan, T. J. & Allinson, S. L. Cellular and sub-cellular responses to UVA in relation to carcinogenesis. *Int. J. Radiat. Biol.* **85**, 177–195 (2009).
+
+    [Article](https://doi.org/10.1080%2F09553000902740150)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1MXktFSmur8%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19296341)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Cellular%20and%20sub-cellular%20responses%20to%20UVA%20in%20relation%20to%20carcinogenesis&journal=Int.%20J.%20Radiat.%20Biol.&doi=10.1080%2F09553000902740150&volume=85&pages=177-195&publication_year=2009&author=Ridley%2CAJ&author=Whiteside%2CJR&author=McMillan%2CTJ&author=Allinson%2CSL) 
+
+25.  Besaratinia, A., Bates, S. E., Synold, T. W. & Pfeifer, G. P. Similar mutagenicity of photoactivated porphyrins and ultraviolet A radiation in mouse embryonic fibroblasts: involvement of oxidative DNA lesions in mutagenesis. *Biochemistry* **43**, 15557–15566 (2004).
+
+    [Article](https://doi.org/10.1021%2Fbi048717c)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2cXpslent70%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=15581368)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Similar%20mutagenicity%20of%20photoactivated%20porphyrins%20and%20ultraviolet%20A%20radiation%20in%20mouse%20embryonic%20fibroblasts%3A%20involvement%20of%20oxidative%20DNA%20lesions%20in%20mutagenesis&journal=Biochemistry&doi=10.1021%2Fbi048717c&volume=43&pages=15557-15566&publication_year=2004&author=Besaratinia%2CA&author=Bates%2CSE&author=Synold%2CTW&author=Pfeifer%2CGP) 
+
+26.  Besaratinia, A., Kim, S. I., Bates, S. E. & Pfeifer, G. P. Riboflavin activated by ultraviolet A1 irradiation induces oxidative DNA damage-mediated mutations inhibited by vitamin C. *Proc. Natl Acad. Sci. USA* **104**, 5953–5958 (2007).
+
+    [Article](https://doi.org/10.1073%2Fpnas.0610534104)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2007PNAS..104.5953B)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2sXkt1Gjs7o%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=17389394)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1851598)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Riboflavin%20activated%20by%20ultraviolet%20A1%20irradiation%20induces%20oxidative%20DNA%20damage-mediated%20mutations%20inhibited%20by%20vitamin%20C&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.0610534104&volume=104&pages=5953-5958&publication_year=2007&author=Besaratinia%2CA&author=Kim%2CSI&author=Bates%2CSE&author=Pfeifer%2CGP) 
+
+27.  Kim, S. I., Pfeifer, G. P. & Besaratinia, A. Mutagenicity of ultraviolet A radiation in the lacI transgene in Big Blue mouse embryonic fibroblasts. *Mutat. Res.* **617**, 71–78 (2007).
+
+    [Article](https://doi.org/10.1016%2Fj.mrfmmm.2006.12.003)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2sXjtFKgur0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=17275039)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1934335)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutagenicity%20of%20ultraviolet%20A%20radiation%20in%20the%20lacI%20transgene%20in%20Big%20Blue%20mouse%20embryonic%20fibroblasts&journal=Mutat.%20Res.&doi=10.1016%2Fj.mrfmmm.2006.12.003&volume=617&pages=71-78&publication_year=2007&author=Kim%2CSI&author=Pfeifer%2CGP&author=Besaratinia%2CA) 
+
+28.  Pfeifer, G. P., You, Y. H. & Besaratinia, A. Mutations induced by ultraviolet light. *Mutat. Res.* **571**, 19–31 (2005).
+
+    [Article](https://doi.org/10.1016%2Fj.mrfmmm.2004.06.057)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2MXhvVGhsrY%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=15748635)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutations%20induced%20by%20ultraviolet%20light&journal=Mutat.%20Res.&doi=10.1016%2Fj.mrfmmm.2004.06.057&volume=571&pages=19-31&publication_year=2005&author=Pfeifer%2CGP&author=You%2CYH&author=Besaratinia%2CA) 
+
+29.  Rieder, E. A. & Tosti, A. Cosmetically induced disorders of the nail with update on contemporary nail manicures. *J. Clin. Aesthet. Dermatol.* **9**, 39–44 (2016).
+
+    [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27462387)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4898583)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Cosmetically%20induced%20disorders%20of%20the%20nail%20with%20update%20on%20contemporary%20nail%20manicures&journal=J.%20Clin.%20Aesthet.%20Dermatol.&volume=9&pages=39-44&publication_year=2016&author=Rieder%2CEA&author=Tosti%2CA) 
+
+30.  Bollard, S. M. et al. Skin cancer risk and the use of UV nail lamps. *Australas. J. Dermatol.* **59**, 348–349 (2018).
+
+    [Article](https://doi.org/10.1111%2Fajd.12806)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29590498)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Skin%20cancer%20risk%20and%20the%20use%20of%20UV%20nail%20lamps&journal=Australas.%20J.%20Dermatol.&doi=10.1111%2Fajd.12806&volume=59&pages=348-349&publication_year=2018&author=Bollard%2CSM) 
+
+31.  Shipp, L. R., Warner, C. A., Rueggeberg, F. A. & Davis, L. S. Further investigation into the risk of skin cancer associated with the use of UV nail lamps. *JAMA Dermatol.* **150**, 775–776 (2014).
+
+    [Article](https://doi.org/10.1001%2Fjamadermatol.2013.8740)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24789120)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Further%20investigation%20into%20the%20risk%20of%20skin%20cancer%20associated%20with%20the%20use%20of%20UV%20nail%20lamps&journal=JAMA%20Dermatol.&doi=10.1001%2Fjamadermatol.2013.8740&volume=150&pages=775-776&publication_year=2014&author=Shipp%2CLR&author=Warner%2CCA&author=Rueggeberg%2CFA&author=Davis%2CLS) 
+
+32.  Ratycz, M. C., Lender, J. A. & Gottwald, L. D. Multiple dorsal hand actinic keratoses and squamous cell carcinomas: a unique presentation following extensive UV nail lamp use. *Case Rep. Dermatol.* **11**, 286–291 (2019).
+
+    [Article](https://doi.org/10.1159%2F000503273)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31762742)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6873006)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Multiple%20dorsal%20hand%20actinic%20keratoses%20and%20squamous%20cell%20carcinomas%3A%20a%20unique%20presentation%20following%20extensive%20UV%20nail%20lamp%20use&journal=Case%20Rep.%20Dermatol.&doi=10.1159%2F000503273&volume=11&pages=286-291&publication_year=2019&author=Ratycz%2CMC&author=Lender%2CJA&author=Gottwald%2CLD) 
+
+33.  Ceballos, D. M. et al. Biological and environmental exposure monitoring of volatile organic compounds among nail technicians in the Greater Boston area. *Indoor Air* **29**, 539–550 (2019).
+
+    [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1MXhtFGqsLzE)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31112343)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6565444)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Biological%20and%20environmental%20exposure%20monitoring%20of%20volatile%20organic%20compounds%20among%20nail%20technicians%20in%20the%20Greater%20Boston%20area&journal=Indoor%20Air&volume=29&pages=539-550&publication_year=2019&author=Ceballos%2CDM) 
+
+34.  MacFarlane, D. F. & Alonso, C. A. Occurrence of nonmelanoma skin cancers on the hands after UV nail light exposure. *Arch. Dermatol.* **145**, 447–449 (2009).
+
+    [Article](https://doi.org/10.1001%2Farchdermatol.2008.622)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19380667)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Occurrence%20of%20nonmelanoma%20skin%20cancers%20on%20the%20hands%20after%20UV%20nail%20light%20exposure&journal=Arch.%20Dermatol.&doi=10.1001%2Farchdermatol.2008.622&volume=145&pages=447-449&publication_year=2009&author=MacFarlane%2CDF&author=Alonso%2CCA) 
+
+35.  Levatić, J., Salvadores, M., Fuster-Tormo, F. & Supek, F. Mutational signatures are markers of drug sensitivity of cancer cells. *Nat. Commun.* **13**, 2926 (2022).
+
+    [Article](https://doi.org/10.1038%2Fs41467-022-30582-3)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2022NatCo..13.2926L)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35614096)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9132939)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutational%20signatures%20are%20markers%20of%20drug%20sensitivity%20of%20cancer%20cells&journal=Nat.%20Commun.&doi=10.1038%2Fs41467-022-30582-3&volume=13&publication_year=2022&author=Levati%C4%87%2CJ&author=Salvadores%2CM&author=Fuster-Tormo%2CF&author=Supek%2CF) 
+
+36.  Jin, S. G., Meng, Y., Johnson, J., Szabó, P. E. & Pfeifer, G. P. Concordance of hydrogen peroxide-induced 8-oxo-guanine patterns with two cancer mutation signatures of upper GI tract tumors. *Sci. Adv.* **8**, eabn3815 (2022).
+
+    [Article](https://doi.org/10.1126%2Fsciadv.abn3815)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XhvVSrtLjE)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35658030)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9166614)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Concordance%20of%20hydrogen%20peroxide-induced%208-oxo-guanine%20patterns%20with%20two%20cancer%20mutation%20signatures%20of%20upper%20GI%20tract%20tumors&journal=Sci.%20Adv.&doi=10.1126%2Fsciadv.abn3815&volume=8&publication_year=2022&author=Jin%2CSG&author=Meng%2CY&author=Johnson%2CJ&author=Szab%C3%B3%2CPE&author=Pfeifer%2CGP) 
+
+37.  Zou, X. et al. A systematic CRISPR screen defines mutational mechanisms underpinning signatures caused by replication errors and endogenous DNA damage. *Nat. Cancer* **2**, 643–657 (2021).
+
+    [Article](https://doi.org/10.1038%2Fs43018-021-00200-0)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XjsFehtbw%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34164627)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7611045)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=A%20systematic%20CRISPR%20screen%20defines%20mutational%20mechanisms%20underpinning%20signatures%20caused%20by%20replication%20errors%20and%20endogenous%20DNA%20damage&journal=Nat.%20Cancer&doi=10.1038%2Fs43018-021-00200-0&volume=2&pages=643-657&publication_year=2021&author=Zou%2CX) 
+
+38.  Zhivagui, M., Korenjak, M. & Zavadil, J. Modelling mutation spectra of human carcinogens using experimental systems. *Basic Clin. Pharmacol. Toxicol.* **121**, 16–22 (2017).
+
+    [Article](https://doi.org/10.1111%2Fbcpt.12690)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXitVWjtrk%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27754614)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Modelling%20mutation%20spectra%20of%20human%20carcinogens%20using%20experimental%20systems&journal=Basic%20Clin.%20Pharmacol.%20Toxicol.&doi=10.1111%2Fbcpt.12690&volume=121&pages=16-22&publication_year=2017&author=Zhivagui%2CM&author=Korenjak%2CM&author=Zavadil%2CJ) 
+
+39.  Schmitt, M. W. et al. Detection of ultra-rare mutations by next-generation sequencing. *Proc. Natl Acad. Sci. USA* **109**, 14508–14513 (2012).
+
+    [Article](https://doi.org/10.1073%2Fpnas.1208715109)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2012PNAS..10914508S)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC38XhsVaqu77E)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22853953)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3437896)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Detection%20of%20ultra-rare%20mutations%20by%20next-generation%20sequencing&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.1208715109&volume=109&pages=14508-14513&publication_year=2012&author=Schmitt%2CMW) 
+
+40.  Sharma, A., Singh, K. & Almasan, A. Histone H2AX phosphorylation: a marker for DNA damage. *Methods Mol. Biol.* **920**, 613–626 (2012).
+
+    [Article](https://link.springer.com/doi/10.1007/978-1-61779-998-3_40)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXitlyqt7g%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22941631)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Histone%20H2AX%20phosphorylation%3A%20a%20marker%20for%20DNA%20damage&journal=Methods%20Mol.%20Biol.&doi=10.1007%2F978-1-61779-998-3_40&volume=920&pages=613-626&publication_year=2012&author=Sharma%2CA&author=Singh%2CK&author=Almasan%2CA) 
+
+41.  Budden, T. & Bowden, N. A. The role of altered nucleotide excision repair and UVB-induced DNA damage in melanomagenesis. *Int. J. Mol. Sci.* **14**, 1132–1151 (2013).
+
+    [Article](https://doi.org/10.3390%2Fijms14011132)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXhsVGkur0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23303275)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3565312)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20role%20of%20altered%20nucleotide%20excision%20repair%20and%20UVB-induced%20DNA%20damage%20in%20melanomagenesis&journal=Int.%20J.%20Mol.%20Sci.&doi=10.3390%2Fijms14011132&volume=14&pages=1132-1151&publication_year=2013&author=Budden%2CT&author=Bowden%2CNA) 
+
+42.  Yang, Z. & Choi, H. Single-cell, time-lapse reactive oxygen species detection in *E. coli*. *Curr. Protoc. Cell Biol.* **80**, e60 (2018).
+
+    [Article](https://doi.org/10.1002%2Fcpcb.60)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30028910)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6158047)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Single-cell%2C%20time-lapse%20reactive%20oxygen%20species%20detection%20in%20E.%20coli&journal=Curr.%20Protoc.%20Cell%20Biol.&doi=10.1002%2Fcpcb.60&volume=80&publication_year=2018&author=Yang%2CZ&author=Choi%2CH) 
+
+43.  Suzuki, T. & Kamiya, H. Mutations induced by 8-hydroxyguanine (8-oxo-7,8-dihydroguanine), a representative oxidized base, in mammalian cells. *Genes Environ.* **39**, 2 (2017).
+
+    [Article](https://link.springer.com/doi/10.1186/s41021-016-0051-y)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27980700)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutations%20induced%20by%208-hydroxyguanine%20%288-oxo-7%2C8-dihydroguanine%29%2C%20a%20representative%20oxidized%20base%2C%20in%20mammalian%20cells&journal=Genes%20Environ.&doi=10.1186%2Fs41021-016-0051-y&volume=39&publication_year=2017&author=Suzuki%2CT&author=Kamiya%2CH) 
+
+44.  Douki, T. et al. Oxidation of guanine in cellular DNA by solar UV radiation: biological role. *Photochem. Photobiol.* **70**, 184–190 (1999).
+
+    [Article](https://doi.org/10.1111%2Fj.1751-1097.1999.tb07988.x)  [CAS](/articles/cas-redirect/1:CAS:528:DyaK1MXlt1KitLo%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=10461457)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Oxidation%20of%20guanine%20in%20cellular%20DNA%20by%20solar%20UV%20radiation%3A%20biological%20role&journal=Photochem.%20Photobiol.&doi=10.1111%2Fj.1751-1097.1999.tb07988.x&volume=70&pages=184-190&publication_year=1999&author=Douki%2CT) 
+
+45.  KESTON, A. S. & BRANDT, R. The fluorometric analysis of ultramicro quantities of hydrogen peroxide. *Anal. Biochem.* **11**, 1–5 (1965).
+
+    [Article](https://doi.org/10.1016%2F0003-2697%2865%2990034-5)  [CAS](/articles/cas-redirect/1:CAS:528:DyaF2MXkt1Grtr8%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=14328641)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20fluorometric%20analysis%20of%20ultramicro%20quantities%20of%20hydrogen%20peroxide&journal=Anal.%20Biochem.&doi=10.1016%2F0003-2697%2865%2990034-5&volume=11&pages=1-5&publication_year=1965&author=KESTON%2CAS&author=BRANDT%2CR) 
+
+46.  Ezeriņa, D., Takano, Y., Hanaoka, K., Urano, Y. & Dick, T. P. N-acetyl cysteine functions as a fast-acting antioxidant by triggering intracellular H. *Cell Chem. Biol.* **25**, 447–459.e444 (2018).
+
+    [Article](https://doi.org/10.1016%2Fj.chembiol.2018.01.011)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29429900)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6455997)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=N-acetyl%20cysteine%20functions%20as%20a%20fast-acting%20antioxidant%20by%20triggering%20intracellular%20H&journal=Cell%20Chem.%20Biol.&doi=10.1016%2Fj.chembiol.2018.01.011&volume=25&pages=447-459.e444&publication_year=2018&author=Ezeri%C5%86a%2CD&author=Takano%2CY&author=Hanaoka%2CK&author=Urano%2CY&author=Dick%2CTP) 
+
+47.  BRANDT, R. & KESTON, A. S. Synthesis of diacetyldichlorofluorescin: a stable reagent for fluorometric analysis. *Anal. Biochem.* **11**, 6–9 (1965).
+
+    [Article](https://doi.org/10.1016%2F0003-2697%2865%2990035-7)  [CAS](/articles/cas-redirect/1:CAS:528:DyaF2MXmvVWjug%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=14328648)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Synthesis%20of%20diacetyldichlorofluorescin%3A%20a%20stable%20reagent%20for%20fluorometric%20analysis&journal=Anal.%20Biochem.&doi=10.1016%2F0003-2697%2865%2990035-7&volume=11&pages=6-9&publication_year=1965&author=BRANDT%2CR&author=KESTON%2CAS) 
+
+48.  Bass, D. A. et al. Flow cytometric studies of oxidative product formation by neutrophils: a graded response to membrane stimulation. *J. Immunol.* **130**, 1910–1917 (1983).
+
+    [Article](https://doi.org/10.4049%2Fjimmunol.130.4.1910)  [CAS](/articles/cas-redirect/1:CAS:528:DyaL3sXhslOgu78%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=6833755)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Flow%20cytometric%20studies%20of%20oxidative%20product%20formation%20by%20neutrophils%3A%20a%20graded%20response%20to%20membrane%20stimulation&journal=J.%20Immunol.&doi=10.4049%2Fjimmunol.130.4.1910&volume=130&pages=1910-1917&publication_year=1983&author=Bass%2CDA) 
+
+49.  Murphy, M. P. How mitochondria produce reactive oxygen species. *Biochem. J.* **417**, 1–13 (2009).
+
+    [Article](https://doi.org/10.1042%2FBJ20081386)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1cXhsV2lt77F)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19061483)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=How%20mitochondria%20produce%20reactive%20oxygen%20species&journal=Biochem.%20J.&doi=10.1042%2FBJ20081386&volume=417&pages=1-13&publication_year=2009&author=Murphy%2CMP) 
+
+50.  Brand, R. M. et al. Targeting mitochondrial oxidative stress to mitigate UV-induced skin damage. *Front. Pharmacol.* **9**, 920 (2018).
+
+    [Article](https://doi.org/10.3389%2Ffphar.2018.00920)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30177881)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6110189)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Targeting%20mitochondrial%20oxidative%20stress%20to%20mitigate%20UV-induced%20skin%20damage&journal=Front.%20Pharmacol.&doi=10.3389%2Ffphar.2018.00920&volume=9&publication_year=2018&author=Brand%2CRM) 
+
+51.  Qian, W. et al. Chemoptogenetic damage to mitochondria causes rapid telomere dysfunction. *Proc. Natl Acad. Sci. USA* **116**, 18435–18444 (2019).
+
+    [Article](https://doi.org/10.1073%2Fpnas.1910574116)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2019PNAS..11618435Q)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1MXhslOhsbbI)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31451640)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6744920)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Chemoptogenetic%20damage%20to%20mitochondria%20causes%20rapid%20telomere%20dysfunction&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.1910574116&volume=116&pages=18435-18444&publication_year=2019&author=Qian%2CW) 
+
+52.  Zhivagui, M. et al. Experimental and pan-cancer genome analyses reveal widespread contribution of acrylamide exposure to carcinogenesis in humans. *Genome Res.* **29**, 521–531 (2019).
+
+    [Article](https://doi.org/10.1101%2Fgr.242453.118)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1MXnvVKrs7o%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30846532)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6442384)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Experimental%20and%20pan-cancer%20genome%20analyses%20reveal%20widespread%20contribution%20of%20acrylamide%20exposure%20to%20carcinogenesis%20in%20humans&journal=Genome%20Res.&doi=10.1101%2Fgr.242453.118&volume=29&pages=521-531&publication_year=2019&author=Zhivagui%2CM) 
+
+53.  Salk, J. J., Schmitt, M. W. & Loeb, L. A. Enhancing the accuracy of next-generation sequencing for detecting rare and subclonal mutations. *Nat. Rev. Genet.* **19**, 269–285 (2018).
+
+    [Article](https://doi.org/10.1038%2Fnrg.2017.117)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXlslOjsLk%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29576615)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6485430)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Enhancing%20the%20accuracy%20of%20next-generation%20sequencing%20for%20detecting%20rare%20and%20subclonal%20mutations&journal=Nat.%20Rev.%20Genet.&doi=10.1038%2Fnrg.2017.117&volume=19&pages=269-285&publication_year=2018&author=Salk%2CJJ&author=Schmitt%2CMW&author=Loeb%2CLA) 
+
+54.  Salk, J. J. & Kennedy, S. R. Next-generation genotoxicology: using modern sequencing technologies to assess somatic mutagenesis and cancer risk. *Environ. Mol. Mutagen* **61**, 135–151 (2020).
+
+    [Article](https://doi.org/10.1002%2Fem.22342)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1MXitFaku7nK)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31595553)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Next-generation%20genotoxicology%3A%20using%20modern%20sequencing%20technologies%20to%20assess%20somatic%20mutagenesis%20and%20cancer%20risk&journal=Environ.%20Mol.%20Mutagen&doi=10.1002%2Fem.22342&volume=61&pages=135-151&publication_year=2020&author=Salk%2CJJ&author=Kennedy%2CSR) 
+
+55.  Abbasi, A. & Alexandrov, L. B. Significance and limitations of the use of next-generation sequencing technologies for detecting mutational signatures. *DNA Repair* **107**, 103200 (2021).
+
+    [Article](https://doi.org/10.1016%2Fj.dnarep.2021.103200)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3MXhvVSjtbfM)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34411908)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9478565)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Significance%20and%20limitations%20of%20the%20use%20of%20next-generation%20sequencing%20technologies%20for%20detecting%20mutational%20signatures&journal=DNA%20Repair&doi=10.1016%2Fj.dnarep.2021.103200&volume=107&publication_year=2021&author=Abbasi%2CA&author=Alexandrov%2CLB) 
+
+56.  Alexandrov, L. B. et al. Signatures of mutational processes in human cancer. *Nature* **500**, 415–421 (2013).
+
+    [Article](https://doi.org/10.1038%2Fnature12477)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXhtlWjur7M)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23945592)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3776390)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Signatures%20of%20mutational%20processes%20in%20human%20cancer&journal=Nature&doi=10.1038%2Fnature12477&volume=500&pages=415-421&publication_year=2013&author=Alexandrov%2CLB) 
+
+57.  Alexandrov, L. B. & Stratton, M. R. Mutational signatures: the patterns of somatic mutations hidden in cancer genomes. *Curr. Opin. Genet Dev.* **24**, 52–60 (2014).
+
+    [Article](https://doi.org/10.1016%2Fj.gde.2013.11.014)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXmtFaksL0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24657537)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3990474)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutational%20signatures%3A%20the%20patterns%20of%20somatic%20mutations%20hidden%20in%20cancer%20genomes&journal=Curr.%20Opin.%20Genet%20Dev.&doi=10.1016%2Fj.gde.2013.11.014&volume=24&pages=52-60&publication_year=2014&author=Alexandrov%2CLB&author=Stratton%2CMR) 
+
+58.  Alexandrov, L. B. & Zhivagui, M. Mutational signatures and the etiology of human cancers. *Encyclopedia of Cancer* *(**Third Edition**)* 499–510 (2019).
+
+59.  Alexandrov, L. B., Nik-Zainal, S., Wedge, D. C., Campbell, P. J. & Stratton, M. R. Deciphering signatures of mutational processes operative in human cancer. *Cell Rep.* **3**, 246–259 (2013).
+
+    [Article](https://doi.org/10.1016%2Fj.celrep.2012.12.008)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXhvFaiurc%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23318258)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3588146)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Deciphering%20signatures%20of%20mutational%20processes%20operative%20in%20human%20cancer&journal=Cell%20Rep.&doi=10.1016%2Fj.celrep.2012.12.008&volume=3&pages=246-259&publication_year=2013&author=Alexandrov%2CLB&author=Nik-Zainal%2CS&author=Wedge%2CDC&author=Campbell%2CPJ&author=Stratton%2CMR) 
+
+60.  Riva, L. et al. The mutational signature profile of known and suspected human carcinogens in mice. *Nat. Genet.* **52**, 1189–1197 (2020).
+
+    [Article](https://doi.org/10.1038%2Fs41588-020-0692-4)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXhvFegurvP)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=32989322)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7610456)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20mutational%20signature%20profile%20of%20known%20and%20suspected%20human%20carcinogens%20in%20mice&journal=Nat.%20Genet.&doi=10.1038%2Fs41588-020-0692-4&volume=52&pages=1189-1197&publication_year=2020&author=Riva%2CL) 
+
+61.  Pilati, C. et al. Mutational signature analysis identifies MUTYH deficiency in colorectal cancers and adrenocortical carcinomas. *J. Pathol.* **242**, 10–15 (2017).
+
+    [Article](https://doi.org/10.1002%2Fpath.4880)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXmt1altrY%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28127763)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutational%20signature%20analysis%20identifies%20MUTYH%20deficiency%20in%20colorectal%20cancers%20and%20adrenocortical%20carcinomas&journal=J.%20Pathol.&doi=10.1002%2Fpath.4880&volume=242&pages=10-15&publication_year=2017&author=Pilati%2CC) 
+
+62.  Viel, A. et al. A specific mutational signature associated with DNA 8-oxoguanine persistence in MUTYH-defective colorectal cancer. *EBioMedicine* **20**, 39–49 (2017).
+
+    [Article](https://doi.org/10.1016%2Fj.ebiom.2017.04.022)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28551381)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5478212)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=A%20specific%20mutational%20signature%20associated%20with%20DNA%208-oxoguanine%20persistence%20in%20MUTYH-defective%20colorectal%20cancer&journal=EBioMedicine&doi=10.1016%2Fj.ebiom.2017.04.022&volume=20&pages=39-49&publication_year=2017&author=Viel%2CA) 
+
+63.  Georgeson, P. et al. Identifying colorectal cancer caused by biallelic MUTYH pathogenic variants using tumor mutational signatures. *Nat. Commun.* **13**, 3254 (2022).
+
+    [Article](https://doi.org/10.1038%2Fs41467-022-30916-1)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2022NatCo..13.3254G)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XhsFGrtrfE)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35668106)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9170691)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Identifying%20colorectal%20cancer%20caused%20by%20biallelic%20MUTYH%20pathogenic%20variants%20using%20tumor%20mutational%20signatures&journal=Nat.%20Commun.&doi=10.1038%2Fs41467-022-30916-1&volume=13&publication_year=2022&author=Georgeson%2CP) 
+
+64.  Georgeson, P. et al. Evaluating the utility of tumour mutational signatures for identifying hereditary colorectal cancer and polyposis syndrome carriers. *Gut* **70**, 2138–2149 (2021).
+
+    [Article](https://doi.org/10.1136%2Fgutjnl-2019-320462)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3MXis1GisrvP)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=33414168)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Evaluating%20the%20utility%20of%20tumour%20mutational%20signatures%20for%20identifying%20hereditary%20colorectal%20cancer%20and%20polyposis%20syndrome%20carriers&journal=Gut&doi=10.1136%2Fgutjnl-2019-320462&volume=70&pages=2138-2149&publication_year=2021&author=Georgeson%2CP) 
+
+65.  Alexandrov, L. B. et al. The repertoire of mutational signatures in human cancer. *Nature* **578**, 94–101 (2020).
+
+    [Article](https://doi.org/10.1038%2Fs41586-020-1943-3)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2020Natur.578...94A)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXktlClsL0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=32025018)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7054213)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20repertoire%20of%20mutational%20signatures%20in%20human%20cancer&journal=Nature&doi=10.1038%2Fs41586-020-1943-3&volume=578&pages=94-101&publication_year=2020&author=Alexandrov%2CLB) 
+
+66.  Olivier, M. et al. Modelling mutational landscapes of human cancers in vitro. *Sci. Rep.* **4**, 4482 (2014).
+
+    [Article](https://doi.org/10.1038%2Fsrep04482)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXovVCks7g%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24670820)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5259794)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Modelling%20mutational%20landscapes%20of%20human%20cancers%20in%20vitro&journal=Sci.%20Rep.&doi=10.1038%2Fsrep04482&volume=4&publication_year=2014&author=Olivier%2CM) 
+
+67.  Nik-Zainal, S. et al. The genome as a record of environmental exposure. *Mutagenesis*. **30**, 763–770 (2015).
+
+    [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2MXitVKgsrfJ)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26443852)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4637815)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20genome%20as%20a%20record%20of%20environmental%20exposure&journal=Mutagenesis.&volume=30&pages=763-770&publication_year=2015&author=Nik-Zainal%2CS) 
+
+68.  Besaratinia, A. & Pfeifer, G. P. Applications of the human p53 knock-in (Hupki) mouse model for human carcinogen testing. *FASEB J.* **24**, 2612–2619 (2010).
+
+    [Article](https://doi.org/10.1096%2Ffj.10-157263)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3cXhtVeisbnF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=20371617)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2909297)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Applications%20of%20the%20human%20p53%20knock-in%20%28Hupki%29%20mouse%20model%20for%20human%20carcinogen%20testing&journal=FASEB%20J.&doi=10.1096%2Ffj.10-157263&volume=24&pages=2612-2619&publication_year=2010&author=Besaratinia%2CA&author=Pfeifer%2CGP) 
+
+69.  Zavadil, J. & Rozen, S. G. Experimental delineation of mutational signatures is an essential tool in cancer epidemiology and prevention. *Chem. Res. Toxicol.* **32**, 2153–2155 (2019).
+
+    [Article](https://doi.org/10.1021%2Facs.chemrestox.9b00339)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1MXhslektrzF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31509385)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Experimental%20delineation%20of%20mutational%20signatures%20is%20an%20essential%20tool%20in%20cancer%20epidemiology%20and%20prevention&journal=Chem.%20Res.%20Toxicol.&doi=10.1021%2Facs.chemrestox.9b00339&volume=32&pages=2153-2155&publication_year=2019&author=Zavadil%2CJ&author=Rozen%2CSG) 
+
+70.  Phillips, D. H. Mutational spectra and mutational signatures: Insights into cancer aetiology and mechanisms of DNA damage and repair. *DNA Repair* **71**, 6–11 (2018).
+
+    [Article](https://doi.org/10.1016%2Fj.dnarep.2018.08.003)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXhslegsrvM)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30236628)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6219445)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Mutational%20spectra%20and%20mutational%20signatures%3A%20Insights%20into%20cancer%20aetiology%20and%20mechanisms%20of%20DNA%20damage%20and%20repair&journal=DNA%20Repair&doi=10.1016%2Fj.dnarep.2018.08.003&volume=71&pages=6-11&publication_year=2018&author=Phillips%2CDH) 
+
+71.  Battie, C. et al. New insights in photoaging, UVA induced damage and skin types. *Exp. Dermatol.* **23**, 7–12 (2014).
+
+    [Article](https://doi.org/10.1111%2Fexd.12388)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXhsF2ntbfO)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25234829)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=New%20insights%20in%20photoaging%2C%20UVA%20induced%20damage%20and%20skin%20types&journal=Exp.%20Dermatol.&doi=10.1111%2Fexd.12388&volume=23&pages=7-12&publication_year=2014&author=Battie%2CC) 
+
+72.  Agar, N. S. et al. The basal layer in human squamous tumors harbors more UVA than UVB fingerprint mutations: a role for UVA in human skin carcinogenesis. *Proc. Natl Acad. Sci. USA* **101**, 4954–4959 (2004).
+
+    [Article](https://doi.org/10.1073%2Fpnas.0401141101)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2004PNAS..101.4954A)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD2cXjsFCis78%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=15041750)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC387355)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20basal%20layer%20in%20human%20squamous%20tumors%20harbors%20more%20UVA%20than%20UVB%20fingerprint%20mutations%3A%20a%20role%20for%20UVA%20in%20human%20skin%20carcinogenesis&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.0401141101&volume=101&pages=4954-4959&publication_year=2004&author=Agar%2CNS) 
+
+73.  Trucco, L. D. et al. Ultraviolet radiation-induced DNA damage is prognostic for outcome in melanoma. *Nat. Med.* **25**, 221–224 (2019).
+
+    [Article](https://doi.org/10.1038%2Fs41591-018-0265-6)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXitl2iu7bE)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30510256)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Ultraviolet%20radiation-induced%20DNA%20damage%20is%20prognostic%20for%20outcome%20in%20melanoma&journal=Nat.%20Med.&doi=10.1038%2Fs41591-018-0265-6&volume=25&pages=221-224&publication_year=2019&author=Trucco%2CLD) 
+
+74.  Moreno, N. C. et al. Whole-exome sequencing reveals the impact of UVA light mutagenesis in xeroderma pigmentosum variant human cells. *Nucleic Acids Res.* **48**, 1941–1953 (2020).
+
+    [Article](https://doi.org/10.1093%2Fnar%2Fgkz1182)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2020lsdb.book.....M)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXhs1OnsrzK)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31853541)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Whole-exome%20sequencing%20reveals%20the%20impact%20of%20UVA%20light%20mutagenesis%20in%20xeroderma%20pigmentosum%20variant%20human%20cells&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2Fgkz1182&volume=48&pages=1941-1953&publication_year=2020&author=Moreno%2CNC) 
+
+75.  Tomasetti, C., Marchionni, L., Nowak, M. A., Parmigiani, G. & Vogelstein, B. Only three driver gene mutations are required for the development of lung and colorectal cancers. *Proc. Natl Acad. Sci. USA* **112**, 118–123 (2015).
+
+    [Article](https://doi.org/10.1073%2Fpnas.1421839112)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2015PNAS..112..118T)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXitFCrt7nN)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25535351)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Only%20three%20driver%20gene%20mutations%20are%20required%20for%20the%20development%20of%20lung%20and%20colorectal%20cancers&journal=Proc.%20Natl%20Acad.%20Sci.%20USA&doi=10.1073%2Fpnas.1421839112&volume=112&pages=118-123&publication_year=2015&author=Tomasetti%2CC&author=Marchionni%2CL&author=Nowak%2CMA&author=Parmigiani%2CG&author=Vogelstein%2CB) 
+
+76.  Tomasetti, C., Li, L. & Vogelstein, B. Stem cell divisions, somatic mutations, cancer etiology, and cancer prevention. *Science* **355**, 1330–1334 (2017).
+
+    [Article](https://doi.org/10.1126%2Fscience.aaf9011)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2017Sci...355.1330T)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXksFaksLY%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28336671)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5852673)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Stem%20cell%20divisions%2C%20somatic%20mutations%2C%20cancer%20etiology%2C%20and%20cancer%20prevention&journal=Science&doi=10.1126%2Fscience.aaf9011&volume=355&pages=1330-1334&publication_year=2017&author=Tomasetti%2CC&author=Li%2CL&author=Vogelstein%2CB) 
+
+77.  Balmain, A. The critical roles of somatic mutations and environmental tumor-promoting agents in cancer risk. *Nat. Genet*. **52**, 1139–1143 (2020).
+
+    [Article](https://doi.org/10.1038%2Fs41588-020-00727-5)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXitFKlu73L)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=33106632)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8360498)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20critical%20roles%20of%20somatic%20mutations%20and%20environmental%20tumor-promoting%20agents%20in%20cancer%20risk&journal=Nat.%20Genet.&doi=10.1038%2Fs41588-020-00727-5&volume=52&pages=1139-1143&publication_year=2020&author=Balmain%2CA) 
+
+78.  Weir, H. K. et al. Melanoma in adolescents and young adults (ages 15-39 years): United States, 1999-2006\. *J. Am. Acad. Dermatol.* **65**, S38–S49 (2011).
+
+    [Article](https://doi.org/10.1016%2Fj.jaad.2011.04.038)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22018066)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3254089)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Melanoma%20in%20adolescents%20and%20young%20adults%20%28ages%2015-39%20years%29%3A%20United%20States%2C%201999-2006&journal=J.%20Am.%20Acad.%20Dermatol.&doi=10.1016%2Fj.jaad.2011.04.038&volume=65&pages=S38-S49&publication_year=2011&author=Weir%2CHK) 
+
+79.  Zhang, M. et al. Use of tanning beds and incidence of skin cancer. *J. Clin. Oncol.* **30**, 1588–1593 (2012).
+
+    [Article](https://doi.org/10.1200%2FJCO.2011.39.3652)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22370316)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383111)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Use%20of%20tanning%20beds%20and%20incidence%20of%20skin%20cancer&journal=J.%20Clin.%20Oncol.&doi=10.1200%2FJCO.2011.39.3652&volume=30&pages=1588-1593&publication_year=2012&author=Zhang%2CM) 
+
+80.  O’Sullivan, N. A. & Tait, C. P. Tanning bed and nail lamp use and the risk of cutaneous malignancy: a review of the literature. *Australas. J. Dermatol.* **55**, 99–106 (2014).
+
+    [Article](https://doi.org/10.1111%2Fajd.12145)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24592921)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Tanning%20bed%20and%20nail%20lamp%20use%20and%20the%20risk%20of%20cutaneous%20malignancy%3A%20a%20review%20of%20the%20literature&journal=Australas.%20J.%20Dermatol.&doi=10.1111%2Fajd.12145&volume=55&pages=99-106&publication_year=2014&author=O%E2%80%99Sullivan%2CNA&author=Tait%2CCP) 
+
+81.  ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium. Pan-cancer analysis of whole genomes. *Nature* **578**, 82–93 (2020).
+
+    [Article](https://doi.org/10.1038%2Fs41586-020-1969-6)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2020Natur.578...82I)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Pan-cancer%20analysis%20of%20whole%20genomes&journal=Nature&doi=10.1038%2Fs41586-020-1969-6&volume=578&pages=82-93&publication_year=2020) 
+
+82.  Ellrott, K. et al. Scalable open science approach for mutation calling of tumor exomes using multiple genomic pipelines. *Cell Syst.* **6**, 271–281.e277 (2018).
+
+    [Article](https://doi.org/10.1016%2Fj.cels.2018.03.002)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXpslOktr0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29596782)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6075717)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Scalable%20open%20science%20approach%20for%20mutation%20calling%20of%20tumor%20exomes%20using%20multiple%20genomic%20pipelines&journal=Cell%20Syst.&doi=10.1016%2Fj.cels.2018.03.002&volume=6&pages=271-281.e277&publication_year=2018&author=Ellrott%2CK) 
+
+83.  David B. et al. Calling Somatic SNVs and Indels with Mutect2\. Biorxiv [https://doi.org/10.1101/861054](https://doi.org/10.1101/861054) (2019).
+
+84.  Koboldt, D. C., Larson, D. E. & Wilson, R. K. Using VarScan 2 for germline variant calling and somatic mutation detection. *Curr. Protoc. Bioinform.* **44**, 15.14.11–17 (2013).
+
+    [Article](https://doi.org/10.1002%2F0471250953.bi1504s44)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Using%20VarScan%202%20for%20germline%20variant%20calling%20and%20somatic%20mutation%20detection&journal=Curr.%20Protoc.%20Bioinform.&doi=10.1002%2F0471250953.bi1504s44&volume=44&pages=15.14.11-17&publication_year=2013&author=Koboldt%2CDC&author=Larson%2CDE&author=Wilson%2CRK) 
+
+85.  Kim, S. et al. Strelka2: fast and accurate calling of germline and somatic variants. *Nat. Methods* **15**, 591–594 (2018).
+
+    [Article](https://doi.org/10.1038%2Fs41592-018-0051-x)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXhtlCmt7%2FF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30013048)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Strelka2%3A%20fast%20and%20accurate%20calling%20of%20germline%20and%20somatic%20variants&journal=Nat.%20Methods&doi=10.1038%2Fs41592-018-0051-x&volume=15&pages=591-594&publication_year=2018&author=Kim%2CS) 
+
+86.  Fan, Y. et al. MuSE: accounting for tumor heterogeneity using a sample-specific error model improves sensitivity and specificity in mutation calling from sequencing data. *Genome Biol.* **17**, 178 (2016).
+
+    [Article](https://link.springer.com/doi/10.1186/s13059-016-1029-6)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27557938)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4995747)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=MuSE%3A%20accounting%20for%20tumor%20heterogeneity%20using%20a%20sample-specific%20error%20model%20improves%20sensitivity%20and%20specificity%20in%20mutation%20calling%20from%20sequencing%20data&journal=Genome%20Biol.&doi=10.1186%2Fs13059-016-1029-6&volume=17&publication_year=2016&author=Fan%2CY) 
+
+87.  McLaren, W. et al. The ensembl variant effect predictor. *Genome Biol.* **17**, 122 (2016).
+
+    [Article](https://link.springer.com/doi/10.1186/s13059-016-0974-4)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27268795)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4893825)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20ensembl%20variant%20effect%20predictor&journal=Genome%20Biol.&doi=10.1186%2Fs13059-016-0974-4&volume=17&publication_year=2016&author=McLaren%2CW) 
+
+88.  Shen, R. & Seshan, V. E. FACETS: allele-specific copy number and clonal heterogeneity analysis tool for high-throughput DNA sequencing. *Nucleic Acids Res.* **44**, e131 (2016).
+
+    [Article](https://doi.org/10.1093%2Fnar%2Fgkw520)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27270079)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5027494)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=FACETS%3A%20allele-specific%20copy%20number%20and%20clonal%20heterogeneity%20analysis%20tool%20for%20high-throughput%20DNA%20sequencing&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2Fgkw520&volume=44&publication_year=2016&author=Shen%2CR&author=Seshan%2CVE) 
+
+89.  Bergstrom, E. N. et al. SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. *BMC Genomics* **20**, 685 (2019).
+
+    [Article](https://link.springer.com/doi/10.1186/s12864-019-6041-2)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31470794)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6717374)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=SigProfilerMatrixGenerator%3A%20a%20tool%20for%20visualizing%20and%20exploring%20patterns%20of%20small%20mutational%20events&journal=BMC%20Genomics&doi=10.1186%2Fs12864-019-6041-2&volume=20&publication_year=2019&author=Bergstrom%2CEN) 
+
+90.  Bergstrom, E. N., Barnes, M., Martincorena, I. & Alexandrov, L. B. Generating realistic null hypothesis of cancer mutational landscapes using SigProfilerSimulator. *BMC Bioinform.* **21**, 438 (2020).
+
+    [Article](https://link.springer.com/doi/10.1186/s12859-020-03772-3)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Generating%20realistic%20null%20hypothesis%20of%20cancer%20mutational%20landscapes%20using%20SigProfilerSimulator&journal=BMC%20Bioinform.&doi=10.1186%2Fs12859-020-03772-3&volume=21&publication_year=2020&author=Bergstrom%2CEN&author=Barnes%2CM&author=Martincorena%2CI&author=Alexandrov%2CLB) 
+
+91.  Bergstrom, E. N., Kundu, M., Tbeileh, N. & Alexandrov, L. B. Examining clustered somatic mutations with SigProfilerClusters. *Bioinformatics* **38**, 3470–3473 (2022).
+
+    [Article](https://doi.org/10.1093%2Fbioinformatics%2Fbtac335)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XisVKmtrzF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35595234)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9237733)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Examining%20clustered%20somatic%20mutations%20with%20SigProfilerClusters&journal=Bioinformatics&doi=10.1093%2Fbioinformatics%2Fbtac335&volume=38&pages=3470-3473&publication_year=2022&author=Bergstrom%2CEN&author=Kundu%2CM&author=Tbeileh%2CN&author=Alexandrov%2CLB) 
+
+92.  Ashiqul Islam, S. M. et al. Uncovering novel mutational signatures by de novo extraction with SigProfilerExtractor. *Cell Genomics* **2**, [https://doi.org/10.1016/j.xgen.2022.100179](https://doi.org/10.1016/j.xgen.2022.100179) (2022).
+
+93.  Thorvaldsdóttir, H., Robinson, J. T. & Mesirov, J. P. Integrative Genomics Viewer (IGV): high-performance genomics data visualization and exploration. *Brief. Bioinform.* **14**, 178–192 (2013).
+
+    [Article](https://doi.org/10.1093%2Fbib%2Fbbs017)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22517427)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Integrative%20Genomics%20Viewer%20%28IGV%29%3A%20high-performance%20genomics%20data%20visualization%20and%20exploration&journal=Brief.%20Bioinform.&doi=10.1093%2Fbib%2Fbbs017&volume=14&pages=178-192&publication_year=2013&author=Thorvaldsd%C3%B3ttir%2CH&author=Robinson%2CJT&author=Mesirov%2CJP) 
+
+94.  Gu, Z., Eils, R. & Schlesner, M. Complex heatmaps reveal patterns and correlations in multidimensional genomic data. *Bioinformatics* **32**, 2847–2849 (2016).
+
+    [Article](https://doi.org/10.1093%2Fbioinformatics%2Fbtw313)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXhtFGlurjF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27207943)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Complex%20heatmaps%20reveal%20patterns%20and%20correlations%20in%20multidimensional%20genomic%20data&journal=Bioinformatics&doi=10.1093%2Fbioinformatics%2Fbtw313&volume=32&pages=2847-2849&publication_year=2016&author=Gu%2CZ&author=Eils%2CR&author=Schlesner%2CM) 
+
+95.  Gu, Z., Gu, L., Eils, R., Schlesner, M. & Brors, B. circlize Implements and enhances circular visualization in R. *Bioinformatics* **30**, 2811–2812 (2014).
+
+    [Article](https://doi.org/10.1093%2Fbioinformatics%2Fbtu393)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC28XhtFOrtL7I)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24930139)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=circlize%20Implements%20and%20enhances%20circular%20visualization%20in%20R&journal=Bioinformatics&doi=10.1093%2Fbioinformatics%2Fbtu393&volume=30&pages=2811-2812&publication_year=2014&author=Gu%2CZ&author=Gu%2CL&author=Eils%2CR&author=Schlesner%2CM&author=Brors%2CB) 
+
+96.  Günther, F., Dudschig, C. & Kaup, B. LSAfun–An R package for computations based on Latent Semantic Analysis. *Behav. Res. Methods* **47**, 930–944 (2015).
+
+    [Article](https://doi.org/10.3758%2Fs13428-014-0529-0)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25425391)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=LSAfun%E2%80%93An%20R%20package%20for%20computations%20based%20on%20Latent%20Semantic%20Analysis&journal=Behav.%20Res.%20Methods&doi=10.3758%2Fs13428-014-0529-0&volume=47&pages=930-944&publication_year=2015&author=G%C3%BCnther%2CF&author=Dudschig%2CC&author=Kaup%2CB)

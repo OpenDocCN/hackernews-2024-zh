@@ -1,0 +1,84 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:26:15
+-->
+
+# Online harms bill puts onus on tech platforms to remove child pornography - The Globe and Mail
+
+> 来源：[https://www.theglobeandmail.com/politics/article-online-harms-bill-law/](https://www.theglobeandmail.com/politics/article-online-harms-bill-law/)
+
+[Open this photo in gallery:](https://www.theglobeandmail.com/resizer/v2/A2762DUKYFG5VLS2AZP6SWI7VM.jpg?auth=8302ec54309331c314563f6136d2e49fc96dcca9503bd7acccff20714f67291d&width=600&quality=80)
+
+Ottawa's long-awaited online harms legislation, Bill C-63, covers social media, such as Facebook and Twitter.Joe Raedle/Getty Images
+
+* * *
+
+The federal government unveiled its long-awaited online harms bill, creating a new hate-crime offence that carries a penalty of life imprisonment in the most egregious cases, and requirements for tech platforms to remove child pornography within 24 hours.
+
+The sweeping legislation, introduced in the Commons by Justice Minister Arif Virani, would make online platforms swiftly take down child-sexual-abuse material, as well as content that bullies or sexually victimizes children or induces a child to harm themselves. The platforms would also have to remove any sexual content posted without consent.
+
+The bill covers social media, such as Facebook and Twitter, and pornography platforms such as Pornhub where users upload videos of themselves, as well as live-streaming services that exceed a certain threshold of users. But it excludes private and encrypted-messaging services, such as the instant-messaging app Snapchat.
+
+The bill also focuses on hate speech, creating a definition of hatred in the Criminal Code, and raises the maximum punishment for advocating genocide from five years to life imprisonment.
+
+[EXPLAINER: What to know about Bill C-63, Canada’s new online harms bill to protect children and prosecute hate crimes](https://www.theglobeandmail.com/politics/article-online-harms-bill-child-abuse/)
+
+Mr. Virani said that in drafting the bill, the government looked at parallel legislation brought forward by other countries, including Britain, and learned from their mistakes. “We cannot tolerate anarchy on the internet,” he said.
+
+“I’m the father of two youngsters and, like parents and grandparents around Canada, I’m terrified by the dangers that lurk on the internet for our children,” Mr. Virani said at a news conference. “I’m also a Muslim. The hatred that festers online is radicalizing people and that radicalization has real world impacts for my community, and for so many other communities.”
+
+He said the bill “targets the worst of what we see online, including hate speech.”
+
+Under the legislation, internet providers would have to notify law enforcement if they believe their service is being used – or has been used – to commit a child-pornography offence, and to preserve data for a year to aid a potential prosecution.
+
+The bill defines seven categories of harmful content, including content that sexually victimizes a child or revictimizes a survivor, incites violent extremism or terrorism, incites violence or foments hatred or publishes intimate images without consent, including deep fakes.
+
+Users would be able to flag harmful content directly with platforms and file a complaint to the newly created Digital Safety Commission.
+
+Failure of platforms to comply with the bill could lead to fines of up to $10-million, and those that persistently ignore demands to obey the new law could face penalties of up to $25-million. Victims of hate speech could receive up to $20,000 in compensation.
+
+NDP public safety critic Peter Julian said his party would be proposing “improvements” to the bill and looking at whether to toughen it up so that platforms have an onus to remove hate speech within 24 hours. He said in a press conference that it had taken the government around 800 days – rather than the promised 100 – to introduce the bill.
+
+The bill is the second time the Liberal government has introduced legislation tackling online hate. An anti-hate law introduced at the tail end of the last Parliament died when the election was called.
+
+The bill introduced Monday would also amend the Canadian Human Rights Act and specify that posting hate speech online is discrimination. It would give people the option to take an issue over a hateful post to the Canadian Human Rights Commission, and allow the Canadian Human Rights Tribunal to adjudicate disputes and to order someone posting hate speech to remove it.
+
+The bill creates a new regulator, as well as a digital safety ombudsperson who would adjudicate on removing hateful material online and a digital safety office.
+
+The ombudsperson would also provide support for users of social media and would have the power to make recommendations to social-media services and the government.
+
+Platforms such as Twitter and Facebook would have an overarching duty to act responsibly, make certain types of content inaccessible and to protect children under the bill, which will be debated in the Commons and the Senate, including in committees before it becomes law.
+
+The platforms would have a duty to “put child safety first” when designing products, for example including content warning labels, according to a government briefing note.
+
+But the bill stops short of introducing age verification for porn sites to stop children accessing explicit adult material.
+
+The bill gives the option for social-media platforms below the size threshold to be included if they pose a significant risk of harm.
+
+It would make platforms publish digital-safety plans, showing how they have reduced exposure to harmful content. They would have to continually assess, mitigate and report on risks to users of their services, and have a presence in Canada to deal with harm.
+
+They would have to ensure they have tools to flag content and block users, and create a point of contact for user complaints, as well as increasing transparency about social media services and tools.
+
+The bill is expected to reignite fears about attempts to influence and control platforms’ algorithms, a controversy that raged during the passage of the government’s Online Streaming Act, also known as Bill C-11.
+
+The Conservatives have signalled they plan to oppose the bill.
+
+But it was welcomed by groups wanting more tools to combat hate online.
+
+The Canadian Race Relations Foundation (CRRF) said it is a positive step to protect people, from online acts of hate, threats and violence, while protecting freedom of speech.
+
+“Freedom of speech does not mean freedom to commit acts of hate,” Mohammed Hashim, chief executive of the CRRF, said in a statement. “The bill also creates, for the first time, a standalone Criminal Code offence for hate crimes and increases the penalties for hate propaganda offences, enabling our laws to catch up to the reality of today, which is that we are in the digital age where hate and violence can spread without limits.”
+
+He told The Globe the new offence would make it easier for the police to pursue perpetrators of hate crimes. He said currently they need to move through multiple stages, which can slow down prosecution for a hate-motivated crime. He said the maximum sentence of life imprisonment would likely be imposed for hate-related murder.
+
+Under-reporting of hate crime is a major issue in Canada because, in part, of the lack of a clear definition of what constitutes a hate crime and a framework on how the justice system should respond, Mr. Hashim added.
+
+Richard Marceau, vice-president, external affairs and general counsel at the Centre for Israel and Jewish Affairs, said “this legislation has come at a time when it is needed most.”
+
+“Antisemitism is at an all-time high in Canada, where it has reached, to quote the Prime Minister, ‘terrifying’ levels.”
+
+Barbara Perry, director of Ontario Tech University’s Centre on Hate, Bias and Extremism, said adding a definition of hatred to the Criminal Code is an “absolutely critical” component that will provide a standard for law enforcement and Crown prosecutors.
+
+Michael Geist, the University of Ottawa’s Canada Research Chair in internet law, raised fears about the potential for overly broad interpretation of harms that could have implications for freedom of expression, although he said some measures are needed to combat online harms.
+
+*With a report from Andrea Woo*

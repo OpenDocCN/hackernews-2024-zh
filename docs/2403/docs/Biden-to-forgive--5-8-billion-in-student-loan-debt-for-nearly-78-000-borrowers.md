@@ -1,0 +1,35 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:33:41
+-->
+
+# Biden to forgive $5.8 billion in student loan debt for nearly 78,000 borrowers
+
+> 来源：[https://www.cnbc.com/2024/03/21/biden-to-forgive-5point8-billion-in-student-debt-for-nearly-78000-borrowers.html](https://www.cnbc.com/2024/03/21/biden-to-forgive-5point8-billion-in-student-debt-for-nearly-78000-borrowers.html)
+
+ US President Joe Biden speaks during an event to announce that his Administration has approved $1.2 billion in student debt cancellation for almost 153,000 borrowers at the Julian Dixon Library in Culver City, California, on February 21, 2024. 
+
+Andrew Caballero-Reynolds | AFP | Getty Images
+
+The Biden administration announced Thursday it would forgive $5.8 billion in student debt for 77,700 borrowers through the [Public Service Loan Forgiveness](https://www.cnbc.com/2023/08/28/public-service-loan-forgiveness-why-it-may-now-be-easier-to-apply.html) program.
+
+It also said President [Joe Biden](https://www.cnbc.com/joe-biden/) would email another 380,000 public service workers starting next week, notifying them that they're [on track to have their debt canceled](https://www.cnbc.com/2024/03/19/how-to-figure-out-when-and-if-youll-get-student-loan-forgiveness-.html) within two years.
+
+The U.S. Department of Education has routinely announced waves of loan forgiveness, as the Biden administration seeks to use its existing authority to leave people with less debt after the Supreme Court struck down its sweeping $400 billion loan forgiveness plan last June. The Biden administration has so far cleared the education debts of nearly 4 million people, totaling $143.6 billion in relief.
+
+"For too long, our nation's teachers, nurses, social workers, firefighters, and other public servants faced logistical troubles and trap doors when they tried to access the debt relief they were entitled to under the law," U.S. Secretary of Education Miguel Cardona said in a statement about the latest round of forgiveness.
+
+**More from Personal Finance:**
+[Millionaires may have hit their 2024 Social Security payroll tax limit](https://www.cnbc.com/2024/03/02/millionaires-reach-limit-for-social-security-payroll-taxes-for-2024.html)
+[78% of near-retirees failed or barely passed a basic Social Security quiz](https://www.cnbc.com/2024/02/21/social-security-benefits-quiz-41percent-of-near-retirees-failed-it.html)
+[Many Americans believe pensions are key to achieving the American Dream](https://www.cnbc.com/2024/03/01/many-workers-believe-pensions-are-key-to-achieving-the-american-dream.html)
+
+The PSLF program, signed into law by President George W. Bush in 2007, allows certain not-for-profit and government employees to have their federal student loans canceled after 10 years of on-time payments. In 2013, the Consumer Financial Protection Bureau estimated that one-quarter of American workers [may be eligible](https://www.consumerfinance.gov/about-us/newsroom/cfpb-launches-toolkit-to-help-teachers-and-other-public-servants-tackle-student-debt/).
+
+However, the program had long been plagued by problems, making people who actually received the relief a [rarity](https://www.cnbc.com/2018/08/30/this-man-joins-a-small-crowd-of-public-servants-to-get-their-student-loans-forgiven.html). Borrowers complained about confusing rules and misinformation from their servicers.
+
+The Biden administration has worked to fix those issues.
+
+Before Biden's fixes to PSLF, just around 7,000 borrowers had received debt relief through the over 15-year-old program, according to the administration. Since 2021, it said, 871,000 borrowers have now had their debt canceled under the program.
+
+## Don’t miss these exclusives from CNBC PRO

@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:28:10
+-->
+
+# The Quadrantid meteor shower 2024 peaks tonight alongside a bright moon | Space
+
+> 来源：[https://www.space.com/quarantid-meteor-shower-bright-moon-2024](https://www.space.com/quarantid-meteor-shower-bright-moon-2024)
+
+Early each January, the Quadrantid meteor stream provides one of the most intense annual meteor displays, with a brief, sharp maximum lasting only a few hours. 
+
+The [Quadrantid meteor shower](https://www.space.com/35142-quadrantid-meteor-shower-guide.html) actually radiate from the northeast corner of the constellation of Boötes, the Herdsman, so we might expect them to be called the "Boötids." But back in the late-18th century there was a constellation here called "Quadrans Muralis," the "Mural or Wall Quadrant" (an astronomical instrument). Quadrans Muralis is a long-obsolete star pattern, invented in 1795 by J.J. Lalande to commemorate the instrument used to observe the [stars](https://www.space.com/57-stars-formation-classification-and-constellations.html) in his catalog. 
+
+Adolphe Quetelet of Brussels Observatory discovered the shower in the 1830s, and shortly afterward it was noted by several astronomers in Europe and America. Thus, they were christened "Quadrantids" (pronounced KWA-dran-tids) and even though the constellation from which these [meteors](https://www.space.com/meteor-showers-shooting-stars.html) appear to radiate no longer exists, the shower's original moniker continues to this day.
+
+**Related:** [January full moon 2024: The 'Wolf Moon' howls at the Gemini twins](https://www.space.com/39469-best-meteor-showers.html)
+
+## Crumbs of a dead comet?
+
+At greatest activity, 60 to 120 meteor members per hour have been reported. However, the Quadrantid influx is sharply peaked: Six hours before and after maximum, these blue meteors appear at one-half of their highest rates. 
+
+So, the stream of particles that produce this shower is a narrow one — apparently derived within the last 500-years from a small comet. The parentage of the Quadrantids had long been a mystery. Then Dr. Peter Jenniskens, an astronomer at the SETI Institute in Mountain View, Calif., noticed that the orbit of 2003 EH1 — a small asteroid [discovered in March 2003](https://www.space.com/4925-hard-meteor-shower-observed-arctic.html) — "falls snug in the shower." He believes that this 1.2-mile (2 km) chunk of rock is the source of the Quadrantids; possibly this asteroid is the burnt-out core of the lost [comet](https://www.space.com/comets.html) C/1490 Y1.
+
+Yet another celestial body that might also be contributing meteoric material to the Quadrantids is the comet 96P/Machholz.
+
+Breaking space news, the latest updates on rocket launches, skywatching events and more!
+
+## When and where to look
+
+As viewed from mid-northern latitudes, we have to get up before dawn to see the Quadrantids at their best. This is because the radiant — that part of the sky from where the meteors appear to emanate — is down low on the northern horizon until about midnight, rising slowly higher in the northeast as the night progresses. The growing light of dawn ends meteor observing usually by around 6 a.m. So, if the "Quads" are to be seen at all, some part of that six-hour active period must fall between 2 and 6 a.m. 
+
+This year will be a favorable year to watch for the peak of this meteor display across much of North America. According to meteor experts, Margaret Campbell-Brown and Peter Brown in the 2024 Observer's Handbook of the Royal Astronomical Society of Canada, the peak of this year's shower is predicted for 4 a.m. Eastern Time or 1 a.m. Pacific Time on Thursday, Jan. 4\. So, across the contiguous U.S. and southern Canada, maximum activity will arrive as the radiant of the "Quads" is ascending toward a favorable viewing position in the northeast sky. The eastern states hold an advantage as the radiant will be noticeably higher up in the sky as opposed to locations farther to the west. 
+
+Under a clear dark sky, meteor rates of 60 or more per hour might be possible for Easterners, while somewhat lower numbers should be expected for those in the Far West. 
+
+An illustration of the night sky on Jan. 4 showing the radiant, or origin point, of the Quadrantid meteor shower. (Image credit: Starry Night Software)
+
+## Moon muscles in
+
+But unfortunately, there's a stumbling block for prospective meteor watchers this year in the form of [the moon.](https://www.space.com/55-earths-moon-formation-composition-and-orbit.html) In one out of every three years, bright moonlight hinders the view of this meteor display and this is one of those years. 
+
+In 2024, the moon arrives at its last quarter phase about six hours before the peak of the shower. That means that on the morning of Jan. 4, there is going to be a bright half-moon (actually a very wide waning crescent), situated in the constellation [Virgo](https://www.space.com/17021-virgo-constellation.html), that will be reaching its highest point in the southern sky just as dawn is breaking. As luck would have it, this particular meteor display is at its best just before the break of dawn — about 6 a.m. local time — when the Quadrantid radiant appears at its highest, about two-thirds of the way up in the northeastern sky. 
+
+That means that from midnight to dawn on Thursday morning, Jan. 4, the moon will brighten the sky somewhat, and will probably squelch a fair number of the fainter Quadrantid streaks. 
+
+So, factoring the moonlight in, means that if you live in the Eastern U.S., you may not see more than 20 or 30 of these blue streakers during a single hour. Out West, you might catch sight of about a dozen or so Quads per hour. 
+
+If you are hoping to catch a look at the stars of the Boötes constellation or any other night sky sight, our guides to the [best telescopes](https://www.space.com/15693-telescopes-beginners-telescope-reviews-buying-guide.html) and [best binoculars](https://www.space.com/26021-best-binoculars.html) are a great place to start.
+
+And if you're looking to snap photos of the Quadrantid meteor shower or the [night sky](https://www.space.com/16149-night-sky.html) in general, check out our guide on [how to photograph meteor showers](https://www.space.com/how-to-photograph-meteor-showers), as well as our [best cameras for astrophotography](https://www.space.com/best-cameras-for-astrophotography) and [best lenses for astrophotography](https://www.space.com/best-lenses-for-astrophotography).
+
+## Stay warm; "shower" with a friend 
+
+Lastly — and I've touched on this point many times before, but certainly it should be addressed again: Your local weather will likely be more appropriate for taking in a hot bath as opposed to a meteor shower. And indeed, at this time of year, meteor watching can be a long, cold business. You wait and you wait for meteors to appear and when they don't appear right away, and if you're cold and uncomfortable, you're not going to be looking for meteors for very long! Therefore, make sure you're warm and comfortable. Warm cocoa or coffee can take the edge off the chill, as well as provide a slight stimulus. It's even better if you can observe with friends. That way, you can cover more sky. 
+
+Good luck and clear skies!
+
+*Joe Rao serves as an instructor and guest lecturer at New York's *[Hayden Planetarium](https://www.amnh.org/our-research/hayden-planetarium)*. He writes about astronomy for *[Natural History magazine](http://www.naturalhistorymag.com/)*, the *[Farmers' Almanac](https://www.farmersalmanac.com/)*and other publications.*

@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:38
+-->
+
+# The Flappie AI cat door stops your pet from gifting you dead mice
+
+> 来源：[https://www.engadget.com/the-flappie-ai-cat-door-stops-your-pet-from-gifting-you-dead-mice-033237654.html](https://www.engadget.com/the-flappie-ai-cat-door-stops-your-pet-from-gifting-you-dead-mice-033237654.html)
+
+Finding weird pet-related technology is a CES tradition, and [this year](https://www.engadget.com/ces-2024-live-coverage-from-ces-unveiled-000021968.html) is no exception. Take Flappie, for example. [The Swiss start-up](https://www.flappie.ch/en/) is showing off an AI-powered cat door that automatically locks if your kitty tries to bring in prey it caught from the outside.
+
+On the side of the door facing the outside, you'll find a motion sensor and night-vision camera. Flappie says it has compiled a "unique and proprietary" dataset over the years, with a focus on diversity — this means getting lots of different kinds of cats as well as prey, filmed in a variety of different lighting conditions. The company says that its AI-powered detection system is accurate more than 90 percent of the time, which means your cat could still get a mouse inside. But hopefully that'll happen a lot less frequently.
+
+There are some manual switches on the inside of the door so you can lock and unlock it any time you want as well as turn off the prey-detection system. Eventually, Flappie says that pets are likely to be trained that they can't enter when carrying something, and when they drop the prey the door will promptly unlock so they can get inside. (One of Flappie's co-founders admitted that a smart cat might figure out to drop the mouse, get the door open, pick it back up and then run in. But no solution is foolproof, right?)
+
+Photo by Nathan Ingraham / Engadget
+
+Flappie also included chip detection in its cat door. So if your pet has been microchipped, you can make it so the cat door only opens for your specific pet. And, of course, there's an app so you can control the door from your phone. But if you're not inclined to hook the Flappie door up to the internet, it'll still work via the controls on the door itself.
+
+For starters, Flappie plans to launch its pet door in Switzerland and Germany later this spring, with plans to expand from there once it gets production scaled up. A US launch is part of the roadmap, but there's no word yet on when that'll happen, or how much the Flappie door might cost when it gets here. But [a CES newsletter](https://shopping.yahoo.com/rdlw?siteId=us-engadget&pageId=1p-autolink&featureId=text-link&custData=eyJzb3VyY2VOYW1lIjoiV2ViLURlc2t0b3AtVmVyaXpvbiIsImxhbmRpbmdVcmwiOiJodHRwczovL21haWxjaGkubXAvMmViNjc3ZmYwMDdiL3N3aXNzdGVjaC1uZXdzLWF0LWNlcy11bnZlaWxlZCIsImNvbnRlbnRVdWlkIjoiYWI2NDhkN2YtZjIwOS00YmZjLTk2MGEtOTYyYTgzOWJlZmVkIn0&signature=AQAAAUfk6Nj2rl1Y0QPexCTlh5ARgaIe5yAjSZxCB6WJGMYv&gcReferrer=https%3A%2F%2Fmailchi.mp%2F2eb677ff007b%2Fswisstech-news-at-ces-unveiled) focused on Swiss tech companies says that Flappie will cost $399, or $199 with a two-year $8.90 monthly subscription to the app so you can see all the videos the door records of your pet.
+
+**Update, January 8, 2024 12:45 PM ET:** We've added pricing details on the Flappie to this story.
+
+*We're reporting live from CES 2024 in Las Vegas from January 6-12\. Keep up with all the latest news from the show* [*here*](https://www.engadget.com/guides/ces/)*.*
+
+This article contains affiliate links; if you click such a link and make a purchase, we may earn a commission.

@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:37:51
+-->
+
+# Nissan drops app support for the original Leaf – are EVs now as disposable as iPhones? | TechRadar
+
+> 来源：[https://www.techradar.com/vehicle-tech/hybrid-electric-vehicles/nissan-drops-app-support-for-the-original-leaf-are-evs-now-as-disposable-as-iphones](https://www.techradar.com/vehicle-tech/hybrid-electric-vehicles/nissan-drops-app-support-for-the-original-leaf-are-evs-now-as-disposable-as-iphones)
+
+Nissan has been accused of "dumping its pioneers" following the announcement that its smartphone app will cease to function in its first-generation electric vehicles from April 1.
+
+The Japanese marque blames the phasing out of the UK's 2G network as the main reason for dropping its Android and iOS NissanConnect EV app services, with some 3,000 Nissan Leaf and e-NV200 commercial vehicles manufactured before 2016 affected in the UK, according to the [BBC](https://www.bbc.co.uk/news/technology-68426263).
+
+Much of the disappointment from owners surrounds the sudden loss of key functionality, such as the ability to remotely heat or cool the vehicle, as well as the option to set up charging schedules that allow batteries to be brimmed when energy tariffs are at their cheapest... all from the convenience of a smartphone.
+
+Nissan claims that its reliance on aging 2G controllers has resulted in a lack of compatibility, although many network providers have said that they won't offer 2G and 3G mobile networks "[past 2033](https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/policy/2g-and-3g-switch-off)", effectively giving Nissan another ten years to offer support to customers. 
+
+(Image credit: Nissan)
+
+With the loss of this convenience, owners will either have to set things up using the vehicle's infotainment system, invest in a smart charging outlet with Bluetooth and/or Wi-Fi connectivity that allows for charge scheduling, or look to upgrade their vehicle entirely.
+
+Nissan told the BBC: "The NissanConnect EV app currently linked to Nissan Leaf and e-NV200 vehicles produced up until 2016 will shut down from 1 April 2024 in preparation of the 2G technology sunset."
+
+It added: "Owners will, however, still be able to use key features such as Climate Control Timer and Charging Timer directly from their car's Navigation System."
+
+Sign up for breaking news, reviews, opinion, top tech deals, and more.
+
+The news follows the announcement from Nissan that it is to stop producing the current generation Leaf, as it looks to begin work on the next generation line-up of replacement vehicles in 2026.
+
+## Disposable cars?
+
+(Image credit: Nissan)
+
+Nissan customers are understandably miffed that key vehicle conveniences are suddenly being removed, but this is just the tip of the iceberg as we see some of the oldest, first-gen EVs approach their 'end of life'.
+
+Thankfully, many of these models lack much of the connectivity and reliance on update-able software compared to those cars being launched today, so are likely to soldier on for longer.
+
+But as EVs move closer towards the era of the Software Defined Vehicle (SDV) and reliance on over-the-air (OTA) updates, we are only going to see ever more functionality cease to be supported by aging hardware and incompatible software.
+
+This wasn’t such an issue when vehicles weren’t as connected, as even older ICE cars can easily be upgraded with an infotainment system that plugs into a smartphone and offers much of the same services as its modern counterparts can. The bottom line is, so long as there's fuel, they will still run.
+
+(Image credit: Nissan)
+
+However, this becomes a serious problem when core EV functionality, such as the ability to communicate with the public charging network or update to the latest safety firmware, becomes impossible. At this point, they become more like a smartphone, which has to be recycled or worse, discarded.
+
+When speaking to Chang-Hyeon Song, President and Head of the New Transport as a Service Division at Hyundai at CES this year, he recognized this as an issue, stating: "If we look at our data, we see most customers are using their vehicles for seven to nine years max. Compared to the smartphone industry, Android gives you two years, [Samsung](https://www.techradar.com/sg/tag/samsung) gives you three years and iPhone might give you four," he said. 
+
+"If you have to send OTA updates to vehicles over 10 years old, there will be so much to test and to maintain that we can’t really give a clear indicator on anything that is more than 10 years old now," he added.
+
+(Image credit: Nissan)
+
+Considering that 15-year-old combustion engine vehicles are still perfectly serviceable, this sort of timescale seems incredibly near-sighted and it is part of the reason we are witnessing terrible residual values on some of the most expensive EVs, such as Porsche's Taycan. Low mileage, secondhand models can be picked up with more than 60 per cent off the original asking price in some markets.
+
+Ironically, Nissan was among the first manufacturers to reveal that its battery technology was lasting well beyond the original estimates, with Nic Thomas, Nissan's marketing director for the UK, telling [Forbes](https://www.forbes.com/sites/carltonreid/2022/08/01/electric-car-batteries-lasting-longer-than-predicted-delays-recycling-programs/?sh=bad42e453329) in 2022: "Almost all of the [EV] batteries we've ever made are still in cars, and we’ve been selling electric cars for 12 years."
+
+"We haven’t got a great big stock of batteries that we can convert into something else," he added. "It’s the complete opposite of what people feared when we first launched EVs – that the batteries would only last a short time."
+
+Sadly, despite EV batteries performing much better than originally expected, this dependency on computing power means it is highly unlikely we will ever see today's EVs become future classics unless they continue to be supported, patched and upgraded.
+
+### You might also like

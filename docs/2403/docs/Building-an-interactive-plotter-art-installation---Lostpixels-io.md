@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:42:47
+-->
+
+# Building an interactive plotter art installation | Lostpixels.io
+
+> 来源：[https://lostpixels.io/writings/building-interactive-plotter-art](https://lostpixels.io/writings/building-interactive-plotter-art)
+
+## Rendering & Performance
+
+When I make [plotter art](/browse/plotter), I use [P5.JS](https://p5js.org/) and the [P5-SVG plugin](https://github.com/zenozeng/p5.js-svg) to render my graphics as SVGs. This workflow allows me to download the files as vectors. Then, I can upload them to [Saxi](https://github.com/nornagon/saxi), a utility that controls my Axidraw pen plotters. The translation between coding art and having the pen plotter draw it is nearly seamless.
+
+Rendering a graphic at 60FPS and responding to user input started to become slow with this approach, though. I found that updating the DOM with new SVG elements 60 times a second wasn't ideal. I flipped back to the typical rendering approach used by P5.JS, which leverages HTML canvas. It immediately fixed all frame rate issues and made the application feel much more fluid when twirling the MIDI controls.
+
+To have the performance of canvas and compatibility of SVGs, I made two instances of P5.JS sketches, one with each rendering target. I only rendered the vector instance before the application was transmitted to the cloud job manager.
+
+I needed to build an application UI to display helpful hints, an intro screen, and some submission steps. To do this, I brought in [Svelte](https://svelte.dev/). Although I could have used React here, I like the ease of use that comes with Svelte. React felt heavy-handed since I wasn't worried about component reuse or application render performance at this layer. Never defeated, though, React managed to make its way into the stack later on.

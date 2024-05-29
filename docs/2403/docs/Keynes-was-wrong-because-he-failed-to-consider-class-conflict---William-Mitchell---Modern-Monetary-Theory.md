@@ -1,0 +1,166 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:44:11
+-->
+
+# Keynes was wrong because he failed to consider class conflict – William Mitchell – Modern Monetary Theory
+
+> 来源：[https://billmitchell.org/blog/?p=61635](https://billmitchell.org/blog/?p=61635)
+
+I was asked during an interview the other day from Paris whether I was a Post Keynesian. I replied not at all and explained that I have never felt that my ideas fit into that category although in a facile sense we are all post keynesian in a temporal sense. Most progressive economists would answer yes if confronted with that question, even most of the economists involved in advancing Modern Monetary Theory (MMT). My point of departure is that while there was a lot of important analytical material in Keynes’ writing that is worth preserving and integrating into, say, MMT, where Keynes went astray was his antipathy to the insights provided by Karl Marx. In particular, I consider that Keynes seriously misunderstood what the dynamics of the class conflict were within a capitalist mode of production. Keynes made major errors in his predictions that one can directly attribute to this blinkered approach to capitalism. I was reminded of this when I read an Op Ed in the Japan Times this week (March 10, 2024) – [The economic future of our overworked grandchildren](https://www.japantimes.co.jp/commentary/2024/03/10/world/keynes-grandchildren-prediction-wrong/). This blinkered approach, which has fed into the modern Post Keynesian literature – which examines capitalism as if it is an ahistorical, neutral system of production and distribution – is a major reason that I do not associate my work with that school of thought.
+
+The article cited above was written by Kauskhik Basu, who was a former chief economist at the World Bank and is now an academic at Cornell University in the US.
+
+In the light of AI advances, the author reflects on the predictions that Keynes made in his essay – [Economic Possibilities for Our Grandchildren](https://www.marxists.org/reference/subject/economics/keynes/1930/our-grandchildren.htm) – which was published in 1930.
+
+I wrote about that essay in this blog post – [Have mainstream economists really embraced large deficits and central bank bond purchases?](https://billmitchell.org/blog/?p=46945).
+
+It is ironic, in the context of my Introduction that it is the ‘marxists.org’ home page that has taken the time to create digital versions of Keynes’ work.
+
+But thanks to whomever that they have taken the time to do that.
+
+The article cited traces Keynes’ urging for people not to fall into pessimism but to rather embrace the view that, in Keynes’ words:
+
+> We are suffering, not from the rheumatics of old age, but from the growing-pains of over-rapid changes, from the painfulness of readjustment between one economic period and another. The increase of technical efficiency has been taking place faster than we can deal with the problem of labour absorption; the improvement in the standard of life has been a little too quick; the banking and monetary system of the world has been preventing the rate of interest from falling as fast as equilibrium requires …
+
+Remember he published this essay after the 1929 stock market crash and the onset of the Great Depression, even though the initial version was as the cited article notes, written in 1928 “for a lecture at a boys’ school in Hampshire, England” and Keynes then “spent two years revising it before its publication.”
+
+Keynes wanted the school boys to think ahead – 100 years ahead to 2028, which takes his prognostications into our era, the decade we are now within.
+
+Keynes believed that the century ahead would be like no other to date because of the possibilities of “important technical improvements” and because capital will accumulate much more quickly than in the past.
+
+So, that was a shout out to capitalism.
+
+He also saw the advantages of colonial plunder – claiming that Britain’s wealth (and more specifically that of the royal family) could be sourced to the “treasures which Drake stole from Spain in 1580”.
+
+Various beneficiaries of that theft then invested in various trading companies abroad which ensured the real resources of the colonies were transferred quick smart back to Britain – helping the latter accumulate massive wealth, while ensuring the former remained (as many of these nations remain) dirt poor.
+
+Keynes considered these beginnings of the modern era would produce massive advances for humanity:
+
+> All this means in the long run that mankind is solving its economic problem. I would predict that the standard of life in progressive countries one hundred years hence will be between four and eight times as high as it is to-day. There would be nothing surprising in this even in the light of our present knowledge. It would not be foolish to contemplate the possibility of afar greater progress still.
+
+The cited article concludes that Keynes’ predictions in this respect “were far off the mark.”
+
+Keynes projected that rather than worrying about having enough work, man (it was the times) will be confronted by:
+
+> … his real, his permanent problem – how to use his freedom from pressing economic cares, how to occupy the leisure, which science and compound interest will have won for him, to live wisely and agreeably and well.
+
+People would struggle, he thought, to break from the habit of striving rather than enjoying.
+
+He considered the model here was the wealthy, who were already freed from the yoke of daily work and:
+
+> To judge from the behaviour and the achievements of the wealthy classes to-day in any quarter of the world, the outlook is very depressing! For these are, so to speak, our advance guard – those who are spying out the promised land for the rest of us and pitching their camp there. For they have most of them failed disastrously, so it seems to me – those who have an independent income but no associations or duties or ties – to solve the problem which has been set them.
+
+But he was optimistic that most of us would work out how to transit into this projected life of leisure:
+
+> For many ages to come the old Adam will be so strong in us that everybody will need to do some work if he is to be contented. We shall do more things for ourselves than is usual with the rich to-day, only too glad to have small duties and tasks and routines. But beyond this, we shall endeavour to spread the bread thin on the butter – to make what work there is still to be done to be as widely shared as possible. Three-hour shifts or a fifteen-hour week may put off the problem for a great while. For three hours a day is quite enough to satisfy the old Adam in most of us!
+
+Many are now working 3-hour days and being paid scantly for it – the underemployed.
+
+Most live in poverty or close to it.
+
+Keynes was dramatically wrong.
+
+The article cited catalogues these mistakes.
+
+It really rehearses arguments that were made by writer Elizabeth Kolbert in her New Yorker Op Ed – [No Time](https://www.newyorker.com/magazine/2014/05/26/no-time-how-we-got-so-busy) – which was published on May 19, 2014.
+
+Elizabeth Kolbert tried to work out why Keynes’ had got that part of his future so wrong and noted:
+
+> … that Nobel Prize-winning economists, too, are perplexed …
+
+Which points one to the source of the error.
+
+The original article I cited considers that while there have been massive “productivity gains” they have not freed us from our desire to work and accumulate ever more wealth rather than taking the opportunity to enjoy more leisure.
+
+The author considers that:
+
+> … Keynes failed to anticipate how the economic problem would evolve, his essay’s underlying normative argument is often overlooked. Indeed, one of the main reasons why he got his prediction wrong is that he projected his own ethical principles onto others. Much like his Bloomsbury Group peers, Keynes viewed greed with disdain. In the same essay, he describes the relentless pursuit of wealth for its own sake as a “disgusting morbidity.”
+
+So it comes down to greed in that author’s opinion – we all prefer mass consumption to leisure and so we accumulate TV sets in every room rather than being content with having one screen.
+
+Further, he claims “Keynes also underestimated the competitive drive that fuels the relentless quest for wealth and social status. The wealthy, in particular, are often motivated by a desire to maintain their relative standing, leading to an endless competition for supremacy.”
+
+So the author’s solution – achieving a more equitable world “requires government intervention”, will should mean that governments “tax the rich” more fully.
+
+That is the purpose of the article – to advance his notion that we should be taxing the rich and giving the proceeds to the poor to help them transit to more leisure.
+
+The author concluded that:
+
+> Contrary to Keynes’ expectations, we cannot build a fairer society by leaving people to their own devices. Fortunately, a growing number of people, including several of the world’s billionaires, are committed to addressing today’s extreme economic disparities, even though that would be to their own disadvantage.
+
+I reject most of his summation of the problem and solution.
+
+The real problem is that Keynes failed to understand capitalism.
+
+Yes, there has been rapid productivity growth but it has not be spread evenly among workers.
+
+Keynes was naive in that respect – thinking that the great gains in productivity that could free workers from the capitalist workplaces would actually be shared across society.
+
+The social democratic era that marked the Post World War 2 full employment consensus certainly had that in mind.
+
+And in the first few decades of that Post War era, governments certainly sought ways of making the income distribution fairer.
+
+For example, Australia used to have an annual ‘productivity’ hearings conducted by our judicial wage setting authorities, which would determine average productivity growth for the nation over the previous year and then award a commensurate wage increase to ALL workers based on that estimate.
+
+It meant that the lowest-paid workers who toiled in labour intensive, low productivity workplaces could enjoy real gains in their material standards of living.
+
+The system was vehemently opposed by employers.
+
+Eventually, with the onset of neoliberalism, that opposition began to carry more weight with government who wanted to appear to be ‘pro business’ or ‘business friendly’ – the sort of stupid epithets that progressive, social democratic political parties now mouth of as if it establishes their credentials to maintain the position of capital and ensure the workers are brought to heal.
+
+It was a Labor government in Australia who eventually abandoned that system of productivity sharing in the 1980s – proving that they had become an agent for capital rather than a mediator in the conflict between labour and capital.
+
+Around the world, the gap between growth in real wages and productivity has widened since the 1970s as capital pressured governments to introduce legislation that allowed them to increased the profit share at the expense of workers.
+
+What Keynes failed to take into account was that the capitalist system is loaded and built on class conflict.
+
+The reason all those ‘Nobel Prize economists’ were perplexed (see above) is because they also do not evaluate economic trajectories in terms of that class conflict.
+
+They teach models where we are all maximising individuals who offer our resources to production and receive income as the reward.
+
+There is no fundamental or functional distinction between those who own capital and those who have to sell their labour power to the owners of capital in order to survive.
+
+Much of the Post Keynesian economics literature also ignores that fundamental reality that sets in place the dynamics of the system that we live in.
+
+Moreover, as governments legislated to make it harder and harder for workers to gain a proportionate share in the income growth that the productivity gains permitted – anti-union legislation, anti-strike rules, labour hire firms, etc – the quality of work has been significantly degraded.
+
+Sure enough, the shift from manufacturing industry dominance to the service sector, definitely made it harder for unions to conduct their tasks – it is much easier signing up and representing workers in one large plant than having to corral thousands of workers spread across small workplaces.
+
+But that should have been sufficient for government to ensure their regulatory structures were updated to ensure working conditions in those small workplaces kept pace with the gains the economy was making.
+
+Sure enough GDP per capita has risen spectacularly across the advanced nations.
+
+But quoting such increases is highly misleading.
+
+While Keynes saw technology cutting the needs for workers across all occupational categories and render high-pay and low-pay together technologically unemployed, the reality of capitalism is very different.
+
+Unemployment remains a burden that is largely borne by the most disadvantaged workers.
+
+The development of the gig economy, a further contrivance of modern capitalism to entrench the inequalities that have accelerated over the neoliberal period, now interacts with this cohort of disadvantaged workers.
+
+A new group of workers has emerged – the precariat – who have to endure increased casualisation, underemployment, and more.
+
+Within the gig economy, workers are now considered to be small-scale entrepreneurs – in the sense that they have to provide their own capital (for example, delivery scooters etc) in order to work at poverty wages in largely unregulated and poorly paid jobs.
+
+So we see workers competing with each other for ridiculously low-paid work, which means these workers now occupy the casualised denizens of modern capitalism – unable to accumulate wealth, unable to purchase houses, unable to be secure if they get sick, unable to take a holiday with pay, and unable to look forward to a retirement with a secure pension.
+
+Their outlook is myopic – it has to be because they have little future – in the way Keynes envisaged it and in the way the baby boomers could look forward to as a consequence of the social democratic period.
+
+## Conclusion
+
+We will never reach the nirvana that Keynes envisaged because the structure of capital ownership will never permit it.
+
+Governments can tinker around the edges but ultimately they have demonstrated a lack of resolve to stand up to the demands of capital.
+
+Any currency-issuing government has the capacity to overpower capital should it desire.
+
+But with revolving doors and all that, the politicians tend to move between their political office and their corporate office over time.
+
+A fundamental shift in the system of production and ownership is required.
+
+Getting there is the challenge and the problem.
+
+That is enough for today!
+
+(c) Copyright 2024 William Mitchell. All Rights Reserved.

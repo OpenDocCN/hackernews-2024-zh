@@ -1,0 +1,234 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:40
+-->
+
+# How We Crowdfunded $750,000 for a Giant Book about Keyboard History | by Glenn Fleishman | Medium
+
+> 来源：[https://glennf.medium.com/how-we-crowdfunded-750-000-for-a-giant-book-about-keyboard-history-c30e24c4022e](https://glennf.medium.com/how-we-crowdfunded-750-000-for-a-giant-book-about-keyboard-history-c30e24c4022e)
+
+Thus it made perfect sense that on a vacation day during a work trip in 2016, he found himself in the wrong place at the wrong time and wandered into one of the world’s greatest typewriter collections, in Figueres, Spain. It seemed almost as if his interest brought the technology history museum into existence for him. He posted photos of this magical-realism experience [on Twitter in a long thread](https://twitter.com/mwichary/status/791709895083102209?lang=en) that went viral, [was written up the world over](https://www.theverge.com/2016/10/31/13476346/typewriter-musem-pictures-marcin-wichary), brought attention and renown to the [Museu de la Tècnica de l’Empordà](http://www.mte.cat/) (website currently broken), and sparked in him the desire to write a full-length book about keyboards, from early typewriters to the present day.
+
+Part of Marcin’s monster Twitter thread about a chance encounter with a truly remarkable museum.
+
+The trouble? His first draft was well over 300,000 words long. What publisher would take a book that long, illustrate it with the photos he superbly captured, produce a design he could celebrate, and not chop it down to 25% of his intended length?
+
+A wall of sticky notes in Marcin’s apartment that he used while drafting the book; [he documented his use of to-do lists, sticky notes, and spreadsheets](https://newsletter.shifthappens.site/archive/a-to-do-list-of-to-do-lists/) in a recent newsletter.
+
+The answer, I whispered in his ear early on, was crowdfunding.
+
+Marcin is a brilliant man, even if he blushes at me saying this publicly. He had never written a full-length book before nor designed one for an offset press. English is not the language he grew up speaking in Poland. He had never previously worked directly with a commercial lithographic offset printer on his own project. He wasn’t familiar with color screening or offset press technology. There were a long list of other “nevers,” too. He’s rarely daunted, and I’m an optimist — some might say a relentless juggernaut of an optimist! And I was on his side.
+
+We had already corresponded when I was working on an *Atlantic* article about what seemed to be [a trend towards less use of typographers’ or “curly” quotes online](https://www.theatlantic.com/technology/archive/2016/12/quotation-mark-wars/511766/), and kept in touch as he progressed on drafting chapters. On 22 June 2017, I dropped him a fateful email, which read in part: “Odd question, but you’re not looking for any writing or editing help on your book?”
+
+Just a few weeks later we started talking, and that led to what is now a six-year working relationship. Starting in 2018, with my initial input, he cut chapters and words, shrinking the book down to a more manageable though nowhere near 25%!—while also building the scaffolding for bringing it to fruition.
+
+> I have a history of suggesting myself as an editor. In 2012, after pitching Marco Arment on an article for his new [*The Magazine*](https://the-magazine.org/) — an early app-only publication in Apple’s one-time Newsstand — I said, surely you will need an editor given demands on your time, and why not hire me? [He did](https://marco.org/2012/11/08/the-magazine-issue-3). Several months later, [I purchased *The Magazine* from Marco](https://the-magazine.org/under-old-management/), and ran it for its natural lifespan [through the end of 2014](https://glog.glennf.com/blog/2014/10/8/the-magazine-is-making-a-book-again-and-shutting-down-what) after Apple made the Newsstand and publication apps less and less accessible and attractive over successive iOS releases.
+
+As I said, I started whispering crowdfunding from nearly the start because I thought it was the only way for Marcin to realize his vision. He could see that, but also had some sense of the overwhelming amount of additional work that would be required if he ran his own campaign — plus the uncertainty of having to hit goals to make it happen and bear personal financial risk for the outcome. Marcin told me that he also wondered if self-publishing might come off or feel to him like “failure.” He spent some time realistically exploring options to work with a publisher but never reached a point where he felt like it was the right fit.
+
+All this preamble is part of the story: Marcin had a perfect hook for telling people about the book—his stumbling into the technology museum in Catalonia. With a little urging on my part, it became the book’s opening chapter. That story is also what led Marcin to start a newsletter, building on an audience already intrigued by his museum photos and his intense keyboard interest. The newsletter became probably the biggest tent pole to the project.
+
+He’s a natural storyteller and spent years showing that ability to people, even as he gathered thousands of tiny stories and dozens of big ones to organize chapters around, and captured, collected, wheedled for, licensed, and commissioned photographs and images. The people most likely to back a book made by Marcin already knew he’d create a great book.
+
+Let me just say that again, and bigger:
+
+> The people most likely to back a book made by Marcin already knew he’d create a great book.
+
+# A Time Machine Always Helps
+
+The best time to start work on your crowdfunding campaign is five years ago. If you don’t have a convenient time machine, then you may need to think about the easier task of projecting forward in time, particularly if you don’t want to wait five years. As [Brad Guigar](https://www.evil-inc.com/brad-guigar/) — the co-host of the [ComicLab podcast](https://comiclab.simplecast.com/) with my pal [Dave Kellett](https://www.instagram.com/davekellett/?hl=en) — always says, “First comes the crowd, then comes the funding.”
+
+> ComicLab, despite being focused on the business of “making, and making a living from, webcomics,” is the single best *generally* useful creator-oriented podcast I have ever listened to about crowdfunding, Patreon, and social-media marketing and sales.
+
+To build a crowd, you have to find the right people. Without precisely aiming for this result, Marcin made several smart choices, some of which persisted over years:
+
+*   **Start a newsletter:** Email is the most effective communication tool. It’s not throttled by social-networking algorithms to 1% of subscribers unless you pay high fees, though spam and other filtering can reduce reach slightly. On the success of his viral tweets about the technology museum, [Marcin started a newsletter](https://newsletter.shifthappens.site/) on 29 August 2017\. (The Kickstarter campaign launched 5½ years later. Marcin said he thought he was launching the newsletter way too early, but a friend correctly advised him to.) Many creators of all sorts have lists with thousands — or even tens of thousands — of subscribers, letting them launch a project and hit targets quickly. I’d point as a solid example outside of crowdfunding to [Alexander Rose’s Spionage newsletter](https://alexanderrose.substack.com/). Rose has written many non-fiction books published by well-known conventional publishers, some of them bestsellers, and [one made into an AMC series](https://en.wikipedia.org/wiki/Turn:_Washington%27s_Spies), but authors always need to hustle: his list helps him find his most dedicated readers — those most interested in the focus of his work, largely involving spycraft.
+*   **Give people something, but don’t overwhelm them.** Marcin described his newsletter as “low traffic.” People are inundated with newsletters, marketing emails, and many other kinds of messages. By being an occasional pleasure in someone’s inbox, Marcin’s *Shift Happens* newsletter became a treat people looked forward to. The format also didn’t constrain him: unlike a Patreon or a paid newsletter with an expectation of frequency, he could write at length and at his leisure. (Also, do people really want a weekly newsletter on keyboards? Only a small subset of folks, largely directly involved in making or modifying keyboards.)
+*   **Come up with the right name early on.** *Shift Happens* came to Marcin as a title before he launched his first newsletter. It’s a clever play on words, intrigues people, and carries just a touch of earthy humor. It’s hard to name things, but worth spending what might seem like an inordinate amount of time on it: whether as catchy as *Shift Happens* or not, it should be something people identify with you and your project and, when they search on it, they find you first or very close to the top. Marcin discarded *Holy Shift* early on, and wisely so. (This is why *The Magazine’*s name was amusing when the primary method to find it was via Apple’s Newsstand but simply ridiculous when trying to recruit readers from the broader internet.)
+*   **Get to know your community.** In researching his book, Marcin bought or borrowed hundreds of books and went to dozens of museums, libraries, and archives across several countries; contacted people all over the world for interviews and to obtain or contract for photos; and met with folks to see their personal collections. That was all great — but he also went into communities. He went to keyboard meet-up events, participated in Reddit and other forums, and attended meetings or conventions of people to get a sense of what people were doing with typewriters and keyboards today. That fed into the book, which describes various communities quite well, but also helped make those people his advocate and promoter when he launched the project — they knew him or knew of him, and appreciated that he had respect for what they were doing.
+
+Marcin also made some particular decisions ahead of time that panned out extremely well:
+
+*   **Launch a website early.** This may not work in every case, but for Marcin, his [Shift Happens website](https://shifthappens.site/) was a huge success. He had spent months working on the text and coding, including building out a 3D interactive preview, putting together image galleries, and programming games. This may be beyond a lot of people’s abilities or budgets, but the lesson is still solid: Marcin built a remarkable amount of anticipation for *Shift Happens*, the book, by putting up Shift Happens, the website, about a month before his Kickstarter launch. Even a modest site with lots of detail, a compelling story, and good photographic and other illustrations can draw people in. Marcin put a lot of himself into the site, too, so it didn’t feel like an impersonal technical account but an authentic journey of discovery. There’s a pre-internet adage that people have to hear about a book five times before they buy it; that isn’t true of books (or crowdfunding campaigns) today, but the more someone hears about a topic that might be of interest, the more inclined they are to remember it and take action.
+*   **Create a separate announcement mailing list.** Some people work very hard to keep their inbox clean. Marcin created a self-destructing mailing list at the same time he posted his website. He promised people that he would only email them when the book was available for order: he sent one email when the Kickstarter campaign launched and another when the pre-order site was ready to accept fresh orders. Then he deleted the list. (I think you could extend the concept and tell people you plan to email them a handful of times, at each stage of launch to completion. Somewhere between one and four is certainly ideal.)
+
+# Ah, It’s a Profit Deal, Takes the Pressure Off
+
+While I advised on some of the above, particularly providing feedback during the website development and suggesting the separate announcement email list, my biggest role came in logistics, shipping costs, budgeting, and building reward levels and pricing. Here’s how I helped budget with Marcin.
+
+## Get Bids Early and From Many Sources
+
+If you’re starting out in a particular kind of product manufacturing, the prices quoted to make the item will vary all over the board. That’s true if you’re getting an estimate on a book or other piece of media made in quantity, a handcrafted item you contract other people to produce, or some kind of static object or gadget that has to be designed, cast in some material, assembled, and packaged.
+
+Your first and hardest part may be developing specifications that you can deliver to the parties you want bids from in order to get consistent pricing that you can compare among makers.
+
+We started requesting printing bids in 2021, initially working with a printing consultant who had to drop out due to family emergencies, and spent over a year talking directly with printers in the United States, Canada, Europe, and Asia, as well as with a print broker that contracts for printing and oversees production. In the end, we picked a U.S. firm for logistics and quality reasons that offset and justified the higher end price to readers.
+
+> One of our biggest hurdles was just getting a response from printers, even ones to whom we had a personal referral. Because of a huge demand for new books in 2021 and 2022, coupled with global shipping disruption, supply-chain and labor shortages (from illness and death), and regular lockdowns, many printers were shorthanded, short of supplies, and overwhelmed. That eased in 2023.
+> 
+> At one point, we had serious conversations with a paper broker in the UK about them purchasing paper from a mill in Germany and having it ocean freighted to Maine due to a lack of paper choices from U.S. mills and ongoing shortages. Even in 2023, our printer had to use up most of their quota with a paper mill across three months to acquire all the paper for Marcin’s project.
+
+Your intrepid project manager examining proofs hot off the press. We spent about 100 hours on press across eight days overseeing the printer of the book. (Photo: Marcin Wichary)
+
+North American printers may charge two to four times more than firms in Asia, partly due to disparities in labor costs, and can be somewhat more expensive than European printers. However, Chinese and other providers bring many project-management challenges — language, time zones, culture, contract enforcement, payment, shipping disruption, etc. — and make it difficult or impossible to go on site to check prototypes or be at the press during printing to make fast decisions or ask for changes.
+
+For a high-value and high-quality item like *Shift Happens*, we were able to set a price for the book that made the budget work to provide more oversight and reduce the potential of delays and sudden spikes in expense. I’ve known or known of other crowdfunders who saw sudden massive shipping delays and/or huge increases in shipping costs over an ocean — often beyond the control of the manufacturer. One was even told by a manufacturing partner that the price was going to be higher than the estimate provided because their Kickstarter raised so much money!
+
+## Budget for Kickstarter, Uncollected Pledges, and Other Fees
+
+Kickstarter collects 5% of your campaign; Stripe, the credit-card processing partner of the site, has an arrangement with Kickstarter where it charges 3% overall plus 20¢ per transaction (for U.S.-based campaigns), slightly different than the standard Stripe rate. For example, a $5,000 campaign with 250 backers at an average of $25 each would pay $450 in fees, netting $4,550; a $100,000 campaign with 1,000 backers at an average of $100 each would incur $8,200 in fees, netting $91,800 before any other expenses.
+
+Raising funds at different levels with fees subtracted, in table and graphical forms
+
+You’ll also find that Kickstarter won’t be able to collect from a small percentage of backers due to charging issues: Kickstarter validates a pledge with a new card or one on file at the time of the pledge, but when the actual charge happens a few weeks later, someone’s card may have been stolen and replaced, they hit their credit limit, or they closed their account or had it closed by their issuing bank. This number should turn out low or very low: for my Tiny Type Museum campaign, funds from only five backers (0.3% of total funds) weren’t collected; with Shift Happens, with substantially more backers, about 0.6% of transactions failed.
+
+People can also cancel their pledge up to the final moment of the campaign, though I typically see cancellations well before the end.
+
+> Some scammers will privately message you with the offer of reciprocal campaign backing. Note, however, that nearly always their campaign ends before yours—they then cancel their pledge on yours before your campaign ends.
+
+Whenever you’re creating spreadsheets or other budgets and estimates, subtract 9% to give yourself some leeway.
+
+To take orders after a campaign, you’ll need to have some kind of post-Kickstarter store. While I recommend BackerKit, described at length below, its structure and fees are best suited as a follow up for a single crowdfunding project—not for setting up a general store. If you expect you’ll want to sell stuff from a campaign after it’s over *plus* other items, consider these two major platforms:
+
+*   **Squarespace:** I use [Squarespace](https://squarespace.com), which technically [doesn’t support pre-orders](https://support.squarespace.com/hc/en-us/articles/360002116567-Accepting-pre-orders?platform=v6&websiteId=5161024be4b080e511750768) but lets you set up items with correct disclosures to purchasers about the delivery schedule. I’ve fulfilled $10,000s of pre-orders this way, and a similar amount of in-stock orders after I had inventory. You [need to subscribe](https://www.squarespace.com/pricing) at its plans for Business ($33/month plus 3% Squarespace fee on top of [Stripe](https://stripe.com/pricing) and [PayPal transaction fees](https://www.paypal.com/us/webapps/mpp/merchant-fees)) or Commerce Basic ($36/month and no fee beyond transaction fees). There’s a 25% to 30% discount for yearly subscriptions, and look to podcasts for a coupon code to reduce the price of your first year of service.
+*   **Shopify:** [Shopify](https://www.shopify.com/pricing) has a one-size-fits-all Basic plan for $39/month (25% less yearly) with a total fee of 2.9% plus 30¢ per transaction if using Shopify Payments. Using other payment processors adds 0.5% to 2% per transaction.
+
+Because neither service has direct Kickstarter integration, for a direct segue from a campaign into post-campaign sales, I recommend BackerKit.
+
+## Plan To Link to a Post-Campaign Partner
+
+Kickstarter has significant limitations in running campaigns that I’ve noted throughout this article. You’ll want to connect your campaign to a post-campaign partner, an awkward term as these services fill an awkward gap: making up for missing pieces in Kickstarter for fulfillment.
+
+[BackerKit](https://www.backerkit.com), a campaign-fulfillment system, fills in nearly all the gaps. In 2023, Kickstarter began to roll out [PledgeManager by Kicktraq](https://www.pledgemanager.com), the latter being a company Kickstarter acquired. I have used BackerKit and not yet tapped PledgeManager, so I can’t recommend the latter, but can discuss the tradeoffs.
+
+Both services suck down all your Kickstarter data (PledgeManager has closer integration), automate collecting addresses and other information from backers, offer timed follow-ups to people who didn’t reply to a survey, and let backers add additional items to their pledge and pay directly. Both also let you set up a pre-order store for people who weren’t part of the campaign. You can set prices for items differently for backers adding stuff on — including things that weren’t in the campaign — and people who didn’t back the campaign.
+
+> When given a chance in a low-friction way, people who already support what you’re doing will spend more.
+
+Both options come with a price tag that you should budget for.
+
+**BackerKit fees:** BackerKit’s post-campaign tools cost at most 2% (or $5 per backer on campaigns with an average pledge of over $250) with a sliding scale down to 1.1% as the project size increases. For add-on and pre-order sales, they charge 3.5% in addition to the Stripe fee of 2.9% plus 30¢ per transaction, a bit more than Squarespace’s Business tier hosting option but about 20% less than the campaign and credit-card fees charged by Kickstarter. The examples below show scenarios of bringing in 20% to 50% above a Kickstarter campaign through BackerKit sales. For large campaigns, this can seem like a big check to write.
+
+**PledgeManager**: Because of the business integration with PledgeManager, Kickstarter can afford to charge less to retain fees they would lose to BackerKit. (BackerKit also [launched a crowdfunding initiative](https://www.backerkit.com/crowdfunding), becoming a small but significant competitor.) With PledgeManager, you pay no percentage-based fee. They charge 25¢ per backer, no matter the scale of the campaign. Any additional purchases are charged at a 5% fee plus Stripe fees of 2.99% plus 30¢ per transaction. With no campaign percentage, only a set fee per backer, PledgeManager comes in about 10% to 20% lower in my model cases. (See spreadsheet below; I didn’t include a bar chart as it looks nearly identical as BackerKit’s!)
+
+Either service provides significant advantages over download spreadsheets and trying to build your own fulfillment system, leveraging a seamless transition between Kickstarter and post-campaign sales:
+
+*   You avoid the weeping and gnashing of teeth that comes with working with the Kickstarter backer interface. It’s truly terrible and hasn’t been much improved for years. (Kickstarter acquired Kicktraq as a bridge between its system and post-campaign pledge management.)
+*   The services don’t limit how many items someone orders, making it simple for your backers to add more of something in the campaign — another book, gadget, or download.
+*   You can set up a pre-order store without learning the ins and outs of Shopify or Squarespace. You can keep that store running indefinitely, after items are available for immediate order or download.
+*   The services manage delivering digital downloads.
+*   The services vary in how they remind people to provide shipping and other information. But both automatically and repeatedly send email to people who didn’t fill out the response survey for shipping or other details, resulting in a high rate of completion. (Using BackerKit, *Shift Happens* crossed 95% of surveys answered after four months, substantially better in my experience with self-run post-campaign management. We are 98% with campaign fulfillment nearly complete.)
+*   If you opt to charge backers a flat rate and tell them you’ll collect final shipping, sales tax, or other fees after a campaign, you can do so in BackerKit or PledgeManager. (See below for sales tax and related issues.) In fact, PledgeManager can calculate down to the receiving address, an advantage in states that have varying taxes by cities or other districts.
+
+In my experience and that of many other crowdfunding regulars, the net revenue from BackerKit far exceeds the fees charged with relatively little work after initial setup; I’ll presume the same with PledgeManager. (BackerKit also has various launch and marketing support tools you can deploy during a campaign offered for different fees.)
+
+## Anticipate Income Tax and Sales Tax Issues
+
+Unanticipated tax issues can kill a crowdfunding project. You’ll read a lot of bad advice out there about how taxes “take” a huge percentage of your Kickstater money. It’s not that simple!
+
+> I am not a lawyer nor am I an accountant. This isn’t legal or financial advice; rather, it’s guidance for research and questions to ask professionals.
+
+With a properly set up business in many countries, you can deduct business expenses (like printing, shipping, contract labor, and the like) directly from income. You are taxed on net business income. In the United States, for instance, if you raise $100,000 and spend $80,000 on legitimate business expenses other than your labor (for simple business structures), you don’t pay federal tax on $100K — only on $20K. (Some states, like Washington, the one I reside in, charge a business tax on gross revenue with no deductions, but only levy it against sales delivered within the state.)
+
+The big issues people face are twofold: first, if your campaign has revenue in one year and expenses in a subsequent one — you raise $100,000 in 2023 and have $80,000 in expenses in 2024 — you can wind up paying more tax than you intended, depending on your country:
+
+*   In the example above, that $100,000 in 2023 will be taxed as pure income. If you’re in the U.S. or another country with [progressive marginal tax rates](https://www.nerdwallet.com/article/taxes/federal-income-tax-brackets), you can wind up paying larger percentages of tax on some of that income.
+*   Higher income isn’t just more tax or a higher tax rate on some of it — you may lose certain deductions and credits that have an income test.
+*   In 2024, when you have all the expense, this will offset your 2024 income, letting you avoid prepaying tax and possibly receiving a substantial refund — but the refund wouldn’t come until you file in 2025\. (Some U.S. businesses have to prepay quarterly estimated federal taxes for the current tax year.)
+*   You may not regain the full tax difference across two years because of the higher marginal rate and non-recoverable deductions/credits in the previous year.
+
+Thus, I highly recommend having as much of your revenue and expense in the same tax year as a consequence. In some cases, you may be able to pay deposits against future work for designers, printers, manufacturers, and other partners in the year you do your fundraising.
+
+Make sure the contract you sign with a partner for future work covers the deposit, and spells out how to reclaim it if you switch suppliers before or after work commences.
+
+> You don’t want to get lost in strawman transactions, in which you transfer money for tax purposes and then get it back: that imposes the jeopardy of civil and criminal jeopardy against both you and the other party.
+
+The other big issue? Not registering your business as needed, such as setting up city, state, and national tax accounts and licenses, and not paying those bills on time.
+
+Finally, sales tax for those operating within the United States and selling to others within the United States has become very complicated. Generally, you pay sales tax for digital and physical shipments to where you live and wherever your stuff is made. Marcin’s printer is in Maine with some operations in Massachusetts, and he lives in Illinois. Thus, he has to collect and remit sales tax in those three states.
+
+Previously, I have “eaten” sales tax as part of my crowdfunding campaign, factoring in the relatively small percentage of Washington State residents participating and having their cost include sales tax, which I then reverse out from the final price they pay to send to my state’s tax agency. (Some states require you explicitly note if sales tax is included or not in the final price.) With *Shift Happens*, we opted for the same.
+
+> In the future, all my campaigns will inform backers that state sales tax will be collected after the campaign, alerting them which states I expect will require me to collect tax. When they provide their address, they will then be prompted to pay the required sales tax. Some people may miss those details and you should be prepared to refund them if they believe they weren’t properly informed. Kickstarter could make it easier by adding an option to enable sales tax on a state-by-state basis.
+
+A reminder that the above *is not accounting or legal advice*. [This 2014 article I wrote](https://medium.com/the-magazine/pay-caesar-his-due-b6481c44c3ff) — last updated in 2022 — can provide some additional help plus links to tax resources, particularly for each U.S. state.
+
+## Consider Non-Domestic Custom and Tax Issues
+
+It’s very hard for a small business of one to a few people to deal with the complexities of collecting the appropriate tax and then remitting it around the world. The European Union offers a streamlined method which you can integrate with online stores, like Shopify, but there’s no option at Kickstater or other crowdfunding platforms to hook in domestic or global tax rates and remittance. Kickstarter doesn’t let you collect U.S. state sales tax or international taxes as automatically calculated add-ons. Also, without being an export expert, it can be hard to figure out what the tariff is for each country you’re shipping to, or to generate the appropriate forms. The answer, generally, is to warn backers: import value-added tax or duties can be 0% to 30%, varying even among EU countries.
+
+Typically, you can ship so that a buyer has to pay at the time of import: the shipper you use manages this process and collects the money; this is called delivered duty unpaid (DDU), and it’s almost always what you want.
+
+The key exception? The UK. They stopped allowing this after Brexit and your goods could be returned instead of delivered. The simplest (ha) course of action is to apply to the [UK HMRC](https://www.gov.uk/government/organisations/hm-revenue-customs) for a VAT account. Books are “zero rated,” or taxed at 0%, allowing you to import them to the UK with documentation and your buyer to receive the item without extra taxes or shipper fees. It does require regular filings with the HMRC—even though you’re reporting £0 in taxes owed. The UK also has a very simple VAT structure for other goods, which is typically 20%.
+
+> I found it painful to apply for a VAT account in 2021, though I succeeded; Marcin applied through a seemingly easier process in early 2023 but waited over seven months for an obscure rejection, and then unexpectedly received his number a few months later. Because we lacked the number while shipping, we sent the books with a zero-rated VAT note on the label after advice from a UK consulting firm—which worked, but your mileage may vary and this isn’t legal or tax advice.
+
+## Get Fulfillment Estimates
+
+Holy cow, but shipping is expensive now. If you haven’t shipped many items within your country or abroad, you need to start thinking about it as soon as you figure out what you are making. Although I budgeted $90 for outside-the-U.S. shipping and handling for my 10 lbs. (4.5 kg) Tiny Type Museum & Time Capsule project in 2019, by the time I was shipping in 2020, I had concerns the USPS could actually deliver them. The international rate via UPS appeared to be $150 to $200.
+
+Fortunately, that was their rack rate—their walk-up-to-the-counter retail price. In 2020/2021 via Stamps.com, and now more broadly through [Pirate Ship](https://www.pirateship.com) and others, you can get a ridiculously discounted business rate: about 60% off retail. I wound up paying from $50 to $100 for global shipping including insurance, so it averaged out. All packages were received correctly.
+
+*Shift Happens* is coincidentally just over 10 lbs. when packaged, and I spent a lot of time talking to fulfillment houses and studying shipping rates to advise Marcin on shipping and handling prices. In the end, Marcin set shipping and handling (the cost of picking, packing, and freighting books plus postage or parcel delivery) to $25 in the U.S., $40 in Canada and Europe excluding the UK, and $50 in the rest of the world.
+
+We expected that those prices would provide us a budget from which to deal with unexpected rises in shipping, cover replacements due to damage, and so forth. However, we hit a snag that caused us to exceed our shipping budget—but which we’d planned for because we remembered to…
+
+## Expect the Unexpected
+
+One last, critical thing to budget for: the bigger the project, the more likely something unexpected may happen that adds significant cost or delays. This is why I advocate ensuring you set pricing so that keep a margin well above the break-even point—whether you’re paying yourself for your labor or not—in case the unexpected happens.
+
+It almost always does.
+
+With *Shift Happens*, we were driving comfortably along the highway when we suddenly hit a brick wall. The “airbags” of our budgeting process, started in 2021, gave us the cushion for Marcin to walk away unscathed. I explain more below.
+
+# Shed Some Tiers
+
+There’s a balance in setting rewards between the purity of a single reward that is the thing that the project makes happen — such as a book, ticket to a performance, or laser-cut iPhone stand — and a dozen or more that include increasingly complicated execution to deliver as the price of the reward goes up. Setting the right number of tiers and the correct pricing and timing can make or break a campaign, or make the difference between a modest one and a very successful one.
+
+I have a few axioms about this:
+
+*   **Let people give you the amount of money they would like to.** Higher-priced tiers with special extras, some of them as simple as “you’re thanked in the book” or “you get a credit in the movie,” let people who want your project to fly provide you with an extra something to get there. It’s love as money, something that happens in capitalism and within families. Personal and performance options can be nice extras, too: an hour-long Zoom call, tickets to the world-premiere movie screening, a meal in a mutually agreed-upon city, a house concert—all these could be options depending on what your skills and interests are.
+*   **Don’t make people think too hard about tiers.** Too much choice means people don’t make a choice. Provide clear differentiation and don’t offer too many.
+*   **Don’t pull an Amanda Palmer by including a very time-consuming object.** Look, [her 2012 campaign was incredible](https://www.kickstarter.com/projects/amandapalmer/amanda-palmer-the-new-record-art-book-and-tour/description) — [I wrote about it for the *Economist*](https://www.economist.com/babbage/2012/06/05/busking-for-millions) — but she admitted later that including tiers with custom-painted record turntables, some painted by others and some by her, [turned out to be a vast time and energy suck](https://amandapalmer.net/posts/20120804/) relative to the reward — even relative to what her backers got out of it! This has since become a shorthand about that kind of hard-won knowledge. Evaluate the time for a high-value tier relative to the price. You also need to consider if you only get one person at a complicated tier that you don’t then lose money without the benefit of unit volume: Kickstarter doesn’t let you set minimums for tiers, only maximums.
+
+As my benchmark rule, I think five tiers are ideal to avoid overburdening potential backers with choice:
+
+*   A low-dollar thank-you tier (often $1): People just want to be involved.
+*   A low-dollar digital-download tier ($5 or $10): For financial reasons, general interest, or shipping costs, an inexpensive digital item can be a way to get more people involved. (This could be higher priced if you’re offering a digital media version of something that’s primarily physical, like a book or vinyl LP.)
+*   A modest physical item with shipping charges ($10 to $30): It’s attractive to many people to get an actual thing associated with a campaign even if it’s not the campaign’s primary focus.
+*   The actual item, which might be $35 to $1,000, depending on the campaign: The price can vary wildly, as can the shipping!
+*   A high-dollar exclusive tier for backers who want to be more involved or supportive: To avoid leaving money on the table for those who want to help you, figure out some sort of higher tier.
+
+There are exceptions: if you opt for an early-bird tier for your main item or a bundle of items, that will expire after a set period of time and rotate to the bottom of the rewards list as unavailable. If you have limited quantities of some items, particularly that cost more, those will be lower in the rewards and likewise be marked off when exhausted.
+
+Depending on the campaign and the cost of the primary item (or items), lower-dollar tiers can add up, sometimes to 10% to 20% of the total campaign revenue.
+
+With *Shift Happens*, Marcin and I wrestled with spreadsheets and conversations over literally years. He considered offering standard and deluxe editions of the book to provide a lower price point. However we ultimately thought we might wind up with the wrong product mix. Once we figured out the only viable printer, it meant that we needed to focus on a single “medium deluxe” version: one that had some of the higher-features Marcin wanted — such as a slipcase — but avoided some truly expensive features that would have required an extra tier without feeling like they offered enough that was different to backers.
+
+His ultimate tiers (not including shipping) conformed fairly closely to my above ideal:
+
+*   **$5:** A font he’d created for the books (digital download)
+*   **$20:** A 32-page booklet with a cover adapting an essay ($10 as an add-on for book tiers)
+*   **$125:** Early bird slipcased book set
+*   **$150:** Regularly priced slipcased book set
+*   **$275:** Two copies of the slipcased book set
+*   **$1,000:** A premium tier with two copies of the book set, two booklets, a special keycap designed and produced *only* for this tier, and a custom, hand-made bookplate
+
+The two-copies tier came about because a number of people wanted to ensure they could get two books (one to keep, one to give away) during the campaign. A number of people purchased additional copies via BackerKit after the campaign as well.
+
+# Avoid Being Just Successful Enough That You Fail
+
+Setting the price combined with the Kickstarter funding goal was trickier than building rewards, and I’ve seen folks knot themselves into pretzels over this and sometimes get into a real budget situation if they guess wrong:
+
+*   You need to set an initial Kickstarter goal that raises the funds you need to execute the project regardless of what you might net out of it.
+*   Setting the goal too high can deter people from backing a project, assuming it will never reach the goal.
+*   Pricing reward tiers too high may put people off from backing.
+*   Setting reward prices too low coupled with a low goal can result in funding without the necessary money to complete the project. (This was a much more common occurrence in the first several years of Kickstarter.)
+*   Stretch goals are great but they must enhance a project (see below).
+
+What I’ve seen happen to people many times is that limited-edition, higher-priced items have higher uptake than expected. In the right construction, selling a lot of a limited item should result in margins of 30% to 70% — you have to set the margins high in case you don’t have enough uptake. If you have a lot of uptake, the total can be considerable. Note in *Shift Happens* that 21 backers came in at the $1,000 tier, resulting in $21,000 or about 3% of the campaign total. (We offered that tier only during the active campaign.) For other projects, the premier tier could be 20% to 30% of funds raised, or even more.
+
+If limited-edition items sell out too fast, that can accelerate progress towards the goal without the quantities needed to achieve economies of scale for manufactured items.
+
+A common scenario goes like this: you have a standard and super-premium version of something, often a book, board game, album, or movie. The standard version benefits from volume for economies of scale in per-unit mass manufacture; the super premium version might cost 10 times or more as much as the standard version and includes something unique or handmade, such as a special pressing of a vinyl LP, unique letterpress printed components, or fancy handbinding for a book.

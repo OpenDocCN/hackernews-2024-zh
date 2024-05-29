@@ -1,0 +1,147 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:32
+-->
+
+# Outlook is Microsoft’s new data collection service | Proton
+
+> 来源：[https://proton.me/blog/outlook-is-microsofts-new-data-collection-service](https://proton.me/blog/outlook-is-microsofts-new-data-collection-service)
+
+Last update on March 1, 2024 Published on January 5, 2024
+
+With Microsoft’s [rollout of the new Outlook for Windows(new window)](https://www.windowscentral.com/software-apps/windows-11/whats-new-with-the-outlook-app-for-windows-11), it appears the company has transformed its email app into a [surveillance](/blog/ban-surveillance-advertising) tool for targeted advertising.
+
+Everyone talks about the [privacy-washing](/blog/google-privacy-sandbox) campaigns of Google and Apple as they mine your online data to generate advertising revenue. But now it looks like Outlook is no longer [simply an email service](/blog/how-to-send-secure-email-outlook); it’s a data collection mechanism for Microsoft’s 801 external partners and an ad delivery system for Microsoft itself.
+
+Here’s how and why.
+
+## **Microsoft shares your data with 801 third parties**
+
+Some European users who download the new Outlook for Windows will encounter a modal with a troubling disclosure about how Microsoft and several hundred third parties process their data:
+
+The window informs users that Microsoft and those 801 third parties use their data for a number of purposes, including to:
+
+*   Store and/or access information on the user’s device
+*   Develop and improve products
+*   Personalize ads and content
+*   Measure ads and content
+*   Derive audience insights
+*   Obtain precise geolocation data
+*   Identify users through device scanning
+
+This latest version of Outlook confirms that more of Big Tech’s profit margins are becoming ever more dependent on the collection of your personal data. Outlook also prompts you to choose how ads look on your screen, making it clear that advertising is a key part of the deal.
+
+Mac users logged into the new Outlook will even encounter ads that appear as inbox messages. Some ads are for Microsoft applications while others come from third-parties selling products. 
+
+## **Microsoft’s “Advertising Partners”**
+
+Thanks to the EU’s General Data Protection Regulation, Europeans are at least informed that a small village of third parties will be able to look at their data. Americans, thanks to their government’s refusal to pass privacy legislation, are never even informed this is happening.
+
+In Outlook settings, UK users can explore a “List of Advertising Partners,” which shows the disturbing number of ad companies working with Microsoft. These third-party companies – called partners – carry names such as “ADMAX” and “ADSOCY.” This is unavailable in the settings for users in the US and Switzerland.
+
+To some extent, the new Outlook lets you choose how your data is used, but it’s not as simple as clicking a single toggle.
+
+“Depending on the type of data they collect, use, and process and other factors including privacy by design, certain partners rely on your consent while others require you to opt-out,” reads the preferences page for users in the UK. “Click on each advertising company listed below to view their privacy policy and exercise your choices.”
+
+Not every partner has the same rules. Users can read each individual privacy policy before deciding, but reading is not required.
+
+Such policies are usually [long, rambling, and notoriously difficult to understand](/blog/how-to-read-privacy-policy). But for many companies, [that’s the idea](/blog/how-to-read-privacy-policy). Such policies are intentionally written this way to give companies the maximum freedom to do what they want with your data. That often means selling your personal details to third-party advertisers and data brokers while making it difficult for you to opt out.
+
+With the new Outlook, Microsoft forces users to enter maze-like privacy statements to seize back some control of their data. Of course, Microsoft knows that almost no one [reads privacy policies(new window)](https://www.pewresearch.org/internet/2019/11/15/americans-attitudes-and-experiences-with-privacy-policies-and-laws/). If everyone understood those policies, revenue would be jeopardized. 
+
+## **New Outlook steals your email password**
+
+Microsoft’s integration of Outlook with cloud services has [raised privacy alarm bells(new window)](https://news.ycombinator.com/item?id=38219568).
+
+When you [sync third-party email accounts from services like Yahoo or Gmail(new window)](https://support.microsoft.com/en-us/office/sync-your-account-in-outlook-to-the-microsoft-cloud-985f9e19-d308-4e85-9d1d-0c6f32f8e981#OfficeVersion=New_Outlook_for_Windows) with the new Outlook, you risk granting Microsoft [access(new window)](https://www.heise.de/news/Microsoft-krallt-sich-Zugangsdaten-Achtung-vorm-neuen-Outlook-9357691.html?wt_mc=rss.red.ho.ho.atom.beitrag.beitrag) to the [IMAP](/blog/smtp-imap-pop3#imap) and [SMTP](/blog/smtp-imap-pop3#smtp) credentials, emails, contacts, and events associated with those accounts, according to the German IT blog [Heise Online(new window)](https://www.heise.de/news/Microsoft-krallt-sich-Zugangsdaten-Achtung-vorm-neuen-Outlook-9357691.html?wt_mc=rss.red.ho.ho.atom.beitrag.beitrag).
+
+“Although Microsoft explains that it is possible to switch back to the previous apps at any time, the data will already be stored by the company,” Heise reported. “This allows Microsoft to read the emails.”
+
+You can’t use the new Outlook without syncing all this information with Microsoft Cloud — there is only the option to cancel, [according to the developers’ forum XDA(new window)](https://www.xda-developers.com/privacy-implications-new-microsoft-outlook/). It is also configured to send login details – including usernames and passwords – directly to Microsoft servers. 
+
+Although this transfer is secured with Transport Layer Security (TLS), according to Heise Online, your IMAP and SMTP username and password are transmitted to Microsoft in plain text. [XDA(new window)](https://www.xda-developers.com/privacy-implications-new-microsoft-outlook/) was able to show their test credentials for a third-party email service provider on Microsoft’s servers. 
+
+Microsoft is enabling itself to access your email account at any time without your knowledge, allowing it to scan and analyze your emails — and share them with third parties.
+
+To users unaware of the privacy implications, using the new Outlook may seem harmless. But what it could mean is welcoming Microsoft into your data vault and giving them complete freedom to potentially use it however they want.
+
+Professor Ulrich Kelber, the Federal Commissioner for Data Protection and Freedom of Information of Germany, expressed concern about the data capabilities of the new Outlook. He [announced on Mastodon(new window)](https://social.bund.de/@bfdi/111381793883035665) his intention to request a report from the Irish Data Protection Commissioner, which is responsible for ensuring companies like Microsoft uphold data protection and privacy standards.
+
+Microsoft has not issued a public response to criticisms about its latest data grab. But the software giant has been upfront about its push to use targeted advertising to reach new revenue heights. In 2021, Microsoft Advertising earned $10 billion. But [Microsoft wants to double that total(new window)](https://www.businessinsider.com/how-microsoft-advertising-plans-to-grow-a-20-billion-business-2022-10?r=US&IR=T).
+
+## **What kind of data does Microsoft collect? **
+
+Per its advertising policy, Microsoft does not use personal data from emails, chats, or documents to target ads. But the ads that pop up may be selected based on other data that gave the company insight about you – such as “[your interests and favorites, your location, your transactions, how you use our products, your search queries, or the content you view(new window)](https://privacy.microsoft.com/en-us/privacystatement#mainadvertisingmodule).”
+
+A deeper dive into Microsoft’s privacy policy shows what [personal data it may extract(new window)](https://privacy.microsoft.com/en-US/privacystatement#mainpersonaldatawecollectmodule):
+
+*   Name and contact data
+*   Passwords
+*   Demographic data
+*   Payment data
+*   Subscription and licensing data
+*   Search queries
+*   Device and usage data
+*   Error reports and performance data
+*   Voice data
+*   Text, inking, and typing data
+*   Images
+*   Location data
+*   Content
+*   Feedback and ratings
+*   Traffic data
+
+The policy offers a glimpse of [where your data might end up(new window)](https://privacy.microsoft.com/en-US/privacystatement#mainpersonaldatawecollectmodule):
+
+*   Service providers
+*   User-directed entities
+*   Payment processing providers
+*   Third parties that perform online advertising services for Microsoft
+
+## **Microsoft steers toward data dollars**
+
+When Google rolled out a [privacy policy expanding its powers to collect data(new window)](https://googleblog.blogspot.com/2012/01/updating-our-privacy-policies-and-terms.html), the company drew criticisms from regulators and rivals, including Microsoft, which took out [full-page newspaper ads(new window)](https://cdn.geekwire.com/wp-content/uploads/2012/02/MICUS0004299_NYT_v2-2.pdf) telling Google users that Google did not respect their privacy.
+
+A short time later, however, [Microsoft unveiled a privacy policy(new window)](https://www.nytimes.com/2012/10/20/technology/microsoft-expands-gathering-and-use-of-data-from-web-products.html) allowing it to use personal information to sell targeted advertising, moving aggressively in a direction it once decried.
+
+Microsoft has since made significant moves toward surveillance revenue, following in the footsteps of Google, Facebook, and, most recently, [Apple](/blog/apple-ad-company). Like other Big Tech companies, Microsoft recognized a chance to generate large revenue streams by collecting and analyzing user data. This data-centric mindset has been part of a larger trend of established companies [vying for a slice of the surveillance cash pie](/blog/google-privacy-washing).
+
+The appointment of Satya Nadella as CEO in 2014 marked a turning point for Microsoft, which faced scrutiny that same year after admitting to [reading emails from a journalist’s Hotmail account(new window)](https://www.theguardian.com/technology/2014/mar/21/microsoft-tightens-privacy-policy-journalists-emails), forcing the company to [tighten its privacy policy(new window)](https://www.pcworld.com/article/444479/microsoft-tweaks-privacy-policies-after-email-spying-backlash.html).
+
+Within three months of taking the job, Nadella released a study from a market intelligence firm that concluded “companies taking advantage of their data have the potential to raise an additional $1.6 trillion in revenues over companies that don’t,” wrote author Shoshana Zuboff in her book, [*The Age of Surveillance Capitalism*(new window)](https://www.theguardian.com/books/2019/oct/04/shoshana-zuboff-surveillance-capitalism-assault-human-automomy-digital-privacy)*.*
+
+Key developments that followed included the Bing search engine and the digital assistant Cortana, both designed to capture and analyze user data. The release of Windows 10 in 2015 further underscored Microsoft’s commitment to this new direction. Scrutiny from the privacy community was swift.
+
+Windows 10 “is currently a privacy morass in dire need of reform,” [wrote software engineer David Auerbach in *Slate*(new window)](https://slate.com/technology/2015/08/windows-10-privacy-problems-heres-how-bad-they-are-and-how-to-plug-them.html), describing how the new operating system, “gives itself the right to pass loads of your data to Microsoft’s servers, use your bandwidth for Microsoft’s own purposes, and profile your Windows usage.”
+
+Microsoft’s pivot toward advertising continued [with its 2021 purchase of Xandr(new window)](https://www.adexchanger.com/online-advertising/xandr-formerly-appnexus-is-now-formerly-att-after-its-acquisition-by-microsoft/), but then it decided that it wanted to capitalize on the captive user base its walled garden created and shifted its focus to [show first-party ads in its services(new window)](https://www.adexchanger.com/platforms/microsoft-is-deprioritizing-third-party-ad-tech-amid-reorgs-and-layoffs/). 
+
+Given this direction, Outlook’s new form makes a certain sort of sense.
+
+In [a 2022 interview with Business Insider(new window)](https://www.businessinsider.com/how-microsoft-advertising-plans-to-grow-a-20-billion-business-2022-10?r=US&IR=T), Rob Wilk, Microsoft’s head of advertising, talked of opportunities with properties like Xbox, which includes a console business as well as logged-in accounts – “just one of the areas we’re going to play in,” he said.
+
+“Imagine a world, not too far off, where all of these pieces are stitched together to make a cleaner, clearer offering for our advertisers,” Wilk said. “And, don’t forget, we’ve also got browsing information and data across gaming and the Microsoft Windows business with billions of users – this gives us a unique advantage to understand intent.”
+
+Wilk dubbed Microsoft’s advertising push a “[newfound religion(new window)](https://www.adexchanger.com/online-advertising/microsoft-ads-chief-rob-wilk-on-why-advertising-is-the-companys-newfound-religion/).”
+
+## **Surveillance in the name of profit **
+
+Microsoft claims that collecting your data is “[to provide you rich, interactive experiences.(new window)](https://privacy.microsoft.com/en-us/privacystatement)”
+
+Yet in the realm of Big Tech, advertising and ad revenue have become ends in themselves, justifying a business model based on the surveillance of your private data in the name of profit.
+
+With this rollout of the new Outlook as a data collection and ad delivery service, Microsoft has revealed itself to be no different than the Googles and Metas of the world. For those companies to make privacy the default would mean losing the revenue they have become addicted to. 
+
+There are other business models out there deployed by companies that focus first and foremost on online security and privacy.
+
+Proton is one of them. 
+
+## **Switch to real privacy**
+
+Proton uses end-to-end encryption to protect your [emails](/mail), [calendar](/calendar), [files stored in the cloud](/drive), [passwords and login credentials](/pass), and your [internet connection(new window)](https://protonvpn.com/). Our security architecture is designed to keep your data invisible even to us, as our business model gives you more privacy, not less.
+
+Proton provides free and open-source technology to expand access to privacy, security and freedom online. But you can always upgrade to paid plans to access extra features, allowing you to pay with money rather than sensitive data.
+
+And Proton makes it [easy to switch](/easyswitch) to our platform. In a few easy steps, you can migrate to an email service you can trust.
+
+We believe in building an internet that works for people and not just for profit. The privacy washing companies like Microsoft and Google routinely perform in the name of revenue is just one more obstacle to a better internet where privacy is the default.

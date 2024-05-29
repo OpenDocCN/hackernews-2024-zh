@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:37:37
+-->
+
+# How scientists traced a mysterious covid case back to six toilets | MIT Technology Review
+
+> 来源：[https://www.technologyreview.com/2024/03/22/1090059/how-scientists-traced-a-mysterious-covid-case-back-to-six-toilets/](https://www.technologyreview.com/2024/03/22/1090059/how-scientists-traced-a-mysterious-covid-case-back-to-six-toilets/)
+
+That virus likely came from a single employee who happened to be shedding an enormous quantity of a very weird variant. The researchers would desperately like to find that person. **But what if that person doesn’t want to be found?**
+
+A few years ago, Marc Johnson, a virologist at the University of Missouri, became obsessed with weird covid variants he was seeing in wastewater samples. The ones that caught his eye were odd in a couple of different ways: they didn’t match any of the common variants, and they didn’t circulate. They would pop up in a single location, persist for some length of time, and then often disappear—a blip. Johnson found his first blip in Missouri. **“It drove me nuts,” he says. “I was like, ‘What the hell was going on here?’” **
+
+Then he teamed up with colleagues in New York, and they found a few more.
+
+Hoping to pin down even more lineages, Johnson put a call out on Twitter (now X) for wastewater. In January 2022, he got another hit in a wastewater sample shipped from a Wisconsin treatment plant. He and David O’Connor, a virologist at the University of Wisconsin, started working with state health officials to track the signal—from the treatment plant to a pumping station and then to the outskirts of the city, “one manhole at a time,” Johnson says. “Every time there was a branch in the road, we would check which branch [the signal] was coming from.”
+
+They chased some questionable leads. The researchers were suspicious the virus might be coming from an animal. At one point O’Connor took people from his lab to a dog park to ask dog owners for poop samples. “There were so many red herrings,” Johnson says.
+
+Finally, after sampling about 50 manholes, the researchers found *the* manhole, the last one on the branch that had the variant. They got lucky. “The only source was this company,” Johnson says. [Their results](https://www.thelancet.com/journals/lanmic/article/PIIS2666-5247(23)00372-5/fulltext)came out in March in *Lancet Microbe*. 
+
+**Wastewater surveillance might seem like a relatively new phenomenon, born of the pandemic, but it goes back decades.** A team of Canadian researchers outlines several historical examples [in this story](https://theconversation.com/targeted-wastewater-surveillance-has-a-history-of-social-and-ethical-concerns-183570). In [one example](https://journals.sagepub.com/doi/10.1177/146642405107100109), a public health official traced a 1946 typhoid outbreak to the wife of a man who sold ice cream at the beach. Even then, the researcher expressed some hesitation. The study didn’t name the wife or the town, and he cautioned that infections probably shouldn’t be traced back to an individual “except in the presence of an outbreak.”
+
+In [a similar study published in 1959](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1830615/), scientists traced another typhoid epidemic to one woman, who was then banned from food service and eventually talked into having her gallbladder removed to eliminate the infection. Such publicity can have a “devastating effect on the carrier,” they remarked in their write-up of the case. “From being a quiet and respected citizen, she becomes a social pariah.”

@@ -1,0 +1,86 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:56:08
+-->
+
+# The Mythical Non-Roboticist - by Benjie Holson
+
+> 来源：[https://generalrobots.substack.com/p/the-mythical-non-roboticist](https://generalrobots.substack.com/p/the-mythical-non-roboticist)
+
+I worked on this idea for months before I decided it was a mistake. The second time I heard someone mention it, I thought, “That's strange, these two groups had the same idea. Maybe I should tell them it didn’t work for us.” The third and fourth time I rolled my eyes and ignored it. The fifth time I heard about a group struggling with this mistake I decided it was worth a blog post all on its own. I call this idea “The Mythical Non-Roboticist”.
+
+Unicorn, Non-Roboticist, Satyr
+
+The idea goes something like this: Programming robots is hard. And there are some people with really arcane skills and PhDs who are really expensive and seem to be required for some reason. Wouldn’t it be nice if we could do robotics without them? What if everyone could do robotics? That would be great, right? We should make a software framework so that non-roboticists can program robots.
+
+This idea is so close to a correct idea that it's hard to tell why it doesn’t work out. On the surface, it's not *wrong*: all else being equal, it would be good if programming robots was more accessible. The problem is that we don’t have a good recipe for making working robots. So we don’t know how to make that recipe easier to follow. In order to make things simple, people end up removing things that folks might need, because no one knows for sure what's absolutely required. It's like saying you want to invent an invisibility cloak and want to be able to make it from materials you can buy from Home Depot. Sure, that would be nice, but if you invented an invisibility cloak that required some mercury and neodymium to manufacture would you toss the recipe?
+
+I actually only use free-trade, organic, non-GMO invisibility cloaks
+
+In robotics, this mistake is based on a very true and very real observation: programming robots ***is*** super hard. Famously hard. It would be super-great if programming robots was easier. The issue is this: programming robots has two different kinds of hard parts.
+
+The first kind of hard part is that robots deal with the real-world, imperfectly sensed and imperfectly actuated. Global mutable state is bad programming style because it's really hard to deal with, but to robot software the entire physical world is global mutable state, and you only get to unreliably observe it and hope your actions approximate what you wanted to achieve. Getting robotics to work at all is often at the very limit of what a person can reason about, and requires the flexibility to employ whatever heuristic might work for your special problem. This is the **intrinsic** complexity of the problem: robots live in complex worlds, and for every working solution there are millions of solutions that don’t work, and finding the right one is hard, and often very dependent on the task, robot, sensors and environment.
+
+Folks look at that challenge, see that it is super hard, and decide that, sure, maybe some fancy roboticist could solve it in one particular scenario, but what about “normal” people? “We should make this possible for non-roboticists” they say. I call these users “Mythical Non-Roboticists” because once they are programming a robot, I feel they *become* roboticists. Isn’t anyone programming a robot for a purpose a roboticist? Stop gatekeeping, people.
+
+“Why are those people programming robots?” “Not sure, but I’m positive they aren’t roboticists. I checked”
+
+I call also them ‘Mythical’ because usually the “non-roboticist” implied is a vague, amorphous group. Don’t design for amorphous groups. If you can’t name three real people (that you have talked to), that your API is for, then you are designing for an amorphous group and only amorphous people will like your API.
+
+“ActivateBehaviorObjectFactory()? Oooh, I like it”
+
+And with this hazy group of users in mind (and seeing how difficult everything is) folks think, “Surely we could make this easier for everyone else by papering over these things with simple APIs?”
+
+No. No you can’t. Stop it. 
+
+You can’t paper over intrinsic complexity with simple APIs because **if your APIs are simple they can’t cover the complexity of the problem**. You will inevitably end up with a beautiful looking API, with calls like “grasp_object” and “approach_person” which demo nicely in a hackathon kickoff but last about 15 minutes of someone actually trying to get some work done. It will turn out that, for their particular application, “grasp_object()” makes 3-4 wrong assumptions about “grasp” ***and*** “object” and doesn’t work for them at all.
+
+This is made worse by the pervasive assumption that these people are less savvy (read: less intelligent) than the creators of this magical framework. That feeling of superiority will cause the designers to cling desperately to their beautiful, simple ‘grasp_object()’s and resist adding the knobs and arguments needed to cover more use cases and allow the users to customize what they get.
+
+“Should let folks control how fast the robot moves?” “I don’t think so… Maybe we give them “slow” and “fast”. Anything else would be too confusing for a non-roboticist"
+
+Ironically this foists a bunch of complexity on to the poor users of the API who have to come up with clever workarounds to get it to work at all.
+
+“So I got the arm to match the conveyor speed by monitoring the position and pre-empting the motion command, alternating ‘slow’ and ‘fast’ at 10Hz with a duty cycle depending on how we are tracking our target. The motion is pretty jerky but it works.”
+
+The sad, salty, bitter icing on this cake-of-frustration is that, even if done really well, the goal of this kind of framework would be to expand the group of people who can do the work. And to achieve that, it would sacrifice some performance you can only get by super-specializing your solution to your problem. If we lived in a world where expert roboticists could program robots that worked really well, but there was so much demand for robots that there just wasn’t enough time for those folks to do all the programming, this would be a great solution.
+
+“Man, *another* robotics startup going public? I wish I knew some roboticists. I’m just an expert in fintech, LLMs and e-commerce.”
+
+The obvious truth is that (outside of really constrained environments like manufacturing cells) even the very best collection of real bone-fide, card-carrying roboticists working at the best of their ability struggle to get close to a level of performance that makes the robots commercially viable, even with long timelines and mountains of funding. We don’t have **any** headroom to sacrifice power and effectiveness for ease.
+
+So should we give up making it easier? Is robotic development available only to a small group of elites with fancy PhDs? No to both! I have worked with tons of undergrad interns who have been completely able to do robotics. I myself am mostly self-taught in robot programming. While there is a lot of intrinsic complexity in making robots work, I don’t think there is any more than, say, video game development.
+
+“Yeah, you’ll never understand the challenges of reasoning in 3D space, worrying about latency all the time, and always being compute constrained.”
+
+In robotics, like in all things, experience helps, some things are teachable, and as you master many areas you can see things start to connect together. These skills are not magical or unique to robotics. We are not as special as we like to think we are.
+
+But what about making programming robots easier? Remember way back at the beginning of the post when I said that there were two different kinds of hard parts? One is the intrinsic complexity of the problem, and that one will be hard no matter what. But the second is the incidental complexity, or as I like to call it, the stupid bullshit complexity.
+
+Robots are asynchronous, distributed, real-time systems with weird hardware. All of that will be hard to configure for stupid bullshit reasons. Those drivers need to work in the weird flavor of linux you want for hard real-time for your controls and getting that all set up will be hard for stupid bullshit reasons. You are abusing wifi so you can roam seamlessly without interruption but linux’s wifi will not want to do that. Your log files are huge and you have to upload them somewhere so they don’t fill up your robot. You’ll need to integrate with some cloud something or other and deal with its stupid bullshit. 
+
+There is a ton of crap to deal with before you even get to complexity of dealing with 3D rotation, moving reference frames, time synchronization, messaging protocols. Those things have intrinsic complexity (you have to think about when something was observed and how to reason about it as other things have moved) and stupid bullshit complexity (There’s a weird bug because someone multiplied two transform matrices in the wrong order and now you’re getting an error message that deep in some protocol a quaternion is not normalized. WTF does that mean?)
+
+One of the biggest challenges of robot programming is wading through the sea of stupid bullshit you need to wrangle in order to **start** working on your interesting and challenging robotics problem.
+
+“I’m so excited. I’ve been working 12 hours everyday for 6 weeks, and I finally get to start doing robotics!”
+
+So a simple heuristic to make good APIs is:
+
+Design your APIs for someone as smart as you, but less tolerant of stupid bullshit.
+
+That feels universal enough that I’m tempted to call it **Holson’s Law of Tolerable API Design**. 
+
+When you are using tools you’ve made, you know them well enough to know the rough edges and how to avoid them.
+
+“Oh yeah, if you try to move the robot without calling enable() it segfaults. That's a safety feature… I guess? But also if you call it twice, that also segfaults. Just call it exactly once, ever.”
+
+But rough edges are things that have to be held in a programmer’s memory while they are using your system. If you insist on making a robotics framework, you should strive to make it as powerful as you can with the least amount of stupid bullshit. Eradicate incidental complexity everywhere you can. You want to make APIs that have maximum flexibility but good defaults. I like python’s default-argument syntax for this because it means you can write APIs that can be used like:
+
+It is possible to have easy things be simple *and* allow complex things. And please, please, please don’t make condescending APIs. Thanks!
+
+[Share](https://generalrobots.substack.com/p/the-mythical-non-roboticist?utm_source=substack&utm_medium=email&utm_content=share&action=share)
+
+Thanks to Leila Takayama and Rodney Brooks for reading drafts of this.
+
+About the Author: Benjie has been a roboticist since he first joined his high school robotics team, has programmed robots at startups and Google X’s Everyday Robots and is currently Director of Robotics at [Robust AI](https://www.robust.ai/), where he hopes to someday ship boring looking robots that solve real problems to customers who pay money for them.

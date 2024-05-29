@@ -1,0 +1,94 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:39:19
+-->
+
+# Training great LLMs entirely from ground up in the wilderness as a startup — Yi Tay
+
+> 来源：[https://www.yitay.net/blog/training-great-llms-entirely-from-ground-zero-in-the-wilderness](https://www.yitay.net/blog/training-great-llms-entirely-from-ground-zero-in-the-wilderness)
+
+#### Hardware Lottery in the Era of LLMs
+
+The first requisite for training models is acquiring compute. This seems straightforward and easy enough. However, the largest surprise turned out to be the instability of compute providers and how large variance the quality of clusters, accelerators and their connectivity were depending on the source. 
+
+People always assume it’s simply a question/debate of accelerator choice (TPUs vs GPUs etc) and all GPU clusters are created equal. For us, this soon proved to be false. As we sampled across different service providers, we find that the *variance of hardware quality differs vastly even for the same hardware,* i.e., GPUs (H100s). Note that here, hardware refers to overall cluster quality and not necessarily the chips or accelerators per se. Just like a lottery. Basically:
+
+> Not all hardware is created equal. *The variance of cluster quality across hardware providers is so high that it is literally a lottery pertaining to how much pain one would have to go through to train good models. In short, a hardware lottery in the era of LLMs. *
+
+More specifically, we’ve leased a few clusters from several compute providers, each with a range of hundreds to thousands of chips. We’ve seen clusters that range from passable (just annoying problems that are solvable with some minor SWE hours) to totally unusable clusters that fail every few hours due to a myriad of reasons. Specifically, some clusters have nodes that fail every N hour with issues ranging from cabling issues (where N is unreasonably small), GPU hardware errors etc. Even more surprisingly, every cluster across the same provider could also be vastly different in terms of how robust it was. 
+
+Meanwhile, even though some other clusters could have significantly more stable nodes, they might suffer from poor I/O and file system that even saving checkpoints could result in timeouts or ungodly amounts of time chipping away at cluster utilisation. Some other compute sources require a completely different software layer to even run and are non-friendly to teams that bring their own codebases - requiring additional migration costs to run experiments or large jobs. 
+
+Nothing is perfect! But some are way worse than others for sure. 
+
+The most frustrating part? It’s almost impossible to really tell ahead of time, especially in the frenzy of everything, what kind of hardware one was going to get and how robust/fault-tolerant the experience would be. 
+
+On top of that, you also have no way of telling if the vendor just fails to deliver on time and delays the shipment by a couple of months, leaving one stranded without being able to procure from other sources for weeks or months. Some providers would also accidentally delete your checkpoint ¯\_(ツ)_/¯.
+
+Did I mention you’ll also get a different Model Flop Utilisation (MFU) for different clusters!? This was a non negligible amount of compute wasted if one is unlucky enough to find a provider with badly cabled nodes or some other issues. Systems with very sub-optimal file systems would have the MFU of training runs tank the moment a team mate starts transferring large amounts of data across clusters.
+
+Every service provider also had different levels of support. These range from being polite to nonchalant, “chatgpt-style” canned responses to blaming the user for every single thing that goes wrong.
+
+Overall, every single cluster we tried feels like they have their own vibe, struggles and failure modes. It was also almost as though every single cluster needed their own hot-fixes for their own set of issues - some more tolerable than others. That said, we’ve learned that fail safes are important, and finding fast hot fixes for any clusters could be key.
+
+In the past couple of months, we’ve built so much just to make sure things are usable, e.g., tooling around monitoring, efficient checkpointing, and various other optimisations even to the extent of installing our custom file system for scalable data storage - and what is just the tip of the iceberg of what is actually required. 
+
+These combinations of toolings resulted in a nontrivial amount of MFU improvements while also minimising downtime in the face of terrible hardware. 
+
+#### **On GPUs vs TPUs**
+
+We’re training our models on GPUs for the most part at Reka. Personally, I’ve used TPUs all my life when it comes to large language model training at Google pre-Reka life. CUDA and *nccl* were the most alien thing to me ever. (I only learned it’s pronounced “Nickel” from one of my coworkers who used to work at Nvidia lol)
+
+I was completely taken aback by the failure rate of GPUs as opposed to my experiences on TPUs at Google. In fact, I don’t actually recall TPUs failing much even for large runs, though *I was not sure if I was protected from knowing this just by the sheer robustness of the outrageously good infra and having a dedicated hardware team*. In fact, the [UL2 20B](https://blog.research.google/2022/10/ul2-20b-open-source-unified-language.html) model (at Google) was trained by leaving the job running accidentally for a month. It never failed. If this were in GPU land, it would have failed within the first few days for sure.
+
+That said, I think this could be more about the competency of the hardware team that manages your accelerators rather than the underlying chip. The presence of having good hardware support (from your compute provider) is important. And so much hinges on them being actually competent, reinforcing the notion of the “hardware lottery”.
+
+GPU land feels strange. It feels like multinode training is more of an afterthought as opposed to distributed training as a first class citizen on TPU pods. In GPU land, it feels as if different providers cable them in different ways to enable multi-node training which leads to the high variance across how things are done at different places. I’m no expert in hardware though but this is the impression I get. 
+
+#### **The pain of multi-cluster setups**
+
+I spent most of my professional career on Google infra, which ran mostly on [Borg](https://research.google/pubs/large-scale-cluster-management-at-google-with-borg/), [Xmanager](https://github.com/google-deepmind/xmanager) and [Colossus](https://cloud.google.com/blog/products/storage-data-transfer/a-peek-behind-colossus-googles-file-system). where everything can be assessed from literally anywhere. Therefore, the concept of having to actually set up new environments in different clusters is a foreign one to me.
+
+In the current world, having multiple clusters of accelerator pools seems inevitable unless one specially builds for a large number in a single location. More specifically, GPU supply (or lack thereof) also naturally resulted in this pattern of cluster procurement in which things are fragmented by nature. Training large models also require large terabytes of data which can create a lot of inconvenience even just moving them around. Meanwhile, replicating data is generally also not straightforward and prohibitive at extremely large scales.
+
+Obviously, the ideal case here is some kind of orchestration layer that is specially built to send jobs to different servers. I believe many big AI-first companies generally have some sort of infrastructure in place to improve the quality of life for AI researchers. However, building this type of sophisticated & fancy ML training infrastructure is not really possible for a lean and new startup at the beginning.
+
+For now, we ended up developing many internal workflows to mitigate many of these issues and are continuing to move towards the gold standard of a world class experimentation infrastructure.
+
+(I was told this scrappy setup was more or less the norm for non top-tier / large companies).  
+
+#### **Code in the wild**
+
+It is no secret that my favourite codebase of all time is [T5X](https://github.com/google-research/t5x) and [Mesh Tensorflow](https://github.com/tensorflow/mesh) (named tensors ftw) but these options quickly became not viable as 1) they don’t get as much support outside Google, 2) they are kind of deprecated and 3) they are not friendly to folks on our team that are not xooglers.
+
+We ended up going for something vanilla, seemingly stable and more popular (i.e., pytorch) that is more accessible to most people on the team (except me lol). In my first few months, I was tripping all over pip, git, docker and all these wild life stuff. Then again, I am not 100% sure about how stable or user friendly it would be to use a google codebase externally (it would have been pretty nasty I guess). 
+
+To be very frank, I would have to say the quality of codebases externally significantly lag behind those I’ve been used to at Google. Primarily because codebase within Google tends to be written by ML rockstars themselves (e.g, Noam Shazeer, Barret Zoph, Adam Roberts, Hyung Won Chung et al.) and just feel better (e.g., superior vibes) compared to those I’ve tried externally. In particular, I found myself super annoyed with the code quality when dabbling with stuff built by other companies (some way worse than others 🤗). 
+
+Also, I never knew that the ability to change model parallelism was not automatic (for free) until some codebases required me to write a converter to change the parallelism of a model. Surely a WTF moment for me.
+
+The other striking thing is how little support these codebases have for large scale encoder-decoder training or even prefixLM training. To that end, even flash attention has consistently declined to provide support for prefixLM training (i.e., custom masks) despite reasonable demand on their github issues for whatever reason. 
+
+I know I should be using Jax. A friend just shamed me for using pytorch, but this is a startup and we decided to move fast. I’m sorry we would do better to be cooler next time. I’m not proud of this fact.
+
+#### **Less principled, more Yolo**
+
+Scaling models systematically generally requires one to go from small to large in a principled way, i.e., run experiments in multiple phrases (1B->8B->64B->300B etc) and pick the winners and continuously scale them up. In a startup, we had way less compute to perform these massive sweeps to check hparams. In the end, we had to work with many [Yolo runs](https://twitter.com/_jasonwei/status/1757486124082303073) (that fortunately turned out well).
+
+In the end it took us only a very small number of smaller scale & shorter ablation runs to get to the strong 21B Reka Flash and 7B edge model (and also our upcoming largest core model). Finding a solid recipe with a very limited number of runs is challenging and requires changing many variables at once given the ridiculously enormous search space. In order to do this, one has to abandon the systematicity of Bigtech and rely a lot on “Yolo”, gut feeling and instinct. 
+
+Thankfully, I (and many of us in the team) have built up this intuition quite a bit in our ML careers to get it right within a substantially short amount of tries. While we’ve trained really good models before in our previous jobs, differences in training infrastructure, data, incorporation of new ideas and other environmental issues can still cause non-trivial differences in outcomes. That said, a strong prior helps to significantly cut down the search space and is probably one of the easiest explanations to why we were able to train really strong models with so few trials, resources and experimentation. 
+
+#### **In a nutshell**
+
+Figuring out things in the wilderness was an interesting experience. It was unfortunately not painless. Compute scarcity and also unreliable compute providers made things significantly harder than expected but we’re glad we pulled through with brute technical strength. 
+
+All in all, this is only a small part of the story of how we started a company, raised some money, bought some chips and matched Gemini pro/GPT 3.5 and outperformed many others in less than a year having to build everything from scratch.
+
+There’s still more to write about, data pipelines, human evaluation, etc, but this is already a very long post. More next time. Send @YitayML DMs on X for feedback!
+
+**Acknowledgements**
+
+I thank Dani Yogatama, Piotr Padlewski, Matthew Henderson, Donovan Ong, Che Zheng, Aitor Ormazabal, Deyu Fu, on the Reka team for feedback on this post. 
+
+I also thank external folks, Jason Wei, Hyung Won Chung, Vinh Tran & Mostafa Dehghani for feedback on this post.

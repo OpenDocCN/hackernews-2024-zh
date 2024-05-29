@@ -1,0 +1,55 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:33:51
+-->
+
+# Reddit CEO Steve Huffman defends his $193 million compensation following backlash from unpaid moderators | Fortune
+
+> 来源：[https://fortune.com/2024/03/19/reddit-ceo-steve-huffman-defends-193-million-compensation-following-backlash-unpaid-moderators/](https://fortune.com/2024/03/19/reddit-ceo-steve-huffman-defends-193-million-compensation-following-backlash-unpaid-moderators/)
+
+While Reddit’s CEO Steve Huffman has been given a $193 million compensation package, the moderators on the platform are unpaid—and the disparity has not gone unnoticed. Since word got out about Huffman’s pay, users on Quora, Reddit, and [X](https://fortune.com/company/twitter/) have been ripping into the package.
+
+“The feel-good moment of simultaneously revealing your CEO is overpaid while your risk assessment underscores the importance of unpaid moderators,” one user wrote in a [discussion post on Huffman’s pay on Reddit.](https://www.reddit.com/r/wallstreetbets/comments/1axspk8/comment/krq5l64/?utm_source=share&utm_medium=mweb3x&utm_name=mweb3xcss&utm_term=1&utm_content=share_button) One of the risk factors [Reddit lists in its IPO filing](https://www.sec.gov/Archives/edgar/data/1713445/000162828024011789/reddit-sx1a3.htm) is that its results and user experience could be harmed if it were unable to keep a sufficient number of “volunteer moderators.”
+
+“When your entire business model is one pr-ck taking nearly everything,” another scoffed. “And relying on people continuing to work for free.”
+
+Now, Huffman has defended his pay packet in a [Q&A video](https://www.reddit.com/r/RDDT/comments/1bhr6uv/amalmosta_answers_but_make_it_video/) on the platform.
+
+“Look, I’m glad this question was asked because there’s been a lot of commentary on this topic,” he began, adding that his compensation—which is made up of salary and stock—is set by Reddit’s board depending on his performance. 
+
+“If the company does well, I will do well,” the CEO added. “If the company does not do well, I don’t either.”
+
+## Huffman’s compensation could see a sweet boost thanks to Reddit’s IPO
+
+According to [an SEC filing](https://www.sec.gov/Archives/edgar/data/1713445/000162828024010137/reddit-sx1a1.htm#i1b9a579e78a34dfa99f7f26daeec195b_94), Huffman got a salary of $341,346 in 2023 and a $792,000 “incentive” bonus. In February, Huffman’s salary was raised to $550,000 with the bulk of his $193 million compensation package tied to stock.
+
+So why did it look like Huffman got a “big grant” at the end of 2023? Because, according to Huffman and the company SEC filing, the board canceled his existing stock awards and then granted him a new equity package in late 2023 that included stock, as well as stock options at various escalating strike prices.
+
+“They did this to simplify things for both the company and me and align my performance with the company’s performance,” Huffman explained.
+
+> [AM(almost)A answers, but make it video](https://www.reddit.com/r/RDDT/comments/1bhr6uv/amalmosta_answers_but_make_it_video/)
+> by[u/rddt_IR](https://www.reddit.com/user/rddt_IR/) in[RDDT](https://www.reddit.com/r/RDDT/)
+
+“The way the board thinks of my stock ownership is as a percent ownership of the company—so while I’m a founder of Reddit I also sold my stake a long time ago and I was rehired and have to re-earn my ownership,” he added. “Today I own about 3.2% of Reddit but I have the opportunity to increase my ownership.” 
+
+Reddit’s upcoming [IPO could value the company at $6.4 billion](https://fortune.com/2024/03/01/reddit-ipo-valuation-up-to-6-5-billion/?utm_source=search&utm_medium=suggested_search&utm_campaign=search_link_clicks), meaning Huffman’s shares could be in for a sweet boost soon.
+
+CEO compensation is always a contentious issue—especially as while bosses have seen their [paychecks soar](https://www.epi.org/publication/ceo-pay-in-2022/) over the years, [workers’ wages are currently being outstripped by inflation](https://www.independent.co.uk/news/business/wages-pay-uk-inflation-cost-of-living-b2396843.html) or [outpacing it by a small amount](https://www.axios.com/2024/02/05/wages-outpacing-inflation).
+
+But although Huffman technically answered why he was awarded $193 million last year, he avoided justifying his salary in the context that Reddit’s moderators remain unpaid. 
+
+Reddit declined Fortune’s request for comment.
+
+## Who is Steve Huffman? 
+
+Huffman, who is also known by his Reddit username spez, founded the discussion website with his college roommate, Alexis Ohanian, in 2005\. At the time, he was on spring break of his senior year at the University of Virginia, where he studied computer science.
+
+The site’s audience grew rapidly in its first few months, and the pair sold Reddit to Condé Nast the next year for $10 million, turning the 23-year-old cofounders into [multimillionaires overnight.](https://www.cnbc.com/2018/07/25/the-1st-thing-alexis-ohanian-bought-after-he-sold-reddit-for-millions.html)
+
+In hindsight, they have both since expressed regret at [selling for such a small amount at the time](https://www.cnbc.com/2020/11/03/alexis-ohanian-reflects-on-selling-reddit-for-10-million.html), given the platform’s success.
+
+Huffman then spent several months backpacking in Costa Rica before cocreating the travel website Hipmunk with Adam Goldstein, an author and software developer, in 2010\. It was acquired by Concur, the travel and expense platform, for an undisclosed amount in 2016, but just four years later it had shut up shop.
+
+In that time, Reddit rehired Huffman as CEO—in 2015—and tasked him with growing the company, [“creating a clear content policy,”](https://www.theguardian.com/technology/2015/jul/13/reddit-ama-chief-executive-steve-huffman-ellen-pao-subreddits) and [stabilizing infrastructure.](https://www.wired.com/2015/10/reddit-survived-meltdown-can-fix/) 
+
+Since then he’s taken a hardened stance on hate speech (culminating in the 2020 ban of thousands of communities), redesigned the site, and been featured on the [Fortune 40 Under 40 list.](https://fortune.com/ranking/40-under-40/2020/steve-huffman/)

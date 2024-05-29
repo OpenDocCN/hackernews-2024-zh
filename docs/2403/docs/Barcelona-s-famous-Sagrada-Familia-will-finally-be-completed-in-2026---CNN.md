@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:40:07
+-->
+
+# Barcelona’s famous Sagrada Familia will finally be completed in 2026 | CNN
+
+> 来源：[https://www.cnn.com/2024/03/25/travel/sagrada-familia-barcelona-completion-scli-intl/index.html](https://www.cnn.com/2024/03/25/travel/sagrada-familia-barcelona-completion-scli-intl/index.html)
+
+CNN  — 
+
+The [Sagrada Fam](https://www.cnn.com/travel/article/sagrada-familia-penultimate-towers-completed-intl-scli/index.html)[ilia](https://www.cnn.com/travel/article/sagrada-familia-penultimate-towers-completed-intl-scli/index.html) in Barcelona will finally be finished in 2026, more than 140 years after construction started, officials have confirmed.
+
+The construction of the last of six towers will mark the completion of the structure of the basilica, the organization responsible for managing the site announced last week.
+
+“The Chapel of the Assumption is expected to be finished in 2025 and the tower of Jesus Christ, in 2026,” the Sagrada Familia said in a statement announcing the publication of its 2023 annual report.
+
+The tower of Jesus Christ will stand at 172.5 meters (566 feet) tall, and will be finished with a 17-meter-tall (56-foot) four-armed cross, according to the cathedral.
+
+When complete, the Sagrada Familia will become the world’s tallest church, overtaking Ulm Minster in Germany.
+
+Construction began in 1882 according to a design spearheaded by celebrated Catalan architect Antoni Gaudí, who decided the monumental structure would have 18 huge, spindle-shaped towers, each symbolizing a different biblical figure—the 12 apostles, the four evangelists, the Virgin Mary and Jesus.
+
+When Gaudí died in 1926, [only an estimated 10%-15% of the project had been built](https://www.cnn.com/style/article/sagrada-familia-history-robots-test-of-time/index.html), including one transept, a crypt and some of the apse wall.
+
+Construction, already slow, was interrupted in the late 1930s by the Spanish Civil War, when most of the designs and models of Gaudí— whose tomb lies beneath the cathedral—were destroyed.
+
+Current designs are based on surviving and reconstructed materials, as well as reimagined adaptations of the original.
+
+In 1984, the building was designated a UNESCO World Heritage site, and it was consecrated by Pope Benedict XVI for religious worship in 2010.
+
+The [construction of the church was carried out illegally for 137 years](https://www.cnn.com/travel/article/spain-sagrada-familia-permit-intl/index.html), until 2019, when a building permit was finally issued by Barcelona’s city council. Authorities only discovered the “anomaly” that it had never been granted planning permission in 2016.

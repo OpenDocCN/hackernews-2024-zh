@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:27:25
+-->
+
+# Exclusive: 'Dead Sea Scrolls' at the Museum of the Bible are all forgeries
+
+> 来源：[https://www.nationalgeographic.com/history/article/museum-of-the-bible-dead-sea-scrolls-forgeries](https://www.nationalgeographic.com/history/article/museum-of-the-bible-dead-sea-scrolls-forgeries)
+
+Through the 1950s, a Bethlehem-based antiquities dealer named Khalil Iskander Shahin, better known as Kando, acquired many fragments from local Bedouin and sold them to collectors around the world. But in the 1970s, a new UNESCO convention on cultural property [and a new Israeli law on the antiquities trade](http://www.antiquities.org.il/Article_eng.aspx?sec_id=42&subj_id=228&id=447) restricted sale of the looted scrolls. Today, private collectors bid for the scraps grandfathered into current law, mostly fragments that entered the private market in the 1950s and 1960s.
+
+However, the landscape suddenly shifted around 2002, as antiquities dealers and biblical scholars started to unveil snippets of biblical text that looked like long-lost pieces of the Dead Sea Scrolls. Many of the shriveled brown fragments—most no bigger than large coins—reportedly traced back to the Kandos, who were rumored to be selling pieces they had long ago spirited away to a vault in Switzerland.
+
+## Explore the Evidence
+
+ This closeup video of the Museum of the Bible's Genesis fragment reveals its bumpy, varied surface, which the researchers interpret as leather. 
+
+By decade’s end, the trickle of post-2002 fragments turned into a flood of [at least 70 pieces](https://lyingpen.com/2020/01/13/a-list-of-70-unprovenanced-post-2002-dead-sea-scrolls-like-fragments/). Collectors and museums jumped at the chance to own the oldest known biblical texts, including Museum of the Bible founder Steve Green, the president of Hobby Lobby. Starting in 2009, Green and Hobby Lobby spent a fortune buying up biblical manuscripts and artifacts to seed what would become the Museum of the Bible’s collection. From 2009 to 2014, Green bought a total of 16 Dead Sea Scroll fragments in four batches, including seven fragments he bought directly from William Kando, the elder Kando’s son.
+
+Initially, some Dead Sea Scroll experts thought the post-2002 pieces, including Green’s, were the real deal. In 2016, leading biblical scholars published [a book on the Museum of the Bible’s fragments](https://brill.com/view/title/33413), dating them to the time of the Dead Sea Scrolls. But months before that book’s publication, doubt had started to creep into some scholars’ minds.
+
+In 2016, researchers including Justnes and [Kipp Davis](https://twu.academia.edu/KippDavis), a scholar at Canada’s Trinity Western University who co-edited the 2016 book, began discussing signs that some post-2002 fragments in Norway [had been faked](https://www.academia.edu/34891469/_Nine_Dubious_Dead_Sea_Scroll_Fragments_from_the_21th_Century_Dead_Sea_Discoveries_24_2_2017_189_228). Davis then [published evidence](https://www.academia.edu/28619652/Gleanings_from_the_Cave_of_Wonders_Patterns_of_Correspondence_in_the_Post-2002_Dead_Sea_Scrolls_Fragments) in 2017 that cast doubt on two Museum of the Bible fragments, including one that was on display when the museum opened in 2017\. One fragment’s lettering squeezed into a corner that wouldn’t have existed when the writing surface was new. Another appeared to have a Greek letter alpha where a 1930s reference Hebrew Bible used an alpha to flag a footnote.

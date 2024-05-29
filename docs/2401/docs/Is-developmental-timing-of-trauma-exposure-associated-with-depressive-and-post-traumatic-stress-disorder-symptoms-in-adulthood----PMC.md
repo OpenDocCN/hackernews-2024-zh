@@ -1,0 +1,645 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:15:34
+-->
+
+# Is developmental timing of trauma exposure associated with depressive and post-traumatic stress disorder symptoms in adulthood? - PMC
+
+> 来源：[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479490/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479490/)
+
+J Psychiatr Res. Author manuscript; available in PMC 2018 Jan 1.
+
+*Published in final edited form as:*
+
+PMCID: PMC5479490
+
+NIHMSID: NIHMS865199
+
+# Is developmental timing of trauma exposure associated with depressive and post-traumatic stress disorder symptoms in adulthood?
+
+, ScD, MPH,^(1,)^(2,)³ , MPH,^(1,)⁴ , PhD,⁵ and , PhD^(5,)⁶
+
+### Erin C. Dunn
+
+¹Psychiatric and Neurodevelopmental Genetics Unit, Massachusetts General Hospital, 185 Cambridge St, Simches Research Building, Boston, MA 02114 USA
+
+²Department of Psychiatry, Harvard Medical School, 401 Park Drive, 2 West, Room 305, Boston, MA 02215
+
+³Stanley Center for Psychiatric Research, The Broad Institute of Harvard and MIT, The Ted and Vada Stanley Building, 75 Ames Street, Cambridge, MA 02142
+
+### Kristen Nishimi
+
+¹Psychiatric and Neurodevelopmental Genetics Unit, Massachusetts General Hospital, 185 Cambridge St, Simches Research Building, Boston, MA 02114 USA
+
+⁴Harvard T.H. Chan School of Public Health, 677 Huntington Avenue, Boston, MA 02115 USA
+
+### Abigail Powers
+
+⁵Department of Psychiatry and Behavioral Sciences, Emory University School of Medicine, 201 Dowman Drive, Atlanta, Georgia, 30322 USA
+
+### Bekh Bradley
+
+⁵Department of Psychiatry and Behavioral Sciences, Emory University School of Medicine, 201 Dowman Drive, Atlanta, Georgia, 30322 USA
+
+⁶Atlanta VA Medical Center, 1670 Clairmont Road, Decatur, GA 30033 USA
+
+¹Psychiatric and Neurodevelopmental Genetics Unit, Massachusetts General Hospital, 185 Cambridge St, Simches Research Building, Boston, MA 02114 USA
+
+²Department of Psychiatry, Harvard Medical School, 401 Park Drive, 2 West, Room 305, Boston, MA 02215
+
+³Stanley Center for Psychiatric Research, The Broad Institute of Harvard and MIT, The Ted and Vada Stanley Building, 75 Ames Street, Cambridge, MA 02142
+
+⁴Harvard T.H. Chan School of Public Health, 677 Huntington Avenue, Boston, MA 02115 USA
+
+⁵Department of Psychiatry and Behavioral Sciences, Emory University School of Medicine, 201 Dowman Drive, Atlanta, Georgia, 30322 USA
+
+⁶Atlanta VA Medical Center, 1670 Clairmont Road, Decatur, GA 30033 USA
+
+Correspondence: Erin C. Dunn, ScD, MPH, Psychiatric and Neurodevelopmental Genetics Unit, Center for Human Genetic Research, Massachusetts General Hospital, 185 Cambridge Street, Simches Research Building 6
+
+^(th)
+
+Floor (room 6.252), Boston, MA 02114;
+
+[ude.dravrah.hgm@2nnude](mailto:dev@null)
+
+Phone: 617-726-9387; Fax: 617-726-0830
+
+The publisher's final edited version of this article is available at
+
+[J Psychiatr Res](/entrez/eutils/elink.fcgi?dbfrom=pubmed&retmode=ref&cmd=prlinks&id=27728852)
+
+## Introduction
+
+Exposure to traumatic life events, including child maltreatment or natural disasters, is increasingly recognized as one of the major social determinants of psychiatric disorders. Trauma exposure has been shown to about double the risk for major depressive disorder ^([1](#R1)–[4](#R4)), which is currently estimated to affect 11.7% of adolescents ^([5](#R5)) and 16.6% of adults ^([6](#R6)). Trauma exposure (or more precisely, exposure to events involving perceived or threatened loss of life, serious injury, or loss of physical integrity), is also a requirement to meet DSM-IV criteria for post-traumatic stress disorder (PTSD)^([7](#R7)), which has a lifetime prevalence of 4.7% among adolescents ^([8](#R8)) and 7.8% among adults ^([9](#R9)). As trauma exposure is common in the population, with six out of every 10 children ^([8](#R8)) and one out of two adults in the United States reporting a lifetime trauma exposure ^([9](#R9)), greater insight into the role of trauma exposure on both depression and PTSD etiology is needed.
+
+One understudied facet of trauma exposure that may be linked to future psychopathology risk is the developmental period of trauma occurrence. Researchers studying child abuse and neglect, in particular, sometimes consider developmental timing as an important dimension of defining maltreatment, finding that age at onset to maltreatment may influence the etiology of mental health problems ^([10](#R10),[11](#R11)). However, few attempts have been made in the broader trauma literature to examine ways in which age at onset to trauma exposure is associated with risk for psychopathology. As a result, we currently lack knowledge about the existence of “sensitive periods” ^([12](#R12)–[14](#R14)) for psychopathology risk, meaning windows of time in the course of development when trauma exposure may confer a particularly elevated risk for the onset of depression or PTSD. Determining whether, and when, sensitive periods exist across the lifespan will be important for understanding developmentally-relevant biological pathways implicated in the etiology of psychopathology and guiding the investment of limited public health resources to the “high-risk” stages when deleterious exposures are most harmful and the “high-reward” stages when enriching exposures and interventions could offer their greatest benefit.
+
+Thus far, only a small number of studies have examined possible sensitive periods corresponding to risk for either depression or PTSD. Among these studies, no consensus has emerged regarding whether earlier or later exposure is predictive of elevated risk for either outcome. With respect to depression, three prospective studies observed that individuals with maltreatment prior to age 5 had higher levels of teacher-reported internalizing symptoms in early childhood ^([15](#R15)) and self-reported depressive symptoms in early ^([16](#R16)) and early to mid-adulthood ^([17](#R17)) compared to those who were either never exposed or exposed during later stages. Retrospective studies have also found earlier abuse (before age 5 ^([18](#R18)), before age 12 ^([19](#R19),[20](#R20),[21](#R21)), or before age 17 ^([22](#R22))) or trauma (between 4–6 ^([23](#R23)) and before age 12 ^([19](#R19),[20](#R20))) particularly elevates risk for depressive symptoms and major depressive disorder. In two of these studies ^([19](#R19),[20](#R20)), early exposure to interpersonal trauma, such as witnessing trauma, physical attacks, and sexual molestation, conferred the largest harm relative to other traumas. However, prospective studies have also found exposure to maltreatment during adolescence (between 10–12 ^([24](#R24)) or 12–17 ^([25](#R25))) was more strongly associated with adolescent depressive symptoms than earlier maltreatment. A recent retrospective study also found emotional abuse specifically at age 14 was most predictive of depression during young adulthood ^([26](#R26)). Three prospective studies ^([11](#R11),[27](#R27),[28](#R28)) and two retrospective studies ^([29](#R29),[30](#R30)) found no effect of developmental timing of maltreatment in relation to internalizing symptoms and adolescent or adult depression.
+
+For PTSD symptoms or PTSD diagnoses, similarly mixed findings have been observed. For instance with respect to child abuse, retrospective studies have found that children with PTSD tended to report a lower age at first exposure (between 3–5 ^([31](#R31))), and that sexual assault or physical abuse before age 11, but not childhood neglect, conferred the highest risk for PTSD ^([32](#R32)). Retrospective studies have also found older children (ages 13–18 ^([21](#R21))) had higher risk for PTSD relative to their peers exposed at other ages. One prospective study of childhood sexual abuse found no association between age at abuse onset and PTSD symptoms ^([33](#R33)). Evidence regarding the effects of age at onset to natural disasters appears more consistent, with both retrospective ^([34](#R34)) and prospective studies ^([35](#R35),[36](#R36)) observing higher levels of PTSD symptoms or PTSD diagnoses among older children (around age 7 and above) compared to younger children (those younger than about age 7). However, results for other traumas is less conclusive, with retrospective studies suggesting there are no differences ^([37](#R37),[38](#R38)) in risk for PTSD based on age at onset of trauma, that early-life trauma is more harmful ^([39](#R39),[40](#R40)), or that middle childhood (ages 6–11) is more strongly associated with PTSD ^([41](#R41)).
+
+Although these studies suggest the developmental timing of trauma exposure may be associated with subsequent risk for depression or PTSD, these studies are limited by a focus on a small subset of adversities, reliance on small clinical or convenience samples, and failure to account for the correlated nature of adversities ^([2](#R2)). Moreover, relatively few have examined, the time-dependent effects of specific trauma types. Instead, most prior studies have focused generally on “early life adversity,” meaning adversities occurring over a broad span of ages (typically birth to age 14). In addition, even fewer studies have accounted for the frequency of exposure to adversity, leaving open the possibility earlier trauma exposure may be confounded by the number of times exposed.
+
+The current study aimed to address these limitations by investigating whether developmentally-sensitive measures of trauma exposure were associated with depressive and PTSD symptoms in a sample of highly-trauma exposed adults. We conducted these analyses using a low income, urban-sample of African American adults with both high rates of trauma exposure (>90% exposed to at least one traumatic event) and high rates of depressive and PTSD symptoms ^([42](#R42)), which provided an opportunity to examine the differential effects of age at onset to trauma that would not be possible in samples where the prevalence of trauma was lower. More specifically, we examined the effect of timing of first exposure to trauma, coded as: *early childhood* (age 0–5 years), *middle childhood* (6–10 years), *adolescence* (11–18 years), and *adulthood* (19+ years), on self-reported depressive and PTSD symptoms in adulthood. Traumatic event types were separated into child maltreatment, other interpersonal trauma, non-interpersonal trauma, and other events in order to determine if sensitive periods of trauma exposure differed based on the type of trauma exposure.
+
+## Methods
+
+### Sample and Procedures
+
+Data came from the Grady Trauma Project (GTP), an ongoing National Institute of Mental Health (NIMH)-funded study examining genetic and environmental risk and resilience factors for the development of PTSD and other psychiatric disorders ^([42](#R42)–[44](#R44)). The GTP sample consists of 8886 adults (ages 18–90) who were recruited from general medical clinics and obstetric/gynecological clinics at Grady Hospital in Atlanta, Georgia. The clinics are part of a publically funded, non-profit healthcare center serving a primarily African American, urban population from low socioeconomic backgrounds. The benefits of this particular sample include identification of an understudied population, a group with a high rate of trauma, and a relatively homogeneous socioeconomic status distribution. Participants were recruited from clinic waiting areas. Eligible participants were at least 18 years old, not actively psychotic, and able to give formal written and verbal consent. Consenting individuals participated in verbal interviews administered by trained research assistants lasting approximately 45–75 minutes, depending on participant’s trauma history and symptoms. Participants received $15 for participation. Emory University’s Institutional Review Board and the Grady Health Care System Research Oversight Committee approved all study procedures.
+
+In the current analysis, we analyzed data from 2892 African American adults whose data were collected between 2005 and 2013 (74.6% female; mean age=41.0, SD=13.8). These adults had complete data on all measures relevant to the current analyses. We restricted analyses to African Americans, as significant differences were observed in the distribution of trauma exposure, covariates, and both outcomes; restriction to one racial/ethnic group eliminated the variability associated with race, allowing us to more effectively control for confounding. Adjustment or stratification by race was not possible as individuals from other racial/ethnic groups comprised only 7.7% of the sample (3.6% were White and 4.1% identified as other), resulting in low power to detect associations due to small cell counts. Of note, our analytic sample is smaller than the larger study sample due to the fact that participants complete study questionnaires in clinic waiting rooms until the clinic is ready to see them/their family member, thus the majority of participants do not complete all measures.
+
+### Measures
+
+#### Exposure to Trauma
+
+Presence or absence of trauma exposure, age at first exposure to trauma, and trauma frequency were ascertained using the Traumatic Events Inventory (TEI), a 14-item screening measure assessing lifetime history of traumatic events ^([42](#R42),[45](#R45),[46](#R46)). We focused on 11 different traumatic events, which had information about age at first onset and could plausibly occur in multiple developmental stages. These events were grouped into four types, consistent with prior research ^([47](#R47),[48](#R48)): (1) *child maltreatment* (i.e., witnessing violence between parents or caregivers; being beaten; experiencing emotional abuse; or experiencing sexual abuse); (2) *other interpersonal violence* (i.e., witnessing or being confronted with a friend or family member being murdered; witnessing a family member or friend being attacked with or without a weapon; witnessing a non-family member or friend attacked with or without a weapon); (3) *non-interpersonal violence* (i.e., experiencing a natural disaster; witnessing or experiencing a serious accident or injury; experiencing a sudden life threatening illness; and (4) *other trauma* (i.e., any other event or experience not covered by the previously stated categories that participants self-identified as a traumatic experience, including witnessing a death or suicide, bereavement, divorce or familial disruption, extended caregiving, job loss, etc).
+
+For each traumatic event, participants reported their age (in year) of their first experience. We used this data to develop age categories for age at first exposure: *early childhood* (age 0–5 years), *middle childhood* (6–10 years), *adolescence* (11–18 years), and *adulthood* (19+ years). These age categories were chosen to match previous research and minimize recall bias (relative to studying specific years of age) ^([33](#R33),[49](#R49)).
+
+Participants also reported the frequency of each trauma event occurrence on a scale ranging from 0 (unexposed) to 8 (greater than 20 times). Using this data, we generated a set of indicator variables (one for each traumatic event) to denote low versus high frequency of trauma exposure, with high being at or above the top quartile of frequency for a specific event. Details regarding cut-points used for each trauma event are denoted in the footnote of . These frequency indicators were used in models examining timing of exposure to account for the possibility that people exposed at younger ages would be more likely have a higher number of occurrences of a given trauma exposure.
+
+**Percent of respondents exposed to frequent trauma by age at first onset to trauma**
+
+Frequency of each trauma event occurrence was ascertained on a scale ranging from 0 (unexposed) to 8 (greater than 20 times). Using this data, we generated indicator variables for each traumatic event denoting low versus high frequency of trauma exposure, with high being at or above the top quartile of frequency for a specific event. The figure presents the % of those exposed to frequent trauma, within each age category, among those exposed. All Chi Square Goodness of Fit models for each trauma event, which evaluated whether there were significant differences between the frequencies of exposure to each trauma by age of first exposure, are significant (p<0.0001) unless indicated with NS (p>0.05).
+
+#### Depressive Symptoms
+
+Depressive symptoms were measured using the Beck Depression Inventory, Second Edition (BDI-II), a 21-item psychometrically validated and widely-used inventory of current depressive symptoms ^([50](#R50)–[53](#R53)). The BDI contains items assessing the presence and severity of depressive symptoms over the past two weeks rated on a scale of 0 (not at all/never) to 3 (extremely/every day). Total BDI score were calculated by averaging all individual items (where at least 19 items were completed) and multiplying that mean by 21; this approach to deriving a summary score enabled us to incorporate data from individuals with small amounts of missing data. In this sample, the BDI demonstrated excellent internal consistency reliability (α=0.93).
+
+#### Post-Traumatic Stress Disorder Symptoms
+
+Post-traumatic stress disorder symptoms were captured using the modified Posttraumatic Symptom Scale (MPSS), a psychometrically validated self-report measure of the frequency and severity of PTSD symptoms ^([54](#R54)). The 17 items on the MPSS correspond to symptom criteria to diagnose PTSD as defined by the Diagnostic and Statistical Manual of Mental Disorders, Fourth Edition (DSM-IV-TR) ^([55](#R55)). These symptoms encompassed re-experiencing, avoidance, emotional numbing, as well as hyperarousal and reactivity categories. Participants were asked about these symptoms generally, and therefore the symptoms do not reference a specific index trauma but can reflect symptoms related to any of the traumas reported on the TEI. All items were scored on a scale of frequency from 0 (not at all) to 3 (5 or more times a week) as experienced by the individual in the past two weeks from their point of assessment. MPSS total scores were calculated by averaging all individual items (where at least 15 values were completed) and multiplying the average by 17\. In this sample, the MPSS also showed excellent internal consistency reliability (α=0.92). Of note, the PTSD scale was not administered to individuals that did not report exposure to at least one type of trauma.
+
+#### Covariates
+
+All linear regression models adjusted for the following covariates: sex; age (continuous); highest level of education (less than 12th grade; high school graduate or GED; greater than high school graduate or GED/college graduate); household monthly income ($0–499; $500–999; $1,000+), and employment status (unemployed; unemployed receiving disability support; and employed, with or without disability support).
+
+### Data Analyses
+
+To facilitate interpretation and comparison, both outcomes were standardized (mean=0; SD=1) prior to analyses. After standardization, we conducted basic univariate and bivariate analyses to compare outcome values by each covariate. We also examined the distribution of exposure to each traumatic event in the total sample and by age at first exposure among those who were exposed. To determine whether respondents exposed at earlier ages also had more frequent trauma exposure, we examined the percent of respondents exposed to frequent trauma by reported age at first exposure. Following these analyses, we fit a series of linear regression models that examined, separately for each traumatic event and type, the association between trauma exposure and each outcome, after adjusting for covariates. Model 1 examined the effect of being exposed (vs. non-exposed) at any age to trauma. Model 2 (partial adjustment) examined the effect of timing of exposure (compared to the referent group of non-exposed during any period), after adjusting for covariates as well as exposure to all other traumatic events, given that some exposures, particularly child maltreatment events, were highly correlated (tetrachoric correlation values ranged from r=0.07 to r=0.63). Model 3 (full adjustment) expanded upon Model 2 by additionally including the indicator for frequency of each trauma event occurrence (0=low frequency; 1=high reported number of occurrences of that trauma exposure). For Models 2 and 3, we conducted a test of homogeneity to evaluate whether the beta coefficients (indicating the effect of timing of exposure relative to never exposed) were significantly different from each other. In cases where the null hypothesis was rejected for the test for homogeneity (p<0.05), indicating that the effects of developmental timing differed across groups, we then conducted post-hoc Tukey tests to evaluate, after adjustment for multiple testing, which specific age at exposure groups differed from one another. All analyses were conducted using SAS Version 9.4 (SAS Institute, Inc, Cary, North Carolina).
+
+## Results
+
+The analytic sample comprised mostly women (74.6%) and middle-age adults (mean age=41.0; SD=13.8). Depressive and PTSD symptoms significantly differed by age, education level, household monthly income, and disability, but not sex (). Specifically, both depressive symptoms and PTSD symptoms were higher among middle-age adults, those with lower education and income, and those who were unemployed or on disability.
+
+### Table 1
+
+Distribution of depressive and posttraumatic stress disorder symptoms in the Grady Trauma Project (GTP) analytic sample (N=2892)
+
+|  | Total Sample | Depressive Symptoms | PTSD Symptoms |
+| :-- | :-: | :-: | :-: |
+|  
+* * *
+
+ |
+| :-- |
+| Covariate | N (%) | Mean (SD) | F value | *p value* | Mean (SD) | F value | *p value* |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Age |
+|  18–25 | 579 (20.0) | 11.78 (9.7) | 21.17 | <.0001 | 10.23 (10.9) | 23.45 | <.0001 |
+|  26–35 | 527 (18.2) | 14.59 (12.0) |  |  | 12.39 (11.9) |  |  |
+|  36–45 | 499 (17.3) | 16.26 (13.3) |  |  | 14.28 (13.6) |  |  |
+|  46–55 | 817 (28.3) | 16.24 (12.8) |  |  | 14.60 (13.0) |  |  |
+|  56+ | 470 (16.2) | 11.63 (11.1) |  |  | 9.00 (10.5) |  |  |
+|  
+* * *
+
+ |
+| Sex |
+|  Male | 733 (25.4) | 14.03 (12.4) | 0.50 | 0.500 | 12.14 (12.7) | 0.30 | 0.585 |
+|  Female | 2159 (74.6) | 14.39 (12.0) |  |  | 12.43 (12.2) |  |  |
+|  
+* * *
+
+ |
+| Education |
+|  Less than 12th grade | 658 (22.7) | 16.89 (13.4) | 20.35 | <.0001 | 14.39 (13.2) | 11.69 | <.0001 |
+|  High school graduate or GED | 1202 (41.6) | 13.79 (11.8) |  |  | 11.68 (12.0) |  |  |
+|  Greater than GED/College graduate | 1023 (35.7) | 13.24 (11.3) |  |  | 11.84 (12.1) |  |  |
+|  
+* * *
+
+ |
+| Income |
+|  $0–499 | 879 (30.4) | 16.88 (13.5) | 36.18 | <.0001 | 13.83 (13.2) | 14.29 | <.0001 |
+|  $500–999 | 779 (26.9) | 14.40 (11.8) |  |  | 12.83 (12.5) |  |  |
+|  $1,000 or more | 1234 (42.7) | 12.40 (10.8) |  |  | 11.01 (11.5) |  |  |
+|  
+* * *
+
+ |
+| Employment Status |
+|  Unemployed | 1468 (50.8) | 15.34 (12.7) | 31.06 | <.0001 | 12.99 (12.7) | 17.57 | <.0001 |
+|  Unemployed (disability) | 549 (19.0) | 15.75 (12.5) |  |  | 13.84 (13.0) |  |  |
+|  Employed (with or without disability) | 875 (30.2) | 11.65 (10.2) |  |  | 10.36 (11.0) |  |  |
+
+### Distribution of Trauma Exposure and Trauma Timing
+
+Nearly three-quarters of the sample reported being exposed to some type of interpersonal or non-interpersonal violence event (). Slightly more than half of the sample had been exposed to some type of child abuse, with violence between caregivers and sexual abuse being the two most common sub-types.
+
+### Table 2
+
+Distribution of exposure to each traumatic event in total sample by age of first exposure to trauma among those who were exposed
+
+| Exposure | Exposed | Age of First Exposure (year) | Age of First Exposure (category) |
+| :-- | :-: | :-: | :-: |
+|  
+* * *
+
+ |
+| :-: |
+| Ages 0–5 | Ages 6–10 | Ages 11–18 | Ages 19+ |
+| :-: | :-: | :-: | :-: |
+|  
+* * *
+
+ |
+| :-: |
+| % | N | Mean | SD | % | N | % | N | % | N | % | N |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **Trauma Exposure** |
+| Child Maltreatment |
+|  Violence between Caregivers | 31.0 | 897 | 8.06 | 3.3 | 8.1 | 235 | 16.2 | 469 | 6.7 | 193 | -- | -- |
+|  Physical Abuse | 19.2 | 555 | 8.10 | 3.3 | 4.6 | 133 | 10.8 | 311 | 3.8 | 111 | -- | -- |
+|  Emotional Abuse | 25.9 | 750 | 9.91 | 3.8 | 3.9 | 112 | 11.2 | 325 | 10.8 | 313 | -- | -- |
+|  Sexual Abuse | 30.4 | 878 | 9.70 | 3.7 | 4.4 | 128 | 13.4 | 387 | 12.6 | 363 | -- | -- |
+|  Any of the Above | 56.9 | 1624 | 8.07 | 3.5 | 15.5 | 449 | 28.0 | 809 | 12.7 | 366 | -- | -- |
+| Other Interpersonal Violence |
+|  Family/friend Murdered | 53.9 | 1560 | 22.19 | 12.0 | 0.9 | 26 | 6.4 | 186 | 19.5 | 564 | 27.1 | 784 |
+|  Witness Attack (Family or friend) | 42.2 | 1220 | 17.37 | 10.3 | 2.7 | 77 | 8.7 | 252 | 16.5 | 476 | 14.4 | 415 |
+|  Witness Attack (non-family/friend) | 44.0 | 1271 | 18.99 | 10.6 | 1.4 | 40 | 7.0 | 201 | 18.9 | 547 | 16.7 | 483 |
+|  Any of the Above | 77.4 | 2238 | 17.52 | 10.5 | 4.3 | 123 | 16.5 | 476 | 31.1 | 900 | 25.6 | 739 |
+| Non-Interpersonal Violence |
+|  Natural Disaster | 25.7 | 744 | 19.68 | 13.4 | 1.2 | 35 | 6.9 | 200 | 7.3 | 210 | 10.3 | 299 |
+|  Serious Accident or Injury | 64.5 | 1865 | 20.37 | 11.9 | 2.8 | 81 | 11.6 | 334 | 20.0 | 572 | 30.4 | 878 |
+|  Life Threatening Illness | 23.1 | 669 | 34.59 | 15.5 | 1.0 | 30 | 0.8 | 24 | 2.3 | 67 | 19.0 | 548 |
+|  Any of the Above | 74.6 | 2157 | 18.91 | 12.2 | 4.8 | 140 | 17.1 | 495 | 22.5 | 651 | 30.1 | 871 |
+| Any other trauma | 31.5 | 911 | 27.73 | 14.2 | 0.9 | 26 | 2.0 | 59 | 6.5 | 188 | 22.1 | 638 |
+
+The mean age at first exposure to any trauma was 11.4 (SD=8.8), but ranged between before one years of age through age 62\. Overall, middle childhood (ages 6–10) was the most often reported time period for first exposure to child maltreatment (). In contrast, adolescence (ages 11–18) and adulthood (ages 19 and above) was the most often reported time periods for first exposure to other interpersonal violence and non-interpersonal violence, respectively.
+
+For most traumas, there was also an age-frequency gradient, suggesting that those first exposed earlier in the lifespan also tended to report experiencing more frequent exposure ().
+
+### Trauma Exposure and Depressive and PTSD Symptoms
+
+As shown in , respondents reporting exposure to trauma at any age had higher depressive and PTSD symptoms, on average, relative to their non-exposed peers. For example, participants exposed to child maltreatment had, on average, depressive and PTSD symptoms scores that were half of a standard-deviation unit greater than their unexposed peers.
+
+### Table 3
+
+Results of linear regression analyses examining trauma exposure (exposed vs. unexposed) on depressive and PTSD symptoms, adjusting for covariates
+
+|  |  | Depressive Symptoms | PTSD Symptoms |
+| :-- | :-: | :-: | :-: |
+|  
+* * *
+
+ |
+| :-: |
+| N (%) | Beta | 95% CI | Beta | 95% CI |
+| :-: | :-: | :-: | :-: | :-: |
+|  
+* * *
+
+ |
+| :-: |
+| Child Maltreatment | 1624 (56.9) | 0.549 | (0.48, 0.62) | 0.575 | (0.51, 0.64) |
+| Other Interpersonal Violence | 2238 (77.4) | 0.211 | (0.13, 0.29) | 0.297 | (0.21, 0.38) |
+| Non-Interpersonal Violence | 2157 (74.6) | 0.146 | (0.06, 0.23) | 0.256 | (0.18, 0.34) |
+| Any trauma not yet covered | 911 (31.5) | 0.152 | (0.08, 0.22) | 0.260 | (0.19, 0.33) |
+
+### Timing of Trauma Exposure and Depressive Symptoms
+
+Depressive symptoms varied as a function age at first exposure to child maltreatment and other interpersonal violence, but not non-interpersonal violence or any other trauma (). Specifically, participants first exposed to child maltreatment during early childhood (β=0.739) had depressive symptoms scores that were about 1.5 times as high as those first exposed during middle childhood (β=0.519) and almost twice as high as those first exposed during adolescence (β=0.397), even after adjusting for sociodemographic covariates and exposure to other trauma types (Tukey p-value <0.05 for both comparisons). In other words, the predicted depressive symptom score for those first exposed during early childhood would be 0.470 (SD = 0.27), whereas the predicted depressive symptom score for those first exposed during middle childhood would be 0.245 (SD = 0.27). These differences persisted after additionally adjusting for frequency of trauma exposure (Model 3 results) and appeared driven primarily by exposure to sexual abuse ([Supplemental Table 1](#SD1)).
+
+### Table 4
+
+Results of linear regression analyses examining the effect of timing of first exposure to trauma on depressive symptoms, adjusting for covariates and frequency of exposure
+
+|  | N (%) | Model 2 (partial adjustment) | Model 3 (full adjustment) |
+| :-- | :-- | :-- | :-- |
+|  
+* * *
+
+ |
+| :-: |
+| F-Statistic (p-value) | Beta | 95% CI | F-Statistic (p-value) | Beta | 95% CI |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+|  
+* * *
+
+ |
+| :-: |
+| **Child Maltreatment** |  | 15.59 (<.0001) |  |  | 10.44 (<.0001) |  |  |
+|  Early Childhood | 449 (15.5) |  | 0.739^a,^b | (0.64, 0.84) |  | 0.633^a,^b | (0.52, 0.74) |
+|  Middle Childhood | 809 (28.0) |  | 0.519 | (0.44, 0.60) |  | 0.444 | (0.36, 0.53) |
+|  Adolescence | 366 (12.7) |  | 0.397 | (0.29, 0.51) |  | 0.356 | (0.25, 0.46) |
+| **Other Interpersonal Violence** |  | 4.28 (0.005) |  |  | 3.84 (0.009) |  |  |
+|  Early Childhood | 123 (4.3) |  | 0.304 | (0.12, 0.49) |  | 0.291 | (0.10, 0.48) |
+|  Middle Childhood | 476 (16.5) |  | 0.344^d,^e | (0.23, 0.46) |  | 0.334^e | (0.21, 0.46) |
+|  Adolescence | 900 (31.1) |  | 0.177 | (0.08, 0.27) |  | 0.170 | (0.07, 0.27) |
+|  Adulthood | 739 (25.6) |  | 0.172 | (0.07, 0.27) |  | 0.169 | (0.07, 0.27) |
+| **Non-Interpersonal Violence** |  | 0.95 (0.414) |  |  | 0.50 (0.684) |  |  |
+|  Early Childhood | 140 (4.8) |  | 0.099 | (−0.07, 0.27) |  | −0.009 | (−0.18, 0.17) |
+|  Middle Childhood | 495 (17.1) |  | 0.179 | (0.07, 0.29) |  | 0.065 | (−0.05, 0.18) |
+|  Adolescence | 651 (22.5) |  | 0.172 | (0.07, 0.27) |  | 0.077 | (−0.03, 0.18) |
+|  Adulthood | 871 (30.1) |  | 0.113 | (0.02, 0.21) |  | 0.041 | (−0.06, 0.14) |
+| **Any trauma not yet covered** |  | 1.26 (0.287) |  |  | 1.22 (0.302) |  |  |
+|  Early Childhood | 26 (0.9) |  | 0.195 | (−0.16, 0.55) |  | 0.210 | (−0.15, 0.57) |
+|  Middle Childhood | 59 (2.04) |  | 0.153 | (−0.09, 0.39) |  | 0.167 | (−0.08, 0.41) |
+|  Adolescence | 188 (6.5) |  | 0.056 | (−0.08, 0.19) |  | 0.070 | (−0.08, 0.22) |
+|  Adulthood | 638 (22.1) |  | 0.210 | (0.12, 0.29) |  | 0.221 | (0.13, 0.31) |
+
+Similarly, after adjusting for sociodemographic characteristics and frequency of trauma exposure, participants first exposed to other interpersonal violence during middle childhood (β=0.334) had depressive symptoms scores that were about twice as large as those first exposed during adulthood (β=0.169; Tukey p-value<0.05). These results did not appear driven by exposure to a specific trauma type ([Supplemental Table 1](#SD1)).
+
+### Timing of Trauma Exposure and PTSD Symptoms
+
+PTSD symptoms also varied as a function age at first exposure to child maltreatment and to some extent other interpersonal violence, but not non-interpersonal violence or any other trauma (). After adjusting for all covariates, those exposed to child maltreatment during early childhood (β=0.681) had significantly higher levels of PTSD symptoms relative to those first exposed during middle childhood (β=0.468) or adolescence (β=0.342; Tukey p-value <0.05 for both comparisons). These differences were explained by exposure to child sexual abuse ([Supplemental Table 2](#SD1)).
+
+### Table 5
+
+Results of linear regression analyses examining the effect of timing of first exposure to trauma on PTSD symptoms, adjusting for covariates and frequency of exposure
+
+|  | N (%) | Model 2 (partial adjustment) | Model 3 (full adjustment) |
+| :-- | :-- | :-- | :-- |
+|  
+* * *
+
+ |
+| :-: |
+| F-Statistic (p-value) | Beta | 95% CI | F-Statistic (p-value) | Beta | 95% CI |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+|  
+* * *
+
+ |
+| :-: |
+| **Child Maltreatment** |  | 21.94 (p<.0001) |  |  | 15.16 (<.0001) |  |  |
+|  Early Childhood | 449 (15.5) |  | 0.792^a,^b | (0.69, 0.89) |  | 0.681^a,^b | (0.57, 0.79) |
+|  Middle Childhood | 809 (28.0) |  | 0.547^d | (0.47, 0.63) |  | 0.468 | (0.38, 0.55) |
+|  Adolescence | 366 (12.7) |  | 0.386 | (0.28, 0.49) |  | 0.342 | (0.24, 0.45) |
+| **Other Interpersonal Violence** |  | 2.94 (0.032) |  |  | 1.67 (0.171) |  |  |
+|  Early Childhood | 123 (4.3) |  | 0.315 | (0.14, 0.49) |  | 0.229 | (0.04, 0.42) |
+|  Middle Childhood | 476 (16.5) |  | 0.410^e | (0.30, 0.52) |  | 0.345 | (0.23, 0.46) |
+|  Adolescence | 900 (31.1) |  | 0.288 | (0.19, 0.38) |  | 0.241 | (0.14, 0.34) |
+|  Adulthood | 739 (25.6) |  | 0.250 | (0.15, 0.35) |  | 0.231 | (0.13, 0.33) |
+| **Non-Interpersonal Violence** |  | 2.02 (0.109) |  |  | 1.22 (0.302) |  |  |
+|  Early Childhood | 140 (4.8) |  | 0.224 | (0.06, 0.39) |  | 0.135 | (−0.04, 0.31) |
+|  Middle Childhood | 495 (17.1) |  | 0.305 | (0.20, 0.41) |  | 0.211 | (0.09, 0.33) |
+|  Adolescence | 651 (22.5) |  | 0.296 | (0.20, 0.39) |  | 0.218 | (0.11, 0.32) |
+|  Adulthood | 871 (30.1) |  | 0.204 | (0.11, 0.30) |  | 0.144 | (0.05, 0.24) |
+| **Any trauma not yet covered** |  | 1.08 (0.356) |  |  | 1.12 (0.340) |  |  |
+|  Early Childhood | 26 (0.9) |  | 0.363 | (0.01, 0.71) |  | 0.341 | (−0.01, 0.69) |
+|  Middle Childhood | 59 (2.04) |  | 0.170 | (−0.07, 0.41) |  | 0.152 | (−0.09, 0.39) |
+|  Adolescence | 188 (6.5) |  | 0.206 | (0.07, 0.34) |  | 0.187 | (0.04, 0.33) |
+|  Adulthood | 638 (22.1) |  | 0.319 | (0.24, 0.40) |  | 0.303 | (0.21, 0.39) |
+
+Although exposure to other interpersonal violence appeared initially most damaging in increasing levels of PTSD symptoms (), no significant differences were found across those exposed at different ages (relative to those never exposed) after adjusting for frequency of exposure (Tukey p-value<0.05).
+
+## Discussion
+
+This study examined the association between developmental timing of exposure to trauma and levels of depression and PTSD symptoms within a sample of highly-trauma exposed adults. By studying a racially and socioeconomically homogeneous sample, where trauma exposure was common, we were able to examine the effects of age at first exposure to trauma. Such analyses may not have been possible in a heterogeneous sample where trauma exposure was more rare.
+
+In line with previous research ^([1](#R1)–[4](#R4)), we found that those who were trauma exposed (regardless of age at first exposure) had significantly higher levels of depressive and PTSD symptoms relative to those who were unexposed to trauma. These findings add further support to the well-documented finding that trauma exposure elevates risk for psychopathology across the lifecourse.
+
+However, a more novel observation from this study was that there appeared to be two developmental stages when trauma exposure was associated with elevated levels of subsequent psychopathology. First, participants exposed to child maltreatment during early childhood (ages 0–5) had both depression and PTSD symptoms that were up to twice as high as those exposed during later developmental stages. These effects were detected even after controlling for sociodemographic characteristics, exposure to other types of traumas, and the number of occurrences of child maltreatment (i.e., the frequency of exposure). Such findings are consistent with several prospective ^([15](#R15)–[17](#R17)) and retrospective studies ^([18](#R18),[31](#R31)) also showing an elevated risk for subsequent depression, in particular, among those first exposed in the first five years of life. Although the mechanisms linking early trauma exposure to subsequent psychopathology risk are not well known ^([56](#R56)), early trauma exposure may be more damaging than later trauma exposure because it compromises a child’s ability to successfully master stage-salient developmental tasks (e.g., self-regulation, secure attachments) ^([57](#R57)) and damages the foundation of brain architecture and neurobiological systems involved in regulating arousal, emotion, stress responses, and reward processing ^([58](#R58)–[61](#R61)), which are all implicated in the onset and persistence of stress-related disorders like depression and PTSD.
+
+Second, we also found that participants first exposed during middle childhood (ages 6–10) to other types of interpersonal violence, including witnessing a friend or family member being murdered or being attacked with or without a weapon, had depressive symptoms scores that were about twice as high as those first exposed during adulthood. Similar results were also detected for PTSD, but were not statistically significant after adjusting the frequency or number of occurrences of child exposure. These results are consistent with at least some prior studies suggesting that trauma during middle childhood, including severe illness ^([41](#R41)), or natural disasters ^([34](#R34)–[36](#R36)) is associated with an elevated risk for PTSD relative to exposure in other periods. Although the mechanisms driving this association are unclear, exposure to interpersonal violence events during middle childhood may be more harmful than exposure in adulthood for a number of reasons: school-age children may be in a unique developmental stages where they do not benefit as much from parental buffering ^([62](#R62)), when demands from the social environment increase (i.e., relating to peers, participating in school activities) ^([63](#R63)), and when adaptive coping capacities are still developing ^([64](#R64)).
+
+It is important to emphasize that these developmental timing differences would have been missed had we not considered the effect of timing of trauma exposure. Our findings therefore underscore that a basic comparison of those “exposed” to those who are “unexposed” may potentially mask important within-group differences that are only revealed when examining developmental timing of exposure to trauma. These findings also emphasize the need to adjust, where possible, for frequency of exposure to trauma, as some developmental timing differences may be attenuated after considering this information.
+
+Several limitations of the current study must be noted. First, the measure of trauma exposure included in this study did not capture other characteristics of the trauma, including its severity, chronicity, or duration. Our frequency indicator variable may have captured some of these domains, though this remains unclear, as the frequency measure was not specific to a given year. In the case of abuse, the relationship of the perpetrator to the victim was also not examined and could have impacted the specific results for abuse types. Indeed, there is evidence suggesting more negative psychological outcomes among those experiencing abuse perpetrated by a family member rather than non-family member ^([65](#R65),[66](#R66)). Moving forward, larger scales studies are needed to examine the extent to which chronicity, duration, and perpetrator of the trauma varies as a function of developmental timing. Second, trauma exposure and age at first exposure to trauma were assessed retrospectively in adulthood. Retrospective reports of child maltreatment in particular have been shown in some cases to be less reliable and valid than prospective reports, because of memory inaccuracies, a reluctance to disclose personal matters, or current mood states ^([67](#R67)). However, recent studies have found retrospective and prospective measures produce similar estimates of effect for mental disorders ^([68](#R68)), suggesting that trauma exposure is harmful regardless of ascertainment strategy and that even if recall bias is present, effect estimates are unlikely altered. Some studies have documented differential recall bias across the lifespan, showing increasing problems in recall and disclosure of early trauma events as age increases (see for example ^([69](#R69))) as well as an association between earlier age at onset of child abuse with greater amnesia in adult memory recovery of those events ^([70](#R70)). However, accurate recall of memories as early as age 2–3 years old has been documented ^([70](#R70),[71](#R71)), older individuals show no autobiographical memory recall difference for memories from any point in their lives^([72](#R72)), and underreporting is more likely than falsely positively reporting early abuse^([73](#R73)). Moreover, by using developmental periods, rather than specific ages, we were able to maintain consistency with prior studies and reduce recall bias as compared to reports focused on single ages. Participants unsure of their age at first trauma exposure were also excluded. Prospective research is needed to replicate these findings; this work would ideally incorporate repeated measures of trauma exposure and mental health in order to differentiate short- versus long-term effects of trauma timing on psychopathology. Finally, our sample was largely comprised of participants who were low income, female, and African Americans. Our analyses were also restricted to African Americans, due to the small number of respondents in other racial/ethnic groups. However, as noted above, a number of the findings from this study are consistent with those found in studies using samples with different demographic profiles. Further, this study focuses on a largely under-studied population with high levels of mental health problems; studying this unique population is key to help determine that factors that might impact the development of psychiatric conditions and the developmental stages when interventions or supports may be most beneficial.
+
+In conclusion, our study underscores the need to consider the developmental period of trauma exposure, as the effect of some traumas varied as a function of when in the course of development the trauma occurred. Identification of these developmental stages of heightened vulnerability will aid in determining sensitive periods and guiding the investment of limited public health dollars towards the life stages when age-tailored interventions can be delivered and deliver their greatest returns.
+
+## References
+
+1\.
+
+McLaughlin KA, Green JG, Gruber MJ, Sampson NA, Zaslavsky AM, Kessler RC. Childhood adversities and adult psychiatric disorders in the National Comorbidity Survey Replication II: Associations with persistence of DSM-IV disorders. Archives of General Psychiatry. 2010;67:124–32. [[PMC free article](/pmc/articles/PMC2847359/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20124112)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Archives+of+General+Psychiatry&title=Childhood+adversities+and+adult+psychiatric+disorders+in+the+National+Comorbidity+Survey+Replication+II:+Associations+with+persistence+of+DSM-IV+disorders&author=KA+McLaughlin&author=JG+Green&author=MJ+Gruber&author=NA+Sampson&author=AM+Zaslavsky&volume=67&publication_year=2010&pages=124-32&pmid=20124112&)]
+
+2\.
+
+McLaughlin KA, Green JG, Gruber MJ, Sampson NA, Zaslavsky AM, Kessler RC. Childhood adversities and first onset of psychiatric disorders in a national sample of US adolescents. JAMA Psychiatry. 2012;69:1151–60. [[PMC free article](/pmc/articles/PMC3490224/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23117636)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=JAMA+Psychiatry&title=Childhood+adversities+and+first+onset+of+psychiatric+disorders+in+a+national+sample+of+US+adolescents&author=KA+McLaughlin&author=JG+Green&author=MJ+Gruber&author=NA+Sampson&author=AM+Zaslavsky&volume=69&publication_year=2012&pages=1151-60&)]
+
+3\.
+
+Norman RE, Byambaa M, De R, Butchart A, Scott J, Vos T. The long-term health consequences of child physical abuse, emotional abuse, and neglect: a systematic review and meta-analysis. PLoS Med. 2012;9:e1001349. [[PMC free article](/pmc/articles/PMC3507962/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23209385)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=PLoS+Med&title=The+long-term+health+consequences+of+child+physical+abuse,+emotional+abuse,+and+neglect:+a+systematic+review+and+meta-analysis&author=RE+Norman&author=M+Byambaa&author=R+De&author=A+Butchart&author=J+Scott&volume=9&publication_year=2012&pages=e1001349&pmid=23209385&)]
+
+4\.
+
+Widom CS, DuMont K, Czaja SJ. A prospective investigation of major depressive disorder and comorbidity in abused and neglected children grown up. Archives of General Psychiatry. 2007;64:49–56. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17199054)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Archives+of+General+Psychiatry&title=A+prospective+investigation+of+major+depressive+disorder+and+comorbidity+in+abused+and+neglected+children+grown+up&author=CS+Widom&author=K+DuMont&author=SJ+Czaja&volume=64&publication_year=2007&pages=49-56&pmid=17199054&)]
+
+5\.
+
+Merikangas KR, He S, Burstein M, et al. Lifetime prevalence of mental disorders in U.S. adolescents: Results from the National Comorbidity Survey Replication - Adolescent Supplement (NCS-A) Journal of the American Academy of Child and Adolescent Psychiatry. 2011;49:980–9. [[PMC free article](/pmc/articles/PMC2946114/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20855043)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+the+American+Academy+of+Child+and+Adolescent+Psychiatry&title=Lifetime+prevalence+of+mental+disorders+in+U.S.+adolescents:+Results+from+the+National+Comorbidity+Survey+Replication+-+Adolescent+Supplement+(NCS-A)&author=KR+Merikangas&author=S+He&author=M+Burstein&volume=49&publication_year=2011&pages=980-9&)]
+
+6\.
+
+Kessler RC, Berglund P, Demler O, Jin R, Merikangas KR, Walters EE. Lifetime prevalence and age-of-onset distributions of DSM-IV disorders in the National Comorbidity Survey Replication. Archives of General Psychiatry. 2005;62:593–602. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15939837)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Archives+of+General+Psychiatry&title=Lifetime+prevalence+and+age-of-onset+distributions+of+DSM-IV+disorders+in+the+National+Comorbidity+Survey+Replication&author=RC+Kessler&author=P+Berglund&author=O+Demler&author=R+Jin&author=KR+Merikangas&volume=62&publication_year=2005&pages=593-602&pmid=15939837&)]
+
+7\.
+
+American Psychiatric Association. Diagnostic and statistical manual of mental disorders. 5\. Arlington, VA: American Psychiatric Publishing; 2013\. [[Google Scholar](https://scholar.google.com/scholar_lookup?title=Diagnostic+and+statistical+manual+of+mental+disorders&publication_year=2013&)]
+
+8\.
+
+McLaughlin KA, Koenen KC, Hill ED, et al. Trauma exposure and posttraumatic stress disorder in a national sample of adolescents. Journal of the American Academy of Child and Adolescent Psychiatry. 2013;52:815–30. [[PMC free article](/pmc/articles/PMC3724231/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23880492)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+the+American+Academy+of+Child+and+Adolescent+Psychiatry&title=Trauma+exposure+and+posttraumatic+stress+disorder+in+a+national+sample+of+adolescents&author=KA+McLaughlin&author=KC+Koenen&author=ED+Hill&volume=52&publication_year=2013&pages=815-30&pmid=23880492&)]
+
+9\.
+
+Kessler RC, Sonnega A, Bromet E, Hughes M, Nelson CB. Posttraumatic stress disorder in the National Comorbidity Survey. Arch Gen Psychiatry. 1995;52:1048–60. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/7492257)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Arch+Gen+Psychiatry&title=Posttraumatic+stress+disorder+in+the+National+Comorbidity+Survey&author=RC+Kessler&author=A+Sonnega&author=E+Bromet&author=M+Hughes&author=CB+Nelson&volume=52&publication_year=1995&pages=1048-60&pmid=7492257&)]
+
+10\.
+
+Barnett D, Manly JT, Cicchetti D. Defining child maltreatment: The interface between policy and research. In: Cicchetti D, Toth SL, editors. Child abuse, child development, and social policy. Norwood, NJ: Ablex; 1993\. pp. 7–73\. [[Google Scholar](https://scholar.google.com/scholar_lookup?title=Child+abuse,+child+development,+and+social+policy&author=D+Barnett&author=JT+Manly&author=D+Cicchetti&publication_year=1993&)]
+
+11\.
+
+English DJ, Graham JC, Litrownik AJ, Everson M, Bangdiwala SI. Defining maltreatment chronicity: Are there differences in child outcomes. Child Abuse and Neglect. 2005;29:575–95. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15970326)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Child+Abuse+and+Neglect&title=Defining+maltreatment+chronicity:+Are+there+differences+in+child+outcomes&author=DJ+English&author=JC+Graham&author=AJ+Litrownik&author=M+Everson&author=SI+Bangdiwala&volume=29&publication_year=2005&pages=575-95&pmid=15970326&)]
+
+12\.
+
+Knudsen E. Sensitive periods in the development of the brain and behavior. Journal of Cognitive Neuroscience. 2004;16:1412–25. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15509387)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Cognitive+Neuroscience&title=Sensitive+periods+in+the+development+of+the+brain+and+behavior&author=E+Knudsen&volume=16&publication_year=2004&pages=1412-25&pmid=15509387&)]
+
+13\.
+
+Bailey DB, Bruer JT, Symons FJ, Lichtman JW, editors. Critical thinking about critical periods. Baltimore, MD: Paul H. Brookes Publishing Company; 2001\. [[Google Scholar](https://scholar.google.com/scholar_lookup?title=Critical+thinking+about+critical+periods&publication_year=2001&)]
+
+14\.
+
+Bornstein MH. Sensitive periods in development: Structural characteristics and causal interpretations. Psychological Bulletin. 1989;105:179–97. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/2648441)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychological+Bulletin&title=Sensitive+periods+in+development:+Structural+characteristics+and+causal+interpretations&author=MH+Bornstein&volume=105&publication_year=1989&pages=179-97&pmid=2648441&)]
+
+15\.
+
+Keiley MK, Howe TR, Dodge KA, Bates JE, Pettit GS. The timing of child physical maltreatment: A cross-domain growth analysis of impact on adolescent externalizing and internalizing problems. Development and Psychopathology. 2001;13:891–912. [[PMC free article](/pmc/articles/PMC2769082/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/11771913)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Development+and+Psychopathology&title=The+timing+of+child+physical+maltreatment:+A+cross-domain+growth+analysis+of+impact+on+adolescent+externalizing+and+internalizing+problems&author=MK+Keiley&author=TR+Howe&author=KA+Dodge&author=JE+Bates&author=GS+Pettit&volume=13&publication_year=2001&pages=891-912&pmid=11771913&)]
+
+16\.
+
+Thornberry TP, Henry KL, Ireland TO, Smith CA. The causal impact of childhood-limited maltreatment and adolescent maltreatment on early adult adjustment. Journal of Adolescent Health. 2010;46:359–65. [[PMC free article](/pmc/articles/PMC2871696/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20307825)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Adolescent+Health&title=The+causal+impact+of+childhood-limited+maltreatment+and+adolescent+maltreatment+on+early+adult+adjustment&author=TP+Thornberry&author=KL+Henry&author=TO+Ireland&author=CA+Smith&volume=46&publication_year=2010&pages=359-65&pmid=20307825&)]
+
+17\.
+
+Kaplow JB, Widom CS. Age of onset of child maltreatment predicts long-term mental health outcomes. Journal of Abnormal Psychology. 2007;116:176–87. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17324028)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Abnormal+Psychology&title=Age+of+onset+of+child+maltreatment+predicts+long-term+mental+health+outcomes&author=JB+Kaplow&author=CS+Widom&volume=116&publication_year=2007&pages=176-87&pmid=17324028&)]
+
+18\.
+
+Dunn EC, McLaughlin KA, Slopen N, Rosand J, Smoller JW. Developmental timing of child maltreatment and symptoms of depression and suicidality in young adulthood: Results from the National Longitudinal Study of Adolescent Health. Depression and Anxiety. 2013;30:955–64. [[PMC free article](/pmc/articles/PMC3873604/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23592532)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Depression+and+Anxiety&title=Developmental+timing+of+child+maltreatment+and+symptoms+of+depression+and+suicidality+in+young+adulthood:+Results+from+the+National+Longitudinal+Study+of+Adolescent+Health&author=EC+Dunn&author=KA+McLaughlin&author=N+Slopen&author=J+Rosand&author=JW+Smoller&volume=30&publication_year=2013&pages=955-64&pmid=23592532&)]
+
+19\.
+
+McCutcheon VV, Heath AC, Nelson EC, Bucholz KK, Madden PA, Martin NG. Accumulation of trauma over time and risk for depression in a twin sample. Psychol Med. 2009;39:431–41. [[PMC free article](/pmc/articles/PMC2855227/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/18533058)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychol+Med&title=Accumulation+of+trauma+over+time+and+risk+for+depression+in+a+twin+sample&author=VV+McCutcheon&author=AC+Heath&author=EC+Nelson&author=KK+Bucholz&author=PA+Madden&volume=39&publication_year=2009&pages=431-41&pmid=18533058&)]
+
+20\.
+
+Maercker A, Michael T, Fehm L, Becker ES, Margraf J. Age of traumatisation as a predictor of post-traumatic stress disorder or major depression in young women. The British journal of psychiatry : the journal of mental science. 2004;184:482–7. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15172941)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=The+British+journal+of+psychiatry+:+the+journal+of+mental+science&title=Age+of+traumatisation+as+a+predictor+of+post-traumatic+stress+disorder+or+major+depression+in+young+women&author=A+Maercker&author=T+Michael&author=L+Fehm&author=ES+Becker&author=J+Margraf&volume=184&publication_year=2004&pages=482-7&pmid=15172941&)]
+
+21\.
+
+Schoedl AF, Costa MC, Mari JJ, et al. The clinical correlates of reported childhood sexual abuse: an association between age at trauma onset and severity of depression and PTSD in adults. Journal of child sexual abuse. 2010;19:156–70. [[PMC free article](/pmc/articles/PMC3580171/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20390785)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+child+sexual+abuse&title=The+clinical+correlates+of+reported+childhood+sexual+abuse:+an+association+between+age+at+trauma+onset+and+severity+of+depression+and+PTSD+in+adults&author=AF+Schoedl&author=MC+Costa&author=JJ+Mari&volume=19&publication_year=2010&pages=156-70&pmid=20390785&)]
+
+22\.
+
+Chu DA, Williams LM, Harris AW, Bryant RA, Gatt JM. Early life trauma predicts self-reported levels of depressive and anxiety symptoms in nonclinical community adults: relative contributions of early life stressor types and adult trauma exposure. J Psychiatr Res. 2013;47:23–32. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23020924)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Psychiatr+Res&title=Early+life+trauma+predicts+self-reported+levels+of+depressive+and+anxiety+symptoms+in+nonclinical+community+adults:+relative+contributions+of+early+life+stressor+types+and+adult+trauma+exposure&author=DA+Chu&author=LM+Williams&author=AW+Harris&author=RA+Bryant&author=JM+Gatt&volume=47&publication_year=2013&pages=23-32&pmid=23020924&)]
+
+23\.
+
+Rusby JS, Tasker F. Long-term effects of the British evacuation of children during World War 2 on their adult mental health. Aging Ment Health. 2009;13:391–404. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/19484603)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Aging+Ment+Health&title=Long-term+effects+of+the+British+evacuation+of+children+during+World+War+2+on+their+adult+mental+health&author=JS+Rusby&author=F+Tasker&volume=13&publication_year=2009&pages=391-404&pmid=19484603&)]
+
+24\.
+
+Harpur LJ, Polek E, van Harmelen AL. The role of timing of maltreatment and child intelligence in pathways to low symptoms of depression and anxiety in adolescence. Child Abuse Negl. 2015 [[PubMed](https://pubmed.ncbi.nlm.nih.gov/26146160)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Child+Abuse+Negl&title=The+role+of+timing+of+maltreatment+and+child+intelligence+in+pathways+to+low+symptoms+of+depression+and+anxiety+in+adolescence&author=LJ+Harpur&author=E+Polek&author=AL+van+Harmelen&publication_year=2015&)]
+
+25\.
+
+Thornberry TP, Ireland TO, Smith CA. The importance of timing: The varying impact of childhood and adolescent maltreatment on multiple problem outcomes. Development and Psychopathology. 2001;13:957–79. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/11771916)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Development+and+Psychopathology&title=The+importance+of+timing:+The+varying+impact+of+childhood+and+adolescent+maltreatment+on+multiple+problem+outcomes&author=TP+Thornberry&author=TO+Ireland&author=CA+Smith&volume=13&publication_year=2001&pages=957-79&pmid=11771916&)]
+
+26\.
+
+Khan A, McCormack HC, Bolger EA, et al. Childhood Maltreatment, Depression, and Suicidal Ideation: Critical Importance of Parental and Peer Emotional Abuse during Developmental Sensitive Periods in Males and Females. Front Psychiatry. 2015;6:42. [[PMC free article](/pmc/articles/PMC4378368/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/25870565)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Front+Psychiatry&title=Childhood+Maltreatment,+Depression,+and+Suicidal+Ideation:+Critical+Importance+of+Parental+and+Peer+Emotional+Abuse+during+Developmental+Sensitive+Periods+in+Males+and+Females&author=A+Khan&author=HC+McCormack&author=EA+Bolger&volume=6&publication_year=2015&pages=42&pmid=25870565&)]
+
+27\.
+
+Jaffee SR, Maikovich-Fong AK. Effects of chronic maltreatment and maltreatment timing on children’s behavior and cognitive abilities. Journal of Child Psychology and Psychiatry. 2011;52:184–94. [[PMC free article](/pmc/articles/PMC2998571/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20735512)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Child+Psychology+and+Psychiatry&title=Effects+of+chronic+maltreatment+and+maltreatment+timing+on+children%E2%80%99s+behavior+and+cognitive+abilities&author=SR+Jaffee&author=AK+Maikovich-Fong&volume=52&publication_year=2011&pages=184-94&pmid=20735512&)]
+
+28\.
+
+Oldehinkel AJ, Ormel J, Verhulst FC, Nederhof E. Childhood adversities and adolescent depression: A matter of both risk and resilience. Development and Psychopathology. 2014;26:1067–75. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/24933401)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Development+and+Psychopathology&title=Childhood+adversities+and+adolescent+depression:+A+matter+of+both+risk+and+resilience&author=AJ+Oldehinkel&author=J+Ormel&author=FC+Verhulst&author=E+Nederhof&volume=26&publication_year=2014&pages=1067-75&pmid=24933401&)]
+
+29\.
+
+Manly JT, Kim JE, Rogosch FA, Cicchetti D. Dimensions of child maltreatment and children’s adjustment: Contributions of developmental timing and subtype. Development and Psychopathology. 2001;13:759–82. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/11771907)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Development+and+Psychopathology&title=Dimensions+of+child+maltreatment+and+children%E2%80%99s+adjustment:+Contributions+of+developmental+timing+and+subtype&author=JT+Manly&author=JE+Kim&author=FA+Rogosch&author=D+Cicchetti&volume=13&publication_year=2001&pages=759-82&pmid=11771907&)]
+
+30\.
+
+Pietrek C, Elbert T, Weierstall R, Muller O, Rockstroh B. Childhood adversities in relation to psychiatric disorders. Psychiatry Res. 2013;206:103–10. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23261184)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychiatry+Res&title=Childhood+adversities+in+relation+to+psychiatric+disorders&author=C+Pietrek&author=T+Elbert&author=R+Weierstall&author=O+Muller&author=B+Rockstroh&volume=206&publication_year=2013&pages=103-10&pmid=23261184&)]
+
+31\.
+
+Glod CA, Teicher MH. Relationship between early abuse, posttraumatic stress disorder, and activity levels in prepubertal children. J Am Acad Child Adolesc Psychiatry. 1996;35:1384–93. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/8885593)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Am+Acad+Child+Adolesc+Psychiatry&title=Relationship+between+early+abuse,+posttraumatic+stress+disorder,+and+activity+levels+in+prepubertal+children&author=CA+Glod&author=MH+Teicher&volume=35&publication_year=1996&pages=1384-93&pmid=8885593&)]
+
+32\.
+
+McCutcheon VV, Sartor CE, Pommer NE, et al. Age at trauma exposure and PTSD risk in young adult women. J Trauma Stress. 2010;23:811–4. [[PMC free article](/pmc/articles/PMC3121097/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20963847)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Trauma+Stress&title=Age+at+trauma+exposure+and+PTSD+risk+in+young+adult+women&author=VV+McCutcheon&author=CE+Sartor&author=NE+Pommer&volume=23&publication_year=2010&pages=811-4&pmid=20963847&)]
+
+33\.
+
+Kaplow JB, Widom CS. Age of onset of child maltreatment predicts long-term mental health outcomes. J Abnorm Psychol. 2007;116:176–87. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17324028)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Abnorm+Psychol&title=Age+of+onset+of+child+maltreatment+predicts+long-term+mental+health+outcomes&author=JB+Kaplow&author=CS+Widom&volume=116&publication_year=2007&pages=176-87&pmid=17324028&)]
+
+34\.
+
+Demir T, Demir DE, Alkas L, Copur M, Dogangun B, Kayaalp L. Some clinical characteristics of children who survived the Marmara earthquakes. Eur Child Adolesc Psychiatry. 2010;19:125–33. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/19639383)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Eur+Child+Adolesc+Psychiatry&title=Some+clinical+characteristics+of+children+who+survived+the+Marmara+earthquakes&author=T+Demir&author=DE+Demir&author=L+Alkas&author=M+Copur&author=B+Dogangun&volume=19&publication_year=2010&pages=125-33&pmid=19639383&)]
+
+35\.
+
+Green BL, Korol M, Grace MC, et al. Children and disaster: age, gender, and parental effects on PTSD symptoms. J Am Acad Child Adolesc Psychiatry. 1991;30:945–51. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/1757444)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Am+Acad+Child+Adolesc+Psychiatry&title=Children+and+disaster:+age,+gender,+and+parental+effects+on+PTSD+symptoms&author=BL+Green&author=M+Korol&author=MC+Grace&volume=30&publication_year=1991&pages=945-51&pmid=1757444&)]
+
+36\.
+
+Copeland WE, Keeler G, Angold A, Costello EJ. Traumatic events and posttraumatic stress in childhood. Arch Gen Psychiatry. 2007;64:577–84. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17485609)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Arch+Gen+Psychiatry&title=Traumatic+events+and+posttraumatic+stress+in+childhood&author=WE+Copeland&author=G+Keeler&author=A+Angold&author=EJ+Costello&volume=64&publication_year=2007&pages=577-84&pmid=17485609&)]
+
+37\.
+
+Mueller-Pfeiffer C, Moergeli H, Schumacher S, et al. Characteristics of child maltreatment and their relation to dissociation, posttraumatic stress symptoms, and depression in adult psychiatric patients. J Nerv Ment Dis. 2013;201:471–7. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23686156)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Nerv+Ment+Dis&title=Characteristics+of+child+maltreatment+and+their+relation+to+dissociation,+posttraumatic+stress+symptoms,+and+depression+in+adult+psychiatric+patients&author=C+Mueller-Pfeiffer&author=H+Moergeli&author=S+Schumacher&volume=201&publication_year=2013&pages=471-7&pmid=23686156&)]
+
+38\.
+
+Maercker A, Michael T, Fehm L, Becker ES, Margraf J. Age of traumatisation as a predictor of post-traumatic stress disorder or major depression in young women. British Journal of Psychiatry. 2004;184:482–7. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15172941)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=British+Journal+of+Psychiatry&title=Age+of+traumatisation+as+a+predictor+of+post-traumatic+stress+disorder+or+major+depression+in+young+women&author=A+Maercker&author=T+Michael&author=L+Fehm&author=ES+Becker&author=J+Margraf&volume=184&publication_year=2004&pages=482-7&pmid=15172941&)]
+
+39\.
+
+Ogle CM, Rubin DC, Siegler IC. The Relation Between Insecure Attachment and Posttraumatic Stress: Early Life Versus Adulthood Traumas. Psychological Trauma: Theory, Research, Practice, and Policy. 2014 No Pagination Specified. [[PMC free article](/pmc/articles/PMC4493437/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/26147517)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychological+Trauma:+Theory,+Research,+Practice,+and+Policy&title=The+Relation+Between+Insecure+Attachment+and+Posttraumatic+Stress:+Early+Life+Versus+Adulthood+Traumas&author=CM+Ogle&author=DC+Rubin&author=IC+Siegler&publication_year=2014&)]
+
+40\.
+
+Ogle CM, Rubin DC, Siegler IC. The impact of the developmental timing of trauma exposure on PTSD symptoms and psychosocial functioning among older adults. Dev Psychol. 2013;49:2191–200. [[PMC free article](/pmc/articles/PMC3806884/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23458662)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Dev+Psychol&title=The+impact+of+the+developmental+timing+of+trauma+exposure+on+PTSD+symptoms+and+psychosocial+functioning+among+older+adults&author=CM+Ogle&author=DC+Rubin&author=IC+Siegler&volume=49&publication_year=2013&pages=2191-200&pmid=23458662&)]
+
+41\.
+
+Schrag NM, McKeown RE, Jackson KL, Cuffe SP, Neuberg RW. Stress-related mental disorders in childhood cancer survivors. Pediatr Blood Cancer. 2008;50:98–103. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17610265)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Pediatr+Blood+Cancer&title=Stress-related+mental+disorders+in+childhood+cancer+survivors&author=NM+Schrag&author=RE+McKeown&author=KL+Jackson&author=SP+Cuffe&author=RW+Neuberg&volume=50&publication_year=2008&pages=98-103&pmid=17610265&)]
+
+42\.
+
+Gillespie CF, Bradley B, Mercer K, et al. Trauma exposure and stress-related disorders in inner city primary care patients. Gen Hosp Psychiatry. 2009;31:505–14. [[PMC free article](/pmc/articles/PMC2785858/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/19892208)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Gen+Hosp+Psychiatry&title=Trauma+exposure+and+stress-related+disorders+in+inner+city+primary+care+patients&author=CF+Gillespie&author=B+Bradley&author=K+Mercer&volume=31&publication_year=2009&pages=505-14&pmid=19892208&)]
+
+43\.
+
+Binder EB, Bradley RG, Liu W, et al. Association of FKBP5 polymorphisms and childhood abuse with risk of posttraumatic stress disorder symptoms in adults. JAMA. 2008;299:1291–305. [[PMC free article](/pmc/articles/PMC2441757/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/18349090)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=JAMA&title=Association+of+FKBP5+polymorphisms+and+childhood+abuse+with+risk+of+posttraumatic+stress+disorder+symptoms+in+adults&author=EB+Binder&author=RG+Bradley&author=W+Liu&volume=299&publication_year=2008&pages=1291-305&pmid=18349090&)]
+
+44\.
+
+Bradley RG, Binder EB, Epstein MP, et al. Influence of child abuse on adult depression: moderation by the corticotropin-releasing hormone receptor gene. Arch Gen Psychiatry. 2008;65:190–200. [[PMC free article](/pmc/articles/PMC2443704/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/18250257)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Arch+Gen+Psychiatry&title=Influence+of+child+abuse+on+adult+depression:+moderation+by+the+corticotropin-releasing+hormone+receptor+gene&author=RG+Bradley&author=EB+Binder&author=MP+Epstein&volume=65&publication_year=2008&pages=190-200&pmid=18250257&)]
+
+45\.
+
+Schwartz AC, Bradley RL, Sexton M, Sherry A, Ressler KJ. Posttraumatic stress disorder among African Americans in an inner city mental health clinic. Psychiatr Serv. 2005;56:212–5. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/15703352)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychiatr+Serv&title=Posttraumatic+stress+disorder+among+African+Americans+in+an+inner+city+mental+health+clinic&author=AC+Schwartz&author=RL+Bradley&author=M+Sexton&author=A+Sherry&author=KJ+Ressler&volume=56&publication_year=2005&pages=212-5&pmid=15703352&)]
+
+46\.
+
+Schwartz AC, Bradley R, Penza KM, et al. Pain medication use among patients with posttraumatic stress disorder. Psychosomatics. 2006;47:136–42. [[PMC free article](/pmc/articles/PMC2764737/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/16508025)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Psychosomatics&title=Pain+medication+use+among+patients+with+posttraumatic+stress+disorder&author=AC+Schwartz&author=R+Bradley&author=KM+Penza&volume=47&publication_year=2006&pages=136-42&pmid=16508025&)]
+
+47\.
+
+McLaughlin KA, Green JG, Alegria M, et al. Food insecurity and mental disorders in a national sample of U.S. adolescents. J Am Acad Child Adolesc Psychiatry. 2012;51:1293–303. [[PMC free article](/pmc/articles/PMC3632292/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23200286)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Am+Acad+Child+Adolesc+Psychiatry&title=Food+insecurity+and+mental+disorders+in+a+national+sample+of+U.S.+adolescents&author=KA+McLaughlin&author=JG+Green&author=M+Alegria&volume=51&publication_year=2012&pages=1293-303&pmid=23200286&)]
+
+48\.
+
+Breslau N, Kessler RC, Chilcoat HD, Schultz LR, Davis GC, Andreski P. Trauma and posttraumatic stress disorder in the community: the 1996 Detroit Area Survey of Trauma. Arch Gen Psychiatry. 1998;55:626–32. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/9672053)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Arch+Gen+Psychiatry&title=Trauma+and+posttraumatic+stress+disorder+in+the+community:+the+1996+Detroit+Area+Survey+of+Trauma&author=N+Breslau&author=RC+Kessler&author=HD+Chilcoat&author=LR+Schultz&author=GC+Davis&volume=55&publication_year=1998&pages=626-32&pmid=9672053&)]
+
+49\.
+
+Dunn EC, McLaughlin KA, Slopen N, Rosand J, Smoller JW. Developmental timing of child maltreatment and symptoms of depression and suicidal ideation in young adulthood: results from the National Longitudinal Study of Adolescent Health. Depress Anxiety. 2013;30:955–64. [[PMC free article](/pmc/articles/PMC3873604/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/23592532)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Depress+Anxiety&title=Developmental+timing+of+child+maltreatment+and+symptoms+of+depression+and+suicidal+ideation+in+young+adulthood:+results+from+the+National+Longitudinal+Study+of+Adolescent+Health&author=EC+Dunn&author=KA+McLaughlin&author=N+Slopen&author=J+Rosand&author=JW+Smoller&volume=30&publication_year=2013&pages=955-64&pmid=23592532&)]
+
+50\.
+
+Beck AT, Steer RA, Brown GK. Manual for the Beck Depression Inventory-II. San Antonio, Texas: Psychological Corporation; 1996\. [[Google Scholar](https://scholar.google.com/scholar_lookup?title=Manual+for+the+Beck+Depression+Inventory-II&author=AT+Beck&author=RA+Steer&author=GK+Brown&publication_year=1996&)]
+
+51\.
+
+Wang YP, Gorenstein C. Psychometric properties of the Beck Depression Inventory-II: a comprehensive review. Revista brasileira de psiquiatria. 2013;35:416–31. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/24402217)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Revista+brasileira+de+psiquiatria&title=Psychometric+properties+of+the+Beck+Depression+Inventory-II:+a+comprehensive+review&author=YP+Wang&author=C+Gorenstein&volume=35&publication_year=2013&pages=416-31&pmid=24402217&)]
+
+52\.
+
+Arnau RC, Meagher MW, Norris MP, Bramson R. Psychometric evaluation of the Beck Depression Inventory-II with primary care medical patients. Health psychology : official journal of the Division of Health Psychology, American Psychological Association. 2001;20:112–9. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/11315728)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Health+psychology+:+official+journal+of+the+Division+of+Health+Psychology,+American+Psychological+Association&title=Psychometric+evaluation+of+the+Beck+Depression+Inventory-II+with+primary+care+medical+patients&author=RC+Arnau&author=MW+Meagher&author=MP+Norris&author=R+Bramson&volume=20&publication_year=2001&pages=112-9&)]
+
+53\.
+
+Beck AT, Steer RA, Carbin MG. Psychometric properties of the Beck Depression Inventory: Twenty-five years of evaluation. Clinical psychology review. 1988;8:77–100. [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Clinical+psychology+review&title=Psychometric+properties+of+the+Beck+Depression+Inventory:+Twenty-five+years+of+evaluation&author=AT+Beck&author=RA+Steer&author=MG+Carbin&volume=8&publication_year=1988&pages=77-100&)]
+
+54\.
+
+Coffey SF, Dansky BS, Falsetti SA, Saladin ME, Brady KT. Screening for PTSD in a substance abuse sample: psychometric properties of a modified version of the PTSD Symptom Scale Self-Report. Posttraumatic stress disorder. J Trauma Stress. 1998;11:393–9. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/9565924)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Trauma+Stress&title=Screening+for+PTSD+in+a+substance+abuse+sample:+psychometric+properties+of+a+modified+version+of+the+PTSD+Symptom+Scale+Self-Report.+Posttraumatic+stress+disorder&author=SF+Coffey&author=BS+Dansky&author=SA+Falsetti&author=ME+Saladin&author=KT+Brady&volume=11&publication_year=1998&pages=393-9&pmid=9565924&)]
+
+55\.
+
+Association. AP. Diagnostic and statistical manual of mental disorders (4th Edition, Text Revision) 4\. Washington, DC: 2000\. [[Google Scholar](https://scholar.google.com/scholar_lookup?title=Diagnostic+and+statistical+manual+of+mental+disorders+(4th+Edition,+Text+Revision)&publication_year=2000&)]
+
+57\.
+
+Cicchetti D, Toth SL. A developmental psychopathology perspective on child abuse and neglect. Journal of the American Academy of Child and Adolescent Psychiatry. 1995;34:541–65. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/7775351)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+the+American+Academy+of+Child+and+Adolescent+Psychiatry&title=A+developmental+psychopathology+perspective+on+child+abuse+and+neglect&author=D+Cicchetti&author=SL+Toth&volume=34&publication_year=1995&pages=541-65&pmid=7775351&)]
+
+58\.
+
+McLaughlin KA, Fox NA, Zeanah CH, Nelson CA. Adverse rearing environments and neural development in children: The development of frontal electroencephalogram asymmetry. Biological Psychiatry. 2011;70:1008–15. [[PMC free article](/pmc/articles/PMC3207006/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/21962332)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Biological+Psychiatry&title=Adverse+rearing+environments+and+neural+development+in+children:+The+development+of+frontal+electroencephalogram+asymmetry&author=KA+McLaughlin&author=NA+Fox&author=CH+Zeanah&author=CA+Nelson&volume=70&publication_year=2011&pages=1008-15&pmid=21962332&)]
+
+59\.
+
+Fox SE, Levitt P, Nelson CA. How the timing and quality of early experiences influence the development of brain architecture. Child Development. 2010;81:28–40. [[PMC free article](/pmc/articles/PMC2846084/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20331653)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Child+Development&title=How+the+timing+and+quality+of+early+experiences+influence+the+development+of+brain+architecture&author=SE+Fox&author=P+Levitt&author=CA+Nelson&volume=81&publication_year=2010&pages=28-40&pmid=20331653&)]
+
+60\.
+
+McLaughlin KA, Fox NA, Zeanah CH, Sheridan MA, Marshall P, Nelson CA. Delayed maturation in brain electrical activity partially explains the association between early environmental deprivation and symptoms of attention-deficit/hyperactivity disorder. Biological Psychiatry. 2010;68:329–36. [[PMC free article](/pmc/articles/PMC3010237/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20497899)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Biological+Psychiatry&title=Delayed+maturation+in+brain+electrical+activity+partially+explains+the+association+between+early+environmental+deprivation+and+symptoms+of+attention-deficit/hyperactivity+disorder&author=KA+McLaughlin&author=NA+Fox&author=CH+Zeanah&author=MA+Sheridan&author=P+Marshall&volume=68&publication_year=2010&pages=329-36&pmid=20497899&)]
+
+61\.
+
+Sheridan MA, Fox NA, Zeanah CH, McLaughlin KA, Nelson CA. Variation in neural development as a result of exposure to institutionalization early in childhood. Proceedings of the National Academy of Science. 2012;109:12927–32. [[PMC free article](/pmc/articles/PMC3420193/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/22826224)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Proceedings+of+the+National+Academy+of+Science&title=Variation+in+neural+development+as+a+result+of+exposure+to+institutionalization+early+in+childhood&author=MA+Sheridan&author=NA+Fox&author=CH+Zeanah&author=KA+McLaughlin&author=CA+Nelson&volume=109&publication_year=2012&pages=12927-32&)]
+
+62\.
+
+Garbarino J. An ecological perspective on the effects of violence on children. Journal of Community Psychology. 2001;29:361–78. [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Community+Psychology&title=An+ecological+perspective+on+the+effects+of+violence+on+children&author=J+Garbarino&volume=29&publication_year=2001&pages=361-78&)]
+
+63\.
+
+Margolin G, Gordis EB. The effects of family and community violence on children. Annu Rev Psychol. 2000;51:445–79. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/10751978)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Annu+Rev+Psychol&title=The+effects+of+family+and+community+violence+on+children&author=G+Margolin&author=EB+Gordis&volume=51&publication_year=2000&pages=445-79&pmid=10751978&)]
+
+64\.
+
+Zimmer-Gembeck MJ, Skinner EA. The development of coping across childhood and adolescence: An integrative review and critique of research. International Journal of Behavioral Development. 2011;35:1–17. [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=International+Journal+of+Behavioral+Development&title=The+development+of+coping+across+childhood+and+adolescence:+An+integrative+review+and+critique+of+research&author=MJ+Zimmer-Gembeck&author=EA+Skinner&volume=35&publication_year=2011&pages=1-17&)]
+
+65\.
+
+Canton-Cortes D, Canton J. Coping with child sexual abuse among college students and post-traumatic stress disorder: the role of continuity of abuse and relationship with the perpetrator. Child Abuse Negl. 2010;34:496–506. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/20627388)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Child+Abuse+Negl&title=Coping+with+child+sexual+abuse+among+college+students+and+post-traumatic+stress+disorder:+the+role+of+continuity+of+abuse+and+relationship+with+the+perpetrator&author=D+Canton-Cortes&author=J+Canton&volume=34&publication_year=2010&pages=496-506&pmid=20627388&)]
+
+66\.
+
+Ullman SE. Relationship to perpetrator, disclosure, social reactions, and PTSD symptoms in child sexual abuse survivors. J Child Sex Abus. 2007;16:19–36. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/17255075)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Child+Sex+Abus&title=Relationship+to+perpetrator,+disclosure,+social+reactions,+and+PTSD+symptoms+in+child+sexual+abuse+survivors&author=SE+Ullman&volume=16&publication_year=2007&pages=19-36&)]
+
+67\.
+
+Hardt J, Rutter M. Validity of adult retrospective reports of adverse childhood experiences: Review of the evidence. Journal of Child Psychology and Psychiatry. 2004;45:260–73. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/14982240)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Journal+of+Child+Psychology+and+Psychiatry&title=Validity+of+adult+retrospective+reports+of+adverse+childhood+experiences:+Review+of+the+evidence&author=J+Hardt&author=M+Rutter&volume=45&publication_year=2004&pages=260-73&pmid=14982240&)]
+
+68\.
+
+Scott KM, McLaughlin KA, Smith DAR, Ellis PM. Childhood maltreatment and DSM-IV adult mental disorders: Comparison of prospective and retrospective findings. British Journal of Psychiatry. 2012;200:469–75. [[PMC free article](/pmc/articles/PMC3365274/)] [[PubMed](https://pubmed.ncbi.nlm.nih.gov/22661679)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=British+Journal+of+Psychiatry&title=Childhood+maltreatment+and+DSM-IV+adult+mental+disorders:+Comparison+of+prospective+and+retrospective+findings&author=KM+Scott&author=KA+McLaughlin&author=DAR+Smith&author=PM+Ellis&volume=200&publication_year=2012&pages=469-75&pmid=22661679&)]
+
+69\.
+
+Yoshihama M, Gillespie BW. Age adjustment and recall bias in the analysis of domestic violence data: Methodological improvements through the application of survival analysis methods. Journal of Family Violence. 2002;17:199–221. [Google Scholar]
+
+70\.
+
+Chu JA, Frey LM, Ganzel BL, Matthews JA. Memories of childhood abuse: dissociation, amnesia, and corroboration. Am J Psychiatry. 1999;156:749–55. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/10327909)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Am+J+Psychiatry&title=Memories+of+childhood+abuse:+dissociation,+amnesia,+and+corroboration&author=JA+Chu&author=LM+Frey&author=BL+Ganzel&author=JA+Matthews&volume=156&publication_year=1999&pages=749-55&pmid=10327909&)]
+
+71\.
+
+Usher JA, Neisser U. Childhood amnesia and the beginnings of memory for four early life events. J Exp Psychol Gen. 1993;122:155–65. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/8315398)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Exp+Psychol+Gen&title=Childhood+amnesia+and+the+beginnings+of+memory+for+four+early+life+events&author=JA+Usher&author=U+Neisser&volume=122&publication_year=1993&pages=155-65&pmid=8315398&)]
+
+72\.
+
+Howes JL, Katz AN. Remote memory: recalling autobiographical and public events from across the lifespan. Can J Psychol. 1992;46:92–116. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/1591652)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=Can+J+Psychol&title=Remote+memory:+recalling+autobiographical+and+public+events+from+across+the+lifespan&author=JL+Howes&author=AN+Katz&volume=46&publication_year=1992&pages=92-116&pmid=1591652&)]
+
+73\.
+
+Hardt J, Rutter M. Validity of adult retrospective reports of adverse childhood experiences: review of the evidence. J Child Psychol Psychiatry. 2004;45:260–73. [[PubMed](https://pubmed.ncbi.nlm.nih.gov/14982240)] [[Google Scholar](https://scholar.google.com/scholar_lookup?journal=J+Child+Psychol+Psychiatry&title=Validity+of+adult+retrospective+reports+of+adverse+childhood+experiences:+review+of+the+evidence&author=J+Hardt&author=M+Rutter&volume=45&publication_year=2004&pages=260-73&pmid=14982240&)]

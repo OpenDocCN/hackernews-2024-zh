@@ -1,0 +1,69 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:08:37
+-->
+
+# The Two Sides of Software Testing: Checking and Exploring | AgileConnection
+
+> 来源：[https://www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring](https://www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring)
+
+Many years ago in a hallway conversation at a conference, a test manager and I were discussing our respective approaches to testing.
+
+"If they can't tell me what the software is supposed to do, I can't test it," Francine, the test manager, scowled. "So, I tell them that I won't start testing until they produce a detailed requirements document."
+
+My eyebrows shot up through my hairline. At the time, I was working for a Silicon Valley software vendor that made consumer applications. If I waited for a comprehensive specification before I started testing, I'd be waiting forever. And, I’d be fired for failing to contribute meaningfully to the project. I said something to that effect, and Francine just shook her head at me. She couldn't imagine not having detailed specifications. I couldn't imagine holding the project hostage until I got documentation.
+
+Unable to see each other’s point of view, we wished each other a good day and headed off in separate directions.
+
+**The Eternal Raging Debate**
+That hallway conversation represented a familiar debate in the testing community: Does "good testing" involve systematically executing a comprehensive set of scripted tests designed from the requirements or specifications for the system? Or, should testing instead involve an investigative approach to exploring for risks? The answers to these questions have historically divided the testing community. The debate has sometimes become downright rancorous, with each side accusing the other of irresponsible practices that increase risk and decrease quality.
+
+In the past, I was firmly on the side of using exploratory approaches. For most of my career, I worked for organizations that preferred lightweight documentation, so we didn't usually produce detailed test scripts. Even if those organizations had wanted binders full of step-by-step test cases, I agreed with James Bach that sticking to a testing script is like playing a game of Twenty Questions where you have to ask all the questions in advance.
+
+However, my perspective on this debate has shifted in the past several years as I started working with agile teams that value testing in all forms. I have come to realize that the old discussion of whether "good testing" involves predefined, detailed test scripts or exploratory testing is like pitting salt against pepper, glue against staples, or belts against suspenders.
+
+It is a false dilemma and a pointless debate.
+
+**Checking**
+Like most agile teams, the teams I work with use lightweight stories as placeholders for a conversation about the requirements. That conversation happens when the team is ready to start implementing the story. At that point, the team captures the details about expectations and acceptance criteria. Before we call the story "done" we need to check that the implemented story does what the product owner intended.
+
+Reflecting on the conversation that Francine and I had all these years ago, I can still hear her words: “Until they tell me what the software is supposed to do, I can’t test it.”
+
+If we reframe that statement a little, we get: “Until they tell me what the software is supposed to do, I can’t check that it does that.” That makes sense. We have to know what the product owner expects before we can implement it and before we can check it, so that’s why we have discussions about user stories to gain shared understanding about the expectations.
+
+Some agile teams have adopted the practice of capturing the results of these discussions in concrete examples. For instance:
+
+Given I am not logged in
+When I visit the Edit Profile page
+Then I should be redirected to the Login page
+When I log in
+Then I should be redirected to the Edit Profile page
+
+(This example is expressed in the Given/When/Then style that has been popularized by the behavior-driven development (BDD) community and is associated with BDD tools such as Cucumber.)
+
+You might notice that when we capture acceptance criteria in the form of concrete examples with expectations like this, they look a lot like scripted tests. We use them like scripted tests, too; we check that these expectations are met not just when we first release the feature but also in subsequent regression tests to verify that the system still meets these expectations. Because agile teams value fast feedback and need to run these tests so often, we automate these checks in order to keep the regression testing burden to a manageable level.
+
+When a team takes this approach of capturing the acceptance criteria in the form of tests, it’s reframing Francine’s position even further: “Until we know how we’re going to check this feature, we don’t know enough to build it.” That’s a subtle but critical shift that puts tests at the front of the line instead of relegating them to the end of the cycle. The result of that shift is that tests are not just connected with requirements; they become an expression of the requirements. They're specifications—they specify the expected behavior of the system. When automated, they become executable specifications.
+
+**Exploring**
+No matter how careful we are when we implement a given story, just checking the story against expectations is not sufficient to ensure we’ve covered everything. There is always the risk that we didn’t anticipate some condition or interaction that could result in bad behavior.
+
+Exploratory testing—particularly session-based exploratory testing as defined by James and Jon Bach—gives us a structured way to investigate the system, looking for risks and vulnerabilities. As skilled testers, we use test design techniques and analytical skills to run one small experiment after another, using the information we discovered from the last little experiment to guide the next. As we exercise the system, we vary configurations, permissions, and data. We perform different actions, perform the same actions but in a different order, and perform actions at unexpected times.
+
+As we go, we watch carefully for signs that we’ve stumbled onto a condition that the system does not handle correctly. In-your-face, unhandled exceptions, like an error message reading "ORA-01400: cannot insert NULL," would be one such sign. However, we're also looking for little hints of potential problems, such as lagging response times. Each small surprise might point to a potential risk that warrants further investigation.
+
+For example, on one project, I discovered in my explorations that a field on a form that should have been read-only was actually editable. That's a small sign of something amiss, but it pointed to a much bigger problem. The field represented the groups to which a user belonged. By changing the value in the field, and without having system administration rights, I discovered that I could make myself an administrator. Obviously, this is a problem.
+
+If it had remained uncaught, we would have had a big security hole in our application.
+
+**Tested = Checked and Explored**
+Agile approaches emphasize producing completed features during every iteration or sprint, at least monthly. Before we can call a story “done,” it has to be tested.
+
+Remember the conversation that Francine and I had and consider our different approaches to testing. Francine emphasized checking; I emphasized exploring. Our approaches are the two sides of the testing equation:
+
+*   Checking: Does the system do what it's supposed to do?
+*   Exploring: Are there any other risks or vulnerabilities that we haven't thought about yet?
+
+In hindsight, I can see that both Francine and I were right. And, both of us were wrong. Each of us had identified an important aspect of testing, but neither of us saw the whole picture. In order to have enough information to declare a story “done,” we have to check it and explore it. Both sides of testing—checking and exploring—are critical to releasing high-quality software.
+
+***Additional Resources***

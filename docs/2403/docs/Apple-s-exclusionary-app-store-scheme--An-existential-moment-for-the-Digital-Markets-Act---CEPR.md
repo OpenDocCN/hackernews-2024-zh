@@ -1,0 +1,117 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:47
+-->
+
+# Apple’s exclusionary app store scheme: An existential moment for the Digital Markets Act | CEPR
+
+> 来源：[https://cepr.org/voxeu/columns/apples-exclusionary-app-store-scheme-existential-moment-digital-markets-act](https://cepr.org/voxeu/columns/apples-exclusionary-app-store-scheme-existential-moment-digital-markets-act)
+
+The Digital Markets Act (DMA) comes into full force in the European Union on 7 March. Article 6(4) requires Apple to permit third-party app stores to distribute apps on its iOS devices. After explaining why this requirement is important, we show that there are good reasons to believe that Apple’s proposed approach to compliance will not meet the objectives of the DMA, and most probably impede entry by rival stores as well as stifle innovation. 
+
+## The importance of app store choice
+
+The DMA’s requirement that Apple offer its users the choice of using alternative app stores reflects the importance of such stores for driving quality and innovation. In recent years, the number of apps that users have been installing on their handsets has declined. This is the case despite the increasing number of applications of all kinds that make a handset more useful. Among the reasons for this decline could be the low quality of the discovery process and the lack of innovation in distribution. All apps are distributed through one large monopoly store that has limited functionality; finding an app involves searching through millions of apps using the store’s search function, the resulting recommendations are themselves distorted by advertising; and the store is not tailored to the needs of particular apps or users.
+
+This situation is not good for either app developers or consumers. Innovation and store variety are needed. Rival app stores could improve the user experience in curation and search by carrying only a subset of apps and offering users a different value proposition. Rival stores could be run by a large corporation with a particular business model, such as Disney in curation of apps for children, Pinterest in curation of apps for creativity, or American Express in distribution of apps for frequent travellers. New models of stores could spring up – for instance, a store which would offer a discount for subscription to multiple online newspapers, or a store run by a government with helpful apps for its citizens. Rival stores could also simply compete by charging lower fees to developers.
+
+Users might want to make one such store their default while multihoming across others, or they might even want to single-home on a rival store rather than use the cluttered legacy store run by the gatekeeper. Parents may wish to give their children easy access to only a child-centred store, for instance.
+
+All of these options represent innovation, which is a core goal of the DMA, and one that the European Parliament feared was being harmed by incumbent gatekeepers. Enabling effective access to third-party stores is designed to increase contestability on the platform with resulting improvements in price, quality, and innovation that will benefit end users as well.
+
+## Apple’s proposed approach to compliance
+
+As part of its general DMA compliance measures, Apple is indeed opening up its devices to entry by third-party app stores at a technical level. However, it has proposed accompanying measures that will substantially hamper the likelihood and effectiveness of such entry. (We summarise the new fees for apps and app stores in Table 1.)
+
+To understand the following, it is important to keep in mind an important feature of the new scheme proposed by Apple. It will be possible for app developers to continue to benefit from the same terms that are currently offered by Apple. At first sight, this seems uncontroversial and a good way to ensure that there are no losers from the introduction of the new tariffs.  However, the old terms will *only* be available for apps distributed *exclusively* through the Apple app store. For any app wishing to use an alternative app store, the new tariffs apply. These include a minimum fee of, effectively, €0.50 per user per year. As we will see, this will generally act to stifle the development of attractive alternative app stores.
+
+Apple’s terms will also hinder competition from ‘proprietary’ app stores: app stores that specialise in the apps produced by one or a small number of developers.  Overall, our analysis indicates that the main category of app stores that will be successfully created are those which distribute apps that Apple has decided not to carry: gambling, pornography, and some forms of unsavoury dating. These entrants may establish a bad reputation for all alternative app stores in the minds of users. By blocking the entry of more positive store categories, the Apple rules severely constrain the path of innovation, to the detriment of both business users and end users.
+
+**Table 1** Summary of Apple’s annual fees for large commercial developers
+(As we understand them. Simplified for easier comprehension.)
+
+## The impact of Apple’s proposed pricing scheme on developers
+
+To analyse the economic effect of Apple’s pricing scheme, we first look at its impact on the incentives of popular ‘free’ apps: typically, apps that support off-handset activities or apps that are supported by advertising. In the first category, we include apps that are used by companies like banks, physical stores, and so on, to connect to their customers as well as apps that sell non-physical goods and are therefore not subject to the current App store fee such as those of Amazon, Deliveroo, and Uber. In the second category are content apps supported by advertising such as social media and some new apps such as Facebook, Instagram, and Sky News. 
+
+These apps have never paid, and currently do not pay, any fees whatsoever to reach their end users through iOS. As discussed above, it will be possible for such app developers to continue to benefit from the same terms. However, if they choose to distribute through an alternative store they must choose the new terms of the Apple store, which in turn means they will have to pay €0.50 per user per year. Moreover, *this fee is calculated on all installs regardless of the app store in which the downloads occur*. That is, the app developer must now pay €0.50 for each of the Apple App Store users it previously served for free.
+
+For example, Deliveroo today pays no fees to Apple to distribute its app on iOS. If Deliveroo exclusively distributes through the Apple App Store after 7 March, it can stay on the existing tariff and continue to pay nothing. Suppose, however, that Deliveroo wants to access users in a gaming store that has agreed to promote the food delivery company in an innovative way. In that case Deliveroo must move to the new Apple terms. When Deliveroo offers its app in this rival store, the company will have to pay €0.50 for every user (after the first million) that it serves through the Apple App Store as well as for every user downloading the app through the alternative gaming store. With this scheme Apple has placed a new distribution charge on downloads through the Apple App Store – but *only if the developer patronises a rival of Apple’s store* (Scott Morton and Abrahamson 2016).
+
+The Apple pricing scheme effectively means that any app developer with millions of existing downloads will become liable for a very substantial annual fee to Apple the moment it decides to work with a rival app store. In economic terms, therefore, Apple has ‘taxed’ its rivals’ entry. When a rival app store is nascent and has an uncertain future, the developer will likely not gain that much initially from distributing through the store. Apple’s effective tax on such popular apps using a rival store is thus likely to deter them from doing so.
+
+Worse still, we understand that the Apple rules prevent the developer from returning to the previous terms (namely, zero cost of distribution in the Apple App Store). Therefore, the developer is not only facing a significantly increased cost for its distribution through the Apple App Store, but one that it cannot reverse – despite the significant risk. The rules therefore create a very substantial disincentive for apps that have a large installed base in the Apple App Store to even experiment with a new entrant.
+
+## The impact of Apple’s proposed pricing scheme on stores
+
+One can therefore predict that these popular apps will not wish to distribute through rival app stores. But is this such a problem? After all, smaller apps with fewer than one million installs will not face the same disincentive. Aren’t these enough these foster entry?
+
+We believe this to be unlikely, and certainly a lack of access to popular apps will make entry by a new entrant app store very much harder. New app stores ¬will need to offer some, or even several, of these existing popular apps to build credibility, grow, and begin to develop their own network effects. We see this phenomenon of needing at least a few ‘big names’ in retail settings where particular brands or ‘anchor stores’ play an outsize role in attracting users. More generalist stores will need popular apps to create an appealing value proposition to end users, and this may also be true for specialist stores. Without the biggest social media, finance, e-commerce, and transportation apps, any alternative app store specialising in that arena will be limited to catering to very niche tastes. In this environment, rival app stores will have a hard time contesting Apple’s monopoly position.
+
+Apple may claim that apps that pay zero in distribution fees to Apple today will not be attractive to an alternative app store anyway because the fees they can charge will need to be close to zero – which cannot cover the costs of the alternative store. This, too, is over-simplistic. Of course, a rival generalist store needs to earn revenue in some way. But we have seen that these apps would likely bring benefits beyond any app store fees they pay. There may also be the potential for some app stores to enter as part of a wider business proposition of a bigger brand, and are therefore not intended to be profitable in their own right. Moreover, this is not Apple’s decision to make; it is up to the entrant to choose its business model and value proposition, and it should do so without interference from the incumbent monopolist.
+
+Part of the issue here which Apple is exploiting is that the success of third-party app stores depends on the independent choices of a wide group of app developers. In aggregate, they would gain from a coordinated move to higher-quality and more innovative app stores, since this would allow these app stores to quickly build their credibility with end users and benefit from network effects. But each developer, acting alone, will not wish to make that move until others do. And there is no potential for the ‘winners’ in this process to subsidise any ‘losers’. Thus, app developers face a coordination problem. Apple’s pricing scheme exacerbates that coordination problem, which will in turn favour its own App store. Overall, Apple’s rules may constitute a violation under Article 8 of the DMA, as their effect is to circumvent contestability in app stores on iOS (Salop and Scheffman 1983).
+
+Finally, it is important to recognise that under Apple’s new business terms, app developers that currently pay a 30% commission on sales of digital goods will be able to access lower rates (20%, see Table 1), or move to third-party app stores that compete by offering lower commissions. However, these changes will still trigger the €0.50 annual fixed fee per user, and thus many such apps may well still be worse off under the new terms. This is likely to include many popular ‘freemium’ apps which have a large installed base, and currently cover their costs by upselling in app purchases to a small proportion of those users. Under the new terms, the new €0.50 fee per user may well outweigh the reduced upselling commissions.
+
+## Blocking proprietary stores
+
+In addition to its new pricing terms, Apple has also imposed two direct requirements on the business model of alternative app stores for which we are at a loss to find a justification. Specifically, an alternative app store must:
+
+*   Agree to build an app whose primary purpose is discovery and distribution of apps, including apps from other developers.
+*   Agree to provide and publish terms, including those pertaining to content and business model, for apps you will distribute, and accept apps that meet those terms.
+
+The underlining here is our own. These terms are highly constraining. The first requirement prevents the development of proprietary app stores that sell a single developer’s apps. The second prevents the development of carefully curated app stores (unless they can formalise all of their curation decisions within published criteria). Both of these categories of app store would seem to be useful innovations that end users would likely value. We see no reason why they should be arbitrarily forbidden, nor do we understand why it is legitimate for Apple to impose business models on alternative app stores.
+
+## Implications for the DMA
+
+Apple’s communications stress the fact that the new terms will be favourable to the vast majority of app developers. This is because the vast majority of developers are small and pay no fees under either set of rules. The problem with the proposed Apple rules, as we have shown, is that they will block entry and innovation in app stores rather than increasing contestability as the law requires.
+
+For popular apps that pay nothing to Apple today, the exclusionary mechanism is straightforward: the fee structure creates a significant new financial cost if those developers choose to distribute through third-party app stores. Without popular apps in their stores, rival app stores cannot attract users, grow, and provide contestability. The Apple scheme kills the network effects of rival stores. By deterring successful entry of third-party app stores, Apple protects its monopoly position in app stores on the iPhone, the resulting monopoly profits, and the control over the path of innovation.
+
+The DMA is a regulation with the specific objectives of contestability and fairness. In the context of app stores, it is clear that both objectives require that third-party app stores can enter and be effective competitors on devices. The tariff announced by Apple in fact achieves the exact opposite of the DMA objectives by making entry of rival stores commercially unviable due to their inability to attract popular apps.
+
+The adoption of this contract by a monopoly distributor at the moment it is faced with entry from rivals looks like anticompetitive conduct. Moreover, behaviour that risks blocking the objectives of the DMA poses a threat to the legitimacy of European law. The text of the DMA is clear: it is up to Apple to show that its proposal will increase fairness and contestability or else abandon the exclusionary elements of the scheme. Commission enforcers must ask the company to do so. If they do not, we fear that the DMA enforcement process is at risk.
+
+*Authors’ note: Fiona Scott Morton regularly consults for government agencies and corporations as an economic expert in antitrust and merger cases. She is retained for Dr Lovdhal-Gormsen’s opt-out consumer class action against Meta in the UK Competition Appeal Tribunal as well as for Microsoft Corporation in multi-jurisdictional competition matters. US clients currently include SiriusXM, several healthcare companies, and nascent electric auto makers.
+Paul Heidhues: Professor of Behavioral and Competition Economics, Düsseldorf Institute for Competition Economics (DICE), Heinrich-Heine University of Düsseldorf. Within the last three years – in collaboration with E.CA economics – he engaged in competition consulting in the context of trucking and timber industries, and advised E.CA on work done by E.CA for Apple in the context of a competition case.*
+
+## References
+
+Salop, S C and D T Scheffman (1983), “[Raising Rivals’ Costs](http://www.jstor.org/stable/1816853)”, *The American Economic Review* 73(2): 267–71.
+
+Scott Morton, F M and Z Abrahamson (2016), "A unifying analytical framework for loyalty rebates", *Antitrust Law Journal* 81: 777. 
+
+## Annex
+
+#### Highlights of the current rules
+
+Current fee structure: ([https://appleinsider.com/articles/23/01/08/the-cost-of-doing-business-apples-app-store-fees-explained](https://appleinsider.com/articles/23/01/08/the-cost-of-doing-business-apples-app-store-fees-explained))
+
+Commissions apply only to digital goods and services which are purchases consumed within the app. This excludes physical goods, such as ordering from a marketplace, food delivery, etc. Apple charges a fee of 30% of the price of apps and of in-app purchases for digital goods and services. For subscriptions, the fee is 30% in the first year and 15% for subsequent years. The apps must use the Apple Payment system to process the fees. Developers can apply for an “App Store Small Business Program” if their revenues (post commission) are less that $1 million per year, and qualify for a commission of 15%.
+
+Developers pay an annual fee of $99 to participate in the Apple Developer programme, and $299 if the app is submitted for an enterprise or organizstion.
+
+#### Highlights of the proposed changes in response to the DMA
+
+App developers will have the choice between staying in the Apple App Store under the old terms, including the use of the Apple Payment System. If developers choose this solution, they are not allowed to also distribute their apps through alternative stores.
+
+If developers choose to stay in the Apple App Store under new terms:
+
+*   The 30% fee is replaced by a 17% fee and the 15% fee by a 10% fee, which do not include the use of the Apple Payment System. App developers will be free to use or not to use the Apple Payment System. If they do, they will be charged a 3% extra charge.
+*   Developers will pay a €0.50 core technology fee (CTF) “for each annual install per year over a 1 million threshold”. It should be understood that an upgrade will be considered an install, so we expect that in practice apps with more than a million users will pay €0.50 every year per user over a million, with ‘user’ understood in a very wide sense: it is enough that the app is installed on the phone, as the charge will apply even if the app is never used. Educational institutions, government agencies, and non-profits will not pay the CTF.
+*   The choice of the new terms is irreversible.
+
+If a developer chooses to distribute through an alternative app store:
+
+*   The app developer will be subject to the new terms of the new app store (marketplaces)
+*   The developer will pay the CTF for all apps regardless of the store through which they are distributed.
+*   Notice that the alternative app stores are considered as apps and will also be subject to the CTF.
+
+#### To calculate fees:
+
+[Fee calculator for apps in the EU - Support - Apple Developer](https://developer.apple.com/support/fee-calculator-for-apps-in-the-eu/)
+
+##### Alternative app store rules:
+
+[Getting started as an alternative app marketplace in the European Union - Support - Apple Developer](https://developer.apple.com/support/alternative-app-marketplace-in-the-eu/)

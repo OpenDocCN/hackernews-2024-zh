@@ -1,0 +1,50 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:24:20
+-->
+
+# FDA Approves First Medication to Help Reduce Allergic Reactions to Multiple Foods After Accidental Exposure | FDA
+
+> 来源：[https://www.fda.gov/news-events/press-announcements/fda-approves-first-medication-help-reduce-allergic-reactions-multiple-foods-after-accidental](https://www.fda.gov/news-events/press-announcements/fda-approves-first-medication-help-reduce-allergic-reactions-multiple-foods-after-accidental)
+
+For Immediate Release:
+
+February 16, 2024
+
+[Español](https://www.fda.gov/news-events/press-announcements/la-fda-aprueba-el-primer-medicamento-que-ayuda-reducir-las-reacciones-alergicas-varios-alimentos)
+
+Today, the U.S. Food and Drug Administration approved [Xolair](https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/103976s5245lbl.pdf) (omalizumab) injection for immunoglobulin E-mediated food allergy in certain adults and children 1 year or older for the reduction of allergic reactions (Type I), including reducing the risk of anaphylaxis, that may occur with accidental exposure to one or more foods. Patients who take Xolair must continue to avoid foods they are allergic to. Xolair is intended for repeated use to reduce the risk of allergic reactions and is not approved for the immediate emergency treatment of allergic reactions, including anaphylaxis. 
+
+Xolair was originally approved in 2003 for the treatment of moderate to severe persistent allergic asthma in certain patients. Xolair is also approved to treat chronic spontaneous urticaria and chronic rhinosinusitis with nasal polyps in certain patients.
+
+**“This newly approved use for Xolair will provide a treatment option to reduce the risk of harmful allergic reactions among certain patients with IgE-mediated food allergies,” said Kelly Stone, M.D., Ph.D., associate director of the Division of Pulmonology, Allergy, and Critical Care in the FDA’s Center for Drug Evaluation and Research. “While it will not eliminate food allergies or allow patients to consume food allergens freely, its repeated use will help reduce the health impact if accidental exposure occurs.”  **
+
+According to the Centers for Disease Control and Prevention, almost 6% of people in the United States in 2021 had a food allergy and exposure to the particular food(s) to which they are allergic can lead to potentially life-threatening allergic reactions (i.e., anaphylaxis). There is currently no cure for food allergy. Current treatment requires strict avoidance of the food(s) the patient is allergic to, and prompt administration of epinephrine to treat anaphylaxis should accidental exposures occur. Palforzia (peanut allergen powder) is an oral immunotherapy product approved in patients 4-17 years of age for the mitigation of allergic reactions, including anaphylaxis, that may occur with accidental exposure to peanut, but its benefits are restricted to peanut allergy. Xolair is the first FDA-approved medication to reduce allergic reactions to more than one type of food after accidental exposure.
+
+Xolair is a drug (in the class of drugs called monoclonal antibodies) that binds to immunoglobulin E (IgE), the antibody type that triggers allergic reactions, and blocks IgE from binding to its receptors. 
+
+Xolair’s safety and efficacy in reducing allergic reactions in subjects with food allergies was established in one multi-center, double-blind, placebo-controlled [study](https://clinicaltrials.gov/study/NCT03881696) of 168 pediatric and adult subjects (at least 1 year of age or older) who were allergic to peanut and at least two other foods, including milk, egg, wheat, cashew, hazelnut or walnut. Researchers randomly gave subjects either Xolair or placebo treatment for 16 to 20 weeks. The primary measure of Xolair’s efficacy was the percentage of subjects who were able to eat a single dose (600 milligrams or greater) of peanut protein (equivalent to 2.5 peanuts) without moderate to severe allergic symptoms, such as moderate to severe skin, respiratory or gastrointestinal symptoms, at the end of the 16-to-20-week treatment course. Of those who received Xolair, 68% (75 of 110 subjects) were able to eat the single dose of peanut protein without moderate to severe allergic symptoms (e.g., whole body hives, persistent coughing, vomiting), compared to 6% (3 of 55 subjects) who received placebo; these results are statistically significant and clinically meaningful for subjects with food allergy. Of note, however, 17% of subjects receiving Xolair had no significant change in the amount of peanut protein tolerated (could not tolerate 100 mg or more of peanut protein). As a result, continuation of strict allergen avoidance is still necessary, despite treatment with Xolair.
+
+The key secondary measures of efficacy were the percentage of subjects who were able to consume a single dose (1,000 milligrams or greater) of cashew, milk or egg protein without moderate to severe allergic symptoms at the end of the 16-to-20-week treatment course. For cashew, 42% (27 of 64 subjects) who received Xolair achieved this endpoint compared to 3% (1 of 30 subjects) who received placebo. For milk, 66% (25 of 38 subjects) who received Xolair achieved this endpoint, compared to 11% (2 of 19) who received placebo. For egg, 67% (31 of 46 subjects) who received Xolair achieved this endpoint, compared to 0% of the 19 who received placebo. As a result, Xolair treatment is approved for certain patients with one or more IgE-mediated food allergies.
+
+The most common side effects of Xolair observed included injection site reactions and fever. Xolair comes with certain warnings and precautions, such as anaphylaxis, malignancy, fever, joint pain, rash, parasitic (worm) infection and abnormal laboratory tests.
+
+In addition, Xolair comes with a boxed warning for anaphylaxis, which can be life threatening, based on pre-marketing and post-marketing reports of anaphylaxis that occurred after Xolair administration. Anaphylaxis has occurred after the first dose of Xolair, but also has occurred beyond one year after beginning treatment. Xolair should only be started in a healthcare setting equipped to manage anaphylaxis. For selected patients who tolerate initial Xolair treatments in a healthcare setting without anaphylaxis, self-administration (or administration by a caregiver) may be appropriate and should be discussed with a healthcare provider.  
+
+Patients should not receive Xolair if they have a history of known severe hypersensitivity to Xolair or any of its components. 
+
+Xolair is not approved for the immediate emergency treatment of allergic reactions, including anaphylaxis. 
+
+Xolair received [Priority Review](/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/priority-review "Priority Review") and [Breakthrough Therapy](/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/breakthrough-therapy "Breakthrough Therapy") designations for this indication. 
+
+The FDA granted the approval of Xolair to Genentech. 
+
+## Related Information
+
+###
+
+Boilerplate
+
+The FDA, an agency within the U.S. Department of Health and Human Services, protects the public health by assuring the safety, effectiveness, and security of human and veterinary drugs, vaccines and other biological products for human use, and medical devices. The agency also is responsible for the safety and security of our nation’s food supply, cosmetics, dietary supplements, radiation-emitting electronic products, and for regulating tobacco products.
+
+* * *

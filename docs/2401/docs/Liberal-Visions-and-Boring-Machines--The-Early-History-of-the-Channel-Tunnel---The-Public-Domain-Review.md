@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:43:42
+-->
+
+# Liberal Visions and Boring Machines: The Early History of the Channel Tunnel — The Public Domain Review
+
+> 来源：[https://publicdomainreview.org/essay/the-early-history-of-the-channel-tunnel/](https://publicdomainreview.org/essay/the-early-history-of-the-channel-tunnel/)
+
+[](#p-15-2)
+
+In February 1882, excerpts from Wolseley’s memorandum were published in *The Nineteenth Century* magazine, and over the following month he and other Army and Navy officers proceeded to conduct a coordinated public campaign against the Tunnel. In this they were aided by James Knowles, the editor of *The Nineteenth Century*, who organised a special edition and petition against the scheme, signed by many eminent, if not exactly representative, public figures, including a number of prominent liberals such as T. H. Huxley, Herbert Spencer, and fourteen Liberal MPs. The accompanying essay by Knowles, a diatribe against selfish “company-promoters”, boiled Wolseley’s arguments down to a trinity of terror: a “certainty” of increased military expenditure, a “probability” of panics, and “the possibility of an irretrievable disaster from invasion”. It was clear that the issue had struck something deep within the nervous system of liberal Britain. When it came to the point, many did not believe that “the people” would embrace their new continental connection in the spirit of universal brotherhood. “The alarmists sign [the petition] because they are alarmists”, reflected *The Scotsman*. “The non-alarmists sign because they do not wish the country to be alarmed.”

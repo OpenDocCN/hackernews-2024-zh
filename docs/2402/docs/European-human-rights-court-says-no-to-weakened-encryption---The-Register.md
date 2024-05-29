@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:48
+-->
+
+# European human rights court says no to weakened encryption • The Register
+
+> 来源：[https://www.theregister.com/2024/02/15/echr_backdoor_encryption/](https://www.theregister.com/2024/02/15/echr_backdoor_encryption/)
+
+The European Court of Human Rights (ECHR) has ruled that laws requiring crippled encryption and extensive data retention violate the European Convention on Human Rights – a decision that may derail European data surveillance legislation known as Chat Control.
+
+The court issued a [decision](https://hudoc.echr.coe.int/eng/#%7B%22itemid%22:%5B%22001-230854%22%5D%7D) on Tuesday stating that "the contested legislation providing for the retention of all internet communications of all users, the security services’ direct access to the data stored without adequate safeguards against abuse and the requirement to decrypt encrypted communications, as applied to end-to-end encrypted communications, cannot be regarded as necessary in a democratic society."
+
+The "contested legislation" mentioned above refers to a legal challenge that started in 2017 after a demand from Russia's Federal Security Service (FSB) that messaging service Telegram provide technical information to assist the decryption of a user's communication. The plaintiff, Anton Valeryevich Podchasov, challenged the order in Russia but his claim was dismissed.
+
+In 2019, Podchasov brought the matter to the ECHR. Russia joined the [Council of Europe](https://www.coe.int/en/web/portal) – an international human rights organization – in 1996 and was a member until it withdrew in March 2022 following its illegal invasion of Ukraine. Because the 2019 case predates Russia's withdrawal, the ECHR continued to consider the matter.
+
+The court concluded that the Russian law requiring Telegram "to decrypt end-to-end encrypted communications risks amounting to a requirement that providers of such services weaken the encryption mechanism for all users." As such, the court considers that requirement disproportionate to legitimate law enforcement goals.
+
+While the ECHR decision is unlikely to have any effect within Russia, it matters to countries in Europe that are contemplating similar decryption laws – such as [Chat Control](https://www.patrick-breyer.de/en/posts/chat-control/) and the UK government's [Online Safety Act](https://www.theregister.com/2023/10/27/online_safety_act_charles/).
+
+[Chat Control](https://www.theregister.com/2023/03/03/german_digital_committee_hearing_heaps/) is shorthand for European data surveillance legislation that would require internet service providers to scan digital communications for illegal content – specifically child sexual abuse material and potentially terrorism-related information. Doing so would necessarily entail weakening the encryption that keeps communication private.
+
+Efforts to develop workable rules have been underway for several years and continue to this day, despite widespread condemnation from [academics](https://www.theregister.com/2022/10/13/clientside_scanning_csam_anderson/), [privacy-oriented orgs](https://tutanota.com/blog/posts/germany-against-client-side-scanning-csam), and [civil society groups](https://freiheitsrechte.org/en/themen/digitale-grundrechte/chatkontrolle).
+
+Patrick Breyer, a member of the European parliament for the Pirate Party, hailed the ruling for demonstrating that Chat Control is incompatible with EU law.
+
+"With this outstanding landmark judgment, the 'client-side scanning' surveillance on all smartphones proposed by the EU Commission in its chat control bill is clearly illegal," said Breyer.
+
+"It would destroy the protection of everyone instead of investigating suspects. EU governments will now have no choice but to remove the destruction of secure encryption from their position on this proposal – as well as the indiscriminate surveillance of private communications of the entire population!" ®

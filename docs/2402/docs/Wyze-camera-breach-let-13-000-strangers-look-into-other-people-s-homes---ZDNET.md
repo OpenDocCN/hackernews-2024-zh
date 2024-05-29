@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:28
+-->
+
+# Wyze camera breach let 13,000 strangers look into other people's homes | ZDNET
+
+> 来源：[https://www.zdnet.com/home-and-office/smart-home/wyze-camera-breach-let-13000-strangers-view-other-peoples-homes/](https://www.zdnet.com/home-and-office/smart-home/wyze-camera-breach-let-13000-strangers-view-other-peoples-homes/)
+
+Wyze
+
+If you have a Wyze security camera, you should be aware of a recent security breach – because it may have let a stranger see in your home.
+
+In a message to customers, company co-founder David Crosby explained that the issue began shortly after an outage on Friday morning, February 16\. If customers tried to view their cameras during that time, he wrote, images were unavailable.
+
+**Also: [The best home security cameras for peace of mind at home](https://www.zdnet.com/home-and-office/smart-home/best-security-camera/)**
+
+But as cameras were being brought back online, users started seeing images and videos in their Events that were not from their cameras. When every device tried to come back online at once, the company explained, the system became overloaded. The increased usage caused device IDs to be mapped incorrectly, connecting some accounts to the wrong cameras. Wyze blamed "a third-party caching client library that was recently integrated into our system" for the trouble.
+
+At first, Wyze estimated that only 14 people were able to peek into someone else's home. Now that estimate has ballooned to 13,000\. However, only 1,500 of those people enlarged a thumbnail or viewed a video. 99% of users weren't impacted at all, the company said, adding that they had already contacted affected users. 
+
+That's a small number, but for those who were viewed without their consent, it's a pretty big deal. "We've identified your Wyze as one that was affected," those users were told. "This means that thumbnails from your events were visible in another Wyze user's account and that a thumbnail was tapped." The email explained that most taps enlarged a thumbnail, but if it was a video event, the video was viewed. 
+
+One Reddit user, a 23-year-old female, received the message that her camera had been viewed by someone else. She uses her camera to keep an eye on her sick animals while she's at work, she explained, but she was getting ready to leave for work during the outage, so she was almost certainly in frame. "I'm so disgusted and upset. I've already deleted my account, but I'm feeling so violated."  
+
+**Also: [How to turn your old Android phone into a security or pet camera](https://www.zdnet.com/article/how-to-repurpose-an-old-android-phone-as-a-security-camera/)**
+
+A small consolation is that only events were seen, not a live view.
+
+When Wyze discovered the problem, the events tab was immediately disabled.
+
+The company did say they took steps to make sure this doesn't happen again, including a new layer of verification before users are connected to Event videos. The Wyze system was also modified to bypass caching on user devices until new client libraries are thoroughly stress-tested.

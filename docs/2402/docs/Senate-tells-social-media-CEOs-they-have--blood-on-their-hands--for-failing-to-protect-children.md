@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:01
+-->
+
+# Senate tells social media CEOs they have 'blood on their hands' for failing to protect children
+
+> 来源：[https://www.engadget.com/senate-tells-social-media-ceos-they-have-blood-on-their-hands-for-failing-to-protect-children-170411884.html](https://www.engadget.com/senate-tells-social-media-ceos-they-have-blood-on-their-hands-for-failing-to-protect-children-170411884.html)
+
+The CEOs of Meta, Snap, Discord, X and TikTok testified at a high-stakes Senate Judiciary Committee [hearing](https://www.engadget.com/how-to-watch-the-ceos-of-meta-tiktok-discord-snap-and-x-testify-about-child-safety-214210385.html) on child exploitation online. During the hearing, Mark Zuckerberg, Evan Spiegel, Jason Citron, Linda Yaccarino and Shou Chew spent nearly four hours being grilled by lawmakers about their records on child safety.
+
+The hearing was the first time Spiegel, Citron and Yaccarino testified to Congress. Notably, all three were subpoenaed by the committee after [refusing](https://www.judiciary.senate.gov/press/releases/durbin-graham-announce-january-2024-hearing-with-five-big-tech-ceos-on-their-failure-to-protect-children-online) to appear voluntarily, according to lawmakers. Judiciary Committee Chair Senator Dick Durbin noted that Citron “only accepted services of his subpoena after US Marshals were sent to Discord’s headquarters at taxpayers’ expense.”
+
+The hearing room was filled with parents of children who had been victims of online exploitation on social media. Many members of the audience silently held up photos of their children as the CEOs entered the room, and Durbin kicked off the hearing with a somber video featuring victims of child exploitation and their parents.
+
+“Discord has been used to groom, abduct and abuse children,” Durbin said. “Meta’s Instagram helped connect and promote a network of pedophiles. Snapchat’s disappearing messages have been co-opted by criminals who financially extort young victims. TikTok has become a quote platform of choice for predators to access, engage and groom children for abuse. And the prevalence of CSAM on X has grown as the company has gutted its trust and safety workforce.”
+
+During the hearing, many of the senators shared personal stories of parents whose children had died by suicide after being exploited online. "Mr. Zuckerberg, you and the companies before us — I know you don't mean it to be so — but you have blood on your hands," Senator Lindsey Graham said in his opening remarks. The audience applauded.
+
+While years of similar hearings have so far failed to produce any new laws, there is growing bipartisan support in Congress for new safety regulations. As *Tech Policy Press* [points out,](https://www.techpolicy.press/backgrounder-senate-judiciary-committee-child-safety/) there are currently more than half a dozen bills dealing with children's online safety that have been proposed by senators. These include the [Kids Online Safety Act (KOSA)](https://www.engadget.com/bipartisan-senate-group-reintroduces-a-revised-kids-online-safety-act-212117992.html), which would require platforms to create more parental control and safety features and submit to independent audits, and [COPPA 2.0](https://www.engadget.com/senators-reintroduce-coppa-20-bill-to-tighten-child-safety-online-165043087.html), a revised version of the 1998 Children and Teens' Online Privacy Protection Act, which would bar companies from collecting or monetizing children’s data without consent.
+
+Senators have also proposed a number of bills to address child exploitation, including the EARN IT Act, currently in its [third iteration](https://www.engadget.com/the-earn-it-act-will-be-introduced-to-congress-for-the-third-time-192619083.html) since 2020, and the STOP CSAM Act. None of these have advanced to the Senate floor for a vote. Many of these bills have faced intense lobbying from the tech industry, though some companies in attendance said they were open to some bills and some aspects of the legislation.
+
+Spiegel said that Snap supports KOSA. Yaccarino said X supports the STOP CSAM Act. Shou and Citron both declined to specifically endorse the bills they were asked about, but said they were open to more discussions.
+
+Zuckerberg suggested a different approach, saying he supported age verification and parental control requirements at the app store level, which would effectively shift the burden to Apple and Google. "Apple already requires parental consent when a child does a payment with an app, so it should be pretty trivial to pass a law that requires them to make it so parents have control anytime a child downloads an app,” Zuckerberg said.
+
+Meta has come increased pressure in recent months following a lawsuit from [41 states](https://www.engadget.com/forty-one-states-sue-meta-for-harming-the-mental-health-of-its-youngest-users-162521184.html) for harming teens’ mental health. Court documents from the suit allege that Meta turned a [blind eye](https://www.engadget.com/unsealed-complaint-says-meta-coveted-under-13s-and-deceives-the-public-about-age-enforcement-231034682.html) to children under 13 using its service, [did little](https://www.engadget.com/facebook-and-instagrams-algorithms-facilitated-child-sexual-harassment-state-lawsuit-claims-095314139.html) to stop adults from sexually harassing teens on Facebook and that Zuckerberg personally [intervened](https://www.bloomberg.com/news/articles/2023-11-27/zuckerberg-vetoed-policy-that-would-protect-girls-suit-claims) to stop an effort to ban plastic surgery filters on Instagram.
+
+Unsurprisingly, Zuckerberg came under particular scrutiny during the hearing. In one awkward exchange, Senator Graham asked Zuckerberg if the parents of a child who died by suicide after falling victim to a sextortion scheme should be able to sue Meta. Zuckerberg, looking uncomfortable, paused and said “I think that they can sue us.”
+
+> Sen. Josh Hawley (R-MO) asks Mark Zuckerberg if he'd like to apologize to families in attendance at Senate hearing on social media
+> 
+> He stands, turns & talks about Meta's "industry-leading efforts..to make sure that no one has to go through the things..your families have suffered" [pic.twitter.com/lqaUgFqhxu](https://t.co/lqaUgFqhxu)
+> 
+> — Scott MacFarlane (@MacFarlaneNews) [January 31, 2024](https://twitter.com/MacFarlaneNews/status/1752747320821612695?ref_src=twsrc%5Etfw)
+
+Later, Senator Josh Hawley pressed the Meta founder on whether he would personally apologize to the parents in the hearing room. Zuckerberg stood up and faced the audience. "I’m sorry for everything you have all been through," he said. "No one should go through the things that your families have suffered and this is why we invest so much and we are going to continue doing industry-wide efforts to make sure no one has to go through the things your families have had to suffer."
+
+Spiegel was also asked to directly address parents. “Mr. Spiegel, there are a number of parents who have children who have been able to access illegal drugs on your platform, what do you say to those parents,” Scenario Laphonza Butler asked the Snap founder. “I’m so sorry,” he said.
+
+As with many past hearings featuring tech CEOs, some lawmakers strayed off topic. Multiple senators pressed Chew on TikTok’s relationship with China, as well as its handling of content moderation during the Israel-Hamas war. Senator Tom Cotton repeatedly asked TikTok's CEO about [his citizenship](https://twitter.com/therecount/status/1752752690965147802) (Chew is Singaporean).
+
+There were also some bizarre moments, like when Senator John Kennedy asked Spiegel if he knew the meaning of “yada yada yada” (Spiegel claimed he was “not familiar” with the phrase). “Can we agree … what you do is what you believe and everything else is just cottage cheese,” Kennedy asked.
+
+During the hearing, many of the companies touted their existing safety features and parental controls (Meta launched several [updates](https://www.engadget.com/facebook-and-instagram-will-block-dms-to-teens-unless-theyre-from-a-friend-130552718.html) in the lead-up to the hearing). Yaccarino, who repeatedly claimed that X was a “brand new company” said X was considering adding parental controls. “Being a 14-month-old company we have reprioritized child protection and safety measures,” she said. “And we have just begun to talk about and discuss how we can enhance those with parental controls.”
+
+*In the US, the National Suicide Prevention Lifeline is 1-800-273-8255 or you can simply dial 988\. Crisis Text Line can be reached by texting HOME to 741741 (US), 686868 (Canada), or 85258 (UK). Wikipedia maintains* [*a list of crisis lines*](https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines) *for people outside of those countries.*

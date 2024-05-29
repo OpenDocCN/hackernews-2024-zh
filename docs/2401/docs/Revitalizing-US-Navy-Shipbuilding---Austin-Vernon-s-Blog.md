@@ -1,0 +1,358 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:43
+-->
+
+# Revitalizing US Navy Shipbuilding - Austin Vernon's Blog
+
+> 来源：[https://austinvernon.site/blog/navyshipbuilding.html](https://austinvernon.site/blog/navyshipbuilding.html)
+
+<main>
+
+## The State of US Shipbuilding
+
+The consensus is that the US does not build enough ships, civilian or military. The lack of production raises alarm as tension with China in East Asia rises. And the US will need ships if we choose to fight in East Asia.
+
+### Analyzing the Industry
+
+Some facts jump out:
+
+1.  **The US has more shipyard workers than major shipbuilding countries like Japan**
+
+    With over 100,000 workers, the US easily exceeds Japan's ~70,000 and is a significant fraction of South Korea's workforce, which can be up to 200,000 workers during boom times. Japan produces ~20x more tonnage than the US. The US workforce focuses on building sophisticated ships for the government with very low productivity.
+
+2.  **Wages for shipyard workers in the US are similar to South Korea and Japan**
+
+    Labor costs are not an excuse!
+
+3.  **US maritime isolationism did not start with the Jones Act**
+
+    The US has protected shipbuilders from foreign competition for [almost all of US history](https://www.theregreview.org/2021/10/11/grabow-protectionism-development-us-maritime-industry/). They produce small numbers of pricey ships for the domestic market, except during wars when they build large numbers of expensive vessels. British yards using traditional techniques could turn out liberty ships cheaper than US yards like Kaiser's Richmond, CA facility that utilized early versions of modern shipbuilding techniques. But the British yards couldn't build as many ships! US shipbuilders were slow to adopt iron, steam, and modern techniques in peacetime.
+
+4.  **Agglomeration in shipbuilding is extreme**
+
+    Three to four clusters of shipyards build the vast majority of large ships. Less than a million workers man these facilities.
+
+5.  **Modern shipbuilding is absurdly efficient**
+
+    South Korea's yearly production often matches the total tonnage the US produced in WWII - with one-fifth of the workers! The ships barely cost more than the materials.
+
+### Why US Productivity is Low
+
+What do the most productive yards do that the US doesn't?
+
+#### What a Productive Shipyard Looks Like
+
+1.  **Block-Style Construction**
+
+    Parts of the ship (or "blocks") are made in workshops and then transported to a dry dock. Cranes move the blocks into place, and workers connect them.
+
+2.  **Group Techniques**
+
+    Car manufacturing techniques don't work for ships because it takes longer to build ships, the number delivered yearly is small, and each one is slightly different. Instead, shipbuilders have less specialized tooling. Shops manufacture "groups" of similar parts. There might be an area for straight hull pieces and another for curved ones.
+
+3.  **Tight Tolerances and Testing**
+
+    Nothing kills labor productivity like sections that don't fit together. US shipyards in WWII had armies of fitters working in subassembly and final assembly areas. Modern shipyards eliminate this labor by producing parts with exacting precision. Shipyards test parts before assembly to prevent later rework or repair.
+
+4.  **Elimination of Outfitting**
+
+    Ships were traditionally bare when launched from the dry dock into the water. Kaiser shipyards set astounding records for assembling and launching liberty ships in as little as four days, but then the ships would park at a dock for weeks or months while workers finished painting, wiring, installing engines, etc.
+
+    Modern shipyards complete almost all outfitting during subassembly construction.
+
+5.  **Sufficient Scale/Agglomeration**
+
+    High-productivity ship manufacturing requires specialized skill and tooling. Shipyards and suppliers make the most money when workers and machines stay working. However, the labor intensity varies dramatically during ship construction. High utilization isn't possible unless a yard can shift its workers between multiple ships.
+
+    Specialized suppliers need multiple shipyards in one location to steady their business. Their number and skills decay with fewer buyers of their services.
+
+    Other benefits of agglomeration are critical. Fluid labor markets can shift labor between yards and suppliers to handle cyclical order flow without forcing skilled workers to leave the industry. Best practices can easily flow between firms.
+
+6.  **Extreme Attention to Detail**
+
+    Producing defect-free parts and maintaining high utilization requires extreme attention from a yard's managers and employees. Shipbuilders are typically responsible for all detailed designs. The control of details allows them to schedule work appropriately and specify parts their machines can produce efficiently. Buyers are paying for general performance.
+
+#### What US Shipyards Lack
+
+The US industry uses some modern techniques, like block construction and group technology, but others elude it. The main differences are:
+
+1.  **Lack of Investment in Modern Tooling and Organization**
+
+    Government work is fickle and not price-sensitive. Congress prefers work to be spread across many districts, reducing the need to compete on cost and quality. Using more workers is often a plus instead of a minus. Why would shipyards risk money on the newest machines and techniques?
+
+2.  **Lack of Agglomeration/Clusters**
+
+    Politics prevents shipyards from concentrating in one district, limiting labor and supplier pools.
+
+3.  **Lack of Integrated Testing**
+
+    The Navy is infamous for its paperwork. It prefers standards and supplier certifications instead of actual testing (and often drags its feet on testing even when Congress mandates it). These processes reduce the number of suppliers that bid on projects and impose extra costs on those that do. The lack of bidders reduces competition, hurts quality, and raises prices.
+
+4.  **Lack of Scale**
+
+    Overhead is spread across very few ships, raising costs.
+
+    It is important to note that most industry proponents jump on this as *the* root cause. But buying more ships the same way or subsidizing ship production will not cause 90% of our existing yards to go out of business, a few super yards to develop in one cluster, and push these yards to pursue a testing culture or purchase more machine tools. An inflow of cash could disincentivize change even more, digging the hole deeper.
+
+### Comparing Japanese and Korean-Built Destroyers
+
+We can quantify the US Navy's cost disadvantage because Japan and South Korea are US allies that build destroyers similar to ours. They have the same radars, many of the same weapons, etc. Japan and South Korea can construct their Maya class and Sejong class destroyers for almost half the cost of a US Arleigh Burke-class ship. The construction time is also significantly shorter. And the Burke-class ships are the ones we build the most efficiently! Performance for other classes is likely much worse because of poor design choices, etc.
+
+The US could double our fleet on the same shipbuilding budget! But are we building optimal designs? And is the US government well suited to replicate the Asian shipbuilding model?
+
+## Laying out A New Vision
+
+There is no shortage of fantasy plans for the US shipbuilding industry. These suggestions will focus on how the US Navy can improve its fleet for close to its same budget within the political constraints of a protected, government-led industry.
+
+The Navy can make changes in two areas. First, it can alter what type of ships it orders. Second, it can change how it procures and operates ships. Effectiveness might increase severalfold even if our shipyards do not reach the global productivity standard.
+
+## Rethinking Ship Requirements
+
+The Navy packs every capability into one ship to create multi-role combatants. Simplifying the scope of each ship is at the heart of how ship requirements can improve. Naval architects should carefully consider other features like radar and top speed because their cost increases exponentially with performance.
+
+### The Current US Navy Ship Paradigm
+
+Navy ships like Burke-class destroyers, Littoral Combat Ships, or Constellation-class frigates take on many tasks. They include conventional air defense, ballistic missile defense, anti-submarine warfare, land attack, anti-ship surface warfare, convoy escort, patrol, scouting, etc. Designers load these ships to the gills with helicopter pads, sensors, missiles, etc.
+
+These multi-role ships are the Navy's attempt to combat horrific costs in basic shipbuilding combined with scope creep. If a plain hull is expensive, it makes sense to pack in as many roles as possible to allow fewer ships to patrol the globe.
+
+A comparison with a supertanker illustrates the hull construction disadvantage. Some of the largest of these ships [weigh 7x more](https://en.wikipedia.org/wiki/TI-class_supertanker) than a Burke-class destroyer. Fully ready-to-sail ships cost around 1/6 of what a [Burke's structure costs](https://navy-matters.blogspot.com/2017/10/burke-class-cost-breakdown.html?m=1) without weapons, radars, engines, etc. The US Navy's least expensive ship per ton is at a ~50x cost disadvantage in its raw steel form. That accounts for almost all the cost difference between the US destroyers and the Japanese and South Korean versions.
+
+The disadvantages of multi-role ships are numerous. The complexity makes them harder to design and build. Training the crew for various roles and maintaining the systems at high readiness is challenging. Each ship becomes so expensive that losing one is a significant blow. The complexity also makes iterative improvements and upgrades more difficult. The warships end up being pricey and fragile.
+
+### The Importance of One Role
+
+Single-role ships have a ruthless focus on one mission. Focus fights scope creep while clarifying mission objectives and the resulting requirements. They are less complicated and have built-in forcing functions for training and readiness. It is much easier to train sailors and evaluate readiness. They are cheaper and allow the procurement of more total hulls. Losing a ship in combat becomes less damaging to the fleet because it only degrades one role, while multi-role ships lose all their capabilities.
+
+The total number of hulls increases severalfold. It isn't a case of four specialized ships replacing four multi-role ships, but four specialized ships replacing one multi-role ship. The math works if the hull cost premium is merely outrageous instead of ludicrous. Each warship will be smaller, simpler, and optimized for its role. More shipyards will be available as potential bidders. A helicopter carrier might be a converted cargo ship instead of making a sleek, expensive destroyer 30% longer. The ideal ratio of ships will likely change with more surface warfare and air defense ships than helicopter carriers or ballistic missile defense platforms.
+
+Total sailor requirements may decrease with specialization. One support team could service many more helicopters if they are exclusively on small cargo ships converted to helicopter carriers. A modern cargo ship only needs around twenty sailors, so the minimum number of sailors for any vessel is small (though Navies often want extra sailors for tasks like damage control). Most crews are dedicated to weapons systems or keeping their fellow sailors alive and healthy through cooking or laundry rather than basic ship tasks.
+
+Reducing the cost of basic construction and rationalizing requirements favors increasing the number of specialized ships. Benefits will accrue in effectiveness and procurement.
+
+### Speed
+
+Doubling a ship's speed increases power requirements from the engine by 8x. Power is proportional to the cube of speed! It is not an understatement to say that the planned top speed has the most impact on ship design. Speed is the defining feature of some ship classes, like the American Littoral Combat Ship (LCS), and many other designs have skinny, streamlined shapes that leave less room for armaments, armor, and crew.
+
+We can see how extreme the differences can be when we compare a modern cargo ship with a Burke-class destroyer. The Burke has more horsepower than a 24,000 TEU cargo ship that can carry the weight of nearly thirty Burke ships. The cargo ship's typical speed is 22 knots compared to a 30+ knot sprint speed for the Burke!
+
+Warship speed has always been a critical feature. Almost all the ships in the WWI and WWII eras were blazing fast after quicker Japanese ships with more proficient gunnery decimated the Russian fleet in the Russo-Japanese War in 1905\. Frontline Navy ships have maintained 30+ knot top speeds even as the threat has shifted from other warships to missiles and aircraft cruising at hundreds or thousands of miles per hour.
+
+New form factors and propulsion designs are available if missiles devalue top speed. Boxier ships can carry more mass and provide more internal space for crew, armor, and armaments. The extreme power requirements of modern Navy ships mean most use gas turbines that are space efficient but burn more fuel and require more maintenance than very inexpensive marine diesel engines. Reducing the top speed by 8-10 knots opens up a world of alternatives.
+
+### Hybrid-Electric Propulsion
+
+Navy ships traditionally have a turbine (powered by gas or steam) that connects to gears, the shaft, and the propeller. These mechanical systems are vulnerable to defects, and the US Navy has had issues with gears on several recent ship classes. Nearby explosions can easily damage the equipment, and there is a significant flooding risk where the shaft penetrates the hull.
+
+An alternative option is to use electric motors powered by diesel generators. The motors and propellers are in "pods" attached to the outside of the hull. Electric wires replace complex mechanical linkages. The propulsion system is more redundant since each ship will have multiple pods and distributed generators. They also open up the possibility of using small battery banks to provide temporary "sprint" speed. Diesel-electric systems are popular on cruise ships.
+
+Inexpensive marine diesel engines can power the generators. These engines are reliable and can efficiently burn a wide range of fuels. Gas turbines require highly refined fuel that may be in short supply during a war. Ships that can use marine engines in a hybrid electric configuration should improve readiness, increase range, decrease operating costs, and gain flexibility in fuel usage.
+
+### Use Radar Judiciously
+
+Radar range follows a power law more extreme than ship speed. Doubling a radar's range requires 16 times the power. Radar equipment can quickly dominate a ship with size, power consumption, and cooling needs. The latest Burke-class destroyers are such a case because the Navy wants them more prepared to intercept ballistic missiles.
+
+The original driver for massive radars on US Navy cruisers and destroyers was the Soviet AS-4 "Kitchen" missile. The AS-4 flight profile is to launch from a high altitude, burn its rocket to increase altitude and speed, and then dive toward the target. These missiles would be fired in masses by Soviet bombers to overwhelm US fleet defenses. Air defense missiles of the time had "semi-active" seekers at best. They required the ship's radar to paint the target, limiting how many targets a ship could engage at any time. Having a radar with a long-range to maximize engagement time was critical.
+
+America's enemies adapted with anti-ship missiles that fly a few meters above the waves. The curvature of the earth prevents ship radars from detecting these missiles until they are within 20-30 kilometers of the ship. Having a radar with 350+ kilometers of range is little help. The US Navy has since upgraded most of its air defense missiles to have active seekers that require less guidance from the ships and allow faster engagements.
+
+Moving to smaller radars (150 km range?) on most ships would have significant benefits with few drawbacks. The cost would fall. Ships will leave radars off until engagement is imminent to avoid detection, anyway (enemies can usually detect radar at twice the distance you can see them). Naval architects would have more freedom to design the ships. A vessel might have multiple radars or could carry several spares instead of its radar being like a complex, multi-story building. Smaller radars would still handle the sea-skimming missile threat while being simpler to repair.
+
+A dedicated air defense ship with a reasonable radar might weigh 1/4 as much as a Burke-class ship. It would carry significantly fewer large anti-air missiles because engagements are so short that sinking with most of the fancy ammo unfired is the most likely outcome if things go poorly. Instead, the ship would carry more shorter-range missiles and guns.
+
+Dedicated platforms could provide ballistic missile radar coverage. Because these missiles arc so high, the radar can be hundreds of kilometers behind the main fleet. And the radar can be more cost-effective if it's on a more basic platform solely focused on ballistic missiles. The US military's TPY-2 designed for this task costs around $200 million compared to a Flight-III Burke-class destroyer that costs ~$2 billion.
+
+Designers must think carefully about the requirements for radar because the cost of increasing capability is extreme.
+
+### Missile Armor
+
+The US Navy uses a layered defense to protect its ships from missiles. US fighters attack enemy aircraft and launchers far from the battlegroups. Cruisers and destroyers fire longer-range air-to-air missiles. Many ships carry shorter-range missiles and guns as a last-ditch defense. Ships can take a hit without sinking by utilizing watertight compartments and armor around sensitive areas like ammo magazines. But there is little general armor, and one hit will put most Navy ships out of the fight because they will lose their fire control radars, etc. Basic armor could improve survivability significantly.
+
+Ship armor has undergone many changes in the last 100 years. Warships in the WWI and WWII eras had at least several inches of steel armor to reduce damage from explosive shells. By the 1980s, armor had fallen so far out of favor that many warships had significant portions of their structures made from thin aluminum. Naval architects returned to steel construction after aluminum ship structures performed poorly when hit by anti-ship missiles in the Falklands and the Persian Gulf conflicts. The consensus is still towards minimal armor. Some say missiles are too destructive for armor to help. Or that the weight and cost are too much. It hasn't mattered because naval conflict has been rare and low intensity since 1945.
+
+The arguments against armor seem thin. Missiles aren't too destructive because the Houthis have fired anti-ship missiles at dozens of cargo ships in the Red Sea, most sailing away with minor damage. Ships are resilient to missile attack if critical systems are protected (Large modern vessels only need to shield propulsion, and their sheer size acts like armor). Contrary examples like the Moskva prove that a poorly maintained and crewed ship can sink under any conditions. Weight matters less for ships without giant radars and helicopter hangars. And armor is cheaper than a new ship or extended dry dock time. US Navy ships should have armor in case high-intensity naval conflict returns.
+
+Even minimal armor and effort to shield sensors or provide armored shrouds for backup sensors would drastically improve combat effectiveness.
+
+A common retort from armor critics is that modern shaped charges can obsolete steel armor (even though no modern anti-ship missiles have shaped charges). Ships have much less pressure to constrain mass and size than a tank. It may be true that adding more inches of steel is not beneficial if enemies adopt shaped charges, but other materials can protect ships. [Water](https://apps.dtic.mil/sti/pdfs/AD1064509.pdf), [Sand/soil](https://apps.dtic.mil/sti/tr/pdf/AD0012951.pdf), air, [chips/chunks of granite](https://erdc-library.erdc.dren.mil/jspui/bitstream/11681/11656/1/SR-86-18.pdf), or alumina mixed with glue can disrupt shaped charges.
+
+Most ships only need enough armor to take some sting off. A warship doesn't need armor to handle a Chinese DF-21 anti-ship ballistic missile if its role is second-tier air defense. Blunting smaller anti-ship missiles like the YJ-12 or YJ-18 is adequate. And many compartments can serve double duty as spaced armor. Traditional Navy ship design uses fuel and storage space as a buffer. A shaped charge putting a several-foot diameter hole in a small portion of a ship above the water line won't impact its fighting ability unless it hits critical systems, which should have more protection or duplicates. In contrast, a battleship or heavy cruiser optimized for shelling targets onshore might have thick steel and a meter of alternative material to blunt counterfire.
+
+Armor is one component in a layered missile defense. It won't prevent all damage, but it can save sailors' lives and keep a ship fighting after a missile hit. There is no excuse to avoid it.
+
+### Torpedo and Mine Armor
+
+Torpedos were disruptive to naval warfare around the start of the 20th century. Ships quickly developed armor systems to reduce their damage. [The primary counter was a big bulge](https://www.navalgazing.net/Underwater-Protection-Part-1) sticking out at the water line. The bulge would have alternating compartments of water and air. The torpedo would detonate on the outer steel, and the air and water voids would dissipate the shockwave. Some ships even started putting closed-cell foam in the air void to prevent flooding.
+
+Ship construction details matter for surviving the shockwaves not dissipated by the anti-torpedo bulge. Weld quality must be excellent, and the ship needs strong bones that keep the vessel together and spread stress throughout the frame rather than letting it concentrate.
+
+These measures, especially anti-torpedo bulges, fell out of favor because Navies started programming their torpedos to explode under ships instead of hitting their side. Ships had little margin for armor on their bottoms because a deeper hull would reduce the top speed too much, and they could not afford to give up space. Further increasing width also increases drag. Making the ship taller presents stability issues. The focus changed to longer-range weapons that could engage other ships carrying torpedos beyond torpedo range and anti-submarine warfare techniques to find and kill subs before they get near friendlies.
+
+Bottom-dwelling mines are now a serious risk with damage profiles similar to torpedos, and the development of countermeasures has lagged.
+
+It becomes much more straightforward to have a hull design that allows for bottom protection from torpedos and mines if top speed isn't sacred. Alternating water and air (or foam) compartments will still work. And we can design ships to be tolerant of shock damage.
+
+### Inexpensive Ammunition
+
+Fancy munitions like hypersonic missiles attract a lot of attention and resources. But the $100 million price tag means practice firings are rare. One of the main benefits of a weapon like this is that it travels so fast that it can hit time-sensitive targets at extreme ranges. But bugs are likely at the critical moment if you never practice firing the missiles because of their cost. A small number also makes it hard to maintain a production line.
+
+Inexpensive ammo has the opposite features. Seamen can regularly train on the "real" thing. Stockpiles can be extensive. Factories can stay open even if only to replace training rounds. A cheaper weapon also implies easier production during a war.
+
+Some examples:
+
+1.  **Artillery shells and gravity bombs can replace cruise missiles**
+
+    The Navy will still need to maintain some cruise missile capability for high-value targets. But war requires megatons of munitions like artillery shells and guided gravity bombs.
+
+2.  **Short Range Air Defense Missiles over large interceptors**
+
+    Missiles get more expensive with range and payload. An SM-3 designed to defeat ballistic missiles outside the atmosphere costs $10-$20 million. It is rarely test-fired, even though a quick, smooth launch is critical to its success. The cheapest interceptor is a short-range hit-to-kill missile. Swarms of these missiles could provide an inexpensive option to engage enemy missiles at 20-30 km ranges.
+
+3.  **Ballistic missiles over hypersonic missiles**
+
+    Ballistic missiles are often faster than hypersonic missile concepts and are still difficult to shoot down. They are ~10x cheaper and can still prosecute time-sensitive or ultra-long-range enemy locations.
+
+Inexpensive ammo leads to more training, better reliability, and improved production capacity.
+
+### Maximizing Combat Effectiveness
+
+These changes can increase combat power by having better-trained crews, improving the protection of sailors and their weapons, distributing capabilities across more ships, and being careful about requirements like radar, speed, and armor.
+
+## Updating Ship Procurement
+
+Concepts like better armor or single-purpose ships will have limited impact unless hull construction and assembly costs are closer to the cost of materials. The Navy needs to encourage investment in productivity, entice more contractors to compete, and make its ships easier to build. Several strategies can help immensely.
+
+### Build Procurement Expertise
+
+Government agencies can perform better when they have in-house expertise. These are the most critical functions:
+
+1.  **Creating a solid specification/bid request**
+
+    A poorly written bid request can lead to more work, make comparing vendors difficult, and create problems and disagreements downstream when inevitable manufacturing issues arise.
+
+2.  **Evaluate vendors and bids**
+
+    The Navy must weed out bids that are incomplete or unrealistic. One of the worst outcomes is the military accepting a low bid with a low chance of success.
+
+3.  **Credible Internal Guidance**
+
+    The most impactful step in ship design is setting the requirements. From those requirements flow many unchangeable cost and manufacturing realities. Having internal expertise that understands the downstream tradeoffs for any requirement is critical.
+
+4.  **Monitoring Progress**
+
+    The Navy needs inspectors in yards and factories to witness testing and find errors before integration into ships. Commercial ship buyers and classification societies always participate in testing and inspections.
+
+5.  **Subcomponent Design**
+
+    A constant problem in the military is vendor lock-in. A contractor might bid low because they plan to extract all their profit on maintenance and upgrades. It may make sense for the Navy to create standards or designs for some modular items to prevent vendor lock-in. A bunk module might have (x,y,z) dimensions and certain connections, with the remaining details left to the manufacturer. Each vendor's module will be different, but they all fit in a ship similarly.
+
+The Navy should try to avoid ultra-detailed ship design and integration. Shipyards will struggle to achieve high productivity with detailed design divorced from production scheduling. The rough/detailed design interface is challenging because many details are non-negotiable for the Navy. It may take the Navy a few iterations to master getting what it needs without interrupting yard operations.
+
+An alternative viewpoint is that the Navy should design its ships down to the bolt like it did before the ~1970s. 100% in-house design would improve over today's listless process and would likely have less variation in outcome. Reaching sky-high productivity levels would be challenging, but vendor dysfunction disasters would become rarer once the Navy redevelops internal talent.
+
+The bottom line is that the Navy needs more internal shipbuilding knowledge.
+
+### Limit Change Orders
+
+Change orders and rework are expensive. They are common in Navy programs because construction often starts before the detailed design is complete. Finish the designs first! The Navy should reject a design if it is so complicated that it takes an unreasonable amount of time to finish.
+
+Modern, efficient shipbuilding is more engineering intensive upfront to make downstream production smoother.
+
+### Functional Testing over Process Specification
+
+Working for the Navy notoriously comes with piles of paperwork and certifications. Unfortunately, that paperwork doesn't improve quality - the Navy's ships often have reliability problems with their powertrains or other components that engineers solved long ago in inexpensive commercial vessels. Outside inspection reports tell a constant tale of the Navy accepting defective ships and then spending more money to try and fix the issues or suffering lower readiness.
+
+The main thing the paperwork accomplishes is reducing the number of companies willing to bid on projects. Less competition leads to higher costs and lower quality.
+
+Commercial shipyards and customers build quality into the production process with tests. Purchase contracts are still complex but focus on function instead of form. There is rigorous testing of subcomponents, witnessed by the buyer and other inspectors, to ensure quality is in order. Suppliers fix any defects before integration with the supplier footing the bill. The cost of mistakes increases dramatically the later they are identified.
+
+Testing like this allows the Navy and suppliers to take more risk in entering contracts with upstarts. The process identifies and corrects problems before they massively run up costs. The Navy keeps its budget, and the supplier can still make a profit (or at least minimize the loss).
+
+Congress has recently tried to force the Navy to do more component testing, but the Navy does not schedule the tests in beneficial ways.
+
+### Shortening Service Length
+
+The Navy typically tells Congress it will operate ships for 30-40 years. Ship designs must accommodate extensive mid-life upgrades and often suffer from readiness issues near the end of their life. The admirals try to retire ships early to ditch the higher maintenance costs and procure ships with newer technology. There is often a hole in the fleet when ships enter retirement early because replacements aren't available.
+
+Shortening the planned service life would skip the song and dance. Scrapping ten to twenty year-old ships and buying new ones may sound expensive, but this is how the commercial market operates. Ships are maintenance intensive, especially as they age. And maintenance is very labor intensive. Cargo lines can buy a new vessel for not much more than the steel, run it into the ground for a decade, then sell it for scrap (and recover some of the cost) once it becomes less reliable.
+
+Shorter lifetimes also limit the need for bleeding-edge technology. Buying advanced but proven tech reduces cost and risk if the ship is in active service for 10-15 years. It will be in the reserve fleet or scrapped before the technology is obsolete. The pressure for bleeding edge technology is much stronger when the planned ship life is 30-40 years.
+
+US Navy ships are usually getting new guts when they undergo midlife upgrades. It is like remodeling a house - the project takes on artisanal qualities. An upgrade strategy only makes sense when the hull, engine, and crew quarters are expensive. You replace the obsolete weapons and electronics with new ones and keep the basic structure. Retrofits aren't a good deal in a world where you can build new hulls for barely more than the cost of the steel.
+
+The Navy needs to buy more new ships, retire them faster, and ditch the complexity of midlife upgrades. They already want to do this but must find a way to sell it to Congress by reducing ship procurement costs.
+
+### Iterative Ship Classes
+
+The costs and timelines for shipbuilding make incorporating new technology tricky. The Army can prototype and test a new tank. They won't buy a manufacturing line until they get it right. Ships cost 100x more than tanks - a prototype is a huge decision. Plus, ship production produces similar ships but not exact replicas like manufacturing tanks or cars.
+
+The more logical path is iterative ship classes that only incorporate one or two new technologies. These classes might be as small as 2-3 ships. Only three warships are in the Korean AEGIS destroyer class built for half the cost of US AEGIS destroyers. Iteration can incorporate new technologies into ships without adding horrific program risk. In traditional serial production, the vessels start at the bleeding edge and suffer more teething problems but are nearing obsolescence by the end of a production run.
+
+Constant iteration and learning with shorter feedback loops is critical to our Navy and was common practice when the US developed aircraft carriers and nuclear submarines.
+
+### Reusing Components
+
+Mass manufacturing identical ships may not be practical, but churning out some components might be. These items might be cheaper to make onsite in an efficient Asian shipyard, but our shipyards would greatly benefit from less complexity. These components can come from diverse states and form congressional coalitions more interested in total output than spreading ship assembly work between dozens of states. Some examples of reusing components could be:
+
+1.  **Propulsion**
+
+    Different ship classes can have part commonality if the Navy adopts a diesel-electric architecture with propulsion pods. Bigger or faster ships have more engines and pods to get more horsepower.
+
+2.  **Bunks**
+
+    Modular construction works best when the item has a high-value density and uniformity. Hotel bathrooms are an item that is often produced in a factory and then installed onsite. Bunks and other compartments fit this description because they will be small and constructed of steel.
+
+3.  **Electronics and Weapons**
+
+    Radars, guns, and electronics packages should come in modules and submodules that are plug-and-play as much as possible. Not only will this simplify assembly, but they will also be easier to replace if damaged in battle.
+
+More shipyards can bid on work if assembly is less complicated, boosting competition and reducing cost. The main risk is that the pieces don't fit together, but the whole program will fail if shipyards can't learn precision since it is a requirement for even basic block construction.
+
+### Minimize Sole Source Suppliers
+
+One of the most pernicious side effects of expensive, multi-role ships is the inability to support a diverse supplier base. The complexity drives up overhead, limits vendor entry, and often forces the Navy to down-select to one supplier building at one yard or factory. Leverage in any contract disputes disappears. Increasing hull count, decreasing complexity, and more modular systems make maintaining multiple vendors more feasible, pleasing Congress.
+
+### Limit Software
+
+Software requires significant upfront effort, its costs spiral with complexity, and it works best when copied millions or billions of times. Navy ships are one of the worst applications for a software operating system. There aren't many copies. Each one is slightly different and absurdly complex. Questions of who owns the intellectual property in the case of tightly integrated systems can also present issues when upgrading or maintaining the systems. A ship can become inoperable because of one lazy civilian contractor outside of the Navy chain of command.
+
+A ship might still have lots of software, but only in individual subsystems rather than being integrated. Automakers have used this strategy in internal combustion engine cars for decades to minimize vendor lock-in. The car doesn't need the radio to talk to the engine. Integrating subsystems into one system can create beautiful consumer products like an iPhone or a Tesla, but the effort and skill required would not be a wise way for the Navy to spend its resources. The engine control software does not need to connect to the bridge, and analog control systems are acceptable. Fancy digital systems have contributed to accidents (besides adding cost).
+
+Software should be limited to where beyond human precision is required. Engine timing control and aiming weapons are good examples. Limited amounts of modular software make the integration and planning work much easier for a shipyard.
+
+### Allow Shipyard Bankruptcies
+
+Management quality is challenging to improve. Improvement comes from firing existing managers or bankruptcy rather than individual improvement. Most US shipyards have poor productivity, and the logic would follow that they need to go bankrupt or reorganize.
+
+One trend that seems to be unsuccessful is aerospace companies and large defense contractors buying shipyards. The thinking was that it would take a sophisticated company to integrate more complex radars and missiles. These companies haven't made much money on shipyards, and the Navy hasn't gotten a good value from its ships. Simplifying the integration and having yard management return to "ship people" is probably necessary.
+
+The trick for political acceptance is to have these reorganizations proceed without layoffs. That is easier than it seems because a shipbuilding program with single-purpose ships and shorter lifetimes will need more hulls. More value will be in cutting and assembling steel. The Navy can qualify more yards, investors can justify restarting/expanding yards, and the Navy can use more firm, fixed-price contracts and punish shipyards that deliver poor quality or late ships. These penalties will lead some yards into bankruptcy, force a sale, or transition into supplying subcomponents. The failure of any one yard will have less impact on the Navy's program because others will be available to take up the slack.
+
+## The Cumulative Impact on Shipyards
+
+The number of changes I've suggested is daunting, but the behavior change required of the Navy is simple (but not easy). The changes grate more against the Navy's internal politics than the wishes of Congress. The Navy needs its officers to spend less time at their desks in the Pentagon and more time in shipyards and factories. Internal expertise will grow, relationships with suppliers will improve, they will notice problems when they are easier to solve, and realism will have a few more advocates.
+
+Using that knowledge to make better tradeoffs will make ships more combat effective, cost less, and easier to build. Radar and speed are outsized levers.
+
+These suggestions seek to maximize competition between shipbuilders and suppliers. Single-use ships and shorter service lives will increase demand for new hulls and stimulate new supply. Ships with loosely coupled systems and modular components are easier for shipyards to integrate (and repair during a war). Testing components early and often makes it easier to qualify new suppliers. Iterative ship classes reduce program risk and the need for risk-tolerant contract structures like cost plus. These changes also make it easier to ramp up production during war.
+
+Features like void spaces for torpedo and mine protection can only work if these competition measures increase productivity. Steel and air may be cheap, but labor is not.
+
+Letting yards fail may be the most politically sensitive change. It will be a disaster if the Navy decides to toughen up on yards but waits until the ship is delivered in poor condition to lay the hammer down. The earlier Naval officers are in the yards and shops identifying problems, the less painful changes for the shipyard will be. Companies can fire bad managers or exit the business while some value remains.
+
+The bottom line is getting officers out of their offices. The rest will follow.
+
+A follow-up post, "The Two Speed Navy," will detail the ships that result from these suggestions.
+
+## General References
+
+1.  [History and Analysis of Liberty Ships and Policy](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.5520&rep=rep1&type=pdf)
+
+2.  [Navy Matters Blog](https://navy-matters.blogspot.com)
+
+3.  [Analysis of Japanese Industry](https://www.nsrp.org/wp-content/uploads/2015/10/Deliverable-2000-214-World_Class_Manufacturing_Model_Final_Report-National_Steel_Shipbuilding_Company.pdf)
+
+4.  [Ship Production by Storch, Hammon, Bunch, and Moore](https://www.amazon.com/gp/product/0939773570/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+
+</main>

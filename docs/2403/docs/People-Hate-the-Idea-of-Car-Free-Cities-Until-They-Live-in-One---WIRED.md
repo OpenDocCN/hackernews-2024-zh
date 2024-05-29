@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:31:42
+-->
+
+# People Hate the Idea of Car-Free Cities—Until They Live in One | WIRED
+
+> 来源：[https://www.wired.com/story/car-free-cities-opposition/](https://www.wired.com/story/car-free-cities-opposition/)
+
+London had a problem. In 2016, more than 2 million of the city’s residents—roughly a quarter of its population—lived in areas with illegal levels of air pollution; areas that also contained nearly 500 of the city’s schools. That same air pollution was prematurely killing as many as [36,000 people a year](https://www.gov.uk/government/publications/air-pollution-applying-all-our-health/air-pollution-applying-all-our-health#:~:text=The%20annual%20mortality%20of%20human,and%2036,000%20deaths%20every%20year.). Much of it was coming from transport: [a quarter](https://www.centreforlondon.org/blog/reimagining-london-transport/) of the city’s carbon emissions were from moving people and goods, with three-quarters of that emitted by road traffic.
+
+But in the years since, carbon emissions have fallen. There’s also been a [94 percent reduction](https://www.theguardian.com/environment/2020/oct/03/dramatic-plunge-in-london-air-pollution-since-2016-report-finds) in the number of people living in areas with illegal levels of nitrogen dioxide, a pollutant that causes lung damage. The reason? London has spent years and millions of pounds reducing the number of motorists in the city.
+
+It’s far from alone. From Oslo to Hamburg and Ljubljana to Helsinki, cities across Europe have started working to reduce their road traffic in an effort to curb air pollution and climate change.
+
+But while it’s certainly having an impact (Ljubljana, one of the earliest places to transition away from cars, has seen sizable reductions in carbon emissions and [air pollution](https://www.ljubljana.si/en/news/air-quality-in-ljubljana/)), going car-free is a lot harder than it seems. Not only has it led to politicians and urban planners facing death threats and being doxxed, it has forced them to rethink the entire basis of city life.
+
+London’s car-reduction policies come in a variety of forms. There are charges for dirtier vehicles and for driving into the city center. Road layouts in residential areas have been redesigned, with one-way systems and bollards, barriers, and planters used to reduce through-traffic (creating what are known as “low-traffic neighborhoods”—or LTNs). And schemes to get more people cycling and using public transport have been introduced. The city has avoided the kind of outright car bans seen elsewhere in Europe, such as in Copenhagen, but nevertheless things have changed.
+
+“The level of traffic reduction is transformative, and it’s throughout the whole day,” says Claire Holland, leader of the council in Lambeth, a borough in south London. Lambeth now sees 25,000 fewer daily car journeys than before its LTN scheme was put in place in 2020, even after adjusting for the impact of the pandemic. Meanwhile, there was a 40 percent increase in cycling and similar rises in walking and scooting over that same period.
+
+What seems to work best is a carrot-and-stick approach—creating positive reasons to take a bus or to cycle rather than just making driving harder. “In crowded urban areas, you can’t just make buses better if those buses are still always stuck in car traffic,” says Rachel Aldred, professor of transport at the University of Westminster and director of its Active Travel Academy. “The academic evidence suggests that a mixture of positive and negative characteristics is more effective than either on their own.”
+
+For countries looking to cut emissions, cars are an obvious target. They make up a big proportion of a country’s carbon footprint, accounting for [one-fifth of all emissions](https://www.europarl.europa.eu/news/en/headlines/society/20190313STO31218/co2-emissions-from-cars-facts-and-figures-infographics) across the European Union. Of course, urban driving doesn’t make up the majority of a country’s car use, but the kind of short journeys taken when driving in the city are some of the most obviously wasteful, making cities an ideal place to start if you’re looking to get people out from behind the wheel. That, and the fact that many city residents are already car-less (just 40 percent of people in Lambeth own cars, for example) and that cities tend to have better public transport alternatives than elsewhere.

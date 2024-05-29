@@ -1,0 +1,396 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:40:30
+-->
+
+# The Smartphone Kids Are Not All Right - The Atlantic
+
+> 来源：[https://www.theatlantic.com/podcasts/archive/2024/03/smartphone-anxious-generation-mental-health/677817/](https://www.theatlantic.com/podcasts/archive/2024/03/smartphone-anxious-generation-mental-health/677817/)
+
+I did not know this at the time, but apparently my children were part of a generation of guinea pigs. “It’s as though we sent Gen Z to grow up on Mars when we gave them smartphones in the early 2010s in the largest uncontrolled experiment humanity has ever performed on its own children,” Jonathan Haidt writes in *The Anxious Generation: How the Great Rewiring of Childhood Is Causing an Epidemic of Mental Illness*.
+
+Haidt convincingly uses data to argue that a [sharp uptick in depression, anxiety, loneliness, and suicide](https://www.theatlantic.com/technology/archive/2024/03/teen-childhood-smartphone-use-mental-health-effects/677722/) among young people is directly tied to the wide distribution of smartphones. He points to surveys that have been asking teenagers for decades questions about mental health, such as: “Life often seems meaningless” or “A lot of times I feel lonely.” Survey results remained pretty consistent, and some numbers were even improving, before they took a sharp, negative turn somewhere between 2010 and 2015.
+
+The solution, Haidt says, is “easy.” In this episode of *Radio Atlantic*, he advocates that parents don’t give middle schoolers smartphones so they can reclaim the old way of socializing, that social-media platforms raise the minimum age for use to 16, and that schools ban cellphones during the day, among other straightforward solutions. The picture, however, looks a lot less clear when you talk with an actual young person. In this episode, I spoke with my child Jacob, and we juxtapose theory with lived experience. You’ll hear a mother (me) wrestle in real time with the consequences of parenting decisions as Haidt makes the case that we should collectively agree to rescue our kids from this experiment.
+
+* * *
+
+**Listen to the conversation here:**
+
+*Subscribe here: [Apple Podcasts](https://podcasts.apple.com/us/podcast/the-smartphone-kids-are-not-all-right/id1258635512?i=1000649980531) | [Spotify](https://open.spotify.com/playlist/4PgNKjRJJWlaV6zuNr69BO) | [YouTube](https://www.youtube.com/@TheAtlantic/podcasts) | [Google Podcasts](https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5tZWdhcGhvbmUuZm0vcmFkaW9hdGxhbnRpYw) | [Pocket Casts](https://pca.st/ccxU)*
+
+***The following is a transcript of the episode:***
+
+**Hanna Rosin:** What’s up? What are you up to?
+
+**Jacob Rosin:** Not much. I just got home. I’m going to do my laundry soon and then pack.
+
+**Hanna Rosin:** Oh, right. You’re leaving Sunday.
+
+**Jacob Rosin:** Hm.
+
+**Hanna Rosin:** Yeah. What’s “hm”?
+
+**[*Typing*]**
+
+**Hanna Rosin:** What are you typing?
+
+**[*Typing*]**
+
+**Jacob Rosin:** I’m just chatting with friends.
+
+**Hanna Rosin:** Wait, you’re chatting with friends while we’re doing this interview?
+
+**Jacob Rosin:** I do this all the time. Don’t worry about it.
+
+**Hanna Rosin:** So you’re going to chat with friends throughout this interview?
+
+**Jacob Rosin:** Have we started the interview yet?
+
+**Hanna Rosin:** No, we haven’t.
+
+**Jacob Rosin:** Okay.
+
+**Hanna Rosin:** (*Sighs*.)
+
+**[*Typing*]**
+
+**Hanna Rosin:** Oh my God. Tell me when you’re ready.
+
+**Hanna Rosin:** This is *Radio Atlantic*. I’m Hanna Rosin. And that is my 20-year-old child, Jacob.
+
+**Jacob Rosin:** I’m ready.
+
+**[*Music*]**
+
+**Jacob Rosin:** Wait—how long will this take? Sorry.
+
+**[*Music*]**
+
+**Hanna Rosin:** This is basically how it goes with me and Jacob. I always think it’s just me and them talking. And I’m always surprised to learn there’s someone else in the room. The feeling is like when you’re at a party and you’re talking to someone, and their eyes are scanning for someone more interesting.
+
+**Hanna Rosin:** Okay, so what would you say that most of our fights are about?
+
+**Jacob Rosin:** I mean, I don’t know how to get more specific than phone usage, but I think it also might be phone usage while also not paying attention to something important.
+
+**Hanna Rosin:** Right, phone usage and then—
+
+**Jacob Rosin:** Is this a leading question?
+
+**Hanna Rosin:** No, I am genuinely trying to figure out how close my perception is to your perception.
+
+**Jacob Rosin:** Okay.
+
+**Hanna Rosin:** What would you say is my position, or maybe your parents’ position, and what is your position in this fight?
+
+**Jacob Rosin:** I mean, I think most of the time when I’m on my phone, my friends are in the phone, and the idea is that there’s a real world out there that I should be paying attention to because it is more immediate, and I can’t really come back to it in the same way, I guess.
+
+**Hanna Rosin:** I see. So you recognize that there’s a world in your phone, there’s a world outside—
+
+**Jacob Rosin:** That is probably more important to me.
+
+**Hanna Rosin:** What’s more important to you?
+
+**Jacob Rosin:** The world on the phone.
+
+**Hanna Rosin:** And I’m irritated because I think the world outside should be more important to you. Is that a fair summary?
+
+**Jacob Rosin:** Maybe, yes.
+
+**Hanna Rosin:** There’s this expression that this MIT professor who writes about stuff has: “We are forever elsewhere.” Do you think that’s true? Does that bother you?
+
+**Jacob Rosin:** Does it bother me? No. That’s just how I am. I just do that. I think about other stuff.
+
+**Hanna Rosin:** Does it feel distracting? Or like your mind—
+
+**[*Typing*]**
+
+**Hanna Rosin:** Are you online again?
+
+**Jacob Rosin:** That was only a brief exchange. I’ll close Discord. Hold on.
+
+**Hanna Rosin:** (*Laughs*.)
+
+**Hanna Rosin:** I’m not sure Jacob is typical, although given what the latest research is showing about how phones intrude into kids’ lives, they might not be *that* atypical.
+
+Jacob is autistic and did not glide easily into middle- and high-school social dynamics. It was always just much easier for them to have fun with friends online.
+
+But I have been pretty typical as a parent, trying to figure out what to enforce around phones. Jacob and their siblings were part of the guinea-pig generation, the first kids to get smartphones during puberty. And we, the parents, knew nothing. We had no wisdom to go by. We just watched as they dove in deeper and deeper and had no idea if this was excellent and fresh and creative, or totally ruinous.
+
+**[*Music*]**
+
+**Hanna Rosin:** When did you first get your cell phone?
+
+**Jacob Rosin:** I remember waking up to look at my phone and look at the results of the 2016 election, so it was at least before then.
+
+**Hanna Rosin:** Yeah, okay. How would you say it changed your—
+
+**Jacob Rosin:** Over time, it absolutely made me feel more connected with social media and particularly Discord.
+
+**Hanna Rosin:** Can you say more about that?
+
+**Jacob Rosin:** I did not really feel like I had any real friends before that point, even though I allegedly did.
+
+**Hanna Rosin:** Did you feel like you started to compare yourself to other people or anything like that?
+
+**Jacob Rosin:** I’ve been doing that since I was born, baby.
+
+**Hanna Rosin:** What does that mean? What do you mean?
+
+**Jacob Rosin:** I don’t know if the internet ever brought that habit. I think it’s just a habit. Maybe it started to be negative when metrics got involved.
+
+**Hanna Rosin:** What do you mean?
+
+**Jacob Rosin:** Well, if I do something funny, that I think is funny, on Twitter.com and only get one like for it, or it’s whatever—you know what I mean.
+
+**Hanna Rosin:** Right. Like in school, it’s vague: who likes you, who sits next to you, or whatever. But then on social media, it’s really specific.
+
+**Jacob Rosin:** In school, I’m not even paying attention to that stuff.
+
+**Hanna Rosin:** Mm-hmm. But on social media, you are.
+
+**Jacob Rosin:** Yeah.
+
+**Hanna Rosin:** In 2017, about a year after Jacob got their first phone, *The Atlantic* published the story, “Have Smartphones Destroyed a Generation?”
+
+*Destroyed*. That is a big word. I don’t know many parents who look at their kid and think, *You’re destroyed*. But now, in 2024, the question of “Have Smartphones Destroyed a Generation?” is less of a question and more of a: *Yeah, actually, they probably did.*
+
+**Jonathan Haidt:** All right, is Hannah on already?
+
+**Hanna Rosin:** Hey, it’s me. Hi, it’s Hanna. I’m sorry—it’s “Hanna Rosin.” It could be “Hannah Rozin,” but it’s not.
+
+**Haidt:** Yeah, I know. And I’m Jon Haidt. It’s often “Jon Hate.”
+
+**Hanna Rosin:** So I talked to social psychologist Jonathan Haidt.
+
+**Hanna Rosin:** Oh, Jon Haidt. I’ve been calling you “Jon Hate.”
+
+**Haidt:** As half the world does.
+
+**Hanna Rosin:** Haidt has a new book called *The Anxious Generation: How the Great Rewiring of Childhood is Causing an Epidemic of Mental Illness*. Like a lot of parents, I keep up with the research. And for the sake of household peace, I would like to dismiss all this stuff about teens and smartphones as alarmist. But Haidt’s book compiles some pretty compelling data.
+
+**Hanna Rosin:** The way I understand your research over the last 10 to15 years is you have been trying to counter the argument of alarmism with extremely specific data. I mean that is how I understand the point of this book.
+
+**Haidt:** Exactly. Sometimes it is correct to be alarmed and, as a professor and social scientist, I want to make damn sure that if I’m going to tell people they should be alarmed, I better be right and I better be able to back it up.
+
+**Hanna Rosin:** One of the big things that Haidt looked at was data from a national survey called, Monitoring the Future. It’s a wide-ranging survey that dates back to the ’70s, and it asks eighth, 10th, and 12th graders a bunch of questions—everything from what they think of the government to their attitudes toward drug and alcohol use.
+
+But what Haidt was most interested in were questions tracking mental health. In the survey, students are given statements and then agree or disagree with them on a scale of 1 to 5.
+
+**Haidt:** On Monitoring the Future, there’s some really sad items about meaninglessness, hopelessness, like: *I often feel that my life is meaningless* or *I feel that my life has no purpose*.
+
+**Hanna Rosin:** Or *I’m feeling lonely and socially isolated at school*. I mean, they’re in a language that is relatable. That’s why I wanted to talk about them. It’s sentences that a teenager could relate to.
+
+**Haidt:** That’s right. So if you plot with the year on the x-axis going back to the ’90s or sometimes the ’70s, and then you plot a bunch of lines, then what you see is the numbers—the lines—bounce around. A number of them, they really do go down a bit. Down is good. Down is like, *I don’t agree with that. I don’t feel depressed*.
+
+**Hanna Rosin:** Fewer people say that, or fewer people agree with those depressing statements.
+
+**Haidt:** That’s right. And this is also a period when suicide rates are dropping. Gen X had the highest suicide rates in history. For whatever reason, the Millennials are actually doing better than Gen X, and that’s very clear when you look at the ’90s and the 2000s. So you get flat lines, or you get lines sloping down. And if you cut off your data collection after 2010, no hint of a problem.
+
+Now, in 2010, teens are just beginning to get iPhones. But what’s remarkable to me is that the mental-health data doesn’t get worse slowly. The mental-health data is fine in the 2000s. And then all of a sudden—right around 2012–2013—everything falls off a cliff.
+
+**Hanna Rosin:** I just want to track the timeline, because these are such short periods that people are thinking in their head, *Okay, what happened then? What happened then?* So 2012 is the wide acceptance of cell phones? Because it’s not when smartphones came around.
+
+**Haidt:** The iPhone comes out in 2007, but it’s just amazing in that it’s a digital Swiss Army knife, and there were no apps other than the ones that came with it. And then the next year we get the app store, and then we get notifications.
+
+So it’s not until 2010–2011 that you have this thing in your pocket, which is not a digital Swiss Army knife that you pull out when *you* need something. It is now a portal that millions—millions—of companies now can use to get to you, as a child. Without your parents’ permission or knowledge, they can get to you. They can send you notifications. They can try to get you to stop your homework and: *Come—look at what someone just said about you*.
+
+So it’s in the 2010s that the phone becomes a master rather than a servant. 2010 is also when Instagram is available for public use. 2010 is also when the front-facing camera is put on. Also, high-speed internet: By 2012–2013, most people do have high-speed internet.
+
+So the point is: Between 2010—when phones weren’t toxic, people weren’t on Instagram, most people didn’t have high-speed data—2010 things were fine. By 2015, everything’s different.
+
+**[*Music*]**
+
+**Hanna Rosin:** For example, what happens if you’re a kid and you make a mistake? Haidt admits that childhood wasn’t perfect before the invention of the smartphone—obviously the smartphone didn’t invent bullying—but now the act of growing up, and everything that comes with it, is on display for thousands and possibly millions to see, including your mistakes.
+
+**Haidt:** There’s a huge difference between practicing all these things on a small stage—not a stage. Let’s say in a small group where mistakes are not very costly. So you say something stupid, and then your friend is mad at you, and then maybe she gives you the cold shoulder. Maybe she even starts a rumor about you. So that’s the way it always was. That’s very painful, but it’s still relatively low stakes.
+
+What happens when now it’s on a stage, where if you say anything wrong or you anger anyone, she can find an ugly photo of you—maybe she can find a nude photo that you swapped with some boy—and now she can put it out there for the world to see, and thousands of people comment on it. It might even get into the newspapers or something like that.
+
+This is a level of shame and humiliation that no teenager can stand, and this, I think, is one of the reasons why the suicide rate is up. Because when you are being publicly shamed on a big stage, life is a living hell and death is an escape.
+
+**Hanna Rosin:** But we don’t actually know how many suicides are related to social-media shaming, just to be clear.
+
+**Haidt:** No, no, that’s right because thankfully suicide is still very, very rare. But what we can say is that it’s up for all groups of teenagers. It’s way, way up for preteen girls. They have very low rates to begin with, but their rates have tripled since before 2010\. So it’s way up. And even if it’s anecdotal—that is, even if because so few kids killed themselves. But you know, we saw all those parents at the Senate hearings.
+
+**Hanna Rosin:** Parents who are against Meta because—
+
+**Haidt:** Because their kids are dead, yeah. They saw it happen. They can see what happened. The kid was, you know, was bullied, shamed, sextorted. She was on webpages promoting self-harm and suicide. Are they all wrong? I don’t think so.
+
+**[*Music*]**
+
+**Hanna Rosin:** After the break, Haidt offers some solutions for what *we* should do—we the schools, we the government, and we the parents—about the smartphone problem.
+
+After which, I ask Jacob if they wish they’d never had a cell phone.
+
+**[*Break*]**
+
+**Hanna Rosin:** It’s the early 2010s, and according to social psychologist Jonathan Haidt, this is around the time that teen mental health starts tanking. Haidt believes that the uptick in depression, anxiety, and self-harm in young people—it all got really bad when the first teenage girl moved her life online: She downloaded Instagram, posted on Tumblr, and started checking obsessively for comments and likes.
+
+**Haidt:** And some of her friends did, too, so that now their consciousness, their focus was hours a day on their phones and was happening in the virtual world. That’s when the problems start. That’s the great rewiring of childhood. You get much less eye contact, social contact. It all goes through the screen.
+
+**Hanna Rosin:** Okay, so the key factor here that shifted is real-time socialization: eye contact, social cues, laughter, navigating the real-time reactions of people. That’s what you’re saying is the key difference? It’s being real time in person with your peers.
+
+**Haidt:** Yes, there are about 15 different causal pathways. There are many ways that the phone-based life is harming boys and girls, but if I had to pick one, that would be the one.
+
+You know, here I am. I’m a 60-year-old man talking about, you know, *Kids these days*. You’d think that I’m wrong, right? You’d think, *What do I know*? You’d think that with all the talk about, you know, *Let’s raise the age to 16\. Let’s not let kids have smartphones ’til 14*—these are the things I say—you’d think that somewhere on planet Earth, there would be a young person who would write an essay saying, *This is wrong*. I can’t find that person. I found one essay from a woman in Canada that kind of defended it. That’s it.
+
+**Hanna Rosin:** Wait—just one question. There are plenty of teenagers who would say, *The phone opened up whole new worlds to me that were not available to me before*.
+
+**Haidt:** Sure, for individuals, they might say that about themselves, but find me any kind of movement or even any individual who is arguing, *No, grownups, you don’t understand. Don’t take away our social media. Don’t stop 11-year-olds from being on it. Middle-school kids should have access*. I can’t find that now.
+
+Maybe there’s a TikTok video somewhere where they do that. But each generation, you know, if you try to raise the drinking age, at some point, I bet somebody wrote something saying, *No, don’t raise the drinking age*. So my point is: Don’t just listen to the correlational data. Don’t just listen to the experimental data, which we haven’t even talked about. Don’t just listen to the parents. Don’t just listen to the teachers, all of whom are speaking with almost one voice: *This is messing up our kids.*
+
+Talk to the kids. And what you find is, while many will say that they enjoy the social connections on Instagram or TikTok—they’ll say they enjoy it—but they don’t say, *And it’s good for us overall*.
+
+**Hanna Rosin:** To me, it’s a little complicated. I have a child who would say they were addicted but also would say that online is where they found their friends and where they found people who shared their interests, and that’s something they couldn’t do in real life. And I find it hard to very simply say it’s all terrible, because I also see the ways in which it’s rewired childhood in a way that I can’t personally access, because I don’t have a lot of friends that I just know online, but in a way that’s also real.
+
+**Haidt:** That’s right. It greatly increases the quantity of social interactions. That’s true. And it greatly decreases their quality. But here’s the thing: If you were right—that it’s opening up all these possible social relationships, that it’s doing all this good—if you were right, then loneliness should have gone down in the 2010s, and it didn’t. It goes up like a hockey stick.
+
+**Hanna Rosin:** Right. And I suppose you could have some kids for whom that’s true, but the vast majority of kids are not true.
+
+**Haidt:** Yep, exactly.
+
+**Hanna Rosin:** So the last section I want to talk about is solutions.
+
+**Haidt:** Yes.
+
+**Hanna Rosin:** I think part of the reason that people resist your argument or want to think of it as alarmist is because the solution seems completely out of reach. If I’m a teenager—
+
+**Haidt:** No, it’s easy.
+
+**Hanna Rosin:** (*Laughs*.) It’s not easy. I mean, if I’m a teenager, I’m listening to this, I’m thinking, *This is culture. This is the world we live in. These companies are bigger than I am. The social culture is bigger than I am. The emotional culture is bigger than I am. There aren’t any particular government regulations on any of this. All my friends are here. So for you to tell me, “Okay, go back and play in the woods,” it’s like: with who and when*? That just seems like a nonstarter.
+
+**Haidt:** Okay. Hanna, I have been involved since college in many efforts to bring about social change. I ran a gun-control group in Connecticut in the ’80s. That was hard. To change people’s minds is really hard.
+
+You know what’s easy? Walking into a situation where most people want to change, they don’t like what’s happening, they just need a coordination device, they just need an escape path out of a collective-action problem. And then I can come along, and I can say, *Here’s your path. Let’s just do it. Let’s do it at the same time. And then it’s easy*. Okay, I’m exaggerating a little bit, but compared to other kinds of social change, this one we can solve in the next year or two.
+
+So here’s how we do it: The reason why so many of us give our kids a smartphone in sixth grade is because she comes to us and says, *Dad, everyone else has a smartphone. I’m being left out*. That’s a collective-action problem. So what I’m proposing in the book is four norms, and it won’t solve it entirely, but it’ll roll it back most of the way. Four norms.
+
+The first norm: No smartphone until high school. Let’s clear this all out of middle school. Middle-school kids desperately need a more old-fashioned childhood, where they have a few close friends, and they talk and they gossip and they do other things face-to-face.
+
+**Hanna Rosin:** So this is a parental culture. You can’t legislate that.
+
+**Haidt:** No, that’s right.
+
+**Hanna Rosin:** You’re saying change your parental culture.
+
+**Haidt:** Yep, that’s right. So that’s the first one. The second norm: No social media ’til 16\. These platforms are just completely inappropriate. Kids should not be growing up on a stage.
+
+**Hanna Rosin:** Have you tried that experiment?
+
+**Haidt:** Yeah. Well, yes. I told my kids no social media in middle school, and my son finally opened his own Instagram account without telling me in 10th grade. But he’d proven himself so responsible. And he was on the track team, which is great, and so they needed to communicate, and he was already at that time, whatever, 14, 15\. So I said, *Okay. That’s okay*. But for my daughter, I’ve said absolutely not—no to Instagram or to Snapchat.
+
+**Hanna Rosin:** Until what age?
+
+**Haidt:** Well, for now, I’ve said 16, and I’m hopeful that this norm—so I have to publicize the book really quickly. She’s now 14, so I better get this norm changed next year so that she’ll be able to put up with it. But anyway—
+
+**Hanna Rosin:** And do you know that she’s not? I mean, the “anyway” is the difficult part. I feel like once you get into the weeds, this is what happens. You will forbid a kid. They can start an Instagram account under any name that you would have no idea about.
+
+**Haidt:** She watches TikTok on a web browser. She doesn’t have it on her phone, but we don’t need perfect here. What we need is to break the norm. We need to break the pattern where, in every free moment, the phone comes out, and TikTok and Instagram go up. That’s what we have to stop.
+
+Third norm is phone-free schools. There is nothing good that comes from kids having the greatest distraction device ever built in their pockets during class.
+
+And then the fourth norm is more independence, free play, and responsibility in the real world. If you’re going to take away the phone-based childhood, if you’re going to greatly cut back on screen usage, we can’t just let them look at the wall. We can’t just say, *Well, go read a book. Go learn to make canoes*, or something. We have to give them back each other. That’s what they really want. That’s where they thrive, is when they can play and hang out with other kids without adults telling them what to do.
+
+So those are the four norms: No smartphone ’til high school. No social media ’til 16\. Phone-free schools. More independence, free play, and responsibility in the real world.
+
+**[*Typing*]**
+
+**Hanna Rosin:** So the reason I’m asking all these questions is because there is this book coming out, called *The Anxious Generation*. And its argument is that—this is what he writes: “It’s as though we sent Gen Z to grow up on Mars when we gave them smartphones in the early 2010s in the largest uncontrolled experiment humanity has ever performed on its own children.” And the argument is that rates of depression, mental-health issues, all kinds of things just skyrocketed. You know, kids became less able to—
+
+**Jacob Rosin:** I mean, have you paid attention to the world lately?
+
+**Hanna Rosin:** What do you mean?
+
+**Jacob Rosin:** Everything sucks. I don’t think that social media is the cause of that, but social media definitely made people more aware of that. And it was going to start happening no matter what we did about it. I don’t know about the phones.
+
+**Hanna Rosin:** And do you think that—I look back and think, *Should we have put more restrictions*? We tried one time, and it was, you know, warfare, but should we have tried harder?
+
+**Jacob Rosin:** Well, what kind of restrictions do you mean by that?
+
+**Hanna Rosin:** Forced you to not have your phone at night, you know, put your—
+
+**Jacob Rosin:** Realistically, yeah, that probably would have helped at some point, but it’s too late now.
+
+**Hanna Rosin:** Oh God, I feel so bad. So how do you think your life would have been different if you didn’t have a phone?
+
+**Jacob Rosin:** I think I would have been a lot unhappier, generally.
+
+**Hanna Rosin:** A lot *un*happier.
+
+**Jacob Rosin:** Mm-hmm.
+
+**Hanna Rosin:** Yeah. The story that it sounds like you tell about your life and social media is: *I got my phone. It gave me a pathway to socializing and social connection. That pathway is addictive, but it’s less lonely because at least I had a pathway to socializing*.
+
+**Jacob Rosin:** Pretty much.
+
+**Hanna Rosin:** Can I propose an alternative story, and you just tell me what you think?
+
+**Jacob Rosin:** Mm-hmm.
+
+**Hanna Rosin:** What if there’s a story that you never got a cell phone? You were lonely and, at some point, you just would have had to socialize?
+
+**Jacob Rosin:** I don’t think that’s true. I do not think I would have been pushed into it by necessity.
+
+**Hanna Rosin:** Because that’s what always—like, as a parent, honestly, that’s what haunts me a little bit. I remember when you came back from camp. Remember that camp that you hated?
+
+**Jacob Rosin:** Yeah.
+
+**Hanna Rosin:** I remember picking you up from that camp. Where was it? In North Carolina or something?
+
+**Jacob Rosin:** Yeah.
+
+**Hanna Rosin:** Anyway, so we picked you up from that camp, and that camp did not allow phones, so you didn’t have your phone for a month.
+
+**Jacob Rosin:** Yes, I did not.
+
+**Hanna Rosin:** And you definitely wrote letters of misery from camp—like, summer camp, I-hate-this-place kind of letters. But you were so chatty when we picked you up because you had not had your phone for a month. And I know you hated that place, but I think about that all the time. Like, *What if we had just done some experiment of Jacob can’t have a phone for a long time*? Would you have been forced to socialize more?
+
+**Jacob Rosin:** I don’t know how much I would actually follow through. But I might. I don’t know.
+
+**Hanna Rosin:** You don’t know?
+
+**Jacob Rosin:** There’s no way to find out now.
+
+**Hanna Rosin:** I mean, my purpose in talking to you is: There is this book. It’s written by grownups. It’s written by grownups who grew up after the internet age about teenagers. And I’m torn because part of me thinks, like, *I ruined Jacob’s life by not taking their phone away more*. And part of me thinks, *These grownups don’t understand kids, and there’s something we’re all missing about* *this experience*.
+
+**Jacob Rosin:** I would not at all say you ruined my life by doing that. I actually feel like I only got to live my life because of my phone.
+
+**Hanna Rosin:** Oh.
+
+**Jacob Rosin:** And yeah, that probably sounds a little depressing, but I think there might be an assumption among people who say stuff like this that everyone who’s on the phone is using it to replace real human interaction. I totally disagree with that. Everything on the phone *is* real human interaction. Well, most things. There are things that are not.
+
+**Hanna Rosin:** And how typical do you think your experience is?
+
+**Jacob Rosin:** Very not typical.
+
+**Hanna Rosin:** Oh, very *not* typical. Okay. But you don’t think I ruined your life then?
+
+**Jacob Rosin:** No. No.
+
+**Hanna Rosin:** Thank you. Thank you for saying that.
+
+**[*Music*]**
+
+**Hanna Rosin:** What are you gonna do just now, get back online?
+
+**Jacob Rosin:** Honestly, yeah. I probably will.
+
+**Hanna Rosin:** Okay. Okay, that’s fine.
+
+**Jacob Rosin:** I’ll stop the recording. Actually, maybe I’ll just go watch videos. I don’t know.
+
+**Hanna Rosin:** This episode of *Radio Atlantic* was produced by Jinae West. It was edited by Andrea Valdez, fact-checked by Sam Fentress, and engineered by Rob Smierciak. Claudine Ebeid is the executive producer of *Atlantic* audio, and Andrea Valdez is our managing editor.
+
+Parents who are listening: Please share with us creative strategies you’ve come up with to limit cellphone use without causing domestic warfare. I’ll give you mine: When Jacob was younger, instead of saying, say, *Half an hour of screen time, Jacob*, I would ask them when they thought they would be done with their video game or conversation. So it might be like 36 minutes or 27 minutes, and that way, they could finish out the game or the conversation, and the endpoint would feel more natural to them. If you have one, send it to [radioatlantic@theatlantic.com](mailto:radioatlantic@theatlantic.com), and we will share our favorites.
+
+Kids who are listening: If you have creative ideas, please share them, too.
+
+Thank you, Jacob, for playing along. I’m Hanna Rosin. And thank the rest of you for listening.
+
+**Hanna Rosin:** Okay. All right. Great. All right, love you. I’ll talk to you later.
+
+**Jacob Rosin:** Bye.
+
+**Hanna Rosin:** Bye.

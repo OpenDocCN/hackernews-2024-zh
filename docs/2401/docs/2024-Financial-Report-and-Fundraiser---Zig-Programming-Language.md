@@ -1,0 +1,86 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:53:52
+-->
+
+# 2024 Financial Report and Fundraiser ⚡ Zig Programming Language
+
+> 来源：[https://ziglang.org/news/2024-financials/](https://ziglang.org/news/2024-financials/)
+
+# 2024 Financial Report and Fundraiser
+
+Zig Software Foundation is a 501(c)(3) non-profit organization which I am proud to say makes **extremely efficient use of monetary resources**. Unlike many of our peers, our primary expense is direct payments to contributors for their enhancements to the Zig project.
+
+Don’t take my word for it - let’s look at some numbers.
+
+## 2023 Expenditures
+
+| Expense Name | 2023 Cost | Description |
+| Contractors | $308,102.61 | Direct compensation to contributors working on Zig at a rate of $60/hour. |
+| Employees | $102,000.00 | ZSF has one employee which is yours truly, Andrew Kelley, serving the role of Lead Software Engineer. My duties as President of Zig Software Foundation are strictly volunteer work; I am not compensated for serving on the board of directors. The other two members of the ZSF board of directors [chose my salary](https://docs.google.com/document/d/1wPQtJxIgCo7SReJev-H7OZGgYt0k8LqECc4G4QYT0aE) to be $159,790 per year, matching the median salary for a Lead Software Engineer in New York City at the time. 
+I have never once received my full salary. At the time of writing, I am accepting $108,000/year (before taxes) and donating the rest to ZSF. In the past I have donated an even larger portion. In the future I think it would be nice to be fully compensated. |
+| CI & Website | $14,661.35 | Zig has great cross-compiling abilities in part due to investing in testing infrastructure for different systems. Some of these costs were one-time costs to purchase machines that sit in our homes and offices while others are market-rate Hetzner bare metal machines that we run GitHub Actions on. 
+Some of this cost is for hosting ziglang.org. Since our free AWS credits have expired we have plans to switch to Fastly which should save about $500/month. |
+| Travel | $10,847.6 | In a 2022 meeting, [the board decided](https://docs.google.com/document/d/1EqyZcd4AKu7Y9Zb_xdE_7q8i-NnqIz1BW8IiJxMX6Xc) that the previous year's travel budget successfully helped grow Zig adoption, and raised the budget from $10,000 to $15,000\. In 2023, ZSF spent $10,847 of those allocated funds, increasing Zig's presence in North America (e.g. Seattle, Vancouver) and Europe (e.g. Stockholm, Berlin, Amsterdam) as well as keeping up relationships with likeminded communities like [Handmade Seattle](https://handmade-seattle.com/). |
+| Legal System | $9,700.00 | This is mostly paying our accountant, [Strada Financial Group](https://www.stradafg.com/), to keep the American legal system happy and keep our organization tax-exempt, but also includes a payment to a legal firm to help us [regain the Zig trademark in Japan from a trademark troll](/news/statement-regarding-zen-programming-language/). |
+| Taxes | $8,894.66 | Although ZSF is a tax-exempt organization, employees are still required to pay income tax. |
+| Sponsorships | $6,068.43 | The Zig project is mostly comprised of in-house code, however, it also relies on third party projects. Today, every Zig installation includes some source files or ported code from [musl libc](http://musl.libc.org/), [mingw-w64](https://www.mingw-w64.org/), and others. ZSF donates money to these projects as a way to say thanks, give back to the ecosystem, and increase the sustainability of Zig's dependencies. |
+| Bank Fees | $1,060.50 | This is a tiny slice of the pie, but every time ZSF wires money, there is a transaction fee. Our contractors graciously bill infrequently when possible to help reduce this cost. |  |
+| Total Expenses | $461,335.15 |
+
+**We spent 92% of our money in 2023 on paying contributors for their time.**
+
+So far so good. You can see we’ve been hard at work spending our esteemed donors' money on advancing the [mission statement](/zsf/#mission-statement).
+
+However, if we look at the trend of donations over time for the year 2023, we see overall a slow decline. This is likely due to the fact that we have slacked off on *asking for money*.
+
+## 2023 Donations Per Month
+
+Meanwhile, **user activity has skyrocketed**. A rapidly increasing user base is adding Zig to their software stacks, filing issues, sending pull requests, asking for help, and shipping software that depends on Zig.
+
+## New GitHub Issues Per Month
+
+| Average time to close issues |
+| All Time | 5 months |
+| Past Year | 7 months |
+| Past Month | 4 months |
+
+| Average time to close pull requests |
+| All Time | 12 days |
+| Past Year | 18 days |
+| Past Month | about 1 month |
+
+Source: [Repo Trends](https://www.repotrends.com/ziglang/zig)
+
+## Total GitHub Stars
+
+In response to this rising demand, we [added incredible new members to the Zig core team](/news/welcome-jacob-young/). Thanks to the income that was available to us in 2023, we were able to offer new contracts.
+
+## 2023 Income
+
+| Income Name | 2023 Amount | Description |
+| Uber Support Contract | $184,800.00 | Uber has wisely agreed to a support contract since [they use the Zig toolchain](https://www.youtube.com/watch?v=SCj2J3HcEfc) and want a guaranteed Service-Level Agreement if they run into any bugs while using it. Other companies are invited to follow in their footsteps and obtain a ZSF support contract in order to guarantee speedy response when encountering a bug while using Zig. |
+| GitHub Sponsors | $145,462.88 | [Zig on GitHub Sponsors](https://github.com/sponsors/ziglang). This category contains a numerous amount of both individuals and companies. It's pretty convenient for both ZSF and donors, as long as Microsoft keeps being cool about it. Hopefully they don't alter the deal anytime soon. We lost a lot of donors when they dropped PayPal support. |
+| Bun | $58,666.67 | [Bun](https://bun.sh/) is a fast JavaScript all-in-one toolkit built using the Zig programming language. The company behind Bun sponsors ZSF in order to ensure that the tech stack they depend on continues to flourish, improve, and become more widely adopted. |
+| TigerBeetle | $22,000.00 | [TigerBeetle](https://tigerbeetle.com/) is a database company whose product is built on the Zig programming language and likewise sponsors ZSF. It's good business practice to keep your software supply chain healthy. |
+| Benevity | $19,851.42 | Benevity helps us collect company-matched donations from employees. This category contains a number of individuals. |
+| Pex | $15,000.00 | [Pex](https://pex.com/) is a company whose product helps enable the fair and transparent use of copyrighted content. |
+| Individuals | $8,710.76 | This category contains people who donate via paper checks, [via every.org](https://www.every.org/zig-software-foundation-inc/), or via UK Online Giving Foundation. |
+| Total Income | $454,491.73 |
+
+However, with our current level of recurring income, we will not be able to renew everyone’s contracts, nor offer new contracts to Zig core team members.
+
+## A Plea for Donations
+
+We have extremely talented Zig core team members who want to renew their contracts, and others who are interested to start getting paid for their valuable work for the first time.
+
+In order to do this, **we need more recurring donations**. I for one do not enjoy asking for money, but in the interest of our users and contributors, it would be irresponsible not to.
+
+**Please sign up for a monthly donation** if you can. Our preferred donation method is [via Every.org](https://www.every.org/zig-software-foundation-inc/f/help-zig-stay-indepe). A fellow 501(c)(3) non-profit, they seamlessly manage gift receipts, and are not pivoting to AI [like GitHub is currently doing](https://github.blog/2023-11-08-universe-2023-copilot-transforms-github-into-the-ai-powered-developer-platform/), which frankly scares the shit out of us.
+
+| Companies | Contact us to get your logo on ziglang.org in exchange for a monthly donation. |
+| Employees | Check if your company matches donations to charities such as Zig Software Foundation. That 2x multiplier makes a huge difference. We're already in the system. |
+| Venture Capitalists | We are aware of a few startups betting on Zig as their language and toolchain of choice to build tomorrow's critical infrastructure. Helping the Zig Software Foundation reach v1.0 faster is one of the most efficient uses of capital you can make to boost your portfolio. |
+| Individuals | Can you spare $5-10 per month? This is our favorite kind of donation because it helps diversify ZSF's income, keeping us free from undue influence from any single party. |
+
+Huge thanks to all who graciously donate funds to our cause. Together we serve the users!

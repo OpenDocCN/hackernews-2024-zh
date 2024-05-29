@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:56:47
+-->
+
+# Tomahawk, the Most Important Music App Nobody's Talking About | WIRED
+
+> 来源：[https://www.wired.com/2012/02/tomahawk-music-ap/](https://www.wired.com/2012/02/tomahawk-music-ap/)
+
+Note that Tomahawk can play tracks from your Tomahawk friends' computers, which makes Tomahawk a P2P streaming client with which you can listen to your friends' collections, tap into your work computer's music from your home computer, and so on.
+
+Tomahawk is much easier to use now than it was back when we wrote [our lengthy tutorial](http://evolver.fm/2011/03/31/tomahawk-next-generation-music-player-the-beginners-guide/) on how to use it, but it still requires a small degree of technical sophistication. The main hurdle: installing the content resolvers, which are the plug-ins that let Tomahawk hook in to YouTube, Spotify and the rest.
+
+It's easy enough. You can either go to [the Tomahawk page](http://www.tomahawk-player.org/) and choose the resolvers you want from the list, pictured to the right – or (this is easier) just go to Tomahawk > Preferences > Resolvers and install them from there. (In the case of Grooveshark, Spotify and any other unlimited music subscriptions, you'll need to be a premium subscriber in order for it to work.)
+
+"Local network" lets you play songs from other computers on your own home network, the same way you can in iTunes. "Extended network" lets you tap into your friends' collections on their computers, so that if you don't have a song on a given playlist, it plays from their machine. (They need to be running Tomahawk at the time.)
+
+The latest version of Tomahawk (0.3.3) includes the ability to listen along in real time with your friends and make radio stations that resolve to any sources to which you have access. (The latter uses technology from [The Echo Nest](http://the.echonest.com), [publisher](http://evolver.fm/about/) of Evolver.fm.) It also includes nice extras like the ability to choose only [high-quality music from YouTube](http://evolver.fm/2011/02/08/how-to-get-better-sound-on-youtube/).
+
+Now for the $64 million question.
+
+"How does Tomahawk plan to make money?" asked an audience member at NY MusicTech Meetup.
+
+Herskowitz replied, "We don't."
+
+Audience member: "So, why do you...."
+
+Herskowitz: "Tomahawk is an open source project that we work at out of the goodness of our hearts and a passion to solve this problem: All of the media players that have been around for 10 years were built to solve problems of 10 years ago. We don't need [CD-R] label-makers, we don't need to print CD cases, we don't need to worry about a lot of things that old players like Winamp, which I worked on back in the day, has to worry about.
+
+"The problems that you need to solve today are, you've got silos of music everywhere. I've got my library of music in [Exfm](http://evolver.fm/2011/10/05/exfm-puts-webs-music-within-easy-reach-now-its-ready-for-primetime/), which I love, I've got stuff on [Spotify](http://evolver.fm/appdb/app/spotify/), I've got stuff everywhere else, and I'm forced as the user to bounce between interface to interface to interface, and there's no way on earth that I can listen to a playlist that goes from [the Beatles](http://evolver.fm/2011/12/12/stunning-beatles-app-masquerades-as-ibook/) to [my cousin's band](https://www.wired.com/underwire/2010/04/javelin/all/1) to my favorite stuff at home to some live recording that I found. This basically solves that problem. It's a very user-centric view."

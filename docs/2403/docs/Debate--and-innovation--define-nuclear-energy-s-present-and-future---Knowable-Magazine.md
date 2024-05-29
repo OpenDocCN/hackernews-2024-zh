@@ -1,0 +1,96 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:37:31
+-->
+
+# Debate, and innovation, define nuclear energy’s present and future | Knowable Magazine
+
+> 来源：[https://knowablemagazine.org/content/article/food-environment/2024/nuclears-role-in-a-net-zero-world](https://knowablemagazine.org/content/article/food-environment/2024/nuclears-role-in-a-net-zero-world)
+
+In an online video from Ultra Safe Nuclear Corporation, a cartoon simulation shows a tsunami wiping out one of their future nuclear power stations and cutting off power. What happens next? Not much: The reactor quietly shuts itself down. “It cools off just by sitting there, no moving parts or fluids, no operator actions,” says the reassuring video. “We’ve designed a reactor that is inherently safe no matter the events.”
+
+The Seattle-based Ultra Safe and dozens of other companies like it are at the forefront of a global nuclear energy revival. As the world urgently needs to wean itself off fossil fuels, reduce greenhouse gas emissions and get the planet’s temperature under control, policymakers, companies and researchers are reexamining nuclear energy as a green alternative that can help bolster the power produced by renewables like wind and solar. Today the industry is emerging from a period of stagnation, with a promise to double or triple its capacity by 2050.
+
+That revival is undergirded by two hot technology trends. Companies like Ultra Safe are aiming to build small modular reactors (SMRs) designed to be just a fraction of the size of former plants, to reduce both building costs and the scope of possible disasters. And many are aiming to utilize new technologies designed to make meltdown accidents impossible and to create less long-lived waste.
+
+ [https://www.youtube.com/embed/zU2UFsnS2aA?wmode=opaque](https://www.youtube.com/embed/zU2UFsnS2aA?wmode=opaque)
+
+VIDEO
+
+This video (from Ultra Safe Nuclear Corporation, a nuclear power company) shows the safety features built into a design for a small modular reactor.
+
+CREDIT: ULTRA SAFE NUCLEAR CORPORATION
+
+But the surge in interest is not without controversy. As with everything in the nuclear landscape, debate rages about whether society actually needs nuclear to tackle climate change, and whether the new systems are as shiny as they seem — with reasonable arguments for and against every promise and risk. Some say the new technologies could offer a [fantastic solution to our energy woes](https://www.nytimes.com/2019/04/06/opinion/sunday/climate-change-nuclear-power.html); others say nuclear is beset with so many environmental, social and economic [problems](https://www.penguinrandomhouse.ca/books/741210/nuclear-is-not-the-solution-by-mv-ramana/9781804290002) that it is best abandoned in favor of other ways to meet the globe’s energy demands.
+
+The next few years will decide what course nuclear power takes in the world’s energy future. “This is a moment of truth,” says Francesca Giovannini, a nuclear policy expert at the Harvard Kennedy School. Over the next few decades, nuclear power is “either going to make it, or that industry is fundamentally done for. ... It’s 50/50 how this goes.”
+
+## Ups and downs in nuclear power output
+
+Nuclear power poses some obvious risks — meltdown accidents, nuclear fuel being diverted to weapons programs, environmental issues posed by mining for uranium, the problems of storing nuclear waste. Against a backdrop of such concerns, alongside shifting economics of energy production, nuclear power production started to level off in the early 2000s and even dipped briefly after the Fukushima power plant accident of 2011\. Some nations, most notably Germany, decided to shutter their nuclear programs entirely. But global nuclear power production is now starting to inch upward again.
+
+Today, nuclear plants produce about 10 percent of global electricity, making nuclear the second largest source of non-fossil-fuel energy after hydropower. There are about 440 nuclear power plants in operation globally; another 60 or so are now being built, and around 100 are on order or planned.
+
+Most Intergovernmental Panel on Climate Change scenarios for keeping the world below 1.5 degrees Celsius of warming include some kind of increase in nuclear power capacity. In the International Energy Agency’s (IEA) [pathway to net zero](https://www.iea.org/reports/nuclear-power-and-secure-energy-transitions), global nuclear power production doubles over 2022 levels by 2050\. A key reason for this is that nuclear is seen as a good way to provide consistent baseload power to prop up more variable renewable sources of energy like wind or solar. Without nuclear, advocates say, we would need to build far more wind and solar power plants to ensure reliable supplies, [doubling or tripling](https://www.science.org/doi/10.1126/science.aaw5304) costs over power networks that include nuclear.
+
+Nuclear has plenty of advantages: It produces no carbon emissions (and, counterintuitively, releases less radioactive uranium and other elements into the environment than [burning coal does](https://www.epa.gov/radtown/radioactive-wastes-coal-fired-power-plants)). It takes up a lot less land than renewables, a [not insignificant consideration](https://www.nature.com/articles/s41598-021-82042-5). If the goal is to decarbonize quickly and with as little social pain as possible, “nuclear is essential,” says Kai Vetter, a nuclear physicist at the University of California, Berkeley.
+
+At the UN’s Convention on Climate Change meeting in Dubai in December 2023, more than 20 nations signed a [declaration to triple nuclear capacity](https://www.energy.gov/articles/cop28-countries-launch-declaration-triple-nuclear-energy-capacity-2050-recognizing-key) by 2050\. And cash is flowing into this effort. In 2020, the US Department of Energy (DOE) notably gave $160 million for two demonstration plants to get up and running by 2027\. And in 2022, the European Union declared that some nuclear projects could call themselves “green” in the same way as renewables, opening the door to environmental financing mechanisms.
+
+But as with almost every issue relating to nuclear power, the arguments in favor of nuclear have their detractors. Public policy expert M.V. Ramana at the University of British Columbia is one of many, for example, who say that baseload power is an [outdated concept](https://theconversation.com/baseload-power-is-a-myth-even-intermittent-renewables-will-work-13210). A smart, diverse and flexible electric grid, they argue, can assure a reliable power supply by shunting power among sources and storage facilities.
+
+And with the [cost of renewables](https://knowablemagazine.org/content/article/food-environment/2020/cost-of-renewable-energy) falling fast, today’s economic estimates about the relative costs of power sources may not mean much in the future.
+
+Then there’s the question of safety. The grand total of lives lost from all nuclear power generation to date, while hard to quantify, is certainly far lower than the number of people killed by air pollution related to the burning of fossil fuels; a [recent paper](https://www.giss.nasa.gov/research/briefs/2013_kharecha_02/) by NASA scientists concluded that nuclear power saved roughly 1.8 million lives from 1971 to 2009 thanks to avoided air pollution. By some accounts nuclear power has also proved less deadly than wind power, which has been linked to drownings at offshore wind farm sites and helicopter collisions with turbines.
+
+But fatality is arguably a blunt way to measure the impacts of the nuclear industry, which also include the risk of accidents contaminating large tracts of land, plus numerous other effects related to such things as mining and waste storage. Ramana has [documented](https://wires.onlinelibrary.wiley.com/doi/10.1002/wene.498) how the burden of these last issues falls disproportionately on Indigenous anddisempowered communities, working against the goals of social justice. Nuclear power, he writes, “does not fit with any idea of a responsible and cleaner energy system.”
+
+## Small and shiny: New nuclear technologies
+
+If we are to pursue nuclear power at the scale called for by the IEA, it will take a herculean effort. The IEA’s pathway requires the world to ramp up from building five big nuclear plants per year to 20 per year over the next decade. Big plants typically cost billions of dollars and come with big financial risks. Westinghouse Electric Company, for example, recently filed for bankruptcy in the face of billions of dollars of cost overruns during the construction of four nuclear plants in the United States.
+
+One plan for reducing those epic and prohibitive costs is to build [small modular reactors](https://www.iaea.org/newscenter/news/what-are-small-modular-reactors-smrs), ranging from reactors that can be shipped on a truck and produce a couple of hundred megawatts, to tiny single-megawatt sizes that are more akin to hefty diesel generators. The modules could be pre-built in a factory and shipped to a site for installation. All this should make these reactors less frightening prospects for investors (though the end price per unit of electricity might wind up higher than that from a larger nuclear power plant).
+
+A handful of SMRs are already in operation in Russia, China and India. Dozens more are in development. Canada has a national SMR action plan, and as of 2021 there were 10 SMR proposals under review (including one from Ultra Safe).
+
+But so far, the promise of enticingly low costs for SMR builds hasn’t materialized, says Granger Morgan, a physicist and codirector of the Center for Climate and Energy Decision Making at Carnegie Mellon. Morgan has [crunched the numbers](https://www.pnas.org/doi/10.1073/pnas.1804655115) for nuclear in the US and was disappointed. “I thought SMRs were going to hold much more promise, but we can’t make the numbers wash,” he says.
+
+That message was hammered home in November 2023 when the company NuScale scrapped its high-profile advanced plans to build an underground SMR in Idaho in the face of cost hikes. “Would it be nice to have nuclear? Yes absolutely,” says Morgan. “Will it be affordable? That’s very much an open question.”
+
+Others argue that small isn’t always beautiful. While smaller plants present a smaller risk from smaller potential accidents, this strategy also means more plants overall, which means more facilities to protect against theft and terrorism. “You have way more fissile material dispersed; you will have to secure way more infrastructure,” says Giovannini. “I mean, that becomes a mess.”
+
+## Next generation nuclear
+
+While some are focusing on making nuclear plants smaller, there’s a parallel movement to make them safer and more efficient. The next generation of reactor designs — Generation IV, in the industry’s lingo — includes a suite of six major reactor families, all very different from today’s standard, each with many possible variants under development. Much of the attention (particularly in the US) has been focused on three of these: high-temperature gas-cooled, molten salt and sodium-cooled.
+
+The ideas behind these technologies, and even some early-stage power plants, have been around for decades. But the new variants of these old ideas combine novel fuels and designs, promising to be safer, more efficient and environmentally friendly. “They’re doing all kinds of whizz-bang, high-tech stuff,” says Morgan, who has no doubt that newer reactors can be made safer than old ones.
+
+Most existing reactors are water-cooled uranium systems, which were chosen as the dominant technology largely as a quirk of history. Like all reactor types, they have their pros and cons. They need high pressures to stop their coolant waters from boiling off at typical operating temperatures around 300 degrees Celsius. And they are designed to work with relatively slow-moving neutrons — the subatomic particles that collide with nuclear fuel to initiate nuclear fission. Slow-moving neutrons are more likely to interact with fuel particles, but systems that use them are also limited in the kinds of fuels they can use. Catastrophe can strike if the fission reaction runs amok or the reactor gets too hot and the core “melts down,” as happened at Three Mile Island, Chernobyl and Fukushima, spewing radiation into the environment.
+
+The latest models of water-cooled reactors (sometimes called Gen III Plus, including many SMRs) use new design tricks to reduce the number of safety systems that require human intervention, aiming to stop accidents in their tracks automatically. Gen IV reactors, though, use entirely different coolant materials, are usually designed to operate at higher, more efficient temperatures, and often use faster-speed neutrons that can convert the most prevalent natural isotopes of uranium into usable fuel, or even feed on nuclear waste.
+
+High-temperature gas-cooled reactors, for example, run at temperatures up to 950°C, making them 20 to 33 percent more thermally efficient than water-cooled reactors. Since the core materials used in these reactors are typically stable up to 1,600°C, which is hotter than lava, there’s a large margin of safety. The reactor in Ultra Safe’s video is an SMR that falls into this category; its small size helps, too, with passive cooling. Ultra Safe also makes their own fuel pellets, encased in a bespoke material that they say retains radioactive materials even in extreme conditions. They’re hoping to build their [first commercial micro-reactor](https://globalfirstpower.com/?ref=usnc.com) in Canada.
+
+In [molten salt reactors](https://knowablemagazine.org/content/article/technology/2019/nuclear-goes-retro-much-greener-outlook), both fuel and coolant are already liquid. So meltdowns, in the traditional sense, are impossible. And liquid-sodium-cooled reactors have a built-in safety feature: If they heat up, the liquid sodium expands and allows more neutrons to escape through the gaps between atoms, so the reaction (which is driven by neutrons) naturally winds down. The US Department of Energy has funded the US company TerraPower (which has Bill Gates as a major investor) to build a demonstration plant of its sodium-cooled Natrium reactor in Wyoming by 2030.
+
+## Nuclear waste not, want not
+
+Waste is one area where the new designs really see some significant improvements, says Giovannini. “None of the reactors have entirely solved the problem of nuclear waste, but they do provide some significant solutions in terms of quantity,” she says. The spent fuel from traditional light water reactors needs to be buried in special repositories for hundreds of thousands of years, because of the production of long-lived radioactive byproducts. Some Gen IV reactors, on the other hand, can transform spent fuel into more fissile isotopes and use it for further fission reactions. This can improve efficiency and produce waste that need only be stored for hundreds of years.
+
+Not everyone, though, thinks all these systems are as shiny as they seem. In 2021, the Union of Concerned Scientists published a report entitled “‘[Advanced’ Isn’t Always Better](https://www.ucsusa.org/resources/advanced-isnt-always-better#top),” in which they highlighted issues with safety, sustainability and nuclear proliferation. They concluded that nearly all the Gen IV reactor types “fail to provide significant enough improvements over [light water reactors] to justify their considerable risks.”
+
+The report was criticized by some for being ideologically antinuclear, says Giovannini. But, she says, “it was very fair” to point out that new tech comes with new worries. Liquid salt, the report pointed out, is corrosive; liquid sodium metal can burst into flame when in contact with water or air. High-temperature gas-cooled reactors, the report concluded, while tolerant of high temperatures, are “far from meltdown-proof, as some claim.”
+
+## Hot idea
+
+Many of these Gen IV systems offer another key benefit: Their higher temperatures can provide not just electricity but also useful heat. This could be used in many industrial processes, such as the production of steel, cement and fertilizer, which currently burn a lot of fossil fuels in their furnaces.
+
+“That heat is pretty much for free,” says Vetter, who sees a particular utility for nuclear heat in desalination, getting clean drinking water out of saltwater as is done at the Diablo Canyon nuclear power plant in California. Indeed, X-energy, a leading US Gen IV nuclear company funded by the DOE, has partnered with Dow chemical company to build its first high-temperature gas-cooled reactor at a Dow chemical production site by 2030\. Morgan, though, thinks that most industries will balk at the set-up costs.
+
+Even if Gen IV reactors turn out to be technically superior, though, it may be decades before they can be thoroughly tested, passed by regulators and built at commercial scale. With little time to spare in the fight against climate change, the world might be better off simply ramping up old reactor designs that are already proven, says Esam Hussein, a retired nuclear engineer from the University of Regina, Canada.“We have the operating experience, we have the regulatory framework,” he says. “If the goal is to fight climate change, why don’t you go with the devil you know?”
+
+In response to why we need a devil at all, many are quick to point out that no energy solution is problem-free, including renewables. Giovannini says she agrees with the nuclear industry’s criticism that we have “jumped on renewables in a very uncritical way.” Wind and solar require electronics and battery banks to store their energy; these in turn need elements like lithium and cobalt that can come with environmental and social justice issues from mining. “Nothing is 100 percent safe,” says Vetter.
+
+It is hard for many to swallow data, assurances and statistics about nuclear, given its history and the huge amounts of money at stake. “I think the nuclear industry is selling a bunch of bullshit most of the time,” says Giovannini, who [has been critical](https://www.nature.com/articles/d41586-021-00580-4) of how the industry deals with public concerns. But her own main worry about nuclear is “they’re moving too slow.” If companies like Ultra Safe, X-energy, TerraPower and others are going to help fight climate change with Gen IV technologies and fleets of small reactors, she and others say, they’re going to have to ramp up fast.
+
+*Editor’s note: This story was updated on March 20, 2024, to change a name: Granger Morgan was referred to as Granger instead of Morgan in one reference.* *It was updated on March 21, 2024, to correct the specialty of Esam Hussein. He is a retired nuclear engineer, not a retired nuclear physicist.*

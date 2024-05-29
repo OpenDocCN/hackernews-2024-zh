@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:17:17
+-->
+
+# Gravity Helps Show Strong Force Strength in the Proton | Jefferson Lab
+
+> 来源：[https://www.jlab.org/news/releases/gravity-helps-show-strong-force-strength-proton](https://www.jlab.org/news/releases/gravity-helps-show-strong-force-strength-proton)
+
+*Jefferson Lab nuclear physicists determine* *the distribution of the strong force inside the proton using a framework connecting to gravity, ushering in a fresh new avenue of discovery*
+
+NEWPORT NEWS, VA – The power of gravity is writ large across our visible universe. It can be seen in the lock step of moons as they circle planets; in wandering comets pulled off-course by massive stars; and in the swirl of gigantic galaxies. These awesome displays showcase gravity’s influence at the largest scales of matter. Now, nuclear physicists are discovering that gravity also has much to offer at matter’s smallest scales.
+
+New research conducted by nuclear physicists at the U.S. Department of Energy’s Thomas Jefferson National Accelerator Facility is using a method that connects theories of gravitation to interactions among the smallest particles of matter to reveal new details at this smaller scale. The research has now revealed, for the first time, a snapshot of the distribution of the strong force inside the proton. This snapshot details the shear stress the force may exert on the quark particles that make up the proton. The result was recently published in [*Reviews of Modern Physics*](https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.95.041002).   
+
+According to the lead author on the study, Jefferson Lab Principal Staff Scientist Volker Burkert, the measurement reveals insight into the environment experienced by the proton’s building blocks. Protons are built of three quarks that are bound together by the strong force.
+
+“At its peak, this is more than a four-ton force that one would have to apply to a quark to pull it out of the proton,” Burkert explained. “Nature, of course, does not allow us to separate just one quark from the proton because of a property of quarks called ‘color.’ There are three colors that mix quarks in the proton to make it appear colorless from the outside, a requirement for its existence in space. Trying to pull a colored quark out of the proton will produce a colorless quark/anti-quark pair, a meson, using the energy you put in to attempt to separate the quark, leaving a colorless proton (or neutron) behind. So, the 4-tons is an illustration of the strength of the force that is intrinsic in the proton.”
+
+The result is only the second of the proton’s mechanical properties to be measured. The proton’s mechanical properties include its internal pressure ([measured in 2018](https://www.jlab.org/news/releases/quarks-feel-pressure-proton)), its mass distribution (physical size), its angular momentum, and its shear stress (shown here). The result was made possible by a half-century-old prediction and two-decade-old data.
+
+In the mid 1960s, it was theorized that if nuclear physicists could see how gravity interacts with subatomic particles, such as the proton, such experiments could reveal the proton’s mechanical properties directly.
+
+“But at that time, there was no way. If you compare gravity with the electromagnetic force, for instance, there is 39 orders of magnitude of difference -  So it's completely hopeless, right?” explained Latifa Elouadhriri, a Jefferson Lab staff scientist and co-author on the study.
+
+The decades-old data came from experiments conducted with Jefferson Lab’s Continuous Electron Beam Accelerator Facility (CEBAF), a DOE Office of Science user facility. A typical CEBAF experiment would entail an energetic electron interacting with another particle by exchanging a packet of energy and a unit of angular momentum called a virtual photon with the particle. The energy of the electron dictates which particles it interacts with in this way and how they respond.
+
+In the experiment, a force even much greater than the four tons needed to pull out a quark/antiquark pair was applied to the proton by the highly energetic electron beam interacting with the proton in a target of liquified hydrogen gas.
+
+“We developed the program to study deeply virtual Compton scattering. This is where you have an electron exchanging a virtual photon with the proton. And at the final state, the proton remained the same but recoiled, and you have one real very highly energetic photon produced, plus the scattered electron,” said Elouadhriri. “At the time we took the data, we were not aware that beyond the 3-dimensional imaging we intended with this data, we were also collecting the data needed for accessing the mechanical properties of the proton.”
+
+It turns out that this specific process – deeply virtual Compton scattering (DVCS) – could be connected to how gravity interacts with matter. The general version of this connection was stated in the 1973 textbook on Einstein’s general theory of relativity titled ‘Gravitation’ by Charles W. Misner, Kip S. Thorne and John Archibald Wheeler.
+
+In it, they wrote, “Any mass-less spin-2 field would give rise to a force indistinguishable from gravitation, because a mass-less spin-2 field would couple to the stress–energy tensor in the same way that gravitational interactions do.”
+
+Three decades later, theorist Maxim Polyakov followed up on this idea by establishing the theoretical foundation that connects the DVCS process and gravitational interaction.
+
+“This breakthrough in theory established the relationship between the measurement of deeply virtual Compton scattering to the gravitational form factor. And we were able to use that for the first time and extract the pressure that we did in the Nature paper in 2018, and now the normal force and the shear force,” Burkert explained.
+
+A more detailed description of the connections between the DVCS process and the gravitational interaction can be found [in this article](https://www.jlab.org/news/releases/quarks-feel-pressure-proton) describing the first result obtained from this research.
+
+The researchers say their next step is to work on extracting the information they need from the existing DVCS data to enable the first determination of the proton’s mechanical size. They also hope to take advantage of newer, higher-statistics and higher-energy experiments that are continuing the DVCS research in the proton.
+
+In the meantime, the study co-authors have been amazed at the plethora of new theoretical efforts, detailed in hundreds of theoretical publications, that have begun to exploit this newly discovered avenue for exploring the mechanical properties of the proton.
+
+“And also, now that we are in this new era of discovery with the [2023 Long Range Plan of Nuclear Science](https://science.osti.gov/-/media/np/nsac/pdf/202310/NSAC_LRP_2023.pdf) released recently. This will be a major pillar of the direction of science with new facilities and new detector developments. We’re looking forward to seeing more of what can be done,” Burkert said.
+
+Elouadhriri agrees.
+
+“And in my view, this is just the beginning of something much bigger to come. It has already changed the way we think about the structure of the proton,” she said.
+
+“Now, we can express the structure of subnuclear particles in terms of forces, pressure and physical sizes that also non-physicists can relate to,” added Burkert.
+
+**Further Reading**
+[Quarks Feel the Pressure in the Proton](https://www.jlab.org/news/releases/quarks-feel-pressure-proton)
+[Nuclear Science Advisory Committee Hails a New Era of Discovery with Release of Long Range Plan](https://www.jlab.org/news/releases/nuclear-science-advisory-committee-hails-new-era-discovery-release-long-range-plan)
+
+**Contact**: Kandice Carter, Jefferson Lab Communications Office, [kcarter@jlab.org](mailto:kcarter@jlab.org)

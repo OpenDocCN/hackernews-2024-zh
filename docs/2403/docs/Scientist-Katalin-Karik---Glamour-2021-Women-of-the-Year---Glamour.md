@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:49:57
+-->
+
+# Scientist Katalin Karikó: Glamour 2021 Women of the Year | Glamour
+
+> 来源：[https://www.glamour.com/story/katalin-kariko-biontech-women-of-year-2021](https://www.glamour.com/story/katalin-kariko-biontech-women-of-year-2021)
+
+In 2013—after enduring multiple professional setbacks, one denied grant after another, and a demotion at the institution to which she’d been devoted for decades—Katalin Karikó, Ph.D., walked out of her lab at the University of Pennsylvania’s School of Medicine for the last time.
+
+For decades the Hungarian biochemist had been fixated on the possibilities of [mRNA](https://www.glamour.com/story/covid-19-vaccine-not-linked-to-infertility), the genetic messenger that delivers DNA instructions to the protein-making infrastructure in each of our cells. Karikó—with her collaborator, immunologist Drew Weissman, M.D., Ph.D.—believed in its potential to treat stubborn and fatal conditions like strokes and even cancer, hoping that mRNA could be used to program cells to produce their own cures. The two were evangelizers, but their work attracted few converts. Those who knew about it tended to be dismissive: fanciful, nice concept, dead end.
+
+That morning at the lab, Karikó’s old boss had come to see her off. She did not tell him what a terrible mistake he was making in letting her leave. She didn’t gloat about her future at BioNTech, a pharmaceuticals firm that millions now associate with lifesaving vaccines but was then a relative upstart in the field. Instead the woman who had bounced from department to department, with no tenure prospects and never earning over $60,000 a year, said with total confidence: “In the future, this lab will be a museum. Don’t touch it.”
+
+Back in 2013 pandemics were the subjects of big-budget blockbusters like *Contagion* and books about the great influenza of 1918\. Few people expected to experience one, and even fewer knew the name of the scientist whose marginalized research would go on to serve as the foundation for some of the most effective vaccines ever made.
+
+Karikó has never craved fame, nor did she spend decades toiling at the bench for prizes (although she and Weissman have received the Lasker Award, the Horwitz Prize, the Dr. Paul Janssen Award for Biomedical Research, and the Breakthrough Prize in Life Sciences in just the past few months). But fine, she has started to take a little pleasure in certain aspects of worldwide renown. First there’s the dream turned real—for her, scientific progress is measured in actual impact. With millions inoculated and the path out of the pandemic charted on the foundation of her research, she has lived to see the purpose in her work. And second, there’s the small, modest delight she takes in the fact that a few weeks before our interview, she ran into the man who’d led her out of her beloved lab at Penn eight years earlier. He told her he was preparing to give a lecture about her.

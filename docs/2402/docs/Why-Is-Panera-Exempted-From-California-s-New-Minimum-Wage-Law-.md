@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:26:34
+-->
+
+# Why Is Panera Exempted From California's New Minimum Wage Law?
+
+> 来源：[https://reason.com/2024/02/28/why-is-panera-exempted-from-californias-new-minimum-wage-law/](https://reason.com/2024/02/28/why-is-panera-exempted-from-californias-new-minimum-wage-law/)
+
+When fast food restaurants across California have to start paying workers $20 per hour on April 1, one major chain will be exempted from the mandate—and it just so happens to have a connection to a longtime friend and donor to Gov. Gavin Newsom.
+
+Panera Bread is poised to get a boost from a bizarre clause in the fast-food minimum wage law that exempts "chains that bake bread and sell it as a standalone item," *Bloomberg *[reports](https://www.bloomberg.com/news/articles/2024-02-28/panera-bread-exempt-from-california-s-minimum-wage-increase-for-fast-food-worker), adding that "Newsom pushed for that break, according to people familiar with the matter."
+
+That exemption stands to benefit Greg Flynn, owner and CEO of the Flynn Restaurant Group, a conglomerate that [operates more than 2,300 restaurants](https://www.qsrmagazine.com/reports/inside-making-greg-flynns-franchising-empire/) nationally and is the second-largest Panera franchisee in the world, according to the [company's website](https://flynn.com/panera/). Flynn and Newsom go way back: *Bloomberg *[reports](https://www.bloomberg.com/news/articles/2024-02-28/panera-bread-exempt-from-california-s-minimum-wage-increase-for-fast-food-worker) that the two attended the same high school at the same time—Flynn was student body president during Newsom's freshman year—and the restaurateur has donated to Newsom's gubernatorial campaigns and bragged to colleagues about his close relationship with the governor.
+
+That relationship likely explains the weird carve-out that would exempt bakeries from the new minimum wage law, even though no one involved is willing to admit as much.
+
+Asked directly about the bakery exemption at [a press conference last year](https://www.youtube.com/live/S8iibvfpdb4?si=Uusn4iIdPxZP7C8y&t=2313), Newsom said it was "part of the sausage making" of the legislative process. "We went back and forth, and it was part of the negotiation," he added.
+
+*Bloomberg*'s [reporting](https://www.bloomberg.com/news/articles/2024-02-28/panera-bread-exempt-from-california-s-minimum-wage-increase-for-fast-food-worker) suggests it was something Newsom sought in those negotiations: The bakery carve-out "was adopted as a means of winning the governor's support for the legislation, said a person with knowledge of the discussions. The rationale was the governor's longstanding relationship with a Panera franchisee, the person said."
+
+Newsom [signed](https://apnews.com/article/california-minimum-wage-increase-fast-food-newsom-69c26b7f07f2647149c37677446cea30) the Fast Food Accountability and Standards Recovery Act (FAST Act) in September 2023\. The law includes the $20 per hour minimum wage and [a variety of other regulations](https://www.foxrothschild.com/publications/california-repeals-fast-act-approves-new-fast-food-industry-regulations) that will apply to restaurant chains with more than 60 locations nationally.
+
+Because labor costs [account](https://www.restaurant365.com/blog/how-to-calculate-labor-cost-percentage/#:~:text=Most%20restaurants%20aim%20for%20labor,menu%20and%20methods%20of%20service) for a significant chunk of the overhead at any fast food restaurant, the new law is expected to have several repercussions. McDonald's and Chipotle have already [announced](https://www.usatoday.com/story/money/2023/11/01/chipotle-mcdonalds-raising-prices-california/71408254007/#:~:text=McDonald's%2C%20Chipotle%20to%20raise%20prices,minimum%20wage%20increases%20for%20workers&text=McDonald's%20and%20Chipotle%20Mexican%20Grill,increase%20for%20fast%20food%20workers.) plans to raise menu prices. Delivery drivers for Pizza Hut [have been laid off](https://reason.com/2023/12/27/californias-new-minimum-wage-is-predictably-killing-food-delivery-jobs/). More [automation](https://www.thecentersquare.com/california/article_d0b9872a-7838-11ee-a908-1fa9ed7a82a0.html) is likely to occur.
+
+Flynn also operates Applebee's, Taco Bell, Arby's, Wendy's, Pizza Hut, and Planet Fitness franchisees across 44 states, according to [his company's website](https://flynn.com/)—but his only California-based establishments are several Applebee's (which are not subject to the new law since it is not defined as a fast food restaurant) and 24 Panera cafes.
+
+It's fair to question how much the carve-out for Panera will even matter. In an environment where other fast-food restaurants competing with Panera for labor are required to pay $20 per hour, Panera will likely have to offer comparable wages in order to attract and retain workers. (One might also wonder if McDonald's and Burger King will suddenly [get into the bakery business](https://twitter.com/scottlincicome/status/1762877729479839900).)
+
+In other words, the real story here *isn't* that a successful businessman was able to get a special exemption written into law. And, indeed, it's hard to blame Flynn for looking out for what's in his businesses' best interest here—he'd [previously warned state lawmakers](https://capitolweekly.net/franchises-are-key-to-a-healthy-california-workforce/) that passing the FAST Act would "effectively kill the franchise business model in the state" and put 728,000 jobs at risk.
+
+The real scandal is that Newsom was apparently willing to push for this special exemption that benefits his personal friend while throwing other California businesses (and consumers) under the bus.
+
+The deeper lesson is that giving the government more power to set wages (or regulate other aspects of the economy) creates the conditions for exactly this sort of thing to happen. It could be that a wealthy special interest used his connections to the governor to secure special treatment, or that a governor tried to help out his friend. Either way, it couldn't have happened without the government injecting itself into the relationship between workers and employers.
+
+And the more the government does that, the more opportunities there will be for officials to [reward their friends and punish their enemies](https://reason.com/2024/02/26/not-all-policy-is-industrial-policy/). That's not fair, nor should it be desirable. Panera—or any business—shouldn't survive or fail in California because of its connections in the halls of power.

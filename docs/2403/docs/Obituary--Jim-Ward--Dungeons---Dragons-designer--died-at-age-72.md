@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:30:47
+-->
+
+# Obituary: Jim Ward, Dungeons & Dragons designer, died at age 72
+
+> 来源：[https://www.gamedeveloper.com/business/obituary-jim-ward-dungeons-dragons-designer-died-at-age-72](https://www.gamedeveloper.com/business/obituary-jim-ward-dungeons-dragons-designer-died-at-age-72)
+
+Jim Ward, a longtime game designer for the Dungeons & Dragons tabletop game, passed away on [March 18](https://www.facebook.com/Jamesmwardauthor/?_rdr) at 72 years old.
+
+Born May 23, 1951, Ward began his game career in 1976 with his and Rob Kuntz's Gods, Demi-Gods & Heroes rulebook for TSR. That same year, he created Metamorphosis Alpha, TSR's fourth role-playing game ever and its first science-fantasy RPG.
+
+At TSR, Ward worked on various modules and supplements. This was at the same time D&D was in its first popularity boom, and the Ruins of Adventure supplement he co-made with David Cook, Steve Winter, and Mike Breault was adapted into the 1988 Pool of Radiance video game.
+
+He'd also work his way up the executive ranks, becoming its creative services VP before exiting in 1996 from disagreements with fellow higher-ups.
+
+For his work at the time, Ward was inducted into the Academy of Adventure Gaming Arts & Design Hall of Fame in 1989.
+
+After leaving TSR, Ward designed a collectible card game for Dragon Ball Z by the late [Akira Toriyama](https://www.gamedeveloper.com/business/obituary-akira-toriyama-dragon-ball-creator-died-at-age-68). He'd later help make similar games for Robert Jordan's The Wheel of Time, Core Design's Tomb Raider, and the TV series Babylon 5.
+
+Eventually, he'd go to co-found his own company, Fast Forward Entertainment, with the likes of fellow role-playing designers like Timothy Brown and Lester W. Smith. He'd later join Troll Games as a writer for game supplements like Castles & Crusades.
+
+"I appreciate everything Jim did to help me out when I was working for Gary Gygax many years ago," wrote Hyperborea writer [Jeffrey Talanian](https://twitter.com/hyperborea576/status/1769888882013688147). "He was so kind, generous, and patient with me. [...] A pleasure to be around. A sad day, indeed."
+
+"James leaves behind a legacy that transcends the bounds of time and space, continuing to inspire future generations of writers, gamers, and dreamers," reads his [Facebook](https://www.facebook.com/Jamesmwardauthor/posts/pfbid02rxfia86UhHdS2Y5VeptDezDnjomcx7pMWpSVWyHdXP39NzdpjTbsQTzSQGaMXVCCl) eulogy. "His spirit will forever dwell in the worlds he brought to life and the hearts of those who knew him.

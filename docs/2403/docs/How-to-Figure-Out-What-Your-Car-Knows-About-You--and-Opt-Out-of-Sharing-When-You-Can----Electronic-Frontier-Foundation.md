@@ -1,0 +1,81 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:43:17
+-->
+
+# How to Figure Out What Your Car Knows About You (and Opt Out of Sharing When You Can) | Electronic Frontier Foundation
+
+> 来源：[https://www.eff.org/deeplinks/2024/03/how-figure-out-what-your-car-knows-about-you-and-opt-out-sharing-when-you-can](https://www.eff.org/deeplinks/2024/03/how-figure-out-what-your-car-knows-about-you-and-opt-out-sharing-when-you-can)
+
+Cars collect a lot of our personal data, and car companies disclose a lot of that data to third parties. It’s often unclear what’s being collected, and what's being shared and with whom. A recent *New York Times* article highlighted how [data is shared by G.M. with insurance companies](https://www.nytimes.com/2024/03/11/technology/carmakers-driver-tracking-insurance.html), sometimes without clear knowledge from the driver. If you're curious about what your car knows about you, you might be able to find out. In some cases, you may even be able to opt out of some of that sharing of data.
+
+## Why Your Car Collects and Shares Data
+
+A car (and its app, if you installed one on your phone) can collect all sorts of data in the background with and without you realizing it. This in turn may be shared for a [wide variety of purposes](https://www.mckinsey.com/industries/automotive-and-assembly/our-insights/unlocking-the-full-life-cycle-value-from-connected-car-data), including advertising and risk-assessment for insurance companies. The list of data collected is long and dependent on the car’s make, model, and trim.  But if you look through any car maker’s privacy policy, you'll see some trends:
+
+*   Diagnostics data, sometimes referred to as “vehicle health data,” may be used internally for quality assurance, research, recall tracking, service issues, and similar unsurprising car-related purposes. This type of data may also be shared with dealers or repair companies for service.
+*   Location information may be collected for emergency services, mapping, and to catalog other environmental information about where a car is operated. Some cars may give you access to the vehicle’s location in the app.
+*   Some usage data may be shared or used internally for advertising. Your daily driving or car maintenance habits, alongside location data, is a valuable asset to the targeted advertising ecosystem. 
+*   All of this data could be shared with law enforcement.
+*   Information about your driving habits, sometimes referred to as “Driving data” or “Driver behavior information,” may be shared with insurance companies and used to alter your premiums.  This can range from odometer readings to braking and acceleration statistics and even data about what time of day you drive.. 
+
+Surprise insurance sharing is the thrust of *The New York Times* article, and certainly not the only problem with car data. [We've written previously](https://www.eff.org/deeplinks/2023/06/steering-mobility-data-better-privacy-regime) about how insurance companies offer discounts for customers who opt into a usage-based insurance program. Every state except California currently allows the use of telematics data for insurance rating, but privacy protections for this data vary widely across states. 
+
+When you sign up directly through an insurer, these opt-in insurance programs have a pretty clear tradeoff and sign up processes, and they'll likely send you a physical device that you plug into your car's OBD port that then collects and transmits data back to the insurer. 
+
+But some cars have their own internal systems for sharing information with insurance companies that can piggy back off an app you may have installed, or the car’s own internet connection. Many of these programs operate behind dense legalese. You may have accidentally “agreed” to such sharing without realizing it, while buying a new car—likely in a state of exhaustion and excitement after finally completing a gauntlet of finance and legal forms. 
+
+This gets more confusing: car-makers use different terms for their insurance sharing programs. Some, like Toyota's “Insure Connect,” are pretty obviously named. But others, like Honda, tuck information about sharing with a data broker (that then shares with insurance companies) inside a privacy policy after you enable its “Driver Feedback” feature. Others might include the insurance sharing opt-in alongside broader services you might associate more with safety or theft, like G.M.’s OnStar, Subaru’s Starlink, and Volkswagen’s Car-Net. 
+
+The amount of data shared differs by company, too. Some car makers might share only small amounts of data, like an odometer reading, while others might share specific details about driving habits.
+
+That's *just* the insurance data sharing. There's little doubt that many [cars sell other data](https://foundation.mozilla.org/en/privacynotincluded/articles/what-data-does-my-car-collect-about-me-and-where-does-it-go/) for [behavioral advertising](https://www.eff.org/deeplinks/2022/03/ban-online-behavioral-advertising), and like the rest of that industry, it's nearly impossible to track exactly where your data goes and how it's used.
+
+## See What Data Your Car Has (and Stop the Sharing)
+
+*This is a general guide to see what your car collects and who it shares it with. It does not include information about specific scenarios—**like intimate partner violence**— that may raise distinctive driver privacy issues.*
+
+**See How Your Car Handles (Data)** Start by seeing what your car is equipped to collect using [Privacy4Cars’ Vehicle Privacy Report](https://vehicleprivacyreport.com/). Once you enter your car’s VIN, the site provides a rough idea of what sorts of data your car collects. It's also worth reading about your car manufacturer’s more general practices on [Mozilla's Privacy Not Included](https://foundation.mozilla.org/en/privacynotincluded/categories/cars/) site.
+
+**Check the Privacy Options In Your Car’s Apps and Infotainment System** If you use an app for your car, head into the app’s settings, and look for any sort of data sharing options. Look for settings like “Data Privacy” or “Data Usage.” When possible, opt out of sharing any data with third-parties, or for behavioral advertising. As annoying as it may be, it’s important to read carefully here so you don’t accidentally disable something you want, like a car’s SOS feature. Be mindful that, at least according to [Mozilla’s report on Tesla](https://foundation.mozilla.org/en/privacynotincluded/tesla/), opting out of certain data sharing might someday make the car undriveable. Now’s also a good time to [disable ad tracking on your phone](https://www.eff.org/deeplinks/2022/05/how-disable-ad-id-tracking-ios-and-android-and-why-you-should-do-it-now).
+
+When it comes to sharing with insurance companies, you’re looking for an option that may be something obvious, like Toyota’s “Insure Connect,” or less obvious, like Kia’s “Driving Score.” If your car’s app has any sort of driver scoring or feedback option—some other names include GM’s ”Smart Driver,” Honda’s “Driver Feedback,” or Mitsubishi’s “Driving Score”—there’s a chance it’s sharing that data with an insurance company. Check for these options in both the app and the car’s infotainment system.
+
+If you did accidentally sign up for sharing data with insurance companies, you may want to call your insurance company to see how doing so may affect your premiums. Depending on your driving habits, your premiums might go up or down, and in either case you don’t want a surprise bill.
+
+**File a Privacy Request with the Car Maker** Next, file a privacy request with the car manufacturer so you can see exactly what data the company has collected about you. Some car makers will provide this to anyone who asks. Others might only respond to requests from residents of states with a consumer data privacy law that requires their response. The International Association of Privacy Professionals has published [this list](https://iapp.org/media/pdf/resource_center/State_Comp_Privacy_Law_Chart.pdf) of states with such laws. 
+
+In these states, you have a “right to know” or “right to access” your data, which requires the company to send you a copy of what personal information it collected about you. Some of these states also guarantee “[data portability](https://www.eff.org/deeplinks/2018/09/what-we-mean-when-we-say-data-portability),” meaning the right to access your data in a machine-readable format. File one of these requests, and you should receive a copy of your data. In [some states](https://iapp.org/media/pdf/resource_center/State_Comp_Privacy_Law_Chart.pdf), you can also file a request for the car maker to not sell or share your information, or to delete it. While the car maker might not be legally required to respond to your request if you're not from a state with these privacy rights, it doesn’t hurt to ask anyway. 
+
+Every company tends to word these requests a little differently, but you’re looking for options to get a copy of your data, and ask them to stop sharing it. This typically requires filling out a separate request form for each type of request.
+
+Here are the privacy request pages for the major car brands:
+
+*   [BMW](https://www.fsgroupprivacy.com/ccpa-wiz) (BMW, Mini, Rolls-Royce)
+*   [Ford](https://privacyportal.onetrust.com/webform/1d20b685-0942-4b4d-a0af-b799c97f5cf6/2e4928b6-d77a-4f76-9518-1bfb9721669d) (Ford, Lincoln)
+*   [GM](https://www.gm.com/consumer-privacy) (Cadillac, GMC, Chevrolet, Buick)
+*   [Honda](https://www.honda.com/privacy/your-privacy-choices) (Honda, Acura)
+*   [Hyundai](https://owners.hyundaiusa.com/us/en/privacy/data-request/new-request)
+*   [Jaguar](https://www.jaguarusa.com/contact-us/contact-us.html) (Jaguar, Land Rover)
+*   [Kia](https://ksupport.kiausa.com/ConsumerAffairs)
+*   [Mazda](https://privacy.mazdausa.com/us/report_request_form)
+*   [Mercedes-Benz](https://privacyportal-cdn.onetrust.com/dsarwebform/a3de94cc-66c0-419e-86e7-9911a41ac2fc/c05924fa-2d76-4cb2-95e4-0e769dbb68b9.html)
+*   [Mitsubishi](https://privacyportal-cdn.onetrust.com/dsarwebform/71ca101a-cc6c-4315-8e3a-f1aa7ca80c48/9223a6c3-2b8a-4d4f-a7c2-9d41e9b5a1b0.html?)
+*   [Nissan](https://privacyportal.onetrust.com/webform/00db3d80-61f2-406b-9665-493b342a269d/draft/8c278b41-f1ab-4f46-9edb-86f7f0f17f97)
+*   [Rivian](https://rivian-privacy.my.onetrust.com/webform/3874d435-fff4-42de-a6d3-122efc56c58d/d416187e-3fe7-4ea4-be5b-ecf5abff017e)
+*   [Stellantis](https://privacyportal.onetrust.com/webform/abdee64f-f547-46bd-97a7-f56d58479fce/664c75ee-ee67-4927-90fe-34d84d7e6fd1) (Fiat, Chrysler, Jeep, Dodge)
+*   [Subaru](https://www.subaru.com/support/consumer-privacy.html)
+*   [Tesla](https://www.tesla.com/support/contact)
+*   [Toyota](https://privacy.toyota.com/) (Toyota, Lexus)
+*   [Volkswagen](https://privacy.vwgoa.com/) (VW, Audi)
+*   [Volvo](https://www.volvocars.com/us/form/privacy-rights-request/)
+
+Sometimes, you will need to confirm the request in an email, so be sure to keep an eye on your inbox. 
+
+**Check for Data On Popular Data Brokers Known to Share with Insurers** Finally, request your data from data brokers known to hand car data to insurers. For example, do so with the two companies mentioned in *The New York Times’* article:
+
+Now, you wait. In most states, within 45 to 90 days you should receive an email from the car maker, and another from the data brokers, which will often include a link to your data. You will typically get a CSV file, though it may also be a PDF, XLS, or even a folder with a whole webpage and an HTML file. If you don't have any sort of spreadsheet software on your computer, you might struggle to open it up, but most of the files you get can be opened in free programs, like Google Sheets or LibreOffice.
+
+Without a national law that [puts privacy first](https://www.eff.org/wp/privacy-first-better-way-address-online-harms), there is little that most people can do to stop this sort of data sharing. Moreover, the steps above clearly require far too much effort for most people to take. That’s why we need much more than these consumer rights to know, to delete, and to opt-out of disclosure: we also need laws that automatically require corporations to minimize the data they process about us, and to get our opt-in consent before processing our data. As to car insurers, we've outlined exactly what sort of guardrails we'd like to see [here](https://www.eff.org/deeplinks/2023/06/steering-mobility-data-better-privacy-regime). 
+
+As *The New York Times*' reporting revealed, many people were surprised to learn how their data is collected, disclosed, and used, even if there was an opt-in consent screen. This is a clear indication that car makers need to do better.

@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:07
+-->
+
+# Pre-IPO Reddit lets ads be dressed up as promoted user posts • The Register
+
+> 来源：[https://www.theregister.com/2024/03/16/reddit_promoted_posts/](https://www.theregister.com/2024/03/16/reddit_promoted_posts/)
+
+Ahead of its stock market debut, Reddit has said it's going to make it easier for brands to craft and run adverts that look a lot like normal user posts on the social network.
+
+Called "free-form ads," Reddit said in an [announcement](https://www.redditinc.com/blog/advertise-like-a-redditor-with-our-all-new-completely-unique-ad-format-free-form-ads) this week that the "all-new, completely unique ad format" is designed to improve click-through rates and upvotes – by making the adverts look as much like user posts as possible.
+
+To be clear, we understand these free-form ads will be labeled as promoted posts.
+
+What's happening here is that advertisers can use the Reddit Ads Manager to create adverts that have all the qualities of normal user posts – photos, videos, lists, megathreads, etc – and then pay to make them appear prominently on the site and in the app as promoted posts, aka adverts. Up until now, brands typically have had to book an ad that links out to an external site, such as a landing page selling some stuff, or an ad that links to a separate user post on Reddit, or a banner ad. Those options are still available though not as fully featured as free-form ads.
+
+Free-form ads instead look like normal, content-packed posts in people's feeds, with a promoted label, rather than a link off to somewhere else, and are crafted via the Ads Manager. There's no need to create a separate user post that an ad links to, for instance.
+
+"Free-form ads are designed to look and feel similar to the type of content Redditors share with each other, inviting maximum engagement from the community," Reddit explained, inviting companies to "advertise like a Redditor." 
+
+The social media monster pointed to companies already trialing free-form ads, which include Just Eat Takeaway, Kraft Heinz, and Leica, all of which found the format capable of "driving upper funnel results." Reddit claimed free-form ads tested so far achieved a 28 percent increase in click-through rates, which the biz noted "outperform[ed] all other ad types." 
+
+When comments are enabled on free-form ads, there's an increase in community engagement, Reddit claimed, without indicating whether that increase was positive or not. Reddit said Philadelphia Cream Cheese, a brand owned by Kraft Heinz, had success with the format though it declined to go into specifics about that trial.
+
+"The brand leveraged our free-form ad format to showcase the refrigerator staple's versatility, with product details and recipe inspiration," Reddit said. "This effectively prompted the Reddit community to 'get a big list going and bond over' their shared love of cream cheese."
+
+Reddit claimed in its bumf about the new ad format that a Philadelphia post had "a 91 percent upvote rate and a 42 percent higher click-through rate from the brand's previous Reddit benchmark," and that the post generated "over a thousand comments in a single month." 
+
+Those numbers don't mean much if Reddit doesn't contextualize them with more information about Philadelphia's typical click-through rates, and Reddit again declined to share specifics. 
+
+We were able to locate two posts from Philadelphia Cream Cheese accounts on Reddit that fit Reddit's description of free-form ads: One from u/PhillyCanada posted a year ago, and the other by u/PhillyCreamCheese posted six months ago, later confirmed by Reddit staff as the free-form ads. 
+
+The PhillyCanada [post](https://www.reddit.com/user/PhillyCanada/comments/12ykrp1/help_us_fill_this_thread_with_unexpectedly_tasty/) seems to conform to Reddit's mentions in the blog post. It has 1.5K overall upvotes and 1.1K comments. The [more recent one](https://www.reddit.com/user/PhillyCreamCheese/comments/16hxm0s/help_us_fill_this_thread_with_ways_you_use_philly/) from PhillyCreamCheese, on the other hand, got 617 comments and zero points, though it's likely to us that score was fixed at zero.
+
+Leica's [test](https://www.reddit.com/user/leica_camera/comments/1b9rpam/in_focus_crafted_in_germany_perfected_with_your/) of free-form ads doesn't indicate a whole lot of success to us - it has just three points.
+
+All free-form adverts are supposed to show some kind of sponsored label, though that doesn't appear to be the case on the three posts included in this story. While Leica's shows it, neither Philadelphia post includes a tag indicating it's sponsored content. We understand that's because the Philadelphia posts are no longer boosted by ad spending, so are back to just being normal user posts.
+
+Reddit, which is planning to [go public on March 21](https://www.nasdaq.com/market-activity/ipos) having [never turned a profit](https://www.theregister.com/2024/03/11/reddit_wants_to_raise_748m/) in nearly 20 years of existence, has been doing everything it can of late to drum up support from investors. Most notably, the outfit signed a [$60 million deal with Google](https://www.theregister.com/2024/02/22/reddit_google_license_ipo_altman/) to ingest user content for the purposes of training AI models after making its Data API a paid service last year, ostensibly to [prevent](https://www.theregister.com/2023/04/18/reddit_charging_ai_api/) AI models from ingesting user data.
+
+Users [haven't been thrilled](https://www.theregister.com/2023/06/12/reddit_api_outage/) with Reddit's behavior running up to its IPO, and whether ads-as-posts will help isn't clear, though we know a thing or two about how devoted readers feel about web adverts generally. ®
+
+***Editor's note:** This article was updated after publication to describe in more detail the nature of free-form ads to give readers more info and context.*

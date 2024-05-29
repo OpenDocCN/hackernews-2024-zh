@@ -1,0 +1,528 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:19
+-->
+
+# How I Taught The Iliad to Chinese Teenagers – The Scholar's Stage
+
+> 来源：[https://scholars-stage.org/how-i-taught-the-iliad-to-chinese-teenagers/](https://scholars-stage.org/how-i-taught-the-iliad-to-chinese-teenagers/)
+
+INTRODUCTION
+
+**S**everal years ago I had the chance to lead two seminars with a group of high-performing Chinese high school seniors. Each seminar had between 20-35 kids; each of these students was a graduating senior enrolled in the international department of a prestigious high school in Beijing. The purpose of these seminars was twofold. First, they were designed to provide these students with an idea of what an American college course might be like and teach them the skills they need to succeed in such a course. Chinese students enrolled in American universities tend to face a few common challenges: they have little experience ‘participating’ in class discussions (and even less participating in class discussions in English), they are unfamiliar with conventions or the purpose of a standard English research essay (most, for example, have never heard the word ‘thesis’), and they are utterly at a loss when asked to cite their sources. The seminars were intended as a remedy for all of these problems. 
+
+ But I had a second goal in the design of each seminar. As this was the final course these students would take before they began their lives as adults in a foreign country, I wanted to make sure this course would be an opportunity for them to learn something they might use in the life they were about to begin. I wanted these to be classes that *mattered.*
+
+I crafted my seminars to that end. I called the first “The Good Life.” It was a high-school take on ethical philosophy. The highlight of that course was the requirement that students not only think and write about the ethical systems discussed in class; they also had to set aside a day every week to try and *live* the ethical system they were studying that week. The second seminar I named “War.” Seminar participants were required to watch or read poems, films, novels, personal accounts, essays, short stories, and epics—well, one epic—on the experience of war. These materials came from different times and places across the span of human civilization. Half of the seminar’s time, however, was spent on one work: The *Iliad.* When the seminar was over, many students reported to me that reading and discussing this one book was the highlight of the three years they spent in high school. This reading was popular enough that a small group of students who had taken the other seminar asked me to teach the *Iliad* section of the class to them privately over the summer.
+
+I have heard the opinion voiced that works like the *Iliad* are too daunting or too boring even for university students. I disagree. My experience teaching the *Iliad* proved to me that even high school students can find the epic engrossing. Most teenagers need help to get there, however. In this post I am going to outline how I taught the *Iliad* to a gaggle of Chinese teenagers.
+
+I am indebted to the many educators who have posted online the materials, methods, and lesson plans they use to teach the humanities. It would have been impossible for me to teach many of the history and literature classes that I did without the aid of this free material. This post is an attempt to ‘pay it forward.’ My hope is that future teachers will find this post as useful for their classes as I found the guides and lesson plans created by teachers who preceded me.
+
+For this reason I include links to all of the PDFs and powerpoints of the *Iliad*-related materials I used for this class. For this reason I will also frequently descend into the nitty-gritty of the various activities, assignments, and presentations that made the class work. Those not asked to teach may find these details overwhelming. If you are one of those people, do not feel obligated to read through the entire piece. I expect this post will be quite long before I finish it; I will not be offended if you only read the parts of most interest to you!
+
+# TABLE OF CONTENTS
+
+1.  INTRODUCTION
+2.  TABLE OF CONTENTS
+3.  CAVEATS, PREPARATION, & TRANSLATION CHOICES
+4.  GENERAL OBSERVATIONS ON SUCCESSFULLY REACHING THE CYNICAL TEENAGER
+5.  GENERAL OBSERVATIONS ON SUCCESSFULLY TEACHING LARGE GROUPS OF CYNICAL TEENAGERS AT ONE TIME
+6.  WEEK I-II: INTRODUCING THE ILIAD & ITS WORLD
+7.  WEEK III-IV: FINDING MEANING IN MORTALITY
+8.  WEEK V-VI: THE DESCENT & REDEMPTION OF ACHILLES
+9.  APPENDIX: THE OTHER THINGS TAUGHT IN THE “WAR SEMINAR”
+
+# CAVEATS, PREPARATION, & TRANSLATION CHOICES
+
+The circumstances in which I taught the *Iliad* were unique. These circumstances forced me to make some unusual choices in the content, presentation, and organization of the seminar. I was asked to create a ten week course. I would meet the students for five hours each week, but those five hours would be distributed among two blocks: a stretch of three 45 minute ‘periods’ on Tuesdays and a two period stretch on Thursdays. No class should ever be three periods long. I often had to adopt creative expedients to productively fill this time. As I never had a block less than 90 minutes long, the activities I developed tend towards the longer side. I am not sure how I would adapt them to fit in a more equally distributed schedule. Because I was teaching students who did not speak English as their mother tongue, I had to be particularly cognizant of the language I used and of the need to slowly and carefully define new terms. Some of the teaching methods I discuss in section #5 were especially useful in making sure all of my students, regardless of language ability, were on the same page.
+
+Despite their language hurdles, I suspect these students were an easier lot to teach than many of the classrooms readers of this post might face. As a rule Chinese students are more attentive and less rebellious than their American counterparts. Because these students were attached to  the most competitive international school in Beijing, the majority of my students were very bright and very motivated. Many students were still overwhelmed by the pace of the class and the difficulty of its assignments. At a less selective school this curriculum may be a harder sell. I consider this course to be about the same difficulty of a one-semester AP course at a normal school or perhaps a senior year Honors course. I would not advise teaching this way to freshmen.
+
+If you are not willing to put an unusual amount of preparation into this course, I do not advise teaching it at all. It took me about a year to create this seminar. In that year I read two separate translations of the *Iliad,* as many articles on Homer as I could get my hands on, and several book-length studies about the *Iliad* and its age. I do not know if you need to go to that extreme. But I think it would be difficult to teach this course without some of the back ground reading that informs my approach. Two books were especially influential: Jonathan Shay’s [*Achilles in Vietnam*](https://amzn.to/3wGh5CX) and Caroline Alexander’s *[The War That Killed Achilles](https://amzn.to/3fPuode).* I cannot overstate the excellence of either book. Both are fantastically readable. They are penetrating and beautiful. Buy them and read them.
+
+There are many translations of the *Iliad.* For my class, I used the [**Robert Fagles translation**](https://amzn.to/3vD4pwy). I do not think this is the best translation of the epic. I would probably award that title to [**Caroline Alexander’s stunning 2016 translation of the**](https://amzn.to/3ic2zyy) *[**Iliad**](https://amzn.to/3ic2zyy),* which achieves a rare combination of fidelity and fluency. The Fagles translation, in contrast, is decried by purists for its looser translation. I am willing to forgive Fagles for his wanderings. His translation is extremely readable yet still written in verse. If you have your students read it out loud, dramatically as possible, you will discover that it is as transporting as any other translation available in English. For students intimidated by the large size and imposing reputation of the *Iliad* it was important that we read the most accessible and fluid version of the poem. Fagles’ work meets that standard. For my students there was an additional benefit: they were required to purchase their own books. The Fagles translation is cheap and widely available, even in China.
+
+You will notice that I do not read every page of the *Iliad* with my students. About 280 pages (out of 540) are read as homework; a few other important passages are read together in class. This is about two thirds of the total.
+
+Why not read the entire thing?
+
+First off, the *Iliad* contains several episodes peripheral to the main plot, not closely tied to the central themes of the work as a whole, or that seem repetitive and monotonous in comparison to what came before. As a teacher, you should read these parts in preparation for the course. It is not necessary for high school students to do the same. As a general rule, no unit in a high school literature course should last longer than five or six weeks. Anything longer than this tends to push students to desperation and boredom.
+
+You *could* try and get around this by packing more of the epic into a smaller amount of time. I believe that approach is unreasonable. It will be overwhelming for students who may already feel overwhelmed. It will also impact your pedagogy. You will be forced to cover more with less. With an epic as profound as this one, your students deserve something more focused and fine grained.
+
+# GENERAL OBSERVATIONS ON SUCCESSFULLY REACHING THE CYNICAL TEENAGER
+
+The reasons you give teenagers for forcing them through hundreds of pages of epic poetry matter. I feel strongly that the ‘why’ for reading a work like this is more important than the ‘how’ of teaching it. In many ways your answers to the first question will shape your approach to the second.
+
+Over the last few years a debate has been raging among both educators and classicists regarding what place, if any, the “classics” should have in modern education, for what purpose they should be taught, and how best to teach them. I come to this debate from an unusual perspective: someone tasked with getting zonked-out Chinese teenagers to care about a book most of them assume they could never possibly finish.
+
+Chinese students live in a social world that is quite alien to the culture wars that divide the Anglosphere and which underlay many of the debates we have about how to teach the classics. They don’t have a dog in that fight. Because of this I found teaching them to be a clarifying experience. Those who defend and those who attack the classics tend to focus their fire on the role the classics play, for good or ill, as the foundation stone of Western high culture. This context is entirely irrelevant to the Chinese teenager. The Western tradition is not their tradition. They have no special reason to adore or revile it. They must approach a work like the *Iliad* on its own terms and for its own sake. If it means anything to them, it is as a *human* story, not a *Western* one.
+
+Why, my Chinese students asked, will we read this? *Because you need to prepare for American university classes,* I replied. But more importantly: *because this book might just change your life!* I said this without apology or awkwardness. I believed it! Ultimately, if a great work of history and literature does not have the potential to change a student’s life, to shape their character or transform their worldview, there is no point in teaching it! Most students believe this themselves. They can tell whether you believe the books you are assigning are that important. If you do not believe the works you are assigning *matter*, students will not think they matter either. I presented the *Iliad* as a meditation on universal problems of the human condition. My students read it as such.
+
+Most students hunger for work that has real meaning. If they must study, they would prefer to study something that matters. They want to matter themselves. That is the second key to reaching cynical teenagers: they must be treated like men and women whose decisions and opinions matter. I was eager to learn from their observations and opinions. I genuinely believe I have as much to learn from my classes as they do from me. I was insistent that the books we read had great moral significance, but it was not my part to force ‘morals of the story’ down my student’s throats. Teenagers rarely respond well to blunt didactics. My role was to provide sufficient historical or literary background so that students could understand works like the *Iliad*, and then push them to wrestle with the questions these texts posed. The conclusions they developed were their own. Students were eager to tell me of these conclusions because they believed (rightly) that I valued their insights and experiences.
+
+My classes were demanding; I was delighted to discover that students made memes parodying how difficult my classes were. Yet my electives were always full. I can chalk some of this up to an entertaining presentation style, but I attribute it mostly to my attitude towards my students. Taking students seriously means setting high expectations for their work. This is the harder path: requiring more of students means investing more time and effort into their growth. My approach towards essay assignments illustrates how I operationalize this principle. Every essay I receive is graded with a terrible harshness. Almost no one gets an A on the first try. But all students are given a second try. I return their essays with dozens of comments in the margins, a graded rubric, and a paragraph of instructions on how they should improve their work. Students can accept the grade they are given, or they can rewrite their essay for higher credit. This process requires double the work on my part, but it makes the students better writers.
+
+Teach things that matter. Believe your students matter. Set high standards, but invest the time to ensure your students can meet the standards you set. 
+
+Forgive me if these three injunctions sound trite! Perhaps they are trite. But they worked wonders for me, and have become the core of my teaching philosophy.
+
+# GENERAL OBSERVATIONS ON SUCCESSFULLY TEACHING LARGE GROUPS OF CYNICAL TEENAGERS AT ONE TIME
+
+***On engaging teaching methods***
+
+I am a believer in tables. I have taught students in neatly ordered rows. I have taught them in large circles. I have taught students in lecture halls with desks lined up on both sides of the room. I have taught them on walking tours. *Nothing has been more effective than small group tables.* Teaching becomes magically easier when you can arrange desks into tables of four to six students. I have suspicions for why this is so, but no doubt *that* it is so. When a teacher complains to me that he or she has difficulty getting students to focus, my first question is always “have you arranged their desks into tables?”
+
+The wonderful thing about tables is the sort of learning activities that naturally flow from them. If, as was true in my case, you must teach in 80 to 120 minute blocks, then a lecture oriented pedagogy is simply untenable. While the common claim that humans only have an attention span of 15-20 minutes [is not actually supported by the psychological literature](https://www.physiology.org/doi/pdf/10.1152/advan.00109.2016), I personally found that if I did not break lectures up with small activities every fifteen minutes or so, I was in for trouble. The benefit of small group tables is that they provide an easy and natural way to “break up” the lectures. In its simplest form, this requires nothing more than asking the class a question.
+
+Instead of directly telling the class (and the teacher) their answers, I will give students three to six minutes to discuss the question with the students at their table instead. This can easily be transformed into a more complex activity: students from different tables can be given different passages to read and summarize, they can be asked to develop counter-points to ideas that either I, a reading, or another table has put forward, or they can be asked to relate a topic or a reading to something earlier in the course, pop culture, or their life experience. The possibilities are endless. In all cases I would conclude the activity by spending three to four minutes by picking on one individual from each table to summarize what their group came up with.
+
+Here is why this works: Students learn better when they are forced to actively wrestle with the concepts presented. This is widely recognized, but often poorly implemented. Many teachers assume that simply asking questions to the class at large is sufficient for this purpose. But there are problems with this approach. If you really believe that forcing a student to articulate their opinion will help them remember and use class material, then simply asking the class a question and picking on a few students to answer it cannot accomplish your objective. You have created a learning activity that only a few students actually engaged in! Even if you go out of your way to ignore attention-seeking hand-waivers by picking on class introverts, you are left with a method that benefits the few at the expense of the many. The question-group discussion-answer format opens the activity up to dozens more students but takes only a little bit more of your class time.
+
+This sort of activity is also useful for ensuring that slower students are not left behind. Students are vigilant creatures, living in constant fear that their stupidity will be exposed in front of their peers. Those who most need to slow down and ask “why?” loathe most to do it. Small groups discussions help immensely with this problem. Students are almost always more willing to admit confusion to four or five friends than they are to the entire class; even if they are not, they benefit from hearing the explanations of the other students in their group. Likewise, if all of the students in a group are confused, they are far more likely to tell you this when they can say “my entire group doesn’t understand…” instead of “I don’t understand…”
+
+This is especially true for ESL students. ESL students often *do* comprehend what is being asked of them, but are nervous about their ability to articulate their thoughts in English. By asking them to first share their thoughts with a small group (or barring that, a partner) they are given a free “practice run” expressing their ideas in English. This method was something of a lucky charm for coaxing reticent Chinese students into class participation: the more opportunities students had to articulate their position out loud before being asked to articulate it to the entire class, the happier they were to do it. Something similar can be said for questions controversial enough that most students are chary about staking a position in public. Finally, because group discussions give students more time to think through their answers, the answers they come up with tend to be more thoughtful than what they might have said had you called on them to give an impromptu performance.
+
+Of course, not every question that I throw at a class uses the question-group discussion-selected answers format. But it is one of the central tools I used in making otherwise foreboding books like the *Iliad* approachable to teenagers. I found the tool so useful, in fact, that I integrated it into the daily routine. After class announcements and a short reading quiz, I would give every group three minutes to discuss amongst themselves if they had any questions or points of confusion about the reading from the night before. Each group was required to produce at least one question (but no more than one) to ask me. If the lecture or class activity of that day (or of some other day that week) would answer their query, I told them hold on to it. I would then explicitly cite their question when I came to it in the course of my lecture. Otherwise, I would spend two to three minutes attempting an answer then and there. This whole process would usually take no more than eight minutes. It was time well spent—not only for the students, who had their questions answered, but also for me. I was sometimes surprised by the things students focused on; often the passages they found difficult or mysterious were completely different from what I expected. This sort of feedback made me a sharper teacher and gradually helped me develop better class materials as well.
+
+And it is all because of tables.
+
+***On getting students to do the readings***
+
+Students are more likely to “do the readings” if the readings are engaging, of course, but this is an imperfect solution. Students are busy. If they can pass a class without reading anything you have assigned them, they will. If they can pass a class by cramming everything you have assigned them to read in the week before the final, they will try that too. The number of students capable of such feats is far smaller than the number of students who think themselves capable of such feats. The challenge of the teacher is to gently convince them otherwise.
+
+This problem is even more critical in a class like this one, which is discussion based and therefore dependent on students having actually done the reading.
+
+My personal solution to this problem is the three-minute reading quiz. At the beginning of every class, as soon as the bell has sounded, I launch into a reading quiz. I create these quizzes the night before giving them; each is five questions long. The questions are simple, factual questions with three important features:
+
+1) They are not open to interpretation or argument 2) The questions are easy to answer, if one has actually done the reading 3) Their answers would be difficult to answer if one had only read the Sparknotes version of the book in question.
+
+As it would take far too much time to grade a quiz for every student during every class period, I have the students grade each others’ quizzes. This is done just after the students have taken the quiz; once everyone has finished their quiz, they exchange their quiz with a neighbor, who marks off the score of the quiz as I tell the class the answers to each question. All told this process takes about 5 minutes of class time. This is time well spent: like leaven in bread, elevates the remainder of the time we spend together.
+
+It also provides a strong incentive for students to arrive on time. I do not give the quizzes to students who were absent; instead, I have a policy of “dropping” the two lowest quiz scores from every student’s grade, which allows them two absences without consequence.
+
+***On formal seminar discussions***
+
+When I surveyed American university professors in 2017 about the gaps that separated their Chinese students from their American ones, they regularly identified two problem areas: Chinese students had difficulty participating in class discussions, and Chinese students did not know how to write a research essay. To work on the first of these problems, I made formal “seminar discussions” a regular feature of my courses. Generally speaking, we would do one seminar discussion every three weeks. Most books would get one seminar each; the *Iliad* had two.
+
+To prepare for the seminar I required students to complete a “seminar preparation paper.” In this short paper, the student would type out two quotations from the reading that they found meaningful, interesting, or mysterious. They would include a Chicago-style citation for their chosen passages, and would also write a short paragraph explaining why they chose each of their passages. In addition, they were required to write three questions “that you would ask the seminar participants to ponder if you were the official seminar leaders for this round.” All of this might seem like busywork, but it assured that students came prepared to participate.
+
+For the seminar itself, I had the students arrange the desks in two concentric circles, each with about 15 students in it. In my mind the ideal discussion group is 12-15 students; anything more than 20 means that individual students do not have enough opportunities to pose questions and give their opinions. My solution to this problem is suboptimal: I divide the students into two groups, with those in the outer circle filling out a work-sheet that tracks the discussion being had by the students in the inner circle. At the halfway point I then have students switch from participants to observers. The benefit of this approach is that is allows all students to participate in a smaller group discussion; the cost is that students spend half of their time discretely checking their phones instead of participating. 
+
+In some classes I led these discussions myself; in others I assigned students to do it. I honestly did not see a great difference in the quality of the seminars either way. Students must know that they are being graded on their participation in the seminars. They must come prepared with a seminar preparation paper. If they meet these two requirements, seminars are usually powerful experiences.
+
+# WEEK I-II: INTRODUCING THE ILIAD & ITS WORLD
+
+## Class I: “Among the Deathless Gods:” The Mythic World of Ancient Greece
+
+Power Point Slides: [The Greek Mythic World](https://1drv.ms/p/s!AoLqKKtM9fi8g-4PY3NdbjnbOsh89A?e=nP8otZ)
+
+Handout: [*Iliad* Important Names Glossary](https://1drv.ms/b/s!AoLqKKtM9fi8g-4Lh8c1traBlRSVMw?e=W1ypcl); [Destiny of Achilles](https://1drv.ms/b/s!AoLqKKtM9fi8g-4Rixs2FnOyskbJtA?e=oZN9JF); [Scholarly Takes: Honor Cultures.](https://1drv.ms/b/s!AoLqKKtM9fi8g-5kXg3JmwdT3jJjcA?e=u8sbpW)
+
+I begin class with a gloriously booming, melodramatic recitation of the *Iliad’s* opening stanza (*“Rage! Goddess, sing the rage of Peleus son Achilles! Murderous, doomed…”*). This unexpected performance never fails to arrest the student’s attention. I then tell the students, without somewhat less melodrama, that they just heard the words that began Western civilization. The Western tradition begins with a world at war. But this story is more than a tale of ancient combat: it is a meditation on the meaning of life. It asks us to ponder the reality of death, the nature of fame, and the demands of duty.
+
+It touches the heart of all who take it seriously.
+
+But to understand this epic the students must be familiar with the mythological over-story that it fits into. The powerpoint slides are arranged to cover this material. First the gods: Zeus, Hera, Athena, Aphrodite, and Thetis. Then some key individuals: Achilles, Menelaus, Agamemnon, Helen, and Paris. With these names a few key events are narrated: Zeus dethroning his father, the prophecy that Thetis’ son would be greater than *his* father, the marriage of Helen, the trial of Paris, the sack of Troy.
+
+This lecture is more of an info-dump than most classes will be. In my presentation I introduce a few themes that we will return to as the class goes on: the arbitrary nature of Zeus’ power, the significance of the prophecies surrounding Achilles’s fate, the curse on the Atrides, and the fact that Achilles was not part of Helen’s wedding pact and thus was one of the few leaders not obligated by covenant to be at Troy. I also emphasize that the hearers of the *Iliad* knew how the story would end already. They knew going in who would live and would who die, what would happen to Hector’s Troy.
+
+So what is the purpose of the *Iliad*? I ask my students to imagine a world without writing, where knowledge must be passed on through memorization and recitation. What would they choose to cram inside their minds to pass on to the next generation? They have in their hands the answer generations of Greeks gave to that question.
+
+The Homeric poets receive from their oral tradition a legend of a ten year war. But the *Iliad* is only two weeks of that ten years. What is it about these two weeks that were so significant to the ancient Greeks that they would spin a 600 page epic out of it? Why would their audiences gladly spend hours listening to the bards recite its episodes—even though this audience knew exactly how the stories would end?
+
+I do not answer these questions. But I pose them to the students and challenge them to try and develop out their own answers to them by the time this unit is complete.
+
+Writing Homework: “[Know Your Greek Gods](https://1drv.ms/b/s!AoLqKKtM9fi8g-4QPPp7xTnjHX2esw?e=ydabwf)” worksheet.
+
+This is to be filled out at home; students are free to use any resource they want to complete the assignment, including Wikipedia. The purpose is to drill the names of these gods into their heads.
+
+Reading Homework: *Iliad,* Book I (pp. 77-98); “Scholarly Takes: Honor Cultures”
+
+Warn students that they will be quizzed on both of these readings.
+
+## Class II: “The Best of the Achaeans”: Achilles, Agamemnon, and the Greek Culture of Honor
+
+Power Point Slides: [Honor Cultures](https://1drv.ms/p/s!AoLqKKtM9fi8g-4TnAevIBTJ0rhI0w?e=SZT6hf)
+
+Handouts: [Scholarly Takes: Achilles’ Showdown with the King](https://1drv.ms/b/s!AoLqKKtM9fi8g-5kXg3JmwdT3jJjcA?e=u8sbpW)
+
+Begin with a reading quiz, and then open the class up to questions. Answer questions about Apollo directly. Questions about the conflict between Agamemnon and Achilles can be held off, as they will likely be addressed in the lecture itself. Observe that the *Iliad* is about the anger of Achilles and its consequences. This anger might strike students as childish, silly, or alien. It seems like these two fully grown warriors react to challenges a bit like toddlers. They are part of what we call an “honor culture.” That culture seems removed from us, but it may not be as distant from our life as 21st century sophisticates would like to think. At this point I will have the class watch [this scene from the TV series *Louie*](https://1drv.ms/v/s!AoLqKKtM9fi8g-4ddWqDWFVwlxboXw?e=h8vJO0).
+
+Ask the class if Louie did the right thing. If most say yes, summarize what happens next in the scene (the woman on a date with Louie rejects him for being something of an unmanly nerd). Does this change how they think about the scene? Given all of this, how many of the students would have done just what Louie did? What else could he have done? Can you understand why he might have chosen to react very differently—perhaps more aggressively?—than he actually did? The class should have a good 5-8 minutes to discuss this question.
+
+Once students have had the chance to air their views, I ask them to turn to page 83 of the *Iliad.* Start at line 221 (“He broke off and anguish gripped…”) and read together out loud until line 240 (“pay for his arrogance with his life”) on page 84\. This is the scene where Achilles contemplates lashing out and killing Agamemnon to avenge the insult given to him.
+
+Ask: what are they really arguing over? Is this similar to or different from the *Louie* scene we just watched?
+
+Note that Louie comes from a very different world than Achilles does. But there are places in the modern world where people must live by the logic of honor. Ask a student to read this quote from Ta-Nehisi Coates about his youth:
+
+ *> “Respect and reputation are everything there. These values are often denigrated by people who have never been punched in the face. But when you live around violence there is no opting out. A reputation for meeting violence with violence is a shield.”
+
+ *Ask students what Coates means when he describes as a “shield.” But unlike a real shield, a reputation is not a tangible thing. How do you maintain it? How do you know your shield is strong enough?
+
+Now ask them to consider this quote from Thomas Hobbes:
+
+> “Glory is like honour; if all men have it no man hath it, for they consist in comparison and precellence .”
+
+For honor to be meaningful, it must be limited. It is something only some can have—something that must be competed for. Ask them to read the passage labeled ‘One irony of honor’ on the “Achilles Showdown” handout. I give the tables several minutes to try and restate the authors’ main point in their own words.
+
+Miller’s essential point: honor is a public thing. You only have honor if others think you do. And who those ‘others’ are really matters—real honor comes from having someone else of high status acknowledge your achievements. I usually give my (Chinese) students this example: imagine that they are complimented for having excellent English by their grandmother (who is almost certainly an old Chinese lady who doesn’t speak a word of it) vs. a younger Chinese who just obtained a PhD from Harvard. Which compliment would mean more to them? Why?
+
+But this process also works in reverse: if other people can *give* you honor, then other people can *take it away.* Achilles and Agamemnon both believe the other is trying to strip them of the honor that they deserve. Show them the insult-wrath-revenge slide, and remind them that they read about this cycle as part of their homework. Most of this epic records the wrath-revenge part of the cycle—but to understand this story we need to have a strong understanding of the *insult* part. That is what the next assignment is for.
+
+At this point hand out the “[Achilles vs. Agamemnon worksheet](https://1drv.ms/b/s!AoLqKKtM9fi8g-4Oyz8d0bfJB-Idgg?e=dNGNy2).” Ideally you should have ten to fifteen minutes for them to work on this assignment in class, with the rest to finish as homework. The worksheet asks them to closely reread much of Book I and restate what is happening—especially what is being argued over—in their own words. It is designed to force their attention on some of the aspects of the dispute between Achilles and Agamemnon that are not immediately obvious (for example, the significance of Achilles’ decision to smash to scepter of Agamemnon to pieces). I tend to grade this assignment lightly—as long as students turn something half coherent in, I will give them full points. They will need those points later on in the semester.
+
+Writing Homework: [Achilles vs. Agamemnon worksheet](https://1drv.ms/b/s!AoLqKKtM9fi8g-4Oyz8d0bfJB-Idgg?e=dNGNy2)
+
+Reading Homework: *Iliad*, Book II.1-572 (pp. 99-115),
+
+## Class III: “The Honors Dealt a King”: Ruling Gods and Men
+
+Power Point Slides: [Honor Cultures](https://1drv.ms/p/s!AoLqKKtM9fi8g-19FYhvmEBcYPD84Q?e=7vwUCh)
+
+Handouts: [A Memory from the Vietnam War: Themis Destroyed](https://1drv.ms/b/s!AoLqKKtM9fi8g-4S8wWnRGgTVlX6tg?e=RtdfQH); [Scholarly Takes: An Explanation of Themis](https://1drv.ms/b/s!AoLqKKtM9fi8g-4S8wWnRGgTVlX6tg?e=RtdfQH)
+
+Start class with a reading quiz and a question session, like always.
+
+Begin the lecture with an observation: we see two kings at work in Book I and II: Agamemnon and Zeus. This juxtaposition is not a coincidence. We see both Zeus and Agamemnon because the Homeric poet wants us to notice something important about each.
+
+So here is a question to ponder: how does Zeus’ leadership work?
+
+To answer the question, split the class into three parts. Give each part one of these sections from the Iliad:
+
+*   Book I, lines 673-697 (pg. 96-97)
+*   Book VIII, lines 1-37 (pg. 231-231).
+*   Book XV, lines 18-59 (pg. 388-389).
+
+Ask the students first to read the sections by themselves, then discuss the sections with their tables. Each table is to be prepared to
+
+1) Summarize what they read to the entire class 2) Explain what Zeus’ authority rests on, as seen in that section.
+
+When all of the students have done this and announced their results to the class, they will discover a common theme: Zeus is obeyed by the other gods because they are afraid of him. They consent to his rule because they must. He is simply more powerful than they. The source of Zeus’s authority is force and fear.
+
+Move to the next slide, which asks:
+
+Is the authority that Zeus has over his fellow Olympians the same as that which Agamemnon has over the Greeks?
+
+If not, what makes human leadership different from the Olympian version?
+
+Have the students discuss this first in small groups, then as a class. Things the class may discuss: why *does* the majority pay homage to Agamemnon? In what ways is Agamemnon’s leadership style similar to Zeus’s? Why does it get different results? What are Agamemnon’s largest flaws as a leader? Would they be considered flaws on Olympus?
+
+Transition to a discussion of the Greek word *Themis,* central to the Greek understanding of leadership and group cohesion. Read together the “An Army is a Moral Construct” passage on the themis handout. To give Chinese students a more concrete idea of what themis means, I give them an example they are familiar with from other classes: Confucius’ statement that a kingdom is governed well when “a father fathers, a son acts as a son, a minister acts as a minister, and lord acts as a lord.”
+
+We then proceed to read the second hand-out that contains an excerpt from Jonathan Shay’s *Achilles in Vietnam.* This passage describes an incident that destroys the sense of *themis* held by an American soldier who was accidentally involved in a war atrocity. (You may have to provide some additional context about the Vietnam War for this story to make sense to students).
+
+Ask: what do you think was the *themis* of the Greek army? What might it mean to a warrior like Achilles to see this *themis* broken?
+
+Writing Homework: None.
+
+Reading Homework: *Iliad,* Book II.1-572, 897-980; Book III (pp. 99-115, 124-144).
+
+## Class IV: “Cities That I Love Best of All:” An Introduction to Homeric History
+
+Power Point Slides: [Homeric History](https://1drv.ms/p/s!AoLqKKtM9fi8g-4xqGfc9FYcHmcUVQ?e=9wTeOD)
+
+Handouts: [Homeric Characters Worksheet](https://1drv.ms/b/s!AoLqKKtM9fi8g-4yTh0oMD7Np_K3gA?e=9LoY2Y)
+
+Start class with a reading quiz and a question session, as is usual.
+
+I begin the class with an overview of “Homeric question,” briefly relating both the traditional story of Homer’s origins and Milman Perry’s discoveries in Serbia on the nature of epic poetry. The work of Perry and subsequent scholars suggests that the *Iliad* was child of many voices, the end product of centuries of oral transmission. Its final form was probably secured in the 700-600s BC, and most of the technology, art, and so forth described in the poem matches the archeology of this period. But hidden in the *Iliad* are remnants of an earlier era. The third slide of this presentation includes an image of a [boar tusk helmet](https://en.wikipedia.org/wiki/Boar%27s_tusk_helmet) dug up from a 14th century BC archaeological site and a passage from the *Iliad* describing this same sort of helmet. Its appearance in the narrative would be something like a galleon from the Spanish Armada appearing in a World War II drama.
+
+What do we know about that Greece, Greece as it was during the supposed years of the Trojan War, the Greece where noble warriors wore boar-tusk helmets? I spend about 15 minutes outlining what we know about Mycenaean civilization through archaeological discoveries: the grandeur of their palaces, how they fought, their role in an entire ecosystem of Near Eastern civilizations. But most of all I focus on the mystery of their fall, the “Bronze Age Collapse” that littered the Greek isles with Mycenaean ruins, ruins that would have towered over the humble abodes of “Dark Age” Greece (pictures of Dark Age archaeological finds are included in the slides to drive home this point).
+
+I then have students read Book IV.35-62\. Here Hera declares that in exchange for the destruction of Troy, she will allow Zeus to destroy Argos, Sparta, and Mycenae without complaint. These three cities were devastated in the Bronze Age collapse. This gives us another way to think about the *Iliad.* Post-apocalyptic fiction is a popular genre with high schoolers. But if you actually lived in a post-apocalyptic setting… what would your fiction be about?
+
+Homer’s Greeks lived in the ruins of a golden age. They had forgotten how to write and read, but they still remembered a time when the Aegean was full of great cities, wealthy kings, and enormous armies. The *Iliad* portrayed that golden world as it was imagined hundreds of years later—and explained why this golden age was no more. It is a true piece of post-apocalyptic fiction.
+
+For the second hour of this class, I have the students divide up into small groups of five to six each for a group project: the “Homeric Characters” assignment. The assignment handout explains the details of this assignment sufficiently, so I will not describe it at length here. Students will not be able to complete this assignment before the class period ends, but they *will* be able to coordinate how they will divide up the labor and will be able to ask any questions they have about the passages they have been assigned. This is a two-purpose assignment: first, it calls attention to Homer’s skill at effective characterization in miniature scenes (many of which we will not otherwise read) and teaches the students to read this text with the careful attention the *Iliad* deserves. Secondly, it gives students a strong sense of the “who’s who” of the story. As we often skip several books between readings, a strong familiarity with the character of Homer’s characters is helpful.
+
+Homework Reading: *Iliad* Book IV (pp. 145-164)
+
+Writing Homework: [Homeric Characters Worksheet](https://1drv.ms/b/s!AoLqKKtM9fi8g-4yTh0oMD7Np_K3gA?e=9LoY2Y)
+
+## Class V: “Where Men Win Glory”: Understanding Ancient Battle
+
+Power Point Slides: [Ancient Warfare](https://1drv.ms/p/s!AoLqKKtM9fi8g-4uGUMoSikAF6AZLQ?e=akyjgm)
+
+Handouts: N/A
+
+Start class with a reading quiz and a question session, like always. They have just read Book IV, which is the first book of the *Iliad* that includes scenes of pitched battle. I remind the students that this is only one of a dozen books devoted to this topic. Today’s class is devoted to understanding the logic of Homeric battle.
+
+I start by having the students read a short passage from a battle scene later on in the *Iliad* (Book XI, lines 253-309; pp. 303-5). This short passage is not relevant to the broader plot of the epic; in fact, in our homework reading we will skip Book XI altogether. One of the characters involved in this battle scene we know: his adversaries, the brothers Iphidamas and Coon, will be unfamiliar to us. They do not appear outside these three pages. I give the students several minutes to read this passage, then ask them to discuss in their tables the following questions:
+
+*   What sticks out most to you in this passage? Is there anything unexpected about the way Homer describes these warriors or their fighting? 
+*   What does this scene have in common with the battle scenes you read in Book IV?
+
+Students often identify the lines that Homer spends narrating Iphidamas’ courtship as an unusual inclusion: isn’t this supposed to be an action scene? Why this aside? This is a standard Homeric trick. A new character, one who will almost always be killed a few lines after he appears, is introduced with a vignette from his past life in times of peace.
+
+Imagine, I say, the following scenario: you boot up a game like *Call of Duty.* But just before your bullet kills one of your enemies, the action suddenly pauses. You now have to play through a short visual novel, where you see the childhood or the wedding of the NPC you are fighting. Just when the scene ends, you return to the battle, your foe dead at your feet.
+
+What would it feel like to play that game? Why does Homer force us through an analogous narrative trip every time one of our heroes gets into a fight?
+
+Just as significant: Homer gives this honor to both the Greeks and the Trojans. Homer was a Greek. All of these vignettes of Trojan domesticity, I told my Chinese students, would be as if the WWII dramas on Chinese television gave little domestic stories for each Japanese soldier the communists killed!
+
+There are two explanations for all of this. The first, and perhaps the more likely for students to articulate on their own, is that these scenes humanize the enemy and illustrate the tragedy of war. But this is not the entire story. Read with the students Book IV, lines 256-8\. Homer calls battle the place “men win glory,” and it is for such glory Agamemnon joins battle. “Glory” is also why, at the beginning of Book IV, the Trojan warrior Lyacon breaks the truce and restarts the war. Emphasize that by recording the unique stories and names of otherwise interchangeable warriors, Homer is giving these warriors the renown they are fighting for. This is what battle *means* for the Homeric warrior—it is their chance to be remembered by the story tellers of the future.
+
+The rest of the class is devoted to *how* battle was fought in the Homeric age. (Much of the material for this section is drawn from Phillip Sabin’s journal article “The Face of Roman Battle;” see my post “[Pre-modern Warfare Was Absolutely Terrifying](https://scholars-stage.blogspot.com/2015/10/pre-modern-battlefields-were-absolutely.html)” for a summary). As part of this presentation I show [the first few minutes of the fight between Achilles and Hector in the 2004 film *Troy*](https://1drv.ms/v/s!AoLqKKtM9fi8g-4tHfi2nKxz9ic_eQ?e=hiUnVw) (I cut the scene off before Hector’s death). How does this fight differ from those we have been reading in the *Iliad*? The answer is fairly obvious: action movies like *Troy* imagine fighting as an elaborate exchange of a dozen blows, parries, and counter attacks. In the *Iliad* combat is never like that. In the Book XI example which we began class with, Agamemnon is attacked by a spear thrust that fails to dent his armor. He pulls the spear aside and cuts down the man who speared him. That is it! There is no long exchange of blows. The action is almost always decided by the success or failure of the first thrust.
+
+This is how pre-modern conflict actually worked. To drill in this point I show the class a few clips from modern HEMA competitions. It is obvious from these clips that most duels were “settled” within a few seconds of being joined together. Melee battle were a series of four to seven second engagements, each of which could end your life.
+
+Understanding this, I tell the class, helps us understand the psychological impact that battle has on the *Iliad’s* characters. Ancient battles were not prolonged hackathons where a soldier on the front line meets warrior after warrior in an endless press. This was physically too tiring to have ever happened, but more important still, it was *psychologically* too demanding. Exposing yourself to multiple multi-second death matches was *terrifying.* And so few soldiers did this. In most ancient battlefields the majority of deaths come to an army in rout: the easiest people to kill are those running away. The goal of ancient war, then, was to terrify the enemy into flight. That required extreme bravery on the part of leaders (like the main characters of the *Iliad*), whose job was to either goad their terrified compatriots into a charge by rushing the enemy line themselves, or who instead would try to rush forward to stop the leaders of an enemy charge before their forces had built up momentum. If you read the *Iliad* carefully you will see the most battle scenes take place in this framework, with one side leading an onslaught, and the other side in flight.
+
+End the class by reminding students how much gumption it would take to play this role: leading a charge or counter-charge were acts of incredible, even super-human, bravery. Little wonder characters in the *Iliad* spend so much time goading each other into action! No surprise they see divinity as the source for the courage hand-to-hand combat demands! No wonder the *Iliad* exults in men who rush gladly into battle! We honor people who get into Harvard or who make a lot of money: the ancients honored those who did something far harder.
+
+Writing Homework: N/A
+
+Reading Homework: *Iliad,* Book VI (pp. 195-214).
+
+# WEEKS 3-4: FINDING MEANING IN MORTALITY
+
+## Class VI: The Homeric Homefront
+
+Power Point Slides: N/A
+
+Handouts: N/A
+
+Start class with a reading quiz and a question session, like always. You are very likely to deal with some questions about Glaucus and Diomedes. I usually take a few moments to summarize what happened in Book V—the crazed rampage of Diomedes, where Diomedes become so enthralled that he attacks all around him indiscriminately, going so far as to attack the gods on the battlefield himself. What a contrast with his behavior in Book VI. If this moment of comity seems out of place in the carnage of the *Iliad* perhaps it is meant to suggest that even for the beserker, peace is an option.
+
+The rest of the class is spent considering two scenes: Hector’s meeting with Paris, and Hector’s meeting with Andromache. If time is available, we will read the first episode as a class (p. 206-208, lines 380-438). Questions I like to ask:
+
+*   Do you sympathize with Helen?
+*   What motivates Hector? What motivates Paris? 
+*   Why is this scene included in the epic?
+
+We then will *definitely* read the scene where Hector meets with Andromache, one of the most stirring in the book. This is the central event of this class. I will usually assign somebody to be Hector, someone to be Andromache, and someone to be the narrator for this scene. I will pick out particularly exuberant students for this purpose. Together then we will read p. 208-212 (lines 462-600). I will repeatedly stop them as we go to ask questions to the class at large.
+
+I will begin by re-iterating something interesting first mentioned in last class: the Trojans are the Greek’s enemies. We now get a glimpse of the Greek’s enemies at home, with their children and wives.
+
+But there is something else for them to watch for: Andromache is not just lamenting the sadness of war—she offers Hector a choice. She claims that he does not need to go out to field of battle on the plains of Troy. I ask students to look for that suggestion (lines 510-520), be ready to summarize what it is, and what the main reasons she offers (lines 480-490; 508-512) for taking it. It is especially worthwhile to discuss her opening remark: “Reckless one, my Hector—your own fiery courage will destroy you!” (line 484). What does she mean by this?
+
+Lines 520-230 are Hector’s answer. Andromache never replies—do you think she finds his reasoning convincing? If time allows, it may be worth while to take the class back to Sarpedon’s rebuke of Hector on pg. 180 (lines 540-565) as context for Hector’s reasoning. Does his position as commander of the Trojan coalition demand that he lead the  Trojan armies out to meet the Greeks? What might Hector fear will happen if he doesn’t? (Again, refer to page 180). What does Hector mean when he says he has “learned it all too well?” What has he learned, exactly? Why “too well?””
+
+What does the class think of Hector’s digression on lines 534-555? What does it tell us about Hector’s priorities? In lines 566-574 he offers a prayer to Zeus for his son. What does he wish for? What does it mean to Hector for his son to be “first in glory?” Do you think being first in glory will actually bring “joy to his mother’s heart?” What do you think Andromache wishes for her son? Do you see the tension between his desires for his son and his decision to rejoin the battle?
+
+What do you think of Hector’s parting claim that fate “is born with us the day we are born?” Does Hector really believe this, or is he just saying this to comfort his wife? Do you think Andromache believes it? Would Hector behave differently if he believed something different?
+
+There are many different ideas and emotions present in these scenes, and students will be quick to catch a fair number of them. Multiple students remarked to me that this book was the first time they felt like they were dealing with “real humans.” But one of the important things happening in this chapter will likely escape student’s notice unless you explicitly point it out. We have spent the last two weeks discussing the Greek honor culture and its imperatives. Now we see that characters in the *Iliad* are starting to question these imperatives themselves. Andromache’s pleadings are a protest against the culture of glory and honor. In the next reading we will see these rather subtle pleadings morph into an all out assault.
+
+Writing Homework: N/A 
+
+Reading Homework: *Iliad,* Book IX (pp. 251-276).
+
+## Class VII: Honor Upturned
+
+Power Point Slides: N/A
+
+Handouts: [Seminar Preparation Paper Guidelines](https://1drv.ms/w/s!AoLqKKtM9fi8g-5gJYaJyn8twNgENA?e=Ifn4cS);
+
+Start class with a reading quiz, but hold the questions to the end.
+
+Begin by reading the conversation between Sarpedon and Glaucus in Iliad XII.323-381 (pp. 334-335). Tell students that this passage is one of the most famous in the *Iliad*; it is a statement that explains why many of the warriors in the *Iliad* are fighting. Ask them to read it and then as a small group come up with a two sentence summary of why these two Trojans warriors agree to fight. Have each table share what they have written with the class.
+
+Suggest that this is about more than war—Sarpedon and Glaucus have articulated a philosophy of life. They recognize something we like to forget: *you shall die.* Every single one of us in this room will die, I tell the students. This is what makes us and the human characters of the *Iliad* different from the Olympians—the Olympians neither die, nor age. Time’s winged chariot does not press them on. But precisely because they live forever, the gods’ actions are of little consequence. Their conflicts never amount to anything more than another turn in an endless round of squabbles. But for us it is different. Our time on Earth is limited: how we spend that time matters. Every decision we make is pregnant with great meaning.
+
+Sarpedon and Glaucus’s response to this predicament is stirring. They look at the face of death and say: we shall die, so let us live for glory **now** before it is too late to do so!
+
+That is one way to face the closing of the day. In Book IX, Achilles suggests another.
+
+As a class we will read Achilles’ logic, starting with p. 261-263 (lines 373-419; “Royal son of Laertes….He’ll never win me over!”). Then read p. 264-265 (lines 450-505; “Go back and tell him…. come on me quickly”). Finally read p. 271-72 (lines 730-756; “But you, you wipe such thoughts… sail home or hold out here”).
+
+After you have read this back and forth, pose the following questions to the class:
+
+*   How is this Achilles different from the Achilles we met before? How is his philosophy different from that of Sarpedon and Glaucus?
+*   “The same honor waits for the coward and the brave. They both go down to death.” Why does Achilles bring this up? What is the relevance here to the request made by his friends?
+*   Why don’t Agamemnon’s gifts placate Achilles? Could *anything* placate Achilles? Is this just about the insult, or is there something more?
+*   In lines 497-505 Achilles says he has been offered a choice. Is this choice only offered to Achilles, or is it more general? If you had to translate this choice into our 21st century world, how would you do so?
+*   In line 741 Achilles declares that he does not need the honor of the Greek host, for his honor “lies in the great decree of Zeus.” What does Achilles mean by this?
+
+Homework Writing: Seminar Prep Paper #1 
+
+Homework Reading: N/A
+
+## Class VIII: Seminar #1
+
+Power Point Slides: N/A
+
+Handouts: N/A
+
+This seminar discussion covers the entire *Iliad* up to Book IX. While the discussion ultimately will be driven by student questions and concerns, the most stimulating discussions I have experienced centered on the following questions:
+
+*   Do any of the characters in the *Iliad* deserve the epithet “hero?” Which ‘hero’ do you personally find most sympathetic? Why?
+*   Is ‘glory’ worth it? We have seen arguments presented on both sides of the question. Whose are the more convincing?
+*   Can we use the word ‘selfish’ to describe any of the main characters of the *Iliad*? Is Achilles’ decision to forsake battle a selfish one? Was Hector’s decision to *join* battle selfish? Or would it have been more selfish for him to stay within the walls with Andromache? How about Paris’ decision to stay with Helen instead of return immediately to battle?
+*   What aspect of the *Iliad* do you think is most relevant to modern day concerns?
+
+End the class by briefly summarizing what happens between book IX and book XVI, where the next reading begins.
+
+Homework Writing: N/A.
+
+Homework reading: *Iliad,* Book XVI, XVIII.1-546 (pp. 412-442; 467-483).
+
+# Weeks 5-6: The Descent and Redemption of Achilles
+
+## Class IX: “The Gods Are Hard To Handle:” What are the Homeric Gods Good For?
+
+Power Point Slides: N/A
+
+Handouts: “[Scholarly Takes: The Berserker State](https://1drv.ms/w/s!AoLqKKtM9fi8g-5AUcUOdkenK5W1rw?e=nfM2kK);” “[What to Make of the Homeric Gods](https://1drv.ms/w/s!AoLqKKtM9fi8g-5BQQ0jUU0T08gLvg?e=RNbsb2)“
+
+Begin this class with the usual quiz and question time. Questions will likely revolve around the relationship of Achilles and Patroclus. Answer these questions as they are asked, but hold off extended discussion of the question for the next lesson. This lesson is about the Homeric Gods.
+
+Print out six copies of the “[What to Make of the Homeric Gods](https://1drv.ms/w/s!AoLqKKtM9fi8g-5BQQ0jUU0T08gLvg?e=RNbsb2)” handout. This handout includes six passages, each about a page long, written by various scholars of literature, psychology, or history. Each attempts a different interpretation of what the Homeric gods “mean.” Table #1 should receive six copies of passage #1, table #2 should receive six copies of passage #2, and so forth. Give students several minutes to digest the passage they have been given and discuss it among themselves. They need to choose someone who will be able to explain their table’s understanding of this passage to the entire class.
+
+They will not actually be explaining their passage to the *entire* class, however. Instead, each table must send all of their students except the chosen explainer to all of the other tables (ideally this means one student sent out to one table each). Once students have traveled to the new table, the chosen explainer will teach his or her roving guests about the ideas in the passage they have been given, and will end his or her presentation by giving the guests a copy of their passage. When this is done the roving students return to their tables. This process should take about ten minutes. Now every table should have a copy of every passage, as well as one student who has discussed the passage’s meaning before. For the next ten minutes each student will present what he or she has learned to her original table. By the time this ten minutes is over, ever student in the class will have heard the arguments of every scholar. At this point I usually ask the tables to vote on which interpretation they find most convincing.
+
+This activity may seem overly complicated to some teachers. I admit it sort of is. However, this is a useful sort of complexity. Simply asking students to read all of the passages by themselves leads to lower levels of comprehension; asking students to present to each other the scholars’ arguments puts pressure on them to carefully read and consider their ideas. Students also find this sort of activity a refreshing change of pace from normal lectures or close readings. I usually try to do one of these ‘roving table’ activities once a month or so (later on in the “War Literature” course I will repeat this activity with a series of WWI war poems).
+
+The last five-to-ten minutes should be spent counting vote tallies and discussing the merits and weaknesses of the various interpretations. If time allows I pull some examples from the last reading (regarding the story of Patroclus) to discuss as case studies, though usually the activity takes enough time to make this unnecessary.
+
+Homework Reading: *Iliad,* Book IXX, XX.403-end; XXI (pp. 488-503; 515-540); “Scholarly Takes: The Berserker State” 
+
+Homework Writing: N/A
+
+## Class X: “You and I Alone:” Friendship, Loss, and Rage on the Battlefield
+
+Power Point Slides: N/A
+
+Handouts: [*Iliad* Essay Assignment](https://1drv.ms/w/s!AoLqKKtM9fi8g-5KFHZuMJyUVgs8Bw?e=rLbx4A)
+
+Before class begins draw on the blackboard a series of concentric circles. Label the outer circle “mankind.” The next circle in, “The Argives.” The next circle in, “Friends-in-arms.” The final circle, “Patroclus and Achilles.” Last of all, in the very center of the circle, leave an unmarked dot.
+
+After the standard round of quizzing and questions, explain that in today’s class we return to Achilles. Achilles is not the same person he once was. In literature departments they would call Achilles a “dynamic” character. His personality and motives are changed by the events of the story.
+
+Ask the students to ponder this question (first in their table, later with the whole class): What motivates Achilles now? How is this different from the Achilles of Book IX? Book I?
+
+If none of the students brings it up, ask the class to open up to Book XXI.79-135 (“He ducked… drench the earth”). This is the scene where Achilles refuses to spare the life of Lycaon, the man who he had once taken captive before. In this speech Achilles says once “it warmed my heart a bit to spare some Trojans” but now “not a single Trojan flees his death.” Why? What has happened to Achilles?
+
+The obvious answer: Patroclus is dead. But why would this drive Achilles to barbarity?
+
+Tell the class that the diagram you have put up on the board is one way to conceptualize what has happened to Achilles. At some point in the past—say when Lycaon was taken captive—Achilles had affection for all mankind, respecting even those he fought. But war, by necessity, often forces those who fight it to view their enemies as alien, or somewhat less than human.
+
+Erase the outer circle.
+
+That still left Achilles with a large community of fellow soldiers, the army of the Argives. But his connection with this community was broken when Achilles was humiliated in the council of Book I.
+
+Erase the next circle.
+
+At this point Achilles still felt comradeship with the other commanders and close friends, who fought by his side for many years. But this comradeship now has conditions. Have the class read Book IX.748-750\. What would cause Achilles to “hate” these old friends?
+
+Have a student read aloud Book XVI.113-119 (“Oh would to god… you and I alone!”). Note how Achilles puts the Argives on the same plane as the Trojans.
+
+Erase the next circle.
+
+Now the only circle left is the one labeled “Achilles and Patroclus.” And indeed, that is what our passage says (“You and I Alone!”). Achilles’ entire world has been reduced to his relationship with one man, the one comrade to have stayed loyal to him as the Greek ships burn.
+
+And now that man is dead.
+
+Erase the final circle.
+
+Have one of the students turn to page 502 and read lines 498-500 (“I am destined to die here…”). Remind students that this sentiment is the polar opposite of Achilles’ pronouncements in Book IX. The Achilles of Book IX said that nothing at Troy was worth dying for; the Achilles of Book XX says that nothing is worth living for.
+
+I then remind students of the handout they read for their homework, an excerpt from Jonathan Shay’s *Achilles in Vietnam.* He describes “devoid of fear” and “inattentive to own safety” as common characteristics of soldiers he treated that ‘went berserk’ in Vietnam. For the remainder of the class period, I have the students, as tables, search for other examples from the last few chapters (with page and line citations) that match Shay’s description. They write these down on a piece of paper and turn it in at the end of class.
+
+Homework Writing: N/A
+
+Homework reading: *Iliad,* Book XII (pp. 541-559); *Iliad* Essay Assignment
+
+## Class XI: “No Oaths Between Men and Lions:” Achilles Unleashed
+
+Power Point Slides: [Achilles Unleashed](https://1drv.ms/p/s!AoLqKKtM9fi8g-5LKQhnH5jNr7zDOw?e=PLHZYb)
+
+Handouts: N/A
+
+I usually begin this class (after the usual quizzes and questions) by asking for a few reactions to this chapter, one of the darkest in the *Iliad.* What did students feel as they read it?
+
+Last class we discussed how Achilles became progressively isolated from the society of mankind. With each step away from his community Achilles does not just lose touch with humanity—he loses some *of* his humanity. Turn to the slide that has the following set of readings. Have each table assign a different one of their members to read one of the following passages and report to the table what they read:
+
+Group I: Book 19\. 246-256, 404-420 (p.495, 499-500)
+
+Group II: Book 19.427-436 (p. 500)
+
+Group III: Book 19.478-501 (p. 500-501)
+
+Group IV: Book 22.9-25 (p. 541-2)
+
+Group V: Book 22.406-410; (p. 553); Book 4.35-42 (p.146)
+
+The tables should be given about six minutes to read the passages and explain what they have read to each other. Ask the tables to discuss what these vignettes have in common. Most will draw the following connection: each depicts Achilles in suprahuman situations: eating the food of the gods, wearing god-given armor, challenging gods to battle, uttering god-like curses, and being forewarned by god-given prophecies. You may connect these incidents with other ones in the story (such as Achilles’ attack on the river). Tell the class that through passages like these the Homeric poet dramatizes Achilles alienation from mankind. Achilles is no longer portrayed as human, but as something else altogether—something more than a human (“godlike”), or something less than one.
+
+The latter is how Achilles sees himself. Turn to the slide with this quote from p. 550 of Book XXII:
+
+> Hector, stop! You unforgivable, you… Don’t talk to me of pacts. There are no binding oaths between men and lions— Wolves and lambs can enjoy no meeting of minds— They are all bent on hating each other to the death. So with you and me.
+
+Ask the class: if there are no oaths between men and lions, which of these two is the man, and which is the lion?
+
+One way to think about the *Iliad* is that it tells the story of Achilles’ fall and redemption. Ask the class to open to Book 24\. After briefly summarizing the contents of Book 23, read lines 1-21, where Achilles desecrates Hectors body. Even after killing Hector, Achilles rages on. He remains beyond the pale of humankind. But if vengeance could not salve Achilles’ soul, what could? How can Achilles become human again? That is the subject of the final book of the *Iliad.* Ask students to pay special attention to this question (and to scenes that show his return to humanity) as they read this book for their homework.
+
+I usually conclude this class by taking questions about the essay assignment handout that I gave students last class. This inevitably takes up a great deal of time, so it is best to keep the book discussion section of this class concise.
+
+Homework Writing: Seminar Prep Paper #2 
+
+Homework Reading: *Iliad* Book XIII.1-328; Book XIV (pp.559-568; 588-614).
+
+## Class XII: Seminar #2
+
+Power Point Slides: N/A 
+
+Handouts: N/A
+
+I do not give a lecture on the final book of the *Iliad.* If properly prepared in the class before, most students pick out the things I would call their attention to without explicit direction on my part.
+
+Some of the more fruitful discussion questions I have seen in this seminar:
+
+*   Is the reconciliation of Priam and Achilles believable? Why does Achilles treat Priam so generously? Why does he return Hector’s body? 
+*   Why does the *Iliad* focus on these two weeks of the war? Why does it start and end where it does? Would the story have been better if it included the Trojan horse, the sack of Troy, and all that? 
+*   Now that you have read the entire epic: How strange do you find Homer’s characters? Are the emotions in this story universal, or particular to a specific time and place? 
+*   Is the *Iliad* pro-war, anti-war, or something else? 
+*   Does the *Iliad* have a message? If so, what is it?
+
+Homework Writing: *Iliad Essay* 
+
+Homework Reading (if part of a larger “War” course): *All Quiet on the Western Front*
+
+# Appendix: Other Works Read in the War Literature Class
+
+I won’t do a class by class breakdown of the rest of this course. However, I am happy to list the other books, poems, films, short stories, and essays we read in the class. I designed two units to follow the *Iliad* unit: “The Soldier’s Perspective” and “The Civilian’s Perspective.” My classes were nine weeks long; had I another three weeks I would have added a fourth unit titled “The Leader’s Perspective.” The material for that section remain tentative, but I likely would have watched the film [*Fog of War*](https://amzn.to/34y5JVC) as a bridge and read the book [*Killer Angels*](https://amzn.to/3vFjGNa) as the centerpiece of the unit.
+
+**Novel**: 
+
+ Erich Maria Remarque, [*All is Quiet on the Western Front*](https://amzn.to/3fwbqJP)
+
+**Poems**: 
+
+Rupert Brooke, “[The Soldier](https://www.poetryfoundation.org/poetrymagazine/poems/13076/the-soldier)“
+
+ Wilfred Owen, “[Dulce et Decorum Est](https://www.poetryfoundation.org/poems/46560/dulce-et-decorum-est)“
+
+ Siegfried Sassoon, “[Dreamers](https://www.poetryfoundation.org/poems/43169/dreamers)” and “[The Hero](https://poets.org/poem/hero)” 
+
+John McRae, “[In Flanders Field](https://poetrysociety.org.uk/poems/in-flanders-fields/)“
+
+Marjorie Pickthall, “[Marching Men](https://www.poetryfoundation.org/poems/44871/marching-men)”
+
+Charles H. Sorley, “[When You See Millions of the Mouthless Dead](https://www.poetryfoundation.org/poems/47427/when-you-see-millions-of-the-mouthless-dead)” 
+
+W.B. Yeats, “[An Irishman Foresees His Death](https://www.poetryfoundation.org/poems/57311/an-irish-airman-foresees-his-death)” 
+
+Julian Grenfell, “[Into Battle](https://www.poetryfoundation.org/poems/47261/into-battle)“
+
+**Essays**: 
+
+William Broyles Jr., “[Why Men Love War](https://classic.esquire.com/article/1984/11/1/why-men-love-war)” 
+
+Virginia Woolf, “[Thoughts on Peace in an Air Raid”](https://newrepublic.com/article/113653/thoughts-peace-air-raid)
+
+**Films: **
+
+[ *Korengal*](https://amzn.to/3fxDJHV) (dir. Sebastian Junger)
+
+[ *Grave of the Fireflies*](https://amzn.to/3fAHc8I) (dir. Isao Takahata).
+
+**Narrative nonfiction: **
+
+ John Hersey, [*Hiroshima* ](https://amzn.to/3fA89t7)
+
+Selections from [*Japan at War: An Oral History*](https://amzn.to/3wGjUE3)**

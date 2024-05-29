@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:23:43
+-->
+
+# Remote work morphs into elite status symbol for wealthy, college-educated | Fortune
+
+> 来源：[https://fortune.com/2024/01/29/remote-work-wealth-education-inequality-white-collar-jobs/](https://fortune.com/2024/01/29/remote-work-wealth-education-inequality-white-collar-jobs/)
+
+Before the days of the punch buggies and the Toyotathon, Americans were stuck with the objectively slower, more austere transportation options of horses and sail boats. With the passage of time, minivans with bumper stickers and [Hyundai](https://fortune.com/company/hyundai-mobis/) Sonatas eclipsed trusty ole steeds. But a funny thing happened along the way, as wealthy hobbyists turned dressage and rowing into status symbols of a life of leisure spent mastering the old ways. Could the world of work be the same?
+
+In 2020, remote work was every bit as revolutionary as the technologies of the horse or the boat, and in an accelerated version of the transportation revolution, it’s rapidly shaping up as a commodity that the wealthy save for themselves. 
+
+Just a few years after most knowledge workers shifted to remote work, it’s now mostly wealthy, college-educated employees who are still being allowed to work from home, according to a newly released poll from [Ipsos Consumer Tracker](https://www.ipsos.com/en-us/news-polls/consumer-behavior-time-covid-19). The survey of 1,110 adults, conducted in mid-January, further supports a conclusion that the labor market has split into separate groups, based on one’s sector, pay, and location. 
+
+“During the pandemic, we saw dramatic disruptions to the world of work—the first in a generation,” Clifford Young, president of polling and society at Ipsos, tells *Fortune*. “Some white-collar workers—who tend to be wealthier and college degree holders—rapidly switched to remote work. The disruptions and discrepancies the pandemic produced are still with us today and are reflected in the data.”
+
+While a whopping 63% of employees that make $100,000 or more report being able to work from home sometimes or always, only 38% of those making $50,000 to $100,000 have the same benefit. That number dwindles to only 32% for workers making under $50,000\. People with higher education are also more likely to be able to work hybrid or remotely (between 59% for those with college degrees and 41% for those without).
+
+Part of what might be happening is that well-paid senior employees are making sure that the boat still stays afloat for them. In other words (despite narratives that suggest otherwise), bosses actually tend to [want to work from home](https://fortune.com/2024/01/03/bosses-prefer-remote-work-more-than-workers-survey/) just as much as their employees. While certain executives’ desire to [micromanage](https://fortune.com/2024/01/04/rto-policies-2024-tracking-employee-attendance/) at times outweighs this desire for personal flexibility, many upper-level management have actually been staying at home and [pushing against RTO mandates](https://www.wsj.com/articles/remote-work-from-home-boss-d093a36c) more than their teams.
+
+And the more farms you see, the fewer remote work opportunities that are likely to crop up, as only 32% of employees in rural areas are able to work from home at least partially. That’s compared to 48% of city dwellers and 55% of suburbanites. It seems like at this point, remote work is synonymous with Panera Bread and labradoodles.
+
+Just like the shadows of pandemic behavior still fall over your behavior (e.g., how you might glare at someone coughing in the subway), it also clouds our workforce. Almost four years after COVID-19 first hit, many workers [continue to search](https://fortune.com/2023/10/23/office-workers-remote-work-over-money-quit-jobs/) for the remote opportunities that surged in 2020\. Getting used to the newfound flexibility many found they [preferred the new way of work](https://fortune.com/2024/01/26/return-to-office-job-satisfaction-financial-performance-study/) to their RTO mandates. That being said, the luxury comes with a price. Employees who work remotely were 35% more likely to be laid off this past year than hybrid or fully in-office employees, per an analysis of 2 million workers by Live Data Technologies, as first reported by the [*Wall Street Journal*](https://www.wsj.com/lifestyle/careers/layoffs-remote-work-data-980ed59d). 
+
+Meanwhile, the blue-collar field has made some gains in terms of stability and pay this past year, notably with UAW winning a [record-breaking contract](https://www.washingtonpost.com/business/2023/11/12/fain-uaw-contract-wins/) for its members from Detroit’s Big Three automakers. These employees aren’t usually able to work from home, sacrificing their health even during the height of the pandemic. Over in the service industry, many used their leverage to get better paying jobs and quit during the Great Resignation as conditions became too stressful. It seems as if now, even if they can’t work remotely, these employees are in a less precarious position.
+
+One thing appears to become clear: The chasm between the sectors in the workforce is likely to only get wider. “Looking ahead to the future, the differences between white-collar professionals—who tend to have more opportunity to work from home in some capacity—and blue-collar workers—who tend not to have that same flexibility baked into their roles—may widen the gaps between the haves and have-nots,” adds Young.

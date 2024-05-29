@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:13:58
+-->
+
+# Record number of Americans are homeless amid nationwide surge in rent, report finds - CBS News
+
+> 来源：[https://www.cbsnews.com/news/rent-homelessness-harvard-report-center-for-housing-studies/](https://www.cbsnews.com/news/rent-homelessness-harvard-report-center-for-housing-studies/)
+
+A growing number of Americans are ending up homeless as soaring rents in recent years squeeze their budgets.
+
+According to a Jan. 25 [report](https://www.jchs.harvard.edu/sites/default/files/reports/files/Harvard_JCHS_Americas_Rental_Housing_2024.pdf) from Harvard's Joint Center for Housing Studies, roughly 653,000 people reported experiencing homelessness in January of 2023, up roughly 12% from the same time a year prior and 48% from 2015\. That marks the largest single-year increase in the country's unhoused population on record, Harvard researchers said. 
+
+Homelessness, long a problem in states such as California and Washington, has also increased in historically more affordable parts of the U.S.. Arizona, Ohio, Tennessee and Texas have seen the largest growths in their unsheltered populations due to rising local housing costs. 
+
+That alarming jump in people struggling to keep a roof over their head came amid blistering inflation in 2021 and 2022 and as surging rental prices across the U.S. outpaced worker wage gains. Although a range of factors can cause homelessness, high rents and the expiration of pandemic relief last year contributed to the spike in housing insecurity, the researchers found. 
+
+"In the first years of the pandemic, renter protections, income supports and housing assistance helped stave off a considerable rise in homelessness. However, many of these protections ended in 2022, at a time when rents were rising rapidly and increasing numbers of migrants were prohibited from working. As a result, the number of people experiencing homelessness jumped by nearly 71,000 in just one year," according to the report.
+
+Rent in the U.S. has steadily climbed since 2001\. In analyzing Census and real estate data, the Harvard researchers found that half of all U.S. households across income levels spent between 30% and 50% of their monthly pay on housing in 2022, defining them as "cost-burdened." Some 12 million tenants were severely cost-burdened that year, meaning they spent more than half their monthly pay on rent and utilities, up 14% from pre-pandemic levels.
+
+[Homelessness a major issue in New Hampshire heading into primary 04:15](https://www.cbsnews.com/video/homelessness-a-major-issue-in-new-hampshire-heading-into-primary/)
+
+People earning between $45,000 and $74,999 per year took the biggest hit from rising rents — on average, 41% of their paycheck went toward rent and utilities, the Joint Center for Housing Studies said.
+
+Tenants should generally allocate no more than 30% of their income toward rent, [according](https://www.hud.gov/topics/rental_assistance) to the U.S. Department of Housing and Urban Development.
+
+Although the rental market is showing signs of cooling, the [median rent in the U.S. was $1,964](https://www.cbsnews.com/news/rent-apartment-fall-demand-cools/) in December 2023, up 23% from before the pandemic, according to online housing marketplace Rent. By comparison, inflation-adjusted weekly earnings for the median worker rose 1.7% between 2019 and 2023, government [data](https://home.treasury.gov/news/featured-stories/the-purchasing-power-of-american-households#:~:text=Real%20weekly%20earnings%20for%20the,in%202019%2C%20despite%20higher%20prices.) shows.
+
+"Rapidly rising rents, combined with wage losses in the early stages of the pandemic, have underscored the inadequacy of the existing housing safety net, especially in times of crisis," the Harvard report stated.
+
+[Elizabeth Napolitano](https://www.cbsnews.com/search/author/elizabeth-napolitano/)
+
+Elizabeth Napolitano is a freelance reporter at CBS MoneyWatch, where she covers business and technology news. She also writes for CoinDesk. Before joining CBS, she interned at NBC News' BizTech Unit and worked on The Associated Press' web scraping team.

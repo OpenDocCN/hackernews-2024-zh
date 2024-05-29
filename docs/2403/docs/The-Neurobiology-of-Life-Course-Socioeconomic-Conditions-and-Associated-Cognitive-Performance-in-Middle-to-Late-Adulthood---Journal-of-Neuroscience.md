@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:42:19
+-->
+
+# The Neurobiology of Life Course Socioeconomic Conditions and Associated Cognitive Performance in Middle to Late Adulthood | Journal of Neuroscience
+
+> 来源：[https://www.jneurosci.org/content/early/2024/03/07/JNEUROSCI.1231-23.2024](https://www.jneurosci.org/content/early/2024/03/07/JNEUROSCI.1231-23.2024)
+
+ ## Abstract
+
+Despite major advances, our understanding of the neurobiology of life course socioeconomic conditions is still scarce. This study aimed to provide insight into the pathways linking socioeconomic exposures—household income, last known occupational position, and life course socioeconomic trajectories—with brain microstructure and cognitive performance in middle to late adulthood. We assessed socioeconomic conditions alongside quantitative relaxometry and diffusion-weighted magnetic resonance imaging indicators of brain tissue microstructure and cognitive performance in a sample of community-dwelling men and women (*N* = 751, aged 50–91 years). We adjusted the applied regression analyses and structural equation models for the linear and nonlinear effects of age, sex, education, cardiovascular risk factors, and the presence of depression, anxiety, and substance use disorders. Individuals from lower-income households showed signs of advanced brain white matter (WM) aging with greater mean diffusivity (MD), lower neurite density, lower myelination, and lower iron content. The association between household income and MD was mediated by neurite density (*B* = 0.084, *p* = 0.003) and myelination (*B* = 0.019, *p* = 0.009); MD partially mediated the association between household income and cognitive performance (*B* = 0.017, *p* < 0.05). Household income moderated the relation between WM microstructure and cognitive performance, such that greater MD, lower myelination, or lower neurite density was only associated with poorer cognitive performance among individuals from lower-income households. Individuals from higher-income households showed preserved cognitive performance even with greater MD, lower myelination, or lower neurite density. These findings provide novel mechanistic insights into the associations between socioeconomic conditions, brain anatomy, and cognitive performance in middle to late adulthood.

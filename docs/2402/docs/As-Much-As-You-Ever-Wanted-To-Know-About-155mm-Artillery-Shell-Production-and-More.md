@@ -1,0 +1,210 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:57
+-->
+
+# As Much As You Ever Wanted To Know About 155mm Artillery Shell Production and More
+
+> 来源：[https://roblh.substack.com/p/as-much-as-you-ever-wanted-to-know](https://roblh.substack.com/p/as-much-as-you-ever-wanted-to-know)
+
+I am an engineer by training with the questionable instinct to run towards problems, especially problems that should not be problems. When I heard that the United States could not produce sufficient 155 mm artillery shells to supply Ukraine, I thought it sounded odd. I knew essentially nothing about artillery save I would want to be on the other end of one. I was generally aware [the industrial base for the defense industry had either atrophied or specialized or both](https://crsreports.congress.gov/product/pdf/R/R47751), depending on your perspective. Maybe this was just over-specialization? A dependency on a single part? Maybe it is a reliance on something exotic? Surely, there must be an explanation, something that would help me understand why we are so ill-prepared. Maybe there is some new technology that could be applied? This is a record of what I learned for the benefit of a more-educated citizenry and to save time for anyone else investigating the issue.
+
+* * *
+
+I approached this first to understand and second to know if-and-how I could help. My understanding is far from perfect—I went for breadth more than depth, often sacrificing detailed measurements in order to go fast. This is the short version.
+
+*   There is a shortage because our lone factory’s maximum capacity is 28,000 units (i.e. 28 ku) per month in the face of Ukraine asking for 600,000 units (600 ku) per month.
+
+*   The major shortage is with producing **steel casings** for the artillery shells.
+
+    *   The materials required to make these shells are relatively plentiful.
+
+    *   If you were to remove the casings bottleneck, other bottlenecks are possible. However, the next step (filling shells with explosive materials) is simpler to optimize vs. moving and precisely shaping a hundred pounds of steel at 2000°F. 
+
+*   There is no technological shortcut to producing more of these. 
+
+    *   3D printing is not viable. The metal itself is too precise to be printable with current technology, and the size of the shells would pose an issue.
+
+    *   Existing facilities use automation, but newer facilities will integrate more automation to improve quality and throughput.
+
+*   Producing shells requires specific machine tools to accommodate the weight/heat and specially forming the nozzle. The tools themselves are fairly common, especially the furnaces; however, a factory optimized for building shells won’t be effective at building much else.
+
+*   The existing production facility is part of a national landmark district, complicating expanding the existing facility.
+
+*   The Department of Defense’s (DOD) current primary path forward is building a new facility in Garland, TX with modern automation and inspection equipment. Assuming it is contributing to the goal of scaling to 100ku per month of production by early 2025, it will have taken 3 years since hostilities started and 2 years since a contract was awarded for it to be online.
+
+*   Building additional capacity is largely in DOD’s hands, as defense contractors are unwilling to build facilities without long-term (15 year) contracts. Today, the DOD typically awards 3-4 year contracts.
+
+Ultimately, I am left with the impression that the US’ solution to problems that require building things is to avoid it at all costs. Congress is loathe to fund munition supplies that are never used, and defense contractors are loathe to build factories that sit idle (and despite what Hollywood may portray, everyone wants deterrence, not actual conflict). Though Congress and DOD are funding a new facility, 3-4 years will have passed before it produces a shell, which is entirely unhelpful in a present conflict. Instead, the DOD is attempting to plug the Ukraine-sized hole with shells from allied nations including Canada, South Korea, Finland, and Germany—places where it’s still possible to build new things.
+
+I believe in alliances, especially when it is the free people of the world standing against aggression from authoritarians. What troubles me here, though, is that the US is pursuing that option because the domestic defense industrial base, inclusive of DOD and its contractors, is sclerotic. It treats time like it’s free. It does not respond quickly. It does not build or innovate around current problems, because of a combination of disincentives from DOD’s own structure and the pervasive challenges of trying to run a manufacturing business in the US. These are largely own goals. If the DOD would write longer term contracts. If we did not declare essential production facilities to be historic landmarks, strangling expansion. I did not even want to get into why GOCOs exist or the labyrinth of DOD procurement, but it is sufficient to say they both pose challenges to doing anything new or different. My solace is that in a real conflict, all of that red tape would be put to the side and people can get about building things. There will be a multi-year lag between when that crisis happens and how fast the factories can return, and I hope we can weather that storm.
+
+Could an entrepreneur change this equation? Anduril’s success is a testament that with the right application of influence and creativity, new companies can compete effectively against the prime contractors. I am less certain that is a possibility here for a few reasons. The primary concern is getting an ROI in 3-4 years on the capital required to build such a facility. You either need a technological edge that dramatically reduces the capital expense, or you need to be able to blend production with other commercial goods (i.e. dual use). For the former, I do not see a dramatically cheaper option unless there is some arbitrage on cheaper electric arc furnaces and presses. For the latter, 3D printing could be an answer, if the material properties existed. However, metal 3D printing companies are struggling with sales as-is, reflecting a lack of commercial demand for commercial 3D printed metal parts. Therefore, even with the steel needed, I am confident it would be a battle to keep them full the rest of the time. This only gets harder without a technological edge like 3D printing, as it would be a sub-scale, commodity steel mill likely optimized for an application with only one real customer.
+
+The rest of the post is specific research questions I had with the best quality of answers I could find and cited. Questions include:
+
+*   *What is the 155 mm artillery shell?*
+
+*   *How big is the gap between what we can produce and what is needed?*
+
+*   *What does the supply chain for 155 mm shells look like?*
+
+*   *Where’s the shortage?*
+
+*   *How are casings made?*
+
+*   *Can 3D printing help?*
+
+*   *What kind of tools are used in the existing process?*
+
+*   *What is the maximum capacity for the existing infrastructure?*
+
+*   *What’s the yield among existing producers? Can it be improved?*
+
+*   *Can they expand existing facilities?*
+
+*   *If they’re going to get to 100ku per month by 2025, how are they going to do it?*
+
+*   *How long does it take to set up a new plant? Why?*
+
+*   *The need for 155 mm shells is unique to European wars. Why worry about this if the risk is a war in the Pacific?*
+
+*   *In a direct conflict, what would we do?*
+
+If you see anything incorrect or do additional research, please let me know.
+
+* * *
+
+* * *
+
+Throughout the war in Ukraine, the 155mm shell has been a weapon of choice. Without air superiority, the 155 mm shell combines range, lethality, fire rate, and mobility to project force up to 20 miles. With small, cheap drones spotting for them, the army of Ukraine was able to consistently halt quantitatively superior Russian advances. 
+
+*Base bleed variant of a M795 155 mm artillery, shown for its diagram of a M795 shell. The base burner is a special variant that burns in flight, releasing gas that reduces base turbulence, extending the range of the shell. The bulk of the units shipped to Ukraine do not include the base bleed, but otherwise look comparable.*
+
+So what is it? It is a 3-part device consisting of a steel body, explosive filler, and a welded rotating band. It can also be fitted with different pieces of tech for specialized roles. The image above shows a variant with a base-burner attached, which extends the range. Other versions include a [GPS tracker on the nose](https://en.wikipedia.org/wiki/M982_Excalibur) to serve as a precision-GPS guided munition.
+
+* * *
+
+No defense department is going to say flatly what their true supply or demand is, so consider these numbers illustrative. 
+
+*   Ukraine claims they have productive uses of up to 600ku per month.
+
+*   Pre-Ukraine war, the US made 14ku per month.
+
+*   In February 2023, they claimed their primary production site is capable of 1,000,000 parts and components annually or 83ku parts monthly. 
+
+*   As of June 2023, the US was making 24ku per month.
+
+*   As of September 2023, the US was making 28ku per month. At the time, the DOD stated a [goal of making 100ku per month by early FY 2025](https://www.reuters.com/business/aerospace-defense/us-aims-make-100000-artillery-shells-per-month-2025-us-official-says-2023-09-15/), and it claims to be ahead of track towards that.
+
+Update: To be specific, I am focusing on the US production line. Note that the US also buys these shells from allies. Many allied countries can produce them and have shared stockpiles with Ukraine, including Canada, South Korea, the United Kingdom, Germany, and Norway.
+
+The supply chain for 155 mm shells starts in Scranton, PA at [Scranton Army Ammunition Plant](https://www.jmc.army.mil/Installations.aspx?id=ScrantonOverview), where the steel casings are made. [Iowa Army Ammunition Plant](https://www.jmc.army.mil/Installations.aspx?id=IowaOverview) is responsible for filling the shells with explosives.
+
+Both of these facilities are GOCOs—government owned, contractor operated. Essentially, the government owns the plant and the equipment, and the contractor bids for the right to operate it and sell the parts back to the government. General Dynamics runs Scranton AAP, while American Ordnance operates Iowa AAP.
+
+* * *
+
+Every media report of the shortage cites **casing production** as the limiting factor in US production.
+
+* * *
+
+The casings themselves used a special form of steel, called HF-1\. HF-1 has a fascinating history, winding through the National Academy of Sciences to Bethlehem Steel. 
+
+HF-1 is a high-silicon, high-carbon, high-manganese form of steel. The basic requirements of an artillery shell are that it must withstand great force to be launched, before another explosion breaks the shell into fragments. The first force—launch—requires a high yield strength, such that the metal won’t deform (yield) under that pressure. In the vernacular, yield strength = yeet distance, while the fragmentation characteristics of the metal relate to the lethality. HF-1 was selected because of how predictable it shatters while maintaining a high yield strength. Everything you could ever want to know about this steel and its competitors is available in a report that Bethlehem Steel put together in 1973: Producibility of Artillery Shells Made from HF-1 Steel available here: [AD0763988.pdf (dtic.mil)](https://apps.dtic.mil/sti/pdfs/AD0763988.pdf)
+
+Additionally, Military Times visited the factory and put together a good video of the process, minus the technical details but plus a lot of the operational details:
+
+Roughly, the process is:
+
+1.  Precisely cutting 20’ lengths of steel scrap into billets
+
+2.  Billets are heated to 2000 °F
+
+3.  Billets are pressed into shape
+
+4.  Billets are cooled and shot-blasted
+
+5.  Billets are polished
+
+6.  Copper bands are added
+
+7.  The billet’s nose is heated and formed to shape 
+
+8.  Metal is heat-treated again before an oil bath
+
+9.  Casings are polished and washed again
+
+10.  Casings are given threads to fit fuses and rifling of the barrels
+
+11.  Casings are treated with phosphate, painted, and set aside for transport
+
+    * * *
+
+Given my experience in the 3D printing industry, this question was top of mind. A core problem for DOD and the defense contractors is that they have to build custom production lines to surge demand. But if there’s no conflict in Europe, these machines are mostly idle. 3D printing is essentially a line designed to be changed much faster, as you can make many different shapes. In theory, with a fleet of metal printers, you could be making war components when necessary and making commercial parts in peacetime. They would almost certainly be more expensive than a dedicated production line, but if the US doesn’t want to pay the capital for it, at least this would be an option. Unfortunately, the short answer is no, 3D printing can’t help here, at least not with today’s technology. 
+
+I am not aware of any metal 3D printer capable of making HF-1 steel or any other high-silicon, high-carbon steel. Metal 3D printing is still pretty limited with some vendors offering questionable material properties that are not attempting to touch high-performance steels. It makes sense the machine vendors wouldn’t prioritize a metal without much commercial appeal.
+
+The other operative question is if a shell casing would fit in the build volume of a current 3D printer. Given the shells are 858 mm in length and 155 mm in diameter, they fit in the build chamber of Velo3D’s 1MZ printers (315x1000 mm and 600x1000 mm), though it looks like they exceed the existing build plate options. In that orientation, they would also have an extremely long print time.
+
+* * *
+
+The [Army overview page](https://www.jmc.army.mil/Installations.aspx?id=ScrantonOverview) for the facility lists the following:
+
+*   Multiple long stroke vertical hydraulic forge press lines
+
+*   Capability to produce large mortar projectiles
+
+*   In house metallurgical testingIn house metallurgical testing
+
+*   Over 120 hydraulic tracer and CNC lathes
+
+*   Machining capability exceeding current ammunition manufacturing requirements
+
+*   In house end-to-end production processes, no outsourcing requirements 
+
+*   Multiple automated paint lines 
+
+*   Multiple heat treat furnaces that austenitize, quench, and temper
+
+*From a 2017 brochure covering SCAAP’s capabilities: [Scranton brochure 2017 Final.pdf (army.mil)](https://www.jmc.army.mil/thumbnails/pdfs/Scranton%20brochure%202017%20Final.pdf)*
+
+* * *
+
+In February 2023, the US Army released some information about SCAAP: SCAAP is a leading producer of large-caliber artillery metal parts and components and can effectively and efficiently manufacture runs from small batch quantities to [more than one million annually](https://www.army.mil/article/263789/secretary_of_the_army_discusses_modernization_efforts_during_scaap_visit)”. 1mu annually would be a little over 83ku per month. Of course, in PR speak, they didn’t say they could make 83ku 155 mm shells per month—presumably they can make 83ku of something, maybe a mix of things, if all their lines were running flat out.
+
+Given the US was flatout at the end of 2024 at 24ku per month with existing infrastructure, I assume all of that was coming from Scranton AAP. In 2022, the US government authorized an additional $243 million to “[help ramp up production lines and help put in some new equipment that will allow the plant to be able to produce more shells at a higher rate](https://www.army.mil/article/263789/secretary_of_the_army_discusses_modernization_efforts_during_scaap_visit)”. I assume some of that money went to scale production from 14ku to 24ku per month, but I can only guess how much remains to be added.
+
+* * *
+
+If you ask in the right rooms, the answer you get is there is room for improvement. Allegedly, the site’s structure as a GOCO disincentivizes optimizing yield. The contractor gets paid the same for operating it as-is, and if the government wants to fix it up, they would have to put in the time and energy.
+
+* * *
+
+Beyond the existing retrofits, you must be willing to let go of some history. Scranton AAP started life in 1908 as a steam locomotive erecting and repair facility. With trains on the decline, it was established as an army ammunition plant in 1953 but sits in a larger national historic district and is listed on the National Registry of Historical Places. I imagine it is a spectacular testament to when we used to build stuff.
+
+* * *
+
+Build a new facility somewhere else. In [December 2022](https://www.army.mil/article/262594/army_contract_actions_to_increase_155_mm_artillery_shell_body_capacity), the US Army gave General Dynamics a contract to build a new facility in Garland, TX. Apparently they have a nice spot picked out in a […business park](https://www.dallasnews.com/business/real-estate/2023/05/10/mesquite-approves-new-general-dynamics-plant-to-make-artillery-casings/)?
+
+*Premium mediocre architecture for a premium mediocre industrial base*
+
+Update: I was preparing this from notes, and the Garland facility was my primary focus, as it’s still General Dynamics. However, the [Army’s press release](https://www.army.mil/article/262594/army_contract_actions_to_increase_155_mm_artillery_shell_body_capacity) from 2022 also mentions a facility in Ohio operated by IMT Defense Corporation. The two will compete for the contract.
+
+* * *
+
+The contract was awarded in December 2022, 10 months after hostilities broke out in Ukraine. It is now February 2024, and the DOD is saying we’ll be at 100ku by early 2025 with little other information about the ramp up.
+
+Considering they want to get to 100ku by early 2025 and SCAAP operating at full capacity at 28ku, the new facilities would add 72ku total. Assuming an even split, each would be producing 36ku or 130% the capacity of SCAAP each by early 2025, **more than 2 years after the contract was awarded and 3 years after hostilities began**.
+
+* * *
+
+“[What takes the longest is acquiring and installing the machine tools and the machinery that makes the explosives and things like that,” Bush said during a media roundtable.](https://taskandpurpose.com/news/army-increasing-155mm-artillery-shell-production/) Additionally, permitting is difficult, construction labor is tight at the moment, and there is no incentive to go faster, especially if US political will is waning in the face of Republicans viewing Ukraine’s independence as a gift to their rival Democrats.
+
+* * *
+
+The issues with 155 mm shell production are a case study of the issues that are endemic in the defense industrial base. In January 2023, Center for Strategic and International Studies [documented the many deficiencies in the defense industrial base](https://csis-website-prod.s3.amazonaws.com/s3fs-public/2023-01/230119_Jones_Empty_Bins.pdf). It includes all manner of missiles needed for such a conflict.
+
+* * *
+
+To be clear, we would continue to rely on our allies in all circumstances, as supply chains allow. For our own production capabilities, I imagine something that looked more like Operation Warp Speed to develop the COVID vaccine, where the government no longer treats time as free. We have many of the machines required in the US; these would need to be co-located to be dedicated to a war effort. The permitting issues would evaporate, and the DOD would award contracts of whatever length to justify the facilities. With the tools and raw materials, the next question is having the right mix of people and automation to operate the tools. In a crunch like this, you would likely have more people initially while you quickly automated what you could. Training those workers would be key.

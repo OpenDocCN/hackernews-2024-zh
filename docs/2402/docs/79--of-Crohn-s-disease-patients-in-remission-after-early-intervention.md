@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:23:58
+-->
+
+# 79% of Crohn's disease patients in remission after early intervention
+
+> 来源：[https://newatlas.com/medical/crohns-disease-treatment/](https://newatlas.com/medical/crohns-disease-treatment/)
+
+Giving an immunotherapy drug as soon as possible after diagnosis with Crohn’s disease significantly reduces complications, including the need for surgery by a factor of 10, a clinical study has found. Compared to conventional treatment, which favors delaying the use of advanced therapies, the results suggest re-thinking how the condition is treated.
+
+Falling under the umbrella of inflammatory bowel diseases (IBD), Crohn’s disease is a painful and disabling chronic disease characterized by flare-ups that can cause progressive bowel damage. The standard treatment for acute flareups is steroids to reduce inflammation. Advanced therapy, which includes immunotherapy drugs, isn’t usually given until after conventional treatments have failed. Despite treatment with the current regime, surgical resection of the bowel is still needed in 17% to 25% of patients within five years of diagnosis.
+
+Led by researchers from the University of Cambridge in the UK, a clinical trial examined the effectiveness of giving the immunotherapy drug infliximab earlier, as soon as possible after diagnosis. They employed what’s called a ‘top-down’ strategy, meaning the drug was given straight after diagnosis regardless of the patient’s symptom severity.
+
+“As soon as a patient is diagnosed with Crohn’s disease, the clock is ticking – and has likely been ticking for some time – in terms of damage happening to the bowel, so there’s a need to start on advanced therapy such as infliximab as soon as possible,” said Nuru Noor, the study’s lead author.
+
+Infliximab is a monoclonal antibody that enhances and improves the immune system by blocking tumor necrosis factor alpha (TNF-alpha), a protein cells produce during acute inflammation. The drug is injected intravenously into the bloodstream or under the skin. Although due to historical concerns about infliximab’s cost and side effects – including an increased risk of infection due to suppression of the immune system – the drug is currently only offered later in the disease’s course.
+
+The study's two treatment arms
+
+Noor et al.
+
+The researchers enrolled 386 patients aged 16 to 80 with active Crohn’s disease diagnosed in the previous six months. All patients were given an eight-week course of oral steroids, and then randomized into one of two treatment groups and followed for a year. The ‘top-down’ group received early infliximab combined with an immune system-modulating drug, whereas the ‘accelerated step-up’ group received conventional therapy focused on treating flare-ups.
+
+The results were striking: at one year, 79% of patients receiving the top-down treatment showed sustained steroid- and surgery-free remission, compared to 15% in the accelerated step-up group. The top-down group had fewer adverse events, including disease flare-ups and serious adverse events, than the accelerated step-up group. Ten participants in the accelerated step-up group required urgent abdominal surgery for their Crohn’s, versus one participant in the top-down group.
+
+Two-thirds (67%) of top-down patients had no visible ulcers when they underwent an endoscopy camera test at the end of the trial. ‘Endoscopic remission’, as it’s known, is important as it’s consistently been associated with a decreased risk of later Crohn’s disease complications. Most previous clinical trials have considered a therapy ‘highly successful’ if 20% to 30% of patients achieved an endoscopic remission. To top it off, patients in the top-down group also reported a higher quality of life and fewer hospitalizations.
+
+“Historically, treatment with an advanced therapy like infliximab within two years of diagnosis has been considered ‘early’ and an ‘accelerated step-up’ approach therefore ‘good enough’,” Noor said. “But our findings redefine what should be considered early treatment. We’ve shown that by treating earlier, we can achieve better outcomes for patients than have previously been reported.”
+
+Contrary to previous concerns, the researchers found no difference in the risk of serious infection between the two treatment groups, suggesting that infliximab was safe to give early. Moreover, infliximab is now available as a cheaper generic or ‘biosimilar’ drug in both the UK and the US. In Australia, treatment with the drug is subsidized through the Pharmaceutical Benefits Scheme (PBS).
+
+“Up until now, the view has been ‘Why would you use a more expensive treatment strategy and potentially over-treat people if there’s a chance they might do fine anyway?’” said Miles Parkes, corresponding author of the study. “We now know we can prevent the majority of adverse outcomes, including [the] need for urgent surgery, by providing a treatment strategy that is safe and becoming increasingly affordable.”
+
+While other anti-TNF drugs, such as adalimumab, work similarly to infliximab and are significantly cheaper, more research is needed to establish whether they’re clinically effective. The researchers are now analyzing the health economics to see whether the benefits of infliximab therapy outweigh its cost.
+
+The study was published in *[The Lancet: Gastroenterology & Hepatology](https://www.thelancet.com/journals/langas/article/PIIS2468-1253(24)00034-7/fulltext#seccestitle170)*.
+
+Source: [University of Cambridge](https://www.cam.ac.uk/stories/crohns-disease-therapy)

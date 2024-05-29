@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:00:39
+-->
+
+# Research shows that people who BS are more likely to fall for BS | Waterloo News | University of Waterloo
+
+> 来源：[https://uwaterloo.ca/news/media/research-shows-people-who-bs-are-more-likely-fall-bs](https://uwaterloo.ca/news/media/research-shows-people-who-bs-are-more-likely-fall-bs)
+
+People who frequently try to impress or persuade others with misleading exaggerations and distortions are themselves more likely to be fooled by impressive-sounding misinformation, new research from the University of Waterloo shows. 
+
+The researchers found that people who frequently engage in “persuasive bullshitting” were actually quite poor at identifying it. Specifically, they had trouble distinguishing intentionally profound or scientifically accurate fact from impressive but meaningless fiction. Importantly, these frequent BSers are also much more likely to fall for fake news headlines.
+
+“It probably seems intuitive to believe that you can’t bullshit a bullshitter, but our research suggests that this isn’t actually the case,” says Shane Littrell, lead author of the paper and cognitive psychology PhD candidate at Waterloo. “In fact, it appears that the biggest purveyors of persuasive bullshit are ironically some of the ones most likely to fall for it.”
+
+The researchers define “bullshit” as information designed to impress, persuade, or otherwise mislead people that is often constructed without concern for the truth. They also identify two types of bullshitting— persuasive and evasive. “Persuasive” uses misleading exaggerations and embellishments to impress, persuade, or fit in with others, while ‘evasive’ involves giving irrelevant, evasive responses in situations where frankness might result in hurt feelings or reputational harm. 
+
+In a series of studies conducted with over 800 participants from the US and Canada, the researchers examined the relations between participants’ self-reported engagement in both types of BSing and their ratings of how profound, truthful, or accurate they found pseudo-profound and pseudo-scientific statements and fake news headlines. Participants also completed measures of cognitive ability, metacognitive insight, intellectual overconfidence, and reflective thinking.
+
+“We found that the more frequently someone engages in persuasive bullshitting, the more likely they are to be duped by various types of misleading information regardless of their cognitive ability, engagement in reflective thinking, or metacognitive skills,” Littrell said. “Persuasive BSers seem to mistake superficial profoundness for actual profoundness. So, if something simply sounds profound, truthful, or accurate to them that means it really is. But evasive bullshitters were much better at making this distinction.” 
+
+The research may help shed light on the processes underlying the spread of some types of misinformation, which could have important implications for the fight against this growing problem. 
+
+The study, You can’t bullshit a bullshitter (or can you?): Bullshitting frequency predicts receptivity to various types of misleading information, authored by Littrell and Waterloo’s Faculty of Arts professors Evan Risko and Jonathan Fugelsang, appears in the *British Journal of Social Psychology*.

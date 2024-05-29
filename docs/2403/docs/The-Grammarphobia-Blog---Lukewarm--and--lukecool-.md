@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:43:55
+-->
+
+# The Grammarphobia Blog: ‘Lukewarm’ and ‘lukecool’
+
+> 来源：[https://www.grammarphobia.com/blog/2021/07/lukewarm-lukecool.html](https://www.grammarphobia.com/blog/2021/07/lukewarm-lukecool.html)
+
+Q: Why is there no antonym for ‘lukewarm’? There seem to be plenty of synonyms but I cannot find a commonly used antonym. Why not ‘lukecool’?
+
+A: We’d use “coolish” if we wanted a single word for somewhat cool—that is, the opposite of “lukewarm” when it means somewhat warm.
+
+As for “lukecool,” some creative English speakers are indeed using it as an antonym for “lukewarm,” though the usage hasn’t made it into any of the 10 standard dictionaries we regularly check.
+
+Urban Dictionary, a collaborative slang reference, has several “lukecool” entries, including a May 17, 2013, contribution defining it as “only slightly cold, flip-side of lukewarm.” The contributor offers an example: “The A/C system must need some freon, it is only lukecool in here.”
+
+The word occasionally appears in formal writing and speech. For example, Harold Leventhal, a US Appeals Court judge for the District of Columbia, has observed that nonlawyers “are ‘lukecool,’ if not hostile, to lawyers” (from “The Lawyer in Government,” a speech delivered Oct. 15, 1971).
+
+And the term appears twice in the March 1981 issue of the British journal Current Archaeology. This is from a report about archeologists’ reactions to a proposed reorganization of the British government’s oversight of ancient monuments and historic buildings:
+
+“Although inevitably there are some who are strongly against, the basic division is between those who are luke-warm and those who perhaps can be described as ‘luke-cool.’ At a straw vote taken at the Council for British Archaeology on January 8th, 32 declared themselves to be luke-warm as against 14 who are luke-cool, and this sort of split seems to be fairly general.”
+
+In *English Lexicogenesis* (2014), an analysis of word formation, the linguist D. Gary Miller notes that “some words do not exist despite an obvious need.” One of the gaps he mentions is “(*)*lukecool* in the face of *lukewarm*, a very old word in English.” The parenthetical asterisk indicates that “lukecool” is considered nonstandard.
+
+“Nothing but tradition makes *luke* acceptable as a qualifier of warmth but not coolness,” Miller writes. “Since only tradition stands in the way of *lukecool*, there is no reason it could not become generally accepted if enough people started using it.”
+
+Yes, the people who speak a language ultimately determine what’s acceptable. But we think Miller may be too dismissive of the long association of “luke” with “warm.”
+
+In fact, “luke” by itself originally meant moderately warm, so “lukewarm” is etymologically a puffed-up, or pleonastic, version of “luke.” And “lukecool” is etymologically an oxymoron, or contradiction in terms. However, most English speakers today are probably unaware of the warmish origin of “luke,” and may believe it means something like “sort of.”
+
+The *OED*’s earliest example for the adjective “luke,” which we’ve expanded, is from *Laȝamon*, or *Layamon’s Brut*, an imaginative chronicle of Britain written sometime before 1200\. In this gory excerpt, the King of Media kills Bedivere, one of King Arthur’s knights, by driving a spear through his byrnie, or coat of mail:
+
+“he heold on his honde; ænne gare swiðe stronge. / Þene gare he uorð strahte; mid strongen his maine. / and smat þene eorl Beduer; forn a þan breoste; / þat þa burne to-barst sone; biuoren and bihinde. / an-opened wes his breoste; þa blod com forð luke.” (“The spear he thrust forth with his strong might, and smote the Earl Bedivere in the breast, so that his byrnie soon burst, before and behind, and his breast was opened. The blood came forth luke.”)
+
+*Oxford* says the Middle English term *luke* appears to be derived from *hléow*, an Old English adjective meaning warm, sunny, or sheltered. The Old English word is the source of *lew*, a Middle English adjective that meant lukewarm and later appeared in the phrase *lew-warm*, which survives in dialectal English.
+
+As for the adjective “lukewarm,” it didn’t appear until the late 14th century. We found this example in a Middle English herbal, or treatise on the medicinal use of plants:
+
+“Resayve iij sponefull of þe juis luke warme, and yf þou haue evil stomake hit opyneþ hit” (“Take three spoonfuls of the juice lukewarm, and if you have an upset stomach it empties it”). From the *Lelamour Herbal *(1373), compiled from various Latin and Middle English sources by the Hereford schoolmaster John Lelamour (Sloane MS 5, folios 13-57, British Library).
+
+In the 16th century, according to the *OED*, the adjective took on the sense of “having little warmth or depth of feeling, lacking zeal, enthusiasm or ardour, indifferent.” The dictionary’s earliest citation is from a treatise by Thomas More:
+
+“Like as god said in thapocalips vnto the churche of Loadice. Thou arte neyther hote nor cold but luke warme, I would thou were colde yt thou mighteste waxe warme.” From *The Four Last Things*, written around 1522 and published posthumously (More was convicted of treason and executed in 1535).
+
+And in its indifferent sense, as you know, “lukewarm” has many antonyms, including “avid,” “eager,” “enthusiastic,” “excited,” “passionate,” and “wholehearted.”
+
+*Help support the Grammarphobia Blog with your* [*donation*](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QE7WNQPNVWUB8)*. And check out* [*our books*](https://www.grammarphobia.com/books.html) *about the English language and more.*

@@ -1,0 +1,52 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:33:09
+-->
+
+# US sues Apple for illegal monopoly over smartphones - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/21/24105363/apple-doj-monopoly-lawsuit](https://www.theverge.com/2024/3/21/24105363/apple-doj-monopoly-lawsuit)
+
+The US Department of Justice accused Apple of operating an illegal monopoly in the smartphone market in an expansive new antitrust lawsuit that seeks to upend many of the ways Apple locks down iPhones.
+
+The DOJ, along with 16 state and district attorneys general, accuses Apple of driving up prices for consumers and developers at the expense of making users more reliant on its phones. The parties allege that Apple “selectively” imposes contractual restrictions on developers and withholds critical ways of accessing the phone as a way to prevent competition from arising, according to the release.
+
+“Apple exercises its monopoly power to extract more money from consumers, developers, content creators, artists, publishers, small businesses, and merchants, among others,” the DOJ [wrote](https://www.justice.gov/opa/pr/justice-department-sues-apple-monopolizing-smartphone-markets).
+
+The government points to several different ways that Apple has allegedly illegally maintained its monopoly:
+
+*   Disrupting “super apps” that encompass many different programs and could degrade “iOS stickiness” by making it easier for iPhone users to switch to competing devices
+*   Blocking cloud-streaming apps for things like video games that would lower the need for more expensive hardware
+*   Suppressing the quality of messaging between the iPhone and competing platforms like Android
+*   Limiting the functionality of third-party smartwatches with its iPhones and making it harder for Apple Watch users to switch from the iPhone due to compatibility issues
+*   Blocking third-party developers from creating competing digital wallets with tap-to-pay functionality for the iPhone
+
+“Apple responded to competitive threats by imposing a series of ‘Whac-A-Mole’ contractual rules and restrictions”
+
+“For years, Apple responded to competitive threats by imposing a series of ‘Whac-A-Mole’ contractual rules and restrictions that have allowed Apple to extract higher prices from consumers, impose higher fees on developers and creators, and to throttle competitive alternatives from rival technologies,” DOJ Antitrust Division Chief Jonathan Kanter said in a statement.
+
+The case is being filed in the US District Court for the District of New Jersey. Attorneys general from New Jersey, Arizona, California, Connecticut, Maine, Michigan, Minnesota, New Hampshire, New York, North Dakota, Oklahoma, Oregon, Tennessee, Vermont, Wisconsin, and the District of Columbia joined the DOJ in the complaint.
+
+The enforcers are asking the court to stop Apple from “using its control of app distribution to undermine cross-platform technologies such as super apps and cloud streaming apps,” prevent it from “using private APIs to undermine crossplatform technologies like messaging, smartwatches, and digital wallets,” and keep it from “using the terms and conditions of its contracts with developers, accessory makers, consumers, or others to obtain, maintain, extend, or entrench a monopoly.”
+
+They also ask the court for any other relief needed to restore competition. On a background call with reporters, DOJ officials would not address if they would seek to break up Apple if it wins at the liability stage. They said any relief would need to be tied to what the court ultimately finds Apple to be liable for.
+
+At a press conference on Thursday announcing the lawsuit, DOJ Deputy Attorney General Lisa Monaco [said](/2024/3/21/24107724/apple-has-maintained-a-chokehold-on-competition-deputy-ag-says) Apple has maintained “a chokehold on competition” and “smothered an entire industry” through its shift from “revolutionizing the smartphone market to stalling its advancement.” Kanter added that Apple was a “significant beneficiary” of the DOJ’s suit against Microsoft over 20 years ago, and this case aims “to protect competition and innovation for the next generation of technology.”
+
+US Attorney General Merrick Garland acknowledged the resource imbalance the government is up against, facing a company worth trillions of dollars. “When you have an institution with a lot of resources that, in our view, is harming the American economy and the American people, it’s important for us to allocate our resources to protect the American people,” Garland said. “And that is certainly the case where individual Americans have no ability to protect themselves.”
+
+[In a statement](/2024/3/21/24107784/apples-response-to-the-dojs-iphone-antitrust-lawsuit), Apple spokesperson Fred Sainz said the lawsuit “threatens who we are and the principles that set Apple products apart in fiercely competitive markets. If successful, it would hinder our ability to create the kind of technology people expect from Apple — where hardware, software, and services intersect. It would also set a dangerous precedent, empowering government to take a heavy hand in designing people’s technology. We believe this lawsuit is wrong on the facts and the law, and we will vigorously defend against it.”
+
+Apple plans to move to dismiss the case, an Apple spokesperson told reporters in a background briefing with several news outlets on Thursday. The company also disagrees with the relevant market the DOJ defined for the case, believing it should be the global smartphone market, not just the US one, a spokesperson said.
+
+Apple is the second tech giant the DOJ has taken on in recent years after filing two separate antitrust suits against Google over the past two administrations. It’s reversed a long drought of tech monopolization cases since the landmark Microsoft lawsuit at the turn of the century. The case has been years in the making, with reports first surfacing in June 2019 that the DOJ would [get to handle antitrust investigations into the company](https://www.wsj.com/articles/ftc-to-examine-how-facebook-s-practices-affect-digital-competition-11559576731).
+
+App developers for Apple’s iOS have complained for years about the platform’s closed and often opaque marketplace. Among the most vocal have been companies [like Spotify](/2022/10/25/23423384/spotify-apple-competitive-behavior-antitrust-commission-audiobooks), which run paid subscription services that Apple requires a 15 to 30 percent cut of to be offered on its platform. On top of that, Apple has its own apps that compete with those on its app store — the only place Apple lets users download apps for what it says are security reasons — which has raised even more distrust among developers about whether they are getting a fair shot in the marketplace.
+
+The House panel found Apple had a monopoly over iOS app distribution
+
+Some developers were able to get the ear of Congress as a House subcommittee carried out its own investigation of the tech giants a few years ago. A 2020 report by that panel [found that Apple held monopoly power](/2020/10/6/21504814/congress-antitrust-report-house-judiciary-committee-apple-google-amazon-facebook) in the market for app distribution on iOS. Lawmakers introduced legislation like the [Open App Markets Act](/22914479/open-app-markets-act-legislation-senate-committee-markup-explained) and the [American Innovation and Choice Online Act](/2022/6/10/23162438/american-innovation-choice-online-act-aico-klobuchar-grassley-senate) that sought to prevent large platforms like Apple from giving their own products an advantage on their marketplaces over competitors. But more than two years since they were introduced, neither has received a vote on the floor of either chamber.
+
+Europe has moved ahead of the US in its efforts to rein in tech. It’s instituted [new rules through the Digital Markets Act](/24040543/eu-dma-digital-markets-act-big-tech-antitrust/archives/) to place a check on the power of gatekeepers of large platforms, several of which are operated by Apple. Earlier this month, the European Commission fined Apple €1.84 billion (about $2 billion) in connection to a complaint from Spotify about its restrictive app store practices. The EU said its investigation found that “Apple bans music streaming app developers from fully informing iOS users about alternative and cheaper music subscription services available outside of the app.”
+
+The DOJ will have its hands full with tech monopoly suits in the coming years. It wraps up closing arguments in its [search distribution case against Google](/23869483/us-v-google-search-antitrust-case-updates) in May and then is set to begin trial in a case over Google’s advertising technology in the fall.

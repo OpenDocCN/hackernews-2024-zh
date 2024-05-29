@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:59
+-->
+
+# Google Messages is blocking rooted Android users from using RCS - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/1/24087418/google-messages-blocking-rcs-on-rooted-android-devices](https://www.theverge.com/2024/3/1/24087418/google-messages-blocking-rcs-on-rooted-android-devices)
+
+Google is cracking down on rooted Android devices, blocking multiple people from using the RCS message feature in Google Messages. Users with rooted phones — a process that unlocks privileged access to the Android operating system, like jailbreaking iPhones — have made several reports on the [Google Messages support page](https://support.google.com/messages/thread/261416210), [Reddit](https://www.reddit.com/r/androidroot/comments/1b36hij/psa_google_is_quietly_blocking_rcs_on_rooted/), and[*XDA*’s web forum](https://xdaforums.com/t/rcs-chat-gone-in-latest-update.4653947/) over the last few [months](https://www.reddit.com/r/GoogleMessages/comments/1agsjh0/rcs_issues_on_devices_that_have_unlocked/), finding they’re suddenly unable to send or receive RCS messages.
+
+One example from [Reddit user u/joefuf](https://www.reddit.com/r/GoogleMessages/comments/181a5p9/unable_to_send_rcs_messages/) shows that RCS messages would simply vanish after hitting the send button. Several reports also mention that Google Messages gave no indication that RCS chat was no longer working, and was still showing as connected and working in Google Messages.
+
+In a statement sent to the *Verge* where we asked if Google is blocking rooted devices from using RCS, Google communications manager Ivy Hunt said the company is “ensuring that message-issuing/receiving devices are following the operating measures defined by the RCS standard” in a bid to prevent spam and abuse on Google Messages. In other words, yes, Google is blocking RCS on rooted devices.
+
+“Google rotates through many solutions to ensure that Android users can communicate sufficiently — and devices that may not have access to one communication protocol will always have at least one other available,” said Hunt. “In this case, users that are not able to use RCS still have access to SMS & MMS messaging.”
+
+There is some merit to Google’s concern: RCS messaging has [faced challenges with tackling spam](https://www.androidpolice.com/rcs-spam-united-states/) forcing Google to [disable its RCS ads feature in India](/2022/6/1/23150243/google-rcs-ads-india-spam-verified-business) back in 2022, for example.
+
+Some services like payment and banking apps, including Google Pay/Wallet, will stop working if they detect that users have rooted their device as a security measure, but these will typically provide a [warning message](/2012/3/5/2846793/google-wallet-rooted-security-warning) to explain the device is unsupported. For users who experienced RCS issues with Google Messages, no such warning is apparently provided.

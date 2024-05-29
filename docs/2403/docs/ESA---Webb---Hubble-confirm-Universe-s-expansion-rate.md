@@ -1,0 +1,69 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:11
+-->
+
+# ESA - Webb & Hubble confirm Universe’s expansion rate
+
+> 来源：[https://www.esa.int/Science_Exploration/Space_Science/Webb/Webb_Hubble_confirm_Universe_s_expansion_rate](https://www.esa.int/Science_Exploration/Space_Science/Webb/Webb_Hubble_confirm_Universe_s_expansion_rate)
+
+#### Webb measurements shed new light on a decade-long mystery
+
+The rate at which the Universe is expanding, known as the Hubble constant, is one of the fundamental parameters for understanding the evolution and ultimate fate of the cosmos. However, a persistent difference, called the Hubble Tension, is seen between the value of the constant measured with a wide range of independent distance indicators and its value predicted from the afterglow of the Big Bang. The NASA/ESA/CSA James Webb Space Telescope has confirmed that the Hubble Space Telescope’s keen eye was right all along, erasing any lingering doubt about Hubble’s measurements.
+
+[NGC 5468 – Cepheid host galaxy](/ESA_Multimedia/Images/2024/03/Webb_Hubble_confirm_Universe_s_expansion_rate)
+
+One of the scientific justifications for building the NASA/ESA [Hubble Space Telescope](/Science_Exploration/Space_Science/Hubble_overview) was to use its observing power to provide an exact value for the expansion rate of the Universe. Prior to Hubble’s launch in 1990, observations from ground-based telescopes yielded huge uncertainties. Depending on the values deduced for the expansion rate, the Universe could be anywhere between 10 and 20 billion years old. Over the past 34 years Hubble has shrunk this measurement to an accuracy of less than one percent, splitting the difference with an age value of 13.8 billion years. This has been accomplished by refining the so-called ‘cosmic distance ladder’ by measuring important milepost markers known as Cepheid variable stars.
+
+However, the Hubble value does not agree with other measurements that imply that the Universe was expanding faster after the Big Bang. These observations were made by the ESA Planck satellite’s mapping of the cosmic microwave background radiation – a blueprint for how the Universe would evolve structure after it cooled down from the Big Bang.
+
+The simple solution to the dilemma would be to say that maybe the Hubble observations are wrong, as a result of some inaccuracy creeping into its measurements of the deep-space yardsticks. Then along came the [James Webb Space Telescope](/Science_Exploration/Space_Science/Webb), enabling astronomers to crosscheck Hubble’s results. Webb’s infrared views of Cepheids agreed with Hubble’s optical-light data. Webb confirmed that the Hubble telescope’s keen eye was right all along, erasing any lingering doubt about Hubble’s measurements.
+
+The bottom line is that the so-called Hubble Tension between what happens in the nearby Universe compared to the early Universe’s expansion remains a nagging puzzle for cosmologists. There may be something woven into the fabric of space that we don’t yet understand.
+
+Does resolving this discrepancy require new physics? Or is it a result of measurement errors between the two different methods used to determine the rate of expansion of space?
+
+[Comparison of Hubble and Webb views of a Cepheid variable star](/ESA_Multimedia/Images/2024/03/Comparison_of_Hubble_and_Webb_views_of_a_Cepheid_variable_star)
+
+Hubble and Webb have now tag-teamed to produce definitive measurements, furthering the case that something else – not measurement errors – is influencing the expansion rate.
+
+“With measurement errors negated, what remains is the real and exciting possibility that we have misunderstood the Universe,” said Adam Riess, a physicist at Johns Hopkins University in Baltimore. Adam holds a Nobel Prize for co-discovering the fact that the Universe’s expansion is accelerating, owing to a mysterious phenomenon now called ‘dark energy’.
+
+As a crosscheck, an initial Webb observation in 2023 confirmed that Hubble’s measurements of the expanding Universe were accurate. However, hoping to relieve the Hubble Tension, some scientists speculated that unseen errors in the measurement may grow and become visible as we look deeper into the Universe. In particular, stellar crowding could affect brightness measurements of more distant stars in a systematic way.
+
+The SH0ES (Supernova H0 for the Equation of State of Dark Energy) team, led by Adam, obtained additional observations with Webb of objects that are critical cosmic milepost markers, known as Cepheid variable stars, which can now be correlated with the Hubble data.
+
+“We’ve now spanned the whole range of what Hubble observed, and we can rule out a measurement error as the cause of the Hubble Tension with very high confidence,” Adam said.
+
+The team’s first few Webb observations in 2023 were successful in showing Hubble was on the right track in firmly establishing the fidelity of the first rungs of the so-called cosmic distance ladder.
+
+Astronomers use various methods to measure relative distances in the Universe, depending upon the object being observed. Collectively these techniques are known as the cosmic distance ladder – each rung or measurement technique relies upon the previous step for calibration.
+
+But some astronomers suggested that, moving outward along the ‘second rung’, the cosmic distance ladder might get shaky if the Cepheid measurements become less accurate with distance. Such inaccuracies could occur because the light of a Cepheid could blend with that of an adjacent star – an effect that could become more pronounced with distance as stars crowd together on the sky and become harder to distinguish from one another.
+
+The observational challenge is that past Hubble images of these more distant Cepheid variables look more huddled and overlapping with neighbouring stars at ever greater distances between us and their host galaxies, requiring careful accounting for this effect. Intervening dust further complicates the certainty of the measurements in visible light. Webb slices through the dust and naturally isolates the Cepheids from neighbouring stars because its vision is sharper than Hubble’s at infrared wavelengths.
+
+“Combining Webb and Hubble gives us the best of both worlds. We find that the Hubble measurements remain reliable as we climb farther along the cosmic distance ladder,” said Adam.
+
+The new Webb observations include five host galaxies of eight Type Ia supernovae containing a total of 1000 Cepheids, and reach out to the farthest galaxy where Cepheids have been well measured – NGC 5468, at a distance of 130 million light-years. “This spans the full range where we made measurements with Hubble. So, we’ve gone to the end of the second rung of the cosmic distance ladder,” said co-author Gagandeep Anand of the Space Telescope Science Institute in Baltimore, which operates the Webb and Hubble Telescopes for NASA.
+
+Together, Hubble’s and Webb’s confirmation of the Hubble Tension sets up other observatories to possibly settle the mystery, including NASA’s upcoming Nancy Grace Roman Space Telescope and ESA’s recently launched [Euclid](https://www.esa.int/Science_Exploration/Space_Science/Euclid) mission.
+
+At present it’s as though the distance ladder observed by Hubble and Webb has firmly set an anchor point on one shoreline of a river, and the afterglow of the Big Bang observed by Planck from the beginning of the Universe is set firmly on the other side. How the Universe’s expansion was changing in the billions of years between these two endpoints has yet to be directly observed. “We need to find out if we are missing something on how to connect the beginning of the Universe and the present day,” said Adam.
+
+These findings were published in the 6 February 2024 issue of *The Astrophysical Journal Letters*.
+
+**More information**
+[Webb](/Science_Exploration/Space_Science/Webb) is the largest, most powerful telescope ever launched into space. Under an international collaboration agreement, ESA provided the telescope’s launch service, using the Ariane 5 launch vehicle. Working with partners, ESA was responsible for the development and qualification of Ariane 5 adaptations for the Webb mission and for the procurement of the launch service by Arianespace. ESA also provided the workhorse spectrograph [NIRSpec](/Science_Exploration/Space_Science/Webb/Webb_s_instruments) and 50% of the mid-infrared instrument [MIRI](/Science_Exploration/Space_Science/Webb/MIRI_factsheet), which was designed and built by a consortium of nationally funded European Institutes (The MIRI European Consortium) in partnership with JPL and the University of Arizona.
+
+Webb is an international partnership between NASA, ESA and the Canadian Space Agency (CSA).
+
+[Release on esawebb.org](https://esawebb.org/news/weic2408/)
+
+**Contact:**
+ESA Media relations
+media@esa.int
+
+Thank you for liking
+
+You have already liked this page, you can only like it once!

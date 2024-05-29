@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:28:54
+-->
+
+# YouTube Has More Than 100 Million Premium and Music Subscribers
+
+> 来源：[https://variety.com/2024/digital/news/youtube-100-million-premium-music-subscribers-1235894391/](https://variety.com/2024/digital/news/youtube-100-million-premium-music-subscribers-1235894391/)
+
+[YouTube](https://variety.com/t/youtube/) Music and [YouTube Premium](https://variety.com/t/youtube-premium/) have surpassed 100 million subscribers across more than 100 countries and regions.
+
+The 100 million figure includes uses who are on free trials, according to YouTube. The company didn’t break down how many are on [YouTube Music](https://variety.com/t/youtube-music/) versus YouTube Premium, the subscription service for ad-free viewing, background listening, offline video downloads and full access to YouTube Music. In November 2022, the company said [YouTube Music and YouTube Premium topped 80 million paying subscribers](https://variety.com/2022/music/news/youtube-music-premium-80-million-paying-subscribers-1235427016/) combined.
+
+The announcement comes after Alphabet, in reporting [fourth-quarter 2023 earnings](https://variety.com/2024/digital/news/youtube-google-subscription-services-annual-revenue-1235892210/), boasted that YouTube and Google subscription services [generated more than $15 billion in revenue last year](https://variety.com/2024/digital/news/youtube-google-subscription-services-annual-revenue-1235892210/). That includes YouTube Premium and YouTube Music, as well as YouTube TV and Google One cloud storage.
+
+In July 2023, YouTube for the first time [raised the price of YouTube Premium (from $11.99 to $13.99 per month) and YouTube Music (from $9.99 to $10.99)](https://variety.com/2023/digital/news/youtube-premium-music-price-increase-1235675118/) in the U.S.
+
+“YouTube Premium helps maintain a thriving creator and artist community, providing them with an additional source of revenue from subscriptions,” Adam Smith, VP of product management at YouTube, wrote in a blog post Thursday.
+
+In 2015, “many doubted a subscription model could thrive on YouTube,” Lyor Cohen, global head of music at YouTube, wrote in another blog psot. “They said the market was crowded and our platform was too different. Today — 100 million subscribers later — our distinctiveness is precisely what drives our success and why I still see so much room for growth.”
+
+In the past year, Smith noted, YouTube has enhanced the Premium playback experience including adding the ability to continue watching YouTube across different devices like smart TVs and tablets and introduced an enhanced version of 1080p HD. YouTube also experimented with new generative AI features that Premium users were among the first to gain access to. For music listeners, YouTube introduced the Samples tab, a way to discover new music, a completely customized radio building experience, and [brought podcasts to YouTube Music](https://variety.com/2023/digital/news/google-podcasts-shutting-down-youtube-1235735517/) (after announcing the shutdown of Google Podcasts).
+
+Sir Lucian Grainge, chairman and CEO, Universal Music Group, commented, “Neal [Mohan, CEO of YouTube], Lyor and their team at YouTube deserve enormous credit for achieving this extraordinary milestone and continuing to grow and drive innovation while making significant contributions to the global music ecosystem. Our partnership demonstrates that if you start from a foundation of respect for artists and songwriters, there are limitless opportunities to create thriving businesses that benefit artists and fans alike.”
+
+Grainge’s remarks about “respect for artists and songwriters” comes after UMG’s dispute with TikTok erupted this week. On Thursday, [TikTok began to remove songs from Universal Music artists](https://variety.com/2024/digital/news/taylor-swift-harry-styles-drake-removed-tiktok-1235894245/) after [the two companies failed to renew a licensing pact that expired Jan. 31](https://variety.com/2024/digital/news/universal-music-group-pulling-songs-tiktok-licensing-deal-1235892437/). Universal Music accused TikTok of trying to [“bully” the music company into a deal worth less](https://variety.com/2024/digital/news/universal-music-group-pulling-songs-tiktok-licensing-deal-1235892437/) than their previous agreement and alleged TikTok was unwilling to address AI and piracy concerns.
+
+Robert Kyncl, CEO of Warner Music Group — and YouTube’s former chief business officer — said in a statement, “Having been at YouTube when we conceived of the subscription service, 100 million customers felt like a distant possibility. Today, it’s yet another signpost on a journey of extraordinary growth. The fact that YouTube continues to go from strength to strength isn’t just good for them, it’s healthy for the entire music ecosystem.”

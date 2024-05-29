@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:40
+-->
+
+# Ghostbots: AI versions of deceased loved ones could be a serious threat to mental health
+
+> 来源：[https://theconversation.com/ghostbots-ai-versions-of-deceased-loved-ones-could-be-a-serious-threat-to-mental-health-224984](https://theconversation.com/ghostbots-ai-versions-of-deceased-loved-ones-could-be-a-serious-threat-to-mental-health-224984)
+
+We all experience loss and grief. Imagine, though, that you don’t need to say goodbye to your loved ones. That you can recreate them virtually so you can have conversations and find out how they’re feeling.
+
+For Kim Kardashian’s fortieth birthday, her then husband, Kanye West, gave her a hologram of her [dead father](https://www.bbc.co.uk/news/entertainment-arts-54731382), Robert Kardashian. Reportedly, Kim Kardashian reacted with disbelief and joy to the [virtual appearance](https://www.theguardian.com/lifeandstyle/2020/oct/30/robert-kardashian-resurrected-as-a-hologram-for-kim-kardashian-wests-birthday) of her father at her birthday party. Being able to see a long-dead, much missed loved one, moving and talking again might offer comfort to those left behind.
+
+After all, resurrecting a deceased loved one might seem miraculous – and possibly more than a little creepy – but what’s the impact on our health? Are AI ghosts a help or hindrance to the grieving process?
+
+As a psychotherapist researching how AI technology can be used to enhance therapeutic interventions, I’m intrigued by the advent of ghostbots. But I’m also more than a little concerned about the potential effects of this technology on the mental health of those using it, especially those who are grieving. Resurrecting dead people as avatars has the potential to cause more harm than good, perpetuating even more confusion, stress, depression, paranoia and, in some cases, psychosis.
+
+Recent developments in artificial intelligence (AI) have led to the creation of ChatGPT and other chatbots that can allow users to have sophisticated human like conversations.
+
+Using deep fake technology, AI software can create an [interactive virtual representation](https://www.sciencedirect.com/science/article/pii/S0267364924000104) of a deceased person by using their [digital content](https://wired.me/technology/artificial-intelligence/why-scientists-are-building-ai-powered-digital-imprints-of-the-dead/) such as photographs, emails, and videos.
+
+Some of these creations were just themes in science fiction fantasy only a few years ago but now they are a scientific reality.
+
+## Help or hindrance?
+
+[Digital ghosts](https://link.springer.com/article/10.1007/s12124-022-09679-3) could [be a comfort](https://www.technologyreview.com/2022/10/18/1061320/digital-clones-of-dead-people/) to the bereaved by helping them to reconnect with lost loved ones. They could provide an opportunity for the user to say some things or ask questions they never got a chance to when the now deceased person was alive.
+
+But the ghostbots’ uncanny resemblance to a lost loved one [may not be](https://www.newscientist.com/article/2416079-resurrecting-loved-ones-as-ai-ghosts-could-harm-your-mental-health/) as positive as it sounds. [Research suggests](https://link.springer.com/article/10.1007/s10676-024-09744-y) that deathbots should be used only as a temporary [aid to mourning](https://link.springer.com/article/10.1007/s12124-022-09679-3) to avoid potentially harmful emotional dependence on the technology.
+
+AI ghosts could be harmful for people’s mental health by interfering with the [grief process](https://www.newscientist.com/article/mg26034650-700-how-ai-avatars-of-the-deceased-could-transform-the-way-we-grieve/).
+
+Grief takes time and there are many [different stages](https://www.medicalnewstoday.com/articles/grieving-process#:%7E:text=They%20include%20shock%2C%20denial%2C%20anger,them%20cope%20in%20various%20ways.) that can take place over many years. When newly bereaved, those experiencing grief might think of their deceased loved one frequently. They might freshly recall old memories and it is quite common for a grieving person [to dream](https://pubmed.ncbi.nlm.nih.gov/23449603/) more intensely about their lost loved one.
+
+The psychoanalyst [Sigmund Freud](https://tidsskriftet.no/en/2020/03/essay/dynamics-grief-and-melancholia) was concerned with how human beings respond to the experience of loss. He pointed out potential added difficulties for those grieving if there’s negativity surrounding a death.
+
+For example, if a person had ambivalent feelings towards someone and they died, the person could be left with a sense of guilt. Or if a person died in [horrific circumstances](https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2020.00749/full) such as a murder, a grieving person might find it more difficult to accept it this.
+
+Freud referred to this as “melancholia”, but it can also be referred to as [“complicated grief”](https://www.tandfonline.com/doi/abs/10.1080/15524256.2020.1745726). In some extreme cases, a person may experience apparitions [and hallucinate](https://journals.sagepub.com/doi/full/10.1177/1363461520962887) that they see the dead person and begin to believe they are alive. AI ghostbots could further traumatise someone experiencing complicated grief and may exacerbate associated problems such as hallucinations.
+
+## Chatbot horror
+
+There are also risks that these ghost-bots could say harmful things or give bad advice to someone in mourning. Similar generative software such as ChatGPT chatbots are already widely criticised for [giving misinformation](https://www.nytimes.com/2023/02/08/technology/ai-chatbots-disinformation.html) to users.
+
+Imagine if the AI technology went rogue and started to make [inappropriate remarks](https://www.nytimes.com/2023/02/16/technology/bing-chatbot-microsoft-chatgpt.html) to the user – a situation experienced by journalist [Kevin Roose](https://www.nytimes.com/2023/02/16/technology/bing-chatbot-transcript.html) in 2023 when a [Bing chatbot](https://www.nytimes.com/2023/12/17/insider/ai-chatbots-humans-hallucinate.html#:%7E:text=On%20Valentine's%20Day%20this%20year,him%20to%20leave%20his%20wife.) tried to get him to leave his wife. It would be very hurtful if a deceased father was conjured up as an AI ghost by a son or daughter to hear comments that they weren’t loved or liked or weren’t their father’s favourite.
+
+Or, in a more extreme scenario, if the ghostbot suggested the user join them in death or they should kill or harm someone. This may sound like a plot from a horror film but it’s not so far fetched. In 2023, the UK’s [Labour party](https://www.bbc.co.uk/news/uk-politics-66224052) outlined a law to prevent the training of AI to incite violence.
+
+This was a response to the attempted assassination of the Queen earlier in the year by a man who was encouraged by his chatbot girlfriend, with whom he had an “[emotional and sexual](https://www.bbc.co.uk/news/uk-england-berkshire-66123122)” relationship.
+
+The creators of ChatGPT currently acknowledge that the software makes errors and is still [not fully reliable](https://www.scientificamerican.com/article/ai-platforms-like-chatgpt-are-easy-to-use-but-also-potentially-dangerous/) because it fabricates information. Who knows how a person’s texts, emails or videos will be interpreted and what content will be generated by this AI technology?
+
+In any event, it appears that no matter how far this technology advances, there will be a need for considerable oversight and human supervision.
+
+## Forgetting is healthy
+
+This latest tech says a lot about our digital culture of infinite possibilities with no limits.
+
+Data can be stored on the cloud indefinitely and everything is retrievable and nothing truly deleted or destroyed. Forgetting is an important element of healthy grief but in order to forget, people will need to find new and meaningful ways of remembering the deceased person.
+
+Anniversaries play a key role in helping those who are mourning to not only remember lost loved ones, but they are also opportunities to [represent the loss](https://scholarlypublishingcollective.org/psup/speculative-philosophy/article-abstract/34/3/284/196788/Grief-Phantoms-and-Re-membering-Loss) in new ways. Rituals and symbols can mark the end of something that can allow humans to properly remember in order to properly forget.

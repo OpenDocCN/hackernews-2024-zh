@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:09:37
+-->
+
+# Shouldn't FROM come before SELECT in Sql? - Stack Overflow
+
+> 来源：[https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql](https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql)
+
+Yes it is strange and counterintuitive. Hugh Darwen theorises about how this state of affairs came about:
+
+> Do you take SELECT-FROM-WHERE for granted, or do you, like me, find it rather curious that the System R team should have spurned the normal way of writing expressions of arbitrary complexity in favour of something utterly idiosyncratic and, one might say, rather dictatorial...?
+> 
+> The fact is that in the 1960s various scripting languages (as we tend to call such things these days) had come about for the purposes of report generation, especially ad hoc report generation. We had one such language in the prerelational DBMS called Terminal Business System (TBS) that I worked on for IBM from 1969-77\. Our language required the user to specify the required report in a series of steps that had to be given *in the prescribed order*...
+> 
+> A somewhat similar but much more sophisticated report generator was later developed by IBM in the US, as part of a product called (prosaically, as was IBM's style in those days) Generalized Information System (GIS)... when I first looked at SQL, my immediate reaction was "Oh no! Son of GIS? Please not that!" I might have been quite wrong about this. The similarity I perceived might have been illusory and even if it was not, I have no firm evidence that anybody in the System R team was familiar with GIS. The fact remains that the general style of a fixed order of actions was the order of the day at the time. I postulate that SQL's SELECT-FROM-WHERE arose out of this fashion.
+
+From [`HAVING` a Blunderful Time](http://www.dcs.warwick.ac.uk/~hugh/TTM/HAVING-A-Blunderful-Time.html)

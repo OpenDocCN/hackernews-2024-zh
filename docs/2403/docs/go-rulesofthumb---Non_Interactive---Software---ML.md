@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:32
+-->
+
+# go/rulesofthumb – Non_Interactive – Software & ML
+
+> 来源：[https://nonint.com/2024/01/06/go-rulesofthumb/](https://nonint.com/2024/01/06/go-rulesofthumb/)
+
+Google has a neat internal website called “Rules of Thumb”, which compares the marginal cost of computational resources to the unit of a “SWE”. “SWE” refers to “Software Engineer” – which itself is the marginal cost to pay salary and benefits to the average engineer at the company. Throughout design docs at the company, you’ll see costs referred to in the units of SWE. For example, “deploying service <X> at 1000QPS will cost ~100 SWEs in resources”.
+
+I always thought comparing costs of fixed assets like compute, RAM, or database accesses to the cost of hiring a new employee was at once brilliant and dystopian. Brilliant because it allowed for some really interesting comparisons when thinking about how much effort to pour into optimizing some aspect of the stack – if you spent half a year optimizing something that saved 1 SWE of resources per year in a product that was growing, then that was a very good use of your time! It was also humbling to see how expensive each employee was – the unit of SWE came out to a rather ridiculous number of CPUs, RAM and/or hard disk space.
+
+The dystopian angle is obvious: there is an underlying implication that human labor is worth some amount of computational resources. This was never more than a joke at Google, as there was never any real chance that the average Googler could be replaced by a computer. You could only really compare costs.
+
+Post 2023, that joke is a bit less funny. Compute is valuable, and getting more valuable. Given the choice between having a team of 3 people working under me or 1000 dedicated H100s for my work, I’d have to think for a little bit. Humans are certainly smarter than ChatGPT but they also take time to train, aren’t available at 3AM on a Saturday (and I don’t expect them to be!) and are hard to pick correctly. With more GPUs, I know exactly what I’m going to get: more synthetic data, faster iteration on a problem and ultimately a reliably better product thanks to scaling laws.
+
+This direct consideration of “more compute or more people?” certainly doesn’t exist out of very small niches like mine so far, but it’s interesting to me that it exists at all. I think that this is an all but guaranteed future for us all: humans will need to increasingly compete with the application of raw compute in all independent work. Social work will still be available and valued, but the act of going from problem to solution will increasingly have compute-bound solutions. If this happens in parallel to Moores law continuing at pace, the results will be interesting.
+
+Even if we don’t achieve an autonomous “AGI”, this notion of “smart person augmented by AI techniques and lots of compute” being competitive with a team of specialists means go/rulesofthumb might become more literal than most of us ever thought it would be!

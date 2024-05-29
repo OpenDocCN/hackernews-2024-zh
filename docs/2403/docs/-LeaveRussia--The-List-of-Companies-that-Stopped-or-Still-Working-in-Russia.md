@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:31:58
+-->
+
+# #LeaveRussia: The List of Companies that Stopped or Still Working in Russia
+
+> 来源：[https://leave-russia.org/](https://leave-russia.org/)
+
+Glob.Revenue, mln.USD
+
+8400
+
+On March 11, 2022 Leroy Merlin announced that it does not plan to reduce its operations in Russia, where it operates 143 stores. On March 17, 2022 they disconnected the Ukrainian office from corporate communications and announced that they would increase deliveries to the Russian Federation. Stopped new investments, imports, and financing in Russia. But the latest video investigation confirms that a French company is supporting Russia's war effort in Ukraine. On March 24, 2023 ADEO announces its intention to transfer control of Leroy Merlin Russia to the local management. The company Scenari Holding, registered in the United Arab Emirates, became the main owner of "Leroy Merlin Vostok", the Russian structure of the chain of stores, according to the data of the EGRUL. 12.2023: The record about the founder of JSC "BRICOLAGE INVESTISSMAN FRANCE" has been deleted from EGRUL. SCENARI HOLDING LP (UAE) becomes the new founder of the organization. 19.12.2023: The status of a legal entity is changed to "The legal entity is in the process of reorganization in the form of joining it with other legal entities." In the course of a detailed investigation, it turned out that the company signed a technical agreement on the alleged sale of the main business in Russia (SCENARI HOLDING LP from the UAE), but the CEO (Defassier Laurent, Louis, Claude) stayed the same since 2019, the company signs new contracts with the group and authorities of the Russian Federation (including the Ministry of Defence and the Ministry of Internal Affairs), trademarks are extended in Rospatent until 2031\. In addition, as the L'Express investigation showed, SCENARI HOLDING LP has the same General Director as in Russia - Laurent Defassier, so the company used a tax optimization scheme, also called layering. Also, most of the imports in 2023 by Leroy Merlin Vostok in Russia was received from ADEO.

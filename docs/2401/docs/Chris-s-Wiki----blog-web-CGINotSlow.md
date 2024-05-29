@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:23
+-->
+
+# Chris's Wiki :: blog/web/CGINotSlow
+
+> 来源：[https://utcc.utoronto.ca/~cks/space/blog/web/CGINotSlow](https://utcc.utoronto.ca/~cks/space/blog/web/CGINotSlow)
+
+I recently read [Reminiscing CGI scripts](https://rednafi.com/go/reminiscing_cgi_scripts/) ([via](https://lobste.rs/s/jcm2am/reminiscing_cgi_scripts)), which talked about [CGI scripts](https://en.wikipedia.org/wiki/Common_Gateway_Interface) and in passing mentioned that they fell out of favour for, well, let me quote:
+
+> CGI scripts have fallen out of favor primarily due to concerns related to performance and security. [...]
+
+This is in one sense true. Back in the era when CGIs were pushed aside by PHP and other more complex deployment environments like Apache's [mod_perl](https://perl.apache.org/) and [mod_wsgi](https://modwsgi.readthedocs.io/), their performance was an issue, especially under what was then significant load. But this isn't because CGI programs are intrinsically slow in an absolute sense; it was because computers in the early 00s were not very powerful and might even be heavily (over-)shared in virtual hosting environments. When the computers acting as web servers couldn't do very much in general, everything less you could get them to do could make a visible difference, including not starting a separate program or two for each request.
+
+Modern computers are much faster and more powerful than the early 00s servers where PHP shoved CGIs aside; even a low end VPS is probably as good or better, with more memory, more CPU, and almost always a much faster disk. And unsurprisingly, CGIs have gotten a lot faster and a lot better at handling load in absolute terms.
+
+To illustrate this, I put together a very basic CGI in Python and Go, stuck them in [my area on our general purpose web server](https://www.cs.toronto.edu/~cks/), and tested how fast they would run. On our run of the mill Ubuntu web server, the Python version took around 17 milliseconds to run and the Go version around four milliseconds (in both cases when they'd been run somewhat recently). Because the CGIs are more or less doing nothing in both cases, this is pretty much measuring the execution overhead of running a CGI. A real Python CGI would take longer to start because it has more things to import, but even then it's not necessarily terribly slow.
+
+(As another data point, I have ongoing numbers for the response time of [Wandering Thoughts](/~cks/space/blog/), which is [a rather complex piece of Python normally running as a CGI](/~cks/space/blog/web/DynamicNeedNotBeSlow). On fairly basic (virtual) hardware, it seems to average about 0.17 seconds for the front page (including things like TLS overhead), which is down noticeably from a decade ago.)
+
+Given that [CGI scripts have their attractions for modest scale pages and sites](/~cks/space/blog/web/CGIAttractions), it's useful to know that CGI programs are not as terrible as they're often made out to be in old sources (or people working from old sources). Using a CGI program is a perfectly good deployment strategy for many web applications (and [you can take advantages of other general web server features](/~cks/space/blog/web/ApacheCGIsAndLocationACLs)).
+
+(Yes, your CGI may slow down if you're getting a hundred hits a second. How likely is that to happen, and if it does, how critical is the slowdown? There are some environments where you absolutely want and need to plan for this, but also quite a number where you don't.)

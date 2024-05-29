@@ -1,0 +1,154 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:52
+-->
+
+# Internet providers have left rural Americans behind. One county is fighting back | Internet | The Guardian
+
+> 来源：[https://www.theguardian.com/technology/2024/mar/17/rural-broadband-us-internet-providers](https://www.theguardian.com/technology/2024/mar/17/rural-broadband-us-internet-providers)
+
+Orangeburg, [South Carolina](https://www.theguardian.com/us-news/south-carolina), is *not* the middle of nowhere.
+
+It’s an hour south of Columbia. It’s an hour and 15 minutes north of Charleston. It’s an hour and a half away from Augusta. It’s just country enough to be out of the way but tantalizingly close to somewhere.
+
+<gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;us-news&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;us-news/series/the-fight-for-democracy&quot;,&quot;type&quot;:&quot;Series&quot;,&quot;title&quot;:&quot;The fight for democracy&quot;},{&quot;id&quot;:&quot;technology/internet&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Internet&quot;},{&quot;id&quot;:&quot;us-news/south-carolina&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;South Carolina&quot;},{&quot;id&quot;:&quot;technology/broadband&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Broadband&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;US news&quot;},{&quot;id&quot;:&quot;us-news/us-congress&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;US Congress&quot;},{&quot;id&quot;:&quot;technology/technology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Technology&quot;},{&quot;id&quot;:&quot;campaign/email/us-morning-newsletter&quot;,&quot;type&quot;:&quot;Campaign&quot;,&quot;title&quot;:&quot;First Thing (newsletter signup)&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;Article&quot;},{&quot;id&quot;:&quot;tone/features&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;Features&quot;},{&quot;id&quot;:&quot;profile/george-chidi&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;George Chidi&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2014/9/9/1410298545138/George-Chidi.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=c01643cb3d3919e9c3b292ea62ad9ab2&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;US News&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;technology/2024/mar/17/rural-broadband-us-internet-providers&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+But distance in the digital age isn’t measured in miles. It’s measured in latency and bandwidth. With enough broadband speed, anywhere is close to everywhere. By that metric, Orangeburg county may as well be in the middle of a desert.
+
+Like hundreds of rural counties across the US, Orangeburg is ignored by commercial broadband service providers who think it’s not profitable to lay fiber optic lines in the area.
+
+In the absence of service from companies like AT&T, Comcast, Verizon and Charter, counties and small towns in rural America couldbuild broadband networks for their residents themselves, which can make the difference between prosperity and poverty. But large telecom corporations have also successfully lobbied at least 20 states to block municipalities from competing.
+
+The problem of rural internet access pits one democracy against another: local governments against state power. It also addresses information equity – the idea that someone in the rural US should have the same ability to participate in the country’s digital economy as someone in a big city. A digital democracy cannot abide unequal digital citizenship.
+
+A historic provision in the 2021 infrastructure act upholds this tenet of digital democracy: $65bn under the broadband equity, access and deployment – or Bead – program to connect rural America to the world.
+
+Orangeburg – mostly rural, Black, and poor – started waging war against state regulations earlier than most rural communities, aided by one hard-headed local engineer and a congressman who has spent the last two decades trying to convince Congress that rural America is worth it.
+
+* * *
+
+The story of $65bn in federal money for rural broadband in the Infrastructure Investment and Jobs Act begins more than 20 years ago, with Serena Williams and the Confederate flag.
+
+James Clyburn, venerable Democratic congressman from South Carolina, recounts his friendship with Williams’ manager Larry Bailey. In 2000, Williams was honoring an NAACP boycott of South Carolina over its continued official display of the Confederate battle flag.
+
+“So, Larry calls me and says, ‘I got a real problem. I need your help,’” Clyburn said.
+
+James Clyburn, right, shakes hands with the chair of the Democratic National Committee, Jaime Harrison, in South Carolina in January. Photograph: Kent Nishimura/AFP/Getty Images
+
+Clyburn, wide awake with an opportunity before him, asked Bailey to donate 100 tickets to a tournament for local kids and a couple hundred laptops he could give to students in rural Clarendon county, near Orangeburg. Bailey agreed, and Clyburn worked with the NAACP and boycott activists, allowing Williams to play in the 2002 Family Circle Cup without drawing condemnation.
+
+Clyburn said he called the superintendent, eager to tell her the great news about the laptops. “There was silence on the phone,” Clyburn said. “I thought: ‘She didn’t hear me, and so I’ve got to repeat it.’”
+
+The laptops aren’t any use to kids who can’t get internet service at home, the superintendent said.
+
+“And that’s when it hit me,” Clyburn said. “That’s what got me involved with the problem.”
+
+Clyburn started hearing examples from other congressmen. Sanford Bishop, who represents rural south Georgia, told him about football players taking the team bus to McDonald’s after practice because they could get wifi in the parking lot, Clyburn said.
+
+Clyburn formed a committee of rural representatives and began looking for ways to fund rural broadband access. “I told Nancy Pelosi we need to treat the information superhighway the same way we treat the interstate superhighways,” he said.
+
+Rural broadband *should* have wide bipartisan support. After all, most rural voters are Republicans. A serious effort hasn’t emerged until recently because the scale of the problem defies small measures and because of the lobbying power of large telecom firms.
+
+Bits and bobs of funding for rural broadband have found their way into federal legislation before. The US agriculture department (USDA) has a program to provide internet service. Communities could use pandemic funding to provide internet service, particularly for children doing distance learning. But nothing has ever reached the scale of the [Internet](https://www.theguardian.com/technology/internet) for All initiative, which combines $42.5bn in funding in the 2021 infrastructure act with FCC programs, grant programs from the commerce department and other sources.
+
+A voter casts a ballot in the city of Orangeburg, the county seat. Photograph: The Washington Post/Getty Images
+
+Supporters often compare it with the New Deal push for rural electrification that started with the Tennessee Valley Authority and continued with the Rural Electrification Administration.
+
+When Franklin Roosevelt created the REA in 1935, the program had a one-year budget of $100m. That’s $2.3bn today.
+
+The Bead program, along with other measures in the infrastructure bill, drops $65bn on rural America in one whack.
+
+The law provides local leaders proposing municipal broadband projects with a legal wedge to employ against big telecom firms who would otherwise fight them: an explicit requirement for state laws to give way in order to receive funding.
+
+* * *
+
+William Metts, 60, grew up in Branchville, South Carolina, and still lives on his family land. After working for 10 years for Department of Defense companies, he came home to Orangeburg county, population 85,000 or so, launched a telecom engineering company in 2001 and started irrigating a digital desert.
+
+“We’d been trying to figure out how to get internet in our community, so we wrote grants during the week for this phone company in Virginia, and then would come in here and write a grant on the weekends for this area,” Metts said.
+
+Metts thought he could get to a deal with the local electrical co-op at one point, and with the Palmetto Rural Telephone Cooperative at another. Both fell through.
+
+“They were 70-year-old farmers who didn’t understand the value of the internet,” Metts said. “I don’t say that as criticism. This was 2010 or so. The internet was not what it is today.”
+
+So Metts went straight to the county and found a receptive audience. In 2009, Congress used the stimulus to unlock money for rural broadband under the American Recovery and Reinvestment Act. The USDA funded $1.8bn in projects, and Orangeburg won $18.6m in federal grants to cover about a quarter of the county’s rural population a year later.
+
+AT&T and other telecoms reacted to this by raining money on the South Carolina legislature.
+
+John Stankey, CEO of AT&T, meets with fiber optic workers at a job site in Evansville, Indiana, in Octoberm 2022. Photograph: Bloomberg/Getty Images
+
+Lobbyists donated about $150,000 to friendly legislators, who responded with H3508, intended to regulate municipal broadband to death. The legislation required any municipality to stop service if the public service commission found 10% of a public provider’s community could get service of 190 kilobits or better from a private service provider – an absurdly slow speed, even then.
+
+Barriers in South Carolina resemble those in at least 16 other states today, which, in the name of a “level playing field” – a term coopted by the conservative American Legislative Exchange Council (Alec) in draft language – keeps government entities from competing with private carriers, even in rural broadband deserts.
+
+A town without decent internet service today is like one without electricity in the 30s, said Jim Stritzinger, director of South Carolina’s office of broadband, formed in 2022 with $400m allocated from federal grants.
+
+South Carolina hired Stritzinger away from running Revolution D, a rural broadband consultancy with a legacy of using real-world data to puncture questionable coverage maps promoted by internet carriers.
+
+If a map of rural territory shows property has broadband access, but in reality it’s in a broadband desert, then the state will miss out on federal funds, said Virginia Bring, press secretary for the National Telecommunications and Information Administration (NTIA).
+
+[skip past newsletter promotion](#EmailSignup-skip-link-39)
+
+after newsletter promotion
+
+Orangeburg’s then county administrator, Bill Clark, [wrote a letter](http://www.muninetworks.org/sites/www.muninetworks.org/files/2011%2003%2008%20Clark%20Letter%20to%20Senators%203-8-11.pdf) to legislators in 2011, telling them that the “level playing field” the bill would create was anything but. “The private providers like AT&T and others have the ability to ‘cherry pick’ service areas without restriction in order to maximize profit potential. This is done at the expense of rural areas and is demonstrated by the lack of service options that presently exist in rural communities.”
+
+Attendees listen as Kamala Harris speaks during a campaign rally at South Carolina State University in Orangeburg last month. Photograph: Brandon Bell/Getty Images
+
+Nonetheless, where telecom companies cannot sow their seeds, they salt the fields.
+
+“We were experimenting on something that would work,” said Harry S Wimberly, 77, who was on the county commission as the county fought off the state. “I’m proud to have been part of a team that had enough gumption to go after this and get it done.”
+
+The bill passed anyway, with one caveat: if a county had already gotten started on a project, it would be exempt. In a country full of laws blocking municipalities from building high-speed internet service, Orangeburg was carved out as an exception.
+
+* * *
+
+Broadband is plainly valuable.
+
+Stritzinger doesn’t have a hard figure on how much broadband changes property values. His back-of-the-envelope guess is that it’s worth the same as adding a bedroom to someone’s house.
+
+But people in Orangeburg don’t value broadband because they can stream old episodes of The Office. It’s fundamental to questions about whether they can raise a family, get a job, or survive at all.
+
+William E O’Quinn has been a family doctor in Orangeburg for almost 50 years. Broadband access, to O’Quinn, can be measured in amputations.
+
+About 15% of adults in the county are diagnosed as diabetic, compared with 12% in South Carolina and 9% nationally. He said the county had a high rate of amputations due to the disease.
+
+“Healthcare is not as accessible for some of these people as it is in the city,” O’Quinn said. “They can’t just get on the bus and ride around the corner to go to see the doctor.”
+
+O’Quinn spoke between sessions of telemedicine. Medicare requires physicians to have a face-to-face encounter with patients before giving them medical equipment like a wheelchair, he said, and video visits require a fast internet connection.
+
+So does distance learning.
+
+Dr Shawn Foster, superintendent of the Orangeburg county school district, measures broadband’s value in the number of poor children he can keep from falling behind.
+
+Foster has more than 10,000 students in his care. Three out of four are people of color. Five out of six are poor enough to get free or reduced-price lunch. And more than three quarters still can’t get high speed internet service at home, according to a state assessment.
+
+The school system uses Waterford, an online preschool alternative for parents who can’t afford brick-and-mortar instruction. It works for Orangeburg, Foster said. “We’ve gone from 18% of our students enter kindergarten ready to learn to now 37%.”
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:57,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;Related: &quot;,&quot;text&quot;:&quot;Pandemic response lays bare America’s digital divide&quot;,&quot;elementId&quot;:&quot;94a91753-a241-417c-a969-17b4b5716911&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/world/2020/mar/21/coronavirus-us-digital-divide-online-resources&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:2,&quot;theme&quot;:0,&quot;design&quot;:10}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+But Waterford’s personalized program of instruction is largely useless if parents can’t get a broadband connection.
+
+The pandemic threw the digital divide into stark relief in Orangeburg. Administrators found they needed a detailed heat map of wireless service coverage so that they could provide wifi hotspots to families that live in phone coverage areas. “We learned not only where people had access and the speed of access, we also learned what providers were where,” he said.
+
+Functioning broadband is also an economic development tool for poor, rural parents, Foster said. Parents can’t work from home with internet access. Even job applications might be out of reach without a decent connection. **“**The days are gone when you can walk into the grocery store and fill out a paper application,” he said.
+
+* * *
+
+Every state has to submit a five-year plan to the federal government describing what it will do with money from the Bead program. Crucially, the plan has to explain how the state will reduce or eliminate barriers for municipalities to use the money when they are not being served by large incumbent carriers.
+
+Joe Biden announces funding to expand high-speed internet at the White House in June 2023. Photograph: Bloomberg/Getty Images
+
+The law was written to encourage new entrants, said Bring of the NTIA. “The law says that they can’t exclude municipal government from applying for grants, and making them ineligible for the grant. As part of our rules, we ask for states to either avoid passing new laws that restrict municipal broadband networks, or grant or waive some of those laws.”
+
+South Carolina is no exception. Stritzinger’s initial plan plainly laid out the barriers for the small towns and rural counties that don’t have Orangeburg’s baked-in exemption.
+
+It warns legislators that the broadband office may raise concerns with the South Carolina legislature “if existing state laws … limit the participation of nontraditional applicants and to disclose any unsuccessful applications for grant funding that may have been impacted by such laws”.
+
+That’s a warning shot. The money goes away if municipalities are shut out.
+
+So far, Maine and Louisiana have had their plans approved by NTIA. Maine’s legislature repealed laws blocking municipal broadband last year.
+
+South Carolina is doling out grants incrementally to measure reactions rather than make one big investment, Stritzinger said. Those grants are going out to any entity he thinks can use the money effectively. As an experiment and demonstration, Metts and Charter Communications are working together to wire one Orangeburg county town center - Norway, population 337 – like it’s a Manhattan Starbucks.
+
+“We’ve been able to reach every part of the state,” Strizinger said. “We’re going to chronicle these main street areas over the next couple years to see if putting digital infrastructure in does all of the stuff that I think it’s gonna do. We’re looking to unlock the magic.”

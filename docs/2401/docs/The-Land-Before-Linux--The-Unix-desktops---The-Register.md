@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:17:19
+-->
+
+# The Land Before Linux: The Unix desktops • The Register
+
+> 来源：[https://www.theregister.com/2024/01/27/opinion_column/](https://www.theregister.com/2024/01/27/opinion_column/)
+
+Opinion Today, thanks to Android and ChromeOS, Linux is an important end-user operating system. But, before Linux, there were important Unix desktops, although most of them never made it.
+
+Way back in 1993, I oversaw a PC Magazine [feature review on Unix desktops](https://books.google.com/books?id=jMKfH6i9OcYC&pg=PA220&dq=Vaughan-Nichols&hl=en&sa=X&ved=2ahUKEwi8pdG5gveDAxXhlmoFHSYsDdcQ6AF6BAgMEAI#v=onepage&q=Vaughan-Nichols&f=false). Yes, that's right, before I was a Linux desktop user, I was a Unix user. Indeed, I've been a Unix fan since 1979, when [2BSD Unix](https://opensource.fandom.com/wiki/Berkeley_Software_Distribution) arrived on the scene. But by 1993, numerous Unix desktops had appeared, and I talked the magazine into letting me kick their tires.
+
+My team and I reviewed Unix distros from Consensys, Dell, Interactive Unix, SCO, Univel, Sun, and NeXT. We also looked at but didn't review Unixes from UHC, Microport, and other companies. I guarantee many of you have never heard of them.
+
+What about Linux? Yes, it was around, and I was already using it. But the state-of-the-art Linux distro was [Softlanding Linux System (SLS)](https://archiveos.org/sls/), and I couldn't convince my editors – or myself, for that matter – that it was reviewable. The first version that I would have reviewed, [Slackware](http://www.slackware.com/), which is still with us today – was still months in the future.  
+
+Today, only Dell is still with us, and it's not certainly in business now because of its System V Release 4 (SVR4) Unix release. However, one of those early Unix desktops is still alive, well, and running in about [one in four desktops](https://www.statista.com/statistics/218089/global-market-share-of-windows-7/).
+
+That operating system, of course, is macOS X, the direct descendent of [NeXT's NeXTSTEP](https://www.zdnet.com/article/steve-jobs-the-next-years/). You could argue that macOS, based on the multi-threaded, [multi-processing microkernel operating system Mach](https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/KernelProgramming/Mach/Mach.html), [BSD Unix](https://docs.freebsd.org/en/articles/explaining-bsd/), and the [open source Darwin](https://github.com/apple/darwin-xnu), is the most successful of all Unix operating systems.
+
+It sure didn't look that way at the time. It wasn't that Windows was better than Unix. In 1993, Unix's competition, if you can call it that, was Windows 3.1 and NT 3.1.
+
+[NT](https://www.theregister.com/2023/12/19/windows_nt_30_years_on/), in particular, at that point, was a bad joke of a server operating system. NT only started to matter with the Windows NT 3.5 release.
+
+There are many reasons Windows beat Unix. Not least of these was that Microsoft made sure hardware and software vendors either played ball with Microsoft or didn't [get access to Windows or Microsoft Office.](http://www.practical-tech.com/business/b020298.htm) 
+
+That was an enormous deal at the time. Today, we think of Macs as being rivals or better than Windows PCs. That wasn't the case then. Steve Jobs had been fired, and in Apple's 1993 annual report, the company reported its [net income](https://www.nytimes.com/1993/10/15/business/company-reports-a-small-profit-for-apple-computer.html) had fallen by 97 percent. 
+
+But, as important as its historically [underhanded business dealings](https://www.theregister.com/2000/04/04/judge_finds_against_ms/) were for its success, Microsoft didn't have to cheat to win. The Unix companies were doing a great job of killing themselves off.
+
+You see, while there were many attempts to create software development standards for Unix, they were too general to do much good – for example [Portable Operating System Interface (POSIX)](https://www.techtarget.com/whatis/definition/POSIX-Portable-Operating-System-Interface) – or they became mired in the business consortium fights between the Open Systems Foundation and Unix International, which became known as the [Unix wars](https://klarasystems.com/articles/unix-wars-the-battle-for-standards/).
+
+While the Unix companies were busy ripping each other to shreds, Microsoft was smiling all the way to the bank. The core problem was that the Unix companies couldn't settle on software standards. Independent Software Vendors (ISV) had to write applications for each Unix platform. Each of these had only a minute desktop market share. It simply made no business sense for programmers to write one version of an application for SCO OpenDesktop (also known as OpenDeathtrap), another for NeXTStep, and still another one for SunOS.
+
+Does that sound familiar? That kind of thing is still a problem for the Linux desktop, and it's why I'm a big fan of [Linux containerized desktop applications](https://www.theregister.com/2023/06/09/will_flatpak_and_snap_replace/), such as Red Hat's Flatpak and Canonical's Snap.
+
+By the time the two sides finally made peace by joining forces in [The Open Group](https://www.opengroup.org/membership/forums/platform/unix) in 1996, it was too late. Unix was crowded out on the conventional desktop, and the workstation became pretty much a Sun Microsystems-only play.
+
+So, how did Linux come to win? Well, it had two major advantages over the Unix distros. The first was that it was open source. In open source's meritocracy, the good code survives, and the bad code dies. In particular I credit Linux's use of the GNU General Public License (GPL).
+
+After all, if all it took for success were open source code, we'd all be running pure BSD operating systems such as [FreeBSD](https://www.freebsd.org/), [DragonflyBSD](https://www.dragonflybsd.org/), and [GhostBSD](https://ghostbsd.org/). Instead, while the BSD Unix systems are still important, they have nothing like Linux's market share. 
+
+The reason for this, as David Wheeler, today the Linux Foundation's  Director of Open Source Supply Chain Security, explained, was the BSD license has been troublesome because, every few years, someone says, "[Hey, let's start a company based on this BSD code!](https://lwn.net/Articles/197875/)" … They pull the *BSD code in, and some of the best BSD developers, and write a proprietary derivative. But as a proprietary vendor, their fork becomes expensive to self-maintain, and eventually, the company founders. Lather, rinse, repeat.
+
+"Meanwhile, the GPL has legally enforced a consortia on major commercial companies … [All] are contributing, and feel safe in doing so because the others are legally required to do the same. It's basically created a 'safe' zone of cooperation." 
+
+Linux's other killer advantage was it had Linus Torvalds. With Torvalds as Linux's single leader, it avoided the old Unix trap of in-fighting, 
+
+It's far more than Torvalds being a genius developer. Torvald's humorous title may be Benevolent Dictator for Life, but over the years, [Torvalds has learned to work and play well with others](https://www.theregister.com/2018/10/22/linus_torvalds_back/).
+
+The stories go that Torvalds is something of a meanie, and it's certainly true that he doesn't suffer fools gladly, but I've been to many [Linux Plumbers meetings](https://lpc.events/). There, I've seen him and the top Linux kernel developers work with each other without any drama. Today's Linux is a group effort. 
+
+If all Linux had was Torvalds, I'd worry about the operating system's future. Linus is a wonderful person and a great programmer, but if that's all there was to Linux's success, we'd be one [bus problem](https://deviq.com/terms/bus-factor/) away from its end.
+
+Instead, the Linux distributors and developers have learned their Unix history lessons.
+
+They've realized that it takes more than open source; it takes open standards and consensus to make a successful desktop operating system. 
+
+We may never see the fabled "Year of the Linux Desktop," but Linux has already become a top end-user operating system, thanks to Android and Chrome OS. It took its own sweet time, but Unix, via Linux, finally has become a top end-user operating system. ®

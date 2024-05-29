@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:50:28
+-->
+
+# How a Microsoft Excel Spreadsheet From Hell Slowed Williams' F1 Cars For Years
+
+> 来源：[https://www.thedrive.com/news/how-a-microsoft-excel-spreadsheet-from-hell-slowed-williams-f1-cars-for-years](https://www.thedrive.com/news/how-a-microsoft-excel-spreadsheet-from-hell-slowed-williams-f1-cars-for-years)
+
+It wasn't obvious to outsiders why [Williams Racing](https://www.thedrive.com/accelerator/36153/the-williams-family-is-out-of-their-formula-1-team) has slowly slipped down the Formula 1 standings over last two decades. There's been [vague talk of outdated processes and internal under-investment](https://www.thedrive.com/news/new-williams-f1-boss-says-facilities-and-tech-20-years-out-of-date), but only now do we have a specific example. That would be the hellacious Microsoft Excel spreadsheet that team principal James Vowles says has been a major drag on car development for years.
+
+Vowles told [*The Race*](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) that on joining the team in early 2023, he found its internal processes were a disaster. The team's entire car-building process was reportedly so inefficient that even when the design was done in good time, disorganized parts management meant the 2024 car was just a pile of parts with just three weeks until testing. Some of this was down to how Williams kept inventory—in a monster of an Excel spreadsheet.
+
+Williams FW46 in pre-season testing in Bahrain. *Williams Racing*
+
+The way Vowles and technical director Pat Fry reportedly recounted it, Williams has been using a spreadsheet that grew to include some 20,000 parts used to make its cars. Williams has apparently relied on such spreadsheets for years now, including even for the 2024 car at early stages.
+
+Not only was this system amateurish and unnavigable (making it unsuitable for [the hectomillion-dollar sport that is F1](https://www.thedrive.com/accelerator/22168/behind-the-shadowy-billion-dollar-payouts-of-f1-nascar-and-indycar)), it was also desperately lacking in important logistical info. The team reportedly didn't have a central resource that tracked what parts cost, how long they took to make, or even how many they had or where they were stored. This forced production staff to search for parts whose location hadn't been documented, wasting valuable time.
+
+"The Excel list was a joke. Impossible to navigate and impossible to update," Vowles told *The Race*, offering up Williams' 400-piece front wing as an example.
+
+"You need to know where each one of those independent components are, how long it will take before it's complete, how long it will take before it goes to inspection. If there's been any problems with inspections, whether it has to go back again. And once you start putting that level of complexity in which is where modern [Formula 1](https://www.thedrive.com/category/f1) is, the Excel spreadsheet falls over, and humans fall over. And that's exactly where we are."
+
+Microsoft Excel splash screen for Windows 95\. *Microsoft*
+
+Such a convoluted parts database may have contributed to the team showing up late for preseason testing in 2019\. It also played a role in Williams' weak in-season development, apparently ballooning the cost of the team's mid-2023 upgrade to "extraordinary" levels.
+
+But it and Williams' other procedural failings are being rectified as part of a comprehensive "technology base" overhaul, with the goal of restoring the team to competitiveness. Obviously, Williams would like to be back at the front of the grid as soon as possible, but these things take time. And maybe still a few Excel spreadsheets here and there.
+
+*Got a tip or question for the author? You can reach them here: james@thedrive.com*

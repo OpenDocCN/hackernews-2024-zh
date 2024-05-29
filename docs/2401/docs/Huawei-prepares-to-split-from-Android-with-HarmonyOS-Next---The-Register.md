@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:07:41
+-->
+
+# Huawei prepares to split from Android with HarmonyOS Next • The Register
+
+> 来源：[https://www.theregister.com/2024/01/22/huawei_harmony_os_next/](https://www.theregister.com/2024/01/22/huawei_harmony_os_next/)
+
+Huawei last week detailed a major release of its HarmonyOS that will see the Chinese giant break with the Linux ecosystem.
+
+HarmonyOS was launched in 2019 – initially as an OS for IoT devices, but later adapted to run on smartphones and other hardware. Huawei suggested the OS could run on its wearables, tablet computers, smartphones, and smart TVs, and offer a unified experience across all.
+
+That's a lot like the sort of thing Google can deliver with Android, with which HarmonyOS was compatible.
+
+But between the geopolitical difficulties of cross-border tech transfers, and a desire to build the best possible offering, through 2023 Huawei indicated that it would build a version of HarmonyOS that broke with the Android ecosystem – even if that meant pain for developers and users.
+
+Last week, Huawei launched that Android-free offering: HarmonyOS Next. And it claimed it's also created the kernel to power it – meaning Huawei has divorced itself from both Android and Linux. Execs claimed the kernel outperforms Linux on some metrics, including memory efficiency.
+
+Consumers were teased with a [trailer video](https://www.youtube.com/watch?v=gODE8N4FhPY) that showed off what looks like a UI that has borrowed a lot from iOS and mainstream Android cuts from the likes of Samsung and Oppo.
+
+Huawei has promised HarmonyOS Next will debut for consumers in Q4 of 2024, and that by then it will have trained millions of developers and secured thousands of native apps to run on the OS. A version for developers has been promised for imminent release.
+
+In sessions for developers, Huawei detailed the innards of the OS and how it will ship with all the basic apps and services consumers will expect – stuff like maps, photo management, and a calculator – and the developer tools it's created.
+
+Huawei has also developed an "open" version of HarmonyOS Next – presumably in the hope that third parties might consider the OS to power their own devices.
+
+The developer push and possible OEM adoption of HarmonyOS Next are as significant as the software itself. If Huawei can develop an ecosystem of third-party players, it could create a viable alternative to the Android/iOS duopoly.
+
+Huawei's revived smartphone range has been hailed as a patriotic alternative for Chinese buyers. Yet even a couple of hundred million Huawei devices running HarmonyOS Next would not be a significant challenge to Apple and Google outside China.
+
+Nor would other Chinese handset-makers adopting the OS necessarily make a difference. Recall that Microsoft signed up the likes of HTC, LG, and Samsung to build Windows Phone handsets, but couldn't crack the market. Only Samsung remains a force in the handset market – and it's all-in on Android.
+
+Huawei has one huge advantage: China's government is on its side and has already let it be known that it would rather government workers don't use iOS for official business. Were China's governments to signal a preference for HarmonyOS, the platform could become a de facto standard behind the Great Firewall. ®

@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:15
+-->
+
+# Google Employee Fired After Protesting Against Israel
+
+> 来源：[https://www.businessinsider.com/google-employee-fired-after-protesting-against-israel-2024-3](https://www.businessinsider.com/google-employee-fired-after-protesting-against-israel-2024-3)
+
+A Google engineer who publicly protested a talk by the head of Google Israel is now out of a job.
+
+The employee demonstrated during a presentation by Barak Regev, Google Israel's managing director, on Monday in New York City.
+
+"I'm a Google software engineer, and I refuse to build technology that powers genocide, apartheid, or surveillance," the worker shouted, according to [videos of the event](https://www.tiktok.com/t/ZTL8DPKVS/).
+
+Google confirmed that the company fired the employee [to CNBC](https://www.cnbc.com/2024/03/08/google-fires-employee-who-protested-israel-tech-event-shuts-forum.html) on Friday.
+
+"Earlier this week, an employee disrupted a coworker who was giving a presentation — interfering with an official company-sponsored event," the company said in a statement to [The Verge](https://www.theverge.com/2024/3/8/24094687/google-israel-project-nimbus-employee-fired). "This behavior is not OK, regardless of the issue, and the employee was terminated for violating our policies."
+
+Google did not immediately return Business a request for comment from Business Insider on Saturday.
+
+Regev was speaking at Mind the Tech, an annual Israeli tech conference held in New York City. The employee was protesting Project Nimbus, a $1.2 billion cloud-computing contract between Google and Amazon and Israel's government.
+
+Google workers have [previously voiced their concerns](https://www.businessinsider.com/project-nimbus-google-sundar-pichai-2022-9) over fears that Israel could use the contract to support its military. Google executives have claimed that the contract is not used to support military work.
+
+"Project Nimbus puts Palestinian community members in danger," the employee said in the video.
+
+More than 100 people, including Google workers, [protested the project](https://www.businessinsider.com/hundreds-gathered-demanding-google-and-amazon-drop-12-billion-contract-for-israels-military-2022-9) outside Google's New York office in 2022 following the resignation of Ariel Koren, an employee who had spoken out against Project Nimbus.
+
+Google workers also flooded the company's employee message board with comments about Project Nimbus on Thursday, CNBC reported. The forum was scheduled to be used to submit questions to Google executives for the International Women's Day Summit the same day, according to the outlet.
+
+Google shut down the forum over the comments, which a company spokesperson said were "divisive content that is disruptive to our workplace," the report says.
+
+The incident on Monday follows the [ouster of the entire YouTube music team last week](https://www.businessinsider.com/youtube-music-layoffs-google-alphabet-workers-union-2024-3). The Alphabet Worker's Union, which represents workers at Google's parent company, [said](https://twitter.com/alphabetworkers/status/1763330389446156738?s=46&t=Nui0UmVGijsDXT2qSHv1rQ) that the team was laid off before they went into an Austin City Council meeting to promote a resolution calling on Google to bargain with them.
+
+A spokesperson for Google told Business Insider that Cognizant, a professional services company that Alphabet contracted the YouTube Music team through, is responsible for ending the workers' employment, not Google.
+
+"Contracts with our suppliers across the company routinely end on their natural expiry date, which was agreed to with Cognizant," the company said in a statement.
+
+Alphabet and Google CEO, [Sundar Pichai](https://www.businessinsider.com/calls-for-google-ceo-sundar-pichai-alphabet-step-down-ai-2024-3) is also facing recent calls for his resignation after the company's recent failures in AI innovation. Google recently put a hold on its AI image generator, [Gemini](https://www.businessinsider.com/google-gemini-ai-chatbot-woke-bias-controversy-raises-question-2024-2), after it created historically inaccurate photos.
+
+*On February 28, Axel Springer, Business Insider's parent company, joined 31 other media groups and filed a $2.3 billion suit against Google in Dutch court, alleging losses suffered due to the company's advertising practices.*

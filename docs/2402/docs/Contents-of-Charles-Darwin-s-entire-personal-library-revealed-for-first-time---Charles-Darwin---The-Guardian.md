@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:53:48
+-->
+
+# Contents of Charles Darwin’s entire personal library revealed for first time | Charles Darwin | The Guardian
+
+> 来源：[https://www.theguardian.com/science/2024/feb/11/charles-darwin-entire-personal-library-revealed-first-time](https://www.theguardian.com/science/2024/feb/11/charles-darwin-entire-personal-library-revealed-first-time)
+
+Details of Charles Darwin’s vast personal library, from a paper on epileptic guinea pigs to the Elizabeth Gaskell novel he adored, are being published in their entirety for the first time.
+
+The project has involved nearly two decades of painstaking, detective-like work to track down the thousands of books, journals, pamphlets and articles in the naturalist’s library.
+
+<gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;science&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;science/charles-darwin&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Charles Darwin&quot;},{&quot;id&quot;:&quot;science/science&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Science&quot;},{&quot;id&quot;:&quot;books/books&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Books&quot;},{&quot;id&quot;:&quot;culture/culture&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Culture&quot;},{&quot;id&quot;:&quot;culture/heritage&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Heritage&quot;},{&quot;id&quot;:&quot;uk/uk&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;UK news&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;Article&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;News&quot;},{&quot;id&quot;:&quot;profile/markbrown&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Mark Brown&quot;,&quot;twitterHandle&quot;:&quot;markbrown14&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2008/01/21/mark_brown_140x140.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=11576cd7511ad0bfd565779b3045d42f&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/uk-home-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;UK Home News&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;science/2024/feb/11/charles-darwin-entire-personal-library-revealed-first-time&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+[John van Wyhe](https://www.facebook.com/john.vanwyhe.7/), the academic who has led the “overwhelming” endeavour, said it showed the extraordinary extent of Darwin’s research into the work of others.
+
+“It also shows how insanely eclectic Darwin was,” Van Wyhe said. “There is this vast sea of things which might be an American or German news clipping about a duck or invasive grasshoppers. That’s been the fun part, not the formal books but the other things … all of which pool together to make the theories and publications we all know.”
+
+The 300-page catalogue published by [Darwin Online](http://darwin-online.org.uk/AboutUs.html) details 7,400 titles across 13,000 items including journals, pamphlets and reviews.
+
+Some of the books date back to Darwin’s school days such as Oliver Goldsmith’s A history of England (1821), which he won as a prize, or his headmaster’s textbook on ancient geography.
+
+Researchers have at times used auction records to piece together stories.
+
+For example, an auction sales record reveals that Darwin had a copy of an 1826 article by the ornithologist [John James Audubon, “Account of the habits of the Turkey Buzzard (Vultura aura), particularly with the view of exploding the opinion generally entertained of its extraordinary power of smelling](https://www.abebooks.co.uk/Account-habits-Turkey-Buzzard-Vultur-aura/31323055108/bd)”.
+
+In 2019, a copy of [Elizabeth Gaskell’s 1880 novel Wives and Daughters](https://www.theguardian.com/tv-and-radio/2010/dec/02/womans-hour-wives-and-daughters) appeared at auction. A note in it records: “This book was a great favourite of Charles Darwin’s and the last book to be read aloud to him.”
+
+Previous lists of what was in Darwin’s library only covered around 15% what was actually in it, said van Wyhe.
+
+The new list shows Darwin had volumes on a dizzying array of subjects including biology, geology, philosophy, psychology, religion, farming, art, history and travel.
+
+More than half the works are in English and the rest in languages including German, French, Italian, Spanish, Dutch and Danish.
+
+One of the items is a German periodical containing the first known photograph of bacteria.
+
+Other papers in the library have titles such as “The anatomy of a four-legged chicken”, “Epileptic guinea-pigs” and “The hateful or Colorado grasshopper”.
+
+The project includes a virtual reconstruction of the library, with 9,300 links to copies of works available for free.
+
+No one, his supporters say, has influenced our knowledge of the natural world more than Darwin.
+
+His 1859 masterwork, On the Origin of Species, set down the theory that explains how life on Earth has evolved. It is seen as a [book that changed the world, one that mattered then and matters now](https://www.theguardian.com/science/2008/feb/09/darwin.bestseller#:~:text=Darwin's%20On%20the%20Origin%20of,some%20of%20them%20dreaded%20it.).
+
+Van Wyhe, a historian of science at the University of Singapore and the director of Darwin Online, said it all showed that Darwin was “not an isolated figure working alone but an expert of his time building on the sophisticated science and studies and other knowledge of thousands of people.
+
+“The size and range of works in the library makes manifest the extraordinary extent of Darwin’s research into the work of others.”
+
+The library publication coincides with what would have been Darwin’s 215th birthday on 12 February.
+
+Reams of material has been written about Darwin but this is the first time his library has been itemised in its entirety.
+
+Van Wyhe said: “Now that we’ve done this I wonder ‘why wasn’t this done many years ago’? Darwin is someone who has been written about more than most historical figures… there are jokes about it, we call it the Darwin industry.”

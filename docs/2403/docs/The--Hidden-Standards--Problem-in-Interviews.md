@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:30:27
+-->
+
+# The "Hidden Standards" Problem in Interviews
+
+> 来源：[https://thephilosopher.tech/the-hidden-standards-problem-in-interviews](https://thephilosopher.tech/the-hidden-standards-problem-in-interviews)
+
+The inflection point of every tech interview is when the interviewer gives a scenario, the candidate seemingly answers correctly, yet the interviewer rejects the candidate on the absurdity of the solution. Why do correct solutions tend to look absurd? Because of how questions are constructed in the first place.
+
+Startup engineers are NOT usually taught how to interview. If someone is good at their job, it is assumed that he can evaluate potential candidates. You'll thus find people with limited technical experience, and still lacking the maturity of working with a diverse team, having the authority to determine who works for the company.
+
+When people are not taught, they wing it. A primary mistake in interviewing is conflating concepts with knowledge. Unless someone is really good at software engineering, he has not yet learnt that syntax is NOT semantics, and the Kafka queue he learnt in a systems design Udemy course is not the only way to build this particular system.
+
+The conflating of concepts with knowledge degrades the whole interview process to "*how many different solutions have you memorised*" instead of "*do you have the ability to understand new problems and the skills to deal with them?*" And the reason this is culturally acceptable is because this is how schools work.
+
+Thus, it becomes important for your interviewer to hear things like "Kafka" or "Microservices" rather than answer the candidate's *petty questions* like "*why do you need BigData for 100GB of data that you have?*"
+
+Because the emphasis is on arbitrary solutions rather than problems, there is never a good exchange of problems in an interview. Only comparing notes on "who has implemented a bigger solution so far in life."
+
+For you to understand what a candidate has accomplished, it's important to understand the landscape of the problems that he dealt with. Sure, he wrote an app to work with Sqlite databases, which sounds very simplistic. However, when you look closer, you realise that he got the company migrated off-of ScyllaDB by rearchitecting a read-heavy application to use Sqlite over S3\. And the primary motive was saving cost. Yeah, the solution does not look "cool," but he managed to pull off a major cost optimisation project. Usually, the arrogance of the interviewer prevents him from understanding the problem statement of the candidate, because it's not the interviewer who is getting interviewed.
+
+On the flip side, inexperienced interviewers also see the world in black and white and think that their problem statements are the ONLY kind of problem statements that exist. They'll go ahead and ask, "*How would you ensure that you rate-limit APIs properly?*" The candidate, not knowing the details of the problem, and being rebuffed on asking more details, answers: "*Well, I would just make sure the WAF takes care of any abnormal traffic; I wouldn't add anything more to it unless deemed necessary.*"
+
+The above is not a bad answer in itself. It answers on the side of security (availability). But the interviewer's company rate-limits APIs because there is a non-public enterprise-tier API that is billed per call. But he never mentions this landscape to the candidate.
+
+Now, many might jump to say, it's the candidate's job to fish out information. Well, most of the developing engineers don't have the skills to ferret out information either. Or else, there won't be such a big disconnect between the development and the product management team. The disconnect with the business teams is greater still on both sides. It's just that the interviewer has assumed what they know is what "*programming is all about*," and anyone who doesn't know it is "*not a programmer.*"
+
+That's the *hidden standard* right there. Whatever answers you give as a candidate, the interviewer adds additional "data points" to it, and then deems the final picture incoherent. But these hidden standards are not known to the candidate, even if he had the ability to solve the company's problem.
+
+Additionally, the problems communicated to the candidate are usually described through the lens of the interviewer. Most of the times, I've seen good engineers solve problems because they *viewed the problem differently*, not because they *computed differently on the exact same definition of the problem.* So one must not set up the problem landscape and be so biased toward it that opposing views are dismissed even before being evaluated on their merits.
+
+It is hyper-critical that we expect candidates to instantly jump to an answer with incomplete and biased information, whereas we ourselves would have taken days to internalise the requirements, weeks to fight over the timelines, and months making excuses about a buggy implementation.
+
+Any time we're not able to evaluate skills, we degrade to evaluating memory in the name of experience.

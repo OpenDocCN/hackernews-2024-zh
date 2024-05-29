@@ -1,0 +1,184 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:09
+-->
+
+# Electronics | Free Full-Text | MeMPA: A Memory Mapped M-SIMD Co-Processor to Cope with the Memory Wall Issue
+
+> 来源：[https://www.mdpi.com/2079-9292/13/5/854](https://www.mdpi.com/2079-9292/13/5/854)
+
+To have straightforward esteem of the performance goodness achieved by MeMPA, we decided to map on the architecture the same benchmarks used for the Hybrid-SIMD evaluation [
+
+[2](#B2-electronics-13-00854)
+
+], i.e., K-Nearest Neighbor (K-NN), K-means, Matrix-Vector Multiplication (MVM), Mean and Variance (
+
+<math display="inline"><semantics><mi>μ</mi></semantics></math>
+
+&
+
+<math display="inline"><semantics><msup><mi>σ</mi> <mn>2</mn></msup></semantics></math>
+
+), and Discrete Fourier Transform (DFT). Moreover, because of the lack of a real compiler for MeMPA, we excluded implementing the same SPLASH-2 algorithms used for the profiling procedure in
+
+[Section 2](#sec2-electronics-13-00854)
+
+, for which a manual mapping would have been extremely hard.
+
+[Table 1](#electronics-13-00854-t001)
+
+sums up the algorithms mapping in terms of number of processed data, number of clock cycles needed for the algorithm execution, and related power consumption.
+
+For the sake of brevity, in the following, only the mapping of one among the implemented algorithms is detailed. In particular, the MVM mapping is provided for a two-fold reason. On the one hand, the MVM allows us to easily point out how the MeMPA highlights, as reduction tree mechanism, M-SIMD computing paradigm, and battleship game-like enabling mechanism, can be exploited to efficiently execute an application. On the other hand, it represents the operation at the base of convolutional neural networks that belong to the set of data-intensive applications that would heavily benefit from MeMPA usage in terms of time and energy consumption. However, the implementation of all other algorithms can be derived following along the same line as the implementation described for the MVM.
+
+#### MVM
+
+The mapping of any algorithm on MeMPA is given by two macro phases: the Processing Matrix initialization phase, where the CPU loads inside the Processing Matrix all data to be elaborated, and the algorithm execution phase, where the algorithm execution actually takes place.
+
+Concerning the MVM described in
+
+[Table 1](#electronics-13-00854-t001)
+
+, the implemented multiplication was performed between a 16 × 16 matrix and a 16 × 1 vector. Thus, during the Processing Matrix initialization phase, each of the matrix elements was stored inside a different Block Word of the Smart Blocks, while all the vector items were loaded inside the first row of Standard Blocks. The whole Processing Matrix initialization phase took 272 clock cycles, namely, one clock cycle for each data writing.
+
+Then, one instruction was instantiated (one clock cycle) to perform the backup of the Block Words data into the first location of the Register Files, a step that is always needed for any algorithm in order to avoid losing the initial data when, at the end of the algorithm, the MeMPA saves the results into the Block Words to make them visible to the CPU.
+
+Afterward, the real algorithm execution phase began by carrying out the 256 products between each matrix element (
+
+<math display="inline"><semantics><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mi>j</mi></mrow></msub></semantics></math>
+
+) and the right vector item (
+
+<math display="inline"><semantics><msub><mi>y</mi> <mi>j</mi></msub></semantics></math>
+
+) needed for the computation of the final vector elements
+
+<math display="inline"><semantics><mrow><msub><mi>z</mi> <mi>i</mi></msub> <mo>=</mo> <msubsup><mo>∑</mo> <mrow><mi>j</mi> <mo>=</mo> <mn>0</mn></mrow> <mn>15</mn></msubsup> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mi>j</mi></mrow></msub> <msub><mi>y</mi> <mi>j</mi></msub></mrow></semantics></math>
+
+. In total, 5 + 1 instructions (six clock cycles) were used to fulfill these multiplications. In particular, for the first five instructions, all IDs were active, each driving only one Smart Blocks row at a time. A scheme of the first
+
+`VLIW_Instruction`
+
+is reported
+
+[Figure 4](#electronics-13-00854-f004)
+
+.
+
+Through this instruction, 1st, 6th, and 11th Smart Block rows were driven to compute all the
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mi>j</mi></mrow></msub> <mo>·</mo> <msub><mi>y</mi> <mi>j</mi></msub></mrow></semantics></math>
+
+(with i = 0, 5, 10 and j = 0, …, 15) terms in parallel and save the outcome in the associated Bypass Storages. In more detail, looking at the structure of the first instruction in
+
+[Figure 4](#electronics-13-00854-f004)
+
+, it can be seen that for ID1 (i.e., the first group of five Smart Block rows starting from the top in the diagram in
+
+[Figure 2](#electronics-13-00854-f002)
+
+b), the activation pattern sees only the first row of Smart Blocks enabled, while the others are not (
+
+`EN ROW = “10000”`
+
+). The operation performed is a multiplication (
+
+`OPCODE = Multiplier`
+
+), having the data from the Column Interconnection and the Block Word as source operators (
+
+`SOURCE OP = Col_Int_Block_Word`
+
+). The data from the Column Interconnection are specified in the
+
+`ADDRESS S1`
+
+field, which represents the address offset value from the first Smart Block belonging to the group. In this case, being the first group of Smart Blocks, the offset will be equal to 16, which is the sixteenth row of the Processing Matrix (corresponding to the first row of Standard Blocks). Finally, the destination is simply specified in the
+
+`DEST OP`
+
+field as Bypass, wanting to save the data in Bypass Storages. The same reasoning can be applied to ID2, which identifies the second group of Smart Blocks, also arranged in five rows. Again, the
+
+`EN ROW`
+
+is equal to
+
+`“10000”`
+
+identifying only the first row of the subgroup; the operation is always the multiplication (
+
+`OPCODE = Multiplier`
+
+); the source operands always coming from the Column Interconnections and the Block Words (
+
+`SOURCE OP = Col_Int_Block_Word`
+
+); the destination always Bypass Storages (
+
+`DEST OP = Bypass`
+
+), while the offset this time is equal to 11, always pointing to the first row of Standard Blocks.
+
+Exploiting the same rationale, second, third, fourth, and fifth instructions computed the <math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mi>j</mi></mrow></msub> <mo>·</mo> <msub><mi>y</mi> <mi>j</mi></msub></mrow></semantics></math> terms for i equal to (1,6,11), (2,7,12), (3,8,13), and (4,9,14), respectively. Lastly, the sixth instruction performed the <math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mn>15</mn> <mo>,</mo> <mi>j</mi></mrow></msub> <msub><mi>y</mi> <mi>j</mi></msub></mrow></semantics></math> products by enabling only the last Smart Blocks row through the third instruction decoder.
+
+Once all the products were ready inside the Bypass Storages of the Processing Matrix, all the sums generating the
+
+<math display="inline"><semantics><msub><mi>z</mi> <mi>i</mi></msub></semantics></math>
+
+values were carried out in four instructions (four clock cycles). In order to carry this out, the reduction tree mechanism implemented due to the Row Interconnections was thoroughly exploited, allowing the reduction in the number of instructions needed for computing the 16 parallel summations from 15 to 4 instructions. The scheme of the first of these four instructions is shown in
+
+[Figure 4](#electronics-13-00854-f004)
+
+(Instruction 8). Differently from the previous set of instructions, where all the enable signals for the Smart Block columns were always active, each of these four instructions activated a different set of Smart Block columns, while all the IDs drove all the Smart Block rows with the same operation for the current clock cycle. For the first instruction, all the odd Smart Block columns were enabled so that all the following sums were computed and saved in the Bypass Storages:
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>0</mn></mrow></msub> <msub><mi>y</mi> <mn>0</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>1</mn></mrow></msub> <msub><mi>y</mi> <mn>1</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>2</mn></mrow></msub> <msub><mi>y</mi> <mn>2</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>3</mn></mrow></msub> <msub><mi>y</mi> <mn>3</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>4</mn></mrow></msub> <msub><mi>y</mi> <mn>4</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>5</mn></mrow></msub> <msub><mi>y</mi> <mn>5</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>6</mn></mrow></msub> <msub><mi>y</mi> <mn>6</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>7</mn></mrow></msub> <msub><mi>y</mi> <mn>7</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>8</mn></mrow></msub> <msub><mi>y</mi> <mn>8</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>9</mn></mrow></msub> <msub><mi>y</mi> <mn>9</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>10</mn></mrow></msub> <msub><mi>y</mi> <mn>10</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>11</mn></mrow></msub> <msub><mi>y</mi> <mn>11</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>12</mn></mrow></msub> <msub><mi>y</mi> <mn>12</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>13</mn></mrow></msub> <msub><mi>y</mi> <mn>3</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>14</mn></mrow></msub> <msub><mi>y</mi> <mn>14</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>15</mn></mrow></msub> <msub><mi>y</mi> <mn>15</mn></msub></mrow></semantics></math>
+
+, for i = 0, …, 15\. Then, for the second instruction only columns 1, 5, 9, and 13 were enabled to compute the
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>0</mn></mrow></msub> <msub><mi>y</mi> <mn>0</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>1</mn></mrow></msub> <msub><mi>y</mi> <mn>1</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>2</mn></mrow></msub> <msub><mi>y</mi> <mn>2</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>3</mn></mrow></msub> <msub><mi>y</mi> <mn>3</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>4</mn></mrow></msub> <msub><mi>y</mi> <mn>4</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>5</mn></mrow></msub> <msub><mi>y</mi> <mn>5</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>6</mn></mrow></msub> <msub><mi>y</mi> <mn>6</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>7</mn></mrow></msub> <msub><mi>y</mi> <mn>7</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>8</mn></mrow></msub> <msub><mi>y</mi> <mn>8</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>9</mn></mrow></msub> <msub><mi>y</mi> <mn>9</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>10</mn></mrow></msub> <msub><mi>y</mi> <mn>10</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>11</mn></mrow></msub> <msub><mi>y</mi> <mn>11</mn></msub></mrow></semantics></math>
+
+,
+
+<math display="inline"><semantics><mrow><msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>12</mn></mrow></msub> <msub><mi>y</mi> <mn>12</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>13</mn></mrow></msub> <msub><mi>y</mi> <mn>3</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>14</mn></mrow></msub> <msub><mi>y</mi> <mn>14</mn></msub> <mo>+</mo> <msub><mi>x</mi> <mrow><mi>i</mi> <mo>,</mo> <mn>15</mn></mrow></msub> <msub><mi>y</mi> <mn>15</mn></msub></mrow></semantics></math>
+
+terms, respectively. Similarly, the third and fourth instructions implemented the remaining sums so that, after the end of the last instruction, all the final
+
+<math display="inline"><semantics><msub><mi>z</mi> <mi>i</mi></msub></semantics></math>
+
+values were available in the Block Words of the first Smart Blocks column.

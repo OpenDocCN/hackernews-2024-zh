@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:38:06
+-->
+
+# A ‘$3,500 Chastity Belt’: Early Apple Vision Pro Adopters Alarmed to Learn VR Porn Doesn't Work
+
+> 来源：[https://www.404media.co/a-3-500-chastity-belt-early-apple-vision-pro-adopters-alarmed-to-learn-vr-porn-doesnt-work/](https://www.404media.co/a-3-500-chastity-belt-early-apple-vision-pro-adopters-alarmed-to-learn-vr-porn-doesnt-work/)
+
+##### Subscribe
+
+Join the newsletter to get the latest updates.
+
+Since the moment the Apple Vision Pro was announced, people have joked that it was a device that some people would primarily use for porn. Now that it has been released, a certain segment of its customer base is very disappointed to learn that current VR porn does not work on the $3,500 headset. Top minds are on the case trying to figure out how to fix this. 
+
+The day the Vision Pro was released, a Reddit user posted in the r/oculusnsfw subreddit “[Anyone figured out porn on the Vision Pro?](https://www.reddit.com/r/oculusnsfw/comments/1ahffm0/anyone_figured_out_porn_on_the_vision_pro/?ref=404media.co) Dying to get this to work haha, if anyone has a success story please tell me how.” The top comment on this thread is “3500$ chastity belt. 🤡🤡🤡🤡🤡🤡” Oculus NSFW subreddit is the largest VR porn subreddit, with employees of many studios who make immersive VR porn active in the community. The general consensus in that thread is that, while the Vision Pro can play “flat” porn videos on sites like PornHub, there is currently not an easy way to play 180 degree side-by-side videos on the Vision Pro, which is how most commercial VR porn is filmed.
+
+In the leadup to the Vision Pro’s release, the r/VisionPro subreddit had popular posts with hundreds of comments on threads like “[What will porn be like with Vision Pro?](https://www.reddit.com/r/VisionPro/comments/1aeb65f/what_will_porn_be_like_with_vision_pro/?ref=404media.co)” and “[Not to be that guy](https://www.reddit.com/r/VisionPro/comments/19erpfc/not_to_be_that_guy_but_this_device_will_be/?ref=404media.co) but this device will be revolutionary for personal porn,” and “[My last night suffering](https://www.reddit.com/r/VisionPro/comments/1agsin1/my_last_night_suffering/?ref=404media.co) … an ode to my last night suffering with being able to see the space between the pixels on my Meta Quest 3 while trying to watch VR porn, breaking my otherwise pristine immersive experience. Tomorrow ushers in a new frontier of masturbatory technology.”   
+
+## This post is for paid members only
+
+Become a paid member for unlimited ad-free access to articles, bonus podcast content, and more.
+
+[Subscribe](/membership/)
+
+## Sign up for free access to this post
+
+Free members get access to posts like this one along with an email round-up of our week's stories.
+
+[Subscribe](/signup/)

@@ -1,0 +1,62 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:18
+-->
+
+# How Showmax, an African streaming service, dethroned Netflix - Rest of World
+
+> 来源：[https://restofworld.org/2024/showmax-subscription-africa-netflix/](https://restofworld.org/2024/showmax-subscription-africa-netflix/)
+
+An eight-year-old South African streaming company has zoomed past Netflix to become Africa’s favorite.
+
+Showmax — which was spun out of Africa’s largest entertainment company, MultiChoice, in 2015 — had 2.1 million subscribers on the continent at the end of November 2023, as compared to 1.8 million for Netflix, according to market research firm Omdia. The same month, [Showmaxi](https://restofworld.org/tag/showmax)[Showmax](https://restofworld.org/tag/showmax)Launched in South Africa in 2015, Showmax is a streaming service that focuses on local content and is available across Africa.[READ MORE](https://restofworld.org/tag/showmax)’s market share rose to nearly 39%, while Netflix dropped to 33.5%.
+
+Amazon Prime Video was a distant third contender on the continent with just 300,000 subscribers in November 2023, Omdia noted.
+
+Showmax has overtaken Netflix amid intense competition brewing in Africa’s video streaming industry, where global firms, major telecoms, and several country-specific apps [are fighting for consumers’ bucks](https://restofworld.org/2023/african-streaming-services-compete-netflix-prime-video/). In January, Prime Video [announced](https://techcrunch.com/2024/01/18/amazon-prime-video-is-discontinuing-support-for-african-and-middle-east-originals/) it was downsizing its Africa and Middle East operations and halting the commissioning of original content.
+
+The company stood out among competitors due to its deep understanding of local preferences and a carefully curated mix of content suited to African interests.
+
+Showmax has partnered with HBO and Comcast to bring high-quality, international English-language content to its viewers, and developed strong relations with local creators in African countries. The platform also has streaming rights to the English Premier League, for which it offers a dedicated subscription plan.
+
+“In the last few years, Showmax has over-indexed on local content and they are clearly seeing the long-term impact of that strategy,” film industry investor and tech entrepreneur Jason Nkoju told *Rest of World*. “It’s a volume game, which the global streaming companies don’t fully seem to comprehend. I guess they will understand that now. The mass market prefers [its] own content.”
+
+When filmmaker Tobechukwu Ejiofor pitched a documentary idea to Showmax executives, they helped him develop it further, he told *Rest of World*, highlighting the company’s close involvement with African creators. Showmax also introduced Ejiofor to another filmmaker, Daro Umaigba, who was researching the same topic, and arranged a meeting between the two in Lagos. The company persuaded them to work together, Ejiofor and Umaigba told *Rest of World*, and the meeting eventually led to *Freemen*, a docuseries about how the Igbos, one of Nigeria’s largest ethnic groups, use a unique apprenticeship system to build generational wealth. The show premiered as a Showmax original this month.
+
+According to Ejiofor, Showmax’s understanding of the cultural value of their project made their working relationship seamless. “Showmax always has a wealth of knowledge of projects that are in the production stage, and always seem to be in touch with loads of filmmakers and what they are doing,” he said.
+
+In 2020, Showmax [acquired exclusive licensing rights](https://techcabal.com/2023/07/04/showmax-netflix-hbo/) to stream HBO’s content in Africa, which has become one of the biggest advantages for the company. “Although we now watch a few local shows on Showmax, my favorite shows were *Billions* and *Curb Your Enthusiasm*,”Johannesburg-based designer Mpumelelo Cindi told *Rest of World*.
+
+In March 2023, Comcast — the parent company of Universal Pictures, NBC, Peacock, Sky, DreamWorks Animation, and Telemundo — bought a 30% stake in Showmax through NBCUniversal. This gave the African company access to advanced technology, the funds to survive in a competitive market, and blockbuster English-language content, including titles from the BBC, Lionsgate, ITV, Paramount, Sony, and Warner Bros.
+
+Comcast’s presence will help further strengthen Showmax’s position, CEO Marc Jury told *Rest of World*. “It allows us to invest in far greater numbers of local productions, and so when you take those local productions, coupled with the international content from around the world and the best of live sport, we know that we’ve got a winner.”
+
+Showmax has exclusive rights to stream HBO’s content in Africa. [https://www.showmax.com/](https://www.showmax.com/)
+
+Showmax users in Nigeria and South Africatold *Rest of World* they prefer the platform over others because of its vast mix of local and international content. “Showmax feels like watching Nigerian TV without having a TV,” Diseye Amy Naassin, a Lagos-based human resources manager, told *Rest of World*. “I like the reality TV shows you find on Showmax — *The* *Real Housewives* shows and *Big Brother Naija*. I also enjoyed the HBO series on the platform.” Showmax’s original series include [multiple award-winning shows](https://stories.showmax.com/za/the-best-safta-winning-local-content-to-stream-now) like *Tali’s* *Joburg Diary* and *Donkerbos*.
+
+Some users said the experience on Showmax’s app leaves something to be desired.
+
+Calling the app a “disservice,” Lagos-based writer Toheeb Lanlehin told *Rest of World* he uses Showmax only for specific content. “I forget that I have a Showmax subscription sometimes [and] Netflix is still top of mind for me,” he said.“Discoverability [on the app] is the problem. If you don’t know what you are looking for, you probably won’t find it.”
+
+During an event in Lagos in January, Opeoluwa Filani, Showmax’s country manager for Nigeria, said the company has launcheda new app — developed in collaboration with Comcast — which does not have these issues. “We have made it easy to find interesting movies by searching [for something] as small as a text in a movie,” he said.
+
+Showmax’s biggest advantage is parent company MultiChoice’s vast network: It runs a cable TV business and has been building TV channels across Africa since 1995, Marie Lora-Mungai, founder of consulting firm Restless Global, told *Rest of World*.
+
+> "Showmax’s biggest advantage is parent company MultiChoice’s vast network."
+
+“MultiChoice’s level of commitment to building the African video-streaming business from the ground up is a lot deeper than the global players’ need for expansion,” Lora-Mungai said*.* “The African market is essentially MultiChoice’s to lose … It has teams on the ground in most countries, constantly taking the pulse of what audiences want to see. In some places like Zambia, MultiChoice even single-handedly props up the entire audiovisual sector.”
+
+MultiChoice’s revenue in the [2023 financial year](https://www.multichoice.com/media/news/multichoice-returns-rest-of-africa-to-profit-and-continues-to-expand) was 59.1 billion rand ($3.1 billion) — most of which came from its direct broadcast satellite service, DStv.  Over the years, MultiChoice has leveraged its television business to support Showmax, Thinus Ferreira, a South African media analyst and TV critic, told *Rest of World*. “DStv is profitable and MultiChoice is able to leverage it to support Showmax through advertising (making people aware of Showmax and its content),” Ferreira said in an email*.*
+
+Hesaid MultiChoice executives, seasoned in the business, commission most of Showmax’s content. “They don’t have to learn and figure that out in the way that Netflix in Africa and Amazon Prime Video, Disney, Apple TV+ and others must still do,” Ferreira wrote. MultiChoice, [which recently rejected](https://www.reuters.com/markets/deals/s-africas-multichoice-ends-deal-talks-with-vivendis-canal-plus-2024-02-05/) an acquisition bid from French media giant Canal+, has said it’s [investing another $89 million into Showmax](https://techcabal.com/2024/02/01/multichoice-showmax-investment/). 
+
+At the beginning of this year, Showmax announced a target of 50 million subscribers and $1 billion in revenue over the next five years.
+
+Experts believe the company will have to exceed expectations on several factors, including its pricing strategy and a smooth relationship with Comcast, to meet this goal. In 2024, Showmax slashed its subscription fee by nearly 50%.
+
+“Showmax wants to grow their subscriber numbers first since that is what investors are interested in, before they then raise their prices, which is what Netflix has also done,” Ferreira said. “Showmax won’t be able to be or to remain this cheap forever but it helps to drive subscriber growth for it now.”
+
+Lora-Mungai said Showmax needs to carefully navigate the risk of its partnership with Comcast not working out well in the long term.
+
+“In practice, this type of global partnership can be tricky,” she said, adding that differences in work culture could lead to disagreements. “Whether Comcast has fully grasped the complexities of doing business in Africa and the patience needed to overcome this market’s challenges remains to be seen.”

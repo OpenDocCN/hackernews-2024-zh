@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:56:29
+-->
+
+# Unreal Engine 5: Entwickler zeigt Spiel im Browser - dank WebGPU
+
+> 来源：[https://www.pcgameshardware.de/Unreal-Engine-Software-239301/News/5-Entwickler-zeigt-Spiel-im-Browser-dank-WebGPU-1440861/](https://www.pcgameshardware.de/Unreal-Engine-Software-239301/News/5-Entwickler-zeigt-Spiel-im-Browser-dank-WebGPU-1440861/)
+
+Die Verwaltung der eigenen Spielesammlung läuft heute zwar meist über einen Launcher, doch wenn man damit ein Spiel spielen möchte, wird dieses im Hintergrund natürlich trotzdem zunächst erst heruntergeladen und installiert. Wie noch von alten Flash-Spielen bekannt, kann man manche Titel aber auch direkt im Webbrowser ausführen. Und passende Spiele soll man künftig sogar mit der Unreal Engine 5 entwickeln können.
+
+## Unreal Engine 5 im Browser
+
+Daran arbeitet zumindest Wonder Interactive: Mit passender Software soll es laut dem Unternehmen möglich sein, Spiele aus der Unreal Engine für die Wiedergabe im Browser zu exportieren. Schon seit 2022 ist dabei angeblich ein Export für die [ältere Web-API *WebGL* möglich](https://theimmersiveweb.com/blog). Nun ist laut Alex St. Louis, Gründer des Unternehmens, offenbar auch der Export für die neue *WebGPU*-API gelungen. Dazu wurde ein Bild veröffentlicht, das das Innenleben eines Autos und eine weit entfernte Landschaft zeigt.
+
+Empfohlener redaktioneller InhaltAn dieser Stelle finden Sie externe Inhalte von [PLATTFORM]. Zum Schutz Ihrer persönlichen Daten werden externe Einbindungen erst angezeigt, wenn Sie dies durch Klick auf "Alle externen Inhalte laden" bestätigen:*Ich bin damit einverstanden, dass mir externe Inhalte angezeigt werden. Damit werden personenbezogene Daten an Drittplattformen übermittelt. Mehr dazu in unserer [Datenschutzerklärung](/datenschutz/).*
+
+*Angeblich werden dabei mehrere wichtige Features unterstützt, beispielsweise die Lastverteilung auf mehrere Kerne und ein Streaming-System, um Assets in Echtzeit zu laden. Falls das Projekt tatsächlich funktioniert, dürfte es damit möglich sein, in Zukunft grafisch deutlich aufwändigere Spiele im Browser darzustellen. Weitere Details sollen dabei [angeblich bald folgen](https://twitter.com/AlexStLouis10/status/1757909424805757239). Neben der Unreal Engine 5 will das Unternehmen in Zukunft außerdem auch andere Engines unterstützen, beispielsweise Unity und die Open 3D Engine.*
+
+***Auch interessant:** [**RPG mit Unreal Engine 5: Ehemalige Witcher-Entwickler brauchen noch mehr Zeit**](https://www.pcgameshardware.de/The-Thaumaturge-Spiel-74216/News/Release-Verschiebung-1440796/)*
+
+*Der Traum, dass man AAA-Spiele künftig einfach über eine Webseite und damit ohne Installation auf der eigenen Hardware spielen kann, dürfte aber trotzdem noch in weiter Ferne liegen. Denn schließlich müssen die jeweiligen Dateien trotzdem heruntergeladen werden, und das dürfte bei großen Projekten kaum praxistauglich sein. Zudem ist der Support für die WebGPU-API bislang noch recht dürftig. Sie wird [laut Can I Use](https://caniuse.com/?search=webgpu) nur von den neuesten Versionen von Chrome, Edge und Opera unterstützt. Vorerst dürften Webbrowser-Spiele daher weiterhin hauptsächlich auf WebGL setzen. Für ebendiese API gibt es wiederum auch alternative Engines. Beispielsweise unterstützt auch die freie Game-Engine Godot einen entsprechenden Webexport - und an einer Unterstützung für WebGPU wird [dort aktuell gearbeitet](https://github.com/godotengine/godot-proposals/issues/6646).*
+
+*Quelle: via [Videocardz](https://videocardz.com/newz/upcoming-project-enables-unreal-engine-5-to-run-through-a-web-browser)*

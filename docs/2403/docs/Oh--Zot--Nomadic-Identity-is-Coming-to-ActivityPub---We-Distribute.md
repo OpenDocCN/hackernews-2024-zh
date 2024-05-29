@@ -1,0 +1,74 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:05:05
+-->
+
+# Oh, Zot! Nomadic Identity is Coming to ActivityPub - We Distribute
+
+> 来源：[https://wedistribute.org/2024/03/activitypub-nomadic-identity/](https://wedistribute.org/2024/03/activitypub-nomadic-identity/)
+
+Even if you’ve been a part of the Fediverse for a long time, you’d be excused if you had never heard of [Nomadic Identity](https://joinfediverse.wiki/The_Zotlabs_projects). Within the confines of Mastodon, it’s a relatively unknown concept. But, for some of us, it’s something of a pipe dream: decentralized identity management with remote access control. On paper, that doesn’t sound too exciting, but it’s a huge concept. Even more exciting: [the guy who designed it is bringing it to ActivityPub](https://fediversity.site/channel/mikedev?mid=https://fediversity.site/item/6b1992db-c504-44e8-ae0f-ac2f0dadb8b6).
+
+## What the Heck is Nomadic Identity?
+
+Nomadic Identity is a concept pioneered by [Mike Macgirvin](https://fediversity.site/channel/mikedev), a longtime builder in the Fediverse. If you’ve ever used Friendica, Hubzilla, or Streams, you’ve used software written by this guy.
+
+Got Zot — Mike Macgirvin on building your own apps and protocols
+
+An interview with the brilliant mind behind the Zot protocol, MagicAuth, and Nomadic Identity.
+
+One of the big problems in federated social systems involves permissions, identity, and data. We can sum this up in three parts:
+
+1.  **Permission Management** – If I visit a friend’s site to interact with something, there typically isn’t a way for me to do anything while I’m over there. I have to go back to my server.
+2.  **Identity Management** – Okay, I have a way to validate that I’m really me. What do I have as a fallback if that fails?
+3.  **Data Portability** – What happens to my stuff if my server goes down? Can I move to another servers and get my statuses, messages, and interactions back? Could I even just do it *temporarily*, to keep my followers, while my server gets sorted out?
+
+From the end user’s side of the house, everything boils down to how their identities are coupled to their instances. ActivityPub-based systems like Mastodon do a pretty decent job with letting people migrate from one server to another, letting users pull in remote statuses from a URL, and letting users decide who is allowed to see or reply to their posts. It’s a far better situation than what came before ActivityPub.
+
+At the end of the day, though, what is currently provided in the ActivityPub side of the network is somewhat limited, compared to what the Zot protocol brings to the table with Nomadic Identity. Let’s dive into the three different components: OpenWebAuth, Channel Relays, and Data Migration.
+
+### OpenWebAuth
+
+OpenWebAuth used to be called “Magic Auth”, because of how seamless the experience is. Instead of only being able to manage things from your social dashboard, you can jump from one part of the Fediverse to another, and *your permissions will be granted automatically.* It all happens in the browser.
+
+The way this works is relatively simple: your browser accesses a token inside of a cookie. That token references your Digital Identity in the Fediverse, verifies it, and a handshake is performed. Afterwards, anything you were given permission to access unlocks and becomes visible on the page.
+
+A really old video of Hubzilla doing it. I’m navigating from my site to Andrew’s.
+
+OpenWebAuth solves one of the most frustrating UX problems the Fediverse currently has: dealing with remote content that you discovered somewhere else.
+
+### Channel Relays
+
+Channel Relays are the second major piece of the puzzle here. Using a common ID, you can associate separate accounts across the network with one another. Each relay is verified through an Authorization process, and then each relay is tethered to one another like so:
+
+Using your credentials, you can log into any one of these three relays, and post to your followers. If the server my work account is on suddenly goes down, I can still log in to my family account or blog, and keep interacting like nothing happened. I’m still in contact with my followers, and if I want, my relay accounts can replicate statuses posted from elsewhere.
+
+A few clear benefits emerge from this:
+
+*   Network Resilience
+*   Censorship Resistance
+*   Ease of Migration
+
+In fact, this mechanism is so good, it feeds directly into the next use-case: Data Migration.
+
+### Data Migration
+
+So, we already have two pieces: multiple identities can be connected together across a network, logging into one can allow you to post from another, and a person can decide, at any time, which account will serve as their primary.
+
+Because all of these things are set up, the act of moving your stuff becomes relatively trivial. All of your accounts are aware of each other. If you switch to a new primary, you can trigger an update to all of your existing conversation threads and comments to switch the author, and replicate the data on your end. Thanks to the way that Nomadic Identity is set up, those verified parts of your identity can perform those kinds of actions, whereas no other account can.
+
+## Why is This Important?
+
+As we continue to think about how to further develop the Fediverse and give people more robust tools capable of doing more things, we have to consider the plumbing that holds it all together. Identity Management is one of those pieces of plumbing that’s surprisingly shaky, and requires serious consideration.
+
+> Digital Identities aren’t something unique to the fediverse and it’s not something Mastodon could stop if they wanted to. Nomadic identity is coming to the internet. The only question is who is going to own your identity. VISA/Mastercard, your government, Google, Microsoft, or you.
+> 
+> Mike Macgirvin
+
+As Threads, Tumblr, and other big social networks come into the space, developers need to think about the stakes. The user migration flow is decent for moving from one server to another, but it’s relatively brittle, and currently only updates a reference from one account to another. The network lacks meaningful ways for people to pull their posts, messages, and media from the place they left.
+
+The biggest takeaway here is that these are mature, time-tested mechanisms that could add extra layers of user agency and control to the Fediverse.
+
+## What’s Next?
+
+Mike is already doing the work of figuring out how to retrofit these concepts onto ActivityPub. It’s likely that we’ll see additional [Fediverse Enhancement Proposals](https://codeberg.org/fediverse/fep) to accommodate certain needs. For implementers, there are a few existing FEPs in the `DRAFT` stage that come recommended:

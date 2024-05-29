@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:57:29
+-->
+
+# A formula for responsive font-size
+
+> 来源：[https://jameshfisher.com/2024/03/12/a-formula-for-responsive-font-size/](https://jameshfisher.com/2024/03/12/a-formula-for-responsive-font-size/)
+
+ [What does the dot do in JavaScript?
+
+`foo.bar`, `foo.bar()`, or `foo.bar = baz` - what do they mean? A deep dive into prototypical inheritance and getters/setters. 2020-11-01](/2020/11/01/what-does-the-dot-do-in-javascript/)  [Smear phishing: a new Android vulnerability
+
+Trick Android to display an SMS as coming from any contact. Convincing phishing vuln, but still unpatched. 2020-08-06](/2020/08/06/smear-phishing-how-to-scam-an-android-user/)  [A probabilistic pub quiz for nerds
+
+A “true or false” quiz where you respond with your confidence level, and the optimal strategy is to report your true belief. 2020-04-26](/2020/04/26/jim-scoring-a-probabilistic-pub-quiz-for-nerds/)  [Time is running out to catch COVID-19
+
+Simulation shows it’s rational to deliberately infect yourself with COVID-19 early on to get treatment, but after healthcare capacity is exceeded, it’s better to avoid infection. Includes interactive parameters and visualizations. 2020-03-14](/2020/03/14/time-is-running-out-to-catch-covid19/)  [The inception bar: a new phishing method
+
+A new phishing technique that displays a fake URL bar in Chrome for mobile. A key innovation is the “scroll jail” that traps the user in a fake browser. 2019-04-27](/2019/04/27/the-inception-bar-a-new-phishing-method/)  [The hacker hype cycle
+
+I got started with simple web development, but because enamored with increasingly esoteric programming concepts, leading to a “trough of hipster technologies” before returning to more productive work. 2019-03-23](/2019/03/23/the-hacker-hype-cycle/)  [Project C-43: the lost origins of asymmetric crypto
+
+Bob invents asymmetric cryptography by playing loud white noise to obscure Alice’s message, which he can cancel out but an eavesdropper cannot. This idea, published in 1944 by Walter Koenig Jr., is the forgotten origin of asymmetric crypto. 2019-02-16](/2019/02/16/project-c-43-the-lost-origins-of-asymmetric-crypto/)  [How Hacker News stays interesting
+
+Hacker News buried my post on conspiracy theories in my family due to overheated discussion, not censorship. Moderation keeps the site focused on interesting technical content. 2019-01-26](/2019/01/26/how-hacker-news-stays-interesting/)  [My parents are Flat-Earthers
+
+For decades, my parents have been working up to Flat-Earther beliefs. From Egyptology to Jehovah’s Witnesses to theories that human built the Moon billions of years in the future. Surprisingly, it doesn’t affect their successful lives very much. For me, it’s a fun family pastime. 2019-01-20](/2019/01/20/my-parents-are-flat-earthers/)  [The dots do matter: how to scam a Gmail user
+
+Gmail’s “dots don’t matter” feature lets scammers create an account on, say, Netflix, with your email address but different dots. Results in convincing phishing emails. 2018-04-07](/2018/04/07/the-dots-do-matter-how-to-scam-a-gmail-user/)  [The sorry state of OpenSSL usability
+
+OpenSSL’s inadequate documentation, confusing key formats, and deprecated interfaces make it difficult to use, despite its importance. 2017-12-02](/2017/12/02/the-sorry-state-of-openssl-usability/)  [I hate telephones
+
+I hate telephones. Some rational reasons: lack of authentication, no spam filtering, forced synchronous communication. But also just a visceral fear. 2017-11-08](/2017/11/08/i-hate-telephones/)  [The Three Ts of Time, Thought and Typing: measuring cost on the web
+
+Businesses often tout “free” services, but the real costs come in terms of time, thought, and typing required from users. Reducing these “Three Ts” is key to improving sign-up flows and increasing conversions. 2017-10-26](/2017/10/26/time-thought-and-typing/)  [Granddad died today
+
+Granddad died. The unspoken practice of death-by-dehydration in the NHS. The Liverpool Care Pathway. Assisted dying in the UK. The importance of planning in end-of-life care. 2017-05-19](/2017/05/19/granddad-died-today/)  [How do I call a program in C, setting up standard pipes?
+
+A C function to create a new process, set up its standard input/output/error pipes, and return a struct containing the process ID and pipe file descriptors. 2017-02-17](/2017/02/17/how-do-i-call-a-program-in-c-with-pipes/)  [Your syntax highlighter is wrong
+
+Syntax highlighters make value judgments about code. Most highlighters judge that comments are cruft, and try to hide them. Most diff viewers judge that code deletions are bad. 2014-05-11](/2014/05/11/your-syntax-highlighter-is-wrong/)

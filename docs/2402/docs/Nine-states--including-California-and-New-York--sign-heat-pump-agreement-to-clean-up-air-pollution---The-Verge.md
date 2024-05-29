@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:40:34
+-->
+
+# Nine states, including California and New York, sign heat pump agreement to clean up air pollution - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/7/24063751/heat-pump-mou-nine-states-california-new-york](https://www.theverge.com/2024/2/7/24063751/heat-pump-mou-nine-states-california-new-york)
+
+Nine states inked an agreement today to promote heat pump sales. The memorandum of understanding (MOU) sets a 2030 target for heat pumps to make up 65 of residential heating, cooling, and water heating equipment sales. By 2040, the goal is for heat pumps to account for 90 percent of the HVAC and water heating market.
+
+Heat pumps are [more energy efficient alternatives](/23301515/heat-pump-faq-guide-heating-cooling) to traditional heating *and* cooling systems. And because they’re electric, they can feasibly run on renewables like wind and solar once there’s more clean energy coursing through power grids. The states on board with the agreement include: California, Colorado, Maine, Maryland, Massachusetts, New Jersey, New York, Oregon, and Rhode Island.
+
+The MOU isn’t legally binding, so this might be more wishful thinking than a clear-cut plan for now
+
+The MOU isn’t legally binding, so this might be more wishful thinking than a clear-cut plan for now. The states will have to develop their own policies or incentives to deploy all these heat pumps. But it shows how much hype there is around heat pumps in the fight against climate change. And with national climate policies hanging in the balance during upcoming presidential elections, state-led efforts become more crucial.
+
+“Even though it’s not legally binding, it does plant a flag and set a strong shared target that states are collectively moving in this direction,” says Emily Levin, senior policy advisor at Northeast States for Coordinated Air Use Management (NESCAUM). The nonprofit association of air quality agencies spearheaded the effort to adopt an MOU.
+
+The plan also has some industry support from companies including Schneider Electric, Siemens, Ikea, eBay, and two of the biggest HVAC manufacturers, Trane and Carrier. They signed a letter of support for the MOU yesterday.
+
+“Climate change poses a significant risk to our long-term economic success, impacts the health and livelihood of our communities, and disrupts the value chains on which we rely,” the letter says. “State adoption of more robust building decarbonization policies and programs will help us meet both business and state goals faster and more cost-effectively, all while reducing climate-related health and safety risks.”
+
+Part of the MOU is to develop an “action plan” to “support widespread electrification of residential buildings,” essentially creating zero-emission buildings. State and local governments have had to pivot in response to the fossil fuel industry’s fierce opposition to bans on new gas hookups, which [killed a first-in-the nation plan in Berkeley, California](https://www.smartcitiesdive.com/news/berkeley-natural-gas-ban-lawsuit-request-rehearing-en-banc-denied-federal-appeals/703449/) that [dragged gas stoves](/2021/4/1/22360189/gas-stove-methane-leaks-electric-climate-change) into the nation’s culture wars.
+
+Buildings are a major source of pollution, accounting for [more than a third](https://www.iea.org/energy-system/buildings#:~:text=The%20buildings%20sector%2C%20which%20includes,global%20energy%20consumption%20and%20emissions.) of energy-related greenhouse gas emissions globally. [Fossil fuel combustion in buildings](https://www.epa.gov/sites/default/files/2021-02/documents/nei2017_tsd_full_jan2021.pdf) also produces more smog-forming nitrogen oxide (NOx) emissions than power plants do in the US. Fossil-fueled heating equipment across the nine states that have joined the MOU create more than 138,000 tons of NOx and 6,000 tons of fine particulate matter pollution each year.
+
+“Heat pumps and building electrification is really the future for healthier homes and a thriving green economy.”
+
+“Heat pumps and building electrification is really the future for healthier homes and a thriving green economy,” Serena McIlwain, Maryland secretary of environment tells *The Verge*. “The fact that we have the support from industry really makes a big difference ... Heat pumps are really, really gaining momentum.”
+
+This isn’t the only effort to make heat pumps more attractive to developers. President Joe Biden [invoked the Defense Production Act](/2022/6/6/23156326/biden-solar-tariffs-renewable-energy-commerce-investigation) in 2022 to boost domestic production of heat pumps and other clean energy technologies. Residential [heat pumps surpassed gas furnace sales for the first time](https://www.utilitydive.com/news/heat-pump-sales-topped-gas-furnaces-United-States/652277/) in 2022 to make up 53 percent of sales. In 2023, New York City [started rolling them out in public housing](/23951214/heat-pump-nycha-public-housing-electric-sustainable) buildings as [part of a $263 million plan](https://www.nyc.gov/site/nycha/about/press/pr-2021/pr-20211220.page) to get heat pumps to renters, starting with low-income residents.
+
+The MOU announced today similarly says the states “will strive to direct” at least 40 percent of new investments in efficiency and electrification upgrades for residential buildings to low-income households and disadvantaged communities.

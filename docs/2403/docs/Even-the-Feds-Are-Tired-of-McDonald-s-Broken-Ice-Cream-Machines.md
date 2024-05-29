@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:51
+-->
+
+# Even the Feds Are Tired of McDonald's Broken Ice Cream Machines
+
+> 来源：[https://gizmodo.com/feds-are-tired-mcdonalds-broken-ice-cream-machines-1851338944](https://gizmodo.com/feds-are-tired-mcdonalds-broken-ice-cream-machines-1851338944)
+
+Federal regulators want to fix [McDonald’s broken ice cream machines](https://gizmodo.com/ifixit-congress-right-to-repair-mcdonalds-ice-cream-1850784450), and they’re asking to expand [right-to-repair](https://gizmodo.com/how-a-group-of-train-hackers-exposed-a-right-to-repair-1851128745?rev=1703787932393) laws to address the issue. In a letter to the US Copyright Office on Thursday, regulators asked for commercial soft-serve machines to be exempt from current laws making them difficult to repair. The laws also make it more difficult for you to get a McFlurry.
+
+Why Former Employees & Scarlett Johansson Are Questioning OpenAI
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22550.vtt" srclang="en">
+
+“In the Agencies’ view, renewing and expanding repair-related exemptions would promote competition in markets for replacement parts, repair, and maintenance services,” said the Department of Justice and the Federal Trade Commission in a [joint letter](https://www.ftc.gov/system/files/ftc_gov/pdf/ATR-FTC-JointComment.pdf).
+
+The McDonald’s broken ice cream machines have found themselves at the center of the right-to-repair movement. The reason [McDonald’s ice cream machines are always down](https://gizmodo.com/broken-ice-cream-machines-could-cost-mcdonalds-900-mil-1848619277) is because of copyright law. Only technicians licensed by the company that made the device are allowed to touch the machines, and they charge over $300 for a 15-minute servicing, according to the letter. The DOJ and the FTC identified commercial soft-serve machines as one of four device categories that would benefit from an easing of copyright laws.
+
+The broken ice cream machines are not just frustrating to customers, it’s a pain in the neck for McDonald’s too. A soft-serve equipment breakdown can lead to a single restaurant losing $625 per day. The scarcity of licensed repair technicians also means there’s always a long wait time to fix a soft-serve machine.
+
+McDonald’s buys ice cream machines from Taylor, a restaurant equipment manufacturer, and Taylor is the only one allowed to fix these machines thanks to copyright law. When a Taylor ice cream machine breaks, [it displays nonsensical error messages to confuse third parties](https://gizmodo.com/ifixit-congress-right-to-repair-mcdonalds-ice-cream-1850784450). A repair company, Kytch, figured out a way to decode the messages, but McDonald’s told its stores not to use it.
+
+Regulators cite an [iFixit report from August](https://youtu.be/2uCpY3tFTIA), which breaks down one of Taylor’s soft-serve machines and describes how to repair them. iFixit describes McDonald’s ice cream machines as a huge right-to-repair issue.
+
+Oftentimes, right-to-repair disasters come from unlikely places, such as [John Deere’s tractors](https://gizmodo.com/john-deere-and-farmers-sign-right-to-repair-agreement-1849964817), [Polish train scandals](https://gizmodo.com/how-a-group-of-train-hackers-exposed-a-right-to-repair-1851128745?rev=1703787932393), or even McDonald’s ice cream machines. The common theme is that copyright laws allow large manufacturers to dominate markets, leaving small businesses and consumers frustrated. Regulators now seem to be paying more attention to these old, glaring issues.
+
+Also on Friday, McDonald’s restaurants are experiencing widespread outages around the world, according to [Time](https://time.com/6957249/mcdonalds-global-outages-asia-ordering-system-crash/). It’s resulting in many stores being temporarily closed, as staff are unable to process electronic orders.

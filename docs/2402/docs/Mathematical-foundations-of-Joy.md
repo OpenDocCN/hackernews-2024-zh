@@ -1,0 +1,615 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:19:38
+-->
+
+# Mathematical foundations of Joy
+
+> 来源：[https://hypercubed.github.io/joy/html/j02maf.html](https://hypercubed.github.io/joy/html/j02maf.html)
+
+# Mathematical foundations of Joy
+
+*by Manfred von Thun*
+
+*Abstract:* Joy is a functional programming language which is not based on the application of functions to arguments but on the composition of functions. This paper describes the theoretical basis of the language. The denotation of Joy programs maps a syntactic monoid of program concatenation to a semantic monoid of function composition. Instead of lambda abstraction Joy uses program quotation, and higher order functions can be simulated by first order functions which dequote quoted programs.
+
+*Keywords:* functional programming, syntactic and semantic monoids, function composition, quotation and dequotation of programs, combinators, elimination of recursive definitions.
+
+* * *
+
+# Introduction
+
+Joy programs are built from smaller programs by just two constructors: *concatenation* and *quotation*.
+
+Concatenation is a binary constructor, and since it is associative it is best written in infix notation and hence no parentheses are required. Since concatenation is the only binary constructor of its kind, in Joy it is best written without an explicit symbol.
+
+Quotation is a unary constructor which takes as its operand a program. In Joy the quotation of a program is written by enclosing it in square brackets. Ultimately all programs are built from atomic programs which do not have any parts.
+
+The semantics of Joy has to explain what the atomic programs mean, how the meaning of a concatenated program depends on the meaning of its parts, and what the meaning of a quoted program is. Moreover, it has to explain under what conditions it is possible to replace a part by an equivalent part while retaining the meaning of the whole program.
+
+Joy programs denote functions which take one argument and yield one value. The argument and the value are *state*s consisting of at least three components. The principal component is a *stack*, and the other components are not needed here. Much of the detail of the semantics of Joy depends on specific properties of programs.
+
+However, central to the semantics of Joy is the following:
+
+> The concatenation of two programs denotes the composition of the functions denoted by the two programs.
+
+Function composition is associative, and hence denotation maps the associative syntactic operation of program concatenation onto the associative semantic operation of function composition. The quotation of a program denotes a function which takes any state as argument and yields as value the same state except that the quotation is pushed onto the stack.
+
+One part of a concatenation may be replaced by another part denoting the same function while retaining the denotation of the whole concatenation.
+
+One quoted program may be replaced by another denoting the same function only in a context where the quoted program will be dequoted by being executed. Such contexts are provided by the *combinator*s of Joy. These denote functions which behave like higher order functions in other languages.
+
+The above may be summarised as follows: Let `P`, `Q1`, `Q2` and `R` be programs, and let `C` be a combinator. Then this principle holds:
+
+```
+
+        IF          Q1      ==      Q2
+        THEN     P  Q1  R   ==   P  Q2  R
+        AND        [Q1] C   ==     [Q2] C
+
+```
+
+The principle is the prime rule of inference for the *algebra of Joy* which deals with the equivalence of Joy programs, and hence with the identity of functions denoted by such programs. A few laws in the algebra can be expressed without combinators, but most require one or more combinators for their expression.
+
+The remainder of this paper is organised as follows. The next sections deal with program concatenation and function composition. The first of these reviews certain algebras called monoids, and homomorphisms between them. In the following section the meaning of Joy programs is shown to be a homomorphism from a syntactic monoid to a semantic monoid. The last of these sections explains the semantic monoid in a little more detail, in particular function composition and the identity function.
+
+The other sections deal with quotations and combinators. The first treats combinators that do not involve the stack, the second those that do. The next section illustrates how these very basic combinators can be used to emulate recursion without explicit definitions. The summary section recapitulates the main conclusions and hints at a connection with category theory.
+
+# Monoids and homomorphisms
+
+The design of Joy was motivated by [{Quine71}](refs.html#%7BQuine71%7D) and [{Backus78}](refs.html#%7BBackus78%7D) who in quite different fields examine how variables of one kind or another can be eliminated and how their work can be done by combinators. In turn their work is based on the pioneers Schönfinkel and Curry. Backus has argued that concepts of programming languages should be selected on the basis of yielding strong and clean mathematical laws. In particular he favours concepts that allow simple algebraic manipulations, where possible replacing variables by combinators or higher order functions. With these goals in mind his research culminated in the language *FP*. The language Joy offers a very different solution to the same goals. Paulson [{Paulson92}](refs.html#%7BPaulson92%7D) remarked that "Programming and pure mathematics are difficult to combine into one formal framework". Joy attempts this task.
+
+Much of the elegance of Joy is due to the simple algebraic structure of its syntax and the simple algebraic structure of its semantics and to the fact that the two structures are so similar. In particular, the two structures are *monoid*s and the meaning function which maps syntax into semantics is a *homomorphism*.
+
+Monoids and homomorphisms are familiar from abstract algebra. A *monoid* `M` consists of a nonempty set `{m, m1, m2 ...}` including a special element `m`, and a binary operation, written, say, as infix period `"."`. The special element has to be a left and right *unit element* for the binary operation, and the binary operation has to be *associative*. In symbols, for all `x`, `y` and `z` from the set,
+
+```
+
+        m . x   =   x   =   x . m
+        (x . y) . z   =   x . (y . z)
+
+```
+
+For example, these are monoids: the integers with `0` as the unit element and addition as the binary operation, or the integers with `1` as the unit element and multiplication as the binary operation. Two examples from logic are the truth values with falsity as the unit element and disjunction as the binary operation, or truth as the unit element and conjunction as the binary operation. Two examples from set theory are sets with the nullset as the unit element and set union as the binary operation, or the universal set as the unit element and set intersection as the binary operation. It so happens that in the preceding examples the binary operation is commutative, but this is not essential for monoids. Two other examples consists of lists with the empty list as the unit element and concatenation as the binary operation, or strings of characters with the empty string as the unit element and concatenation as the binary operation. Concatenation is *not* commutative.
+
+Because of the associative law, parentheses are not needed. Also, if there are no other binary operations, the infix operator itself can be omitted and the operation indicated by juxtaposition. Unit elements are often called identity elements, but the word "identity" is already needed with a different meaning in Joy. Unit elements are sometimes called neutral elements, too.
+
+Unit elements should be distinguished from *zero element*s, which behave the way the number `0` interacts with multiplication: a product containing a zero factor is equal to zero. In logic falsity is the zero element for conjunction, and truth is the zero element for disjunction. For sets the nullset is the zero element for intersection, and the universal set is the zero element for union. In commutative monoids there is always at most one zero element.
+
+Let `M` over `{m m1 ..}` and `N` over `{n n1 ..}` be two monoids. A function `h` from `{m m1 ..}` to `{n n1 ..}` is called a *homomorphism* if and only if it maps unit elements onto unit elements and commutes with the binary operation:
+
+```
+
+        h(m)  =  n                      h(x . y)  =  h(x) . h(y)
+
+```
+
+In the second equation, the binary operation on the left is that of `M`, and the one on the right is that of `N`. One example is the logarithm function which is a homomorphism from the multiplicative monoid onto the additive monoid. Another example of a homomorphism is the `size` (or length) function on lists which maps the list monoid onto the additive monoid: the size of the empty list is zero, and the size of the concatenation of two lists is the sum of the sizes of the two lists:
+
+```
+
+        log(1)  =  0                    log(x * y)  =  log(x) + log(y)
+        size([])  =  0                  size(x ++ y)  =  size(x) + size(y)
+
+```
+
+(In the last two equations, the symbols `[]` and `++` are used for the empty list and for concatenation.) Other examples are the function which takes a list (or string) as argument and returns the set of its elements. So this function removes duplicates and forgets order. It maps the list monoid onto the set monoid with the nullset as the unit and union as the binary operation.
+
+Homomorphisms can be defined over other algebras which are not monoids. Examples are groups, rings, fields and Boolean algebras. They are studied in universal algebra and in category theory. One particular homomorphism can only be described as mind-blowing: this is Gödel's arithmetisation of syntax - all syntactic operations on formulas of a theory are mapped onto corresponding arithmetic operations on their Gödel numbers. (See for example [{Mendelson64}](refs.html#%7BMendelson64%7D).)
+
+In propositional logic the equivalence classes of formulas constitute a Boolean algebra of many elements. A valuation is a homomorphism from that algebra to the two element Boolean algebra of truth values. One can go further: the meaning of a formula is the set of valuations that make it true. The meaning function then is a homomorphism from the Boolean algebra of equivalence classes to the Boolean algebra of sets of valuations. This situation is typical in semantics: the meaning function is a homomorphism. The same holds for Joy - the meaning function is a homomorphism from Joy syntax to Joy semantics.
+
+# A syntactic monoid and a semantic monoid
+
+The *syntax* of Joy programs is very simple: the basic building blocks are atomic programs, and larger programs are formed by concatenation as one of the main modes of program construction. Concatenation is associative, and hence no parentheses are required. Also, concatenation is the only binary constructor, so no explicit symbol is required, and hence concatenation can be expressed by juxtaposition. It is useful to have a left and right unit element `id`. Collectively these constitute the syntactic monoid.
+
+Now to the *semantics*. In the introduction it was said that Joy uses postfix notation for the evaluation of arithmetic expressions. To add two numbers they are pushed onto a stack and then replaced by their sum. This terminology is helpful but can be misleading in several ways. The phrasing suggest a procedural or imperative interpretation: Joy programs consist of commands such as push this, push that, pop these and push their sum. But there is nothing procedural about Joy, as described here it is a purely functional language.
+
+However, the terminology of commands does suggest something useful. Commands, when executed, produce changes. Exactly what is changed depends on the nature of the command. But in the most general terms what changes is the state of a system. In particular the execution of a postfix expression produces changes in the state of a stack. For each change there is a before-state and an after-state. The after-state of one change is the before-state of the next change.
+
+So, changes are essentially functions that take states as arguments and yield states as values. There is only one before-state, so they are functions of one argument. Therefore they can be composed. The composite of two functions can be applied to a state as argument and yields as value the state that is obtained by first applying the one function to the argument and then applying the other function to the resulting value. This is essentially the semantics of Joy: All programs denote functions from states to states.
+
+The state does not have to be the state of a stack. It just so happens that evaluation of postfix expressions is so conveniently done on a stack. But evaluation of expressions is by no means everything. In what follows, the stack is an essential part of the state, but for many purposes it is useful to ignore the whole state altogether.
+
+The operation of *function composition* is associative and there is a left and right unit element, the *identity function*. Collectively they comprise the semantic monoid. The meaning function maps a syntactic monoid onto a semantic monoid. The concatenation of two programs denotes the composition of the functions denoted by the two programs, and the unit element of concatenation denotes the unit element of composition.
+
+# Function composition and the identity function
+
+If the *programs* `P` and `Q` denote the same function, then the *functions* `P` and `Q` are *identical*. Two functions are identical if for all values in the intersection of their domains they yield the same value. This will be written
+
+```
+
+        P   ==   Q
+
+```
+
+The symbol `==` will be used to denote the identity of Joy functions. The symbol does not belong to the language Joy but to its metalanguage. The *identity relation* between functions is clearly *reflexive*, *symmetric* and *transitive*. Furthermore, identicals are indiscernible in larger contexts such as compositions. Hence *substitution* of identicals can be used as a rule of inference:
+
+```
+
+        IF             Q1      ==      Q2
+        THEN        P  Q1  R   ==   P  Q2  R
+
+```
+
+The symbol `id` will be used to denote the *identity function*. The fact that function composition is associative and that the identity function is a left and right unit is expressed by
+
+```
+
+        (P  Q)  R   ==   P  (Q  R)
+        id  P   ==   P   ==   P  id
+
+```
+
+The notation can be used to express what *look* like identities of numbers; for example
+
+```
+
+        2  3  +   ==   5
+
+```
+
+expresses that the composition of the three *functions* on the left is identical with the one *function* on the right. On the left, the first two functions push the *numbers* 2 and 3 onto the stack, and the third replaces them by their sum. On the right, the function pushes the *number* 5\. The left and the right are defined for all stacks as arguments and yield the same stack as value. Hence the left and the right are identical.
+
+But it is important to be quite clear what the equation says. Each of the four symbols `2`, `3`, `+` and `5` denotes a function which takes a stack as argument and yields a stack as value. The three *numerals* `2`, `3` and `5` denote *functions* which are defined for all argument stacks. They yield as values other stacks which are like the argument stacks except that a new *number*, 2, 3 and 5 has been pushed on top.
+
+The symbol `+` does *not* denote a *binary* function of two numbers, but like all Joy functions it takes one argument only. That argument has to be a stack whose top two elements are numbers. The value returned is another stack which has the top two numbers replaced by their sum. It follows that the above equation does *not* express the identity of numbers but the identity of *functions*.
+
+The associativity of composition has as a consequence about *currying*: that there is no difference between standard and curried operators. Consider the example
+
+```
+
+        (2  3)  +   ==   2  (3  +)
+
+```
+
+On the left the `+` takes two parameters supplied by `(2 3)`. On the right `+` is given one parameter, `3`. The resulting function `(3 +)` expects one parameter to which it will add `3`. Because of associativity the two sides are identical and hence no parentheses are required.
+
+Let `P` be a program which pushes `m` values onto the stack. Let `Q` be a program which expects `n` values on the stack, `m` <= `n`. Now consider their concatenation `P Q`. Of the `n` expected by `Q`, `n` will be supplied by `P`. So the program `P Q` only expects `n - m` values on the stack.
+
+* * *
+
++++HERE+++ assoc and curry
+
+* * *
+
+In the development of mathematics an explicit notation for the number `0` has been a rather recent innovation. The symbol enables one to say more than just that `0` is a unit element for addition. Similarly, in the algebra of functions an explicit symbol for the identity function makes it possible to state many laws. This is particularly true for the functions in Joy. The following are some examples:
+
+In arithmetic `0` and `1` are unit elements for addition and multiplication, so adding `0` or multiplying by `1` have no effect. For lists the empty list is a unit element, so concatenation on the left or the right has no effect. Similarly in logic, falsity and truth are unit elements for disjunction and conjunction, so disjoining with falsity and conjoining with truth make no difference. Also in logic, disjunction and conjunction are idempotent, so disjoining or conjoining with a `dup`licate yields the original. For any stack it holds that `swap`ping the top two elements twice has no net effect, and that duplicating the top element and then `pop`ping off the duplicate has no net effect.
+
+There are many more laws: double negation has no net effect, reversing a sequence twice just leaves the original, and taking the successor and the predeccessor of a number - in either order - produces no net effect. In the *algebra of Joy* these are expressed by the following:
+
+```
+
+        0  +   ==   id                  1  *   ==   id
+        []  concat   ==   id            []  swap  concat   ==   id
+        false  or   ==   id             true  and   ==   id
+        dup  and   ==   id              dup  or   ==   id
+        swap  swap   ==   id            dup  pop   ==   id
+        not  not   ==   id              reverse  reverse   ==   id
+        succ  pred   ==   id            pred  succ   ==   id
+
+```
+
+Note that no variables were needed to express these laws.
+
+The identity function is a left and right unit element with respect to function composition. It is appropriate to remark here that there is also a *left zero element* and there is a *right zero element*. Two such elements `l` and `r` satisfy the following for all programs `P`:
+
+```
+
+        l  P   ==   l                   P  r   ==   r
+
+```
+
+Since function composition is not commutative, the two zero elements are not identical. In Joy the left zero `l` is the `abort` operator, it ignores any program following it. The right zero `r` is the `clearstack` operator, it empties the stack and hence ignores any calculations that might have been done before. The two operators have some theoretical interest, and they are occasionally useful.
+
+# Quotation, dequotation and combinators
+
+Any program enclosed in square brackets is called a *quoted program* or *quotation*. The length or `size` of the quotation `[5]` is `1`, and the size of the quotation `[2 3 +]` is `3`. However, as noted earlier, the two programs inside the brackets denote the same function. What this shows is that we cannot substitute their quotations for each other:
+
+```
+
+        [5]  size   =/=   [2 3 +]  size
+
+```
+
+What forbids the substitution is the quotation - by the square brackets. So quotations produce opaque contexts, quotation is an intensional constructor.
+
+However, there are contexts where substitution is permissable across quotations. These are contexts where the content of the quote is not treated as a passive datum but as an active program. In Joy such treatment is due to *combinator*s which in effect dequote one or more of their parameters.
+
+The `i` combinator expects a quoted program on top of the stack. It pops that program and executes it. So, if the quoted program `[P]` has just been pushed onto the stack, then the `i` combinator will execute `P`:
+
+```
+
+        [P]  i   ==   P
+
+```
+
+For example, each of the following four programs compute the same function - the one which takes any stack as argument and returns as value another stack which is like the argument stack but has the number `5` pushed on top.
+
+```
+
+         2  3  +                         5
+        [2  3  +] i                     [5] i
+
+```
+
+If the program `P` computes the identity function, then the effect of applying the `i` combinator is that of the identity function:
+
+```
+
+        [id]  i   ==   id               []  i   ==   id
+
+```
+
+Another law is this:
+
+```
+
+        i  ==  []  cons  i  i
+
+```
+
+Two programs `P` and `Q` may look very different - for example, they may differ in their sizes. But it could be that the compute the same function. In that case the dequotations of their quotations also compute the same function:
+
+Hence
+
+```
+
+        IF       P       ==    Q
+        THEN    [P]  i   ==   [Q]  i
+
+```
+
+Suppose now that a quoted program, `[P]`, is on top of the stack. It could then be executed with the `i` combinator. But it could also be manipulated as a passive data structure first. For example, one could push the quotation `[i]` and then use the `cons` operator to insert `[P]` into `[i]` to give `[[P] i]`. What happens if this is executed by the `i` combinator? The internal `[P]` quote is pushed, and then the internal `i` combinator is executed. So the net effect is that of executing `P`.
+
+Hence
+
+```
+
+        [i]  cons  i   ==   i
+
+```
+
+Note that it has been possible to state this law without reference to the quoted program `[P]`. But it may help to spell out a consequence:
+
+```
+
+        [P]  [i]  cons  i   ==   [[P] i]  i   ==   [P]  i   ==   P
+
+```
+
+The `i` combinator is only one of many. Another is the `b` combinator which expects two quoted programs on top of the stack. It pops them both and then executes the program that was second on the stack and continues by executing the program that was on top of the stack. So, in the special case where two programs `[P]` and `[Q]` have just been pushed onto the stack, the `b` combinator will execute them in the order in which they have been pushed:
+
+```
+
+        [P]  [Q]  b   ==   P  Q
+
+```
+
+It follows that the `b` combinator actually dequotes both of its parameters, and hence either or both can be replaced by an equivalent program:
+
+```
+
+        IF       P1  ==  P2     AND    Q1  ==  Q2
+        THEN    [P1]  [Q1]  b   ==   [P2]  [Q2]  b
+
+```
+
+If both programs compute the identity function, then the effect of the `b` combinator is the identity function. If either of the two programs computes the identity function, then the effect is the same as that of executing the other, which is the same as applying the `i` combinator to the other:
+
+```
+
+        []  []  b   ==   id
+        []  b   ==   i
+        []  swap  b   ==   i
+
+```
+
+The second equation could be reversed, and this shows that the `i` combinator could be *defined* in terms of the `b` combinator.
+
+Quotations are sequences, and sequences can be concatenated. In Joy strings, lists and, more generally, quotations can be concatenated with the `concat` operator. If `[P]` and `[Q]` have just been pushed, then they can be concatenated to become `[P Q]`. The resultant concatenation can be executed by the `i` combinator. The net effect is that of executing the two programs, and that is also achieved by applying the `b` combinator:
+
+```
+
+        [P]  [Q]  concat  i   ==   P  Q   ==   [P]  [Q]  b
+
+```
+
+But the two quoted programs do not have to be pushed immediately before the concatenation or the application of the `b` combinator. Instead they could have been constructed from smaller parts or extracted from some larger quotation. Hence the more general law:
+
+```
+
+        concat  i   ==   b
+
+```
+
+The equation could be reversed, hence the `b` combinator could be *defined* in terms of the `i` combinator. The *names* `i` and `b` of the two combinators have been chosen because of their similarity to the *I combinator* and *B combinator* in *combinatory logic*. The standard text is [{Curry58}](refs.html#%7BCurry58%7D), but good expositions are to be found in many other books, for example [{Burge75}](refs.html#%7BBurge75%7D).
+
+# Stack oriented combinators
+
+The two previous combinators require one or two quoted programs as parameters, but the parameters merely have to be in an agreed place, they do not need to be on a stack. There are several combinators which only make sense if the data are located on a stack.
+
+Sometimes it is necessary to manipulate the stack not at the top but just below the top. That is what the `dip` combinator is for. It is behaves like the `i` combinator by executing one quotation on top of the stack, except that it leaves the item just below the quotation unchanged. In detail, it expects a program `[P]` and below that another item `X`. It pops both, saves `X`, executes `P` and then restores `X`.
+
+For example, in the following the saved and restored item is `4`:
+
+```
+
+        2  3  4  [+]  dip  ==   5  4
+
+```
+
+If a program computes the identity function, then the effect of applying the `dip` combinator is to compute the identity function:
+
+```
+
+        [id]  dip   ==   id             []  dip   ==   id
+
+```
+
+Suppose a program `[P]` is on top of the stack, and it is first duplicated and then the copy executed with `dip` just below the original `[P]`. Now the original has been restored, but suppose it is now popped explicitly. The net effect was the same as executing just the original `[P]` with the `i` combinator:
+
+```
+
+        i   ==   dup  dip  pop
+
+```
+
+Suppose that there are two programs `[P]` and `[Q]` on top of the stack, with `[Q]` on top. It is required to execute `[P]` while saving `[Q]` above. One way to do that is this: First push `[i]`. Now `[Q]` is the second element. Executing `dip` will save `[Q]` and execute `[i]` on the stack which now has `[P]` on the top. That amounts to executing `[P]`, and after that `[Q]` is restored.
+
+Suppose further that it is now required to execute `[Q]`, and that is easily done with the `i` combinator. The net effect of all this is the same as executing first `[P]` and then `[Q]`, which could have been done with the `b` combinator. Hence
+
+```
+
+        b   ==   [i]  dip  i
+
+```
+
+The last two equations show that the `dip` combinator could be used to *define* both the `i` combinator and the `b` combinator. The reverse is not possible.
+
+The last two equations also serve to illustrate algebraic manipulation of Joy programs. In the last equation the `i` combinator occurs twice, once quoted and once unquoted. Both occurrences can be replaced in accordance with the previous equation, and this yields
+
+```
+
+        b   ==   [dup dip pop]  dip  dup  dip  pop
+
+```
+
+The substitution of the unquoted occurrence is unproblematic. But the other substitution requires comment. Quoted occurrences can be substituted only in a context of dequotation, and in this case such a context is given by the `dip` combinator.
+
+Again suppose that there are two quoted programs `[P]` and `[Q]` on the stack. If the `dip` combinator is executed next, it will cause the topmost quotation `[Q]` to be executed while saving and later restoring `[P]` below. Suppose that the `i` combinator is executed next, this will cause the restored `[P]` to be executed. So the net effect of the two combinators is to execute first `P` and then `Q`. That same effect could have been achieved by first swapping `[P]` and `[Q]` around, so that `[P]` is on top, and then executing the `b` combinator. This is expressed in the left law below. The right law says the same thing, and it shows another way in which the `b` combinator could have been defined.
+
+```
+
+        dip  i   ==   swap  b           b   ==   swap  dip  i
+                                        b   ==   swap  dip  dup  dip  pop
+
+```
+
+Function composition is associative, and hence the following holds:
+
+```
+
+        [P]  [Q]  b  [R]  i   ==   [P]  i  [Q]  [R]  b
+
+```
+
+To eliminate the three quotations from this equation observe that they can be written on the left of both sides provided that the `b` combinator and the `i` combinator are applied appropriately. For the left side this is easy:
+
+```
+
+        [P]  [Q]  b  [R]  i   ==   [P]  [Q]  [R]  [b] dip i
+
+```
+
+For the right side it is a little harder since the `i` combinator has to be applied to `[P]` which is obscured not by one but two other quotations. The `dip` combinator has to be used on itself in this case, as follows:
+
+```
+
+        [P]  i  [Q]  [R]  b   ==   [P]  [Q]  [R]  [[i] dip]  dip  b
+
+```
+
+Combining the two right hand sides and cancelling the common three quotations we obtain the following to expressing the associativity of function composition:
+
+```
+
+        [b]  dip  i   ==   [[i] dip]  dip  b
+
+```
+
+In this law we can even replace the `i` combinator and the `b` combinator in accordance with earlier definitions:
+
+```
+
+        [swap  dip  dup  dip  pop]  dip  dup  dip  pop
+   ==   [[dup  dip  pop]  dip]  dip  swap  dip  dup  dip  pop
+
+```
+
+It is possible to cancel the final `pop` on both sides, but it is not possible to cancel the prefinal `dip` on both sides. This unlikely law also expresses the associativity of function composition. But the most elegant way of expressing the associativity is by using a variant of the `dip` combinator, called `dipd`, which might be defined by
+
+```
+
+        dipd   ==   [dip]  cons  dip
+
+```
+
+Then the associativity can be expressed by
+
+```
+
+        [b]  dip  i   ==   [i]  dipd  b
+
+```
+
+([{Henson87}](refs.html#%7BHenson87%7D) criticises presentations of FP-systems, originally due to [{Backus78}](refs.html#%7BBackus78%7D) in that they give no law to this effect although they use it in proofs.)
+
+The combination of the `dip` combinator immediately followed by the `i` combinator is sometimes useful for arranging the top few elements on the stack in a form that is suitable for executing a quoted program `[P]` that is at the top of the stack.
+
+This is how it is done: first another quoted program `[Q]` is pushed, and executed using the `dip` combinator. This will save and restore the `[P]`, but arrange the stack in accordance with `[Q]`. Then the restored `[P]` is executed by the `i` combinator. Depending on the `[Q]` that is chosen, the three part combination of `[Q]`, the `dip` combinator and the `i` combinator will prepare the stack for the execution of `[P]`.
+
+Since such a combination still requires the `[P]` on the stack, any such combination has the effect of a combinator. The following illustrate some simple choices of `[Q]` that are sometimes useful. The names of these combinators have been chosen because of their similarity to the *K combinator*, *W combinator* and the *C combinator* in *combinatory logic*.
+
+```
+
+        k   ==   [pop]  dip  i
+        w   ==   [dup]  dip  i
+        c   ==   [swap] dip  i
+
+```
+
+# More general laws
+
+Suppose that there is a quoted program `[P]` on top of the stack. This could now be executed by some combinator, say `C`. Alternatively, one could push the quotation `[C]` and then use the `cons` operator to insert the earlier `[P]` into the later quotation, and this produces `[[P] C]`. This of course may be executed by the `i` combinator. When that happens the inner `[P]` is pushed, thus partly undoing the `cons` operation. But then `C` will be executed. The net effect is the same as the earlier alternative. So we have: For all operators or combinators `C`
+
+```
+
+        [C]  cons  i   ==   C
+
+```
+
+It should be remarked that this theorem also holds for operators, say `O`, instead of combinators `C`.
+
+Again suppose that there is a quoted program `[P]` on top of the stack. It could be executed by some combinator `C`, or one could do this: push the quotation `[i]`, `cons` the earlier `[P]` into that and now execute `C`. The `cons` operation produced `[[P] i]` and when this is executed by `C`, the inner `[P]` is pushed partly undoing the `cons`. Then the `i` combinator actually executes this. The net effect is that of just executing `C`. Hence for all combinators `C`
+
+```
+
+        [i]  cons  C   ==   C
+
+```
+
+The two laws above may be combined: for all combinators C
+
+```
+
+        [i]  cons  C   ==   [C]  cons  i
+
+```
+
+So far we have only encountered one combinator which takes two quoted parameters - the `b` combinator. But Joy has a large number of combinators which take two, three or even four quoted parameters. The following concerns combinators which expect at least two quoted programs as parameters. For such combinators the first three laws holds unchanged, but these variations also hold:
+
+```
+
+        [i]  cons  cons  C   ==   C
+        [C]  cons  cons  i   ==   C
+        [i]  cons  cons  C   ==   [C]  cons cons  i
+
+```
+
+The principle generalises to combinators with at least three quoted parameters, by allowing three `cons` operations to occur.
+
+Finally, the second law generalises to all parameters of a combinator: any one parameter `[P]` can be replaced by `[[P] i]`. The replacement can of course be constructed by `cons`ing `[P]` into `[i]`. That of course may be done for all quotation parameters. If there is just the one parameter `[P]`, then `cons`ing it into `[i]` to produce `[[P] i]` is easy enough, as in the second law.
+
+If there are two parameters `[P]` and `[Q]` it already becomes tedious to change them to `[[P] i]` and `[[Q] i]`. If there are three or more quotation parameters, then the program to produce the three changes could be rather obscure.
+
+Joy has a combinator which can use a function to `map` the elements of a list to a list of the same length containing the results of applying the function. Several special forms take as a parameter not an arbitrary list but a specified number of one, two, three and so on elements from the stack. These are the `app1` combinator, the `app2` combinator, the `app3` combinator and so on. These are just the right combinators to produce the changes required for the parameters of a combinator. The following laws hold for combinators `C1`, `C2` and `C3` requiring one, two or three quotation parameters:
+
+```
+
+        [[i] cons]  app1  C1   ==   C1
+        [[i] cons]  app2  C2   ==   C2
+        [[i] cons]  app3  C3   ==   C3
+
+```
+
+To illustrate for a combinator C3:
+
+```
+
+         [P]      [Q]      [R]    [[i] cons]  app3  C3
+   ==   [[P] i]  [[Q] i]  [[R] i]                   C3
+   ==    [P]      [Q]      [R]                      C3
+
+```
+
+Computationally it is of course pointless to replace a quotation such as `[P]` by `[[P] i]` if the quotations are being used as parameters for a combinator. But the replacements are invaluable in a Joy interpreter written in Joy. This interpreter is essentially a complex combinator, appropriately called `joy`, and it has to behave just like the `i` combinator. In the definition of the `joy` combinator, the implementation of all combinators uses the above mapping combinators but with `[[joy] cons]` instead of `[[i] cons]`.
+
+# Elimination of Definitions
+
+One of the problems of large pieces of software concerns the complexity of interdependent parts and the need to make interfaces lean. To some extent this is a matter of information hiding, and programming languages achieve this in various ways. Most have local symbols such as formal parameters of functions and local program variables of procedures. Many have full block structure allowing declarations of functions and procedures to be nested and hence invisible from the outside. Some have modules or other compilation units which allow further information hiding in larger program components. Joy approaches the problem in a different way -- the information that needs to be hidden is minimised in the first place. Mostly the problem arises from declarations of named functions and procedures and their named formal parameters.
+
+There are several reasons why one might want to declare a function, because
+
+1.  it requires recursion, or
+2.  it is needed in several seemingly unrelated places in a program, or
+3.  it makes the program clearer.
+
+The third reason is always valid. In Joy the second reason is much less compelling, and the first has almost no force at all.
+
+Joy has a large number of combinators which permit computation of anonymous functions which are normally defined recursively. It also has combinators that permit repeated calls of such functions in some related patterns. Joy programs which use suitable combinators to allow the computation of anonymous functions with anonymous formal parameters.
+
+Consider the following recursive definition and use of the *factorial* function in a (fantasy) functional language:
+
+```
+
+    LET  factorial(n)  =  if n = 0 then 1 else n * factorial(n - 1)
+     IN  factorial(5)
+
+```
+
+The call in the second line should return `120`. Joy has a number of ways of doing essentially the same computation without introducing the *name* `factorial` and without introducing the *name* of the formal parameter `n`. Several of these ways are still modelled on the recursive definition and have approximately the same length. Two of them are based on the fact that the definition has the pattern of *linear recursion*, indeed *primitive recursion*. As in all languages the use of *accumulating parameter*s can avoid the recursion altogether, but that is not the point here.
+
+The humble `i` and `dip` combinators were certainly not designed for recursion, so it will come as a surprise that they can be used to emulate recursion without naming the function or its formal parameter. To make the recursion possible, every call of the anonymous function must be able to access itself again, and this is done by giving it its own body as a quoted parameter on the top of the stack. This is achieved by always duplicating the quoted body first and then using the `i` combinator to execute the duplicate. The `dip` combinator can be used to access the stack below the quoted body. The only other combinator needed is the `ifte` combinator which achieves the same kind of two-way branching as the `if-then-else` in the conventional definition above.
+
+This is the program:
+
+```
+
+1           5
+2           [  [pop  0  =]
+3              [pop  pop  1]
+4              [  [dup  1  -]  dip
+5                 dip  i
+6                 *  ]
+7              ifte  ]
+8           dup  i
+
+```
+
+The line numbers are only included for reference. Execution begins in line 1 by pushing the actual parameter `5` onto the stack. Then the long quotation extending from line 2 to line 7 is pushed onto the stack. This quotation is the body of the function, it corresponds to the right hand side of the conventional definition. Execution continues in line 8 where the long quotation is duplicated and the top copy is executed by the `i` combinator. This execution has the effect of pushing the two short quotations in lines 2 and 3 and also the longer quotation in lines 4 to 6\. So at this point the stack contains the parameter `5` and above that four quotations.
+
+But now the `ifte` combinator in line 7 executes. It pops the last three quotations and saves them elsewhere. Then it executes the if-part, the saved quotation from line 2\. That will pop what is now the top of the stack, the body of the function from lines 2 to 7. This exposes the number which is the parameter, and it is compared with `0`.
+
+The comparison will yield a truth value which the `ifte` combinator will use to determine whether to execute the saved then-part from line 3 or the saved else-part from lines 4 to 6\. In either case the stack is first restored to what it was before the if-part was executed: the quoted body of the function is again on top of the stack and below it is the actual parameter for this particular call. If the most recent comparison by the if-part was true, then the saved then-part from line 3 is executed.
+
+This results in the body and the actual parameter being popped off the stack and replaced by `1`, the factorial of `0`. On the other hand, if the most recent comparison was false, then the saved else-part from lines 4 to 6 is executed. For the later multiplication the parameter has to be duplicated and the top duplicate has to be decremented. Since the body of the function is in the way, the duplicating and decrementing is done via the `dip` combinator in line 4.
+
+At this point the top three elements on the stack are the original parameter for this call, then the decremented duplicate, and right on top of that the quoted body of the function. It is now necessary to compute the factorial of the decremented duplicate, and this call may need access to the body again. So the body cannot be simply executed by the `i` combinator, but first the body is duplicated in line 5 and then the duplicate is executed by the `i` combinator. Execution of that duplicate body will eventually terminate, and then the top two elements will be the original parameter and the factorial of what was its decremented duplicate. The two numbers are now multiplied in line 6, yielding the required factorial of the parameter for this call. This completes the execution of the else-part from lines 4 to 6\. Irrespective of whether the then-part or the else-part was executed, the execution of the `ifte` combinator is now complete.
+
+This completes the execution of the body of the function in lines 2 to 7\. It also completes the execution of whichever occurrence of the `i` combinator in lines 5 or 8 triggered this execution of the body. Ultimately the execution of the `i` combinator in line 8 will have completed, and at this point the parameter `5` from line 1 will have been replaced by its factorial `120` as required.
+
+Two short comments are in order: Firstly, the *description* of the program was given in an imperative or procedural mode which is psychologically helpful. But this does not change the fact that all Joy programs and all their parts denote functions. Secondly, the program can be written using only the `dip` combinator and the `ifte` combinator by substituting `dup dip pop` for the two calls of the `i` combinator in lines 5 and 8.
+
+Of course this program is a *tour de force*, it is ugly and inefficient. With more suitable combinators much crisper and more efficient programs can be written. In particular, the repeated pushing and saving of the quoted if-part, then-part and else-part is not necessary. Also, the repeated duplication of the quoted body is not necessary, and consequently the three parts do not have to work around the quoted body when it is in the way on the top. In fact, the essence of the if-part and most of the else-part are built into the `primrec` combinator for primitive recursion. The entire program then is
+
+```
+
+        5  [1]  [*]  primrec
+
+```
+
+As mentioned before, even the use of recursion can be eliminated in favour of a more efficient loop combinator which uses an accumulating parameter.
+
+# Summary
+
+This paper has attempted to explain the theoretical foundations of the language Joy. Much of the semantics is summarised by observing that the following are true:
+
+```
+
+        2  3  +   ==   7  2 -
+        dup  +   ==   2  *
+        dip  i   ==   swap  b
+
+```
+
+The first *seems* to express the identity of numbers. The second *seems* to express the identity of functions which both double a given number which they expect on the stack. The third *seems* to express the identity of functionals, or second order functions which take two first order functions as parameter and compose them.
+
+While these readings are sometimes helpful, the unity of Joy semantics really forces a different interpretation. All three equations express identity of Joy functions which take one argument stack and yield one value stack.
+
+The mathematical discipline of *category theory* deals with functions of one arguments. All Joy functions are of that kind, too. In fact all monoids are special cases of categories, so Joy's syntactic monoid of concatenation and Joy's semantic monoid of function composition are categories. So some fundamental connections should be expected. In particular, Joy is related to Cartesian closed categories, and to the "Combinatory Abstract Machine" *CAM*, see for example [{Poigne92}](refs.html#%7BPoigne92%7D).
+
+The paper [j00ovr](J00OVR.HTML) contains an overview of Joy and references to other papers dealing with specific aspects of Joy.
+
+* * *

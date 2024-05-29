@@ -1,0 +1,306 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:09:07
+-->
+
+# The 2023 Hugo nomination statistics have finally been released – and we have questions | Cora Buhlert
+
+> 来源：[https://corabuhlert.com/2024/01/21/the-2023-hugo-nomination-statistics-have-finally-been-release-and-we-have-questions/](https://corabuhlert.com/2024/01/21/the-2023-hugo-nomination-statistics-have-finally-been-release-and-we-have-questions/)
+
+The long-awaited nomination statistics for the 2023 Hugo Awards have finally been published – at the last possible moment according to the WSFS constitution (and at a point when I really don’t have time for Hugo neepery). The voting statistics already came out sometimes in December and it turned out that several finalists won with very large majorities.
+
+[The full voting and nomination stats are here](https://www.thehugoawards.org/wp-content/uploads/2024/01/2023-Hugo-Award-Stats-Final.pdf) and there are several landmines in there, which makes me wonder whether “The Hugo admin was very busy with his day job” is the only reason the stats were delayed for so long.
+
+So let’s delve right in:
+
+The first landmine is lurking in Best Novel, because it turns out that *Babel* by R.F. Kuang, whose absence from the ballot was very notable, since pretty much everybody expected it to be nominated, started out with the third most nominations, but was knocked out by EPH on the final round (which it shouldn’t have been) and also declared ineligible. *Babel* was published in the US on September 1, 2022, it didn’t have any prior publication elsewhere and it’s obviously SFF, so how can it be ineligible?
+
+The EPH data is also weird, because *Babel* doesn’t gain any points throughout, as the other nominees are eliminated, which is extremely unusual. Of course, most of the longlist is made up of Chinese novels, where there may be little overlap with western ballots, but I imagine that at least some of the 115 people who nominated *The Mountain in the Sea* by Ray Nayler (another likely finalist conspicuous by its absence) or some of the 78 people who nominated *A Half-Built Garden* by Ruthanna Emrys (which surprised me a little, though it’s a pleasant surprise) would have also nominated *Babel*. Also, it would be great if the stats listed at least the authors, because it’s annoying trying to google some of these works.
+
+ETA: Several people have since come forward and stated that they voted for both *Babel* and *The Mountain in the Sea* or *A Half-Built Garden* or all three, so this should be visible in the EPH data.
+
+ETA2: [R.F. Kuang has made a statement on BlueSky](https://bsky.app/profile/rfkuang.bsky.social/post/3kjljukyow42o).
+
+ETA3: [Camestros Felapton has asked several people to share their ballots and run his own analysis](https://camestrosfelapton.wordpress.com/2024/01/31/a-summary-of-babel-issues/) and comes to the conclusion that there are multiple issues here and that the numbers for *Babel* just don’t make any sense.
+
+ETA 02-06-2024: [Camestros has now analysed twenty Best Novel nomination ballots provided by volunteers](https://camestrosfelapton.wordpress.com/2024/02/07/an-update-on-an-earlier-table/). Even based on this small sample, he comes to the conclusion that the numbers definitely don’t add up, especially the EPH numbers for *Babel*, but also for *Nettle and Bone* and *Nona the Ninth*.
+
+Also notable by its absence from the longlist is *The World We Make* by N.K. Jemisin. Now N.K. Jemisin is not just a great writer, she’s also extremely popular with Hugo voters and I find it unlikely that *The World We Make* got fewer nominations than the more obscure *A Half-Built Garden.*
+
+Personally, I’m happier with *The Daughter of Doctor Moreau* by Silvia Moreno-Garcia, the finalist which made the ballot instead of *Babel*, because I bounced off R.F. Kuang’s *Poppy War* trilogy really hard. But this does not change the fact that *Babel* was obviously eligible and should have made the ballot. And we really need an explanation why it was declared ineligible.
+
+Another pattern that’s really notable and that we will find throughout the ballot is the sharp drop-off in nominations. The top seven nominees – i.e. the six finalists plus Babel – received between 831 and 767 nominations. This number is much higher than usual, but then we had an influx of Chinese nominators and therefore more nomination ballots. However, the eighth place nominee, a Chinese novel entitled *Age of the Godmakers* (I couldn’t find out the author or anything else about this one) only got 150 nominations, 617 less than *The Daughter of Doctor Moreau*. This is a massive drop-off and extremely unusual.
+
+ETA: [Camestros Felapton discusses the cliff phenomenon and the sharp drop-off in nominations in this post](https://camestrosfelapton.wordpress.com/2024/01/25/hugo-2023-view-from-the-cliff/).
+
+ETA: [It’s also been pointed out that in Best Novel and several other categories, the EPH numbers totalled exceed the number of total ballots cast, which should not be possible](https://bsky.app/profile/mrmaresca.com/post/3kjhbwjmf5a2d).
+
+In Best Novella, it turns out that Becky Chambers declined a nomination for *A Prayer for the Crown-Shy*, which was another likely finalist conspicuous by its absence. We also have the sharp drop-off in nominations between place 5, *A Mirror Mended* by Alix E. Harrow with 615 nominations, and place 6, *What Moves the Dead* by T. Kingfisher with 155 nominations. The longlist consists mainly of Chinese novellas as well as *High Times in the Low Parliament* by Kelly Robson and *The Bruising of Qilwa* by Naseem Jamnia.
+
+In Best Novelette, the eventual winner “The Space Time Painter” got twice as many nominations as the second place finalist. It’s clear that “The Space Time Painter” is a story which really spoke to the Chinese fans nominating, especially since it also referred to a famous Chinese painting. We also have a Chinese novelette called “Color the World” declared ineligible, according to Neil Clarke, because it was published in the wrong year, i.e. it really is ineligible. We also have another case of a nomination declined for “Two Hands Wrapped in Gold” by S.B. Divya, [who went public about declining the nomination for political reasons several months ago](https://sbdivya.com/fwords/2023/6/29/withdrawing-from-hugo-nominations).
+
+Another oddity is that a story named “Turing Food Court” by Wang Nuonuo, which appeared in English in [this anthology of Chinese science fiction](https://www.amazon.com/Galaxy-Awards-Chinese-Science-Anthology/dp/8832077728), is listed in both tenth and twelfth place on the longlist and would likely have made the ballot, if the nominations had been combined.
+
+ETA: Apparently, the double placement of “Turing Food Court” was a copy and paste error and has been resolved.
+
+In Best Short Story, “On the Razor’s Edge”, a story which I did not particularly care for, was actually leading in nominations, followed by “Rabbit Test” by Samatha Mills, a story which spoke very much to US voters due to the repeal of Roe vs. Wade. We have another story, “Fogong Temple Pagoda” by Hai Ya (also found in [this anthology](https://www.amazon.com/Galaxy-Awards-Chinese-Science-Anthology/dp/8832077728)) declared ineligible, which may be another case of prior publication. Though apparently, it was a 2022 publication. “Destiny Delayed” by Oghenechovwe Donald Ekpeki was knocked out by EPH in spite of 429 nominations and like *Babel* gained no points throughout. However, since the longlist is mostly comprised of Chinese stories, where the nominators were likelier to nominate other Chinese stories than a story by a Nigerian author that was published in *Asimov’s*, this is likelier than what happened with *Babel*.
+
+ETA: “Fogong Temple Pagoda” first appeared in English in 2022 in the *Galaxy Awards* anthology, so it should have been eligible.
+
+In Best Series, we have no nominations declined nor anything declared ineligible, but we have the strongest example of the massive drop-off in nominations on the whole ballot. The six finalist ranks had between 925 and 816 nominations, whereas the seventh placed finalist *The Nsibidi Scripts* a.k.a. the *Akata Trilogy* by Nnedi Okorafor had only 52 nominations. I’m sorry, but this pattern is so unlikely to have occurred naturally that a meteor strike hitting the convention center during the Hugo ceremony is probably more likely.
+
+I’m also thrilled to see Elric of Melniboné by Michael Moorcock, the longest running SFF series written by a single author (the first story came out in 1961, the last story in 2023, i.e. that’s a whopping 62 years) make the longlist in twelfth place, alas with only 27 nominations. I very much championed Elric, because there are few people alive who deserve a Hugo more the Michael Moorcock and yet never got one. Elric is eligible again in 2024 due to the publication of “The Folks in the Forest” in *New Edge Sword and Sorcery* No. 1 (in which I have an essay, so I got to share a TOC with Michael Moorcock, so let’s get Michael Moorcock and Elric that long overdue nomination in 2024.
+
+In Best Graphic Story, it’s notable that the eventual winner, the IMO rather unremarkable videogame tie-in comic *Cyberpunk 2077: Big City Dreams* as well the *Dune* graphic novel also got the most nominations. These works were on a recommendation list by the Chinese magazine *Science Fiction World* and are also apparently very popular with Chinese fans. The graphic novel *Across a Field of Starlight* by Blue Deliquanti, which actually sounds fascinating and would almost certainly have been a better finalist than *Cyberpunk 2077* or *Dune* – again, just missed the ballot.
+
+In Best Related, we have two works declared ineligible. The first is *History of Chinese Science Fiction in the 20th Century*, which was declared ineligible, because one of the author was on the Hugo committee. This is an absolutely valid reason to declare what was likely a worthy finalist ineligible and also appears to be a first in Hugo history. Another finalist declared ineligible was *The Art of Ghosts of Tsushima*, a video game related art book, due to prior publication in English. Nothing questionable about this.
+
+We also have the drop-off in this category, though it’s not as huge as elsewhere. But “The Ghosts of Workshops Past” got 176 votes, the next highest place finalist “The Buffalito World Outreach Project” got only 34\. This repeated pattern is really very unusual.
+
+Looking further down the longlist, it’s notable that almost every nominee is actually a non-fiction book or sufficiently booklike object such as the 2022 Black Spec Fic Report. I’m also thrilled to see four books I featured as part of my [non-fiction spotlight](http://corabuhlert.com/category/non-fiction-spotlight/), make the longlist. There will be more non-fiction as well as fanzine and fancast spotlights in the run-up to the 2024 Hugos BTW.
+
+In Best Dramatic Presentation Long, we have more oddities: Seasons 1 of *Andor* and *The Sandman* were both declared ineligible, because individual episodes got more votes in short form. This is standard practice and has happened before. It also turns out that *Prey*, a movie which not only was unexpectedly good but also a likely finalist, would have easily made the ballot, but the team behind the film decline the nomination. As one of the people who nominated *Prey*, I really would like to know why they declined. Political reasons? But then, Hollywood is actively chasing the big Chinese market, so that’s rather unlikely. And though the Hugos don’t have a lot of clout in Hollywood, I still find it unlikely that filmmakers wouldn’t want one, especially since genre films and TV shows are regularly snubbed at the major film and TV awards, as this recent round of “Let’s shower *Oppenheimer*, *The Holdovers*, *Killers of the Flower Moon*, *Succession*, *The Bear* and *Beef* with awards” proves.
+
+It’s also notable that the longlist has as many complete TV seasons (*Ms. Marvel*, *The Peripheral* and *Our Flag Means Death*, which I fully expected to make the ballot, considering how beloved it is) as movies. I’m also really happy to see *Neptune Frost*, an Afrofuturist film from Rwanda, for which I co-signed an eligibility extension, just sneak onto the longlist in 15th place.
+
+In Best Dramatic Short, things get odd again, because it turns out that an episode of *The Sandman* called “The Sound of Her Wings” was declared ineligible. Now season 1 of *The Sandman* was also declared ineligible in Best Dramatic Presentation Long, because an individual episode got more votes. However, “The Sound of Her Wings” not only was absolutely eligible, since it came out on August 5, 2022, it also got more than enough votes to make the ballot.
+
+We also have an episode of *Severance* declared ineligible, because the whole season made the ballot in Long Form as well as the music video *The Deep* declared ineligible due to prior publication. The sharp drop-off between the first three places and place four is also notable here.
+
+In Best Editor Long Form, the first thing that’s striking is that what traditionally is a low nomination category actually got a lot of nominations this year. Lee Harris of *Tordotcom* got a whopping 433 nominations, which normally would be Best Novel or Best Dramatic Presentation territory. It’s also notable that Carl Engle-Laird of *Tordotcom* and Priyanka Krishnan of *William Morrow* were both knocked out by EPH in spite of getting almost a hundred nominations more than Yao Haijun.
+
+ETA: [Camestros Felapton delves into the Best Editor Long category and notes that the data looks definitely odd](https://camestrosfelapton.wordpress.com/2024/01/29/hugo-2023-best-editor-long/).
+
+There’s nothing overly notable in Best Editor Short except that Jonathan Strahan, Sheila Williams and Lynne and Michael Damian Thomas were all knocked out by EPH. However, this isn’t that unusual, since all three (as well as many of those who made the ballot) are likely to be nominated by the same people.
+
+In Best Professional Artist, we have another nomination declined by Chinese Australian artist Guo Jian. There may be political reasons for this.
+
+There’s nothing overly unusual in Best Semiprozine except that *Clarkesworld* is actually a prozine and has been for years now. I’m also happy to see my friends of *Space Cowboy Books Presents: Simultaneous Times* to just edge onto the longlist in 15th place.
+
+In Best Fanzine, it’s notable that the top seven nominees (the six finalists plus *Black Nerd Problems*) are all very close to each other with more than 200 nominations each, then we get a sharp drop-off to *The Full Lid* with 55 nominations and then *Speculative Fiction in Translation* and *Runalong the Shelves* with 15 nominations each. I’m sorry, but these patterns are super unusual. The last time we saw something like this was during the puppy years and even then it wasn’t this extreme.
+
+ETA: [Camestros Felapton does a deep dive into the fanzine numbers and points out that they make no sense and also appear to be mislabeled](https://camestrosfelapton.wordpress.com/2024/01/23/hugo-2023-fanzine/).
+
+In Best Fancast, we also have the massive drop-off between *Coode Street Podcast* in fourth place with 100 votes to *Worldbuilding for Masochists* in fifth with 56 and *Kalanadi* in sixth place with 20\. I’m also happy to see my friends of *The Skiffy and Fanty Show* and *If This Goes On, Don’t Panic* make the longlist.
+
+Best Fan Writer has another massive landmine, because Paul Weimer had the third highest number of nominations and yet was declared ineligible. This is complete nonsense, because Paul did plenty of fanwriting in 2022 and was obviously eligible. In fact, there are at least three nominees further down the longlist, whose eligiblity would be more in question, since they almost exclusively write for professional publications. And even that doesn’t really matter, since we have seen quite a few fan writer finalists with almost exclusively professional publications in the past few years. Paul has also confirmed that he was never contacted to clarify his eligibility, he simply was declared ineligible. [He’s also understandably furious](https://www.patreon.com/posts/hugo-award-final-96866335).
+
+ETA: [Paul Weimer shares two e-mails he sent to Hugo administrator Dave McCarty](https://www.patreon.com/posts/96988204), demanding to know why exactly he was declared ineligible, when he very obviously wasn’t. Paul also points out that if the Chinese government has any issues with his writing, he needs to know, because he may eventually want to travel to China for business or personal reasons.
+
+Also notable is that my pal Camestros Felapton was knocked out by EPH and that the pen name of finalist Arthur Liu “HeavenDuke” is misspelled as “HeavenDule”.
+
+ETA: [Camestros Felapton delves into the Best Fan Writer statistics and notes several oddities compared to 2022](https://camestrosfelapton.wordpress.com/2024/01/23/hugo-2023-fan-writer-stats/).
+
+There are no shocking or unusual developments in Best Fan Artist, which makes it the only not even remotely controversial category on the ballot.
+
+For the Lodestar, *In the Serpent’s Wake* by Rachel Hartman is actually listed twice, in fifth and seventh place. However, unlike “Turing Food Court” in Best Novelette, Rachel Hartman made the ballot anyway. Nonetheless, after taking three months to prepare the data, how can there still be such errors?
+
+ETA: [Camestros Felapton takes a deep dive into the Lodestar nomination data.](https://camestrosfelapton.wordpress.com/2024/02/01/its-still-not-tomorrow-yet-lodestar-23/)
+
+ETA 02-17-2024: [The mystery of *In the Serpent’s Wake* being listed twice has been resolved. It should really be *Unraveller* by Frances Hardinge](https://camestrosfelapton.wordpress.com/2024/02/17/hugo-2023-one-little-mystery-solved/).
+
+For the Astounding Award finally, we have another finalist randomly declared ineligible, namely Xiran Jay Zhao, who was on their first year of eligibility in 2022, so they should absolutely still have been eligible in 2023\. Sunyi Dean also got knocked out by EPH in spite of getting the fifth highest number of votes.
+
+ETA: [Xiran Jay Zhao responds on Twitter to being declared ineligible](https://twitter.com/XiranJayZhao/status/1749213630086918163). Like Paul, they were never contacted with questions regarding their eligibility. Like Paul, they are also justifiably angry.
+
+ETA2: [Now Xiran Jay Zhao’s *TikTok* post about being randomly declared ineligible for the Astounding Award has been removed for allegedly violating community rules](https://twitter.com/XiranJayZhao/status/1749595259590594778). TikTok is owned by a Chinese company. [Their upcoming book *Heavenly Tyrant* has also been delayed to 2025](https://twitter.com/XiranJayZhao/status/1749550398220927328), though according to their tweet, this may also be related to Zhao’s views on the Gaza conflict. Nonetheless, this is about a lot more than just the Hugos by now.
+
+ETA3: [Xiran Jay Zhao also has an *Instagram* post about being declared ineligibl](https://www.instagram.com/p/C2bCHwtvRQM/?hl=en)e, where you can also admire the gorgeous down they wore when they were an Astounding finalist in 2022.
+
+*******
+
+This is the most unusual Hugo longlist I’ve ever seen, including the puppy years, and we really, really need some answers here:
+
+Why were *Babel*, Paul Weimer, Xiran Jay Zhao and that *Sandman* episode declared ineligible, when they absolutely should have been eligible? Most of the Chinese nominees declared ineligible likely actually were ineligible due to prior publication, at least according to Neil Clarke who recognised several of the titles and authors. Though “Fogong Temple Pagoda” appears to be a 2022 publication, i.e. eligible. We definitely need answers here.
+
+And what’s the reason behind the very strange voting patterns and sharp drop-off between first and fifteenth place nominations? Normally, this sort of pattern indicates slating, but a) EPH was supposed to reduce the impact of slates, and b) we have seen no public evidence of slates apart from a recommendation list (which is not against the rules) by *Science Fiction World*. And the *Science Fiction World* list alone does not explain these patterns.
+
+Finally, while occasionally a nominee will fall victim to EPH, we have had several nominees knocked out by EPH, which is extremely unusual. That said, this might be explained by the very different voting patterns of Chinese and Western fans.
+
+Nonetheless, a lot of people are justifiably angry, because these stats are a mess and make no sense at all. The conspiracy theories are already flying fast and furious. Most people seem to suspect tampering in some form.
+
+The seemingly random ineligiblity is believed to be due to the affected nominees being considered politically undesirable in China, especially since two of the affected nominees, R.F. Kuang and Xiran Jay Zhao, are American and Canadian Chinese respectively. However, nothing I have read by R.F. Kuang suggests that she would be overly likely to criticise the Chinese government. Plus, we have other Chinese diaspora finalists on the ballot who were not declared ineligible. Nor does this explain why Paul Weimer or *The Sandman* or “Fogong Temple Pagoda” were declared ineligible.
+
+ETA: One of Xiran Jay Zhao’s books apparently has an Uyghur main character, which would explain why they might be considered undesirable.
+
+ETA 02-03-2024: [Mary Robinette Kowal recounts how her novelette “The Lady Astronaut of Mars” was declared ineligible in 2013 due to being an audiobook](https://bsky.app/profile/maryrobinette.bsky.social/post/3kkjtcnqfyc2n) and how this was clearly explained and the rules eventually adjusted.
+
+The sharp drop-offs in nomination counts seem to suggest some kind of block voting or slating, except that the phenomenon wasn’t this notable even during the puppy years. Another, nastier theory is a whole swath of nominees were removed from the ballot and their votes redistributed in order to push finalists deemed more acceptable. This also explains the absence of works we would have expected to see on the longlist. However, if this was done, then why weren’t *Babel*, *The Sandman*, Paul Weimer and Xiran Jay Zhao removed in the same way?
+
+Anyway, we need an explanation and we need it fast, lest the conspiracy theories get out of hand.
+
+I didn’t vote for Chengdu, but I have been willing to give them the benefit of the doubt, even as inconsistencies and issues kept piling up, because the way the Chinese fans were treated by some western fans was disgusting.
+
+However, if there was political influence on the Hugo ballot (and note that this is a big “if” at this moment) and if Dave McCarty or Ben Yalow allowed this to happen, then fuck them and fuck Chengdu! I don’t blame any of the Chinese organisers for going along with possible political pressure, because they have to live in China and face genuine risks. But McCarty, Yalow or any other western SMOFs involved should have sounded the alarm or at the very least resigned. The Chinese government has no power over them. So shame on them, if they went along with this. Also shame on them, if they thought that burying the data would mean people wouldn’t notice the problem.
+
+Note that this is all just theory and conjecture at this point. We don’t know for sure what happened. And this is why we need answers and an explanation and we need it now. The people who were randomly declared ineligible needs answers and the finalists who made the ballot or won also need answers, because this is tainting their nominations and wins as well, if they don’t know if they really made the ballot or won organically.
+
+Also, we need changes to the WSFS constitution that a) if a finalist is declared ineligible, an explanation needs to be given (which I assumed already was a requirement, but apparently not). Also finalists where the eligibility is in question should be contacted and given the chance to clarify their eligibility.
+
+ETA: [Camestros Felapton also muses about possible changes to the WSFS constitution.](https://camestrosfelapton.wordpress.com/2024/01/21/rule-change-musings/)
+
+Finally, while I am supportive of Worldcons outside the usual US/UK/Canada/Australia/maybe western Europe corridor, potential bidders need to accept that local politics, preferences and censorship should not influence the Hugo ballot. I don’t care if Uganda or Florida (or Hungary or Russia) get their knickers in a twist about LGBTQ finalists or if Israel gets their knickers in a twist over Palestinian finalists or if a Muslim majority country gets its knickers in a twist over Jewish finalists. Your country’s politics, whatever they are, should not influence the Hugo ballot. Any potential bidder needs to accept this or they can’t host a Worldcon. And yes, I feel sorry for countries with shitty politics and shitty governments (which includes western countries at times), but in this case, I care more about the integrity of the Hugo Awards.
+
+Also, Chengdu has just made it a lot more unlikely for any future non-western or non-traditional bid (mainly Uganda at this point, since Egypt withdrew and the Tel Aviv bid seems to be dead for all intents and purposes) to ever win a Worldcon again. This is also a slap in the face for those of us who defended Chengdu, so thanks a lot.
+
+For more analysis and spirited discussion, see [Camestros Felapton’s analysis post](https://camestrosfelapton.wordpress.com/2024/01/21/hugo-award-2023-nomination-stats/) and [the comments at *File 770*](https://file770.com/chengdu-worldcon-releases-2023-hugo-nomination-statistics/). There’s also a [post on *File 770*, addressing the many oddity on the longlist](https://file770.com/2023-hugo-nomination-report-has-unexplained-ineligibility-rulings-also-reveals-who-declined/).
+
+ETA: [Camestros has also posted the questions he sent to the Hugo admin team](https://camestrosfelapton.wordpress.com/2024/01/21/my-priority-questions-about-the-hugo-stats/) and [did another dive into the data](https://camestrosfelapton.wordpress.com/2024/01/21/hugo-2023-noms-mind-the-gap/), particularly the sharp drop-off in nominations seen in many categories.
+
+ETA: [Heather Rose Jones taks a deep dive into the Hugo nomination data and the unusual vote distribution patterns and compares 2023 to several earlier years](https://alpennia.com/blog/comparison-hugo-nomination-distribution-statistics).
+
+ETA: [Jameson Quinn, who is not just a specialist in voting systems but also helped to design the EPH algorithm to reduce the impact of slate voting, delves into the inconsistencies in this *BlueSky* thread.](https://bsky.app/profile/voter.bsky.social/post/3kjljddudob2z)
+
+ETA: [Best Fan Writer finalist Jason Sanford weighs in on the Hugo nomination uproar in his latest Genre Grapevine column](https://www.patreon.com/posts/96916543).
+
+ETA2: [Jason Sanford has written another Genre Grapevine column](https://www.patreon.com/posts/97596226), summing up the latest developments in the Hugo nomination uproar.
+
+ETA: [Joe Sherry of the 2021 Best Fanzine and 2023 Ignyte Award winner *nerds of a feather* takes a look at the many issues and irregularities with the 2023 Hugo nominations](http://www.nerds-feather.com/2024/01/burning-down-hugo-awards-look-at.html).
+
+ETA: [*Mr Philip’s Library* offers a summary of the many issues and delays affecting the Chengdu Worldcon and the 2023 Hugo Awards](https://mrphilipslibrary.wordpress.com/2024/01/21/hugo-nominating-stats-rascality-and-a-brief-history-of-where-it-all-started/).
+
+[Cheryl Morgan also weighs in](https://www.cheryl-morgan.com/?p=29370) and points out that putting out nomination data which clearly indicate shenangigans may be a way of protesting what happened by making it obvious that something happened. Because if someone falsified the data, they did so very clumsily.
+
+ETA: [Tammy Coxen weighs in on Facebook](https://www.facebook.com/tammy.coxen/posts/pfbid02UmNqFshVsp9Pyv1j6DpZ5iHoFrYsb8JCHWYuAuCRHTJcbHonGtd4FD26c3fds1K4l) and notes that if no reason for declaring several finalists ineligible was given, then no reason can be given. She also assumes it’s all irrelevant anyway, because Worldcon will be dead in ten years anyway due to a lack of viable bids.
+
+ETA: [Simon McNeil weighs in with a predictably bad take with a few good points mixed in and thinks the Hugos should die already, because they are irrelevant](https://simonmcneil.com/2024/01/23/chengdu-2023-the-least-important-front-of-the-new-cold-war/).
+
+ETA: [At *Pajiba*, Nate Parker offers a summary of the 2023 Hugo drama and also relitigates some past Worldcon and Hugo drama](https://www.pajiba.com/book_reviews/the-hugo-awards-step-in-it-again.php) from the Sad and Rabid puppies to the *Raytheon* debacle of 2021.
+
+ETA 02-04-2024: On his *YouTube* channel, [Damien Walter discusses what he calls “the strange sad death of the Hugo Awards”](https://www.youtube.com/watch?v=j_D-dYTnkgY) and also offers a summary of the history of the Hugos and Worldcon. He does make some good points, namely that there was also a lot of money and business deals connected to the Chengdu Worldcon, even though Worldcon is traditionally a non-profit, volunteer-run event. However, he’s a bit quick to declare the Hugos, especially considering that he actually addresses various previous controversies.
+
+ETA: At *Blog of the Moon*, [Raj weighs in and points out that bad as the 2023 Hugo nomination mess is, it is also a problem limited to one specific Worldcon and Hugo team](https://lordofthemoon.com/blog/2024/01/the-debacle-around-the-2023-hugo-awards/) and that this does not actually mean that the Hugos are permanently tarnished or dead, as some people seem to assume or hope.
+
+I also have to admit that I really don’t understand those people who almost gleefully cheer that the Worldcon and the Hugos have been irrevocably tarnished, especially since most of them aren’t puppies (who have been saying that the Hugos are dead since 2015), but come from the left side of the genre spectrum. In some cases, there is old resentment involved, often linked to the AO3 drama of 2019, but I don’t understand why anybody would want something to die that other people enjoy.
+
+ETA: [Here is a blogpost from the right side of the SFF spectrum by James Pyles](https://poweredbyrobots.com/2024/01/23/2024-hugo-award-nominations-meltdown/) at *Powered By Robots*.  [As Camestros Felapton points out](https://camestrosfelapton.wordpress.com/2024/01/28/ok-one-last-post-on-the-topic-for-completeness/) there is very little reaction otherwise from the former Sad and Rabid Puppies.
+
+ETA: [Camestros also notes that the data and discrepancies are just too weird and contradictory to point either to one big conspiracy or incompetence and that there appears to be more than one issue at play here](https://camestrosfelapton.wordpress.com/2024/01/22/hugo-stats-where-are-we-today/). He also points out that we don’t know if we can trust any of the 2023 nomination and voting data at this point. Because the voting data was also unsual with several finalists winning on first pass.
+
+ETA2: [Camestros has now found a 2023 Hugo statistic which does not look overly weird](https://camestrosfelapton.wordpress.com/2024/02/01/a-non-weird-hugo-23-stat/).
+
+ETA 02-07-2024: [Camestros has shared some graphs showing the relationship between raw votes and EPH points](https://camestrosfelapton.wordpress.com/2024/02/07/raw-votes-to-eph-points-2020-2023/) and also t[he relationship between nominee rank and number of votes](https://camestrosfelapton.wordpress.com/2024/02/08/rank-v-votes-2020-2023/). Unsurprisingly, the data for Chengdu looks extremely weird and also visualises the cliff, where the top ranks received many more nominations than those just below.
+
+ETA: [Nicholas Whyte, who has been Hugo administrator multiple times, always got the nomination data released within hours of the ceremony and has always been extremely scrupulous in establishing whether a finalist was eligible, in cases there were doubts, weighs in on the 2023 nomination drama](https://fromtheheartofeurope.eu/no-comment-2/) and… notes that he has nothing useful to add to what has been already said. I find this extremely worrying, especially since I’m sure that if Nicholas had been Hugo administrator last year, the data wouldn’t be such an unholy mess.
+
+ETA: Meanwhile, [2023 Hugo administrator Dave McCarty is still deflecting and giving non-answers and also being snippy about it](https://www.facebook.com/grand.universal.dave/posts/pfbid0hGrsGBfQdKJ1AeJ9rvQBZHnm6sMN477qekuseGViBUBvkgmkgNLtfWXCFJqyboNHl). I know Hugo admins don’t grow on trees, but I hope every future Worldcon reconsiders before appointing Dave McCarty again.
+
+[*File 770* has more screenshots from the comment section at Dave McCarty’s *Facebook*, so you won’t have to wade into Mark Zuckerberg’s evil empire](https://file770.com/chengdu-hugo-administrator-dave-mccarty-fields-questions-on-facebook/). These include multiple Hugo winner Neil Gaiman and 2023 Best Novel finalist Silvia Moreno-Garcia calling out Dave McCarty as well as a hint that one or multiple Chinese members of the team might be at risk, if more was said. And indeed “Someone would be in genuine danger, if we said more” is about the only explanation I would accept at this point.
+
+ETA2: [*File 770* reports that Dave McCarty has apologised for behaving like a jerk on *Facebook*](https://camestrosfelapton.wordpress.com/2024/01/28/dave-mccartys-response/) and closed comments there and asks people to direct any questions they may still have to the Chengdu Hugo team via e-mail. Unfortunately, [as Camestros Felapton points out](https://camestrosfelapton.wordpress.com/2024/01/28/dave-mccartys-response/), this is the same e-mail address to which several mails already bounced. Also note that Dave McCarty still hasn’t actually answered any of the questions.
+
+ETA 02-06-2024: [And Camestros Felapton reports that Dave McCarty has now either deleted or made his *Facebook* posts about the Hugo nomination debacle and indeed anything to do with the Chengdu Worldcon private](https://camestrosfelapton.wordpress.com/2024/02/06/im-a-journal-ist-not-a-journalist/). Sigh. Why am I not surprised?
+
+ETA: [2021 Best Fanzine winner and 2023 finalist *nerds of a feather* have issued a statement](http://www.nerds-feather.com/2024/01/statement-on-irregularities-and.html) in which they point out that their e-mails to the Chengdu Hugo team bounced and that they demand answers. So do we all.
+
+ETA: Fandom being what it is, there is now [a website called IneligibleDave.com](https://www.ineligibledave.com/), which demands that Dave McCarty finally give a good answer to the questions many people have asked, and that he be kept away from positions of power at any Worldcon or other con going forwards. I completely agree with those points.
+
+ETA: [*File 770* reports that Dave McCarty and Chen Shi of the Chengdu Hugo team as well as Chegdu co-chair Ben Yalow and Mark Protection Committee member Kevin Standlee have been reprimanded or censured by World Intellectual Property](https://file770.com/worldcon-intellectual-property-announces-censure-of-mccarty-chen-shi-and-yalow-mccarty-resigns-eastlake-is-new-chair/) who hold the Worldcon and Hugo service marks. Dave McCarty has also resigned as director of Worldcon Intellectual Property, while Kevin Standlee has resigned as chairman of the board.
+
+ETA: [Camestros wonders whether the whole issue may be due to complete and utter incompetence rather than any malicious intent](https://camestrosfelapton.wordpress.com/2024/01/24/im-coming-around-to-the-unified-stuff-up-theory/).
+
+ETA:[At *File 770*, ErsatzCulture shares another update on the state of the Hugo nomination debate, which includes a machine translation of a *Weibo* post by La Zi](https://file770.com/hugo-controversy-hits-mainstream-news-a-chengdu-vice-chair-comments-in-social-media/), editor of *Science Fiction World* magazine and the Galaxy Awards anthology as well as one of the vice chairs of the Chengdu Worldcon, which hints at trouble behind the scenes and that La Zi wanted nothing to do with it.
+
+[Angie Wang shares screenshots and translations of several Chinese social media posts on *BlueSky*](https://bsky.app/profile/okchickadee.bsky.social/post/3kjolxsomx327). Chinese fans are clearly as angry about the whole mess as western fans, especially since this also messes up their efforts for Chinese SFF to gain acceptance on the world stage. Because make no mistake, whether there were voting irregularities in the 2021 site selection vote or not, the Chengdu Worldcon had genuine support from Chinese fans and these fans are now angry and disappointed and feel betrayed. So this isn’t an issue of China versus the West, it’s an issue of Dave McCarty and his Hugo team messing up the nominations and randomly declaring viable finalists ineligible for unknown reasons.
+
+ETA: For another Chinese view on the Hugo nomination uproar, see [this guest post by Chinese fan Zimozi Natsuco at *File 770*](https://file770.com/zimozi-natsuco-guest-post-the-hugo-awards-evil-fall-is-a-watered-down-affair-and-certain-issues-to-watch-out-for/), which confirms what we’ve seen elsewhere, namely that Chinese fans are as angry as western fans about the Hugo nomination mess and the general issues with the Chengdu Worldcon. Zimozi Natsuco also points out that a lot of the Chinese members of the Chengdu con com were not actually fans, but media executives looking for business opportunities, and that some of these folks apparently ended up on the Hugo subcommittee and are as guilty as Dave McCarty. The fact that business-minded folks from outside fandom apparently came in and took over the Chengdu is something we’ve heard a few times from Chinese fans before – e.g. when the dates and venue were abruptly changed – but these statements didn’t get enough attention outside China, probably most western fans just don’t know enough about Chinese fandom.
+
+ETA 02-09-2024: [Hugo winner Chris Garcia weighs in on the Hugo nomination uproar in issue 66 of his fanzine *The Claims Department*](https://claimsdepartment.weebly.com/uploads/4/3/8/5/43857175/claims66.pdf) and declares that Dave McCarty betrayed fandom and the Hugos be giving in to pressure or perceived pressure to remove certain works from the ballot. Chris also goes into a screenshot from Chinese social media that was shared on *File 770*, according to which the Chengdu Anti-Pornography and Anti-Illgel Affairs Office boasted of having reviewed and removed worked deemed problematic from the dealers room and the Hugo ballot. If this really does refer to the Hugo ballot, they didn’t do a very thorough job, since John Chu’s Hugo-nominated novelette is a gay love story by an openly gay Chinese diaspora author and yet was allowed to remain on the ballot. The Best Dramatic Presentation Long winner *Everything Everywhere All At Once* also has prominent LGBTQ characters, ditto for Best Dramatic Presentation Short finalist *Andor*, which is also super-political. The main mystery here really is why censor these specific works and people and not others.
+
+ETA: [2023 Best Novel finalist John Scalzi weighs in on the Hugo nomination uproar and the baffling disqualification of *Babel* and others at *Whatever*](https://whatever.scalzi.com/2024/01/21/whats-up-with-babel-and-the-hugos/) and links to this very blog, which is also the reason this already much read post is getting even more views now.
+
+[Aidan Moher also weighs in on the Hugo statistics at the new home of *Astrolabe*](https://astrolabe.aidanmoher.com/astrolabe-36-panic-at-the-hugos-2023-controversy/).
+
+ETA 02-05-2024: [Doris V. Sutherland weighs in on the Hugo nomination uproar at *Women Write About Comics*](https://womenwriteaboutcomics.com/2024/02/the-chengdu-hugo-awards-ineligibilities/).
+
+ETA: [Charles Stross weighs in one the Hugo nominations statistics mess and the Chengdu Worldcon in general](https://www.antipope.org/charlie/blog-static/2024/01/worldcon-in-the-news.html) at *Antipope* and also notes that the Chegdu Worldcon was taken over by corporate interests, who pushed out the Chinese fans.
+
+ETA: [Alex Acks weighs in on the Hugo nomination disaster](https://katsudon.net/?p=6725).
+
+ETA: [2023 Best Fancast finalist *Octothorpe* weighs in on the Hugo nomination irregularities](https://octothorpe.podbean.com/e/102-i-fully-comprehend-the-mysteries/). Also check out [Alison Scott’s artwork for this episode](https://imgur.com/OkhOqlO).
+
+ETA: [2014 Best Novel winner Ann Leckie weighs in on *BlueSky*](https://bsky.app/profile/annleckie.com/post/3kjlzamn64a2i).
+
+ETA: [Two-time Hugo finalist Chuck Tingle weighs in on Twitter](https://twitter.com/ChuckTingle/status/1751033185365094450) and points out that his own *Space Raptor Butt Invasion* was not disqualified in 2015, even though there would have been arguments in favour of that, so why were *Babel*, Xiran Jay Zhao, *The Sandman* and Paul Weimer disqualified for seemingly no reason?
+
+ETA: [Camestros Felapton points out that two Chinese stories, “Colour the World” and “Fogong Temple Pagoda” have also been declared ineligible without any explanation](https://camestrosfelapton.wordpress.com/2024/01/27/hugo-2023-stats-some-other-pieces/), though these two stories are barely mentioned in most accounts (and a lot of mainstream articles forget Paul as well). “Colour the World” actually does appear to be ineligible due to having appeared in Chinese in 2019 and in English in 2021, but “Fogong Temple Pagoda” was first published in English in 2022, i.e. it should have been eligible.
+
+ETA: [Renay weighs in at the Hugo winning fanzine *Lady Business*](https://ladybusiness.dreamwidth.org/2024/01/23/lets-get-literate-hugo-award-shenanigans.html) and also links to other takes and posts.
+
+ETA 02-02-2024: [Hamsterwoman weighs on the 2023 Hugo winners, finalists and the nomination drama at *Dreamwidth*](https://hamsterwoman.dreamwidth.org/1211038.html). You have to scroll down past some photos of what looks like a great gift parcel.
+
+ETA: [The *Stitch and Bitch* *YouTube* channel discusses the many issues with the 2024 Hugo nominations](https://www.youtube.com/watch?app=desktop&v=3oguW7jk2sE) and have even brought their tinfoil hats.
+
+ETA: [Daniel Greene, a popular *YouTuber*, also weighs in one the Hugo controversy](https://www.youtube.com/watch?v=85CFDXrORdw), though he apparently doesn’t know much about how the Hugos work and considers them something of a joke, probably because the sort of books he frequently reviews (Brandon Sanderson) rarely win or get nominated.
+
+ETA: [*The Binary System Podcast* also weighs in on the Hugo nomination debacle](https://pixelatedgeek.com/2024/02/binary-system-podcast-396-lore-olympus-episode-262-and-263-guardians-of-the-galaxy-vol-3-and-the-oscar-nominations/) amidst discussion of the 2024 Oscar nominations (not blogging about those, since I haven’t seen most of those films and have zero interest in watching them), *Guardians of the Galaxy Vol. 3* and *Lore Olympus*.
+
+ETA 02-02-2024: At *File 770*, [Ingvar shares a story called “Trigger Snowflake and the Dequalifications”](https://file770.com/trigger-snowflake-and-the-dequalifications/), which is directly inspired by the Hugo nominations uproar.
+
+ETA: The issue is beginning to hit the mainstream media, for [Cheryl Eddy at *io9* offers a summary of the controversy](https://gizmodo.com/hugo-awards-rf-kuang-babel-not-eligible-controversy-1851185306).
+
+ETA: [Jenn Northington offers a good summary of the uproar at *BookRiot*](https://bookriot.com/2023-hugo-awards-controversy/).
+
+ETA: [Dean Simons offers a summary of the controversy at *Comics Beat*](https://www.comicsbeat.com/hugo-awards-in-a-quagmire-following-contentious-exclusions-in-released-report/) and also goes into the unexpected win for the *Cyberpunk 2077* tie-in comic in the Graphic Story category.
+
+ETA: [And the Hugo nomination scandal has now hit the *Guardian*](https://www.theguardian.com/books/2024/jan/24/science-fiction-awards-held-in-china-under-fire-for-excluding-authors), where China correspondent Amy Hawkins reports about the issue. The last time the *Guardian* reported about the Hugos was during the puppy years.
+
+ETA: [Sadie Gennis and Susana Polo share a summary of the 2023 Hugo drama as well as past Hugo-related uproars at *Polygon*](https://www.polygon.com/24049021/hugo-awards-controversy-china-censorship-babel).
+
+ETA 02-02-2024: [The Hugo controversy has now hit *Esquire*](https://www.esquire.com/entertainment/books/a46612912/science-fiction-hugo-awards-2024/?source=nl&utm_source=nl_esq&utm_medium=email&date=020224&utm_campaign=nl34202746&GID=4b07013057ad7b05c51a80541b7afc8c394e32b4e546a47cbe7b4697adc69d19&utm_term=TEST-+NEW+TEST+-+Sending+List+-+AM+180D+Clicks%2C+NON+AM+90D+Opens%2C+Both+Subbed+Last+30D), where Adam Morgan offers a pretty good summary of the issues with the 2023 Hugo nominations as well as past scandals like the Sad and Rabid Puppy debacle. Though I have to note that the header image actually shows a 2020 CoNZealand Hugo trophy and not a 2023 Chengdu Hugo trophy. I’ve also never heard anybody refer to the Hugo administrator as the “Hugo pope”, but always as the Hugo administrator.
+
+ETA: [At *Winter is Coming*, Daniel Roman offers a very thorough article about the 2023 Hugo nomination uproar](https://winteriscoming.net/posts/controversy-at-the-hugo-awards-works-deemed-ineligible-lead-to-censorship-speculation?utm_campaign=apple-news&utm_medium=referral&utm_source=apple-news).
+
+ETA: [2014 Best Fan Writer winner Abigail Nussbaum weighs in on the Hugo nomination uproar](https://wrongquestions.blogspot.com/2024/01/the-2023-hugo-awards-now-with-asterisk.html), wonders how we can prevent a repetition of this going forward and points out that the Hugos have survived worse.
+
+And indeed, steps are already being taken to prevent this from ever happening again. [For Cheryl Morgan and Kevin Standlee have drafted a resolution for the 2024 WSFS Business Meeting in Glasgow, Scotland](https://www.cheryl-morgan.com/?p=29391), for decoupling the Hugos from the current Worldcon and putting them under the umbrella of the mark protection committee to prevent future Worldcons from tampering with the Hugos. [The full text is here](https://www.cheryl-morgan.com/wp-content/uploads/2024/01/Independent-Hugo-Administration.pdf).
+
+ETA 02-05-2024: [Brad Templeton also weighs in with a summary of the 2023 Hugo nominatiosn uproar and some suggestions for preventing it from ever happening again](https://ideas.4brad.com/world-science-fiction-conventionawards-were-attacked-again-how-can-its-unusual-governance-structure). One of the suggestions, “Stop selling memberships to outsiders” is pretty terrible, because every Worldcon is someone’s first Worldcon.
+
+ETA 02-05-2024: [Camestros Felapton delves even deeper into EPH and the many issues with the Chengdu Hugo nomination data](https://camestrosfelapton.wordpress.com/2024/02/05/hugo-2023-stats-the-one-sixtieth-solution/). Cam also comes up with [a way of preemptively checking whether a given Worldcon is actually able to properly process nominations and votes and run EPH](https://camestrosfelapton.wordpress.com/2024/02/05/eph-and-brown-mms/).
+
+ETA 01-11-2024: Camestros Felapton has done even more analysis of the 2023 Hugo nominations statistics and has now probably spent more time analysing the statistics than Dave McCarty and pals spent preparing them. I’m not linking to the individual posts anymore, but [you can find all of Cam’s 2023 Hugo analysis posts here](https://camestrosfelapton.wordpress.com/category/hugo-awards/hugo2023/). Basically, Cam’s analyses confirm what we already knew, namely that the 2023 Hugo nomination statistics are a complete and utter mess and that we likely can’t trust any of the data at all.
+
+ETA: [*The Hugo Book Club Blog* wonders whether EPH, the mechanism devised to lessen the impact of slates in the wake of the Sad and Rabid Puppy debacle of 2015/16, is more trouble than it’s worth](http://hugoclub.blogspot.com/2024/01/the-maginot-line-of-fandom.html).
+
+ETA: [Ada Palmer has a great examination of how censorship works in general and how much of it as actually self-censorship](https://www.exurbe.com/tools-for-thinking-about-censorship/).
+
+ETA: [Best Fan Writer finalist Arthur Liu weighs in on *Twitter* and points out several other issues with the nomination data](https://twitter.com/HeavenDule/status/1748783035552837860) that I hadn’t noticed, not being that familiar with Chinese SFF.
+
+Arthur Liu is also unhappy to realise he made the ballot because Paul Weimer was disqualified. And this is why all this is so infuriating and unfair, not just towards those who were declared ineligible, but also towards those who made the ballot and now question their nominations. And this is something no Hugo finalist deserves.
+
+ETA: [2023 Best Fan Writer winner Chris M. Barkley also weighs in](https://www.facebook.com/chris.barkley/posts/10160868493615081). Chris is also upset, because like other winners in categories where a finalist was randomly declared ineligible he will never know if he would have won, if Paul had made the ballot.
+
+Many Hugo finalists already suffer from imposter syndrome – the first time I was nominated was at the start of the covid pandemic and I suspected that I only made the ballot because all twenty people who would have been ahead of me had declined for fear of catching covid at the con (it turned out no one had declined and I won the fifth highest number of nominations) – so doing this to Hugo finalists and winners is just cruel, because many of us are already insecure enough.
+
+Finally, we had some very good and worthy Hugo finalists and winners in 2023 and I hate that a lot of them now question whether they were nominated or won legitimately.
+
+ETA: Apparently, there are now calls to declare the 2023 Hugos illegitimate and redo them. I certainly understand the reasoning behind this, but taking away the wins from the 2023 winners – many of whom are already questioning whether they won fair and square – would be cruel. Let’s not forget that there are human beings involved here.
+
+ETA2: [Chris M. Barkley also discusses the issue with the 2023 Hugo nominations again in his regular column at *File 770* from the POV of someone who actually attended the Chengdu Worldcon.](https://file770.com/barkley-so-glad-you-didnt-ask-80/) He also responds to calls for the 2023 Hugo winners to return their trophies (most of which haven’t even shipped yet) by pointing out that no, he won’t return his trophy. I full agree with Chris here. We occasionally see calls for Hugo finalists or winners to recuse themselves, walk out or return their trophies, usually from people who’ve never been within spitting distance of a Hugo trophy. But this is a call that every finalist must make for themselves and the rest of us must accept that decision.
+
+And for the record, while I’m glad I wasn’t nominated in 2023 and therefore had nothing to do with the whole mess, I wouldn’t have returned my trophy either.
+
+ETA 02-05-2024: In his latest column at *File 770*, [Chris M. Barkley actually interviews 2023 Hugo administrator Dave McCarty](https://file770.com/barkley-so-glad-you-didnt-ask-81/). There’s a lot of waffling and few clear answers, but McCarty talks a lot about the cultural differences between China and the US and how he had to bridge and respect those differences and how no one pressured him to remove anything from the ballot and how he never even interacted with any government officials higher up than the major of Chengdu and how he followed the WSFS consitution to the letter.
+
+ETA 02-05-2024: [There’s now also a transcript of the interview available](https://docs.google.com/document/d/1-cRucUihby1bhNlrviPaktjxc8E2tk4P/edit), though it’s just more excuses and word salad from Dave McCarty.
+
+ETA 02-06-2024: [Here is a somewhat cleaned up transcript of the interview](https://file770.com/wp-content/uploads/Dave-McCarty-Interview-Audio-file-cleaned-up.pdf), with less gibberish but no more meaningful information.
+
+It’s of course a shitload of nonsense. Yes, cultural differences affect Worldcons, but that means things like traditional room and bid parties being difficult to do in Helsinki, because Finland (and all of Scandinavia actually) is really weird about alcohol, or how Ireland’s strict fire codes affected queuing for panels at the Dublin Worldcon. It should not mean that finalists are randomly declared ineligible, because someone fears they might not be appropriate. Though McCarty’s statements strongly imply that we are dealing with pre-emptive self-censorship here rather than actual government pressure. He also appears to be afraid that saying more will make his Chinese colleagues look bad. Though at this point, I don’t think that there’s anything that can make them worse than they already look. Never mind that Chinese fans are as angry about the way the Chengdu Worldcon and the Hugos went as western fans.
+
+ETA 02-05-2024: [Camestros Felapton responds to the Dave McCarty interview](https://camestrosfelapton.wordpress.com/2024/02/06/not-so-old-man-shouts-at-soundclouds/) and particularly to McCarty’s weak explanation for why there are so many obvious issues with the data.
+
+ETA 02-05-2024: [On *BlueSky*, Meg Frank recounts that Dave McCarty talked about manipulating Hugo votes and throwing out ballots to prevent that 5% rule taking effect during the 2014 Worldcon in London](https://bsky.app/profile/peripateticmeg.bsky.social/post/3kjm6dmqk3t2x). So McCarty behaving as if the Hugos are his personal fiefdom isn’t new.
+
+In other news, Chris also received a damaged Hugo trophy, since most of the Chengdu trophies seem to have been damaged in transit from China due to insufficient packaging. [Considering the same thing happened to me](http://corabuhlert.com/2022/09/24/2022-a-hugo-odyssey/), we should maybe also make sure that Hugo trophies are packaged better.
+
+ETA: [Nominations for the 2024 Hugo Awards are now open](https://glasgow2024.org/hugo-awards/hugo-awards-nomination/).
+
+ETA 02-06-2024: It is only fitting that this endless and much amended saga (hopefully) ends with [“*The Tragedy of MacCarty, Pope of Hugos* by William Shakespeare, as performed by Timothy the Talking Cat on the kitchen table with multiple wigs and hats.”](https://camestrosfelapton.wordpress.com/2024/02/06/the-tragedy-of-maccarty-pope-of-hugos-by-william-shakespeare/)
+
+ETA 02-15-2024: There have been significant new developments, [so I wrote another post here](http://corabuhlert.com/2024/02/15/the-2023-hugo-nomination-scandal-gets-worse/).
+
+### Like this:
+
+Like Loading...

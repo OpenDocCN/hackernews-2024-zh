@@ -1,0 +1,151 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:53:59
+-->
+
+# Unity in power, power in unity: why the EU needs more integrated electricity markets
+
+> 来源：[https://www.bruegel.org/policy-brief/unity-power-power-unity-why-eu-needs-more-integrated-electricity-markets](https://www.bruegel.org/policy-brief/unity-power-power-unity-why-eu-needs-more-integrated-electricity-markets)
+
+## ****3 Managerial-governance related benefits of more integrated internal energy markets ****
+
+Internal energy market integration brings further benefits in terms of competition, innovation and credibility, which are perhaps harder to quantify than the economic benefits but are nevertheless quite substantial.
+
+The EU’s internal electricity markets contribute to the overarching goal of creating an integrated economic space within the European Union, where the benefits for EU citizens and businesses bolster the European political project of collaboration and peace . On the one hand, the broader internal market requires that electricity regulation is not used by EU countries to distort the playing field in favour of their electricity-consuming companies. On the other hand, because of its technical characteristics, integrating electricity markets requires more than ensuring the absence of typical tariff and non-tariff barriers (see section 4 on the complexities of market integration).
+
+The EU’s internal electricity markets encourage competition among participants. This is particularly useful in the electricity sector, which typically faces rather high degrees of concentration in purely national markets . As a result, integrating national markets into a larger European one substantially enhances competition.
+
+Just as in other markets (Desmet and Parente, 2010), this competition helps drive down cost, improve quality and spur technological advancements. Moreover, creation of a larger, more predictable market governed by common rules aimed at achieving energy policy goals of climate protection, security of supply and energy justice, engenders more credibility and trust among market participants, who also benefit from strengthened governance, independent regulatory authorities and unbundled market operators. 
+
+More regulatory certainty within a wider economic area underpinned by adequate pricing of externalities, and at the same time creating a conducive environment for renewable energy, amplifies investor confidence and lowers the cost of capital for clean technologies, which in turn is the main factor driving clean-tech cost competitiveness, thus reducing the cost of the energy transition.
+
+****Figure 10: Management/soft benefits of the internal energy market****
+
+^(Source: Bruegel.)
+
+### **3.1 Competition fostering innovation and consumer surplus**
+
+ One of the primary benefits of the internal energy market is to stimulate competition between energy-market participants. Cross-border energy trade fosters a more dynamic marketplace, encouraging companies to strive for efficiency and cost-effectiveness. As competition intensifies, companies are compelled to innovate, seeking technological advancements and operational improvements to gain a competitive edge. A bigger, more uniform market also increases the expected profits from scaling-up better solutions, hence encouraging companies to innovate more. This can be expected to be seen in many innovative digital solutions that drive demand-side flexibility and contribute to faster and cheaper integration of variable renewable energy sources . Harmonisation of grid connectivity standards across the EU and national targeting of the many local barriers that inhibit the uptake of demand response and the participation of smaller distributed assets will contribute to further resilience and efficiency of power markets in the EU (ACER, 2023).
+
+More competitors in a bigger European market also means less market power for individual companies. This drives down producer margins, to the benefit of consumers and the whole European economy.
+
+### **3.2 Trust in institutions**
+
+The EU’s internal energy markets bring further economic advantages by addressing the importance of credibility and trust in the energy sector. A unified and integrated market fosters reliability and predictability, both in market operation and achieving the desired level of security of supply, as well as in rules and regulations. As the market expands, it becomes more transparent and increases resilience in the face of sudden shocks or disruptions, improving everyday reliability and providing a framework for swift and coordinated action in the event of a crisis. More integration in the EU energy market, likely accompanied by further coordination in overall system planning and financing, also gives a sense of stability when it comes to the overall direction of EU energy and climate policy, because wider EU goals are more likely to be achieved. This transparency, resilience and stability, in turn, enhances the trust of consumers, investors and other market participants that make long-term investments in energy infrastructure. This trust is particularly important for enabling the development of large, critical energy-infrastructure projects such as offshore wind networks or the green hydrogen sector.
+
+### **3.3 Lower cost of capital**
+
+The cost of capital for energy-sector investments varies significantly across Europe (see Figure 11 for renewable technologies), for reasons including different regulatory environments and risks, access to finance and country risk.
+
+ **Figure 11: Cost of capital for onshore wind across Europe**
+
+^(Source: Bruegel based on Steffen (2020). Note: The figures presented are the weighted average cost of capital (WACC) at 2017 interest rates.)
+
+EU policymaking safeguards reduce the risk of *ad-hoc* or retroactive changes in EU regulations and enable investors to challenge unjustified national measures. More generally, by reducing regulatory hurdles and supporting competitive markets, EU law tends to improve confidence in overall market functioning. A more stable regulatory framework thus reduces the risk premium associated with the risks of regulatory intervention.
+
+EU policymaking also provides visibility about long-term energy transition goals (up to 2050), with binding intermediate targets. The EU framework also requires member states to provide more visibility and predictability about their national energy transition pathways, eg through national energy and climate plans (NECPs). This visibility provides more confidence that demand for renewable energy sources and clean, flexible assets will continue growing, supporting the scaling up (and related cost reductions) of the underlying supply chains.
+
+Thanks to the greater liquidity and lower volatility, the risk premiums for investors related to volatile market revenues therefore decrease in larger markets.
+
+Reducing the cost of capital will be crucial to reduce the energy cost in a system with an increasing share of fixed cost (Figure 12).
+
+**Figure 12: Capital cost reduction is key for bringing down energy-system cost in systems with high shares of nuclear and renewables**
+
+^(Source: Steffen (2020))
+
+## ****4 The complex path to integration****
+
+Energy-market integration is not a binary choice between either having 27 disconnected power systems or having one joint electricity market in which national borders play absolutely no role. Cross-border lines and multilateral electricity trading arrangements in Europe have existed for more than 100 years (Zachmann, 2013), though the EU’s internal electricity market is less than 30 years old. Moreover, EU countries continue to trade electricity with non-EU countries that are not part of the internal electricity market, including Switzerland, Morocco and the United Kingdom. Even within the EU, electricity trade arrangements can have very different levels of intensity. Thereby, the benefits of more integration typically coincide with stronger distributional effects and less national control over electricity-system choices. For illustrative purposes we distinguish between six degrees of market integration:
+
+1.  Enclosed national systems (autarky);
+2.  Idiosyncratic arrangements: commercial contracts between electricity market players in different countries, such as Morocco and Spain;
+3.  Linked markets for short-term products: interfaces between national markets, such as hourly spot markets for next-day electricity delivery, such as UK-EU spot trading;
+4.  Linked markets for long-term products: interfaces between national markets allowing foreign participants to compete for long-term products, such as French bidders participating in Germany’s capacity mechanism;
+5.  Joint markets for short-term products: shared market institutions with identical rules in all pooled countries, such as the NordPool spot market;
+6.  Joint market for specific [?]: shared market institutions with identical rules in all pooled countries; for example, single European auctions for electricity from renewable sources.
+
+As in the EU about a dozen main electricity wholesale products are traded, sometimes only within countries, sometimes across borders, sometimes within certain regions but never across the entire Union, the current system resembles a complex and dynamic jigsaw.
+
+In the last decade, integration in short-term markets has improved substantially, while the relative impact of short-term markets on final electricity bills has decreased. The share of wholesale prices in final energy prices in Germany, for example, declined from around 50 percent before 2010 to less than 20 percent before the energy crisis (Figure 13). One reason was that currently predominantly national instruments for investments, such as ubiquitous renewables support schemes and increasingly capacity mechanisms, gained in importance .
+
+**Figure 1****3****:****Short-term market revenue increasingly supplemented by other revenue streams, including national support**
+
+The likely contribution of at times heavy-handed national investment instruments to a decrease in wholesale prices across the EU is one example of how national and European, market and non-market, and short- and long-term instruments interact. Hence, coordination across borders is needed, even if only very shallow/specific forms of energy-market integration are chosen. Currently, increasingly sophisticated national measures proliferate, with responsibilities spread out over national ministries, regulators, market operators and transmission and distribution system operators. The EU electricity market design reform  of 2023 encouraged some simplification and harmonisation, but EU countries will likely maintain ample leeway to pile up national instruments and micro-manage the development of their power systems.
+
+It seems straightforward that a coordinated system of more consistent instruments would produce clearer guidance and hence reduce uncertainties, and thus reduce capital costs. 
+
+As we outline above, the benefits from more market integration can be very substantial. This raises the question of why, if market integration is so beneficial, more progress has not been made in the past?
+
+First, power system choices are not just about efficiency of the electricity system, but also about political cultures (state vs. market delineation), technology preferences (eg regarding nuclear or rooftop solar), and regional and industrial policy. Most importantly, distributional effects *within a country* strongly shape its preferences for certain market set-ups . Generators in one country might lose if a new transmission line makes supplies from cheaper foreign competitors available to consumers. At the same time, consumers in the exporting country might complain about increasing prices if ‘their’ cheap power is sold abroad.
+
+Second, power-system choices also have distributional effects *between* countries. Some countries might fear that others get more of the benefits of integration, and even on aggregate, a few countries might worry that they will lose out from an unmitigated internal market . 
+
+Third, in specific market situations, countries have strong incentives for beggar-thy-neighbour policies. For example, subsidising electricity for domestic industrial consumers (to outcompete firms located in other member states) can escalate into detrimental subsidy races or border closures, with limited (or even detrimental) consequences for the global competitiveness of EU industry. 
+
+And fourth, the European Treaties (Art. 194 of the Treaty on the Functioning of European Union) guarantee each member state the right to determine its fuel mix. While not at odds with increasingly ambitious renewable energy targets decided at EU level over the years, this provision anchors the notion that certain fundamental choices ultimately rest with each member state. 
+
+Hence, moving ahead on market integration will require sufficient redistributive tools (to deal with the first two points raised above) , a good level of trust between partners and institutions to monitor and enforce common rules (to avoid the problems mentioned in the third point above), and for member states to adopt and accept more structured coordination and collaboration, inevitably bringing with it enhanced roles for either joint EU or regional institutions (arguably getting to the heart of the political balance alluded to in the fourth point above) (Figure 14). 
+
+**Figure 1****4****:****Distribution issues and solutions**
+
+^(Source: Bruegel.)
+
+These are profound policy questions with structural economic, financial and social consequences, meaning they merit further political discussion.
+
+## ****5 Conclusion ****
+
+The 2022 energy crisis highlighted the resilience, and thus also the security benefits, of relatively well-integrated EU electricity and gas markets. But paradoxically, the crisis also accelerated the pre-existing trend of fragmentation, rather than leading to more coordinated solutions. To achieve ‘more independence through more interdependence’****,**** this trend needs to be reversed.
+
+Electricity market integration has substantial benefits that will be instrumental to improving the resilience and enabling the transition of Europe’s energy system. When done jointly, substantially less capital needs to be invested in additional power plants, and less fossil fuel needs to be burned than if each EU country optimises its system domestically. Moreover, the cost of the invested capital will be lower in a consistently regulated and predictable European market, and consumers would reap more of its benefits.
+
+The time to put this fundamental political discussion on the table is now, especially since Europe is facing massive electricity-system investments, with greater risks of lock-in of more expensive, less-efficient choices, should member states opt for the more fragmented approach. Moreover, the current coordination arrangements, based on creating a joint European short-term market, have been gradually losing impact as national long-term instruments have become the dominant signal for investment. Hence, inaction at EU level implies member states might be forced to take back more control to safeguard their energy-policy objectives, potentially setting in motion a ‘death spiral’ for the internal energy market, reducing rather than enhancing all the benefits it has already delivered. 
+
+That said, pursuing further market integration requires substantial political investment, namely that governments tackle the significant distributional effects within and between countries. Experience has shown that domestic political constraints in this respect often are numerous and rather entrenched. Hence, moving ahead without proper discussion among and commitment from EU governments is not credible and might lead to backlash.
+
+As such, achieving the benefits of integration will require a vision of what degree of integration is feasible and desirable, and how to properly implement and govern it. It will also require an honest acknowledgement of the counter-factual: the implications and costs of *not* pursuing this route.
+
+## ****References****
+
+ACER (2022) *ACER’s Final Assessment of the EU Wholesale Electricity Market Design*, European Union Agency for the Cooperation of Energy Regulators, available at [https://www.acer.europa.eu/Publications/Final_Assessment_EU_Wholesale_Electricity_Market_Design.pdf](https://www.acer.europa.eu/Publications/Final_Assessment_EU_Wholesale_Electricity_Market_Design.pdf)
+
+ACER (2023) *Demand response and other distributed energy resources: what barriers are holding them back? 2023 Market Monitoring Report*, European Union Agency for the Cooperation of Energy Regulators, available at [https://www.acer.europa.eu/sites/default/files/documents/Publications/ACER_MMR_2023_Barriers_to_demand_response.pdf](https://www.acer.europa.eu/sites/default/files/documents/Publications/ACER_MMR_2023_Barriers_to_demand_response.pdf)
+
+Baker, P., M. Hogan and C. Kolokathis (2018) ‘Realising the benefits of European market integration’, Regulatory Assistance Project, May, available at[https://www.raponline.org/knowledge-center/realising-the-benefits-of-european-market-integration/](https://www.raponline.org/knowledge-center/realising-the-benefits-of-european-market-integration/)
+
+Brown, T., D. Schlachtberger, A. Kies, S. Schramm and M. Greiner (2018) ‘Synergies of sector coupling and transmission reinforcement in a cost-optimised, highly renewable energy system’, *Energy* 160: 720-739, available at [https://doi.org/10.1016/j.energy.2018.06.222](https://doi.org/10.1016/j.energy.2018.06.222)
+
+Çam, E. and C.F. Alvarez (2023) ‘Europe’s energy crisis: Understanding the drivers of the fall in electricity demand’, *Commentary*, 9 May, International Energy Agency, available at [https://www.iea.org/commentaries/europe-s-energy-crisis-understanding-the-drivers-of-the-fall-in-electricity-demand](https://www.iea.org/commentaries/europe-s-energy-crisis-understanding-the-drivers-of-the-fall-in-electricity-demand)
+
+Consentec (2023) *Ansätze eines Offshore-Stromnetzes in der Ausschließlichen Wirtschaftszone (AWZ)*, Report for the German Ministry of Economic Affairs and Climate Action, available at [https://www.bmwk.de/Redaktion/DE/Publikationen/Energie/ansaetze-eines-offshore-stromnetzes-in-der-ausschliesslichen-wirtschaftszone-awz.pdf?__blob=publicationFile&v=3](https://www.bmwk.de/Redaktion/DE/Publikationen/Energie/ansaetze-eines-offshore-stromnetzes-in-der-ausschliesslichen-wirtschaftszone-awz.pdf?__blob=publicationFile&v=3) 
+
+Desmet, K. and S. Parente (2010) ‘Bigger is Better: Market Size, Demand Elasticity, and Innovation’,*International Economic Review* 51(2): 319–33, available at [http://www.jstor.org/stable/40784708](http://www.jstor.org/stable/40784708)
+
+ENTSO-E (2021) *Continental Europe Synchronous Area Separation on 24 July 2021 Technical Report*, European Network of Transmission System Operators for Electricity, available at [https://eepublicdownloads.entsoe.eu/clean-documents/SOC%20documents/SOC%20Reports/entso-e_CESysSep_210724_211112.pdf](https://eepublicdownloads.entsoe.eu/clean-documents/SOC%20documents/SOC%20Reports/entso-e_CESysSep_210724_211112.pdf)
+
+European Commission (2023) ‘REPowerEU Plan’, COM(2022) 230 final, available at [https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022DC0230](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022DC0230)
+
+European Commission (2022) ‘Non paper on complementary economic modelling undertaken by DG ENER analysing the impacts of overall renewable energy target of 45% to 56% in the context of discussions in the European Parliament on the revision of the Renewable Energy Directive’, available at [https://energy.ec.europa.eu/system/files/2022-06/2022_06_20%20RED%20non-paper%20additional%20modelling.pdf](https://energy.ec.europa.eu/system/files/2022-06/2022_06_20%20RED%20non-paper%20additional%20modelling.pdf)
+
+ European Commission (1995) ‘For a European Union energy policy’, **Green Paper**, January, available at [https://op.europa.eu/en/publication-detail/-/publication/f3a9af74-f359-4d06-9361-c0b06f0fbe61](https://op.europa.eu/en/publication-detail/-/publication/f3a9af74-f359-4d06-9361-c0b06f0fbe61)
+
+ European Commission (1996) ‘An energy policy for the European Union’, **White Paper**, January, available at [https://op.europa.eu/en/publication-detail/-/publication/2a58e5e8-8848-4606-b7d8-1eccb4832988](https://op.europa.eu/en/publication-detail/-/publication/2a58e5e8-8848-4606-b7d8-1eccb4832988)
+
+Monforti, F., M. Gaetani and E. Vignati (2016) ‘How synchronous is wind energy production among European countries?’ *Renewable and Sustainable Energy Reviews* 59: 1622-1638, available at[https://doi.org/10.1016/j.rser.2015.12.318](https://doi.org/10.1016/j.rser.2015.12.318)
+
+Newbery, D., G. Strbac and I. Viehoff (2016) ‘The benefits of integrating European electricity markets’, *Energy Policy* 94: 253-263, available at [https://doi.org/10.1016/j.enpol.2016.03.047](https://doi.org/10.1016/j.enpol.2016.03.047)
+
+McWilliams, B. and G. Zachmann (2023) ‘European natural gas demand tracker’, *Bruegel Dataset*, available at [https://www.bruegel.org/dataset/european-natural-gas-demand-tracker](https://www.bruegel.org/dataset/european-natural-gas-demand-tracker)
+
+McWilliams, B., G. Sgaravatti, S. Tagliapietra and G. Zachmann (2023) ‘The European Union is ready for the 2023-24 winter gas season’, *Analysis*, 10 October, Bruegel available at [https://www.bruegel.org/analysis/european-union-ready-2023-24-winter-gas-season](https://www.bruegel.org/analysis/european-union-ready-2023-24-winter-gas-season)
+
+Moll, B., M. Schularick and G. Zachmann (2023) ‘The Power of Substitution: The Great German Gas Debate in Retrospect’, *Brookings Papers on Economic Activity*, 26 September, available at [https://www.brookings.edu/wp-content/uploads/2023/09/6_Moll-et-al_unembargoed_updated.pdf](https://www.brookings.edu/wp-content/uploads/2023/09/6_Moll-et-al_unembargoed_updated.pdf)
+
+Roth, A. and W.P. Schill (2023) ‘Geographical balancing of wind power decreases storage needs in a 100% renewable European power sector’, *iScience* 26(7), available at [https://www.cell.com/iscience/fulltext/S2589-0042(23)01151-3](https://www.cell.com/iscience/fulltext/S2589-0042(23)01151-3)
+
+Steffen, B. (2020) ‘Estimating the cost of capital for renewable projects’, *Energy Economics* 88: 104783, available at [https://doi.org/10.1016/j.eneco.2020.104783](https://doi.org/10.1016/j.eneco.2020.104783)
+
+Schwab, T. (2020) ‘Energising EU Cohesion : The Renewable Energy Transition Powers Up Lagging Regions’, Bertelsmann Stiftung, 5 December, available at[https://www.bertelsmann-stiftung.de/en/our-projects/europes-economy/project-news/energising-eu-cohesion](https://www.bertelsmann-stiftung.de/en/our-projects/europes-economy/project-news/energising-eu-cohesion)
+
+Trinomics and Artelys (2023) *Power System Flexibility in the Penta region – Current State and Challenges for a Future Decarbonised Energy System*, study commissioned by the Benelux General Secretariat on behalf of the Pentalateral Energy Forum, available at [https://www.benelux.int/nl/etude/power-system-flexibility-in-the-penta-region-current-state-and-challenges-for-a-future-decarbonised-energy-system-2/](https://www.benelux.int/nl/etude/power-system-flexibility-in-the-penta-region-current-state-and-challenges-for-a-future-decarbonised-energy-system-2/)
+
+Zachmann, G. (2013) *Electricity without borders: a plan to make the internal market work*, Blueprint 20, Bruegel, available at [https://www.bruegel.org/book/electricity-without-borders-plan-make-internal-market-work](https://www.bruegel.org/book/electricity-without-borders-plan-make-internal-market-work)

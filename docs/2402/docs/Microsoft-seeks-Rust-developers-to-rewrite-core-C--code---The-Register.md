@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:10
+-->
+
+# Microsoft seeks Rust developers to rewrite core C# code • The Register
+
+> 来源：[https://www.theregister.com/2024/01/31/microsoft_seeks_rust_developers/](https://www.theregister.com/2024/01/31/microsoft_seeks_rust_developers/)
+
+Microsoft's adoption of Rust continues apace if a posting on the IT titan's careers website is anything to go by.
+
+Although headcount at Microsoft might currently be down – by two percent compared to the previous year – recruitment persists at the Windows giant. In this case, the company is forming a team of Rustaceans to tackle a platform move away from C#.
+
+The job, a principal software architect for Microsoft 365, has responsibilities that include "guiding technical direction, design and implementation of Rust component libraries, SDKs, and re-implementation of existing global scale C# based services to Rust."
+
+According to the [post](https://jobs.careers.microsoft.com/global/en/job/1633482/Principal-Software-Architect), spotted by [MSPowerUser](https://mspoweruser.com/microsoft-forms-new-team-to-help-rewrite-core-windows-components-into-rust-from-c-c/), the job lurks within the Substrate App Platform group, part of the Microsoft 365 Core Platform organization. The Substrate does the heavy lifting behind the scenes for Microsoft's cloud services, making a rewrite into Rust quite a statement of intent.
+
+Microsoft said: "We are forming a new team focused on enabling the adoption of the Rust programming language as the foundation to modernizing global scale platform services, and beyond."
+
+The company has had an interest in Rust for a while. In 2023, the director of OS security for Windows [announced](https://www.theregister.com/2023/04/27/microsoft_windows_rust/) the arrival of Rust in the Windows kernel and the language has been making its way into multiple components over the years.
+
+Microsoft, alongside companies such as Meta and AWS, is a platinum member of the Rust Foundation. Considering the growing enthusiasm for [memory-safe programming](https://www.theregister.com/2023/01/26/memory_safety_mainstream/), something Rust delivers with far less effort than the likes of C++, Microsoft's move is unsurprising. However, the company's desire to shift existing C#-based services to Rust will raise a few eyebrows among the developer community.
+
+Memorably, a Microsoft engineer had to rapidly backpedal issue a clarification after [proudly proclaiming](https://www.theregister.com/2018/06/18/microsoft_roundup/) that Office 365 was being ported to JavaScript. In this instance, while Microsoft remains committed to C#, at least in public, its actions over the last few years and the job posting are indications that the company is keeping its options open.
+
+It is also an indicator of the direction of travel for engineers mulling what new skills to pick up in an increasingly competitive world. ®

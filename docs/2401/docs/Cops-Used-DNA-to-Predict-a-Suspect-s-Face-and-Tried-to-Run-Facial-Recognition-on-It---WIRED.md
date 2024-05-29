@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:02
+-->
+
+# Cops Used DNA to Predict a Suspect’s Face—and Tried to Run Facial Recognition on It | WIRED
+
+> 来源：[https://www.wired.com/story/parabon-nanolabs-dna-face-models-police-facial-recognition/](https://www.wired.com/story/parabon-nanolabs-dna-face-models-police-facial-recognition/)
+
+In 2017, detectives working a cold case at the East Bay Regional Park District Police Department got an idea, one that might help them finally get a lead on the murder of Maria Jane Weidhofer. Officers had found Weidhofer, dead and sexually assaulted, at Berkeley, California’s Tilden Regional Park in 1990\. Nearly 30 years later, the department sent genetic information collected at the crime scene to Parabon NanoLabs—a company that says it can turn DNA into a face.
+
+Parabon NanoLabs ran the suspect’s DNA through its proprietary machine learning model. Soon, it provided the police department with something the detectives had never seen before: the face of a potential suspect, generated using only crime scene evidence.
+
+The image Parabon NanoLabs produced, called a Snapshot Phenotype Report, wasn’t a photograph. It was a 3D rendering that bridges the uncanny valley between reality and science fiction; a representation of how the company’s algorithm predicted a person could look given genetic attributes found in the DNA sample.
+
+The face of the murderer, the company predicted, was male. He had fair skin, brown eyes and hair, no freckles, and bushy eyebrows. A forensic artist employed by the company photoshopped a nondescript, close-cropped haircut onto the man and gave him a mustache—an artistic addition informed by a witness description and not the DNA sample.
+
+In a controversial 2017 decision, [the department published the predicted face](https://www.eastbaytimes.com/2017/09/14/new-leads-in-unsolved-1990-berkeley-park-murder-case/) in an attempt to solicit tips from the public. Then, in 2020, one of the detectives did something civil liberties experts say is even more problematic—and a violation of Parabon NanoLabs’ terms of service: He asked to have the rendering run through facial recognition software.
+
+“Using DNA found at the crime scene, Parabon Labs reconstructed a possible suspect’s facial features,” the detective explained in a request for “analytical support” sent to the Northern California Regional Intelligence Center, a so-called fusion center that facilitates collaboration among federal, state, and local police departments. “I have a photo of the possible suspect and would like to use facial recognition technology to identify a suspect/lead.”
+
+The detective’s request to run a DNA-generated estimation of a suspect’s face through facial recognition tech has not previously been reported. Found in a trove of hacked police records published by the transparency collective Distributed Denial of Secrets, it appears to be the first known instance of a police department attempting to use facial recognition on a face algorithmically generated from crime-scene DNA.
+
+It likely won’t be the last.
+
+For facial recognition experts and privacy advocates, the East Bay detective’s request, while dystopian, was also entirely predictable. It emphasizes the ways that, without oversight, law enforcement is able to mix and match technologies in unintended ways, using untested algorithms to single out suspects based on unknowable criteria.
+
+“It’s really just junk science to consider something like this,” Jennifer Lynch, general counsel at civil liberties nonprofit the Electronic Frontier Foundation, tells WIRED. Running facial recognition with unreliable inputs, like an algorithmically generated face, is more likely to misidentify a suspect than provide law enforcement with a useful lead, she argues. “There’s no real evidence that Parabon can accurately produce a face in the first place,” Lynch says. “It’s very dangerous, because it puts people at risk of being a suspect for a crime they didn’t commit.”

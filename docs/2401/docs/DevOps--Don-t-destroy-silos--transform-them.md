@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:56:04
+-->
+
+# DevOps: Don't destroy silos, transform them
+
+> 来源：[https://fernandovillalba.substack.com/p/devops-dont-destroy-silos-transform](https://fernandovillalba.substack.com/p/devops-dont-destroy-silos-transform)
+
+*   DevOps should not be about destroying silos; it should be about transforming them into a self-service bar. 
+
+*   In Kelsey’s words: “Silos are fine, as long as there is an API between them”
+
+*   Merging various team responsibilities and domains by destroying silos can overwhelm them with cognitive load.
+
+*   The pinnacle of inter-team interaction is providing an intuitive self-service (API, Library, CLI, UI etc)
+
+If you google [silos DevOps](https://www.google.com/search?q=silos+devops&oq=silos+devops), the top page is filled with many articles telling you that you must destroy silos. In fact, there is only [one article](https://polarsquad.com/blog/how-i-stopped-wanting-to-break-silos-and-why) that says otherwise on the top page! So, if the consensus is so overwhelming that destroying silos is a good thing, Why am I writing this piece? First, let’s take a look at what a silo is
+
+We use the word silo to refer to teams that are too isolated. These departments have no visibility of what’s going on with other teams; communication is minimal or non-existent, and naturally, they operate in a way that feels detached from the organization's goals or the needs of the teams that they should be aiming to serve.
+
+Destroying silos is a bad angle because you often end up merging various domains and responsibilities in a single team and creating significant cognitive load. Using teams as discrete and small units of delivery is preferable; it is the way that teams are separated and how they communicate that needs to be tackled.
+
+The problem with the DevOps movement is that it ended up taking “shifting left” to the extreme. In this sense, development teams weren’t so much empowered to deliver software faster; rather, they were over-encumbered with infrastructure tasks that were outside of their expertise.
+
+This way of destroying silos is summarized in one of the [top articles](https://orangematter.solarwinds.com/2018/08/09/how-to-eliminate-silos-using-devops/) in my Google search:
+
+*“The first function of DevOps implementation is to get operations and development groups working together as two areas of specialization that form a complete team”*
+
+This “merging of two teams” sounds like a bad idea because the larger a team is, the more sluggish it becomes as trust breaks down and domains and responsibilities multiply. Teams should be small, with a single domain of responsibility for maximum agility. Team structure should also reflect the software architecture to maximize the effects of Conway's law.
+
+[Another suggestion](https://www.damcogroup.com/blogs/breaking-down-silos-in-software-product-engineering) to destroy silos found online is to create cross-functional teams. This is certainly better and desirable, but there is a small caveat. If your company is small to medium size with only a few teams, you may get away with using PaaS and SaaS tools that reduce the infrastructure complexity and give ease of use for operational tasks, but this becomes difficult to achieve as organizations get very large and have complex requirements. In this case, you will need to have a dedicated, product-driven platform teams that create an internal developer platform for your teams to be able to self-serve their infrastructure teams in standard, secure and compliant ways.
+
+Kelsey Hightower said something that echoed my feelings on [this interview](https://youtu.be/hD7HlWbmVqI):
+
+“Silos are fine as long as there is an API between them”
+
+That is the best possible summary you can give to this entire post. Indeed, the best way to have inter-team communication in large organizations is not talking to each other all the time; it’s creating work that can speak for itself.
+
+This usually takes the form of an API that’s intuitive, easy to use, and treating other teams as your valued users and customers. An API abstracts away your domain for other teams to focus on their expertise rather than being overloaded with infrastructure, compliance and other intricacies that slow down software delivery.
+
+So in that sense, DevOps should NOT be about destroying silos, but about turning teams into self-service bars where they serve their domain expertise to other teams with an API, library, or other form of work that can be easily and intuitively consumed.
+
+The communication between teams is done via elegant user experience and by treating your teams as customers. As opposed to inter-team communication by meetings, Slack, or even [relying too heavily on documentation](https://nandovillalba.medium.com/platform-engineering-please-kill-rtfm-72de6f01075e).
+
+Two teams can collaborate as one to achieve a common goal or to understand each other’s needs better, but usually this is temporary until the teams are able to deliver their domain expertise as a service to speed up delivery.
+
+It is desirable for a developer team to be able to deploy and operate their own software, and it is also preferable for them to be able to create their own infrastructure; what’s not very productive is to task developers with onerous infrastructure chores to get there.
+
+In that sense, giving an AWS account with admin permissions is just not enough; AWS is very complex to use, and even if your team has one or two experts that can do it, it takes a lot of time and effort to implement, and how do you ensure that it remains consistent and compliant with the rest of the organization?
+
+This is why it is desirable to have a segmentation of domains where a platform team is able to provide an API or tool with self-service capabilities for developer teams. In small companies, this may take the shape of using a PaaS or a smaller, simpler cloud provider; in big companies, it will take the shape of product-driven platform teams implementing an internal developer platform.
+
+Communication is not about every team talking all the time, which just slows things down; it’s about creating channels of communication via self-service tooling that speaks for itself, or as Manual Pais and Matthew Skelton put it in their phenomenal Team Topologies book:
+
+If, logically, two teams shouldn’t need to communicate based on the software architecture design, then something must be wrong if the teams are communicating. Is the API not good enough? Is the platform not suitable? Is a component missing? If we can achieve low-bandwidth communication—or even zero-bandwidth communication—between teams and still build and release software in a safe, effective, rapid way, then we should.
+
+And also:
+
+“Flow is difficult to achieve when each team depends on a complicated web of interactions with many other teams” 
+
+When a team uses another team’s API, there is a communication happening there, but this is done via design and user experience, not by talking. In this scenario, the self-service interaction is much faster and more conducive to flow state than many teams talking to each other all the time to get the job done.
+
+Close collaboration (more talking, more meetings, more slack and sharing of documents) between two teams can happen at discovery phase or during periods of big change and innovation, but once the needs to a development teams become more predictable, then team collaboration evolves into X-as-service as shown in the graph below from the book [Team Topologies](https://www.amazon.co.uk/Team-Topologies-Organizing-Business-Technology/dp/1942788819):
+
+From close collaboration to team providing a service
+
+But it is worth noting that this scenario is generally temporary as it significantly slows down the pace of delivery and puts a strain on cognitive load on both teams. This is also different from merging two teams together as both teams remain independent.
+
+Platform engineering has a lot of marketing driven buzz these days and it is becoming the hot topic. While I understand that people get tired of hearing these things, there is one thing I like about it, the focus is on turning the silo into a sushi bar, not destroying the silo:
+
+The problem with platform engineering and designing solutions in this way for teams to work together is that it is harder than just throwing a script or writing a how to document for other teams to use. And to be fair, the amount of tools available to make the task easier are scarce. Recently Microsoft has released an open source tool called [Radius](https://techcommunity.microsoft.com/t5/educator-developer-blog/introducing-radius-a-new-open-source-project-for-teams-building/ba-p/3976183) that promises to make it easy to deliver self service infrastructure and cloud native apps for developers, and there are multiple([CNOE](https://cnoe.io/), [platform whitepaper](https://tag-app-delivery.cncf.io/whitepapers/platforms/)) open source blueprints on how to make internal developer platforms, but the work involved is still very significant and daunting for most organizations.
+
+Destroying silos should be more about turning them into self-service stream-aligned teams than it is about destroying them. Team segmentation is desirable, it reduces cognitive load, it maximizes focus and enables easier flow state. When creating small teams organized by domain and in a way that mirrors the software architecture, the delivery of software will be faster and more effective. In order to achieve this, teams must understand [what great user experience means](https://nandovillalba.medium.com/ux-on-platform-engineering-1c7ecfaddea7) and treat other teams and colleagues as their customers.
+
+Reading about DevOps and destroying silos from the articles on the top search results in Google is a little underwhelming as most of them are a little fluffy and marketingy. In order to understand team collaboration and team dynamics better, I strongly recommend a careful read of the Team Topologies book, it brilliantly describes all team categories, types of interaction and how you should organize them according to Conway’s law.
+
+Fernando Villalba has over a decade of miscellaneous IT experience. He started in IT support ("Have you tried turning it on and off?"), veered to become a SysAdmin ("Don't you dare turn it off") and later segued into DevOps type of roles ("Destroy and replace!"). He has been a consultant for various multi-billion dollar organizations helping them achieve their highest potential with their DevOps processes.
+
+Follow Fernando Villalba in **[LinkedIn](https://www.linkedin.com/in/nandoit/)** or **[Twitter](https://twitter.com/nandoyum)**

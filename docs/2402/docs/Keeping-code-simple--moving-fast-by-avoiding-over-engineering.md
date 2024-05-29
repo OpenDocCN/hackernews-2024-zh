@@ -1,0 +1,114 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:40:15
+-->
+
+# Keeping code simple: moving fast by avoiding over-engineering
+
+> 来源：[https://graphite.dev/blog/keeping-code-simple](https://graphite.dev/blog/keeping-code-simple)
+
+When engineering, I always aim to build the minimum spec with the cleanest architecture. Why? Because I want to build software as fast as possible. I’m short on time, short on attention, and want feedback asap. Moving fast is a common goal, but intentionality is also incredibly important. Under pressure it’s easy to skip the planning stage, but, a rushed development cycle often leads to both lowering quality standards while also unconsciously over-engineering.
+
+My advice: If you want to move fast, code as clean and simply as possible.
+
+**Note**
+
+Greg spends full workdays writing weekly deep dives on engineering practices and dev-tools. This is made possible because these articles help get the word out about Graphite. If you like this post, try [Graphite](https://graphite.dev?utm_source=blog-note) today, and start shipping 30% faster!
+
+## **Urgently building a todo list slowly**[](/blog/keeping-code-simple#urgently-building-a-todo-list-slowly)
+
+Consider the following story: you’re engineering a new to-do list app. You begin by clarifying the product needs and crafting a simple design doc. You’re told the to-do list needs to support additions and deletions, and of course, save the list between sessions. Standard requirements.
+
+Some engineers' first questions in the design doc might be: "What front-end framework should I use to render the list? What database should I use to store the data? What ORM might I need to read and write from the datastore? Will I need to virtualize the list if it gets long for performance?"
+
+The default answers might involve picking the latest frontend framework, storing data in a SQLite store, and using the ORM de-jour to access. You might be able to punt virtualizing the list, though perhaps there’s an easy library you can use. Heck, while you're thinking about virtualization anyway, you might even be tempted to containerize the whole application.
+
+Extending the story with a bit of realism, let’s assume you get halfway through coding the to-do list when your manager and PM start breathing down your neck. You’re running out of time, and the feature needs to get out the door yesterday. You start typing faster, but you also start skipping clean coding patterns. Your functions become more coupled, you directly call external libraries all over, and you skip writing any unit tests. Along the way you also cut and modify scope all over the place, hacking your initial spec to pieces.
+
+The to-do list ships on time, albeit with a few more bugs than you would have liked. Unfortunately, your work isn’t done. Your brilliant use of SQLite and virtualization lets the to-do list store millions of elements without performance degradation, but then product throws you a curveball. Based on user feedback, the next evolution needs the list to sync to the cloud. Time to throw away your SQLite implementation - plus you’ll need to refactor all of your scattered ORM calls throughout the code. It’s do-able, but it’ll take some time…
+
+## **Building the todo list faster**[](/blog/keeping-code-simple#building-the-todo-list-faster)
+
+I’ll end the story here, as it's all too familiar. I see this trapping constantly and still occasionally fall for it myself — delivering sloppy architecture while at the same time over-engineering performance, scalability, and security. This inevitably reduces quality, due to the unplanned cost of more time debugging and slower estimates on iterative changes, while over-engineered specs often go forever unused.
+
+The fallacy is the assumption that the product needs will not significantly change in the future, and even if they change, the assumption is that they’ll change in a way you've predicted. Over-engineering is an attempt to predict the future, while quality-engineering is maximizing extensibility.
+
+I firmly believe writing clean code is just as fast as writing messy code - though it may take more experience and wisdom. Quality software is *soft* - easy to remold. Let’s take another look at our to-do list from earlier, but implement it a little more cleanly this time, and make it more malleable.
+
+The bare minimum spec needs a data store that can read and write thousands of text records. In the future, it may need to be faster, bigger, more secure, or backed by the network. But you don’t know yet, so the best thing you can do is punt the decision and throw the data store behind a narrow interface. Code a module with a simple generic read-and-write interface, and for the sake of your MVP, initially implement the entire datastore as a JSON blob written to disk.
+
+You’ve just saved yourself a day of fiddling with a database and reading docs on an ORM someone else built. Moreover, you’ve pulled off the wise dependency inversion pattern. All data calls route through an interface you own, while the dead-simple JSON store is probably performant enough to last forever. Plus you always have the option to swap to a cloud store in the future by simply updating your data module. With no need to adjust any application logic, you’ve made future improvements *faster* and safer by keeping the code clean and flexible.
+
+## Why over-engineering is slow[](/blog/keeping-code-simple#why-over-engineering-is-slow)
+
+Over-engineering is inefficient for two fundamental reasons:
+
+1.  Wasted time: Any feature that isn’t necessary costs time to implement that could have been spent implementing other necessary features.
+
+2.  Slowing development: Extra features result in extra complexity. Codebase complexity slows down future development.
+
+The first point is obvious, the second is best explained by this quote from the book [“A Philosophy of Software Design”](https://www.goodreads.com/en/book/show/39996759):
+
+> As a program evolves and acquires more features, it becomes complicated, with subtle dependencies between its components. Over time, complexity accumulates, and it becomes harder and harder for programmers to keep all of the relevant factors in their minds as they modify the system. This slows down development and leads to bugs, which slow development even more and add to its cost. The larger the program, and the more people that work on it, the more difficult it is to manage complexity.
+
+By keeping the core architecture as simple as possible, you avoid adding unnecessary complexity. You write net-less code, and each necessary feature is easier to slot in.
+
+## Punt complexity as long as possible[](/blog/keeping-code-simple#punt-complexity-as-long-as-possible)
+
+Consider this excerpt about the development of the test-automation web server [FitNesse](https://en.wikipedia.org/wiki/FitNesse), from the wonderful engineering book “Clean Architecture:”
+
+> Another early decision was to avoid thinking about a database. We had MySQL in the back of our minds, but we purposely delayed that decision by employing a design that made the decision irrelevant. That design was simply to put an interface between all data accesses and the data repository itself.
+> 
+> We put the data access methods into an interface named `WikiPage`. Those methods provided all the functionality we needed to find, fetch, and save pages. Of course, we didn’t implement those methods at first; we simply stubbed them out while we worked on features that didn’t involve fetching and saving the data.
+> 
+> Indeed, for three months we simply worked on translating wiki text into HTML. This didn’t require any kind of data storage, so we created a class named `MockWikiPage` that simply left the data access methods stubbed.
+> 
+> Eventually, those stubs became insufficient for the features we wanted to write. We needed real data access, not stubs. So we created a new derivative of `WikiPage` named `InMemoryPage`. This derivative implemented the data access method to manage a hash table of wiki pages, which we kept in RAM.
+> 
+> This allowed us to write feature after feature for a full year. In fact, we got the whole first version of the `FitNesse` program working this way. We could create pages, link to other pages, do all the fancy wiki formatting, and even run tests with FIT. What we couldn’t do was save any of our work.
+> 
+> When it came time to implement persistence, we thought again about MySQL, but decided that wasn’t necessary in the short term, because it would be really easy to write the hash tables out to flat files. So we implemented `FileSystemWikiPage`, which just moved the functionality out to flat files, and then we continued developing more features.
+> 
+> Three months later, we reached the conclusion that the flat file solution was good enough; we decided to abandon the idea of MySQL altogether. We deferred that decision into nonexistence and never looked back.
+> 
+> That would be the end of the story if it weren’t for one of our customers who decided that he needed to put the wiki into MySQL for his own purposes. We showed him the architecture of `WikiPages` that had allowed us to defer the decision. He came back *a day later* with the whole system working in MySQL. He simply wrote a `MySqlWikiPage` derivative and got it working.
+> 
+> We used to bundle that option with `FitNesse`, but nobody else ever used it, so eventually we dropped it. Even the customer who wrote the derivative eventually dropped it.
+> 
+> Early in the development of `FitNesse`, we drew a *boundary line* between business rules and databases. That line prevented the business rules from knowing anything at all about the database, other than the simple data access methods. That decision allowed us to defer the choice and implementation of the database for well over a year. It allowed us to try the file system option, and it allowed us to change direction when we saw a better solution. Yet it did not prevent, or even impede, moving in the original direction (MySQL) when someone wanted it.
+> 
+> The fact that we did not have a database running for 18 months of development meant that, for 18 months, we did not have schema issues, query issues, database server issues, password issues, connection time issues, and all the other nasty issues that raise their ugly heads when you fire up a database. It also meant that all our tests ran fast, because there was no database to slow them down.
+> 
+> In short, drawing the boundary lines helped us delay and defer decisions, and it ultimately saved us an enormous amount of time and headaches. And that’s what a good architecture should do.
+
+The main takeaway here is to always satisfy the core functionality of product requirements in the simplest way possible, without locking yourself into one particular implementation. This way, you can easily add or modify functionality modularly, without rebuilding from scratch.
+
+## **Core principle**[](/blog/keeping-code-simple#core-principle)
+
+Engineers should build to the minimum product specifications needed at the time while holding to high-quality engineering standards. In order to follow the best practices for simple, clean coding prioritize:
+
+*   unit tests
+
+*   linters
+
+*   narrow interfaces
+
+*   low coupling
+
+*   clean variable names
+
+Punt on:
+
+*   powerful data stores
+
+*   complicated APIs
+
+*   unnecessary frameworks
+
+The fastest way to engineer is to punt as much as possible - often by separating the core application logic from dependencies that you might change in the future.
+
+Working on Graphite, I’ve sometimes gotten this right and sometimes wrong. Our business logic originally made calls to GitHub and TypeORM flagrantly across [over a thousand callsites](https://graphite.dev/blog/call-site-attribution). This made library upgrades untestable and catastrophic. We eventually paid the debt down and migrated them behind interfaces we owned, with feasibly testable interfaces.
+
+In another instance, I designed transactional emails cleanly on the first pass. Despite temptations to over-engineer, I wrote an email module with one method, `sendEmail`, which hid details about email clients and logging from the application. We eventually migrated email senders but were able to do so with a single PR and no bugs.
+
+Please learn from my scars. Move fast, code cleanly, and avoid over-engineering at all costs — simple, quality coding is almost always the fastest path.

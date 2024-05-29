@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:47
+-->
+
+# The Race to 2nm: RISC-V Chips in Japan - by Dr. Ian Cutress
+
+> 来源：[https://morethanmoore.substack.com/p/the-race-to-2nm-risc-v-chips-in-japan](https://morethanmoore.substack.com/p/the-race-to-2nm-risc-v-chips-in-japan)
+
+One of the sidelines in the semiconductor industry that’s flying under the radar a bit is the rise of Rapidus. Rapidus is a new semiconductor company, established in August 2022 in Japan, with the plan to bring latest generation semiconductor manufacturing into the country. Rapidus is backed by eight major companies from Japan, including Denso, Kioxia, NTT, NEC, Softbank, Sony, and Toyota, with the goal of bringing 2nm manufacturing capacity online in 2027\. This has led to deep collaborations with the Japanese government (330 billion yen of subsidies) and the US government for design and collaboration. In part, Rapidus has created partnerships with IBM for its Gate-All-Around transistor technology, and imec for research and advancements. Ground breaking on the new fab was started in September 2023, with relevant industry companies such as ASML announcing plans to establish satellite offices to support the project.
+
+One of the developments of the project is the LSTC, or Leading-Edge Semiconductor Technology Center - an organization borne from the Japanese Ministry of Economy, Trade and Industry. The LSTC will facilitate next-generation research between the US and Japan at the Rapidus facility. Part of the LSTC’s remit is to build vital silicon for use in both economies with market leading IP and drive the industry forward. It’s on that point that today Tenstorrent is announcing that it has struck a deal with the LSTC for its advanced high-performance RISC-V cores and chiplets.
+
+Tenstorrent’s custom RISC-V design is called Ascalon, with the largest variant designed for servers and enterprise workloads. The company will offer both the core IP and 128-core chiplets into the market. The LSTC is set to build its own AI accelerator for edge deployments, and requires a CPU chiplet alongside it for heterogeneous compute. Under this project, LSTC is aiming for developments in post-5G technology on a leading process, and in partnership with Rapidus, this project has spawned from a memorandum of cooperation signed with Tenstorrent back in 2023\. Tenstorrent last year also opened a research office in Japan, hiring local expertise in core and chip design, especially given their recent design wins in the region.
+
+Chief Architect of Tenstorrent, Wei-Han Lien, stated that “The edge AI accelerator will incorporate LSTC’s AI chiplet along with Tenstorrent’s RISC-V and peripheral chiplet technology. This pioneering strategy harnesses the collective capabilities of both organizations to use the adaptable and efficient nature of chiplet technology to meet the increasing needs of AI applications at the edge.” I interviewed Wei-han last year about the new RISC-V cores, which you can watch here.
+
+On the face of it, this announcement has all the buzzwords: RISC-V, 2nm, AI, edge. It’s like an SEO fever dream. The whole thing with Rapidus is important on its own, with new transistors and a volume production fab in Japan by 2027 (pilot line in 2025). From the Tenstorrent perspective, I’ll be interested to hear what exactly LSTC has planned when it comes to AI acceleration and how the Ascalon IP fits into that message (also, how much this deal with worth to them as an AI start-up). Hopefully LSTC will do some outreach about it, and in time, Rapidus will invite us for a fab tour.
+
+[Share](https://morethanmoore.substack.com/p/the-race-to-2nm-risc-v-chips-in-japan?utm_source=substack&utm_medium=email&utm_content=share&action=share)
+
+###### More Than Moore, as with other research and analyst firms, provides or has provided paid research, analysis, advising, or consulting to many high-tech companies in the industry, which may include advertising on the More Than Moore newsletter or TechTechPotato YouTube channel and related social media. The companies that fall under this banner include AMD, Applied Materials, Armari, Baidu, Facebook, IBM, Infineon, Intel, Lattice Semi, Linode, MediaTek, NordPass, ProteanTecs, Qualcomm, SiFive, Supermicro, Tenstorrent, TSMC.

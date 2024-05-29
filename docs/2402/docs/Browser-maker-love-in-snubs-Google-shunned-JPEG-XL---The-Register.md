@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:27
+-->
+
+# Browser maker love-in snubs Google-shunned JPEG XL • The Register
+
+> 来源：[https://www.theregister.com/2024/02/03/jpeg_xl_interop_2024/](https://www.theregister.com/2024/02/03/jpeg_xl_interop_2024/)
+
+Browser makers Apple, Google, Microsoft, and Mozilla, alongside two software consultancies, celebrated a moment of unity and common purpose on Thursday with the announcement of Interop 2024, a project to promote web browser interoperability.
+
+The process began last year by gathering [proposals](https://github.com/orgs/web-platform-tests/projects/3/views/1) for web technologies that group members will try to harmonize using automated tests. The goal is to ensure browser implementations of these technologies match specifications in order to make the web platform better for developers.
+
+Yet [Interop 2024](https://wpt.fyi/interop-2024) omits [JPEG XL](https://jpeg.org/jpegxl/), the most popular [proposal](https://github.com/web-platform-tests/interop/issues/430) as measured by community reactions (emojis added to proposal discussion threads). JPEG XL garnered [646 reactions](https://foolip.github.io/interop-reactions/), more than four times more than the second place finisher, which also wasn't included.
+
+[JPEG XL](https://jpeg.org/jpegxl/documentation.html), an ISO/IEC 18181 standard, is [said](https://cloudinary.com/blog/the-case-for-jpeg-xl) to be a potential replacement for the JPEG and PNG image formats, among others, and to be well-suited for modern graphics applications.
+
+"Thank you for proposing JPEG XL image format for inclusion in Interop 2024," the group said in [a post](https://github.com/web-platform-tests/interop/issues/430#issuecomment-1921864485) to the proposal discussion on Thursday. "We wanted to let you know that this proposal was not selected to be part of Interop this year. We did not have consensus to include this proposal. This should not be taken as a comment on the technology as a whole."
+
+> This isn't even about JPEG-XL, though its rejection does make me sad. This is about the Interop project
+
+How this came to pass isn't clear – the Interop [selection process](https://github.com/web-platform-tests/interop/blob/main/2024/selection-process.md) isn't public, a fact that frustrates some JPEG XL supporters.
+
+Responding to the Interop group's rejection, several developers questioned why there's been no explanation about why JPEG XL failed to make the cut.
+
+Student and coder Tibet Tornaci [wrote](https://github.com/web-platform-tests/interop/issues/430#issuecomment-1923216914), "That's it? That's the response to what is, by several times, the most requested feature in Interop 2024? No explanation for rejecting the feature that got 4.5x more support than the runner-up? Really?"
+
+"This isn't even about JPEG-XL, though its rejection does make me sad.
+
+"This is about the Interop project, which claims to work 'for the benefit of users and web developers,' failing to be accountable to the users and web developers that engaged with the project."
+
+And they blamed the usual suspect with regard to JPEG XL's ill-fortune: Google.
+
+Yale student and infosec bod Cody Neiman [wrote](https://github.com/web-platform-tests/interop/issues/430#issuecomment-1924215830), "Situations like this, with JXL, were the exact situations I thought Interop was good for – stopping some singular rogue manager at a company from preventing all of the web from moving on. But instead this was just another development thread Google single-handedly stopped out of nothing but ego? This is incredibly disappointing."
+
+Google did not immediately respond to a request for comment about the Interop selection process.
+
+Mozilla has not jumped on the JPEG XL bandwagon either: The Firefox maker said it's neutral with regard to the technology, citing cost and lack of significant differentiation from other image codecs.
+
+"Overall, we don't see JPEG-XL performing enough better than its closest competitors (like AVIF) to justify addition on that basis alone," [said](https://github.com/mozilla/standards-positions/issues/522#issuecomment-1409539985) Martin Thomson, distinguished engineer at Mozilla, last year. "Similarly, its feature advancements don't distinguish it above the collection of formats that are already included in the platform."
+
+Thomson, however, said support may follow if there's enough demand.
+
+Jon Sneyers, senior image researcher at Cloudinary and editor of the JPEG XL spec, told *The Register* in an email that it's Google's Chrome team rather than the internet goliath as a whole that has opposed the image compression technology.
+
+"As far as I know, the decision process of the Interop group is not public, and I don't know what criteria they use to decide which proposals get picked and which don't," he said. "I do assume that the decision is in the end made by consensus of the browser devs, who in the past have made their positions relatively clear."
+
+> It makes sense that they want to promote adoption of their own codecs
+
+The Google Chrome development team [decided not to support](https://www.theregister.com/2022/10/31/jpeg_xl_axed_chrome/) JPEG XL in Chrome two years ago, citing [insufficient](https://bugs.chromium.org/p/chromium/issues/detail?id=1178058#c84) interest from the community, [costs](https://groups.google.com/a/chromium.org/g/blink-dev/c/WjCKcBw219k/m/xX-NnWtTBQAJ) to partners, and [performance tests](https://storage.googleapis.com/avif-comparison/index.html) that have been [challenged](https://cloudinary.com/blog/contemplating-codec-comparisons) as inaccurate. And it has since resisted [entreaties](https://bugs.chromium.org/p/chromium/issues/detail?id=1451807#c35) to reconsider – despite [Apple's endorsement](https://www.theregister.com/2023/06/07/apple_safari_jpeg_xl/) last year and recent [support from Samsung](https://cloudinary.com/blog/samsung-now-supports-dng-1-7-including-jpeg-xl) and apparent interest [from Microsoft](https://twitter.com/teroalhonen/status/1750957377292062735).
+
+"Chrome is 'against' because of 'insufficient ecosystem interest' and because they want to promote improvements in existing codecs," said Sneyers, pointing to JPEG, WebP, and AVIF. "Those last two are after all codecs that were developed in part by people from the Chrome team, so it makes sense that they want to promote adoption of their own codecs."
+
+"I don't think 'Google' as a company is exercising a veto," he said, noting that many of the JPEG XL developers come from Google Research. "But the Google Chrome team is organizationally quite distant from the Google Research department, as far as I understand."
+
+Sneyers said this is unfortunate because "ecosystem interest" in JPEG XL has picked up significantly over the past year.
+
+"There is now support in macOS/iOS/Safari, the Adobe suite supports it – they also added JPEG XL to the DNG 1.7 specification – Samsung has announced JPEG XL support in their next phones, and there are rumors about Microsoft Windows support," he said.
+
+"Most Linux distributions and FOSS software also already support JPEG XL. There is also interest from DICOM (medical imaging) and PDF to add JPEG XL to the next versions of their standards. So the current situation is that just about everything supports JPEG XL already or will soon, and Chrome is the only major software that is dragging its feet." ®

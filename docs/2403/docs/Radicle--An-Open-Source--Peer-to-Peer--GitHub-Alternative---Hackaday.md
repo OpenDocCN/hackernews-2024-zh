@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:13
+-->
+
+# Radicle: An Open-Source, Peer-to-Peer, GitHub Alternative | Hackaday
+
+> 来源：[https://hackaday.com/2024/03/16/radicle-an-open-source-peer-to-peer-github-alternative/](https://hackaday.com/2024/03/16/radicle-an-open-source-peer-to-peer-github-alternative/)
+
+The actions of certain large social networks have recently highlighted how a small number of people possess significant power over the masses and how this power is sometimes misused. Consequently, there has been a surge in the development of federated (or decentralized) services, such as Mastodon and Matrix.  But what about development? While GitHub and similar services are less likely to be used for political manipulation, they are still centralized services with a common failure point. [Radicle is an open-source, peer-to-peer collaboration stack](https://radicle.xyz) built on top of Git but backed with public key cryptography as a standard and a [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) to ensure widespread data sharing across the network and, thus, some fault tolerance.
+
+Essentially, code and associated documentation are secured cryptographically with an identity. The [Git protocol](https://git-scm.com/docs/protocol-v2) is used for actual data transfer from peer-to-peer, which means that updates are only sent as deltas, not complete copies, maximizing channel bandwidth efficiency. A custom gossip protocol is used for metadata transfer around the network of peers. The projects had a local-first ideology, with users running a full-stack node on their hardware and all features available, even offline, which is great for laptop users who move around locations with sporadic access to the internet.
+
+Judging from their Zulipchat instance, this is a highly active space, so perhaps it is worth diving in and seeing if it floats your boat. Fancy getting onto the Fediverse, but only have a spare MS-DOS machine to try it on? [We’ve got it covered](https://hackaday.com/2023/08/09/ms-dos-meets-the-fediverse/). Want to use Git but not online? [You need a private Git server](https://hackaday.com/2018/06/27/keep-it-close-a-private-git-server-crash-course/). Finally, too much Git? [How about Gitless](https://hackaday.com/2023/06/18/too-much-git-try-gitless/)?
+
+Thanks [Anonymous] for the tip! No, that wasn’t lost on us :D

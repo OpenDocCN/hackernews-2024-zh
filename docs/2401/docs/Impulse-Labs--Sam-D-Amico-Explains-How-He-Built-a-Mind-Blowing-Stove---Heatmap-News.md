@@ -1,0 +1,82 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:07
+-->
+
+# Impulse Labs' Sam D'Amico Explains How He Built a Mind-Blowing Stove - Heatmap News
+
+> 来源：[https://heatmap.news/impulse-labs-cooktop-sam-damico-induction-stove](https://heatmap.news/impulse-labs-cooktop-sam-damico-induction-stove)
+
+Impulse Labs debuted its much anticipated induction stove at the Consumer Electronics Show in Las Vegas this week. Coming to grips with this high-tech culinary wonder is a little bit like that meme of an [expanding brain](https://knowyourmeme.com/memes/galaxy-brain).
+
+At first glance, the [Impulse Cooktop](https://www.impulselabs.com//#Product) is just a sexy-looking, $5,999 appliance: sleek black glass, burners that resemble a DJ turntable, knobs that add a satisfying analog touch to an otherwise fully digital interface.
+
+But then you learn it also has integrated temperature sensors that keep the burners at the precise temperature you want.
+
+And then you learn that the stove has a battery in it, which means that unlike most other induction stoves, it can plug into a standard 120-volt outlet. You don’t have to get a pricy circuit upgrade, or an even pricier electrical panel upgrade, to install it.
+
+Plus, the battery delivers enough power to boil a liter of water in 40 seconds. And you can still cook if the power goes out. And [its eligible for a 30% tax credit](https://www.irs.gov/credits-deductions/residential-clean-energy-credit) .
+
+And then, your brain explodes when you learn the battery is a smart energy storage device that can charge up when power is cheap in the morning so that you save money when you use it in the evening, when power prices are highest. You can also participate in programs that will pay you to dispatch power from your stove to the grid when demand is high.
+
+Who knew a stove could, or should, do so much?
+
+Courtesy of Impulse Labs
+
+I caught up with Sam D’Amico, the mastermind behind [Impulse Labs](https://www.impulselabs.com/), while he was at CES, to learn more about the story behind the stove. We talked about pizza, why induction cooking is the wedge to getting whole homes off gas, and his vision for putting a battery in every appliance. Our conversation has been lightly edited for clarity.
+
+**What’s your background? What were you up to before founding Impulse?**
+
+I graduated Stanford in 2012\. In 2013 I got my masters. When I was there, I was on the solar car team and actually wrote battery management firmware as part of that. That gave me my first taste in electrification. You had to build a full EV and drive it across Australia. Then I immediately got sucked into consumer electronics and worked on a number of devices, including Google Glass, Oculus.
+
+Part of the thesis for Impulse is, home appliances really haven’t seen a lot of innovation in 50 years or so. There’s been a number of advances in consumer electronics, so being able to take a lot of the talent and supply chain and experience from that and apply it to the appliance space is underleveraged.
+
+**You were working on all these computer electronics, and then somehow you got interested in stoves. I understand it had something to do with making the perfect pizza. Could you tell me that story?**
+
+I was in Japan at a conference, and we went to this pizza place and they cooked my pizza in like 45 seconds. And I’m like, that is insane. I think it’s called Savoy Pizza, you should definitely go to it. Tastiest pizza I’ve ever had. Super memorable. And then I’m like, I want to do that. But can I make it a tabletop device in my house?
+
+And so I was getting obsessive with how to replicate that, but I realized you couldn’t do it on a 120-volt plug. I basically realized you had to put a battery in the appliance to be able to boost the power above what a 120 volt provides. All of the oven and smart appliance companies were really focused on AI and computer vision at that time, because they couldn’t innovate on the performance characteristics — they were topped out. And I realized this was an end run around that. You could actually make something that was three times better on the performance side, not have to worry about AI features that maybe no one is going to use, and really do some innovation.
+
+That started me thinking about the bigger picture. I realized you could use that storage for the building. And then that kind of expanded into what became Impulse.
+
+**Did you figure out how to cook a pizza in 45 seconds?**
+
+So the first product is a cooktop. The idea here was we realized that the key appliance to getting gas out of the home was the stove. People don’t know what the fuel source is for all of their other appliances, including ovens. The big thing with gas stoves is that the user experience is the flame. So being able to address that, we thought, was fundamental to building decarbonization.
+
+Utility companies know this. They know that getting people to get a gas stove is the way to get them off electric heat and on to gas heat. The wedge is actually the gas stove. So by producing an appliance that is just way more compelling, we can sever that dependency.
+
+When we do an oven, I think we will have that pizza feature. I think the ballpark of performance of around 45 seconds is possible.
+
+**What was the process like of testing stoves and trying to figure out what the perfect stove is?**
+
+That was the fun part. We started buying hot plates and stoves and tearing them down. We basically realized that a lot of this stuff just hadn’t been attempted because the power wasn’t available. So the first thing we did was try to crank a ton of power into the stove. So we were like, let’s do 10 kilowatts, because 10 is a big number. That let us boil a liter of water in 40 seconds. We had that demo working in March or April of 2022\.
+
+But we realized immediately that this was too much performance unless you could solve the controls problem. The reason why people complain about warped pans and various other things is because the stove gets too hot. We then started tearing down all the hot plates and stoves we could find that had temperature sensors in them, and we realized that no one’s actually addressed this, and we found that there was a lot of leverage there that let us unlock the full performance of the stove. And so we’re monitoring the temperature in real time, making sure that we’re delivering the appropriate amount of power for the level you want to set, so that it holds a specific temperature.
+
+**If you need to use your stove all day, like for cooking a whole Thanksgiving dinner, is that possible with this? Or will the battery drain and then you can’t use it for a little bit?**
+
+You’re going to be okay, yes. You’ll drain the battery if you’re, let’s say, boiling a big pot of water for pasta. But then once it’s at temperature, you’re not going to be drawing more than what a 120-volt plug would draw. Maybe you’re stir-frying something. That pan, when it’s heating up, maybe it’s drawing a couple kilowatts for a minute, but then once everything’s up to temperature, you’re drawing hundreds of watts, and the battery is charging.
+
+So basically, the average power draw [when you cook] is appropriate for even a 120-volt plug. It’s just that the peak power is more like an EV charger, or like an electric radiant heater, or something crazy. And that mismatch between peak and average is where the opportunity for putting batteries in appliances really shines.
+
+**The battery is like a quarter of a Tesla Powerwall. How valuable can that be for the grid?**
+
+There’s a couple of ways to weigh how valuable that is. In Southern California, which has really strong time-of-use energy rates, in the 4 to 9 pm slot, [using electricity during] that peak window is like 20 cents more expensive per kilowatt-hour than outside that window. So if you charge the battery outside the window and then you discharge the battery, whether it’s cooking or it’s putting power back into the house, inside that window, it’s worth hundreds of dollars a year in terms of energy bill savings.
+
+We’ve got a full computer in there. It will basically pull those rate tables and make those choices semi-autonomously. We’re likely going to expose some level of choice to the end user, but we haven’t finalized the design.
+
+**What’s your pitch to the average consumer? How do you get people interested in having batteries in their appliances?**
+
+I think there’s a very direct pitch, which is, we are making the best possible appliances. It will make you a better cook. You will be able to do things faster and more efficiently.
+
+Two is, you will be like, “I want to get an induction stove, I heard that’s a good thing to get.” And then your electricians will come by and tell you that you only have 10 amps available on your electric panel, and you’re going to be sad. And so we also solve that problem.
+
+And then the third one is, now we’ve put some energy storage in your house. There’s 140 million homes in America. If we can intercept three major appliances per home, or four major appliances per home, that’s like 1.4 terawatt-hours of storage deployment potential. There’s an opportunity to deploy storage every year just by people upgrading their appliances. And so that’s part of the end game. Utilities will like that because it means they don’t have to invest in all this expensive transmission infrastructure.
+
+**Do you want to make other products besides stoves?**
+
+Yeah. We want to make the best appliances across the board. There’s a number of logical options, anything that has high peak but low average draw is the low hanging fruit. So you can imagine ovens — they draw power when they pre-heat. Water heaters are another one, where it’s like, if you’re taking a shower, it consumes a ton of power, but when you’re not, it doesn’t. Laundry is another one. I also want to emphasize that we’re making relatively high-end, premium appliances to start, but this architecture scales down fairly well to mid-range products. It’s just that as a startup, just as Tesla started with sports cars, we have to kind of start with the lower-volume, higher-margin products and then scale up from there.
+
+**How do people get one?**
+
+You can preorder it today on ImpulseLabs.com. There’s about 45% in federal discounts available. Because this thing has a battery and an inverter, it’s an energy storage product. It gets a 30% investment tax credit. A big change under the IRA was that stationary batteries, sold separately from solar, get that credit now. And then there’s also an $840 electric stove rebate that is available under the IRA. That one is income gated and expected to roll out in the fall. Our products are going to be available in Q4, so we expect the timing to be appropriate where all those rebates and credits will be available.

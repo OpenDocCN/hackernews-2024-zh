@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:31:58
+-->
+
+# Build systems a la carte: theory and practice - Simon Peyton Jones
+
+> 来源：[https://simon.peytonjones.org/build-systems-a-la-carte-theory-and-practice/](https://simon.peytonjones.org/build-systems-a-la-carte-theory-and-practice/)
+
+# Abstract
+
+Build systems are awesome, terrifying – and unloved. They are used by every developer around the world, but are rarely the object of study. In this paper we offer a systematic, and executable, framework for developing and comparing build systems, viewing them as related points in a landscape rather than as isolated phenomena. By teasing apart existing build systems, we can recombine their components, allowing us to prototype new build systems with desired properties.
+
+This is a revised and expanded journal version of our [ICFP’18 paper “Build systems a la carte”](../build-systems-a-la-carte/), with more detail and a new section on our experience of turning theory into practice.
+
+Executable code is [available here](https://github.com/snowleopard/build/releases/tag/jfp-preprint).

@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:02
+-->
+
+# Two-thirds of young Dutch people say influencers affect their financial decisions | NL Times
+
+> 来源：[https://nltimes.nl/2024/03/12/two-thirds-young-dutch-people-say-influencers-affect-financial-decisions](https://nltimes.nl/2024/03/12/two-thirds-young-dutch-people-say-influencers-affect-financial-decisions)
+
+A new study found that influencers play a significant role in the financial decisions made by young Dutch people. Roughly two-thirds of young people between the ages of 16 and 19 said that they have been swayed by an influencer regarding their own financial situation.
+
+"Due to this influence, 39 percent of young people who follow influencers have made money, 46 percent saved money and 29 percent lost money," according to Wijzer in Geldzaken, a project from the Ministry of Finance to promote better understanding of money-related issues. "Young people also indicate that both phishing emails and advertising from influencers are becoming increasingly difficult to recognize (31% and 28%)."
+
+The study also found that young people earning their own money are less susceptible to this influence. Those who work a part-time job said their decisions were less affected by influencers than those who receive money from their parents or student loans. Finance influencers, or "finfluencers," are increasingly becoming a concern, said Eva van Reijmersdal, an associated professor at the University of Amsterdam's School of Communication Science.
+
+"Young people say they do not believe everything they promote. Yet we know that unconscious influence lurks," she said. "Young adults are in a period of transition and appear to be very receptive to the advice of these types of influencers."
+
+About 30 percent of the 1,005 people surveyed for the study said they had money problems last year, with 13 percent spending beyond their means, 10 percent owing money to those close to them, and 10 percent making payments on products purchased. Also, 30 percent said they have difficulty dealing with impulse purchases, while 40 percent had to teach themselves tricks to prevent spontaneously buying something nice or luxuriuous.
+
+Roughly 98 percent said they saw social media posts or videos from influencers about financial matters. The researchers looked more closely at content related to making money or saving it. An estimated 42 percent frequently see online gambling advertisements, and 37 percent make in-game purchases.
+
+"The majority of young people surveyed have doubts about information from influencers. For example, the majority of young people do not believe that influencers solely promote products they believe in, that they are telling the truth and/or are honest about products. But they do enjoy following them," the study found.
+
+Researchers also noted that 28 percent of people in research and applied science universities often find themselves wanting something peddled by an influencer. However, only 21 percent of higher vocational students and 19 percent of secondary school students feel that way.

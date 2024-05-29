@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:07
+-->
+
+# E.W.Dijkstra Archive: A Parabel (EWD 365)
+
+> 来源：[https://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD365.html](https://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD365.html)
+
+A Parabel
+
+"Years ago a railway company was erected and one of its directors --probably the commercial bloke-- discovered that the initial investment could be reduced significantly if only fifty percent of the cars would be equipped with a toilet and, therefore, so was decided.
+
+"Shortly after the company had started its operations, however, complaints about toilets came pouring in. An investigation was carried out and showed that the obvious thing had happened: despite its youth the company was already suffering from internal communication problems, for the director's decision on the toilets had not been transmitted to the shunting yard where all cars were treated as equivalent and, as a result, sometimes trains were composed with hardly any toilets at all.
+
+"In order to solve the problem, a bit of information was associated with each car, telling whether it was a car with or without toilet and the shunting yard was instructed to compose trains with the number of cars of both types as equal as possible. It was a complication on the shunting yard but, once it had been solved, the people responsible for the shunting procedures were quite proud that they could manage it.
+
+"When the new shunting procedures had been made effective, however, complaints about the toilets continued to come in. A new investigation was carried out and then it transpired that, although in each train about half of the cars had indeed toilets, sometimes trains were composed with nearly all toilets in one half of the train. In order to remedy the situation, new instructions were issued, telling that cars with and cars without toilets should alternate. This was a more severe complication for the shunting people, but after some initial grumbling, eventually they managed.
+
+"Complaints, however, continued and the reason turned out to be that, as cars with a toilet had a toilet at one of their ends, the distance between two successive toilets in the train could still be nearly three car lengths and for mothers with children in urgent need --and perhaps even luggage piled up in the corridor-- this still could lead to disasters. As a result, the cars with toilets got another bit of information attached to them, making them into directed objects and the new instructions were, that in each train the cars with toilets should have the same orientation. This time the new instructions were received with less than enthusiasm, for the number of turntables was hardly sufficient; to be quite fair to the shunting people we must even admit that according to all reasonable standards, the number of turntables was insufficient and it was only by virtue of the most cunning ingenuity that they could just manage.
+
+"With all toilets equally spaced along the train the company felt confident that now everything was all right, but passengers continued to complain: although no passenger was more than a car length away from the nearest toilet, passengers (in urgent need) did not know in which direction to start their stumbling itinerary along the corridor! To solve the problem, arrows saying "TOILET" were fixed in all corridors, making also the other half of the cars into directed objects that should be properly oriented by the shunting procedures.
+
+"When the new instructions reached the shunting yard, they created an atmosphere ranging from despair to revolt: it just couldn't be done! At that critical moment a man whose name has been forgotten and shall never be traced, made the following observation. If each car with a toilet was coupled, from now until eternity, at its toileted end with a car without a toilet, then, from now onwards, the shunting yard, instead of dealing with N directed cars of two types, could deal with N/2 identical units that to all intents and purposes could be regarded as symmetrical. And this solution solved all shunting problems at the modest price of, firstly, sticking to trains with an even number of cars only --the few additional cars needed for that could be paid out of the initial savings effected by the commercial bloke!-- and, secondly, slightly cheating with regard to the equal spacing of the toilets. But after all, who cares about the last three feet?
+
+"Although at the time that this story took place, mankind was not blessed yet with automatic computers, our anonymous man who found the solution deserved to be called the world's first competent programmer."
+
+I have told this story to different audiences. Programmers as a rule are delighted by it and managers, invariably, get more and more annoyed as the story progresses; true mathematicians, however, fail to see the point.

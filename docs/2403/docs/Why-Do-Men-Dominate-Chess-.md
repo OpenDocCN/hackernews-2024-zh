@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:36:02
+-->
+
+# Why Do Men Dominate Chess?
+
+> 来源：[https://quillette.com/2024/03/22/why-do-men-dominate-chess/](https://quillette.com/2024/03/22/why-do-men-dominate-chess/)
+
+For years now, sports experts and culture warriors alike have been fiercely contesting the issue of whether transwomen (males who live and identify as women) should be eligible to compete in the female categories of numerous sports—including [rugby](https://www.theguardian.com/sport/2022/aug/11/banning-transgender-women-from-playing-womens-contact-rugby-absurd-claim-activists?ref=quillette.com), [swimming](https://www.nytimes.com/2022/05/29/us/lia-thomas-women-sports.html?ref=quillette.com), [weightlifting](https://quillette.com/blog/2023/02/02/sex-gender-and-powerlifting/), and [disc golf](https://quillette.com/2022/09/28/is-this-the-lia-thomas-of-disc-golf/). But last August, this debate entered an unexpected domain: the game of chess.
+
+Under a new policy announced by the Switzerland-based International Chess Federation (widely known as [FIDE](https://www.fide.com/?ref=quillette.com), following on its French name, the Fédération Internationale des Échecs), for now, at least, transwomen [will not be permitted](https://doc.fide.com/docs/DOC/2FC2023/CM2_2023_45.pdf?ref=quillette.com) to compete in official events reserved for women.
+
+ [Disc Golf’s Lia Thomas Moment
+
+As a biologically male player continues a meteoric rise on the female circuit, women are starting to speak out.](https://quillette.com/2022/09/28/is-this-the-lia-thomas-of-disc-golf/) 
+
+Readers who aren’t serious chess players may be surprised to learn that the game—in which the most demanding physical movements consist of lifting small pieces of carved wood—even reserved a separate category for women in the first place. What could be the justification? And given that such a category exists, some might ask, why wouldn’t transwomen be allowed to identify into it? Some journalists and other commentators have been quick to [suggest](https://www.msnbc.com/opinion/msnbc-opinion/new-restrictions-trans-women-chess-players-match-games-sexist-history-rcna100968?ref=quillette.com) that the new policy is motivated by transphobia; but might there be sound reasons for the change? These are the questions I’ve set out to answer in this essay.

@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:52
+-->
+
+# Google may face billion-plus in damages from TPU patent spat • The Register
+
+> 来源：[https://www.theregister.com/2024/01/10/google_tpu_patent_dispute/](https://www.theregister.com/2024/01/10/google_tpu_patent_dispute/)
+
+Allegations that Google's Tensor Processing Units (TPUs) were developed using stolen designs are being put to the test as a jury trial brought against the search giant by Singular Computing kicks off this week.
+
+Google is accused of infringing patents held by Singular and developed by computer scientist Joseph Bates, an academic turned startup founder. According to his LinkedIn [profile](https://www.linkedin.com/in/joebatessingular/), Bates held research and teaching positions at Cornell, MIT, Carnegie Mellon, and Johns Hopkins universities in the US between 1980 until 2011.
+
+In 2005, Bates founded Singular Computing to commercialize various computing architectures. According to Singular's [website](https://www.singularcomputing.com/), the biz "develops and licenses hardware and software technologies for high-performance energy-efficient computing, both large scale and embedded."
+
+Singular's legal spat with Google dates back to late 2019 when Bates filed a lawsuit in a Massachusetts federal court against the cloud titan [[PDF](https://regmedia.co.uk/2024/01/09/singular_google_complaint.pdf)]. According to the complaint, Bates disclosed various technologies he had come up with to Google under a non-disclosure agreement on three occasions between 2010 and 2014\. During this time, Singular said, Bates made Google aware the technologies in question were patent protected.
+
+The patents, said to have been first filed in 2009 and made public in 2010, describe a computer architecture designed to execute a large number of low-precision calculations each processor cycle. While this lower precision may be impractical for conventional compute workloads, the complaint argues it's well suited to AI software that can accommodate this lower precision.
+
+Singular Computing also emphasized that these technologies don't just exist on paper, as a prototype based on the designs was constructed shortly after the first patent application was filed. The patents in question are: an initial US [8,407,273](https://patents.google.com/patent/US8407273B2), and US [9,218,156](https://patents.google.com/patent/US9218156B2) and [10,416,961](https://patents.google.com/patent/US10416961B2) as related followups.
+
+Singular contends Google deliberately incorporated Bates' architectures into its TPU v2 and v3 processors, without permission or a license, and thus knowingly infringed the associated patents. TPUs being the custom AI accelerator chips Google designed [with outside help](https://www.theregister.com/2023/09/22/google_broadcom_tpus/) to use in its cloud to speed up the training of neural networks and their decision making.
+
+Jeff Dean, today Google's chief scientist, wrote to colleagues about how Bates' designs could be "really well suited" for the web goliath's workloads, according to internal emails surfaced by the complaint. Google's legal team, meanwhile, argued no one who worked on the TPUs had any connection with Bates or his blueprints.
+
+Google has repeatedly denied these allegations of patent infringement. In a statement to *The Register*, a spokesperson said: "Singular's patent claims are dubious and currently on appeal. They don't apply to our Tensor Processing Units, which we developed independently over many years. We look forward to setting the record straight in court."
+
+By appeal that PR person is referring to a separate US appeals court case being heard this week in which Google will present arguments as to why Singular's patents should be considered invalid. Big G is essentially trying to get the patents thrown out to crash Singular's infringement complaint.
+
+Google's TPUs, [introduced](https://www.theregister.com/2016/05/18/confirmed_google_bakes_custom_data_centre_chips/) in 2016, were first developed to power the machine-learning features baked into things like Gmail, Google Maps, and YouTube.
+
+At a high level, the accelerators are these days essentially a bunch of brain-float matrix math engines called MXUs supported by some high-bandwidth memory and a few CPU cores to make it programmable.
+
+Now in their fifth-generation, Google is [pushing](https://www.theregister.com/2023/12/06/google_unveils_tpu_v5p_pods/) the silicon as an alternative to GPUs for cloud-based AI training and inference workloads.
+
+The main trial, which kicked off Monday, is expected to last at least two weeks.
+
+According to pretrial documents [[PDF](https://regmedia.co.uk/2024/01/09/singular_google_pretrial.pdf)] filed by Google, Singular is seeking between $1.6 billion and $5.19 billion in damages in the form of a lump sum payment if the jury determines the company's patents were infringed. ®

@@ -1,0 +1,47 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:53
+-->
+
+# The Second Death of Pablo Neruda | The New Yorker
+
+> 来源：[https://www.newyorker.com/news/daily-comment/the-second-death-of-pablo-neruda](https://www.newyorker.com/news/daily-comment/the-second-death-of-pablo-neruda)
+
+It may come as no surprise that a country as deeply polarized by its recent history as Chile is also at war over the relevance of its preëminent poet, Pablo Neruda. In December, fifty years after the coup d’état that brought General [Augusto Pinochet](https://www.newyorker.com/magazine/1998/10/19/the-dictator-2) to power, Chileans rejected an attempt to write a new constitution to replace the heavily amended one adopted by the dictator’s regime. It was the second plebiscite aimed at doing so in two years. The first time, in September, 2022, voters rejected a left-wing reform in a landslide. In December, a right-wing alternative was also soundly rejected, underscoring the extent to which, as the writer and political commentator Patricio Fernández told me, “building agreements” has become “extremely difficult” in Chile.
+
+Neruda was arguably the most important Spanish-language poet of the twentieth century, and a symbol of the Chile that succumbed to Pinochet. He died in September, 1973, twelve days after the coup overthrew the government of Salvador Allende, the democratically elected socialist President and a friend of Neruda’s. For generations, Neruda’s prestige seemed beyond reproach. In recent years, however, his life and death have been subjected to new scrutiny—and the interpretation and legitimacy of his work along with them. But the difficulty in reaching a consensus about the poet is the result of efforts coming not from opposing political camps but from within the left, to which he historically belonged. One side seeks to portray him as a perpetrator, the other as a victim. The former is Chile’s formidable feminist movement; the latter is led by the Communist Party—which Neruda was a longtime member of and which is now part of the governing coalition—and by some of his nephews and nieces, who are determined to prove that the poet was assassinated by the dictatorship.
+
+Neruda’s life traversed a good part of the twentieth century, and from early on he knew what he was meant to do. He was born Ricardo Eliecer Neftalí Reyes Basoalto on July 12, 1904, and grew up in Temuco, in the southern Araucanía region, which was known for its magnificent virgin forests and the relentless rainfall that he called, in the first pages of his “[Memoirs](https://www.amazon.com/Memoirs-Pablo-Neruda/dp/0374527539),” the “one unforgettable presence” of his childhood. His father, a train driver, opposed his desire to become a poet and, according to Adam Feinstein, Neruda’s biographer, took him on long train rides through the forests, in an effort to distract his son from writing. Those rides, however, only fuelled a love of nature, which shaped much of Neruda’s work. He became a published writer at thirteen, when a local newspaper printed a short essay in which he argued that “enthusiasm and perseverance” are the engines of progress. At the age of sixteen, to hide his identity from his father—and possibly in homage to the Czech realist writer and poet Jan Neruda—he adopted the pen name Pablo Neruda. His first book of poems, “[Crepusculario](https://www.amazon.com/Book-Twilight-Pablo-Neruda/dp/1556593988)” (“Book of Twilight”), was published three years later. A month shy of turning twenty, he released “[Veinte Poemas de Amor y una Canción Desesperada](https://www.amazon.com/Twenty-Love-Poems-Song-Despair/dp/0811803201)” (“Twenty Love Poems and a Song of Despair”), about the heartbreak of falling in love, which remains one of the most iconic books of poems in Spanish.
+
+“The naturalness of these lines, their exuberant and youthful melancholy, their casual repetitions, their over-all simplicity mark Neruda’s early style and account in some measure for the continued popularity of the book,” Mark Strand, the former U.S. Poet Laureate, [wrote in this magazine](https://www.newyorker.com/magazine/2003/09/08/the-ecstasist), in 2003\. The twentieth poem in the collection, which is perhaps the most famous, begins:
+
+> Tonight I can write the saddest lines.
+> Write, for example, “The night is starry and the stars are blue and shiver in the distance.”
+> The night wind revolves in the sky and sings.
+> Tonight I can write the saddest lines. I loved her, and sometimes she loved me too.
+
+Neruda studied French and pedagogy at the University of Chile, in Santiago, but soon devoted himself to writing. His initial literary success brought him “a small aura of respectability,” he later wrote in “Memoirs,” and in 1927 he used it to get an appointment, through a well-connected friend, with the Minister of Foreign Affairs, who offered him a position as consul in colonial Burma.
+
+In 1933, Neruda published a very different kind of book, “[Residencia en la Tierra](https://www.amazon.com/Residence-Earth-Pablo-Neruda/dp/0811215814)” (“Residence on Earth”), a collection of Surrealist poems, some about the Chilean landscape, that he wrote, in part, during his years spent abroad as consul. After Burma, he was sent to Colombo, then to Java—where, in 1930, at the age of twenty-six, he married María Antonia Hagenaar, known as Maruca, with whom he had his only child, Malva Marina—and later to Singapore, Buenos Aires, Barcelona, and Madrid. Feinstein described the collection as “hard to understand because of its obscure imagery, its hermetic richness,” but noted that it contains “some of the most beautiful poetry ever written in Spanish.” From “Walking Around”:
+
+> There are brimstone-colored birds and horrible intestines
+> hanging from the doors of the houses that I hate,
+> there are dentures left forgotten in a coffeepot,
+> there are mirrors
+> that ought to have wept from shame and fright,
+> there are umbrellas everywhere, and poisons, and navels.
+
+Neruda was living in Madrid when the Spanish Civil War broke out, in July, 1936\. A month later, his friend [Federico García Lorca](https://www.newyorker.com/magazine/2009/06/22/lorcas-bones) was executed by a Nationalist firing squad. For the first time, Neruda’s work became politically engaged, and in 1937 he published “[España en el Corazón](https://www.amazon.com/Hearts-Espana-corazon-Directions-Bibelots/dp/081121642X)” (“Spain in Our Hearts”), an antifascist hymn. He returned to Santiago, but when the republic fell, in 1939, he was sent to Paris, where he led the evacuation of more than two thousand Spanish refugees to Chile on the Winnipeg, a French cargo ship that had to be refitted; he later called the mission his most enduring poem. After a stint as consul in Mexico, he returned to Chile, where, in 1945, he was elected to the Senate and officially joined the Communist Party. A couple of years later, at the onset of the Cold War, the government of President Gabriel González Videla, which had been elected with Communist support, shifted to the right and initiated a crackdown on workers and Party members. After Neruda condemned González Videla on the Senate floor, he was accused of treason and an order was issued for his arrest. Neruda went into hiding until, a year later, he left the country, crossing the Andes on horseback to Argentina, and then went into exile in Europe.
+
+In 1950, a collection that was widely regarded as his masterpiece, “[Canto General](https://www.amazon.com/Canto-General-Americas-Pablo-Neruda/dp/1936797690),” was published in Mexico. More than five hundred pages long, it contains, in three hundred and forty poems, a history of the New World and its Indigenous peoples. The writer and literary critic Diamela Eltit noted, in 2004, that parts of “Canto General” try to “break with white history.” Strand described it as Whitmanesque. From the collection’s first canto, “A Lamp on Earth”:
+
+> No one could
+> remember them afterward: the wind
+> forgot them, the language of water
+> was buried, the keys were lost
+> or flooded with silence or blood.
+> 
+> Life was not lost, pastoral brothers.
+> But like a wild rose
+> a red drop fell into the dense growth,
+> and a lamp of earth was extinguished.

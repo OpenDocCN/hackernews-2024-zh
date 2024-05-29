@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:38
+-->
+
+# Reddit’s Sale of User Data for AI Training Draws FTC Inquiry | WIRED
+
+> 来源：[https://www.wired.com/story/reddits-sale-user-data-ai-training-draws-ftc-investigation/](https://www.wired.com/story/reddits-sale-user-data-ai-training-draws-ftc-investigation/)
+
+The Google deal was one of [a “small number” of data licensing wins](https://www.wired.com/story/inside-reddit-protest-ipo/) that Reddit has been pitching to investors as it seeks to drum up interest for shares being sold in its IPO. Reddit CEO Steve Huffman in the investor pitch described the company’s data as invaluable. “We expect our data advantage and intellectual property to continue to be a key element in the training of future” AI systems, he wrote.
+
+In [a blog post](https://blog.google/inside-google/company-announcements/expanded-reddit-partnership/) last month about the Reddit AI deal, Google vice president Rajan Patel said tapping the service’s data would provide valuable new information, without being specific about its uses. “Google will now have efficient and structured access to fresher information, as well as enhanced signals that will help us better understand Reddit content and display, train on, and otherwise use it in the most accurate and relevant ways,” Patel wrote.
+
+The FTC had previously shown concern about how data gets passed around in the AI market. In January, the agency announced it was requesting information from Microsoft and its partner and ChatGPT developer OpenAI about their multibillion-dollar relationship. Amazon, Google, and AI chatbot maker Anthropic were also questioned about their own partnerships, the FTC said. The agency’s chair, Lina Khan, described its concern as being whether the partnerships between big companies and upstarts would lead to unfair competition.
+
+Reddit has been licensing data to other companies for a number of years, mostly to help them understand what people are saying about them online. Researchers and software developers have used Reddit data to study online behavior and build add-ons for the platform. More recently, Reddit has contemplated selling data to help algorithmic traders looking for an edge on Wall Street.
+
+Licensing for AI-related purposes is a newer line of business, one Reddit launched after it became clear that the conversations it hosts helped train up the AI models behind chatbots including ChatGPT and Gemini. Reddit last July introduced fees for large-scale access to user posts and comments, saying its content should not be plundered for free.
+
+That move had the consequence of shutting down an ecosystem of free apps and add ons for reading or enhancing Reddit. Some users staged a rebellion, shutting down parts of Reddit for days. The potential for further user protests had been one of the main risks the company disclosed to potential investors ahead of its trading debut expected next Thursday—until the FTC letter arrived.
+
+*Updated March 15, 2024, 8 pm EDT: This article was updated to disclose that Advance, owner of WIRED's publisher Condé Nast, has a stake in Reddit.*

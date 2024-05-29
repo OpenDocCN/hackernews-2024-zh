@@ -1,0 +1,72 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:34:02
+-->
+
+# World’s first use of ammonia as a marine fuel in a dual-fueled ammonia-powered vessel in the Port of Singapore | Fortescue
+
+> 来源：[https://fortescue.com/news-and-media/news/2024/03/15/world-s-first-use-of-ammonia-as-a-marine-fuel-in-a-dual-fueled-ammonia-powered-vessel-in-the-port-of-singapore](https://fortescue.com/news-and-media/news/2024/03/15/world-s-first-use-of-ammonia-as-a-marine-fuel-in-a-dual-fueled-ammonia-powered-vessel-in-the-port-of-singapore)
+
+Fortescue, with the support of the Maritime and Port Authority of Singapore (MPA), government agencies, research institutes, and industry partners, has successfully conducted the world's first use of ammonia, in combination with diesel in the combustion process, as a marine fuel onboard the Singapore-flagged ammonia-powered vessel, the Fortescue Green Pioneer, in the Port of Singapore.
+
+The Fortescue Green Pioneer was loaded with liquid ammonia from the existing ammonia facility at Vopak Banyan Terminal on Jurong Island for the fuel trial. In completing the fuel trial, the Fortescue Green Pioneer has also received flag approval from the Singapore Registry of Ships (SRS) and the “Gas Fueled Ammonia” notation by classification society DNV to use ammonia, in combination with diesel, as a marine fuel.
+
+#### **Ammonia as a marine fuel**
+
+Globally, ammonia is used in agriculture and industry. It is manufactured as a chemical by combining nitrogen from the air with hydrogen. As a carrier for hydrogen, ammonia can be transported to demand centres for power generation and as a marine fuel in support of the energy transition. Several dual-fueled ammonia vessels have been ordered by shipowners.      
+
+#### **Fortescue Green Pioneer**
+
+The Fortescue Green Pioneer started its journey towards becoming the world’s first ocean-going ammonia-powered vessel in 2022 when Fortescue successfully converted a four-stroke engine to run on ammonia, in combination with diesel, at its land-based testing facility in Perth, Western Australia. 
+
+Following the success of the land-based testing, conversion work commenced on the vessel at Seatrium’s Benoi yard from July 2023\. This included the installation of the gas fuel delivery system, safety systems and infrastructure, and the successful conversion of two of the vessel’s four engines to enable the use of ammonia, combined with diesel in the combustion process, to power the vessel.  The two remaining engines onboard the Fortescue Green Pioneer will operate on conventional fuels when required.
+
+In December 2023, the vessel sailed from Singapore to the Middle East and was showcased at the UN Framework Convention on Climate Change and associated meetings (COP28/CMP18/CMA5) in Dubai, United Arab Emirates. World leaders, industry captains and members of international organisations were among the guests hosted on the vessel.
+
+#### **Safety and Training Preparations**
+
+In preparation for the vessel’s operations in Singapore, Hazard Identification Study and Hazard and Operability Study workshops were jointly organised by MPA, Fortescue, Vopak, research institutes, and industry partners to identify the potential risks during fuel transfer and engine trials and to develop the necessary prevention, control, and mitigation measures. 
+
+Trainings , including gas-specific Hazardous Materials emergency responses, and MPA-led safety drills, were also conducted to assess the operational readiness and preparedness of crew during an incident. All crew attained the necessary proficiencies on the new enhanced procedures prior to the conduct of the trials.
+
+An ammonia plume model was jointly developed by the Agency for Science, Technology and Research’s Institute of High Performance Computing (A*STAR’s IHPC), Nanyang Technological University’s Maritime Energy and Sustainable Development Centre of Excellence (MESD), the Technology Centre for Offshore and Marine, Singapore (TCOMS), and the National University of Singapore’s Tropical Marine Science Institute (TMSI) to determine the safety envelope, model the dispersion of an ammonia plume in an event of an incident, and to support the safety and incident response planning. The model, which accounted for the Fortescue Green Pioneer’s vessel and engine design parameters, behaviour of ammonia within Singapore’s tropical climate, sea current conditions, and surrounding vessels, infrastructure, and geometries, was used to guide the operations. It will be continually enhanced as operations for new maritime fuels scale up in the Port of Singapore.   
+
+#### **First Ammonia Fuel Trial in Singapore**
+
+An Emergency Operations Centre was also set up at MPA’s Port Operations Control Centre for representatives of MPA, Fortescue, Vopak, research institutes, and government agencies to monitor the operations, which was supported by a drone-enabled live stream operated by Skyports Drone Services. 
+
+The fuel trial was conducted over a period of seven weeks and included rigorous testing of the Fortescue Green Pioneer’s ammonia storage systems, associated piping, gas fuel delivery system, retrofitted engines, and seaworthiness. The tests were conducted in phases to ensure safe port operations and safety for crew members and engineers who have completed a series of rigorous training sessions since October 2023\. As part of the safety protocols for the conduct of these tests, crew members also donned personal protection equipment such as chemical protection suits, nitrile chemical gloves, rubber boots, positive pressure mask and hood, and portable gas detectors for the relevant operations.
+
+The two four-stroke retrofitted engines served as proxy for the commercialisation of ammonia-fueled marine engines under development globally. The post-combustion nitrogen oxide (NOx) levels met the local air quality standard, while efforts to reduce the pilot fuel for combustion ignition and nitrous oxide (N2O) emissions post-combustion will continue as more ammonia-fueled marine engines and low-carbon ammonia sources become available.
+
+#### **Ammonia Fuel Loading at Vopak Banyan Terminal on Jurong Island, Singapore**
+
+The five cubic metres (three tonnes) of liquid ammonia used for the fuel trial was supplied by Vopak using its existing infrastructure at the 10,000m3 Vopak Banyan Terminal on Jurong Island. As part of the risk management, extensive pre-operations, safety checks and tests were conducted. A second tranche of three tonnes of liquid ammonia will be loaded for the Fortescue Green Pioneer to conduct further tests and trials over the next few weeks. 
+
+The ammonia fuel loading, a first for Vopak globally using its existing infrastructure in Singapore, reaffirms the potential for using existing and similar ammonia infrastructure cost-effectively by terminals globally to support the operationalisation, commercialisation and progressive scale-up of ammonia as a marine fuel for international shipping.
+
+#### **Classification by DNV**
+
+Fortescue engaged DNV to be part of the innovation process from the very early stages of this project. The Fortescue Green Pioneer’s ammonia fuel systems and engine conversion received class approval by DNV based on DNV’s Technology Qualification process to ensure that the new technology and systems fitted onboard, which were not covered under existing regulations, will function within specified limits and acceptable levels of confidence. 
+
+Prior to issuance of the relevant statutory certificates by DNV on behalf of the Singapore Registry of Ships, MPA worked closely with DNV and Fortescue on the technical assessment of the vessel and the approval process of the vessel’s ammonia safety systems and design under the SOLAS regulation  on alternative design and arrangements.
+
+#### **Milestone for International Shipping **
+
+Following the world’s first ship-to-containership methanol bunkering operation in Singapore in July 2023 and the implementation of digital bunkering operations from November 2023, the successful conduct of this ammonia fuel trial on board the Fortescue Green Pioneer marks a significant milestone in Singapore’s multi-fuel bunkering capability development to support the digitalisation, decarbonisation, and manpower development for international shipping. The collective support provided for such trials also demonstrates the facilitative regulatory environment, and the strong research and tripartite ecosystem in Singapore to support the conduct of trials and scale-up operations for new maritime fuels.   
+
+Shortlisted consortia from an earlier Expression of Interest for an ammonia power generation and bunkering solution on Jurong Island are currently involved in a closed Request for Proposal exercise to select a lead developer for the project.
+
+MPA and Fortescue will present key learning points from the trials at suitable platforms as well as at other international fora in the future.
+
+Mr Teo Eng Dih, Chief Executive, MPA, said, “The safe conduct of this fuel trial supports the holistic assessment of the use of ammonia as a marine fuel, and the development of standards and safety procedures. This will inform the crew training, emergency and bunkering procedures which MPA, agencies and the tripartite community are developing in support of making available safe and cost-efficient solutions as MaritimeSG and the international shipping community undergo the energy transition.”  
+
+Dr Andrew Forrest AO, Chairman of Fortescue, said, “Australia and Singapore are nations for whom the seas are our lifeblood and Fortescue has seen firsthand the willingness of Singapore to lead the world in taking brave, innovative action to build green ammonia shipping. My message to the Singaporean Government is only green is green. Anything else is made from fossil fuels. The Fortescue Green Pioneer is proof that safe, technical solutions for ammonia power engines exist. But as I did at COP 28 in Dubai, I am once again calling on the world’s ports to get on with setting fair, safe and stringent fuel standards for green ammonia and not shy away from their responsibilities simply because of a lack of character. We must push to see global emitters paying fair carbon prices for heavy fuels used in traditional shipping. These prices must provide clear investment signals to drive green investment.”
+
+Cristina Saenz de Santa Maria, Regional Manager South East Asia, Pacific & India, Maritime, DNV, said “We are proud to be partnering with Fortescue and MPA on this groundbreaking project, which sets a new benchmark for the use of ammonia as a marine fuel and reinforces Singapore's leadership in alternative fuel bunkering. Working closely with both teams over the last two years, we have undertaken a rigorous technology qualification process to ensure the safety and performance of the ammonia fuel systems and engine retrofit. The successful culmination of this project reflects Fortescue and MPA’s commitment to drive innovation and cooperation in the industry, a vision that we share at DNV as we help our customers achieve their decarbonization objectives.”
+
+Rob Boudestijn, President, Business Unit Singapore, Vopak, said “Vopak takes great pride in our role as ammonia storage and handling specialists, facilitating the historic first-in-kind ammonia transfer for fuel purposes. As industry leaders with over 20 years of invaluable ammonia handling expertise in six locations globally, including Singapore, we are committed to help drive safety excellence throughout the energy transition journey. Decarbonising the value chains of energy and end products will be a long-term journey with many stages and our customers and partners can count on Vopak’s proven expertise and assets as we progress alongside Singapore towards a sustainable future.”
+
+Mr Chris Ong, Chief Executive Officer of Seatrium, said, "Seatrium is proud to partner with Fortescue, MPA, and industry partners to deliver the successful conversion of world’s first ammonia-powered vessel, the Fortescue Green Pioneer. As the partner of choice in vessel conversions for our customers in Singapore and beyond, Seatrium plays an important role in supporting the global energy transition towards the use of lower carbon fuels. The successful conversion of the Fortescue Green Pioneer's engines by Seatrium signals a crucial shift in maritime decarbonisation as the world looks towards a greener future. The significance of Singapore’s role in this milestone cannot be overstated, as it represents a global opportunity to leverage cutting-edge technologies for the next phase of growth in maritime operations. We are proud to be at the forefront of this movement, and we will continue to lead the charge towards a more sustainable future for the industry."
+
+#### **Footage and an image of the Fortescue Green Pioneer is available [here](https://fortescue.cmail19.com/t/y-l-xhuthid-dktijyliju-r/).**

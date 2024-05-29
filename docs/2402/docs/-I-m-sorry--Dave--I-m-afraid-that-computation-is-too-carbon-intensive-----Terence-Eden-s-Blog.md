@@ -1,0 +1,27 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:53:44
+-->
+
+# “I’m sorry, Dave. I’m afraid that computation is too carbon intensive.” – Terence Eden’s Blog
+
+> 来源：[https://shkspr.mobi/blog/2024/02/im-sorry-dave-im-afraid-that-computation-is-too-carbon-intensive/](https://shkspr.mobi/blog/2024/02/im-sorry-dave-im-afraid-that-computation-is-too-carbon-intensive/)
+
+An interesting snippet about the future of computation:
+
+> Starting with this build, we are introducing the Power Grid Forecast API. This API empowers app developers to optimize app behavior, minimizing environmental impact by shifting background tasks to times when more renewable energy is available in the local electrical grid.
+> [Announcing Windows 11 Insider Preview Build 26052](https://blogs.windows.com/windows-insider/2024/02/08/announcing-windows-11-insider-preview-build-26052-canary-and-dev-channels/)
+
+Some computational processes take a lot of electricity. Back in the old days, batch computing meant that programmers could use "spare" CPU cycles at night. Their code ran when no-one else was using the machine. These days, it is common for computational tasks to be outsourced to where-ever electricity is least polluting. For example, shifting overnight processing to countries on the other side of the planet with excess solar power. With Windows' new APIs, they can wait until [electricity is too cheap to meter](https://shkspr.mobi/blog/2023/12/electricity-thats-too-cheap-to-meter/) before doing something computationally expensive.
+
+Computing budgets are usually set in terms of FLOPS, Watts, or seconds. I think it is fascinating that we might soon routinely add CO[2] to that equation.
+
+I've written before about [domestic appliances being smart about their electricity use](https://shkspr.mobi/blog/2017/11/what-if-your-internet-connected-fridge-came-with-free-electricity/). It would be brilliant if your freezer knew to wait 10 minutes for less-polluting power before running its compressor. Similarly, you could tell a clothes dryer to be finished by the time you get home - but let it decide when to actually run.
+
+I also wonder if a games console could drop its FPS, or outsource some of its processing to the cloud, when domestic electricity becomes too expensive.
+
+Of course, the downside is obvious. Can your code refuse to run if it thinks it will cause harm? Is there an interpretation of the [laws of robotics](https://shkspr.mobi/blog/2019/01/i-robot-the-3-laws-considered-harmful/) which prevents a machine from polluting?
+
+I don't really think that domestic devices will refuse our requests in the near future. But I am curious what incentives - financial or otherwise - there might be to encourage more efficient resource use.
+
+* * *

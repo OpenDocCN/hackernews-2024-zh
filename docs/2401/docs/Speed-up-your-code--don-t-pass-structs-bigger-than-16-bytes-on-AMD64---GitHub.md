@@ -1,0 +1,126 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:21
+-->
+
+# Speed up your code: don't pass structs bigger than 16 bytes on AMD64 · GitHub
+
+> 来源：[https://gist.github.com/FeepingCreature/5dff669aad380a123b15659e195fb96c](https://gist.github.com/FeepingCreature/5dff669aad380a123b15659e195fb96c)
+
+# Speed up your code: don't pass structs bigger than 16 bytes on AMD64
+
+[](#speed-up-your-code-dont-pass-structs-bigger-than-16-bytes-on-amd64)
+
+Or "How I sped up [Neat](https://neat-lang.github.io) by a factor of 2x".
+
+* * *
+
+If you check the [related_post_gen](https://github.com/jinyus/related_post_gen/) benchmark, you will find that Neat, my language, has moved up a few spots. How did I achieve this? Did I implement new high-level optimizer passes that use language details to expose hidden optimization potential?
+
+I changed arrays to be passed as three pointer parameters instead of one parameter consisting of a three-pointer struct. That's it.
+
+This problem has been vexing me for a long time. Neat seemed weirdly slower than it should have been, particularly compared to D, and if I looked at a profiler I would be seeing a lot of weird stack moves. The compiler seemed to be spending most of its time rearranging large amounts of the stack for function calls.
+
+Why are Neat arrays three pointers? As opposed to D, Neat employs a refcounter. That means that arrays, in addition to start and end, also need a pointer to the base of the array object, where the reference count is stored. It turns out the reason that D arrays are fast and Neat arrays are so slow is just because having 24 bytes instead of 16 puts them into a different regime of parameter passing.
+
+If we check [the SystemV AMD64 ABI specification](https://refspecs.linuxbase.org/elf/x86_64-abi-0.99.pdf) (PDF), it tells us that any struct greater than 16 bytes is passed by pointer. ("If the size of the aggregate exceeds two eightbytes and the first eightbyte isn’t SSE or any other eightbyte isn’t SSEUP, the whole argument is passed in memory.") To pass a struct by memory, we allocate a struct-sized spot on the stack, fill it with the values we pass, then pass the pointer to the function.
+
+Now, LLVM is a very good optimizer, but this does not leave it much room. The value *has* to go on the stack, which means there must be space for it there, it must be copied out of the register it is probably living in, and it has to remember which parts of the stack are in use and which ones can be reused by another call, which it turns out to be pretty poor at.
+
+We can demonstrate the issue with this benchmark:
+
+```
+==========
+harness.h:
+==========
+
+#define TYPE double
+
+struct Vector { TYPE x, y, z; };
+
+struct Vector vector_add_struct(struct Vector left, struct Vector right);
+
+struct Vector vector_add_fields(
+    TYPE left_x, TYPE left_y, TYPE left_z,
+    TYPE right_x, TYPE right_y, TYPE right_z);
+
+==========
+harness.c:
+==========
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "harness.h"
+
+int main(int argc, const char *argv[])
+{
+    int mode = atoi(argv[1]);
+    int length = atoi(argv[2]);
+    struct Vector result = {0};
+    if (mode == 0)
+    {
+        for (int i = 0; i < length; i++)
+            result = vector_add_struct(result, (struct Vector) {i, i, i});
+    }
+    else
+    {
+        for (int i = 0; i < length; i++)
+            result = vector_add_fields(result.x, result.y, result.z, i, i, i);
+    }
+    printf("result <%f, %f, %f>\n", result.x, result.y, result.z);
+}
+
+=======
+impl.c:
+=======
+
+#include "harness.h"
+
+struct Vector vector_add_struct(struct Vector left, struct Vector right)
+{
+    return (struct Vector) {
+        left.x + right.x,
+        left.y + right.y,
+        left.z + right.z,
+    };
+}
+
+struct Vector vector_add_fields(
+    TYPE left_x, TYPE left_y, TYPE left_z,
+    TYPE right_x, TYPE right_y, TYPE right_z)
+{
+    return (struct Vector) {
+        left_x + right_x,
+        left_y + right_y,
+        left_z + right_z,
+    };
+} 
+```
+
+As you can see, depending on parameters, this either passes some values as separate parameters or a single large struct. The mode and run length are passed on the commandline to prevent the optimizer from constant folding everything.
+
+We must compile impl.c separately to avoid inlining:
+
+```
+clang -O3 impl.c -c -o impl.o
+clang -O3 harness.c impl.o -o benchmark
+time ./benchmark 0 1000000000
+time ./benchmark 1 1000000000 
+```
+
+This is hardly subtle: with just the change of passing three separate fields instead of a vector struct, I go from 12.3 seconds to 5.3 seconds!
+
+If we check the assembly, we can indeed see that a lot of instructions are occupied with stack shuffles. In fact, a major benefit of the field version is that the parameters already enter the function in SSE registers, rather than having to be loaded from the stack every time. This was the whole point of the SystemV ABI and its focus on passing values in registers as much as possible, so it's kind of sad to see it fail here. I believe with the number of registers available on AMD64, a benchmark would have shown by-value passing to be valuable even for types above 16 bytes.
+
+In fact, if you think about what the code does, by writing the fields on the stack and then (explicitly rather than implicitly) passing a pointer, the (new, performant) AMD64 System V ABI has effectively regressed to the old x86 cdecl ABI, where everything was passed on the stack! Cdecl, famously, was so known for its slowness that it spawned multiple calling conventions aimed just at making it fast.
+
+Of course, in any real situation this code would be all inlined. In fact, turning on LTO with gcc (though interestingly not clang!) erases any performance difference between the two versions. But still, not every function can or should be inlined.
+
+Now, if you are calling a C API, you have to use the C ABI. But lots of high-level types internal to non-C languages, though they may be presented to the compiler's backend as a struct (such as Neat's three-pointer arrays), don't strictly speaking *need* to be expressed as one. You are the language writer, and it's up to you to decide how arrays, tuples, sumtypes etc. are passed. That's why I chose to pass all of those (if above 16 bytes) as individual fields instead, and the benchmark shows the benefit.
+
+So if you are on AMD64, and you're either working on languages or microoptimizing an API, I advise you to take the free speedup. You should at least benchmark to see if you can benefit from splitting structs above 16 bytes manually. Especially in inner loops, the benefit can be surprisingly large.
+
+Addendum:
+
+*   Q: Sure, maybe this is true for structs of pointers. But `double` is in class SSE, according to the spec. Why isn't the struct passed in SSE registers anyways?
+*   A: Man I don't know. All I can tell you is that it doesn't.

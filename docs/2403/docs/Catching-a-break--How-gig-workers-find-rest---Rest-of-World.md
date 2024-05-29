@@ -1,0 +1,96 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:37:35
+-->
+
+# Catching a break: How gig workers find rest - Rest of World
+
+> 来源：[https://restofworld.org/2024/gig-worker-rest-breaks/](https://restofworld.org/2024/gig-worker-rest-breaks/)
+
+Sophia Ibrahim Gedo, a Nairobi-based ride-hailing driver, had a customer in the back seat when she felt the urge to use the bathroom. Usually, Gedo would find the nearest gas station, mall, or restaurant — if she was lucky, they would let her use their facilities. But when she stopped at a gas station, the toilet was locked. Her customer was getting impatient, so Gedo got back into the car and kept driving.
+
+“It was my longest trip. By the time I was dropping [off] this client, I was sweating,” Gedo, who is in her late 40s, told *Rest of World*. “I almost peed on myself.” 
+
+Whether they’re ferrying passengers or delivering food orders, gig workers often work 10 to 12 hours a day to make ends meet. As they traverse their cities, these workers scramble to find facilities to meet their basic needs — restrooms, clean places to eat meals, and safe spots to rest. Through trial and error, many gig workers have crafted their own invisible city maps, identifying places where they can stop for a breather.
+
+*Rest of World* spoke to 104 ride-hailing drivers, delivery workers, and cleaners who find gigs via apps across 10 cities — Dhaka, Hanoi, Hong Kong, Jakarta, Johannesburg, Karachi, Lagos, Mexico City, Nairobi, and São Paulo — to better understand how often they take breaks, and where they go to use the bathroom and eat meals.
+
+The respondents to our survey painted a harrowing picture: A third of the workers said they either don’t take breaks at all or just relax a bit between gigs. More than half said they had been denied access to public places like malls and restaurants; some said they were often chased off by the police, homeowners, security personnel, and shopkeepers who perceived them as loiterers. Meanwhile, platforms like Grab, inDrive, and iFood are making attempts to build facilities such as pit stops and lounges, but few gig workers have access to them.
+
+IFood delivery drivers rest at a support point provided by the company in São Paulo.
+
+“The majority of drivers prefer not to take rest, have very short breaks, and get very little sleep overall,” Tobias Kuttler, research associate at Fairwork, a labor project by the Oxford Internet Institute and WZB Berlin Social Science Center, told *Rest of World*. “[I] have seen drivers with 17-hour average shifts. Those drivers were visibly sleep-deprived and in a bad health state, taking medications to fight their pain.”  
+
+There are close to [435 million gig workers](https://www.worldbank.org/en/topic/jobsanddevelopment/publication/online-gig-work-enabled-by-digital-platforms#:~:text=It%20reveals%20that%20the%20online,in%20languages%20other%20than%20English.) globally, and our survey showed that for most of them, rest is a luxury. Only 18 of the respondents said they had flexibility and choice in how many breaks they could take, while 35 felt they could not afford to take any more breaks, even if they wished they could.
+
+“[The] platform economy encourages riders to work as many jobs as possible, to maximize earnings, cover expenses, to not become subject to platform penalties,” Mark Graham, director at Fairwork, told *Rest of World*. 
+
+Wallace Miguel, an iFood and Lalamove delivery worker in São Paulo, manages to unwind only during the few minutes when he is waiting at a restaurant for an order that isn’t ready yet. “The restaurant usually provides benches and water, and I take the opportunity to use them,” the 22-year-old said.
+
+Basil Faraz, a 25-year-old Foodpanda rider in Karachi, told *Rest of World* it’s only between orders that he is able to rest. He spends this time sitting on a cluster of rocks and bricks under a thatch of trees in the city’s upscale Defence Housing Authority neighborhood, where several other delivery workers also rest. Even then, Faraz is constantly staring at his phone, refreshing the food delivery app, and waiting to get the next delivery request. “Obviously I can’t go inside an air-conditioned mall [to rest],” he said, chuckling. “They’ll look at me and tell me to get lost.”
+
+Delivery riders in Dhaka often meet at lunch and tea spots between deliveries.
+
+In countries like Kenya, [legislation prohibits](http://www.parliament.go.ke/sites/default/files/2022-10/Legal%20Notice%20No.%20120%20of%202022%20relating%20to%20the%20National%20Transport%20and%20Safety%20Authority%20(Transport%20Network%20Companies,%20Owners,%20Drivers,%20and%20Passengers)%20Regulations,%202022%20from%20the%20Ministry%20of%20Transpo.pdf) ride-hailing drivers from working more than eight hours in a 24-hour period. So drivers often bounce between apps, sometimes working as many as 19 hours a day, Justin Nyaga, chairman of the Organization of Online Drivers in Kenya, told *Rest of World*.
+
+Tran Van Tu, who works for ride-hailing and food delivery platform Be in Hanoi, believes its algorithm incentivizes him to work more. “The more I work, the more gigs I get,” the 33-year-old told *Rest of World.* He said he works between 13 and 16 hours each day.
+
+Gig workers who recognized the toll the long hours had taken on their bodies said they could not do anything about it. “Working for 14 hours is very dangerous for both me and the client,” Julius King’ori, a 45-year-old ride-hailing driver with Uber and Bolt in Nairobi, told *Rest of World*. “I’m a human being, I need more breaks. But we can’t afford to take more breaks because of the amount of money that we earn from our trips.”
+
+> “Wherever people see someone wearing this gray-and-pink shirt, that person is treated like garbage.”
+
+To maximize the time they spend on the road, several ride-hailing workers in Nairobi choose not to come home at night. Instead, they sleep in cars parked at the Jomo Kenyatta International Airport because the premises have bathrooms they can use to shower, Emmanuel Ochieng, who works for ride-hailing companyLittle Cab, told *Rest of World*.
+
+“You will find [workers] lining up to take a shower because they didn’t manage to go to the houses. There is even a lady who comes to the parking lot to sell food,” Ochieng said. “Even when the app sets aside time to rest, it won’t be helpful for a driver. The best thing the apps could do is to adjust their wages so they can rest comfortably.” Of the 104 gig workers surveyed, 36 said they got six hours or less of sleep on average each day.
+
+Even when gig workers find the time to relax, they need to watch out for harassment and robberies. Close to half the respondents (49) noted that they had been harassed or attacked while resting in places like malls, restaurants, parking lots, and residential areas. While a dozen respondents said they had been chased away by security guards, 15 said they were robbed while resting. “Restaurant guards shoo me away if I sit outside while waiting for an order to get packed and ready,” Muhammad Kamran, a 43-year-old Foodpanda worker in Karachi, told *Rest of World*.
+
+Gig workers wait at a pick-up point to fulfill online orders in Lagos.
+
+According to Tariq Noor, another Foodpanda rider from Karachi, the gig workers’ uniforms are taboo. “Wherever people see someone wearing this gray-and-pink shirt, that person is treated like garbage,” the 39-year-old told *Rest of World*. “If I go to a shop and I am not wearing this shirt, I am treated better and not told to wait outside.”
+
+> “It’s clear that women are at risk twice over."
+
+The survey revealed that female gig workers are particularly vulnerable to the challenges that come with being mobile all day long. Of the 18 female respondents who spoke to *Rest of World*, six said they had faced some sort of harassment while on the job. Phuong Mui May, a 26-year-old ShopeeFood delivery rider from Hanoi, said she was harassed on the street by a passerby while waiting to collect an order. Now, she takes breaks in an alley with other delivery riders in order to feel safe.
+
+“It’s clear that women are at risk twice over,” Savita Bailur, senior director at Caribou Digital, an advisory firm which carries out research on digital platforms, told *Rest of World*. “One, because there are typically fewer women in [gig] work, and two because they don’t always have the infrastructure support that men do.”
+
+Female gig workers are particularly vulnerable to the challenges that come with being mobile all day.
+
+Female gig workers said they have to plan a lot for a simple bathroom break; it’s not easy to find safe and hygienic facilities. “In Mexico and Uganda, the lack of bathrooms and bathroom breaks were linked to higher rates in UTIs [urinary tract infections] for women workers, which ultimately prevents them from working for platforms long-term,” Graham of Fairwork said.
+
+Bridgette Muthoni Munene, a 39-year-old ride-hailing driver from Nairobi, gets stressed every time she drinks water during the day. “[The toilet] is a big challenge for ladies who work in this industry,” she said. 
+
+Angela Chukunzira, activist and labor researcher at Ukombozi Library in Kenya, told *Rest of World* several female Uber drivers have told her stories of their struggles to find a spot to change sanitary pads during work hours. “You have to even pay to use the bathrooms in some malls, so it becomes a problem and [an] added cost for them,” Chukunzira said. “[Platforms] are not created for the workers. It’s all about profitability … If they’re not giving them basic resources, like the car that you need to do the work itself or even the mobile phone, I think a toilet is a bit of a stretch.”
+
+In some cities, gig workers have organized themselves and created spaces where they can safely use restroom facilities, unwind, and socialize. For instance, in Jakarta, workers have started dozens of [community-run base camps](https://restofworld.org/2024/gojek-rider-communities-discourage-unionization/) — makeshift structures made of wooden panels or tents — where they hold meetings, chat, and eat food while they wait for orders.
+
+In Vietnamese cities, several restaurants have partnered with apps to offer a separate area for platform drivers to sit and wait, Nguyen Thi Minh Chau, a researcher at the Southern Institute of Social Sciences in Ho Chi Minh City, told *Rest of World*. Last year, [100 restaurants and cafes](https://tuoitrenews.vn/news/society/20230321/100-restaurants-coffee-shops-in-downtown-ho-chi-minh-offer-gratis-toilet-service/72198.html) in Ho Chi Minh City put up “free-of-charge toilet” signs after the local government struggled to build new public bathrooms due to lack of land.
+
+In a few places, platforms have stepped up to create dedicated resting spaces for workers. These rest stops, often called pit stops or lounges, usually provide restrooms, drinking water, and space to sit down and charge devices. Some offer additional comforts like microwaves to reheat food.
+
+InDrive’s lounge for its drivers in Jakarta is part of the company’s mission to address “injustice in the ride-hailing industry,” a spokesperson told *Rest of World*. The lounge also serves as a venue for events and training sessions for its gig workers, including a recently concluded one on first aid.
+
+Super-app Grab, meanwhile, operates three “[GrabBike Lounges](https://www.grab.com/id/en/press/consumers-drivers/grab-resmikan-grabbike-lounge-pertamanya-di-jakarta-sebagai-bagian-dari-inisiatif-grabsejahtera-untuk-meningkatkan-kesejahteraan-para-mitra-pengemudi-grabbike/)” in Jakarta, which not only offer essential amenities but also Wi-Fi, a prayer room, a motorcycle workshop, a barbershop, and even a “helmet spa.” Grab’s app has a [“fatigue nudges” safety feature](https://www.grab.com/sg/inside-grab/stories/how-grabs-driver-app-automatically-reminds-drivers-to-get-enough-rest/), to remind drivers to take a break “when they’ve been driving for long hours,” Radhi Juniantino, Grab’s director of trust and safety in Indonesia, told *Rest of World*. “These reminders are based on the app’s reading of the driver’s online and offline hours, which provides a gauge of fatigue levels.” 
+
+In Jakarta, workers have started dozens of community-run base camps where they can rest while waiting for orders.
+
+In São Paulo, food delivery platform iFood offers more than 170 “support points,” two of which are fully run by iFood, and the rest in partnership with local authorities, private companies, and restaurants, the company said in an email. But the majority of the support points — run in partnership with restaurants — only offer water, access to a toilet, and the space to wait for an order to be ready. They don’t provide resting places, or access to facilities such as microwaves and charging ports.
+
+A number of platforms — Uber, Gojek, Bolt, SweepSouth, Chowdeck, Jumia, Mano, Be, Pathao, Rappi, Careem, and Deliveroo — either declined to answer or did not respond to queries regarding their efforts to support gig workers in terms of rest.
+
+Many platforms resist setting up rest centers because their upkeep would require financial investment, and also because they are not answerable for this lack of infrastructure, Ainan Tajrian, a researcher associated with Fairwork in Bangladesh, told *Rest of World*. “The recognition of workers as independent contractors also shifts such burden away from the platform,” she said.
+
+There was a time when Foodpanda worker Faraz could beat Karachi’s infamous summer heatwave under a shed that the company had installed outside one of its stores. But local authorities removed the shed this year, Faraz said. The Karachi city administration told *Rest of World* it was removed because Foodpanda did not have a construction permit for the location.
+
+Foodpanda has rest stops called “rider hubs” across Pakistan, Cambodia, and Singapore, a Foodpanda spokesperson told *Rest of World*. “We care about [our delivery workers’] well-being and … actively encourage our delivery partners to take short breaks during the day to help them recharge.”
+
+Glovo workers rest under some trees in Lagos.
+
+Some companies have also accounted for extreme weather conditions while providing for gig workers. Food delivery startup Glovo, for instance, has set up pit stops for drinking water in countries like Morocco and Côte d’Ivoire during summers, and hot-tea spots in places like Ukraine and Kazakhstan during winter, a company spokesperson told *Rest of World*. Glovo, which has a wide presence in Africa, has created “courier centers” in several African metro cities that work as designated rest stops for its workers.
+
+The Glovo app, the spokesperson said, also has a policy that limits work to eight hours per day, which is “fundamental in ensuring our couriers have the necessary downtime to maintain a healthy work-life balance while safeguarding their safety and overall welfare.” But five Glovo riders in Lagos told *Rest of World* they all worked well over nine hours in order to make a decent living, given their low wages.
+
+One of the Glovo riders, Philip Saheed, a 20-year-old who supports a family of six, tries to take a break at the six-hour mark during his nine-hour shift. But all too often, he needs to keep working. “When there are back-to-back orders, I stop to buy snacks on my way to deliver, and use the small waiting time to eat,” he told *Rest of World*. 
+
+Still, Saheed does not wish for more breaks. “I want more work so that I can make money,” he said.

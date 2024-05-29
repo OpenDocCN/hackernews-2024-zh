@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:51:48
+-->
+
+# UC Irvine study: vehicle brakes produce charged particles that may harm public health – UCI News
+
+> 来源：[https://news.uci.edu/2024/03/12/uc-irvine-study-vehicle-brakes-produce-charged-particles-that-may-harm-public-health/](https://news.uci.edu/2024/03/12/uc-irvine-study-vehicle-brakes-produce-charged-particles-that-may-harm-public-health/)
+
+**Irvine, Calif., March 12, 2024** **—** Scientists know relatively little about particles released into the air when a vehicle driver brakes, though evidence suggests those particles may be more harmful to health than particles exiting the tailpipe.
+
+In a new study in *[Proceedings of the National Academy of Sciences](https://www.pnas.org/doi/10.1073/pnas.2313897121)*, University of California, Irvine researchers show how most of these particles emitted during light braking carry an electric charge – something that could potentially be exploited to help reduce air pollution from vehicles.
+
+“We found that up to 80% of aerosol particles emitted from braking are electrically charged, and that many of them are in fact highly charged,” saidAdam Thomas, a doctoral candidate in the lab of Jim Smith, professor of chemistry, who led the study alongside UCI postdoctoral researcher Paulus Bauer.
+
+To do the work, the team used a large lathe to spin a detached brake rotor and caliper. They then measured the electric charge of the aerosols emitted into the air and discovered the 80 percent figure.
+
+“I was very surprised,” said Smith. “We were also surprised that this has not really been studied given how common cars are in human societies.”
+
+The research is part of a broader team effort at UCI to understand the public health impacts of non-tailpipe emissions in areas beset by car traffic, including many areas in Southern California.
+
+“The toxicity and health effects of brake wear particles are largely unknown,” said Manabu Shiraiwa, professor of aerosol chemistry at UCI and one of the researchers behind the university-wide project. “Recent results from my lab indicate that they may induce oxidative stress, but more research is needed.”
+
+The new study reveals a problem that may grow as electric cars become more and more common over the next several decades. Electric cars, Smith explained, are not truly zero-emission vehicles, so municipalities need to think about strategies to reduce emissions from brake use as well as tailpipes.
+
+The team found that the percentage of charged particles emitted largely depended on the material makeup of brake pads. Because the particles carry an electric charge, this should make it relatively easy to remove from the air.
+
+“If they are charged, they can be removed easily from the air before they have a chance to have an impact at all on health,” said Smith. “All you would need to do is to collect them with an electrostatic precipitator – a device that exposes the charged particles to an electric field and efficiently sweeps them away.”
+
+The public health risk posed by brake emissions is not borne equally by a population – lower-income parts of cities tend to be more traffic-heavy than others, which creates an environmental justice issue wherein certain socioeconomic classes are more exposed to brake emissions than others.
+
+According to Professor Barbara Finlayson-Pitts, Distinguished Emeritus Professor of chemistry and the principal investigator of the project at UCI, emissions from braking are not well-characterized but are potentially significant in high-traffic areas. “These areas are often in poorer communities and highlight an important aspect of environmental justice that has been largely overlooked,” Finlayson-Pitts said.
+
+The UCI team is working with local community organizations like the Madison Park Neighborhood Association in Santa Ana, which is helping disseminate UCI’s scientific findings to the public. Funding for the study came from fees paid by Volkswagen as part of a 2016 settlement reached with the California Department of Justice, which found that the company used devices that contributed to increased air pollution.
+
+**About UCI’s Brilliant Future campaign:** Publicly launched on Oct. 4, 2019, the [Brilliant Future campaign](https://brilliantfuture.uci.edu/) aims to raise awareness and support for UCI. By engaging 75,000 alumni and garnering $2 billion in philanthropic investment, UCI seeks to reach new heights of excellence in student success, health and wellness, research and more. The School of Physical Sciences plays a vital role in the success of the campaign. Learn more by visiting [https://brilliantfuture.uci.edu/uci-school-of-physical-sciences/](https://brilliantfuture.uci.edu/uci-school-of-physical-sciences/).
+
+**About the University of California, Irvine:** Founded in 1965, UCI is a member of the prestigious Association of American Universities and is ranked among the nation’s top 10 public universities by *U.S. News & World Report*. The campus has produced five Nobel laureates and is known for its academic achievement, premier research, innovation and anteater mascot. Led by Chancellor Howard Gillman, UCI has more than 36,000 students and offers 224 degree programs. It’s located in one of the world’s safest and most economically vibrant communities and is Orange County’s second-largest employer, contributing $7 billion annually to the local economy and $8 billion statewide. For more on UCI, visit [www.uci.edu](http://www.uci.edu).
+
+**Media access:** Radio programs/stations may, for a fee, use an on-campus ISDN line to interview UCI faculty and experts, subject to availability and university approval. For more UCI news, visit [news.uci.edu](http://news.uci.edu/). Additional resources for journalists may be found at [https://news.uci.edu/media-resources/](https://news.uci.edu/media-resources/).

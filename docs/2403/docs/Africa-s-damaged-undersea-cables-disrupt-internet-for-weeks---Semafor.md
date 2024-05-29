@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:42
+-->
+
+# Africa's damaged undersea cables disrupt internet for weeks | Semafor
+
+> 来源：[https://www.semafor.com/article/03/18/2024/africas-damaged-undersea-cables-disrupt-internet-for-weeks](https://www.semafor.com/article/03/18/2024/africas-damaged-undersea-cables-disrupt-internet-for-weeks)
+
+Cables laid deep in the ocean underpin the wireless internet world, carrying data across continents through connected landing stations and data centers. Google and Meta have in recent years become the biggest names in the business of laying these fiber optic cables in Africa, as part of their investment and product expansion drives in the continent.
+
+Glo-1, a cable provided by Nigerian telecoms company Globacom, was not affected by last week’s incident. 2Africa, the 45,000km cable being deployed by a Meta-led consortium which landed in Nigeria and Ghana last month, was also not named as one of those affected. Access to WhatsApp, Instagram and Facebook apps owned by Meta remained normal in both Nigeria and [Ghana](https://twitter.com/BBSimons/status/1768292967989588457).
+
+Google’s services, including the search engine and YouTube, have also remained normally available. Its $1 billion Equiano cable is present in Nigeria, Togo and Namibia. Seacom, a cable company that focuses on East and Southern Africa, said it [rerouted its traffic](https://twitter.com/SEACOM/status/1769344459202760940) to Equiano after the disruption.

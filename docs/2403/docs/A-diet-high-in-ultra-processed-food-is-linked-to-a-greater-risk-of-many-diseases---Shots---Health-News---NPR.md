@@ -1,0 +1,68 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:25
+-->
+
+# A diet high in ultra-processed food is linked to a greater risk of many diseases : Shots - Health News : NPR
+
+> 来源：[https://www.npr.org/sections/health-shots/2024/03/18/1238939706/ultra-processed-food-junk-food-disease-cancer-anxiety-depression-diet](https://www.npr.org/sections/health-shots/2024/03/18/1238939706/ultra-processed-food-junk-food-disease-cancer-anxiety-depression-diet)
+
+Ultra-processed foods contain substances you wouldn't find in your own kitchen, like high-fructose corn syrup, artificial flavor and color enhancers, anti-caking agents and emulsifiers. **Dan Kitwood/Getty Images** ****hide caption****
+
+****toggle caption****Dan Kitwood/Getty Images
+
+Ultra-processed foods contain substances you wouldn't find in your own kitchen, like high-fructose corn syrup, artificial flavor and color enhancers, anti-caking agents and emulsifiers.
+
+Dan Kitwood/Getty Images
+
+At a time when Americans consume [more than half](https://pubmed.ncbi.nlm.nih.gov/34647997/#:~:text=Results%3A%20Adjusting%20for%20changes%20in,except%20Hispanics%2C%20in%20stratified%20analyses) of their daily calories from ultra-processed foods, there is increasing evidence that eating too many of these foods can make us sick.
+
+A [study](https://www.bmj.com/content/384/bmj-2023-077310) published in *the British Medical Journal* finds people who consume high amounts of these foods have an increased risk of anxiety, depression, obesity, metabolic syndrome, certain cancers including colorectal cancer and premature death.
+
+The data come from more than 9 million people who participated in dozens of studies, which researchers analyzed as part of umbrella review.
+
+"Taking the body of literature as a whole, there was consistent evidence that regularly eating higher – compared to lower – amounts of ultra-processed foods was linked to these adverse health outcomes," says study author [Melissa Lane](https://foodandmoodcentre.com.au/team/melissa-lane-2/), of Deakin University in Australia.
+
+Ultra-processed foods are abundant in our food supply. Among the most common are highly refined breads, fast food, sugary drinks, cereals, cookies, and other packaged snacks. They are often high in salt, sugar, fat and calories and low in fiber and micro-nutrients such as vitamins.
+
+The [Dietary Guidelines for Americans](https://health.gov/our-work/nutrition-physical-activity/dietary-guidelines) recommend filling half our plates with fruits and vegetables, and eating plenty of whole grains, and not too much of the refined grains found in ultra-processed foods.
+
+One telltale sign that a [food is ultra-processed](https://pubmed.ncbi.nlm.nih.gov/30744710/) is if its ingredient label includes substances you would not find in your own kitchen such as high-fructose corn syrup, hydrogenated oils, hydrolysed protein, or additives such as artificial colors, flavor enhancers, emulsifiers, anti-caking agents and thickeners.
+
+### The evidence piles up
+
+The observational studies included in this new review do not prove that consumption of ultra-processed foods can cause anxiety, cancer or other health conditions. These studies point to associations, not causation. But at a time when diet is a [leading cause of chronic disease](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9921002/#:~:text=Diet%2C%20often%20considered%20as%20a,and%20perhaps%20some%20neurological%20diseases.), it adds to a growing body of evidence that ultra-processed foods contribute to the development of these conditions.
+
+For instance, a study published last year found people in the habit of consuming high levels of ultra-processed foods were about three times more likely to [develop colorectal cancer,](https://pubmed.ncbi.nlm.nih.gov/36477589/) compared to those who consumed the least. The exact mechanisms by which these foods may increase the risk is not clear, though the overlap with metabolic disease is striking.
+
+"One mechanism of how ultra-processed food can be associated with colorectal cancer is through leading to increased weight," says [Jeff Meyerhardt](https://www.dana-farber.org/find-a-doctor/jeffrey-a-meyerhardt), an oncologist at Dana Farber Cancer Institute. Weight increases the risk of diabetes and metabolic syndrome factors, "that are closely tied to colorectal cancer," he says.
+
+When it comes to mood and mental health conditions, there is evidence to show that adults who maintain a healthy diet [have fewer depressive symptoms](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2809727). For instance, a French study found adherence to a Mediterranean diet in mid-life is linked to a lower risk of depression, particularly in men. There's also evidence that healthy diets may help [tamp down anxiety](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8706568/).
+
+"We're seeing a roughly 20 to 50% increased risk of depressive symptoms in people who have diets that are high in these ultra- processed foods," says [Wolfgang Marx](https://www.deakin.edu.au/about-deakin/people/wolf-marx), a Senior Research Fellow at the Food & Mood Centre at Deakin University in Australia, and a senior author of the new research.
+
+There could be a 'threshold effect' Marx says, meaning people who consume small amounts, under a certain threshold, are not at increased risk. Though it is not clear exactly how much is OK, because it may vary from person to person and depend on other lifestyle habits. However, the research shows people who consume the most are more likely to be affected by mood and mental health struggles.
+
+### Should consumers be warned about ultra-processed food?
+
+A panel of advisors is currently evaluating all the latest diet and nutrition studies as part of a process to [update the federal government's Dietary Guidelines](https://www.dietaryguidelines.gov/learn-about-process#step-4-develop-the-dietary-guidelines). It is possible advisors could recommend limits on ultra-processed foods, though it would likely be difficult to get people to follow them.
+
+On the regulatory side, the Food and Drug Administration is moving ahead to finalize a [new definition of the term "healthy"](https://www.npr.org/2022/10/06/1127307420/the-fda-is-updating-the-definition-of-healthy-and-designing-new-labels) – which is expected soon.
+
+The FDA says a "healthy" claim on food labels could help consumers identify healthier choices at a [quick glance](https://www.fda.gov/food/food-labeling-nutrition/use-term-healthy-food-labeling) and may prompt food companies to reformulate their products. The revised definition aims to make Americans more aware of healthy fats found in foods such as avocados and salmon, and of the relative harms of foods that contain lots of salt, added sugars and saturated fats.
+
+The FDA is also moving towards [front-of-package labeling](https://www.fda.gov/food/cfsan-constituent-updates/fda-issues-procedural-notice-consumer-research-front-package-labeling) that will flag foods that contain high amounts of sodium, sugar and saturated fat. These types of labels "will make it easier for consumers to make healthier choices and better understand the nutritional value of the foods and beverages they buy," says [Nancy Brown,](https://www.heart.org/en/about-us/nancy-brown) CEO of the American Heart Association.
+
+And while the FDA is not currently tackling ultra-processed foods head on with labeling, [Jim Jones,](https://www.fda.gov/about-fda/fda-organization/jim-jones) the FDA's first Deputy Commissioner for Human Foods says by focusing on these three ingredients – sodium, sugar and saturated fat – the agency aims to make people aware of the risks.
+
+"The science around added sugars, saturated fat, and sodium intake is quite clear," says Jones. "We will also likely make progress on reducing consumption of ultra-processed food because there is a high correlation between those three ingredients and ultra-processed food," he says.
+
+Jones says all regulatory decisions are based on scientific evidence, and there's still a lot that's unclear about the link between ultra-processed foods and disease.
+
+Is it caused by more than the overlap with obesity and metabolic diseases? Given how palatable, convenient and inexpensive many of these foods are, is it easier to over-consume them? Or are there other mechanisms at play, such as ingredients or additives that can harm our gut health?
+
+"Our feeling is that we need more science before we're ready to make recommendations or think of a voluntary or a regulatory program," he says.
+
+And there is agreement from researchers and physicians that more research is needed to fully understand the connections between ultra-processed food consumption and disease risks.
+
+*This story was edited by Jane Greenhalgh & Carmel Wroth*

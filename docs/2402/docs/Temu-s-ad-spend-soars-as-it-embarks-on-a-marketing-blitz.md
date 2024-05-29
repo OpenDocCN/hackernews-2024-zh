@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:11
+-->
+
+# Temu's ad spend soars as it embarks on a marketing blitz
+
+> 来源：[https://www.modernretail.co/marketing/ive-never-seen-anything-like-this-temus-ad-spend-soars-as-it-embarks-on-a-marketing-blitz/](https://www.modernretail.co/marketing/ive-never-seen-anything-like-this-temus-ad-spend-soars-as-it-embarks-on-a-marketing-blitz/)
+
+Online marketplace Temu is counting on a deluge of ads — whether that’s through social media, paid search or television — to win over shoppers.
+
+According to a new study by MediaRadar, Temu’s ad spend jumped 1,000% year-over-year for the period from January to November 2023\. Seventy-six percent of Temu’s ad spend for the period went to social media, compared to 13% on digital display ads, the ad intelligence platform found. Temu is also funneling more money into TV and plans to run an ad during the Super Bowl for the second year in a row, [according to the Wall Street Journal](https://www.wsj.com/articles/chinese-e-commerce-giant-temu-will-return-to-the-super-bowl-59acb7a6). Modern Retail reached out to Temu for comment on its marketing spend, but the company said it could not provide comment at this time.
+
+Temu’s appeal lies in its low-priced items such as $2 scrunchies and $10 sneakers. It is a fairly new company, having launched in the United States in September 2022\. But, over the past year and a half, it’s managed to grow a large volume of sales by placing ads on TikTok, Instagram, Google and nearly every other channel where people shop. MediaRadar told Modern Retail that from September through December 2023, Temu spent more than $517 million in national advertising. While Temu’s parent company (the Chinese-based PDD Holdings) does not divvy up sales by brand,PDD’s total revenue last quarter [reached](https://investor.pddholdings.com/news-releases/news-release-details/pdd-holdings-announces-third-quarter-2023-unaudited-financial) 68.84 billion yuan ($9.67 billion), an increase of 94% year-over-year. Going forward in 2024, Temu shows no signs of slowing its advertising ambitions.
+
+[Like Shein](https://www.modernretail.co/retailers/how-shein-is-taking-over-social-media-advertising/), Temu hasresorted to a digital marketing blitz to acquire new customers. Goldman Sachs analysts [estimate](https://www.investors.com/news/technology/why-chinese-e-commerce-giant-temu-challenge-to-amazon-is-boosting-meta/) Temu spent about $1.2 billion on Meta in 2023, and Meta [calculated](https://techcrunch.com/2023/01/23/shopping-app-temu-is-using-tiktoks-strategy-to-keep-its-no-1-spot-on-app-store/) Temu ran 8,900 ads on its platforms last January. Last February, Temu ran its first-ever Super Bowl ad, a 30-second spot that urged viewers to “shop like a billionaire.” A Temu spokesperson [told AdAge](https://adage.com/article/special-report-super-bowl/temu-will-return-super-bowl-it-says-lawsuit-against-shein/2531736) that the company “credits its 2023 Super Bowl ad campaign for helping put the e-commerce giant on the map.”
+
+Temu is also investing in paid search for its items to appear alongside name-brand products like Apple chargers and Stanley tumblers. In fact, a search for the phrase “Lego toy” returns more Google Shopping results for Temu than it does for Lego, Mike Ryan,head of e-commerce insights at Smec, an e-commerce solutions provider, [pointed out on X](https://twitter.com/mikeryanretail/status/1746802154357101046). On TikTok, Temu continues to gain ground, with the hashtag #Temu racking up 11 billion views. Temu runs a social media influencer program for those with more than 300 followers and [says](https://www.temu.com/influencer-collaboration.html) it’s worked with more than 10,000 influencers to date.
+
+Today, it’s difficult to scroll through social media or even surf the web without coming across a Temu ad. And, Temu’s orange boxes are popping up more in package rooms and mailrooms. Last summer, a USPS worker pleaded with people to order less from Temu in a [viral TikTok.](https://www.dailydot.com/news/usps-worker-complains-about-temu/) Next month, more than 100 million people are expected to watch the Super Bowl — and with it, a Temu ad that likely cost up to $7 million, by some estimates.
+
+Andrew Lipsman, an independent e-commerce analyst, told Modern Retail that he’s “never seen a strategy quite like this.”
+
+“I’ve seen versions of it, but not seemingly at the scale, at this level of aggressiveness,” he said. “They are creating this level of cultural awareness that I think is maybe allowing it to enter the mainstream in a way that other brands that just try to arbitrage traffic haven’t been able to make that leap.”
+
+This has proven true in the U.S. and abroad, according to Google Merchant Center ad data. For instance, Temu is ranked first in “clothing and accessories” ad visibility in the United Kingdom over the past 28 days — higher than Amazon, eBay, Asos, Shein and Nike. Its ads/organic ratio (meaning how often its products get impressions from Google Shopping ads as opposed to organic results) is more than 100\. Amazon’s, for comparison, is 10, while eBay’s is 8.
+
+“It shows you that there’s nothing organic going on here at all. They’re just blasting the market with ads,” Smec’s Ryan told Modern Retail. “Their paid visibility alone is more than the paid and organic visibility of these others combined. It’s really breathtaking.”
+
+Besides the volume, what’s unusual about Temu’s ad strategy is the content of these ads, Ryan said. Temu’s ads on social media don’t tend to focus on one category, meaning they could show flashlights in one carousel slide and lingerie in the next. “It’s really surreal,” Ryan said. “It’s this untargeted, brute force kind of approach towards advertising. I actually think that their ads within Google Search and Shopping are some of their most targeted ads, because Google actually takes care of that.”
+
+One question, though, is how much this ad spend resonates with people or turns them into repeat buyers. In an attempt to answer this, Lipsman calculated the ratio of Temu’s daily active users to monthly active users. In September 2022, this ratio was 9%, but in October 2023, it reached some 20%, he said. “That’s a good sign that it’s getting stickier,” he said.
+
+Other numbers appear promising. GWS Magnify [estimates](https://www.retailbrew.com/stories/2023/10/12/temu-skyrocketing-challenging-amazon) Temu had 82.4 million active shoppers using its app in September, up from 4.6 million a year prior. Web searches for “Temu” are up 788% worldwide over the past 12 months, according to Google Trends. In October, 20% of U.S. adults [told the market researcher CivicScience](https://civicscience.com/after-major-growth-temu-could-be-poised-for-a-big-holiday-season/#:~:text=Twenty%20percent%20(20%25)%20of,from%2064%25%20to%2028%25.) that they had used Temu, double the number from March.
+
+MediaRadar expects to see a “similar ad spend investment” from Temu in 2024\. MediaRadar CEO Todd Krizelman told Modern Retail in an email that the strategy will likely focus on social and high-profile events. “Over time, the same level of investment might not be needed to remain top of mind,” he wrote.
+
+Besides running ads, Temu is fundamentally changing the way the ad landscape works, marketers say. Both Temu and Shein are [outbidding other retailers](https://www.modernretail.co/technology/the-new-scapegoats-brands-are-blaming-temu-shein-for-poor-business-performance/) via low ad prices and driving up customer acquisition costs. In a [November earnings call](https://seekingalpha.com/article/4646195-etsy-inc-etsy-q3-2023-earnings-call-transcript), Etsy’s CEO declared that Temu and Shein were “almost single-handedly having an impact on the cost of advertising,” especially when it came to Google and Meta.
+
+Ryan mentioned the Google Search results for “Lego toy” as indicative of this arms race of sorts. “They steamrolled every other retailer who resells Lego products,” he said. “And arguably, any of those ads would have been more relevant than the Temu ad. A concern that comes to me is, I view this as spamming the auctions.”
+
+“To me, it is imaginable — but unproven — that they are the largest advertiser in history,” Ryan said.

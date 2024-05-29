@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:44:08
+-->
+
+# NASA Unveils Design for Message Heading to Jupiter’s Moon Europa
+
+> 来源：[https://www.jpl.nasa.gov/news/nasa-unveils-design-for-message-heading-to-jupiters-moon-europa](https://www.jpl.nasa.gov/news/nasa-unveils-design-for-message-heading-to-jupiters-moon-europa)
+
+To hear audio of the spoken languages and see the sign, go to: [go.nasa.gov/MakeWaves](https://europa.nasa.gov/spacecraft/vault-plate/).
+
+In the spirit of the Voyager spacecraft’s [Golden Record](https://voyager.jpl.nasa.gov/golden-record/), which carries sounds and images to convey the richness and diversity of life on Earth, the layered message on Europa Clipper aims to spark the imagination and offer a unifying vision.
+
+“The content and design of Europa Clipper’s vault plate are swimming with meaning,” said Lori Glaze, director of the Planetary Science Division at NASA Headquarters in Washington. “The plate combines the best humanity has to offer across the universe – science, technology, education, art, and math. The message of connection through water, essential for all forms of life as we know it, perfectly illustrates Earth’s tie to this mysterious ocean world we are setting out to explore.”
+
+### **Reaching Out to the Cosmos**
+
+In 2030, after a 1.6-billion-mile (2.6-billion-kilometer) journey, Europa Clipper will begin orbiting Jupiter, making 49 close flybys of Europa. To determine if there are conditions that could support life, the spacecraft’s powerful suite of [science instruments](https://europa.nasa.gov/spacecraft/instruments/) will gather data about the moon’s subsurface ocean, icy crust, thin atmosphere, and space environment. The electronics for those instruments are housed in a [massive metal vault](https://www.jpl.nasa.gov/news/how-nasa-is-protecting-europa-clipper-from-space-radiation) designed to protect them from Jupiter’s punishing radiation. The commemorative plate will seal an opening in the vault.

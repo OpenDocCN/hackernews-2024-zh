@@ -1,0 +1,62 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:21
+-->
+
+# It’s not just the Super Bowl. Catching a game is becoming unaffordable | CNN Business
+
+> 来源：[https://lite.cnn.com/2024/02/04/business/its-not-just-the-super-bowl-going-to-a-game-is-becoming-unaffordable/index.html](https://lite.cnn.com/2024/02/04/business/its-not-just-the-super-bowl-going-to-a-game-is-becoming-unaffordable/index.html)
+
+Source: CNN
+
+Across the country, ticket prices have surged, making it impossible for many to afford to go see their favorite team play without spending a fortune.
+
+(And don’t even ask about [Super Bowl tickets](https://www.cnn.com/2024/01/29/business/super-bowl-ticket-prices/index.html#:~:text=The%20average%20price%20is%20hovering,than%20last%20year's%20big%20game.), which will be the most expensive on record. Hint: $9,000+)
+
+The price of tickets has surged far beyond inflation over the past few decades, and much of it has been by design. Teams create a limited supply of seats, and increased competition for those seats among people with disposable income is driving up prices fiercely. Dynamic pricing for tickets on [ticket-resale platforms](https://www.cnn.com/2023/12/08/tech/senators-unveil-live-ticketing-reform-bill-aimed-at-bots-and-resellers/index.html) and overbuilt new [stadiums and arenas](https://www.cnn.com/videos/sports/2023/01/09/future-of-stadiums-spc-spt-intl.cnn) with more luxury suites and premium seats have also driven up prices.
+
+That makes catching a game in person, increasingly, a luxury good. And that’s the way team owners and major sports leagues want it.
+
+“Tickets are not something that everybody buys. What the NFL wants is a lot of money for around 70,000 people in a city,” said Victor Matheson, a sports economist at College of the Holy Cross.
+
+Teams “don’t care if families can’t afford the seats as long as they can still hook them watching TV,” he said. Major sports leagues make around two-thirds of their revenue on television deals.
+
+Consumers have shifted their spending toward services and away from goods dishing out more for concert tickets, amusement parks, sporting events and other experiences since the height of the pandemic subsided. In sports, the impact has been huge: Attendance records for everything from women’s volleyball games at Nebraska to Lionel Messi’s MLS games were shattered last year.
+
+Higher demand has pushed up prices for these events, a trend some analysts have dubbed [“funflation.”](https://www.wsj.com/economy/consumers/its-getting-too-expensive-to-have-fun-a59e9df8)
+
+Ticket prices to sporting events increased 15% in December from the year prior, according to the latest data from the Bureau of Labor Statistics.
+
+In 2023, the average NFL ticket climbed 8.6% to $120, according to [Team Marketing Report](https://teammarketing.com/fancostindex/), a sports market research company. It costs $631 to take a family of four to a game and buy food, two souvenirs and a parking spot.
+
+MLB tickets increased 3.5% to an average of $37 in 2023\. It cost $266 to take a family to a game.
+
+It’s all part of a longer-term trend.
+
+Between 1999 and 2020, prices for admission to sporting events grew more than [twice as fast](https://www.bls.gov/blog/2020/you-paid-how-much-for-a-ticket-to-the-game.htm) as overall consumer prices, according to the BLS. Ticket prices were slow to recover in 2021 as stadiums reopened from pandemic closures. Many teams also slashed prices to win back fans. But prices have jumped back.
+
+Some consumers may also be seeing higher prices for games because of ticket-selling platforms. Ticketmaster and StubHub use sophisticated dynamic pricing algorithms that change minute-by-minute based on demand. Teams such as the New York Yankees have taken a stake in ticket resale platforms. These clubs see an opportunity to make more money by taking a cut of the secondary ticket sale between buyers and sellers.
+
+Top games can “skyrocket because you have software that allows tickets to be super flexible,” Matheson said.
+
+Despite the fact that seats are often unfilled in stadiums, teams are reluctant to sell empty seats for rock-bottom prices. They worry that selling the cheap seats as the teams get more desperate for fans in the stadium would push people in the future to wait for lower prices before buying their tickets. So seats sometimes sit empty or are covered over.
+
+The closing of the upper deck in Oakland helped the Athletics raise ticket prices during the early 2000s, for example. The team limited the supply of tickets with the hope it would create scarcity and give fans the incentive to buy tickets in advance. (The Athletics are now [leaving Oakland](https://www.cnn.com/2023/11/16/sport/mlb-approves-oakland-athletics-las-vegas/index.html) for Las Vegas.)
+
+“Teams don’t want fans to think that they can get tickets for essentially nothing if they just wait until the last minute,” Matheson said. “If fans thought that, they would never buy the full price tickets.”
+
+Many teams have also built new stadiums and arenas or remodeled existing facilities in recent decades. These new stadiums, many of which were taxpayer funded, have been built with reduced seating capacity than previous venues, allowing teams to charge higher prices.
+
+There are more luxury suites for deep-pocketed companies and fans than there used to be, said Dennis Coates, a sports economist at University of Maryland, Baltimore County.
+
+One little-known reason for that boom: Individual teams in many sports don’t have to share sales from premium seats and luxury boxes with the rest of the league, making it a key source of revenue, he said. Teams have to share other sources of revenue, such as money from lucrative television deals.
+
+“The new generation of stadiums are designed to maximize the number of really good seats at the expense of large numbers of cheap seats,” Matheson said. “You design arenas for a super-premium experience. There’s no sense in trying to make arenas that have large numbers of cheap seats.”
+
+The New York Yankees, Minnesota Twins, Florida Marlins and Atlanta Braves’ new stadiums each have [at least 8,000 fewer seats](https://www.sportstravelmagazine.com/sports-venue-design-capacity-seating-venues-shrinking-rangers-baseball/) than their previous homes.
+
+Five of the most recent seven NFL stadiums have [seating for 71,000 or less](https://lasvegassun.com/news/2018/may/09/why-a-65000-seat-stadium-capacity-suits-the-raider/).
+
+The new Allegiant Stadium in Las Vegas, home of the NFL’s Raiders team and where the upcoming Super Bowl will be played between the Kansas City Chiefs and the San Francisco 49ers February 11, holds 65,000 fans. Relatively small, that ranks it 27th out of 30 NFL stadiums in capacity.
+
+[See Full Web Article](https://www.cnn.com/2024/02/04/business/its-not-just-the-super-bowl-going-to-a-game-is-becoming-unaffordable/index.html)

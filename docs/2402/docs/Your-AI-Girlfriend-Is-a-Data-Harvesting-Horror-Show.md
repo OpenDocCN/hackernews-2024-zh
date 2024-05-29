@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:51:19
+-->
+
+# Your AI Girlfriend Is a Data-Harvesting Horror Show
+
+> 来源：[https://gizmodo.com/your-ai-girlfriend-is-a-data-harvesting-horror-show-1851253284](https://gizmodo.com/your-ai-girlfriend-is-a-data-harvesting-horror-show-1851253284)
+
+Lonely on Valentine’s Day? AI can help. At least, that’s what a number of companies hawking “romantic” chatbots will tell you. But as your robot love story unfolds, there’s a tradeoff you may not realize you’re making. According to a new study from Mozilla’s *Privacy Not Included project, [AI girlfriends and boyfriends](https://gizmodo.com/sam-altman-says-chatgpt-can-t-be-your-girlfriend-1851181240) harvest shockingly personal information, and almost all of them sell or share the data they collect.
+
+Like It or Not, Your Doctor Will Use AI | AI Unlocked
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/21541.vtt" srclang="en">
+
+“To be perfectly blunt, AI girlfriends and boyfriends are not your friends,” said Misha Rykov, a Mozilla Researcher, in a press statement. “Although they are marketed as something that will enhance your mental health and well-being, they specialize in delivering dependency, loneliness, and toxicity, all while prying as much data as possible from you.”
+
+AI Girlfriends Aren’t All Bad | AI Unlocked
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22134.vtt" srclang="en">
+
+AI Girlfriends Aren’t All Bad | AI Unlocked
+
+Mozilla dug into [11 different AI romance chatbots](https://foundation.mozilla.org/en/privacynotincluded/eva-ai-chat-bot-soulmate/), including popular apps such as Replika, Chai, Romantic AI, EVA AI Chat Bot & Soulmate, and CrushOn.AI. Every single one earned the Privacy Not Included label, putting these chatbots among the worst categories of products Mozilla has ever reviewed. The apps mentioned in this story didn’t immediately respond to requests for comment.
+
+You’ve heard stories about data problems before, but according to Mozilla, AI girlfriends violate your privacy in “disturbing new ways.” For example, CrushOn.AI collects details including information about sexual health, use of medication, and gender-affirming care. 90% of the apps may sell or share user data for targeted ads and other purposes, and more than half won’t let you delete the data they collect. Security was also a problem. Only one app, Genesia AI Friend & Partner, met Mozilla’s minimum security standards.
+
+One of the more striking findings came when Mozilla counted the trackers in these apps, little bits of code that collect data and share them with other companies for advertising and other purposes. Mozilla found the AI girlfriend apps used an average of 2,663 trackers per minute, though that number was driven up by Romantic AI, which called a whopping 24,354 trackers in just one minute of using the app.
+
+The privacy mess is even more troubling because the apps actively encourage you to share details that are far more personal than the kind of thing you might enter into a typical app. EVA AI Chat Bot & Soulmate pushes users to “share all your secrets and desires,” and specifically asks for photos and voice recordings. It’s worth noting that EVA was the only chatbot that didn’t get dinged for how it uses that data, though the app did have security issues.
+
+Data issues aside, the apps also made some questionable claims about what they’re good for. EVA AI Chat Bot & Soulmate bills itself as “a provider of software and content developed to improve your mood and well-being.” Romantic AI says it’s “here to maintain your MENTAL HEALTH.” When you read the company’s terms and services though, they go out of their way to distance themselves from their own claims. Romantic AI’s policies, for example, say it is “neither a provider of healthcare or medical Service nor providing medical care, mental health Service, or other professional Service.”
+
+That’s probably important legal ground to cover, given these app’s history. Replika reportedly encouraged a man’s attempt to [assassinate the Queen of England](https://gizmodo.com/man-sentenced-ai-girlfriend-assassinate-queen-1850904625). A Chai chatbot allegedly [encouraged a user to commit suicide](https://www.vice.com/en/article/pkadgm/man-dies-by-suicide-after-talking-with-ai-chatbot-widow-says).

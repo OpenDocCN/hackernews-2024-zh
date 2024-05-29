@@ -1,0 +1,66 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:39:54
+-->
+
+# Flipper Zero's Co-Founder Says the Hacking Tool Is All About Exposing Big Tech's Shoddy Security
+
+> 来源：[https://gizmodo.com/flipper-zeros-co-founder-says-the-hacking-tool-is-all-a-1851279603](https://gizmodo.com/flipper-zeros-co-founder-says-the-hacking-tool-is-all-a-1851279603)
+
+The [Flipper Zero may be one of the most versatile, and most controversial](https://gizmodo.com/flipper-zero-videogame-module-1851300303) keychain-sized devices ever put to market. The device can scan, receive, send, and mimic several types of signals. It can scan NFC and RFID signals used by many common products. It can replicate the frequency used for your workplace’s ID card. It’s a $169 doohickey [useful for everyday operations like opening your garage door](https://gizmodo.com/flipper-zero-10-useful-things-1851247732) or pen-testing security systems. It’s also been accused by the Canadian government of being [capable of replicating vehicle key fobs](https://gizmodo.com/canada-moves-to-ban-the-flipper-zero-over-car-hacking-f-1851242790) or even [shutting down iPhones with DDoS attacks](https://gizmodo.com/apple-fixes-flipper-zero-shutting-down-iphones-1851102972). Apple fixed that issue so the Flipper arguably did its job as a testing tool.
+
+Why Former Employees & Scarlett Johansson Are Questioning OpenAI
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22550.vtt" srclang="en">
+
+Flipper cofounder and COO Alex Kulagin has heard much of the controversy, but he still sees the product as more than the layman’s idea of a go-to device for the *Mr. Robot*-style hackerman. With [Flipper releasing its game controller add-on](https://gizmodo.com/flipper-zero-game-module-controller-raspberry-pi-1851248496) this month, Kulagin sees the Zero as a Swiss army knife for the extra geeky or the merely tech-curious. To him, the Flipper Zero is a whistleblower for the world’s security systems that rely on old, shoddy, and easily hacked tech. Gizmodo spoke with Kulagin at length about what plans Flipper has to expand their premiere product beyond its Tamagotchi-sized body and his hopes to move beyond the wide-ranging controversy that continues to follow it.
+
+*This interview has been edited for clarity and brevity.*
+
+**Gizmodo:** So can you give me a rundown of what the Video Game Module is and what it adds to the Flipper Zero that’s not already there.
+
+**Alex Kulagin:** We’re very excited because it’s our first collaboration or partnership of such scale. Raspberry Pi are legends in this world. The Video Game Model brings entertainment capabilities, as the Flipper lacked some of those important features. First of all, with video outputs, you can actually now mirror the Flipper screen to a bigger TV. It’s very fun to see. It’s weird, because the Flipper screen is super small. It’s like 640х480 resolution, but we are able to scale it up. And it’s fun to see it on a huge 4K TV. So the Flipper becomes very big, but it’s very sharp. We built in a motion sensor, the IMU, so you can play by tilting the device. One of the first demo games built for this is the *Air Arkanoid* game, which is very fun.
+
+**Giz:** Like a Wii controller?
+
+**AK:** Yeah. The third main feature, though it’s not less important, is that it’s built on the Raspberry Pi microcontroller. It can use the existing library of apps and code that’s already there and built for the Raspberry Pi Pico. The chip is quite powerful and has some unique features. For example, you can run Python on it. The Flipper can normally only run C [the coding language], and Python is much easier to understand.
+
+**Giz:** So it could already connect to TVs [through IR signals] and other IoT tech, but will you be able to cast your own video from a separate device to another screen through the Flipper. Even go so far as to cast it onto the screens of Times Square?
+
+**AK:** No, it actually requires the cable connection to do so. It’s like a standard DVI-D output, which many TVs support. I don’t think you can do anything in that area with this, but you never know. Sometimes the community comes up with some crazy abilities. But, by design, it’s more for entertainment and not for hacking stuff.
+
+**Giz:** Gotcha. That kind of points to your company’s philosophy. You guys create this tech very much for the DIYers and the people are just making their own stuff. When you’re designing something like this, where does your mind go? How did this kind of thing come together in the way that it did?
+
+**AK:** Flipper is a very expandable thing. So its core invites design. We made it open source, it has all these GPIO pins, it has many features out of the box already. But we designed it that way to expand it even more. So often, we have some internal hardware and software we need for work, or it’s just fun to do. This idea of outputting the video from Flipper to an external monitor actually started as a project from one of our developers because we wanted to show the Flipper screen on the front door of our office. They were using a Raspberry Pi Pico for this, and we had some testing that showed it actually works. So we hacked some things to do it. Then it became like this idea that we can actually make a product out of it. It’s similar to how we came up with the WiFi dev board we sell because our supplier didn’t have this debugging hardware in stock because of the chip shortage. So we had to come up with our hardware to actually debug and use it inside the team.
+
+**Giz:** How did you get connected to Raspberry Pi? Did you reach out to them or had you been in communication with them for a while for some sort of partnership?
+
+**AK:** I think they reached out to us first. At some point, we just started talking about what we could do together. Because for them, before they were buying chips from other vendors, and now they’re trying to make their own chips. And it’s an important area of business for them. So we were trying to find where we can be connected so their audience and our audience will be happy about the products.
+
+**Giz:** You guys are in an interesting place. The devices are legal pretty much everywhere, but you’ve caught flak from people who I don’t know if they really understand what the device is, or how it’s used. What are your thoughts on the current discussions about the Flipper itself and how people are using it now, for both “legitimate uses” or just penetrating different systems to prove that they can?
+
+**AK:** It’s important to know that Flipper is actually not, you know, cutting edge technology. We packed all this technology, all this, like access control technologies that we use every day, in one device. But it’s not like it can interact with most of the super modern, cutting-edge technologies, right? Like a modern car, the Flipper can’t actually do anything with that. I think it’s important to understand there are a lot of things around us that are really outdated and old, something people don’t really think about a lot. Like, you try to put the most secure key lock in your door, but many people don’t think that you should have a secure garage door as well, and they have a garage opening device from the 2000s. People just don’t think that it can be hacked in any way, but people use these cheap products that are not encrypted, and these vulnerabilities have been known for decades. We don’t do anything new in this area. But the awareness of users who possess these devices is very low.
+
+**Giz:** So you see yourselves as bringing awareness to these issues?
+
+**AK:** What Flipper brings is awareness that, guys, this thing is not secure, like if you should actually think if something can be hacked by a $100 toy, maybe it’s too old. This is important for us to do. Now we see some vendors who sell NFC readers actually bring new products to market with Flipper Zero-proof advertisements. They use it as a marketing thing, which is a win for us, right? That means we did something good. This is the philosophy we stick to it.
+
+**Giz:** What about the people who don’t use it in the prescribed way? There’s several other firmwares that support the Flipper Zero
+
+**AK:** We monitor a lot of stuff that happens with a device. We have Discord and we have a Reddit to see what’s happening. We monitor alternative firmwares and what’s happening there because it’s also open-sourced. And if we see that something can be sensitive enough, we try to contain it. Like with sub-Ghz frequencies and login codes. Even if it’s really old and hacked in many ways, even if it’s technically possible to replay it, we don’t let users do it, there’s no button. The analogy I have is if it’s like a keylock or a doorknob. If it’s a doorknob, it’s not encrypted in any way. It’s not actually hacking something, you’re just making people realize that your thing is not secure at all.
+
+**Giz:** I think that goes back to the very minimal way that some people think of hacking, especially when most hacking is literally just social engineering. Do you feel like sometimes that you’re almost on a mission to educate the world about what these definitions mean from a technical stance?
+
+**AK:** Many people buy Flipper without knowing anything. They see a TikTok and think its cool, they see it do something weird like opening a Tesla charging port and they think what is this cyberpunk device? They buy it, and they say “okay, what can I do with it.” This is just tech-curious people, not established geeks, who never touched a Raspberry Pi or Arduino stuff. But these little hacks bring them to an awareness of how it actually works. We think it’s important to educate people about how this stuff works and what the risks are. There are many people with much more sophisticated devices. There’s stuff sold on Amazon [Flipper has been banned from the site] that is far more capable. We don’t see it as creating more risk. We see it as we’re reducing the risk for many people just by letting them know their stuff has flaws.
+
+**Giz:** Will we ever reach a point when our technical ability is equivalent to our technical knowledge as a society?
+
+**AK:** I think with enough publicity about it. Before 2015, nobody was thinking about data privacy too much. We were just putting things on Facebook and didn’t think about what happened next. For the last eight years, it’s become a very big thing to talk about. And now everybody’s thinking about privacy, about cookies, all this stuff. It’s become so big because the media is talking about it so much and Flipper makes the media talk about these things too. For example this Apple DDoS thing. It was there for a long time, you could do it with many devices, but Flipper made it more accessible and people started talking about it, and Apple had to actually fix it, which is a good thing. You cannot reach maximum awareness. It’s not possible to have total awareness, but maybe we could have it at some basic level, at least.
+
+**Giz:** What are your future plans? Are you going to keep expanding the Flipper’s capabilities with more modules?
+
+**AK:** In terms of models, we have a few in development right now. It’s going to be low in terms of other things coming out this year, less significant than [the Video Game Module], but we have some important technologies we always wanted to do on paper, but there’s no physical hardware to do it with yet. Our ultimate goal is to make a market for it. We didn’t restrict people from making and selling their own modules. We want to be like the Arduino market, which has tons and tons of models and people can buy from different vendors. The greater goal is to show what you actually can do. But we’ll launch a couple more modules and we’ll see. We also have our attention on new devices we built outside of Flipper Zero.
+
+**Giz:** Any chance you can give me a hint on those plans for future, non-Flipper devices?
+
+**AK:** Ehh, not really, not at the moment. But we’ll let you know.

@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:11:03
+-->
+
+# Tech layoffs jump in January as Alphabet, Meta, Microsoft reach high
+
+> 来源：[https://www.cnbc.com/2024/01/26/tech-layoffs-jump-in-january-as-alphabet-meta-microsoft-reach-high.html](https://www.cnbc.com/2024/01/26/tech-layoffs-jump-in-january-as-alphabet-meta-microsoft-reach-high.html)
+
+ L-R: Mark Zuckerberg, CEO of Facebook, Satya Nadella, CEO of Microsoft, and Sundar Picahi, CEO of Google.
+
+Reuters | Getty Images | Getty Images
+
+The S&P 500 is trading at a record and the Nasdaq is at its highest in two years. [Alphabet](/quotes/GOOGL/) shares reached a new [pinnacle](https://www.cnbc.com/2024/01/25/alphabet-shares-close-at-a-record-joining-microsoft-and-meta.html) on Thursday, as did [Meta](/quotes/META/) and [Microsoft](/quotes/MSFT/), which ran past $3 trillion in market cap.
+
+Don't tell that to the bosses.
+
+While Wall Street cheers on Silicon Valley, tech companies are downsizing at an accelerating clip. So far in January, some 23,670 workers have been laid off from 85 tech companies, according to the website [Layoffs.fyi](http://Layoffs.fyi). That's the most since March, when almost 38,000 people in the industry were shown the exits.
+
+Activity picked up this week with [SAP](/quotes/SAP/) announcing job changes or layoffs for [8,000 employees](https://www.cnbc.com/2024/01/23/sap-plans-job-changes-or-buyouts-for-8000-employees-in-restructuring-plan.html) and Microsoft cutting [1,900 positions](https://www.cnbc.com/2024/01/25/microsoft-lays-off-1900-workers-nearly-9percent-of-gaming-division-after-activision-blizzard-acquisition.html) in its gaming division. Additionally, high-valued fintech startup [Brex laid off 20% of its staff](https://www.brex.com/journal/a-message-from-our-founder) and [eBay](/quotes/EBAY/) slashed 1,000 jobs, or 9% of its full-time workforce. Jamie Iannone, eBay's CEO, [told employees](https://www.cnbc.com/2024/01/23/ebay-to-slash-about-1000-roles-or-approximately-9percent-of-full-time-employees.html) in a memo that, "We need to better organize our teams for speed — allowing us to be more nimble, bring like-work together, and help us make decisions more quickly." 
+
+Earlier in the month, Google [confirmed that it cut several hundred jobs](https://www.cnbc.com/2024/01/11/google-layoffs-hundreds-of-jobs-cut-across-engineering-and-hardware.html) across the company, and [Amazon](/quotes/AMZN/) has eliminated [hundreds of positions](https://www.cnbc.com/2024/01/10/amazon-layoffs-hundreds-of-jobs-cut-in-prime-video-and-mgm-studios.html) spanning its Prime Video, MGM Studios, Twitch and Audible divisions. [Unity](/quotes/U/) said it's cutting about [25% of its staff](https://www.cnbc.com/2024/01/08/unity-software-to-lay-off-1800-employees-as-part-of-a-corporate-restructuring.html#:~:text=Unity%20Software%20said%20Monday%20that%20it's%20cutting%201%2C800%20jobs%2C%20or,of%20a%20corporate%20restructuring%20plan.), and Discord, which offers a popular messaging service used by gamers, is [shedding 17% of its workforce](https://www.cnbc.com/2024/01/11/discord-cuts-17percent-of-workforce-latest-tech-company-to-downsize-in-2024.html).
+
+The swarm of activity comes ahead of a barrage of tech earnings next week, when Alphabet, Amazon, Apple, Meta and Microsoft are all scheduled to report quarterly results. Investors lauded the cost-cutting measures that companies put in place last year in response to rising inflation, interest rates hikes, recession concerns and a brutal market downturn in 2022\. Even with an improving economic outlook, the thriftiness continues.
+
+Layoffs peaked in January of last year, when 277 technology companies cut almost 90,000 jobs, as the tech industry was forced to reckon with the end of a more than decade-long bull market. Most of the rightsizing efforts took place in the first quarter of 2023, and the number of cuts proceeded to decline each month through September, before ticking up toward the end of the year.
+
+One explanation for the January surge as companies budget for the year ahead: They've learned they can [do more with less](https://www.cnbc.com/2023/05/11/techs-new-business-model-do-more-with-less-.html).
+
+At Meta, in CEO [Mark Zuckerberg's](https://www.cnbc.com/mark-zuckerberg/) words, 2023 was the ["year of efficiency,"](https://www.cnbc.com/2023/02/01/metas-year-of-efficiency-everything-wall-street-needed-to-hear.html) and the stock [jumped almost 200%](https://www.cnbc.com/2023/12/18/metas-stock-wrapping-up-record-year-spurred-by-cost-cuts.html) alongside 20,000 job cuts. Across the industry, artificial intelligence was the [rallying cry](https://www.cnbc.com/2023/12/27/generative-ai-big-year-meant-profit-for-nvidia-experiments-elsewhere.html) as new generative AI technologies showed what was possible in automating customer service, booking travel and creating marketing campaigns.
+
+## 'Reposition themselves for AI'
+
+The AI hype raised concerns in many corners of the economy about the declining need for human labor as technology gets smarter. But it's having a more immediate impact on the workforce. AI demand is so great that some tech companies are cutting headcount in parts of the business to invest more heavily in developing AI products.
+
+"These companies, in general, are reducing numbers of employees associated with product lines or divisions that have not been successful because they want to reposition themselves for AI," said Art Zeile, CEO of DHI group, which owns the tech recruiting platform Dice.
+
+Zeile was quick to point out that the cuts we're seeing this January are far below the numbers from a year prior, adding that "it's not the kind of news that it was earlier."
+
+Company execs choose different verbiage to convey their downsizing message to employees and investors, but the through line is that they're trying to become more focused.
+
+Microsoft Gaming CEO Phil Spencer said his company's layoffs were part of a larger "execution plan" that would reduce "areas of overlap," a little more than three months after Microsoft [closed its acquisition of Activision Blizzard](https://www.cnbc.com/2023/10/13/microsoft-closes-activision-blizzard-deal-after-regulatory-review.html). SAP said its restructuring is designed to increase "focus on key strategic growth areas, in particular Business AI." 
+
+Phil Spencer, CEO of Microsoft Gaming, appears at the Political Opening of the Gamescom conference in Cologne, Germany, on Aug. 23, 2023.
+
+Franziska Krug | German Select | Getty Images
+
+Alphabet CEO [Sundar Pichai](https://www.cnbc.com/sundar-pichai/) told employees in a [memo](https://www.cnbc.com/2024/01/17/google-ceo-says-job-cuts-needed-in-2024-to-serve-ambitious-goals.html) titled "2024 priorities and the year ahead" that, "we have ambitious goals and will be investing in our big priorities this year," and that "to create the capacity for this investment, we have to make tough choices." And at Amazon's Audible unit, CEO Bob Carrigan said "getting leaner and more efficient" is the way the company needs to operate for the "foreseeable future."
+
+Nigel Vaz, CEO of consulting firm Publicis Sapient, told CNBC that some companies are probably looking at the boon that Meta and [Salesforce](/quotes/CRM/) got after their hefty cost-cutting measures last year.
+
+Salesforce [cut about 10% of its workforce](https://www.cnbc.com/2023/01/04/salesforce-is-cutting-10percent-of-its-workforce-more-than-7000-employees.html) in January 2023, and the stock ended up nearly doubling for the year, its best performance since 2009\. Following Meta's announced cuts, the company's shares had their best year since Facebook debuted on the Nasdaq in 2012.
+
+"I look at Meta and Salesforce as only two examples of companies that needed the impetus," Vaz said. "The minute they got the impetus, then demonstrated what happens when you act with edge on stuff that you probably knew you needed to do."
+
+## Not just tech
+
+The layoffs aren't limited to the tech industry. Embattled bank [Citigroup](/quotes/C/) said earlier this month that it was [cutting 10% of its workforce](https://www.cnbc.com/2024/01/12/citigroup-cutting-10percent-of-workforce.html). And on Thursday [Levi Strauss](/quotes/LEVI/) said it will [lay off](https://www.cnbc.com/2024/01/25/levi-strauss-plans-to-cut-at-least-10percent-of-its-global-corporate-workforce-in-restructuring.html) at least 10% of its global corporate workforce as part of a restructuring. Paramount became the latest media brand to announce cuts, with CEO Bob Bakish [saying on Thursday](https://www.cnbc.com/2024/01/25/paramount-ceo-bob-bakish-announces-layoffs.html) the business needs to "operate as a leaner company and spend less."
+
+Within tech, a wide variety of companies, big and small and spanning the consumer and enterprise markets, are eliminating jobs.
+
+At the large publicly traded companies, there's an "intense focus" on profitability, margins and cost cutting, said Tim Herbert, chief research officer at CompTIA, which tracks trends across the tech sector. But, he added, there's an "enormous base" of small and mid-sized tech companies across the U.S., and that in some cases contractors, freelancers and overseas workers are being hit particularly hard.
+
+However, Herbert echoed Zeile in noting that there's not enough data to get too panicked about the activity in January.
+
+"There's a lot of nuance to the data, so we always want to be a little bit careful not to read too much into it," Herbert said. "We don't want to ever get too hung up on just one month of data, or even two months of data."
+
+While investors will get a clearer picture on the near-term outlook for business and consumer spending in tech earnings announcements next week, the latest macroeconomic reports provide some reasons for optimism.
+
+The [economy grew](https://www.cnbc.com/2024/01/25/gdp-q4-2023-the-us-economy-grew-at-a-3point3percent-pace-in-the-fourth-quarter.html) at a faster-than-expected pace in the fourth quarter, and inflation cooled over that stretch, the Commerce Department reported Thursday.
+
+[Gross domestic product](https://www.bea.gov/sites/default/files/2024-01/gdp4q23-adv.pdf) increased at a 3.3% annualized rate in the quarter, topping the Wall Street consensus estimate for a gain of 2%. Meanwhile, consumer prices rose 2.7% on annual basis in the quarter, down from 5.9% a year ago. Inflation has been easing from its pandemic-era peak in mid-2022.
+
+The market has been rallying, as investors see those key numbers leading to the likelihood of Federal Reserve rate cuts in 2024 after the central bank lifted its benchmark rate 11 times in less than two years to fight inflation.
+
+Vaz said many corporate leaders are optimistic over "[inflation](https://www.cnbc.com/2024/01/22/stock-market-hits-new-high-after-2-years-overcoming-a-nasty-inflation-period-and-surging-rates.html) actually meaningfully starting to come down" at the same time that "[spending](https://www.cnbc.com/2024/01/10/consumer-spending-rises-in-december-to-end-solid-holiday-season-cnbc/nrf-retail-monitor-shows.html) is essentially coming back in so many sectors."
+
+*— CNBC's Michael Bloom, Annie Palmer and Jennifer Elias contributed to this report*
+
+**WATCH:** [Google layoffs hit Moonshots Factor](https://www.cnbc.com/video/2024/01/23/google-cuts-hit-moonshots-factory.html)

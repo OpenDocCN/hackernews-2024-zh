@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:34
+-->
+
+# What PWA Can Do Today
+
+> 来源：[https://whatpwacando.today](https://whatpwacando.today)
+
+# What PWA Can Do Today
+
+A showcase of what is possible with Progressive Web Apps today.
+
+A Progressive Web App (PWA) is a website that can be installed on your device and provide an app-like experience [read more](/info)
+
+## How to use this app
+
+This app is itself a Progressive Web App which means it can be installed to the home screen of your mobile device or to your desktop.
+
+After installing you can check the demos of the features below to see what is supported on your device.
+
+When the button below becomes enabled, you can install this app.
+
+<material-button id="install-button" label="Install to home screen" raised="">*add_to_home_screen*</material-button>
+
+Check the demos of the features below to see what is supported on your device.
+
+## Features
+
+[<material-button>*videocam*</material-button>](/media)[<material-button>*gps_fixed*</material-button>](/geolocation)[<material-button>*notifications_none*</material-button>](/notifications)[<material-button>*auto_awesome_motion*</material-button>](/view-transitions)[<material-button>*fingerprint*</material-button>](/authentication)[<material-button>*language*</material-button>](/protocol-handling)[<material-button>*folder_open*</material-button>](/file-handling)[<material-button>*account_box*</material-button>](/contacts)[<material-button>*share*</material-button>](/web-share)[<material-button>*qr_code_scanner*</material-button>](/barcode)[<material-button>*face*</material-button>](/face-detection)[<material-button>*vibration*</material-button>](/vibration)[<material-button>*mic*</material-button>](/audio-recording)[<material-button>*play_circle_filled*</material-button>](/audio)[<material-button>*tune*</material-button>](/audiosession)[<material-button>*screen_share*</material-button>](/capture-handle)[<material-button>*sync*</material-button>](/background-sync)[<material-button>*downloading*</material-button>](/background-fetch)[<material-button>*inventory*</material-button>](/storage)[<material-button>*bluetooth*</material-button>](/bluetooth)[<material-button>*nfc*</material-button>](/nfc)[<material-button>*layers*</material-button>](/ar-vr)[<material-button>*credit_card*</material-button>](/payment)[<material-button>*screen_lock_portrait*</material-button>](/wake-lock)[<material-button>*screen_rotation*</material-button>](/device-orientation)[<material-button>*3d_rotation*</material-button>](/device-motion)[<material-button>*network_check*</material-button>](/network-info)[<material-button>*record_voice_over*</material-button>](/speech-synthesis)[<material-button>*hearing*</material-button>](/speech-recognition)[<material-button>*touch_app*</material-button>](/multi-touch)

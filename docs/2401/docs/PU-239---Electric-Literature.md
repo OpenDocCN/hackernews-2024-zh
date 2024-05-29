@@ -1,0 +1,333 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:35
+-->
+
+# PU-239 - Electric Literature
+
+> 来源：[https://electricliterature.com/pu-239-ken-kalfus/](https://electricliterature.com/pu-239-ken-kalfus/)
+
+## PU-239
+
+#### “PU-239”
+by Ken Kalfus
+
+Someone committed a simple error that, according to the plant’s blueprints, should have been impossible, and a valve was left open, a pipe ruptured, a technician was trapped in a crawlspace, and a small fire destroyed several workstations. At first the alarm was discounted: false alarms commonly rang and flashed through the plant like birds in a tropical rain forest. Once the seriousness of the accident was appreciated, the rescue crew discovered that a soft drink dispenser waiting to be sent out for repair blocked the room in which the radiation suits were kept. After moving it and entering the storage room, they learned that several of the oxygen tanks had been left uncharged. By the time they reached the lab the fire was nearly out, but smoke laced with elements from the actinide series filled the unit. Lying on his back above the ceiling, staring at the wormlike pattern of surface corrosion on the tin duct a few centimeters from his face, Timofey had inhaled the fumes for an hour and forty minutes. In that time he had tried to imagine that he was inhaling dollar bills and that once they lodged in his lungs and bone marrow they would bombard his body tissue with high-energy dimes, nickels, and quarters.
+
+Timofey had worked in 16 nearly his entire adult life, entrusted with the bounteous, transfiguring secrets of the atom. For most of that life, he had been exhilarated by the reactor’s song of nuclear fission, the hiss of particle capture and loss. Highly valued for his ingenuity, Timofey carried in his head not only a detailed knowledge of the plant’s design, but also a precise recollection of its every repair and improvised alteration. He knew where the patches were and how well they had been executed. He knew which stated tolerances could be exceeded and by how much, which gauges ran hot, which ran slow, and which could be completely ignored. The plant managers and scientists were often forced to defer to his judgment. On these occasions a glitter of derision showed in his voice, as he tapped a finger significantly against a sheet of engineering designs and explained why there was only a single correct answer to the question.
+
+After Timofey’s death, his colleagues recalled a dressing down he had received a few years earlier at the hands of a visiting scientist. No one remembered the details, except that she had proposed slightly altering the reaction process in order to produce a somewhat greater quantity of a certain isotope that she employed in her own research. Hovering in his stained and wrinkled white coat behind the half dozen plant officials whom she had been addressing, Timofey objected to the proposal. He said that greater quantities of the isotope would not be produced in the way she suggested and, in fact, could not be produced at all, according to well established principles of nuclear physics. Blood rushed to the woman’s square, fleshy, bulldog face. “Idiot!” she spat. “I’m Nuclear Section Secretary of the Academy of Sciences. I fucking *own* the established principles of nuclear physics. You’re a *technician!”* Those who were there recalled that Timofey tried to stand his ground, but as he began to explain the flaw in her reasoning his voice lost its resonance and he began to mumble, straying away from the main point. She cut him off, asking her audience, “Are there any other questions, any educated questions?” As it turned out, neither Timofey nor the scientist was ever proved right. The Defense Ministry rejected the proposal for reasons of economy.
+
+Timofey’s relations with his coworkers were more comfortable, if distant, and he usually joined the others in his unit at lunch in the plant’s low-ceilinged, windowless buffet. The room rustled with murmured complaint. Timofey could hardly be counted among the most embittered of the technical workers — a point sagely observed later. All joked with stale irony about the lapses in safety and the precipitous decline in their salaries caused by inflation; these comments had become almost entirely humorless three months earlier, when management followed a flurry of assuring memos, beseeching directives, and unambiguous promises with a failure to pay them at all. No one had been paid since.
+
+Every afternoon at four Timofey fled the compromises and incompetence of his workplace in an old Zhiguli that he had purchased precisely so that he could arrive home a half hour earlier than if he had taken the tram. Against the odds set by personality and circumstance, he had married, late in his fourth decade, an electrical engineer assigned to another unit. Now, with the attentiveness he had once offered the reactor, Timofey often sat across the kitchen table from his wife with his head cocked, listening to their spindly, asthmatic eight-year-old son, Tolya, in the next room give ruinous commands to his toy soldiers. A serious respiratory ailment similar to the boy’s kept Marina from working; disability leave had brought a pretty bloom to her soft cheeks.
+
+The family lived on the eighth floor of a weather-stained concrete apartment tower with crumbling front steps and unlit hallways. In this rotted box lay a jewel of a two-bedroom apartment that smelled of fresh bread and meat dumplings and overlooked a birch forest. Laced with ski tracks in the winter and fragranced by grilled shashlik in the summer, home to deer, rabbits, and even gray wolves, the forest stretched well beyond their sight, all the way to the city’s double-fenced perimeter.
+
+His colleagues thought of Marina and the boy as Timofey was pulled from the crawlspace. He was conscious, but dazed, his eyes unfocused and his face slack. Surrounded by phantoms in radiation suits, Timofey saw the unit as if for the first time: the cracked walls, the electrical cords snaking underfoot, the scratched and fogged glass over the gauges, the mold-spattered valves and pipes, the disabled equipment piled in an unused workstation, and the frayed tubing that bypassed sections of missing pipe and was kept in place by electrical tape. He staggered from the lab, took a shower, vomited twice, disposed of his clothes, and was briefly examined by a medic, who took his pulse and temperature. No one looked him in the eye. Timofey was sent home. His colleagues were surprised when he returned the next day, shrugging off the accident and saying that he had a few things to take care of before going on the “rest leave” he had been granted as a matter of course. But his smile was as wan as the moon on a midsummer night, and his hands trembled. In any case, his colleagues were too busy to chat. The clean-up was chaotically underway and the normal activities of the plant had been suspended.
+
+Early one evening a week after the “event,” as it was known in the plant and within the appropriate ministries (it was not known anywhere else), Timofey was sitting at a café table in the bar off the lobby of a towering Brezhnevera hotel on one of the boulevards that radiated from Moscow’s nucleus. A domestically made double-breasted sports jacket the color of milk chocolate hung from his frame like wash left to dry. He was only fifty years old but, lank and stooped, his face lined by a spiderwork of dilated veins, he looked at least fifteen years older, almost a veteran of the war. His skin was as gray as wet concrete, except for the radiation erythema inflaming the skin around his eyes and nose. Coarse white hair bristled from his skull. Set close beneath white caterpillar eyebrows, his blue eyes blazed.
+
+He was not by nature impressed by attempts to suggest luxury and comfort, and the gypsies and touts milling outside the entrance had in any case already mitigated the hotel’s grandeur. He recognized that the lounge area was meant to approximate the soaring glass and marble atria of the West, but the girders of the greenhouse roof impended two stories above his head, supported by walls of chipped concrete blocks. A line of shuttered windows ran the perimeter above the lounge, looking down upon it as if it were a factory floor. The single appealing amenity was the set of flourishing potted plants and ferns in the center of the room. As Timofey watched over a glass of unsipped vodka that had cost him a third of his remaining rubles, a fat security guard in a maroon suit flicked a cigarette butt into the plant beds and stalked away.
+
+Timofey strained to detect the aspirates and dental fricatives of a foreign language, but the other patrons were all either Russian or “black” — that is, Caucasian. Overweight, unshaven men in lurid track suits and cheap leather jackets huddled over the stained plastic tables, blowing smoke into each other’s faces. Occasionally they looked up from their drinks and eyed the people around them. Then they fell back into negotiation. At another table, a rectangular woman in a low-cut, short black dress and black leggings scowled at a newspaper.
+
+Directly behind Timofey, sitting alone, a young man with dark, bony features decided that this hick would be incapable of getting a girl on his own. Not that there would be too many girls around this early. He wondered if Timofey had any money and whether he could make him part with it. Certainly the mark would have enough for one of the kids in ski parkas waving down cars on the boulevard. The young man, called Shiv by his Moscow acquaintances (he had no friends), got up from his table, leaving his drink.
+
+“First time in Moscow, my friend?”
+
+Timofey was not taken off guard. He slowly raised his head and studied the young man standing before him. Either the man’s nose had once been broken, or his nose had never been touched and the rest of his face had been broken many times, leaving his cheeks and the arches beneath his eyes jutted askew. The youth wore a foreign blazer and a black shirt, and what looked like foreign shoes as well, a pair of black loafers. His dark, curly hair was cut long, lapping neatly against the top of his collar. Jewelry glinted from his fingers and wrists. It was impossible to imagine the existence of such a creature in 16.
+
+Shiv didn’t care for the fearlessness in Timofey’s eyes; it suggested a profound ignorance of the world. But he pulled a chair underneath him, sat down heavily, and said in a low voice, “It’s lonely here. Would you like to meet someone?”
+
+The mark didn’t reply, nor make any sign that he had even heard him. His jaw was clenched shut, his face blank. Shiv wondered whether he spoke Russian. He himself spoke no foreign languages and detested the capriciousness with which foreigners chose to speak their own. He added, “You’ve come to the right place. I’d be pleased to make an introduction.”
+
+Timofey continued to stare at Shiv in a way that he should have known, if he had any sense at all, was extremely dangerous. A crazy, Shiv thought, a waste of time. But then the mark abruptly rasped, in educated, unaccented Russian, “I have something to sell.”
+
+Shiv grinned, showing large white canines. He congratulated him, “You’re a businessman. Well, you’ve come to the right place for that too. I’m also a businessman. What is it you want to sell?”
+
+“I can’t discuss it here.”
+
+“All right.”
+
+Shiv stood and Timofey tentatively followed him to a little alcove stuffed with video poker machines. They whined and yelped, devouring gambling tokens. Incandescent images of kings, queens, and knaves flickered across the young man’s face.
+
+“No, this isn’t private enough.”
+
+“Sure it is,” Shiv said. “More business is done here than on the Moscow Stock Exchange.”
+
+“No.”
+
+Shiv shrugged and headed back to his table, which the girl, in a rare display of zeal, had already cleared. His drink was gone. Shiv frowned, but knew he could make her apologize and give him another drink on the house, which would taste much better for it. He had that kind of respect, he thought.
+
+“You’re making the biggest mistake of your life,” Timofey whispered behind him. “I’ll make you rich.”
+
+What changed Shiv’s mind was not the promise, which these days was laden in nearly every commercial advertisement, political manifesto, and murmur of love. Rather, he discerned two vigorously competing elements within the mark’s voice. One of them was desperation, in itself an augury of profit. Yet as desperate as he was, Timofey had spoken just barely within range of Shiv’s hearing. Shiv was impressed by the guy’s self-control. Perhaps he was serious after all.
+
+He turned back toward Timofey, who continued to stare at him in appraisal. With a barely perceptible flick of his head, Shiv motioned him toward a row of elevators bedecked with posters for travel agencies and masseuses. Timofey remained in the alcove for a long moment, trying to decide whether to follow. Shiv looked away and punched the call button. After a minute or so the elevator arrived. Timofey stepped in just as the doors were closing.
+
+Shiv said, “If you’re jerking me around …”
+
+The usually reliable fourth-floor *dezhurnaya,* the suppurating wart who watched the floor’s rooms, decided to be difficult. Shiv slipped her a five dollar bill, and she said, “More.” She returned the second fiver because it had a crease down the middle, dispelling its notional value. Shiv had been trying to pass it off for weeks and now conceded that he would be stuck with it until the day he died. The crone accepted the next bill, scowling, and even then gazed a long time into her drawer of keys, as if undecided about giving him one.
+
+As they entered the room, Shiv pulled out a pack of Marlboros and a gold-plated lighter and leaned against a beige chipboard dresser. The room’s ponderous velvet curtains smelled of insecticide; unperturbed, a bloated fly did lazy eights around the naked bulb on the ceiling. Shiv didn’t offer the mark a cigarette. “All right,” he said, flame billowing from the lighter before he brought it to his face. “This better be worth my while.”
+
+Timofey reached into his jacket, almost too abruptly: he didn’t notice Shiv tense and go for the dirk in his back pocket. The mark pulled out a green cardboard folder and proffered it. “Look at this.”
+
+Shiv returned the blade. He carried four knives of varying sizes, grades, and means of employment.
+
+“Why?”
+
+“Just look at it.”
+
+Shiv opened the folder. Inside was Timofey’s internal passport, plus some other documents. Shiv was not accustomed to strangers shoving their papers in his face; indeed, he knew the family names of very few people in Moscow. This guy, then, had to be a nut case, and Shiv rued the ten bucks he had given the *dezhurnaya*. The mark stared up through the stamped black-and-white photograph as if from under water. “Timofey Fyodorovich, pleased to meet you. So what?”
+
+“Look at where I live: Skotoprigonyevsk-16.”
+
+Shiv made no sign of being impressed, but for Timofey the words had the force of an incantation. The existence of the city, a scientific complex established by the military, had once been so secret that it was left undocumented on the Red Army’s own field maps. Even its name, which was meant to indicate that it lay sixteen kilometers from the original Skotoprigonyevsk, was a deception: the two cities were nearly two hundred kilometers apart. Without permission from the KGB, it had been impossible to enter or leave 16\. Until two years earlier, Timofey had never been outside, not once in twenty-three years. He now realized, as he would have realized if he hadn’t been so distracted by the events of the past week, that it wasn’t enough to find a criminal. He needed someone with brains, someone who had read a newspaper in the last five years.
+
+“Now look at the other papers. See, this is my pass to the Strategic Production Facility.”
+
+“Comrade,” Shiv said sarcastically, “if you think I’m buying some fancy documents — ”
+
+“Listen to me. My unit’s principal task is the supply of the strategic weapons force. Our reactor produces Pu-239 as a fission by-product for manufacture into warheads. These operations have been curtailed, but the reactors must be kept functioning. Decommissioning them would be even more costly than maintaining them — and we can’t even do that properly.” Timofey’s voice fell to an angry whisper. “There have been many lapses in the administration of safety procedure.”
+
+Timofey looked intently at Shiv, to see if he understood. But Shiv wasn’t listening; he didn’t like to be lectured and especially didn’t like to be told to read things, even identity papers. The world was full of men who knew more than Shiv did, and he hated each one of them. A murderous black cloud rose from the stained orange carpeting at his feet and occulted his vision. The more Timofey talked, the more Shiv wanted to hurt him. But at the same time, starting from the moment he heard the name Skotoprigonyevsk-16, Shiv gradually became aware that he was onto something big, bigger than anything he had ever done before. He was nudged by an incipient awareness that perhaps it was even too big for him.
+
+In flat, clipped sentences, Timofey spoke: “There was an accident. I was contaminated. I have a wife and child, and nothing to leave them. This is why I’m here.”
+
+“Don’t tell me about your wife and child. You can fuck them both to hell. I’m a businessman.”
+
+For a moment, Timofey was shocked by the violence in the young man’s voice. But then he reminded himself that, in coming to Moscow for the first time in twentyfive years, he had entered a country where violence was the most stable and valuable currency. Maybe this was the right guy for the deal after all. There was no room for sentimentality.
+
+He braced himself. “All right then. Here’s what you need to know. I have diverted a small quantity of fissile material. I’m here to sell it.”
+
+Shiv removed his handkerchief again and savagely wiped his nose. He had a cold, Timofey observed. Acute radiation exposure severely compromised the immune system, commonly leading to fatal bacterial infection. He wondered if the hoodlum’s germs were the ones fated to kill him.
+
+Timofey said, “Well, are you interested?”
+
+To counteract any impression of weakness given by the handkerchief, Shiv tugged a mouthful of smoke from his cigarette.
+
+“In what?”
+
+“Are you listening to anything I’m saying? I have a little more than three hundred grams of weapons-grade plutonium. It can be used to make an atomic bomb. I want thirty thousand dollars for it.”
+
+As a matter of principle, Shiv laughed. He always laughed when a mark named a price. But a chill seeped through him as far down as his testicles.
+
+“It will fetch many times that on the market. Iraq, Iran, Libya, North Korea all have nuclear weapons programs, but they don’t have the technology to produce enriched fissile material. They’re desperate for it; there’s no price Saddam Hussein wouldn’t pay for an atomic bomb.”
+
+“I don’t know anything about selling this stuff …”
+
+“Don’t be a fool,” Timofey rasped. “Neither do I. That’s why I’ve come here. But you say you’re a businessman. You must have contacts, people with money, people who can get it out of the country.”
+
+Shiv grunted. He was just playing for time now, to assemble his thoughts and devise a strategy. The word fool remained lodged in his gut like a spoiled piece of meat.
+
+“Maybe I do, maybe I don’t.”
+
+“Make up your mind.”
+
+“Where’s the stuff?”
+
+“With me.”
+
+A predatory light flicked on in the hoodlum’s eyes. But Timofey had expected that. He slowly unbuttoned his jacket. It fell away to reveal an invention of several hours’ work that, he realized only when he assembled it in the kitchen the day after the accident, he had been planning for years. At that moment of realization, his entire body had been flooded with a searing wonder at the dark soul that inhabited it. Now, under his arm, a steel canister no bigger than a coffee tin was attached to his left side by an impenetrably complex arrangement of belts, straps, hooks, and buckles.
+
+“Do you see how I rigged the container?” he said. “There’s a right way of taking it off my body and many wrong ways. Take it off one of the wrong ways and the container opens and the material spills out. Are you aware of the radiological properties of plutonium and their effect on living organisms?”
+
+Shiv almost laughed. He once knew a girl who wore something like this.
+
+“Let me see it.”
+
+“It’s *plutonium.* It has to be examined under controlled laboratory conditions. If even a microscopic amount of it lodges within your body, ionizing radiation will irreversibly damage body tissue and your cells’ nucleic material. A thousandth of a gram is fatal … I’ll put it to you more simply. Anything it touches dies. It’s like in a fairy tale.”
+
+Shiv did indeed have business contacts, but he’d been burned about six months earlier, helping to move some Uzbek heroin that must have been worth more than a half million dollars. He had actually held the bags in his hands and pinched the powder through the plastic, marveling at the physics that transmuted such a trivial quantity of something into so much money. But once he made the arrangements and the businessmen had the stuff in *their* hands, they gave him only two thousand dollars for his trouble, little more than a tip. Across a table covered by a freshly stained tablecloth, the Don — his name was Voronenko, and he was from Tambov, but he insisted on being called the Don anyway, and being served spaghetti and meatballs for lunch — had grinned at the shattering disappointment on Shiv’s face. Shiv had wanted to protest, but he was frightened. Afterwards he was so angry that he gambled and whored the two grand away in a single night.
+
+He said, “So, there was an accident. How do I know the stuff’s still good?”
+
+“Do you know what a half-life is? The half-life of plutonium 239 is twenty-four thousand years.”
+
+“That’s what you’re telling me …”
+
+“You can look it up.”
+
+“What am I, a fucking librarian? Listen, I know this game. It’s mixed with something.”
+
+Timofey’s whole body was burning; he could feel each of his vital organs being singed by alpha radiation. For a moment he wished he could lie on one of the narrow beds in the room and nap. When he woke, perhaps he would be home. But he dared not imagine that he would wake to find that the accident had never happened. He said, “Yes, of course. The sample contains significant amounts of uranium and other plutonium isotopes, plus trace quantities of americium and gallium. But the Pu-239 content is 94.7 percent.”
+
+“So you admit it’s not the first-quality stuff.”
+
+“Anything greater than 93 percent is considered weapons-grade. Look, do you have somebody you can bring this to? Otherwise, we’re wasting my time.”
+
+Shiv took out another cigarette from his jacket and tapped it against the back of his hand. Igniting the lighter, he kept his finger lingering on the gas feed. He passed the flame in front of his face so that it appeared to completely immolate the mark.
+
+“Yeah, I do, but he’s in Perkhuskovo. It’s a forty-minute drive. I’ll take you to him.”
+
+“I have a car. I’ll follow you.”
+
+Shiv shook his head. “That won’t work. His dacha’s protected. You can’t go through the gate alone.”
+
+“Forget it then. I’ll take the material someplace else.”
+
+Shiv’s shrug of indifference was nearly sincere. The guy was too weird, the stuff was too weird. His conscience told him he was better off pimping for schoolgirls. But he said, “If you like. But for a deal like this, you’ll need to go to one godfather or another. On your own you’re not going to find someone walking around with thirty thousand dollars in his pocket. This businessman knows me, his staff knows me. I’ll go with you in your car. You can drive.”
+
+Timofey said, “No, we each drive separately.”
+
+The mark was unmovable. Shiv offered him a conciliatory smile.
+
+“All right,” he said. “Maybe. I’ll call him from the lobby and try to set it up. I’m not even sure he can see us tonight.”
+
+“It has to be tonight or there’s no deal.”
+
+“Don’t be in such a hurry. You said the stuff lasts twenty-four thousand years, right?”
+
+“Tell him I’m from Skotoprigonyevsk-16\. Tell him it’s weapons-grade. That’s all he needs to know. Do you understand the very least bit of what I’m saying?”
+
+The pale solar disc had dissolved in the horizonal haze long ago, but the autumn evening was still in its adolescent hours, alive to possibility. As the two cars lurched into the swirl of traffic on the Garden Ring road, Timofey could taste the unburned gasoline in the hoodlum’s exhaust. He had never before driven in so much traffic or seen so many foreign cars, or guessed that they would ever be driven so recklessly. Their rear lights flitted and spun like fireflies. At his every hesitation or deceleration the cars behind him flashed their headlights. Their drivers navigated their vehicles as if from the edges of their seats, peering over their dashboards, white-knuckled and grim, and as if they all carried three hundred grams of weaponsgrade plutonium strapped to their chests. Driving among Audis and Mercedes-Benzes would have thrilled Tolya, who cut pictures of them from magazines and cherished his small collection of mismatched models. The thought of his son, a sweet and cheerful boy with orthodontic braces, and utterly, utterly innocent, stabbed at him.
+
+The road passed beneath what Timofey recognized as Mayakovsky Square from television broadcasts of holiday marches. He knew that the vengeful, lustrating revision of Moscow’s street names in the last few years had renamed the square Triumfalnaya, though there was nothing triumphant about it, except for its big Philips billboard advertisement. Were all the advertisements on the Garden Ring posted in the Latin alphabet? Was Cyrillic no longer anything more than a folk custom? It was as if he had traveled to the capital of a country in which he had never lived.
+
+Of course hardly any commercial advertising could be seen in 16\. Since Gorbachev’s fall a halfhearted attempt had been made to obscure most of the Soviet agitprop, but it was still a Soviet city untouched by foreign retailing and foreign advertising. The few foreign goods that found their way into the city’s state-owned shops arrived dented and tattered, as if produced in Asian, European, and North American factories by demoralized Russian workers. Well, these days 16 was much less of a city. It was not uncommon to see chickens and other small livestock grazing in the gravel between the high-rises, where pensioners and unpaid workers had taken up subsistence farming.
+
+Resentment of Moscow burned in Timofey’s chest, alongside the Pu-239.
+
+Plutonium. There was no exit for the stuff. It was as permanent and universal as original sin. Since its first synthesis in 1941 (what did Seaborg do with that magical, primeval stone of his own creation? put it in his vault? was it still there?) more than a thousand metric tons of the element had been produced. It was still being manufactured, not only in Russia, but in France and Britain as well, and it remained stockpiled in America. Nearly all of it was locked in steel containers, buried in mines, or sealed in glass — safe, safe, safe. But the very minimal fraction that wasn’t secured, the few flakes that had escaped in nuclear tests, reactor accidents, transport mishaps, thefts, and leakages, veiled the entire planet. Sometime within the next three months Timofey would die with plutonium in his body, joined in the same year by thousands of other victims in Russia and around the world. His body would be brought directly to the city crematorium, abstractly designed in jaggedly cut, pale yellow concrete so as to be vaguely “life-affirming,” where the chemistry of his skin and lungs, heart and head, would be transformed by fire and wind. In the rendering oven, the Pu-239 would oxidize and engage in wanton couplings with other substances, but it would always stay faithful to its radioactive, elemental properties. Some of it would remain in the ash plowed back to the earth; the rest would be borne aloft into the vast white skies arching above the frozen plain. Dust to dust.
+
+Yet it would remain intangible, completely invisible, hovering elusively before us like a floater in our eyes’ vitreous humor. People get cancer all the time and almost never know why. A nucleic acid on a DNA site is knocked out of place, a chromosome sequence is deleted, an oncogene is activated. It would show up only in statistics, where it remained divorced from the lives and deaths of individuals. It was just as well, Timofey thought, that we couldn’t take in the enormity of the threat; if we did, we would be paralyzed with fear — not for ourselves, but for our children. We couldn’t wrap our minds around it; we could think of it only for a few moments and then have to turn away from it. But the accident had liberated Timofey. He could now contemplate plutonium without any difficulty at all.
+
+And it was not only plutonium. Timofey was now exquisitely aware of the ethereal solution that washed over him every day like a warm bath: the insidiously subatomic, the swarmingly microscopic, and the multi-syllabically chemical. His body was soaked in pesticides, the liquefied remains of electrical batteries, leaded gasoline exhaust, dioxin, nitrates, toxic waste metals, dyes, and deadly viral organisms generated in untreated sewage — the entire carcinogenic and otherwise malevolent slough of the great Soviet industrial empire. Like Homo Sovieticus himself, Timofey was ending his life as a melange of damaged chromosomes, metal-laden tissue, crumbling bone, fragmented membranes, and oxygen-deprived blood. Perhaps his nation’s casual regard for the biological consequences of environmental degradation was the result of some quasi-Hegelian conviction that man lived in history, not nature. It was no wonder everyone smoked.
+
+For a moment, as the hoodlum swung into the turning lane at the Novy Arbat, Timofey considered passing the turnoff and driving on through the night and the following day back to 16’s familiar embrace. But there was only one hundred and twenty dollars hidden in the bookcase in his apartment. It was the sum total of his family’s savings.
+
+Now Shiv saw Timofey’s shudder of indecision in his rearview mirror; he had suspected that the mark might turn tail. If he had, Shiv would have broken from the turning lane with a shriek of tire (he savored the image) and chased him down.
+
+In tandem the two cars crossed the bridge over the Moscow River, the brilliantly lit White House on their right nearly effervescing in the haze off the water. It was as white and polished as a tooth, having been capped recently by a squadron of Turkish workers after Yeltsin’s troops had shelled and nearly gutted it. Shiv and Timofey passed the Pizza Hut and the arch commemorating the battle against Napoleon at Borodino. They were leaving the city. Now Timofey knew he was committed. The hoodlum wouldn’t let him go. He knew this as surely as if he were sitting in the car beside him. If the world of the atom were controlled by random quantum events, then the macroscopic universe through which the two Zhigulis were piloted was purely deterministic. The canister was heavy and the straps that supported it were beginning to cut into Timofey’s back.
+
+He could have even more easily evaded Shiv at the exit off Kutuzovsky Prospekt; then on the next road there was another turnoff, then another and another. Timofey lost count of the turns. It was like driving down a rabbit hole: he’d never find his way back. Soon they were kicking up stones on a dark country road, the only traffic. Every once and a while the Moscow River or one of its tributaries showed itself through the naked, snowless birches. A pocked and torn slice of moon bobbed and weaved across his windshield. Shiv paused, looking for the way, and then abruptly pivoted his car into a lane hardly wider than the Zhiguli itself.
+
+Timofey followed, taking care to stay on the path. He could hear himself breathing: the sound from his lungs was muffled and wet. Gravel crunched beneath his tires and bushes scraped their nails against the car’s doors. The hood slowed even further, crossing a small bridge made of a few planks. They clattered like bones.
+
+Timofey’s rearview mirror incandesced. Annoyed, he pushed it from his line of sight. Shiv slowed to a stop, blinked a pair of white lights in reverse, and backed up just short of Timofey’s front bumper. At the same time, Timofey felt a hard tap at his rear.
+
+Shiv stepped from his car. Pinned against the night by the glare of headlights, the boy appeared vulnerable and very young, almost untouched by life. Timofey detected a measure of gentleness in his face, despite the lunar shadows cast across it. Shiv grimaced at the driver of the third automobile, signaling him to close his lights. He walked in front of his own car and squeezed alongside the brush to Timofey’s passenger door.
+
+“We have to talk,” he said. “Open it.”
+
+Timofey hesitated for a moment, but the lengthy drive had softened his resolve and confused his plan. And there was a car pressed against his rear bumper. He reached over and unlocked the door.
+
+Shiv slid into the seat and stretched his legs. Even for short people, the Zhigulis were too goddamned small.
+
+“We’re here?”
+
+“Where else could we be?”
+
+Timofey turned his head and peered into the dark, looking for the businessman’s dacha. There was nothing to see at all.
+
+“All right, now hand over the stuff.”
+
+“Look, let’s do this right — ” Timofey began, but then comprehension darkened his face. He didn’t need to consider an escape: he understood the whole setup. Perhaps he had chosen the coward’s way out. “I see. You’re as foolish as a peasant in a fairy tale.”
+
+Shiv opened his coat and removed from a holster in his sport jacket an oiled straight blade nearly twenty centimeters long. He turned it so that the moonlight ran its length. He looked into the mark’s face for fear. Instead he found ridicule.
+
+Timofey said, “You’re threatening me with a knife? I have enough plutonium in my lungs to power a small city for a year, and you’re threatening me with a *knife?”*
+
+Shiv placed the shaft against Timofey’s side, hard enough to leave a mark even if it were removed. Timofey acted as if he didn’t feel it. Again something dark passed before Shiv’s eyes.
+
+“Look, this is a high-carbon steel Premium Gessl manufactured by Imperial Gessl in Frankfurt, Germany. I paid eighty bucks for it. It passes through flesh like water. Just give me the goddamned stuff.”
+
+“No. I won’t do that,” Timofey said primly. “I want thirty thousand dollars. It’s a fair price, I think, and I won’t settle for anything less. I drove here in good faith.”
+
+Timofey was the first man Shiv had ever killed, though he had cut a dozen others, plus two women. He wondered if it got easier each time; that’s what he had heard. In any case, this was easy enough. There wasn’t even much blood, though he was glad the mark had driven his own car after all.
+
+Now Shiv sat alone, aware of the hiss of his lungs, and also that his armpits were wet. Well, it wasn’t every day you killed a man. But Timofey hadn’t resisted, it hadn’t been like killing a man. The knife had passed through him not as if he were water, but as if he were a ghost. Shiv sensed that he had been cheated again.
+
+He opened and pushed away Timofey’s brown sports jacket, which even in the soundless dark nearly screamed Era of Stagnation. The canister was there, still strapped to his chest. The configuration of straps, hooks, and buckles that kept it in place taunted Shiv with its intricacy. He couldn’t follow where each strap went, or what was being buckled or snapped. To Shiv it was a labyrinth, a rat’s nest, a knot. To Timofey it had been a topographical equation, clockworks, a flowchart. “Fuck it,” Shiv said aloud. He took the Gessl and cut the thin strap above the cylinder with two quick strokes.
+
+Already the mark’s body was cool; perhaps time was passing more quickly than Shiv realized. Or maybe it was passing much more slowly: in a single dilated instant he discerned the two cut pieces of the strap hovering at each other’s torn edge, longing to be one again. But then they flew away with a robust *snap!* and the entire assembly lost the tension that had kept it wrapped around Timofey’s body. The effect was so dramatic he fancied that Timofey had come alive and that he would have the opportunity to kill him again. The canister popped open — he now apprehended which two hooks and which three straps had kept it closed — and fell against the gearshift.
+
+Powder spilled out, but not much. Shiv grabbed the canister and shoveled back some of what was on the seat, at least a few thousand dollars’ worth. He couldn’t really see the stuff, but it was warm and gritty between his fingers. He scooped in as much as he could, screwed the cylinder shut, and then dusted off his hands against his trousers. He cut away the rest of the straps, leaving them draped on Timofey’s body. He climbed from the car.
+
+“Good work, lads.”
+
+The two brothers, Andrei and Yegor, each stood nearly two meters tall on either side of their car, which was still parked flush against Timofey’s bumper. They were not twins, though it was often difficult to recall which was which, they were so empty of personality. Shiv, who had called them from the hotel lobby, thought of them as pure muscle. By most standards of measurement, they were of equally deficient intelligence. They spoke slowly, reasoned even more slowly, and became steadily more unreliable the further they traveled from their last glass of vodka. Nevertheless, they were useful, and they could do what they were told, or a satisfactory approximation of it.
+
+“What do you got there?” said Yegor.
+
+“You wouldn’t understand, believe me.”
+
+It was then that he saw that Andrei was holding a gun at his hip, leveling it directly at him. It was some kind of pistol, and it looked ridiculously small in Andrei’s hands. Still, it was a gun. In the old days, no one had a gun, everyone fought it out with knives and brass knuckles and solid, honest fists, and pieces of lead pipe. You couldn’t get firearms. They never reached the market, and the mere possession of one made the cops dangerously angry. But this was democracy: now every moron had a gun.
+
+“Put it away. What did you think, I was going to cut you out?”
+
+Yegor stepped toward him, his arm outstretched. “Hand it over.”
+
+Shiv nodded his head, as if in agreement, but he kept the canister clutched to his stomach. “All right, you’ve got the drop on me. I admit it. I’ll put it in writing if you like. They’ll be talking about this for years. But you’re not going to be able to move it on your own.”
+
+“Why not?” said Andrei. He raised the gun with both hands. The hands trembled. For a moment, Shiv thought he could see straight down the barrel. “You think we’re stupid.”
+
+“If you want to show me how smart you are, you’ll put down the fucking gun.”
+
+“I don’t have to show you anything.”
+
+“Listen, this is plutonium. Do you know what it is?”
+
+“Yeah, I know.”
+
+“Do you know what’s it’s used for?”
+
+“I don’t got to know. All I got to know is that people will buy it. That’s the free market.”
+
+“Idiot! Who are you going to sell it to?”
+
+“Private enterprise. They’ll buy it from us just like they’d buy it from you. And did you call me an idiot?”
+
+“Listen, I’m just trying to explain to you” — Shiv thought for a moment — “the material’s radiological properties.”
+
+Shiv was too close to be surprised, it happened too quickly. In one moment he was trying to reason with Andrei, intimidate him, and was only beginning to appreciate the seriousness of the problem, and had just observed, in a casual way, that the entire time of his life up to the moment he had stepped out of Timofey’s car seemed equal in length to the time since then, and in the next moment he was unconscious, bleeding from a large wound in his head.
+
+“Well, fuck you,” said Andrei, or, more literally, “go to a fucked mother.” He had never shot a man before, and he was surprised and frightened by the blood, which had splattered all over Shiv’s clothes, and even on himself. He had expected that the impact of the shot would have propelled Shiv off the bridge, but it hadn’t. Shiv lay there at his feet, bleeding against the rear tire. The sound of the little gun was tremendous; it continued roaring through the woods long after Andrei had brought the weapon to his side.
+
+Neither brother said anything for a while. In fact, they weren’t brothers, as everyone believed, but were stepbrothers, as well as in-laws, in some kind of complicated way that neither had ever figured out. From Yegor’s silence, Andrei guessed that he was angry with him for shooting Shiv. They hadn’t agreed to shoot him beforehand. But Yegor had allowed him to carry the gun, which meant Andrei had the right to make the decision. Yegor couldn’t second-guess him, Andrei resolved, his nostrils flaring.
+
+But Yegor broke the long silence with a gasped guffaw. In the bark of his surprise lay a tremor of anxiety. “Look at this mess,” he said. “You fucking near tore off his head.”
+
+Andrei could tell his brother was proud of him, at least a bit. He felt a surge of love.
+
+“Well, fuck,” said Yegor, shaking his head in wonder. “It’s really a mess. How are we going to clean it up? It’s all over the car. Shit, it’s on my pants.”
+
+“Let’s just take the stuff and leave.”
+
+Yegor said, “Go through his pockets. He always carries a roll. I’ll check the other guy.”
+
+“No, it’s too much blood. I’ll go through the other guy’s pockets.”
+
+“Look, it’s like I’ve been telling you, that’s what’s wrong with this country. People don’t accept the consequences of their actions. Now, *you* put a hole in the guy’s head, *you* go through his pockets.”
+
+Andrei scowled but quickly ran his hands through Shiv’s trousers, jacket, and coat anyway. The body stirred and something like a groan bubbled from Shiv’s bloodfilled mouth. Some of the blood trickled onto Andrei’s hand. It was disgustingly warm and viscid. He snatched his hand away and wiped it on Shiv’s jacket. Taking more care now, he reached into the inside jacket pocket and pulled out a gold-colored money clip with some rubles, about ten twenty dollar bills, a few tens, and a creased five. He slipped the clip and four or five of the twenties into his pocket and, stacking the rest on the car’s trunk, announced, “Not much, just some cash.”
+
+Yegor emerged from the car. “There’s nothing at all on this guy, only rubles.”
+
+Andrei doubted that. He should have pocketed all of Shiv’s money.
+
+“I wonder what the stuff’s like,” said Yegor, taking the closed canister from Shiv’s lap.
+
+He placed it next to the money and pulled off the top, revealing inside a coarse, silvery gray powder. Yegor grimaced. It was nothing like he had ever seen. He wet his finger, poked it into the container, and removed a fingerprint’s worth. The stuff tasted chalky.
+
+“What did he call it?” he asked.
+
+“Plutonium. From Bolivia, he said.”
+
+Andrei reached in, took a pinch of the powder, and placed it on the back of his left hand. He then closed his right nostril with a finger and brought the stuff up to his face. He loved doing this. From the moment he had pulled the gun on Shiv he had felt as if he were in Chicago or Miami. He sniffed up the powder.
+
+It burned, but not in the right way. It was as if someone — Yegor — had grabbed his nostril with a pair of hot pliers. The pain shot through his head like a nail, and he saw stars. Then he saw atoms, their nuclei surrounded by hairy penumbrae of indeterminately placed electrons. The nuclei themselves pulsed with indeterminacy, their masses slightly less than the sum of their parts. Bombarded by neutrons, the nuclei were drastically deformed. Some burst. The repulsion of two highly charged nuclear fragments released Promethean, adamantine energy, as well as excess neutrons that bounced among the other nuclei, a cascade of excitation and transformation.
+
+“It’s crap. It’s complete crap. Crap, crap, *crap!”*
+
+Enraged, Andrei hoisted the open container, brought it behind his head, and, with a grunt and a cry, hurled it far into the night sky. The canister sailed. For a moment, as it reached the top of its ascent beyond the bridge, it caught a piece of moonlight along its sides. It looked like a little crescent moon itself, in an eternal orbit above the earth, the stuff forever pluming behind it. And then it very swiftly vanished. Everything was quiet for a moment, and then there was a distant, voluptuous sound as the container plunged into the river. As the two brothers turned toward each other, one of them with a gun, everything was quiet again.
+
+## Take a break from the news
+
+We publish your favorite authors—even the ones you haven't read yet. Get new fiction, essays, and poetry delivered to your inbox.
+
+#### YOUR INBOX IS LIT
+
+Enjoy strange, diverting work from The Commuter on Mondays, absorbing fiction from Recommended Reading on Wednesdays, and a roundup of our best work of the week on Fridays. Personalize your subscription preferences here.

@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:24:53
+-->
+
+# The Real Value of a Catholic Modernity – The Homebound Symphony
+
+> 来源：[https://blog.ayjay.org/the-real-value-of-a-catholic-modernity/](https://blog.ayjay.org/the-real-value-of-a-catholic-modernity/)
+
+In 1996 the philosopher Charles Taylor delivered a lecture – [later to be published with several responses](https://www.google.com/books/edition/A_Catholic_Modernity/EEXoIaw6A0cC?hl=en&gbpv=1&printsec=frontcover) – called “A Catholic Modernity?” But do you know what the truly essential value of a Catholic modernity is? It was a Catholic modernity that defeated Dracula.
+
+The Catholic elements of [the story](https://www.gutenberg.org/ebooks/345) are memorable. Most readers will readily recall Dracula shrinking back from a crucifix thrust in his face; many will also remember the consecrated Hosts with which Dr. van Helsing “sanitises” the big boxes filled with Transylvanian earth in which Dracula plans to hide himself; or the moment when, in the Transylvanian wilderness near the Count’s castle, he crumples more Hosts into powder that he uses to form a protective circle around Mina Harker.
+
+But Dracula’s biggest mistake is to enter the world of technocratic modernity.
+
+We know why he does it: he lives in a sparsely populated backwater, whereas London is the largest city in the world and offers an endless supply of victims: victims he can kill and victims he can make into an army of the Undead. But this man of the early modern era can only enter London by obeying the procedures of modernity, which is to say, by acquiring a modern *identity*. As James Scott has taught us – and this is a theme I pursue in [an essay nominally about Agatha Christie’s Miss Marple](https://www.thenewatlantis.com/publications/miss-marple-and-the-problem-of-modern-identity) – the modern state makes people *legible*. And it is because Dracula becomes legible that he is thwarted, discovered, and killed.
+
+Because Dracula cannot move freely in the daytime, he must have a place of refuge and safety while the sun shines. So he needs both the aforementioned boxes – temporary coffins – and homes (“mansions”) or warehouses in which to keep them. To buy these things he needs money, which he has plenty of; but he also needs to follow the administrative procedures of the modern capitalist state. He can’t ship anything without giving a name and an address, and – more important to the story – without employing people, from real estate agents to plain old carters, who *keep records*. Our heroes’ long pursuit of Dracula is largely a matter of tracing the written records of everything Dracula does in England. Note also that the enemies of Dracula coordinate their plan of action with reference to the sequence of events that they have recorded using typewriters and phonographs. (*Dracula* is the first novel featuring voice memos.) 
+
+Dracula doesn’t understand this world. At one point he breaks into Dr. Seward’s office to destroy the handwritten journals and letters that document his evil deeds. But what he doesn’t know is that Mina Harker has made typewritten copies of it all. Dracula is like the Bishop of London in the sixteenth century who bought and burned copies of Tyndale’s New Testament, not realizing that Tyndale could use the proceeds to make more copies. 
+
+And modernity reigns not just in England: even in eastern Europe the pursuers are greatly aided by Mina’s knowledge of when the trains run — and by telegraphs they receive from London. Railway timetables, telegraphs, phonographs, typewriters, invoices, bills of lading, double-entry bookkeeping: these are the instruments by which Dracula’s pursuers draw their net around him. (And money – let’s not forget money. As Mina Harker writes in her journal, “Oh, it did me good to see the way that these brave men worked. How can women help loving men when they are so earnest, and so true, and so brave! And, too, it made me think of the wonderful power of money!”) 
+
+Dracula’s own powers – superhuman strength, the control of local weather, the ability to summon and direct brute creatures – cannot match the powers of his Enemy. And that Enemy is not Dr. Van Helsing or Jonathan Harker or any of the other people who chase him, but rather technocratic modernity itself — supplemented and strengthened by the spiritual technologies of the Church, that is, material objects sanctified for holy purposes.
+
+Poor Dracula, he never had a chance – not against the double-reinforced power of a Catholic Modernity.

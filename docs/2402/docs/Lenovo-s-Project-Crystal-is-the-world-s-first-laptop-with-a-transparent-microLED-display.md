@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:25:52
+-->
+
+# Lenovo’s Project Crystal is the world’s first laptop with a transparent microLED display
+
+> 来源：[https://www.engadget.com/lenovos-project-crystal-is-the-worlds-first-laptop-with-a-transparent-microled-display-230025521.html](https://www.engadget.com/lenovos-project-crystal-is-the-worlds-first-laptop-with-a-transparent-microled-display-230025521.html)
+
+It’s not often you encounter a device that looks like it came straight out of a movie set. But Lenovo’s Project Crystal, supposedly the world’s first laptop with a transparent microLED display, is an example of sci-fi come to life.
+
+Currently there are no plans to turn Project Crystal into a retail product. Instead Lenovo’s latest concept device was commissioned by its ThinkPad division to explore the potential of transparent microLED panels and AI integration. The most obvious use case would be sharing info somewhere, like a doctor’s office or a hotel desk. Instead of needing to flip a screen around, you could simply reverse the display via software, allowing anyone on the other side to see it while getting an in-depth explanation.
+
+When combined with the camera built into the rear of the system, Lenovo says there could be possible AR applications. One example would be to use the camera to identify an object, similar to Google Lens. And with its transparent display, it should be possible to take that idea a step further by overlaying a diagram or schematic on top of the object for things like troubleshooting or repair.
+
+But the best thing about Project Crystal, is that Lenovo bothered making it at all. Currently, even standard microLED displays are extremely expensive with those panels typically reserved for cutting-edge gadgets like Samsung’s [The Wall](https://www.engadget.com/samsung-the-wall-virtual-movie-studio-121524064.html) or [Apple’s Vision Pro](https://www.engadget.com/apple-vision-pro-review-beta-testing-the-future-201430272.html). And, see-through versions have only been seen as concepts like on the [transparent microLED TV Samsung showed off](https://www.engadget.com/samsung-debuts-the-worlds-first-transparent-microled-screen-at-ces-2024-042634398.html) a couple of months ago at CES 2024.
+
+1 / 13
+
+## Lenovo Project Crystal hands-on photos
+
+ In-person photos of Lenovo's new concept device -- Project Crystal -- which the company claims is the world's first laptop with a transparent micro LED display. 
+
+In person, the transparency effect is bewildering. When closed or when its display is off, Project Crystal’s screen almost looks like an ordinary piece of glass with a slight brownish tint. But at a moment’s notice the whole thing lights up like a battleship*.* Nominal brightness goes all the way up to 1,000 nits, with Lenovo saying peaks can go as high as 3,000 nits, which would make it brighter than the new [Galaxy S24 family.](https://www.engadget.com/galaxy-s24-ultra-review-samsungs-ai-reinforcements-have-arrived-specs-price-191508062.html) And despite being made of multiple layers, the panel is extremely thin, which helps blur the line being the digital and analog worlds. Lenovo says it's also considering adding some sort of contrast layer, so it can turn into a traditional opaque display at the touch of a button. However, for a relatively large 16-inch display, its resolution isn’t super high, so if you look closely you can see individual pixels.
+
+Another design twist is that instead of a traditional keyboard, Project Crystal features one of Lenovo’s touch-based replacements similar to those on older [Yoga Books](https://www.engadget.com/2018-10-25-lenovo-yoga-book-c930-review-an-expensive-experiment.html). Unfortunately, it still suffers from a lot of the same issues. The most obvious example of this is that your hands drift while typing because there’s no tactile feedback, which leads to decreased accuracy. Lenovo says AI may be able to address that in the future by learning a person’s typing habits and then using that info to account for your hands straying from the home row. But right now, it’s still a problem.
+
+Photo by Sam Rutherford/Engadget
+
+The rest of the laptop is very much a work in progress, too. I only saw two ports on the entire system which would be a major faux pas for a notebook this big. Project Crystal is also based on a last-gen CPU, while other components like its hinge was so weak that its screen threatened to close anytime it tilted below 90 degrees. And for some reason, the laptop seemed to build up a static charge, as it sometimes shocked people who touched its display.
+
+Project Crystal is a solution in search of a problem. A problem that does exist in niche situations and may be an issue worth tackling more seriously down the line. But more importantly, it’s challenging us to think about what is possible with emerging display technology and how it might fit into a laptop of the future.
+
+Catch up on all of the news from MWC 2024 right [here](https://engadget.com/tag/mwc-2024/)!

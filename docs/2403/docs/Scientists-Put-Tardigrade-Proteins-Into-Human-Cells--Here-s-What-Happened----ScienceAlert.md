@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:46:39
+-->
+
+# Scientists Put Tardigrade Proteins Into Human Cells. Here's What Happened. : ScienceAlert
+
+> 来源：[https://www.sciencealert.com/scientists-put-tardigrade-proteins-into-human-cells-heres-what-happened](https://www.sciencealert.com/scientists-put-tardigrade-proteins-into-human-cells-heres-what-happened)
+
+Freeze 'em, heat 'em, blast them into empty space; with [survival skills](https://www.sciencealert.com/tardigrade-genes-reveal-a-strange-history-of-their-crazy-survival-skills) unlike any other organism on the planet, those hardy critters known as tardigrades will only come back for more.
+
+While it's clear their ability to withstand stress is in part due to their ability to [turn their insides into gel](https://www.sciencealert.com/tardigrades-can-survive-decades-without-water-and-we-finally-know-how), the mechanisms behind this act of metabolic preservation haven't yet been made clear.
+
+A new study led by researchers from the University of Wyoming found that expressing key tardigrade proteins in human cells slowed metabolism, providing critical insights into how these [virtually indestructible invertebrates](https://www.sciencealert.com/tardigrades-are-practically-indestructible-but-climate-change-could-be-their-weak-point) can survive under the most extreme conditions.
+
+The team focused on a particular protein called CAHS D, [already known](https://www.nature.com/articles/s42003-022-04015-2) to protect against extreme drying (desiccation). Through a variety of methods, the researchers showed how CAHS D transformed into a gel-like state when under stress, keeping molecules protected and protecting against drying.
+
+"This study provides insight into how tardigrades, and potentially other desiccation-tolerant organisms, survive drying by making use of biomolecular condensation," [write](https://onlinelibrary.wiley.com/doi/10.1002/pro.4941) the researchers in their published paper.
+
+"Beyond stress tolerance, our findings provide an avenue for pursuing technologies centered around the induction of biostasis in cells and even whole organisms to slow aging and enhance storage and stability."
+
+Tardigrades have already shown they can survive hot and cold temperatures and [high levels of radiation](https://www.sciencealert.com/tardigrades-reveal-yet-another-incredible-survival-tactic-glowing-radiation-shields) that would be fatal to human beings, and long periods without any water – normally so essential to life. They can even [survive in space](https://www.sciencealert.com/a-group-of-tardigrades-crashed-into-the-moon-in-april-they-could-still-be-alive).
+
+[Previous research](https://www.sciencealert.com/tardigrades-can-survive-frozen-oblivion-by-pausing-their-biological-clocks) has revealed an impressive number of tricks that tardigrades use to stay alive, built up [over hundreds of millions of years](https://www.sciencealert.com/tardigrade-genes-reveal-a-strange-history-of-their-crazy-survival-skills). Essentially, they're very good at slowing the processes of life right down with the help of CAHS D, and that could be useful in human cells too.
+
+"Amazingly, when we introduce these proteins into human cells, they gel and slow down metabolism, just like in tardigrades," [says](https://www.uwyo.edu/news/2024/03/uw-researchers-show-that-introduced-tardigrade-proteins-can-slow-metabolism-in-human-cells.html) molecular biologist Silvia Sanchez-Martinez, from the University of Wyoming.
+
+"When you put human cells that have these proteins into biostasis, they become more resistant to stresses, conferring some of the tardigrades' abilities to the human cells."
+
+Some way down the line, we may be able to figure out how to pass some of that amazing tardigrade resilience onto our own cells and tissues, potentially slowing biological aging and helping in treatments where safe cell storage at cold temperatures is vital, such as [organ transplants](https://www.sciencealert.com/this-new-experimental-antibody-could-prevent-organ-rejection).
+
+It's going to take plenty of further research to harness this transfer of abilities, research that is [already underway](https://www.nature.com/articles/s41598-023-31586-9) with some studies looking at whether tardigrade proteins can stabilize important blood products used to treat genetic diseases. Early signs are promising in several areas, including the way the proteins are smartly activated when environmental stress is present, and deactivated when it isn't.
+
+"When the stress is relieved, the tardigrade gels dissolve, and the human cells return to their normal metabolism," [says](https://www.uwyo.edu/news/2024/03/uw-researchers-show-that-introduced-tardigrade-proteins-can-slow-metabolism-in-human-cells.html) University of Wyoming molecular biologist Thomas Boothby.
+
+The research has been published in [*Protein Science*](https://onlinelibrary.wiley.com/doi/10.1002/pro.4941).

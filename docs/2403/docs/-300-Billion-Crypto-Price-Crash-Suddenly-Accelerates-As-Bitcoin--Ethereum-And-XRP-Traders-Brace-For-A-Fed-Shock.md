@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:32:29
+-->
+
+# $300 Billion Crypto Price Crash Suddenly Accelerates As Bitcoin, Ethereum And XRP Traders Brace For A Fed Shock
+
+> 来源：[https://www.forbes.com/sites/digital-assets/2024/03/19/300-billion-crypto-price-crash-suddenly-accelerates-as-bitcoin-ethereum-and-xrp-traders-brace-for-a-fed-shock/](https://www.forbes.com/sites/digital-assets/2024/03/19/300-billion-crypto-price-crash-suddenly-accelerates-as-bitcoin-ethereum-and-xrp-traders-brace-for-a-fed-shock/)
+
+Bitcoin <fbs-ticker data-name="BTC" data-href="https://www.forbes.com/digital-assets/assets/bitcoin-btc/" data-type="crypto">[BTC](https://www.forbes.com/digital-assets/assets/bitcoin-btc/)</fbs-ticker> and major cryptocurrencies—including ethereum and XRP <fbs-ticker data-name="XRP" data-href="https://www.forbes.com/digital-assets/assets/xrp-xrp/" data-type="crypto">[XRP](https://www.forbes.com/digital-assets/assets/xrp-xrp/)</fbs-ticker> —have fallen sharply as traders brace for a correction ([and a potentially brutal Biden administration crackdown](https://www.forbes.com/sites/digital-assets/2024/03/17/joe-biden-quietly-planning-to-kill-crypto-and-destroy-billions-of-dollars-of-value-after-huge-bitcoin-ethereum-xrp-and-solana-price-surge/ "https://www.forbes.com/sites/digital-assets/2024/03/17/joe-biden-quietly-planning-to-kill-crypto-and-destroy-billions-of-dollars-of-value-after-huge-bitcoin-ethereum-xrp-and-solana-price-surge/")).
+
+[***Subscribe now to*** *Forbes' CryptoAsset & Blockchain Advisor* ***and "uncover blockchain blockbusters poised for 1,000% plus gains" ahead of bitcoin's looming halving earthquake!***](https://www.forbes.com/newsletters/forbescryptoassetadvisor/?utm_source=billybambrough&utm_medium=article&utm_campaign=cryptocodex "https://www.forbes.com/newsletters/forbescryptoassetadvisor/?utm_source=billybambrough&utm_medium=article&utm_campaign=cryptocodex")
+
+The bitcoin price has crashed by over 10% since this time last week, [despite JPMorgan's chief executive making a surprise bitcoin flip](https://www.forbes.com/sites/digital-assets/2024/03/12/jpmorgan-ceo-issues-shock-bitcoin-reversal-as-1-million-price-prediction-is-suddenly-brought-forward/ "https://www.forbes.com/sites/digital-assets/2024/03/12/jpmorgan-ceo-issues-shock-bitcoin-reversal-as-1-million-price-prediction-is-suddenly-brought-forward/"), with the downward trend suddenly accelerating and wiping $300 billion from the combined bitcoin, ethereum, XRP and crypto market since it hit a peak of $2.8 trillion earlier this month.
+
+Now, [as Elon Musk makes a dramatic return to the crypto market](https://www.forbes.com/sites/digital-assets/2024/03/15/to-the-moon-elon-musk-makes-dramatic-return-crypto-front-lines-amid-unprecedented-price-boom-thats-boosted-bitcoin-ethereum-xrp-solana-and-dogecoin/ "https://www.forbes.com/sites/digital-assets/2024/03/15/to-the-moon-elon-musk-makes-dramatic-return-crypto-front-lines-amid-unprecedented-price-boom-thats-boosted-bitcoin-ethereum-xrp-solana-and-dogecoin/"), bitcoin, ethereum, XRP and crypto traders are eyeing the Federal Reserve's interest rate decision on Wednesday that could further tank prices.
+
+[**Sign up now for the free *CryptoCodex***](https://www.forbes.com/newsletter/cryptocodex/#49ee29f83534 "https://www.forbes.com/newsletter/cryptocodex/#49ee29f83534")—**A daily five-minute newsletter for traders, investors and the crypto-curious that will get you up to date and keep you ahead of the bitcoin and crypto market bull run**
+
+<fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">[Forbes'More Dangerous' Than Nukes-China And Russia Revealed To Be Suddenly Abandoning The U.S. Dollar For A Bitcoin, Ethereum And XRP-Inspired Rival Amid Crypto Price PumpBy Billy Bambrough](https://www.forbes.com/sites/digital-assets/2024/03/09/more-dangerous-than-nukes-china-and-russia-revealed-to-be-suddenly-abandoning-the-us-dollar-for-a-bitcoin-ethereum-and-xrp-inspired-rival-amid-crypto-price-pump/)
+
+ <fbs-accordion class="expandable" current="-1">Federal Reserve chairman Jerome Powell will announce the Fed's latest interest rate decision ... [+] tomorrow—and could cause extreme bitcoin price swings as the ethereum, XRP and crypto market wobbles.</fbs-accordion> Getty Images
+
+Alongside the Fed's Wednesday interest rate decision, widely expected to see the rates left on hold, officials will update their forecast for coming months, which currently sees three cuts in 2024.
+
+However, a poll of economists by the *Financial Times* [found](https://www.ft.com/content/9d58ff6a-c6c4-4740-b3aa-5699a865c7f4 "https://www.ft.com/content/9d58ff6a-c6c4-4740-b3aa-5699a865c7f4") the Fed will be forced to hold interest rates at a high level for longer than markets and central bankers anticipate. Soaring expectations the Fed is poised to declare victory in it war on inflation has driven crypto and stock markets to record highs in recent weeks.
+
+Last week, however, U.S. inflation data from the consumer price index (CPI) and producer price index (PPI) both showed higher than expected price increases.
+
+Meanwhile, Japan's central bank has hiked interest rates for the first time since 2007, tightening its monetary policy as fears of deflation fell and inflation ticked up.
+
+The "high inflation rate in the U.S. could prompt the Federal Reserve and other central banks to raise interest rates, potentially slowing price rises, and causing some pullback in crypto prices," Tristan Frizza, the chief executive of Zeta Markets, said in emailed comments.
+
+"However, inflation's direct impact on consumers, eroding their assets, may drive them to invest more in crypto to offset these effects. The prevailing narrative of bitcoin and other cryptocurrencies being 'immune' to inflation, along with increasing market interest and institutional involvement in crypto, could spur greater participation in the crypto markets."
+
+[**Sign up now for *CryptoCodex***](https://www.forbes.com/newsletter/cryptocodex/#2451f12d3534 "https://www.forbes.com/newsletter/cryptocodex/#2451f12d3534")**—A free, daily newsletter for the crypto-curious**
+
+[ForbesJPMorgan CEO Issues Shock Bitcoin Reversal As $1 Million Price Prediction Is Suddenly 'Pulled Forward'By Billy Bambrough](https://www.forbes.com/sites/digital-assets/2024/03/12/jpmorgan-ceo-issues-shock-bitcoin-reversal-as-1-million-price-prediction-is-suddenly-brought-forward/)
+
+ <fbs-accordion class="expandable" current="-1">The bitcoin price has fallen sharply over the last week, dragging down the wider ethereum, XRP and ... [+] crypto market.</fbs-accordion> Forbes Digital Assets
+
+The bitcoin and crypto market has been turbo-charged by the debut of a fleet of bitcoin spot exchange-traded funds (ETFs) on Wall Street this year. The new bitcoin ETFs have raked in billions of dollars with the largest becoming some of the fasting growing ETFs in history.
+
+"In the last couple of months, the U.S. spot bitcoin ETF launch, and the U.S. Fed monetary policy pivot have flipped the crypto mood from cautious optimism to euphoria," Ed Hindi, chief investment officer at Tyr Capital, said in emailed comments, pointing to the crypto fear and greed index that's currently in extreme greed territory. "Historically that has signalled short-term 'cooling off' periods.
+
+However, Hindi remains confident this is just a temporary dip before the bitcoin price and wider crypto market resumes its march higher.
+
+"We expect the coming year will bring about new all-time highs in bitcoin and ethereum and a much wider institutional participation in crypto assets. In our opinion, ethereum and other altcoins [smaller cryptocurrencies] will outperform bitcoin."</fbs-ad>

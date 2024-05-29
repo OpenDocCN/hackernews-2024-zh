@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:08:22
+-->
+
+# Google cancels contract with an AI data firm that’s helped train Bard - The Verge
+
+> 来源：[https://www.theverge.com/2024/1/23/24048429/google-appen-cancel-contract-ai-training-bard](https://www.theverge.com/2024/1/23/24048429/google-appen-cancel-contract-ai-training-bard)
+
+Google ended its contract with Appen, an Australian data company involved in training its large language model AI tools used in Bard, Search, and other products, even as the competition to develop generative AI tools increases. “Our decision to end the contract was made as part of our ongoing effort to evaluate and adjust many of our supplier partnerships across Alphabet to ensure our vendor operations are as efficient as possible,” Google spokesperson Courtenay Mencini said in a statement sent to *The Verge*. 
+
+Appen notified the Australian Securities Exchange [in a filing](https://www.listcorp.com/asx/apx/appen-limited/news/customer-update-and-fy23-preliminary-results-2984290.html), saying it “had no prior knowledge of Google’s decision to terminate the contract.”
+
+Human workers at companies like Appen often handle many of the more distasteful parts of training AI and are often the lower-paid, often ignored [backbone of the entire industry](/features/23764584/ai-artificial-intelligence-data-notation-labor-scale-surge-remotasks-openai-chatbots). At Appen, contractors help rate data quality and answers from AI models. [*Fast Company*](https://www.fastcompany.com/90906492/google-bard-ai-raters-fired) wrote last year that some Appen employees who are members of the Alphabet Workers Union had been petitioning Appen to increase wages from $10 an hour to $15\. While the union won wage increases, the final number fell short of its goal. Many of these workers were then laid off, with Appen citing business conditions. 
+
+[CNBC](https://www.cnbc.com/2024/01/23/alphabet-ends-contract-with-appen-which-trained-bard-google-search.html) reported that Appen has also helped train AI models for Microsoft, Meta, and Amazon. The company said in its ASX filing that its work with Google has had a significant impact on its revenue. Appen’s revenue from Google alone in the fiscal year 2023 amounted to $82.8 million. It made $273 million last year. 
+
+Mencini added that Google is working closely with Appen to make the transition “as smooth as possible.”
+
+Employees at another Google contractor, Accenture, [overwhelmingly voted](/2023/11/7/23950392/google-contractors-accenture-obscene-bard-prompts-unionizing) to join the Alphabet Workers Union — which represents Google contractors — after refusing to handle “obscene, graphic, and offensive prompts” for the then-unreleased Bard chatbot in November last year.
+
+And it isn’t just an issue for Google. Content moderators working in Kenya for data-labeling firm Sama [sued the company and its client Meta](/2024/1/11/24034865/an-ai-data-labeling-firm-is-paying-workers-2-20-an-hour-to-view-violent-horrifying-content) for paying people $2.20 an hour to view disturbing images and videos.

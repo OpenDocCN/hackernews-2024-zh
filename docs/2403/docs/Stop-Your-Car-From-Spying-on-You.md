@@ -1,0 +1,52 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:39:15
+-->
+
+# Stop Your Car From Spying on You
+
+> 来源：[https://reason.com/2024/03/25/stop-your-car-from-spying-on-you/](https://reason.com/2024/03/25/stop-your-car-from-spying-on-you/)
+
+Being proved right isn't always fun. Just weeks after my [warning in the March issue](https://reason.com/2024/02/15/big-brother-in-the-drivers-seat/) that our modern high-tech cars are tracking us and sharing data with manufacturers, cops, and parties unknown, came a report of soaring auto insurance premiums because of snitching vehicles. The consequences get worse from there. Fortunately, there are ways to keep your snoopy ride from contacting the mothership.
+
+*The Rattler* is a weekly newsletter from J.D. Tuccille. If you care about government overreach and tangible threats to everyday liberty, this is for you.
+
+## Your Driving History May Be Transmitted and Stored
+
+"Car companies are collecting information directly from internet-connected vehicles for use by the insurance industry," Kashmir Hill [reported](https://www.nytimes.com/2024/03/11/technology/carmakers-driver-tracking-insurance.html) this month for *The New York Times*. "Sometimes this is happening with a driver's awareness and consent…. But in other instances, something much sneakier has happened."
+
+Hill profiled Seattle resident Kenn Dahl, who checked his LexisNexis consumer disclosure report after his car insurance premium jumped by 21 percent. LexisNexis turned over documents containing "the dates of 640 trips, their start and end times, the distance driven and an accounting of any speeding, hard braking or sharp accelerations." The data came from General Motors based on his enrollment in OnStar Smart Driver. The records were interpreted as grounds for putting him in a higher insurance risk category.
+
+Dahl joined the program without realizing the potentially expensive and intrusive consequences. But other drivers are sometimes enrolled without their knowledge when they sign paperwork at the dealership. Worse, data may be collected through other means without explicit consent.
+
+"Modern cars are internet-enabled, allowing access to services like navigation, roadside assistance and car apps that drivers can connect to their vehicles to locate them or unlock them remotely," added Hill. "Some drivers may not realize that, if they turn on these features, the car companies then give information about how they drive to data brokers like LexisNexis."
+
+This isn't the first warning about car data-collection. Modern vehicles are equipped with "microphones, cameras, and sensors sending signals through your car's computers," the Mozilla Foundation [warned](https://foundation.mozilla.org/en/privacynotincluded/articles/what-data-does-my-car-collect-about-me-and-where-does-it-go/) in a September 2023 [report](https://foundation.mozilla.org/en/privacynotincluded/articles/its-official-cars-are-the-worst-product-category-we-have-ever-reviewed-for-privacy/). Those features can be convenient, the authors noted, but "whenever you interact with your car you create a tiny record of what you just did. Like when you turn the steering wheel or unlock the doors. And usually all that information is collected and stored by the car company."
+
+Those sensors collect information about activity in the vehicle and surrounding environment. [Nissan's data policy](https://foundation.mozilla.org/en/privacynotincluded/nissan/) even claims the right to track "your sexual activity, health diagnosis data, and genetic information," though it's unclear how much they're doing now, and what they're giving themselves leeway to monitor in a more dystopian future.
+
+But mysteriously rising insurance premiums aren't the end of the potential consequences of data-hungry computers with wheels. Some uses of data are not just expensive, but dangerous.
+
+## Your Car Is a Fourth-Amendment Nightmare
+
+"Investigators have realized that automobiles—particularly newer models—can be treasure troves of digital evidence," CNBC [reported](https://www.nbcnews.com/tech/tech-news/snitches-wheels-police-turn-car-data-destroy-suspects-alibis-n1251939) in 2020\. "Their onboard computers generate and store data that can be used to reconstruct where a vehicle has been and what its passengers were doing. They reveal everything from location, speed and acceleration to when doors were opened and closed, whether texts and calls were made while the cellphone was plugged into the infotainment system, as well as voice commands and web histories."
+
+That record of our movements, communications, and activities is often available to government agencies just for the asking, Mozilla [pointed out](https://foundation.mozilla.org/en/privacynotincluded/articles/after-researching-cars-and-privacy-heres-what-keeps-us-up-at-night/). "They can just ask for it (without a warrant) or hack into your car to get it. At least fourteen (56%) of the car brands' own privacy policies say they can voluntarily share your personal data with law enforcement or the government in response to a 'request.'"
+
+Years of court decisions making automobiles easy pickings for searches leave the data collected by cars largely unprotected by the Fourth Amendment, Riley Beggin [wrote](https://www.governing.com/security/police-dont-need-a-warrant-to-pull-personal-data-from-cars) in 2022 for *The Detroit News*. "While the Supreme Court has determined that police need a warrant to search that information when it's on a mobile phone, that protection doesn't extend to the information when stored on a car's systems."
+
+Worse, cars synced with our phones download much of the devices' information into onboard storage.
+
+## Reclaim Your Privacy
+
+Which makes this a good point to [introduce a new guide](https://www.eff.org/deeplinks/2024/03/how-figure-out-what-your-car-knows-about-you-and-opt-out-sharing-when-you-can) from the Electronic Frontier Foundation (EFF) on determining the degree to which your vehicle may be providing cops, data brokers, and other snoops a window into your life. It then tells you how to do something about it.
+
+"Start by seeing what your car is equipped to collect using [Privacy4Cars' Vehicle Privacy Report](https://vehicleprivacyreport.com/)," urges EFF's Thorin Klosowski. "Once you enter your car's VIN, the site provides a rough idea of what sorts of data your car collects."
+
+Klosowski recommends reviewing the data policies for your car and for related phone apps. "Look for settings like 'Data Privacy' or 'Data Usage.' When possible, opt out of sharing any data with third-parties, or for behavioral advertising." He also suggests filing a request with your car's maker to discover what information has already been gathered (EFF offers links to car companies' relevant pages).
+
+With my recently purchased Toyota 4Runner ([not a great corporate data policy](https://foundation.mozilla.org/en/privacynotincluded/toyota/)), I used the SOS button in the cab to contact customer service. I [opted out of data sharing](https://www.4runners.com/threads/my-dcm-disconnection-odyssey.25104/) with minimal pushback. Toyota emailed me an acknowledgement that "per your request, you have waived your Connected Services and therefore your vehicle is not transmitting location, driving, and vehicle health data to Toyota." It also detailed services that would not work without data-sharing.
+
+Of course, relying on Toyota to honor my opt-out is a matter of trust. I'm really not a trusting guy. So, I also [pulled the fuse for the Data Communication Module](https://www.4runners.com/threads/how-to-disconnect-the-tracking-telemetry-on-the-5th-gen-4runner.20628/#post-255368) (DCM), which connects the car to the cellphone network. No DCM, no phoning home. No DCM, no interior microphone either, since that runs through the same fuse in the 4Runner (check what's affected before trying this with your own vehicle). But I don't want my phone and its data synced to the vehicle anyway, so that's no loss to me.
+
+Speaking of phones, EFF's Klosowski also reminds drivers to [disable ad tracking](https://www.eff.org/deeplinks/2022/05/how-disable-ad-id-tracking-ios-and-android-and-why-you-should-do-it-now) on the phones they carry so those devices don't undo efforts to preserve privacy. Avoiding monitoring, tagging, and tracking is an ongoing battle in the modern world.

@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:30
+-->
+
+# Americans are feeling much better about the economy thanks to slowing inflation | CNN Business
+
+> 来源：[https://www.cnn.com/2024/01/19/economy/americans-are-feeling-much-better-thanks-to-slowing-inflation/index.html](https://www.cnn.com/2024/01/19/economy/americans-are-feeling-much-better-thanks-to-slowing-inflation/index.html)
+
+Washington, DC CNN  — 
+
+Americans’ attitudes on the economy are improving substantially as inflation slows.
+
+The University of Michigan’s latest consumer survey showed that sentiment improved greatly this month, soaring 13% from December, according to a preliminary reading released Friday. Sentiment reached its highest level since July 2021.
+
+“Consumer views were supported by confidence that inflation has turned a corner and strengthening income expectations,” Joanne Hsu, the university’s surveys of consumers director, said in a release. “Over the last two months, sentiment has climbed a cumulative 29%, the largest two-month increase since 1991 as a recession ended.”
+
+Inflation eased markedly throughout 2023 without a sharp rise in unemployment, which has helped perk up moods among US consumers in recent months. It remains to be seen whether inflation could drift all the way to the Federal Reserve’s 2% target without interest rates staying higher for longer or triggering massive job losses.
+
+But for now, Americans are rejoicing in the steady progress on the inflation front.
+
+The university’s latest survey showed that US consumers’ expectations for inflation rates in the year ahead and over the next five years also improved. That means Americans have growing faith that inflation will eventually return to levels they’re used to.
+
+“The powerful surge shows Americans are feeling the effects of lower inflation. That’s transmitted directly through prices at the pump, which have been falling since September, and less directly given wage increases have risen above the rate of inflation,” Robert Frick, corporate economist at Navy Federal Credit Union, said in a note Friday. “The strong jobs market also heavily influences Americans’ view of the economy in general.”
+
+While Friday’s survey showed that consumers are feeling some much needed relief, there are still lots of pain points for many Americans.
+
+First, even though inflation has slowed, prices remain much higher than in 2019, before inflation exploded. Prices aren’t likely to return to pre-pandemic levels, absent a deep recession, because even in an immaculate economy, prices would ideally rise by at least 2%.
+
+In addition to high prices, Americans continue to grapple with an impenetrable housing market, persistent income inequality, and rising debt, prompting [some to think that the so-called “American Dream” is broken](https://www.cnn.com/2024/01/19/economy/american-dream-millennials/index.html).
+
+There are still plenty of risks lurking, including the possibility of a recession and inflation’s slowdown stalling. Some investors have grown optimistic that inflation will soon be under control and that the Fed is due to begin cutting interest rates as soon as March.
+
+But Fed officials have begun to temper that optimism by stressing that there are still many risks.
+
+“Risks that would delay or dampen my expectation for cuts this year are that economic activity that seems to have moderated in the fourth quarter of 2023 does not play out; that the balance of supply and demand in the labor market, which improved over 2023, stops improving or reverses; and that the gains on moderating inflation evaporate,” Fed Governor Christopher Waller said Tuesday during a conversation hosted by the Brookings Institution.
+
+Americans still have a few things to be grateful for.
+
+The biggest positiveexample is the persistently healthy job market. Employers added 216,000 jobs in December, a robust gain that [capped a banner year of job growth](https://www.cnn.com/2024/01/05/economy/jobs-report-december-final/index.html). The unemployment rate held steady at a low 3.7% that month as wages continued to outpace inflation.
+
+New applications for unemployment assistance have also remained at historically low levels. Initial jobless claims, a proxy for layoffs, dropped last week to a level not seen since the fall of 2022, reaching 187,000 claims for the week that ended January 13, the Labor Department said Thursday.
+
+US consumers are also continuing to open their wallets, showing that they feel confident enough to spend. Retail sales [rose 0.6% in December](https://www.cnn.com/2024/01/17/economy/retail-sales-december/index.html) from the prior month, according to Commerce Department data released Wednesday.
+
+And the Fed’s latest Survey of Consumer Finances, a comprehensive triennial survey conducted since 1989, showed that Americans’ net worth surged at a historic pace from 2019 to 2022\. The survey also showed that in 2022, 20% of families owned a privately held business, the largest share on record, according to the report.
+
+While the survey showed plenty of improvements, it also reflected that inequality has widened and that [housing has become increasingly unaffordable](https://www.cnn.com/2022/03/09/homes/us-homeowner-wealth-gap/index.html) during this most recent three-year period.

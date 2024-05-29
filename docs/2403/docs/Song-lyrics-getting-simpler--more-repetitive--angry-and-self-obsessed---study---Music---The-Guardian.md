@@ -1,0 +1,56 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:46:56
+-->
+
+# Song lyrics getting simpler, more repetitive, angry and self-obsessed – study | Music | The Guardian
+
+> 来源：[https://www.theguardian.com/music/2024/mar/29/song-lyrics-getting-simpler-more-repetitive-angry-and-self-obsessed-study](https://www.theguardian.com/music/2024/mar/29/song-lyrics-getting-simpler-more-repetitive-angry-and-self-obsessed-study)
+
+You’re not just getting older. Song lyrics really are becoming simpler and more repetitive, [according to a study](https://www.nature.com/articles/s41598-024-55742-x) published on Thursday.
+
+Lyrics have also become angrier and more self-obsessed over the last 40 years, the study found, reinforcing the opinions of cranky ageing music fans everywhere.
+
+<gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;music&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;music/music&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Music&quot;},{&quot;id&quot;:&quot;science/science&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Science&quot;},{&quot;id&quot;:&quot;culture/culture&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Culture&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;Article&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;News&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/australia-foreign&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;Australia Foreign&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;music/2024/mar/29/song-lyrics-getting-simpler-more-repetitive-angry-and-self-obsessed-study&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+A team of European researchers analysed the words in more than 12,000 English-language songs across the genres of rap, country, pop, R&B and rock from 1980 to 2020.
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:3,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;Related: &quot;,&quot;text&quot;:&quot;‘Joyful madness’: ANU scientist wins global prize for ‘dancing his PhD’ about kangaroos&quot;,&quot;elementId&quot;:&quot;8bd9d6a4-f02c-401f-bb03-b5394ab3e1f9&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/science/2024/feb/27/kangaroo-time-anu-scientist-global-science-prize-aaas-dance-your-phd-competition&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:3,&quot;design&quot;:0}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+Before detailing how lyrics have become more basic, the study pointed out that US singer-songwriting legend Bob Dylan – who rose to fame in the 1960s – has won a Nobel prize in literature.
+
+Senior study author Eva Zangerle, an expert on recommendation systems at Austria’s University of Innsbruck, declined to single out an individual newer artist for having simple lyrics.
+
+But she emphasised that lyrics can be a “mirror of society” which reflect how a culture’s values, emotions and preoccupations change over time.
+
+“What we have also been witnessing in the last 40 years is a drastic change in the music landscape – from how music is sold to how music is produced,” Zangerle said.
+
+Over the 40 years studied, there was repeated upheaval in how people listened to music. The vinyl records and cassette tapes of the 1980s gave way to the CDs of the 90s, then the arrival of the internet led to the algorithm-driven streaming platforms of today.
+
+For the study in the journal Scientific Reports, the researchers looked at the emotions expressed in lyrics, how many different and complicated words were used, and how often they were repeated.
+
+“Across all genres, lyrics had a tendency to become more simple and more repetitive,” Zangerle summarised.
+
+The results also confirmed previous research which had shown a decrease in positive, joyful lyrics over time and a rise in those that express anger, disgust or sadness.
+
+Lyrics have also become much more self-obsessed, with words such as “me” or “mine” becoming much more popular.
+
+The number of repeated lines rose most in rap over the decades, Zangerle said – adding that it obviously had the most lines to begin with.
+
+“Rap music has become more angry than the other genres,” she added.
+
+The researchers also investigated which songs the fans of different genres looked up on the lyric website Genius.
+
+Unlike other genres, rock fans most often looked up lyrics from older songs, rather than new ones.
+
+Rock has tumbled down the charts in recent decades, and this could suggest fans are increasingly looking back to the genre’s heyday, rather than its present.
+
+Another way that music has changed is that “the first 10-15 seconds are highly decisive for whether we skip the song or not,” Zangerle said.
+
+Previous research has also suggested that people tend to listen to music more in the background these days, she added.
+
+Put simply, songs with more choruses that repeat basic lyrics appear to be more popular.
+
+“Lyrics should stick easier nowadays, simply because they are easier to memorise,” Zangerle said.
+
+“This is also something that I experience when I listen to the radio.”

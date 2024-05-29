@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:31:25
+-->
+
+# Rive Renderer — now open source and available on all platforms
+
+> 来源：[https://rive.app/blog/rive-renderer-now-open-source-and-available-on-all-platforms](https://rive.app/blog/rive-renderer-now-open-source-and-available-on-all-platforms)
+
+We’re excited to announce the Rive Renderer is officially open source and available on all platforms. It isn’t hyperbolic to say what you can do with Rive is about to change in an earth-shattering way. 
+
+The Rive Renderer is custom-built for Rive content, for animation, and for runtime. Now you can draw an unprecedented amount of vector graphics with mega fast rendering. Want to fill the screen with vector graphics and super crisp text? Do it — the Rive Renderer ensures everything on the screen animates at 120 fps with pristine antialiasing quality. 
+
+The in-house Rive Renderer  — two years in the making — draws our content without restriction. We have full control over the entire experience, from when a designer builds something in the Rive Editor, to when an end-user sees or interacts with it at runtime. By carefully and intentionally only generating content that will go fast at runtime, we have optimized the Rive Renderer to be groundbreakingly fast and highly performant. Now designers can worry less about how to build something that performs well at runtime and just… create!
+
+## Why now?
+
+When we first built Rive, we used existing open source solutions to render our content, like Skia and the HTML Canvas API. The bring-your-own-renderer architecture, which we still support, is great because it lets users plug in renderers with low effort. However, not having a consistent and optimized renderer of our own has been a major roadblock for Rive’s product roadmap and innovation. We knew Rive couldn’t reach its full potential without one. 
+
+It also meant we couldn’t dependably implement highly requested rendering features across the [many platforms Rive supports](https://rive.app/runtimes). Using multiple renderers meant that if a feature didn’t exist on one renderer, then we couldn’t ship it, because that feature wouldn’t have worked in all of the backends where Rive runs. 
+
+## What's next?
+
+A singular renderer empowers us to work on effects we’re itching to add, like blurs, drop shadows, glows, tapered strokes, and more. Whatever features we dream up, we can now build and add to Rive. Let us know your feature requests via [email](mailto:hello@rive.app).
+
+## How does it work?
+
+To get technical, the Rive Renderer is a novel geometric reduction of antialiased vector paths into unique triangle patches. A massively parallel triangle rasterization pipeline already comes standard on desktop and mobile GPUs, and the renderer’s specific triangulation method allows us to harness that powerful 3D hardware for drawing Bézier curves.
+
+Our code is architected so you will always be able to use whatever third-party renderer you want. But if you want Rive’s unique features and the best overall experience, we suggest using the Rive Renderer.
+
+You can enable the Rive Renderer on iOS, Android, or the Web by [following these directions](https://rive.app/community/doc/overview/docD20dU9Rod). Take it for a spin today on [Github](https://github.com/rive-app/rive-renderer). And check out our Unity and Unreal runtimes that have it integrated, with more integrations coming soon.

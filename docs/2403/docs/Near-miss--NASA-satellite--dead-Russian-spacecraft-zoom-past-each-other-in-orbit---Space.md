@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:55
+-->
+
+# Near miss! NASA satellite, dead Russian spacecraft zoom past each other in orbit | Space
+
+> 来源：[https://www.space.com/near-collision-nasa-timed-satellite-russian-space-junk](https://www.space.com/near-collision-nasa-timed-satellite-russian-space-junk)
+
+A NASA satellite almost got clobbered high above Earth this morning (Feb. 28).
+
+At 1:34 a.m. EST (0634 GMT), according to agency officials, the dead Russian spy satellite Cosmos 2221 zoomed uncomfortably close to a NASA craft dubbed TIMED that has been studying [Earth's atmosphere](https://www.space.com/17683-earth-atmosphere.html) since 2001.
+
+"While the two non-maneuverable [satellites](https://www.space.com/24839-satellites.html) will approach each other again, this was their closest pass in the current predicted orbit determinations, as they are gradually moving apart in altitude," NASA officials wrote in an [update today](https://blogs.nasa.gov/sunspot/2024/02/28/nasas-timed-spacecraft-passes-safely-by-satellite/).
+
+That update didn't report just how close the encounter was — but satellite-monitoring company [LeoLabs gave us the numbers](https://twitter.com/LeoLabs_Space/status/1762851748702511418), and they are sobering. The two spacecraft, which are orbiting at an altitude of about 378 miles (608 kilometers), missed each other by less than 65 feet (20 meters).
+
+**Related:** [7 wild ideas to clean up space junk](https://www.space.com/24895-space-junk-wild-clean-up-concepts.html)
+
+Such [near misses](https://www.space.com/space-debris-near-miss-orbital-bad-neighborhood) are becoming more and more common as Earth orbit gets increasingly crowded. 
+
+[According to the European Space Agency](https://www.esa.int/Space_Safety/Space_Debris/Space_debris_by_the_numbers), there are about 11,500 satellites zooming around Earth at the moment, yet only 9,000 of them remain operational. But that's just the tip of the orbital iceberg. About 36,500 pieces of debris at least 4 inches (10 centimeters) wide cruise around our planet, as do more than 130 million others with a diameter of 1 millimeter or more.
+
+Breaking space news, the latest updates on rocket launches, skywatching events and more!
+
+Even such tiny shards can cause serious damage to a satellite, considering how fast things move in Earth orbit. For example, 250 miles (400 km) up — the average altitude of the [International Space Station](https://www.space.com/16748-international-space-station.html) — objects are zipping along at about 17,500 mph (28,160 kph).
+
+The TIMED satellite's name is short for "Thermosphere Ionosphere Mesosphere Energetics and Dynamics." 
+
+That moniker gives you a pretty good idea of its mission; the spacecraft "studies the influence of [the sun](https://www.space.com/58-the-sun-formation-facts-and-characteristics.html) and of human activity on Earth's mesosphere and lower thermosphere/ionosphere," NASA officials wrote in today's update. "The region is a gateway between Earth and space, where the sun's energy is first deposited into Earth's environment."
+
+Cosmos 2221 was a Russian ELINT (electronic and signals intelligence) satellite, [according to NASA](https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1992-080A). The 4,400-pound (2,000 kilograms) spacecraft launched in November 1992.
+
+*[Join our Space Forums](https://forums.space.com/) to keep talking space on the latest missions, night sky and more! And if you have a news tip, correction or comment, let us know at: [community@space.com.](mailto:community@space.com)*

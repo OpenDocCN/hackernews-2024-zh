@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:21:09
+-->
+
+# DVD’s New Cousin Can Store More Than a Petabit - IEEE Spectrum
+
+> 来源：[https://spectrum.ieee.org/data-storage-petabit-optical-disc](https://spectrum.ieee.org/data-storage-petabit-optical-disc)
+
+A novel disc the size of a DVD can hold more than 1 million gigabits—roughly as much as is [transmitted per second over the entire world’s Internet](https://www.washingtonpost.com/technology/2022/10/27/laser-powered-chip-internet-data-transfer/)—by storing data in three dimensions as opposed to two, a new study finds.
+
+Optical discs such as CDs and [DVDs](https://spectrum.ieee.org/fivedimensional-dvd-could-store-16-terabytes) encode data using a series of microscopic pits. These pits, and the islands between them, together represent the 0s and 1s of binary code that computers use to symbolize information. CD, DVD, and Blu-ray players use lasers to read the data encoded in these discs.
+
+“The use of ultrahigh-density optical data storage technology in big data centers is now possible.” **—Min Gu, University of Shanghai for Science and Technology**
+
+Although optical discs are low in cost and highly durable, they are limited by the amount of data they can hold, which is usually stored in a single layer. Previously, scientists investigated encoding data on optical discs in many layers in [three dimensions](https://spectrum.ieee.org/racetrack-memory) to boost their capacity. However, a key barrier that prior research faced was how the optics used to read and write this data were limited to roughly the size of the wavelengths of light they used.
+
+Now scientists in China have developed a way to encode data on 100 layers in optical discs. In addition, the data is recorded using spots as small as 54 nanometers wide, roughly a tenth of the size of the wavelengths of visible light used to read and write the data.
+
+All in all, a DVD-size version of the new disc has a capacity of up to 1.6 [petabits](https://spectrum.ieee.org/frequency-comb)—that is, 1.6 million gigabits. This is some 4,000 times as much data density as a [Blu-ray disc](https://spectrum.ieee.org/the-consumer-electronics-hall-of-fame-samsung-bdp1000) and 24 times as much as the currently most advanced hard disks. The researchers suggest their new optical disc can enable a data center capable of exabit storage—a billion gigabits—to fit inside a room instead of a stadium-size space.
+
+“The use of ultrahigh-density optical data storage technology in big data centers is now possible,” says [Min Gu](https://en.wikipedia.org/wiki/Min_Gu), professor of [optical-electrical and computer engineering](https://www.atse.org.au/news-and-events/article/min-gu-appointed-executive-chancellor-in-shanghai/) at the [University of Shanghai for Science and Technology](https://en.wikipedia.org/wiki/University_of_Shanghai_for_Science_and_Technology).
+
+### How to store a petabit on one disc
+
+The strategy the researchers used to write the data relies on a pair of lasers. The first, a green 515-nanometer laser, triggers spot formation, whereas the second, a red 639-nm laser, switches off the writing process. By controlling the time between firing of the lasers, the scientists could produce spots smaller than the wavelengths of light used to create them.
+
+The procedure used to create blank discs is compatible with conventional DVD mass production and can be completed within 6 minutes.
+
+To read the data, the researchers again depended on a pair of lasers. The first, a blue 480-nm beam, can make spots fluoresce, while the second, an orange 592-nm light, switches off the fluorescence process. Precise control over the firing of these lasers can single out which specific nanometer-scale spot ends up fluorescing.
+
+This new strategy depends on a novel light-sensitive material called AIE-DDPR that is capable of all these varied responses to different wavelengths of light. “It has been a 10-year effort searching for this kind of material,” Gu says. “The difficulty has been how the writing and reading processes affect each other in a given material—in particular, in a three-dimensional geometry.”
+
+The scientists encoded data on layers each separated by 1 micrometer. They found that the writing quality stayed comparable across all the layers. “Personally, I was surprised that nanoscale writing-recoding and reading processes both work well in our newly invented material,” Gu says.
+
+The researchers note that the entire procedure used to create blank discs made using AIE-DDPR films is compatible with conventional DVD mass production and can be completed within 6 minutes. Gu says these new discs may therefore prove to be manufacturable at commercial scales.
+
+Currently, he says, the new discs have a writing speed of about 100 milliseconds and an energy consumption of microjoules to millijoules.
+
+Still, Gu says, the researchers would like to see their new discs used in big data centers. As a result, they’re working to improve their new method’s writing speed and energy consumption. He suggests this may be possible using new, more energy-efficient recording materials. He says more layers in each disc may be possible in the future, using better lenses and fewer aberrations in their optics.
+
+The scientists detailed [their findings](https://www.nature.com/articles/s41586-023-06980-y) online 21 February in the journal *Nature*.
+
+From Your Site Articles
+
+Related Articles Around the Web

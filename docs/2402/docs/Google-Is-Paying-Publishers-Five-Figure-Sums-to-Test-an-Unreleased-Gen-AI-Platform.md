@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:27
+-->
+
+# Google Is Paying Publishers Five-Figure Sums to Test an Unreleased Gen AI Platform
+
+> 来源：[https://www.adweek.com/media/google-paying-publishers-unreleased-gen-ai/](https://www.adweek.com/media/google-paying-publishers-unreleased-gen-ai/)
+
+Google launched a private program for a handful of independent publishers last month, providing the news organizations with beta access to an unreleased [generative artificial intelligence](https://www.adweek.com/category/artificial-intelligence/) platform in exchange for receiving analytics and feedback, according to documents seen by ADWEEK.
+
+As part of the agreement, the publishers are expected to use the suite of tools to produce a fixed volume of content for 12 months. In return, the news outlets receive a monthly stipend amounting to a five-figure sum annually, as well as the means to produce content relevant to their readership at no cost.
+
+“In

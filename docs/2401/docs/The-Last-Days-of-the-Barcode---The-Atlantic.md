@@ -1,0 +1,254 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:48
+-->
+
+# The Last Days of the Barcode - The Atlantic
+
+> 来源：[https://www.theatlantic.com/podcasts/archive/2024/01/the-last-days-of-the-barcode/677185/](https://www.theatlantic.com/podcasts/archive/2024/01/the-last-days-of-the-barcode/677185/)
+
+Once upon a time, a restless cashier would eye each and every item you, the consumer, purchased and key it into the register. This took skill but also time—and proved to be an imperfect way to keep track of inventory. Then one day, a group of grocery executives and inventors came up with a better way: what we now know as the barcode, a rectangle that marks items ranging from insulin to Doritos. It’s so ubiquitous and long-lived that it’s become invisible.
+
+In this episode of
+
+*Radio Atlantic*
+
+, editor Saahil Desai
+
+[gives an early obituary to a monumental and fading technology](https://www.theatlantic.com/technology/archive/2024/01/barcode-changing-stores-qr-code/677089/)
+
+. Desai walks us through the surprising history of the barcode, from its origins in the grocery business to Walmart and Amazon (with a detour to the movie
+
+*Deep Throat*
+
+). The barcode allowed grocers to stock infinite varieties of everything, which led us to
+
+*expect*
+
+infinite varieties of everything and made us the highly demanding and sometimes addicted shoppers we are today. We talk about the barcode and the technology that is about to succeed it, which is more effective and more sinister.
+
+Listen to the conversation here:
+
+* * *
+
+***The following is a transcript of the episode:***
+
+**Saahil Desai:** If you think about basically everyone, not just in America, but the world, perhaps the symbol that most of us know or encounter most often on a daily basis is not, like, a Nike symbol or a Coke symbol or literally anything else. It’s a barcode.
+
+**Hanna Rosin:** A barcode. That little rectangle of black-and-white stripes that you find on pretty much every single product, from lawn chairs to insulin to Flamin’ Hot Cheetos.
+
+You point a scanner at it, and it gives you the basic information about the product—is this Honey Nut Cheerios or regular Cheerios? And how much do they cost?
+
+It’s such old technology that it’s not really that exciting anymore. In fact, it’s just part of the invisible architecture of everyday life, which makes it exactly the kind of thing that editor Saahil Desai notices.
+
+**Desai:** It’s familiar in that sense, both geographically and over time, right? The barcode hasn’t changed really in 50 years. It’s so deeply familiar in that way. I find comfort in that. And that’s sort of beautiful to me.
+
+**[*Music*]**
+
+**Rosin:** I’m Hanna Rosin. This is *Radio Atlantic*. Once upon a time, you would go to a grocery store and a cashier would manually key in the price of an item. Cashiers who could do this quickly were so prized that in 1964 the winner of International Checker of the Year won a mink stole and a trip to Hawaii.
+
+Then came this new thing: the barcode, which didn’t just change how cashiers did their jobs. It remade the whole American economy and eventually us, the consumers.
+
+**[*Music*]**
+
+**Rosin:** Saahil, what on earth got you interested in the barcode in the first place?
+
+**Desai:** So, I am part of this grocery co-op in my neighborhood in Brooklyn, and sometimes I have to work the checkout shift, where you literally scan people’s items the way that any cashier does. And it was just miraculous to me, the way that the barcode is sort of a perfect technology. Like, it just immediately scans and beeps.
+
+Like, the error rate for the barcode is something like one in 400,000\. And it’s been that way for many decades. This is a true story: I downloaded an app to try and scan UPC codes. And when I downloaded the app and tried to scan the code, my phone crashed. But then, when I got it up again, it scanned the code in a second. So technology today is just, like, not as reliable as this simple, 50-year-old technology that you can scan so quickly with your phone or any other scanner.
+
+**Rosin:** Okay, so beside the fact that the barcode has been around forever, why is it important?
+
+**Desai:** I think the barcode is sort of the plumbing of modern capitalism and consumerism as we now know it, in the sense that it is the thing that makes modern shopping work, even if we don’t always see it or think about it. All the megastores that we now know—whether that’s, like, a Walmart Supercenter or a Costco—all these megastores, and even the era that has followed, which is Amazon, that’s only possible because of the barcode.
+
+**Rosin:** Okay. But where do they start? Like, where does the story of the barcode start?
+
+**Desai:** The story of the barcode starts, really, in grocery stores. Like, think about the place you go where you do the most scanning of products. Go to any grocery store: It’s just sort of a chorus of beeps.
+
+And so, really, the barcode started off and was devised to just be a sort of universal symbol for the grocery industry, just a way for them to keep track of all products—whether that was in, you know, one grocery store or another—and to just scan things more quickly. The idea of taking that symbol and those scanners and applying them beyond the grocery industry, to every other store that we now see these codes in, was totally inconceivable to everyone who invented the barcode.
+
+**Rosin:** All right. I want to get to the magical moment when the barcode was invented. But before we do that, can you just explain what the pre-barcode world looked like?
+
+**Desai:** So if grocery stores now are lots of beeping, the sound of that era was lots of clicking. And so that’s all because you would have to put a sticker price on every single product. And so just think about all the work that would entail. So there would be a price gun that someone would constantly have to be changing to the specific price and have to be sort of stamping on products all the time, all day long, just to keep up with all the products in the store.
+
+[*Clicking sounds*]
+
+**Desai:** So you would have to sort of do a click for popcorn. You’d have to do some more click for those cans of beer. You’d have to click for Cheez-Its. Click for Pop-Tarts. Older products might still be there, or something might be priced incorrectly, because everything needed a sticker price. So there was a lot of inaccuracy and inefficiency in that way.
+
+**[*Music*]**
+
+As early as the late ’40s, grocery stores realized that they needed a better way of doing this, that the status quo was not going to work.
+
+**Rosin:** Mm-hmm.
+
+**Desai:** So, starting in the early ’70s, this group of grocery execs—it was, you know, basically everyone that was involved in the products themselves and getting them to your grocery store—they all came together and decided that they were going to work together to create a universal way to identify every product in every grocery store. Sort of the same way, you know, a seven-digit phone number calls up a certain person, the idea was that a 12-digit UPC code would just identify any particular item, right?
+
+So then you could differentiate between, like, a 12-ounce Gatorade versus a 32-ounce Gatorade, and Lemon-Lime versus like Arctic Blast, or whatever—differentiate between all the different products out there.
+
+**Rosin:** And did that seem like a crazy, outlandish idea? I mean, to think every single product—like, every fruit, everything—would have its own particular marker? Or did they think, *Oh no. It’s just like a phone number. No big deal*?
+
+**Desai:** That was actually the easy part. That took them, you know, only a year to devise. And then from there, it took like two years to create a symbol that actually could be scanned, that could represent the code.
+
+**Rosin:** Mm-hmm.
+
+**Desai:** And so basically what these people decided is that if they let any individual company profit off of a barcode, then that would really be a huge impediment to this actually becoming universal. And obviously the whole idea of a universal product code is that it’s universal. So what they did is they chose seven finalists—seven companies—that would create a code in a way for it to be scanned, and none of these companies would get any sort of profits off of it.
+
+They would all agree to put the code in the public domain, and they would all just, you know, basically make money by selling scanners. That was the idea.
+
+**Rosin:** Wait. I just want to pause here. It’s, like, unimaginable. It seems completely logical when you explain it, that they should come up with a reason why this thing would be widely accepted, and that reason is sort of Marxist. You know, like, nobody’s going to profit off of it specifically.
+
+**Desai:** It’s almost, like, comically postwar America to me, in a way—very ’60s and ’50s in a sense that it just feels so divorced and different from how we think about American business and technology today. Obviously, if the same sort of process played out today, it is really, really hard to envision a world in which an individual person didn’t get super rich. Like, there would be an Elon Musk of barcodes.
+
+**Rosin:** Right. Exactly.
+
+**Desai:** Like, the people who created this, obviously, they are not household names and they never really got rich. They really spent the rest of their lives creating something that became ubiquitous, but they never really got any notoriety from that.
+
+**Rosin:** So how did we land on the exact barcode that we know today, the rectangular one?
+
+**Desai:** So IBM created the barcode as we now know it, which is, like, this zebra-striped code of black-and-white lines. But for a while, it really seemed like the most promising symbol was from the company RCA, which actually already piloted that barcode at a store, and it was the first barcode to ever be patented. And it sort of looks like a bullseye. So it’s round, and it’s different circles of varying thickness in sort of concentric circles.
+
+**Rosin:** It’s kind of beautiful. It looks like a little—it looks like a dartboard, basically.
+
+**Desai:** Yeah, it’s really uncanny to look at other barcode alternatives, because I think it makes you realize just how many times you have seen the sort of zebra-striped UPC barcode without really thinking about it.
+
+**Rosin:** Right, because all these other alternatives and different shapes are unimaginable.
+
+**Desai:** They’re truly unimaginable. There’s one that looks almost like—I would say like a sun, with little rays.
+
+And like the notion of just, like, looking at every item and seeing that, versus just the usual black-and-white stripes, is very uncanny to me.
+
+**Rosin:** Can you describe them? I’m looking them all up. Okay, so we have the bullseye one, the RCA one. The one that looks like a sun is actually beautiful. And there’s one like a rainbow, which is beautiful. And I kind of like the ones that look like music symbols, you know. We ended up with the most boring one—maybe the most practical, but definitely, visually, the most boring one is the one that is ubiquitous.
+
+**Desai:** But can’t you envision some alternate reality in which we did have the bullseye barcode and we were having this discussion and, you know, someone was like, *Wow. That IBM zebra-stripe barcode is beautiful*.
+
+**Rosin:** Exactly. *We could have had a future with zebras on everything. And instead, we ended up with this dartboard*. Yeah, I can imagine it.
+
+[*Music and scanner beeps*]
+
+**Rosin:** So how does it resolve? How do we land on the rectangle we have today?
+
+**Desai:** So, basically, the invention of the barcodes is delightfully ’70s and terrible ’70s at the same time. Right? So they couldn’t decide between the IBM zebra-stripe barcode and all the other various barcodes that we’ve been talking about. And, you know, this was a really divisive, ongoing discussion. And to sort of lighten the mood, one of the core figures in this collection of various, like, grocery-store executives decided to take the whole committee to see *Deep Throat* at a San Francisco porn theater, basically. And it was soon after that they decided to pick the IBM barcode. As if the invention of the barcode couldn’t get any more ’70s, I think this is sort of the cherry on top.
+
+**Rosin:** Right. Exactly. I guess the only assumption you can make is that they were all men.
+
+**Desai:** I can definitely tell you that much. They were definitely all men.
+
+**Rosin:** So, they were trying to solve for a problem of efficiency. Do you think they had any idea of the numbers of enormous changes that would follow because of the barcode?
+
+**Desai:** They really thought the barcode would just be for grocery stores because that was the whole idea, right? Like, it was intended to just be a really industry-specific and focused thing.
+
+And so they never really contemplated the idea that, you know, everything could use or could get a barcode. And so, you know, there was some prediction at the time that only like 10,000 companies would ever really use this UPC barcode. And now, like 10,000 UPC barcodes get scanned every second.
+
+**Rosin:** Oh my God. That’s insane. So what did happen? Like, what actually changed?
+
+**Desai:** Yeah, so once the barcode arrives, stores can more easily figure out exactly what is selling and what isn’t. And what that does, it seems very simple to us now, but it lets them try out new products more easily, right? Because if you buy, say, a new type of mustard, right?
+
+**Rosin:** Mm-hmm.
+
+**Desai:** If you can more easily know whether it’s selling or not, it makes it easier to sort of just test out a product. And if you’re thinking about the cashier, you know, keying in all the products on a big, hulking mechanical cash register, if you turn all of that into a barcode that just needs to be scanned, you can add an infinite number of items in a store, and it doesn’t really change anything for a cashier, right? They don’t need to know any more information about the products. They just put it over the barcode, and they put it in your bag, and that’s it.
+
+**Rosin:** Oh, my God. As you’re speaking, I’m seeing all the beauty and horror of where we live now. Really. Like, I can just see it all. Like, in that first moment, when they’re probably just so excited about all the possibility, and then come tumbling all the horrors: our addiction to it, our addiction to efficiency. Is that what happened? Like, was this the beginning of it all?
+
+**Desai:** I do sort of like to think of the creators of the barcode as like the Oppenheimers of capitalism, really. Because it is sort of like that, right? In a sense, America has B.C. and A.D., which is before codes and, you know, after *Deep Throat*, for lack of a better phrase.
+
+**Rosin:** That was good. Did you just make that up, or were you planning it?
+
+**Desai:** Yeah, you know, I was struggling to think of A.D., but, thankfully, we had something there. But I really do think that’s the story of American business, in a sense.
+
+**Rosin:** Begins with the barcode?
+
+**Desai:** Yeah. Right, because everything about modern capitalism, from the shopper’s vantage point, is really divided into these two eras. Everything we know today about shopping is downstream from this zebra-striped barcode.
+
+**Rosin:** Whoa. Okay. See, I knew we were going to get to the big *X*-explains-everything moment. So now defend yourself.
+
+**Desai:** Yeah. Okay, right. So if we think about the quote-unquote best things about modern shopping.
+
+I will explain the quote-unquote there in a second, which is that there’s so many products, arguably too many products, right? It can be exhausting sometimes. Like, I went to Whole Foods, and there’s 23 types of mustard jars on the shelves at my local Whole Foods, which is sort of crazy and incredible, right? Like, anything you now want, you can get, and that’s great in a sense, and that’s also terrible in a sense, you know? That level of choice can be paralyzing. And the efficiency that the barcode has unfurled has also led to the era of fast fashion and mindless junk and, you know, even just corporate bigness, right? These scanners were really expensive, so it was the biggest companies that got in on them first and were able to just speed up their operations.
+
+**Rosin:** Right. I mean, you said no one got rich off the barcode, but sort of downstream, people got rich off the barcode, right?
+
+**Desai:** Definitely. The barcode’s creators did not get rich, but they created something that made lots of people rich. The era of big-box stores and megastores and Costcos the size of medieval European towns, or whatever, is all only possible because of a barcode, which lets you track all these products more easily and know what’s selling and what isn’t, and lets cashiers scan all the stuff way more efficiently. So in that sense, it really has abetted the rise of megastores, and it has definitely been a vehicle for people in corporate America to get really rich.
+
+**Rosin:** Like, the Walton family are billionaires to some degree because of the barcode.
+
+**Desai:** Absolutely. Right. Like, without the barcode, these sorts of stores would not be able to function.
+
+**Rosin:** So in the half century that it’s been around, the barcode has remade the world. What does the world look like when the barcode is replaced? That’s after the break.
+
+**[*Music*]**
+
+**Rosin:** This began as a thing that solved a problem for grocery-store owners, which seemed like a genuine problem. It began in a spirit of shared invention, and then it ends by completely changing our psyches—like, our sense of expectation, who we are, what we expect, how fast we expect it, how much of it we expect. I mean, it’s a pretty profound difference.
+
+**Desai:** Yeah, what’s really interesting to me about that is sort of how long it took for that to happen, right? It wasn’t like the barcode was invented and then, you know, 10 days later every store now has endless numbers of options of everything.
+
+It took quite some time for the barcode to actually reach the level of pervasiveness that we now know.
+
+**Rosin:** So is it going to be with us forever? Or is it going to become obsolete, like everything else?
+
+**Desai:** Yeah. So I would say it’s probably the last days of the barcode as we know it, at least, right?
+
+So what’s happening is that there’s this organization called GS1, which is kind of like the government of barcodes, right? So if you create a new product and you want a UPC code for that product, you go to GS1 and they will assign you a UPC code.
+
+But they have decided that starting in 2027, instead of getting this UPC barcode, you can basically just put a QR code on products.
+
+And so, obviously when you scan a QR code on a restaurant menu, or whatever, it just pulls up a URL. But these QR codes are sort of different from that, in the sense that you can scan them, but they also will beep at a cash register and contain lots of data within them that’s not just a link. So they’re sort of like—they have two roles in that way.
+
+**Rosin:** I think I didn’t fully understand that. Maybe it’s because my brain was stuck on, like, the experience of being at a restaurant and everyone scanning the QR code and how totally annoying it is because the Wi-Fi does or doesn’t work in the restaurant and all of that. So I couldn’t tell if what you were saying was good or bad for me, the consumer.
+
+**Desai:** I think it’s good and bad.
+
+**Rosin:** Uh-huh.
+
+**Desai:** Obviously, lots of people are annoyed by QR codes, mostly just because of restaurant menus.
+
+**Rosin:** Mm-hmm.
+
+**Desai:** But I find a beauty in the QR code, too. It was created in the ’90s—it was not supposed to just be something that you scan with your phone to pull up a link. The idea was just instead of, like, 12 numbers that can be included in a UPC code, a QR code can include over 4,000 characters, right? So both numbers, letters, exclamation points, periods—anything like that, right?
+
+So it’s a barcode on steroids is basically what it is.
+
+**Rosin:** Mm-hmm. Mm-hmm.
+
+**Desai:** A UPC code does not tell stores that much about an actual product, right? Just what it is and how much it costs.
+
+A can of seltzer that was made yesterday and the exact same can of seltzer that’s 15 years old, they would have the same UPC code and so they would scan the same way. The store would have no way of knowing the difference, right? But the QR code can contain way more information.
+
+So what that allows is, for example, right, if you have jugs of milk in a store that are like two days away from expiring, the store will automatically be able to discount those. So it will allow more efficiency in a store’s inventory in a way that is actually helpful, in a sense, for us consumers. But also the current barcode has sort of no role for us as consumers, because we can’t really do anything with it. So it’s potentially helpful to replace it with something that we can all actually scan.
+
+Say you are, you know, allergic to peanuts, and you download the Kroger app and put in that you’re allergic to peanuts. Hypothetically, whenever you scan a product, it’s possible it could ping you to tell you that it has trace amounts of peanuts and that you shouldn’t buy it. That happens both if you’re using your phone—so you’re connected to the Kroger app—or even possibly if you’re just scanning your stuff at a checkout counter. Say you scanned your loyalty card information so they know who you are, and if you’ve already told Kroger online that you’re allergic to peanuts, because information about allergens is baked into this new QR code, it’s possible that it could tell you right then not to buy that product.
+
+**Rosin:** I see why there are efficiencies for the store. I see why it’s good to have more information for a product. But when you got to the part about the peanuts is where my vigilance went up, because I thought, *Okay. Yes, we as a consumer are going to get more information, but we are definitely going to pay a price*. Because I think of a QR code: Unlike a barcode, I’m scanning it and it’s scanning me. Like, I’m giving up something with a QR code that I feel like I’m not giving up with a barcode.
+
+**Desai:** Yes, I think what tripped you up actually was not peanuts. It was *app*. That’s the problem. The issue is, basically, so much of American capitalism now is data harvesting and targeted advertising.
+
+**Rosin:** Mm-hmm.
+
+**Desai:** The story of the barcode and its transformation is very much in that trajectory as well. So say we go to Levi’s and there’s a pair of jeans you want. You could scan the code and it will probably tell you to download the Levi’s app.
+
+Say we do that, right? We’ll download the app. You’ll scan the pair of jeans, right? Say you decide it’s too expensive. Because the company now has this data, that you scanned the QR code of this pair of jeans, they could very easily send you a 15-percent-off code in your email, the same way that if you leave a product in your online cart—everyone’s sort of familiar with, like, leave it there long enough and you’ll get like a code, like, *Please come back. Here’s a small discount*. It’s like the physical version of that, which is really sort of creepy to me.
+
+**Rosin:** Totally creepy. Like, I’ll come home and there’ll be a Levi’s catalog. Before I get home from the store, there’ll be a Levi’s catalog in my mailbox, which turns all of us into targetable commodities.
+
+**Desai:** Yeah, we’re way more targeted now, in part because the QR code also knows where in a store you are scanning that.
+
+So, if you scan a tube of toothpaste, if there’s some special display sponsored by Crest, or whatever, and you scan that versus the one that’s exactly the same on a shelf in the back, the store will immediately know that.
+
+That does feel a bit creepy to me. And the way that this is going to give companies just more data about us all is, to me, the most disheartening aspect of this transformation.
+
+**Rosin:** Mm-hmm. Okay, so to you as a person who spends time in these worlds, what is coming for us? Like, for all I know, QR codes are already defunct.
+
+**Desai:** They’re not already defunct, but they are very, very antiquated. The QR code was invented in Japan in the early ’90s, mostly for the automotive industry, actually. And so it’s been around for quite some time. And, obviously, technology has changed a lot in [30] years.
+
+And, you know, the QR code is the near future, but only the near future. In the same way that the UPC code lasted 50 years, we’re turning to the QR code, but there’s no way in hell it’s going to last 50 years. It’s sort of like the way that everyone gets a new iPhone every two years or three years, or whatever. Once you move into that mode of constantly updating things, it’s going to change and not last for many decades and lead to the same sort of familiarity that people now associate with a UPC code.
+
+**Rosin:** Oh, that’s very disorienting. Now I see why you wrote this story about the barcode, even with the many evils that it ushered in, with some kind of fond nostalgia—because it’s stuck around long enough to become part of the background of our lives. And now we’re gonna be constantly bombarded with new innovations that we can’t quite keep up with, and we don’t quite know what they’re doing or how they’re harvesting information, so it’s a much more disorienting world. Like, it sounds like none of these will we become attached to as consumers or just humans.
+
+**Desai:** I think that’s totally right. Amazon, for example, is really trying to use AI now to scan products—like, a type of AI camera that can just understand the shape and color and text on a package and just know what it is immediately, which is much faster than scanning a code. So there’s definitely a future here in which the QR code persists for a few years, but it’s going to be disrupted because that’s the story of technology now, right?
+
+Everything gets disrupted quickly, except the barcode. And I think what heartens me about that is if we see it less often, maybe we’ll actually admire and appreciate it. Because I don’t think, until I started thinking and reporting the story, I really noticed the barcode at all or really appreciated it. But I think in a world in which we see this familiar barcode 50 percent less frequently, I think we’re more likely to actually give it some thought and to appreciate the degree to which it has just withstood 50 years, unlike every other aspect of American technology.
+
+**Rosin:** Mm-hmm. Well, Saahil, I am very grateful to you for making something that was, before this moment, pretty invisible to me incredibly interesting. So thank you for coming on.
+
+**Desai:** Yeah, thanks for having me.
+
+**Rosin:** This episode of *Radio Atlantic* was produced by Kevin Townsend and edited by Claudine Ebeid. It was engineered by Rob Smierciak and fact-checked by Isabel Cristo. Claudine Ebeid is the executive producer for Atlantic Audio. Andrea Valdez is our managing editor. I’m Hanna Rosin. Thank you for listening.

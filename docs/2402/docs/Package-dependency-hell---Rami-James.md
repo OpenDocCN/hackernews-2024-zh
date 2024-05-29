@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:23:05
+-->
+
+# Package dependency hell — Rami James
+
+> 来源：[https://www.ramijames.com/thoughts/package-dependency-hell](https://www.ramijames.com/thoughts/package-dependency-hell)
+
+Package managers like npm give you quick and easy access to their ecosystem of functionality. Unfortunately, the ease with which you can quickly add packages to a project inflates the complexity you inherit. You save some time by using someone else’s code, but you pay an unknown price in the future. It’s up to the upstream package maintainer. If they update and break something in your stack, it’s on you to update it. Your code may work today, but the likelihood that it will work as-is in five years is fairly low. With enough packages imported, you will spend a lot of energy trying to stay up-to-date. It’s a nightmare. The energy you spend doing maintenance is instead of creating new functionality. A pretty high price, I would argue.
+
+As with everything in software development, it's a trade-off you can pose with a question: do you spend time building something someone else has already built, or do you build something new? 
+
+You, of course, don’t have to use external packages. You can build everything on your own. Let’s face it, though: building everything from the ground up is incredibly hard and beyond the reach of most developers. If you just want to get some project up and running, you bite the bullet and accept that for its lifetime, you will be trading your time for your lack of deep expertise. You're now trapped in dependency hell. Better get comfortable because you're going to be here a while.
+
+This maps to many real-world issues I'm working through on a much more personal level.
+
+When you're growing up, there is this story you're told that gives you a roadmap to your life that you're expected to follow. Today, I believe this roadmap is largely not for your benefit but is a way to produce competent indentured servants for the market economy. You learn, you work, you breed, and you die. You don’t do it for you; you do it for the “greater good.” You do it to be useful.
+
+I hate this structure of the world. It reminds me too much of the javascript ecosystem’s dependency hell I described above. 
+
+Starting a new life? “Let’s take a shortcut and add all the necessary packages! Don’t worry about the future over-head; it will be fine!”
+
+> ```
+> npm add education 
+> ```
+> 
+> ```
+> npm add student-loans
+> ```
+> 
+> ```
+> npm add degree
+> ```
+> 
+> ```
+> npm add kids
+> ```
+> 
+> ```
+> npm add partner
+> ```
+> 
+> ```
+> npm add career
+> ```
+> 
+> ```
+> npm add mortgage
+> ```
+> 
+> ```
+> npm add house
+> ```
+> 
+> ```
+> npm add car
+> ```
+> 
+> ```
+> npm add white-picket-fence
+> ```
+
+Most of us get some good things out of adding these dependencies, but the price we collectively pay in exchange is a society full of constant, mindless toil. Every package we add is another layer of complexity and maintenance. We are trapped in this dependency cycle because we are too poor, disinterested, timid, scared, or exhausted to acquire the skills that allow us to be fully independent. We don't need all those packages, but we added them because we were told that is how things are done. Most people aren’t very thoughtful about what dependencies they add to their lives. Once you have them, you have to deal with them. 
+
+It took me a long time to understand that my depression and anxiety weren’t arbitrary. I didn't understand that adding packages is optional. I added too many and couldn’t handle the stress of maintaining so much. I just did what the roadmap told me to do. It all felt wrong, but I played along until I couldn’t handle it all anymore.
+
+When I was young, I wasn't ever ok with getting up and going to school to be force-fed whatever knowledge someone else decided was appropriate. I did it because I was told to until I realized I could say “no.”
+
+As an adult, I wasn't ok with working endless, brutal hours. I've been doing it since I was 15 and am still barely scraping by. Almost 30 years of my life are gone. 
+
+The way society is designed is that, if you're lucky, you earn a bit more than you spend every month. You're supposed to slowly accrue value over your lifetime and retire close to 70\. I don’t think my generation (and those who came after) believe we will retire. We’re all getting screwed. It was true for my parents. My mom died at 54, so she got screwed one way. My dad is still working at 82, so he got screwed in another way. It doesn't add up for me. I want to avoid ending up like them. 
+
+My ability to keep going is gone. I'm at that “no” stage with work. I can't do it anymore. Every job that I take, I quit. I'm burned out and feel like I've got nothing left. I want to refrain from participating in a system that falsely promises security in exchange for our energy, creativity, and happiness. My very essence has been siphoned off. It’s all gone to maintaining packages that other people keep updating.
+
+I feel like I gave it everything I had, and now I’m just stuck. I’m no longer building anything that fulfills me. I’m a slave to dependency hell. 
+
+The question is, how do you slim things down when you are already drowning? How do you remove the right dependencies without sowing chaos?
+
+I’m not sure what the answer to this is. I have some ideas, but they are half-formed, and I’m not ready to write about them publicly. I’d love to hear your thoughts if you have any.

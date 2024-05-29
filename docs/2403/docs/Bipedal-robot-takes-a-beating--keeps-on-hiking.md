@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:46:34
+-->
+
+# Bipedal robot takes a beating, keeps on hiking
+
+> 来源：[https://www.freethink.com/robots-ai/bipedal-robot-limx](https://www.freethink.com/robots-ai/bipedal-robot-limx)
+
+We’ve seen robots that can [hike mountains](https://www.freethink.com/hard-tech/robot-dog) and ones that can [take a beating](https://youtu.be/rVlhMGQgDkY?si=FKZhJfj3GfokGfbO&t=105), but China-based robotics company LimX Dynamics has now unveiled a bipedal robot that can do both at the same time.
+
+**The background:** Building a robot that can do one thing in one specific environment — think of all the bots currently working on assembly lines — is hard enough, but LimX’s focus is on developing “general-purpose robots,” ones that can do *many* things in many environments.
+
+It recently unveiled a [humanoid robot](https://medium.com/@limxdynamics/limx-dynamics-unveils-dynamic-testing-of-humanoid-robot-achieving-real-time-perceptive-stair-51d37b0cc6a5) and a [wheeled quadruped](https://medium.com/@limxdynamics/limx-dynamics-launches-its-first-wheeled-quadruped-achieving-breakthrough-in-application-of-legged-8f5a56a1a51a) (if you were traumatized by the [Wheelers](https://disney.fandom.com/wiki/Wheelers) in “Return of Oz” as a child, maybe skip videos of the latter in action), and now, it’s added a bipedal robot named “[P1](https://medium.com/@limxdynamics/limx-dynamics-biped-robot-p1-conquers-the-wild-based-on-reinforcement-learning-253ad33eaca6)” to its lineup.
+
+> Forest environments were not included in P1’s training simulations.
+
+**Meet P1:** P1 is essentially just a pair of legs — think an AT-ST from “Star Wars,” but only about waist high and thankfully unarmed — and it’s trained to have “exceptional control and stability,” even when walking in incredibly challenging environments.
+
+This training took place in computer simulations and made use of [reinforcement learning](https://www.freethink.com/hard-tech/reinforcement-learning-for-robots), a technique that lets an AI learn through trial and error, with “rewards” given when it does something desirable.
+
+**Friendly hike:** To demonstrate P1’s capabilities, LimX filmed the bipedal robot at China’s Tanglang Mountain, where it encountered grassy fields, rocky ditches, and steep, brush-covered slopes — environments that LimX says were not included in the robot’s training simulations.
+
+In the video, P1 is able to keep its balance remarkably well, despite the rough, unfamiliar terrain and the occasional abuse from its human companion — at one point, the man hits the bot’s legs with a tree branch so hard that the branch breaks, yet P1 stays on its feet.
+
+**Looking ahead**: P1 is listed as a product on LimX’s website, but it’s not clear what the company plans to charge for the bipedal robot, when people can buy one, or what the intended use cases are.
+
+Based on the demo video, though, it’s easy to imagine P1s being used for search-and-rescue missions, where it could team up with [cyborg cockroaches](https://www.freethink.com/hard-tech/insect-drones-cockroach), [robotic snakes](https://www.freethink.com/series/uprising/search-and-rescue-robots), and [scream-sensing drones](https://www.freethink.com/hard-tech/search-and-rescue-drone) to save people in peril.
+
+*We’d love to hear from you! If you have a comment about this article or if you have a tip for a future Freethink story, please email us at* [*[email protected]*](/cdn-cgi/l/email-protection#483c21383b082e3a2d2d3c20212623662b2725)*.*

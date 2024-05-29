@@ -1,0 +1,62 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:20
+-->
+
+# Planito
+
+> 来源：[https://sprain.ch/planito/](https://sprain.ch/planito/)
+
+## FAQs
+
+### When does a Planito cycle start?
+
+You can start your Planito cycle on any day you choose. It could be the first day of the year, the upcoming Monday, or even today. The start date is entirely up to you.
+
+### How many working hours are there in a Planito year?
+
+A Planito year consists of approximately 245 working days, with each day having 6.5 working hours. This totals about 1,593 hours per year, which is around 20% less than what is typically worked in a traditional week model, not accounting for vacation time.
+
+### How is vacation time handled with Planito?
+
+Vacation time in Planito is managed similarly to traditional models but adjusted for the shorter working hours. For example, if you have four weeks of paid vacation in a traditional model (160 hours), in Planito, this would be reduced by 20% to 128 hours, still equating to 20 days of vacation.
+
+### How are holidays treated in Planito?
+
+Planito does not follow traditional holidays. Instead, every week has a Sharkday, which gives a holiday-like experience, offering a break and a chance to focus on personal priorities.
+
+### How can the required work get done with 20% fewer hours per year?
+
+Planito is built on the idea that shorter working hours lead to less burnout, fewer sick days, happier employees, and, as a result, increased productivity and efficiency. This model relies on evidence that supports these outcomes.
+
+### How is Planito better than a 4-day workweek?
+
+Some 4-day workweek models compress the same amount of work hours into fewer days, which can be counterproductive. Planito differs by reducing the total number of work hours per day, promoting a more sustainable approach to work and focus.
+
+Scientific research supports the idea that an individual can maintain concentrated work for a maximum of 6 hours per day, further validating Planito's approach to shorter, more effective work periods compared to the traditional or modified 4-day workweek models.
+
+### If I have to work on a Saturday or Sunday, when can I spend time with friends and family?
+
+With Planito's 6.5-hour workday, starting your day at 8:00 AM means you would finish by 2:30 PM. This schedule often allows ample time in the afternoon and evening to spend with loved ones, even on workdays.
+
+Importantly, about one third of all Planito weekend days (or roughly 35 days per year) align with traditional weekend days, offering additional opportunities to spend time with friends and family who follow a conventional schedule.
+
+### How can I enjoy a Planito weekend when everyone else is working?
+
+Planito weekends offer unique opportunities to enjoy activities without the usual crowds, like empty ski slopes or shorter lines at attractions. While it may affect social plans with friends who work traditional hours, it also opens up new possibilities for personal time and errands.
+
+### Doesn't Planito conflict with the need for exchange with clients or colleagues?
+
+A Planito week always overlaps with traditional work weeks on several days, ensuring ample opportunity for collaboration and communication. This design considers the need to stay connected while also protecting deep work time.
+
+### Does Planito work if my country's laws prohibit work on Saturdays or Sundays?
+
+Planito, as a conceptual model, might not align with every local legislation, including those that restrict work on weekends. It's important to consider the compatibility of Planito with your country's legal framework regarding workdays.
+
+### Wouldn't Planito become ineffective if everyone adopted it?
+
+Planito is designed with the current 7-day week in mind, leveraging the benefits of off-peak deep work. If widely adopted, some benefits might diminish, but the model's core advantages, like shorter workdays and extended weekends, could still offer widespread benefits.
+
+### Why is it called Planito?
+
+The name is loosely based on the fact that the Planito has the same number of days in a week as there are planets in our solar system. Yes, [we still like Pluto](https://www.britannica.com/story/why-is-pluto-no-longer-a-planet).

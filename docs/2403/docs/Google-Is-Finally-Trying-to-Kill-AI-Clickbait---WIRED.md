@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:18
+-->
+
+# Google Is Finally Trying to Kill AI Clickbait | WIRED
+
+> 来源：[https://www.wired.com/story/google-search-artificial-intelligence-clickbait-spam-crackdown/](https://www.wired.com/story/google-search-artificial-intelligence-clickbait-spam-crackdown/)
+
+Google is taking action against algorithmically generated spam. The search engine giant just announced [upcoming changes](https://developers.google.com/search/blog/2024/03/core-update-spam-policies), including a revamped spam policy, designed in part to keep AI clickbait out of its search results.
+
+“It sounds like it’s going to be one of the biggest updates in the history of Google,” says Lily Ray, senior director of SEO at the marketing agency Amsive. “It could change everything.”
+
+In a blog post, Google [claims](https://blog.google/products/search/google-search-update-march-2024/) the change will reduce “low-quality, unoriginal content” in search results by 40 percent. It will focus on reducing what the company calls “scaled content abuse,” which is when bad actors flood the internet with massive amounts of articles and blog posts designed to game search engines.
+
+“A good example of it, which has been around for a little while, is the abuse around obituary spam,” says Google’s vice president of search, Pandu Nayak. [Obituary spam](https://www.wired.com/story/morbid-war-online-obituaries/) is an especially grim type of digital piracy, where people attempt to make money by scraping and republishing death notices, sometimes on social platforms like [YouTube](https://www.wired.com/story/youtube-obituary-pirates/). Recently, obituary spammers have started [using artificial intelligence](https://www.theverge.com/24065145/ai-obituary-spam-generative-clickbait) tools to increase their output, making the issue even worse. Google’s new policy, if enacted effectively, should make it harder for this type of spam to crop up in online searches.
+
+This notably more aggressive approach to combating search spam takes specific aim at “domain squatting,” a practice in which scavengers purchase websites with name recognition to profit off their reputations, often replacing original journalism with AI-generated articles designed to manipulate search engine rankings. This type of behavior predates the AI boom, but with the rise of text-generation tools like ChatGPT, it’s [become increasingly easy](https://www.wired.com/story/ai-generated-marketing-content/) to churn out endless articles to game Google rankings.
+
+The spike in domain squatting is just one of the issues that have [tarnished](https://www.theatlantic.com/technology/archive/2023/09/google-search-size-usefulness-decline/675409/) Google Search’s reputation in recent years. “People can spin up these sites really easily,” says SEO expert Gareth Boyd, who runs the digital marketing firm Forte Analytica. “It’s been a big issue.” (Boyd admits that he has even created similar sites in the past, though he says he doesn’t do it anymore.)
+
+In February, WIRED reported on several [AI clickbait networks](https://www.wired.com/story/confessions-of-an-ai-clickbait-kingpin/) that used domain squatting as a strategy, including one that took the websites for the defunct indie women’s website [The Hairpin](https://www.wired.com/story/plaintext-hairpin-blog-ai-clickbait-farm/) and the shuttered Hong Kong-based pro-democracy tabloid [Apple Daily](https://www.wired.com/story/confessions-of-an-ai-clickbait-kingpin/) and filled them with AI-generated nonsense. Another [transformed the website of a small-town Iowa newspaper](https://www.wired.com/story/iowa-newspaper-website-ai-generated-clickbait-factory/) into a bizarro repository for AI blog posts on retail stocks. According to Google’s new policy, this type of behavior is now explicitly categorized by the company as spam.
+
+In addition to domain squatting, Google’s new policy will also focus on eliminating “reputation abuse,” where otherwise trustworthy websites allow third-party sources to publish janky sponsored content or other digital junk. (Google’s blog post describes “payday loan reviews on a trusted educational website” as an example.) While the other parts of the spam policy will start enforcement immediately, Google is giving 60 days notice prior to cracking down on reputational abuse, to give websites time to fall in line.
+
+Nayak says the company has been working on this specific update since the end of last year. More broadly, the company has been working on ways to fix low-quality content in search, including AI-generated spam, since 2022\. “We’ve been aware of the problem,” Nayak says. “It takes time to develop these changes effectively.”
+
+Some SEO experts are cautiously optimistic that these changes could restore Google’s search efficacy. “It’s going to reinstate the way things used to be, hopefully,” says Ray. “But we have to see what happens.”

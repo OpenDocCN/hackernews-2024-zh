@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:30:20
+-->
+
+# Bank of Japan brings era of negative interest rates to an end with first hike in 17 years | CNN Business
+
+> 来源：[https://www.cnn.com/2024/03/18/business/japan-boj-negative-interest-rate-ended-intl-hnk/index.html](https://www.cnn.com/2024/03/18/business/japan-boj-negative-interest-rate-ended-intl-hnk/index.html)
+
+Hong Kong CNN  — 
+
+Japan has ended its negative interest rate policy, marking a historic shift away from an aggressive monetary easing program that was implemented years ago to fight chronic deflation.
+
+As part of the decision, the [Bank of Japan](https://www.cnn.com/2023/07/28/investing/japan-boj-yield-curve-intl-hnk/index.html) (BOJ) raised interest rates for the first time in 17 years, lifting its short-term rate to “around zero to 0.1%” from minus 0.1%, according to a statement posted on its website on Tuesday.
+
+The BOJ has battled deflation and economic stagnation since the late 1990s. Over the years, it has sought to encourage prices to rise by using a combination of conventional and unconventional monetary policies, including zero or negative interest rates and large-scale asset purchases.
+
+“Japan’s economy has recovered moderately, although some weakness has been seen in part,” it said in the statement Tuesday.
+
+Recent data and anecdotal information have shown that the virtuous cycle between wages and prices has become “more solid,”it added.
+
+As inflation rose and interest rates elsewhere went up, pressure had grown on the BOJ to wind down its negative interest rate policy (NIRP).
+
+Last week, major unions and companies, including Toyota ([TM](https://www.cnn.com/markets/stocks/TM)), announced better-than-expected wage hikes. Central bankers had been saying they wanted to see robust growth in wages before they can start to normalize interest rates.
+
+Though small, the landmark interest rate hike was the first since 2007\. Until Tuesday, the BOJ had been the last central bank in the world to employ negative interest rates.
+
+“The Bank of Japan has today ended an era of exceptional monetary policy accommodation,” Morgan Stanley analysts said Tuesday in a research note. “This can be characterized as a virtuous cycle of rising nominal GDP growth, wages, prices and corporate profits.”
+
+As part of its exit from NIRP, the BOJ also announced that it would abandon its yield curve control (YCC) policy, which was introduced in 2016 to keep the yield on 10-year Japanese government bonds around 0% to maintain accommodative financial conditions.
+
+Meanwhile, it would end purchases of exchange-traded funds and Japanese real estate investment trusts (J-REITs).
+
+Japan’s benchmark Nikkei 225 index seesawed during the trading day. It reversed morning losses to edge higher after the news of the rate hike, and then slipped into negative territory again. It closed up 0.7%.
+
+The broader Topix index ended 1.1% higher.
+
+The Japanese economy will continue growing at a pace “above its potential growth rate,” as a virtuous cycle from income to spending gradually intensifies, the BOJ said in the statement.
+
+The inflation rate in the country is also likely to be above 2% through fiscal 2024, it said.
+
+However, it pledged to keep buying long-term government bondsat “broadly the same amount” as before, and indicated that financial conditions will remain accommodative “for the time being.”
+
+Accommodative is a term used to describe monetary policy that adjusts to adverse market conditions and usually involves keeping interest rates low to spur growth and employment.
+
+That suggests the BOJ will not embark on an aggressive tightening cycle of the sort that other major central banks, such as the United States, have engaged in in recent years to control inflation.
+
+“There are extremely high uncertainties surrounding Japan’s economic activity and prices,” the BOJ said, adding that the risks include developments in overseas economies, commodity prices and domestic firm’s wage-setting behavior.
+
+“Under these circumstances, it is necessary to pay due attention to developments in financial and foreign exchange markets and their impact on Japan’s economic activity and prices,” it added.
+
+The Japanese yen weakened after the BOJ’s move. It slid 1% to 150.69 per US dollar by Tuesday evening.
+
+Analysts said the BOJ’s move might have been priced in by equities and currency markets.
+
+“Policy normalization was expected by [our] economists and consensus,” the Morgan Stanley analysts said.
+
+In future, analysts from Capital Economics say they don’t believe the BOJ will raise its policy rate any further.
+
+“We suspect that wage growth among smaller firms won’t be quite as strong as among those firms participating in the Shunto [wage negotiations],” they said in a research report on Tuesday.
+
+“With wage growth peaking this year, we still expect inflation to fall below the BOJs target by the end of the year so the bank won’t feel the need to lift its policy rate any further.”
+
+*This story has been updated with additional information.*

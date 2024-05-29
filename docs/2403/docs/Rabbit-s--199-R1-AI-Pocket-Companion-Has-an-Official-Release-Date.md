@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:41:17
+-->
+
+# Rabbit’s $199 R1 AI Pocket Companion Has an Official Release Date
+
+> 来源：[https://www.inverse.com/tech/rabbit-r1-release-date](https://www.inverse.com/tech/rabbit-r1-release-date)
+
+The AI gadget that stole [CES 2024](https://www.inverse.com/ces-2024) finally has a release date. I’m, of course, talking about the [Rabbit R1, the real-life Pokédex-like pocket device](https://www.inverse.com/tech/rabbit-r1-ai-release-date-price-ces-2024) that uses AI, a camera, and microphones to “see” and “hear.”
+
+After months of showing off on social media what the R1 is capable of, the first units of the Teenage Engineering-designed device will start rolling off factory lines on March 31, with the first batch of deliveries [arriving starting on April 24](https://twitter.com/rabbit_hmi/status/1771343600519139337). The company has a [“pickup party”](https://x.com/jessechenglyu/status/1771357834015625441?s=20) in New York City on April 23.
+
+At $199 and with no subscription required, the R1 is the first breakout hit for this new wave of “AI gadgets” that include the [Humane Ai Pin](https://www.inverse.com/tech/humane-ai-pin-subscription-three-months-free) and the recently announced [Open Interpreter 01 Light](https://www.inverse.com/tech/open-interpreter-01-light-ai-control-your-computer-for-you). These devices tout their built-in AI assistants as ways to help contextualize the world, as a sort of second brain or extension to the mind, and/or to automate app or service experiences by learning how to operate them for you.
+
+On March 22, Rabbit announced it had sold 100,000 pre-orders for the R1\. For a device and startup with no proven track record, the interest is remarkable.
+
+In contrast, Humane hasn’t shared sales numbers for the Ai Pin. Its $700 price tag and $24/month subscription (though, the first three months are free if you purchase the device by March 31) makes it a tougher sell. A day after Open Interpreter announced its 01 Light ($99 pre-made or you can build your own with the open-source documentation), the company said [it received 1,000 pre-orders](https://x.com/hellokillian/status/1771647508516880546?s=20).
+
+## Hardware Is Back, Baby!
+
+The upcoming Rabbit R1 release and Humane Ai Pin release can be thought of as the return of The Gadget. The iPhone was revolutionary and transformed the world in significant ways; it also made smartphones a multi-tool that replaced separate devices like a phone, music player, digital camera, and more. But with AI, standalone gadgets that leverage AI to understand the world around you are getting their moment.
+
+So many people have been asking: Why aren’t all these AI gadgets just an app? The answer is actually really simple: phones and tablets don’t allow AI deep system-level access. The iPhone, especially, is a closed platform that Apple wouldn’t allow AI complete access to. Josh Miller, the CEO of The Browser Company, which makes the fantastic Arc web browser for Mac (and Windows in beta) and AI-powered Arc Search mobile browser, put it perfectly on Sunday:
+
+> The “Her”/R2D2 interface for Consumer AI must SEE everything that you do on your screen. It needs to understand your life in order to help it (incl. when not using).
+
+> You CANNOT do this unless you own the Operating System a person uses for their Work and/or Personal lives.
+
+> Problem is only Apple, Microsoft & Google own big Operating Systems.
+
+I have no doubt that Google and Samsung and Apple are racing to incorporate AI at a system level into their smartphones, and the results could very much render the Rabbit R1 or Humane Ai Pin obsolete. Google and Samsung have already [opened the AI floodgates](https://www.inverse.com/tech/samsung-galaxy-s24-ai-features-google-explained) on the [Pixel 8 series](https://www.inverse.com/tech/google-pixel-8-phone-assistant-with-bard-generative-ai) and [Galaxy S24 series](https://www.inverse.com/tech/samsung-galaxy-s24-phones-generative-ai), respectively. Still, it’s refreshing to see the new form factors and designs. Smartphones (slabs or foldables) are here to stay for a long time, but they’ve been the center of our lives for 17 years. There has to be room for other devices to fit in. We’re about to find out whether these new AI gadgets can break through the smartphone chokehold or if they’ll be short-lived gimmicks. Buckle up, tech is about to get fun and exciting again!

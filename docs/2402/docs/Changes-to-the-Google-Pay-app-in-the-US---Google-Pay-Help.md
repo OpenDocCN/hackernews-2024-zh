@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:36
+-->
+
+# Changes to the Google Pay app in the US - Google Pay Help
+
+> 来源：[https://support.google.com/googlepay/answer/14555219?hl=en](https://support.google.com/googlepay/answer/14555219?hl=en)
+
+**Important:** The following changes only impact the U.S. version of the standalone Google Pay app.
+
+While in-store and online payments via Google Pay remain unchanged, the U.S. version of the Google Pay app will no longer be available for usestarting June 4, 2024\. Here are the key changes and important dates:
+
+*   **Manage your Google Pay balance from the Google Pay app until June 4.** You can use the U.S. version of the Google Pay app until June 4, 2024 to view and transfer your Google Pay balance to your bank account. You can continue to view and transfer your funds to your bank account after June 4, 2024 from the [Google Wallet website](http://wallet.google.com/wallet?p=home&utm_source=gpay-hc&utm_medium=website&utm_id=14555219). [Learn more about transferring money out of Google Pay](/googlepay/answer/10197214).
+*   **Changes to peer-to-peer payments:** As of June 4, 2024, you will no longer be able to send money to, request or receive money from others through the U.S. version of the Google Pay app.
+*   **As of today you will no longer be able to view or activate deals in the U.S. version of the Google Pay app.** If you previously activated a deal, and are still waiting for cash back, [regular reward timelines](/googlepay/answer/10852671?sjid=4992091311075268743-NA#find-cashback&zippy=%2Creward-timelines-where-to-find-cash-back) apply.
+
+Your experience with Google Pay to check out online and to tap to pay in stores will remain the same. [Learn more about how Google simplifies our payment apps in the US.](https://blog.google/products/google-pay/payment-apps-update/)
+
+Google Payment Corporation's [Customer Service and Error Resolution Policy](https://support.google.com/googlepay/answer/7160765?hl=en) and applicable processes still apply to report unauthorized peer-to-peer transactions related to Google Pay. If you have any further questions about your balance in the app, refer to this [Google Pay balance article](/googlepay/answer/10197112).
+
+### Common questions about these changes
+
+When will the U.S. version of the Google Pay app no longer be available for use?
+
+On June 4, 2024, the U.S. version of the Google Pay app will no longer be available for use. This change does not impact the Google Pay app in India or Singapore, nor does it impact Google Wallet. [Learn more about Google Wallet](/wallet/answer/11951709#about_google_wallet).
+
+You can continue to do the following:
+
+1\. You can continue to tap and pay in stores and manage payment methods in Google Wallet, and from the [Google Wallet website](http://wallet.google.com/wallet?p=home&utm_source=gpay-hc&utm_medium=website&utm_id=14555219).
+
+2\. You can continue to pay online and in-store with Google Pay (your stored payment details will still appear at checkout online on Android and Chrome, and in-store through Google Wallet).
+
+3\. You can use the U.S. version of the Google Pay app until June 4, 2024 to view and transfer your Google Pay balance to your bank account. After June 4, 2024, you can view and transfer your Google Pay balance to your bank account from the [Google Wallet website](http://wallet.google.com/wallet?p=home&utm_source=gpay-hc&utm_medium=website&utm_id=14555219).
+
+What if I have money in the U.S. version of the Google Pay app? Can I still use the tap to pay feature in stores? What if the U.S. version of the Google Pay app is linked to my bank account with Plaid?
+
+If you have linked accounts on Google Pay to monitor your transactions and insights, you’ll still be able to view your transactions on the [Google Wallet website](https://wallet.google.com/wallet?p=home&utm_source=gpay-hc&utm_medium=website&utm_id=14555219) in the transactions tab after June 4, 2024\. If you wish to disconnect your accounts after June 4, 2024, you will be able to unlink them on the [Google Wallet website](https://wallet.google.com/wallet?p=home&utm_source=gpay-hc&utm_medium=website&utm_id=14555219).
+
+What if I send money internationally with Wise via the U.S. version of the Google Pay app?
+
+If you’ve used the Google Pay app in the U.S. to send money with Wise from the U.S. to India or Singapore, this feature and related transaction information will no longer be available in the app starting June 4, 2024\. This does not impact your Wise account, which you can continue to access at [wise.com](http://wise.com).
+
+Can I still find deals with Google?
+
+Google Pay offers are no longer available in the U.S. version of the Google Pay app.
+
+If you previously activated an offer, and are still waiting for cash back from a qualified purchase, [reward timelines still apply](/googlepay/answer/10852671?sjid=4992091311075268743-NA#find-cashback&zippy=%2Creward-timelines-where-to-find-cash-back).

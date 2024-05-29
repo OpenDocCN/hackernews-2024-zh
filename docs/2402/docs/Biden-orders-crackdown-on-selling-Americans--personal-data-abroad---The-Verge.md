@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:26:53
+-->
+
+# Biden orders crackdown on selling Americans’ personal data abroad - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/28/24085572/biden-executive-order-personal-data-transfer-china-privacy-surveillance](https://www.theverge.com/2024/2/28/24085572/biden-executive-order-personal-data-transfer-china-privacy-surveillance)
+
+President Joe Biden has [issued an executive order](https://www.whitehouse.gov/briefing-room/statements-releases/2024/02/28/fact-sheet-president-biden-issues-sweeping-executive-order-to-protect-americans-sensitive-personal-data/) authorizing the US attorney general “to prevent the large-scale transfer of Americans’ personal data to countries of concern.” [According to the US Department of Justice](https://www.justice.gov/opa/pr/justice-department-implement-groundbreaking-executive-order-addressing-national-security) today, those countries could include China, Russia, Iran, and North Korea.
+
+The White House says it’s targeting data brokers, which it says collect more personal data than ever before — data that includes things like personal health and financial data. The scale can be staggering: in a recent extreme example from a Consumer Reports study, 48,000 companies had sent Facebook data [on a single user](/2024/1/17/24041897/facebook-meta-targeted-advertising-data-mining-study-privacy).
+
+Several departments will be required to roll out new protections under the order. The White House writes that the Department of Justice (DOJ) will have to create rules to prevent countries of concern from exploiting personal data, though it’s not clear through what means the DOJ would accomplish this. The data would include that related to genomics, biometrics, personal health, finances, and “certain kinds of personal identifiers.” The DOJ would also be required to work with the Department of Homeland Security to set new security standards regarding data gathered through “investment, vendor, and employment relationships.”
+
+Biden also ordered the Departments of Health and Human Services, Defense, and Veterans Affairs to ensure that Americans’ health data can’t be transferred via other routes like federal grants.
+
+Finally, the Committee for the Assessment of Foreign Participation in the United States Telecommunications Services Sector would have to consider personal data threats when reviewing submarine cable licenses. The order, which would be the president’s third so far this year, has not yet been published to the [Federal Register](https://www.federalregister.gov/presidential-documents/executive-orders/joe-biden/2024).
+
+The order described by the White House’s announcement doesn’t appear to address the overall issue of the personal data market in the US, which has very little in the way of boundaries. That leaves us with case-by-case regulatory action by agencies like the FTC, which recently banned [two](/2024/1/10/24032966/ftc-bans-outlogic-location-data-sales-tracking-settlement) [brokers](/2024/1/18/24043260/the-ftc-bans-another-data-broker-from-selling-your-location-data) from selling precise location data that could endanger consumers.
+
+Foreign actors aren’t the only concern. Senator Ron Wyden (D-OR), who has been beating the drum for digital privacy for many years, cited one of those bans when he [called on the NSA](https://www.wyden.senate.gov/news/press-releases/wyden-releases-documents-confirming-the-nsa-buys-americans-internet-browsing-records-calls-on-intelligence-community-to-stop-buying-us-data-obtained-unlawfully-from-data-brokers-violating-recent-ftc-order) to stop buying location information from data brokers. The [US director of national intelligence said](/2023/6/14/23759585/odni-spy-report-surveillance-data-location-tracking) information US intelligence agencies buy from them is as detailed as any it could have gotten “only through targeted (and predicated) collection.”

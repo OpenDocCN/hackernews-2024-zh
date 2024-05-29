@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:37
+-->
+
+# Linux dev delivers 6% file system performance increase – says ‘it was literally a five minute job’ | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job](https://www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job)
+
+A Linux developer has implemented a couple of changes to a caching algorithm which claim to deliver a 6% performance improvement in I/O operations. IO_uring creator and self-confessed [Linux](https://www.tomshardware.com/monitors/linux-is-the-only-os-to-support-diagonal-pc-monitor-mode-dev-champions-the-case-for-22-degree-rotation-computing) kernel IO dabbler, Jens Axboe, decided to implement the code changes after putting them off for years but [admits](https://twitter.com/axboe/status/1747016366891442220) the changes were “literally a 5 min job” (h/t [Phoronix](https://www.phoronix.com/news/Linux-Caching-Time-Block-IO)).
+
+Axboe’s patches seem to deliver their performance gains by reducing the number of time queries made to the I/O system. In his [RFC patch notes](https://lore.kernel.org/linux-block/20240115215840.54432-1-axboe@kernel.dk/) Axboe writes that lots of code is “quite trigger happy with querying time.” There is some code to reduce this already, but the new patchset, described by Axboe as trivial, “simply caches the current time in struct blk_plug, on the premise that any issue side time querying can get adequate granularity through that.” The developer reasons that “Nobody really needs nsec granularity on the timestamp.” Here we have another case of some ingenious thinking delivering measurable benefits in a long-established piece of technology.
+
+## Five minutes work for one person delivers 6% I/O benefits for all (Linux users)
+
+In Axboe’s tests the observed 6% improvement in [IOPS](https://www.tomshardware.com/news/silicon-motion-unveils-montitan-sm8366-pcie-5-ssd-controller) readings comparing pre-and post-patching. Interestingly the [asynchronous I/O interface](https://unixism.net/loti/what_is_io_uring.html) developer hints that Linux users might see even greater benefits in the real world. This is because in Axboe’s test system he “doesn't even enable most of the costly block layer items that you'd typically find in a distro and which would further increase the number of issue side time calls.” In other words, those using more bloated Linux vendor kernels could get more mileage out of Axboe’s new patches.
+
+Phoronix reckons there is a good chance the RFC patches could be ready for upstreaming with Linux 6.9, later this year. Whenever it arrives, it is great to get extra performance for free, especially as storage can be a common system bottleneck. Meanwhile, if you are in the market for faster or more capacious storage, it might be a good idea to check out our [best SSD storage](https://www.tomshardware.com/reviews/best-ssds,3891.html) guide which covers everything from budget SATA drives to the latest M.2 PCIe SSDs. 
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

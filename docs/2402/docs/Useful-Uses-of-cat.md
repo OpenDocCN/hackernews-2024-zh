@@ -1,0 +1,49 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:05
+-->
+
+# Useful Uses of cat
+
+> 来源：[https://two-wrongs.com/useful-uses-of-cat](https://two-wrongs.com/useful-uses-of-cat)
+
+When I write shell one-liners that transform the contents of some file, they often look something like
+
+```
+cat access.log | head -n 500 | grep mail | perl -e …
+
+```
+
+This is what a lot of people reflexively call a *useless use of cat*¹ And more thoughtful people will call a useless use of `grep` and `head` too because the Perl script can of course do both of those things. because `head` can take the file name as an argument and we don’t need the extra pipe and `cat` command. In fact, almost all commands can take the file name directly² For the ones that don’t, we can use input redirection and say e.g. `< access.log command`. and we only really need `cat` when we want to concatenate the contents of files.
+
+But there’s a reason I do it anyway.
+
+I’m currently re-reading one of David Parnas’ classic papers on modularity³ *Designing Software for Ease of Extension and Contraction*; Parnas; ieee Transactions on Software Engineering; 1979.. Every software engineer should read that stuff – it’s brilliant. For this article we’ll focus on one thing: we all know code changes should be isolated. For example, we should be able to add new functionality by just adding code, and not going in and changing existing code. Parnas phrases this in an interesting way.
+
+> We must recognise that […] it is always possible to remove code from a program and have a runnable result, [and] any software system can be extended. The problem is that these subsets and extensions are not the programs that we would have designed if we had set out to design just that product. Further, the amount of work needed to obtain the product seems all out of proportion to the nature of the change.
+
+His idea of the ideal design is one where we can add or remove code and it still looks like the program was designed for the thing it’s doing now; i.e. you can’t tell that something else was added or removed later on, it all looks like part of the original design.
+
+Parnas lists four classes of problems we often encounter when trying to make changes. For this discussion, the second class is the relevant one.
+
+> Many programs are structured as a chain of components, each receiving data from the previous component, processing it (and changing the format), before sending the data to the next program in the chain. If one component in this chain is not needed, that code is often hard to remove because the output of its predecessor is not compatible with the input requirements of its successor. A program that does nothing but change the format must be substituted.
+> 
+> One illustration would be a payroll program that assumed unsorted input. One of the components of the system accepts the unsorted input and produces output that is sorted by some key. If the firm adopts an office procedure that results in sorted input, this phase of the processing is unnecessary. To eliminate that program, one may have to add a program that transfers data from a file in the input format to a file in the format appropriate for the next phase.
+
+If we go back to our example of the shell one-liner and squint a little, then the string `access.log` is one input format (describing the file with the relevant contents) and the contents of the access log is a different input format. These are two representations of essentially the same thing.
+
+If we then eliminate the useless use of cat and write instead
+
+```
+head -n 500 access.log | grep mail | perl -e …
+
+```
+
+we find that `head` performs two responsibilities:
+
+1.  Converting the string `access.log` into the contents of the file; and
+2.  Extracting the first 500 records of that content.
+
+When we’re satisfied with our Perl script, it’s not unreasonable to think that we might want to run it across the entire access log rather than just the first 500 records. If we then delete only the `head` processing step we’re left without a step that transforms the string `access.log` into the contents of the access log. We can move that responsibility into the `grep` call, but this would mean we had to change some existing component in order to remove another – no good!
+
+The natural solution is a useless use of `cat`. With a separate processing step that converts the filename into the file contents, we can delete any intermediary processing steps and still be left with a functioning pipeline.⁴ We can also change the source data to e.g. a `zcat` or `curl` command. I frequently experiment with `cat canned_response.json` and then switch to `curl` once I’m satisfied with the one-liner. The process-to-process pipe is, in other words, the more flexible and decoupling interface compared to input redirection which implies a particular type of data source. People can complain all they want about it, but I will continue writing modular code. Even when it’s just shell one-liners.

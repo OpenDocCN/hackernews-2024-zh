@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:34
+-->
+
+# Reddit's new paid ads look exactly like user posts | ZDNET
+
+> 来源：[https://www.zdnet.com/article/reddits-new-paid-ads-look-exactly-like-user-posts/](https://www.zdnet.com/article/reddits-new-paid-ads-look-exactly-like-user-posts/)
+
+SOPA Images/Contributor/Getty Images
+
+The next time you see an interesting post in your Reddit feed, take a closer look - it might just be a paid advertisement. A new advertising format has hit the site today, and it's designed to look exactly like a post from a real user.
+
+Calling them "free-form ads," [Reddit](https://www.zdnet.com/article/reddit-was-hit-with-a-phishing-attack-how-it-responded-is-a-lesson-for-everyone/) said the new advertisements are its most native format ever, designed to look and feel like community content shared by real people. And Reddit hopes you don't treat them like ads.
+
+**Also: [At 35, the web is broken, but its inventor hasn't given up hope of fixing it yet](https://www.zdnet.com/home-and-office/networking/at-35-the-web-is-broken-but-its-inventor-hasnt-given-up-hope-of-fixing-it/)**
+
+The ads, meant to mimic the site's megathreads, will let advertisers use a variety of formats in one post, including images, videos, and text. "Just like the megathread," [Reddit's announcement reads](https://www.redditinc.com/blog/advertise-like-a-redditor-with-our-all-new-completely-unique-ad-format-free-form-ads), "free-form ads encourage multiple users to come together, get the information they need, and deep dive into the topic at hand."
+
+Reddit explained that the open-ended nature of these ads will give advertisers more freedom to explore creativity and, hopefully, to start conversations with users.
+
+In addition, the company said, new building capabilities in the site's ad manager tool will make it easier for businesses to get their name and new products in front of an audience.
+
+Early results suggest the effort is working. According to Reddit, free-form ads got 28% more clicks than all other types of ads on the site and saw a jump in community engagement.
+
+**Also: [Employees input sensitive data into generative AI tools despite the risks](https://www.zdnet.com/article/employees-input-sensitive-data-into-generative-ai-tools-despite-the-risks/)**
+
+Reddit highlighted a recent campaign from Philadelphia Cream Cheese as a success story. A post that asked users "How do you use 'Philly cream cheese' to take foods to the next level?" saw more than 1,000 comments in a month, a 91% upvote rate, and a 42% higher clickthrough rate than the brand's previous benchmark.

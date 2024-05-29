@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:49
+-->
+
+# RubyWM - an X11 window manager in pure Ruby - RubyFlow
+
+> 来源：[https://rubyflow.com/p/pb1tu2-rubywm-an-x11-window-manager-in-pure-ruby](https://rubyflow.com/p/pb1tu2-rubywm-an-x11-window-manager-in-pure-ruby)
+
+I’ve just pushed a *still very rough* version of my Ruby X11 window manager to [Github](https://github.com/vidarh/rubywm/tree/master)
+
+Read the warnings, and heed them - I run this wm full time, but I’m also willing accept hacking around bugs and restart it whenever something breaks. It *will* break with a number of apps that rely on EWMH or ICCCM compliance beyond what I’m currently supporting. The huge still contains horrible abominations against good taste I’ve not yet had the time to clean up.
+
+You’re better off treating this as a tech demo and for inspiration than actually relying on it at this point.
+
+If you do end up actually wanting to follow what’s going on with this, you might want to follow me on Mastodon: [@vidar@galaxybound.com](https://m.galaxybound.com/@vidar)

@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:47:52
+-->
+
+# New batch of surveillance cameras will watch roadways in Oakland, state highways across East Bay
+
+> 来源：[https://www.mercurynews.com/2024/03/29/new-batch-of-surveillance-cameras-will-watch-roadways-in-oakland-state-highways-across-east-bay/](https://www.mercurynews.com/2024/03/29/new-batch-of-surveillance-cameras-will-watch-roadways-in-oakland-state-highways-across-east-bay/)
+
+OAKLAND — The California Highway Patrol plans to significantly increase the number of cameras mounted along roadways across the East Bay, as part of a mounting bid by Gov. Gavin Newsom tamp down on crime and freeway shootings across the region.
+
+The agency recently contracted a private company to install nearly 200 additional cameras across the East Bay — bringing the total number of cameras in the region overseen by the highway patrol to 480, according to state and local officials. The contract signaled a marked jump from previous plans for the California Highway Patrol [to take over installation and operation of a few hundred cameras](https://www.mercurynews.com/2024/02/13/newsoms-plan-to-send-chp-officers-to-tackle-oaklands-crime-crisis-how-would-it-work/) that would surveil Oakland’s major thoroughfares.
+
+In announcing the camera system Friday, Newsom called it a chance to tackle organized crime and improve public safety across the East Bay. And in a video he took at Hegenberger Road — an area that’s [gained attention](https://www.mercurynews.com/2024/03/18/oakland-crime-decline-hegenberger-road-in-n-out/) in recent months for [property crimes and often-related announcements of closing businesses](https://www.mercurynews.com/2024/03/18/oakland-crime-decline-hegenberger-road-in-n-out/) — Newsom framed it as part of a broader strategy “to begin to beautify this extraordinary city here in Oakland.”
+
+“With the installation of this 480 high-tech camera network, we’re equipping law enforcement with the tools they need to effectively combat criminal activity and hold perpetrators accountable — building safer, stronger communities for all Californians,” the governor said in a statement.
+
+Newsom’s announcement gave few details about where the cameras would be installed, beyond the fact that 290 of them were expected to be “on and around surface streets” in Oakland’s city limits, while 190 cameras would be the East Bay’s state highways.
+
+In a statement accompanying the announcement, Oakland Mayor Sheng Thao voiced gratitude for the cameras and stressed that improving public safety was a “top priority.” Her office confirmed Friday that the 480-camera tally included the roughly 290 cameras that had previously been slated to fall under the highway patrol’s purview.
+
+“This new camera network will help us stop crime and hold more suspects accountable,” Thao’s statement said.
+
+Messages sent by the Bay Area News Group to the governor’s office and to the California Highway Patrol, seeking additional information about the cameras, were not immediately returned Friday morning.
+
+The highway patrol recently contracted Flock Safety to install the cameras, which appear to use a wide array of high-tech features that go beyond simply reading motorists’ license plates.
+
+The cameras feature “improved vehicle recognition” that allows officers to search for vehicles by several identifying categories, including their “type, make, color, license plate state, missing/covered plates,” as well as bumper stickers, decals and roof racks, according to the governor’s announcement. The camera system also can provide real-time alerts when a vehicle sought by officers is spotted.
+
+Footage captured by the cameras will be retained for 28 days, the governor’s announcement said. It will not be handed over to anyone “beyond California law enforcement,” and will comply with recent legal bulletins on data-storage and sharing by the California Department of Justice, the announcement said.
+
+The 28-day retention limit was “intentional,” said Leigh Hanson, the mayor’s chief of staff. It’s two days shorter than the city’s own 30-day data storage limit, and more than a month less than than CHP’s own 60-day retention limit.
+
+“We wanted to make sure all the work our team had done with the (city’s) privacy commission aligned with what Gov. Newsom and Attorney General Rob Bonta were planning — and they were receptive,” Hanson said.
+
+The announcement marks the latest bid by Newsom to address crime in and around Oakland. In February, he announced [a surge of 120 highway patrol officers](https://www.mercurynews.com/2024/02/06/california-highway-patrol-sending-120-officers-to-oakland-to-combat-crime/) to the region — an operation that ended after just five days, leaving many local leaders [surprised and confused](https://www.eastbaytimes.com/2024/02/14/what-did-the-surge-of-chp-help-for-five-days-do-in-oakland-the-results-are-in/) about why it ended so quickly. The agency has since conducted “[sting operations](https://www.mercurynews.com/2024/03/12/dozens-more-arrests-announced-as-part-of-california-highway-patrol-sting-operations/)” across the East Bay, resulting in scores of arrests.
+
+Brian Hofer, of the Oakland Privacy Advisory Commission, said he was heartened to hear that the highway patrol would store footage from the cameras a couple days less than the city’s 30-day limit.
+
+Still, he lamented how the 480-camera count was an “outsized number for a city of our population and geography,” leading to concerns of a “whole wall of cameras” that, if not monitored closely, could be easily misused.
+
+“I just hope people understand — going from 300 cameras to now almost 500 — a really significant amount of location data is now going to be in the hands of the state, and mischief can arise from that,” Hofer said. “That’s a shifting of the power dynamic that we never really had in the old days.”

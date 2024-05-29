@@ -1,0 +1,279 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:25:47
+-->
+
+# Emulation Evaluation 2022 - Juiced.GS
+
+> 来源：[https://juiced.gs/emulators/](https://juiced.gs/emulators/)
+
+(*This article collects Ivan Drucker’s emulator reviews published in the December [2020](https://juiced.gs/store/volume-25-2020/), [2021](https://juiced.gs/store/volume-26-2021/), and [2022](https://juiced.gs/store/volume-27-2022/) issues of* Juiced.GS*. For full reviews of newer emulators not reviewed here, plus updated reports for the latest versions of the emulators reviewed below, please see [the December 2023 issue](https://juiced.gs/store/volume-28-2023/)!*)
+
+Not all of us have our Apple II computers by our side at all times. The next best thing (and sometimes a better thing) is an emulator! An emulator is a virtual Apple II, recreated in software. Its hardware components, from the 6502 on up, are mimicked, as part of an application written for a different operating system. Disks are represented as “image files” containing their data, and, while running in an emulator, Apple II software has no awareness that it’s not running on the real thing! Emulators allow us to use the software of our favorite computer on something more modern. 
+
+The Apple II community is graced with a veritable cornucopia of excellent emulator choices for Mac, Windows, Linux, and mobile operating systems. Choosing the right one can be difficult—so let me outline the pros and cons of each. 
+
+While this roundup is not a comprehensive list of Apple II emulators, I’ve included titles which emulate an enhanced Apple IIe or IIGS, which run on current versions of major operating systems, and which have been updated since 2010 or later. Open-source projects must have specific release points (unless they are Web-based), rather than being simply a code repository; I am only reviewing the most recently declared release, not any code which has been committed subsequently. Releases for Windows and macOS must have ready-to-run binary executables. All but one title are free of cost.
+
+All macOS titles are native for both newer Apple silicon and older Intel-based machines unless otherwise noted; Intel-only titles will run in translation on Apple silicon models. Mac users who receive a warning that the application cannot be opened because the developer can’t be verified will need to, on first run, control-click the application, choose Open from the menu, and then choose Open from the subsequent warning dialog.
+
+For Windows titles, users with high DPI displays may need to adjust compatibility settings of the emulator’s EXE file by viewing its properties in Windows Explorer.
+
+This revision of the original December 2020 article incorporates the December 2021 and December 2022 update articles. Editorial changes have been made as well.
+
+## **The Best Apple II Emulators**
+
+These emulators are feature-rich, offer accurate emulation, and are relatively easy to use.
+
+### **Virtual II**
+
+**Platform:** macOS
+**Models emulated:** II, II plus, IIe (U), IIe (E), IIc
+**Image support:** DSK, PO, D13 (limited), NIB, HDV, 2MG, WOZ, V2D, GZ
+**Status:** actively developed (v11.1 released September 2022)
+**Author:** Gerard Putter
+**Available from:** [https://virtualii.com/](https://virtualii.com/)
+
+Virtual II does nearly everything you could ask for from an emulator. It has a highly polished, easy-to-navigate interface, and it faithfully recreates every 8-bit Apple II model other than the IIc Plus. What really makes Virtual II stand out, however, is its collection of virtual hardware and the flexibility with which you can deploy it. Much like a real Apple II, you get to choose which peripheral card you want to put in which slot, and to which devices you want to attach those cards. Included are floppy and hard drive interface cards, memory cards, a parallel printer card, serial cards, a CP/M card, clock cards, a Mockingboard card, and a mouse card. Some of these offer integration with macOS: the Super Serial Card can send and receive through an actual macOS interface, and one of the printers can output to a macOS text file. The emulation of Apple IIc is a newer feature, and lacks the virtual hardware capabilities of the other models, offering little beyond floppy and hard drive support. In version 11.1, IIc ROM 0 is erroneously indicated as Apple IIc Plus.
+
+Inbuilt Apple II hardware is represented as well. The CPU speed (for both the 6502/65C02, and optional Z-80) can be sped up. The cassette port and game connector are also emulated, and for an emulated II/II+, onboard memory quantity and shift-key modification may be selected. Programmers will also appreciate the integrated 6502 debugger. Multiple machines may be emulated in separate windows, and the Apple II screen can be recorded to a movie file. The emulated machine state may be saved at any time. File extraction from ShrinkIt archives is available.
+
+Disk support deserves its own mention. For 5.25″ floppies, one or more emulated Disk II cards can host two Disk II drives, and the physical sound of the drive itself is simulated (via audio samples). For 3.5″ and hard disks, virtual hardware (with no real-world counterpart) is provided: one or more “SCSI II” cards can host one or two “OmniDisk” drives, which each functionally operate as a removable ProDOS hard disk, and support any disk image up to 32mb.
+
+Best of all, any Mac folder can be “inserted” into a drive and treated as either a ProDOS or DOS 3.3 disk (either 140K or 32 MB in size, depending on whether you’re using the Disk II or the OmniDisk), greatly easing transfer of individual files between macOS and the emulated Apple II. Virtual II also provides its own Spotlight interface for searching Apple II filenames across and within disk images, and the catalog of a disk image can be quickly seen via macOS QuickLook, cleverly superimposing file names on a graphic of a floppy disk label. Disk writes are not saved to the disk image until the virtual disk is ejected, the emulator window is closed, or a “flush” command is chosen from a menu.
+
+I could go on and on, but I’ll conclude by saying that Virtual II, in addition to its versatility, gets innumerable fine details right, has sparkling fit and finish, and provides excellent documentation; its $39 price tag is more than justified. (A $19 “limited” version is available, but it omits some useful features like saved states, screen recording, and macOS folder mounting; a free “evaluation” version additionally employs watermarks and forced pauses.)
+
+### **AppleWin**
+
+**Platform:** Windows (plus macOS and Linux variants)
+**Models emulated:** Apple II, II Plus/J-Plus, IIe (U), IIe (E); some Apple II clones
+**Image support:** DSK, PO, HDV, 2MG, NIB, WOZ, ZIP, GZ
+**Status:** actively developed (v1.30.12.0, released September 27, 2022)
+**Authors:** Tom Charlesworth, Nick Westgate, Michael Pohoreski, et al
+**Available from:** [https://github.com/AppleWin/AppleWin/releases](https://github.com/AppleWin/AppleWin/releases)
+**macOS variant:** [https://github.com/sh95014/AppleWin/](https://github.com/sh95014/AppleWin/)
+**Linux variant:** [https://github.com/audetto/AppleWin/](https://github.com/audetto/AppleWin/)
+
+The pre-eminent 8-bit Apple II emulator for Microsoft Windows is AppleWin, whose origins date all the way back to 1994\. AppleWin is straightforward, with a compact interface, nearly unchanged from its Windows 3.1 beginnings. It offers accurate emulation, including a variety of simulated monitor styles, and a robust assortment of useful virtual hardware items, pre-assigned to their typical slots in an Apple II. Included are four 5.25″ floppy drives and two hard drives; Mockingboard (with speech, unlike most emulators), Phasor, and SAM sound cards; a CP/M card; an Uthernet I or II network card; a Super Serial card (which can communicate either with a real Windows serial port, or via TCP); a mouse; SNES MAX and 4Play game controller cards, and a parallel printer card. No actual printer is emulated; output is sent to a Windows text file. Unfortunately, the window size is not arbitrarily scalable.
+
+Many more hardware configuration options are available by launching AppleWin from a command prompt or batch file, or by appending the appropriate command line switches to the target of a Windows shortcut. While not all of these are of everyday interest, it’s unfortunate that this method is required for potentially desirable configurations, such as more than 128K of memory, or a default peripheral card removed from its slot. It would benefit AppleWin if some of the command line launch options were added to its configuration window. Still, it’s nice to have them exist at all.
+
+AppleWin provides integration with the essential Apple II disk image utility CiderPress, which eases exchanging files between Windows and the emulated Apple II. The emulated machine state can be saved, and the CPU can be accelerated. For Apple II programmers, AppleWin includes a powerful debugger. Reading the included help file is highly recommended to learn about all the emulator’s capabilities and how to access them.
+
+For Windows users wanting to emulate an Apple II, AppleWin does what it does very well. In addition, macOS and Linux users can use AppleWin via independently maintained variants which newly appeared in 2022; I did not try these out extensively, but the macOS version, called Mariani, appears to do what it is supposed to. The Linux port requires building from source.
+
+### **KEGS (including GSport and GSplus)**
+
+**Platform:** macOS, Linux (Windows via GSport or GSplus)
+**Status:** actively developed (v1.16 released January 23, 2022)
+**Models emulated:** IIGS (ROM 01 and 3)
+**Image support:** DSK, PO, NIB, HDV, 2MG, WOZ, SDK, ZIP, GZ
+**Author:** Kent Dickey
+**Available from:** [https://kegs.sourceforge.net/](https://kegs.sourceforge.net/)
+**GSport:** [https://david-schmidt.github.io/gsport](https://david-schmidt.github.io/gsport)
+**GSplus:** [https://apple2.gs/plus](https://apple2.gs/plus)
+**Android variant:** [https://play.google.com/store/apps/details?id=com.froop.app.kegs](https://play.google.com/store/apps/details?id=com.froop.app.kegs)
+
+KEGS (Kent’s Emulated GS) is a very full-featured Apple IIGS emulator, originating in the 1990s, with a somewhat clunky (though not difficult) text menu driven interface. In late 2020, after a 16-year hiatus, KEGS began receiving excellent enhancements, leapfrogging over its offshoots GSport and GSplus (which were separately reviewed in the original version of this article). Despite a few rough edges, and a potential one-time challenge in getting it running, KEGS is a top-notch emulator which now represents the best Apple IIGS emulation option for Mac and Linux users. (In 2022, Windows support was stated as forthcoming; GSport and GSplus remain worthwhile Windows alternatives.)
+
+KEGS offers most of what a real Apple IIGS does. You can use virtual versions of the inbuilt “slot cards” visible in the IIGS control panel. The 65816 CPU can be accelerated, and a debugger is available. Memory can be expanded to 14 MB. The technical status area beneath the emulation window is ugly, but can be hidden. An oddity is that the screen border is sometimes uneven on the sides.
+
+Disk usage is flexible in KEGS. There are two 3.5″ floppy drives, two 5.25″ floppy drives, and eleven SmartPort drives which can be used for ProDOS disk images up to 32 MB. The 5.25″ drives virtually “grind,” just as they do on a real machine, when ProDOS or GS/OS is scanning every drive for a specific volume, and it really slows things down. You can mount a folder from the host OS as a ProDOS disk, making it easy to transfer files between the two systems; documentation for this “DynaPro” feature is missing from version 1.16, but [available here](https://groups.google.com/g/comp.emulators.apple2/c/fddXQE73tGg/m/Frtt5skSAgAJ?utm_source=a2.click&utm_medium=urlshortener).
+
+Notable recent capabilities in KEGS include native support for both Apple silicon and Intel Macs, resizable windows, a virtual Mockingboard, WOZ disk image support, joystick support, an improved debugger, copy-paste ability from host OS to emulated GS/OS, and precise timing accuracy when running at 2.8 MHz.
+
+Mac users will want to read the README.mac.txt file in the “doc” folder supplied with the download. Linux users will need to build from source code. All KEGS users should certainly read the comprehensive README file, and may also wish to read the more attractively presented documentation for the very similar GSport and GSplus.
+
+GSport, by David Schmidt and others, and GSplus, by Dagen Brock, are derivatives of a 2004 release of KEGS. They lack many of the above recently added features, and these variants are no longer developed. What they do offer over KEGS are ready to use Windows versions, as well as emulation of Uthernet I and various printers such as ImageWriter LQ. GSport also emulates AppleTalk. For Mac users who want these features, GSplus is the better option, as it is a 64-bit application which runs on modern versions of macOS (via Intel translation on newer Apple silicon based Macs, though developers can easily recompile it to be native).
+
+In 2022, I discovered an independent port of KEGS for Android phones, last updated in 2013, which is based on the same 2004 release that GSport and GSplus are. I didn’t use it heavily, but enough to see that it does put an Apple II in your pocket, with clever usage of the entire touchscreen as a mouse. I suggest you read the “usability tips” in its product description, and the additional information on the source code page linked from there.
+
+While KEGS is a great emulator, I wish for more polish around its user interface (particularly when it comes to selecting disks), more ready-to-use Mac packaging (an application icon would be nice, as would a launcher file to avoid needing to run from Terminal), a way to disable or speed up the drives in slot 6, and incorporation of the networking and printing enhancements provided by GSport and GSplus.
+
+## **Good Apple II Emulators**
+
+These emulators may be a bit less polished or a bit harder to use, but they’re still quite functional.
+
+### **OpenEmulator**
+
+**Platform:** macOS
+**Models emulated:** Apple II, II Plus/Europlus/J-Plus, IIe (U), IIe (E); Apple I (and clones)
+**Image support:** DSK, PO, NIB, HDV, 2MG, WOZ, DC42, V2D, FDI, VDI, VMDK
+**Status:** actively developed (v1.1.1 released March 11, 2022)
+**Authors:** Marc S. Ressl, Tobias Eriksson, Zellyn Hunter, 4AM, et al
+**Available from:** [https://openemulator.github.io/](https://openemulator.github.io/)
+
+OpenEmulator is an easy-to-use emulator that aims for a high degree of fidelity to a real Apple II’s appearance, including the ability to choose from different historic monitor types. The emulated machine state can be saved at any time. It offers flexibility via virtual slots, to which virtual hardware interface cards and accessories may be connected. Peripherals represented include floppy disk (with mechanical sounds sampled from a real drive) and hard disk (with a wide array of image formats supported), memory expansion, and some unusual options, such as an emulated Apple Graphics Tablet (which works great with Dazzle Draw), a SilentType thermal printer, and precision floppy disk tuning. However, there are notable omissions, such as a clock card, mouse card, memory card, sound card, and CPU acceleration. 
+
+OpenEmulator has not acquired many new capabilities in recent years. With that said, open source community members have kept OpenEmulator relevant, adding support for WOZ disk images and Apple IIe emulation. There are some rough spots, such as an option to emulate an Apple III that simply yields an error, and a mysterious virtual CPU socket that says “disconnected” when the emulator is plainly running. In 2022, OpenEmulator was updated with bug fixes, and made Apple silicon native.
+
+For Mac users who want a no-cost, user-friendly 8-bit Apple II emulator with a fair bit of flexibility, OpenEmulator is a very functional choice. But if it doesn’t do something you want, don’t hold your breath waiting for that feature to appear in a new release.
+
+### **Apple in PC (AIPC)**
+
+**Platform: **Windows
+**Models emulated: **Apple II Plus, IIe (E)
+**Image support: **DSK, PO, NIB, HDV, 2MG, WOZ
+**Status:** unclear (v0.1.46.1 released June 5, 2020)
+**Author: **Keonwoo Kim
+**Available from: **[https://github.com/sosaria7/appleinpc/releases](https://github.com/sosaria7/appleinpc/releases)
+
+AIPC dates from the early 2000s and was hard to find for many years before resurfacing in 2016 with new updates. It’s a solid emulator for Windows users that covers the essentials capably with a straightforward, utilitarian interface.
+
+Emulated hardware includes mouse, joystick, Mockingboard, Phasor, hard drive, and 5.25″ floppy drive. Cards can be assigned to arbitrary slots, and an unusual feature is being able to customize Apple II screen colors. The Apple II machine state can be saved between sessions. The emulation window is not scalable, only capable of 1x, 2x, and full screen. A 6502 debugger is available but is extremely limited. While AIPC doesn’t do much that can’t also be done in AppleWin, I still like it, as it could be useful, for example, if configuring a virtual Apple II with numerous floppy drives, which AppleWin’s fixed-slot configuration doesn’t offer. 
+
+### **Ample**
+
+**Platform:** macOS
+**Models emulated:** all 8-bit Apple II models (including Apple IIc and IIc Plus); Apple IIGS (ROM 00, 01, 3); Apple-1; Apple III; Franklin, Laser, and many other clones and foreign market variants
+**Image support:** DSK, PO, NIB, HDV, 2MG, WOZ, DC42, EDD, CHD
+**Status:** actively developed (current version: r38/250, released November 30, 2022)
+**Author:** Kelvin Sherlock
+**Available from:** [https://github.com/ksherlock/ample/releases](https://github.com/ksherlock/ample/releases)
+
+Ample is not actually an emulator, but a valuable utility for Mac users that makes the powerful multi-machine, multi-platform emulator called MAME ([reviewed below](https://juiced.gs/emulators/#mame)) dramatically easier to use for Apple II emulation.
+
+Kelvin Sherlock’s Ample solves the problem of MAME’s complexity in starting up. Instead of having to learn command line syntax or stumbling around the awkward MAME graphical interface, Ample does the heavy lifting for you, with uncomplicated controls to help unlock the power of MAME with a minimum of fuss. That’s not to say Ample transforms MAME into something as user-friendly as your typical emulator, but it gets part of the way there.
+
+In addition to providing a prebuilt, Apple II-specialized version of MAME, and fetching needed ROM files for you, Ample provides a straightforward window which lets you specify exactly which machine you wish to emulate, and which peripheral cards (of the over 50 available, listed by full name) you want in its slots. You can also easily select otherwise obscure MAME options, like capturing the Mac mouse, which eliminates the “double pointer” issue in GS/OS which I mention in the MAME review.
+
+Ample will then launch MAME as you have configured it—though once running, if you want to do things like switch disks, you will still need to press Fn-delete, followed by tab, to navigate through MAME’s tricky native interface. Ample also provides shortcuts to documentation for MAME and its Apple II-specific modules.
+
+While still not as smooth an experience as using one of the dedicated Apple II emulator titles, Ample is well worth checking out for any Mac user interested in using MAME for Apple II emulation, especially if previously deterred from doing so.
+
+### **Agat**
+
+**Platform:** Windows
+**Models emulated:** Apple II, II Plus/J-Plus, IIe (U), IIe (E); Apple-1
+**Image support:** DSK, PO, NIB, HDV
+**Status:** unclear (current version: 1.29.2, released Feb 16, 2019)
+**Authors:** Sergey Gromov and Oleg Odintsov
+**Available from:** [https://sourceforge.net/projects/agatemulator/files/agatemulator](https://sourceforge.net/projects/agatemulator/files/agatemulator)
+
+Agat is not as well known as other Apple II emulators, but it’s worthy of attention. Named after an Apple II inspired, Soviet-made line of computers (which it also emulates), Agat is easy to use, has some original features, and performs well, providing a wide range of virtual hardware which can be flexibly configured.
+
+Peripherals include 5.25″ floppy and hard drive cards (with harsh mechanical sound samples you may want to disable), clock, Mockingboard, “Slinky” memory expansion, mouse, CP/M, cassette, accelerated CPU, and printer (with an option for text file output). Some of Agat’s more intriguing options include a Liberty floppy drive card for 3.5″ disk sizes from 200K (SSSD) to 800K (DSDD), an Apple Firmware card in slot 0 (rather than a 16K memory card), and an integrated debugger that simply simulates the Apple II monitor. Sound emulation is sub-par. 
+
+While most of the emulators listed here offer some capability of saving different machine configurations, Agat is the only one to colorfully display them in a library, and it comes preset with 45 to choose from (not all of which are Apple II computers). It’s a great way to quickly try out its various capabilities, and you can run several emulated machines at the same time. A running machine state cannot be saved. 
+
+Agat seems unlikely to receive major improvements, but, for Windows users, it offers a bit more flexibility (if less fidelity) than AppleWin, with comparable ease of use. Be sure to click the included help button for the keyboard shortcuts.
+
+### **microM8**
+
+**Platform:** macOS (Intel, runs in translation on Apple silicon), Windows, Linux
+**Models emulated:** Apple II, II Plus, IIe (U), IIe (E)
+**Image support:** DSK, PO, D13, NIB, HDV, 2MG, WOZ
+**Author:** Paleotronic
+**Status:** actively developed (build 201912161141, released Dec 16, 2019)
+**Available from:** [https://paleotronic.com/software/microm8/](https://paleotronic.com/software/microm8/)
+
+microM8 (known in early versions as The Octalyzer) is a very good, but unusual Apple II emulator. It is so different from others that it can be hard to wrap your head around. While a typical emulator sticks to imitating physical hardware via software, microM8 leaps into realms that a real Apple II wouldn’t see, such as perspective 3D graphics and rewindable live gameplay. This emulator seems less concerned with faithful replication of Apple II history and more with making Woz’s baby perform cool new tricks through virtualization.
+
+While microM8 can be mostly used as one would use any other Apple II emulator, that’s not where its heart is. When you start it up with drives empty, you don’t see “Apple ][” atop an empty space; instead, you see a colorful, animated splash screen, which invites you to do all kinds of things, such as loading its own enhanced BASIC or connecting to an Internet BBS. Probably microM8’s most immediately appealing feature is the ability to load a drive from a large online repository. USB game controllers are recognized. Virtual hardware, in fixed slots, includes 5.25” floppy drives, hard drive, mouse, modem, color printer, Mockingboard, and CP/M card. 
+
+Despite its friendly appearance and online documentation, microM8 can be challenging to use at first. It has many keyboard commands that are described on a help screen, and it also offers numerous options when launching from a command prompt. Disk images are inserted by dragging them into the left or right side of the emulator window. Fortunately, there is also a menu system, which you find by hovering in the upper left corner of the emulator window. (An optional GUI control panel can also be downloaded, though I didn’t find it especially useful.) The feature set is extensive, and some of microM8’s capabilities are quite sophisticated, such as a powerful web based 6502 debugger, an HTTP control API, and a software packaging mechanism. There are also a lot of choices for video modes, screen recording, and more. I’m sure I did not discover all the things microM8 can do.
+
+microM8 is of high quality, and it is an extremely creative product. If Apple II emulators were movies, it could be a cult favorite. And it’s fun to play with, even if you already have your emulator of choice.
+
+## **For Technical Users**
+
+These emulators are not plug-and-play, so prepare to get your hands dirty.
+
+### **MAME (Apple II modules)**
+
+**Platform:** Windows (plus macOS and Linux variants)
+**Models emulated:** all 8-bit Apple II models (including Apple IIc and IIc Plus); Apple IIGS (ROM 00, 01, 3); Apple-1; Apple III; Franklin, Laser, and many other clones
+**Image support:** DSK, PO, NIB, HDV, 2MG, WOZ, DC42, EDD, CHD
+**Status:** actively developed (0.250, released November 30, 2022)
+**Authors:** various
+**Available from:** [https://mamedev.org/](https://mamedev.org/)
+
+MAME is not an Apple II emulator per se. Rather, it is a superemulator, first released in 1997, which now supports thousands of vintage arcade games and computers, if you are able to provide the needed ROM files for the machine you want. It is a towering achievement in historic game emulation.
+
+MAME originally emulated arcade machines, but its scope has expanded to include personal computers (via incorporation of an offshoot project called MESS), and the Apple II is represented among these. MAME’s Apple II capabilities are remarkably robust, yet not great fun to use, because they are hampered by an unintuitive, generic interface shared by all the other emulated arcade games and computers; it is arguably easier to start MAME’s Apple II emulation directly from a command prompt. There is also not much Apple II specific documentation. A dedicated Apple II emulator will do a better job for most people.
+
+With that said, MAME has a philosophy of not mere emulation, but immortality for hardware, and as such provides a vast array of virtual historic Apple II interface cards and peripherals, several of which I wasn’t even aware of. It is also the only modern emulator I know of that offers Apple III emulation, and MAME runs on nearly every personal computer platform. If these capabilities appeal to you, MAME may well be worth your effort. Furthermore, MAME’s Apple II abilities are frequently improving. MAME’s Apple IIGS emulation is notable for existing at all, and it does work, but it has some challenging aspects, such as not hiding the host machine mouse pointer when in windowed mode without an obscure command line option.
+
+An important keyboard command when using MAME is forward-delete (Fn-delete on a Mac without a Del key), which toggles between enabling MAME’s keyboard controls, and sending all keys to the emulated Apple II. Also, if you want MAME to run in a window, rather than full-screen, you will need to launch it from a command prompt, and use the “-window” option. Be cautioned that many of the settings available in MAME’s graphical interface are not saved as part of either machine state or configuration, so you may be better off bypassing the GUI entirely and specifying exactly what you want in your virtual Apple II with command prompt options and configuration file editing. I highly advise reading both the general MAME documentation as well as its Apple II specific notes found in the main distribution site’s wiki. Mac users are recommended to use Ample ([reviewed above](https://juiced.gs/emulators/#ample)) to reduce the difficulty of launching MAME.
+
+### **LinApple**
+
+**Platform:** Linux
+**Models emulated:** Apple II, II Plus, IIe (E)
+**Image support:** DSK, PO, NIB, HDV
+**Status:** unclear (v2b released June 26, 2015; newer forks exist but no formal releases)
+**Authors:** various (creator: Andrey Tzar)
+**Available from:** [https://linapple.sourceforge.net/](https://linapple.sourceforge.net/) (2015 release), [https://github.com/linappleii/linapple](https://github.com/linappleii/linapple) (current)
+
+LinApple is similar to what AppleWin was in 2007, but with a different user interface. Compared with AppleWin, some features are absent, and new ones have been added. Much of LinApple is based on AppleWin code, so it emulates an Apple II well, yet feels quite different from AppleWin to operate. There are no graphical controls. All operation is performed via the function keys—fortunately, a help screen is provided—and configuration is performed by editing a text file. I would normally consider these to be negatives, but they’re not unusual for Linux. Neither is the fact that LinApple must be compiled from its source code. In other words, LinApple requires more technical ability than other emulators.
+
+Like AppleWin, LinApple provides commonly used virtualized peripherals in their usual slots. Present are two 5.25″ floppy drives, two hard drives, Mockingboard and Phasor sound cards, various monitor emulations, a printer card which writes to a text file in the host operating system, and a mouse card. Memory beyond 128K is not available. The CPU can be accelerated, and the machine state can be saved. One added capability is an integrated FTP browser for loading the virtual disk drives from images on a remote server, though it’s difficult to get working. 
+
+One charming aspect of LinApple is the author’s obvious enthusiasm for the project and for the Apple II—his personality shines through in the language of the help screen, the documentation, and the configuration files. However, he has not maintained the project since 2015\. Others have since picked it up and enhanced it, but have not issued a formal release.
+
+If you’re using Linux, and want to emulate an 8-bit Apple II, LinApple will get the job done, if you can clear its hurdles.
+
+## **Web-based Apple II emulators**
+
+There are a few Apple II emulators which run within Web browsers, providing a virtual Apple II even on “walled garden” platforms such as iOS/iPadOS, and browser based computers such as Chromebooks. They also provide an Apple II for anyone in front of any computer in the world, with no software required! These emulators tend to be more limited in their capabilities due to the development challenges of running within a browser, so I am a bit more forgiving in my evaluation than I would be with a desktop browser running native code.
+
+### **Apple ][js (and //jse and 1js)**
+
+**Platform:** Web browser
+**Models emulated:** Apple II, II Plus/J-Plus, IIe (U), IIe (E), Apple I
+**Image support:** DSK, PO, D13, NIB, HDV, 2MG, WOZ
+**Status:** actively developed (ongoing changes, no formal releases)
+**Author:** Will Scullin
+**Available from:** https://scullinsteel.com
+
+Apple ][js (and Apple //jse and Apple 1js) by Will Scullin is an impressive, Web-based, open source emulator written in TypeScript and HTML5\. A library of software is provided, and common hardware, including 5.25” floppy drives, hard drive, printer, and mouse are emulated in typical slots. Locally stored disk images can be uploaded. Not every feature is apparent from the interface, and there is, unfortunately, no documentation. An onscreen keyboard ensures all Apple II keystrokes can be sent, but its keys are tiny on a mobile phone, and its placement below the Apple II display reduces the screen area on a desktop browser. While Apple ][js is not as full featured as the other emulators described here, it successfully performs the essentials, and then some — no small feat considering the constrained environment of a Web browser.
+
+### **cyanIIde**
+
+**Platform:** Web browser
+**Models emulated:** Apple IIe (E)
+**Image support:** DSK, PO, NIB, HDV, 2MG, WOZ
+**Status:** actively developed (second announcement August 6, 2022)
+**Author:** Paleotronic
+**Available from:** [https://paleotronic.com/cyaniide](https://paleotronic.com/cyaniide)
+
+cyanIIde (pronounced “cyanide”) is a Web-based, no-cost, closed-source emulator by the makers of the microM8 emulator. It is hosted on the Paleotronic website, but is primarily intended for embedding Apple II programs on one’s own website, though documentation for doing so is sparse. cyanIIde is notable for having cycle-accurate video rendering, joystick support, and printer emulation, plus unique Applesoft and assembly language editors, in a Web browser. cyanIIde appears to offer a high quality of emulation, which is impressive considering the limited environment, but not a lot of features, at least via its user interface. You can insert disk images, and that’s about it. Mobile device users will need a physical keyboard for input. cyanIIde is probably not the most flexible Web-based emulator available for everyday use, but is pretty cool if you want to embed an Apple II on your Web site. Due to being written in WebAssembly, cyanIIde may not work in every browser.
+
+## **Other Apple II Emulators**
+
+A few other Apple II emulators are worth mentioning, though they lack essential features or support.
+
+### **ApplePi**
+
+**Platform: **Linux
+**Models emulated: **Apple II, II Plus, IIe (U), IIe (E)
+**Image support: **DSK, PO, HDV, 2MG
+**Status:** actively developed (v0.2.3 released February 9, 2022)
+**Author: **Bruce Ward
+**Available from: **[https://github.com/FZBunny/applepi](https://github.com/FZBunny/applepi)
+
+ApplePi is a recently introduced emulator for Linux users, with floppy and hard disk emulation capabilities, a robust debugger, and a clean graphical user interface. It has very limited virtual peripheral support. While designed for use with a Raspberry Pi, ApplePi works well with any Debian or Ubuntu type system. (Note that this emulator is unrelated to the Apple II Pi project.) Unfortunately, ApplePi does not support disk images in WOZ or NIB format, nor 13-sector disks, and it equips all emulated machines with a 65C02, even if the real hardware came with a 6502, which could reduce compatibility with some earlier software. Despite these concerns, ApplePi is the simplest and most attractive title I have seen for Linux if you just need to cover the basics.
+
+### **Clock Signal (Apple II modules)**
+
+**Platform: **macOS
+**Models emulated: **Apple II, II Plus, IIe (U), IIe (E)
+**Image support: **DSK, PO, NIB, HDV, 2MG, WOZ
+**Status:** actively developed (v2022-09-16)
+**Author: **Tom Harte
+**Available from:** [https://github.com/TomHarte/CLK/releases](https://github.com/TomHarte/CLK/releases)
+
+Clock Signal (Apple II modules), by Tom Harte, is a multi-machine emulator for macOS that first gained Apple II support in 2018\. It is dedicated to high-performance and extremely accurate analog video and audio emulation across a wide variety of vintage machines, not only Apple II (and its recreation of an Apple II’s appearance on a fuzzy CRT is indeed remarkable). However, this emulator badly needs a manual or a more interface with discoverable commands; its minimalist “it just works” design ethos ironically renders usage opaque, and the full feature set unknown — I can’t even figure out how to press reset. Some bugs are also evident. As a two-floppy 8-bit Apple II emulator with very faithful lo-fi CRT simulation, Clock Signal works, but with more flexible Apple II emulators available, it is not my first recommendation.
+
+## **The unreviewed**
+
+There are many Apple II emulator projects I chose to exclude because, as of December 2022, they were (or are) not yet released, or require specialty hardware, or aren’t functionally complete, or require building from source code on non-Linux systems, or they don’t emulate an enhanced Apple IIe or IIGS. Still, their authors have put effort into them, and these titles each have their own focus and qualities, and hopefully they will blossom into great Apple II emulators.
+
+These emulators were excluded because they do not emulate at least an enhanced Apple IIe or Apple IIGS: [8bitworkshop.com](http://8bitworkshop.com/?fbclid=IwAR2ePmKmesBUxnrnGJBfCKRfxDrfAyGqGHsVwQSJe3yhgFDLvhZDoQIAXYw), Accurapple, Bobbin, Epple ][, Reinette II Plus Dot Py.
+
+These emulators were excluded because, as of late 2022, they have not yet had a formal release, or have not had a formal release since 2010, or require building from source on non-Linux platforms: Apple2TS, JACE, XGS.
+
+These emulators were excluded because their most recent releases do not run on current versions of major operating systems: Aiie!, pico-iie, Sweet16.
+
+These emulators were excluded because, as of late 2022, their most recent release has noteworthy bugs or missing features: Clemens, Steve ][.

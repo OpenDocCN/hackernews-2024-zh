@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:19:54
+-->
+
+# Hell is other people: performance management at Big Tech
+
+> 来源：[https://lcamtuf.substack.com/p/hell-is-other-people-performance](https://lcamtuf.substack.com/p/hell-is-other-people-performance)
+
+I spent a fair portion of my adult life working for large tech companies. In all my interactions with peers, no other topic caused as much cynicism and angst as the question of performance management — that is, the labyrinthine processes the companies follow to decide who to fire and who to reward for exemplary work.
+
+Much of this anxiety arises from the belief that Big Tech wants to instill a cutthroat environment where you’re always compelled to do your best. I don’t think that’s true: in rapidly growing companies with easy access to funding, there is no intrinsic incentive to fire mediocre staff. The process is stressful to managers, legally risky, and harmful to morale. The loss of institutional knowledge is a problem, too. The tendency to accumulate slack is precisely why profitable tech companies panic and go through overdue layoffs whenever the economic outlook turns for the worse.
+
+The actual reason for performance management is that your employees are sticklers for fairness. The exact dollar figure on your paycheck matters a lot less than knowing there’s another person who does less and somehow earns more. As a manager, in a good proportion of 1:1s, you hear your subordinates comparing themselves to others and asking you to explain any perceived slights. Harboring low performers has corrosive effects on team dynamics — doubly so in places that attract talent through the mythos of only hiring the best.
+
+For a long time, the prevailing corporate approach to performance management was to let the manager decide. After all, they had the expertise and the familiarity with the problem space, so it was believed that they’re best equipped to dole out punishment and deliver rewards. But this led to problems: some teams developed a reputation for leniency, and others for being too harsh. More insidiously, the setup allowed rumors to spread: a manager could be accused of giving preferential treatment to their buddies or love interests, with no way to disprove such claims; every company sooner or later developed extensive lore of this sort.
+
+All this changed with Google. In its early years, the company sought to do things differently, and reinventing performance management seemed like fair game. The firm ultimately converged on a peer-based system where your performance is evaluated not by your boss, but by a selection of your coworkers. This promised greater fairness and improved transparency. Over the years, the model spread like a wildfire to other tech companies — and sometimes beyond.
+
+Of course, the approach imposed considerable burden across the company: once or twice a year, the entire business would grind to a halt with every employee writing self-assessments and peer feedback; after that, a significant proportion of senior staff would disappear to serve on committees while the underlings anxiously awaited results. But the benefits seemed obvious — and well worth the price.
+
+Except, the benefits never really materialized. The problem is that every employee is judged by their ability to get work done; in most roles, this depends on being able to get along with others, including strangers with different sensibilities and unfamiliar backgrounds. Providing honest, critical feedback is a significant and ultimately unnecessary social risk. It doesn’t help that the burden of the process prompts most to put the bare minimum of effort into individual reviews; a handful of platitudes is usually enough to get you through it and get back to work.
+
+In the end, the feedback for most employees ends up being overwhelmingly positive — and uniformly bland. The usual exceptions are the absolute worst performers who wouldn’t survive under any other performance management regime; as well as a handful of unlucky folks who deliver solid results but lack social grace and self-promotion skills.
+
+This outcome puts the organization in an unenviable position. To fix the mess, the managers are tasked with “interpreting” the feedback to arrive at some sort of a normalized ranking that can be used as a basis for firings, promotions, and bonuses. This happens behind the scenes in stuffy multi-hour meetings where the data is shuffled and massaged until it fits on some reasonable curve. The illusion of a peer-driven system is maintained — but in reality, for layoffs and compensation, the manager almost always makes the call. The actual peer feedback is of little consequence.
+
+To be fair, the promotion process can involve an extra step: in many places, the final decision is delegated to an independent committee of senior employees. The panel is unlikely to promote if the manager doesn’t support the bid, but having your manager’s blessing doesn’t guarantee success. The goal is to maintain a consistently high bar, but this too comes at a hefty price. The committee must decipher voluminous but sloppy feedback without the benefit of knowing the nominees or understanding their work. Too often, the verdicts diverge from the intrinsic merit of the case. “You’re doing great, we just need to structure your packet differently for the next cycle” is a common saying when delivering the bad news.
+
+The kicker is that across the industry, the perception of this Google-originating process isn’t necessarily any better than that of what it sought to replace. At a great cost, we merely traded the accusations of manager-level favoritism for grander conspiracy theories — sinister corporate agendas divined from the garbled words of secretive, shapeless committees.
+
+The promise of a more egalitarian performance management process is a part of the mythos of Big Tech; but it’s also a fascinating study of painting oneself into a corner, unable to walk back.

@@ -1,0 +1,51 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:36
+-->
+
+# Redwood trees are growing almost as fast in the UK as their Californian cousins – new study
+
+> 来源：[https://theconversation.com/redwood-trees-are-growing-almost-as-fast-in-the-uk-as-their-californian-cousins-new-study-225475](https://theconversation.com/redwood-trees-are-growing-almost-as-fast-in-the-uk-as-their-californian-cousins-new-study-225475)
+
+What can [live for over 3,000 years](https://plants.ces.ncsu.edu/plants/sequoiadendron-giganteum/), weigh over 150 tonnes and could be sitting almost unnoticed in your [local park](https://www.woodlandtrust.org.uk/visiting-woods/woods/havering-county-park/)? Giant sequoias (known as giant redwoods in the UK) are among the tallest and [heaviest](https://www.nps.gov/redw/planyourvisit/upload/ThreeTrees-2014-508.pdf) organisms that have ever lived on Earth, not to mention they have the potential to [live longer](https://www.nps.gov/parkhistory/online_books/shirley/sec11.htm#:%7E:text=Sierra%20Redwood%E2%80%94the%20world's%20oldest,oldest%20living%20things%20in%20existence) than other species.
+
+My team’s [new study](https://royalsocietypublishing.org/doi/10.1098/rsos.230603) is the first to look at the growth of giant sequoias in the UK – and they seem to be doing remarkably well. Trees at two of the three sites we studied matched the [average growth rates](https://arboretum.ucdavis.edu/sites/g/files/dgvnsk1546/files/inline-files/redwood_exhibits_0.pdf) of their counterparts in the US, where they come from. These remarkable trees are being planted in an effort to help absorb carbon, but perhaps more importantly they are becoming a striking and much-admired part of the UK landscape.
+
+To live so long, giant sequoias have evolved to be extraordinarily resilient. In their [native northern California](https://www.visitsequoia.com/explore/spring-summer-fall-activities/redwoods-and-sequoias), they occupy an ecological niche in mountainous terrain 1400 – 2100 metres above sea level.
+
+Their [thick spongy bark](https://cdnsciencepub.com/doi/10.1139/x94-092) insulates against fire and disease and they can survive severe winters and arid summers. Despite these challenges these trees [absorb and store](https://doi.org/10.1002/2016GB005546) CO₂ faster and in greater quantities than almost any other in the world, storing up to five times more carbon per hectare than even tropical rainforests. However, the changing climate means Californian giant sequoias [are under threat](https://www.nps.gov/articles/000/giant-sequoias-face-new-threats.htm) from more frequent and extreme droughts and fires. More than 10% of the remaining population of around 80,000 wild trees were killed [in a single fire](https://www.theguardian.com/us-news/2021/jun/02/sequoias-destroyed-california-castle-fire) in 2020 alone.
+
+## Tree giants from the US
+
+What is much less well-known is that there are an estimated [half a million sequoias](https://www.forestryengland.uk/news/over-half-million-natures-giants-the-nations-forests#:%7E:text=With%20now%20over%20half%20a,species'%20long%2Dterm%20survival.) (wild and planted) in England, dotted across the landscape. So how well are the UK giant sequoias doing? To try and answer this, my team used a technique called [terrestrial laser scanning](https://info.vercator.com/blog/3-types-of-terrestrial-laser-scanners) to measure the size and volume of giant sequoias.
+
+Sequoia national park in California, USA. [My Good Images/Shutterstock](https://www.shutterstock.com/image-photo/mother-infant-visit-sequoia-national-park-1175764084)
+
+The laser sends out half a million pulses a second and if a pulse hits a tree, the 3D location of each “hit” is recorded precisely. This gives us a map of tree structure in unprecedented detail, which we can use to estimate volume and mass, effectively allowing us to estimate the tree’s weight. If we know how old the trees are, we can estimate how fast they are growing and accumulating carbon.
+
+As part of a Master’s project with former student Ross Holland, and along with colleagues at Kew Royal Botanical Gardens, we measured giant sequoias across three sites - [Benmore botanical gardens](https://www.rbge.org.uk/visit/benmore-botanic-garden/) in Scotland, [Kew Wakehurst](https://www.kew.org/wakehurst) in Sussex and [Havering Country Park](https://www.havering.gov.uk/info/20037/parks/723/havering_country_park) in Essex. These sites span the wettest (Benmore) and driest (Havering) climates in the UK, enabling us to assess how rainfall affects growth.
+
+The fastest-growing trees we measured are growing almost as fast as they do in California, adding 70cm of height and storing 160kg of carbon per year, about twice that of a [native UK oak](https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb). The trees at Benmore are already among the tallest trees in the UK at 55 metres, the current record-holder being a [66 metre Douglas Fir](https://www.outdoorlook.co.uk/blog/post/record-breaking-tall-trees-in-the-uk) in Scotland. The redwoods, being faster growing, are likely to take that title in the next decade or two. And these trees are “only” around 170 years old. No native tree in the UK is taller than about 47 metres. We also found significant differences in growth rates across the UK. They grow fastest in the north where the climate is wetter.
+
+So how did these trees get here? [Exotic plant collecting](https://academic.oup.com/jhc/article/35/2/347/6651665) was big business in the 18th and 19th centuries, in large part as a display of wealth and taste. Giant sequoias were first introduced in 1853 by Scottish grain merchant and keen amateur collector [Patrick Matthew](https://www.giant-sequoia.com/gallery/scotland/), who gave them to friends. Later that same year commercial nurseryman [William Lobb](https://www.nationaltrust.org.uk/discover/nature/trees-plants/how-the-giant-sequoia-came-to-england) brought many more from California, along with accounts of the giant trees from which they came.
+
+Giant sequoias quickly became a sensation and were planted to create imposing avenues, at the entrances of grand houses and estates, in churchyards, parks and botanic gardens. The letters about these trees helps us to accurately age planted trees, enabling us to calculate their growth rates.
+
+Normally, you need to take samples [from a tree’s core](https://www.nature.scot/sites/default/files/2018-09/Publication%202018%20-%20SNH%20Research%20Report%20789%20-%20A%20review%20of%20the%20theory%20and%20practice%20of%20tree%20coring%20on%20live%20ancient%20and%20veteran%20trees.pdf) to get an accurate age estimate but that can damage the tree.
+
+## Imagine their potential
+
+UK sequoias are unlikely to grow as tall as their Californian counterparts, which tend to grow in forests, due to lightning strikes and high winds – always a risk when you’re the tallest thing in the landscape rather than one among many. More recently, there has been a [resurgence in planting](https://press.royalsociety.org/Uploads/RSOS230603_Proof.pdf) giant sequoias in the UK, particularly [in urban settings](https://news.hackney.gov.uk/hackney-plants-70-trees-to-commemorate-70th-day-of-the-70th-year-of-the-queens-reign/#:%7E:text=Hackney%20has%20planted%2070%20sequoia,the%20borough's%20Platinum%20Jubilee%20celebrations.). This is because of their carbon storage potential and perhaps because people seem to [really like them](https://press.royalsociety.org/Uploads/RSOS230603_Proof.pdf).
+
+We urgently need to understand how UK trees will fare in the face of [much hotter, drier summers](https://www.bbc.co.uk/news/science-environment-67845671), [stormier winters](https://theconversation.com/storm-ciaran-is-breaking-records-and-research-suggests-more-severe-weather-in-future-216842) and with [increased risks of fire](https://nationalemergenciestrust.org.uk/wildfires-growing-risk/). Global trade is also increasing [the spread of disease](https://www.nature.com/articles/s41579-021-00639-z#:%7E:text=The%20economic%20and%20environmental%20threats,in%20recent%20years96%2C97.) among plantlife. More work is needed to consider the impact of planting non-native species like giant sequoias on native habitats and biodiversity but our work has shown that they are apparently very happy with our climate, so far.
+
+More importantly, we have to remember that trees are more than just stores of carbon. If we value trees only as carbon sticks we will end up with thousands of hectares of monoculture, which isn’t good for nature.
+
+But these giant sequoias are here to stay and are becoming a beautiful and resilient part of our landscape.
+
+* * *
+
+***Don’t have time to read about climate change as much as you’d like?***
+*[Get a weekly roundup in your inbox instead.](https://theconversation.com/uk/newsletters/imagine-57?utm_source=TCUK&utm_medium=linkback&utm_campaign=Imagine&utm_content=DontHaveTimeTop) Every Wednesday, The Conversation’s environment editor writes Imagine, a short email that goes a little deeper into just one climate issue. [Join the 30,000+ readers who’ve subscribed so far.](https://theconversation.com/uk/newsletters/imagine-57?utm_source=TCUK&utm_medium=linkback&utm_campaign=Imagine&utm_content=DontHaveTimeBottom)*
+
+* * *

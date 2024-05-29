@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:57
+-->
+
+# The Fundamentals of C/C++ Game Programming | Using Target-based Develo
+
+> 来源：[https://www.taylorfrancis.com/books/mono/10.1201/9781315156361/fundamentals-game-programming-brian-beuken](https://www.taylorfrancis.com/books/mono/10.1201/9781315156361/fundamentals-game-programming-brian-beuken)
+
+This book is aimed at giving novice coders an understanding of the methods and techniques used in professional games development. Designed to help develop and strengthen problem solving and basic C/C++ skills, it also will help to develop familiarity targeting and using fixed/restricted hardware, which are key skills in console development. It allows the reader to increase their confidence as game programmers by walking them through increasingly involved game concepts, while maintaining the understanding that despite the increased complexity, the core methods remain consistent with the advancement of the technology; the technology only enhances the gaming experience. It also demonstrates underlying principles of game coding in practical step by step ways to increase exposure and confidence in game coding concepts.
+
+Key Features:
+
+***   Increases the confidence of new coders by demonstrating how to get things done.*   Introduces evolving projects to reinforce concepts, both directly and indirectly that the reader will use to produce and then enhance the project.*   Provides tutorials on Graphics API’s that can be easily understood by a novice.*   Demystifies hardware used to gain new effects without blinding the user to the technical wizardry going on under the system.*   Gives a sense of achievement to the reader and pushes them toward improvement.**

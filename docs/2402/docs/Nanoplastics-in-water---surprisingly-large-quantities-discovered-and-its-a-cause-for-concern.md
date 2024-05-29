@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:34
+-->
+
+# Nanoplastics in water - surprisingly large quantities discovered and its a cause for concern
+
+> 来源：[https://molecularspec.substack.com/p/nanoplastics-in-water-surprisingly](https://molecularspec.substack.com/p/nanoplastics-in-water-surprisingly)
+
+This post builds on the theme of microplastics. I covered the microplastics [health threat here](https://open.substack.com/pub/molecularspec/p/microplastics-how-toxic-and-what?r=yu7ek&utm_campaign=post&utm_medium=web) and the [consumption estimates and sources here](https://open.substack.com/pub/molecularspec/p/microplastics-how-much-do-we-consume?r=yu7ek&utm_campaign=post&utm_medium=web).
+
+Definitions first - nanoplastics are smaller than 1 micrometer (μm) / 1000 nanometer (nm) ([Source](https://www.sciencedirect.com/topics/chemistry/nanoplastics#:~:text=Plastics%20less%20than%200.1%20%CE%BCm,et%20al.%2C%202021).)).
+
+But could nanoplastics be more dangerous than microplastics to health? In short - yes.
+
+Their tiny size allows nanoplastics to cross the blood-brain barrier ([Source](https://www.sciencedirect.com/topics/chemistry/nanoplastics#:~:text=Plastics%20less%20than%200.1%20%CE%BCm,et%20al.%2C%202021).)) and gastrointestinal barrier ([Source](https://www.sciencedirect.com/science/article/pii/S2589914723000051)). Since they are closer to the size of proteins, they pose a risk to cell interactions too ([Source](https://www.sciencedirect.com/science/article/pii/S2589914723000051)). This is in contrast to microplastics, which typically are not able to cross these barriers. All of these increase the risk, but still need further validation studies for human impact, which I suspect are very hard to achieve given the lack of detection methods for nanoplastics.
+
+One aspect I looked at before is the confluence of micro/nanoplastics and toxic plastic additives. There is at least one researched example where nanoplastics had up to twice the absorption capacity of PCBs (polychlorinated biphenyls) vs. microplastics ([Source](https://www.sciencedirect.com/science/article/pii/S2589914723000051)).
+
+In summary nanoplastics both pose increased risk to get deep into our bodies - which could have the potential to mechanically disturb our biological fabric and are more prone to carry directly toxic materials with them when compared to microplastics.
+
+And if we are consuming hundreds of thousands of them with each litre of bottled (and potentially tap) water, we might be slowly and inevitably intoxicating our bodies. More on that below.
+
+In the last few weeks a new [paper](https://www.pnas.org/doi/10.1073/pnas.2300582121) came out, which was able to count and identify really tiny sized plastic particles in bottled drinking water. One of the big problem with nanoplastics is that there are not many ways to identify them. Most of the previous work relied on tedious methodologies cycling through multiple lab based techniques, where some tests can take multiple hours for one sample. Despite the new method, detection remains an issue, especially for real world applications.
+
+There was even strong coverage of nanoplastics in various media recently off the back of the publication mentioned:
+
+Previous rule of thumb was that bottled water users at least double their annual intake of microplastics, adding an additional 90k particles per year (Source - [previous blog post](https://molecularspec.substack.com/p/microplastics-how-much-do-we-consume?r=yu7ek&utm_campaign=post&utm_medium=web)). This new research casts new light on that figure - the impact could have been underestimated by a factor of hundreds to thousands.
+
+Apparently bottled water can contain an average of [240k nanoparticles](https://www.pnas.org/doi/10.1073/pnas.2300582121) of plastics for every litre!
+
+The [study](https://www.pnas.org/doi/10.1073/pnas.2300582121) remarkably was able to count particles as small as 100-200 nm. With some serious effort researchers inferred the type of plastic polymer for each particle identified.
+
+Three unnamed bottled water brands were tested and in two, PA (nylon) was found to make up the majority of the nanoplastics weight, while in third it was majority PET.
+
+These findings of the composition of nanoplastics are surprising. PET makes up the vast majority of water bottling market [at around 80%](https://bottledwater.org/packaging/), so intuitively it makes sense that it ends up migrating into the water. Meanwhile PA is not typically used for water bottles. PA in food packaging is a somewhat harder film used for cheeses / meats among others.
+
+Given that PA is not usually used for bottling, there is room for a theory that some of the nanoplastics did not originate from the bottles, but rather might have come from water processing or the source water itself. [Authors](https://www.pnas.org/doi/10.1073/pnas.2300582121) point that all three brands tested produce water with the method of reverse osmosis, where membranes used are made of PA.
+
+This is a big and scary implication - nanoplastics originate not only from packaging used in bottling water, meaning tap water can also be impacted.
+
+Interestingly nanoplastics in water take so much longer to settle than microplastics: theory says that a 2mm PVC piece will settle at the rate of 87cm/s, while a 100nm PVC piece will take over twelve(!) years to travel the same distance, at a settling rate of ~7cm/year ([Source](https://www.sciencedirect.com/science/article/pii/S2589914723000051)).
+
+Why does that matter? Wastewater treatment relies very heavily on settling sludge. But if nanoplastics settle at rate of years, they might not get filtered out from it. In fact quite the opposite, there is research showing that nanoplastics inhibit the wastewater sludge process ([Source](https://www.sciencedirect.com/science/article/pii/S2589914723000051)).
+
+Going back to tap water - [recent work](https://www.sciencedirect.com/science/article/abs/pii/S004313542200598X) looking at tap water in Barcelona indeed found nanoplastics to the level of 2-9 ng/L. This is less than the [bottled water paper](https://www.pnas.org/doi/10.1073/pnas.2300582121) (6-11 ng/L) reviewed above. However, the tap water research was only able to cound particles down to 700 nm as opposed to down to 100 nm in bottled water.
+
+While the methods used were not the same, they shine light on a worrying prospect that our water might universally contain nanoplastics, which in turn can be a threat to human health. I am hoping for more research on particle counting in tap water (and filtration research) soon! We also need better understanding how the quantity / shape / weight of these compounds correlate to health risks.
+
+Given that bottled water seems to have large quantities of nanoparticles (even though the overall weight exposure is rather small), which could have increased health risks, out of the abundance of caution I would for now consider tap water as a safer alternative.
+
+That’s not to say that soon we might see analoguous research about tap water, highlighting high levels of nanoplastics in it. If/when that happens, only advanced water filtration without plastic parts could be a way to avoid nanoplastics.
+
+And finally a bit of a disclaimer - the relationship of nanoplastics quantities and human health risks needs to be established. It appears that nanoplastics have higher propensity to affect our bodies as compared to larger microplastics, but the intensity and type of the impact is yet to be established. As far as I can tell the validation of direct toxicity today relates mainly to plastic additives, such as plasticizers / phthalates etc. as covered in the [microplastics post](https://open.substack.com/pub/molecularspec/p/microplastics-how-toxic-and-what?r=yu7ek&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true). The isolated mechanical accumulation of particles of plastic is less studied.

@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:37:31
+-->
+
+# Small Business/Mid-Market is NOT Easier Than Enterprise — JJELLYFISH
+
+> 来源：[https://www.jjellyfish.com/articles/debunking-the-myth-smbmid-market-is-not-easier-than-enterprise](https://www.jjellyfish.com/articles/debunking-the-myth-smbmid-market-is-not-easier-than-enterprise)
+
+It's a widely held misconception that targeting small and mid-market sectors is inherently 'easier' than engaging with enterprise clients.
+
+While this holds some truth regarding acquiring customers, it overlooks the grave significance of maintaining them. Both — acquiring and maintaining — are essential to demonstrate proof of product/market fit.
+
+*Let me explain …*
+
+**Small Business: Easy Come, Easy Go**
+
+In this sector, **the user and the buyer are often the same** – facilitating rapid sales cycles and product feedback.
+
+However, small businesses require a high-velocity motion due to their smaller budgets (usually ~$10K/year). This approach demands an ‘unfair advantage’ in a net-new marketing tactic, word-of-mouth, community access, etc.
+
+The product is under more scrutiny since companies where the user and buyer are the same tend to be less forgiving.
+
+It's not often discussed, but small businesses exhibit significant diversity. Their smaller team sizes typically lead to fewer rules, processes, and structures (i*.e., wild, wild west*). Additionally, business owners optimize for various motivations, including lifestyle, growth, and acquisition, creating a diverse and dynamic environment.
+
+**Identifying repeatable market themes and insights is the most challenging here.**
+
+Additionally (and most obviously), the high churn rate, driven by cash flow volatility and business closures, adds unpredictability to this sector.
+
+*It's worth noting that serving venture-backed startups differs from typical small businesses as they have somewhat clearer growth/speed incentives and ‘timelines but certainly similar churn challenges.*
+
+**Mid-Market: The Muddled Middle**
+
+In the mid-market, **the user and the buyer are typically one step removed from one another (N-1)**.
+
+Spend enough time in the mid-market, and you'll realize it’s more or less a fork in determining if your approach leans more towards **higher-end small businesses** — or — **lower-end enterprises**.
+
+For example, sales cycles can vary widely ~60 days to 6+ months, as do contract values $15K-$50K.
+
+Startups must initially focus on **high velocity/volume** — or — **high contract value** (i.e., multimillion-dollar expansions) to grow at venture speed.
+
+Mid-market companies often operate with more limited expansion budgets, fewer technical resources (*which are often outsourced - again depending on company size*), and less defined clarity on roles and responsibilities, making it harder to navigate than in small businesses or enterprises (i.e., the bookends).
+
+In short, the mid-market is an amalgamation, often best approached by dividing the group into two buckets — (1) upper-end of small businesse OR (2) lower-end enterprise.
+
+**Enterprise: Where Buying Processes and Speed to Traction *Can* Conflict At Early Stages**
+
+There are several **layers between the user and the buyer** in the enterprise segment, which complicates the sales process.
+
+Enterprises promise high initial deal values ($75K - $200K) and substantial $MM expansion opportunities by around year ~3 or 4 — making the effort very much worth it!
+
+Their well-established brand names lend social credibility, and their tolerance for slight product imperfections (to a certain extent) allows for more time to sort and nail.
+
+Of course, the lengthy buying process can conflict with the fast-paced experimentation characteristic of early-stage startups. Moreover, there is an expected need for custom services and support.
+
+**What's often overlooked are the two layers of product/market fit in enterprises: (1) buyer and (2) user. This makes onboarding and ongoing support critical for unlocking user value. Without close management, expansion beyond the initial group is unlikely.**
+
+Many startups struggle to exceed the initial contract value of ~$100K/year following ‘the land’, making capturing the true value of $MM expansion from this market very challenging.
+
+**In conclusion**
+
+Whether targeting small business, mid-market, or enterprise, it's imperative to acknowledge and address each segment's dynamics.
+
+Success is not about finding an 'easier' path but mastering the distinct games of (1) high volume OR (2) high deal value and deciding which is best for you, your market skills, and the product you’ve built.
+
+*   For small businesses, the game revolves around rapid learning, unlocking high velocity, and understanding how to ascend into enterprise over time.
+
+*   For the mid-market, you’re more or less straddling *two games*, which is not ideal, but it is crucial to determine where the pull falls on the spectrum. Are they a closer fit with higher-end small business — OR **—** lean more towards lower-end enterprises?
+
+*   For enterprises, the emphasis is on unlocking $MM expansion by around year 3.
+
+Ultimately, on a long enough time horizon, every startup evolves into an 'enterprise startup,' which means they either
+
+1.  render the incumbent enterprise obsolete ***OR***
+
+2.  ensure the enterprise doesn't become obsolete
+
++++++++
+
+[***HERE’s***](https://www.jjellyfish.com/articles/breakdown-of-us-businesses) *a link going deeper into the total count of U.S. small business, mid-market, and enterprise data.*

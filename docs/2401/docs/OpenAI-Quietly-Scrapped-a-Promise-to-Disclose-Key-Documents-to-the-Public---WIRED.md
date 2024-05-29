@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:47
+-->
+
+# OpenAI Quietly Scrapped a Promise to Disclose Key Documents to the Public | WIRED
+
+> 来源：[https://www.wired.com/story/openai-scrapped-promise-disclose-key-documents/](https://www.wired.com/story/openai-scrapped-promise-disclose-key-documents/)
+
+WIRED’s request for the documents promised in OpenAI’s IRS filings fell to the counsel for its nonprofit to decide on. Their denial and new policy of withholding those documents extends an existing trend of dwindling openness at a project founded on transparency. OpenAI once published extensive detail about its AI inventions but has more recently guarded the technical details and data behind its most famous tool, ChatGPT. Felix, the company spokesperson, says San Francisco-based OpenAI discloses all the material required by the IRS and California’s attorney general and that it regularly publishes information about [its research and safety work](https://openai.com/research/weak-to-strong-generalization), while also making its research freely available in the form of tools such as ChatGPT.
+
+OpenAI’s declining openness has been most notable since 2019, when the nonprofit [created a for-profit subsidiary](https://www.wired.com/story/compete-google-openai-seeks-investorsand-profits/) to house most of its AI development and draw outside investment. That opened the way for OpenAI to hitch its future to the largesse of Microsoft, one of the tech giants it was founded to challenge, and also to shroud its finances. OpenAI cofounder turned [competitor](https://www.wired.com/story/fast-forward-elon-musks-xai-chatgpt-hallucinating/) Elon Musk [said at a *New York Times* event in November](https://www.rev.com/transcript-editor/shared/BsSehREdKzBuHCZaWh3v15HZ6nXoc9WvTCBWBttFzNGTE_UDx9xRePx3riSr-gePRS_B_ZekP7fK0TdgmiCkAhmbAUI?loadFrom=PastedDeeplink&ts=65.37) that his former company should be called Super-Closed-Source-for-Maxiumum-Profit-AI.
+
+Closely Held
+
+OpenAI’s original nonprofit organization—and its board—retain ultimate control of OpenAI’s activities and technology. Like all US nonprofits, it must publicly share upon request a copy of its annual report to the IRS and indicate in those submissions whether any additional documents like its bylaws or similar or related documents such as a governing constitution or conflict of interest policy were also available to the public during the last year.
+
+Some notable nonprofits do that, like the Bill & Melinda Gates Foundation, which publishes its [bylaws](https://docs.gatesfoundation.org/documents/bill_and_melinda_gates_foundation_board_governing_principles.pdf) and rules [on conflicts](https://docs.gatesfoundation.org/Documents/conflict_of_interest_policy.pdf) and [workplace relationships](https://docs.gatesfoundation.org/documents/personal-relationships-policy.pdf), but it’s not standard practice.
+
+“It is not common for organizations to make their governing documents or internal policies public,” says Rick Cohen, chief operating and communications officer for [National Council of Nonprofits](https://www.councilofnonprofits.org/), an advocacy group.
+
+Yet for seven consecutive years, from its founding through 2022, OpenAI stated in its [annual IRS filings](https://projects.propublica.org/nonprofits/organizations/810861541) that it made those submissions as well as other files available “upon request.” It’s unclear if anyone ever took OpenAI up on the invitation in the years through 2022—OpenAI won’t say.
+
+Last month, after two days of waiting on OpenAI communications staff to fulfill an emailed request for its governing documents, conflict rules, and financial statements, WIRED rang the doorbell outside OpenAI’s San Francisco headquarters on December 14 asking to see all those documents. A receptionist said over an intercom that wouldn’t be possible, hung up, and didn’t reengage. OpenAI’s IRS filing for 2023 that would reflect it has changed its previous policy isn’t due until later this year.
+
+To [encourage oversight](https://www.irs.gov/charities-non-profits/form-990-resources-and-tools) of nonprofits, [US tax law requires](https://www.irs.gov/charities-non-profits/exempt-organization-public-disclosure-and-availability-requirements) them to at least make their annual reports to the IRS, form 990s, available for public inspection [at their offices the same day they were requested](https://www.irs.gov/charities-non-profits/public-disclosure-and-availability-of-exempt-organizations-returns-and-applications-disclosures-required) if they are not posted on an organization’s website. OpenAI doesn’t post its reports on its website but still didn’t provide them when WIRED showed up in person. IRS documentation says violators [can face fines of $20 a day](https://www.irs.gov/charities-non-profits/public-disclosure-and-availability-of-exempt-organizations-returns-and-applications-penalties-for-noncompliance), up to $10,000, but the agency declined to comment about OpenAI, citing confidentiality [provisions of tax law](https://www.law.cornell.edu/uscode/text/26/6103). OpenAI hasn’t been accused of wrongdoing, and Felix says OpenAI’s reports are available online through government and research databases.

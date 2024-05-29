@@ -1,0 +1,52 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:22:47
+-->
+
+# SF’s Millennium Tower now may be sinking in the center – NBC Bay Area
+
+> 来源：[https://www.nbcbayarea.com/investigations/series/millennium-tower/san-francisco-millennium-tower-foundation-sinking/3460782/](https://www.nbcbayarea.com/investigations/series/millennium-tower/san-francisco-millennium-tower-foundation-sinking/3460782/)
+
+The engineer of the so-called fix of the troubled Millennium Tower in San Francisco recently acknowledged there’s been less than expected tilt improvement over the first six months of the $120 million project’s completion.
+
+The advanced model designed to predict the tower's behavior had forecast as much as four inches of tilt correction within six months after the leaning high-rise was anchored on two sides to bedrock.
+
+While the tower is no longer sinking anymore at the corner, and has reversed some settlement there, data shows there’s only been about an inch of tilt reversal, a quarter of what the model had predicted.
+
+Contractors in charge of the fix had made the more optimistic prediction under the theory that once supported on the north and west, the tower’s newly shifted weight would cause it to settle more on its east and south sides.
+
+But two outside engineers say the data suggests instead of sinking at the opposite sides, the tower appears to be sinking more in the center.
+
+“With all tall buildings, there is a tendency, even though the foundation mat may be quite thick, there is a tendency for this center to settle more than the edges,” says Harry Poulos, an internationally recognized expert on tall building foundations.
+
+Poulos points to monitoring data that he says indicates the tower is now settling at the center an overall rate of about a tenth of an inch a year.
+
+“A tenth of an inch is not that much but it's not heading in the right direction,” Poulos said, “and that would be a little bit of a concern to the longer term.”
+
+Robert Pyke, a veteran geotechnical engineer, says the data so far shows the risk of relying on even sophisticated modeling to predict performance.
+
+“The overall situation is very complex,” he said.
+
+Pyke said the concern about center sinking in buildings, also known as dishing, is that the deformation can trigger cracks underneath foundations. Such cracks, he said, carry the risk of long-term corrosion damage.
+
+The concern is that should water seep in those cracks, it could rust exposed steel reinforcement. Rusted steel expands and that can trigger more damage to the cracked concrete.
+
+“It’s highly likely that there's been an increase in cracking for this kind of fix,” Pyke said. “That should have been obvious that there was a possibility of further increasing cracking and water intrusion into the foundation.”
+
+He said such damage can be fixed, but that would require a detailed examination of the underside of the foundation to reveal and repair cracks.
+
+As for what might explain the building’s unpredicted behavior, Pyke points to a buried wall under the east side of the tower’s foundation as a likely factor.
+
+Pyke says that wall, built to separate the Millennium Tower from a neighboring underground garage, could be preventing the tower from tilting back the predicted four inches to the east.
+
+Fix engineers said the model predicted the dividing wall would sink under the new weight imposed by the tower settling in the opposite direction. But a skeptical Pyke says the monitoring data so far suggests the massive underground wall is holding fast.
+
+The designer of the fix project, Ron Hamburger, told us in a statement that the northwest corner is now stable and cannot sink more. That has resulted in a quarter of an inch of improvement in the settlement at the northwest corner.
+
+The fix is expected to continue to reverse more tilt over time, he said, but not at the rate the model predicted because of unexpected soil response.
+
+The “remainder of the building continues to settle as we always anticipated, resulting in tilt recovery, albeit it at [a] slightly lower rate,” than modeling predicted, Hamburger said. “We believe this lower rate of settlement is because stress relief of the soils under the building has been more effective than originally forecast.”
+
+As it stands, the tower is leaning a little more than an inch less than before the fix was completed. Its currently tilting a little less than 29 inches at the northwest corner.
+
+It’s been six months since San Francisco's Millennium Tower was fully supported to stop it from sinking and leaning. While the project was hailed as an immediate success, the high-rise now appears to be sinking in the middle. Raj Mathai speaks with Jaxon Van Derbeken on this.

@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:49
+-->
+
+# Consumption of 100% Fruit Juice and Body Weight in Children and Adults: A Systematic Review and Meta-Analysis - PubMed
+
+> 来源：[https://pubmed.ncbi.nlm.nih.gov/38227336/](https://pubmed.ncbi.nlm.nih.gov/38227336/)
+
+**Importance:** Concerns have been raised that frequent consumption of 100% fruit juice may promote weight gain. Current evidence on fruit juice and weight gain has yielded mixed findings from both observational studies and clinical trials.
+
+**Objective:** To synthesize the available evidence on 100% fruit juice consumption and body weight in children and adults.
+
+**Data sources:** MEDLINE, Embase, and Cochrane databases were searched through May 18, 2023.
+
+**Study selection:** Prospective cohort studies of at least 6 months and randomized clinical trials (RCTs) of at least 2 weeks assessing the association of 100% fruit juice with body weight change in children and adults were included. In the trials, fruit juices were compared with noncaloric controls.
+
+**Data extraction and synthesis:** Data were pooled using random-effects models and presented as β coefficients with 95% CIs for cohort studies and mean differences (MDs) with 95% CIs for RCTs.
+
+**Main outcomes and measures:** Change in body mass index (BMI; calculated as weight in kilograms divided by height in meters squared) was assessed in children and change in body weight in adults.
+
+**Results:** A total of 42 eligible studies were included in this analysis, including 17 among children (17 cohorts; 0 RCTs; 45 851 children; median [IQR] age, 8 [1-15] years) and 25 among adults (6 cohorts; 19 RCTs; 268 095 adults; median [IQR] age among cohort studies, 48 [41-61] years; median [IQR] age among RCTs, 42 [25-59]). Among cohort studies in children, each additional serving per day of 100% fruit juice was associated with a 0.03 (95% CI, 0.01-0.05) higher BMI change. Among cohort studies in adults, studies that did not adjust for energy showed greater body weight gain (0.21 kg; 95% CI, 0.15-0.27 kg) than studies that did adjust for energy intake (-0.08 kg; 95% CI, -0.11 to -0.05 kg; P for meta-regression <.001). RCTs in adults found no significant association of assignment to 100% fruit juice with body weight but the CI was wide (MD, -0.53 kg; 95% CI, -1.55 to 0.48 kg).
+
+**Conclusion and relevance:** Based on the available evidence from prospective cohort studies, in this systematic review and meta-analysis, 1 serving per day of 100% fruit juice was associated with BMI gain among children. Findings in adults found a significant association among studies unadjusted for total energy, suggesting potential mediation by calories. Further trials of 100% fruit juice and body weight are desirable. Our findings support guidance to limit consumption of fruit juice to prevent intake of excess calories and weight gain.

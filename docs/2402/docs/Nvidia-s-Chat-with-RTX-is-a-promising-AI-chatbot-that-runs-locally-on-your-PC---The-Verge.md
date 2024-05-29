@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:03
+-->
+
+# Nvidia’s Chat with RTX is a promising AI chatbot that runs locally on your PC - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/13/24071645/nvidia-ai-chatbot-chat-with-rtx-tech-demo-hands-on](https://www.theverge.com/2024/2/13/24071645/nvidia-ai-chatbot-chat-with-rtx-tech-demo-hands-on)
+
+Nvidia is releasing an early version of [Chat with RTX](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fwww.nvidia.com%2Fen-us%2Fai-on-rtx%2Fchat-with-rtx-generative-ai%2F) today, a demo app that lets you run a personal AI chatbot on your PC. You can feed it YouTube videos and your own documents to create summaries and get relevant answers based on your own data. It all runs locally on a PC, and all you need is an RTX 30- or 40-series GPU with at least 8GB of VRAM.
+
+I’ve been briefly testing out Chat with RTX over the past day, and although the app is a little rough around the edges, I can already see this being a valuable part of data research for journalists or anyone who needs to analyze a collection of documents.
+
+Chat with RTX can handle YouTube videos, so you simply input a URL, and it lets you search transcripts for specific mentions or summarize an entire video. I found this ideal for searching through video podcasts, particularly for finding specific mentions in podcasts over the past week amid rumors of Microsoft’s new [Xbox strategy shift](/2024/2/12/24067370/microsoft-xbox-playstation-switch-games-future-hardware).
+
+It wasn’t perfect for searching YouTube videos, though. I tried to search through the transcript of a *Verge* YouTube video, and Chat with RTX downloaded the transcript for a completely different video. It wasn’t even one that I had queried before, so there are clearly bugs in this early demo.
+
+*Chat with RTX is great at searching your local documents.*
+
+Screenshot by Tom Warren / The Verge
+
+When it worked properly I was able to find references in videos within seconds. I also created a dataset of *FTC v. Microsoft* documents for Chat with RTX to analyze. When I was covering the court case last year, it was often overwhelming to search through documents at speed, but Chat with RTX helped me query them nearly instantly on my PC.
+
+For example, the chatbot did a good job summarizing Microsoft’s entire Xbox Game Pass strategy from internal documents revealed at the trial:
+
+> Based on the provided context information, Xbox Game Pass is a content subscription service in gaming that provides access to a library of games for a single monthly fee. It is envisioned as a platform that empowers players to play their games anywhere and allows publishers to reach players everywhere. The service is supported by Project xCloud and Xbox Series X, and it aims to create a fertile ground for publishers to monetize their games. The primary strategic objective for the Gaming CSA is to scale Xbox Game Pass, and it is believed that there is a significant subscriber opportunity globally, with a potential of 750 million subscribers. The service faces three primary content dynamics, including the need for differentiated content, expanding beyond console, and limited content supply.
+
+I’ve also found this useful to scan through PDFs and fact-check data. Microsoft’s own Copilot system doesn’t handle PDFs well within Word, but Nvidia’s Chat with RTX had no problem pulling out all the key information. The responses are near instant as well, with none of the lag you usually see when using cloud-based ChatGPT or Copilot chatbots.
+
+The big drawback to Chat with RTX is that it *really* feels like an early developer demo. Chat with RTX essentially installs a web server and Python instance on your PC, which then leverages Mistral or Llama 2 models to query the data you feed it. It then utilizes Nvidia’s Tensor cores on an RTX GPU to speed up your queries.
+
+*Chat with RTX isn’t always accurate, though.*
+
+Screenshot by Tom Warren / The Verge
+
+It took around 30 minutes for Chat with RTX to install on my PC, which is powered by an Intel Core i9-14900K processor with an RTX 4090 GPU. The app is nearly 40GB in size, and the Python instance takes up around 3GB of RAM out of the 64GB available on my system. Once it’s running, you access Chat with RTX from a browser, while a command prompt runs in the background spewing out what’s being processed and any error codes.
+
+Nvidia isn’t offering this as a polished app that all RTX owners should download and install immediately. There are a number of known issues and limitations, including that source attribution isn’t always accurate. I also initially attempted to get Chat with RTX to index 25,000 documents, but this seemed to crash the app, and I had to clear the preferences to get going again.
+
+Chat with RTX also doesn’t remember context, so follow-up questions can’t be based on the context of a previous question. It also creates JSON files inside the folders you ask it to index, so I wouldn’t recommend using this on your entire Documents folder in Windows.
+
+I love a good tech demo, though, and Nvidia has certainly delivered that here. It shows the promise of what an AI chatbot can do locally on your PC in the future, especially if you don’t want to have to subscribe to something like [Copilot Pro](/2024/1/15/24038711/microsoft-copilot-pro-office-ai-apps) or [ChatGPT Plus](/2023/10/29/23937497/chatgpt-plus-new-beta-all-tools-update-pdf-data-analysis) just to analyze your personal files.

@@ -1,0 +1,84 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:41
+-->
+
+# Mass Layoffs At Pioneering Nuclear Startup | HuffPost Impact
+
+> 来源：[https://www.huffpost.com/entry/nuscale-layoffs-nuclear-power_n_65985ac5e4b075f4cfd24dba](https://www.huffpost.com/entry/nuscale-layoffs-nuclear-power_n_65985ac5e4b075f4cfd24dba)
+
+Almost exactly one year ago, NuScale Power [made history](https://www.energy.gov/ne/articles/nrc-certifies-first-us-small-modular-reactor-design#:~:text=The%20U.S.%20Nuclear%20Regulatory%20Commission,use%20in%20the%20United%20States.) as the first of a new generation of nuclear energy startups to win regulatory approval of its reactor design ― just in time for the Biden administration to begin pumping billions of federal dollars into turning around the nation’s atomic energy industry.
+
+But as mounting costs and the [cancellation of its landmark first power plant](https://www.huffpost.com/entry/nuscale-uamps-nuclear_n_654c317ce4b088d9a74d17db) have burned through shrinking cash reserves, the Oregon-based company is laying offnearly a thirdof its workforce.
+
+At a virtual all-hands meeting Friday afternoon, the company announced the job cuts to remaining employees. HuffPost reviewed the audio of the meeting. Two sources with direct knowledge of NuScale’s plans confirmed the details of the layoffs.
+
+By Friday evening, NuScale’s stock price had plunged more than 8% as investors sold off shares. NuScale did not respond to a call, an email or a text message seeking comment.
+
+In a [press release](https://www.nuscalepower.com/en/news/press-releases/2024/nuscale-power-positions-company-for-next-phase-of-growth) issued Monday, the company confirmed it had laid off 154 individual employees, or 28% of its full-time staff. Sources told HuffPost on Friday the cuts affected as much as 40% of the total workforce. The spokesperson who sent HuffPost the announcement Monday morning did not respond to an email asking how many part-time workers and contractors the firm has let go.
+
+Surging construction costs are imperiling clean energy across the country. In just the past two months, developers have pulled the plug on major offshore wind farms in New Jersey and New York after state officials refused to let companies rebid for contracts at a higher rate.
+
+But the financial headwinds are taking an especially acute toll on nuclear power. It takes more than a decade to build a reactor, and the only new ones under construction in the U.S. and Europe went billions of dollars over budget in the past two decades. Many in the atomic energy industry are betting that [small modular reactors](https://www.huffpost.com/entry/small-nuclear-reactors-energy_n_649f055be4b0c7e9d8e723e8?a4) ― shrunken down, lower-power units with a uniform design ― can make it cheaper and easier to build new nuclear plants through assembly-line repetition.
+
+The U.S. government is banking on that strategy to meet its climate goals. The Biden administration spearheaded a pledge to triple atomic energy production worldwide in the next three decades at the United Nations’ climate summit in Dubai last month, enlisting dozens of partner nations in Europe, Asia and Africa.
+
+The two infrastructure-spending laws that President [Joe Biden](https://www.huffpost.com/news/topic/joe-biden) signed in recent years earmark billions in spending to develop new reactors and keep existing plants open. And new bills in Congress to speed up U.S. nuclear deployments and sell more American reactors abroad are virtually all bipartisan, with progressives and right-wing [Republicans](https://www.huffpost.com/news/topic/republican-party) alike expressing support for atomic energy.
+
+A rendering from the Idaho National Laboratory shows what NuScale's debut power plant was supposed to look like.
+
+Idaho National Laboratory
+
+But the U.S. trails rivals like China and Russia in deploying new types of reactors, including those based on technologies that scientists working for the federal government first developed.
+
+Until November, NuScale appeared on track to debut the nation’s first atomic energy station powered with small modular reactors. But the project to build a dozen reactors in the Idaho desert, and sell the electricity to ratepayers across the Western U.S. through a Utah state-owned utility, [was abandoned](https://www.huffpost.com/entry/nuscale-uamps-nuclear_n_654c317ce4b088d9a74d17db) as rising interest rates made it harder for NuScale to woo investors willing to bet on something as risky a first-of-its-kind nuclear plant.
+
+The cancellation of the so-called Carbon Free Power Project “was a surprise to pretty much everyone,” a former NuScale engineer, who spoke to HuffPost on condition of anonymity to avoid alienating future employers, said after losing his job.
+
+The company had become far less transparent since its stock market debut, the former employee said, noting that the press release announcing the power plant’s cancellation claimed that NuScale and its partners “mutually” decided to call it quits.
+
+“As much as NuScale might publicly say it was a mutual decision,” the employee said, “I bet they’d say laying us off was a mutual decision to part ways, too.”
+
+In 2022, NuScale went public via a SPAC deal, a type of merger that became [a popular way](https://www.cnbc.com/2021/01/30/what-is-a-spac.html) for debt-laden startups to pay back venture capitalists with a swifter-than-usual initial public offering on the stock market.
+
+In its latest quarterly earnings, NuScale reported just under $200 million in cash reserves, nearly 40% of which was tied up in restricted accounts.
+
+On a call with analysts in November, Ramsey Hamady, NuScale’s chief financial officer, said the firm expected to “take in about $50 million worth of cash from customers from work that we do.”
+
+But the firm spent more than that in the previous three-month cycle ― a function, the executive said, of how project costs fluctuate regularly.
+
+“This isn’t just a fixed-expense business. There’s variable expense, and there’s a lot of discretionary spending,” Hamady said. “We spend more as we have contracts, and we pull in our spending as contracts either get pushed out or delayed or whether we want to focus more on discretionary spend or nondiscretionary spend.”
+
+While severance payments would add roughly $3 million in this quarter’s operating losses, the company said Monday the job cuts would save up to $60 million.
+
+*Did you just lose your job at NuScale or another green energy company? Our reporter wants to hear from you.* ***Email*** ***Alexander*** ***C. Kaufman at*** [***alexander******.kaufman@huffpost.com***](mailto:alexander.kaufman@huffpost.com), ***or text him securely on the encrypted messaging app*** ***Signal*** ***at +1*** ***[631-455-8855](https://tel:6314558855)**.***
+
+An aerial view of the core module of China's Linglong One, the world's first commercial small modular reactor, installed on Aug. 10 in Changjiang Li Autonomous County in China's Hainan province.
+
+China News Service via Getty Images
+
+NuScale, which has four other projects proposed in the U.S. and tentative deals in at least eight other countries, isn’t the only nuclear startup navigating choppy waters.
+
+In October, Maryland-based X-energy, which is working with the federal government to develop a next-generation reactor using gas instead of water for cooling, cut part of its workforce and [scrapped plans](https://x-energy.com/media/news-releases/x-energy-ares-mutually-terminate-business-agreement) to go public.
+
+In September, California-based Oklo appeared to lose a more than $100 million contract to build its its liquid-metal-cooled “micro-reactors” at an Air Force base in Alaska, as the independent [Northern Journal](https://www.northernjournal.com/p/us-military-quietly-revokes-planned?utm_campaign=email-half-post&r=2crwfb&utm_source=substack&utm_medium=email%5C) newsletter first reported. But the Defense Department said in a statement that the deal was never finalized, and that the bureaucratic change that took place in the fall and appeared to revoke Oklo’s contract was a misunderstood procedural technicality.Oklo said it’s on track with plans to start selling shares on the New York Stock Exchange later this year.
+
+Nor are the nuclear industry’s high-tech newcomers the only ones with issues.
+
+The U.S. utilities that operate the world’s largest fleet of traditional reactors [balked last month](https://www.huffpost.com/entry/democrats-biden-hydrogen-tax-credit-45v_n_657cb3ffe4b0e142c0bda677) at the Biden administration’s proposed regulations for making clean hydrogen fuel. Constellation, the country’s top nuclear operator, said the rules rendered existing reactors ineligible for a lucrative tax credit for making hydrogen with carbon-free electricity, and threatened to sue the administration.
+
+The first fuel loading at the Consumer Power Company of Michigan's Palisades Plant Unit 1, Calvert, Michigan, 1974\. The Palisades station shut down last year as natural gas gobbled up its share of the electricity market. The plant's new owner, and the state of Michigan, want to work with the Biden administration to restore power production at the Palisades nuclear station.
+
+Smith Collection/Gado via Getty Images
+
+Russia’s invasion of Ukraine nearly two years ago triggered an energy shock as European democracies scrambled to find alternatives to buying natural gas from Moscow. The constant need to replenish pipelines using a fuel with a wildly fluctuating price put a new premium on nuclear energy’s steady 24-hour output without needing refueling for two years or more. To boot, nuclear reactors don’t produce planet-heating emissions, and they generate orders of magnitude more electricity, more frequently and on less land, than solar panels or wind turbines.
+
+Yet as the U.S. and its allies sanctioned the oil and gas exports funding Russia’s war chest, the Kremlin’s state-owned nuclear company, Rosatom, has remained immune, since American and European reactors depend on fuel that it enriches. Russia is building most of the [new reactors in the works](https://world-nuclear.org/information-library/current-and-future-generation/plans-for-new-reactors-worldwide.aspx) in places like Bangladesh, Egypt and Turkey, and [just signed](https://www.rosatom.ru/en/press-centre/opinion/alexey-zhukov-the-nuclear-power-plant-has-become-a-symbol-of-growing-partnership-between-india-and-r/) a new deal for more in India.
+
+China, meanwhile, is constructing more reactors at home than nearly all the world combined, and built four large-scale reactors using the leading new American design before the U.S. could complete its first.
+
+Former President [Donald Trump](https://www.huffpost.com/news/topic/donald-trump) banned U.S. nuclear companies from working in China, a prohibition Biden has maintained. In December, the U.S. House of Representatives [voted](https://mcmorris.house.gov/posts/house-passes-mcmorris-rodgers-bill-banning-russian-uranium-imports-to-united-states) to ban Russian uranium imports. While it’s unlikely to become law, the U.S. last year finally took the first step toward supplying its own nuclear fuel again.
+
+At an industrial site in Ohio this past autumn, the private company that succeeded what was once the U.S. government’s in-house nuclear fuel enricher [began producing](https://www.huffpost.com/entry/centrus-oklo-nuclear_n_64ebc564e4b0d17252144d32) the American-made alternative to a special kind of uranium fuel that companies like Oklo need. In just the last few months, three new uranium mines have [entered into production](https://www.mining-technology.com/news/three-new-uranium-mines-open-in-us/) in Arizona and Utah.
+
+There’s a clear demand. The price of uranium eclipsed [$91 per pound](https://www.uxc.com/p/prices/UxCPrices.aspx?currency=cad) this week for the first time since the 2011 Fukushima disaster.

@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:34:00
+-->
+
+# Return to office is a mistake for software developers | InfoWorld
+
+> 来源：[https://www.infoworld.com/article/3714660/return-to-office-is-a-mistake.html](https://www.infoworld.com/article/3714660/return-to-office-is-a-mistake.html)
+
+The COVID pandemic was a struggle for everyone—some more than others—but a major factor in making it through was the ability to work from home. Many companies were able to continue only because their workforce could work productively remotely. Some companies, notably tech companies, even thrived. One could argue that Zoom itself kept us from a complete economic disaster.
+
+Working remotely was good in all kinds of ways. Many people really liked it. No more commute time meant hours of recaptured leisure and productivity, not to mention saved costs and reduced stress. Families were able to spend more time together. As work and life mingled together, many people came to enjoy the flexibility and freedom that working from home provides. Sure, there were problems, but overall, the pandemic changed the workplace for the better.
+
+As the memory of the pandemic begins to fade, however, companies are starting to ask (force?) people to “return to office” (RTO). I live in the Philly area, and it seems like organizations around here have RTO fever—they want their employees to stop working from home and come back to the office full-time. Independence Blue Cross, a large health insurer based in Philadelphia, is forcing everyone back to the office at least three days a week starting in March. The new mayor here, Cherelle Parker, is making all city employees work in the office.
+
+And it’s not just Philly. Businesses across the country are calling for employees to RTO. Amazon famously is requiring people hired at remote locations [to move closer to an office or lose their jobs](https://www.npr.org/2023/02/17/1158102101/amazon-office-remote-work). Ironically, even Zoom has [issued a return-to-office mandate](https://www.cnn.com/2023/08/07/business/zoom-return-to-office/index.html). 
+
+I get why. Many managers have the (outdated?) notion that they can’t properly control people who aren’t in their direct line of sight. Many believe that the incidental, physical interaction that occurs between people at the office is superior to the conversations that take place on video calls and Slack. And I’m sure that there are substantial investments in commercial real estate that company executives can’t stand to see go unused.
+
+But RTO is a really bad idea. It is an especially bad idea for software development teams.
+
+Being left alone is nirvana for software developers. Interruptions—the crashing of the house of cards the developers carefully build in their brains—are the bane of developer productivity. Cubicle farms are breeding grounds for interruptions and distractions.  Joel Spolsky, co-founder of Stack Overflow and well-known blogger, famously wrote that [every software developer should have their own office with a door that closes](https://www.joelonsoftware.com/2003/09/24/bionic-office/). But few software development companies, perhaps foolishly, are willing to spend the money to give every developer a private space. 
+
+Working from home solves this problem. Software development organizations are uniquely suited to remote work, and indeed software development was early to the remote work shift. Code doesn’t care where it gets written and where it is stored.
+
+Remote work is in effect an office with a door that closes, allowing every developer to establish their own ground rules for where and how they work. I’m sure that home and family life can and do provide distractions, but a developer will have much more control over their home environment than the one in an office.
+
+Thus, the pandemic caused software developers to realize the value and benefits of working from home, and they will not be pleased at the notion of giving that up. Many who are forced back to the office will seek employment where things are more flexible.  They will not be willing to give up the flexibility and work-life balance that working from home provides. 
+
+And of course, the best software companies realize this. People with good development skills are hard to find and certainly not concentrated within commuting distance of company headquarters. Software developers, especially the best ones, have realized that proximity to the home office is decidedly not required for success.  They will gradually seek out companies who recognize this and allow them to choose where they live and even when they work. 
+
+Thus, taking a remote first approach to the workplace environment allows companies to seek out and attract those top-tier developers who can command a remote job. Companies that force their developers to come into the office will see developers—their best developers!—leave for companies that provide a more flexible environment.
+
+Software companies who fail to realize the titanic shift in workplace structure caused by the pandemic will force developers back to the office at their peril.
+
+Copyright © 2024 IDG Communications, Inc.

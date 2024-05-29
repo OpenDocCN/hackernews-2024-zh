@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:08
+-->
+
+# Why you should never retire
+
+> 来源：[https://www.economist.com/business/2024/01/25/why-you-should-never-retire](https://www.economist.com/business/2024/01/25/why-you-should-never-retire)
+
+In an episode of “The Sopranos”, a popular television series which started airing in the 1990s, a gangster tells Tony, from the titular family, that he wants to retire. “What are you, a hockey player?” Tony snaps back. Non-fictional non-criminals who are considering an end to their working lives need not worry about broken fingers or other bodily harm. But they must still contend with other potentially painful losses: of income, purpose or, most poignantly, relevance.
+
+Some simply won’t quit. Giorgio Armani refuses to relinquish his role as chief executive of his fashion house at the age of 89\. Being Italy’s second-richest man has not dampened his work ethic. Charlie Munger, Warren Buffett’s sidekick at Berkshire Hathaway, worked for the investment powerhouse until he died late last year at the age of 99\. Mr Buffett himself is going strong at 93.

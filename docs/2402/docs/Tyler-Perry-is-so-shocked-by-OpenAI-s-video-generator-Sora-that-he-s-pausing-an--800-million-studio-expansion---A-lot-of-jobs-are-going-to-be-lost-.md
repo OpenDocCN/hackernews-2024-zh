@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:18:52
+-->
+
+# Tyler Perry is so shocked by OpenAI’s video generator Sora that he’s pausing an $800 million studio expansion: ‘A lot of jobs are going to be lost’
+
+> 来源：[https://finance.yahoo.com/news/tyler-perry-shocked-openai-video-173944787.html](https://finance.yahoo.com/news/tyler-perry-shocked-openai-video-173944787.html)
+
+OpenAI’s demonstration of its video-generator tool, Sora, caused [a lot of hand-wringing](https://killthedj.com/openai-releases-sora/) about potential job losses. Now a TV and movie mogul is amplifying such fears.
+
+Tyler Perry says he has halted an $800 million expansion of his Atlanta studio complex that would have added a dozen soundstages. Seeing OpenAI’s tool in action prompted the move, he said.
+
+“All of that is currently and indefinitely on hold because of Sora and what I’m seeing,” he [told](https://www.hollywoodreporter.com/business/business-news/tyler-perry-ai-alarm-1235833276/) the *Hollywood Reporter* on Thursday. “I had gotten word over the last year or so that this was coming, but I had no idea until I saw recently the demonstrations of what it’s able to do. It’s shocking to me.”
+
+OpenAI CEO Sam Altman [revealed](https://twitter.com/sama/status/1758193609927721350) Sora last week, saying the AI tool was available to a “limited number of creators” for now. It lets users, with nothing more than a simple text prompt, create 60-second videos so realistic that most people wouldn’t guess they were AI-generated.
+
+As a business owner, Perry sees Sora’s potential in cutting costs. It might become unnecessary to build sets or travel to locations, for instance. But he’s also an actor and filmmaker, and in terms of the threat to film and TV jobs, “there’s got to be some sort of regulations in order to protect us,” he said. “If not, I just don’t see how we survive.”
+
+## AI 'moving so quickly'
+
+Perry said that as he watched demos of Sora, his mind turned to workers in his industry.
+
+“It makes me worry so much about all of the people in the business,” he said. “Because as I was looking at it, I immediately started thinking of everyone in the industry who would be affected by this, including actors and grip and electric and transportation and sound and editors, and looking at this, I’m thinking this will touch every corner of our industry.”
+
+He added, “I’m looking at my business and the bottom line, but I’m also very concerned about all the people that I have trained and brought up in this industry,” he said. “I’m concerned about what will happen to them.”
+
+Sora is not the first tool of its kind, but the quality of the videos it generated alarmed Perry.
+
+Last year, an AI-generated video showing Will Smith eating spaghetti went viral for another reason: It was horrific, with the actor’s eyes and mouth [changing form](https://twitter.com/MagusWazir/status/1640555696750993415) as he pushed food into his face.
+
+“The technology’s moving so quickly,” said Perry. “I feel like everybody in the industry is running a hundred miles an hour to try and catch up, to try and put in guardrails and to try and put in safety belts to keep livelihoods afloat.”
+
+Tools like Sora will be a “major game-changer,” he said, because of simple economics. If a pilot that would normally cost $15 million or $35 million can instead be done at a fraction of the cost, companies will gravitate to the less expensive option, he noted.
+
+“So I am very, very concerned that in the near future, a lot of jobs are going to be lost,” he said. “I really, really feel that very strongly.”
+
+This story was originally featured on [Fortune.com](https://fortune.com/2024/02/23/tyler-perry-openai-sora-ai-studio-expansion-halted/)

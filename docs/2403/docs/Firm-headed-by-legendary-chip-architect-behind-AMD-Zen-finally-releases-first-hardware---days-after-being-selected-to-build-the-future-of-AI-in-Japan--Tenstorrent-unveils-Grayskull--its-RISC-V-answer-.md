@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:15
+-->
+
+# Firm headed by legendary chip architect behind AMD Zen finally releases first hardware — days after being selected to build the future of AI in Japan, Tenstorrent unveils Grayskull, its RISC-V answer to GPUs | TechRadar
+
+> 来源：[https://www.techradar.com/pro/firm-headed-by-legendary-chip-architect-behind-amd-zen-finally-releases-first-hardware-days-after-being-selected-to-build-the-future-of-ai-in-japan-tenstorrent-unveils-grayskull-its-risc-v-answer-to-gpus](https://www.techradar.com/pro/firm-headed-by-legendary-chip-architect-behind-amd-zen-finally-releases-first-hardware-days-after-being-selected-to-build-the-future-of-ai-in-japan-tenstorrent-unveils-grayskull-its-risc-v-answer-to-gpus)
+
+Tenstorrent, the firm led by legendary chip architect Jim Keller, the mastermind behind [AMD](https://www.techradar.com/sg/tag/amd)'s Zen architecture and Tesla's original self-driving chip, has launched its first hardware. Grayskull is a RISC-V alternative to GPUs that is designed to be easier to program and scale, and reportedly excels at handling run-time sparsity and conditional computation.
+
+Off the back of this, Tenstorrent has also unveiled its Grayskull-powered DevKits - the standard Grayskull e75 and the more powerful Grayskull e150\. Both are inference-only hardware designed for AI development, and come with TT-Buda and TT-Metalium software. The former is for running models right away, while the latter is for users who want to customize their models or write new ones.
+
+The Santa Clara-based tech firm's milestone launch comes hot on the heels of a partnership with Japan's Leading-edge Semiconductor Technology Center (LSTC). Tenstorrent's RISC-V and Chiplet IP will be used to build a state-of-the-art 2nm AI Accelerator, with the ultimate goal of revolutionizing AI performance in Japan.
+
+## By the power of Grayskull!
+
+The Grayskull e75 model is a low-profile, half-length PCIe Gen 4 board with a single Grayskull processor, operating at 75W. The more advanced e150 model is a standard height, 3/4 length PCIe Gen 4 board containing one Grayskull processor operating at up to 200W, and balancing power and throughput.
+
+Tenstorrent processors comprise a grid of cores known as Tensix Cores and come with network communication hardware so they can talk with one another directly over networks, instead of through DRAM.
+
+The Grayskull DevKits support a wide range of models, including BERT for natural language processing tasks, ResNet for image recognition, Whisper for speech recognition and translation, YOLOv5 for real-time object detection, and U-Net for image segmentation.
+
+The Grayskull e75 and e150 DevKits are [available for purchase](https://tenstorrent.com/cards/) now at $599 and $799, respectively.
+
+Sign up to the TechRadar Pro newsletter to get all the top news, opinion, features and guidance your business needs to succeed!
+
+### More from TechRadar Pro

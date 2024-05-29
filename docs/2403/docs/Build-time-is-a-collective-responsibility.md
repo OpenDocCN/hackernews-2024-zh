@@ -1,0 +1,53 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:38:00
+-->
+
+# Build time is a collective responsibility
+
+> 来源：[https://yoyo-code.com/build-time-is-collective-responsibility/](https://yoyo-code.com/build-time-is-collective-responsibility/)
+
+There's been some talk about Rust's compile time again recently. I feel like there's a mismatch of expectations when it comes to this topic in general. I want to address that, and Rust is especially good example to illustrate this.
+
+## You have to do your part [🔗](#you-have-to-do-your-part)
+
+At my previous job, I became pretty frustrated with slow builds of our C++ codebase. From the frontend world, I was used to seeing my code changes reflected in the browser in ~1s, so 5-minute build time was a bit too much for me.
+
+When I asked one developer about this, my concerns were more or less dismissed. I was told to just accept this as reality and move on. There was a sense of avoiding responsibility: "this is not our problem, it's been inflicted on us, we're a native project, we have to compile a lot of code." But as I have dug into the build system, I've found a bunch of trivial problems:
+
+*   the heaviest part of the codebase was built twice
+*   single big header file was included almost everywhere and compiled more than 100x times
+*   many unnecessary includes that created spurious build time dependencies
+*   Severely limited parallelism because of a single (avoidable) bottleneck in the build graph
+
+Fixing them was often just about changing few lines in `CMakeLists.txt` or moving some code around between different files. I shaved off minutes of build time in the end.
+
+Curiously, one problem wasn't even a build system problem. I was told to use `make -j <target>`, which actually bricks the computer for a while. Somehow everybody on the team just assumed that `-j` is a shorthand for `-j <num_cpus>`, but it's actually a shorthand for `-j <infinity>`. That's a user problem, but it also illustrates my point.
+
+We could go rant about many inherent compile time problems of C++, about confusing `make` defaults, some `CMake` constructs not doing what you'd expect, but the thing is - this is our program, our build configuration, our responsibility. **Part of our responsibility is to understand the tools and use them properly.**
+
+## Builder is an interpreter [🔗](#builder-is-an-interpreter)
+
+Here's the thing:
+
+Build time will never be simply fast. Build is just a program, like any other one and has all the problematic properties of programs.
+
+Rust is a perfect example here, because it has a turing-complete type system, so your code can be thought of as a combination of multiple programs layered on top of each other. One program will be run by your users, but another program will be interpreted by Rust's type system during the build.
+
+You don't have to use a turing-complete build system, though. Even if your build system doesn't allow arbitrary computation, it probably has some way you can give it a lot of work to do. Regex also doesn't have to be Turing complete to run practically forever on some inputs.
+
+This means that you can't just offload the build time concern to a third party, like compiler developers. Yes, they have to do their part, too, but they can't take responsibility for your program or build config doing something fundamentally problematic.
+
+**As much as language developers are not responsible for your quadratic program when it comes to runtime performance, they are also not responsible for your quadratic build-time program.**
+
+## We are in this together [🔗](#we-are-in-this-together)
+
+To be fair, library and toolchain developers have this meta-responsibility of offering and encouraging constructs that work well for their toolchain.
+
+I think this is partly why there are these mismatched expectations in the first place. Many people come from ecosystems where these concerns don't exist because their developers designed these languages or toolchains to avoid them. This is especially true for interpreted languages.
+
+Rust is in a much harder position here. They not only included features that are problematic for build time (trait system, monomorphisation, macros, match exhaustiveness, ...) but also encouraged their use in many cases. The 'make invalid states unrepresentable' meme is also part of the blame here. Doing that often implies using the compiler as theorem prover, which is fundamentally a compile time trade-off.
+
+For languages like Rust, I believe compile time concerns should be part of the education and documentation. Developers have to understand that the way they structure their codebase or how they use certain features has a non-trivial impact on build time. It should also give them tools to diagnose and fix these problems.
+
+For example, The Little Book of Rust Macros has a [performance section](https://veykril.github.io/tlborm/decl-macros/patterns/tt-muncher.html#performance) on some quadratic patterns. There's also a [compile times](https://nnethercote.github.io/perf-book/compile-times.html) section in The Rust Performance Book, and we also have [cargo timings](https://doc.rust-lang.org/cargo/reference/timings.html) and [self profile](https://blog.rust-lang.org/inside-rust/2020/02/25/intro-rustc-self-profile.html) to diagnose. Typescript has a [performance](https://github.com/microsoft/TypeScript/wiki/Performance) section in their wiki, too.

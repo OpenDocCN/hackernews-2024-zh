@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:29:51
+-->
+
+# r300: more NIR lowering for vertex shaders (!26816) · Merge requests · Mesa / mesa · GitLab
+
+> 来源：[https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816)
+
+This MR moves the most of the remaining backend lowering into NIR. Specifically, ftrunc, fcsel (when suitable) and flrp. The backend lowering paths are removed. This is a prerequisite for more backend cleanups, for example I have a MR ready to get rid of backend DCE for vertex shaders.
+
+To be honest I tried to get this right like five times already, initially even before nir_to_rc and I always failed to make it work reasonably. The reason why this is more tricky than the usual lowering is the required pass order. In fact all the opcodes that we are lowering comes either from integer lowering (ftrunc) or bool lowering. We can't do bool lowering in the main loop in finalize nir (most notably because peephole select expects bools for ifs) and while early integer lowering is OK in tests and seems to work, Emma voiced some opposition to it previously. Therefore all of this now happens when translating to the backend IR. For the same reason there are some custom algebraic passes doing the same lowering that we would normally used the common nir_opt_algebraic. In an ideal world we would do the lowering before late algebraic, so if we lower the fcsels all all the way to add+muls we can optimally generate ffmas, but I couln'd get this right so we just emit ffmas directly when lowering the flrps that come from the fcsels...
+
+Doing the fcsel lowering in NIR on R500 (we have a native CMP but the vertex engine has the limitation that it can't read from three different TMP registers) is also unfortunately much more complex than doing it in the backend, one needs to look through the fneg and fabs and also check whether constant and inputs will be copy propagated or not. In the end this is a lot of code, so in total this series is mostly even (NIR fcsel lwoering vs the TRUNC, LRP and CMP backend removal), but opens a way for more cleanups in a future.
+
+Shader-db-wise this is a bit of a win for R500 (by doing the fcsel lowering in nir, we still have info if this is fcsel_lt/ge or fcsel and we can save the comparison for the later case if we have to lower it), and mostly even on R300 see individual commits for detailed stats.

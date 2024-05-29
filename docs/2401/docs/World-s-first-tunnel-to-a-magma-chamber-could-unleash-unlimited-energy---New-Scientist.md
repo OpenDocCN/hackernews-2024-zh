@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:06
+-->
+
+# World's first tunnel to a magma chamber could unleash unlimited energy | New Scientist
+
+> 来源：[https://www.newscientist.com/article/mg26134722-100-worlds-first-tunnel-to-a-magma-chamber-could-unleash-unlimited-energy/](https://www.newscientist.com/article/mg26134722-100-worlds-first-tunnel-to-a-magma-chamber-could-unleash-unlimited-energy/)
+
+ICELAND is one of the most boring countries in the world. That is meant as a compliment, not an insult. The island nation is dotted with thousands of boreholes drilled deep into the rock to extract geothermal energy. They will soon be joined by another, which will be anything but boring. “We are going to drill into a magma chamber,” says Hjalti Páll Ingólfsson at the Geothermal Research Cluster (GEORG) in Reykjavík. “It’s the first journey to the centre of the Earth,” says his colleague Björn Þór Guðmundsson.
+
+Well, not quite the centre. Some [magma chambers](/article/mg22630192-100-vast-magma-reservoir-found-hiding-beneath-yellowstone-park/) – underground reservoirs of molten rock – lie just a few kilometres below Earth’s surface, putting them within reach of modern drills. They occasionally leak magma to the surface, where it spews out as lava. That is exactly what was starting to happen, to spectacular and devastating effect, around the town of Grindavík in southern Iceland, as this story went to press. The trouble is, we don’t normally know where magma chambers lie. “No geophysical technique has been shown to satisfactorily locate magma reservoirs,” says [John Eichelberger](https://www.uaf.edu/acep/about/our-team/john-eichelberger.php) at the University of Alaska Fairbanks.
+
+Now, though, Ingólfsson and his colleagues have struck it lucky. They have stumbled across a magma chamber and have advanced plans to do the unthinkable and deliberately drill into it. The project will do no less than make scientific history, providing our first direct opportunity to study the hidden liquid rock that Earth uses to build its continents. Along the way, it may also…

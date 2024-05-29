@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:30
+-->
+
+# McDonald's Closes Amid Global IT Outage
+
+> 来源：[https://www.newsweek.com/mcdonalds-closes-amid-global-it-outage-1879528](https://www.newsweek.com/mcdonalds-closes-amid-global-it-outage-1879528)
+
+McDonald's restaurants across the world have been forced to temporarily close, and other branches around the world have reported a widespread technological issue which means customers cannot pay for food.
+
+Internal systems in Australian restaurants were offline since about 3:10 p.m. local time, according to a report by News.com.au.
+
+IT issues have also been reported online in China including Hong Kong, Japan, Canada, South Korea, Taiwan and Germany.
+
+The American fast food company, McDonalds logo is displayed outside one of its stores on January 09, 2024 in Stoke-on-Trent, United Kingdom. Technology issues have been reported in several countries across the world. The American fast food company, McDonalds logo is displayed outside one of its stores on January 09, 2024 in Stoke-on-Trent, United Kingdom. Technology issues have been reported in several countries across the world. GETTY
+
+## What We Know
+
+A spokesperson from [McDonald's](https://www.newsweek.com/topic/mcdonalds) U.S. told *Newsweek*: "We are aware of a technology outage, which impacted our restaurants; the issue is now being resolved. We thank customers for their patience and apologize for any inconvenience this may have caused. Notably, the issue is not related to a cybersecurity event."
+
+In Australia, internal systems at some restaurants have been offline since about 3:10 p.m. local time. Some stores have been forced to close completely, while others are only taking cash orders, according to a report by news.com.au.
+
+Posting on X, formerly [Twitter](https://www.newsweek.com/topic/twitter), McDonalds Japan said there has been a "system failure," and that the company apologizes "for any inconvenience this may cause and ask that you please wait for a while until the service is restored." It does not give the reason for why the outage has occurred.
+
+A McDonald's employee in New Zealand told the *New Zealand Herald* that a computer server crash meant they couldn't take any orders or serve any food, with screens used to take orders currently not working.
+
+New Zealand based X user Germin van Royen said: "The Mcdonalds outage is crazy. Went in tonight and drive thru + all kiosks were down. A system that can fail nation wide is bad but across multiple countries too!? Bonkers."
+
+Customers in Hong Kong have been able to purchase food, but cannot use mobile and self-ordering kiosks, according to a [Facebook](https://www.newsweek.com/topic/facebook) post on Friday. It says the outage is down to a "computer system failure."
+
+"Please order directly at the restaurant counter," the statement continues.
+
+McDonald's Taiwan has issued a similar statement, saying its "24hr Happy Delivery" and telephone ordering has been temporarily suspended due to the system undergoing maintenance.
+
+Social media users in the U.K. have said they have been unable to order food, but this has not been confirmed by McDonald's U.K. According to data from the Downdetector website, U.K.-based users of the McDonald's app began reporting trouble with orders this morning at around 5:30 a.m. local time.
+
+According to a statement issued by McDonald's, and reported by [British newspaper *The Telegraph*](https://www.telegraph.co.uk/business/2024/03/15/ftse-100-markets-latest-news-cma-housebuilder-investigation/) at 6:50 a.m. ET, the issue affecting the U.K. and Ireland has now been resolved.
+
+Other problems from the U.S., Canada and the Netherlands have been reported by [Reddit](https://www.newsweek.com/topic/reddit) users. Issues in Germany have also been reported by X users.
+
+*Update 03/15/24, 7:45 a.m. ET: This article has been updated to indicate that the issue has been resolved in the U.K. and Ireland, according to a McDonald's statement.*
+
+## *Uncommon Knowledge*
+
+*Newsweek is committed to challenging conventional wisdom and finding connections in the search for common ground.*
+
+*Newsweek is committed to challenging conventional wisdom and finding connections in the search for common ground.*

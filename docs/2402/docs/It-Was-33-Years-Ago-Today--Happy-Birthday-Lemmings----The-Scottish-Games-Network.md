@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:56
+-->
+
+# It Was 33 Years Ago Today: Happy Birthday Lemmings! - The Scottish Games Network
+
+> 来源：[https://scottishgames.net/2024/02/14/it-was-33-years-ago-today-happy-birthday-lemmings/](https://scottishgames.net/2024/02/14/it-was-33-years-ago-today-happy-birthday-lemmings/)
+
+Today, February 14th, 2024, marks the 33rd anniversary of *[Lemmings](https://en.wikipedia.org/wiki/Lemmings_(video_game))*, the game that transcended mere entertainment to become a cultural icon and a catalyst for Scotland’s thriving game development industry. But before the green-haired hordes invaded screens worldwide, let’s rewind to 1991 and trace its remarkable journey.
+
+Born from the minds of DMA Design (now of course Rockstar North), a small Dundee studio, Lemmings was a revolutionary concept. Instead of blowing things you, you were tasked with saving the plummeting rodents’ lives.
+
+However, DMA’s genius lay in its execution. With charming character design (at an astonishingly small scale), addictive puzzle mechanics, and more than a touch of what would become DMA’s slapstick humour, they transformed a complex concept into a game anyone could pick up and play.
+
+*Lemmings* offered a simple premise: guide a predetermined number of lemmings to an exit by assigning them roles like blocker, climber, builder, and floater. But simplicity masks depth. Each level presented a unique challenge, requiring strategic thinking, quick reflexes, and a touch of trial-and-error gory death.
+
+Success was immediate. *Lemmings* conquered consoles and computers, selling over 15 million copies and becoming the UK’s best-selling game of 1991\. Awards and accolades rained down, but perhaps the most significant impact was on Scottish gaming itself. Lemmings put DMA Design on the map, attracting talent and investment and inspiring the world’s first games degree.
+
+The Scottish Games Network spoke to several of the original team members to ask for their thoughts on the impact of the game:
+
+#### Mike Dailly, the creator of the original animation of tiny things being splattered, said:
+
+> I’m constantly amazed at the legacy of Lemmings. Where ever I go, there are fans, old and new who love the game. With the style, and accessibility of it, it not only entertained, but brought families closer together as kids played with their non-game playing parents and grandparents. I get people getting in touch all the time telling me of their happy memories of playing it with their relatives who never had an interest in games before, and being able to share their hobby with them, meant the world to them.
+> 
+> Even now at shows, some 33 years later, you’ll still see the odd person dressed up as a Lemming and expressing love for the game, the music, the sound effects, the characters – or how they were useless at it, but loved to just nuke them!
+> 
+> Lemmings is still the game I’m most proud to have been a part of, in a world of first person shooters, it’s as popular now as it ever was with young and old alike
+
+#### Russell Kay, told us his dream is to bring the games to a new generation:
+
+> 33 years ago we released a game that is still loved today that is very gratifying and I don’t think any of us would have believed you if we were told at the time. Over the years we have fallen in and out of love with the franchise but it holds a special place in our hearts, personally I would love to be able to update the characters and franchise but Sony hold onto the rights jealously, it would be fantastic to get a chance to see what the Lemmings would make of the modern gaming world!
+
+Lemmings’ influence resonated far beyond Scotland. It can be said to have popularised puzzle games, inspiring titles like *The Incredible Machine*. Its emphasis on physics and user-generated content laid the groundwork for future sandbox games (possibly even *Minecraft*…?)
+
+Moreover, its humour and memorable characters solidified DMA Design’s reputation for innovative, surprising and engaging gameplay, paving the way for future classics like *Grand Theft Auto*, the often overlooked (and far more bonkers) *Tanktics*, cult-classic *Body Harvest* and the underrated *Wild Metal Country*.
+
+Today, Lemmings remains a beloved puzzle classic, enjoying re-releases on various platforms and inspiring new generations of designers. But its legacy extends far beyond nostalgic pixelated memories. Dundee’s city centre plays host to a beloved [series of statues of Lemmings](https://scottishgames.net/2013/10/14/lets-go-lemmings-in-the-real-world/), hard at work, climbing and bridging a garden gateway overlooking the river Tay.
+
+On the 20th anniversary in 2011 [a plaque was unveiled](https://scottishgames.net/2021/02/15/happy-birthday-lemmings-30-today/) at the bottom of Perth Road in the city, commemorating DMA’s first office, where the game was originally born.
+
+In 2022 *[Lemmings: Can You Dig It?](https://scottishgames.net/2022/02/15/lemmings-can-you-dig-it-youtube/)* a feature-length documentary was released, which charted the design and development of the original game and its impact upon gamers today. You can watch it here:
+
+ [https://www.youtube.com/embed/RbAVNKdk9gA?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en-GB&autohide=2&wmode=transparent](https://www.youtube.com/embed/RbAVNKdk9gA?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en-GB&autohide=2&wmode=transparent)
+
+VIDEO
+
+Happy birthday *Lemmings*!
+
+### Like this:
+
+Like Loading...
+
+### *Related*

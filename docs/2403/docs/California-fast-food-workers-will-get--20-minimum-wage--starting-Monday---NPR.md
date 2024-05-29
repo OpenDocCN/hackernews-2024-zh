@@ -1,0 +1,82 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:47:49
+-->
+
+# California fast-food workers will get $20 minimum wage, starting Monday : NPR
+
+> 来源：[https://www.npr.org/2024/03/30/1241451631/california-fast-food-20-minimum-wage](https://www.npr.org/2024/03/30/1241451631/california-fast-food-20-minimum-wage)
+
+A McDonald's worker hands food to a customer at a drive-thru window in Los Angeles, on Sept. 28. **Damian Dovarganes/AP** ****hide caption****
+
+****toggle caption****Damian Dovarganes/AP
+
+A McDonald's worker hands food to a customer at a drive-thru window in Los Angeles, on Sept. 28.
+
+Damian Dovarganes/AP
+
+California fast-food workers cooking Big Macs or whipping Frappuccinos willstart making a minimum wage of $20 an hour on Monday. For many, this means a 25% raise.
+
+The new state minimum uniquely focuses on a particular segment, fast food, affecting some of the country's biggest chains, including McDonald's, Starbucks, Subway and Pizza Hut.
+
+It's a big win for cooks, cashiers and other fast-food workers – some of the lowest-paid jobs in the U.S. – [whose wages have been growing](https://www.epi.org/publication/swa-wages-2023/) at a faster clip since the pandemic, after decades of stagnation.
+
+California is one of the country's most expensive states; about [half a million people](https://www.gov.ca.gov/2023/09/28/california-increases-minimum-wage-protections-for-fast-food-workers/) are estimated to work in fast food here, mostly women, immigrants and people of color. Many live below the poverty line.
+
+Sandra Jauregui from Sacramento is counting down the days to her first bigger paycheck in two weeks. After 18 years working at several Jack in the Box franchises, her pay will jump from $17.50 to $20\. That means she could be bringing home another $120 each paycheck.
+
+"It's super great," says Jauregui, 52, speaking in Spanish. "At the very least it'll give me some breathing room ... and make it easier to pay the rent and other bills."
+
+### Chipotle, McDonald's warn of price hikes, less work
+
+But the dramatic pay raise has also touched off a heated debate about the impact on local businesses. Smaller franchise restaurant owners warn they'll have to raise prices, reduce worker's hours, cut jobs or even close shop.
+
+California's pay hike is a result of a contentious deal struck by labor leaders, including the large Service Employees International Union, and fast-food companies last year. [The new wage law](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB1228) applies to fast-food chains with at least 60 locations nationwide, [with exemptions](https://www.dir.ca.gov/dlse/Fast-Food-Minimum-Wage-FAQ.htm) for some bakeries and smaller fast-food outposts inside grocery stores, airports and other venues.
+
+Several fast-food executives have suggested prices would go up 2.5% to 3.5% to offset higher wages; Jack in the Box, Starbucks, McDonald's and Chipotle have all warned of upcoming price hikes. That's on top of price increases many restaurants have been rolling out for months. The cost of eating out has stubbornly inched higher even as [inflation has cooled elsewhere](https://www.npr.org/2024/03/12/1238113991/inflation-was-higher-than-expected-in-february).
+
+Other chains plan to speed up their use of automation, including kiosks and robots. A major Pizza Hut franchisee cited the wage hike as the reason for [layoffs of more than 1,000 delivery drivers](https://laist.com/news/california-pizza-hut-delivery-drivers-layoffs?utm_source=facebook.com&utm_campaign=npr&utm_medium=social&utm_term=nprnews&fbclid=IwAR3fzmiA4IaAELNENr4M2FHkHdQ9RcNTSQqRLduSCPYXKswn7UCdM3aMx2k) this year, in a switch to apps like Uber Eats and DoorDash that pushes more delivery fees onto shoppers.
+
+One big Pizza Hut franchisee in California cited the upcoming wage hike as a reason for laying off more than 1,000 delivery drivers in a shift to delivery apps like Uber Eats and DoorDash. **Justin Sullivan/Getty Images** ****hide caption****
+
+****toggle caption****Justin Sullivan/Getty Images
+
+One big Pizza Hut franchisee in California cited the upcoming wage hike as a reason for laying off more than 1,000 delivery drivers in a shift to delivery apps like Uber Eats and DoorDash.
+
+Justin Sullivan/Getty Images
+
+### Franchisees weigh cuts to workers' hours
+
+Many restaurant owners expect workers to be working fewer hours. That was the main side-effect a decade ago, when Seattle hiked its minimum wage to $15, [research suggests](https://evans.uw.edu/new-evidence-from-the-seattle-minimum-wage-study/).
+
+"I am used to being a champion of labor and I'm in this odd position," says Michaela Mendelsohn, a longtime advocate for LGBT workers and also owner of six El Pollo Loco restaurants with about 170 employees.
+
+Her restaurants lost shoppers after a pre-emptive price increase in February, she says. Now, the focus is on cutting costs by simplifying operations, changing how long it takes workers to make sauces, for example, or to close up for the night.
+
+"We're having to get more efficient," Mendelsohn says. "So really what's left is ... to reduce labor hours. And I hate saying that."
+
+In recent years, the battle for higher minimum wages has [increasingly played out](https://www.npr.org/2023/12/26/1221521157/minimum-wage-states-raises-jan-1) at the city, county and state levels as the federal minimum wallows [at $7.25 an hour](https://www.npr.org/2023/07/31/1191034086/14-years-ago-the-federal-minimum-wage-was-raised-to-7-25-an-hour-it-hasnt-change).
+
+Broadly, California often sets the bar for many business decisions that other states later follow. Advocates hope something similar will happen with fast-food pay – spreading to other industries in the state and across the country.
+
+California's minimum previously rose to $16 an hour on Jan. 1\.
+
+### Workers are thrilled, but also anxious
+
+Employers' warnings have left many workers with mixed feelings about the raise, despite the potential for extra spending power.
+
+The Jack in the Box worker Jauregui, 52, has been cobbling together two salaries, working about 54 hours a week between the restaurant and a laundromat.
+
+She says she's always trying to save a bit to treat her grandchildren – she has custody of three of them – who are constantly growing out of clothes and shoes. And although she marched alongside fellow SEIU members to win the wage increase, she is fearful of the downside.
+
+"My boss told me that he won't reduce my hours but that he will cut others' hours," Jauregui said.
+
+All this makes California's wage hike a high-profile case study for how exactly a higher minimum wage reverberates through the local economy.
+
+"This policy is going to be really different in different parts of California," says Jacob Vigdor, professor of public policy and governance at the University of Washington, who has studied the effects of Seattle's 2014 minimum wage hike.
+
+The research found that after the minimum wage rose from $9.47 to $13 – in the early years of [the Fight For $15 labor campaign](https://www.npr.org/2020/02/26/808113169/gives-me-hope-how-low-paid-workers-rose-up-against-stagnant-wages) – workers generally didn't lose jobs even though they did lose hours. And they ended up with higher pay.
+
+"The restaurant business is a really tough business," Vigdor says. "Restaurants open and close all the time, even in places where the minimum wage hasn't changed for more than a decade. ... Generally speaking, we found that in the restaurant industry, businesses were able to find ways to adapt to higher wage costs."
+
+*KQED's Farida Jhabvala Romero contributed to this report.*

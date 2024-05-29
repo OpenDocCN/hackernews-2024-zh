@@ -1,0 +1,60 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:48
+-->
+
+# NIST Study Shows Everyday Plastic Products Release Trillions of Microscopic Particles Into Water | NIST
+
+> 来源：[https://www.nist.gov/news-events/news/2022/04/nist-study-shows-everyday-plastic-products-release-trillions-microscopic](https://www.nist.gov/news-events/news/2022/04/nist-study-shows-everyday-plastic-products-release-trillions-microscopic)
+
+NIST researchers analyzed single-use beverage cups, such as coffee cups, which can release trillions of nanoparticles, or tiny plastic particles, from the inner lining of the cup when the water is heated.
+
+Credit: N. Hanacek/NIST
+
+Plastics surround us, whether it’s the grocery bags we use at the supermarket or household items such as shampoo and detergent bottles. Plastics don’t exist only as large objects, but also as microscopic particles that are released from these larger products. These microscopic plastics can end up in the environment, and they can be ingested into our bodies. 
+
+Now, researchers at the National Institute of Standards and Technology (NIST) have analyzed a couple of widely used consumer products to better understand these microscopic plastics. They found that when the plastic products are exposed to hot water, they release trillions of nanoparticles per liter into the water.
+
+The NIST researchers published their findings in the scientific journal *[Environmental Science and Technology](https://pubs.acs.org/doi/10.1021/acs.est.1c06768).* 
+
+“The main takeaway here is that there are plastic particles wherever we look. There are a lot of them. Trillions per liter. We don’t know if those have bad health effects on people or animals. We just have a high confidence that they’re there,” said NIST chemist Christopher Zangmeister. 
+
+There are many different types of [plastic materials](https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/plastics-material-specific-data), but they are all made up of polymers, natural or human-made substances composed of large molecules linked together. Scientists have found microscopic particles from these larger plastics in the oceans and many other environments. Researchers categorize them into two groups: micro- and nanoplastics. 
+
+[Microplastics](https://oceanservice.noaa.gov/facts/microplastics.html#:~:text=Microplastics%20are%20small%20plastic%20pieces,our%20ocean%20and%20aquatic%20life.&text=Plastic%20debris%20can%20come%20in,)%20are%20called%20%E2%80%9Cmicroplastics.%E2%80%9D) are generally considered smaller than 5 millimeters in length and could be seen by the naked eye, while nanoplastics are smaller than one millionth of a meter (one micrometer) and most can’t even be seen with a standard microscope. Recent studies have shown some consumer products that hold liquids or interact with them, such as polypropylene (PP) baby bottles and nylon plastic tea bags, release these plastic particles into the surrounding water. 
+
+In their study, the NIST researchers looked at two types of commercial plastic products: food-grade nylon bags, such as baking liners — clear plastic sheets placed in baking pans to create a nonstick surface that prevents moisture loss — and single-use hot beverage cups, such as coffee cups. The beverage cups they analyzed were coated with low-density polyethylene (LDPE), a soft flexible plastic film often used as a liner. 
+
+The LDPE-lined beverage cups were exposed to water at 100 degrees Celsius (212 degrees Fahrenheit) for 20 minutes.
+
+To analyze the nanoparticles released from these plastic products, the researchers first needed to determine how to detect them. “Imagine having a cup of water in a generic to-go coffee cup. It could have many billions of particles, and we would need to figure out how to find these nanoplastics. It’s like finding a needle in a haystack,” Zangmeister said. 
+
+So, he and his colleagues had to use a new approach. “We used a way of taking the water that’s in the cup, spraying it out into a fine mist, and drying the mist and all that’s left within the solution,” said Zangmeister. Through this process, the nanoparticles are isolated from the rest of the solution.
+
+The technique itself has previously been used to detect tiny particles in the atmosphere. “So, we’re not reinventing the wheel but applying it to a new area,” said Zangmeister.
+
+After the mist was dried, the nanoparticles in it were sorted by their size and charge. Researchers could then specify a particular size, for example nanoparticles around 100 nanometers, and pass them into a particle counter. The nanoparticles were exposed to a hot vapor of butanol, a type of alcohol, then cooled down rapidly. As the alcohol condensed, the particles swelled from the size of nanometers to micrometers, making them much more detectable. This process is automated and run by a computer program, which counts the particles. 
+
+High resolution images of the nanoparticles found in single use beverage cups, such as coffee cups, at the micrometer (one millionth of a meter) scale.
+
+Credit: C. Zangmeister/NIST, adapted by N. Hanacek/NIST
+
+Researchers could also identify the chemical composition of the nanoparticles by placing them on a surface and observing them with techniques known as scanning electron microscopy, which takes high-resolution images of a sample using a beam of high-energy electrons, and Fourier-transform infrared spectroscopy, a technique that captures the infrared-light spectrum of a gas, solid or liquid. 
+
+All these techniques used together provided a fuller picture of the size and composition of the nanoparticles.
+
+In their analysis and observations, the researchers found that the average size of the nanoparticles was between 30 nanometers and 80 nanometers, with few above 200 nanometers. Additionally, the concentration of nanoparticles released into hot water from food-grade nylon was seven times higher compared with the single-use beverage cups.
+
+“In the last decade scientists have found plastics wherever we looked in the environment. People have looked at snow in Antarctica, the bottom of glacial lakes, and found microplastics bigger than about 100 nanometers, meaning they were likely not small enough to enter a cell and cause physical problems,” said Zangmeister. 
+
+“Our study is different because these nanoparticles are really small and a big deal because they could get inside of a cell, possibly disrupting its function,” said Zangmeister, who also stressed that no one has determined that would be the case. 
+
+The U.S Food and Drug Administration ([FDA](https://www.fda.gov/)) regulates the plastics that touch the food we eat or the water we drink. The agency has standards and safety measures in place to determine what’s safe. The FDA’s researchers run rigorous tests on these plastics and measure how much plastic mass is lost when exposed to hot water. For example, [the FDA has determined](https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfcfr/cfrsearch.cfm?fr=177.1520) that food grade nylon (such as that [used in tea bags](https://pubs.acs.org/doi/pdf/10.1021/acs.est.9b02540)) can safely lose up to 1% of its mass under high-temperature conditions. In the NIST study using their new technique, the researchers found one tenth of a percent of the mass was lost, which is significantly below current FDA limits for what’s considered safe.
+
+Zangmeister noted there isn’t a commonly used test for measuring LDPE that is released into water from samples like coffee cups, but there are tests for nylon plastics. The findings from this study could help in efforts to develop such tests. In the meantime, Zangmeister and his team have analyzed additional consumer products and materials, such as fabrics, cotton polyester, plastic bags and water stored in plastic pipes. 
+
+The findings from this study, combined with those from the other types of materials analyzed, will open new avenues of research in this area going forward. “Most of the studies on this topic are written toward educating fellow scientists. This paper will do both: educate scientists and perform public outreach,” said Zangmeister.
+
+* * *
+
+Paper: Christopher Zangmeister, James Radney, Kurt Benkstein and Berc Kalanyan. Common Single-Use Consumer Plastic Products Release Trillions of Sub-100 nm Nanoparticles per Liter into Water during Normal Use. *Environmental Science and Technology.* Published online April 20, 2022\. DOI: [10.1021/acs.est.1c06768](https://doi.org/10.1021/acs.est.1c06768)

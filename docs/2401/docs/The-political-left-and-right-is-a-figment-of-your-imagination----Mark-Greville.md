@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:26:04
+-->
+
+# The political left and right is a figment of your imagination. – Mark Greville
+
+> 来源：[https://markgreville.ie/2024/01/02/the-political-left-and-right-is-a-figment-of-your-imagination/](https://markgreville.ie/2024/01/02/the-political-left-and-right-is-a-figment-of-your-imagination/)
+
+With a vague hint of a threat, an acquaintance demanded to know if I was “on the left or the right. Politically, I mean”. What he meant was the future of our potential relationship depended on my answer. The problem — I didn’t know. To be honest, I have trouble keeping up with what the left and right stand today. Are the left socialist? Are the right conservative? Where do liberals go? What about fascists and communists? It’s all so confusing. I asked him what I needed a side for. “Oh, we all need to pick a side, Mark”.
+
+Why?
+
+I have visited the US a lot over the past 15 years. Living in Ireland, I am always struck by how passionate people are about political parties. Most people I’ve met consider themselves on the left (Democrat) or on the right (Republican). When I ask them how they pick a side, they speak about how their ethical and moral values form the basis for their worldview, and help them choose a side. And they choose with certainty. People with a sense of certainty have always fascinated me. I am the opposite. I never feel like I understand things deeply enough to have a definitive view. My opinions hang on by a thread. Except for a love for my family. And my love of Everton Football Club. I am certain about that.
+
+Sports increasingly influence our lives. Thinking about sports informs our thinking about the world. There is a problem with this — how we think about sports is terrible. Fans are angry, emotional, and biased. We chant, wear our team colours, and rail against the unfairness of the referee. We love ‘our’ players. We hate the opposition. We see goodness in our team, and can’t see things from the other side’s perspective. This style of thinking leaks into our political lives. We wear our party colours and chant our slogans. We complain about the ‘referee’ (any authority figures — see media, law, government). We love our party and learn to hate the opposition. Our side is correct, and the other side is wrong.
+
+We are not political party members; we are political party fans.
+
+The word [fan is short for fanatic](https://www.oed.com/dictionary/fan_n2). We fanatics are in for the long haul. In sports, we deal with change — in fortunes, in players, in team ownership. But change is also part of the deal when you pick a side politically. The left and right are not fixed positions. The principles that were once a core belief will adjust and move. In college many years ago, some classmates chose the left because they believed in free speech. But this is shifting. A [2021 study](https://futurefreespeech.org//wp-content/uploads/2021/06/Report_Who-cares-about-free-speech_21052021.pdf) by the Free Speech Institute showed that in the US, Republican voters are now more in favour of free speech than Democrats. It has moved from left to right. A shift like this leaves political supporters in a quandary. Is a political principle more important than the side they support? Maybe a more useful question is — what political shifts would it take for you to switch sides? If you can’t ever imagine switching sides no matter the change, you have fallen into the sports fan trap.
+
+If the thought of having to change political sides fills you with anxiety, don’t worry. There is no such thing as the left or the right. It is a figment of your imagination.
+
+In the book [The Social Construction of Reality (Berger and Luckmann)](https://geni.us/kwVwlv), the authors argue that knowledge comes from social interactions. We invent concepts to help explain the world to ourselves and others. The most useful are repeated and spread through interactions with others. Over time, these become objective truth. Take the idea of nationality. When I lived in England, I met people I felt so close to in attitude and appearance that they could have been family. However, in olden times, someone decreed that people on one side of the Irish Sea were English, and people on the other side were Irish. After a while, this idea spread through human interaction, and people started believing in the idea of two different countries. They saw themselves as similar to others on their side, and different from those on the other side. This idea has caused centuries of issues, even though it is an invented idea. It’s been around so long that it feels as real as the laws of gravity. But there is no law here, just an invention repeated for hundreds of years.
+
+The idea of a political right and political left is a social construction. It is a radically simplified way to see the world. It only exists because people have used it in the past. It is not the best model, or even a good representation of the complicated nature of political thought. There are only two sides, no subtlety, no room for complexity. Not three political sides, or four. Just a straight line with two choices. Pick a side.
+
+This is what my acquaintance wanted me to do. To reduce myself to a simple point on a line. To relax my uncertainty and join a side. Pick one, and adopt the ideas of those on that side. Learn one way of thinking, or, in fact, learn not to think, but to accept the group. Over time, slide further along the line so that I end up arguing for positions I don’t believe in, or even understand.
+
+I reject this. I reject it all, the reduction of humans to a simple right/left idea. A supporter, like a sports fan, drunkenly shouting my team’s slogans. Screaming about simple solutions to complex problems. Picking an enemy to hate.
+
+Don’t choose a side.
+
+Choose to think.

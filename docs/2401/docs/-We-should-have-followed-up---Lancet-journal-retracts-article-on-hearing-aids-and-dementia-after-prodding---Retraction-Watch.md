@@ -1,0 +1,104 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:59
+-->
+
+# ‘We should have followed up’: Lancet journal retracts article on hearing aids and dementia after prodding – Retraction Watch
+
+> 来源：[https://retractionwatch.com/2024/01/04/we-should-have-followed-up-lancet-journal-retracts-article-on-hearing-aids-and-dementia-after-prodding/](https://retractionwatch.com/2024/01/04/we-should-have-followed-up-lancet-journal-retracts-article-on-hearing-aids-and-dementia-after-prodding/)
+
+When Jure Mur, a postdoc at the University of Edinburgh in Scotland, realized the replication of a published study he was working on as a “sanity check” wasn’t producing matching results, his first reaction was “annoyance,” he said. 
+
+He assumed the mistake was his own, and he’d have to thoroughly check his work to find it. “Only after double- and triple-checking my code did I start suspecting an error in the original paper,” Mur told Retraction Watch. 
+
+Mur emailed the authors of the article several times, but they never responded to him, he said. He next contacted the editors of *The Lancet Public Health*, which had published the original paper, “[Association between hearing aid use and all-cause and cause-specific dementia: an analysis of the UK Biobank cohort](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00048-8/),” in April 2023. 
+
+ In months of back-and-forth correspondence, seen by Retraction Watch, Mur explained the discrepancies he’d found, then submitted a comment article the editors declined to publish. 
+
+The paper was retracted in December, but only after Mur pushed the editors to consider the implications of the authors’ response to his comment, which confirmed his findings and contradicted their original paper. 
+
+“The end result is positive for the scientific community,” Mur said. But because the editors seemed to address the issue he raised only after he and his colleagues submitted a comment article, and “either did not read or did not understand the response to our comment,” he said the experience “made me doubt the integrity of the editorial process at the journal.” 
+
+Given the high praise the article received when it was first published, the analysis should be corrected and republished, not just retracted, said [Jan Blustein](https://wagner.nyu.edu/community/faculty/jan-blustein), a professor at New York University who studies hearing loss.  
+
+“It was declared to be the final word, and it’s apparently not,” she said. 
+
+The *Lancet Public Health* article made international headlines when it appeared, from [*Der Spiegel*](http://ct.moreover.com/?a=50515650229&p=1pl&v=1&x=eQPpZIlK4WeBZ4IzoWqEng)to [CNN](http://ct.moreover.com/?a=50511418435&p=1pl&v=1&x=V03Qt0bPVGUkM04wL4uOGQ) (also in [Spanish](http://ct.moreover.com/?a=50513504364&p=1pl&v=1&x=j_VvpNmtQJp0HPhB_LlPCQ)) to [*The Daily Mail*](https://www.dailymail.co.uk/health/article-11970303/Hearing-aids-lower-risk-dementia-Lancet-study-suggests.html). (CNN has added an update about the retraction to their story and removed references to the study.) It has been cited 15 times, according to Clarivate’s Web of Science. 
+
+“In people with hearing loss,” the authors wrote, “hearing aid use is associated with a risk of dementia of a similar level to that of people without hearing loss.” They proposed “up to 8% of dementia cases could be prevented with proper hearing loss management.”
+
+In a simultaneously published [editorial](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00058-0/fulltext)–now also [retracted](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00302-X/fulltext)–other researchers wrote that with the addition of the article’s data, “the evidence that hearing aids can be a powerful tool to reduce the risk of dementia in people with hearing loss is as good as possible without randomised controlled trials.”  
+
+Mur and his colleagues intended to build on the article with a related analysis on the same UK Biobank data. But when he couldn’t replicate the main findings, Mur scrutinized the paper more deeply. 
+
+In mid-May, Mur emailed the corresponding author, [Dongshan Zhu](https://faculty.sdu.edu.cn/zhudongshan/en/index.htm) of Shandong University in Jinan, China. He wrote that he “had some questions regarding your analysis” and asked whether he should direct them to Zhu or the first author of the paper. Mur followed up several times, but Zhu never responded, he said. 
+
+Mur also emailed the editors of *The Lancet Public Health* in late May, asking if they would share any other authors’ email addresses they had. He explained that he’d been having trouble replicating some of the findings in the paper, and the corresponding author hadn’t responded to his emails. One of the editors supplied the email address for another author, Chengchao Zhou, also affiliated with Shandong University. Mur’s emails to Zhou went unanswered as well. 
+
+At the editors’ suggestion, Mur sent another email to Zhu and Zhou in June asking if they would share their code, and copied the editors. After again getting no response, Mur sent the editors a [document](https://retractionwatch.com/wp-content/uploads/2024/01/1_discrepancy_doc.docx.pdf) detailing the discrepancies between his replication attempt and the results in the paper. 
+
+Most notably, he found that hearing aid use did not correspond to a lower rate of dementia for people with hearing loss, as the authors reported. He found the opposite: among people with hearing loss, the dementia rate was higher for those using hearing aids. In his email to the editors, Mur wrote: 
+
+> Without comparing the code to clean and analyse the data, it is difficult to draw firm conclusions about what is going on. But I think it’s worth trying to resolve it.
+
+In July, Audrey Ceschia, editor in chief of *The Lancet Public Health*, responded. She wrote that the journal had been “notified of an error in the paper” and was currently working with the authors on a correction that “might also help resolving some of the discrepancies you’ve noticed.” She said she would share the correction when it was ready, and also suggested Mur could submit his findings to the journal’s correspondence section. 
+
+Mur and a few colleagues submitted a [comment article](https://retractionwatch.com/wp-content/uploads/2024/01/2_comment_article.docx.pdf) to the journal in October, formally explaining the differences in their findings and the published paper, with a link to a repository of their code. In mid-November Ceschia sent Mur the [authors’ response](https://retractionwatch.com/wp-content/uploads/2024/01/3.1_author_response.pdf) (with [code](https://retractionwatch.com/wp-content/uploads/2024/01/3.2_author_code.pdf) they provided), but wrote that the journal had “decided not to publish the exchange of letters.” 
+
+The authors’ response noted they had “found some discrepancies between coding schemes” and described a new analysis they’d run on the data. They reported on “the relationship between self-reported hearing loss, hearing aid use and risk of dementia,” as they had in their original paper, as well as an additional analysis on people who had severe hearing loss as measured with a hearing test. 
+
+In supplementary material, the authors presented results in line with what Mur and his colleagues found, but contradicting their originally published work: 
+
+> Using self-reported hearing loss (no severity information), we found that in people with hearing loss, both using and not using [hearing aids] was linked to an increased risk of all-cause dementia, with HR (95% CI) of (1.47, 1.33-1.63) and (1.17, 1.09-1.25) respectively, i.e., using [hearing aids] had even higher risk of dementia
+
+Mur responded to the journal editors, pointing out that this result “is exactly what we found, reported, and submitted as a comment to the Lancet Public Health and is contrary to the findings published by Jiang et al. (2023). Only in some of the supplementary analyses that were not part of that original published paper, do the authors find a confirmation of their original claim.” 
+
+He continued: 
+
+> In my understanding of scientific integrity, it should now be the authors to retract the article based on these new analyses, or at least publish a major correction which includes a reinterpretation of findings in light of the extended analyses. Since they apparently do not intend to do so, we would now expect the publisher to take action and at least publish our comment (if you don’t plan on retracting the paper either). Please also note that the manuscript is a comment, not a correspondence piece. You may recall that we tried to have a correspondence with the authors and only decided to write a comment after multiple attempts were not successful..
+
+The next day, Anika Knuppel, senior editor at the journal, responded that the editors were “looking into this.” A few weeks later, in early December, Ceschia wrote: 
+
+> Please accept our profound thanks for prompting us to investigate the reliability of the paper by Fan Jiang et al. To summarise an extensive series of exchanges with the authors, they have now explained that they have discovered analytical errors in their work that render their findings and conclusions false and misleading. We have taken the decision to retract their paper and will publish the retraction notice next week. We are very grateful to you for bringing your concerns to us directly and we are pleased to be able to correct the scientific record in a timely manner.
+
+On December 12, *The Lancet Public Health* editors published the following [retraction notice](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(22)00314-0/fulltext): 
+
+> On Nov 27, 2023, we have been informed by the authors of the paper—Association between hearing aid use and all-cause and cause-specific dementia: an analysis of the UK Biobank cohort—published on April 13, 2023,1 that an error was introduced in the output format setting of their SAS codes (data for people with hearing loss using hearing aids and with hearing loss without using hearing aids were switched), leading to errors in their analysis which render their findings and conclusions false and misleading. These errors were identified by the authors following an exchange with scientists seeking to reproduce the authors’ findings. We are therefore retracting this Article.
+
+We asked Zhu why he and his colleagues had not requested a retraction once their reanalysis found different results than their original paper. He responded: 
+
+> Thanks for your attention to our research.
+> 
+> If the output formats were not mis-defined, using self-reported hearing loss, people with hearing loss using HA had 34% higher risk of dementia, and people with hearing loss not using HA had 7% higher risk dementia [sic].
+> 
+> We believe there are two prominent bias [sic] when self-reported hearing loss was used, i.e., self-reported bias, and hearing loss severity bias.
+> 
+> In the next step, we will try to control for self-report bias and severity bias to see the effect of wearing hearing aids after bias control on reducing the risk of dementia, especially in people with severe hearing loss.
+
+When we reached out to Ceschia and Knuppel, we heard back from a spokesperson for *The Lancet*. Regarding the authors’ response to Mur and colleagues’ comment, the spokesperson said: 
+
+> While acknowledging “some discrepancies between coding systems”, they argued that “The overall message of the study did not change.” In good faith, we accepted the authors’ explanation, and decided not to publish the exchange. In retrospect, we should have followed up the admitted discrepancies more assiduously and worked with the authors and Dr Mur to settle any outstanding uncertainties. Dr Mur rightly challenged our decision in an email on November 16\. We immediately recognised the seriousness of his concerns and wrote again to the authors on November 22 asking them to further clarify their analyses, based on Dr Mur’s evidence and our own by now heightened unease. On November 24, the authors reported major errors in their paper, which rendered their findings and conclusions false and misleading. We moved quickly to retract the paper on December 12, 2023.
+
+When the paper first appeared, it seemed to confirm a widely held belief – that hearing loss is associated with developing dementia, and using hearing aids can help to reduce risk – about which the scientific evidence has been mixed, Blustein, the hearing loss researcher, told Retraction Watch. In [her view](https://www.sac-oac.ca/wp-content/uploads/2023/04/Hearing-loss-and-dementia-Blustein-Weinstein-Chodosh.pdf), [public health messaging](https://jamanetwork.com/journals/jamaotolaryngology/fullarticle/2808841) and media coverage of the question has been “misleading.” 
+
+The findings were picked up quickly and disseminated among the community of people following the question of hearing loss and dementia, she said. “I don’t think people are necessarily aware of retractions.” 
+
+The analysis should be corrected, and if *The Lancet Public Health* were to receive a new version, they should publish it, Blustein said. 
+
+The UK Biobank dataset “is a very valuable data source,” she said. The dataset’s large size, long followup period, and information about potentially confounding factors made the article an important piece of evidence. “To throw away data because somebody miscoded it is a mistake.”
+
+Blustein also felt that the retraction notice was unclear about what readers should take away from the study, and the lack of clarity was “another reason why the record is incomplete” without a replacement analysis. 
+
+While the retraction notice was “technically correct,” Mur said, it did “obfuscate the fact that it was primarily my colleagues and I – not the journal or the authors of the original paper – who identified a problem and invested plenty of time and effort to have it rectified.” 
+
+To other researchers trying to correct the record, he advised: 
+
+> Be prepared for an uphill battle. In our case, the editors were always courteous and quick to respond to our emails but notifying them of the discrepancies and detailing them in a short report was not sufficient. We still had to write and submit a paper before any substantial action by the journal was evident.
+
+But putting forth the effort was important, he said, “simply because we knew the results were erroneous.” He continued: 
+
+> The study had been mentioned in several media articles, featured in an editorial by the journal, and hailed by some in the field as the most definitive evidence on the topic one can get without performing a clinical trial. You can’t let that stand if you know it to be false.
+
+*Like Retraction Watch? You can make a *[*tax-deductible contribution to support our work*](http://paypal.com/us/fundraiser/charity/1909130)*, *subscribe to our free *[*daily digest*](http://eepurl.com/bNRlUn)* *or [paid weekly update](https://retractionwatch.substack.com/)*, *follow us *[*on Twitter*](http://twitter.com/RetractionWatch)*, like us *[*on Facebook*](https://www.facebook.com/pages/Retraction-Watch/119209094864356)*, or add us to your *[*RSS reader*](https://retractionwatch.com/feed/)*. If you find a retraction that’s *[*not in The Retraction Watch Database*](http://retractiondatabase.org/RetractionSearch.aspx)*, you can *[*let us know here*](https://docs.google.com/forms/d/e/1FAIpQLSeAsw4i5J8M7sOQ9GiG0_dglkim9gdPPba92yZRLfCq4u-o7w/viewform?c=0&w=1)*. For comments or feedback, email us at [[email protected]](/cdn-cgi/l/email-protection)*.
+
+### *Related*

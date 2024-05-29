@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:22
+-->
+
+# I Stopped Using Passwords. It's Great—and a Total Mess | WIRED
+
+> 来源：[https://www.wired.com/story/stopped-using-passwords-passkeys/](https://www.wired.com/story/stopped-using-passwords-passkeys/)
+
+Using passkeys likely means having a different mindset from how you think about passwords. There’s nothing to remember when you log in, and you have to use something else to store your passkeys. Passkeys can be stored in Apple’s, Google’s or Microsoft’s password manager systems; your browser; a dedicated password manager; or on a [physical security key](https://www.wired.com/story/google-titan-security-key-passkeys/). I created a Google passkey on one USB key, and all I need to do to sign in is, essentially, plug it in. (All of the devices I use professionally and personally are Apple, meaning I haven’t tested passkeys between my iPhone and a Windows laptop, for instance.)
+
+“The technology is mature, the front ends are still nascent,” Shikiar from the FIDO Alliance says. Over the past year, the FIDO alliance has also been [working on user experience guidelines](https://fidoalliance.org/ux-guidelines/), he says, making it more straightforward for people to sign up and use passkeys across systems. Gary Orenstein, the chief customer officer of password manager Bitwarden, says there are multiple groups involved in the creation and rollout of passkeys, so transitioning to a world where everything is seamless takes coordination. “The standards are at one level, user expectations are at a different level,” he says. “The vendor implementations are at a third level, and they’re merging, but it takes time.”
+
+Being able to save a passkey on essentially any device makes them more useful and means you aren’t locked in to Google’s, Microsoft’s, or Apple’s ecosystems. However, where you save a passkey is going to take some remembering. When setting up one passkey, I was asked by my password manager, browser, and the device operating system whether I wanted to save my passkey with each of them. Picking one spot and sticking to it is probably the best option.
+
+Most of my work is done on my laptop—and it's rare that I download new apps or log out of apps on my phone—so I have been saving the majority of my passkeys in Bitwarden, which costs me $10 a year for a premium account alongside my hundreds of passwords. It works like this: When logging in to my Amazon account, I enter my username, and then Bitwarden’s browser extension pops up asking whether I want to log in with my passkey for Amazon. I press confirm, and I am logged in. It also offers the option to use my device or a hardware key to log in, and if I select one of these options, it looks for passkeys stored on my laptop.
+
+However, as mentioned, Bitwarden doesn’t currently offer passkeys on mobile, meaning that to get the mobile-first Coinbase integration to work, I ended up saving that passkey to iCloud’s Keychain instead. Orenstein, from Bitwarden, says that making passkeys work on mobile is a priority for Bitwarden and more support should be rolling out in the coming months. The company has seen a “fantastic” adoption of passkeys so far, he says, but acknowledges people will have to get used to the change. “You still need an awareness about where it is,” Orenstein says. “I think, over time, as an industry, we can reduce the need for that awareness, hopefully to zero.”
+
+The Password’s Long Goodbye
+
+You may not have set up any passkeys yet, but it’s only a matter of time. Tech companies are starting to [make passkeys the default](https://www.wired.com/story/google-passkey-default/), and more businesses are adopting them. In the past couple of weeks, [X has started](https://9to5mac.com/2024/01/23/x-passkeys-ios-2fa/) allowing some people to use passkeys, and WhatsApp is [bringing them to iPhones and iPads](https://9to5mac.com/2024/01/29/whatsapp-passkey-iphone/) after previously rolling out passkey support for Android devices.
+
+Leona Lassak, Blase Ur, and Maximilian Golla, three academics from Germany and the US who have [researched the adoption of passkeys](https://www.blaseur.com/papers/fidoobstacles.pdf), say that businesses they’ve interviewed are generally positive about the adoption of passkeys and the extra security it will bring. However, it will likely take some time until the majority of websites, apps, and companies are using passkeys for everything. “I don’t think we will have a big bang in the next few months,” Lassak says. “It’s going to be a slow process, which on the way will then also catch other and smaller entities.”
+
+As a result, passwords will still be around for a while. It’ll be a long time until I have converted my remaining 320-ish accounts to be using passkeys. And for the time being at least, those accounts where I do have passkeys will still have existing passwords that I can fall back on. “Passkeys is having fewer passwords, but not necessarily no passwords,” says Golla.
+
+Experts recommend setting up a few passkeys whenever you come across them on your online accounts, rather than necessarily trying to change them all at once. There are guides to [what websites are using passkeys already](https://fidoalliance.org/passkeys-directory/), and [Google](https://www.google.com/account/about/passkeys/), [Microsoft](https://support.microsoft.com/en-us/windows/passkeys-in-windows-301c8944-5ea2-452b-9886-97e4d2ef4422), and [Apple](https://support.apple.com/en-ca/guide/mac-help/mchl4af65d1a/mac#:~:text=To%20create%20a%20passkey%2C%20iCloud,or%20iPad%3A%20Click%20Other%20Options.) all have straightforward explanations on how to create passkeys. And there are plenty of benefits to getting started now.
+
+“They are a true password replacement that eliminate the threat of phishing, eliminate the hassle of password resets, and eliminate the liability that service providers have when they’re managing thousands, tens of thousands, or tens of millions, or billions of passwords,” Shikiar says. “It really is an entirely new way of doing user authentication.”

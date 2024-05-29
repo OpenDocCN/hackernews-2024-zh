@@ -1,0 +1,37 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:23:28
+-->
+
+# In Memoriam: Niklaus Wirth – Communications of the ACM
+
+> 来源：[https://cacm.acm.org/magazines/2024/3/280075-in-memoriam-niklaus-wirth/fulltext](https://cacm.acm.org/magazines/2024/3/280075-in-memoriam-niklaus-wirth/fulltext)
+
+Computing pioneer Niklaus Wirth died on January 1, 2024, just 45 days short of his 90th birthday.
+
+Wirth was born in Switzerland in 1934\. He received his B.S. from ETH (Swiss Federal Institute of Technology) in Zurich in 1959, and his M.Sc. degree from Université Laval in Quebec City, Canada in 1960\. He then attended the University of California at Berkeley, where he obtained his Ph.D. in EECS in 1963\. Wirth then joined the faculty at Stanford University, but left in 1968 to join the faculty of ETH in Zurich.
+
+Wirth was a member of the international team that developed ALGOL 60—the first widespread computer language to introduce structured programming with independent blocks, local variables, lexical scoping, and recursive functions. Reflecting on the experience in a 2018 oral interview, he thought ALGOL was “a big mess” and that “it would be a worthwhile project for a Ph.D. thesis.”
+
+He later applied his design philosophies for simplicity, creating ALGOL W (1966), a cleaned-up version of ALGOL 60, but resigned from the IFIP standards committee when they would not incorporate his recommendations into the official version of the language.^a He also developed the Euler language (1965), Modula (1975), Modula-2 (1978), and several versions of Oberon (1987 et seq.).
+
+Nevertheless, it was Pascal (1970), a language explicitly designed to teach block-structured programming, that was perhaps Wirth’s most notable creation. His idea was to keep the language simple for students, unlike “commercial languages” that he opined were so large and complex that “nobody can understand them in their entirety.”
+
+Because of its simplicity, the Pascal compiler was easy to implement. Using an approach to software design and development he called “stepwise refinement,”^b Wirth and his students steadily improved the quality of the machine code the compiler generated until it rivaled that of the day’s commercial FORTRAN compilers.
+
+At the time, many different computer architectures were used in education, so Wirth and his students designed the  compiler to emit an intermediate portable code they called *P-Code*, that could be run on a simple virtual machine. The virtual machine could be readily ported to different architectures, contributing to Pascal’s early popularity. The idea was also an inspiration for the Java virtual machine two decades later.
+
+At the University of California, San Diego, Ken Bowles and his students extended Wirth’s Pascal into a complete operating system called the UCSD p-system. An editor, the compiler, and runtime could all fit in less than 64KB of memory: it became the basis of Apple Pascal, released for the Apple II computer in August 1979, and Borland’s Turbo Pascal. At least a generation of students, possibly numbering in the millions, learned to program with these systems.
+
+During his career at ETH where he was a professor of Informatics, Wirth spent two sabbaticals at Xerox PARC, where his collaborations influenced the development of the Modula-3 language and the Alto workstation. At ETH, he directed the development of an operating system with a full suite of tools and applications for the locally built Lillith (and later, Ceres) workstations with bitmapped displays and mice well before such items were commercially available. These systems were used by everyone in his laboratory for all their research. Martin Odersky recollects: “Now you might think that there would have been an army of developers doing these things. But no, it was Niklaus Wirth with six doctoral students, as well as some researchers in the associated groups of Jürg Gutknecht and Peter Mössenböck.”
+
+In addition to being the first to formally describe the top-down, stepwise refinement of software, Wirth also is known for Wirth’s Law: “Software is getting slower more rapidly than hardware is becoming faster.”
+
+Wirth’s overriding philosophy was that systems should be simple, efficient, and “elegant.” He forcefully (some colleagues have said “ruthlessly”) advocated for the reduction of both features and overhead in systems, often frustrating his colleagues and students when this removed functionality they wanted.
+
+Among his many honors, Wirth was an ACM Fellow, the recipient of the 1984 A.M. Turing Award, and a foreign associate of the U.S. National Academy of Engineering. He was also a recipient of both the IEEE Emanuel R. Piore and IEEE Pioneer awards.
+
+Additional Resources
+Oral History; https://amturing.acm.org/pdf/WirthTuringTranscript.pdf
+CHM; https://computerhistory.org/profile/niklaus-wirth/
+Video interview: https://bit.ly/3Sj04MO

@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:44:45
+-->
+
+# Kubernetes and back - Why I don't run distributed systems - davd.io
+
+> 来源：[https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/](https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/)
+
+It’s almost outrageous to say that I don’t like distributed systems while working in a company that advertises as being cloud-native, headless and what not. And probably every SRE with some buzzword certifications may think I’m a complete idiot, but hear me out.
+
+Roughly a year ago, I decided to switch to a Kubernetes based multi-node environment with one of my side projects. The promise of doing zero-downtime deployments and node maintenance, better scalability and “self healing” if a node goes down sounded too good to not jump on the ever-growing train of tech marketing.
+
+I took a moment to calculate the cost of hosting my app on the K8s offerings of a Hyperscaler like AWS, Google or Azure just to figure out that *this* won’t be an option for me.
+
+So self-hosting it is. Set up 6 VMs (workers and control planes), which ran me a low three-figure price per month and set up Kubernetes. I spent an enormous amount of time to get the K8s specs for my application just right, migrating away from a single-machine docker compose environment, with proper cloud volumes distribution, a MongoDB setup with three replicas, multiple replicas per pod for all my services, load balancers and so on. I ended up with a - in theory - highly available system.
+
+Not all was great, I instantly missed ZFS on my volumes, which I used before to snapshot my application state before backing up. I also recognized that due to the replication (that was a mess to set up - I’m wondering who engineered that over at the MongoDB folks), my database became quite slow (because I wanted to have the highest level of data replication safety). Not to even start talking about the Redis and ElasticSearch clusters.
+
+With every replication that I set up, the system became more confusing and I ran into multiple situation where I was facing performance problems that were extremely expensive and complex to debug.
+
+Once the application started running and was actually hit with customer traffic, I reran the same tests that I ran before when I set up the system to ensure the HA setup was working. Killing a worker node from the Cloud VM control panel took the cluster painfully long to recognize the node was gone. The MongoDB replication needed multiple seconds to figure out what to do now. In the end, the application had a downtime of a minute or so - not necessarily the setup that I expected from a fully redundant system. It took me much tweaking, reading about different networking plugins, adding additional heartbeats and healthchecks etc. to make verything working to an extent that I could pull down a node with confidence, even without tainting it before (in the end, this is what happens with an outage). In the end it still was a multi-second downtime.
+
+Backing up also caused me headaches and nightmares. My MongoDB DB is so big that I cannot reasonably dump it anymore. Normally I’d snapshot the FS and back that up. But how do you do that if your CSI driver does not support btrfs or ZFS? So some more working around, some more complexity to end up with a CI pipeline that stops one of my MongoDB replica, backs up the DB in a cold state and then resumes it again, which causes unneccessary load on the rest of the cluster to bring up the replication again. And what happens if a node goes down during a backup (which I need to do quite often)? Then my replication has no quorum and all remaining nodes just start screaming, while the application is down again.
+
+Are there solutions to all of that? Probably. But by the time I got to a somewhat working state, everything became so complex, that it really was a pain to maintain this whole thing. And it got more expensive of course.
+
+This is where I stopped and thought: “OK hey, is that really worth it”? Well, I guess that depends on your use case, but for me, it’s not. And by then I really started questioning what Kubernetes is even good for after all. I’m exaggerating of course. But think about it: The promise is that you have an abstracted platform that allows you to run distributed workloads, oftentimes by running containers that you never inspected too closely - or did you really ever look into how certmanager works? Pretty sure you didn’t, but sure enough you have that Helm chart somewhere in your Ansible playbook. But does it really deliver on it? Distributed systems predate Kubernetes and Docker and probably all modern technology stacks. And contrary to all the marketing efforts by Cloud vendors, you still need to know all of those low level things: How does database replication work? What load balancing paradigms do exist? How can I set up a private network for my internal services and expose only the surface publicly? How do I configure a firewall properly? What was that stupid command again to set up a static route?
+
+And this is what everybody quietly ignores, nobody gets asked about in their Kubernetes certification and what everybody is overwhelmed with as soon as things don’t work like described in the docs. But then you are a bad SRE. You still need to know all of that, plus all the stupid Kubernetes object types, specialties of your vendor’s Cloud Controller and how all those shitty services are called again on Azure.
+
+So in the end, the cognitive load and application complexity (and with that: possible bugs, security issues etc.) is way higher than it was with traditional siloed approaches.
+
+Today, I’m back with a single machine that handles the peak 500 concurrent users, that costs me around 40 bucks a month. And it’s faster. I have a cold spare VM ready to pick up operation by booting it up, updating the application to the latest state, remounting the cloud volume and reallocating the floating IP. That’s a single shell script (of course running inside a GitLab CI pipeline, ‘cause we’re fancy). The whole operation is faster than it was with the optimized Kubernetes configuration when I killed one of the nodes. But those are single machines now. Understandable and debuggable. I have a script that heartbeats the production machine and if it is down for a certain amount of time, it will start that script. Is *that* faster than a HA cluster? No. But it’s way easier to understand and I don’t really need more for my use case. A few minutes in the event of a cloud VM going down every few years sounds bearable if you don’t loose millions during that time.
+
+Or to put it with the words of ThePrimeagen:
+
+> “JUST PUT IT ON A SERVER!!1”
+
+So do I hate Kubernetes? Of course not. All I’m saying is: Choose your weapons carefully. You wouldn’t be the first person to shoot yourself in the foot with the very weapon you bought to defend yourself.

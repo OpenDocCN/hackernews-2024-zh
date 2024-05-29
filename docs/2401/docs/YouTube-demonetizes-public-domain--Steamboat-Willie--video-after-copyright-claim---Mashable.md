@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:04
+-->
+
+# YouTube demonetizes public domain 'Steamboat Willie' video after copyright claim | Mashable
+
+> 来源：[https://mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim](https://mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim)
+
+***UPDATE: Jan. 5, 2024, 5:18 p.m. EST** On Friday, Disney retracted the copyright claim on YouTuber Brock Baker's "Steamboat Willie" video.*
+
+*Read the update [here](https://mashable.com/article/disney-pulls-youtube-steamboat-willie-copyright-claim)* *as well as the original story below.*
+
+Planning to [utilize](https://mashable.com/article/infestation-88-steamboat-willy-horror-game) new public domain works featuring Mickey Mouse this year? Well, here's a case you should certainly pay attention to.
+
+On Thursday, voice actor and YouTuber Brock Baker uploaded a new video, titled "Steamboat Willie (Brock's Dub),"  to his YouTube channel with more than 1 million subscribers.
+
+The video contains the entirety of the 1928 Disney animated short "Steamboat Willie," with Baker providing his own comedic voice overs and sound effects throughout the less than 8 minute long cartoon.
+
+According to Baker, shortly after uploading the clip though, YouTube [demonetized](https://twitter.com/BrockBaker/status/1743009587475665205 "(opens in a new window)") the video, evidently on behalf of the erstwhile copyright owner, Disney. Baker also shared a screenshot to his X account showing the video was also being blocked from view in some territories as well.
+
+Prior to this year, nothing here would be out of the ordinary. Disney is very protective of its copyrighted works and would likely be especially so of a film like *Steamboat Willie* as it stars its most iconic character, Mickey Mouse.
+
+However, *Steamboat Willie* along with that 1928 version of Mickey Mouse, [entered the public domain](https://mashable.com/article/mickey-mouse-steamboat-willie-disney-public-domain) on January 1, 2024\. This means that a video like Baker's should be completely fine for the YouTuber to not only create and distribute, but monetize as well.
+
+Baker could likely make a fair use or parody defense for his dubbed version of *Steamboat Willie*, but as Duke University's Jennifer Jenkins, a professor of law teaching intellectual property, [told Mashable this week](https://mashable.com/article/mickey-mouse-steamboat-willie-public-domain-so-far), he doesn't even need to make that argument. Public domain works are considered public property. 
+
+"Reproducing and adapting the footage in whatever way you like is legit," Jenkins told Mashable.
+
+As soon as "Steamboat Willie" became public domain earlier this week, multiple different creative projects using the iconic mouse were announced. Some of these creative works include a [horror movie](https://variety.com/2024/film/news/steamboat-willie-horror-film-mickey-mouse-public-domain-copyright-1235849861/ "(opens in a new window)") and a [video game](https://mashable.com/article/infestation-88-steamboat-willy-horror-game).
+
+So, what happened with Baker's video? Mashable has reached out to YouTube to find out more information and will update this post when we hear back. However, due to how quickly Disney's copyright claim was issued after Baker uploaded his "Steamboat Willie" video, it's likely the video was a victim of the automated Content ID process.
+
+"Videos uploaded to YouTube are scanned against a database of audio and visual content that's been submitted to YouTube by copyright owners," reads YouTube's policy page on its [Content ID](https://support.google.com/youtube/answer/2797370?hl=en "(opens in a new window)") feature. "When Content ID finds a match, it applies a Content ID claim to the matching video."
+
+If this is the case, YouTube nor Disney appear to have updated the database to remove works that have recently entered the public domain. And, if so, it seems that should certainly be programmed into the Content ID system as an automated process, much like the valid claims are.
+
+Mashable will keep you updated on the status of Baker's video.

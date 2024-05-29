@@ -1,0 +1,43 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:47:14
+-->
+
+# NVIDIA CEO: Every Country Needs Sovereign AI | NVIDIA Blog
+
+> 来源：[https://blogs.nvidia.com/blog/world-governments-summit/](https://blogs.nvidia.com/blog/world-governments-summit/)
+
+ Every country needs to own the production of their own intelligence, NVIDIA founder and CEO Jensen Huang told attendees Monday at the World Governments Summit in Dubai.
+
+Huang, who spoke as part of a fireside chat with the UAE’s Minister of AI, His Excellency Omar Al Olama, described [sovereign AI](https://blogs.nvidia.com/blog/what-is-sovereign-ai/) — which emphasizes a country’s ownership over its data and the intelligence it produces — as an enormous opportunity for the world’s leaders.
+
+“It codifies your culture, your society’s intelligence, your common sense, your history – you own your own data,” Huang told Al Olama during their conversation, a highlight of an event attended by more than 4,000 delegates from 150 countries.
+
+“We completely subscribe to that vision,” Al Olama said. “That’s why the UAE is moving aggressively on creating large language models and mobilizing compute.”
+
+Huang’s appearance in the UAE comes as the Gulf State is moving rapidly to transform itself from an energy powerhouse into a global information technology hub.
+
+Dubai is the latest stop for Huang in a global tour that has included meetings with leaders in Canada, France, India, Japan, Malaysia, Singapore and Vietnam over the past six months.
+The Middle East is poised to reap significant benefits from AI, with PwC projecting a $320 billion boost to the region’s economy by 2030.
+
+At Monday’s summit, Huang urged leaders not to be “mystified” by AI. AI’s unprecedented ability to take directions from ordinary humans makes it critical for countries to embrace AI, infusing it with local languages and expertise.
+
+In response to Al Olama’s question about how he might approach AI if he were the leader of a developing nation, Huang emphasized the importance of building infrastructure.
+
+“It’s not that costly, it is also not that hard,” Huang said. “The first thing that I would do, of course, is I would codify the language, the data of your culture into your own large language model.”
+
+And as AI and accelerated computing has developed, NVIDIA GPUs have become a platform for one innovation after another.
+
+“NVIDIA GPU is the only platform that’s available to everybody on any platform,” Huang said. “This ubiquity has not only democratized AI but facilitated a wave of innovation that spans from cloud computing to autonomous systems and beyond.
+
+All of this promises to unleash new kinds of innovations that go beyond what’s traditionally been thought of as information technology.
+
+Huang even countered advice offered by many visionaries over the years who urged young people to study computer science in order to compete in the information age. No longer.
+
+“In fact, it’s almost exactly the opposite,” Huang said. “It is our job to create computing technologies that nobody has to program and that the programming language is human: everybody in the world is now a programmer — that is the miracle.”
+
+In a move that further underscores the regional momentum behind AI, Moro Hub, a subsidiary of Digital DEWA, the digital arm of the Dubai Electricity and Water Authority, focused on providing cloud services, cybersecurity and smart city solutions, announced Monday it has agreed to build a green data center with NVIDIA.
+
+In addition to the fireside chat, the summit featured panels on smart mobility, sustainable development and more, showcasing the latest in AI advancements. Later in the evening, Huang and Al Olama took the stage at the “Get Inspired” ecosystem event, organized by the UAE’s AI Office, featuring 280 attendees including developers, startups and others.
+
+*Explore [generative AI](https://www.nvidia.com/gtc/sessions/generative-ai/?nvid=nv-int-txtad-141445 "Original URL: https://www.nvidia.com/gtc/sessions/generative-ai/?nvid=nv-int-txtad-141445 Click to follow link.") sessions and experiences at [NVIDIA GTC](https://www.nvidia.com/gtc/), the global conference on AI and accelerated computing, running March 18-21 in San Jose, Calif., and online.*

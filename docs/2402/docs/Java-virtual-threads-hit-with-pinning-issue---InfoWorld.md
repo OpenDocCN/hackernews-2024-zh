@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:22:16
+-->
+
+# Java virtual threads hit with pinning issue | InfoWorld
+
+> 来源：[https://www.infoworld.com/article/3713220/java-virtual-threads-hit-with-pinning-issue.html](https://www.infoworld.com/article/3713220/java-virtual-threads-hit-with-pinning-issue.html)
+
+Java’s [virtual threads](https://www.infoworld.com/article/3678148/intro-to-virtual-threads-a-new-approach-to-java-concurrency.html), introduced in [JDK 21](https://www.infoworld.com/article/3689880/jdk-21-the-new-features-in-java-21.html) in September 2023 to make it easier to write and maintain concurrent applications, has suffered from a “pinning” issue that arises with synchronized methods or synchronized statements.  
+
+Oracle [detailed the virtual thread pinning issue](https://inside.java/2024/02/21/quality-heads-up/) this week on the [Inside Java website](https://inside.java/). The two most common cases involve a virtual thread parking while in a synchronized method, and a virtual thread blocking when entering a synchronized method, because the object’s associated monitor is held by another thread. In both cases, the carrier or native thread is not released to do other other work. Virtual thread pinning could impact performance and scalability and potentially result in starvation and deadlock, according to the blog post.
+
+New early access builds for [Java’s Project Loom](https://jdk.java.net/loom/) introduce changes to the object monitor implementation that do not pin in these two common cases. The Loom team is seeking help from users to test the reliability and performance of these updated object monitors with code that uses virtual threads and with libraries that are heavily synchronized. To report an issue, developers should use the [Loom mailing list](https://mail.openjdk.org/pipermail/loom-dev/).
+
+Project Loom is the OpenJDK project that develops JVM features and APIs to support lightweight concurrency. Previewed in [JDK 19](https://www.infoworld.com/article/3653331/jdk-19-the-new-features-in-java-19.html) and [JDK 20](https://www.infoworld.com/article/3676699/jdk-20-the-new-features-in-java-20.html), virtual threads are lightweight threads that dramatically reduce the effort of writing, maintaining, and observing high-throughput concurrent applications, according to Oracle. Despite the pinning issue, Oracle said virtual threads have been extremely well-received by the Java community and ecosystem.
+
+Copyright © 2024 IDG Communications, Inc.

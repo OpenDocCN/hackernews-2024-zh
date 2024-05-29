@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:29:16
+-->
+
+# Bad therapy is stunting our kids - UnHerd
+
+> 来源：[https://unherd.com/2024/02/bad-therapy-is-stunting-our-kids/](https://unherd.com/2024/02/bad-therapy-is-stunting-our-kids/)
+
+*Bad Therapy* argues further that therapeutic parenting has coincided with an explosion of psychic distress at home and bad behaviour in schools: “Kids having utter meltdowns, tantrums, screaming, yelling, throwing things, crying, threatening to kill themselves” in “a school regime that demands no self-discipline from students, believing such expectation unreasonable if not unevolved”. In this authority-free regime, playground violence goes unpunished save through “restorative justice”, in which attacker and victim sit in a circle and talk about their feelings. The result, in extremis, is violent young people left at large, until sometimes — as in the case of the “Parkland shooter” — they kill.
+
+Even the ones who aren’t violent are learning to be “mean as hell” — by weaponising institutional empathy. From girls ostracised at expensive private high schools for causing “harm” with a careless social media post, to the adolescents screenshotting their peers’ “problematic” online utterances as ammunition for future interpersonal conflicts, Shrier describes this superficially cuddly culture with cold anger, as “corruption of character” and “sustained flirtation with evil”.
+
+*Bad Therapy* paints a grim picture of young people simultaneously under- and over-parented. Of adults who both want to be involved in every detail of their children’s lives but who shrink from being seen as authority figures while they do so, preferring to be their child’s “best friend”. Why is this happening? Why are we Gen X “[latchkey kids”](https://daily.jstor.org/latchkey-generation-bad/), left to fend for ourselves while both parents worked, so fearful either of taking an authoritative stance with our own children, or of seeing them experience the slightest discomfort or obstacle?
+
+“Why are we Gen X latchkey kids so fearful with our own children?”
+
+*Bad Therapy* is a work of cultural criticism, not social history. But in Shrier’s view, close to the heart of the so-called “youth mental health crisis” is Gen X and Millennial parents’ aversion to being the symbolic — and literal— Father for their children. Instead, she argues, anxious “gentle parents” hover with platitudes about “big feelings” while their toddlers screech and bite, or defer to experts when their teenagers are struggling. These parents reject the “more masculine style of parenting” Shrier characterises as “knock it off, shake it off” — an approach that rebuked misbehaviour briskly, and expected minor setbacks to be dismissed. Instead “all traces of tough love and rule-bound parenting have been supplanted by a more empathetic style, the one once associated with moms.”
+
+Less explicitly spelled out is the way the same dynamic has also outsourced mothering — and opened the door to its replacement by what Jordan Peterson calls the “dark mother” or “devouring mother”. For Freud, this “Oedipal mother” stood in contrast with the “good mother” who, for Freud, “necessarily fails” at nurturing, thus setting the child on a path to independence. Instead of setting her children free, though, the devouring Oedipal mother keeps them tightly enmeshed forever.
+
+The plot twist, in the therapeutic childrearing and educational cultures excoriated by Shrier in *Bad Therapy*, is that today this dark mother is not an individual but a set of institutions, norms, and practices. For, as *Bad Therapy* argues, it’s less that these unhappy children are tied to their literal mothers’ apron strings, than that they’re enveloped by the devouring mother of institutional “care”. Over time, it can end up displacing literal and symbolic parents of both sexes.
+
+Shrier doesn’t speculate as to why or how. But somewhere along the way, Gen X and Millennial parents allowed themselves to be persuaded that the way forward was deferring to paid parenting “experts” — and, in return for ceding authority, hoped their kids would like them. Except, as it turns out, it’s had the opposite effect: children don’t like their parents more for being needy and permissive. Nor are they even freer, but — often — simply more radical. Shrier draws a straight line from the loss of authority in parenting to political extremism, noting that extremist movements from BLM to the far-Right often attract young people from homes where authoritative guidance is lacking. She quotes Myrieme Nadri-Churchill of the deradicalisation nonprofit Parents for Peace, who puts it starkly: “It’s almost like extremist groups have replaced parenting.”
+
+What, then, is to be done? The book’s central message could perhaps be summed up as: less tech, more agency, better boundaries. In her view, the first course of action is to remove the factors obviously making adolescents’ lives worse: the therapy-speak, the climate alarmism, the “hunt for repressed trauma”, the suffocating micromanagement, and the anxious reluctance to allow children to develop independence. Crucially, she argues that the most obvious intervention of all for improved youth mental health is not more institutional devouring Mother, but an authoritative “no” by the symbolic Father: specifically, banning smartphones from schools.
+
+But this would mean employing the very authority that makes Gen X wince. “Teens manage fine with flip phones. They aren’t weaker than you — unless you make them so.” She leaves the question implicit: are you Father enough to hold the line? We can perhaps infer from *Bad Therapy* that if anyone needs (good) therapy it’s not the kids but their parents — most centrally, in making peace with the symbolic Father. For if Shrier is correct, my generation has killed him — only to turn away from being the hero who takes his place. In his stead, we’ve enthroned a faceless, institutional devouring mother.
+
+And perhaps, again, the only way to escape this dark, smothering pseudo-mother is to make peace with the necessity, as Freud put it, of failing as real mothers. In any case, grappling with our own anxieties and disappointments as adults and parents is easier said than done, as Shrier acknowledges. She describes how effortful she finds it to grant her own children increasing access to independence.
+
+Nonetheless, she argues, it’s on parents to do battle with our own deep-seated fears: about harm to children, about failing as nurturers, about being hated for saying “no”. What is preventing Gen X from doing so? Perhaps the “latchkey generation” carries more childhood wounds than we realise.
+
+* * *

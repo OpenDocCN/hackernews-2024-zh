@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:57
+-->
+
+# Florida Is on Its Way to Banning and Criminalizing Alternative Meat
+
+> 来源：[https://www.foodandwine.com/florida-lab-grown-meat-ban-legislation-8609560](https://www.foodandwine.com/florida-lab-grown-meat-ban-legislation-8609560)
+
+Gov. Ron DeSantis wants to keep lab-grown meat out of Florida. 
+
+Over the last several months, Florida legislators have been quietly working to ban — and criminalize — the production and sale of cell-cultivated meat across the state, via the introduction of two bills, HB 1071 and SB 1084\. On February 6, the state's House of Representatives passed SB 1084, which now sits on DeSantis' desk awaiting a signature. And if his previous comments are any indication, he will be pulling out his pen soon. 
+
+"I know the Legislature is doing a bill to try to protect our meat," DeSantis said in February while visiting the South Florida State College Hardee Campus, according to [CBS](https://www.cbsnews.com/miami/news/desantis-takes-aim-at-fake-meat/). "You need meat, OK. And we're going to have meat in Florida." DeSantis added, "We're not going to have fake meat. Like that doesn't work."
+
+Cell-cultivated meat, to be clear, differs from traditional veggie burgers and meat alternatives like Impossible Burgers. As the [Congressional Research Service](https://crsreports.congress.gov/product/pdf/R/R47697#:~:text=Cell%2Dcultivated%20meat%20is%20developed,and%20%285%29%20food%20processing.) (CRS) defines, 
+
+Cell-cultivated meat "is developed in a lab, grown from a sample of animal cells that does not require the slaughter of animals." In other words, it's actually meat. The development of cell-cultivated meat, the CRS explained, happens in five steps: the biopsy of animal cells, cell banking, cell growth, harvesting, and food processing. It's an industry that has heavy oversight in the U.S. by both the Food and Drug Administration (FDA) and the United States Department of Agriculture (USDA). 
+
+As the CRS noted, there are about 150 companies around the world involved in the cell-cultivated meat industry, 43 of which are based in the U.S. Of those 43, just two companies, Good Meat and [Upside Food](https://www.foodandwine.com/lab-grown-meat-usda-approval-cultivated-chicken-7551767), have FDA approval in the U.S. While it's still a relatively small industry, it's one with major financial backing. According to the CRS, some $3 billion has been invested in its growth via private capital, and an additional $5 million has been issued via the National Science Foundation in research grants, along with an additional $12 million in grants by the USDA National Institute of Food and Agriculture.
+
+Even still, all this funding and research isn't enough for some Florida lawmakers. 
+
+"As of today, the unknowns are so great,"  House bill sponsor Danny Alvarez, a Republican representative from Hillsborough County, shared during a meeting of the House Regulatory Reform & Economic Development Subcommittee, CBS reported. "There are no long-term studies." 
+
+If the "unknowns" feel a little too simple for you, it's probably because it is. 
+
+Florida state Rep. Tyler Sirois, the Republican who introduced a similar bill, HB 1071, told [Politico](https://www.politico.com/news/2023/11/15/florida-republican-lab-grown-meat-ban-00127447) that his major motivation is protecting the cattle industry. “Farming and cattle are incredibly important industries to Florida,” Sirois stated, adding, "So I think this is a very relevant discussion for our state to have.” He did make sure to slip in that he considers cell-cultivated meat an “affront to nature and creation.”
+
+“I think it raises important ethical concerns about the limitations and boundaries we should place on this type of science,” Sirois added. “I think you could see a very slippery slope here leading to things like cloning, which are very troubling to me.”
+
+Mother Nature may disagree on the "affront" part, at least according to Josh Tetrick, co-founder and chief executive of Eat Just, which operates Good Meat.
+
+“Instead of all of that land and all of that water that’s used to feed all of these animals that are slaughtered, we can do it in a different way,” said Josh Tetrick, co-founder and chief executive of Eat Just, which owns Good Meat, shared with the [Associated Press](https://www.nbcnews.com/science/science-news/us-approves-chicken-made-cultivated-cells-nations-first-lab-grown-meat-rcna90439) following its FDA approval. 
+
+Florida, however, isn't alone in its pursuit to block the production and sale of this type of meat. As [*Fast Company*](https://www.fastcompany.com/91056837/ron-desantis-and-the-florida-legislature-turn-their-anti-woke-agenda-on-lab-grown-meat) reported, Tennessee is considering a similar bill that would impose a $1 million fine for selling cultivated meat. Alabama also passed a bill to ban the sale and manufacturing of it, making it a Class C felony. This means that if you're caught selling cell-cultivated meat there, you could wind up in prison for up to 10 years. And, as [Food Dive](https://www.fooddive.com/news/texas-plant-based-cultivated-meat-labeling-law/651455/) reported, Texas also implemented legislation around how cultivated meat can be labeled and marketed. 
+
+All this legislation won't kill the industry; it will just move it offshore. According to *Fast Company*, both South Korea and Israel have favorable laws toward cultivated meat, while the Netherlands (where the first cell-cultivated meat was developed in 2013) has pledged $65 million to the industry. China even named cultivated meat as part of its five-year plan for national food security, giving other nations the proverbial first — and likely biggest — bite out of an industry that's [projected to own](https://www.atkearney.com/retail/article/?/a/how-will-cultured-meat-and-meat-alternatives-disrupt-the-agricultural-and-food-industry) as much as 35% of the meat market by 2040.

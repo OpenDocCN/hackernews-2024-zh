@@ -1,0 +1,37 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:25:46
+-->
+
+# How I backup | Derek Sivers
+
+> 来源：[https://sive.rs/backup](https://sive.rs/backup)
+
+Some people have asked, so here is how I do my backups. It takes me about **ten seconds per day** and **five minutes per month** to maintain.
+
+It works well for me, but I’m always open to suggestions. Just [email me](/contact) with any ideas or questions.
+
+## every-day documents (~40 GB)
+
+Files I use and change every day: documents, emails, code, diary, ideas, website, accounts, etc.
+
+*   I have a desktop and a laptop, so I keep this ~40 GB directory cloned with rsync every day or so between them. Whenever I turn on one computer, I sync it from the other.
+*   Daily rsync to an encrypted Linux USB stick attached to the desktop.
+*   Daily rsync to an encrypted MacOS USB stick attached to the laptop.
+*   Daily rsync to an encrypted ZFS SSD inside the desktop.
+*   Daily rsync to OpenBSD remote attached storage at vultr.com as [described at my “Tech Independence” page](/ti).
+
+I’ve written shortcuts for these rsync commands so it’s really as simple as me typing `bkz` or `bkstick` in the terminal as I’m working anyway. I do it a few times a day, especially if I’ve just made or saved something of value. And always right before I shut down the computer, which I do almost any time I step away from it for more than a few minutes. That’s why I say it’s like ten seconds a day, just typing that command occasionally.
+
+## keepsakes (~3 TB)
+
+Rarely-accessed files I want to keep forever: videos and photos of my kid, music and film collection.
+
+*   Three different external 4TB 2.5" drives, in three different formats: ZFS, OpenBSD, MacOS.
+*   Every month or so, I connect them via USB cable, and rsync everything to each of them, bringing one down to a safe deposit box downtown, and taking out the one that was there from my last visit.
+*   5TB at [Hetzner Storage Box](https://www.hetzner.com/storage/storage-box), I rsync remotely.
+*   4TB at [ZFS.rent](https://zfs.rent/), a ZFS encrypted clone.
+
+So that’s five copies of my keepsakes in four different locations. Each one also has a recent copy of my every-day documents from above. So a few minutes a month to connect the USB drives, and I only do the safe deposit box when I’m going that way anyway, and only takes a couple minutes.
+
+In the days of spinning-platter hard drives, they used to die surprisingly often, so I like the security of many copies. But it also helps to have some deliberately behind others, so on the rare case where I’ve deleted something, then rsynced my dailies and even my monthly, then realized I need that thing I deleted, then I know the drive in the safe deposit box has it since I haven’t updated that one in a couple months.

@@ -1,0 +1,228 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:21
+-->
+
+# Reddit: Return Of The Junk Stock IPO
+
+> 来源：[https://www.forbes.com/sites/greatspeculations/2024/03/06/reddit-return-of-the-junk-stock-ipo/](https://www.forbes.com/sites/greatspeculations/2024/03/06/reddit-return-of-the-junk-stock-ipo/)
+
+ <fbs-accordion class="expandable" current="-1">London, UK - July 31, 2018: The buttons of the app Reddit, surrounded by Pinterest, Whatsapp, and ... [+] other apps on the screen of an iPhone.</fbs-accordion> getty
+
+Reddit, (RDDT), should start trading as a newly public company sometime in March. At the reported valuation of $5 billion or higher, Reddit earns an Unattractive Stock Rating.
+
+While Reddit’s expected $5 billion valuation is half of its $10 billion private market valuation seen in 2021 when interest rates were zero and money was cheap, it remains much too high.
+
+Reddit reminds me of the fast-growing, but highly unprofitable IPOs in 2021\. Sure, Reddit birthed some of the most volatile meme stocks through the WallStreetBets subreddit, but the company has never been profitable and should not be a publicly traded company. Reddit’s IPO marks the return of the junk IPO. I think the company may never monetize its platform without angering its users and the entire premise of Reddit is user-generated content. This business model is inescapably built on a catch-22: make money or please users.
+
+A $5 billion valuation implies that Reddit will grow its user base to 26x current levels, which would be nearly 5x the size of Snap (SNAP), which is a highly unlikely feat. Reddit looks overvalued, and I think investors should pass on this IPO.
+
+### **Return of the Unprofitable IPO?**
+
+Remember the IPOs of 2020-21, such as DoorDash ( <fbs-ticker data-name="DASH" data-href="https://www.forbes.com/digital-assets/assets/dash-dash/" data-type="crypto">[DASH](https://www.forbes.com/digital-assets/assets/dash-dash/)</fbs-ticker> ), Robinhood (HOOD), Coinbase (COIN), Didi Global (DIDIY), and Rivian (RIVN)? Remember how they performed? Most are on my Zombie Stock list, where Reddit will likely be if it ever goes public.
+
+ <fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">The first social media company to go public in years will not only test investors’ appetite for the next money-losing operation, but it will also provide some clarity on the IPO market in general. Let’s hope investors aren’t throwing caution to the wind and piling into the latest profitless company. Real diligence reveals that Reddit is not only unprofitable, but also highly overvalued.
+
+### **Losses Shrinking, But Still Large**
+
+Reddit has successfully grown its top line, but not the bottom-line. In 2023, the company’s revenue grew 21% year-over-year (YoY). However, Reddit’s net operating profit after tax (NOPAT) was -$131 million in 2023 and it burned $841 million in free cash flow (FCF).
+
+**Figure 1: Reddit’s Revenue & NOPAT: 2022 – 2023**
+
+ <fbs-accordion>RDDT NOPAT and Revenue</fbs-accordion> New Constructs, LLC
+
+### **Users Are Growing…**
+
+Reddit has successfully leveraged its brand recognition and community focused platform to gain users. Total daily active uniques (DAUq) have grown from an average of 54.8 million in 1Q21 to 73.1 million in 4Q23\. Quarter-over-quarter (QoQ) and YoY, these user growth rates are trending higher, per Figure 2.
+
+**Figure 2: Reddit Daily Active Uniques QoQ Growth Rate: 2Q21 – 4Q23**
+
+ <fbs-accordion>RDDT QoQ User Growth Rates 2Q21-4Q23</fbs-accordion> New Constructs, LLC
+
+### **…And Those Users Generate Revenue**
+
+Despite its smaller (relative) user base, when measured by DAUg, Reddit’s average revenue per user (ARPU) is higher than social peers such as Snap and Pinterest (PINS). See Figure 3\. Moving forward, finding a way to translate those revenues to profits is critical to Reddit’s success and ability to justify its lofty valuation.
+
+**Figure 3: Reddit’s ARPU Vs. Peers: 4Q23**
+
+ <fbs-accordion>RDDT ARPU vs. Peers 4Q23</fbs-accordion> New Constructs, LLC
+
+### **Projecting Strong Growth Opportunities**
+
+Those only skimming the S-1 could believe that Reddit is poised for significant growth in the coming years. However, a more thorough examination reveals many risks and red flags that could challenge such growth.
+
+As Reddit tells it in its S-1, its growth opportunities include advertising, data licensing and artificial intelligence, and adding additional commerce and digital goods/services to the platform. From the S-1, each of these markets boasts strong expected growth rates:
+
+*   S&P Global Market Intelligence forecasts the Global Advertising market will grow 8% compounded annually through 2027.
+*   International Data Corporation (IDC) forecasts the broader AI market will grow 20% compounded annually through 2027.
+*   IDC forecasts the “user economy” market will grow 12% compounded annually through 2027.
+
+Nevertheless, the problem is not growth. As I have seen with so many Zombie Stocks, spend enough money, and anyone can grow revenues. The problem is profits.
+
+### **Not All Growth is Profitable**
+
+While growing users is key to any social media or community platform, not all growth is profitable.
+
+Reddit is attracting users, but not those that can be monetized. In its S-1, Reddit notes that from July 2023 through December 2023, 75% of the incremental users added were “logged-out users”. These users (emphasis added) “typically come to Reddit via search engines, spend less time on the site, and **do not monetize** at the same rate as logged-in users.”
+
+In other words, Reddit is growing, but it is attracting a type of user that won’t make the company any profit.
+
+### **Heavily Concentrated Revenue Adds Risk to Growth Potential**
+
+98% of Reddit’s revenue in 2023 came from third-party advertising on the site and 28% of all revenue came from ten customers. The high revenue weakens pricing power, and the loss of a large customer would materially hurt the business.
+
+### **Reliance on Unpaid Moderators Creates Unique Risk**
+
+Reddit’s user-focused communities create a unique experience, one that is generally not available on most social media platforms. However, unlike other platforms, which employ a large quantity of moderation teams, Reddit relies heavily on unpaid moderators (“mods”). These mods are volunteers responsible for key functions such as reviewing content and defining and enforcing community rules.
+
+This unique approach makes the Reddit experience more personal, but it is not without risks. Moderators are extremely important and could leave at any time. From the company’s S-1:
+
+***“****Redditors who volunteer to be moderators of Reddit communities are an important part of our business’ ecosystem. … Because moderators are volunteers, any moderator can decide to stop acting as a moderator and participate only as a community member, or to leave our platform entirely. “*
+
+These key members also hold large influence and power within the community and can actively disrupt the normal operations of Reddit’s business. Again, key quotes from the S-1:
+
+*   “[moderators] may be able to leverage their influence within those communities to change the dynamics of the discourse within the communities or to disrupt the normal operation of their communities or other communities on our platform.”
+*   “Moderators can also band together and, for various reasons, decide to shut down the normal operation of their communities in a manner that degrades the experiences of all Redditors…”
+
+The second risk in those quotes is not just hypothetical. It is real. In June 2023, moderators set subreddit’s that counted millions of users private, thereby making them inaccessible to the public during a [48-hour protest](https://www.theverge.com/2023/6/5/23749188/reddit-subreddit-private-protest-api-changes-apollo-charges "https://www.theverge.com/2023/6/5/23749188/reddit-subreddit-private-protest-api-changes-apollo-charges") of Reddit’s decision to increase its API pricing. Prior to that, moderators have locked down communities over Reddit’s [hiring decisions](https://www.theverge.com/2021/3/24/22348255/reddit-moderator-blackout-protest-aimee-knight-uk-green-party "https://www.theverge.com/2021/3/24/22348255/reddit-moderator-blackout-protest-aimee-knight-uk-green-party") and [hate speech policies](https://www.theverge.com/2020/6/3/21279601/reddit-dark-subreddits-protest-police-violence-racism-hate-speech-policies "https://www.theverge.com/2020/6/3/21279601/reddit-dark-subreddits-protest-police-violence-racism-hate-speech-policies"). Leaving moderation up to users creates a community that matches its users wants and needs, but it can also create damaging conflicts between the users and the company.
+
+### **Users Already Seem Unhappy with the IPO**
+
+It’s impossible to analyze Reddit without accounting for the power of its users (moderators included). The meme-stock phenomenon traces some of it roots to the WallStreetBets subreddit, and those same users are much less enthusiastic about Reddit as a public company than they were GameStop (GME) back in the day.
+
+Despite providing certain users the ability to participate in the IPO, there are [many](https://time.com/6835612/reddit-users-ipo/ "https://time.com/6835612/reddit-users-ipo/") [reports](https://www.theverge.com/2024/2/24/24081441/reddit-shares-redditor-ipo-user-risk "https://www.theverge.com/2024/2/24/24081441/reddit-shares-redditor-ipo-user-risk") that users are unhappy with the IPO. The overarching question – can a platform built on community and shared interests lose its value proposition when its business is run to meet quarterly sales and profit expectations?
+
+Reddit also warns that the influence of users, such as those in the WallStreetBets community, could increase volatility and uncertainty in its shares. Keeping these users engaged and active will be key to growing the platform but could run counter to why those users use Reddit in the first place.
+
+### **Low Switching Costs**
+
+Unlike other social platforms, which are built around friends, family, and meaningful connections, Reddit, alongside Twitter, is arguably the most anonymous platform. Users can enter the platform without investing much time and can leave just as easily. Reddit recognizes as much in its S-1, when it notes “we face intense competition for users with low switching costs.”
+
+For Reddit users, moving to another platform, or finding information elsewhere is trivial. The low switching costs make monetizing users more difficult because they can bolt at the slightest inconvenience and aren’t necessarily loyal to the platform.
+
+### **Even With Unpaid Contributors, Costs Remain High**
+
+User risk aside, Reddit’s path to profitability requires a significant reduction in expenses, and I don’t see significant cost reduction coming anytime soon. Reddit notes that it is “in the early stages” of monetization efforts. I believe reducing costs in key areas such as sales and marketing or R&D would signal less growth moving forward, not more. Companies that cannot grow without being terribly unprofitable are prime candidates for the Zombie Stock list.
+
+Reddit’s cost of revenue, sales & marketing, general & administrative, and research & development costs were 117% of revenue in 2023, per Figure 4.
+
+To maintain competitiveness, attract new users, and develop new products to engage those users, Reddit must continue this spending. How else can it win the fight for advertising dollars from firms with some of the most resources in the market, such as Facebook and Google?
+
+**Figure 4: Reddit’s Operating Expenses: 2022 – 2023**
+
+ <fbs-accordion>RDDT Operating Costs As % of Revenue</fbs-accordion> New Constructs, LLC
+
+### **Competition Is Plentiful**
+
+As an internet community, Reddit vies for users’ attention against an endless number of competitors. In its S-1, Reddit specifically highlights content and communication services, online marketplaces, and large language models as key competitors. The companies that make up each of these groups range from the largest and most successful to other unprofitable social media companies fighting for users, such as:
+
+1.  Alphabet (GOOGL)
+
+1.  Meta Platforms (META)
+
+*   Facebook
+*   Instagram
+*   Threads
+*   WhatsApp
+
+1.  Wikipedia
+2.  Snap (SNAP)
+3.  X (formerly Twitter)
+4.  Pinterest (PINS)
+5.  TikTok
+6.  Roblox (RBLX)
+7.  Discord
+8.  Twitch
+9.  Facebook Marketplace
+10.  Nextdoor (KIND)
+11.  Craigslist
+12.  Poshmark
+13.  Etsy (ETSY)
+14.  ChaptGPT
+15.  Gemini
+16.  Anthropic
+
+### **Reddit is Nowhere Near Breakeven**
+
+Reddit is an unprofitable social media company fighting for users. I think it will struggle to gain any advantage over the largest and successful competitors. Per Figure 5, Reddit’s NOPAT margin, invested capital turns (a measure of balance sheet efficiency) and return on invested capital (ROIC) rank in the bottom half of its competition, and nowhere near breakeven. I included Match Group (MTCH) and Bumble (BMBL) in Figure 5 as a reference as they’re business also revolves around social media and communication with others.
+
+**Figure 5: Reddit’s Profitability Vs. Competition: TTM**
+
+ <fbs-accordion>RDDT Profitability Vs. Peers</fbs-accordion> New Constructs, LLC
+
+### **Valuation Implies Seemingly Unrealistic Growth**
+
+When I use my reverse discounted cash flow (DCF) model to analyze the future cash flow expectations baked into RDDT, I find that shares, even at $5 billion, embed very optimistic assumptions about margins and growth. I think the stock holds downside risk at its IPO valuation.
+
+### **Reported Valuation Implies Reddit’s DAUq Will Rival Facebook**
+
+To justify its reported valuation of $5 billion, my model shows that Reddit would have to:
+
+*   immediately improve NOPAT margin to 5% (compared to -16% in 2023 and higher than Pinterest’s 3-yr average margin) and
+*   grow revenue by 38% compounded annually through 2033.
+
+In this [scenario](https://www.newconstructs.com/wp-content/uploads/2024/03/NewConstructs_DCF_RDDTjustificationScenario_2024-03-01.png "https://www.newconstructs.com/wp-content/uploads/2024/03/NewConstructs_DCF_RDDTjustificationScenario_2024-03-01.png"), Reddit would generate $20.7 billion in revenue in 2033, which is almost 26x its 2023 revenue and 4.5x Snap’s 2023 revenue. At its current annual ARPU (Calculated as 2023 revenue of $804 million divided by quarterly average DAUq over 2023 (65 million).), $12.38 at the end of 2023, this scenario implies the company would have 1.7 billion DAUs. For reference, at the end of 2023, Facebook had 2.1 billion DAUs, Snap had 414 million DAUs and Reddit had 73 million.
+
+This scenario also implies Reddit grows NOPAT to $1.0 billion in 2033, compared to -$131 million in 2023.
+
+I think that it is overly optimistic to assume Reddit will achieve margins anywhere near 5% without a material increase in user monetization, which risks upsetting users that have grown accustomed to the current experience. Reddit’s lack of competitive moat and concerns about advertisers’ willingness to promote on Reddit raise further questions about its ability to improve margins while maintaining revenue growth rates.
+
+Growing DAUq to 1.7 billion also seems overly optimistic as well. The market’s expectations for both margin improvement and DAUq growth look unrealistically high standalone. I think it is even more unlikely that the firm could achieve both at the same time.
+
+### **There’s 97%+ Downside if Growth Matches 2023**
+
+Even if I instead assume a newly public Reddit focuses more heavily on monetization, and less on user growth than in the scenario above, and:
+
+*   NOPAT margin immediately improves to 8% (double Pinterest’s 3-year average margin) through 2033, and
+*   revenue grows 21% compounded annually (equal to 2023 revenue growth rate) through 2033, then
+
+the stock would be worth [just $141 million](https://www.newconstructs.com/wp-content/uploads/2024/03/NewConstructs_DCF_RDDTvaluationScenario_2024-03-01.png "https://www.newconstructs.com/wp-content/uploads/2024/03/NewConstructs_DCF_RDDTvaluationScenario_2024-03-01.png") today – a 97% downside to the reported IPO valuation. At Reddit’s current ARPU, this scenario implies Reddit has 437 million DAUs in 2033\. Even if I assume Reddit can double its ARPU, this scenario implies it has 218 million DAUs in 2033, or 3x its 2023 DAUs.
+
+This scenario also implies Reddit grows NOPAT to $433 million in 2033\. Again, for reference, Reddit’s 2023 NOPAT is -$131 million.
+
+Figure 6 compares Reddit’s implied future NOPAT in these scenarios to its historical NOPAT. For reference, I include Pinterest and Etsy’s NOPAT.
+
+**Figure 6: Estimated IPO Price Looks Overvalued**
+
+ <fbs-accordion>RDDT DCF Implied NOPAT</fbs-accordion> New Constructs, LLC
+
+Each of the above scenarios assume Reddit grows revenue, NOPAT, and FCF without increasing working capital or fixed assets. This assumption is highly unlikely but allows me to create best-case scenarios that demonstrate the high level of expectations embedded in the reported IPO valuation.
+
+### **Ignore the Non-GAAP**
+
+Many unprofitable companies present non-GAAP metrics to appear more profitable than they really are, in hopes of justifying a higher valuation, and Reddit is no different. Reddit provides investors with the popular Adjusted EBITDA metric. Not surprisingly, Adjusted EBITDA gives a more positive picture of the firm’s business than GAAP net income and Economic Earnings.
+
+For instance, Reddit’s 2023 adjusted EBITDA removes $49 million in stock-based compensation and $14 million in depreciation and amortization. After removing all items, Reddit reports adjusted EBITDA of -$69 million in 2023\. Meanwhile, GAAP net income is -$91 million while economic earnings are even lower at -$288 million. See Figure 7.
+
+**Figure 7: Reddit’s Adjusted EBITDA, GAAP Net Income, and Economic Earnings: 2022 – 2023**
+
+ <fbs-accordion>RDDT GAAP Economic Adjusted EBITDA Comparison</fbs-accordion> New Constructs, LLC
+
+### **Control Concentrated in the Hands of a Few**
+
+In its initial S-1, Reddit disclosed it will go public with dual class shares. New investors will buy the A shares, which receive one vote per share, while existing investors will own shares that receive 10 votes per share. This super voting class gives existing shareholders significant say over corporate governance matters.
+
+Prior to the IPO, large existing shareholders, such as Advance Magazine, FMR LLC, Quiet Capital, Tacit Capital, Open AI’s Sam Altman, Tencent, and Vy Capital, own 75% of the voting power in the company.
+
+While these figures could shift slightly post IPO, and it’s too early to tell given that Reddit’s initial S-1 lacks details around how many shares it will be selling and what that amount will mean in relation to existing shareholders, one thing is clear. New shareholders will not have much say in the corporate governance of the business.
+
+### **Emerging Growth Company Status Limits Transparency**
+
+By electing to operate as an “Emerging Growth Company”, Reddit is exempt from certain requirements that are beneficial to shareholders.
+
+More specifically, Reddit notes in its S-1 that, as an emerging growth company, it will:
+
+*   present only two years of audited financial statements in the S-1,
+*   not be required to obtain an auditor’s attestation report on the company’s internal controls over financial reporting requirements of the Sarbanes-Oxley Act,
+*   provide less extensive disclosure about executive compensation arrangements, and
+*   will not require stockholder non-binding advisory votes on executive compensation or golden parachute arrangements,
+
+Reddit notes in its S-1 that it is continuing to develop and refine its disclosure controls and improving its internal control over financial reporting. Investors need to know if a company’s financials can be trusted, and in this case, there are no assurances given that the reporting procedure are still being built and tested.
+
+### **No White Knight to Save Investors**
+
+The expectations baked into Reddit’s reported IPO valuation look highly optimistic. Often, the best hope investors might have in overvalued stocks is for an established company to acquire the firm. However, investors shouldn’t get their hopes up. As noted above the competitors with the most cash already have larger user bases, with better monetization, and robust advertising platforms. Additionally, competition has had many years to acquire Reddit prior to this IPO and have chosen not too. Acquiring Reddit now wouldn’t create all that much value for a competing social platform.
+
+Additionally, Reddit’s economic book value, or no growth value, is -$5.4 billion. Potential acquirers will not likely have interest in paying anywhere close to the lofty IPO valuation for a business that will likely face significant challenges moving forward.
+
+*Disclosure: David Trainer, Kyle Guske II, and Hakan Salt receive no compensation to write about any specific stock, style, or theme.*</fbs-ad>

@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:49:47
+-->
+
+# It’s time to stop using SMS for anything. | by Lucky225 | Medium
+
+> 来源：[https://lucky225.medium.com/its-time-to-stop-using-sms-for-anything-203c41361c80](https://lucky225.medium.com/its-time-to-stop-using-sms-for-anything-203c41361c80)
+
+# It’s time to stop using SMS for anything.
+
+By now most infosec professionals are aware of various ways SMS text messaging can be hijacked. For example so-called [“SIM Swap” attacks](https://www.vice.com/en/article/a37epb/t-mobile-alert-victims-sim-card-hack), [SS7 attacks](https://www.vice.com/en/article/xyezmn/we-were-warned-about-flaws-in-the-mobile-data-backbone-for-years-now-2fa-is-screwed), [Port-out fraud](https://www.vice.com/en/article/mg7bd4/how-a-hacker-can-take-over-your-life-by-hijacking-your-phone-number), etc. All of these attacks however do require some level of sophistication, whether it be high level access to SS7, or account information or social engineering to successfully port out the phone number to a new provider or swap the sim on the existing account.
+
+There is however other vulnerabilities that are not particularly well known. For VoIP numbers in particular, which may be assigned to a…

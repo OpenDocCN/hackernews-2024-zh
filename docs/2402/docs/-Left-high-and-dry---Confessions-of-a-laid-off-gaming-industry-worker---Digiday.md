@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:38:15
+-->
+
+# 'Left high and dry': Confessions of a laid-off gaming industry worker - Digiday
+
+> 来源：[https://digiday.com/marketing/left-high-and-dry-confessions-of-a-laid-off-gaming-industry-worker/](https://digiday.com/marketing/left-high-and-dry-confessions-of-a-laid-off-gaming-industry-worker/)
+
+Across tech and media, layoff season is in full swing — and the gaming industry is getting hit particularly hard at the moment.
+
+Gaming is a culturally ascendant form of entertainment, but gaming companies are struggling to take advantage of the rise of the medium. As free-to-play or [live service gaming](https://digiday.com/marketing/why-gamers-are-flocking-from-premium-titles-to-free-to-play-ad-supported-games-in-this-unstable-economy/) gradually eclipses premium game sales as the industry’s leading business model, gaming companies are pivoting — and making significant cuts to their payrolls — accordingly. The [over 5,000 gaming industry layoffs](https://twitter.com/tha_rami/status/1750532050833322419) that occurred in January included a cut of [530 staffers at Riot Games](https://apnews.com/article/riot-games-league-legends-layoff-c0a780159d97149c48c9f06cc154efe2) and a cull of 1,900 Microsoft employees across the company’s Activision Blizzard and Xbox divisions. 
+
+For the latest edition of our Confessions series, in which we trade anonymity for candor, Digiday spoke to a gaming industry worker who lost their job during January’s wave of layoffs. 
+
+*This conversation has been lightly edited and condensed for clarity.*
+
+## **How did you feel about your job prior to the layoffs last month?**
+
+It was my dream job. I’d been trying to get it since I was in high school, and I tried every year that I was in college. Everyone I know who worked there told me that it was their dream job. I mean, really, it was a pretty awesome place to work, right up until now. There’s a saying that if you pick a job you love, you’ll never work a day in your life. It’s not true — I worked some days. But I loved my coworkers, and I cared about the game. I still care about the game, annoyingly enough.
+
+## **Were there any signs that a layoff might be coming?**
+
+In January, we had this pretty ominous town hall — it was like, “Hey, the Covid bump is definitely over. We made way less than we did in 2020 and 2019; we’re going to be pivoting some strategies.”
+
+## **What kind of shape are you in after getting laid off?**
+
+I mean, I feel like shit. I get left high and dry, and it is not a good time to be looking for work in games. There’s no getting around that — it’s already a pretty glutted field, because a lot of people want to make video games for a living. Everybody wants to do that, so there’s a ton of competition. 
+
+## **Who got hit by this wave of cuts?**
+
+The thing that’s gone unspoken, but should really be said about layoffs that are often targeting junior level staff, is that it’s basically undoing all the diversity steps that the industry has taken in the past few years. Because who are juniors? Well, they’re industry newcomers, who are women, queer people, people of color. It’s always disproportionate, because the industry is hostile for us. We can’t get seniority. And if we’re always the last hired and the first fired, then we’ll never get seniority.
+
+I’m still worried about the game, and part of that is that they’re banking so much on senior talent, but they’re not going to have it forever. These people have already worked 10 to 20 years there; it’s inevitable that they’re going to want to do something else or go to a different company. And when these people leave, what will they have left? There’ll be no one to hand over knowledge to, no one to carry on practices — no new generation of seniors.
+
+## **How do you feel about the response to the layoffs from the broader gaming industry?**
+
+There’s been a lot of positive support. But the thing that comes with that is that it’s only been a week and a half, or like two weeks, and already, the layoffs moment has passed. It’s over. No one cares anymore. My coworkers, they’re just back to doing their jobs, and it’s like, my life doesn’t go back to normal now. I’m just fucked, and I feel forgotten.
+
+A part of me wishes that they had done a walkout, or a strike, or that they had done or said something — but I don’t know what they could have done. I know it’s unreasonable to want that, but at the same time, it’s just like I’m getting the equivalent of “thoughts and prayers.” The only people supporting us now are other people who got laid off — we basically formed our own support groups.
+
+## **You’re right that there weren’t any large-scale walkouts after any of the layoffs. Why haven’t we seen more of that kind of energy in the gaming industry this year?**
+
+The thing about layoffs is that making people scared is a feature, not a bug. That’s an impact — if people are scared for their jobs now, they’ll fall into line. Execs know that; there’s no way they don’t want you to know. When they make sure that everybody knows that they’re expendable, then the fuck are you going to do? You want your job. You don’t want to end up like them.
+
+https://digiday.com/?p=533970

@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:11
+-->
+
+# Neatnik Notes · Neato
+
+> 来源：[https://notes.neatnik.net/2024/03/neato](https://notes.neatnik.net/2024/03/neato)
+
+# Neato
+
+If I were ever going to get a tattoo, it might be the text haste makes waste set in a stern-looking font, located somewhere that I’m likely to see it very often (like maybe on my left hand so I’d see it whenever I glance at my watch). Of all of the aphorisms, it’s the one that I feel the hardest but forget the most often.
+
+At the end of 2022, I hastily added the most ambitious feature yet to [omg.lol](https://omg.lol), which was a brand new blogging engine that I (predictably) called [weblog.lol](https://weblog.lol). I started building it on December 1, with the goal of finishing by Christmas. It was a totally arbitrary goal, and even though I succeeded in meeting my own deadline, I didn’t do myself any favors with the rushed execution. I wound up laying down a problematic foundation—*but it’s OK*, I kept telling myself, *because I can always fix it all later!* And of course you can guess how that went. (I probably need another tattoo about procrastination.)
+
+Last month [I mentioned some upcoming plans](https://omglol.news/2024/02/06/2024-omg-lol-improvements) for improvements to omg.lol’s content management stuff, and I’ve been mulling over all of the details related to that for the past few weeks. Most of that time was spent trying to come up with a cool name for the new thing that’s going to be at the heart of it all, and now that I’ve finally landed on one, I can announce that [Neato](https://neato.pub) will launch this summer.
+
+I’ve been working on content management and publishing systems for nearly three decades, both personally and professionally, and this feels like the right time to finally take what I’ve learned and direct it into a single awesome thing. Neato will be a standalone service, but it’ll also be available as part of [Web 1 Land](https://web1.land) and [omg.lol](https://omg.lol) (where it will power just about everything from profile pages to statuslog entries). I am *really* excited about it.
+
+What can I say about Neato itself? At this stage, just a few quick things:
+
+1.  It’ll be ridiculously easy to use, and appealing to beginners and experts alike.
+2.  It’ll be a heck of a lot of fun to use.
+3.  It’ll be the most thoroughly well-documented thing I’ve ever worked on.
+
+That last point is important, because as anyone who’s used weblog.lol knows, I dropped the ball on documentation and never picked it up again. I’ve amassed enough guilt over that to fuel some genuinely impressive documentation efforts for Neato, and I’m looking forward to showing that I *can* actually get that right.
+
+Neato will be ready when it’s ready. I want it to be ready this summer, but I also really don’t want to have to get the tattoo that I described above, so I’m not going to commit to anything beyond aiming to have a beta ready in a few months. When it’s ready, though, I can promise that it’ll be worth the wait.
+
+Keep an eye on [neato.pub](https://neato.pub) for updates. There will be a feed there soon (built with Neato itself, of course)!

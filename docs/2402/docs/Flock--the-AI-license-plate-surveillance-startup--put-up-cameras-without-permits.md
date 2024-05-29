@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:29:50
+-->
+
+# Flock, the AI license plate surveillance startup, put up cameras without permits
+
+> 来源：[https://qz.com/flock-ai-license-plate-surveillance-startup-cameras-per-1851294024](https://qz.com/flock-ai-license-plate-surveillance-startup-cameras-per-1851294024)
+
+Flock, a startup which promotes a [surveillance state](https://jalopnik.com/florida-is-tracking-drivers-through-a-secret-surveillan-1849507667), has installed car tracking cameras in 4,000 cities among 42 states. The company makes its money and shareholder value by delivering [AI-based tracking hardware and software](https://jalopnik.com/cops-are-already-treating-self-driving-cars-as-surveill-1850595009) to [local police departments](https://jalopnik.com/people-are-still-dying-on-american-streets-and-we-dont-1850862638), which are more than happy to pay Flock’s $3,000 annual fee. The Atlanta-based company [has grown nearly 2,700 percent since 2020](https://www.flocksafety.com/articles/flock-safety-ranked-number-58-on-2023-deloitte-technology-fast-500), and at least some of that growth, [according to a new report from Forbes](https://www.forbes.com/sites/thomasbrewster/2024/02/27/flock-safety-surveillance-broke-state-law/?sh=2c7213cc2a8f), has come from a willingness to bend the rules to get their cameras installed and tracking your every movement.
+
+Starbucks and Workers United are heading back to the bargaining table
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/22556.vtt" srclang="en">
+
+Flock uses fallible artificial intelligence software to “fingerprint” a car, matching its make, model, and appearance to a license plate number in the DOT database. Cops love Flock because they say it is less expensive than competitive systems from Motorola, while allegedly providing more accurate tracking of potential suspects.
+
+[*Forbes’* report shows the level of law-breaking](https://www.forbes.com/sites/thomasbrewster/2024/02/27/flock-safety-surveillance-broke-state-law/?sh=2c7213cc2a8f) Flock is willing to commit in order to help law enforcement catch alleged criminals. According to company correspondence reviewed by *Forbes*, Flock has failed to obtain correct permitting for hundreds of its camera installations. Installing “devices” on state infrastructure without prior DOT approval is a crime in Florida, Illinois, and South Carolina, and the company has also run into issues with Texas and Washington over its lack of permits.
+
+From *Forbes*:
+
+> In South Carolina, State Transportation Secretary Christy Hall told *Forbes* that since spring 2022, her staff has found more than 200 unpermitted Flock cameras during routine monitoring of public roads. In July 2023, the agency put a moratorium on new installations and ordered a safety and compliance review of all Flock cameras across the state.
+
+Furthermore, and more importantly, it isn’t exactly clear what Flock is doing with the tracking data. Early last year South Carolina Rep. Todd Rutherford had this to say:
+
+> “People don’t know what is happening with that data, who is accessing it, who is keeping it. All of that infringes on our personal freedom without our knowledge. It’s getting to the point where a company is willing to break the law to install these cameras.”
+
+Flock CEO Garrett Langley said at a recent event that the company’s cameras now “cover almost 70 percent of the population” and are used to solve “about 2,200 crimes a day.” Just one Flock contract, Riverside County, California’s, consists of a network of 309 cameras scanning 27.5 million cars per month.
+
+In June of 2022, an Illinois DOT official in contact with Flock representatives told the company it had many repeated, error-filled permit applications for camera installations. A Flock representative gave the IDOT official a thinly-veiled threat that if they didn’t fast-track the process, Flock would send “about 30 different police chiefs” to their office to talk to them about it.
+
+[*This article originally appeared on Jalopnik*](https://jalopnik.com/license-plate-surveillance-startup-broke-the-law-while-1851289764).

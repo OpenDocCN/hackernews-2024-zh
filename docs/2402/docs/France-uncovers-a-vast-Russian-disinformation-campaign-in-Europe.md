@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:22
+-->
+
+# France uncovers a vast Russian disinformation campaign in Europe
+
+> 来源：[https://www.economist.com/europe/2024/02/12/france-uncovers-a-vast-russian-disinformation-campaign-in-europe](https://www.economist.com/europe/2024/02/12/france-uncovers-a-vast-russian-disinformation-campaign-in-europe)
+
+RUSSIA HAS been at the forefront of [internet disinformation](https://www.economist.com/briefing/2018/02/22/russian-disinformation-distorts-american-and-european-democracy) techniques at least since 2014, when it pioneered the use of bot farms to spread fake news about its invasion of Crimea. According to French authorities, the Kremlin is at it again. On February 12th Viginum, the French foreign-disinformation watchdog, announced it had detected preparations for a large disinformation campaign in France, Germany, Poland and other European countries, tied in part to the second anniversary of Vladimir Putin’s invasion of Ukraine and the elections to the European Parliament in June.
+
+Viginum said it had uncovered a Russian network of 193 websites which it codenames “Portal Kombat”. Most of these sites, such as topnews.uz.ua, were created years ago and many were left dormant. Over 50 of them, such as news-odessa.ru and pravda-en.com, have been created since 2022\. Current traffic to these sites, which exist in various languages including French, German, Polish and English, is low. But French authorities think they are ready to be activated aggressively as part of what one official calls a “massive” wave of Russian disinformation.

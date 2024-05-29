@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:43:34
+-->
+
+# Apple reinstates Epic Games’ developer account as EU’s Digital Markets Act bites | Pocket Gamer.biz | PGbiz
+
+> 来源：[https://www.pocketgamer.biz/news/83578/apple-reinstates-epic-games-developer-account-as-eus-digital-markets-act-bites/](https://www.pocketgamer.biz/news/83578/apple-reinstates-epic-games-developer-account-as-eus-digital-markets-act-bites/)
+
+[Apple](https://www.pocketgamer.biz/company/561/apple/) will reinstate [Epic Games](https://www.pocketgamer.biz/company/3978/epic-games/)’ App Store developer account just days after it said it would remove it, following pressure from the European Commission.
+
+Epic said that Apple has [made the commitment](https://www.epicgames.com/site/en-US/news/apple-terminated-epic-s-developer-account) to both the company and EC. The Fortnite developer will now continue moving forward with bringing the Epic Games Store and Fortnite to iOS in Europe.
+
+"This sends a strong signal to developers that the European Commission will act swiftly to enforce the Digital Markets Act and hold gatekeepers accountable," read an statement from Epic.
+
+**Groundhog Day**
+
+Apple had previously revoked Epic’s access following the company’s decision to [integrate its own payment options in Fortnite](https://www.pocketgamer.biz/news/74187/epic-sues-apple-afterfortnite-removed-from-app-store/).
+
+On February 16th, 2024, Epic first announced its intention to [bring the Epic Games Store to iOS and relaunch Fortnite](https://www.pocketgamer.biz/news/83452/epic-app-store-comes-to-ios-at-last-in-sweden/), stating it had secured a developer account again.
+
+But earlier this week, Apple said it would once again be [revoking access](https://www.pocketgamer.biz/news/83560/apple-just-revoked-epics-ios-developer-account/), calling Epic “verifiably untrustworthy”. Epic called the moved a “serious violation” of the the Digital Markets Act and viewed to fight to get back on iOS.
+
+The EC was swift to respond, with a spokesperson telling Reuters it had [“requested further explanations on this from Apple under the DMA”](https://www.pocketgamer.biz/news/83568/eu-regulators-go-gunning-for-apple-following-their-latest-epic-spat/).
+
+"We are also evaluating whether Apple's actions raise doubts on their compliance with the DSA (Digital Services Act) and the P2B (Platform to Business Regulation), given the links between the developer programme membership and the App store as designated VLOP (very large online platform)."
+
+European Commissioner Thierry Breton [tweeted about the news](https://twitter.com/TimSweeneyEpic/status/1766158416093798866), suggesting influence from the regulator contributed to the decision.
+
+"I take note with satisfaction that following our contacts Apple decided to backtrack its decision on Epic exclusion," said Breton
+
+"From Day 2, #DMA is already showing very concrete results!"
+
+Epic Games CEO Tim Sweeney called the decision the ["first major victory"](https://twitter.com/TimSweeneyEpic/status/1766158416093798866) for the EC's Digital Markets Act.
+
+"The DMA went through its first major challenge with Apple banning Epic Games Sweden from competing with the App Store, and the DMA just had its first major victory," he said.
+
+"Following a swift inquiry by the European Commission, Apple notified the Commission and Epic that it would relent and restore our access to bring back Fortnite and launch Epic Games Store in Europe under the DMA law.
+
+"A big win for European rule of law, for the European Commision, and for the freedom of developers worldwide to speak up. #FreeFortnite!"

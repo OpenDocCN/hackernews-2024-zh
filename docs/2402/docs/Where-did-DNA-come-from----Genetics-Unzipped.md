@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:46
+-->
+
+# Where did DNA come from? — Genetics Unzipped
+
+> 来源：[https://geneticsunzipped.com/transcripts/2021/8/26/where-did-dna-come-from](https://geneticsunzipped.com/transcripts/2021/8/26/where-did-dna-come-from)
+
+[Click here to listen to the full podcast episode](https://geneticsunzipped.com/blog/2021/8/26/s417-back-to-the-beginning-exploring-the-origins-of-life)
+
+Let’s get going by hopping into a time machine and setting the clock back roughly 3.7-4.4 billion years….
+
+We’ve ended up somewhere around the time that scientists think life first started on Earth.
+
+The planet looks very different to the one we know today. Of course, with no life, there are no trees, plants, or animals. There’s also no oxygen or ozone layer, leaving the planet’s surface exposed to the sun’s intense UV rays and making it blisteringly hot. Despite the high temperatures, there are [vast oceans covering most of the surface of the Earth](https://news.harvard.edu/gazette/story/2021/04/harvard-scientists-determine-early-earth-may-have-been-a-water-world/). Frequent volcanic eruptions spew gases into the atmosphere, including carbon dioxide, nitrogen, hydrogen and water vapour. Not a great place to be, by any standards.
+
+Yet somehow, life emerged from this chaos. And from there unfolded all the incredible biodiversity that we see today.
+
+Experts think that the first step towards life was simply a molecule that was capable of self-replicating. As a geneticist, your mind might jump straight away to the most famous self-replicating molecule of them all, DNA. However, there has been plenty of debate about exactly which biological molecule filled this role, with many pointing to RNA as the prime candidate for the first replicator thanks to its versatility that allows it to self-replicate and store information - this is the basis of the so-called RNA world hypothesis.
+
+RNA is a single-stranded biological polymer made up of building blocks called nucleotides. Nucleotides consist of a ribose sugar molecule attached to a phosphate group and a nitrogen-containing base. The bases in RNA are adenine, cytosine, guanine and uracil, usually known by their initials, A, C, G and U, strung together along a phosphate sugar backbone. And it’s the order of these nucleotides, or letters, that spell out the genetic code.
+
+Scientists think that individual nucleotides may have formed spontaneously in the chaotic soup that was simmering on the primordial earth, and eventually, these nucleotides bonded together to form RNA. Unstable RNAs quickly broke down, but stable molecules grew and finally, self-copying RNA formed. Some RNAs were better at copying themselves than others, so they persisted and became more abundant - natural selection at its most fundamental.
+
+To support this theory, in the 1950s, American chemists Stanley Miller and Harold Urey from the University of Chicago devised experiments to try to prove that organic building blocks necessary for life could form spontaneously under the conditions seen on the early earth. They built a closed system containing gases thought to be present back in the day - ammonia, nitrogen, hydrogen - and a heated pool of water. Next, they sent sparks of electricity through the system to represent lighting flashes that might have provided energy to kickstart chemical reactions on the primordial planet. 
+
+Then they let the system stew, and after around a week, they found organic molecules, including sugars, amino acids, and fats. 
+
+Although they didn’t find any large, complex molecules like DNA or RNA, their experiment showed that organic building blocks could have formed spontaneously on early earth, laying the foundation for more complex molecules later on. Experts now think that Miller and Urey’s experiments didn’t get the atmosphere of early Earth quite right, but more recent experiments have shown that [organic building blocks, including nucleotides](https://www.newscientist.com/article/mg21528795-500-dna-could-have-existed-long-before-life-itself/), can form under a relatively wide range of conditions that [could have been present on the primordial earth](https://www.chemistryworld.com/news/bubbly-beginnings-for-lifes-first-molecules/3010795.article). 
+
+So, it seems reasonable to expect that the building blocks of life formed spontaneously, but the details on how they came together to form more complex molecules remain sketchy. 
+
+While the theory about the origins of single-stranded RNA seems relatively straightforward - nucleotides formed, they somehow glued themselves together and made copies of themselves - most of life on earth uses double-stranded DNA, not RNA, as its genetic code.
+
+DNA, like RNA, is made up of chains of nucleotides. However, the nucleotides in DNA contain a different sugar - deoxyribose, which is harder to make than the ribose sugar in RNA. What’s more, in DNA, uracil is replaced with the base thymine, or T, which has a slightly different structure. Hence the DNA genetic code is spelled out in the letters A, C, G and T.
+
+Exactly how DNA came into existence is still a mystery. Conventional wisdom suggests that RNA-based life eventually switched to DNA to take advantage of its stability, which makes it better at storing genetic information. But so far, there is little evidence about how this could have happened. 
+
+There are viruses whose genomes contain DNA with uracil instead of thymine, a substance called uracil-DNA. The existence of this half-way house might give us a glimpse into the evolution of DNA from RNA, but many questions remain about the switch, including how early life forms could have translated RNA into DNA, a process that relies on enzymes that scientists think required millions more years of evolution. 
+
+Mysteries like these mean that in recent years, increasing numbers of experts have renounced the RNA world hypothesis and, with it, the idea that DNA evolved from RNA. Instead, some have put forward the theory that RNA and DNA formed at around the same time. Recent experiments at Ludwig Maximilians University in Munich, Germany, have shown that the [subunits of DNA could have formed spontaneously](https://www.eurekalert.org/news-releases/516640) and been present in the primordial soup, suggesting that the first DNA molecules could have formed at a similar time to RNA.
+
+Others suggest that the idea that pure RNA or pure DNA formed spontaneously is unlikely. This is because single strands of RNA or DNA match up with complementary nucleotide building blocks as a first step to copying themselves. But the paired RNA or DNA strands then bind together so tightly that they can’t separate without help from sophisticated enzymes, preventing them from making any new RNA or DNA. 
+
+New models from the Medical Research Council Laboratory of Molecular Biology in Cambridge indicate that the evolution of DNA and RNA might have been messier than first thought, with [RNA-DNA hybrid molecules forming less stable double-stranded complexes](https://www.scientificamerican.com/article/the-first-gene-on-earth-may-have-been-a-hybrid/) before sorting themselves out and transitioning to pure RNA and DNA.
+
+As if all these confusing theories aren’t enough, some experts [reject the idea that any nucleic acid formed before proteins](https://www.quantamagazine.org/lifes-first-molecule-was-protein-not-rna-new-model-suggests-20171102/), instead favouring a metabolism-first hypothesis with amino acids appearing spontaneously in the primordial soup and eventually forming peptides, self-replicating proteins and ultimately self-sustaining metabolic networks, with nucleic acids turning up later. 
+
+One of my favourite theories, put forward by Professor Nick Lane from UCL, is that life got started thanks to [charged proton particles shuttling around](https://nick-lane.net/publications/proton-gradients-origin-life/) between the layers of water gushing out from deep sea hydrothermal vents. Effectively, life started from pond slime...
+
+There are, of course, many more theories about the chemical origins of life, including alternative nucleic acids and even genetic material or life itself arriving on earth from outer space. Although this would render all this speculation about chemical conditions on early Earth completely irrelevant, it merely shifts the problem to a different place in the universe.
+
+And despite all this speculation about how nucleic acids, amino acids, and even proteins might have spontaneously appeared and begun self-replicating, these theories still don’t explain one of the most important aspects of life as we know it: the genetic code. 
+
+The genetic code, which enables information stored in DNA and RNA to be translated into proteins that allow organisms to function, is near enough uniform in every living organism, with the same three-letter ‘words’ or codons translating to the same amino acids in almost every known organism, with only rare and very weird exceptions. 
+
+The highly conserved nature of the genetic code throughout life on earth suggests that it must have evolved before the theoretical last universal common ancestor (LUCA) from which all life supposedly descended appeared around 3.5-3.8 billion years ago, allowing it to be passed on and preserved throughout the entire tree of life.  
+
+It’s generally accepted that the modern genetic code evolved from a simpler version with fewer amino acids, with some suggestions that the first ‘code’ only used two amino acids, which then expanded to become the full repertoire we know and love today. But there is no scientific consensus about how the initial code evolved, what it was like, or how it functioned. 
+
+So for now, we mostly just have speculation. Back to the time machine - it’s time to whizz forward a few billion years to tackle another mystery in the history of life.
+
+## References

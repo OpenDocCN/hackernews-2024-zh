@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:19
+-->
+
+# NYT Flash-based visualizations work again | FlowingData
+
+> 来源：[https://flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/](https://flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/)
+
+In the 2000s, if you wanted to make interactive or animated visualization for the web, Flash was the main option. When Flash lost support and fell off the internet, a solid decade of great visualization no longer worked.
+
+The New York Times has resurrected their archives with a Flash emulator. So pieces that were relegated to static thumbnail images are back. See the [box office streamgraph](https://archive.nytimes.com/www.nytimes.com/interactive/2008/02/23/movies/20080223_REVENUE_GRAPHIC.html) that once upset many, the [multi-line chart](https://archive.nytimes.com/www.nytimes.com/interactive/2009/11/06/business/economy/unemployment-lines.html) showing jobless rates for people like you, and the [interactive stacked area chart](https://archive.nytimes.com/www.nytimes.com/interactive/2009/07/31/business/20080801-metrics-graphic.html) on how people spend their day.
+
+NYT is [using](https://twitter.com/johnmichael_mur/status/1747853253503844711) the open source [Ruffle](https://ruffle.rs) as their Flash emulator. I hope other news outlets follow. It’s great to see my favorite visualizations working again. [via [EagerEyes](https://eagereyes.org/blog/2024/nytimes-web-flash-player)]

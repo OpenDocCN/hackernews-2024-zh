@@ -1,0 +1,74 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:52
+-->
+
+# How to Win Friends and Influence People: the Sam Altman Edition
+
+> 来源：[https://www.businessinsider.com/how-to-win-friends-and-influence-people-sam-altman-edition-2024-1](https://www.businessinsider.com/how-to-win-friends-and-influence-people-sam-altman-edition-2024-1)
+
+Altman has spoken and written extensively over the years about the importance of networks and building your reputation and influence in business.
+
+You might say he's taken a page or two out of Dale Carnegie's famous self-help book, ["How to Win Friends & Influence People."](https://www.businessinsider.com/lessons-from-how-to-win-friends-and-influence-people-2015-4) Business leaders like Warren Buffett say the book changed their lives. It's unclear if Altman has ever read it — his press people didn't respond to a request for comment — but it's clear that he at least practices some of its principles.
+
+With that, here are some of what you might call "Sam Altman's Rules on How to Win Friends and Influence People."
+
+ Dale Carnegie's famous self-help book "How to Win Friends & Influence People" was first published in 1936. Amazon 
+
+## **Always sell your vision**
+
+Altman, hailed as a "great deals guy" by his 72-hour replacement, [ex-Twitch boss Emmett Shear](https://www.businessinsider.com/emmett-shear-new-ceo-openai-career-education-twitch-startup-2023-11), has talked about the importance of "getting good at 'sales.'"
+
+"You have to evangelize your plans to customers, prospective employees, the press, investors, etc.," Altman wrote in a 2019 [blog post](https://blog.samaltman.com/how-to-be-successful). "This requires an inspiring vision, strong communication skills, some degree of charisma, and evidence of execution ability."
+
+## Show up in person
+
+Altman said one tip that helped him in this regard "is to show up in person whenever it's important."
+
+"When I was first starting out, I was always willing to get on a plane," he wrote. "It was frequently unnecessary, but three times it led to career-making turning points for me that otherwise would have gone the other way."
+
+## Have a sunny attitude
+
+Altman also wrote in that post about the importance of optimism and self-belief to his success.
+
+"A big secret is that you can bend the world to your will a surprising percentage of the time—most people don't even try, and just accept that things are the way that they are," he wrote. "People have an enormous capacity to make things happen. A combination of self-doubt, giving up too early, and not pushing hard enough prevents most people from ever reaching anywhere near their potential."
+
+ Sam Altman doesn't like traditional networking events and instead suggests emailing people you'd like to meet. Tomohiro Ohsumi/Getty Images 
+
+## Network, network, network
+
+When it comes to networking, Altman says two things are paramount: "Help people as much as you can" and "develop a reputation for really taking care of the people who work with you."
+
+When building a network, Altman doesn't favor meet-ups and conferences but instead likes to "just email other people who you'd like to talk to," he said in a 2017 [interview](https://www.youtube.com/watch?v=45BvnJgwYjk).
+
+## Scope out new talent
+
+Altman aims to be known for "pushing people hard enough that they accomplish more than they thought they could, but not so hard they burn out" and notes that as a business leader, it's particularly important to "get good at discovering undiscovered talent."
+
+"The easiest way to learn is just to meet a lot of people, and keep track of who goes on to impress you and who doesn't," he wrote. "I try to always ask myself when I meet someone new 'Is this person a force of nature?' It's a pretty good heuristic for finding people who are likely to accomplish great things."
+
+## Avoid meeting creep
+
+Altman [wrote](https://blog.samaltman.com/productivity) in a separate blog post, from 2018, that he typically tries to keep meetings to a minimum but that it's "critical that you keep enough space in your schedule to allow for chance encounters and exposure to new people and ideas."
+
+"Having an open network is valuable; though probably 90% of the random meetings I take are a waste of time, the other 10% really make up for it," he said.
+
+[Every employee at OpenAI is welcome to reach out to Altman](https://www.businessinsider.com/openai-insiders-describe-sam-altmans-leadership-2023-12) directly on Slack, and a "crazy" number of people have his personal number, one person who has worked closely with Altman previously told Business Insider.
+
+ Employees at OpenAI have an open invite to contact Sam Altman directly with feedback or ideas. Sven Hoppe/picture alliance via Getty Images 
+
+## Be approachable
+
+One result, naturally, is Altman retains his image of an ambitious yet still approachable leader to employees (though he is [viewed instead by some as manipulative](https://www.businessinsider.com/multiple-versions-of-openai-ceo-sam-altman-emerge-2023-12), impatient, and a bit superior at times.)
+
+When Altman was ousted as CEO, [hundreds of OpenAI employees](https://www.businessinsider.com/discover-the-openai-employees-triumph-2023-11) threatened to quit if he wasn't reinstated. It was a massive show of support that undoubtedly helped bring Altman back. Altman's approach to hiring could be one reason for the wave of [public fealty from his employees](https://www.businessinsider.com/openai-employees-react-on-social-media-sam-altman-shock-firing-2023-11).
+
+"By at least a 10x margin, the best candidate sources I've ever seen are friends and friends of friends," he [wrote](https://blog.samaltman.com/how-to-hire) in a 2013 blog post. "When you hire someone, as soon as you're sure she's a star you should sit her down and wring out of her the names of everyone that you should try to hire."
+
+It's not just employees: Fellow business titans hold Altman in high regard, too.
+
+Former Google CEO Eric Schmidt has praised him as ["a hero,"](https://twitter.com/ericschmidt/status/1725625144519909648?s=20) and Airbnb CEO Brian Chesky hailed him ["one of the best founders of his generation."](https://twitter.com/bchesky/status/1725654103739801862)
+
+But besides his connections and reputation (and being, as he [says](https://blog.samaltman.com/how-to-be-successful), "born incredibly lucky"), Altman's success at OpenAI is in no small part due to [ChatGPT's explosive debut](https://www.businessinsider.com/chatgpt-openai-executives-are-shocked-by-ai-chatbot-popularity-2023-1).
+
+As he said in 2017, "If you build something impressive, your network will kind of come to you."

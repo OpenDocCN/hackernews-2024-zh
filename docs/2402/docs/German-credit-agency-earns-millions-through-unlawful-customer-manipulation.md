@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:30
+-->
+
+# German credit agency earns millions through unlawful customer manipulation
+
+> 来源：[https://noyb.eu/en/german-credit-agency-earns-millions-through-unlawful-customer-manipulation](https://noyb.eu/en/german-credit-agency-earns-millions-through-unlawful-customer-manipulation)
+
+**Lucrative business at the expense of apartment seekers.** Anyone looking for a flat or house to rent in Germany is regularly asked to prove their financial reliability. As a result, people looking for accommodation often end up at credit agencies such as SCHUFA – which make a fortune by selling people in Germany their own data. What SCHUFA deliberately conceals: according to Article 15 GDPR, it would have to provide precisely this data free of charge and without delay.
+
+**Concealed rights.** On its own website, SCHUFA only advertises its so-called “BonitätsAuskunft” for €29.95 to private individuals and claims that it offers an “advantage on the housing market”. A transparent reference to the Article 15 GDPR right to free information is not provided. Using manipulative designs, the company is trying to push the sale of paid products and even falsely presents the free information as unsuitable for submission to third parties.
+
+Martin Baumann, data protection lawyer at *noyb*: *“SCHUFA is falsely claiming that only its paid products can be presented to third parties. In reality, the European Court of Justice has emphasised several times that data subjects are allowed to do whatever they want with their free information."*
+
+**“Data copy” instead of information.** The vast majority of data subjects is unlikely to even find the free information. Although the GDPR stipulates that companies must support data subjects in obtaining their free information, SCHUFA does not even mention it by name. The company casually refers to the information in accordance with Article 15 GDPR as a “data copy”. In fact, a range of further information needs to be included as well. At the same time, the legal term “information” in accordance with Article 15 is misused for the paid product (BonitätsAuskunft). Anyone who manages to find the hidden option to request the information free of charge is once again bombarded with adverts for the paid product. In addition, SCHUFA advises against sharing the free information with third parties. On the one hand, it supposedly contains sensitive data, but on the other hand *“not an up-to-date calculation of your creditworthiness scores”*.
+
+**Data is deliberately withheld.** As a result, SCHUFA is violating European data protection law in several ways. The company doesn’t take any measures to make it easy for data subjects to exercise their right of access to data, contrary to the clear requirements of the GDPR. Additionally, the company deliberately withholds information in order to be able to sell its paid product: For example, in the case of the complainant, the free information included only a “basic score”, while the paid information showed six different “industry scores”. Article 15 GDPR obliges the company to disclose all processed data in full. To make matters worse, the complainant received the paid product after five days, while the free information, which was ordered at the same time, took significantly longer. Here, too, the GDPR actually requires an “immediate” delivery.
+
+Martin Baumann, data protection lawyer at *noyb*: *“The GDPR requires companies to make all data available immediately, transparently, easily accessible and free of charge. These requirements are in clear contradiction to the current business practice of selling people their own data.”*
+
+**Complaint and report in Germany.** *noyb* has therefore filed a complaint against SCHUFA with the Hessian data protection authority. By systematically hiding and delaying the free information and deliberately withholding data, the company is in breach of the GDPR. In addition, *noyb* is filing a report with the Hessian DPA. SCHUFA systematically violates the legal requirement of free information by creating the impression that only the paid products are suitable as proof to third parties.

@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:45:08
+-->
+
+# Never forget that utterly ridiculous Pepsi logo design document | Creative Bloq
+
+> 来源：[https://www.creativebloq.com/news/never-forget-that-utterly-ridiculous-pepsi-logo-design-document](https://www.creativebloq.com/news/never-forget-that-utterly-ridiculous-pepsi-logo-design-document)
+
+With the news that [Pepsi has announced a new logo](https://www.creativebloq.com/news/new-pepsi-logo), it's time to say goodbye to one of the more divisive designs of the 15 years. Fans are already calling the simpler, straighter and bolder new logo a "massive improvement" over the slanted 'globe' introduced in 2008\. But as well as that logo, people are also saying farewell to perhaps the most ridiculous, hilarious design document of all time.
+
+A leaked PDF offers an utterly mind-boggling glimpse into Pepsi's million-dollar rebrand from 2008\. The design refresh centres around the word 'breathtaking' and, well, that's certainly one way of putting it. (Looking for inspiration? Check out the [best logos](https://www.creativebloq.com/features/best-logos) of all time.)
+
+Welcome to the Pepsi universe (Image credit: Arnell Group)
+
+The [work in progress document](https://www.goldennumber.net/wp-content/uploads/pepsi-arnell-021109.pdf)  was allegedly created by New York-based brand consultancy agency Arnell Group, and was leaked by an "industry insider" on Reddit in 2009\. The whole thing is so ridiculous that some [believe](https://www.telegraph.co.uk/news/newstopics/howaboutthat/4591892/Pepsi-logo-design-document-sparks-internet-hoax-debate.html) it's a hoax. 
+
+The 27-page document starts relatively normally. The designers talk about the [golden ratio](https://www.creativebloq.com/design/designers-guide-golden-ratio-12121546), and it's cool to see how those circles take inspiration from Pepsi logos throughout history. But things then move in some, er, unexpected directions. Things get deep. 
+
+Okay, then (Image credit: Arnell Group)
+
+We're told about the "Emotive forces shape the gestalt of the brand identity". We are introduced to the Pepsi planet, the Pepsi [galaxy](https://www.creativebloq.com/tag/samsung-galaxy) and, of course, the Pepsi universe. We learn about the earth’s geodynamo – a naturally occurring electric generator in fluid motion which generates and sustains the earth’s magnetic field. And inspired the Pepsi logo, obviously. And perhaps the most preposterous claim in the entire document is that the Pepsi logo is based on the Mona Lisa. 
+
+Right (Image credit: Arnell Group)
+
+Indeed, it's one of the most infamous documents in the world of graphic design, and it's just as outrageous today as in 2009\. Lots of logos have fascinating histories, from the story of the [Apple logo's missing bite](https://www.creativebloq.com/news/apple-logo-history) to [Mercedes Benz's hybrid design](https://www.creativebloq.com/news/porsche-unseen-conceptshttps://www.creativebloq.com/news/mercedes-logo). But there's only logo out there that can claim to take inspiration from the exponential expansion of the universe on the basis of the positive and negative definite matrices and optimisation theorem.
+
+**Read more:**
+
+Daily design news, reviews, how-tos and more, as picked by the editors.

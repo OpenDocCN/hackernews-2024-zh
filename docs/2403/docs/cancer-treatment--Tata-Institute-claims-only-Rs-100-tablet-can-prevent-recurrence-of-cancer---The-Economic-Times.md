@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:37
+-->
+
+# cancer treatment: Tata Institute claims only Rs 100 tablet can prevent recurrence of cancer - The Economic Times
+
+> 来源：[https://economictimes.indiatimes.com/news/science/tata-institute-claims-new-breakthrough-cancer-treatment-only-costs-rs-100-heres-what-they-said/articleshow/108058030.cms?from=mdr](https://economictimes.indiatimes.com/news/science/tata-institute-claims-new-breakthrough-cancer-treatment-only-costs-rs-100-heres-what-they-said/articleshow/108058030.cms?from=mdr)
+
+The
+
+[Tata Institute](/topic/tata-institute)
+
+in Mumbai has announced a groundbreaking discovery in
+
+[cancer treatment](/topic/cancer-treatment)
+
+. After a decade of research, they have developed a tablet that could prevent cancer from recurring and reduce the
+
+[side effects](/topic/side-effects)
+
+of treatment by 50%.
+
+## Breakthrough Discovery
+
+Researchers and doctors at the Tata Institute have developed a tablet that they claim can prevent the recurrence of cancer and reduce side effects of treatments like radiation and chemotherapy by 50%. The tablet, named 'R+Cu', contains pro-oxidant tablets with
+
+[resveratrol](/topic/resveratrol)
+
+and
+
+[copper](/topic/copper)
+
+, which generate oxygen radicals in the stomach. These radicals destroy chromatin particles released by dying cancer cells, preventing them from turning healthy cells cancerous. This process also inhibits the movement of cancer cells from one part of the body to another, known as '
+
+[Metastases](/topic/metastases)
+
+'.
+
+**Testing and Approval**
+
+Dr. Rajendra Badve, a senior cancer surgeon at
+
+[Tata Memorial Hospital](/topic/tata-memorial-hospital)
+
+, stated that the tablet has been tested on rats for its effect on side effects and prevention, with promising results. However, human trials are yet to be completed, which could take about five years. The tablet is awaiting approval from the Food Safety and Standards Authority of India (FSSAI) and is expected to be available in the market by June-July.
+
+**Affordable Treatment** 
+
+One of the most significant aspects of this breakthrough is its affordability. While cancer treatment can cost lakhs to crores, this tablet is expected to be available for just ₹100, making it accessible to a larger population.
+
+"Tata doctors were working on this tablet for almost a decade. The tablet is awaiting approval from the Food Safety and Standards Authority of India (FSSAI). TIFR scientists have applied to FSSAI to approve this tablet. After getting the approval, it will be available in the market from June-July. This tablet will help to a great extent in improving cancer treatment," the senior cancer surgeon said in an interview with
+
+[NDTV](/new-delhi-television-ltd/stocks/companyid-16783.cms)
+
+.
+
+"While the budget for the treatment ranges from lakhs to crores, this tablet will be available everywhere for just ₹ 100," he said.
+
+**Future Prospects** 
+
+The tablet not only shows promise in preventing the recurrence of cancer but also in reducing side effects of treatment. The researchers believe it could be effective in treating pancreatic, lung, and oral cancers.
+
+The development of this tablet marks a significant breakthrough in cancer treatment, offering hope to patients and potentially revolutionizing the way cancer is treated. Its affordability and effectiveness could make it a game-changer in the field of oncology.

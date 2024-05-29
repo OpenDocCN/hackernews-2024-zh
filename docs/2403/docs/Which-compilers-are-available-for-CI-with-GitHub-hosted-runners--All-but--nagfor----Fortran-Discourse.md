@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:51:58
+-->
+
+# Which compilers are available for CI with GitHub-hosted runners? All but `nagfor` - Fortran Discourse
+
+> 来源：[https://fortran-lang.discourse.group/t/which-compilers-are-available-for-ci-with-github-hosted-runners-all-but-nagfor/7554](https://fortran-lang.discourse.group/t/which-compilers-are-available-for-ci-with-github-hosted-runners-all-but-nagfor/7554)
+
+[Update: This post was linked to Hack News and [received some attention](https://news.ycombinator.com/item?id=39656405).]
+
+[Testing has been playing a central role](https://github.com/orgs/libprima/discussions/39) in the development of [PRIMA](http://www.libprima.net). The tests are [automated by GitHub Actions](https://github.com/libprima/prima?tab=readme-ov-file#how). The concept of CI (Continuous Integration) and GitHub Actions have been not only life-changing but also eye-opening to me. They enable me to test my code with intensity and extensiveness that are unimaginable otherwise.
+
+GitHub Actions with **GitHub-hosted runners** are particularly useful. With them, you can test your code in a fresh environment. In addition, you do not need to worry about messing up your computer due to the tests. Most importantly, you have access to a virtually unlimited amount of computers in the cloud rather than being limited by physical computers available in your office.
+
+Which Fortran compilers are available on GitHub Actions with **GitHub-hosted runners**? In my experience, all major compilers on the market **except for `nagfor` from NAG**. Here, even discontinued compilers such as [g95](https://en.wikipedia.org/wiki/G95) and [Oracle sunf95](https://www.oracle.com/tools/developerstudio/downloads/developer-studio-jsp.html) are included, but [IBM Open XL Fortran compiler](https://www.ibm.com/products/open-xl-fortran-aix-compiler-power) and [Cray Fortran compiler](https://cpe.ext.hpe.com/docs/cce/) are excluded, as they work only on vendor-specific platforms.
+
+`nagfor` cannot be used with **GitHub-hosted runners** due to the [special way it manages the license](https://support.nag.com/content/kusari-frequently-asked-questions). Each license can only be used on a computer with a specific “Kusari ID”. You can deactivate the license on a computer and move it to another one, but you need to send an email to NAG to tell them the new ID and ask for a new license key — a procedure not automatable.
+
+It is not particularly ideal to be such an exception in a world where **everything is moving to the cloud**, and even [MATLAB is available on GitHub-hosted runners](https://github.com/matlab-actions/setup-matlab), not to mention other compilers such as Intel `ifx`, NVIDIA `nvfortran`, and AOCC `flang`. I do believe it is something urgent to deal with — even though it is not my business. I once enquired NAG support for the possibility of supporting GitHub-hosted runners in the future, and the response was, unfortunately, —
+
+> “our developers do not view this item as important where our product(s) is concerned.”
+
+So, no hope at all. **What a pity for such an excellent compiler!**
+
+* * *
+
+* * *
+
+P.S.:
+
+How to make compilers available on GitHub Actions with GitHub-hosted runners? In addition to the fantastic [`fortran-lang/setup-fortran`](https://github.com/fortran-lang/setup-fortran) provided by [@awvwgk](/u/awvwgk) and other contributors, I use the following scripts, which are maintained at [GitHub - equipez/github_actions_scripts](https://github.com/equipez/github_actions_scripts). Note that my scripts are homemade for personal use, and they install only the latest available version of the compilers, whereas you can control the version with [`fortran-lang/setup-fortran`](https://github.com/fortran-lang/setup-fortran). **The scripts are not composed for use on local machines, as they may make unwanted changes to your system.**
+
+See [my workflow](https://github.com/libprima/prima/blob/ec42cb0c49e1425d4fe5838dcc20c2d3891308c9/.github/workflows/lint_hosted.yml#L89-L114) for a concrete example of using these scripts on GitHub-hosted runners.

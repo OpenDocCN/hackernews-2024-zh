@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:18
+-->
+
+# Chinese national charged with stealing AI secrets from Google | AP News
+
+> 来源：[https://apnews.com/article/china-google-justice-department-63156ade1e564d15d92adbef91e9c5da](https://apnews.com/article/china-google-justice-department-63156ade1e564d15d92adbef91e9c5da)
+
+WASHINGTON (AP) — A former software engineer at Google has been charged with stealing artificial intelligence trade secrets from the company while secretly working with two companies based in China, the Justice Department said Wednesday.
+
+Linwei Ding, a Chinese national, was arrested in Newark, California, on four counts of federal trade secret theft, each punishable by up to 10 years in prison.
+
+The case against Ding, 38, was announced at an American Bar Association conference in San Francisco by Attorney General Merrick Garland, who along with other law enforcement leaders has repeatedly warned about the threat of Chinese economic espionage and about the national security concerns posed by advancements in artificial intelligence and other developing technologies.
+
+“Today’s charges are the latest illustration of the lengths affiliates of companies based in the People’s Republic of China are willing to go to steal American innovation,” FBI Director Christopher Wray said in a statement. “The theft of innovative technology and trade secrets from American companies can cost jobs and have devastating economic and national security consequences.”
+
+Google said it had determined that the employee had stolen “numerous documents” and referred the matter to law enforcement.
+
+“We have strict safeguards to prevent the theft of our confidential commercial information and trade secrets,” Google spokesman Jose Castaneda said in a statement. “After an investigation, we found that this employee stole numerous documents, and we quickly referred the case to law enforcement. We are grateful to the FBI for helping protect our information and will continue cooperating with them closely.”
+
+A lawyer listed as Ding’s defense attorney had no comment Wednesday evening.
+
+Artificial intelligence is the main battleground for competitors in the field of high technology, and the question of who dominates can have major commercial and security implications. Justice Department leaders in recent weeks have been sounding alarms about how foreign adversaries could harness AI technologies to negatively affect the United States.
+
+Deputy Attorney General Lisa Monaco said in a speech last month that the administration’s multi-agency Disruptive Technology Strike Force would place AI at the top of its enforcement priority list, and [Wray told a conference last week](https://apnews.com/article/fbi-election-interference-wray-2024-campaign-ai-a0c4a95c818839b18f919c6d648c4dcf) that AI and other emerging technologies had made it easier for adversaries to try to interfere with the American political process.
+
+Garland echoed those concerns at the San Francisco event, saying Wednesday that, “As with all evolving technologies, (AI) has pluses and minuses, advantages and disadvantages, great promise and the risk of great harm.”
+
+The indictment unsealed Wednesday in the Northern District of California alleges that Ding, who was hired by Google in 2019 and had access to confidential information about the company’s supercomputing data centers, began uploading hundreds of files into a personal Google Cloud account two years ago.
+
+Within weeks of the theft starting, prosecutors say, Ding was offered the position of chief technology officer at an early-stage technology company in China that touted its use of AI technology and that offered him a monthly salary of about $14,800, plus an annual bonus and company stock. The indictment says Ding traveled to China and participated in investor meetings at the company and sought to raise capital for it.
+
+He also separately founded and served as chief executive of a China-based startup company that aspired to train “large AI models powered by supercomputing chips,” the indictment said.
+
+Prosecutors say Ding did not disclose either affiliation to Google, which described him Wednesday as a junior employee.
+
+He resigned from Google last Dec. 26\.
+
+Three days later, Google officials learned that he had presented as CEO of one of the Chinese companies at an investor conference in Beijing. Officials also reviewed surveillance footage showing that another employee had scanned Ding’s access badge at the Google building in the U.S. where he worked to make it look like Ding was there during times when he was actually in China, the indictment says.
+
+Google suspended Ding’s network access and locked his laptop, and discovered his unauthorized uploads while searching his network activity history.
+
+The FBI in January served a search warrant at Ding’s home and seized his electronic devices, and later executed an additional warrant for the contents of his personal accounts containing more than 500 unique files of confidential information that authorities say he stole from Google.

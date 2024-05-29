@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:04
+-->
+
+# Apple confirms iPhone owners can travel outside the EU for 30 days before they lose access to third-party app stores | iMore
+
+> 来源：[https://www.imore.com/iphone/apple-confirms-iphone-owners-can-travel-outside-the-eu-for-30-days-before-they-lose-access-to-third-party-app-stores](https://www.imore.com/iphone/apple-confirms-iphone-owners-can-travel-outside-the-eu-for-30-days-before-they-lose-access-to-third-party-app-stores)
+
+Apple's iOS 17.4 software update was released earlier this week and among other things, it enabled support for third-party app stores in EU member countries. Dubbed "alternative app marketplaces" by Apple, access to these third-party app stores is mandated by the new Digital Markets Act in the European Union, but no such requirement exists outside of the bloc. As a result of that, Apple took the decision to only enable alternative app marketplaces in the EU, leaving those elsewhere to use the [App Store](https://www.imore.com/how-download-apps-and-games-your-iphone-and-ipad). But it isn't quite that simple.
+
+As part of Apple's enabling of support for such marketplaces, it requires that users have an EU Apple ID while the iPhone has to physically be in an EU country as well. That's to ensure that people in other parts of the world can't gain access to third-party app stores by pretending to be in the EU, and it's a stance that isn't wholly surprising. However, the requirement for an EU GPS fix does potentially raise issues — like when people go on vacation.
+
+Apple had previously said that it would give EU citizens a period of graze for which third-party app stores would continue to work even when they left the EU, but it hadn't clarified how long that period would be. That has today changed, with some clarification offered in an updated [support document](https://go.redirectingat.com/?id=23432X820453&xcust=im_us_1561366818289953883&xs=1&url=https%3A%2F%2Fsupport.apple.com%2Fen-us%2F118110&sref=https%3A%2F%2Fwww.imore.com%2Fiphone%2Fapple-confirms-iphone-owners-can-travel-outside-the-eu-for-30-days-before-they-lose-access-to-third-party-app-stores) that details exactly how things will go down.
+
+## 30 days and gone
+
+The updated document confirms that in order for alternative app marketplaces to be available "the country or region of your Apple ID must be set to one of the countries or regions of the European Union, and you must physically be located in the European Union." Apple notes that "device eligibility for alternative app marketplaces is determined using on-device processing with only an indicator of eligibility sent to Apple," adding that "to preserve your privacy, Apple does not collect your device's location."
+
+But what happens when iPhone owners leave the EU? Apple now has an answer for that, too.
+
+"If you leave the European Union, you can continue to open and use apps that you previously installed from alternative app marketplaces," Apple begins. "Alternative app marketplaces can continue updating those apps for up to 30 days after you leave the European Union, and you can continue using alternative app marketplaces to manage previously installed apps." 
+
+That all seems unlikely to cause too many issues, but there's a caveat. "However, you must be in the European Union to install alternative app marketplaces and new apps from alternative app marketplaces," Apple warns. That appears to suggest that as soon as an EU citizen leaves the EU, they won't be able to install anything outside of the App Store. Whether or not that will be something the European Commission takes issue with, remains to be seen. After all, an EU citizen is an EU citizen even *after* they leave the EU.
+
+iMore offers spot-on advice and guidance from our team of experts, with decades of Apple device experience to lean on. Learn more with iMore!
+
+Apple has already been accused of [making a mockery of the DMA](https://www.imore.com/ios/spotify-epic-and-more-brand-apples-changes-a-mockery-of-the-dma-on-the-eve-of-seismic-ios-deadline) in the way it has chosen to comply with it. These limitations may be another example of that, but it will be left to the European Commission to decide on that. The EC has already demanded Apple explain why it has [chosen to ban Epic Games' developer account](https://www.imore.com/apple/eu-demands-answers-over-apples-latest-epic-games-twist-bloc-seeks-explanation-after-cupertino-terminates-fortnite-makers-developer-account) and it seems more butting of heads could follow, too.
+
+### More from iMore

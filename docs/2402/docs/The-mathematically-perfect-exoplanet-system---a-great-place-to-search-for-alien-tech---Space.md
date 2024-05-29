@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:12
+-->
+
+# The mathematically perfect exoplanet system — a great place to search for alien tech | Space
+
+> 来源：[https://www.space.com/alien-technosignatures-exoplanet-mathematically-perfect-orbits](https://www.space.com/alien-technosignatures-exoplanet-mathematically-perfect-orbits)
+
+Late last year, astronomers [discovered a fascinating star system](https://www.space.com/six-sub-neptunes-found-100-light-years-from-earth) only 100 [light-years](https://www.space.com/light-year.html) away from us. Its six sub-Neptune planets circle very close to their host star in mathematically perfect orbits, piquing the interest of scientists searching for alien technology, or technosignatures, which they argue would offer compelling evidence of advanced life beyond [Earth](https://www.space.com/54-earth-history-composition-and-atmosphere.html).
+
+To be clear, no such evidence was found in the system, dubbed HD 110067\. However, the researchers say they're not done looking yet. HD 11067 remains an interesting target for similar observations in the future. 
+
+In our own tiny pocket of the cosmos, radio waves from [satellites](https://www.space.com/24839-satellites.html) and telescopes beaming out in the plane of our [solar system](https://www.space.com/16080-solar-system-planets.html), meaning that if somebody outside our solar system watched Earth cross the face of our sun, they'd maybe be able to pick up a signal that coincides with the planet's transit.  
+
+**Related:** [This rare exoplanet system has 6 'sub-Neptunes' with mathematically perfect orbits](https://www.space.com/six-sub-neptunes-found-100-light-years-from-earth)
+
+HD 110067 is viewed edge on from Earth, so we are seeing the six planets in the plane of their system — a view that gives us an excellent chance of picking up such a signal if there exists one, study co-author Steve Croft, a radio astronomer working with the life-searching Breakthrough Listen program at the University of California, Berkeley, told Space.com
+
+"Our technology in our own solar system has spread outside the [habitable zone](https://www.space.com/goldilocks-zone-habitable-area-life)," Croft told Space.com. So technology-friendly civilization in HD 110067, if any, may have communication relays set up on multiple planets in the system, he said. "Even if it is a negative result, that still tells us something."
+
+When HD 110067's discovery was announced, Croft and his team used the world's largest fully steerable telescope, the Green Bank Telescope ([GBT](https://www.space.com/green-bank-observatory.html)) in West Virginia, and searched the system for signs of alien technology. The researchers looked for signals that were continuously present when the telescope was pointed at the system and absent when directed away, the smoking gun of technosignatures local to HD 110067.
+
+Breaking space news, the latest updates on rocket launches, skywatching events and more!
+
+But such signals are difficult to distinguish from natural sources of radio waves and humankind's own technological signals, such as radio waves beaming from cell phones connected to Wi-Fi, [SpaceX](https://www.space.com/18853-spacex.html)'s [Starlink](https://www.space.com/spacex-starlink-satellites.html) satellite network in [low Earth orbit](https://www.space.com/low-earth-orbit). This creates a haystack of signals in which researchers look for a needle of a potential extraterrestrial signal, said Croft. 
+
+"I should add we don't know if there are needles in the haystack," he said. "We don't really know what the needles look like."
+
+Despite this lack of sufficient knowledge of what alien technology looks like, the team employed a few techniques to ensure a detected signal is not local interference. For instance, if one were to build a transmitter in the hopes that somebody else would pick it up, that transmitter would pump a lot of energy into a narrow range of frequencies. Natural astrophysical phenomena, by contrast, beam radio waves across a much broader range.
+
+Signals from such a transmitter placed on a planet spinning around a foreign star would drift in time when observed from Earth, "the same as when an ambulance goes past you, the sound of it shifts from very high to very low," study lead author [Carmen Choza](https://www.linkedin.com/in/carmen-choza-28437422b/), an assistant researcher at the [Search for Extraterrestrial Intelligence](https://www.space.com/33626-search-for-extraterrestrial-intelligence.html) (SETI) Institute in California, told Space.com.
+
+The search ultimately did not detect a technological signal — however, the results do not eliminate the existence of technosignatures in HD 110067, Croft said, but rather tell us that no signal was beamed in our direction at the time of the observations.
+
+Meanwhile, the discovery team is refining the radii of the six detected planets using the [European Space Agency](https://www.space.com/22562-european-space-agency.html)'s [CHEOPS](https://www.space.com/36144-cheops-exoplanet-satellite.html) space telescope, and the planets' masses using HARPS-N and CARMENES instruments in Spain, Rafael Luque of the University of Chicago told Space.com.
+
+Accurate data on sizes and masses of the planets would shed more light onto the system's chemical makeup. Using that information, it may be possible to somewhat "reverse engineer" the evolution of the system and its planets to learn their formation mechanisms, the team had [shared](https://www.space.com/six-sub-neptunes-found-100-light-years-from-earth) late last year.
+
+Scientists have long been searching for life outside our solar system in hopes of learning our place in [the universe](https://www.space.com/52-the-expanding-universe-from-the-big-bang-to-today.html), by trying to answer one question that's being pondered over for thousands of years, "Are we alone?"
+
+"Sometimes people ask me, 'what are your chances of success in the next 10 years?'" Croft said. "My answer to that is, "well, I don't know, but they are better than they were in the last 10 years because our searches are getting powerful all the [time](https://www.space.com/time-how-it-works)."
+
+Croft echoed the words of SETI pioneer Jill Tarter: "We reserve the right to get smarter."
+
+This research is described in a [paper](https://iopscience.iop.org/article/10.3847/2515-5172/ad235f) published last month in the journal Research Notes of the AAS.

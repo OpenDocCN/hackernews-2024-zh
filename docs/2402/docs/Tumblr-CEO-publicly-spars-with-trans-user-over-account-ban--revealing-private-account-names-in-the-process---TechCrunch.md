@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:19:51
+-->
+
+# Tumblr CEO publicly spars with trans user over account ban, revealing private account names in the process | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/02/22/tumblr-ceo-publicly-spars-with-trans-user-over-account-ban-revealing-private-account-names-in-the-process/](https://techcrunch.com/2024/02/22/tumblr-ceo-publicly-spars-with-trans-user-over-account-ban-revealing-private-account-names-in-the-process/)
+
+Matt Mullenweg, CEO of Tumblr owner Automattic, is supposed to be on sabbatical. Instead, he’s arguing with Tumblr users over an individual content moderation decision, which has sparked communitywide outcry and accusations of transphobia.
+
+Over the last few days, the situation escalated to the point that Mullenweg has engaged with the user in question on [other platforms](https://twitter.com/photomatt/status/1760638778010644694) and shared private details about her account in public.
+
+The controversy began when a user with the blog name predstrogen was banned. Before the ban, she was frustrated with Tumblr because the platform failed to take action when she reported that she was being targeted with transmisogynistic harassment. This led her to post that she hopes that the CEO “dies a forever painful death involving a car covered in hammers that explodes more than a few times and hammers go flying everywhere.”
+
+According to Mullenweg, predstrogen was banned for posts that threatened violence against Tumblr staff, and specifically cited the “forever painful death” post. He also claimed that her clothed transition photos were not what yielded adult content violations.
+
+“We generally do not comment on individual cases, but because there seems to be mass misinformation around this, I will make an exception and comment on predstrogen,” he wrote on his blog, [photomatt](https://www.tumblr.com/photomatt). He added, “Tumblr has a number of LGBT+ including trans people on staff, and they see things from the inside fully, and they’re not protesting this case.”
+
+Some users said that Mullenweg was overreacting, as the language is so cartoonish that it couldn’t be taken seriously. But Mullenweg took the post as a threat.
+
+“Threats of violence are never okay. Threats of violence are not protected speech,” he wrote on his blog. “We will work with police and FBI where appropriate, though to be clear predstrogen’s case hasn’t warranted that so far. I’m referring to what we may potentially do for other threats.”
+
+Tumblr did not respond to requests for comment.
+
+Mullenweg took the debate off platform to X, where he [commented](https://twitter.com/photomatt/status/1760638778010644694) on a post from the user who was banned on Tumblr. Then, on [one of his Tumblr posts](https://www.tumblr.com/photomatt/743030472054079489/you-gonna-do-anything-or-make-any-statement-about?source=share), Mullenweg shared numerous of her side blog names, which is not public information (Tumblr users often make empty side blogs with no content in order to squat on URLs).
+
+“On the adult content mistagging, I added context to say it has nothing to do with clothed transition photos, she had 20+ other blogs and multiple accounts with names so explicit I can’t post them here without a mature tag,” Mullenweg wrote, then listing some of the accounts by name.
+
+Aside from Elon Musk since he took over Twitter (now X), it’s uncommon to see the CEOs of social platforms commenting directly on individual content moderation decisions. It’s even more uncommon for those CEOs to share private information about that user’s account.
+
+Bluesky faced a similar situation last year, but it played out in an [opposite manner](https://techcrunch.com/2023/06/08/blueskys-growing-pains-strain-relationship-with-its-black-community-moderation/). One user said that they hoped a prominent Black user would get pushed off of “somewhere real high.” In that case, Bluesky’s team decided it wasn’t a legitimate death threat, which strained the burgeoning platform’s relationship with its Black users.
+
+“Wisely or not, many people use violent imagery when they’re arguing or venting,” Bluesky CEO Jay Graber [posted](https://bsky.app/profile/jay.bsky.team/post/3jwqmz66bdo2w) at the time. “We debated whether a ‘death threat’ needs to be specific and direct in order to cause harm, and what it would mean for people’s ability to engage in heated discussions on Bluesky if we prohibited this kind of speech.”
+
+When juxtaposed, these two moderation decisions show the difficulty that platforms have in making decisions about certain types of speech. While Bluesky deemed that getting shoved from “somewhere real high” is hyperbolic, Tumblr decided that “a forever painful death involving a car covered in hammers that explodes more than a few times and hammers go flying everywhere” is a sound threat.
+
+Tumblr is in an extended downward spiral. Tumblr was acquired by Yahoo (now TechCrunch’s parent company) for $1 billion in 2013, but the platform struggled to the point that Automattic bought Tumblr for just $3 million in 2019\. Last year, Mullenweg said that the platform loses $30 million each year, and later, he [reassigned](https://techcrunch.com/2023/11/10/automattic-ceo-matt-mullenweg-details-tumblrs-future-after-re-org/) the majority of Tumblr’s staff to other projects inside of Automattic. But no one on the trust and safety team was reassigned, so these moderation decisions likely weren’t impacted by the company shake-up. However, Tumblr has a bad track record for content moderation decisions, especially those involving trans people.
+
+“We did have an external contract moderator last year that was making transphobic moderation (and also selling moderation, criminally),” Mullenweg wrote on his blog. “As soon as we were aware that person was fired, and we later terminated the entire relationship with that contracting firm and have brought almost everything in-house (at great cost).”
+
+Mullenweg pinned a post to his Tumblr titled “[My Beliefs and Principles](https://www.tumblr.com/photomatt/742964297818390528/my-beliefs-and-principles?source=share),” where he addresses the claims that he is transphobic. He is currently on sabbatical until May.
+
+> [Tumblr is losing $30M each year, CEO says](https://techcrunch.com/2023/07/12/tumblr-is-losing-30m-each-year-ceo-says/)
+
+> [Bluesky’s growing pains strain its relationship with Black users](https://techcrunch.com/2023/06/08/blueskys-growing-pains-strain-relationship-with-its-black-community-moderation/)

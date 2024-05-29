@@ -1,0 +1,70 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:12:15
+-->
+
+# My heat pump: a personal story about a broken heating industry – Inside track
+
+> 来源：[https://greenallianceblog.org.uk/2023/12/22/my-heat-pump-a-personal-story-about-a-broken-heating-industry/](https://greenallianceblog.org.uk/2023/12/22/my-heat-pump-a-personal-story-about-a-broken-heating-industry/)
+
+It was a freezing Friday evening early in February 2023, when my boiler broke. An engineer was called, several cold days passed, and his declaration came in sombre tones: ‘uneconomic to repair’. Like [58% of new boiler purchasers](https://www.nesta.org.uk/interim-boilers-for-broken-heating/), I was cold and I wanted a quick fix. But I really didn’t want a new boiler, given most last for over a decade and produce two tonnes of CO2 per year. I wanted a heat pump.
+
+Heat pumps span my personal and professional life: it’s clear [they’re the main technology](https://twitter.com/DrSimEvans/status/1682326867099918337) for zero carbon home heating and equally clear that, at just [2% of sales](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1148930/heat-pumps-net-zero-investment-roadmap.pdf), the UK’s market isn’t working. I had a hypothesis about why, and I now also have lived experience to draw on. Here’s what I think it’d take to make heat pumps the natural choice for anyone with a broken boiler.
+
+**Lesson one: heat pumps work, but the myth that they don’t might put you off**
+
+Some background: I live in a mid-terrace, solid-walled Victorian house that is [very typical](https://mapmaker.cdrc.ac.uk/#/dwelling-age?f_h0=A~B~C~D&lon=-0.0556&lat=51.4842&zoom=9.81) in greater London. When I moved in it was an EPC E rated ‘fixer-upper’. I’ve installed some efficient windows, floor insulation, and draught-proofed a bit, but it’s still an EPC D at best: I think I’ve cut my heat demand by about a quarter. My home remains inefficient and that made me worry: would a heat pump work for me?
+
+It’s nearly impossible to get a straight answer to this question, and that is a huge problem.
+
+This is the first lesson of my story: manufacturers and installers need to make it easy for potential consumers to feel confident that a heat pump will ‘just work’ without having to do the work yourself. I think that’s the most important thing that the government’s clean heat market mechanism could do.
+
+Boilers tend to ‘just work’, but with heat pumps, things like [flow temperatures](https://heatpumps.co.uk/heat-pump-resources/frequently-asked-questions-heat-pumps/), the [width of your pipework](https://www.heatgeek.com/what-to-do-with-microbore-pipework-on-heat-pumps/), radiator size, [heat stores and buffers](https://www.installeronline.co.uk/how-to-maximise-cop/), and peak demand at design temperature can make the difference between cheap clean heat and a system that struggles. No consumer should have to understand any of this, and the fact that I felt I had to is testament to how immature the market is.
+
+I made heavy use of Trystan Lea’s [excellent website](https://trystanlea.org.uk/) and Heat Geek’s [knowledge base](https://www.heatgeek.com/category/knowledge/) to model the efficiency of my home. I experimented and found that my home heated up just fine last winter with radiators set to 50c when it was -2 outside. That was the most important test: if you are looking to get a heat pump, lower the ‘flow temperature’ of your boiler to, say 45c, and leave it running during a cold spell. If your house stays warm, you can probably get a heat pump without a disruptive retrofit.
+
+Unlike boilers, heat pumps move heat from outside to inside, just like a refrigerator moves heat out of the white box where you keep your food and into your kitchen – just feel the warm grill at the back. Modern heat pumps can move 4 units of heat for every 1 unit of electricity they consume.
+
+This is a bit like magic. My heat pump has kept me warm all year, and the hottest I’ve had the radiators was 42c – most of the time they’re around 35c. This makes my heating at least 380% efficient, meaning it is cheaper to run than my old boiler.
+
+The bottom line is: don’t believe the naysayers! Heat pumps [work very well in old buildings](https://twitter.com/glynhudson/status/1730344377019486220), so long as the system is designed properly.
+
+**Lesson two: the industry is selling oversized, expensive systems**
+
+That’s the good news. The bad news is that getting a well-designed system is not simple. My installation is a story of foolishness against the odds and definitely not the way anyone should have go about getting a heating system. I have an incredibly understanding partner, who endured several weeks of very cold evenings with a large duvet, stoic expression, and remarkably few complaints. You will be pleased to know that we are still together.
+
+After my boiler died, I got on the phone. The first two local heat pump installers I spoke to were lovely, but when I explained that I was currently without heat, they told me it’d be a six week lead time, and that I should just get a boiler, which could be installed in two days. Of the three large companies I contacted, one never replied, and another said my (out of date) EPC meant a heat pump wouldn’t work for me. The one big installer who got back to me had excellent customer service and did a full survey of my house the next day.
+
+The survey specified an 11kW heat pump, twice the size I expected. Because it was so big, it needed new pipes and radiators, trenching across the garden, approval from my electricity network, and the cost would be £13,000\. I’m willing to pay a green premium but not £10,000 more than a gas boiler! When I pointed out that my calculations had put my heat loss at between 5-6kW, and I thought the system could be smaller, they said their software was probably more accurate. Except it wasn’t.
+
+It was the second big lesson I learned: the heating profession has overestimated heating demand for decades. With gas this hardly matters. A 30kW combi boiler is perhaps £100 more than a 25kW one, so why not oversize? The trouble is, with a heat pump, oversizing means upgrading pipes, radiators, and everything else. This is disruptive, hugely expensive, [and, critically, unnecessary](https://twitter.com/PeterEastern/status/1682260041619865600).
+
+**Lesson three: installation is the Achilles heel of the heat pump industry**
+
+At this point I was decidedly downbeat. Living without heat is miserable, and I had next to nothing to show for a fortnight of suffering in the cold. I still really didn’t want a boiler, but as my partner gently reminded me, we could be warm if I was a bit less stubborn. She was right.
+
+Enter my deus-ex-machina: Peter. He’s a maverick who wants to revolutionise the way heat pumps are installed. A software engineer by training, he’s an outsider to the industry. He replied to a last-ditch tweet I sent, saying I had a broken boiler and wanted a heat pump but that I was probably a complicated case.
+
+We started by looking at the data: my flow temperature experiment, my gas use in the past year, and the fact that windows and floor insulation probably cut the air leakage in my not-that-efficient home. The recent [academic](https://www.sciencedirect.com/science/article/abs/pii/S0360132320306466) [evidence](https://journal-buildingscities.org/articles/10.5334/bc.388) suggests that this means much smaller heat pumps can be used than is assumed. Peter ran the numbers with my data and this updated evidence, specified a 5.5kW heat pump, and had it temporarily installed a few days later. I was warm for the first time in weeks.
+
+The initial installation was a bit messy, and this speaks to the third lesson in my story. The boiler market is focused on cheap and quick installation. At its worst, the industry pays de-skilled ‘boiler slingers’ (a derisive term) to pop a new combi boiler onto the wall, get the heat going fast, and leave you [paying over the odds](https://www.theheatinghub.co.uk/articles/turn-down-the-boiler-flow-temperature) because the system’s not been set up well. This is bad for heating engineers – they’re being turned into a commodity, paid for speed rather than quality, and not for the skill involved in good heating design. But it’s now the norm.
+
+By contrast, the heat pump industry is the opposite: it’s been a cottage industry selling overcomplicated, oversized systems to early adopters with time and money to spare. That won’t work for most people. My installation is the exception that proves the rule: Peter got my heat pump working quickly, to give me heat last winter, but had to come back to fine tune the system because the installation process is – frankly – still too complicated. This is because the heat pump industry has yet to develop smaller, more integrated plug-in replacements for a boiler. I doubt that this will work for every property, but it certainly could work for most.
+
+**In conclusion**
+
+It is easy to mistake anecodote for data, but my story is a representative one. My EPC D, average sized, Victorian terraced home is warm and cheaper to heat with a heat pump than with the boiler it replaced. I swapped two radiators to enable it to run more efficiently, but because my installer looked at the data, it needed no major new pipework, and because I have set my heat pump to automatically switch off during the 4-7pm period of peak electricity demand, two-thirds of the electricity it uses is zero carbon. I’ve probably cut the carbon emissions of my home by more than three quarters, and also lowered the cost of my heating. My experience should be achievable for most people.
+
+But it isn’t, yet. To get cheap, clean heat to be the norm, the heating industry needs to modernise. The data that smart meters and cheap sensors can provide make it possible to stop oversizing and over specifying heat pumps. It’s easy to foresee an integrated energy module with a heat pump, hot water cylinder and battery that plugs into existing homes, simplifying installation and providing better value to households than today’s combi boilers. This is all doable, with today’s technologies.
+
+Perhaps 2024 will be the year you get a heat pump. But even if it isn’t, there’s every reason to think that by the time your boiler breaks, you won’t have to think twice about switching to one, and that is a cosy note to end the year on.
+
+### Like this:
+
+Like Loading...
+
+* * *
+
+### Discover more from Inside track
+
+Subscribe to get the latest posts to your email.

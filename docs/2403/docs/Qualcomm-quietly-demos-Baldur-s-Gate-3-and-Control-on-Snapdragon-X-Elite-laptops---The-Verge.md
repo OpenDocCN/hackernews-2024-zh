@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:42:40
+-->
+
+# Qualcomm quietly demos Baldur’s Gate 3 and Control on Snapdragon X Elite laptops - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/27/24113730/qualcomm-snapdragon-x-elite-gaming-influencers](https://www.theverge.com/2024/3/27/24113730/qualcomm-snapdragon-x-elite-gaming-influencers)
+
+If you read [my scoop last week](/24107331/qualcomm-gdc-2024-snapdragon-on-windows-games), I bet you’ve been wondering — how well could a Snapdragon chip *actually* run Windows games? At the 2024 Game Developers Conference, the company claimed Arm could run those titles at close to x86/64 speed, but how fast is fast?
+
+With medium-weight games like *Control* and *Baldur’s Gate 3*, it looks like the target might be: 30 frames per second at 1080p screen resolution, medium settings, possibly with AMD’s FSR 1.0 spatial upscaling enabled.
+
+That’s what Qualcomm has apparently been showing influencers, according to numerous videos from YouTubers, TikTokers, and “Snapdragon Insiders,” many of which were uploaded over the past week after they flew down to Qualcomm’s San Diego headquarters for the company’s [“eXperience Day.”](https://twitter.com/Snapdragon/status/1770575632776228923?s=20)
+
+While some of the videos feel a little promotional — one influencer talks about how he’s seeing “*Elden Ring* playing really nicely at about 30 frames per second” while actually showing *Baldur’s Gate 3* running at a mere 21-24fps — it’s admittedly pretty neat to see games like these running on Windows on Arm at all.
+
+Enobong Etteh, aka BooredAtWork, has [the video](https://youtu.be/0vd5gwtxxDM?si=yStX7D4jtsGh12PC&t=96) with the most uninterrupted gameplay footage; he apparently got to try *Control*, *Baldur’s Gate 3*, and *Redout 2* at Mobile World Congress in Barcelona this February. In early scenes from *Control* that don’t demand as much horsepower, we’re seeing frame rates that dip as low as 26fps in a firefight or between 30fps and 40fps just running around.
+
+Today’s gaming handhelds can do better than that, but this is an early demo.
+
+Another [video from JuanBagnell](https://youtu.be/iryLKvhsgrU?si=Q65LzG9OXHjCVpb_&t=403) shows frame rates of 25 to 30fps in *Baldur’s Gate 3* in the game’s very first fight, which takes place in a completely enclosed area, not the open world; *BG3* also[infamously demands a lot more of a computer’s CPU](https://www.eurogamer.net/digitalfoundry-2023-baldurs-gate-3-act-three-massively-hits-cpu-performance-but-why) in the final third of the game, so calling the game “playable” might be a bit of a stretch.
+
+BooredAtWork also suggests later in his video that *Baldur’s Gate 3* may be playable on the laptop with AMD’s FSR 1.0 toggled to its “Performance” setting, which lets games render at a much lower render resolution than 1080p and try to make up the difference with upscaling.
+
+It’s worth remembering we’re looking at these games running on a Qualcomm reference design laptop, not final hardware, and we don’t know how much (or little) optimization these games have had. They might perform better!
+
+We may also now have a hint at battery life, too: JuanBagnell says Qualcomm told him the entire laptop is “rated to operate at around 20-24 watts.” If that’s true, and you theoretically put that in a thin laptop with a typical 49.5 watt-hour battery (like the Qualcomm-powered Lenovo ThinkPad X13s), you can roughly divide 49.5 by 24 to get just over two hours of battery. That’d be on par with today’s Windows gaming handhelds, but not better.
+
+BooredAtWork says Qualcomm told him these laptops already support 250 PC games and should have 500 by launch.

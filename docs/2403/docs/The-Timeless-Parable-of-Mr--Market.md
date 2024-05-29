@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:30:18
+-->
+
+# The Timeless Parable of Mr. Market
+
+> 来源：[https://fs.blog/mr-market/](https://fs.blog/mr-market/)
+
+There is no one better to explain the concept of Mr. Market than Warren Buffett, who has used to to make billions of dollars and remain calm when all around him [were losing their heads](https://fs.blog/2012/12/how-to-be-a-man-rudyard-kipling/).
+
+In the [1987 letter to Berkshire Hathaway shareholders](http://www.berkshirehathaway.com/letters/1987.html), Buffett unfolds the concept for us.
+
+> Ben Graham, my friend and teacher, [long ago described](https://www.amazon.com/gp/product/0060555661/ref=as_li_qf_asin_il_tl?ie=UTF8&tag=farnamstreet-20&creative=9325&linkCode=as2&creativeASIN=0060555661&linkId=6c5ba2ad371f4559568e2fc7f5aae154) the mental attitude toward market fluctuations that I believe to be most conducive to investment success. He said that you should imagine market quotations as coming from a remarkably accommodating fellow named Mr. Market who is your partner in a private business. Without fail, Mr. Market appears daily and names a price at which he will either buy your interest or sell you his.
+> 
+> Even though the business that the two of you own may have economic characteristics that are stable, Mr. Market’s quotations will be anything but. For, sad to say, the poor fellow has incurable emotional problems. At times he feels euphoric and can see only the favorable factors affecting the business. When in that mood, he names a very high buy-sell price because he fears that you will snap up his interest and rob him of imminent gains. At other times he is depressed and can see nothing but trouble ahead for both the business and the world. On these occasions, he will name a very low price, since he is terrified that you will unload your interest on him.
+> 
+> Mr. Market has another endearing characteristic: He doesn’t mind being ignored. If his quotation is uninteresting to you today, he will be back with a new one tomorrow. Transactions are strictly at your option. Under these conditions, the more manic-depressive his behavior, the better for you.
+> 
+> But, like Cinderella at the ball, you must heed one warning or everything will turn into pumpkins and mice: Mr. Market is there to serve you, not to guide you. It is his pocketbook, not his wisdom, that you will find useful. If he shows up some day in a particularly foolish mood, you are free to either ignore him or to take advantage of him, but it will be disastrous if you fall under his influence. Indeed, if you aren’t certain that you understand and can value your business far better than Mr. Market, you don’t belong in the game. As they say in poker, “If you’ve been in the game 30 minutes and you don’t know who the patsy is, you’re the patsy.”
+> 
+> Ben’s Mr. Market allegory may seem out-of-date in today’s investment world, in which most professionals and academicians talk of efficient markets, dynamic hedging and betas. Their interest in such matters is understandable, since techniques shrouded in mystery clearly have value to the purveyor of investment advice. After all, what witch doctor has ever achieved fame and fortune by simply advising “Take two aspirins”?
+> 
+> The value of market esoterica to the consumer of investment advice is a different story. In my opinion, investment success will not be produced by arcane formulae, computer programs or signals flashed by the price behavior of stocks and markets. Rather an investor will succeed by coupling good business judgment with an ability to insulate his thoughts and behavior from the super-contagious emotions that swirl about the marketplace. In my own efforts to stay insulated, I have found it highly useful to keep Ben’s Mr. Market concept firmly in mind.
+> 
+> Following Ben’s teachings, Charlie and I let our marketable equities tell us by their operating results – not by their daily, or even yearly, price quotations – whether our investments are successful. The market may ignore business success for a while, but eventually will confirm it. As Ben said: “**In the short run, the market is a voting machine but in the long run it is a weighing machine**.” The speed at which a business’s success is recognized, furthermore, is not that important as long as the company’s intrinsic value is increasing at a satisfactory rate. In fact, delayed recognition can be an advantage: It may give us the chance to buy more of a good thing at a bargain price.
+
+Of course, this concept can be applied outside of stock markets as well.
+
+> “In the short run, the market is a voting machine but in the long run it is a weighing machine.”— Ben Graham
+
+***Mr. Market** is a [Farnam Street Mental Model](https://fs.blog/mental-models/).*

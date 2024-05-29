@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:40:35
+-->
+
+# Amazon-owned Audible lays off 5% of staff | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/](https://techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/)
+
+Audible, the Amazon-owned audiobook company, is laying off 5% of its staff, according to a leaked memo obtained by [Business Insider](https://www.businessinsider.com/amazon-jobs-layoffs-audible-2024-1).
+
+Per the memo, Audible CEO Bob Carrigan praised staff for a strong 2023 and assured them that the business was in good shape… but, due to the “increasingly challenging landscape,” the company is still making cuts. This is a common refrain in the tech sphere, where companies across all sectors have been beleaguered by [ongoing layoffs](https://techcrunch.com/2024/01/09/tech-layoffs-2023-list/) since 2022.
+
+Audible did not respond to requests for comment.
+
+Amazon has been cutting back its workforce aggressively over the last year. Across the company, in 2023, Amazon [laid off](https://techcrunch.com/2023/03/20/amazon-confirms-another-round-of-layoffs-impacting-9000-people-in-aws-twitch-and-other-units/) [around](https://techcrunch.com/2023/01/05/amazon-to-cut-18000-jobs-as-tech-layoffs-continue/) 27,000 employees across multiple departments, including AWS, Twitch and advertising. Now, just this week, Twitch laid off another [500 employees](https://techcrunch.com/2024/01/09/twitch-layoff-500-employees/), and Amazon’s MGM Studios and Prime Video let go of “[several hundred](https://techcrunch.com/2024/01/10/amazon-prime-video-and-mgm-studios-laid-off-hundreds-of-employees/)” employees. It’s an ominous time for Amazon’s entertainment products.
+
+Prime Video aside, all of these organizations at Amazon — Twitch, MGM Studios and Audible — came to the company via acquisition. Most recently, Amazon spent [$8.5 billion](https://techcrunch.com/2022/03/17/amazon-completes-its-8-5-billion-acquisition-of-mgm/) on MGM in 2022, which brought more than 4,000 films and 17,000 TV shows to the Prime Video streaming service. Twitch, the gaming-focused livestream platform, came to Amazon for about [$1 billion](https://techcrunch.com/2014/08/25/amazon-will-buy-twitch-for-over-1-billion/) in 2014\. [Audible](https://techcrunch.com/2008/01/31/amazon-strengthens-its-digital-hand-with-300-million-purchase-of-audible/) has been part of Amazon since 2008, when it was acquired for $300 million.
+
+Twitch is massively popular, but the costs of operating a huge livestreaming service are high, so the company has remained unprofitable. For MGM and Prime Video, senior vice president Mike Hopkins said the division is making cuts to “reduce or discontinue investments in certain areas while increasing our investment and focus on content and product initiatives that deliver the most impact.”
+
+> [Amazon Prime Video and MGM Studios laid off hundreds of employees](https://techcrunch.com/2024/01/10/amazon-prime-video-and-mgm-studios-laid-off-hundreds-of-employees/)
+
+> [Twitch is laying off another 500 employees](https://techcrunch.com/2024/01/09/twitch-layoff-500-employees/)

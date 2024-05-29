@@ -1,0 +1,100 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:14:57
+-->
+
+# How to Build a Password Cracker
+
+> 来源：[https://www.sevnx.com/blog/post/building-a-password-cracker](https://www.sevnx.com/blog/post/building-a-password-cracker)
+
+So, the major takeaway here is that increasing the MHz value of the core GPU clock gives you a noticeable performance boost, but it needs to be supported by increasing power/voltage values to maintain stability. **Please be careful when overlocking since actual hardware damage may occur if values are pushed too far in the wrong configuration. Also, if you’re running your rig at home, be careful with the amount of power you’re drawing as you may start tripping circuit breakers depending on your outlet capability (Please check out the Power Supplies section above).**
+
+#### Software
+
+**OS** – When it comes to operating system of choice a Linux Server OS such as Debian or Ubuntu is the go-to choose because it is free and can run in headless mode. Headless mode means that the GPU don’t have to spend any resources on rendering the GUI for you, leaving those resources for hashcat to chomp away at resulting in peak performance. But if you’re comfortable with Windows OS, whether it’s Windows 10/11 or Server 2019/2022, meaning some extra money needs to be spent on licensing (a decent chunk if it’s Server OS), you can still 100% run hashcat. You may experience some drops in performance, but you can balance it out with some overclocking and optimizing Windows to run barebones but with a GUI. There appears to be better driver and overclocking support on Windows as a bonus but it’s a point that can be contested because of GreenWithEnvy overclocking tool for *nix and driver support has been pretty good lately.
+
+**Drivers/CUDA**: Make sure to install latest drivers but you may find that sometimes older drivers may be performing better on certain algorithms, so test different ones out if time permits but usually latest is greatest rule applies. This blog does not cover installation process steps on *nix as this process varies based on the OS flavor. For all the Windows users out there, it’s simple to grab latest Nvidia or AMD drivers for your cards and run through the installation process. For Nvidia CUDA, grab the latest CUDA SDK (11.8.* at the time of writing this blog) and run through barebones install. Make sure the CUDA DLL file nvrtc64_*_*.dll makes its way to C:\windows\system32\ folder from the Program Files folder where CUDA was installed to avoid the “CUDA SDK Toolkit installation NOT detected” error in hashcat. The one at the time of writing this blog is called nvrtc64_112_0.dll
+
+**Overclocking**: If you’re on Windows OS, there are free overclocking software suites, EVGA Precision X1 and MSI Afterburner which are fantastic for overclocking for novice and professional users. Overclocking on Linux can be accomplished with GreenWithEnvy tool, but it does require a GUI. Using command line tools does come with an increased risk of making a mistake in a configuration file but it is an option for advanced users out there.
+
+[https://www.evga.com/precisionx1/](https://www.evga.com/precisionx1/)
+
+[https://www.msi.com/Landing/afterburner/graphics-cards](https://www.msi.com/Landing/afterburner/graphics-cards)
+
+[https://github.com/dankamongmen/GreenWithEnvy](https://github.com/dankamongmen/GreenWithEnvy)
+
+**hashcat** – At the time of writing, hashcat is currently at version 6.2.6\. Although there are other free and commercial tools available for password recovery/password cracking, hashcat is still the top dog when it comes to a lot of algorithms out there, especially the ones we usually focus on during security engagements. You can grab the binaries from the [https://hashcat.net/hashcat/](https://hashcat.net/hashcat/) site or build the latest version using their GitHub [https://github.com/hashcat/hashcat](https://github.com/hashcat/hashcat). Leveraging the pre-built binaries is the easiest option to start but you can benefit from building from source if a new algorithm is being added in development.
+
+**hashcat-utils** (including maskprocessor/statsprocessor/princeprocessor)
+
+This an awesome collection of tools that can come in handy depending on various scenarios or password patterns you might be up against. For example, here at SEVN-X we leverage cutb tool to create something called password salad (we’ll cover this technique further in the blog). We also leverage combinator tool to generate phrases and longer password candidates. Maskprocessor comes in handy generating custom wordlists. You may find a solution to a problem you encounter using one of the available utilities, so check them out for sure.
+
+[https://hashcat.net/wiki/doku.php?id=hashcat_utils](https://hashcat.net/wiki/doku.php?id=hashcat_utils)
+
+**pack/pack2**
+
+The amazing Password Analysis Cracking Kit (PACK) is super useful for password analysis and building out custom rules among other things. Pack2 is a Rust-based PACK replacement candidate but as the author says, it’s a work in progress.
+
+#### A Couple Notes on Benchmarks
+
+Benchmarking PC builds is popular nowadays for enthusiasts and benchmarking GPUs beyond gaming for hashcat is great for those who are looking to buy GPUs specifically for this. There are several resources for this and here at SEVN-X we found that searching GitHub/Twitter usually does the trick. There’s also this site containing a pretty good list of GPU benchmarks:
+
+[https://www.onlinehashcrack.com/tools-benchmark-hashcat-gtx-1080-ti-1070-ti-rtx-2080-ti-rtx-3090-3080-4090.php](https://www.onlinehashcrack.com/tools-benchmark-hashcat-gtx-1080-ti-1070-ti-rtx-2080-ti-rtx-3090-3080-4090.php)
+
+Also, for everyone out there thinking that the benchmark performance is what you’re going to get when you buy the GPU you saw benchmarks for, let me stop you right here. The benchmark in hashcat is simulated for one hash, meaning multiple hashes will increase your cracking time. The benchmark does not emulate wordlists or rules, simply put it does the equivalent of brute-forcing possible password combinations speed as a benchmark. So, when you start cracking that hash using wordlists or a combination of wordlist and rules, your speed will not be that of the benchmark, nor will it be the same if it’s multiple hashes even in the brute force mode. There are also overclocking, driver updates, hashcat algorithm optimizations, and potential hardware differences that might make your results different then the benchmark for someone else, so just be aware of that.
+
+#### Dictionaries and wordlists
+
+When it comes to cracking hashes, there are several good resources to start with wordlists, dictionaries, or password lists to use during the cracking process. The most infamous one out there is the rockyou.txt plaintext password collection that is widely available. It is important to note that generating custom wordlist can be helpful or building out your own all-encompassing collection to increase the chances of cracking that next hash. There are tools like cewl to help scrape client sites for keywords.
+
+If you’re up for building your own wordlist there’s a lot that can go into one. There’s also the ability to collect publicly available password dumps and build a list out of those. First, recommendation for building a wordlist (not a password list) is to start with the following:
+
+*This list is based on assumption you’re trying to crack passwords of English-speaking users. It serves as a good source baseline and should be checked for duplicates to ensure we’re not wasting cycles during cracking. Longest part of creating your own list is collecting the data sets and getting all sorted out.
+
+*   English words dictionary
+
+*   First Names
+
+*   Last Names
+
+*   Country names
+
+*   County names
+
+*   City names
+
+*   Street/road/lane/etc. names and valid addresses
+
+*   Wikipedia titles/words
+
+*   Urban dictionary words/phrases
+
+*   Alexa Top 1 million (brand/org/biz/etc. names)
+
+*   Media (video) – IMDB/TVDB movie titles/episode titles/character names/actor names/words
+
+*   Media (music) – songs/albums/artists/lyrics/words
+
+*   Media (games) – titles/characters/words
+
+*   Media (books) – titles/characters/words
+
+*   Media (quotes) – famous quotes from anything
+
+*   Pop culture – memes, quotes, hashtags, etc.
+
+Another great source for creating a list is usernames. There are a couple of collections, but usernames or email prefixes (without the @something part) are pretty good candidates for rulesets.
+
+Now if you want to build out a collection of public password dumps, there are several sources that can be used to start building your own set. There are a ton of various collections out on GitHub, or torrent sites if you wish to be adventurous. A lot of these are just a google search away!
+
+#### Awesome resources
+
+When you start out in password cracking space or thinking of putting together your first dedicated cracking rig, these are high quality resources and places where here at SEVN-X learned a ton throughout our builds over the years and you can find additional information beyond what’s in this blog.
+
+Link: [https://hashcat.net/wiki/](https://hashcat.net/wiki/)
+
+*   That hashcat wiki is an invaluable source for the tool. There’s plenty of documentation and links to other resources to help with all kinds of scenarios.
+
+*   Defcon Password Village has some great guides and beginner friendly notes from hashcat to hardware.
+
+[If you have any questions or feedback regarding the blog post, password cracking rig configurations or hashcat, send us a message to [hashburglar@sevnx.com](mailto:hashburglar@sevnx.com)]

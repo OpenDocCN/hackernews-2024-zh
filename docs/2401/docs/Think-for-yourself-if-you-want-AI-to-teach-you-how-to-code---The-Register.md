@@ -1,0 +1,64 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:13:56
+-->
+
+# Think for yourself if you want AI to teach you how to code • The Register
+
+> 来源：[https://www.theregister.com/2024/01/27/ai_coding_automatic/](https://www.theregister.com/2024/01/27/ai_coding_automatic/)
+
+Feature Learning how to program is perhaps now easier than ever with AI, though the tools that suggest or generate source code for you have to be used wisely. 
+
+Programming requires patience and persistence, especially at the start of the learning process when nothing makes much sense. The rules for writing code seem confusing. There are all sorts of punctuation marks and symbols that have to be used carefully. Missing a colon or a comma, or messing up the indentation can lead to errors, depending on the language used. Over time, with enough practice, it does click into place.
+
+Like most beginners learning how to code online, I started by watching tutorials and solving problems in sets of programming exercises. When I got stuck on a problem, it was very tempting to turn to ChatGPT, which would easily help me jump to the right solution. These types of assistants are good at generating simple code, and some of them can even give you a complete answer just as you're describing it.
+
+I realized this when wrestling with the implementation of a particular function, and turned off GitHub Copilot's autocomplete feature in Visual Studio Code to stop myself from cheating.
+
+### Don't just copy and paste
+
+David Malan, a computer science professor at Harvard University teaching CS50, a popular introductory computer science course (that can be taken for free [online](https://pll.harvard.edu/course/cs50-introduction-computer-science)), agreed that AI can be a little too helpful sometimes. 
+
+To dissuade students from using tools like OpenAI's ChatGPT or Google's Bard to complete their assignments, teachers offered them an alternative: a virtual rubber duck. The CS50 duck is a coding chat-bot powered by GPT-4 but has guardrails in place to prevent students from [cheating](https://www.theregister.com/2022/08/19/copilot_github_students/).
+
+Rubber duck debugging, as you may be aware, [is a thing](https://medium.com/@arnoldcsubastil/the-psychology-behind-rubber-duck-debugging-f19141c70060) in software development: if you're stuck on some code, talking though the problem with some toy or other inanimate object can help you figure out the solution all by yourself. It's quite effective.
+
+The CS50 duck debugger is an homage to that: the bot has been primed to be friendly and supportive, it only responds to queries that are related to the course, and doesn't provide the answers to homework problems, Malan told *The Register*. 
+
+"Our policy at the course's start is that students may not use third-party software like ChatGPT and Copilot; they simply tend to be too helpful, all too willing to provide students with solutions outright rather than guide them toward them, as a good teacher might. But students are allowed and encouraged to use CS50's own AI-based software, which has those pedagogical guardrails in place," he said.
+
+The CS50 duck was introduced last year, and the feedback has been mostly positive. Having a virtual tutor on hand means students can ask for help at any time they want. But like all AI models, it can make mistakes and isn't always accurate. Initial tests showed it was able to answer about 88 percent of questions related to the curriculum correctly. 
+
+The coding bot is useful for instructors, too; it gives them more time to help students in other areas beyond homework. In a research paper [[PDF](https://cs.harvard.edu/malan/publications/V1fp0567-liu.pdf)] analyzing the duck debugger's impact, teachers at Harvard said their experiment building a virtual AI coding assistant has paid off. They believe "generative AI [can] bolster student learning, not merely disrupt it," and are looking at ways the technology can be applied in other subjects.
+
+### Saving time with less Googling
+
+For what it's worth, my academic background is in physics and science journalism, and not computer science. I started learning how to code just before the latest generation of chat bots took off. Previously I would try to understand software concepts or fix bugs by, like many people, reading blog posts or searching for examples of similar code on sites like Stack Overflow. AI allows me to shortcut this process.
+
+Instead of sifting through lots of information to find solutions that best match my problem, I can now turn to a large language model for direct help. I'm learning so that I can better understand the technologies that others are using; these digital assistants get me up to speed faster than poring over multiple articles about, say, slices versus arrays, or leafing through other people's software projects.
+
+Machine-written code, however, isn't always useful, and can [lower the quality](https://devclass.com/2024/01/24/ai-assistance-is-leading-to-lower-code-quality-claim-researchers/) of a code base. If I copied and pasted an AI assistant's output into my source, it would often introduce new errors because it didn't fit with the rest of my program. Trying to fix these mistakes can be tricky, especially if you don't understand what has been generated. As a novice, it wasn't always clear whether the errors were because the code was just plain wrong or whether it was being used in the wrong context.
+
+"I think if someone wanted to learn to code [using the current] crop of AI tools, they should approach it with two goals: Take the time to learn to code enough to know what the tool is generating. [And] adopt the role of 'code reviewer' and study how to identify and improve bad code," Zed Shaw, a software developer and the author of [Learn Python the Hard Way](https://learnpythonthehardway.org/), told *The Register*. 
+
+Programmers should be able to spot errors in machine-made code and shouldn't trust the bots completely. They should certainly be on the look out for obvious copyrighted code slipping into the models' output.
+
+"The fact that ChatGPT gives solutions quicker wrapped in reassuring phrases like 'I think this should solve your problem..." make it so we turn off our critical thinking, and we don't question its solutions as carefully as we should," said Charles Severance, a computer science professor at the University of Michigan's School of Information, who has [released](https://online.dr-chuck.com/) free coding courses online.
+
+"Always assume that ChatGPT is a less-skilled programmer than you are. The only safe way to use AI tools is when you are confident the solution that it produces is correct," he added. 
+
+### You need to know what you're doing
+
+To use these tools effectively, you must understand your problem and explain it clearly in your prompt. The quality of the code returned in the output depends on the way you frame your questions in the input, Inbal Shani, chief product officer at GitHub, told *The Register*.
+
+Users should interact with [GitHub Copilot](https://www.theregister.com/2023/03/22/github_copilot_learns_new_tricks/) as if they were talking to a colleague, she suggested. "The more detail you give that assistant that sits next to you about what your intention is, where you're going for the problem you're trying to solve, the better response you'll get because the AI gets more context. It knows how to do a more detailed search to find that right piece of code or recommend the right testing infrastructure for you," she said. 
+
+> The programming languages we use have become more aligned with human language; chat tools are just the next step in this evolution
+
+Phillip Compeau, an associate teaching professor at Carnegie Mellon University, who created the [Rosalind](https://rosalind.info/problems/locations/) platform and [Programming for Lovers](https://programmingforlovers.com/) tutorial, for people interested in computational biology, agreed.
+
+When he's teaching students who are beginning to code, he encourages them to stay away from AI. But for more advanced students who know the basics, he teaches them how to use the technology to be more productive and efficient in their work.
+
+"One of the things that I show students is that the best way to get a clean, correct answer from an AI tool generating code is if you are able to clearly and correctly specify exactly what the computer needs to do. That is the very definition of programming a computer, and over time, the programming languages we use have become more aligned with human language; chat tools are just the next step in this evolution," he told *The Register*. 
+
+Figuring out what you want your program to do, how it should work, and where it's gone wrong, is crucial in coding. Learners can only build these core skills over time with consistent practice. You can't skip this process by relying on AI if you want to be a competent software developer. But if you use it wisely, you can improve quickly and become a good programmer - and maybe it'll even be fun. ®

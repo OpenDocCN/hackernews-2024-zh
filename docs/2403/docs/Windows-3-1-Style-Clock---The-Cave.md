@@ -1,0 +1,10 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:42:30
+-->
+
+# Windows 3.1 Style Clock – The Cave
+
+> 来源：[https://rmcretro.store/products/windows-3-1-style-clock](https://rmcretro.store/products/windows-3-1-style-clock)
+
+I still live in a Windows 3.1 world :) and I love the clock. It's clever, creative, and thoughtfully executed. The quality of the printing is great -- this is worthy of mounting on my wall. My main objection is that the movement of the clock itself is very noisy. I don't think it's poor quality of itself, but I think the metal plate of the clock face acts reverberates such that it amplifies the noise. The hands themselves are on-brand, but it's seriously distracting in my office. I've temporarily disconnected the battery, in the hope that I can find a replacement movement which is quieter. 5* for the clock itself, 2* for the sound, 5* for the shipping and customer experience.

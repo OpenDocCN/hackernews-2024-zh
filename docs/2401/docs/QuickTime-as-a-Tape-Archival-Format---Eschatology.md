@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:36
+-->
+
+# QuickTime as a Tape Archival Format – Eschatology
+
+> 来源：[https://eschatologist.net/blog/?p=409](https://eschatologist.net/blog/?p=409)
+
+On the [SIMH group](https://groups.io/g/simh/), [Al Kossow](https://bitsavers.org/) and others [have been discussing how `.tap` is a terrible archival container format](https://groups.io/g/simh/message/3722) that also has a bunch of problems for use in emulation and simulation of systems. This is a problem I’ve been thinking about for a while since I hired [Miëtek](https://mietek.io/) to implement SCSI tape support in MAME including the `.tap` format, and I had a sudden realization: There’s already a great format for representing sequential media, QuickTime!
+
+A lot of people think QuickTime is a “video format,” but that’s not really accurate. Video and audio playback are applications *atop* the QuickTime container format; the container format itself is a means of representing multiple typed *tracks* of time-based *media*, each of which may have their own representation in the form of *samples* interpreted according to their own CODECs.
+
+## QuickTime Media Structure at a High Level
+
+As an example, a QuickTime file containing a video with associated stereo audio and subtitles may have three tracks, each with their own timebase:
+
+1.  The video track, whose timebase is the number of frames per second, and whose *track media* is the CODEC metadata needed to decode its samples.
+2.  The audio track for the two audio channels, whose timebase is the number of samples per second. Its track media will be similar to that of the video, specifying the CODEC to use for the audio samples to decode.
+3.  The text track for the subtitles, whose timebase is probably derived from the video timebase, whose track media will specify things like the language and font of the subtitles, and whose samples consist of the text to present and the size, location, duration, and styling for that presentation.
+
+All of these are represented within a file as *atoms* which represent well-identified bags of data with arbitrary size and content, making it very easy to write general-purpose tooling and also to extend over time. (The last major extension to the low-level design was in the 1990s, to support 64-bit atom sizes, so it’s quite a stable format already.)
+
+## Mapping QuickTime to Data Tape
+
+Once you realize that the tracks themselves can be arbitrary, it starts to become clear how this format maps nicely to tape content: Since tapes themselves are linear, they’re fundamentally time-based.
+
+The actual content of a tape isn’t a pure stream of raw data, it’s a set of blocks of raw data between magnetic flux marks, with some gaps between — and thanks to media decay, those blocks can be good or bad. Usually these marks are used to organize tapes into files, but that’s not a guarantee; for both archival and emulation, it’s best to stick to the low-level representation and let applications impose the higher-level semantics.
+
+In this case, you’d have a “tape data” track whose track media describes the original medium (7-track, 9-track, etc.) and the interpretation of its samples. The samples themselves would be the marks and data blocks. And there’s even a native representation of tape gaps, in the form of non-contiguous samples.
+
+The format can also be leveraged to support random access *including writes*, since the intelligence for that can be in the “CODEC” for the “tape” track media, combined with the QuickTime format’s existing support for non-destructive edits. New data can be overlaid based on its “temporal” position, which should more or less accurately simulate how a rewritten tape would actually work, while still preserving the data that was just overwritten.
+
+Finally, QuickTime has a concept of “references” that can be used to implement things like tape files independent of (rather than inline with) the tape data itself. A catalog of block references, for example, could also be stored with the tape data’s track media to indicate the block extents for individual files on tape, thus allowing direct access by tooling without having to stream through the entire file.
+
+## Implementation
+
+Since QuickTime movie files are a moderately complex structure atop a simple base, it’s important to have a reasonable API to work with both the low-level atom structures as well as the higher-level constructs like tracks, track media, sample chunks and samples. Fortunately there already exists at least one Open Source library allowing this, [QTFileLib](https://github.com/macosforge/dss/tree/master/QTFileLib) from the [Darwin Streaming Server](https://github.com/macosforge/dss) that Apple made Open Source in 1999.
+
+Darwin Streaming Server as a whole and its QTFileLib component are written in quite straightforward “C with Classes”-style C++, and QTFileLib has an API surface representing all of the major low-level and application-level concepts of the file format. As a side effect of the implementation of its read support, it also has a lot of the API necessary for creating and wiring together QuickTime data structures for creating files, just not support for writing it all out. Structurally that should be straightforward to add. It even looks straightforward to port to plain C, if that’s desired.

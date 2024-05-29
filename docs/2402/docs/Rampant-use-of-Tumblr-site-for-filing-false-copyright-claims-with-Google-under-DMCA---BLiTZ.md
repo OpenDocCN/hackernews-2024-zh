@@ -1,0 +1,58 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:50
+-->
+
+# Rampant use of Tumblr site for filing false copyright claims with Google under DMCA - BLiTZ
+
+> 来源：[https://www.weeklyblitz.net/featured/rampant-use-of-tumblr-site-for-filing-false-copyright-claims-with-google-under-dmca/](https://www.weeklyblitz.net/featured/rampant-use-of-tumblr-site-for-filing-false-copyright-claims-with-google-under-dmca/)
+
+Various entities, including organized crime rackets, criminals, scammers, fraudsters and even members of terrorist groups are randomly taking services of ‘Reputation Management’ firms in getting existing content links from Google search engine removed by filing false copyright claim under the [US Digital Millennium Copyright Act](https://www.google.com/support/answer/1386831) (DMCA), while these firms use [Tumblr](https://www.tumblr.com/) for creating back-dated posts on this site for their attempted copyright claims. Everyday, hundreds of such false copyright claims are being filed with Google by ‘Reputation Management’ firms thus dodging algorithms or Google’s bots by presenting fake references to back-dated Tumblr posts.
+
+We found on Tumblr a notice [stating](https://www.tumblr.com/dmca): “Have your copyrighted works been posted on Tumblr without your permission? Sorry about that. Please complete the form below to submit a copyright claim and we’ll look into it”.
+
+In the next paragraph, Tumblr says: “Also, this isn’t the right way to tell us about possible violations of our Community Guidelines or to submit other legal claims. Visit our Help Center to learn about those issues”.
+
+On February 1, 2024, Tumblr in a notice [said](https://www.tumblr.com/abuse/copyright): “As a global platform for creativity and self-expression, Tumblr is deeply committed to supporting and protecting freedom of speech. At the same time, we draw lines around a few narrowly defined but deeply important categories of content and behavior that jeopardize our users, threaten our infrastructure, and damage our community. For more information on how we identify content and review reports, and the actions we may take in response, see [here](https://help.tumblr.com/hc/en-us/articles/360011799473-Content-moderation-on-Tumblr)”.
+
+It may be mentioned here that Tumblr is a free micro blog platform that allows users to post content to personal blogs online. The company was founded in 2007 and acquired by Yahoo in 2013\. Today, Tumblr hosts 277 million blogs and serves content to more than 500 million visitors. Because of its popularity, blogs hosted on Tumblr tend to rank highly in search engines, especially if they include specific keywords like an individual’s name. Tumblr offers an excellent service and gives users an easy way to publish their ideas and develop a following. On some occasions however, individuals misuse Tumblr by posting negative, false, copyrighted, or defamatory information on the Internet. If this has happened to you, here are several ways to remove Tumblr posts.
+
+According to our own investigations it has been revealed, whenever anyone looks for getting reports or articles removed from the Google search engine, they just copy the original entire content from the targeted site and republish it on Tumblr giving a backdate to establish their copyright claims by providing links to their backdated post on Tumblr.
+
+We have found, individuals involved in visa scams and connections with controversial citizenship and passport selling ventures of Dominica and other Caribbean island nations, have been attempting to get news links removed from Google search by employing ‘Reputation Management Firms’ through pressing fictitious copyright claims under the under the US Digital Millennium Copyright Act.
+
+While [searching information](https://www.weeklyblitz.net/featured/thousands-of-bangladesh-nationals-hold-secret-passports/) on Danhong “Jean” Chen (Jean Danhong Chen, age 54), alias Maria Sofia Taylor and her business partner Jianyun “Tony” Ye (Tony Jianyun Ye, age 51), the Google search result says: “In response to multiple complaints that we received under the [US Digital Millennium Copyright Act](https://www.google.com/support/answer/1386831), we have removed 8 results from this page. If you wish, you may read the DMCA complaints that caused the removals at LumenDatabase.org: [Complaint](https://lumendatabase.org/notices/36055573), [Complaint](https://lumendatabase.org/notices/30206862)”.
+
+According to the [US Department of Justice](https://www.justice.gov/usao-ndca/pr/owner-south-bay-law-firm-and-office-manager-charged-committing-large-scale-immigration) (DoJ) Danhong “Jean” Chen (54), alias Maria Sofia Taylor and her business partner Jianyun “Tony” Ye (51) “submitted to the United States Citizenship and Immigration Services (USCIS) fraudulent documents that contained false signatures and falsely described how applicants would qualify for the EB-5 program”. They were charged under the US penal codes on allegations of visa fraud, obstruction of Justice, and aggravated identity theft.
+
+Immediately after completion of [investigation](https://www.sec.gov/files/litigation/complaints/2018/comp24319.pdf) by the [Securities and Exchange Commission](https://www.sec.gov/files/secondamendcomplaint18-cv-06371robinson.pdf) (SEC) and  before being indicted by the US court, Danhong “Jean Chan (54) fled the United States and became a naturalized citizen of Dominica in October 2018\. She might have used a different name – Maria Sofia Taylor while buying Dominica citizenship.
+
+The Cases of abuse of Tumblr by organized crime rackets, criminals, scammers, fraudsters and even members of terrorist groups are huge. According to [Samaa TV](https://www.samaa.tv/208738150-tumblr-removes-malicious-posts-by-conman-gaurav-srivastava-after-outcry-by-journalists), an Indian businessman named Gaurav Srivastava used Tumblr’s backdating function to create posts that appeared to be from an earlier date, then used these posts as the basis for copyright claim to manipulate Google results for his name.
+
+Tumblr said that the blogs and their posts were removed “for violating community guidelines” after they were used in an attempt to remove factual stories about the businessman, who abused the name of American secret service Central Intelligence Agency (CIA) to defraud a Dutch oil trader. The complex, international fraud carried out by Srivastava is the subject of increasing media interest after other allegations about Srivastava’s history of fraud came to light.
+
+According to an investigation, Tumblr accounts linked to Gaurav Srivastava lied to Google to get two articles de-indexed and removed from Google’s search results by claiming that the original investigative stories were published on Tumblr and not on the journalistic platforms.
+
+According to legal complaint repository the Lumen Database, complaints were made to Google citing the Digital Millennium Copyright Act (DMCA). The complaints claimed that the stories exposing the fraud and deceit of Gaurav Srivastava on how he cheated a Dutch oil trader were a copyright violation of the stories published on Tumblr site.
+
+Gaurav Srivastava has a well-known history of using false copyright claims to shut down fact-based coverage of his malicious activities. After critical coverage is published, he copies the work to a new anonymous blog with no post history (often on sites like Tumblr or Medium), backdates the post, and files a complaint to Google under DMCA.
+
+The parent company of Tumblr, Automattic, confirmed in a statement their assessment that the blogs were set up to raise fake DMCA claims – by people linked to Gaurav Srivastava – and have been “removed from Tumblr for violating our Community Guidelines”.
+
+The statement added: “Tumblr and Automattic take legitimate copyright protection very seriously. We take great care to protect our users from fraudulent or otherwise invalid takedown notices, and similarly we have a zero-tolerance policy for blogs using our services to abuse the DMCA.”
+
+Gaurav Srivastava first targeted Project Brazen, a US-based investigative journalism outlet run by [Pulitzer Prize-winning authors Bradley Hope](https://whalehunting.projectbrazen.com/the-old-im-a-secret-spy-con/,%20https:/twitter.com/brazenFM/status/1722563387983351948) and Tom Wright, in their original story about him, which contained their own [original research and interviews.](https://www.gripeo.com/gaurav-and-sharon-srivastava-family-foundation/)
+
+Tumblr also confirmed that it had deleted the post published on its site used to raise a malicious claim against the Project Brazen investigation into Gaurav Srivastava’s fraud. Tumblr said: “Our team has reviewed EarlybirdtimeTumblr.
+
+This blog has also been removed from Tumblr for violating Community Guidelines. Both Tumblr and Automatic take copyright protection very seriously. We will continue to manually investigate any reports of Tumblr blogs being used to publish content that is mentioned in these fraudulent takedown notices”.
+
+Former Wall Street Journal reporters Bradley Hope, a Pulitzer Prize winner, and Tom Wright, a Pulitzer Prize nominee, revealed that Srivastava used a creative lie to complain to Google that the award-winning investigative journalism site had stolen the contents of story on Srivastava from another blog. By using Google’s copyright policy to his advantage, Srivastava used a fraudulent technique to get the story on himself de-indexed by setting up a fake Tumblr account and publishing the same content to claim it as his own – and then claimed copyright.
+
+One of the reporters on the investigative story, Soobin Kim, tweeted: “Our @WhaleHunting story was removed from Google’s indexes due to copyright complaints. The complaints, saved on @lumendatabase, claim that we copied a backdated blog post, all content of which was lifted from our story. This is how fraudsters curate their online reputation”.
+
+False copyright claims against Blitz contents
+
+In February 2023, after [learning](https://www.weeklyblitz.net/news/serious-allegations-against-josh-adler-and-convrtx/) about a [notorious fraudster](https://www.weeklyblitz.net/international/uae-mecca-of-criminals-terrorists-gangsters-scammers/), who is patronized by the [World Economic Forum](https://www.weeklyblitz.net/international/world-economic-forum-patronizes-terrorist-kerry-adler/) (WEF), [Atlantic Council](https://www.weeklyblitz.net/news/atlantic-council-promotes-fraudster-terrorist-kerry-adler/) and even Canadian Prime Minister [Justin Trudeau](https://www.weeklyblitz.net/news/kerry-adler-and-skypower-exosed/) –  as we began exposing his activities, this fraudster first attempted to get the items removed from Blitz by offering us bribes. Then he switched to an alternative option by engaging one or more reputation management firms which started filing false copyright claims with Google by presenting evidence from Tumblr posts. Although Google had initially deindexed some of the Blitz links being misled by the false copyright claims, we Blitz lodged counterclaim, eventually all of those deindexed links were back on Google search engine. But by that time, the fraudster was able to scam more people.
+
+With these proven cases of using Tumblr for filing false copyright claims, either Google should totally blacklist Tumblr by flagging it as an untrustworthy source or the authorities concerned in the United States should impose heavy penalties on Tumblr for facilitating false copyright claimants. The third option is – Tumblr should make certain technical changes on its site, where no one can post any content by giving it backdate.

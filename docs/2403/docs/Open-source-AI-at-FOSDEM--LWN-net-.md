@@ -1,0 +1,78 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:35
+-->
+
+# Open-source AI at FOSDEM [LWN.net]
+
+> 来源：[https://lwn.net/Articles/961868/](https://lwn.net/Articles/961868/)
+
+| **Please consider subscribing to LWN**Subscriptions are the lifeblood of LWN.net. If you appreciate this content and would like to see more of it, your subscription will help to ensure that LWN continues to thrive. Please visit [this page](/subscribe/) to join up and keep LWN on the net. |
+
+February 15, 2024
+
+This article was contributed by Koen Vervloesem
+
+* * *
+
+[FOSDEM](/Archives/ConferenceByYear/#2024-FOSDEM)
+
+At [FOSDEM 2024](https://fosdem.org/2024/) in Brussels, the [AI and Machine Learning devroom](https://fosdem.org/2024/schedule/track/ai_ml/) hosted several talks about open-source AI models. With talks about a definition of open-source AI, "ethical" restrictions in licenses, and the importance of open data sets, in particular for non-English languages, the devroom provided an overview of the current state of the domain.
+
+An AI model is a program that has been trained on a data set to recognize patterns, mimic the learned data in its output, or to make some kinds of decisions autonomously. Most notably, large language models (LLMs), which are extensive neural networks capable of generating human-like text, were a recurrent subject at FOSDEM. This report comes from the live-streams of the talks, as the flu unfortunately prevented me from attending FOSDEM in-person this year.
+
+Characteristically, an LLM incorporates up to several hundred billion "weights", which are floating-point numbers that are also referred to as "parameters". Companies developing large language models are not inclined to release their models and the code to run them as open source, since training the models requires significant computing power and financial investment. However, that doesn't stop various organizations from developing open-source LLMs. Last year, LWN looked at [open-source language models](/Articles/931853/).
+
+#### License restrictions
+
+Niharika Singhal, project manager at the [Free Software Foundation Europe](https://fsfe.org) (FSFE), talked about the trend of [imposing ethical restrictions on AI models through licensing](https://fosdem.org/2024/schedule/event/fosdem-2024-2750-codes-bound-by-ethics-the-rising-tide-of-non-free-software-licenses-in-ai-ecosystems/). Singhal provided several instances of added restrictions of that sort, related to field of endeavor, behavior, or commercial practices. One is the [Hippocratic License](https://firstdonoharm.dev), which restricts the licensee from executing numerous actions deemed harmful based on various "<q>international agreements and authorities on fundamental human rights norms</q>". There's also the [Llama 2 v2 use policy](https://ai.meta.com/llama/use-policy/), which prohibits use of the LLM for violent or terrorist activities, as well as "any other criminal activity". Similarly, BigScience's [OpenRAIL-M License](https://bigscience.huggingface.co/blog/bigscience-openrail-m) imposes restrictions on the use of models for various harmful activities.
+
+According to Singhal, these additional restrictions have serious implications: "They create barriers against the use and reuse of the models, which also makes it more difficult to adapt and improve the models." She believes that to preserve "openness" in AI, the licenses of AI models must be interoperable with free-software licenses, which isn't the case with these restrictions. She concludes that licenses can't be a substitute for regulation: "Restrictive practices to comply with ethical rules shouldn't be in licenses: these belong to the domain of regulations."
+
+#### A definition of open-source AI
+
+Stefano Maffulli, executive director of the [Open Source Initiative](https://opensource.org) (OSI), described OSI's efforts to [define open-source AI](https://fosdem.org/2024/schedule/event/fosdem-2024-2805-moving-a-step-closer-to-defining-open-source-ai/). In 2022, the OSI started contacting researchers, other "open" organizations, technology companies, and civil-rights organizations, to ask them about their ideas for an open-source AI system.
+
+As a general principle, Maffulli maintains that the [GNU Manifesto](https://www.gnu.org/gnu/manifesto.html)'s Golden Rule should be applicable to AI: "If I like an AI system, I must be free to share it with other people." For an AI system to be categorized as open-source, it needs to grant us adaptations of the four basic freedoms applicable to open-source software: to use, study, modify, and share.
+
+> We need to be able to use the system for any purpose and without having to ask for permission. We need to be able to study how the system works and inspect its components. We need to be able to modify the system to change its recommendations, predictions, or decisions to adapt to our needs. And we need to be able to share the system with or without modifications, for any purpose.
+
+According to Maffulli, a pertinent question to pose in this context is: "What is the preferred form to make modifications to an AI system?" To get an answer to this question, OSI has created small working groups to analyze some popular AI systems. "We're starting with [Llama 2](https://llama.meta.com) and [Pythia](https://www.eleuther.ai/papers-blog/pythia-a-suite-for-analyzing-large-language-modelsacross-training-and-scaling), two LLMs. After this, we'll repeat the same exercise with [BLOOM](https://bigscience.huggingface.co/blog/bloom), [OpenCV](https://opencv.org), [Mistral](https://docs.mistral.ai), [Phi-2](https://www.microsoft.com/en-us/research/blog/phi-2-the-surprising-power-of-small-language-models/), and [OLMo](https://allenai.org/olmo)." For each of these AI systems, the working group will identify the requirements to guarantee the four basic freedoms. For example, understanding why, given an input, you get a particular output, is necessary to being able to study an AI system.
+
+In 2024, the OSI will release a new [draft of the open-source AI definition](https://opensource.org/deepdive/drafts/) monthly, based on bi-weekly virtual public town halls. "Our goal is to have a 1.0 release by the end of October", Maffulli said. Everyone is welcome to partake in the discussions regarding the drafts in OSI's [public forum](https://discuss.opensource.org).
+
+According to Maffulli, there can't be a spectrum when it comes to open-source AI: either an AI system is open source, or it isn't. Nevertheless, many players within the domain of large language models misuse the term "open source". For example, one of the most popular "open" LLMs is Meta's Llama 2\. When Meta's Yann LeCun [announced this model on Twitter](https://twitter.com/ylecun/status/1681336284453781505) last year, he wrote: "<q>This is huge: Llama-v2 is open source, with a license that authorizes commercial use!</q>". However, the [Llama 2 license](https://github.com/facebookresearch/llama/blob/main/LICENSE) has limitations on its commercial use that are based on the number of active users. It also forbids using Meta's model to improve other LLMs. Both limitations are at odds with the OSI's Open Source Definition.
+
+#### Open data sets
+
+Julie Hunter, a research engineer at the French software company [Linagora](https://www.linagora.com), discussed [building open-source language models](https://fosdem.org/2024/schedule/event/fosdem-2024-2591-building-open-source-language-models/). According to Hunter, the LLMs developed by Meta, as well as those by [MosaicML](https://www.mosaicml.com) and the [Technology Innovation Institute](https://www.tii.ae/)'s Falcon models, are so-called "open-weight models": the weights of the neural networks are published. This allows a choice of how the model is run and the model can be fine-tuned by adapting the weights with additional training. However, the weights don't explain why something works or doesn't work. "Without access to the data the model is trained on, it leaves a lot open to guesswork", Hunter said.
+
+There has been a push for open training data and, as a result, a lot of data sets have been added to web sites like the one run by [Hugging Face](https://huggingface.co). "Anyone can train their new LLM on these data sets", Hunter said. "However, there are several problems with many of these data sets. They are often crawled from the web, packed with personal information, toxic language, and low-quality sentences. Furthermore, they are predominantly English."
+
+The [OpenLLM France](https://www.openllm-france.fr) consortium aims to build open-source AI models and technologies for the French language. For its first model, Claire, the main goal was to create a French data set with traceable licenses. The [Claire French Dialogue Dataset](https://arxiv.org/abs/2311.16840) is a corpus containing 140-million words from transcripts and stage plays in French, as well as from parliamentary discussions. This data set, [Claire-Dialogue-French-0.1](https://huggingface.co/datasets/OpenLLM-France/Claire-Dialogue-French-0.1), is mostly using the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, though some parts have other (traceable) licenses.
+
+The data set was used to fine-tune an open-weights model, [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b). "The main purpose of this approach was to evaluate the impact of a good data set on the performance of the model", Hunter said. Michel-Marie Maudet, Linagora's general manager, added that the company's idea of developing a language model based on a small and high-quality corpus of data was inspired by Microsoft Research's paper "[Textbooks Are All You Need](https://arxiv.org/abs/2306.11644)". He continued:
+
+> The quality of a data set is more important than its quantity. A small and high-quality corpus results in a compact, specialized model with superior control over its responses in terms of interpretability and reliability. It also makes training faster, which allows us to continuously update it.
+
+In October 2023, the model [Claire-7B-0.1](https://huggingface.co/OpenLLM-France/Claire-7B-0.1) was published on Hugging Face. The [code to train the model](https://github.com/OpenLLM-France/Lit-Claire) was also made public, under the AGPLv3\.
+
+#### Beyond English
+
+OpenLLM France is now working on a 100% open-source language model, Lucie, slated for release in April 2024\. Maudet explained: "This model is trained with 100% open-source data sets of French, English, German, Spanish, and Italian texts, as well as some computer code." The data sets include the archives of the French national library and academic publications with open access.
+
+Maudet's [talk](https://fosdem.org/2024/schedule/event/fosdem-2024-2629-from-openllm-france-to-openllm-europe-paving-the-way-to-sovereign-and-open-source-ai/) presented some details about OpenLLM France and its mission. The community, which started in July 2023, boasts over 450 active members, ranging from academic institutions to companies. Why is a France-focused LLM consortium required? Maudet explained that an exploration into the geographical distribution of LLMs with more than a billion parameters since 2018 reveals that nearly 70% of them are created in North America, and only 7.5% in Europe. Upon examining the language distribution in Llama 2's training data, the figures seem even more dismal: "While English comprises almost 90% of the data, European languages such as German and French account for just 0.17% and 0.16% of the data, respectively." Because European languages are underrepresented in their data sets, models like Llama 2 exhibit subpar performance in these languages.
+
+There have been similar initiatives in other parts of Europe to build a European-language open-source LLM, such as [LAION](https://laion.ai) and [openGPT-X](https://opengpt-x.de/en/) in Germany and [Fauno](https://github.com/RSTLess-research/Fauno-Italian-LLM) in Italy. At FOSDEM, Maudet announced that OpenLLM France is renaming itself to [OpenLLM Europe](http://openllm-europe.org) (though the web site is not available yet). "Our mission is to develop an open-source LLM for each European language."
+
+#### Conclusion
+
+The fact that organizations call their AI systems "open source" even if their license is at odds with the four basic freedoms is a sign that we really need to have a clear definition of open-source AI. Hopefully, OSI's definition—expected by the end of 2024—will also help stop the proliferation of licenses with various well-meant but detrimental ethical restrictions. Beyond that, it would be beneficial for a consortium such as OpenLLM Europe to attract enough members to build powerful open-source LLMs beyond English.
+
+* * *
+
+(
+
+[Log in](https://lwn.net/Login/?target=/Articles/961868/)
+
+to post comments)

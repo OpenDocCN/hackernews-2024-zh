@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:28:45
+-->
+
+# Crypto firm Gemini to pay over $1 billion back to customers in settlement - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/29/24086501/crypto-firm-gemini-ny-regulator-settlement](https://www.theverge.com/2024/2/29/24086501/crypto-firm-gemini-ny-regulator-settlement)
+
+The cryptocurrency exchange Gemini has [promised to return $1.1 billion](https://www.dfs.ny.gov/reports_and_publications/press_releases/pr202402282) to customers as part of [a settlement it reached](https://www.dfs.ny.gov/system/files/documents/2024/02/ea20240228_co_geminitrustcompanyllc.pdf) with New York’s Department of Financial Services (NYDFS). Gemini will also have to pay $37 million to the NYDFS “for significant failures that threatened the safety and soundness of the company.”
+
+The NYDFS claims Gemini, which is owned by twins Tyler and Cameron Winklevoss, had “compliance, management, and internal audit issues” when it came to managing its Earn program. Introduced in 2021, Gemini’s Earn program let customers loan their cryptocurrency to the crypto brokerage Genesis Global Capital while receiving interest.
+
+However, the NYDFS says Genesis “was not fully vetted nor sufficiently monitored by Gemini.” When [Genesis defaulted on loans](/2022/11/16/23462180/crypto-genesis-brokerage-suspends-withdrawals-ftx-collapse) in November 2022 and [filed for bankruptcy](/2023/1/20/23472388/genesis-lending-digital-currency-group-bankrupt-ftx-crypto-winter) last year, around 200,000 Gemini Earn customers were unable to access $1.1 billion (valued at around $1.8 billion today) in funds.
+
+In [an update published on its website](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fwww.gemini.com%2Fearn), Gemini says that if the settlement is approved, it will result in “all Earn users receiving 100% of their digital assets back in kind.” The company says customers can expect to receive 97 percent of assets in around two months, while the remainder could arrive over the next year.
+
+“We’ve worked tirelessly over the past 15 months to advocate for Earn users and seek the return of their assets,” Gemini says. “Being able to return assets on a coin-for-coin basis to our customers was critical for us.”
+
+[Gemini is still facing a lawsuit](/2023/10/19/23923707/new-york-attorney-general-crypto-lawsuit-gemini-genesis-dcg-fraud) from New York Attorney General Letitia James that alleges Gemini, Genesis, and Genesis parent company Digital Currency Group “lied to investors and tried to hide more than a billion dollars in losses.” However, [James expanded the lawsuit](https://www.cnbc.com/2024/02/09/ny-attorney-general-expands-crypto-lawsuit-sees-3-billion-fraud-.html) earlier this month and now claims the three companies’ schemes resulted in losses amounting to $3 billion.

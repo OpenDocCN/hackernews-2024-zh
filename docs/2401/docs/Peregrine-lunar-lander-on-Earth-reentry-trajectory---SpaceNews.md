@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:46:06
+-->
+
+# Peregrine lunar lander on Earth reentry trajectory - SpaceNews
+
+> 来源：[https://spacenews.com/peregrine-lunar-lander-on-earth-reentry-trajectory/](https://spacenews.com/peregrine-lunar-lander-on-earth-reentry-trajectory/)
+
+*Updated 11 p.m. Eastern.*
+
+WASHINGTON — Astrobotic says its Peregrine spacecraft, unable to land on the moon because of a propellant leak, will instead reenter the Earth’s atmosphere in the coming days.
+
+In [an update posted on social media Jan. 13](https://twitter.com/astrobotic/status/1746260132269379995), Astrobotic said it has been monitoring the trajectory of Peregrine over the last several days. Its Vulcan Centaur launch placed it on a highly elliptical orbit that took out beyond the orbit of the moon, with the original intent of swinging back around the Earth before going out to, and entering orbit around, the moon.
+
+“Our analysis efforts have been challenging due to the propellant leak, which have been adding uncertainty to predictions of the vehicle’s trajectory,” the company said in a statement. “Our latest assessment now shows the spacecraft is on a path towards Earth, where it will likely burn up in the Earth’s atmosphere.”
+
+The company did not disclose a time or location for the reentry. Independent analysts, using available tracking data, estimate a reentry late Jan. 18 near Australia.
+
+Astrobotic confirmed in a [statement](https://www.astrobotic.com/update-17-for-peregrine-mission-one/) late Jan. 14 that it would allow the spacecraft to reenter rather than attempt a maneuver with its remaining fuel.
+
+“Working with NASA, we received inputs from the space community and the U.S. Government on the most safe and responsible course of action to end Peregrine’s mission. The recommendation we have received is to let the spacecraft burn up during re-entry in Earth’s atmosphere,” the company stated. “As such, we have made the difficult decision to maintain the current spacecraft’s trajectory to re-enter the Earth’s atmosphere. By responsibly ending Peregrine’s mission, we are doing our part to preserve the future of cislunar space for all.”
+
+Peregrine [suffered a propellant leak hours after its launch](https://spacenews.com/peregrine-lander-suffers-anomaly-after-launch/) Jan. 8\. The company believes that a valve in a helium pressurization system failed to close after an initial test, causing an overpressurization of an oxidizer tank. That ruptured the tank, creating the leak.
+
+While Astrobotic initially said estimated the spacecraft would run out of propellant, and thus be unable to maintain the proper attitude for its solar panels to generate power, within a couple of days, the spacecraft continues to operate. The company said Jan. 11 [it had powered on 10 payloads on the spacecraft](https://spacenews.com/astrobotic-gets-payloads-working-on-ailing-peregrine-lander/), including four provided by NASA’s Commercial Lunar Payload Services (CLPS) program.
+
+“The propellant leak has slowed considerably to a point where it is no longer the teams’ top priority,” Astrobotic said in its Jan. 13 update. The company said in its Jan. 14 update that the spacecraft has enough propellant to maintain its attitude and “perform small maneuvers” through the end of the mission.
+
+NASA and Astrobotic announced Jan. 12 that they would hold a media briefing about the mission on Jan. 18.
+
+### *Related*

@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:47
+-->
+
+# Shutting down Artifact. We’ve made the decision to wind down… | by Artifact Team | Artifact News | Medium
+
+> 来源：[https://medium.com/artifact-news/shutting-down-artifact-1e70de46d419](https://medium.com/artifact-news/shutting-down-artifact-1e70de46d419)
+
+To our Artifact Users and Partners:
+
+We’ve made the decision to wind down operations of the Artifact app. We launched a year ago and since then we’ve been working tirelessly to build a great product. We have built something that a core group of users love, but we have concluded that the market opportunity isn’t big enough to warrant continued investment in this way. It’s easy for startups to ignore this reality, but often making the tough call earlier is better for everyone involved. The biggest opportunity cost is time working on newer, bigger and better things that have the ability to reach many millions of people. I am personally excited to continue building new things, though only time will tell what that might be. We live in an exciting time where artificial intelligence is changing just about everything we touch, and the opportunities for new ideas seem limitless.
+
+I am particularly proud of all the work our small team of 8 has accomplished. For instance, our app was recently named the everyday essential app of the year by the Google Play Store. I’ve gotten the pleasure of working with some of the most talented engineers and designers through this venture and they deserve an immense amount of respect and credit. While we will go our separate ways, we can look back fondly on what we’ve built.
+
+While we’ve made this decision, we wanted to make sure that we allowed the community time to adjust. So, today we’ve decided to slim down the app’s complexity and operations by removing the ability to add new comments and posts. This type of content requires a fair amount of moderation and oversight and we will not have the staff going forward to support these features. Your existing posts, however, will remain visible to you on your own profile self-view. In the meantime, Artifact will continue to operate the core news reading capability through the end of February.
+
+News and information remain critical areas for startup investment. We are at an existential moment where many publications are shutting down or struggling, local news has all but vanished, and larger publishers have fraught relationships with leading technology companies. My hope is that technology can find ways to preserve, support and grow these institutions and that these institutions find ways of leveraging the scale that things like AI can provide. I am certain there are bright minds working on ideas that will continue to surprise and delight us in all these areas. We are optimistic about the future and want to thank our community for being part of this adventure we call Artifact.
+
+Kevin Systrom
+
+CEO

@@ -1,0 +1,372 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:44:10
+-->
+
+# Xr0 Makes C Safer than Rust
+
+> 来源：[https://xr0.dev/safer](https://xr0.dev/safer)
+
+## Xr0 Makes C Safer than Rust
+
+There is a practical way to guarantee the safety of C programs at compile time, in the sense of no use-after-frees, no double frees, no buffer out-of-bounds reads/writes, no null pointer dereferences, no uses of uninitialised memory, no arithmetic overflows/underflows and, more generally, no undefined behaviour. The latest version of [Xr0](/) is an empirical demonstration of the validity of this method. Though very rough around the edges, Xr0 can already eliminate use-after-frees, double-frees, null pointer dereferences, the use of uninitialised memory and memory leaks for a limited subset of C89.
+
+The method is that of formalising and verifying the interfaces between functions. We shall argue that interface informality is the root of all unsafety. The remarkable safety guarantees that Rust provides are consequent to something much deeper than its ownership rules: Rust empowers programmers to formalise and verify the semantics of pointer usage at the interface boundary between functions. If interface formality is the fundamental determinant of safety, systems language design should focus directly on it rather than on any other criterion, including ownership. Xr0 shows how this can be done.
+
+### 0\. C is the world’s most important language.
+
+It is simple but expressive, practical but admitting of elegance (think of some of the pointer arithmetic in K&R); it is small, fast, and portable; it is the *lingua franca* of programming and the language of languages: C is the programmer’s working model for the computer. Good C programmers are, by definition, good programmers. The dominance of the C programming language is no accident and will continue for at least another [fifty years](https://www.paulgraham.com/hundred.html).
+
+### 1\. C’s safety issues are a big deal.
+
+This can be seen from the figures helpfully compiled by Alex Gaynor [here](https://alexgaynor.net/2020/may/27/science-on-memory-unsafety-and-security/). Something on the order of 65%–70% of safety-critical bugs in large C programs are a result of memory safety issues, especially use-after-frees and out-of-bounds reads/writes. This jaw-dropping number has been reproduced across Android and iOS, MacOS and Windows and Linux (in Ubuntu’s contributions to the kernel over a six-month period), and Chromium and Firefox.
+
+This why most attempts to improve on C fail. C is simple and gives the programmer control, and this is why C programmers love and use it. But it is this simplicity and control that makes it easy for programmers to introduce safety vulnerabilities. C, like the computer, does what you say, not what you mean. Attempts to fix C typically reduce the programmer’s control and abandon simplicity, making them non-starters for C programmers.
+
+C++ undermines simplicity and still has C’s safety issues.
+
+Java (and C#) undermine both simplicity and programmer control.
+
+Go preserves simplicity (the hardest thing to preserve) but reduces control by introducing garbage-collection (GC).
+
+### 3\. Rust is an amazing advance for systems programming.
+
+Rust is the first language that seriously addresses C’s safety issues without undermining programmer control. It shows how safety can in many respects be secured at compile time without GC. This is incredible. It may be the first systems language that makes C programmers hunger for more, even though they may be unsatisfied with Rust’s idiosyncrasies and complexity.
+
+### 4\. Rust is complex and limiting, so it will struggle to dislodge C.
+
+Although it is worthy of praise for opening our eyes to what is possible at compile time – indeed Rust may be thought of as the first mainstream triumph of formal methods – it has two weaknesses that make it unsuitable as an upgrade on C. First, Rust is complicated; at the very least, it is much more complicated than C. This isn’t our assessment: [listen here](https://youtu.be/A3AdN7U24iU?t=1624) to Carol Nichols, who sits on Rust’s [leadership council](https://www.rust-lang.org/governance/teams/leadership-council):
+
+> The big downside is Rust is more complex [than C], and we are trying, all the time, to lessen the learning curve through books and video courses and various learning materials…But we’re trying to express complex ideas such that the compiler can understand them and that does take more syntax and more complexity…
+
+G.H. Hardy said well that “Beauty is the first test: there is no permanent place in the world for ugly mathematics”. For [humble programmers](https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html) simplicity is the first test. Are we to accept that there is no simple solution to C’s problems?
+
+Secondly, no matter how effective it is, Rust forces the programmer to operate within a strict ownership model. To the extent that there are other ways to secure safety, this model cannot but feel Procrustean. Consider this example from [Rust’s documentation](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html):
+
+```
+let s1 = String::from("hello");
+let s2 = s1;
+
+println!("{}, world!", s1); 
+```
+
+The borrow checker rejects the use of `s1` in the print command because ownership of the string is transferred from `s1` to `s2` in the second assignment statement. Let us ask the question: Is there anything inherently unsafe about multiple (even mutable) references to an object? Has it been shown by some rock-solid argument that such stringent ownership semantics are the only way to guarantee compile-time safety? To believe that Rust is the conclusive answer to the safety problem one has to accept either that the above code is *inherently* unsafe, or that the conclusive answer to the problem involves forcing programmers to adopt patterns that do not reflect what is inherently safe and unsafe. Unless stringent ownership rules are the *sine qua non* of static safety, they cannot be the final answer to the safety problem.
+
+This raises the question of what constitutes the inherently safe and unsafe. Can we characterise safety in a way that is more useful and flexible than that given by strict ownership semantics?
+
+### 5\. Interface informality is the root cause of unsafety (The Xr0 Thesis).
+
+Trivial safety bugs are those that are recognisable from within a function:
+
+```
+void
+foo()
+{
+        int *p = malloc(1);
+        free(p);
+        free(p);
+} 
+```
+
+The double-free above is obvious, and it is easy to write automated tools that catch such obvious bugs. The real challenge comes in when we compose functions: is there a double-free beneath?
+
+```
+void
+bar(int *p);
+
+void
+foo()
+{
+        int *p = malloc(1);
+        bar(p);
+        free(p);
+} 
+```
+
+The answer is “it depends on `bar`’s body”. But what if `bar` is defined like this,
+
+```
+void
+baz(int *p);
+
+void
+bar(int *p)
+{
+        baz(p);
+} 
+```
+
+and `baz` in turn is defined in terms of `qux`?
+
+With informal interfaces between functions we have to examine the entire chain of calls that begin at any given function in our code to know if the function is safe. If this function is `main`, we have to examine all the functions in the program, which means we have no other way of assuring ourselves of the safety of the program than by examining every part of it manually.
+
+We submit, then, that code like
+
+```
+void
+bar(int *p);
+
+void
+foo()
+{
+        int *p = malloc(1);
+        bar(p);
+        free(p);
+} 
+```
+
+exhibits, much more strongly than the Rust example in the previous section, the nature of what is inherently unsafe. The only way to know whether `foo` is safe is to look inside `bar`’s body, because the interface at the boundary between `foo` and `bar` is informal. Granted, the prototype tells us that `bar` has no return value and that it takes a single `int`-pointer as its argument, but that is not enough for us to judge whether `foo` is safe. The prototype is informal with respect to the safety concern that we have, namely, whether or not `bar` frees its argument. And it is this interface informality that means we cannot know that `foo` is safe by looking at it alone, and more generally, that when we look at `main` we will not be able to know if it is safe by analysing it alone. In other words, this informality it means we cannot know that the program is safe. This is the heart of the safety problem in C.
+
+Ownership rules are one way to make such code safe. For example, if `bar` only takes an immutable reference to `p`, then there can be no double-free here.
+
+But note that another way to do so is to require that side-effects be annotated. Every function that frees a pointer (directly or indirectly) must then be annotated. Then if `bar` is written as
+
+```
+void
+bar(int *p) ~ [ free(p); ] /* i.e., bar has the side effect of freeing p */ 
+```
+
+we can detect the double-free in `foo` easily. If, on the other hand, `bar` has no such annotation, then `foo` cannot be wrong in freeing `p`.
+
+Even more importantly, note that to enforce ownership rules we would still need to annotate the interface boundary. In Rust the distinctions between a function that takes ownership, one that takes an immutable reference and one that takes a mutable reference are still expressed formally and syntactically in the function signatures. So though at first glance it may seem that Rust’s safety guarantees come from its ownership rules, the truth is they come from interface formality with respect to pointers.
+
+### 6\. Xr0 enables formalising and verifying of function interfaces.
+
+Focusing on interface formality directly gives us a more flexible criterion for safety and one that may be reconcilable with C’s design ethos of simplicity and programmer control. This what Xr0 does.
+
+The above annotation to `bar`, though simplified, is not mere theory. ^(Xr0 empowers you to annotate functions with their *safety semantics* and to verify that their bodies satisfy these annotations. All the nontrivial safety vulnerabilities in C programs are a result of the failure to propagate through the function interface the safety assumptions and implications on either side.)
+
+Recognising that this is the real problem, that safety semantics need to be propagated formally through the interfaces between functions, we become very hopeful. Because it turns out that building tools that enable the expression and propagation of these semantics is technically feasible. It’s a well-defined engineering problem, not an open-ended scientific question. It’s hard, but not like science. It’s hard for amateur compiler engineers like ourselves, and it requires time and determination, but it is by no means impossible.
+
+Let’s look at a few examples.
+
+#### Memory leaks
+
+These are easy. Whenever a call to `malloc` occurs within a function, we insist that either the function free the memory or that the function return the allocated memory and be annotated accordingly.
+
+Thus we permit
+
+```
+void
+foo()
+{
+        void *p = malloc(1);
+        free(p);
+} 
+```
+
+and
+
+```
+void *
+foo() ~ [ return malloc(1); ] /* i.e. returns memory that must be freed */
+{
+        void *p = malloc(1);
+        return p;
+} 
+```
+
+but forbid
+
+```
+void
+foo()
+{
+        void *p = malloc(1);
+        /* leak */
+} 
+```
+
+We also have to forbid deceptive annotations like this:
+
+```
+void *
+foo() ~ [ return malloc(1); ] /* annotation is inconsistent with the body */
+{
+        void *p = malloc(1);
+        free(p);
+        return p;
+} 
+```
+
+In order for this to apply generally, we also have to treat indirect calls to `malloc` like allocations in their own right:
+
+```
+void *
+foo() ~ [ return malloc(1); ]
+{
+        return malloc(1);
+}
+
+void
+bar()
+{
+        foo(); /* leak because foo calls malloc */
+}
+
+void
+baz()
+{
+        free(foo()); /* ok */
+}
+
+void *
+qux() ~ [ return foo(); ] /* i.e. returns what foo returns */
+{
+        return foo();
+}
+
+void *
+quux() ~ [ return malloc(1); ] /* transitivity: calls foo, which calls malloc */
+{
+        return foo();
+}
+
+void *
+corge() ~ [ return foo(); ] /* transitivity: calls malloc, which foo calls */
+{
+        return malloc(1);
+} 
+```
+
+Above the only problematic function is `bar`, which doesn’t account for `foo`’s side effect, as `baz` does. The remaining functions are all correct, as explained in their annotations.
+
+#### Initialisation of memory
+
+The basic principle here is we track a variable from the moment of its declaration and forbid it being used before a value is assigned to it. So
+
+```
+void
+foo()
+{
+        int i;
+        printf("%d", i);
+} 
+```
+
+is easily caught as a violation of this rule, whereas both of the below functions are permitted:
+
+```
+void
+foo()
+{
+        int i = 0;
+        printf("%d", i);
+}
+
+void
+bar()
+{
+        int i;
+        int *p = &i;
+        *p = 5;
+        printf("%d", i);
+} 
+```
+
+If we want to use a function to initialise a value, we must annotate ^(it accordingly:)
+
+```
+void
+init(int *p, int val) ~ [ *p = val; ] /* i.e. this assignment is a side effect */
+{
+        *p = val;
+}
+
+void
+foo()
+{
+        int i;
+        init(&i, 20);
+        printf("%d", i);
+} 
+```
+
+So the programmer’s power to declare uninitialised variables is in no sense curtailed. All Xr0 does is guarantee that when a variable is used it has already been given a value.
+
+What is most noteworthy in each of these cases is to see what interface formality is buying us. Now even if we have several layers of function calls, as in
+
+```
+void
+realinit(int *p, int val) ~ [ *p = val; ]
+{
+        *p = val;
+}
+
+void
+init(int *p, int val) ~ [ *p = val; ]
+{
+        realinit(p, val);
+}
+
+void
+foo()
+{
+        int i;
+        init(&i, 20);
+        printf("%d", i);
+} 
+```
+
+we can think about the safety of the functions separately. We can see that `realinit`’s annotation is correct because it reconciles with the assignment statement in its body. `init`’s is correct because the call in its body has the same side effect as `realinit`. And in `foo` we can see that `i` has a value when the `printf` statement is executed, by virtue of `init`’s annotation alone, without considering its body or its connection to `realinit`.
+
+#### Use-after-frees; double frees; null pointer dereferences
+
+Though these errors have slightly different semantics, the common malady is invalid usage of a pointer. Use-after-frees occur when we attempt to read from or write to a freed region of memory and double frees when we attempt to free a freed region. Null pointer dereferences occur when we attempt to dereference a pointer whose value is `NULL`.
+
+Thus Xr0 prevents these errors by tracking what is semantically possible for a given pointer and insisting that this information be propagated through function interfaces. So it tracks if a pointer can be freed (which is only true when it is returned from an allocation, directly or indirectly), whether it can be written to (i.e. whether it can be dereferenced as an lvalue), and whether it can be read from (i.e. whether it can be dereferenced as an rvalue).
+
+The above annotation for `init` was actually partially incorrect, because we didn’t express that `init` assumes its first parameter is a valid pointer, pointing at writeable memory. The full annotation is as follows:
+
+```
+void
+init(int *p, int val) ~ [
+        setup: p = .clump(sizeof(int));
+        *p = val; 
+]{
+        *p = val;
+} 
+```
+
+The details are not important for now. The point is that `init` has a precondition which allows Xr0 to reject any callers that don’t pass in pointers that can be dereferenced as lvalues, like the following ones:
+
+```
+void
+foo()
+{
+        init(NULL, 10);
+}
+
+void
+bar()
+{
+        int *p;
+        init(p, 20);
+}
+
+void
+baz()
+{
+        int *p;
+
+        p = malloc(1);
+        free(p);
+        init(p);
+} 
+```
+
+We act in much the same way when a function reads the value of a pointer, or intends to free it. This information must simply be propagated in annotations.
+
+#### Buffer overflows/underflows (NB: not implemented yet)
+
+The same principles demonstrated above can be used to eliminate all buffer out-of-bounds errors at compile time also. There’s no reason why we can’t track buffer sizes and propagate that information through annotations. But we’ve decided to refrain from showing our draft designs for such a feature in this post, because they haven’t been implemented yet.
+
+### 7\. Xr0 can go a long way, but it certainly has a long way to go.
+
+Indeed, there is quite a bit that we haven’t yet implemented. For example, Xr0 can’t presently verify loops and recursive functions, so these are being bridged with axiomatic statements. See the list of [limitations](/learn#limitations) to get a clear picture of the status of the project. Xr0 is promising, but it has a long way to go. We hope this post explains our confidence and the basic thrust of the approach we’re taking.
+
+Although our focus is on C, we hope these ideas will prove stimulating to language designers more generally. There’s no reason why these ideas couldn’t be used to prevent, for example, null pointer dereferencing in a language like Go, or buffer out-of-bounds errors in Rust.
+
+Do check out [the tutorial](/learn). You can try out Xr0 now from [the playground](/try).
+
+If you’re intrigued by Xr0 and would like to try it out on a real program, you should know that we’re forming a cohort for the first few users of Xr0. Participation in the cohort would come with support and prioritisation (within reason) of features in our [roadmap](/vision-roadmap) as we work towards making Xr0 useful for everyone. And best of all, it’ll be completely free. The only thing is there’s two of us, so we’ll have to keep the cohort fairly small. Reach out via email to [Claude](mailto:betz@xr0.dev) or [Amisi](mailto:a@xr0.dev) or DM us on the [Xr0 Zulip](https://xr0.zulipchat.com/) if you’re interested in this.

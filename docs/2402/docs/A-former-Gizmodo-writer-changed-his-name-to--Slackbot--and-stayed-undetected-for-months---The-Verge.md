@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:18:41
+-->
+
+# A former Gizmodo writer changed his name to ‘Slackbot’ and stayed undetected for months - The Verge
+
+> 来源：[https://www.theverge.com/2024/2/23/24081249/slack-slackbot-gizmodo-tom-mckay](https://www.theverge.com/2024/2/23/24081249/slack-slackbot-gizmodo-tom-mckay)
+
+Hiding on Slack isn’t all that hard, apparently; you just have to pretend you’re a bot. That’s what *IT Brew*’s Tom McKay did when he left *Gizmodo* in 2022, and he went undetected by the site’s management for months.
+
+In a post on X, McKay shared some screenshots of the new “Slackbot” persona he took on after he officially left *Gizmodo*. He also confirmed to *The Verge* that this silly prank really happened.
+
+If you’re not glued to Slack for most of the day like I am, then you might not know that Slackbot is the friendly robot that lives in the messaging service. It helps you do things like set reminders, find out your office’s Wi-Fi password, or let you know when you’ve been mentioned in a channel that you’re not a part of.
+
+When it was his time to leave, McKay swapped out his existing profile picture for one that resembled an angrier version of [Slackbot’s actual icon](https://slack.com/resources/using-slack/a-guide-to-slackbot-custom-responses). He also changed his name to “Slackbot.” You can’t just change your name on Slack to “Slackbot,” by the way, as the service will tell you that name’s already been taken. It *does* work if you use a special character that resembles one of the letters inside Slackbot, though, [such as replacing](https://x.com/fromdanielwei15/status/1760860498780622947?s=20) “o” with the Unicode character “о.”
+
+The move camouflaged McKay’s active Slack account for months, letting his account evade deletion. It also allowed him to send bot-like messages to his colleagues such as, “Slackbot fact of the day: Hi, I’m Slackbot! That’s a fact. Have a Slack-ly day!” My colleague Victoria Song, who previously worked at *Gizmodo*, isn’t all that surprised that this situation unfolded, and says, “As Tom’s former coworker and a [G/O Media survivor](/2023/7/8/23788162/gizmodo-g-o-media-ai-generated-articles-star-wars), this tracks.”
+
+Of course, not *every* company will fall for this trick, as some have security measures in place to prevent this kind of thing. But perhaps *Gizmodo*’s management thought that McKay’s account had already been deleted. Or maybe they just weren’t eagle-eyed enough to spot a duplicate Slackbot with a suspicious pair of brows.

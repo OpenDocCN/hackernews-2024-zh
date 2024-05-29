@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:26:32
+-->
+
+# What It’s Like to Use Apple’s Lockdown Mode | WIRED
+
+> 来源：[https://www.wired.com/story/apple-lockdown-mode-hands-on/](https://www.wired.com/story/apple-lockdown-mode-hands-on/)
+
+With the releases of iOS 16 and macOS Ventura in 2022, Apple debuted its Lockdown Mode for people at particular risk of being targeted by mercenary spyware. The feature is essentially a set of configurations for iOS and macOS that limit or block niceties like link previews in Messages and shared albums in Photos. Lockdown Mode also restricts your device's ability to accept unsolicited communications like FaceTime calls from phone numbers and accounts you've never called before. And this year, in iOS 17, Apple added additional improvements, meaning more safety-focused limitations. The company has consistently emphasized that Lockdown Mode is not meant for mainstream use by most people—but in a week of testing, it's surprisingly tolerable.
+
+Turning on Lockdown Mode simply involves confirming the setting change with your device PIN or a biometric authentication in “Privacy & Security” and then rebooting so the system can apply all the restrictions and limitations. Enabling Lockdown Mode is similar to changing the language of your device—the system needs to comprehensively adopt the new configuration and apply it everywhere. Once the reboot is complete, your device comes back on looking pretty much like normal.
+
+When malware developers target Apple devices, they tailor their attacks to exploit weaknesses in the complex features of iOS and macOS that facilitate communication and data sharing and handle different file types and information formats. So Lockdown Mode aims to make it much harder for commercial spyware vendors or other motivated and well-resourced actors to develop exploit chains that combine vulnerabilities in multiple iOS or macOS features to take control of devices. In practice, this means that it's harder and less fun to casually share—and especially receive—links, GIFs, and integrated elements in tools like Messages. And services like HomeKit are curtailed as well.
+
+For example, you can still use Apple Pay with Lockdown Mode, but its integrations with other apps are much less fluid. If someone sends you a payment through Apple Cash, you can receive it, but you'll only get a very general, unspecific message in Messages that something has occurred— you won't know that someone sent you money on Apple Cash. Links don't expand when you send and receive them, and if you send or receive a link to an image or other file, it will send as text-only—a gnarly, full URL with no preview and no hyperlink that would let you automatically open it in a browser.
+
+As part of Apple's most recent updates for Lockdown Mode in June, the company added support for Apple Watch and began automatically removing geolocation data from photos when you share them. The improvements also include a move to block devices by default from joining unsecured Wi-Fi networks and 2G cellular networks—a change meant to protect against malicious Wi-Fi networks and the mobile data surveillance tool known as [stingrays](https://www.wired.com/2016/05/hacker-lexicon-stingrays-spy-tool-government-tried-failed-hide/).
+
+This set of updates enabled “safer wireless connectivity defaults, media handling, media sharing defaults, sandboxing, and network security optimizations,” Apple said in a statement at the time. “Turning on Lockdown Mode further hardens device defenses and strictly limits certain functionalities, sharply reducing the attack surface for those who need additional protections.”

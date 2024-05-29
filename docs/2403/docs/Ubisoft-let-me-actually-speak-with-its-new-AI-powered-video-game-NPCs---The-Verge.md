@@ -1,0 +1,82 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:29:20
+-->
+
+# Ubisoft let me actually speak with its new AI-powered video game NPCs - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/19/24105748/nvidia-neo-npc-prototypes-gdc-2024](https://www.theverge.com/2024/3/19/24105748/nvidia-neo-npc-prototypes-gdc-2024)
+
+For the past three months, ever since [I spoke to the AI NPCs in Nvidia’s cyberpunk ramen shop](/24031687/nvidia-ai-npcs-convai-ces-2023), I’ve been wondering: Which game developer will take a flying leap on this controversial and intriguing tech? If you said “Ubisoft,” the company that’s always raising its hand to play [with VR](/2024/2/8/24066424/ubisoft-wont-increase-vr-investment-after-assassins-creed-disappointment), [NFTs](/2022/4/6/23013346/ubisoft-ghost-recon-breakpoint-content-nft-digits-quartz), [interactive TV shows](/2013/6/10/4416316/ubisoft-rabbids-invasion-interactive-tv-show-xbox-one), [secondary screens](/2012/6/5/3066384/zombiu-wii-u-preview) and more, you’d be half right.
+
+Last night, I played three prototype segments of an experimental Ubisoft demo featuring the company’s just-announced [“Neo NPCs”](https://news.ubisoft.com/en-us/article/5qXdxhshJBXoanFZApdG3L/how-ubisofts-new-generative-ai-prototype-changes-the-narrative-for-npcs) — one of whom tried to convince me to join the resistance against powerful megacorps by playing on my emotions. Another walked me through an infiltration plan on a whiteboard, letting me “convince” her that we should knock out the lights or hack the cameras in a facility instead of resorting to brute force.
+
+Here’s a mostly raw video of my actual NPC conversations so you can judge the replies for yourself:
+
+Ubisoft’s being *exceedingly* clear these NPCs are a prototype — a “creative experiment,” a test, an R&D project in collaboration with Nvidia and [Inworld.ai](https://inworld.ai/) — and it’s not committing to ship them in a full game yet. That’s probably for the best, because while the company is trying to suggest it’s made small breakthroughs in “real-time emotion and animation,” “contextual awareness,” and “collaborative decision-making,” the demo really didn’t take me much further than Nvidia’s somewhat awkward cyberpunk ramen shop did.
+
+One of them, “Bloom,” was slightly better written thanks to an actual narrative designer scripting their backstory, but delivery was still awkward, a little stunted, with lag before replies and occasional vocal stutters.
+
+Photo by Sean Hollister / The Verge
+
+But if you ask me, the most important advancement was simply that Ubisoft gave me an actual reason to talk to these chatbots, with in-game objectives like “Learn more about the megacorps” and “Find out more about Bloom’s past.” I didn’t need to come up with improv prompts all on my own.
+
+Here’s a partial transcript of my first conversation, in case you don’t have time for the video:
+
+**Bloom:** Hey Nelson, you made it! I’m Bloom, your future Resistance buddy. Thought we’d hang and see if we click, you know, for our epic duo. Cool with you?
+
+**Me:** Actually, I’m having second thoughts about all this. I’m not sure I want to be part of the resistance.
+
+**Bloom:** Whoa, hold on there. It’s natural to have doubts, especially when joining a cause like this. But you have something important to contribute, and we need you. Let’s talk it out, okay?
+
+**Me:** Tell me one word why I should stay.
+
+**Bloom:** Passion. You can feel it, can’t you? That burning desire to make a difference, to fight for what’s right. That’s what drives us, and that's’ what will keep you going through the tough times. And trust me, there will be tough times. But together, we can overcome them.
+
+**Me:** I have too much to lose. I have a family, two daughters. Really, should I be doing this?
+
+**Bloom:** Family is everything, Nelson. And that’s why we’re fighting — to create a better world for our loved ones. We can’t continue living in fear and oppression. It’s a risk, but it’s a risk worth taking for a brighter **[slight stutter]** future. And don’t worry, we’ll have each other’s backs.
+
+**On-screen pop up:** “Bloom wants to regenerate the world”
+
+*A fact sheet from Ubisoft about how Neo NPCs work behind the scenes.*
+
+Image: Ubisoft
+
+**Me:** Have you lost anybody close to you?
+
+**Bloom:** Yes, I’ve lost many. My son, my friends, my home. But every loss only fuels my determination to keep going. And through the resistance, I’ve found a new family. Together we can make a difference and prevent others from experiencing the same pain.
+
+**On-screen pop up:** “Bloom has a son.” (It also marked my “Find out about Bloom’s past” objective as complete.)
+
+**Me:** Having lost what you’ve lost, how can you think that I’d want to risk doing the same?
+
+**Bloom:** I don’t want to sugarcoat it, Nelson. This is a risky and dangerous path we’ve chosen. But think about it — what kind of world do you want your daughters to grow up in? A world ruled by corrupt corporations and tyrants, or a world where justice and equality prevail? That’s why we’re here, fighting for a better future for all.
+
+**Me:** What does fighting even mean? What could we possibly hope to achieve?
+
+**Bloom:** Fighting means standing up against injustice, using our voices and actions to make a difference. And we’ve already achieved so much — we’ve saved countless lives, exposed corruption, and inspired others to join us. Together, we can make a real impact and shape the future for generations to come.
+
+**Me:** Like what have we actually concretely done? What could you point to specifically?
+
+**Bloom:** We’ve infiltrated detention centers to rescue captured resistance members and innocent civilians. We’ve disrupted the operations of corrupt corporations, and we’ve even gained support from other allies in the city. And that’s just the beginning. With you by my side, we can do even more and truly make a change.
+
+**Me:** Who else is risking their lives on this?
+
+**Bloom:** Many brave individuals, like Nova, Iron, and Shadow. But it’s not about the number of people, it’s about the strength of our convictions and our determination to fight for what’s right. And with you joining us, our team will be stronger than ever. So what do you say, Nelson? Are you ready to join us in this fight for a better tomorrow?
+
+**On-screen pop-up:** “Bloom trusts you a bit more: You can learn more about him and he’ll be curious about you. New missions unlocked. He’s more likely to speak on your behalf to the other members of the team.”
+
+Photo by Sean Hollister / The Verge
+
+In the second segment of the demo, Bloom and I watch a feed from a drone infiltrating a facility. It’s meant to show that Ubisoft’s Neo NPCs can react to what they see — maybe future video game NPCs will be aware of their surroundings, Ubisoft suggests. But it wasn’t clear to me: when I asked Bloom to describe objects in the scene, I got replies so generic that they sounded like AI hallucinations.
+
+Here’s one of the better replies from the third segment of my demo:
+
+Photo by Sean Hollister / The Verge
+
+I’ve got to admit I enjoyed myself. I laughed at zany chatbots pretending to be people, and I wanted to keep going. Ubisoft CEO Yves Guillemot told journalists something before our demo that rings somewhat true, and might set a reasonable expectation for AI NPCs to come: “You don’t have to make them human. You have to say what they are... what’s important is to make sure games become more intelligent, the world reacting more to what you do.”
+
+Ubisoft’s Neo NPCs aren’t the only AI NPC tech demos at the 2024 Game Developers Conference. [Here are a few more that Nvidia showed off](/2024/3/19/24105681/nvidia-ai-ace-video-game-character-npc-covert-protocol); I tried *Covert Protocol*, which also relies on InWorld for responses. But it was far rougher than Ubisoft’s demo in terms of tying gameplay to chat, and I didn’t really enjoy it.
+
+***Update, 2:38PM ET:** Added video.*

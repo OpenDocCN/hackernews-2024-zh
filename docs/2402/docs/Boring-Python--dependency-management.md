@@ -1,0 +1,174 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:37:36
+-->
+
+# Boring Python: dependency management
+
+> 来源：[https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/](https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/)
+
+# Boring Python: dependency management
+
+[<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16"><title>Published on:</title></svg> May 13, 2022](/weblog/2022/may/13/)    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tags" viewBox="0 0 16 16"><title>Categories:</title></svg> [Django](/weblog/categories/django/), [Python](/weblog/categories/python/)
+
+This is the first in hopefully a series of posts I intend to write about how to build/manage/deploy/etc. Python applications in as boring a way as possible. So before I go any further, I want to be absolutely clear on what I mean by “boring”: I don’t mean “reliable” or “bug-free” or “no incidents”. While there is some overlap, and some of the things I’ll be recommending can help to reduce bugs, I also want to be clear: there will be bugs. There will be incidents where a feature or maybe an entire service is down. “Boring”, to me, is about the *sources* of those incidents. It’s difficult enough to manage your own code and the bugs and other problems that will inevitably pop up in it from time to time; you don’t want to compound that by having bugs or other surprises coming from the tools and processes you use to build, manage, and deploy it. So when I call something “boring”, I mean it’s unlikely to add another source of bugs and nasty surprises that cause a pager to go off at 2AM; the pager *will*, of course, eventually go off at 2AM, but when it does you’ll be able to feel reasonably confident (if that’s the right word for such a situation) that the source of it was something in your own code that you can diagnose and fix.
+
+And so I’m planning several posts exploring different aspects of making Python development boring (in this sense). But for this first installment, I’ll be talking about one of the internet’s favorite topics: managing dependencies.
+
+If you’re just interested in the end result, the process I recommend is pretty simple and can be found in the section titled “putting it all together”. The rest of this post exists to explain, in as much detail as I can manage, all the things going on behind those simple-looking recommendations, and why I make those specific recommendations.
+
+## A quick introduction to Python packaging
+
+[I’ve written about this before](/weblog/2020/jan/05/packaging/), but to make sure this is clear I want to do a quick refresher.
+
+As I see it, there are three basic aspects to “packaging”, and one of the difficult things about “packaging” discussions is lack of clarity around which are being discussed. They are:
+
+1.  Given some working code, define and produce from it a distributable artifact.
+2.  Given that someone has produced a distributable artifact, use it to cause the corresponding code to appear, in working form, somewhere else.
+3.  Given the existence of potentially many separate projects or versions of projects with their own independent and potentially-conflicting sets of dependencies, make it possible to work on and run more than one at a time.
+
+Python’s packaging ecosystem has default tools for each of these. In order, they are: (1) setuptools, (2) pip, (3) virtual environments. These three tools are your foundation, and for truly “boring” Python development work, I would argue that you should stick to them almost exclusively.
+
+I know there are other tools out there, and more being developed. Most of the perceived change and churn in “Python packaging” is around tools that try to provide a single interface for all three of the aspects I’ve listed above. I don’t personally use or recommend any such tool because, again, my goal is *boring* — I want to worry as little as possible about this stuff once I’ve initially set it up, and that mostly means not being an early adopter. The three core default tools I’ve mentioned have all been around and stable for a long time, in software terms, at least — they’re all over a decade old, and their end-user interfaces evolve *incredibly* slowly, when they evolve at all. They’re reliable. They’re well-understood. That’s exactly what I want and exactly what I recommend.
+
+Now, maybe you’ll read this and decide to use something else. Or maybe you’ll take my advice and start out with the default tooling, and then later on decide to change. But even if you do end up thinking something else is the best choice for your team/project, I think you will benefit greatly from at least trying out the default tools and understanding how to use them for their respective aspects of packaging.
+
+Also, I should note here that my use case for Python is deploying networked (primarily web) services, on servers. If you primarily use Python for, say, machine learning or data science, you are likely to already be a happy user of a completely different world of tools (such as Anaconda and notebooks). Please continue using them! They suit your use case really well, and replacing them with my preferred workflow would be a regression for you.
+
+Now, let’s get started.
+
+## Requirements
+
+The eventual goal is to invoke `pip install` to, well, do what it says: install a bunch of Python packages. But how to tell `pip` *which* packages to install? There are a couple of options:
+
+*   Passing a list of package names on the command line: `pip install package1 package2 …`
+*   Passing a file containing a list of package names: `pip install -r filename`
+
+The second option is generally referred to as a “requirements file”, and by convention when you’re using only one such file, it’s named `requirements.txt`. I’m going to recommend a multi-file setup, though, so we’ll hold off on naming for now.
+
+It’s also worth being clear on the purpose of a requirements file: it’s to take a particular environment you already have, and reproduce it somewhere else. Which means that a requirements file typically should list *all* packages to install and *exact versions* to install. This is different from the dependency declarations of individual distributable packages (the `dependencies` section of a `pyproject.toml` packaging config file), which generally specify broad ranges that the package is tested against and compatible with, and only direct dependencies.
+
+If you’re deploying services written in Python, you *can* build them as distributable packages. I just don’t recommend it, for a few reasons:
+
+*   The convenience of distributable packages is that you can re-use them across multiple projects/services/etc. For example, you might have an auth setup you want to use in all your services, and build it as a package that can be installed by those services. When the thing you’re deploying *is* the service, this is much less important.
+*   It’s overwhelmingly likely, here in 2022, that your deployment will consist of building some type of container and then pushing it to some type of container runtime/orchestration system, and that the manifest which defines that container will be version-controlled along with the service’s code. In which case it doesn’t make much sense to build a package from the code and then pull it into the container to be installed; just copy the source tree into the container, rather than adding extra steps for no benefit.
+*   Copying the source tree as-is into your container avoids some potential issues, primarily around imports: a common error made by people building packages for the first time is relying — often without realizing it! — on the fact that in Python the current working directory is always on the import path. As a result, they end up building packages that only “work” in the original local development environment with a specific working directory, and even then only by accident ([the solution to this, if you’re curious, is to force your local development workflow to depend on the installability of your package](https://hynek.me/articles/testing-packaging/)).
+*   Ultimately, what you *want* is to take a known-good, working environment from a developer’s machine, and reproduce exactly that environment on your servers. That’s just what requirements files are for.
+
+## More requirements
+
+As I mentioned above, I’m advocating a setup which will use multiple requirements files. This involves a bit of organization, so I recommend creating a top-level `requirements/` directory in your source-code repository and placing requirements files in it, rather than putting the files themselves top-level, or putting them somewhere else.
+
+Now, why multiple files? Well, because there are often multiple types of dependencies and you often want to select only a particular subset to install. The most common such split is between general always-needed packages, and packages which are only needed in order to run your test suite; there’s no need for a production container to have all the test-only dependencies installed, and in general the less code you put in the production container the fewer things you have that can go wrong, so I generally like to install those only when the test suite is actually going to be run.
+
+You can split this up further if you want — I’ve done finer-grained splits of dependencies before — but at the very least I think you should be keeping test-only dependencies separate from the rest.
+
+## Seeing the trees in the forest
+
+Now we run into our first clear problem: what’s in a requirements file is not necessarily what will be installed. Or, to be specific: is not necessarily *all* of what will be installed. Suppose, for example, that you put `Django==4.0.4` (the latest version as I write this) in your requirements file, and then `pip install -r` from it. You’ll get Django 4.0.4… and also `asgiref` and `sqlparse`, and depending on your platform and Python version possibly also `backports.zoneinfo` and `tzdata`, because those are dependencies declared by Django.
+
+So how do you see, and control, your entire dependency tree? Well, one option is to list out your direct dependencies, `pip install` them locally in a virtual environment, then run `pip freeze` to see the full list of what was installed, and then add any indirect dependencies to your requirements file. You could even script this if you wanted to, and in fact someone already *has* scripted it: [the pip-tools project](https://pypi.org/project/pip-tools/), which provides a `pip-compile` command that takes a list of the packages you directly care about, and outputs a requirements file containing the entire tree, with all direct and indirect dependencies, pinned to exact versions.
+
+If you really want to write your own script to do this, I won’t stop you, but I’ve used `pip-compile` at multiple jobs now and on my own personal projects and been happy enough with it that it’s the only non-standard Python packaging tool I’m willing to recommend people use.
+
+## Hashing it out
+
+Tracking the full dependency tree, and having the ability (thanks to `pip-tools`) to see both the full tree and just the direct dependencies, gets most of the way to a reproducible environment. But not *all* of the way, because this process implicitly relies on the integrity of the Python Package Index to serve you the same package every time and not silently swap out something different or even malicious.
+
+Now, I should be clear here: every single breathless OMG SUPPLY CHAIN ATTACK ON PYPI article I’ve ever seen has just been sensationalized typosquatting. Things like registering a package named “Dajngo” and hoping to catch people who mistyped “Django”, or similar. I’ve *never* seen one making a tenable claim of compromise of package maintainers’ accounts, or of PyPI itself. PyPI has been reliable and trustworthy to an incredibly high degree.
+
+But even the folks who run PyPI have put thought — see [PEP 458](https://peps.python.org/pep-0458/) and [PEP 480](https://peps.python.org/pep-0480/) for two examples — into some of the scarier scenarios and how PyPI can be made more resilient to them. And you should be thinking about those scenarios, too: PyPI has been highly trustworthy, but there’s a reason why the saying is “trust, but verify”.
+
+It’s worth noting here that signed packages, as many operating-system vendors use, are not really a solution for PyPI. OS vendors tend to have a small set of specially-trusted package maintainers, so there’s a small set of signing keys to keep track of. A repository like PyPI is open to arbitrary members of the public for package publishing, which is fundamentally incompatible with having only a small set of trusted keys. You *can*, and some package authors *do*, PGP-sign PyPI uploads anyway, but standard Python package tooling doesn’t do anything with the signatures.
+
+But in the absence of a small set of trusted package signers, the next best thing is just reproducibility: ensuring that what you get the next time you `pip install` will be the same as what you got *this* time (when, presumably, you verified that it was what you expected it to be), or if not that the installation will fail.
+
+For this you can use pip’s [hash-checking mode](https://pip.pypa.io/en/stable/cli/pip_install/#hash-checking-mode), where in addition to the package name and version, you also list the expected hash or hashes of the package. When this is provided, pip’s behavior changes as follows:
+
+*   *All* packages to be installed must specify hashes, including all indirect dependencies. If any package does not have a hash specified, the installation will fail.
+*   If any package’s actual hash does not match its expected hash, the entire installation attempt fails.
+
+This is as close as you can get to fully-reproducible environments using the standard Python packaging tool chain. The only room for variation here is if your dependencies include packages with compiled extensions, and you install onto multiple different platforms; the compiled packages for different platforms will, naturally, have different hashes. This can be worked around by specifying *multiple* hashes for such packages, listing one hash for each platform-specific variant you expect to install.
+
+To manually obtain the hashes for your dependency tree you can run `pip download` to download all the packages locally, and then `pip hash` on each one to obtain the hash. For platform-specific packages you can manually download each platform variant and `pip hash` them.
+
+Or, once again, you can script this, and once again the pip-tools project *has* scripted it; the `--generate-hashes` argument to `pip-compile` will automatically calculate and insert all necessary package hashes (including all platform variants) into the compiled requirements file.
+
+## Invocations
+
+Before putting all this together, it’s worth covering one more detail: how to invoke the tools. This may seem a bit silly, since they all provide command-line entry points: just run `pip install`, right?
+
+But there’s a potential issue here: in a moment I’m going to recommend creating a Python virtual environment, which opens up the possibility of multiple Python environments coexisting on the same machine. This is certainly a useful feature, but it does come with a new concern, which is how to ensure you’re using and running things in the environment you expect to be using.
+
+One common way to run into trouble here is having one Python environment’s package directory be first on your `$PYTHONPATH` while, unbeknownst to you, a different one’s `bin/` directory is first on your general `$PATH`. If you just run `pip install` you’ll get the second one’s instance of `pip`, which may not be at all what you want.
+
+This is why the official Python packaging guides, and official documentation for tools like `pip`, always use a different approach: they run `python -m pip` instead of `pip`, and `python -m venv` instead of a standalone script like `virtualenv`. The `-m` flag allows a Python module to be run as a script (providing it’s been written to expose an entry point for this, which `pip` and `venv` both have), and while it doesn’t guarantee that you’ll invoke the Python interpreter you were expecting, it does prevent a lot of potential hard-to-debug issues that can accidentally result from things like manually hacking around with paths.
+
+## Putting it all together
+
+That was a lot of explanation for what ends up being, ultimately, a fairly simple process to actually use. So now let’s finally take a look at it.
+
+First things first: always work in, and deploy in, a virtual environment. Even if you think you don’t need one. In fact, *especially* if you don’t think you need one. Virtual environments (originally the third-party `virtualenv` module, now with the core functionality in the standard library as the `venv` module) provide isolation of a particular Python environment and set of installed packages, which is incredibly handy when you want or need to have multiple such environments. And even if you’re deploying in a container which you *know* has only one Python interpreter in it, I still urge you to create a virtual environment inside it anyway; they don’t cost you anything to create, and if you ever *do* end up with multiple Python interpreters in the container — which is easy to accidentally do, if you use a base image with a purpose-built Python and then install a system package that turns out to depend on the distro’s own Python, for example — using one from the start will save you from potentially having a pager go off one night when suddenly the wrong Python is being invoked.
+
+If you’re developing locally and not using a local container build, just invoke `python -m venv` however you like, and activate it before running any packaging-related commands. There are several popular conventions for this, and I won’t push any specific one on you, but I do recommend that you adopt some sort of standard way of placing your virtual environments, whether it’s to put them all in a single directory, or always in a hidden directory at the root of a project’s source tree, or something else.
+
+In a container, you have a choice of whether to put it the virtual environment in some system-wide location like `/opt` (which is, as far as I can tell, the choice least offensive to filesystem hierarchy standards), or if you’re running the container as a non-root user — which you should be — in that user’s home directory. Personally I lean toward putting it in the systemwide location and then dropping to non-root after packages have been installed, because it ensures the virtual environment’s package-install location is not writeable by the user the container runs as.
+
+But no matter where you put it, “activation” is a simple matter: set the environment variable `VIRTUAL_ENV` to the path to the virtual environment and then put `$VIRTUAL_ENV/bin` onto `$PATH` to be sure any accidental direct invocations of scripts will work. Which means that so far it’s going to be:
+
+```
+`RUN  mkdir -p /opt/venvs && python -m venv /opt/venvs/my-app
+ENV  VIRTUAL_ENV=/opt/venvs/my-app
+ENV  PATH=“$VIRTUAL_ENV/bin:$PATH”` 
+```
+
+You should have at least a couple of requirements files containing your dependencies; I tend to name them `app.txt` and `tests.txt` to distinguish the general app dependencies from the test-only ones, but you can name them however you like. If you take my advice about letting pip-tools provide the implementation of “compiling” a list of direct dependencies to a full pinned and hashed tree of all your dependencies, you’ll need to have a step for that. Most of the projects I work on use a `Makefile` to drive common dev tasks, so a `make requirements` target that invokes pip-tools is pretty standard for me, and usually I have it run something like this inside the container:
+
+```
+`python -m pip install --upgrade pip-tools
+python -m pip-tools compile --generate-hashes requirements/app.in --output-file requirements/app.txt
+python -m pip-tools compile --generate-hashes requirements/tests.in --output-file requirements/tests.txt` 
+```
+
+And the container can simply pull in the compiled requirements files and install them:
+
+```
+`COPY  requirements/ .
+python -m pip install -r requirements/app.txt
+# Somewhere else, possibly in a separate build stage or script:
+python -m pip install -r requirements/tests.txt` 
+```
+
+This gets you:
+
+*   As reproducible and consistent an environment as possible, all the way from local development through to production, especially if you do local dev in containers and build from the same `Dockerfile` or other manifest both locally and for production.
+*   Instant warning if any of your dependencies suddenly changes: if a package somehow gets surreptitiously replaced, the install step will fail on a hash mismatch.
+*   Minimal worries about conflicts with a “system Python” or its packages.
+
+**Packages can run code during installation**
+
+Python packages come in two forms: “source” or “sdist” packages, which typically have the file extension `.tar.gz`, and “wheel” packages, which have the file extension `.whl`. A source package historically includes a `setup.py` script which specifies how to build and install it (though this is being gradually replaced by the static `pyproject.toml` config file), and that script will be run during installation. If you were to accidentally install a malicious package, it could run arbitrary code in its `setup.py` script during installation, which would be very bad. Wheel packages, on the other hand, are simple archives whose installation process consists of extracting the files and putting them in the correct locations; there are no install-time hooks for running code.
+
+You can tell `pip` to use *only* wheel packages, by passing [the `--only-binary` flag](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-only-binary) and either a list of packages or the special value `:all:`. For example: `python -m pip install --only-binary :all: -r requirements/app.txt`.
+
+I strongly recommend trying this option first, and sticking with it if it works. Unfortunately, not all packages provide `.whl` format, so you may not be able to force it for your entire install. If you run into a package that doesn’t provide a wheel, you can still require all other packages to use wheels.
+
+## Staying up-to-date
+
+The only thing still missing is updates as new versions of your dependencies are released. For security updates this is pretty crucial, but it’s also useful to have even for non-security updates; if you’re not regularly looking for and applying updated versions of dependencies, you’re likely to end up with painful upgrade-the-whole-world-at-once moments when you hit a milestone like a major library/framework version reaching the end of its upstream support cycle.
+
+This is where things get a little bit tricky, because the usual way you’d automatically pick up updates is by specifying a range of versions you’re willing to accept for direct dependencies, and periodically rebuilding your full tree to pick up any updates. For example, if you want to use the Django 3.2 LTS release, you might specify `Django>=3.2.0,<4.0`. And then you’d always get the latest 3.2-series Django release.
+
+And you can do this if you want; you’ll likely want to combine it with pip-tools or your own scripting to perform the equivalent “compilation” of the full pinned and hashed dependency tree, and then you’ll automatically pull updated versions every time you recompile the dependencies.
+
+The only potential downside is the same as the upside: you get updated every time you recompile the dependencies. Which is great when it works, and not so great when it doesn’t. Personally, I lean toward the super-boring approach, which is to apply updates explicitly and one at a time, rather than implicitly in batches. For this I tend to configure and use [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates) or its equivalent for other code-hosting platforms. My experience with dependabot is that it just works — it even understands the pip-tools style of requirements and will do the right thing. So I generally like to set it up, let it file pull requests on a weekly cadence, and then manually review and apply those pull requests. But again, that’s me and my preference for being as boring as possible; I don’t mind spending a little time each week dealing with the dependabot PRs if it prevents a pager from going off at 2AM.
+
+And of course, if you just want got get security updates and not every single version bump of every dependency, several code-hosting platforms have that built-in as a feature now, and there are also third-party services like [pyup](https://pyup.io) that will do it for you.
+
+## And that’s a wrap
+
+As promised, that was a lot of words for what’s really a pretty simple process, but there’s a lot of complexity — necessary complexity, of a sort that pops up in any software packaging ecosystem — lurking underneath, and explaining *that* is what drives up the word count.
+
+But hopefully you now understand how to do “boring” Python dependency management, using only the standard Python packaging tools and *optionally* pip-tools for the “already scripted this bit so you don’t have to” factor. And hopefully you understand *why* I’m recommending the particular workflow I’ve given above. Even if you don’t want to adopt my recommendations, I’d like to think that learning what they are and why I make them is helpful to you. For me, these recommendations are the result of nearly a decade of trying, across four different employers, to settle on a dependency management workflow that kept things up to date with minimal risk of causing pagers to go off.
+
+Meanwhile I’ve got some ideas for further “boring Python” articles, including why to keep using Python at all when its trendiness, at least for my own domain of web apps, seems to be on the decline — but those will have to wait for another day.

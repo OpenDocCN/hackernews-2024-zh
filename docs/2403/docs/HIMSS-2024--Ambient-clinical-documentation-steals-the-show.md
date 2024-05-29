@@ -1,0 +1,90 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:00:35
+-->
+
+# HIMSS 2024: Ambient clinical documentation steals the show
+
+> 来源：[https://www.cnbc.com/2024/03/16/himss-2024-ambient-clinical-documentation-steals-the-show.html](https://www.cnbc.com/2024/03/16/himss-2024-ambient-clinical-documentation-steals-the-show.html)
+
+ Attendees at HIMSS in Orlando, Florida 2024.
+
+Courtesy of HIMSS
+
+The hottest new technology for doctors promises to bring back an age-old health-care practice: face-to-face conversations with patients.
+
+As more than 30,000 health and tech professionals gathered among the palm trees at the HIMSS conference in Orlando, Florida, this week, ambient clinical documentation was the talk of the exhibition floor. 
+
+This technology allows doctors to consensually record their visits with patients. The conversations are automatically transformed into clinical notes and summaries using artificial intelligence. Companies like Microsoft's Nuance Communications, Abridge and Suki have developed solutions with these capabilities, which they argue will help reduce doctors' administrative workloads and prioritize meaningful connections with patients. 
+
+"After I see a patient, I have to write notes, I have to place orders, I have to think about the patient summary," Dr. Shiv Rao, founder and CEO of Abridge, told CNBC at HIMSS. "So what our technology does is it allows me to focus on the person in front of me — the most important person, the patient — because when I hit start, have a conversation, then hit stop, I can swivel my chair and within seconds, the note's there." 
+
+Administrative workloads are a major problem for clinicians across the U.S. health-care system. A [survey published](https://www.cnbc.com/2024/02/21/doctors-feel-burned-out-but-encouraged-by-potential-of-ai-survey-says.html) by Athenahealth in February found that more than 90% of physicians report feeling burned out on a "regular basis," largely because of the paperwork they are expected to complete. 
+
+More than 60% of doctors said they feel overwhelmed by clerical requirements and work an average of 15 hours per week outside their normal hours to keep up, the survey said. Many in the industry call this at-home work "pajama time." 
+
+Since administrative work is mostly bureaucratic and doesn't directly influence doctors' decisions around diagnoses or patient care, it has served as one of the first areas where health systems have seriously begun to explore applications of generative AI. As a result, ambient clinical documentation solutions are having a real moment in the sun. 
+
+"There isn't a better place to be," Kenneth Harper, general manager of DAX Copilot at Microsoft, told CNBC in an interview. 
+
+Microsoft's Nuance [announced](https://www.cnbc.com/2023/03/20/microsoft-nuance-announce-clinical-notes-application-powered-by-openai.html) its ambient clinical documentation tool Dragon Ambient eXperience (DAX) Express in a preview capacity last March. By September, the solution, now called DAX Copilot, was [generally available](https://news.nuance.com/2023-09-27-Nuance-Announces-the-General-Availability-of-Dragon-Ambient-eXperience-Copilot-to-Further-Improve-Healthcare-Experiences,-Outcomes,-and-Efficiency). Harper said there are now more than 200 organizations using the technology. 
+
+Microsoft acquired Nuance for around [$16 billion](https://www.cnbc.com/2021/04/12/microsoft-buys-nuance-communications-in-16-billion-deal.html) in 2021\. The company had a two-story exhibition booth in the exhibit hall that was often packed with attendees
+
+Harper said the technology saves doctors several minutes per encounter, though the exact numbers vary depending on the specialty. He said his team gets feedback about the service almost daily from doctors who claim it has helped them take better care of themselves — and even saved their marriages.
+
+Harper recounted a conversation with one physician who was considering retirement after practicing for more than three decades. He said the doctor was feeling worn out from years of stress, but he was inspired to keep working after he was introduced to DAX Copilot. 
+
+"He said, 'I literally think I'm going to practice for another 10 years because I actually enjoy what I do,'" Harper said. "That's just a personal anecdote of the type of impact this is having on our care teams." 
+
+At HIMSS, Stanford Health Care [announced](https://news.nuance.com/2024-03-11-DAX-Copilot-to-Automate-the-Creation-of-Clinical-Documentation,-Reduce-Physician-Burnout,-and-Expand-Access-to-Care-Deployed-Enterprise-Wide-at-Stanford-Health-Care) it is deploying DAX Copilot across its entire enterprise. 
+
+Gary Fritz, chief of applications at Stanford Health Care, said the organization had initially started by testing the tool within its exam rooms. He said Stanford recently surveyed physicians about their use of DAX Copilot and 96% found it easy to use. 
+
+"I don't know that I've ever seen that big a number," Fritz told CNBC in an interview. "It is a big deal."
+
+Dr. Christopher Sharp, chief medical information officer at Stanford Health Care and one of the physicians who tested DAX Copilot, said it is "remarkably seamless" to use. He said the tool's immediacy and reliability are accurate and strong but could improve at capturing a patient's tone. 
+
+Sharp said he thinks the tool saves him documentation time and has changed how he spends that time. He said he is often reading and editing notes instead of composing them, for instance, so it is not as though the work has disappeared entirely.
+
+In the near term, Sharp said he'd like to see more capabilities for personalization within DAX Copilot, both at an individual and specialty level. Even so, he said it was easy to see the value of it from the start.
+
+"The moment that that first document returns to you, and you see your own words and the patient's own words being reflected directly back to you in a usable fashion, I would say that from that moment, you're hooked," Sharp told CNBC in an interview.
+
+Fritz said it is still early in the product life cycle, and Stanford Health Care is still working out exactly what deployment will look like. He said DAX Copilot will likely roll out in specialty-specific tranches. 
+
+Attendees at HIMSS in Orlando, Florida 2024.
+
+Courtesy of HIMSS
+
+In January, Nuance announced the general availability of [DAX Copilot within Epic](https://news.nuance.com/2024-01-18-Nuance-Announces-General-Availability-of-DAX-Copilot-Embedded-in-Epic,-Transforming-Healthcare-Experiences-with-Automated-Clinical-Documentation) Systems' electronic health record (EHR). Most doctors create and manage patient medical records using EHRs, and Epic isthe [largest vendor](https://klasresearch.com/article/current-trends-in-us-hospital-emr-market-share/1022) by hospital market share in the U.S., according to a May report from [KLAS Research](https://klasresearch.com/report/us-hospital-emr-market-share-2023-market-energy-driven-mostly-by-small-organizations/3013). 
+
+Integrating a tool like DAX Copilot directly into doctors' EHR workflow means they won't need to switch apps to access it, which helps save time and reduce their clerical burden even further, Harper said. 
+
+Seth Hain, senior vice president of R&D at Epic, told CNBC that more than 150,000 notes have been draftedinto the company's software by ambient technologies since the HIMSS conference last year. And the technology is scaling fast. Hain said more notes have already been drafted in 2024 than in 2023.
+
+"You're seeing health systems who have worked through an intentional process of acclimating their end users to this type of technology, now beginning to rapidly roll that out," he said. 
+
+A company named Abridge also integrates its ambient clinical documentation technology directly within Epic. Abridge declined to share the exact number of health organizations using its technology. It announced at HIMSS that California-based UCI Health is rolling out the company's solution system-wide. 
+
+Rao, the CEO of Abridge, said the rate at which the health-care industry has adopted ambient clinical documentation feels "historic." 
+
+Abridge announced a [$30 million](https://www.businesswire.com/news/home/20231026850279/en/Abridge-raises-30M-to-Accelerate-Adoption-of-its-Proven-Generative-AI-Solution-across-U.S.-Healthcare-Systems) Series B funding round in October, led by Spark Capital, and four months later, the company closed a $150 million Series C round, according to [a February release](https://www.abridge.com/press-release/series-c-150). Rao said tail winds like physician burnout have turned into a "tornado" for Abridge, and it will use these funds to continue to invest in the science behind the technology and explore where it can go next. 
+
+The company is saving some doctors as much as three hours a day, Rao said, and is automating more than 92% of the clerical work it focuses on. Abridge's technology is live across 55 specialties and 14 languages, he added. 
+
+Abridge has a Slack channel called "love stories," which was viewed by CNBC, where the team will share the positive feedback they get about their technology. One message from this week was from a doctor who said Abridge helped them take their least favorite part of their job away and saves them around an hour and a half each day.
+
+"That's the type of feedback that absolutely inspires everybody in the company," Rao said.
+
+Suki CEO Punit Soni said the ambient clinical documentation market is "sizzling." He expects rapid growth to continue through the next couple of years, though, like all hype cycles, he said he thinks the dust will settle.
+
+Soni founded Suki more than six years ago after hypothesizing that there would be a need for a digital assistant to help doctors manage clinical documentation. Soni said Suki is now used by more than 30 specialties in around 250 health organizations nationwide. Six "large health systems" have gone live with Suki in the past two weeks, he added. 
+
+"For four to five years I've sat around, basically with the shop open, hoping somebody will show up. Now the entire mall is here, and there's a line outside the door of people wanting to deploy, " Soni told CNBC at HIMSS. "It's very, very exciting to be here."
+
+Suki's [website](https://www.suki.ai/happy-doctors/) says its technology can reduce the time a physician spends on documentation by an average of 72%. The company raised a [$55 million](https://www.suki.ai/news/suki-announces-55-million-series-c-funding-round/) funding round in 2021 led by March Capital. It will likely raise another round in the latter half of the year, Soni said.
+
+Soni said Suki is focused on deploying its technology at scale and exploring additional applications, like how ambient documentation could be used to assist nurses. He said the Spanish language is coming to Suki soon, and customers should expect most major languages to follow. 
+
+"There is so much that has to happen," he said. "In the next decade, all of health-care tech is going to look completely different."

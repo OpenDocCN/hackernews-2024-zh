@@ -1,0 +1,76 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:49
+-->
+
+# Boids - Wikipedia
+
+> 来源：[https://en.wikipedia.org/wiki/Boids](https://en.wikipedia.org/wiki/Boids)
+
+Artificial life program
+
+For the reptilian family, see
+
+[Boidae](/wiki/Boidae "Boidae")
+
+.
+
+ <//upload.wikimedia.org/wikipedia/commons/transcoded/4/43/Boids_OpenGL_example.webm/Boids_OpenGL_example.webm.480p.vp9.webm>
+
+<//upload.wikimedia.org/wikipedia/commons/4/43/Boids_OpenGL_example.webm>
+
+<//upload.wikimedia.org/wikipedia/commons/transcoded/4/43/Boids_OpenGL_example.webm/Boids_OpenGL_example.webm.m3u8>
+
+<//upload.wikimedia.org/wikipedia/commons/transcoded/4/43/Boids_OpenGL_example.webm/Boids_OpenGL_example.webm.240p.vp9.webm>
+
+<//upload.wikimedia.org/wikipedia/commons/transcoded/4/43/Boids_OpenGL_example.webm/Boids_OpenGL_example.webm.360p.webm>
+
+<//upload.wikimedia.org/wikipedia/commons/transcoded/4/43/Boids_OpenGL_example.webm/Boids_OpenGL_example.webm.360p.vp9.webm> 
+
+A Boids example created in [OpenGL](/wiki/OpenGL "OpenGL")
+
+**Boids** is an [artificial life](/wiki/Artificial_life "Artificial life") program, developed by [Craig Reynolds](/wiki/Craig_Reynolds_(computer_graphics) "Craig Reynolds (computer graphics)") in 1986, which simulates the [flocking](/wiki/Flocking_(behavior) "Flocking (behavior)") behaviour of [birds](/wiki/Bird "Bird"), and related group motion. His paper on this topic was published in 1987 in the proceedings of the [ACM](/wiki/Association_for_Computing_Machinery "Association for Computing Machinery") [SIGGRAPH](/wiki/SIGGRAPH "SIGGRAPH") conference.^([[1]](#cite_note-1)) The name "boid" corresponds to a shortened version of "bird-oid object", which refers to a bird-like object.^([[2]](#cite_note-2)) Reynolds' boid model is one example of a larger general concept, for which many other variations have been developed since. The closely related work of Ichiro Aoki is noteworthy because it was published in 1982 — five years *before* Reynolds' boids paper.^([[3]](#cite_note-3))
+
+## Model details[[edit](/w/index.php?title=Boids&action=edit&section=1 "Edit section: Model details")]
+
+As with most artificial life simulations, Boids is an example of [emergent](/wiki/Emergence "Emergence") behavior; that is, the complexity of Boids arises from the interaction of individual agents (the boids, in this case) adhering to a set of simple rules. The rules applied in the simplest Boids world are as follows:
+
+*   **separation**: [steer](https://en.wiktionary.org/wiki/steer#Verb "wikt:steer") to avoid crowding local flockmates
+*   **alignment**: steer towards the average heading of local flockmates
+*   **cohesion**: steer to move towards the average position (center of mass) of local flockmates
+
+More complex rules can be added, such as obstacle avoidance and goal seeking.
+
+The basic model has been extended in several different ways since Reynolds proposed it. For instance, Delgado-Mata et al.^([[4]](#cite_note-4)) extended the basic model to incorporate the effects of fear. Olfaction was used to transmit emotion between animals, through pheromones modelled as particles in a free expansion gas. Hartman and Benes^([[5]](#cite_note-5)) introduced a complementary force to the alignment that they call the change of leadership. This steer defines the chance of the boid to become a leader and try to escape.
+
+The movement of Boids can be characterized as either chaotic (splitting groups and wild behaviour) or orderly. Unexpected behaviours, such as splitting flocks and reuniting after avoiding obstacles, can be considered emergent.
+
+The boids framework is often used in computer graphics, providing realistic-looking representations of flocks of birds and other creatures, such as schools of fish or herds of animals. It was for instance used in the 1998 video game *[Half-Life](/wiki/Half-Life_(video_game) "Half-Life (video game)")* for the flying bird-like creatures seen at the end of the game on [Xen](/wiki/Locations_of_Half-Life#Xen "Locations of Half-Life"), named "boid" in the game files.
+
+The Boids model can be used for direct control and stabilization of teams of simple unmanned ground vehicles (UGV)^([[6]](#cite_note-6)) or [micro aerial vehicles](/wiki/Micro_air_vehicle "Micro air vehicle") (MAV)^([[7]](#cite_note-7)) in [swarm robotics](/wiki/Swarm_robotics "Swarm robotics"). For stabilization of heterogeneous UAV-UGV teams, the model was adapted for using onboard relative localization by Saska et al.^([[8]](#cite_note-8))
+
+At the time of proposal, Reynolds' approach represented a giant step forward compared to the traditional techniques used in computer animation for motion pictures. The first animation created with the model was *[Stanley and Stella in: Breaking the Ice](/wiki/Stanley_and_Stella_in:_Breaking_the_Ice "Stanley and Stella in: Breaking the Ice")* (1987), followed by a feature film debut in [Tim Burton](/wiki/Tim_Burton "Tim Burton")'s film *[Batman Returns](/wiki/Batman_Returns "Batman Returns")* (1992) with computer generated bat swarms and armies of penguins marching through the streets of Gotham City.^([[9]](#cite_note-9))
+
+The boids model has been used for other interesting applications. It has been applied to automatically program Internet multi-channel radio stations.^([[10]](#cite_note-10)) It has also been used for visualizing information^([[11]](#cite_note-11)) and for optimization tasks.^([[12]](#cite_note-12))
+
+Biologist [Richard Dawkins](/wiki/Richard_Dawkins "Richard Dawkins") references the Boids model in his 2009 book *[The Greatest Show on Earth: The Evidence for Evolution](/wiki/The_Greatest_Show_on_Earth:_The_Evidence_for_Evolution "The Greatest Show on Earth: The Evidence for Evolution")*.^([[13]](#cite_note-13))
+
+## See also[[edit](/w/index.php?title=Boids&action=edit&section=2 "Edit section: See also")]
+
+## References[[edit](/w/index.php?title=Boids&action=edit&section=3 "Edit section: References")]
+
+1.  **[^](#cite_ref-1)** [Reynolds, Craig](/wiki/Craig_Reynolds_(computer_graphics) "Craig Reynolds (computer graphics)") (1987). "Flocks, herds and schools: A distributed behavioral model". *Proceedings of the 14th annual conference on Computer graphics and interactive techniques*. [Association for Computing Machinery](/wiki/Association_for_Computing_Machinery "Association for Computing Machinery"). pp. 25–34\. [CiteSeerX](/wiki/CiteSeerX_(identifier) "CiteSeerX (identifier)") [10.1.1.103.7187](https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.103.7187). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1145/37401.37406](https://doi.org/10.1145%2F37401.37406). [ISBN](/wiki/ISBN_(identifier) "ISBN (identifier)") [<bdi>978-0-89791-227-3</bdi>](/wiki/Special:BookSources/978-0-89791-227-3 "Special:BookSources/978-0-89791-227-3"). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [546350](https://api.semanticscholar.org/CorpusID:546350).
+2.  **[^](#cite_ref-2)** Banks, Alec; Vincent, Jonathan; Anyakoha, Chukwudi (July 2007). "A review of particle swarm optimization. Part I: background and development". *Natural Computing*. **6** (4): 467–484\. [CiteSeerX](/wiki/CiteSeerX_(identifier) "CiteSeerX (identifier)") [10.1.1.605.5879](https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.605.5879). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1007/s11047-007-9049-5](https://doi.org/10.1007%2Fs11047-007-9049-5). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [2344624](https://api.semanticscholar.org/CorpusID:2344624).
+3.  **[^](#cite_ref-3)** Aoki, Ichiro (August 25, 1982). ["A Simulation Study on the Schooling Mechanism in Fish"](https://www.jstage.jst.go.jp/article/suisan1932/48/8/48_8_1081/_article). *Nippon Suisan Gakkaishi (Japanese Fisheries Academic Journal)*. **48** (8): 1081–1088\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.2331/suisan.48.1081](https://doi.org/10.2331%2Fsuisan.48.1081). Retrieved November 26, 2023.
+4.  **[^](#cite_ref-4)** Delgado-Mata, Carlos; Martinez, Jesus Ibanez; Bee, Simon; Ruiz-Rodarte, Rocio; Aylett, Ruth (2007). "On the use of Virtual Animals with Artificial Fear in Virtual Environments". *New Generation Computing*. **25** (2): 145–169\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1007/s00354-007-0009-5](https://doi.org/10.1007%2Fs00354-007-0009-5). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [26078361](https://api.semanticscholar.org/CorpusID:26078361).
+5.  **[^](#cite_ref-5)** Hartman, Christopher; Beneš, Bedřich (July 2006). "Autonomous boids". *Computer Animation and Virtual Worlds*. **17** (3–4): 199–206\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1002/cav.123](https://doi.org/10.1002%2Fcav.123). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [15720643](https://api.semanticscholar.org/CorpusID:15720643).
+6.  **[^](#cite_ref-6)** Min, Hongkyu; Wang, Zhidong (2011). *Design and analysis of Group Escape Behavior for distributed autonomous mobile robots*. IEEE International Conference on Robotics and Automation (ICRA). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1109/ICRA.2011.5980123](https://doi.org/10.1109%2FICRA.2011.5980123).
+7.  **[^](#cite_ref-7)** Saska, Martin; Jan, Vakula; Libor, Preucil (2014). *Swarms of micro aerial vehicles stabilized under a visual relative localization*. IEEE International Conference on Robotics and Automation (ICRA). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1109/ICRA.2014.6907374](https://doi.org/10.1109%2FICRA.2014.6907374).
+8.  **[^](#cite_ref-8)** Saska, Martin; Vojtech, Vonasek; Tomas, Krajnik; Libor, Preucil (2012). [*Coordination and Navigation of Heterogeneous UAVs-UGVs Teams Localized by a Hawk-Eye Approach*](https://web.archive.org/web/20170810054531/http://labe.felk.cvut.cz/~tkrajnik/ardrone/articles/formace.pdf) (PDF). IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). Archived from [the original](http://labe.felk.cvut.cz/~tkrajnik/ardrone/articles/formace.pdf) (PDF) on August 10, 2017. Retrieved August 11, 2019.
+9.  **[^](#cite_ref-9)** Lebar Bajec, Iztok; Heppner, Frank H. (2009). ["Organized flight in birds"](http://lrss.fri.uni-lj.si/people/ilbajec/papers/ilb_ab09.pdf) (PDF). *Animal Behaviour*. **78** (4): 777–789\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1016/j.anbehav.2009.07.007](https://doi.org/10.1016%2Fj.anbehav.2009.07.007). [S2CID](/wiki/S2CID_(identifier) "S2CID (identifier)") [53180059](https://api.semanticscholar.org/CorpusID:53180059).
+10.  **[^](#cite_ref-10)** Ibáñez, Jesús; Gómez-Skarmeta, Antonio F.; Blat, Josep (2003). "DJ-boids: emergent collective behavior as multichannel radio station programming". *Proceedings of the 8th international conference on Intelligent User Interfaces*. pp. 248–250\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1145/604045.604089](https://doi.org/10.1145%2F604045.604089).
+11.  **[^](#cite_ref-11)** Moere, A V (2004). "Time-Varying Data Visualization Using Information Flocking Boids". *Proceedings of the IEEE Symposium on Information Visualization*. pp. 97–104\. [CiteSeerX](/wiki/CiteSeerX_(identifier) "CiteSeerX (identifier)") [10.1.1.208.7409](https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.208.7409). [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1109/INFVIS.2004.65](https://doi.org/10.1109%2FINFVIS.2004.65).
+12.  **[^](#cite_ref-12)** Cui, Zhihua; Shi, Zhongzhi (2009). "Boid particle swarm optimisation". *International Journal of Innovative Computing and Applications*. **2** (2): 77–85\. [doi](/wiki/Doi_(identifier) "Doi (identifier)"):[10.1504/IJICA.2009.031778](https://doi.org/10.1504%2FIJICA.2009.031778).
+13.  **[^](#cite_ref-13)** [Dawkins, Richard](/wiki/Richard_Dawkins "Richard Dawkins") (2009). *The Greatest Show on Earth: The Evidence for Evolution*. [Free Press](/wiki/Free_Press_(publisher) "Free Press (publisher)"). pp. 219–220\. [ISBN](/wiki/ISBN_(identifier) "ISBN (identifier)") [<bdi>978-1-61664-829-9</bdi>](/wiki/Special:BookSources/978-1-61664-829-9 "Special:BookSources/978-1-61664-829-9").
+
+## External links[[edit](/w/index.php?title=Boids&action=edit&section=4 "Edit section: External links")]

@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:53
+-->
+
+# Small Joys when Programming - by Diego Crespo
+
+> 来源：[https://www.deusinmachina.net/p/small-joys-when-programming](https://www.deusinmachina.net/p/small-joys-when-programming)
+
+I used to paint Warhammer 40K mini figures, and one of the things I always enjoyed about the hobby, was building up my toolkit of home brewed accessories that I would use to paint. During my time painting, I repurposed a fishing tackle box as a mobile painting station, used bamboo spice racks for organizing my paints, and had the big brain idea of drilling magnets into my paintbrush handles so I could hang them for storage. I even crafted my own washes from diluted inks. My personal workflow fixed deficiencies I encountered over the course of years of painting.
+
+This concept of customization is something I’ve developed as I become a more seasoned programmer as well. From configuring custom key bindings in Emacs, to writing little scripts that automate problems only I have, and agonizing over the ideal keyboard for programming, I’ve been meticulously honing my programming environment for years.
+
+Even the Operating System my code runs on has not escaped customization. People have asked me, “*What if you are working on a machine that isn’t set up with your workflow?* ”, as if I would somehow be unable to work in that environment. Sure there might be some pain, but it’s not like I would suddenly have forgotten how to program.
+
+This reminds me of an anecdote of my CTO a few years ago. He was using my Macbook and trying to copy and paste something out of my terminal. His Mac was set up to copy as soon as the mouse was done highlighting, but mine wasn’t. He kept going to paste the output into another program and getting nothing. It took him a few tries to realize what was going on, but he got it eventually. So sure, my muscle memory might betray me in the beginning, but after a time things will go smoothly again. Plus I like to think it’s good for my brain. You know, neuroplasticity and stuff.
+
+I consider these difficulties a blessing. It makes me appreciate more what I have built, which otherwise spends most of its day unappreciated in the background. It’s also a sentiment that can be applied in other domains as well. James Hoffman, a World Barista Champion turned coffee YouTuber, touches on this in his video [What No One Tells You About Learning To Taste](https://www.youtube.com/watch?v=tU1y7hBSgiY)
+
+As someone who worked tirelessly to achieve perfection in coffee, he realized that there we downsides that were making him unhappy. He avoided bad coffee and was a burden on his friends due to his high expectations around it. But he realized that he could still enjoy good coffee. He just needed to change his perspective. He said…
+
+> In the case of coffee I started to drink bad coffee. Now, I didn't go and seek it out, but when it was gonna happen I just let it happen.
+
+I think that’s a healthy way of thinking about it. And, bringing this back to programming, the inability to always work in your preferred environment, should not rob you of the little things that make programming enjoyable. Programming is as much an art as science, and a little bit of personal expression is always fun. So remember…
+
+> Without a little ugliness there can be no beauty
+> 
+> - James Hoffman
+
+And go fiddle with some customizations.
+
+Hi 👋 my name is Diego Crespo and I like to talk about technology, niche programming languages, and AI. I have a [Twitter](https://twitter.com/deusinmach) and a [Mastodon](https://mastodon.social/deck/@DiegoCrespo), if you’d like to follow me on other social media platforms. If you liked the article, consider liking and subscribing. And if you haven’t why not check out another article of mine listed below! Thank you for reading and giving me a little of your valuable time. A.M.D.G
+
+[Share](https://www.deusinmachina.net/p/contemplating-loss-in-the-digital?utm_source=substack&utm_medium=email&utm_content=share&action=share&token=eyJ1c2VyX2lkIjoxMDA1NTI0NjQsInBvc3RfaWQiOjEzNzEyNzc4MywiaWF0IjoxNjk1MzA3NDMzLCJleHAiOjE2OTc4OTk0MzMsImlzcyI6InB1Yi0xMTQ2MzU5Iiwic3ViIjoicG9zdC1yZWFjdGlvbiJ9.xfTsuo9K9txQ2hSv0AsAPTMqJm3sx3EVKCy-A-PvuPo)
+
+[Share Deus In Machina](https://www.deusinmachina.net/?utm_source=substack&utm_medium=email&utm_content=share&action=share)

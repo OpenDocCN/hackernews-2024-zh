@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:16
+-->
+
+# HP is in the rent-a-printer business now - The Verge
+
+> 来源：[https://www.theverge.com/2024/3/2/24088867/hp-all-in-plan-printer-rental-instant-ink](https://www.theverge.com/2024/3/2/24088867/hp-all-in-plan-printer-rental-instant-ink)
+
+HP has a new proposition in a time when (companies like it have made sure) you don’t really control much about your computer anyway: why don’t you just let HP rent you one? The company debuted a subscription service today — just like CEO Enrique Lores [said it would](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DQPRMyQSZGuY) last month — called [the HP All-In Plan](https://www.awin1.com/cread.php?awinmid=7168&awinaffid=173843&ued=https%3A%2F%2Fwww.hp.com%2Fus-en%2Fall-in-plan%2Fprinters%2Fenvy.html). It’s essentially an extension of HP’s Instant Ink, and like that plan, you’ll have ink sent to you as you approach empty, but unlike it, your monthly fee also covers the printer itself.
+
+Which printer you get depends on the plan you choose. They start at $6.99 per month for 20 pages’ worth of prints and whatever the current HP Envy model is, and go all the way up to a $35.99-a-month affair that gets you an OfficeJet Pro and 700 pages. If you go over your page allotment, HP will add more for a dollar per block of 10–15 pages.
+
+But each plan is a two-year rental, not a lease-to-own situation. So if you decide HP All-In isn’t for you after all, you’ll have to return the printer and go back to rubbing elbows with everyone else at FedEx whenever the need to print arises. And if you cancel after an initial 30-day trial or before two years, you’ll pay a fee as high as $270, depending on the plan and when you cancel.
+
+The subscription, like HP’s [recent ad campaign](https://arstechnica.com/gadgets/2023/12/hp-misreads-room-awkwardly-brags-about-its-less-hated-printers/) promoting its printers as “made to be less hated,” trades on the idea that printers are frustrating commodities. The company’s [configurator page](https://www.awin1.com/cread.php?awinmid=7168&awinaffid=173843&ued=https%3A%2F%2Fwww.hp.com%2Fus-en%2Fhp-all-in-plan-enroll%2Fpdp-config%3Fskus%3DEnvyOnbooks.00001_EnvyInspireOnbooks.00001_OfficeJetOnbooks.00001%26pdpFlow%3DbundleSelection%26options%255BEnvyOnbooks.00001%255D%3DYnVuZGxlLzEz-YnVuZGxlLzEzLzMzLzE%253D%26options%255BEnvyInspireOnbooks.00001%255D%3DYnVuZGxlLzE3-YnVuZGxlLzE3LzQ1LzE%253D%26options%255BOfficeJetOnbooks.00001%255D%3DYnVuZGxlLzIx-YnVuZGxlLzIxLzU3LzE%253D%26selectedSku%3DEnvyOnbooks.00001) mentions bonuses like “continuous printer coverage” and “next-business-day printer replacement,” for instance. That way, if a [firmware upgrade blue-screens your printer](/2023/5/23/23734185/hp-officejet-blue-screen-error-83c0000b-bricked), at least you have some recourse that doesn’t involve driving to a store to buy a whole new one.
+
+There are people this plan will undoubtedly appeal to. Not everybody cares that deeply about feeling like they own their printer. And receiving ink before you run out is great if you are, like me, the kind of person who ignores the “low ink” warning all the way until I’m fully out and am actually printing something critical, rather than coloring pages for your kid, for once.
+
+But those are mostly functions of the fact that I don’t really print that often and rarely encounter the annoyances of printer ownership. For those who do, companies can take two paths. One is HP’s plan, which appeals to the frustration of user-hostile experiences like scanners that don’t work [because you bought third-party ink](/2023/8/11/23067867/canon-hp-class-action-lawsuit-scan-without-ink-settlement) and printers that become unusable without [some serious effort](/23648726/hp-officejet-printer-region-how-to-change-why) because you moved overseas. The other approach is making printers [that mostly just do the thing](/23642073/best-printer-2023-brother-laser-wi-fi-its-fine) you want them for.

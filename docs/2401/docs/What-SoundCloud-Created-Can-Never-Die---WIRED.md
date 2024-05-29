@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:49:22
+-->
+
+# What SoundCloud Created Can Never Die | WIRED
+
+> 来源：[https://www.wired.com/story/what-soundcloud-created-can-never-die/](https://www.wired.com/story/what-soundcloud-created-can-never-die/)
+
+Kaytranada and Kehlani. Lil Nas X’s “[Old Town Road](https://www.wired.com/story/lil-nas-x-old-town-road-song-of-2019/).” Sheck Wes’ “Mo Bamba.” The commonalities these artists and songs share is neither region nor genre but platform. [SoundCloud](https://www.wired.com/2016/03/soundclouds-new-venture-mixes-social-network-music-service/) was their origin point. “It sparked so many careers once upon a time,” says [Stonie Blue](https://soundcloud.com/antbluejr), a New York-based DJ and cofounder of [BIYDIY Records](http://www.biydiy.online/). “Artists could upload their music straight to the community that would lurk there before the main focus was streaming on [Apple Music](https://www.wired.com/tag/apple-music/) or [Spotify](https://www.wired.com/tag/spotify/).” Blue joined the platform in 2012, and in that time, he's come across newbie artists like Sango, Dream Koala, Yeek, and WOLFE de MÇHLS. “SoundCloud,” he says, “always felt like the underground.”
+
+The element of discovery is at the core of SoundCloud’s fundamental appeal. That's been the case since it launched in 2007\. The Berlin-founded company has maintained its relevance by embracing a simple ethos: come as you are. That’s made SoundCloud the for-everybody platform—one that embraces all genres, sexualities, religions, and definitions of music and art. By setting itself up as a hub for community-oriented music streaming, it’s become a kind of incubator for avant-garde sounds. Today, SoundCloud is everybody’s underground.
+
+That may soon change. The company has plans to [pursue a buyer](https://www.billboard.com/business/streaming/soundcloud-preparing-to-sell-1235578246/https://www.billboard.com/business/streaming/soundcloud-preparing-to-sell-1235578246/) this year, according to [multiple reports](https://news.sky.com/story/music-streaming-service-soundcloud-tunes-up-for-sale-13043602), a move the company has been working on for some time. In 2017, SoundCloud nearly shut down when it was reported that the company would run out of funding within two months. Thanks to a last-minute $170 million cash infusion from investment firms Raine Group and Temasek Holdings, and [a little help](https://www.vulture.com/2017/07/chance-the-rapper-soundcloud.html) from Chance the Rapper, the company was saved from termination. Raine Group and Temasek are now reportedly seeking a payday of upwards of $1 billion. With news of a possible sale, what hangs in the balance is the possible loss of what has made SoundCloud such a unique platform, and the impact that rupture could have on the future of the music business.
+
+“Might sound dramatic but it changed my life,” says Dede Ademabua, the Grammy-nominated producer known as [IAMNOBODI](https://soundcloud.com/iamnobodi). “Wouldn’t be where I am today if it wasn’t for SoundCloud. I was able to make a name for myself by uploading songs and DJ mixes that people all over the world connected with. I became a part of [music collective] Soulection through this platform.”
+
+The spirit of the platform was inherent from the beginning. Ademabua, who has worked with Nipsey Hussle, Little Simz, and Bryson Tiller, says community was always at its heart, and what it stood for. “If anything, SoundCloud was about having fun and connecting with like-minded individuals globally,” Ademabua says.
+
+Those connections hit a critical mass in 2015 when SoundCloud rap announced itself to mainstream ears, as upstarts Lil Peep, Smokepurpp, XXXtentacion, and Juice WRLD began to make noise. Even for SoundCloud, a platform notorious for its exhaustive catalog of sounds, SoundCloud rap—rebellious, drug-friendly, and swirling with tales of emo torment—was like nothing else on the scene. *The New York Times* christened it “the most vital and disruptive new movement in hip-hop.”

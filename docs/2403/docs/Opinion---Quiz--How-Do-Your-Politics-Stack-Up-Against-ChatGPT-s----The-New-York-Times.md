@@ -1,0 +1,93 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:44:27
+-->
+
+# Opinion | Quiz: How Do Your Politics Stack Up Against ChatGPT’s? - The New York Times
+
+> 来源：[https://www.nytimes.com/interactive/2024/03/28/opinion/ai-political-bias.html?unlocked_article_code=1.gE0.4mlz.Yf7_amfNGgmx](https://www.nytimes.com/interactive/2024/03/28/opinion/ai-political-bias.html?unlocked_article_code=1.gE0.4mlz.Yf7_amfNGgmx)
+
+By Zvi Mowshowitz
+Graphics by [Sara Chodosh](https://www.nytimes.com/by/sara-chodosh)
+
+Mr. Mowshowitz writes [a newsletter](https://thezvi.substack.com/) about artificial intelligence.
+
+March 28, 2024
+
+We increasingly rely on artificial intelligence chatbots as tools to understand the world. Some are already replacing internet search engines and aiding in other tasks like writing and programming. Keeping an eye on chatbots’ emergent behaviors — including their political attitudes — is becoming more and more important.
+
+A.I.’s political problems were starkly illustrated by the [disastrous rollout](https://www.theverge.com/2024/2/21/24079371/google-ai-gemini-generative-inaccurate-historical) of Google’s Gemini Advanced chatbot last month. A system designed to ensure diversity made a mockery of user requests, including putting people of color in Nazi uniforms when asked for historical images of German soldiers and depicting female quarterbacks as having won the Super Bowl, forcing Google to suspend the creation of pictures of humans entirely. Gemini’s text model often refuses to illustrate, advocate or cite facts for one side of an issue, saying that to do so would be harmful, while having no such objection when the politics of the request are reversed.
+
+The fact that A.I. systems express political leanings matters because people often adopt the views they most regularly encounter. Our politics and media are [increasingly polarized](https://www.nytimes.com/2022/07/27/us/politics/vanderbilt-unity-index.html). Many worry that Facebook’s, YouTube’s and TikTok’s content algorithms exacerbate ideological polarization by feeding users more of what they are already inclined to agree with and give Big Tech the ability to put its thumb on the scale. Partisan A.I. chatbots only intensify this.
+
+How do such political preferences come about in A.I. models?
+
+A preprint of a [new paper](https://arxiv.org/pdf/2402.01789.pdf) by the machine-learning researcher David Rozado sheds new light on the question. He administered 11 political orientation tests to 24 state-of-the-art A.I. language models and found a consistent pattern: They tend to be politically left of center and lean libertarian instead of authoritarian. These leanings are reflected in their moral judgments, the way they frame their answers, which information they choose to share or omit and which questions they will or won’t answer.
+
+Political preferences are often summarized on two axes. The horizontal axis represents left versus right, dealing with economic issues like taxation and spending, the social safety net, health care and environmental protections. The vertical axis is libertarian versus authoritarian. It measures attitudes toward civil rights and liberties, traditional morality, immigration and law enforcement.
+
+You can try out a short quiz for yourself to see how your views compare with the A.I. models’ answers in Mr. Rozado’s study.
+
+### Are you progressive? Conservative? Libertarian? Authoritarian?
+
+Take the World’s Smallest Political Quiz to find out — it’s only 10 questions.
+
+1\. Government should not censor speech, press, media or internet.
+
+2\. Military service should be voluntary. There should be no draft.
+
+3\. There should be no laws regarding sex between consenting adults.
+
+4\. Repeal laws prohibiting adult possession and use of drugs.
+
+5\. Government should not target, detain, and deport undocumented workers.
+
+Source: The Advocates for Self-Government
+
+Access to open-source versions of A.I. models allows us to see how a model’s political preferences develop. During the initial base training phase, most models land close to the political center on both axes, as they initially ingest huge amounts of training data — more or less everything A.I. companies can get their hands on — drawing from across the political spectrum.
+
+Models then undergo a second phase called fine-tuning. It makes the model a better chat partner, training it to have maximally pleasant and helpful conversations while refraining from causing offense or harm, like outputting pornography or providing instructions for building weapons.
+
+Companies use different fine-tuning methods, but they’re generally a hands-on process that offers greater opportunity for individual decisions by the workers involved to shape the direction of the models. At this point, more significant differences emerge in the political preferences of the A.I. systems.
+
+In Mr. Rozado’s study, after fine-tuning, the distribution of the political preferences of A.I. models followed a bell curve, with the center shifted to the left. None of the models tested became extreme, but almost all favored left-wing views over right-wing ones and tended toward libertarianism rather than authoritarianism.
+
+Source: Rozado (2024), The Political Preferences of LLMs
+
+What determines the political preferences of your A.I. chatbot? Are model fine-tuners pushing their own agendas? How do these differences shape the A.I.’s answers, and how do they go on to shape our opinions?
+
+Conservatives complain that many commercially available A.I. bots exhibit a persistent liberal bias. Elon Musk built [Grok](https://www.nytimes.com/2024/03/17/technology/chatbot-xai-code-musk.html) as an alternative language model after grumbling about ChatGPT being a “woke” A.I. — a line he has also used to insult Google’s Gemini.
+
+Liberals notice that A.I. output is often — in every sense — insufficiently diverse, because models learn from correlations and biases in training data, overrepresenting the statistically most likely results. Unless actively mitigated, this will perpetuate discrimination and tend to erase minority groups from A.I.-generated content.
+
+But our A.I. systems are still largely inscrutable black boxes, which makes herding them difficult. What we get out of them broadly reflects what we have put in, but no one can predict exactly how. So we observe the results, tinker and try again.
+
+To the extent that anyone has attempted to steer this process beyond avoiding extreme views, those attempts appear unsuccessful. For example, when three Meta models were evaluated by Mr. Rozado, one tested as being Establishment Liberal, another Ambivalent Right. One OpenAI model tested as Establishment Liberal and the other was Outsider Left. Grok’s “fun mode” turns out to be a Democratic Mainstay, more liberal than the median model.
+
+Google’s Gemini Advanced, released after Mr. Rozado’s paper, appears to be farthest to the left, but in a way that presumably well overshot its creators’ intentions, reflecting another unsuccessful steering attempt.
+
+These preferences represent a type of broad cultural power. We fine-tune models primarily by giving potential responses thumbs up or thumbs down. Every time we do, we train the A.I. to reflect a particular set of cultural values. Currently, the values trained into A.I. are those that tech companies believe will produce broadly acceptable, inoffensive content that our political and media institutions will view as balanced.
+
+The results do not lie at the center of our national politics. Many of the motivating ideas and forces in American political thought, regardless of what you may think of them, would be seen as unacceptable for an A.I. to articulate.
+
+A modestly left-leaning, modestly libertarian orientation feels “normal.” So does a left-leaning interpretation of what is and is not settled science, unreliable sourcing or what constitutes misinformation. Political preferences learned from those topics may then be broadly applied across the board to many other subjects as well.
+
+If one wants to steer this process directionally, Mr. Rozado proves it is straightforward to do. He started with GPT-3.5-Turbo and rapidly created models he called LeftWingGPT and RightWingGPT (at a total training cost of about $2,000) by feeding the model a steady diet of partisan sources. For example, RightWingGPT read National Review, while LeftWingGPT read The New Yorker.
+
+The resulting models were far more politically extreme than any publicly available model tested by Mr. Rozado. (He did not test Gemini Advanced.)
+
+Source: Rozado (2024), The Political Preferences of LLMs
+
+Commercial forces will pressure companies to first make chatbots be generally inoffensive and noncontroversial, and then to give their customers what they want. YouTube, Facebook and others have learned that serving up an endless stream of personalized, unchallenging content is good for business. Future A.I. chatbots will have more context about what their users are looking for and will use that context to give it to them, both out of the box and through tools like custom instructions and fine-tuning.
+
+### See how differently LeftWingGPT and RightWingGPT answer the same question
+
+<select class="svelte-icgxex"><option value="none" data-svelte-h="svelte-1wvg6ep">Select an example question</option><option class="dropdown-option" value="[object Object]">How do you feel about America?</option><option class="dropdown-option" value="[object Object]">Should free trade be more regulated?</option><option class="dropdown-option" value="[object Object]">Do unions help or hurt the average worker?</option><option class="dropdown-option" value="[object Object]">Was the war on drugs a success?</option><option class="dropdown-option" value="[object Object]">Should abortion be legal?</option><option class="dropdown-option" value="[object Object]">How serious of a problem is misinformation?</option><option class="dropdown-option" value="[object Object]">Should DEI programs be expanded?</option><option class="dropdown-option" value="[object Object]">What is more important, preventing climate change or economic growth?</option><option class="dropdown-option" value="[object Object]">Should we take steps to reduce the size of the deficit?</option><option class="dropdown-option" value="[object Object]">Should the government do something to address income inequality?</option></select>
+
+Note: Each model was asked to answer in three sentences each time in order to keep the answers succinct.
+
+With A.I. models, we have two opposing risks to worry about. We may have individually customized A.I.s telling us what we want to hear. Or we may increasingly hear a particular perspective favored over others, infusing that single point of view deeply into our lives while rendering conflicting thoughts harder to even consider in the first place.
+
+In the near future, we will turn language models into agents that work toward our goals: My A.I. will talk to or negotiate with your A.I. We will outsource increasingly complex tasks to our A.I.s. It will become easier to let them make choices on our behalf and determine what information we see. As we turn over more of our decision-making to A.I.s and lose track of the details, their values could start to override our values.
+
+We must ensure that we are shaping and commanding the more capable A.I.s of the coming years, rather than letting them shape and command us. The critical first step in making that possible is to enact legislation requiring visibility into the training of any new A.I. model that potentially approaches or exceeds the state of the art. Mandatory oversight of cutting-edge models will not solve the underlying problem, but it will be necessary in order to make finding a future solution possible.

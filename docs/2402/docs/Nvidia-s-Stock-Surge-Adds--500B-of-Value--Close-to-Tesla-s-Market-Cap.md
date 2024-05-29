@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:38:46
+-->
+
+# Nvidia's Stock Surge Adds $500B of Value, Close to Tesla's Market Cap
+
+> 来源：[https://markets.businessinsider.com/news/stocks/nvidia-tesla-stock-price-market-cap-huang-musk-ai-microchips-2024-2](https://markets.businessinsider.com/news/stocks/nvidia-tesla-stock-price-market-cap-huang-musk-ai-microchips-2024-2)
+
+*   Nvidia's stock surge boosted its market cap by about $500 billion, almost Tesla's entire worth.
+*   Its $1.7 trillion market cap is closing in on Amazon and Alphabet.
+*   Nvidia CEO Jensen Huang's fortune has surged by $17 billion this year to $61 billion, per Bloomberg.
+
+Thanks for signing up!
+
+Access your favorite topics in a personalized feed while you're on the go. 
+
+Nvidia's [stock surge in 2024](https://markets.businessinsider.com/news/stocks/nvidia-stock-artificial-intelligence-q4-earnings-outlook-semiconductor-chips-nvda-2024-2?utm_medium=ingest&utm_source=markets) has boosted its value by about $500 billion — close to [Tesla](https://www.businessinsider.com/tesla?utm_medium=ingest&utm_source=markets)'s entire market value.
+
+The graphics-chip maker's shares have soared 40% this year, lifting its market value by $489 billion to $1.7 trillion at Monday's close. It's now threatening to overtake Amazon and Alphabet to become the third-most valuable US company after Microsoft and Apple.
+
+In contrast, shares of [Elon Musk](https://www.businessinsider.com/elon-musk?utm_medium=ingest&utm_source=markets)'s Tesla have [tumbled 27%](https://markets.businessinsider.com/news/stocks/elon-musk-tesla-stock-mania-net-worth-wealth-jeff-bezos-2024-1?utm_medium=ingest&utm_source=markets) this year, slashing the EV maker's market value by $214 billion to $576 billion. That's only $86 billion more than Nvidia's market-cap gain in just over five weeks of trading this year.
+
+Nvidia shares climbed another 2%, and Tesla shares dropped a further 2%, in premarket trading on Tuesday. If those changes hold, the gap between Nvidia's year-to-date rise in market cap and Tesla's market value will shrink to less than $50 billion.
+
+The semiconductor giant's market cap has more than quadrupled since the start of last year. Investors are wagering it will be one of the biggest beneficiaries of the artificial-intelligence boom, which has already [supercharged demand for its chips](https://markets.businessinsider.com/news/stocks/nvidia-stock-price-record-high-artificial-intelligence-tech-earnings-nvda-2024-2?utm_medium=ingest&utm_source=markets).
+
+The $500 billion rise in Nvidia's market value this year is striking in both speed and magnitude. Only about a dozen US public companies are worth more. Nvidia has added roughly a JPMorgan's ($504 billion) worth of value in under six weeks, and its gain exceeds the likes of Walmart ($454 billion) or Exxon ($406 billion) in size.
+
+Similarly, Nvidia's total market cap of $1.7 trillion dwarfs corporate titans like Mark Zuckerberg's [Meta](https://www.businessinsider.com/meta?utm_medium=ingest&utm_source=markets) ($1.2 trillion), [Warren Buffett](https://markets.businessinsider.com/news/stocks/who-is-warren-buffett-berkshire-hathaway-stocks-investing-wealth-philanthropy-2023-5?utm_medium=ingest&utm_source=markets)'s Berkshire Hathaway ($848 billion), Eli Lilly ($670 billion), and Visa ($554 billion).
+
+Business Insider/Nasdaq
+
+The fact that Nvidia commands double the market cap of Berkshire might seem shocking, as the chipmaker generated only $18 billion of revenues in its last reported quarter, compared to Berkshire's $93 billion.
+
+However, the pair posted similar operating profits ($10.4 billion versus $10.8 billion), and Nvidia is growing much faster.
+
+Notably, Nvidia's stock leap has enriched its largest shareholders. Cofounder and CEO [Jensen Huang](https://www.businessinsider.com/nvidia-jensen-huang-chipmaker-cofounder-ceo-wealth-net-worth-ai-2023-5?utm_medium=ingest&utm_source=markets)'s net worth has swelled by an estimated $17 billion this year to hit $61 billion, ranking him 22nd on the [Bloomberg Billionaires Index](https://www.bloomberg.com/billionaires/) and third in year-to-date gains.
+
+He's now wealthier than two heirs to the Mars fortune, worth $48 billion each, and just behind commodity tycoon Charles Koch ($63 billion).

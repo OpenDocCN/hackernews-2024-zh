@@ -1,0 +1,80 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:59:21
+-->
+
+# Workers without degrees aren't getting as many job offers as it seems
+
+> 来源：[https://www.cnbc.com/2024/02/19/job-posts-for-workers-without-degrees-are-booming-but-not-the-hiring.html](https://www.cnbc.com/2024/02/19/job-posts-for-workers-without-degrees-are-booming-but-not-the-hiring.html)
+
+Many of the market's top companies with the largest workforces in the nation are touting degreeless jobs and actively [removing degree requirements](https://www.cnbc.com/2023/11/01/walmart-sends-a-new-degree-free-message-about-getting-a-corporate-job.html) from more job postings. The idea of hiring based on skill rather than completion of college education for certain roles has become more prevalent at a time when workers are in short supply and the economic value of a college degree is [being questioned](https://www.cnbc.com/2023/05/24/college-enrollment-continues-to-slide-as-a-four-year-degree-loses-appeal.html) by more Americans.
+
+But as data emerges on degreeless hiring, there are signs that some of these efforts may be falling short.
+
+A [new report](https://www.burningglassinstitute.org/research/skills-based-hiring-2024) from Burning Glass Institute and Harvard Business School focuses on how companies stack up in their efforts to hire non-degreed workers. This is important to U.S. workers, more than half of whom don't have degrees, since it impacts their ability to get higher-paying jobs and better roles.
+
+The total number of companies promoting efforts to hire people without degrees doesn't mean these workers are actually getting the jobs, and in fact, there's limited public evidence to date to support how corporate efforts are shaping up. The research from Burning Glass is an effort to quantify that. It's based on limited data and doesn't consider alternative pathways that people without degrees use to join organizations, such as through apprenticeships and internships. But it's still a snapshot look at how some of the top employers in the U.S. are doing in their efforts to hire more workers based on skills versus degree attainment.
+
+"Unfortunately, what we found is for the most part, employers are still hiring the same people they were before," said Matt Sigelman, president of the Burning Glass Institute, which provides data-driven research on work-related topics.
+
+### More than 60% of U.S. workers don't have degrees 
+
+The move to hire people without degrees is important because of the large number of people who fall into this bucket. U.S. Census bureau data shows that about 62% of Americans don't have degrees. The push to hire more of these workers doesn't apply to low-level jobs that never required a degree or professional positions like doctors or lawyers. What's at stake here are the middle-tier jobs like construction managers, sales supervisors, web developers, cybersecurity and IT help desk specialists. These jobs typically require certain skills sets and training, but not necessarily a four-year degree. 
+
+Knowing how specific companies stack up when it comes to skills-based hiring is important for workers "because it tells them where they are most likely to get a fair shake," Sigelman said.
+
+There are also advantages to workers in terms of pay. The study found that when workers without an undergraduate degree step into a role that previously required a degree, they experience a roughly 25% increase in salary, on average. That amounts to more than $12,400 in incremental earnings per year. 
+
+Workers who want to see how specific companies or sectors compare can use the [American Opportunity Index](https://www.americanopportunityindex.org/) to compare them based on factors such as hiring, pay, promotion, parity, and culture. It rates companies on a 1-5 scale, 5 being the highest, and focuses on jobs open to those without a degree. The index is a joint project of the Burning Glass Institute, the Managing the Future of Work Project at Harvard Business School and the Schultz Family Foundation.
+
+Joseph Fuller, a professor of management practice at Harvard Business School, recommends job-seekers use the index to compare companies in the same sector since there can be vast differences in their hiring and promotion practices for non-degreed workers. Fuller said he doesn't doubt commitment at the management level for any of the companies named in the report, but said that policy pronouncements can only go so far. "They can announce good intentions but they have to execute against those good intentions," he said.
+
+### Ranking Walmart, Apple, GM and others
+
+Burning Glass researchers undertook the new study given the growing number of employers removing degree requirements, [data they've previously tracked](https://www.hbs.edu/managing-the-future-of-work/Documents/research/emerging_degree_reset_020922.pdf). The most recent findings underscore that desire by companies to extend opportunities to non-degree holders doesn't necessarily translate into everyday practice.
+
+The observations in the study are based on a database of the career histories of 65 million American workers, which Burning Glass says represents about 40% of the U.S. workforce. The 11,300 roles included in the sample are ones for which researchers say they could observe a meaningful volume of hiring for at least one year before and after a firm removed a degree requirement.
+
+Researchers focused on large companies for which they observed more than 500 unique job ads annually. The sample included roles from 1,134 different companies. The companies named in the report are those for which researchers had "strong data coverage," he said. 
+
+Only 37% of firms analyzed made tangible changes in their hiring practices. These leaders included major employers such as Koch Industries, [Walmart](/quotes/WMT/), [Apple](/quotes/AAPL/), [General Motors](/quotes/GM/), [Target](/quotes/TGT/), [Cigna](/quotes/CI/), [Tyson Foods](/quotes/TSN/), [ExxonMobil](/quotes/XOM/) and [Yelp](/quotes/YELP/).
+
+The fact that some very successful companies do meaningfully change their hiring profile suggests it's not a lack of talent that's impeding skills-based hiring efforts, Sigelman said. Rather, it implies managers may be reticent to hire people without degrees, absent specific policies to assess these workers' skills. If there are two candidates — one with a degree, one without, "to many hiring managers, it will feel risky," he said.
+
+### Bank of America, Amazon, Oracle and others receive scrutiny
+
+The largest group of firms in the study — 45% of the sample — removed degree requirements from job postings, but showed little change in actual hiring patterns, the researchers said. Companies in this bucket include [Bank of America](/quotes/BAC/), [Amazon](/quotes/AMZN/), [Oracle](/quotes/ORCL/), [Lockheed Martin](/quotes/LMT/), [Kroger](/quotes/KR/) and [Stellantis](/quotes/STLA/).
+
+Companies cited for not following through with significant hires told CNBC they either couldn't verify the data, disputed researchers' conclusions, or pointed to measures they have taken to improve their skills-based hiring.
+
+"While we can't verify the methodology of this survey based on the information shared, the conclusions aren't accurate," an Amazon spokesperson said via email. "A large number of roles at Amazon don't require a college degree."
+
+For its part, Bank of America shared that about 40% of its 2023 hires were filled by candidates without four-year college degrees, a figure the banking giant said has been increasing in recent years.
+
+And Lockheed Martin pointed to its five-year commitment to creating 8,000 apprenticeship opportunities for skilled workers through technical apprenticeships, mid-career development programs, new college hire rotation programs and internships — a goal it met one year ahead of plan.
+
+Stellantis said its approach includes looking at doing more skills and competency-based assessments, which expands the candidate pool and increases retention. "Examples in our software division show how we are striving to recruit candidates based on their skills not only on their educational background," a spokesperson said via email.
+
+Oracle and Kroger did not respond to email requests for comment.
+
+### Nike, Uber, Delta and the 'backslide' risk
+
+The final 18% of firms included in the study were dubbed "backsliders" by the researchers.
+
+These are firms who made initial progress after removing degree requirements, but later relapsed. Backsliders called out by researchers include such companies as [Nike](/quotes/NKE/), [Uber](/quotes/NKE/), HSBC, Novartis, [Delta Air Lines](/quotes/DAL/), Meijer and [US Foods](/quotes/USFD/). 
+
+A spokesperson for Meijer would not comment on the study itself, but said via email it has "never made any commitment regarding hiring team members with or without degrees because of the broad variety of roles within our company." The spokesperson also pointed to the education benefits it offers, which includes free undergraduate education that all team members can take advantage of upon being hired, with no waiting period.
+
+A spokesperson for HSBC said via email that the "report's narrow focus fails to grasp the nuanced impact of skill-based hiring, overlooking the multifaceted strengths our approach unlocks to create a high-performance culture and an exceptional experience for our colleagues."
+
+Delta said the data cited in the report is not a trend it's seeing in the aggregate and that it remains committed to skill-based hiring. "Our focus is hiring the best candidates for every role — regardless of where they acquired the skills," a spokesperson said in an email.
+
+Nike, Uber, Novartis and US Foods did not respond to requests for comment.
+
+### Degreeless career success tips
+
+Researchers identified several common patterns among leaders in skill-based hiring that they say could help others further their success. For one, "they call attention to people throughout the organization who are crushing it without degrees," Sigelman said. "That takes some of the stigma off and it makes it feel less risky for hiring managers to take a chance on hiring someone without a degree."
+
+Companies that have been successful with skill-based hiring also articulate clearly the skills they require for a job, even before posting it. According to Sigelman, they ask hiring managers to be specific about the skills they are looking for and also what they would consider evidence of somebody having acquired those skills.
+
+Additionally, leaders in skill-based hiring have processes to assess the skills they are seeking. For instance, they might ask job prospects to submit projects for a candidate-blind review by hiring managers. This allows companies to assess "who fundamentally did the best project without knowing whose work it was," Sigelman said.

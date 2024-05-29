@@ -1,0 +1,18 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:52:07
+-->
+
+# EU chip goal ‘totally unrealistic’ says ASML CEO
+
+> 来源：[https://www.electronicsweekly.com/news/business/eu-chip-goal-totally-unrealistic-2024-01/](https://www.electronicsweekly.com/news/business/eu-chip-goal-totally-unrealistic-2024-01/)
+
+Investments in fab by TSMC, Bosch, NXP and Infineon are “good for the European car industry but it’s not enough. It’s not enough at all,” says Wennink, “if you want to get to 20%, you just have to calculate how much you need to build here.”
+
+![EU chip goal ‘totally unrealistic’ says ASML CEO](img/d11a510ac0c1c38614fe72a2b6fedd84.png)In 2022, Kurt Sievers, CEO of NXP stated: “We have calculated that we would need €500 billion investment in Europe to reach the 20 percent market share goal.”
+
+According to SEMI, China will have 8.6 million 8 inch equivalent wpm capacity this year, Taiwan will have 5.7 million wpm, Korea will have 5.1 million wpm, Japan will have 4.7 million wpm, the USA will have 3.1 million wpm, Europe will have 2.7 million wpm, and S.E.Asia will have 1.7 million wpm.
+
+So Europe has roughly 8% of the industry measured by capacity and has roughly 8% of the market measured by value.
+
+To up that to 20% in a world where capacity is currently growing at about 6% a year would need about a dozen new fabs to be built and in full volume production by 2030.

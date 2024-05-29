@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:39:07
+-->
+
+# Explore Historic Japanese Textbooks Online
+
+> 来源：[https://mymodernmet.com/historic-japanese-textbooks-online/](https://mymodernmet.com/historic-japanese-textbooks-online/)
+
+What did your school textbooks look like? Chances are they were old, ripped, and written in. Their computer-printed images were certainly not fine art, especially with other students' layering doodles over the years. However, textbooks do not always have to be boring; they can be works of art. An online archive of historic Japanese textbooks from the 19th and 20th centuries—hosted by the [National Institute for Educational Policy Research](https://www.nier.go.jp/library/rarebooks/)—exemplifies the textbook as an art form. Decorated in everything from hand painting and calligraphy to traditional block printing, the books are explorable in PDF format for free.
+
+The collection includes artwork such as hanging drawings, elementary primers, and brushwork guides for calligraphy. These works span a broad period, from the 19th century till after World War II—a time of immense change for Japan. Some texts are many pages long, combining elegant writing with detailed illustrations. Horses dance across a page beneath simple characters; whereas in another book, plants found in the garden are illustrated. Others depict teachers and small pupils cross-legged in front of their lecturers. It's fascinating even for those who cannot read Japanese.
+
+Chiefly on display is the artistry of the books' many makers. [Woodblock printing](https://mymodernmet.com/ukiyo-e-japanese-woodblock-prints/) is an ancient art, dating back to the 8th century in Japan. These abilities to create books long pre-dated the European [invention of the printing press](https://mymodernmet.com/history-of-the-printing-press/) during the Renaissance. Sometimes a block print might create the lines of a drawing, which was then colored in by hand. Other times, artists utilized the “brocade” method, *nishiki-e*, of using multiple blocks in multiple inks to create an image. It was not until the 20th century that modern print technology began to replace these methods. While modern textbooks might be more conducive to mass production or regular updating, they surely cannot match the charm, elegance, and beauty of these historic tomes.
+
+## An archive of centuries’ worth of Japanese textbooks hosted by the National Institute for Educational Policy Research is available online.
+
+## Many are incredible examples of block printing and illustration.
+
+h/t: [[Colossal](https://www.thisiscolossal.com/2024/01/japanese-rare-textbooks/)]
+
+## Related Articles:
+
+[Explore 870,000 Items in the New York Public Library Online Archives](https://mymodernmet.com/ny-public-library-online-archives/)
+
+[The Unique History and Exquisite Aesthetic of Japan’s Ethereal Woodblock Prints](https://mymodernmet.com/ukiyo-e-japanese-woodblock-prints/)
+
+[Explore and Download Over 220,000 Traditional Japanese Woodblock Prints](https://mymodernmet.com/japanese-woodblock-prints-ukiyo-e/)
+
+[Explore Five Volumes of the History of Cartography for Free Online](https://mymodernmet.com/the-history-of-cartography-online/)

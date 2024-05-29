@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:35:56
+-->
+
+# postmarketOS // in 2024-01: Infrastructure and bug reports
+
+> 来源：[https://postmarketos.org/blog/2024/01/08/infrastructure-and-testing/](https://postmarketos.org/blog/2024/01/08/infrastructure-and-testing/)
+
+It's a new year, aaand of course that means we're all having big grandiose thoughts about our projects. postmarketOS is no different, and in pursuit of transparency and reflection we got inspired to write this very blog post about those plans and what has been happening recently.
+
+First things first, As you may know, we recently [launched on OpenCollective](https://opencollective.com/postmarketos), and WOW, the feedback has been honestly amazing. We on the core team definitely didn't expect this level of generosity, and we're hard at work finding the best ways to use this money to improve the sustainability and reliability of postmarketOS. OpenCollective let's us easily manage expenses, pay people for their work, and receive donations. With everything being 100% transparent. We're extremely excited for the autonomy that this gives us.
+
+We've been having a bit of a tough time with our infrastructure recently. So we decided to make use of some of the donated money to invest in a bigger, better and more reliable server and started to move services over. Towards the end of January the major bottlenecks should be resolved (we are working hard on it behind the scenes), and infrastructure should be nice and fast again.
+
+In the further future, we would like to host our package repository and device images totally separately to our other services to minimise the risk of *unplanned outages*.
+
+We will also eventually get a second dedicated server which will work as a CI runner. We currently benefit from GitLab.com's ("Free premium for Open Source projects"), without which it would not be possible to operate postmarketOS. While we are very grateful towards GitLab for this, it would be better if we didn't rely on it as GitLab may decide at any time to be not as generous in the future. Therefore we are continuing to reducing our dependency on such infrastructure.
+
+Among other things, we hope that these changes will allow us to continue supporting more main and community devices - where we provide prebuilt images - and leave us room for some other experiments we have in mind.
+
+Testing is one of the things that currently holds us back. We support so many devices with so many different configurations that making changes to some of our more core components (like the initramfs) is extremely difficult. The testing team [which you can join here](https://wiki.postmarketos.org/wiki/Testing_Team) helps a lot, but it's certainly understandable that folks may not want to test potentially risky changes, or some of the more boring housekeeping things. It can also be challenging to provide a good method for *how* to test some features (i.e. if it's not a codepath which is hit under normal usage).
+
+Writing a testing guide is always useful, but there's no reason we can't do better - we already have the wonderful `pmbootstrap ci` command which lets you run CI for most of our repos locally, and we plan to have proper automated testing eventually which will let us properly validate a lot of the most important things.
+
+The month of December has been surprisingly interesting, considering the time of year and just how ready everyone seemed to be for the holidays.
+
+*   [We released the stable v23.12 version](/blog/2023/12/18/v23.12-release/), based on Alpine 3.19\. Note that most of the other changes here are not included in this stable release, but are available in our rolling edge channel.
+*   The postmarketOS team grew by one, with [Nikita Travkin](https://gitlab.com/TravMurav) being the first Trusted Contributor to be elected with [the new process](https://postmarketos.org/blog/2023/12/03/how-to-become-tc/).
+*   postmarketOS gained support for 5 new devices, as well as a new generic x86_64 device for all your favourite x86 tablets, and even laptops or regular PCs. Honorable mention to the Quartz64 which gained support in late November.
+*   We shipped [logbookd](https://git.sr.ht/~martijnbraam/logbookd), a very cute logging implementation which actually saves to storage(!!!), so you can retrieve logs from previous boots. It also adds well-needed coloured output, allows for some (slightly fuzzy) service filtering, and includes kernel logs by default. Thanks Martijn.
+    *   Shortly after, we [fixed](https://gitlab.com/postmarketOS/pmaports/-/commit/7efcec020d35491fae66e65c3bcad6e7c9d83638) an issue where syslog wasn't actually being enabled, resulting in both logbookd and openrc-syslog competing, oops!
+*   We [finally shipped sensors on SDM845](https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4050), only to discover that [the OnePlus 6T accelerometer was upside down](https://gitlab.com/postmarketOS/pmaports/-/commit/4a0a5456f1b0e0542cf666e6220457b414bece21), yes, this was a pretty bad lapse in testing to let this one through, and definitely a lesson learnt.
+*   The CODEOWNERS file [was cleaned up and gained its own CI](https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4662), this will help us keep it in shape and we eventually hope to have it for most devices so that the correct folks get notified about changes to their devices. Thanks Luca.
+*   The postmarketOS artwork package [was updated](https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4614) to correctly show up in GNOME wallpaper settings. Thanks Pablo.
+*   The ARMv7 Tegra devices were [all moved to](https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4606) a common device package, relying on U-Boot to pick the correct DTB. Amazing work Svyatoslav (@Clamor).
+*   cgroups are now [enabled by default](https://gitlab.com/postmarketOS/pmaports/-/commit/bfa873343a78c066affc78cf8644bbf6d7763c10), to simplify using services like Docker or many of the other things cgroups are useful for. Thanks Clayton.
+*   Unl0kr [was upgraded](https://gitlab.com/postmarketOS/pmaports/-/commit/0aa9524204e9c9c002c860b87c972bc2ebf025f3) with a workaround to fix inputs being dropped when typing fast on a physical keyboard. Thanks Jane and Ollie [for implementing the fix](https://github.com/calebccff/lv_drivers/pull/5).
+*   systemd-boot was [upgraded](https://gitlab.com/postmarketOS/pmaports/-/commit/e9ccc5ae232a510c428cc014e3c16eea4d80d338) with an important patch landing upstream, and other improvements. Thanks Clayton.
+*   A whole lot of [Lomiri](https://lomiri.com/) packages have been [making their way into Alpine](https://pkgs.alpinelinux.org/packages?name=*lomiri*&branch=edge&repo=&arch=aarch64&maintainer=), bringing us ever closer to Lomiri on postmarketOS. This is thanks to a longstanding effort by [Luca Weiss](https://fosstodon.org/@z3ntu), and more recently [@Justsoup](https://mstdn.social/@justsoup).
+
+Currently in the pipeline are quite a few really nice improvements, feel free to check them out and test them (only IF they ask for testing!) - but please try not to bother developers. In no particular order:
+
+It has been a while since we did the postmarketOS in YYYY-MM blog posts. This is an experiment to bring them back. Let us know if you enjoyed reading this post. Depending on that (and depending on just how much other stuff needs to be done), we may write them more regularly again.
+
+If you appreciate the work we're doing on postmarketOS, and want to support us, consider [joining our OpenCollective](https://opencollective.com/postmarketos).

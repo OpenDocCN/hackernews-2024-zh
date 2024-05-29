@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:22
+-->
+
+# Finding lead in Stanley's Quencher
+
+> 来源：[https://www.lumafield.com/article/finding-lead-in-stanleys-quencher-industrial-ct](https://www.lumafield.com/article/finding-lead-in-stanleys-quencher-industrial-ct)
+
+In a remarkable story of product innovation, Stanley became, in the [words](https://www.youtube.com/watch?v=RADEfBJmtk4) of its Global President Terence Reilly, a “110-year-old overnight success.” The company’s journey from inventing the first vacuum-sealed water bottle in 1913 to becoming a TikTok sensation began with the launch of the Quencher tumbler in 2016\. The Quencher initially saw modest success, but a strategic shift in 2020 towards vibrant new colors and finishes caught the eye of a new generation of consumers. This pivot, coupled with savvy social media marketing and influencer collaborations, caused Stanley's revenue to skyrocket from $70 million in 2019 to $750 million in 2023.
+
+More recently, the same social media enthusiasm that propelled Stanley to new heights has revealed itself as a double-edged sword. Social media influencers [have discovered](https://www.wired.com/story/stanley-cup-lead-soldering/) that lead solder is used in the Quencher’s manufacturing process, jeopardizing Stanley’s success. 
+
+But is the lead in the Quencher actually dangerous? Our [Neptune](https://www.lumafield.com/products/neptune-industrial-x-ray-ct-scanner) industrial X-ray CT scanner is the perfect tool to see inside Stanley’s tumbler to understand how it’s made and whether or not lead solder truly poses a risk to consumers.
+
+Stanley’s cups have inner and outer walls made of stainless steel, separated by a vacuum that minimizes heat transfer. The manufacturing process for vacuum-insulated stainless steel containers starts by forming two separate stainless steel layers for the inner and outer walls, which are then welded together at the rim to create a sealed unit. The cup is placed in a vacuum chamber, and air is removed through a hole that’s left in the bottom of the outer layer.
+
+At this point, the hole through which air was evacuated must be sealed before the cup is removed from the vacuum chamber. Lead solder provides a reliable and cost-effective answer. During the assembly of the inner and outer layers, a small lead pellet is placed above the air-escape hole. After the air is pulled out of the cup, the vacuum chamber is heated just enough to melt the lead, causing it to flow into the air escape hole and seal it. When the vacuum chamber is opened, a vacuum remains between the cup’s walls.
+
+In our CT scans, we can clearly see the inner and outer stainless steel flask layers, as well as the solder point. We also see a metal disk attached to a welded tab, which may be a component used to position the solder and hold it in place before it’s melted. Dense materials or those made of elements with higher atomic numbers attenuate (absorb or scatter) X-rays more. Lead is very dense and tends to block X-rays, which is why it’s used to protect people from X-ray radiation. In [Voyager](https://www.lumafield.com/products/voyager-ai-powered-cloud-analysis-software), we’ve applied a color map to the reconstruction that corresponds to the range of material attenuation coefficients. Lead, the most attenuating, appears here as a solid red. The scan shows that the lead solder is completely shielded by a stainless steel cover just below it.
+
+Stanley issued a [statement](https://support.stanley1913.com/en/support/solutions/articles/69000850923-do-stanley-products-contain-lead) saying, “Once sealed, this area is covered with a durable stainless steel layer, making it inaccessible to consumers. Rest assured that no lead is present on the surface of any Stanley product that comes into contact with the consumer nor the contents of the product. In the rare occurrence the base cap of a product comes off due to ordinary use and exposes this seal, it is eligible for our Lifetime Warranty.” 
+
+Leaded solder, despite its known health risks, remains widely used in various industries, including electronics, due to its superior workability and lower melting point compared to unleaded alternatives. The Stanley revelation has sparked a debate on the difficult trade-offs manufacturers face between continuing with a well-established but potentially harmful material or investing in the development of safer—albeit more expensive and technically challenging—alternatives.
+
+In response to the controversy, other reusable water bottle companies have been highlighting their lead-free manufacturing processes. Brands like Owala, Hydro Flask, and Klean Kanteen have successfully eliminated lead from their products, opting for alternative materials such as noncrystalline silica beads or proprietary sealants. These companies demonstrate that while the transition to lead-free manufacturing is complex and costly, it is feasible and aligns with growing consumer demand for environmentally friendly and safe products.
+
+As consumers become more discerning about the products they buy, the pressure on companies to not compromise on safety or sustainability will only increase. Perhaps just as important as continued innovation is educating consumers on the relative risks associated with materials and manufacturing processes. Proactively demystifying the product's lifecycle and design choices could mean the difference between soaring success and a viral backlash.

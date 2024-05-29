@@ -1,0 +1,92 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:34:27
+-->
+
+# With higher fees and more ads, streaming services like Netflix, Disney+ and Hulu are cashing in by using the old tactics of cable TV
+
+> 来源：[https://theconversation.com/with-higher-fees-and-more-ads-streaming-services-like-netflix-disney-and-hulu-are-cashing-in-by-using-the-old-tactics-of-cable-tv-215048](https://theconversation.com/with-higher-fees-and-more-ads-streaming-services-like-netflix-disney-and-hulu-are-cashing-in-by-using-the-old-tactics-of-cable-tv-215048)
+
+There’s one thing that television viewers can count on in 2024: higher fees and more commercials.
+
+The major streaming services – Amazon, Netflix, Hulu, Disney+ and Max – have [all announced](https://www.axios.com/2023/12/28/amazon-prime-netflix-disney-peacock-streaming-subscription) rate hikes and new advertising policies.
+
+As I show in my new book, “[24/7 Politics: Cable Television and the Fragmenting of America from Watergate to Fox News](https://press.princeton.edu/books/hardcover/9780691246666/247-politics),” the streaming boom that has imperiled cable television is actually built upon the very same business model that made television viewers pay for monthly subscriptions decades ago.
+
+Like their cable predecessors, streaming companies have lured people in with promises of a better and cheaper viewing experience. Now that they have a robust subscriber base, they’re in the process of raising rates while also introducing more commercials and bundling programming to make customers pay more and more.
+
+There is a difference, though. When cable companies tried similar tactics in the late 1980s, there was an uproar from politicians who called such business practices “unfair” to their constituents. Now, there’s nary a peep – a sign of just how inured Americans have become to the whims of corporations trying to squeeze their customers.
+
+## Stemming the tide of ‘toll television’
+
+Like streaming companies, cable TV’s entrepreneurs in the 1960s saw the business potential of framing cable television as a path for more choice with fewer commercials.
+
+At the time, [federal regulations](https://www.worldradiohistory.com/BOOKSHELF-ARH/Regulatory/Television's-Guardians-The-FCC-1958-1967-Baughman-1985.pdf) squashed competition by allowing the “Big Three” broadcast networks — CBS, NBC and ABC — to dominate the airwaves as long as they also served a vaguely defined “[public interest](https://www.rutgersuniversitypress.org/public-interests/9780813572291/).” Advertisers underwrote the cost of programs, which meant that while viewers didn’t have to pay a monthly TV bill, they did have to endure commercials.
+
+This business structure also encouraged programming with mass appeal in order to deliver the broadest possible audiences to advertisers. But not all TV viewers were happy with the formulaic quiz shows and sitcoms that dominated the airwaves. Sensing an untapped opportunity, TV entrepreneurs tried to concoct ways to circumvent the dominance of the Big Three.
+
+Cable television actually dates back to the late 1940s. It was initially known as “[community antenna television](https://tupress.temple.edu/books/blue-skies),” or CATV, because it was used to bring broadcast signals to smaller communities that couldn’t get signals from the big cities.
+
+At first, this technology simply expanded the reach of CBS, NBC and ABC rather than providing a competing service.
+
+Former NBC executive Pat Weaver – here with his daughter, actress Sigourney Weaver – was an early proponent of subscription TV. [Ron Galella Collection/Getty Images](https://www.gettyimages.com/detail/news-photo/sigourney-weaver-and-sylvester-pat-weaver-during-the-year-news-photo/105909150?adppopup=true)
+
+But in 1963, a former NBC executive named Pat Weaver [proposed subscription television](https://www.theatlantic.com/magazine/archive/1964/10/why-suppress-pay-tv-the-fight-in-california/658253/), in which people would pay a monthly fee for access to specialized channels through a wired connection.
+
+His company, STV, offered a way to sidestep the “vast land of advertising trivia” that beamed into living rooms across the nation, Weaver explained during one public forum. Weaver dreamed of how giving individual subscribers more choices could forge a business model that could break through the programming limitations of broadcast.
+
+In the end, STV didn’t last. Broadcasters and theater owners mobilized to convince the public that such experiments would turn all television into pay TV, dividing Americans into those with television access and those without it.
+
+[Broadcasting lobbyists warned](https://press.princeton.edu/books/hardcover/9780691246666/247-politics) that “toll television” would “have an undemocratic and divisive effect” by depriving viewers of their right to consume television for free. [One flyer featured](https://go.gale.com/ps/i.do?p=AONE&u=googlescholar&id=GALE%7CA70451817&v=2.1&it=r&asid=23eb4633) a devastated young boy with a football helmet who didn’t have enough coins to insert in the television.
+
+“Pop says he don’t have any more Dollar and a halfs for me to watch each ball game,” the caption read.
+
+The dire warnings about the end of free TV worked, and voters supported a [state ballot initiative](https://ballotpedia.org/California_Proposition_15,_Prohibition_of_Paid_Television_Programming_Initiative_(1964)) in 1964 that outlawed subscription television. While the courts [overturned the new law](https://caselaw.findlaw.com/court/ca-supreme-court/1820874.html) for violating the First Amendment, STV didn’t survive.
+
+## Cable catches on
+
+But the idea of wired television delivering more choices to viewers persisted.
+
+As frustrations with the limits of broadcast television intensified [across the political spectrum during the 1970s](https://www.cambridge.org/core/journals/modern-american-history/article/watergate-the-bipartisan-struggle-for-media-access-and-the-growth-of-cable-television/64F2A0E3B8D3EAD28F8E6449DEF11BDE), consumers, elected officials and regulators all embraced the potential of cable television to offer an alternative.
+
+By the mid-1970s, experiments with programming disseminated via satellite on cable systems tested new types of niche channels and shows – like nonstop movies, sports, music or the weather – to see if audiences might be interested. In 1975, HBO gambled that a live international boxing match between Muhammad Ali and Joe Frazier, “[Thrilla in Manila](https://www.cnn.com/2016/06/04/sport/thrilla-in-manila-remembered/index.html),” would boost its struggling pay-TV operation.
+
+It did: Income from pay television services like HBO, which first launched in 1972, [soared](https://press.princeton.edu/books/hardcover/9780691246666/247-politics) from US$29 million in 1975 to $769 million in 1980\.
+
+Like STV before them, cable companies tapped into frustrations with broadcasting and its advertising model. They sold subscriptions by promising that premium channels like HBO could provide movies with “no cuts, no commercials.”
+
+Millions of people eagerly signed up for cable subscriptions and premium channels like HBO that cost even extra.
+
+## Deregulation nation
+
+Niche cable channels soon emerged that appealed to specific demographic groups. Black Entertainment Television created new opportunities for programming geared toward Black audiences. The Daytime Channel offered entertainment and news directed at women, while MTV connected a younger generation through music videos.
+
+Then there was C-SPAN, a cable industry-funded initiative that put the cameras on the House of Representatives starting in 1979\. In a 1984 letter to the network, an enthusiastic viewer praised the public affairs channel for providing “over-the-back-fence discussion with your neighbors on matters of common interest, but with the scope that the neighborhood extends to encompass all areas of the United States.”
+
+Cable’s popularity buoyed the lobbying efforts of the industry, which was pushing Congress to deregulate key aspects of their business operations. In 1984, they succeeded: [The Cable Communications Policy Act of 1984](https://www.congress.gov/bill/98th-congress/senate-bill/66) notably removed local government caps on what companies could charge for subscription services.
+
+The consequences quickly became clear: price hikes and poor customer service. In the next few years, basic cable rates skyrocketed, [increasing by an average of 90%](https://press.princeton.edu/books/hardcover/9780691246666/247-politics).
+
+## Playing political football
+
+Al Gore, then an ambitious senator representing Tennessee, saw an opportunity. He pounced on the issue, decrying how cable companies and lobbyists had leveraged consumer demand in ways that amounted to [what he described as](https://www.c-span.org/video/?9959-1/cable-telecommunications-act-day-1-part-1) “total domination of the marketplace.”
+
+John Malone served as CEO of TCI for over 20 years. [Rick Maiman/Sygma via Getty Images](https://www.gettyimages.com/detail/news-photo/john-malone-news-photo/1039963656?adppopup=true)
+
+[He condemned the industry](https://www.c-span.org/video/?9959-1/cable-telecommunications-act-day-1-part-1) as an American “Cosa Nostra,” and having likened Tele-Communications Inc. (TCI) executive [John Malone](https://www.thegentlemansjournal.com/article/john-malone-everything-need-know-americas-single-largest-land-owner/) to “Darth Vader,” Gore then lashed out at him during a 1989 congressional hearing for “shaking down” average Americans.
+
+Malone pushed back, highlighting the unprecedented choice that people now had on cable. Rate increases allowed for experimentation with niche programming that never stood a chance on network broadcast television, he added. And they also helped pay the costs of laying – and then later upgrading – wires across the country to deliver such services.
+
+## Everything old is new again
+
+Cable-bashing was effective on the campaign trail for Gore and his top-of-the-ticket running mate, Arkansas Gov. Bill Clinton. But, once in office, they changed tack. They wanted private industry to build the information highway they saw as [central to their governing agenda](https://www.dissentmagazine.org/article/let-them-eat-tech/), and cable companies were the ones who owned the coaxial wires going into millions of homes.
+
+Four years later, Gore and Clinton celebrated the [1996 Telecommunications Act](https://www.fcc.gov/general/telecommunications-act-1996), which slashed many price regulatory measures Gore had championed while on the campaign trail in 1992.
+
+The rationale? That the marketplace competition and programming choice alone could deliver for the public interest.
+
+The result? The expansion of a media landscape forged on the terrain of private businesses and their profit margins.
+
+Despite today’s frustrations with changes designed to boost bottom lines – rate hikes, [limits on password sharing](https://www.washingtonpost.com/technology/2023/05/27/netflix-password-sharing-why-users-mad/), [exclusive streaming contracts for sporting events](https://www.theatlantic.com/technology/archive/2022/08/sports-streaming-makes-losers-us-all/671231/) – people no longer look to politicians to help them navigate and address these concerns as they once did. The bipartisan belief in deregulation has seemingly closed down these conversations about policy alternatives.
+
+That’s why cable didn’t just blaze a path for a new business model. It also convinced elected officials and constituents to embrace a different understanding of the public interest, one where the market reigns supreme.

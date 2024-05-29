@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:59
+-->
+
+# A New Chapter For Mozilla
+
+> 来源：[https://blog.mozilla.org/en/mozilla/a-new-chapter-for-mozilla-laura-chambers-expanded-role/](https://blog.mozilla.org/en/mozilla/a-new-chapter-for-mozilla-laura-chambers-expanded-role/)
+
+Today marks a significant moment in our journey, and I am thrilled to share some important news with you. After much thoughtful consideration, I have decided to transition from the role of CEO of Mozilla Corporation back to the position of Mozilla Corporation Executive Chairwoman, a role I held with great passion for many years. 
+
+During my 25 years at Mozilla, I’ve worn many hats, and this move is driven by a desire to streamline our focus and leadership for the challenges ahead. I’ve been leading the Mozilla business through a transformative period, while also overseeing Mozilla’s broader mission. It’s become evident that both endeavors need dedicated full-time leadership. 
+
+Enter [Laura Chambers](https://www.linkedin.com/in/chamberslaura/), a dynamic board member who will step into the CEO role for the remainder of this year. Laura brings a wealth of experience, having been an active and impactful member of the Mozilla board for three years. With an impressive background leading product organization at Airbnb, PayPal, eBay, and most recently as CEO of Willow Innovations, Laura is well-equipped to guide Mozilla through this transitional period. 
+
+Her focus will be on delivering successful products that advance our mission and building platforms that accelerate momentum. Laura and I will be working closely together throughout February to ensure a seamless transition, and in my role as Exec Chair I’ll continue to provide advice and engage in areas that touch on our unique history and Mozilla characteristics. 
+
+Laura’s focus will be on Mozilla Corporation with two key goals: 
+
+**1\. Vision and Strategy for the Future:** Refining the company’s vision and aligning the corporate and product strategy behind it. This will be grounded in our mission and unique strengths and shaped by our point of view on technology’s future and our role in it.
+
+**2\. Outstanding Execution: Focus, Processes, Capabilities:** Doubling down on our core products, like Firefox, and building out our capabilities and innovation pipeline to bring new compelling products to market. 
+
+While Laura takes on the reins as CEO of Mozilla Corporation, I will return to supporting the CEO and leadership team as I have done previously as Exec Chair. In addition, I will expand my work in two critical areas: 
+
+**1\. More consistently representing Mozilla in the public** – With a focus on policy, open source, and community — through speaking and direct engagement with the community.
+
+**2\. Representing Mozilla as a unified entity** – bigger than the sum of our parts — as we continue to strengthen and refine how all the entities work together to advance our policy and community goals with greater urgency and speed. 
+
+We’re at a critical juncture where public trust in institutions, governments, and the fabric of the internet has reached unprecedented lows. There’s a tectonic shift underway as everyone battles to own the future of AI. It is Mozilla’s opportunity and imperative to forge a better future. I’m excited about Laura’s day-to-day involvement and the chance for Mozilla to achieve more. Our power lies in the collective effort of people contributing to something better and I’m eager for Mozilla to meet the needs of this era more fully. 
+
+Thank you to everyone who participates in Mozilla, supports us, cheers us on, and works towards similar goals. Your dedication is the driving force behind Mozilla’s impact and success. Here’s to a future filled with innovation, collaboration, and continued success!

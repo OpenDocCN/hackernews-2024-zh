@@ -1,0 +1,36 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:44:06
+-->
+
+# Electronic Arts frags 5% of staff 'to grow fandom' • The Register
+
+> 来源：[https://www.theregister.com/2024/02/29/ea_bumble_layoffs/](https://www.theregister.com/2024/02/29/ea_bumble_layoffs/)
+
+It's been a bad week to work in the video game industry. First Sony closed its London studio and cut staff, and now Electronic Arts is letting workers go.
+
+EA CEO Andrew Wilson [announced](https://www.ea.com/news/continuing-to-evolve-our-business-and-teams) the layoffs in a letter to employees yesterday, telling them the publisher would be cutting around five percent of staff. Based on its 2023 annual report to the US Securities and Exchange commission, EA had approximately 13,400 employees, meaning around 670 jobs would be eliminated. 
+
+"We are streamlining our company operations to deliver deeper, more connected experiences for fans everywhere that build community, shape culture, and grow fandom," he opined.
+
+Maybe not in the case of games like the [rumored](https://insider-gaming.com/star-wars-mandalorian-game/) first-person shooter based on The Mandalorian, which appears to have been canceled as part of EA's restructuring. 
+
+"We are … sunsetting games and moving away from development of future licensed IP that we do not believe will be successful in our changing industry," Wilson said. "This greater focus allows us to drive creativity, accelerate innovation, and double down on our biggest opportunities — including our owned IP, sports, and massive online communities." 
+
+We can see why Wilson wants to double down on real-time multiplayer stuff, having looked over his biz's most recently reported [quarterly earnings](https://s22.q4cdn.com/894350492/files/doc_financials/2024/q3/Q3-FY24-Earnings-Release-FINAL.pdf) [PDF]. While generally reporting a strong three months to December 31 with profits of $290 million and a rise in net bookings, earnings were driven almost entirely by live services, which accounted for 73 percent of EA's business over the past year. 
+
+Laura Miele, president of EA Entertainment, also sent a [missive](https://www.ea.com/news/a-note-from-laura-miele) to employees on Wednesday saying Electronic Arts has noticed a rapid shift among video game players, who now apparently prioritize large open-world games, online communities, and live services. 
+
+With that in mind, EA plans to lean on established brands like its EA Sports products, Battlefield, and [other properties](https://gamerant.com/every-video-game-franchise-ea-owns/). 
+
+"We have decided to pivot away from early development on a Star Wars FPS Action game to focus our efforts on new projects based on our owned brands while providing support for existing games," Miele said. 
+
+Miele also said that Ridgeline Studios, founded by veteran game developer Marcus Lehto to work on the next Battlefield single-player experience, would be shuttered. Lehto [announced](https://twitter.com/game_fabricator/status/1762520851961037281) his departure from the gaming biz just days ago. 
+
+EA is also shuttering several mobile games. "It's the right time to focus our time on the remaining games in our portfolio which we believe can grow," Miele said.
+
+We asked for more specifics about the cuts, and EA declined to elaborate.
+
+EA [said](https://ir.ea.com/financial-information/sec-filings/sec-filings-details/default.aspx?FilingId=17319633) it expects its restructuring moves to take the rest of 2024, but layoffs would be mostly completed by early next quarter. 
+
+In other words, just because you haven't been laid off yet don't assume you're not in HR's sniping range. ®

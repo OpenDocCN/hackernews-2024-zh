@@ -1,0 +1,86 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:58:59
+-->
+
+# The 6% commission on buying or selling a home is gone after Realtors association agrees to seismic settlement | CNN Business
+
+> 来源：[https://www.cnn.com/2024/03/15/economy/nar-realtor-commissions-settlement/index.html](https://www.cnn.com/2024/03/15/economy/nar-realtor-commissions-settlement/index.html)
+
+CNN  — 
+
+The 6% commission, a standard in home purchase transactions, is no more.
+
+In a sweeping move expected to dramatically reduce the cost of buying and selling a home, the National Association of Realtors announced Friday a settlement with groups of homesellers, agreeing to end landmark antitrust lawsuits by paying $418 million in damages and eliminating rules on commissions.
+
+The NAR, which represents more than 1 million Realtors, also agreed to put in place a set of new rules. One prohibits agents’ compensation from being included on listings placed on local centralized listing portals known as multiple listing services, which critics say led brokers to push more expensive properties on customers. Another ends requirements that brokers subscribe to multiple listing services — many of which are owned by NAR subsidiaries — where homes are given a wide viewing in a local market. Another new rule will require buyers’ brokers to enter into written agreements with their buyers.
+
+The agreement effectively will destroy the current homebuying and selling business model, in which sellers pay both their broker and a buyer’s broker, which critics say have driven housing prices artificially higher.
+
+By some estimates, real estate commissions are expected to fall 25% to 50%, according to TD Cowen Insights. This will open up opportunities for alternative models of selling real estate that already exist but don’t have much market share, including flat-fee and discount brokerages.
+
+Shares of real estate firms Zillow and Compass both fell by more than 13% Friday as investors feared that lower commission rates for agents could lead to less business for real estate platforms.
+
+In a 10-K filing last month, Zillow warned that, “if agent commissions are meaningfully impacted, it could reduce the marketing budgets of real estate partners or reduce the number of real estate partners participating in the industry, which could adversely affect our financial condition and results of operations.”
+
+Shares of real estate brokerage Redfin also fell nearly 5%.
+
+Meanwhile, homebuilder stocks rose on the news: Lennar shares gained 2.4%, PulteGroup shares added 1.1% and Toll Brothers shares added 1.8%.
+
+For the average-priced American home for sale — $417,000 — sellers are paying more than $25,000 in brokerage fees. Those costs are passed on to the buyer, boosting the price of homes in America. That fee could fall by between $6,000 and $12,000, according to TD Cowen Insights’ analysis.
+
+“While the settlement comes at a significant cost, we believe the benefits it will provide to our industry are worth that cost,” said Kevin Sears, president of the NAR, in a statement.
+
+In November, a federal jury in Missouri found the NAR and two brokerages liable for [$1.8 billion in damages](https://www.cnn.com/2023/11/05/homes/nar-verdict-real-estate-commission-fee/index.html) for conspiring to keep agent commissions artificially high. Because it was an antitrust case, the NAR was potentially on the hook for triple those damages — $5.4 billion.
+
+The NAR had pledged to appeal the case, but other brokerages settled — and, eventually, so did the NAR, on Friday.
+
+“NAR has worked hard for years to resolve this litigation in a manner that benefits our members and American consumers,” said Nykia Wright, interim CEO of NAR, in a statement. “It has always been our goal to preserve consumer choice and protect our members to the greatest extent possible. This settlement achieves both of those goals.”
+
+The NAR had required homesellers to include the compensation for agents when placing a listing on a multiple listing service. Although NAR has long said commissions are negotiable and that the structure helped making housing more affordable for buyers, critics have long argued that the fees were expected and homesellers felt they would lose buyers if they didn’t offer them.
+
+Homesellers who brought lawsuits against the NAR have argued that in a competitive market, the cost of the buyer’s agent’s commission should be paid by the buyer who received the service, not by the seller. The sellers who brought the lawsuit against the NAR and the brokerages said that buyers should be able to negotiate the fee with their agent, and that the sellers should not be on the hook for paying it.
+
+This settlement, which is subject to a judge’s approval, opens the door to a more competitive housing market. Realtors could now compete on commissions, allowing for prospective buyers to shop around on rates before they commit to buying a home. Brokers could begin to advertise their fees, allowing customers to choose lower-cost agents. The NAR, in its announcement, did not set a suggested fee.
+
+This marks the biggest change to the housing market in a century, said Norm Miller, professor emeritus of real estate at the University of San Diego.
+
+“I’ve been waiting 50 years for this,” Miller said.
+
+Although it’s unclear what the future of the housing market will look like, Miller said he expected homebuying to pick up somewhat as costs fall dramatically for homebuyers.
+
+“There are all kinds of models we might see in the future, and no one knows what they are,” he said, suggesting some brokers may charge, say, a $3,000 fee for selling a home, while others will offer a competitive commission.
+
+The agreement will bring sweeping reforms for millions of Americans, said Benjamin D. Brown, managing partner of Cohen Milstein Sellers & Toll and co-chair of its antitrust practice, who helped craft the settlement.
+
+“For years, anticompetitive rules in the real estate industry have financially harmed millions of Americans,” said Brown.
+
+Individual sellers often feel powerless to negotiate a better deal for themselves, given the risk that offering lower commissions could cause brokers to steer buyers to other properties, said Robert Braun, a partner in Cohen Milstein’s antitrust practice.
+
+“For far too long, home sellers have faced a system recognized by many as blatantly unfair. This class action and settlement provides justice for our clients and will require important changes that help future home sellers,” said Braun.
+
+Although most realtors are included in the settlement, brokerage HomeServices of America continues to fight the case in court, the NAR said.
+
+The NAR said it had fought to get HomeServices of America agents covered by the settlement, but said it was pleased to have more than 1 million of its members on board with the agreement.
+
+“Ultimately, continuing to litigate would have hurt members and their small businesses,” said Wright in a statement. “While there could be no perfect outcome, this agreement is the best outcome we could achieve in the circumstances.”
+
+Miller said the settlement could lead to a mass exodus of brokers from the industry — potentially half of the 2 million or so agents in America.
+
+Lower fees mean mediocre agents are likely to leave the field, but top brokers will get more business. “The good ones will absolutely do better,” he said.
+
+America’s fees are significantly higher than in foreign countries, Miller noted. In Israel, Singapore and the UK, brokers charge between 1% to 2% for the same thing that agents do in the United States.
+
+The NAR has been fighting off US antitrust officials and litigation for years regarding alleged anti-competitive practices. But November’s verdict marked the association’s biggest setback yet — and ultimately led to the downfall of the rules that have long protected its compensation model.
+
+The association also faces scrutiny from the US Department of Justice, and it’s unclear whether this settlement with sellers will impact the government’s scrutiny of the brokerage industry.
+
+The trade group has also undergone severe leadership turmoil over the past year.
+
+In January, the former president of the NAR, Tracy Kasper, [stepped down](https://www.cnn.com/2024/01/08/economy/nar-president-steps-down-alleging-blackmail/index.html), after she said she received a threat to disclose a past personal, non-financial matter unless she compromised her position at NAR. Sears replaced Kasper earlier this year.
+
+Kasper had just taken over the role in August 2023, after Kenny Parcell, the former president, [resigned amid sexual harassment allegations](https://www.cnn.com/2023/08/29/homes/nar-president-resigns/index.html) that were first published by the [New York Times](https://www.nytimes.com/2023/08/26/realestate/national-association-of-realtors-sexual-harassment.html). NAR employees reportedly said Parcell improperly touched them and sent lewd photos and texts. In the Times article, Parcell denied the accusations.
+
+In November 2023, the chief executive of NAR, [Bob Goldberg, also stepped down](https://www.cnn.com/2023/11/02/homes/ceo-of-nar-resigns/index.html), and was replaced by Wright. Goldberg stepped down two days after the $1.8 billion judgment against the NAR.
+
+*This story has been updated with additional reporting and context. It has also been updated to clarify Norm Miller’s comments on brokers’ salary prospects.*

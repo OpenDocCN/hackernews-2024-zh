@@ -1,0 +1,74 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:07
+-->
+
+# Did a 1997 merger ruin Boeing?
+
+> 来源：[https://finshots.in/archive/did-a-1997-merger-ruin-boeing/](https://finshots.in/archive/did-a-1997-merger-ruin-boeing/)
+
+*In today’s Finshots, we go back over two decades to how a mega-merger leading to a clash of cultures might have been the downfall of Boeing.*
+
+Before we begin, if you're someone who loves to keep tabs on what's happening in the world of business and finance, then [hit subscribe](https://finshots.in/?utm_source=finshots&utm_medium=newsletter#subscribe) if you haven't already. We strip stories off the jargon and deliver   crisp financial insights straight to your inbox. Just one mail every morning. Promise!
+
+If you’re already a subscriber or you’re reading this on the app, you can just go ahead and read the story.
+
+* * *
+
+### The Story
+
+At 5 pm on 5th January, 171 passengers boarded an Alaska Airlines flight from Oregon to California.
+
+But barely 10 minutes in the air and cruising at 16,000 feet, this routine flight quickly turned into a nightmare…
+
+The plane broke!
+
+Or rather, a part of the plane disappeared. A gaping hole emerged, the wind rushed in, phones and caps were sucked out, oxygen masks dropped, and the passengers clung on for dear life.
+
+The pilots made an emergency landing. And let’s just say that, luckily, everyone made it out alive.
+
+But all eyes are on Boeing now. Its 737 Max 9 variant has been temporarily banned from taking off in the US. And the problem for Boeing is that it’s another body blow in a long series of problems in the past few years. Remember when two of its Max airlines plummeted to the ground in 2018 and killed hundreds of people on board?
+
+Yeah, things aren’t looking good for the plane manufacturer. And we must ask — where did it all go so wrong for Boeing?
+
+Well, it probably all began in the [summer of 1997](https://qz.com/1776080/how-the-mcdonnell-douglas-boeing-merger-led-to-the-737-max-crisis?utm_source=email&utm_medium=Quartz_Daily_Brief_Asia&utm_content=1851147566).
+
+Boeing wanted to establish dominance and show the world who was boss in the airline industry. So it decided to acquire another plane manufacturer called McDonnell Douglas. It was a massive merger worth $14 billion.
+
+Now after the merger, the new entity retained the Boeing name. It was expected since it was Boeing that splashed the cash. But the problem was that the culture of McDonnell Douglas seeped in. And that changed the face of Boeing completely.
+
+See, the Boeing of the pre-merger era was called an ‘engineers’ company’. The ones who made these flying machines called the shots. Costs didn’t matter and it was only quality and design that did. They wanted to ensure that only their best ideas took to the skies. Safety was paramount. And the [Chief Financial Officer](https://www.theatlantic.com/ideas/archive/2019/11/how-boeing-lost-its-bearings/602188/%5C) who was answerable to Wall Street about costs didn’t care much about trying to impress the bankers either.
+
+But after the merger, everything changed.
+
+The CEO of McDonnell Douglas actually became the CEO of Boeing. A chairman with no aviation background, but who’d worked in General Electric, was also appointed. The company started paying attention to creating shareholder value which was hardly a priority earlier. And as one article put it, “Now, a passion for great planes was replaced with a passion for affordability.” Boeing even turned to [outsourcing](https://hbr.org/2014/06/the-price-of-wall-streets-power) critical operations. Sure, it made the balance sheet ‘asset light’, but, it came at the cost of quality.
+
+To top it all off, they even moved management headquarters away from where all the engineering took place — from Seattle to Chicago.
+
+At first, no one said anything. Sure, there was a joke that went, “McDonnell Douglas bought Boeing with Boeing’s money.” But it was a harmless observation. The planes kept rolling off the conveyor belt.
+
+But then 2018 happened. And the death of Boeing’s culture came to the fore.
+
+See, [American Airlines](https://finshots.in/archive/boeing-gone/) was looking to place an order with Boeing’s rival Airbus. Airbus had created the A320neo which was more fuel-efficient. And while initially, Boeing scoffed at Airbus, the call from American Airlines was a jolt out of the blue. That’s when Boeing realised it had fallen behind.
+
+But it didn’t have time on its hands to innovate and build something from scratch. And that’s when the McDonnell Douglas way of doing things caught on — instead of spending $20 billion on a new plane, Boeing budgeted a [puny $2.5 billion](https://ethicsunwrapped.utexas.edu/engineering-ethics-and-the-boeing-scandal) and decided to tweak its iconic 737\. Technical drawings for the model were being churned out at double the pace, workers from other departments were pulled in for the Max project, and timely delivery took precedence over quality. The idea was to make small but significant changes to 737 while sticking to the original design so that pilots wouldn’t really have to be retrained either.
+
+But, flying a machine in the sky isn’t child’s play. Apparently, from 2010 to 2014, Boeing’s CEO never mentioned safety even once in their annual statement. And we all know what happens when ethics and quality fly out of the window!
+
+And in 2018, when two 737 Max planes crashed and killed hundreds of people, everyone knew that it was the billion-dollar merger with McDonnell Douglas that ultimately became Boeing’s downfall.
+
+The sad part?
+
+The [problems](https://www.ft.com/content/1d6aa5bb-b162-4217-912a-b698c84e5d00) don’t seem to be ending.
+
+In the past couple of years, Boeing has said that some of its aircraft might have loose bolts that could be dangerous. It said that one of its suppliers drilled holes in the wrong places for some jets. And it even stumbled in its quest to build the US President’s new Air Force One.
+
+For Boeing, the merger from 1997 is coming back to haunt it. The Max is the best-selling plane in Boeing’s history. And 76% of the company’s outstanding order book involves variants of these aircraft. And it’ll be a tough task to convince people that Boeing has not forgotten how to build an aeroplane.
+
+Until then…
+
+*Don't forget to share this article on [WhatsApp](https://api.whatsapp.com/send?text=An%20explainer%20on%20how%20a%20mega-merger%20from%20the%201990s%20might%20have%20led%20to%20the%20downfall%20of%20Boeing.%20https://bit.ly/47t8Zzi), [LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://finshots.in/archive/did-a-1997-merger-ruin-boeing), and [X (formerly Twitter).](https://twitter.com/intent/tweet?url=https://bit.ly/48qIhsC&via=finshots&text=An%20explainer%20on%20how%20a%20mega-merger%20from%20the%201990s%20might%20have%20led%20to%20the%20downfall%20of%20Boeing.)*
+
+PS: No Indian carrier has the Max 9 aircraft model in their fleet. The Indian regulator has asked all airlines to run a precautionary check though.
+
+📢Finshots is now on WhatsApp Channels. Click [here](https://www.whatsapp.com/channel/0029Va8sLgkIiRomBh4Uxs38) to follow us and get your daily financial fix in just 3 minutes.

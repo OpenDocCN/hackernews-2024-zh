@@ -1,0 +1,22 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:43
+-->
+
+# Google shares update on next step toward phasing out third-party cookies in Chrome
+
+> 来源：[https://blog.google/products/chrome/privacy-sandbox-tracking-protection/](https://blog.google/products/chrome/privacy-sandbox-tracking-protection/)
+
+When it comes to improving privacy on the web, the work is never finished. That's why in Chrome, we continue to invest in [features that protect your data and provide more control over how it’s used](https://www.google.com/chrome/#safe). This includes taking steps to limit the ability to track your activity across different websites.
+
+On January 4, we'll begin testing Tracking Protection, a new feature that limits cross-site tracking by restricting website access to third-party cookies by default. We'll roll this out to 1% of Chrome users globally, a key milestone in our [Privacy Sandbox initiative](https://privacysandbox.com/) to phase out third-party cookies for everyone in the second half of 2024, subject to addressing any remaining competition concerns from the UK’s Competition and Markets Authority.
+
+## The role of third-party cookies
+
+Third-party cookies have been a fundamental part of the web for nearly three decades. While they can be used to track your website activities, sites have also used them to support a range of online experiences — like helping you log in or showing you relevant ads.
+
+With the Privacy Sandbox, we’re taking a responsible approach to phasing out third-party cookies in Chrome. We’ve built new tools for sites that [support key use cases](https://developers.google.com/privacy-sandbox/3pcd), and [provided time for developers](https://privacysandbox.com/open-web/#the-privacy-sandbox-timeline) to make the transition. And as we introduce Tracking Protection, we’re starting with a small percentage of Chrome users so developers can test their readiness for a web without third-party cookies.
+
+## What to expect from Tracking Protection
+
+Participants for Tracking Protection are selected randomly — and if you’re chosen, you’ll get notified when you open Chrome on either desktop or Android.

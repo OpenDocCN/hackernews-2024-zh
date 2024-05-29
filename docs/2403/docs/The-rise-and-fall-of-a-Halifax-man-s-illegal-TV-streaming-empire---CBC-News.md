@@ -1,0 +1,120 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:29:57
+-->
+
+# The rise and fall of a Halifax man's illegal TV streaming empire | CBC News
+
+> 来源：[https://www.cbc.ca/news/canada/nova-scotia/nova-scotia-man-illegal-streaming-empire-1.7112573](https://www.cbc.ca/news/canada/nova-scotia/nova-scotia-man-illegal-streaming-empire-1.7112573)
+
+It was intended as words of wisdom, but it oozed cockiness, as Activeits plotted his path to fortune on an internet forum popular with spammers.
+
+The boast was right there in the title of the thread: "How i made 1k a day or more."
+
+Typing under the fictitious name, he detailed his involvement with "a thing called IPTV" and how he'd built an unauthorized online television streaming service, one that illegally rebroadcast channels to subscribers at cheap rates.
+
+"There is a TON of money to be made in IPTV and i'm just getting started!" Activeits wrote on March 14, 2018, later dismissing concerns he would get sued or sent to jail. "Everything i do, i do carefully." 
+
+These weren't the embellishments of a blowhard. Activeits was making a ton of money, and he would make a ton more. But he was wrong in one crucial respect. He wasn't careful enough.
+
+Last fall, Activeits, also known as Tyler White — who lives on Old Sambro Road on the outskirts of Halifax — was ordered to pay $7.1 million in penalties to some of the largest entertainment companies in the world for his role in a streaming service called Beast TV.
+
+Tyler White, the founder of Beast TV, is shown in an undated photograph. (Tyler White/Facebook)
+
+The case offers a window into the inner workings of operations that break copyright laws but which many law-abiding Canadians quietly use — pirate services offering thousands of channels for a fraction of the price of legitimate cable or streaming packages.
+
+"We view it as a critical threat to not just our platforms, but to the creative sector as a whole," said Aaron Wais, the head of global litigation for the Motion Picture Association, a group that includes Disney, Netflix and Warner Bros.
+
+"It impacts us as right-holders. It impacts creators across the industry. It causes hundreds of millions of dollars in damages and thousands of lost jobs."
+
+There are many legitimate IPTV (internet-protocol television) services that offer TV streaming over the internet, including those run by major Canadian broadcasters like Bell Media and Rogers.
+
+But over the years, the internet has been littered with illegal IPTV operators, some of them peddling huge packages of live sports, television and movie channels for as little as $20 a month. Only the big ones catch the attention of the major studios, and Beast TV was one of them.
+
+The Netflix logo is displayed on the company's website, Feb. 2, 2023, in New York. (Richard Drew/The Associated Press)
+
+There are two dimensions to illegal IPTV, according to experts and court records. The first involves operators who run what amount to "server farms." They subscribe to television services, and deploy dozens of receivers tuned to specific channels, retransmitting them immediately to the internet.
+
+The second dimension involves operators who purchase those streams, and set up their own websites and subscription services, selling channel packages for cut-rate prices.
+
+In many cases, those in illegal IPTV do a bit of both, pooling unauthorized streams between themselves for a fee so each can create subscription services that advertise hundreds or thousands of channels.
+
+The Beast case also shows how powerful entertainment companies have turned to an extraordinary legal measure in Canadian civil courts, gaining judicial orders allowing them to enter the homes of perpetrators and even seize equipment.
+
+## Inside the Beast TV case
+
+When lawyers and private investigators arrived at White's two-storey country house on the morning of Nov. 24, 2020, and simultaneously to the Brantford, Ont., home of a business partner, Colin Wright, they came armed with an order signed by a Federal Court judge.
+
+Each was instructed to turn over control of Beast TV infrastructure to lawyers, provide log-in credentials for the registrar accounts of domains and subdomains, tell them the location of servers, and release detailed financial information. Not only that, the duo were forbidden for 48 hours from telling anyone, aside from their lawyers, what was happening.
+
+White's response was defiant: "Never heard of it," he said of Beast TV when confronted at his home, according to court records. "I don't even have a computer in my house," he said, admitting moments later he owned a laptop.
+
+He may have been caught off guard. But the knock at his door should have hardly been a surprise. In 2019, he and Wright had been implicated in another busted illegal IPTV operation called Vader Streams.
+
+Computer forensic experts deployed by the studios were never able to seize control of Beast IPTV because White and Wright refused to immediately share log-in and registrar information, and White told an associate linked to Beast to shut down two domains, according to court records.
+
+Over the course of the next month, according the court documents, other players in the Beast operation began migrating subscribers to other streamers before terminating Beast itself.
+
+This brief explainer outlines how illegal IPTV business can be structured.
+
+The evidence of White's disregard for the order was so damning that a judge later handed him 60 days in a Nova Scotia jail for contempt of court, a sentence that is under appeal.
+
+It was clear Beast TV made big money during its short life. At the time of the court action, White had $744,000 in seven bank accounts, and he owned two rental properties in Halifax he'd bought with his IPTV proceeds. He also held an unknown amount of investments and cryptocurrency.
+
+On the day after the bust, he mused with one of his associates in a conversation recorded without his knowledge about faking bankruptcy to avoid paying fines to the studios, according to court documents.
+
+In the weeks that followed, he withdrew $50,000 in cash, in violation of the judicial order. Later, when he sought to sell some of his assets, a judge noted he claimed he needed $150,000 a year to cover his living expenses.
+
+CBC spoke with White a number of times by phone, but he would not agree to an interview. He said the legal action he's faced has been hard on him and his family, but that due to confidentiality provisions in the case he was uncertain whether he could speak publicly about it.
+
+Wright did not respond to requests for comment and his wife said he was unlikely to agree to an interview. In 2021, he was also ordered to pay $7.1 million for his role in Beast TV.
+
+The home screen for Beast TV, an illegal streaming operation, is shown. (Court documents)
+
+It's telling of Beast's size and influence that more than three years after the shutdown, the internet is littered with copycat sites apparently trying to cash in on the old Beast name, even purloining the old Beast logo.
+
+The Office of the United States Trade Representative has for more than two decades included Canada on its "watch list" of countries it says fail to adequately protect and enforce the intellectual property rights of American inventors, creators and companies.
+
+The International Intellectual Property Alliance, a group that represents thousands of U.S. companies producing video games, television shows, films, music and books, has heavily criticized Canada in multiple reports over the years.
+
+Last year, it argued Canada's Copyright Act doesn't have the tools to properly fight "rogue" sites, intellectual property crimes aren't a priority for police, and Canadian judges should be jailing more of those who break intellectual property laws.
+
+"It's nearly impossible to overstate the magnitude of the piracy problem in Canada," the 2023 report said.
+
+## Viewers will pay
+
+But those harsh words should be taken with "many grains of salt," according to Ariel Katz, a professor at the University of Toronto who specializes in intellectual property law, and who notes the alliance's reports are not independent, objective studies.
+
+He argues there are a number of issues at play. One is when popular U.S. television shows or movies can't be easily accessed in Canada and require signing up for expensive cable packages. 
+
+He also said people from diaspora communities in Canada can find it difficult to find all the overseas channels they may want to watch, and must pay for premium packages to access even a small number through their cable companies.
+
+"When content is made available in a convenient way, in reasonable prices, people tend to get that and pay for that," he said. "When they cannot get that, then they still want it, so they will find ways for getting it."
+
+## Another Nova Scotia case
+
+The alliance of U.S companies has criticized the RCMP for not making intellectual property a higher priority, although it did note progress on that front in a couple of cases, including one in Nova Scotia.
+
+Three years ago, Riad Thomeh, from Bedford, N.S., pleaded guilty to charges under the Criminal Code, Copyright Act and Radio Communications Act following an RCMP raid on his home in August 2019.
+
+He was selling subscriptions through his IPTV site EpicStream, according to an agreed statement of facts, and was also suspected of selling feeds to other IPTV operators with their own subscriber bases.
+
+When officers searched his home, they found a "server room" in the basement containing 66 satellite receivers. Thomeh was taking his valid Bell Media signal, and then "splitting" it using software and hardware that could decrypt the signal using the additional satellite receivers. 
+
+He was handed a conditional sentence that included eight months of house arrest, ordered to pay $25,000 in fines, and forfeited property and 12 parcels of land that had been bought with his EpicStream proceeds.
+
+"It's hard for me to see who the true victim here is," Thomeh said during his sentencing hearing.
+
+The notion that the unauthorized streaming of hit films or TV shows produced by huge companies amounts to a victimless crime is one likely shared by some viewers taking advantage of ultra-cheap rates offered by illegal IPTV operators.
+
+But for some, the financial toll is enormous. Shan Chandrasekar, the president of the Asian Television Network, the Toronto-based operator of 54 channels that show everything from Bollywood movies to cricket matches, said his company has been financially gutted by piracy.
+
+In 2011, he said ATN had its best year, earning revenues of more than $26 million. That number plummeted to just $9 million last year due to a long, slow decline in subscribers.
+
+He said popular channels from overseas that ATN was paying high licence fees and royalties to broadcast in Canada were being pirated "left, right and centre."
+
+"Piracy became rampant from the year 2012 onwards, and in the year 2017 it spread like wildfire," he said.
+
+He said the best solution is to jail the perpetrators. He points to a U.K. case last year where the ringleader of an illegal streaming effort that featured Premier League soccer matches was handed 11 years in prison, and five others were also put behind bars.
+
+"That kind of a deterrent is the only way in Canada we could probably solve this," he said.

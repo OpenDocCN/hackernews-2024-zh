@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:09
+-->
+
+# It Is Somebody's Moral Imperative To Leak Coyote vs Acme To The World - Aftermath
+
+> 来源：[https://aftermath.site/coyote-vs-acme-fuck-david-zaslav](https://aftermath.site/coyote-vs-acme-fuck-david-zaslav)
+
+Last week [an excellent report on The Wrap revealed that](https://www.thewrap.com/coyote-vs-acme-update-offers-warner-bros/), despite initially walking back its decision, Warner Bros. is indeed intent on throwing *Coyote vs Acme*--a funded, shot and completed motion picture--in the trash. Not because it sucks, but to save some money on taxes.
+
+It's not the first time this has happened recently--"content" ranging [from Disney TV shows](https://gizmodo.com/disney-streaming-cuts-tax-writeoffs-1850502594) to a *Batgirl* movie has met with the same fate--but this one stung a little more. Disney and HBO removing TV shows that people had already had a chance to see was one thing, and *Batgirl*[was reportedly also very bad](https://www.nme.com/en_au/news/film/batgirl-movie-so-bad-not-releasable-says-dc-studios-3390857#:~:text='Batgirl'%20movie%20was%20so%20bad%20it%20was%20%E2%80%9Cnot,releasable%E2%80%9D%2C%20says%20DC%20Studios%20boss&text=Leslie%20Grace%20as%20'Batgirl'%20CREDIT,Grace%2C%20Brandon%20Fraser%20and%20J.K.), which was another.
+
+But *Coyote vs Acme* has been seen by *nobody*. The movie--directed by Dave Green, written by *May December's* Samy Burch, produced by (among others) James Gunn and starring characters that define Warner Bros.' entire existence--was paid for, is finished, is ready to be seen, and now it stands a very real chance of being deleted forever, just to save a company some money.
+
+It's an incredibly dystopian situation we all find ourselves in, where art is only made to be fed into a woodchipper to serve shareholders, and it's one [that's been covered extensively elsewhere](https://www.looper.com/1161829/hollywood-creatives-are-breathing-fire-over-the-current-trend-of-tv-tax-write-offs/), so I'm not going to get into the reeds over the politics and economics of the decision here.
+
+What I am going to say, though, is that if you work at Warner Bros., or anywhere related to Warner Bros., and you have any access to this movie whatsoever, it's your moral imperative to leak it to the world before it's too late. If Warner Bros. don't want to release it, and have reportedly blocked attempts for other companies to release it, then what does it matter?
+
+(**Please note**: I am not a lawyer or law enforcement officer and this does not constitute actual advice).
+
+As we *have* covered previously, [there is no piracy without ownership](https://aftermath.site/there-is-no-piracy-without-ownership). If we can't buy or rent the thing, and likely never will be able to do so via legal means, then leaking this movie and putting it on torrent sites shouldn't be seen as stealing, either. By all accounts Warner CEO David Zaslav is happy throwing this movie in the bin, without selling a single theatre ticket or digital rental, so whether we get to see it for free or not doesn't move that financial needle one bit.
+
+What leaking the movie *would* do is save a piece of art that hundreds of people poured their hearts and souls into for months or even *years*. That shouldn't be a crime. That's public service.

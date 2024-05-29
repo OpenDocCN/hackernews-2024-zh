@@ -1,0 +1,12 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:45:10
+-->
+
+# From Snowdrop to Nightjar: Robert Marsham’s “Indications of Spring” (1789) — The Public Domain Review
+
+> 来源：[https://publicdomainreview.org/essay/from-snowdrop-to-nightjar/](https://publicdomainreview.org/essay/from-snowdrop-to-nightjar/)
+
+[](#p-4-0)
+
+The table shows how the project developed in Marsham’s mind. In the left-hand column, he dates all his observations by year, from 1736 to 1788\. He begins tentatively with only a few obvious items, such as when he first hears the song thrush and the arrival of the first swallow, entering the date in the appropriate box in the table. Sometimes, he notes when an observation was made in another county, presumably while he was travelling. It is a few years before he settles into his methodology, developing a full list of twenty-seven items of flora and fauna recorded at home entirely on his own estate, selected so as to cover the whole spring season from winter to early summer. They include the leafing and flowering of hawthorn and the leafing dates of ash, oak, elm, beech, birch, hornbeam, and chestnut trees, as well as the dates on which birds such as the cuckoo and nightingale began to sing. The snowdrop flower is among the earliest things he expects to see. The last anticipated observation of the season is the distinctive calling of the nightjar, which he terms the “Churn Owl”, and which is still easily heard on warm evenings in the area today. Marsham continued to record this information until his death at the age of eighty-nine.

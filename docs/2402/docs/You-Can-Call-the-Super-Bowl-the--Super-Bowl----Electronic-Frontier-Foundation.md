@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:21
+-->
+
+# You Can Call the Super Bowl the "Super Bowl" | Electronic Frontier Foundation
+
+> 来源：[https://www.eff.org/deeplinks/2018/02/you-can-call-super-bowl-super-bowl](https://www.eff.org/deeplinks/2018/02/you-can-call-super-bowl-super-bowl)
+
+Are you going to a Big Game party on Sunday? Or perhaps going to watch the pro football championship game? Or take in the majestic splendor of the [Superb Owl](http://www.cc.com/video-clips/qs3r6w/the-colbert-report-logo-restrictions-for-the-super-bowl)? You can also just call it by its real name: the Super Bowl.
+
+The NFL is infamous for coming down like a ton of bricks on anyone who dares use the actual name for the game in public. And it's also famous for trying to grab control of the names people started using when the NFL’s tactics worked and scared everyone away from saying “Super Bowl.” No matter how hard [the NFL tries](https://www.techdirt.com/articles/20160205/13584533536/nfl-edging-towards-claiming-trademark-big-game-again.shtml), it doesn’t own the phrase “The Big Game,” which has been used for longer than there’s been a Super Bowl. But anything that looks like someone making money off of the name will attract the NFL’s attention. In 2007, the NFL put a stop to an Indiana church’s party for a number of reasons, [including](https://www.cbsnews.com/news/nfl-to-churches-not-in-thy-fathers-house/) that the church promoted it as a “Super Bowl bash.”
+
+NFL’s tactics don’t change the fact that you can totally say “Super Bowl.”
+
+The NFL has trademarked the terms “Super Bowl” and “Super Sunday,” but that doesn’t mean it actually controls all rights to the phrase. Instinctually, we all know [that can’t be how the law works](https://www.eff.org/deeplinks/2013/11/trademark-law-does-not-require-companies-tirelessly-censor-internet). We see and use trademarked names for things all the time. Grocery stores advertise special deals on Coca-Cola and we put “Windex” on our grocery lists. Commercials [namecheck](https://www.youtube.com/watch?v=z_WK1WhZbI0) competitors by name all the time.
+
+It doesn’t even make any internal sense. Companies have trademarks so that they can have something that everyone instantly recognizes, not so that they suddenly become Voldemort and can’t be named out of fear.
+
+Having a trademark means being able to make sure no one can slap the name of your product onto theirs and confuse buyers into thinking they’re getting the real thing. It also means stopping an instance where using the name might make someone think it’s an endorsement or sponsorship. If neither of those things happens, you can call the Super Bowl the Super Bowl. The ability to use something’s trademarked name to identify it—even in a commercial—is called “nominative fair use.” Because the trademark is its *name*.
+
+Thankfully, the NFL and the Super Bowl are really good at letting us know who has paid astronomical amounts to get the NFL’s endorsement. Ads end with things like “official [vehicle sponsor](https://www.youtube.com/watch?v=Kb_tGiMcZBg) of the NFL” and there’s a whole page of sponsor names on the [Super Bowl’s website](https://www.mnsuperbowl.com/official-partners). There are so many instantly recognizable ways to know who has partnered with the NFL and who hasn’t that no one can think your party is an official, NFL-sponsored get together. No one thought that about the one at the church in 2007.
+
+The reason no one says “Super Bowl” has nothing to do with the law and everything to do with the massive amount of resources the NFL has brought to bear on the issue. Its pockets are very deep, its will is strong, and its desire for control ravenous. But its scare tactics don’t change the fact that you can totally say “Super Bowl.”

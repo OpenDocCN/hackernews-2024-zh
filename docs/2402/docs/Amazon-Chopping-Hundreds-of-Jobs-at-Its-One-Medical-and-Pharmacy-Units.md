@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:37:58
+-->
+
+# Amazon Chopping Hundreds of Jobs at Its One Medical and Pharmacy Units
+
+> 来源：[https://www.businessinsider.com/amazon-one-medical-pharmacy-layoffs-broader-cost-cutting-campaign-2024-2](https://www.businessinsider.com/amazon-one-medical-pharmacy-layoffs-broader-cost-cutting-campaign-2024-2)
+
+One person said roughly 115 positions may be eliminated. Another estimated up to 400 employees could lose their jobs. The company had planned to announce the layoffs before February 1, but had delayed it due to [Amazon's recent earnings report](https://www.businessinsider.com/amazon-stock-earnings-report-q4-call-amzn-price-live-updates-2024-2) and other internal issues, they said.
+
+The plan is part of a company-wide mandate to reduce One Medical's fixed cost structure, these people said. Amazon's leadership wants One Medical to significantly decrease its operating losses and asked the healthcare company to save an additional $100 million this year, one of the people said. One Medical had [an operating loss of $420 million](https://www.sec.gov/ixviewer/ix.html?doc=/Archives/edgar/data/1404123/000140412323000016/onem-20221231.htm#i72078d8ae63a4898b043200ed5c6c71d_46) in 2022, the last year it publicly disclosed financial results before getting acquired by Amazon.
+
+Amazon has started the year with a flurry of job cuts across a number of units including Twitch, [Prime Video](https://www.businessinsider.com/before-layoffs-amazon-prime-video-unit-grew-fastest-2024-1), [Audible](https://www.businessinsider.com/amazon-jobs-layoffs-audible-2024-1), and Amazon Pay. Still, there is [heightened anxiety](https://www.businessinsider.com/amazon-jobs-layoffs-quiet-firing-tactics-employees-2024-1) about more job cuts at Amazon as CFO Brian Olsavsky last week [declined to say layoffs are over](https://www.businessinsider.com/amazon-earnings-hints-more-layoffs-despite-strong-financial-results-2024-2) during a call with reporters.
+
+In an email to BI, Amazon's Amazon Health Services Senior Vice President Neil Lindsay confirmed the layoffs.
+
+"We're seeing very strong momentum and positive customer feedback across our health care offerings. As we continue our mission to make health care simpler for customers, we're realigning some resources to help accelerate our efforts to deliver the best experience for our patients, customers, and members," Lindsay said in the statement.
+
+"Unfortunately, these adjustments will result in the elimination of a few hundred roles within Amazon Pharmacy and One Medical. We're grateful to these team members for their contributions, and we will support them in their next steps. We will continue hiring providers and investing in teams and technology that will help us provide high-quality and accessible care to more people," he added.
+
+## More control over One Medical
+
+One Medical is one of the mega acquisitions Amazon made during a pandemic-driven boom. Amazon purchased film studio MGM for $8.5 billion in 2021, then announced plans to buy both One Medical and Roomba-maker iRobot in 2022.
+
+Covid-related growth didn't continue as expected, and Amazon has responded by aggressively cutting costs. Over the past 18 months or so, it has laid off at least 27,000 employees and axed a number of long-term projects. The iRobot deal also recently [fell through](https://media.irobot.com/2024-01-29-Amazon-and-iRobot-agree-to-terminate-pending-acquisition) due to regulatory issues.
+
+## Cost cutting projections
+
+One Medical plans to consolidate its marketing resources with Amazon's own healthcare business, the people said. One Medical also wants to integrate corporate functions across real estate, compliance, finance, and HR, while centralizing support roles. New artificial intelligence tools are expected to increase productivity and save costs as well, according to one of the people familiar with the situation.
+
+ A One Medical office One Medical 
+
+Under this plan, One Medical projects its fixed operating costs will drop from 41% of total revenue to just 20% by 2028, the people said. The company also aims to reduce the cost of each patient's visit to $322 in 2024, from $372 in 2023\. That will be accomplished mainly by increasing the number of patients served, one of the people said. Amazon recently rolled out [a new One Medical discount option](https://www.onemedical.com/mediacenter/one-medical-amazon-prime-benefit/) for Prime members.
+
+Amazon has been exerting more control over One Medical since closing the $3.9 billion acquisition in early 2023, according to three current employees. Tension between the leadership team at Amazon and One Medical has grown in recent months, and some One Medical executives are expected to depart the company as part of this change, one of the people said. One Medical's former CEO Amir Dan Rubin [stepped down late last year](https://www.cnbc.com/2023/09/01/amazon-loses-one-medical-ceo-one-year-after-acquisition.html).
+
+In December, One Medical changed its compensation plan to more closely follow Amazon's, which caused more tension internally, [BI previously reported](https://www.businessinsider.com/amazon-alters-employee-pay-plan-one-medical-2023-12).
+
+A lot of people don't have confidence that Amazon is going to uphold One Medical corporate DNA, one of the people told BI.
+
+***Do you work at Amazon? Got a tip?***
+
+***Contact the reporter, Eugene Kim, via the encrypted-messaging apps Signal or Telegram (***[***+1-650-942-3061***](tel:+1-650-942-3061)***) or email (***[***ekim@businessinsider.com***](mailto:ekim@businessinsider.com)***). Reach out using a nonwork device. Check out Business Insider's*** [***source guide***](https://www.businessinsider.com/insider-guide-to-securely-sharing-whistleblower-information-about-powerful-institutions-2021-10) ***for other tips on sharing information securely.***

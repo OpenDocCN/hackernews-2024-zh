@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:05:58
+-->
+
+# Update: Palworld tops 8 million sales on Steam alone
+
+> 来源：[https://www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend](https://www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend)
+
+Update (01/25/24):  Palworld remains in the ascendancy and has now sold over 8 million copies on Steam alone in less than six days.
+
+[Pocketpair shared the latest milestone on X](https://twitter.com/Palworld_EN/status/1750350702000607389) and said it's still working "full-speed" on bug fixes.
+
+The title has passed 2 million concurrent users (CCU) on Steam to consolidate second place on the all-time Steam CCU charts but remains some way behind PUBG: Battleground's record.
+
+Update (01/23/24): Palworld has now [eclipsed 6 million sales in four days](https://twitter.com/Palworld_EN/status/1749674695560208888). Pocketpair shared the news on social media and said it's working to fix a number of bugs that players have identified. "Some users are experiencing problems and bugs, which we are addressing with the highest priority," wrote the studio.
+
+The title also continues to break records on Steam. At the time of writing, Palworld has [attracted over 1.86 million concurrent users on the platform](https://steamdb.info/charts/?sort=peak), surpassing the feats of major releases like Counter-Strike 2 and Dota 2. In fact, the game only needs to beat PUBG: Battlegrounds' all-time peak of 3.25 million concurrent users to become the record holder. 
+
+It remains to be seen whether that'll be a step too far for the early access title, but right now it feels like all bets are off.
+
+Original story:Pokemon-alike-meets-survival-builder [Palworld](https://twitter.com/Palworld_EN/status/1749360035938070627) [has topped 5 million sales](https://twitter.com/Palworld_EN/status/1749360035938070627) in three days.
+
+The early access title peaked at 1.29 million concurrent users on Steam over the weekend ([according to SteamDB estimates](https://steamdb.info)) and still has over 1 million concurrent users at the time of writing.
+
+That means it's currently sitting at the summit of the Steam most played charts, having passed major releases like Counter-Strike 2, Dota 2, PUBG: Battlegrounds, and Apex Legends to get there.
+
+Although the title fell short of setting an all-time concurrent user record–that honor is still held by PUBG Battlegrounds, which previously pulled in over 3 million concurrent players–it has broken the all-time peaks set by massive hits like Cyberpunk 2077, Elden Ring, Baldur's Gate 3, and more.
+
+Commenting on the game's meteoric success, developer Pocketpair explained it was [selling 86,000 units per hour](https://twitter.com/Palworld_EN/status/1749074821609373745) on Sunday and thanked its burgeoning community for their support. The studio also indicated it was [struggling to cope with a deluge of bug reports](https://twitter.com/Palworld_EN/status/1749320138850267163) and revealed it received over 50,000 support requests over the weekend.
+
+"We sincerely apologize for the delay in response from our support team," it wrote. The development team is aware of serious bugs that are occurring, such as being unable to enter servers, unable to play multiplayer, and losing saved data, and are currently working on fixing them. We will share information about the fixes for these issues as soon as possible."
+
+Palworld is currently available on Windows PC, Xbox One, Xbox Series X | S, and Xbox Game Pass.

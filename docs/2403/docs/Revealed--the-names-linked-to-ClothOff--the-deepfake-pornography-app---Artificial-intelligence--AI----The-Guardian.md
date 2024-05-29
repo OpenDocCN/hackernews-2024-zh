@@ -1,0 +1,105 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:28
+-->
+
+# Revealed: the names linked to ClothOff, the deepfake pornography app | Artificial intelligence (AI) | The Guardian
+
+> 来源：[https://www.theguardian.com/technology/2024/feb/29/clothoff-deepfake-ai-pornography-app-names-linked-revealed](https://www.theguardian.com/technology/2024/feb/29/clothoff-deepfake-ai-pornography-app-names-linked-revealed)
+
+The first Miriam al-Adib learned of the pictures was when she returned home from a business trip. “Mum,” said her daughter. “I want to show you something.”
+
+The girl, 14, opened her phone to show an explicit image of herself. “It’s a shock when you see it,” said Adib, a gynaecologist in the southern Spanish town of Almendralejo and a mother of four daughters. “The image is completely realistic … If I didn’t know my daughter’s body, I would have thought that image was real.”
+
+<gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;technology&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;technology/artificialintelligenceai&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Artificial intelligence (AI)&quot;},{&quot;id&quot;:&quot;technology/deepfake&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Deepfake&quot;},{&quot;id&quot;:&quot;technology/technology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Technology&quot;},{&quot;id&quot;:&quot;society/children&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Children&quot;},{&quot;id&quot;:&quot;society/society&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Society&quot;},{&quot;id&quot;:&quot;world/world&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;World news&quot;},{&quot;id&quot;:&quot;world/belarus&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Belarus&quot;},{&quot;id&quot;:&quot;world/spain&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Spain&quot;},{&quot;id&quot;:&quot;world/europe-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;Europe&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;Article&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;News&quot;},{&quot;id&quot;:&quot;profile/michael-safi&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Michael Safi&quot;,&quot;twitterHandle&quot;:&quot;safimichael&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/09/05/Michael_Safi.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=1cee4edab647d25cf3f9019c5d562d5c&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/09/05/Michael_Safi.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=70bc0ca86c13f60ba229f1aa033ca055&quot;},{&quot;id&quot;:&quot;profile/alex-atack&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Alex Atack&quot;},{&quot;id&quot;:&quot;profile/joshua-kelly&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Joshua Kelly&quot;},{&quot;id&quot;:&quot;profile/philip-mcmahon&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Philip McMahon&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2015/1/29/1422531426034/phil.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=dc3d05bb70148999e58e102b8306d551&quot;},{&quot;id&quot;:&quot;publication/theguardian&quot;,&quot;type&quot;:&quot;Publication&quot;,&quot;title&quot;:&quot;The Guardian&quot;},{&quot;id&quot;:&quot;theguardian/mainsection&quot;,&quot;type&quot;:&quot;NewspaperBook&quot;,&quot;title&quot;:&quot;Main section&quot;},{&quot;id&quot;:&quot;theguardian/mainsection/uknews&quot;,&quot;type&quot;:&quot;NewspaperBookSection&quot;,&quot;title&quot;:&quot;UK news&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;technology/2024/feb/29/clothoff-deepfake-ai-pornography-app-names-linked-revealed&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+It was a deepfake, one of dozens of nude images of schoolgirls in Almendralejo that had been generated by artificial intelligence (AI) and which had been circulating in the town for weeks in a WhatsApp group set up by other schoolchildren.
+
+Some of the girls whose likenesses were being spread were refusing to go to school, suffering panic attacks, being blackmailed and getting bullied in public. “My concern was that these images had reached pornographic sites that we still don’t know about today,” Adib told the Guardian from her clinic in the town.
+
+State prosecutors are considering charges against some of the children,
+who created the images using an app downloaded from the internet. But they had been unable to identify the people who developed the app, who prosecutors suspect are based somewhere in eastern [Europe](https://www.theguardian.com/world/europe-news), they said.
+
+The Spanish incident [flared into global news](https://www.theguardian.com/world/2023/sep/25/spanish-prosecutor-investigates-if-shared-ai-images-of-naked-girls-constitute-a) last year and made Almendralejo, a small town of faded renaissance-era churches and plazas near the Portuguese border, the site of the latest in a series of warning shots from an imminent future where AI tools allow anyone to generate hyper-realistic images with a few clicks.
+
+But while deepfakes of pop stars such as Taylor Swift have [generated the most attention](https://www.theguardian.com/technology/2024/jan/31/inside-the-taylor-swift-deepfake-scandal-its-men-telling-a-powerful-woman-to-get-back-in-her-box), they represent the tip of an iceberg of nonconsensual images that are proliferating across the internet and which police are largely powerless to stop.
+
+As Adib was learning of the pictures, thousands of miles away at the Westfield high school in New Jersey, a strikingly similar case was playing out: many girls [targeted by explicit deepfake images](https://www.cbsnews.com/newyork/news/westfield-high-school-ai-pornographic-images-students/) generated by students in their classes. The New Jersey incident has prompted a civil lawsuit and helped fuel a bipartisan effort in the US Congress to ban the creation and spread of nonconsensual deepfake images.
+
+At the centre of both the incidents in [Spain](https://www.theguardian.com/world/spain) and New Jersey was the same app, called ClothOff.
+
+In the year since the app was launched, the people running ClothOff have carefully guarded their anonymity, digitally distorting their voices to answer media questions and, in one case, using AI to generate an entirely fake person who they claimed was their CEO.
+
+A picture of ‘Ewan Liam Torres’, who ClothOff claims is its CEO, but which is likely to be an AI-generated image. Photograph: Screengrab
+
+But a six-month investigation, conducted for [a new Guardian podcast series called Black Box](https://www.theguardian.com/technology/series/blackbox), can reveal the names of several people who have done work for ClothOff or who our investigation suggests are linked to the app.
+
+Their trail leads to [Belarus](https://www.theguardian.com/world/belarus) and Russia but passes through businesses registered in Europe and front companies based in the heart of London.
+
+ClothOff, whose website receives more than 4m monthly visits, invites users to “undress anyone using AI”. The app can be accessed through a smartphone by clicking a button that confirms the user is over 18, and charges approximately £8.50 for 25 credits.
+
+The credits are used to upload photographs of any woman or girl and return the same image stripped of clothing.
+
+## **A brother and sister in Belarus**
+
+Screenshots seen by the Guardian indicate that a Telegram account in the name of Dasha Babicheva, who social media accounts suggest is in her mid-20s and lives in the Belarus capital, Minsk, has conducted business on ClothOff’s behalf, including discussing applications to banks, changes to the website and business partnerships.
+
+A profile picture from a Telegram account in the name of Dasha Babicheva. Photograph: Screengrab
+
+In one screenshot, the account in Babicheva’s name tells a counterpart at another firm that if journalists have questions about ClothOff, “they can contact us on this email”, providing the website’s press contact.
+
+An Instagram account in Babicheva’s name, which shared some of the same images with the Telegram account in her name and which listed the same phone number, was made private after the Guardian started making inquiries, and the phone number was deleted from the profile.
+
+Babicheva did not respond to detailed questions.
+
+A profile picture taken from the LinkedIn account in the name of Alaiksandr Babichau. Photograph: Supplied
+
+Alaiksandr Babichau, 30, identified in social media accounts as Dasha Babicheva’s brother, also appears to be closely linked to ClothOff.
+
+In a recruitment advertisement, ClothOff directed applicants to an email address from the website AI-Imagecraft.
+
+Domain-name records for AI-Imagecraft show the website owner’s name has been hidden at the owner’s request.
+
+But AI-Imagecraft has a virtually identical duplicate website, A-Imagecraft, whose owner has not been hidden: it is listed as Babichau. The Guardian was able to log in to both A-Imagecraft and AI-Imagecraft using the same username and password, indicating the two websites are linked.
+
+There are further links between Babichau and ClothOff. The Guardian has seen screenshots of conversations between ClothOff staff and a potential business partner. The ClothOff staff are identified only by their first names and one of them, identified by another staff member as the “founder”, had the Telegram display name “Al”.
+
+The Guardian compared videos posted to Al’s Telegram account with publicly available footage posted to an account in the name of Alaiksandr Babichau. It showed that both Al and Babichau had uploaded videos and photos showing the same hotel in Macau on 24 January, and from rooms in the same Hong Kong hotel on 26 January. The correlation suggests the two accounts either belong to people who travelled to the cities at the same time, or to the same person.
+
+Reached over the phone last week, Babichau denied any connection to the deepfake app, claimed he did not have a sister named Dasha, and said a Telegram account in his name, that listed his phone number, did not belong to him. In response to further inquiries, he abruptly ended the phone call and has not responded to detailed questions by email.
+
+Shortly after the conversation, the Guardian was blocked by the Telegram account he claimed did not belong to him.
+
+Photograph: Screengrab
+
+## **A money trail through London**
+
+Payments to ClothOff revealed the lengths the app’s creators have taken to disguise their identities. Transactions led to a company registered in London called Texture Oasis, a firm that claims to sell products for use in architectural and industrial-design projects.
+
+But the company appears to be a fake business designed to disguise payments to ClothOff.
+
+The text on the firm’s website has been copied from the website of another, legitimate, business, as was a list of staff members. When the Guardian contacted one of the people listed as a Texture Oasis employee, he said he had never heard of the business. Our investigation has found no other links between the named staff and ClothOff, adding to the suggestion the staff list has been copied.
+
+The Guardian has also unearthed links between ClothOff and an online video-game marketplace called GGSel, described by its CEO as a way for Russian gamers to circumvent western sanctions.
+
+Both websites briefly listed the same business address last year: a company based in London called GG Technology Ltd, registered to a Ukrainian national named Yevhen Bondarenko. Both websites have since deleted any reference to the firm.
+
+The LinkedIn account in Babichau’s name lists him as a GGSel employee.
+
+Meanwhile, an account in the name of Alexander German, described as a web developer whose LinkedIn says he also works at GGSel, uploaded website code for ClothOff to an account in his name on GitHub, a coding repository. This source code was deleted a short time later.
+
+Reached by the phone number listed on his LinkedIn, someone who identified himself as Alexander German denied he was a web developer or linked in any way to ClothOff.
+
+Several LinkedIn accounts that listed their employment at GGSel on their profiles deleted any reference to the company or removed their surnames and pictures after the Guardian started making inquiries about links between GGSel and ClothOff.
+
+In a statement, GGSel denied any involvement with ClothOff and said it had no connection to GG Technology Ltd, but could not or did not explain why the company was listed on its website as its owner last year. It said neither Babichau nor German had ever been employees and that it would contact LinkedIn to ask them to remove the references from the profiles in their names.
+
+Bondarenko deleted his social media accounts on Wednesday and the Guardian was unable to reach him for comment.
+
+ClothOff said in response to questions that it had no connection with GGSel nor any of those named in this article. A spokesperson claimed it was impossible to use its app to “process” the images of people under the age of 18 but did not specify how or why – nor how images, including of children, were generated by the app in Spain. They speculated the images in New Jersey may have been created using a competitor service.
+
+On Thursday, access to the ClothOff website and app appeared to have been blocked in the UK, but they were still available elsewhere.
+
+The investigation has shown the growing difficulty of distinguishing real people from fake identities that can be accompanied by high-quality photographs, videos and even audio. A fuller account of this story will be published in an episode of [Black Box](https://www.theguardian.com/technology/series/blackbox) to be released next Thursday.
+
+*   *Additional reporting by Matteo Fagotto, Phil McMahon, Oliver Laughland, Manisha Ganguly, Andrew Roth, Yanina Sorokina and Kateryna Malofieieva.*

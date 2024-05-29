@@ -1,0 +1,160 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:46:27
+-->
+
+# The 2 Best Temperature Control Mugs of 2024, Tested & Reviewed
+
+> 来源：[https://www.seriouseats.com/best-temperature-control-mugs-5498744](https://www.seriouseats.com/best-temperature-control-mugs-5498744)
+
+| The Temperature Journey of a Standard Mug of Coffee |
+| --- |
+|   | **Temp. After 10 Minutes** | **Temp. After 20 Minutes** | **Temp. After 30 Minutes** | **Temp. After 40 Minutes** | **Temp. After 50 Minutes** | **Temp. After 60 Minutes ** | **Temp. After 70 Minutes ** | **Temp. After 80 Minutes ** | **Temp. After 90 Minutes ** |
+| **Standard Mug of Coffee: Start Temperature 174°F** | 136°F |  111°F |  101°F |  95°F |  90°F |  87°F |  85°F |  82°F |  80°F |
+
+If you’re wondering if you should consider a temperature control mug, consider the rate at which coffee cools. Unlike many of the other [Serious Eats reviews I’ve done](https://www.seriouseats.com/ashley-rodriguez-5185578), this review lent itself well to a control group: a mug of coffee simply left on the counter. During the temperature hold test, where I tested each mug’s ability to hold hot coffee (taking the temperature every 10 minutes over a 90-minute period), I also measured a regular ol’ cup of coffee to see how its temperature changed over time.
+
+I can’t claim this was done very scientifically. (I don’t know what the temperature inside my home was, for example, and if that contributed to a slower or faster cooling rate. I used an amber mug made by the folks at [MANUAL](https://www.manual.is/), and I can’t say if these results would be the same if I tested in a porcelain or ceramic mug.) However, it seems like coffee loses about 40 degrees in the first 10 minutes, 25 more degrees after 20 minutes, and so on (see above). The rate at which coffee loses heat is high when coffee is very hot, and then it slows down as it cools. 
+
+When I saw these results, I was even more convinced that a temperature-controlled mug could be a worthwhile investment since coffee loses so much heat so quickly. Anecdotally, I also know this to be true. The first few moments you’re waiting for coffee to cool can feel like an eternity, but the second coffee reaches an ideal temperature (more on this below), it’ll continue to lose heat. The moments between the perfect temperature and unpleasantly cool can be a phone call, a quick question from a colleague, or a bathroom break. This is all to say: Seeing a mug of coffee's temperature drop from 136°F (after 10 minutes) to 111°F (after 20 minutes) was enough to convince me that, for the right person, these temperature control mugs are a good way to solve a very common problem. 
+
+### 135°F Seemed to Be the Sweet Spot
+
+Throughout testing, I tasted each mug’s coffee repeatedly to evaluate any flavor differences. Serious Eats / Ashley Rodriguez 
+
+Almost all the mugs I tested started at a preset temperature of 135°F. Some of the mugs could not be adjusted at all, hovering on or around the 135°F marker no matter what. I wanted to know why. 
+
+Humans perceive different flavors from the same foods depending on temperature. [We did a deep dive into how temperature affects flavor](https://www.seriouseats.com/why-room-temperature-food-is-often-better), and the research is still evolving, but here’s a summary of what we learned: items that are too hot will mask flavor while items that are too cool will dull them. There’s no uniform understanding of the relationship between temperature and flavor (our article notes, for example, that “beer turns bitter when warmed from its typical serving temperature; coffee, on the other hand, has been found to taste less bitter when cooled down from piping-hot.”) but it does seem there’s a sweet spot between just above body temperature and just below our heat threshold (around 150-160°F, but that’s also not a super scientific range and really depends on your own personal preferences). 
+
+At one point, the [National Coffee Association](https://www.ncausa.org/) recommended a serving temperature between 180-185°F, and a few articles I read latched onto that range. Their current website doesn’t seem to reflect that range, but I’d guess they meant that drip coffee should be *served*, not necessarily consumed, between 180-185°F. Their website points to [a study that shows most people prefer their coffee at around 140°F](https://www.researchgate.net/publication/230106152_At_What_Temperatures_Do_Consumers_Like_to_Drink_Coffee_Mixing_Methods). Another study got more specific, indicating that [136](https://pubmed.ncbi.nlm.nih.gov/18226454/)[°F](https://www.researchgate.net/publication/230106152_At_What_Temperatures_Do_Consumers_Like_to_Drink_Coffee_Mixing_Methods) [was the ideal temperature](https://pubmed.ncbi.nlm.nih.gov/18226454/). So, 135°F is not far off.
+
+### All the Mugs Performed the Same Task—But They Were Still Different
+
+The OHOM mug, shown here, only worked on its charger. Serious Eats / Ashley Rodriguez 
+
+I found it slightly difficult to compare each mug because almost all of them performed relatively the same. They all did what they said they’d do—keep coffee warm—but operated very differently.
+
+Two of the seven mugs (the OHOM and the Hurkins) are basically coffee warmers: they only work when the mug is on the heating pad. For some reason, with both models, the heating pads doubled as phone chargers. I’m not sure who asked for this. 
+
+The Glowstone mug lacked any sort of digital interface or app, which I didn't find to be intuitive. Serious Eats / Ashley Rodriguez 
+
+The Glowstone, on the other hand, only operated off its charger and displayed a red light when at the “ideal” temperature (their website indicates that’s between 140-150°F, but there’s no digital interface, and I noted that the temperature did drop over time). The ionMug had three temperature settings and heated coffee both off the charger (for up to three hours) and on the charger (it’ll turn off after three hours of inactivity, but all you need to do is move it to remind it to keep heating). Both Embers and the VSITOO are app-controlled (arguably, these are the only “smart” mugs because of their app connectivity), and even amongst that group, the Ember Travel can be controlled via touch functions on the mug itself. 
+
+The Ember's app was easy to use and allowed you to easily tailor your temperature and save multiple preset temperatures. Serious Eats / Ashley Rodriguez 
+
+But, despite usability differences, most mugs were able to hold temperature at 135°F for at least 90 minutes (the Glowstone had a weird design feature where the temperature began to very slowly taper off around the 30-minute mark, but it was clearly still being heated since the temperature drop was very slight, about five degrees every 10 minutes, and then dropping down dramatically after 60). If the mugs were on their chargers, most (except the OHOM and the Glowstone) were able to keep a consistent 135°F for four hours.
+
+### It's OK If You Think a Temperature Control Mug Is Silly (It Is, Indeed, Both Silly and Great)
+
+ Serious Eats / Ashley Rodriguez 
+
+One of the reasons I wanted to do this review is because of a video made by James Hoffmann. Hoffmann runs a successful YouTube channel where he talks about fun—and sometimes offbeat—coffee topics, from [reviews of common products](https://www.youtube.com/playlist?list=PLxz0FjZMVOl2lbGLgq4AjrGg4fiTn_E3m) to [making espresso in tourist spots across London](https://www.youtube.com/watch?v=JT5Rz3QV74g&t=970s). He [reviewed the Ember Mug in 2018](https://www.youtube.com/watch?v=8pPCMjqI_uw) and admits that it’s a silly product, but that he likes it and accepts any and all teasing associated with that. “I get that if you saw me with this, [you] would want to tease me,” he says, “and you should.” 
+
+Hoffmann is in part responding to the not-so-warm (ha!) welcome the Ember received when it debuted. I’m not kidding: Google “Ember mug” and “silly” together and you’ll find Reddit threads and articles questioning why in the world someone would want this mug (one article even goes so far as to say you’d have to be an [“idiot” to buy this mug](https://splinternews.com/this-80-cup-will-keep-your-coffee-warm-if-youre-an-idi-1823561187)). Ember took off through a [well-funded IndieGoGo campaign](https://www.indiegogo.com/projects/ember-temperature-adjustable-mug#/), and like many crowd-funded projects (particularly in coffee with the most famous flop being [the promise of the ZPM](https://www.nytimes.com/2015/05/03/magazine/zpm-espresso-and-the-rage-of-the-jilted-crowdfunder.html), which promised professional-grade espresso machines for the home for $400 a pop), people were skeptical. 
+
+I can’t say for certain the Ember was the first temperature control mug, but it certainly paved the way for folks to enjoy consistently hot coffee without sticking it in the microwave. Coffee’s chemical makeup changes and compounds break down as it cools, so reheating a cup of coffee is like putting together a piece of glass you smashed into a zillion pieces: it’s not going to come out the same. And yes, oxidation will occur with any coffee you simply let sit out, regardless if it’s in a temperature-controlled mug or not, but it won’t degrade in the same way as a fully cooled—then reheated—coffee will. 
+
+All this is to say that you do not *need* a temperature-controlled mug. I’d argue you need a [good gooseneck kettle](https://www.seriouseats.com/best-gooseneck-kettles-5271953) to make a [great pour-over](https://www.seriouseats.com/make-better-pourover-coffee-how-pourover-works-temperature-timing), or a [decent machine to make great espresso](https://www.seriouseats.com/best-espresso-machines-5185482) at home, but you absolutely do not need a temperature control mug to enjoy coffee. I feel like with articles like this, the natural reaction is to bristle at the recommendations and make a comment like, “I’d never pay X amount of money for that.” You don’t have to: having or not having one will not make or break your coffee experience. Instead, I’d classify this as a really lovely luxury, an item that made drinking coffee better in a way that I hadn’t expected. 
+
+## The Criteria: What to Look for in a Temperature Control Mug
+
+ Serious Eats / Ashley Rodriguez / Amanda Suarez 
+
+I looked for mugs that delivered on their stated promise: did they keep coffee at a pleasant temperature over an extended period of time? I evaluated how long they took to charge, how long they kept coffee hot, how versatile they were, and any smart functions. I also assessed how easy they were to use: did they require any special instructions to deliver on their stated task? 
+
+I looked at how they delivered information, too: some mugs signaled that they were fully charged, needed charging, or were at their ideal temperature through a series of colors and flashing lights, which were not always intuitive. Lastly, I evaluated the design of the mug and if they were easy to clean and handle (some got hot to the touch) and pleasant to drink out of. 
+
+## The Best Temperature Control Mugs
+
+**What we liked:** For starters, the Ember Travel Mug is the only mug that relies on old-fashioned design: [travel mugs](https://www.seriouseats.com/best-travel-mugs-5191838) in general can keep coffee hotter for longer, which I saw demonstrated in my testing. After the mug ran of out battery (which took about three hours) its tapered shape meant that coffee cooled at a much slower rate than any of its competitors. Also, because of this design, less coffee was exposed to oxygen, so it oxidized at a much slower rate. I found that most of the mugs tasted relatively the same after 90 minutes, save the Ember Travel, which was superior to the others. 
+
+The Ember Travel is also the “smartest” mug. Although both the Ember and the Ember Travel use the same app to control temperature, the Ember Travel displays temperature readings in real-time (the Ember mug just has a light on the bottom that flashes different colors, which were difficult to remember and interpret). When I initially poured coffee into the Ember Travel, it gave me a reading of the coffee’s current temperature. However, there was a threshold: when I poured cold water, the mug simply read “cold,” but it also flashed the word “empty” to indicate when there was no liquid. 
+
+The app for the Ember comes with preset temperatures for a variety of drinks: it’ll hold liquid at an ideal temperature for things like tea, and you can set your preferred temperature setting or just rely on one of the defaults already programmed. Unlike the other smart mug, the VSIToo, you could also set the Ember to exactly the temperature you want (along with its app constantly disconnecting every time I entered a different room, the VSIToo only allows you to tweak the temperature in nine-degree increments). Overall, I’m not sure you can ask much more from a smart mug than the Ember Travel: it provides so much more than any of its competitors. 
+
+ Serious Eats / Ashley Rodriguez 
+
+**What we didn’t like:** Of course, the Ember Travel is the most expensive mug I tested. At $200, it’s undeniably pricey.
+
+Part of my testing involved letting the mugs sit on their chargers over a period of four hours. Because the Ember Travel is designed to go into sleep mode after a certain period of inactivity, it was difficult to “remind” the mug I was still using it. I had to pick it up and fiddle with the app a few times before the mug kicked back on. 
+
+I didn’t mind drinking out of a travel mug, but my partner noted that he’d prefer to use a mug with a handle. He reminded me that many people are likely using these kinds of mugs at work, but I countered with the fact that a travel mug can still be enjoyed at an office, while a regular mug with a handle can’t go on the road or fit into a car mug carrier. I think that’s more an issue of preference rather than a ding on the mug itself. 
+
+Finally, although you can set your ideal temperature down to the degree, the temperature range is limited. The mug will only keep liquid warm between 120-145°F, so if you want something hotter or cooler, this mug can’t do it.
+
+### Key Specs
+
+*   **Materials:** Stainless steel, ceramic coating
+*   **Capacity:** 12 ounces
+*   **Weight:** 2.4 pounds
+*   **Temperature range:** 120 to 145°F 
+*   **Battery life:** 3 hours
+*   **Charging time:** Approximately 2 hours
+*   **Care instructions:** Handwash-only
+
+ Serious Eats / Ashely Rodriguez 
+
+**What we liked:** Because life is all about balance, I now present to you the least expensive mug I tested. 
+
+The ionMug looked remarkably like many of the high-end mugs, with a matte black finish and a digital interface. It only offers three settings: you can set it to keep your coffee hot at 135°F, 140°F, or 145°F, but it has just as long of a battery life as the Ember Travel and works continuously when left on its charger. Like many of the mugs, it needed to be “reminded” it was still on during our four-hour charging test, but simply moving the mug a bit was enough to turn off its sleep mode and restart the warming feature. 
+
+The ionMug is also steady as a rock. Other mugs fluctuated in temperature every now and then, but the ionMug barely wavered, keeping at a steady 133°F (it was programmed to 135, and I felt that a +/- range of two degrees was acceptable) at almost every temperature check interval. The ionMug is also the only mug under $100 that could be used off its charger: the other two, the Hurkins and the OHOM, need to be on the charger to heat and still cost more than the ionMug. 
+
+As you can see, part of the "5" is gone. Serious Eats / Ashely Rodriguez 
+
+**What we didn’t like:** I tested all these mugs four to six times. In particular, I really wanted to see if the ionMug would show early wear and tear, something I was worried about due to its low price point. Although the mug held up in performance, I did notice that the digital interface was starting to wear (when I set it to heat at 135°F, half of the “5” would no longer flash). Some of the Amazon reviews I read for the mug indicated that it didn’t have the best lifespan and that the charging divots on the bottom of the mug were easily damaged. 
+
+I’m not totally convinced that the battery won’t just fail after a few more uses (especially based on the reviews I read), but I couldn’t get it to that point during testing, so I can’t say for certain if the battery issues were due to poor craftsmanship or simply using the mug incorrectly. The manual indicates that the ionMug is safe to use under running water, but I bet you shouldn’t really do that (I cleaned each mug with soap, then quickly ran water only in the mug, not outside of it. I also never submerged the mugs—I couldn’t wrap my head around each of these mugs having metal or a battery and throwing it into water).
+
+### Key Specs
+
+*   **Materials:** Stainless steel, ABS plastic
+
+*   **Capacity:** 12 ounces
+*   **Weight:** 1.6 pounds
+*   **Temperature range:** 135 to 145°F 
+*   **Battery life:** 3 hours
+*   **Charging time:** Approximately 2 hours
+*   **Care instructions:** Handwash-only
+
+ Serious Eats / Ashley Rodriguez 
+
+ ## The Competition
+
+*   [Hurkins Smug](https://www.amazon.com/dp/B08QVHH8QK/?tag=seriouseats-onsite-backup-20):The Hurkins performed just fine, but its indicator light was very faint, so I had trouble telling if it was on. The Hurkins only worked on its charger. 
+*   [OHOM Self-Heating Ceramic Mug](https://food52.com/shop/products/7322-self-heating-ceramic-mug): Like the Hurkins, the OHOM didn't have a battery and only worked on the charger. Made of ceramic, this was one of the more attractive mugs I tested and it comes in a range of colors. Most of the mugs came with a travel lid—this one did not, and, despite moving it around to tell the charger it was still in use, it went into “sleep” mode around three hours. 
+*   [Ember Mug 2](https://www.williams-sonoma.com/products/ember-mug-2/): The good ol’ Ember performed just fine, but you get so many more features for a few bucks more with the Ember Travel. It was a little hard to deduce the different flashing colors, but the mug performed well and kept the coffee tasting fresh and hot. If you have your eye on this mug specifically, you won't be disappointed by it.
+*   [Glowstone Smart Mug 2](https://www.amazon.com/Glowstone-Classic-Self-heating-Smart-dishwasher/dp/B08BS4C9LZ/?th=1&tag=seriouseats-onsite-backup-20)**:** This most resembled an actual mug and was the only mug that was dishwasher-safe. But the design choices felt strange: for some reason, it only worked off the charger and displayed a bright red light to indicate that coffee was at an ideal drinking temperature, but didn't allow users to control the temperature, nor did it display the temperature. 
+*   [VSITOO S3 Pro Temperature Control Smart Mug with Sliding Lid](https://www.amazon.com/dp/B08CN79M3M/?tag=seriouseats-onsite-backup-20)**:** This performed about as well as the Ember, but users could only pick temperatures in increments of nine and the app wasn’t as easy to use as Ember’s. Every time I walked from one room to another, I got a notification asking me to reconnect the mug and app.. 
+
+## FAQs
+
+### Will a temperature control mug heat up cold coffee?
+
+Yes—although this wasn’t part of our testing protocol, I did allow some of the coffees to go cold, usually by letting the mugs get to sleep mode and turning them back on. All of them were able to bring coffee up back to temperature, except the Glowstone, which needed to be emptied and refilled again (I have to say I’m not sure I did this right: the directions to the Glowstone were pretty sparse so I had to do some Googling and guessing. If there was a different way I was supposed to do this, I never figured it out). 
+
+I will say that letting coffee get cool and then hot again isn’t ideal. Coffee compounds break down as they cool, so heating up a once-cold cup will yield a stale and lifeless mug. 
+
+### Why not just use a hotplate to keep coffee hot?
+
+You can definitely buy a hotplate for your mug, but have you ever smelled an old coffee carafe sitting on a hotplate? That’s what your mug will smell—and your coffee will taste—like. 
+
+What temperature-controlled mugs do is keep coffee at an ideal drinking temperature without bringing them to a temperature where the liquid quickly evaporates or the coffee begins to steam and bake. I couldn’t find any science or research on how coffee compounds would change if, let’s say, we set the mugs to 160°F instead of 135°F and held them at that temperature (this would be a good experiment), but I imagine there’s a temperature threshold where the coffee goes from being pleasantly warmed to cooked. I’m just not sure where that line is. 
+
+There are hotplates available where you can control the temperature, but because they don’t come with their own mugs, you have a different problem: these mugs are going to get *hot*. I think that’s why I don’t understand why you’d buy a Hurkins or OHOM mug—the two mugs that only work on their chargers—rather than a hotplate that’s compatible with any mug. Both models only work with the chargers they come with, and both mugs were pretty hot to the touch anytime they were in use. Furthermore, they offer no temperature variation, so it seems like they limit themselves unnecessarily.
+
+### Does holding coffee at a prolonged temperature impact the coffee negatively?
+
+Yes, but honestly? Not by a lot. Compared to a freshly brewed cup of coffee, the coffees I tasted two, three, and even four hours later were pretty pleasant, and I expected them to degrade much more than they did.
+
+I considered some of the things I prized in past reviews I’ve written, like double-walled insulated carafes with [coffee brewers](https://www.seriouseats.com/the-best-automatic-drip-coffee-makers). I like double-walled carafes because they keep coffee hot without baking or exposing the coffee to additional heat, and while these mugs do use heat to keep the coffee warm (they do so gently: it’s easier to keep something at a consistent temperature than to bring it up from room temperature or colder), I thought, “if I care so much about keeping coffee warm after it’s brewed, why am I not thinking about how to keep it warm after it’s poured?” I don’t think I would have ever considered buying a temperature control mug until I did that first taste test, and now I’m going to order one for myself. 
+
+### Do temperature controlled mugs use an app?
+
+Yes, many temperature control mugs (like the Ember) use an app. The app is where you'll be easily able to set and adjust the mug's temperature. Some mugs, though, only have on-board displays.
+
+## Why We're the Experts
+
+*   [Ashley Rodriguez](https://www.seriouseats.com/ashley-rodriguez-5185578) is a freelance writer and a coffee educator. She's worked in the coffee industry for more than a decade.
+*   Ashley's also written our reviews of [milk frothers](https://www.seriouseats.com/best-milk-frothers-5189329) and [coffee makers](https://www.seriouseats.com/the-best-automatic-drip-coffee-makers).
+*   For this review, Ashley evaluated the most popular temperature control mugs, evaluating how long they kept coffee hot, how easy they were to use, and more.

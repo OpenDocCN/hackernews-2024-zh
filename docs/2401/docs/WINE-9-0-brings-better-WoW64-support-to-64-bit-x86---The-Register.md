@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:53
+-->
+
+# WINE 9.0 brings better WoW64 support to 64-bit x86 • The Register
+
+> 来源：[https://www.theregister.com/2024/01/18/wine_90_is_out/](https://www.theregister.com/2024/01/18/wine_90_is_out/)
+
+WINE 9.0 brings the benefits of better WoW64 support to 64-bit x86 – *and Arm* – kit, plus native Wayland support on Linux.
+
+WINE releases have become pleasantly regular in the last half-a-dozen years. [WINE 9.0 was released](https://gitlab.winehq.org/wine/wine/-/releases/wine-9.0) on Tuesday, almost a year after [we reported on WINE 8.0](https://www.theregister.com/2023/02/03/wine_80_dxvk_21/) and two years after we [reported on WINE 7.0](https://www.theregister.com/2022/01/19/wine_7/).
+
+The latest version consolidates some of the changes that we wrote about in those previous installments. Internally, it ["thunks"](https://blogs.stonesteps.ca/1/p/20) 32-bit Windows API calls to 64-bit ones before it translates them to Unix API calls, which the developers call WoW64 after the [Windows feature of the same name](https://learn.microsoft.com/en-us/windows/win32/winprog64/wow64-implementation-details). As the release announcement puts it:
+
+("PE format" here refers to Microsoft's *Portable Executable* format, which [we explained in depth](https://www.theregister.com/2022/06/20/redbean_2_a_singlefile_web/) a couple of years back.)
+
+The announcement continues:
+
+No potential for confusion there, then.
+
+For now, although most major Linux distros only exist in 64-bit editions, all still include support for 32-bit libraries and programs… but all the big players are looking at dropping that. Canonical considered [dropping 32-bit app support from Ubuntu](https://www.theregister.com/2019/06/24/steam_wine_ubuntu_32_bit/) in 2019, but backtracked. Fedora [is still evaluating it](https://www.theregister.com/2022/03/10/fedora_inches_closer_to_dropping/). It is very likely that Debian's next release, [version 13 "Trixie" will have no x86-32 edition](https://www.theregister.com/2023/12/19/debian_to_drop_x86_32/), and [FreeBSD 15 won't either](https://www.theregister.com/2023/10/24/freebsd_14_rc2/).
+
+But WINE doesn't just run on Linux and FreeBSD; it also works on Apple macOS. The last release of macOS 10, [10.15 "Catalina"](https://www.theregister.com/2019/10/08/adobe_catalina/) dropped 32-bit support back in 2019, and none of the five versions since support x86-32 code.
+
+Being able to run 32-bit Windows binaries on macOS 11 through 14 is quite a boon as it is, but there's more:
+
+This doesn't mean that WINE translates x86 code to Arm:
+
+MacOS on Arm64 offers that as standard in the form of [Rosetta 2 translator](https://www.theregister.com/2020/11/18/apple_silicon_m1_mac_compatibility/), which can even [be called from within Linux VMs](https://www.theregister.com/2022/06/09/apple_linux_support_macos/). Folks running Linux on Arm64 will have to provide their own, but the Wine developers point at [FEX-Emu](https://fex-emu.com/) for this.
+
+Meanwhile, in Linux land, there's also support for the ever-growing Wayland display protocol:
+
+Much like 32-bit binary support, most Wayland-based distros still support X.11 apps via XWayland, but a direct Wayland rendering path helps performance. That matters to gamers, streamers, and those working with video, and thanks to Valve's hard work on SteamOS, [the performance of Windows apps on Linux](https://www.theregister.com/2023/09/27/osseu_steam_os_3/) is improving rapidly.
+
+There are lots of other changes in this release. Also improved are Postscript handling, 3D graphics, audio and video handling, desktop integration, support for `MSHTML` rendering via Gecko, Mon and .NET support, and more.
+
+However, you should note that both the 64-bit-only and Wayland support, two of the key features, remain optional: you can use them in the stable release version, but you will have to explicitly enable them. The stable releases of WINE are cautious things, and mostly, its default settings avoid enabling things which might conceivably break anything for anyone. *Wine-Stable* is the version you will generally find in your Linux distro's repositories.
+
+If you want fancy features that are still under active development, there is a separate branch, called [Wine-Staging](https://wiki.winehq.org/Wine-Staging). If even that isn't fresh enough for you, there is also the `-development` branch, which gets a new release about every two weeks, as the [WineHQ FAQ](https://wiki.winehq.org/Wine_User's_Guide#Wine_from_WineHQ) describes.
+
+As ever, if you want to know if a particular application or game will work, check the [Wine Application Database](https://appdb.winehq.org/) first. There are also helper apps that make it easier to get stuff running, such as the [Winetricks helper script](https://wiki.winehq.org/Winetricks) which can automatically install needed Windows dependencies for specific apps.
+
+If all this sounds like too much work, and you just want something to install and work – or you want to financially support WINE development – then [as it has for decades](https://www.theregister.com/2011/01/29/codeweavers_impersonator/), CodeWeavers' CrossOver makes it much easier… on Linux, on ChromeOS, and [on Macs as well](https://www.theregister.com/2020/11/19/crossover_apple_m1/). ®

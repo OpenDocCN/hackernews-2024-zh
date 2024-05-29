@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:26:08
+-->
+
+# Wendy's Is Going to Introduce Dynamic Pricing
+
+> 来源：[https://www.foodandwine.com/wendys-introducing-dynamic-pricing-8600506](https://www.foodandwine.com/wendys-introducing-dynamic-pricing-8600506)
+
+You soon might want to get strategic about the exact time you visit Wendy’s. 
+
+In early February, Kirk Tanner, the new CEO and president of [Wendy’s](https://www.foodandwine.com/chefs/im-a-chef-because-of-the-wendys-superbar), shared with analysts his various plans to increase company profits, including investing in digital menu boards that will have the capacity to display dynamic pricing that fluctuates throughout the day by 2025.  
+
+“We are planning to invest approximately $20 million to roll out digital menu boards to all U.S. company-operated restaurants by the end of 2025,” Tanner said, according to [Nation’s Restaurant News](https://www.nrn.com/quick-service/wendy-s-expects-test-dynamic-pricing-and-daypart-offers-2025). Tanner added that Wendy’s will also invest an additional $10 million over two years to enhance its global system, help upsell other menu items, and improve order accuracy. But that’s not all. 
+
+Tanner stated, “Beginning as early as 2025, we will begin testing more enhanced features like dynamic pricing and daypart offerings along with AI-enabled menu changes and suggestive selling.”
+
+A spokesperson for Wendy's confirmed the news with Food & Wine, stating the company is focused on providing "great-tasting" food and is "making a significant investment" to grow its digital business, including rolling out digital menu boards in some U.S. restaurants. "Beginning as early as 2025, we will begin testing a variety of enhanced features on these digital menuboards like dynamic pricing, different offerings in certain parts of the day, AI-enabled menu changes and suggestive selling based on factors such as weather. Dynamic pricing can allow Wendy's to be competitive and flexible with pricing, motivate customers to visit and provide them with the food they love at a great value. We will test a number of features that we think will provide an enhanced customer and crew experience."
+
+In case that sounds like a load of corporate jargon, let us break it down: Dynamic pricing, as defined by our friends at [Investopedia](https://www.investopedia.com/terms/p/peak-pricing.asp#:~:text=Under%20a%20dynamic%20pricing%20strategy,pricing%20strategy%20called%20dynamic%20pricing.), allows companies to set variable pricing that can fluctuate up and down throughout the day, depending on demand. For example, if you’ve ever seen “surge pricing” on your Uber app, this is dynamic pricing. 
+
+"Businesses are able to change prices based on algorithms that take into account competitor pricing, supply, and demand, and other external factors in the market,” Investopedia explains. “Dynamic pricing is a common practice in several industries such as hospitality, travel, entertainment, retail, electricity, and public transport. Each industry takes a slightly different approach to repricing based on its needs and the demand for the product.” 
+
+This means a Wendy’s burger may sell at a higher price point during a busy lunch rush, then come down in price during an afternoon lull, and go back up again at dinner time. And it’s not just Wendy’s who is thinking of adopting the practice. As [Nation’s Restaurant News](https://www.nrn.com/technology/why-restaurants-are-finally-adopting-dynamic-pricing-strategies) previously reported, during the 2022 Restaurant Finance and Development Conference, there was an entire panel discussion on how the restaurant industry could better adopt the system. The only caveat being, if customers will love it or loathe it. 
+
+“Wendy’s foray into dynamic pricing is a bold experiment that could help the chain be more efficient and ultimately profitable if it works, " said Caleb Silver, editor in chief of Investopedia, shared with Food & Wine. “But, it does run the risk of angering and losing customers since they actually have many choices, unlike the rideshare industry.” 
+
+Though, so far, some other fast-casual spots that’ve tested the method say they’ve seen positive results. 
+
+“For us, it was all about consumer reaction. The concern was if you’re going to raise prices, you’re going to sell less product, and it turns out that really wasn’t the case,” Faizan Khan, a Dog Haus franchise owner, said at the Restaurant Finance and Development Conference. “I think there’s a lot of room for consumers in terms of price amounts they’re going to accept. Generationally, I think we’re seeing this being acceptable.” According to Khan, the entire idea could help “fill in” slower times and ease the burden on kitchen staff during peak hours, making every restaurant more profitable and sustainable from a human resource perspective throughout the day. Additionally, it gives consumers the chance to decide what they are willing to pay and when on any given day. 
+
+And Tanner really does seem dedicated to making Wendy’s the spot to be all day, rather than just lunch and dinner time. Beyond dynamic pricing, Tanner also shared on the call that the brand will be pushing its [breakfast program](https://www.foodandwine.com/wendys-launches-new-english-muffin-sandwiches-7643043) through a $55 million ad push spread over the next few years. “This investment,” he said, “will further amplify our plans and support and always-on approach across media partnerships and activations as we tell our breakfast story.” It’s hoping to see a 50% increase in breakfast sales over the next two years, so we’d venture a guess that you’ll likely see some great dynamic pricing deals coming for those meals too.

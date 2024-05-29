@@ -1,0 +1,50 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:35:14
+-->
+
+# Edge URL Schemes – text/plain
+
+> 来源：[https://textslashplain.com/2022/07/18/edge-url-schemes/](https://textslashplain.com/2022/07/18/edge-url-schemes/)
+
+### The `microsoft-edge:` Application Protocol
+
+Microsoft Edge implements an [Application Protocol](https://textslashplain.com/2019/08/29/web-to-app-communication-app-protocols/) with the scheme `microsoft-edge`: that is designed to launch Microsoft Edge and pass along a web-schemed URL and/or additional arguments. A basic invocation might be as simple as:
+
+`microsoft-edge:http://example.com/`
+
+However, as is often the case with things I choose to write about, there’s a bit of hidden complexity that may not be immediately obvious.
+
+#### Non-Public
+
+The purpose of this URL scheme is to enable Windows and cooperating applications to invoke particular user-experiences in the Edge browser.
+
+This scheme is not considered “public” — there’s no official documentation of the scheme, and the Edge team makes no guarantees about its behavior. We can (and do) add or modify functionality as needed to achieve desired behaviors.
+
+Over the last few years, we’ve added a variety of functionality to the scheme, including the ability to invoke UX features, launch into a specific user profile, and implement other integration scenarios. By way of example, Windows might advertise the Edge Surf game and, if the user chooses to play, the game is launched by ShellExecuting the URL `microsoft-edge:?ux=surf_game`.
+
+Because of the non-public and inherently unstable (not backward-compatible) nature of this URL scheme, it is not an *extensibility point* and it is not supported to configure the handler to be anything other than Microsoft Edge.
+
+*Under the hood: handling of this scheme can be found in Edge’s non-public version of the [StartupBrowserCreator::ProcessCmdLineImpl](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/startup/startup_browser_creator.cc;l=911;drc=97f94c6631e327c2c1a9891774b44fbba9e8e3bf) function I wrote about recently as a part of my post on [Chromium Startup](https://textslashplain.com/2022/06/15/chromium-startup/).*
+
+#### Tricky Bits
+
+One (perhaps surprising) restriction on the `microsoft-edge` scheme is that it cannot be launched from inside Edge itself. If a user inside Edge clicks a link to the `microsoft-edge:` scheme, nothing visibly happens. Only if they open the F12 Console will they see an error message:
+
+The `microsoft-edge` protocol is blocked inside Edge itself to avoid “*navigation laundering*” problems, whereby going through the external handler path would result in loss of context. Losing the context of a navigation can introduce vulnerabilities in both security and abuse. For example, a popup blocker bypass existed on Android when Android Chrome failed to block the Chrome version of this protocol. Similarly, anti-CSRF restrictions on `SameSite=Strict` cookies could be circumvented because such cookies are deliberately suppressed on “cross-site” navigations but not suppressed for “external” navigations.
+
+The Edge WebView2 control also blocks navigation to the `microsoft-edge` protocol, although I expect that an application which wants to allow such navigations could probably do so with the appropriate event handlers.
+
+Another tricky bit concerns the fact that a user may have multiple different channels of Edge (Stable, Beta, Dev, Canary) installed, but the `microsoft-edge` protocol can only be claimed by one of them. This can be potentially confusing if a user has different channels selected to handle `HTTPS:` and `microsoft-edge` links:
+
+…because some links will open in Edge Canary while others will open in Edge Beta.
+
+* * *
+
+### The `edge:` Built-In Scheme
+
+Beyond the aforementioned application protocol, Microsoft Edge *also* supports a [Built-In Scheme](https://textslashplain.com/2022/01/21/adding-protocol-schemes-to-chromium/) named `edge:`. In contrast to the `microsoft-edge:` application protocol, this scheme is *only* available within the browser. You can not invoke an `edge:` URL elsewhere in Windows, or pass it to Edge as a command-line argument.
+
+The `edge:` scheme is simply an alias for the `chrome`: and `about`: schemes used in Chromium to support internal pages like `about:flags`, `about:settings`, and similar (see `edge:about` for a list).
+
+For security reasons, regular webpages cannot navigate to or load subresources from the `edge/chrome` schemes. Years ago, a common exploit pattern was to navigate to `chrome:downloads` and then abuse its privileged WebUI bindings to escape the browser sandbox. There are also special debug urls like `about:inducebrowsercrashforrealz` that will do exactly as they say.

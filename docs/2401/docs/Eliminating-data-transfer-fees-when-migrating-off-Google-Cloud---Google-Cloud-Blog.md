@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:12
+-->
+
+# Eliminating data transfer fees when migrating off Google Cloud | Google Cloud Blog
+
+> 来源：[https://cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/](https://cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/)
+
+ At Google Cloud, we work to support a thriving cloud ecosystem that is open, secure, and interoperable. When customers’ business needs evolve, the cloud should be flexible enough to accommodate those changes.
+
+Starting today, Google Cloud customers who wish to stop using Google Cloud and migrate their data to another cloud provider and/or on premises, can take advantage of free network data transfer to migrate their data out of Google Cloud. This applies to all customers globally. You can learn more [here](https://cloud.google.com/exit-cloud).
+
+Eliminating data transfer fees for switching cloud providers will make it easier for customers to change their cloud provider; however, it does not solve the fundamental issue that prevents many customers from working with their preferred cloud provider in the first place: restrictive and unfair licensing practices.
+
+Certain legacy providers leverage their on-premises software monopolies to create cloud monopolies, using restrictive licensing practices that lock in customers and warp competition.
+
+The complex web of licensing restrictions includes [picking and choosing](https://www.theregister.com/2023/08/25/microsoft_google_alibaba_windows_apps/) who their customers can work with and how; charging [5x the cost](https://azure.microsoft.com/en-us/pricing/azure-vs-aws/cost-savings/?activetab=pivot:windowsservertab) if customers decide to use certain competitors’ clouds; and limiting interoperability of must-have software with competitors’ cloud infrastructure. These and other restrictions have no technical basis and may impose a [300% cost increase](https://cispe.cloud/website_cispe/wp-content/uploads/2023/06/Quantification-of-Cost-of-Unfair-Software-Licensing_Prof-Jenny_-June-2023_web.pdf) to customers. In contrast, the cost for customers to migrate data out of a cloud provider is minimal.
+
+Making it easier for customers to move from one provider to another does little to improve choice if customers remain locked in with restrictive licenses. Customers should choose a cloud provider because it makes sense for their business, not because their legacy provider has locked them in with overly restrictive contracting terms or punitive licensing practices.
+
+The promise of the cloud is to allow businesses and governments to seamlessly scale their technology use. Today’s announcement [builds](https://cloud.google.com/blog/products/networking/standard-tier-network-now-includes-200-gb-data-transfer-per-month) on the multiple measures in recent months to provide [more value](https://cloud.google.com/blog/products/networking/new-availability-sla-for-standard-tier-networking) and improve [data transfer](https://cloud.google.com/blog/products/identity-security/announcing-ga-of-cloud-nat-support-for-standard-tier-egress) for large and small organizations running workloads on Google Cloud.
+
+We will continue to be vocal in our efforts to advocate on behalf of our cloud customers — many of whom raise concerns about legacy providers’ licensing restrictions directly with us. Much more must be done to end the restrictive licensing practices that are the true barrier to customer choice and competition in the cloud market.

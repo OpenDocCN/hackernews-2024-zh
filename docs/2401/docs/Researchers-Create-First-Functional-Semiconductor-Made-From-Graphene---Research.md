@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:56
+-->
+
+# Researchers Create First Functional Semiconductor Made From Graphene | Research
+
+> 来源：[https://research.gatech.edu/feature/researchers-create-first-functional-semiconductor-made-graphene](https://research.gatech.edu/feature/researchers-create-first-functional-semiconductor-made-graphene)
+
+### **Moving Forward**
+
+Epitaxial graphene could cause a paradigm shift in the field of electronics and allow for completely new technologies that take advantage of its unique properties. The material allows the quantum mechanical wave properties of electrons to be utilized, which is a requirement for quantum computing.
+
+"Our motivation for doing graphene electronics has been there for a long time, and the rest was just making it happen," de Heer said. "We had to learn how to treat the material, how to make it better and better, and finally how to measure the properties. That took a very, very long time."
+
+According to de Heer, it is not unusual to see yet another generation of electronics on its way. Before silicon, there were vacuum tubes, and before that, there were wires and telegraphs. Silicon is one of many steps in the history of electronics, and the next step could be graphene.
+
+"To me, this is like a Wright brothers moment," de Heer said. "They built a plane that could fly 300 feet through the air. But the skeptics asked why the world would need flight when it already had fast trains and boats. But they persisted, and it was the beginning of a technology that can take people across oceans."
+
+**Citation**: Zhao, J. *et al*. Ultrahigh-mobility semiconducting epitaxial graphene on silicon carbide. *Nature* (2024).
+
+**DOI**: [https://doi.org/10.1038/s41586-023-06811-0](https://doi.org/10.1038/s41586-023-06811-0)
+
+**Writer**: Catherine Barzler
+
+**Video and Photos**: Chris McKenney
+
+#####
+
+The Georgia Institute of Technology, or Georgia Tech, is one of the top public research universities in the U.S., developing leaders who advance technology and improve the human condition. The Institute offers business, computing, design, engineering, liberal arts, and sciences degrees. Its more than 45,000 undergraduate and graduate students, representing 50 states and more than 148 countries, study at the main campus in Atlanta, at campuses in France and China, and through distance and online learning. As a leading technological university, Georgia Tech is an engine of economic development for Georgia, the Southeast, and the nation, conducting more than $1 billion in research annually for government, industry, and society.

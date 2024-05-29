@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:46
+-->
+
+# Spotify, Epic Games and others pen letter to EC, claiming Apple has made a 'mockery' of the DMA | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/03/01/spotify-epic-games-and-others-pen-letter-to-ec-claiming-apple-has-made-a-mockery-of-the-dma/](https://techcrunch.com/2024/03/01/spotify-epic-games-and-others-pen-letter-to-ec-claiming-apple-has-made-a-mockery-of-the-dma/)
+
+Epic Games, Spotify, [Proton](https://proton.me/blog/apple-dma-compliance-plan-trap), [37signals](https://twitter.com/dhh/status/1750666349385568695?t=_KAH4ToWQLy2KWIYKVD4FA&s=19) and other developers had already signaled their displeasure with how Apple has chosen to [adapt its rules](https://techcrunch.com/2024/01/25/apple-dma-changes/) to meet the requirements of the new EU regulation, the Digital Markets Act (DMA), calling it “[extortion](https://techcrunch.com/2024/01/26/spotify-calls-apples-dma-compliance-plan-extortion-and-a-complete-and-total-farce/)” and [“bad-faith” compliance](https://techcrunch.com/2024/01/17/epic-plans-to-contest-apples-bad-faith-compliance-with-court-ruling-over-app-store/), among other things. Now those companies have formalized their complaints [in a letter addressed to the European Commission,](https://newsroom.spotify.com/2024-03-01/a-letter-to-the-european-commission-on-apples-lack-of-dma-compliance/) where they collectively argue that Apple has made a mockery of the new law and urge the EC to take “swift, timely, and decisive action against Apple” in order to protect developers.
+
+Apple’s new [DMA rules](https://techcrunch.com/2024/01/25/apple-dma-changes/) have been widely criticized by developers and tech companies, including [Meta](https://techcrunch.com/2024/02/01/mark-zuckerberg-calls-apples-dma-rules-so-onerous-he-doubts-any-developer-will-opt-in/), [Mozilla](https://techcrunch.com/2024/01/26/apple-dma-webkit/) and [Microsoft](https://mashable.com/article/meta-microsoft-lobby-eu-apple-app-store-dma). Instead of introducing a new, more level playing field where developers could easily compete with Apple’s App Store, Apple found a way to legally comply with the specifics of the regulation, but not its intention. Most notably, it introduced a Core Technology Fee for those developers adopting its DMA rules, which requires apps distributed outside the App Store to still pay Apple €0.50 for each first annual install per year over a 1 million threshold. This was bad news for would-be rivals that had wanted to set up their own app stores or distribute their apps outside of Apple’s walls to avoid paying commissions.
+
+In the new letter, 34 companies and associations across a variety of sectors are asking the EC to take action.
+
+“Apple’s new terms not only disregard both the spirit and letter of the law, but if left unchanged, make a mockery of the DMA and the considerable efforts by the European Commission and EU institutions to make digital markets competitive,” it reads.
+
+The letter goes on to point out where the companies think that Apple is non-compliant with the DMA, noting that Apple’s system of requiring developers to choose to opt into the DMA terms adds unnecessary complexity and confusion, as both are non-compliant, it says. Plus, because of the new fee structure, and the Core Technology Fee, it’s clear that few will agree to the DMA terms, the companies said. While there has been much vocal criticism of the terms, at least one developer, MacPaw, recently announced it had accessed the terms to distribute its software subscription Setapp in the EU.
+
+The companies also complain that Apple’s “scare screens,” designed to warn customers of the risks associated with transacting outside Apple’s App Store, will “mislead and degrade the user experience, depriving them of real choice and the benefits of the DMA.”
+
+Finally, the letter argues that for the DMA to be effective, it needs to allow for alternative app stores and sideloading — the former which the companies say Apple makes difficult and the latter which Apple’s DMA rules don’t even allow for.
+
+Apple, meanwhile, also published a [whitepaper today](https://developer.apple.com/security/complying-with-the-dma.pdf) that outlines its solutions to address the changes the DMA requires to commissions and payments. Here, it stresses the security and trust customers have with Apple and its emphasis on consumer privacy. In short, its position is that “Users should not be exposed to physical harm through iOS,” and that all its efforts with regard to DMA compliance are means of reducing any potential harms that users could be exposed to.
+
+There are hints that Apple may be feeling the pressure, however, as it also [today reversed an earlier decision](https://techcrunch.com/2024/03/01/apple-reverses-decision-about-blocking-web-apps-on-iphones-in-the-eu/) to block progressive web apps from operating normally on devices in the EU. The [FT had recently reported](https://www.ft.com/content/1e677a7e-9494-4f5b-a724-9e58ef26b34f) that the EC’s ruling focused on competition in the streaming music market will not be in Apple’s favor and will rather extract a €500 million fine from the iPhone maker. Apple responded to this by [sharing details about Spotify’s success on iOS](https://techcrunch.com/2024/02/22/as-possible-ec-fine-nears-apple-claims-spotify-is-trying-to-get-limitless-access-to-its-tools-without-paying/), noting that its app had been installed more than 119 billion times across Apple devices, among other things.
+
+In response to the companies’ letter, an EC spokesperson told TechCrunch that the six-month deadline for Big Tech gatekeepers, like Apple, was there for a reason.
+
+“Once the compliance solutions are fully known next week, these need to be properly analyzed both by the Commission and stakeholders, in its completeness and not just based on a few announcements,” they noted, adding that the Commission is looking “very carefully” at how companies are complying.
+
+Once it has full enforcement powers, the EC will “not hesitate to act,” they also said.

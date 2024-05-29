@@ -1,0 +1,48 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:12:47
+-->
+
+# Essays: Don’t Talk to People Like They’re Chatbots - Schneier on Security
+
+> 来源：[https://www.schneier.com/essays/archives/2024/01/dont-talk-to-people-like-theyre-chatbots.html](https://www.schneier.com/essays/archives/2024/01/dont-talk-to-people-like-theyre-chatbots.html)
+
+## Don’t Talk to People Like They’re Chatbots
+
+#### AI could make our human interactions blander, more biased, or ruder.
+
+For most of history, communicating with a computer has not been like communicating with a person. In their earliest years, computers required carefully constructed instructions, delivered through punch cards; then came a command-line interface, followed by menus and options and text boxes. If you wanted results, you needed to learn the computer’s language.
+
+This is beginning to change. Large language models—the technology undergirding modern chatbots—allow users to interact with computers through natural conversation, an innovation that introduces some baggage from human-to-human exchanges. Early on in our respective explorations of ChatGPT, the two of us found ourselves typing a word that we’d never said to a computer before: “Please.” The syntax of civility has crept into nearly every aspect of our encounters; we speak to this algebraic assemblage as if it were a person—even when we know that [it’s not](https://www.belfercenter.org/publication/ai-and-trust).
+
+Right now, this sort of interaction is a novelty. But as chatbots become a ubiquitous element of modern life and permeate many of our human-computer interactions, they have the potential to subtly reshape how we think about both computers and our fellow human beings.
+
+One direction that these chatbots may lead us in is toward a society where we ascribe humanity to AI systems, whether abstract chatbots or more physical robots. Just as we are [biologically primed](https://www.bbc.com/future/article/20140730-why-do-we-see-faces-in-objects) to see faces in objects, we imagine intelligence in anything that can hold a conversation. (This isn’t new: People projected intelligence and empathy onto the very primitive 1960s chatbot, [Eliza](https://www.theatlantic.com/ideas/archive/2022/06/google-lamda-chatbot-sentient-ai/661322/).) We say “please” to LLMs because it feels wrong not to.
+
+Chatbots are growing only more common, and there is reason to believe they will become [ever more intimate parts of our lives](https://www.theatlantic.com/podcasts/archive/2023/08/are-ai-relationships-real/674965/). The market for AI companions, ranging from friends to romantic partners, is already crowded. Several companies are working on AI assistants, akin to secretaries or butlers, that will [anticipate and satisfy our needs](https://www.cbsnews.com/news/walmart-artificial-intelligence-retail/#:~:text=Called%20%22InHome%20Replenishment%2C%22%20the,%2C%20monthly%20schedule%2C%20for%20example.). And other companies are working on AI therapists, mediators, and life coaches—even simulacra of our dead relatives. More generally, chatbots will likely become the interface through which we interact with all sorts of computerized processes—an AI that responds to our style of language, every nuance of emotion, even tone of voice.
+
+Many users will be primed to think of these AIs as friends, rather than the corporate-created systems that they are. The internet already spies on us through systems such as Meta’s advertising network, and LLMs will likely join in: OpenAI’s [privacy policy](https://openai.com/policies/privacy-policy), for example, already outlines the many different types of personal information the company collects. The difference is that the chatbots’ natural-language interface will make them feel more humanlike—reinforced with every politeness on both sides—and we could easily miscategorize them in our minds.
+
+Major chatbots do not yet alter how they communicate with users to satisfy their parent company’s business interests, but market pressure might push things in that direction. Reached for comment about this, a spokesperson for OpenAI pointed to a section of the privacy policy noting that the company does not currently sell or share personal information for “cross-contextual behavioral advertising,” and that the company does not “process sensitive Personal Information for the purposes of inferring characteristics about a consumer.” In an interview with [*Axios*](https://www.axios.com/2024/01/17/sam-altman-davos-ai-future-interview) earlier today, OpenAI CEO Sam Altman said future generations of AI may involve “quite a lot of individual customization,” and “that’s going to make a lot of people uncomfortable.”
+
+Other computing technologies have been shown to shape our cognition. Studies indicate that autocomplete on websites and in word processors can dramatically reorganize our writing. Generally, these recommendations result in blander, [more predictable](https://www.eecs.harvard.edu/~kgajos/papers/2020/arnold20predictive.pdf) prose. And where autocomplete systems give biased prompts, they result in biased writing. In one [benign experiment](https://www.eecs.harvard.edu/~kgajos/papers/2018/arnold18sentiment.pdf), positive autocomplete suggestions led to more positive restaurant reviews, and negative autocomplete suggestions led to the reverse. The effects could go far beyond tweaking our writing styles to affecting our mental health, just as with the potentially depression- and anxiety-inducing social-media platforms [of today](https://mitsloan.mit.edu/ideas-made-to-matter/study-social-media-use-linked-to-decline-mental-health).
+
+The other direction these chatbots may take us is even more disturbing: into a world where our conversations with them result in our treating our fellow human beings with the apathy, disrespect, and incivility we more typically show machines.
+
+Today’s chatbots perform best when instructed with a level of precision that would be appallingly rude in human conversation, stripped of any conversational pleasantries that the model could misinterpret: “Draft a 250-word paragraph in my typical writing style, detailing three examples to support the following point and cite your sources.” Not even the most detached corporate CEO would likely talk this way to their assistant, but it’s common with chatbots.
+
+If chatbots truly become the dominant daily conversation partner for some people, there is an acute risk that these users will adopt a lexicon of AI commands even when talking to other humans. Rather than speaking with empathy, subtlety, and nuance, we’ll be trained to speak with the cold precision of a programmer talking to a computer. The colorful aphorisms and anecdotes that give conversations their inherently human quality, but that often confound large language models, could begin to vanish from the human discourse.
+
+For precedent, one need only look at the ways that bot accounts already degrade digital discourse on social media, inflaming passions with crudely programmed responses to deeply emotional topics; they [arguably](https://www.cjr.org/the_media_today/nature_study_trump_bots_twitter.php) played a role in sowing discord and polarizing voters in the 2016 election. But AI companions are likely to be a far larger part of some users’ social circle than the bots of today, potentially having a much larger impact on how those people use language and navigate relationships. What is unclear is whether this will negatively affect one user in a billion or a large portion of them.
+
+Such a shift is unlikely to transform human conversations into cartoonishly robotic recitations overnight, but it could subtly and meaningfully reshape colloquial conversation over the course of years, just as the character limits of text messages affected so much of colloquial writing, turning terms such as *LOL*, *IMO*, and *TMI* into everyday vernacular.
+
+AI chatbots are always there when you need them to be, for whatever you need them for. People aren’t like that. Imagine a future filled with people who have spent years conversing with their AI friends or romantic partners. Like a person whose only sexual experiences have been mediated by pornography or erotica, they could have unrealistic expectations of human partners. And the more ubiquitous and lifelike the chatbots become, the greater the impact could be.
+
+More generally, AI might accelerate the disintegration of institutional and social trust. Technologies such as Facebook were supposed to bring the world together, but in the intervening years, the public has become more and more suspicious of the people around them and less trusting of civic institutions. AI may drive people further toward isolation and suspicion, always unsure whether the person they’re chatting with is actually a machine, and treating them as inhuman regardless.
+
+Of course, history is replete with people claiming that the digital sky is falling, bemoaning each new invention as the end of civilization as we know it. In the end, LLMs may be little more than the word processor of tomorrow, a handy innovation that makes things a little easier while leaving most of our lives untouched. Which path we take depends on how we train the chatbots of tomorrow, but it also depends on whether we invest in strengthening the bonds of civil society today.
+
+Categories: [AI and Large Language Models](https://www.schneier.com/essays/ai-and-large-language-models/), [Internet and Society](https://www.schneier.com/essays/society/)
+
+Tags: [Atlantic](https://www.schneier.com/essays/atlantic/)

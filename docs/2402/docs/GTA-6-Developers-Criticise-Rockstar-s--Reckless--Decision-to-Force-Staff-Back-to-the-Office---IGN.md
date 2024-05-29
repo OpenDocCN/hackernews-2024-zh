@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:28:13
+-->
+
+# GTA 6 Developers Criticise Rockstar’s ‘Reckless’ Decision to Force Staff Back to the Office - IGN
+
+> 来源：[https://www.ign.com/articles/gta-6-developers-criticise-rockstars-reckless-decision-to-force-staff-back-to-the-office](https://www.ign.com/articles/gta-6-developers-criticise-rockstars-reckless-decision-to-force-staff-back-to-the-office)
+
+Developers at Rockstar Games have hit out at the company’s decision to force staff to return to the office five days a week to close out work on [GTA 6](/games/grand-theft-auto-vi).
+
+This week, [Rockstar notified staff](/articles/rockstar-games-is-asking-employees-to-return-to-office-amid-gta-security-concerns) of its return-to-office order, due to start in April, which it said had to do with completing development on GTA 6 “at the level of quality and polish we know it requires”, and to mitigate security breaches. GTA 6 is developed primarily at Rockstar North in Edinburgh, Scotland, although support comes from a number of other Rockstar studios across the UK and the world.
+
+Now, the Independent Workers’ union of Great Britain, which represents video game developers in the UK, has publicly criticized Rockstar for the move, and published testimony from current developers who warn it will significantly affect their well-being.
+
+According to the IWGB, last year 170 Rockstar Games workers in the UK signed a petition opposing mandatory three-day office work. Now, workers accuse Rockstar of “broken promises”, and have expressed concern about health, caring responsibilities, living arrangements, and a heightened risk of overwork (crunch). Some workers have said they moved their lives further away from studio locations that would now need to be reversed in under six weeks to comply with Rockstar’s demands. Rockstar is yet to comment.
+
+The IWGB also alleges Rockstar had insisted flexible work options would remain available in an employee-wide email that said: “This isn’t our first step to five days a week. No one wants to go back to the old way of working.” The IWGB went on to claim Rockstar management has so-far refused to engage with workers on the issue, and will “pull the plug” on remote access to technology on April 15.
+
+After so many broken promises we now fear management may even be paving the way for a return to toxic ‘crunch’ practices.
+
+An anonymous Rockstar worker is quoted as saying: “Working from home has been a lifeline for many of us at Rockstar, allowing us to balance care responsibilities, manage disabilities, and relocate as we need. Now, Rockstar is snatching away that lifeline without a second thought for the workers who’ll be impacted most. After so many broken promises we now fear management may even be paving the way for a return to toxic ‘crunch’ practices. Senior leadership need to rethink their reckless decision making and engage with their staff to find an arrangement that works for everyone.”
+
+Another said: “As usual, there has been zero consultation with us: the people who these policy changes most affect. Just one of my concerns is being forced to work late hours in the office to maintain contact with global teams when before we could log on from home to attend late meetings. This will mean missing out on spending time with our families. I am also aware of colleagues who have health issues preventing full time office work who are now left in limbo.”
+
+And here’s another member of staff: “We the staff care greatly about the games we make and our passion, skill, and talent should never be taken for granted by studio management. It is together, through collaboration and a healthy work life balance and workplace culture that we continue making some of the most beloved and spectacular games in our industry.”
+
+For years, Rockstar had a notorious reputation within the video game industry for brutal crunch in the making of Grand Theft Auto and Red Dead games. However, following the release of [Red Dead Redemption 2](/games/red-dead-redemption-2) in 2018 and [the shocking stories about the human cost of its development](https://www.eurogamer.net/the-human-cost-of-red-dead-redemption-2), media reports suggested changes were made to the company’s culture to avoid the same thing happening during the development of GTA 6.
+
+It is unacceptable that Rockstar leadership have gone back on their word time and time again and have ignored the workers' requests for basic working conditions.
+
+Austin Kelmore, IWGB Game Workers Chair also hit out at Rockstar: “The workers in the IWGB Game Workers Union at Rockstar are pushing for transparency over pay and promotions, a healthy and inclusive workplace culture, and work life balance centred around what each worker needs. It is unacceptable that Rockstar leadership have gone back on their word time and time again and have ignored the workers' requests for basic working conditions.
+
+“Workers across the industry are done with letting executives make reckless and harmful decisions and the Rockstar workers are showing us the start of what's to come if they're continually ignored. There's no better time than now to join our union and push for this to be the healthy and sustainable games industry we know it can be.”
+
+The video game development industry has wrestled with an increasing call from executives to return to the office following the sea-change sparked by the pandemic. Last year, IGN [revealed](/articles/ubisoft-montreal-in-turmoil-amid-what-developers-are-calling-broken-promises) Ubisoft Montreal employees were left fuming over what they called broken promises in regards to the studio's return-to-office mandate. And, more recently, [Star Citizen developers criticized a relocation plan](/articles/star-citizen-developer-cloud-imperium-games-confirms-layoffs-as-former-staff-hit-out-at-relocation-plan) at developer Cloud Imperium Games.
+
+GTA 6, meanwhile, is expected to launch at some point in 2025 on PlayStation 5 and Xbox Series X and S. Some predict it will become the best-selling video game of all time after its debut trailer set viewership records.
+
+*Image credit: Ken Jack/Getty Images*
+
+*Wesley is the UK News Editor for IGN. Find him on Twitter at @wyp100\. You can reach Wesley at wesley_yinpoole@ign.com or confidentially at wyp100@proton.me.*

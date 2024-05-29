@@ -1,0 +1,38 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:41
+-->
+
+# Saudi Aramco CEO: Energy transition failing
+
+> 来源：[https://www.cnbc.com/2024/03/18/saudi-aramco-ceo-says-energy-transition-is-failing-give-up-fantasy-of-phasing-out-oil.html](https://www.cnbc.com/2024/03/18/saudi-aramco-ceo-says-energy-transition-is-failing-give-up-fantasy-of-phasing-out-oil.html)
+
+ Amin Nasser, CEO of Saudi Aramco, speaks at the 2024 CERAWeek by S&P Global conference in Houston, Texas, on March 18, 2024.
+
+F. Carter Smith | Bloomberg | Getty Images
+
+HOUSTON — Saudi Aramco CEO Amin Nasser said Monday that the energy transition is failing and policymakers should abandon the "fantasy" of phasing out oil and gas, as demand for fossil fuels is expected to continue to grow in the coming years.
+
+"In the real world, the current transition strategy is visibly failing on most fronts as it collides with five hard realities," Nasser said during a panel interview at the CERAWeek by S&P Global energy conference in Houston, Texas.
+
+"A transition strategy reset is urgently needed and my proposal is this: We should abandon the fantasy of phasing out oil and gas and instead invest in them adequately reflecting realistic demand assumptions," the CEO said to applause from the audience.
+
+The Paris-based International Energy Agency [forecast](https://www.cnbc.com/2023/10/24/demand-for-fossil-fuels-set-to-peak-by-2030-but-its-not-enough-iea.html#:~:text=Sustainable%20Future-,Global%20demand%20for%20oil%2C%20coal%20and%20gas%20set%20to%20peak,2030%2C%20energy%20agency%20IEA%20says&amp;text=A%20transformative%20shift%20in%20how,technologies%E2%80%9D%20playing%20a%20crucial%20role.) last year that peak oil, gas and coal demand would come in 2030\. Nasser said demand is unlikely to peak anytime soon, let alone by that year. Nasser suggested that the IEA is focusing on demand in the U.S. and Europe and needs to focus on the developing world as well.
+
+## Oil Prices, Energy News and Analysis
+
+Nasser said alternative energy sources have been unable to displace hydrocarbons at scale, despite the world investing more than $9.5 trillion over the past two decades. Wind and solar currently supply less than 4% of the world's energy, while total electric vehicle penetration is less than 3%, he said.
+
+Meanwhile, the share of hydrocarbons in the global energy mix has barely fallen in the 21st century from 83% to 80%, Nasser said. Global demand has increased by 100 million barrels of oil equivalent per day during the same period and will reach an all-time high this year, the CEO said.
+
+Gas has grown 70% since the start of the century, Nasser said. The transition from coal to gas is responsible for two-thirds of the reductions in carbon emissions in the U.S., he said.
+
+"This is hardly the future picture some have been painting," Nasser said. "Even they are starting to acknowledge the importance of oil and gas security."
+
+Developing nations in the global south, meanwhile, will drive oil and gas demand as prosperity rises in those nations, which represent more than 85% of the world's population, the CEO said. These nations receive less than 5% of the investment targeting renewable energy, he said.
+
+Nasser said the world should focus more on reducing emissions from oil and gas in addition to renewables. The CEO said efficiency improvements alone over the past 15 years have reduced global energy demand by almost 90 million barrels per day oil equivalent. Wind and solar, meanwhile, have substituted only 15 million barrels over the same period, he said.
+
+"We should phase in new energy sources and technologies when they are genuinely ready, economically competitive and with the right infrastructure," Nasser said.
+
+## Don't miss these stories from CNBC PRO:

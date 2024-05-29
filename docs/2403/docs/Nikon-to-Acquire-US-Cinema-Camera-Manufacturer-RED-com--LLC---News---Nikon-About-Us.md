@@ -1,0 +1,27 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:50
+-->
+
+# Nikon to Acquire US Cinema Camera Manufacturer RED.com, LLC | News | Nikon About Us
+
+> 来源：[https://www.nikon.com/company/news/2024/0307_01.html](https://www.nikon.com/company/news/2024/0307_01.html)
+
+TOKYO - Nikon Corporation (Nikon) hereby announces its entry into an agreement to acquire 100% of the outstanding membership interests of RED.com, LLC (RED) whereby RED will become a wholly-owned subsidiary of Nikon, pursuant to a Membership Interest Purchase Agreement with Mr. James Jannard, its founder, and Mr. Jarred Land, its current President, subject to the satisfaction of certain closing conditions thereunder.
+
+Since its establishment in 2005, RED has been at the forefront of digital cinema cameras, introducing industry-defining products such as the original RED ONE 4K to the cutting-edge V-RAPTOR [X] with its proprietary RAW compression technology. RED's contributions to the film industry have not only earned it an Academy Award but have also made it the camera of choice for numerous Hollywood productions, celebrated by directors and cinematographers worldwide for its commitment to innovation and image quality optimized for the highest levels of filmmaking and video production.
+
+This agreement was reached as a result of the mutual desires of Nikon and RED to meet the customers’ needs and offer exceptional user experiences that exceed expectations, merging the strengths of both companies. Nikon's expertise in product development, exceptional reliability, and know-how in image processing, as well as optical technology and user interface along with RED’s knowledge in cinema cameras, including unique image compression technology and color science, will enable the development of distinctive products in the professional digital cinema camera market.
+
+Nikon will leverage this acquisition to expand the fast-growing professional digital cinema camera market, building on both companies' business foundations and networks, promising an exciting future of product development that will continue to push the boundaries of what is possible in film and video production.
+
+## Overview of RED.com, LLC
+
+| Company name | RED.com, LLC |
+| Head office location | Foothill Ranch, California, U.S.A. |
+| Representatives | Jarred Land, President |
+| Foundation | 2005 (Establishment) |
+| Number of employees | Approximately 220 |
+| Business | Design, development, manufacture, sales, and provision of services of professional digital cinema cameras |
+
+Share

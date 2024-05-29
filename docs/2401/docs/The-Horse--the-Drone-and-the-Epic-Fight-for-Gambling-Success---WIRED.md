@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:02:49
+-->
+
+# The Horse, the Drone and the Epic Fight for Gambling Success | WIRED
+
+> 来源：[https://www.wired.co.uk/article/horse-racing-drone](https://www.wired.co.uk/article/horse-racing-drone)
+
+**AROUND LUNCHTIME ON** April Fool’s Day, 2019, a white transit van pulled up on the roadside of Moulsham Hall Lane in Chelmsford. Inside were three men, Michael McCool, Simon Peters and Jason Bishop, who had made the journey from Melton Mowbray to this spot just beyond the boundary of Chelmsford City Racecourse, ahead of a day of horse racing.
+
+With some time still to go before the first race, the trio unloaded a hard, black, plastic case from the van and dashed over to a nearby field. Here, they unpacked a DJI Matrice 200 drone and launched it, with Peters at the controls sending it flying near to the racecourse. First, they tested the drone, sending it 16 metres into the air for 30 seconds, then up again several more times, reaching heights of 113m. Bishop kept an eye on the quadcopter from the field below as a safety spotter, in case Peters lost sight of it.
+
+Meanwhile, in the rear of the van, McCool watched a TV monitor beam live pictures from the drone’s on-board camera. He checked that its aerial vantage point offered them a view of every twist and turn of the course, before bringing the drone back down to the ground. At 1:32pm, the drone took flight again, hovering at 56m. From this height, the men watched a horse called Shorter Skirt, with odds of 7/2, [beat](https://www.sportinglife.com/racing/results/2019-04-01/chelmsford-city/518929/bet-toteplacepot-at-totesportcom-fillies-novice-stakes) highly-tipped favourite Fen Breeze in the opening race.
+
+While following the drone footage from the back of the Ford Transit, the men began to place bets online while the races were underway. Using a programme called Betfair Betting Assistant, McCool divided his attention between the drone’s video stream and the screen of a MacBook Air, onto the bezel of which were written exhortations such as “Go were [sic] the jockeys are!”
+
+But, while the trio of drone-enabled bettors were focused on the action, staff at Chelmsford City Racecourse had their eyes focused on the skies.
+
+Brian Wakefield, the racecourse’s facilities manager, had been told that something strange was happening: a punter at the racecourse who had been laying bets kept seeing the odds change in the middle of the race, and suspected that someone, somewhere must have an edge. That “would suggest someone was betting off live footage,” Wakefield wrote later in a police statement. “I had a hunch this would be from a drone or something similar.”
+
+Wakefield and a colleague set off from the racecourse, driving around the outside of the track until they came across the white van. They parked their car and confronted the drone operatives; McCool and his band of men kept flying, and the police were called.
+
+Around 2:30pm, the first police officers arrived on scene. Five officers ended up visiting the site, including Essex Police’s drone manager. Wakefield told the officers he believed the drones were being used to give the people in the van an unfair advantage over ordinary bettors, and – according to one police officer’s statement at the time – “were filming live horse races and streaming them around the world.” (McCool, a fast-talking, stocky former soldier, denies this was the case.)

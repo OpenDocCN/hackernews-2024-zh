@@ -1,0 +1,68 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:42:12
+-->
+
+# Single dose of LSD provides immediate, lasting anxiety relief, study says | CNN
+
+> 来源：[https://www.cnn.com/2024/03/07/health/lsd-anxiety-fda-breakthrough-therapy-wellness/index.html](https://www.cnn.com/2024/03/07/health/lsd-anxiety-fda-breakthrough-therapy-wellness/index.html)
+
+CNN  — 
+
+A clinical trial’s encouraging results won US Food and Drug Administration breakthrough therapy status for an [LSD](https://www.cnn.com/2020/02/27/health/lsd-overdoses-case-studies-wellness/index.html) formulation to treat generalized anxiety disorder, Mind Medicine Inc. announced Thursday. The biopharmaceutical company is developing the drug.
+
+“A breakthrough designation is a recognition that a drug has demonstrated evidence of clinical efficacy in meeting an unmet medical need with morbidity and mortality associated with it,” said Dr. Daniel Karlin, assistant professor of psychiatry at Tufts University School of Medicine in Boston and chief medical officer for MindMed.
+
+MindMed’s MM120 will still go through the standard FDA approval process, including phase III trials.
+
+The designation, however, “is an offer from the agency to engage more closely in drug development,” Karlin said. “It affects timelines of response and our ability to get more interactions with the agency so that we can be sure that we’re in lockstep agreement as we move forward.”
+
+Two other companies have also received FDA breakthrough therapy status: [psilocybin](https://compasspathways.com/compass-pathways-receives-fda-breakthrough-therapy-designation-for-psilocybin-therapy-for-treatment-resistant-depression/) for treatment-resistant depression and to [MDMA,](https://maps.org/news/media/press-release-fda-grants-breakthrough-therapy-designation-for-mdma-assisted-psychotherapy-for-ptsd-agrees-on-special-protocol-assessment-for-phase-3-trials/) (3,4-Methyl​enedioxy​methamphetamine) commonly known as ecstasy or molly, for post-traumatic stress disorder or PTSD.
+
+A single dose of MM120 (lysergide d-tartrate) led to a 48% rate of remission from generalized anxiety disorder at 12 weeks following the drug’s administration, according to MindMed.
+
+The MM120 drug also significantly improved clinical signs of [generalized anxiety disorder](https://www.cnn.com/2022/04/01/health/social-anxiety-cognitive-behavioral-therapy-benefits-wellness/index.html) for 65% of patients within three months, according to results of the phase 2b trial designed to test dosage levels, the company said.
+
+Anxiety is the most [common mental disorder](https://www.cnn.com/2022/10/07/health/anxiety-mental-health-depression-screening-prevention-health-wellness/index.html) in the United States, affecting over 40 million people age 18 and older each year, according to the [Anxiety and Depression Association of America.](https://adaa.org/understanding-anxiety/facts-statistics) Generalized anxiety order is characterized by excessive, ongoing thoughts that are difficult to control and interfere with day-to-day activities.
+
+“The clinical improvement for many patients was more than double what we see with today’s standard of care,” Karlin said. “This occurred at all levels of anxiety, from moderate all the way up to severe.”
+
+Standard of care for generalized anxiety disorder is a combination of [cognitive behavioral therapy](https://www.cnn.com/2021/11/27/health/cbt-cognitive-behavioral-therapy-wellness/index.html) and medications such as selective serotonin reuptake inhibitors, or SSRIs, and buspirone — both of which work on levels of serotonin in the brain — as well as sedatives called benzodiazepines.
+
+All of these medications need time to work and may require experimentation with various doses, adding time and expense to a patient’s treatment, Karlin said.
+
+The multicenter, randomized, double-blinded trial tested doses of 25, 50, 100 and 200 micrograms compared with a placebo.
+
+“We’re very confident based on the results that 100 micrograms is the right dose to bring into our phase three studies, as we didn’t see any more improvement with 200 micrograms but did see additional adverse effects,” Karlin said.
+
+Professor David Nutt, director of the Neuropsychopharmacology Unit at Imperial College London’s division of brain sciences, who researches psychedelics, said in an email that the study results “are very exciting data in what can be a difficult to treat population (anxiety).”
+
+“They expand the likely utility of [psychedelic treatment](https://www.cnn.com/2020/01/24/health/goop-psychedelics-wellness/index.html) beyond depression,” said Nutt, who was not involved in the research. “And again, [as with the depression trials](https://www.cnn.com/2022/11/02/health/psilocybin-magic-mushroom-depression-wellness/index.html), a single dose produces enduring effects, probable due to its breaking down persistent negative thought processes.”
+
+While it was not the study’s primary purpose, results did show that MM120 also improved [signs of depression,](https://www.cnn.com/videos/health/2023/06/14/magic-mushroom-david-culver-ron-2-actws-vpx.cnn) Karlin said. “We saw rapid and robust improvement on depression symptoms in people — depression and anxiety have overlapping disease definitions.”
+
+Most research with MDMA and psilocybin has relied on the use of trained therapists who meet and establish a rapport with participants before the drug is administered. Those therapists are then on hand during the “trip” to help each person assimilate the experience, thus helping assure the lasting impact of any psychological insights.
+
+The MM120 study, however, was accomplished without the use of psychotherapy during the session. Instead, monitors sat in the room to assure safety, but spent their time “mostly reading books,” Karlin said.
+
+“While prior research has documented the benefits of combining LSD with psychotherapy to alleviate anxiety associated with life-threatening conditions, this groundbreaking study is the first to show that a single dose of LSD … can effectively treat generalized anxiety without the adjunct of psychotherapy,” said psychiatrist Dr. Gabriella Gobbi, a professor and scientist at McGill University Health Centre in Montreal and Canada Research Chair in Therapeutics for Mental Health. She was not involved in the clinical trial.
+
+Compared with experiences with forms of LSD purchased illegally on the street, the study’s grade of MM120 did not appear to induce “bad trips,” Karlin said.
+
+“LSD is difficult to manufacture with high purity and tends to degrade quickly in the presence of light and water,” Karlin said. “We’re manufacturing it to pharmaceutical industry standards, a highly pure version that is also shelf stable. So that’s a critical difference.”
+
+Most adverse effects in the study were rated as mild to moderate by participants, occurring mostly on the day of the study, Karlin said. Those included euphoric feelings, illusions and hallucinations, anxiety, abnormal thinking, headaches, dizziness, nausea, excessive sweating, vomiting, numbness or tingling of the skin, and pupil dilation.
+
+When the MM120 clinical trial began in August 2022, it marked the first time LSD had been studied in a medical setting in over 40 years, Karlin said.
+
+During the 1940s and early 1950s, [tens of thousands of patients](https://www.ncjrs.gov/App/abstractdb/AbstractDBDetails.aspx?id=185048) took LSD and other psychotropics to[ study their effects](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5603820/#bib61) on cancer anxiety, alcoholism, opioid use disorder, depression, and post-traumaticstress disorder or PTSD. Researchers began to see psychedelics as possible “[new tools for shortening psychotherapy](https://www.ncbi.nlm.nih.gov/pubmed/14793387).”
+
+But when Harvard University psychologists Timothy Leary and Richard Alpert were fired from the [Harvard Psilocybin Project](https://psychology.fas.harvard.edu/people/timothy-leary) in 1963  after the university discovered they had been giving LSD to their students, the use of psychedelics for research began to lose its luster.
+
+Leary began to speak out publicly, encouraging young people to take LSD recreationally. He quickly became the face of the drug counterculture movement with his [signature message](https://www.youtube.com/watch?v=LTCxINKT7l4), “Turn on, tune in, drop out.”
+
+No longer administered solely in the relative safety of a lab or psychiatrist’s office, LSD began to feature in horror stories of bad “acid” trips at colleges and concerts — headlines that appeared alongside images of anti-Vietnam protests and Woodstock attendees.
+
+In 1968, the United States outlawed LSD and research projects were shut down or forced underground. Then came the 1970 Controlled Substances Act, signed by President Richard Nixon. It classified all hallucinogenics, including psilocybin, as [Schedule I drugs](https://www.dea.gov/drug-scheduling) — substances with “no currently accepted medical use” and a high probability of abuse.
+
+*Clarification: This story has been updated to more precisely reflect the FDA approval process.*

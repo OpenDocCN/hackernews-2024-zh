@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:48:13
+-->
+
+# "Let them eat cereal": How accusations of "greedflation" fueled consumer ire against Kellogg's | Salon.com
+
+> 来源：[https://www.salon.com/2024/03/10/let-them-eat-cereal-how-accusations-of-greedflation-fueled-consumer-ire-against-kelloggs/](https://www.salon.com/2024/03/10/let-them-eat-cereal-how-accusations-of-greedflation-fueled-consumer-ire-against-kelloggs/)
+
+Since 2022, Kellogg has been running an ad campaign encouraging families, with the help of Tony the Tiger and Toucan Sam, to break out of their boring dinner rotation and swap in the occasional bowl of [cereal](https://www.salon.com/2022/11/07/revisiting-millsberry-the-wild-rise-and-fall-of-general-mills-virtual-cereal-themed-town/). “If you’re tired of cooking chicken over and over (and the kids are bored of eating it) we’ve got something you’ll want to try,” the [description for one of the advertisements](https://www.youtube.com/watch?v=U8Dw1bjRxY0) read. “Turn off the [stove](https://www.salon.com/2024/02/18/the-best-thing-you-can-do-for-your-cooking-is-leave-your-alone/), pop open the pantry and pour your favorite Kellogg’s cereal for dinner!”
+
+That commercial didn’t inspire nearly the same amount of dialogue as when — nearly two years later, on Feb. 21 — [WK Kellogg Co. CEO Gary Pilnick](https://www.theguardian.com/us-news/2024/feb/27/kelloggs-ceo-cereal-for-dinner) also suggested customers eat cereal for dinner, likely because instead of positioning it, as the advertisement had, as a little treat, he suggested it as a solution for families feeling throttled by food inflation. 
+
+“The cereal category has always been quite affordable, and it tends to be a great destination when consumers are under pressure,” Pilnick said in an interview with [CNBC](https://www.cnbc.com/video/2024/02/21/wk-kellogg-ceo-gary-pilnick-cereal-for-dinner-is-trending-for-consumers-under-price-pressure.html). “If you think about the cost of cereal for a family versus what they might otherwise do, that’s going to be much more affordable.”
+
+He isn’t wrong; the average price per box of cereal in the U.S. is around $3.27 and, when speaking with CNBC, Pilnick estimated that a serving with milk in fruit would cost about $1\. However, his comments didn’t sit well with many viewers and consumer advocates who quickly pointed out that the price per unit of [Kellogg’s products was up by 17.1% in October](https://finance.yahoo.com/news/kellogg-cereal-dinner-controversy-price-182100461.html) compared with the same month a year earlier, the highest increase among ready-to-eat cereal brands. 
+
+This has led to widespread calls for a boycott of Kellogg’s products, which could potentially spark the boycott of other food companies that are perceived to be similarly squeezing their customers during a period of time when, as [reported by Pew](https://www.pewresearch.org/politics/2024/01/25/americans-more-upbeat-on-the-economy-bidens-job-rating-remains-very-low/), more than 90% of Americans say they are “very” or “somewhat” concerned about the price of food — especially because the boycott is reportedly already starting to produce some results. 
+
+“There’s no reason for you to jack up your prices the way you did, except to screw us,” TikTok user [@TallGirl6234 said](https://www.tiktok.com/@tallgirl6234/video/7340723750792367403) in a now-viral video posted in February. “And you know what? Now we’re going to screw you — while eating some other brand’s cereal.”
+
+The success of the video has launched the hashtag #letthemeatcereal as well as associated website [Let Them Eat Cereal](https://letthemeatcereal.info/faqs), which provides resources for customers who want to participate in a boycott of Kellogg’s products “from April 1 to June 30th (2024 Q2) by buying the store brand, making your own, and sharing resources for others to get involved.” 
+
+“Boycotting Kellogg and other mega corporations isn’t easy, and this is intentional,” they continue. “It is an excellent way to use collective action for change though.” 
+
+This period of sustained grocery inflation, even as the price of other goods comes down, has caused frustration for a lot of American customers. As Abha Bhattarai and Jeff Stein wrote for the [Washington Post,](https://www.washingtonpost.com/business/2024/02/02/grocery-price-inflation-biden/) there are a lot of complex, interlocking reasons why the cost of food at the supermarket is still up. “Prices remain elevated due to a mixture of labor shortages tied to the pandemic, ongoing supply chain disruptions, droughts, avian flu and other factors far beyond the [Biden] administration’s control,” they wrote. 
+
+However, economic experts and everyday Americans are both increasingly talking about how “[greedflation](https://fortune.com/europe/2023/12/08/greedflation-study/)” is potentially impacting the cost of goods. 
+
+“The idea that profits drove our current bout of inflation surfaced in the last few years among progressive economists and lawmakers but was waved away by more mainstream types as a ‘conspiracy theory,’” wrote [Emily Peck for Axios](https://www.axios.com/2023/05/18/once-a-fringe-theory-greedflation-gets-its-due) last summer. “That changed earlier this year. In a speech in January, then-Fed vice chair Lael Brainard said wages weren't the main driver of inflation and pointed to a ‘price-price spiral,’ where companies mark up prices far higher than the increases in their input costs.” 
+
+Companies, some customers would say, like Kellogg. There are reports that the calls for the boycott of the brand are already starting to have some effect. As reported on Friday by the [Daily Dot](https://www.dailydot.com/news/kelloggs-cereal-99-cent-sale/), some shoppers have already started to see Kellogg’s cereals for prices as low as 99 cents on supermarket shelves. In a viral TikTok video, user Marc Fazon found similar prices at his store. 
+
+“Yo, this is the cheapest I’ve ever seen cereal be,” [he said](https://www.tiktok.com/@marcfazon/video/7343354159393099054). “Ninety-nine cent, nah, the protest is working y’all, keep doing it.”
+
+Kellogg isn’t the only company facing increased scrutiny — or the threat of boycott — from disgruntled customers. Let Them Eat Cereal has already posted plans to boycott [three additional companies](https://letthemeatcereal.info/faqs) in the next calendar year: Netstlé, Coca-Cola and Exxon.
+
+Read more
+
+from Salon Food

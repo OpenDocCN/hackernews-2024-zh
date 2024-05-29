@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:25
+-->
+
+# MyHeritage debuts OldNews.com, offering access to millions of historical newspaper pages | TechCrunch
+
+> 来源：[https://techcrunch.com/2024/03/01/myheritage-launches-oldnews-com-a-website-with-access-to-millions-of-historical-newspaper-pages/](https://techcrunch.com/2024/03/01/myheritage-launches-oldnews-com-a-website-with-access-to-millions-of-historical-newspaper-pages/)
+
+MyHeritage announced today that it’s launching [OldNews.com](https://www.oldnews.com/en), a new website that offers access to thousands of historical newspapers, mainly from the 1800s and 1900s. The website includes articles from major international newspapers to small-town journals and gazettes. Its search engine lets you quickly find information on a person, topic or event. OldNews is a subscription-based service that costs $99 per year and offers a 7-day free trial.
+
+The website allows genealogists, educators, researchers, and history enthusiasts to search for articles about people and events throughout history. OldNews can be used to discover stories about your ancestors or gain deeper insights into different moments in history. You can browse through headline news, birth and marriage announcements, obituaries, sports and culture, lifestyle news, advertisements and more. MyHeritage will add millions more newspaper pages each month.
+
+At launch, the website includes newspapers from publications across the U.S., Canada, the U.K., Austria, the Netherlands, and Australia. The company says millions of newspaper pages are added each month and that it plans to add content from additional countries in the future. OldNews is available in 11 languages, including English, French, German, Dutch, Danish, Norwegian, Swedish, Finnish, Italian, Spanish and Portuguese.
+
+The news content was processed using optical character recognition (OCR) technology and enhanced with algorithms developed in-house by MyHeritage.
+
+“Our team has scoured the globe, collaborating with libraries and archives, collecting together the very best of the history of the world,” said Myko Clelland, MyHeritage’s Director of Content in Europe, in an emailed statement. “Following the digitization process, we applied our cutting-edge proprietary new optical character recognition and AI language modeling process to the printed material. This then gave us an accurate, best in class text database, exclusive to OldNews, that can be searched and matched using names, dates, locations and keywords.”
+
+After you search for a person or topic, the website will show you a zoomed-in thumbnail image of articles highlighting the terms from your search. The terms will remain highlighted if you choose to view a full article. You can print out the document or download it to your computer. MyHeritage plans to release additional browsing capabilities in the coming months, such as the ability to save and share newspaper clippings.
+
+MyHeritage notes that since you didn’t have to be famous to appear in the newspaper in the past, anyone can be found in them, which makes historical newspapers valuable to genealogists, historians, and educators. They are also valuable to the average person. For example, you could try to find your grandparents’ or great-grandparents’ marriage announcements using their names and the year they were married.
+
+“Historical newspapers contain a wealth of information and provide an unparalleled level of detail about the past,” said MyHeritage CEO and founder Gilad Japhet in a press release. “We are launching OldNews.com to serve as our focal point for historical newspapers, with a robust content offering. This release is just the beginning; we have an incredible pipeline of additional content and features, and ambitious plans to make OldNews.com the number-one online repository of international historical newspapers beyond the English-speaking world.”
+
+The launch of the new website comes at a time when we’re seeing news outlets being shut down and their [content being removed](https://slate.com/business/2024/02/messenger-gawker-vice-media-layoffs-sites-deleted-why.html) from their websites, deleting access to thousands of news articles and features from recent decades. Given the importance of preserving news content, the launch of OldNews is a nice way to celebrate journalism while ensuring easy access to important historical accounts.

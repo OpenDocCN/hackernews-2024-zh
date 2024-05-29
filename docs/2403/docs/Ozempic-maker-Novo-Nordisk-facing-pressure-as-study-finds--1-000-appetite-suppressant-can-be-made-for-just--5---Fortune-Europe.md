@@ -1,0 +1,50 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:47:39
+-->
+
+# Ozempic maker Novo Nordisk facing pressure as study finds $1,000 appetite suppressant can be made for just $5 | Fortune Europe
+
+> 来源：[https://fortune.com/europe/2024/03/28/ozempic-maker-novo-nordisk-facing-pressure-as-study-finds-1000-appetite-suppressant-can-be-made-for-just-5/](https://fortune.com/europe/2024/03/28/ozempic-maker-novo-nordisk-facing-pressure-as-study-finds-1000-appetite-suppressant-can-be-made-for-just-5/)
+
+Ozempic could be profitably produced for less than $5 a month even as maker Novo Nordisk A/S charges almost $1,000 in the US, according to a [study](http://jamanetwork.com/journals/jamanetworkopen/fullarticle/10.1001/jamanetworkopen.2024.3474?utm_source=For_The_Media&utm_medium=referral&utm_campaign=ftm_links&utm_term=032724) that revives questions about prices for top-selling treatments for diabetes and obesity.
+
+The blockbuster drug could be manufactured for 89 cents to $4.73 for a month’s supply, figures that include a profit margin, researchers at Yale University, King’s College Hospital in London and the nonprofit Doctors Without Borders reported in the journal [JAMA Network Open](https://jamanetwork.com/journals/jamanetworkopen). That compares to the monthly US list price of $968.52 for Ozempic, a weekly injection.
+
+Novo declined to provide production costs for Ozempic and Wegovy, its related drug for obesity. The company said it’s making significant investments to ensure that the public has access to its widely popular drugs. It’s making about $6 billion in capital expenditures and spending $11 billion to acquire production facilities from Catalent Inc. as part of those efforts, according to an emailed response to questions. 
+
+“This outrageously high price has the potential to bankrupt Medicare, the American people and our entire health care system,” Senator Bernie Sanders, who has held hearings about high US drug prices, said in a statement after the findings came out. The Vermont independent called on Novo Nordisk to lower the list price of Ozempic to $155 a month or less, in line with what it charges in other [countries](https://www.bloomberg.com/news/newsletters/2024-01-30/ozempic-is-cheaper-in-mexico-here-s-why). 
+
+The study extends research showing how steep US markups are for GLP-1 drugs like Ozempic and Wegovy and underlines longstanding criticism of prices for diabetes therapies, especially insulin. On a per-month basis, Ozempic generally can be produced for less than various forms of insulin, a lifesaving diabetes drug that’s been available for decades, the study found. 
+
+“The profit margin is immense,” on drugs like Ozempic, said [Melissa Barber](https://medicine.yale.edu/profile/melissa-barber/), a public health economist at Yale and the study’s corresponding author. “There should be a conversation in policy about what is a fair price.”
+
+Novo’s combined 2023 sales of Ozempic and Wegovy topped $18 billion. Patents linked to the drugs are likely to expire in June 2033, according to [estimates](https://news.bloomberglaw.com/ip-law/novo-nordisk-must-face-mylan-challenge-to-wegovy-ozempic-patent) from Bloomberg Law. Novo shares fell 0.8% in Copenhagen, and have gained 26% this year.
+
+## Transparency Goal
+
+Drug production costs are often shrouded in secrecy with little clarity on how they relate to prices, if at all. Barber and her colleagues used updated estimates for raw ingredient costs and focused on the costs of producing diabetes drugs, including GLP-1 drugs like Ozempic, along with other diabetes pills and insulins.
+
+“The goal of this research is to have receipts, to be as transparent as possible,” Barber said.
+
+Novo and other drugmakers slashed US prices for some forms of insulin by as much as 75% last year under pressure from the Biden administration. By some estimates, however, the reductions made those products more profitable because they eliminated rebates paid to pharmacy benefit managers, the middlemen who negotiate prices for payers and employers.
+
+Novo said in an email that 75% of its gross earnings goes to rebates and discounts to ensure patients have access to products like semaglutide, the active ingredient in Wegovy and Ozempic. Drugmakers often cite the high costs of research that may last years as a reason for their prices. Spending on drug research and development was almost $5 billion last year and will rise this year, Novo said. 
+
+Still, debate over the cost of drugs like Ozempic and Wegovy is ramping up. State health plans and Medicaid offices are seeing growing bills for Ozempic and its sister drug Wegovy, raising questions about whether the increases in cost are sustainable. In January, North Carolina cut off coverage of anti-obesity medicines for state employees, citing soaring costs and lack of agreement on pricing from drugmakers.
+
+Surprisingly, the study found that the biggest cost in producing Ozempic is not the active medicine, called semaglutide, but the disposable pens used to inject it. They can be made for no more than $2.83 per month’s supply, the authors concluded, based on interviews with former employees and consultants to injection device manufacturers. One Ozempic pen is used weekly and lasts a month.
+
+## Other Costs
+
+By contrast, the active drug in Ozempic can be produced for about 29 cents for a month’s supply, or 7.2 cents for a typical weekly dose, the research found. It’s not cheap to make — semaglutide costs over $70,000 per kilogram. But only a tiny quantity of the drug is used in each weekly dose.
+
+Other costs include those of filling each pen, estimated at 20 cents per monthly dose, and other chemical ingredients, which the study estimates at 15 cents per monthly dose.  
+
+The analysis doesn’t include estimates for the cost of making Wegovy. Separate [research](https://onlinelibrary.wiley.com/doi/full/10.1002/oby.23725) from the University of Liverpool and elsewhere found last year that Wegovy could be produced for a mere $40 a month.  
+
+Subscribe to Well Adjusted, our newsletter full of simple strategies to work smarter and live better, from the Fortune Well team.
+
+[Sign up](https://www.fortune.com/newsletters/well-adjusted?&itm_source=fortune&itm_medium=article_tout&itm_campaign=well_adjusted)
+
+for free today.

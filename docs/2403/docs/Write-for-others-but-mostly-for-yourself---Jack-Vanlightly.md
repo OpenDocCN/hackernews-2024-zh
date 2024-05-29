@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:57:33
+-->
+
+# Write for others but mostly for yourself — Jack Vanlightly
+
+> 来源：[https://jack-vanlightly.com/blog/2022/1/25/write-for-others-but-mostly-for-yourself](https://jack-vanlightly.com/blog/2022/1/25/write-for-others-but-mostly-for-yourself)
+
+I started my blog originally to help me get to the next level in my career and help establish myself as an authority in the areas of tech that I was focusing on. I liked writing and thought I had something to say.
+
+Looking back at my 6 years of blogging now it’s hard to recognise myself from the engineer I was back then before writing was a regular habit for me. It’s funny because in the end my blog was the key to unlock the next door in my career but not necessarily for the reasons I expected. I figured if I could write some interesting posts I could turn up to an interview and use it as a kind of portfolio, but it became so much more than that.
+
+The thing that surprised me after a while of doing technical writing was that writing wasn’t just about me explaining something to an audience, it was a tool to give rigor to my thinking. I cared about my reputation and about my potential readers and so embarking on writing a blog post about a technical subject ended up involving a huge amount of work. I knew that if I wasn’t careful or was indeed careless about what I wrote I’d not only be wasting people’s time but I could be publicly ridiculed on the internet. So I only wrote about things that I had a fundamental understanding of or set about getting that deep understanding that I lacked first.
+
+The great thing about writing is that it uncovers all these areas that you thought you understood but don’t. This is especially true when you know that competent and knowledgeable people are going to read it. You start explaining something in detail, about how it works, what the trade-offs are, the alternatives and so on and very soon your internal BS detector is going off. It’s yelling “How do you know that!?” and “What evidence do you have for this statement!?”. You realize that your knowledge is based on shaky foundations and your words are worthless. So you set out to learn the missing pieces, search for the insights and fundamental truths so that you can explain all this stuff with authenticity.
+
+When you write regularly and face-off against this internal BS detector you either level up or go home. Writing forced me to learn things to a higher standard like nothing else.
+
+After a while of writing my blog I realized that it had taught me how to think. It taught me how to discover insights that few others had seen. It brought me to the next level I needed. Then further down the road because I wrote quality posts I slowly got visibility within my niche area of tech and that translated into more work opportunities.
+
+Now I don’t just write publicly on blogs but privately for my team when the subject is something I can’t share publicly or isn’t the kind of thing that I think is going to be valuable to others. I might write a kind of blog post about an imaginary feature I am envisaging, a new technique that can help us or how something works. Because I do share it with people I get that automatic BS detection in my head that tells me when my thinking is sloppy or on shaky ground. It also forces me to flesh out the idea, consider all its trade-offs. Sometimes it ends up being generally applicable enough that I can actually publish it. This is how my recent [Apache BookKeeper internals blog series](https://medium.com/splunk-maas/apache-bookkeeper-internals-part-1-high-level-6dce62269125) and my [USE metrics series](https://medium.com/splunk-maas/apache-bookkeeper-observability-part-1-introducing-the-metrics-7f0acb32d0dc) started. I wanted to understand BookKeeper better and share that with my colleagues but in the end it was so valuable that I published it.
+
+My recommendation is that you don’t look at blog writing as just something people do to work on their “personal brand”. It can definitely help with that, but first and foremost it is a tool that people can use to up their game and take their knowledge and critical thinking to the next level.
+
+It is like training for your thinking, it makes you more powerful which translates to better understanding and greater insight. Blogging is less popular now than it was but don’t let that stop you, in the end the person that benefits most, even if few people read it, is you.
+
+Photo credit: ESO

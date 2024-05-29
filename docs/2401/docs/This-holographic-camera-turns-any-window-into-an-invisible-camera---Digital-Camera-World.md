@@ -1,0 +1,30 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:26
+-->
+
+# This holographic camera turns any window into an invisible camera | Digital Camera World
+
+> 来源：[https://www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera](https://www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera)
+
+[Zeiss](https://www.digitalcameraworld.com/tag/zeiss) is bringing its remarkable Holocam technology to [CES 2024](https://www.digitalcameraworld.com/news/ces-2024-everything-you-need-to-know-about-the-camera-and-tech-showcase), which can turn any glass screen into a camera. This means that everything from the window in your car to the screen on your laptop to the glass on your front door can now possess an invisible image sensor. 
+
+Further, because the technology makes the camera completely transparent, it eliminates the need for cutouts or punch holes – meaning you can have direct eye contact with the person you're chatting to, because the camera can be placed anywhere on (or should that be *in*) the screen. 
+
+The Holocam technology "uses holographic in-coupling, light guiding and de-coupling elements to redirect the incoming light of a transparent medium to a hidden image sensor."
+
+Zeiss' [CES](https://www.digitalcameraworld.com/tag/ces) presentation is focused around its Multifunctional Smart Glass system in general, with a focus on applications in automobiles, so many of its use cases are based around how holography can improve in-car operability. However, it's easy to see how this could be truly transformative technology in the wider world. 
+
+Smart doorbells that don't need a separate camera module. Webcams that enable you to look anywhere on your screen. Parking cameras that can be completely hidden. Face or gesture recognition on any screen, including to unlock doors. Fatigue detection for drivers. Or, you know, phones and tablets without bloody notches or punch holes.
+
+Using an entire pane of glass as a camera lens also opens some fascinating optical possibilities. Some of Zeiss' bullet points include "large aperture invisible camera" and "individual adjustment of orientation and size of the field of views." Which makes me wonder, what *is* the maximum aperture and focal range of a camera like this?
+
+Of course, there's a darker potential for such technology. Given the current fear around hidden cameras in Airbnbs, the idea of every single window (or even shower door) in a rental property being able to spy on you is a little disconcerting. 
+
+The best camera deals, reviews, product advice, and unmissable photography news, direct to your inbox!
+
+Still, this is a fascinating bit of tech – and I'm super excited to see if and how it comes into everyday use. 
+
+Doors that only open if they recognize your face sounds cool – but then, we all know how that works (or doesn't) on phones (Image credit: Zeiss)
+
+Take a look at the [best dashs](https://www.digitalcameraworld.com/buying-guides/best-dash-cam), the [best indoo security cameras](https://www.digitalcameraworld.com/buying-guides/best-indoor-security-camera), the [best spy cameras](https://www.digitalcameraworld.com/buying-guides/best-spy-cameras) and the [best hidden camera detectors](https://www.digitalcameraworld.com/buying-guides/best-hidden-camera-detector).

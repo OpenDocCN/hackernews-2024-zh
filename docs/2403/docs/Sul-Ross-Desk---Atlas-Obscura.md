@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:06:33
+-->
+
+# Sul Ross Desk - Atlas Obscura
+
+> 来源：[https://www.atlasobscura.com/places/sul-ross-desk-alpine-texas](https://www.atlasobscura.com/places/sul-ross-desk-alpine-texas)
+
+In 1979, three students at Sul Ross State University decided they needed a spot away from campus to study. And why not grind on those exam reviews with a view? So Jim Kitchen, Bill Wagner, and Travis Miller carted a desk up to the top of Hancock Hill, north of campus.
+
+They would spend their afternoons and evenings studying at this spot and taking in the great views offered by the west Texas sun and expansive plains and mountains extending in every direction. One of the students decided to bring a notebook and wrote a note in it. When he returned later, he discovered that someone had replied. So began an epistolary tradition that now spans four decades.
+
+Today, the notebook kept in the desk’s drawer offers visitors the chance to write to other visitors and reflect on what it means to leave a mark and make a statement in such a place at whatever moment in time they happen to be there. Completed notebooks from the Sol Ross desk are kept at the [Archives of the Big Bend](https://library.sulross.edu/archives/). According to a [review of the notebooks by *Texas Monthly*](https://www.texasmonthly.com/being-texan/notebooks-hancock-hill-desk-alpine/), most of the writers are anonymous and entries range from short declarative statements (declarations of love, a simple statement of what date two names were there), to longer, more personal writing (reflections on the passage of time, a message to a lost loved one, confessions of deeply-held secrets).
+
+The original desk has been replaced several times. Locals believe that the current desk is the fourth one to occupy this site. Though the furniture has changed, the sentiment remains the same—there’s always a place to sit and collect your thoughts atop Hancock Hill.
+
+###### Know Before You Go
+
+The desk is located at the following coordinates: 30°22'14.8"N 103°38'40.7"W
+
+The hike to the desk is along stony and loose gravel hiking paths and is not accessible by car. Maps at the Hancock Hill trailhead, behind Mountainside Hall, show the path to The Desk. The hike is about two miles out and back.
+
+There is ample parking at the trailhead and no permit is required. There is no entry fee.

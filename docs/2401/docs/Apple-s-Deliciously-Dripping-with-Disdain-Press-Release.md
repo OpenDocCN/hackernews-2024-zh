@@ -1,0 +1,84 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:11:11
+-->
+
+# Apple's Deliciously Dripping with Disdain Press Release
+
+> 来源：[https://spyglass.org/apple-to-eu-drop-dead/](https://spyglass.org/apple-to-eu-drop-dead/)
+
+Earlier today, [I laid out why](https://spyglass.org/thats-a-nice-app-store-youve-got-there/) I thought Apple might end up taunting the EU with any changes they implement to comply with the Digital Markets Act (DMA) laws set to take effect in March. And after a roughly [30 minute](https://www.threads.net/@mgsiegler/post/C2iQcgzL6r1?ref=spyglass.org) honeymoon period when folks thought Apple may actually be turning over a new leaf, it's pretty clear how Apple feels about these changes that they're being made to implement. Which is to say: [not great, Bob!](https://www.youtube.com/watch?v=MpUWrl3-mc8&ref=spyglass.org)
+
+I mean, [this press release](https://www.apple.com/newsroom/2024/01/apple-announces-changes-to-ios-safari-and-the-app-store-in-the-european-union/?ref=spyglass.org) is pretty bonkers. To showcase this truly amazing tone and tenor for corporate communications, I will literally highlight the best parts:
+
+> Across every change, Apple is introducing new safeguards that reduce — but don’t eliminate — new risks the DMA poses to EU users.
+
+We start out quite subtle, with some em dash shade. And the subtly continues on in the very next sentence:
+
+> With these steps, Apple will continue to deliver the best, most secure experience possible for EU users.
+
+Be sure to focus on "possible", we'll come back to it. Many times.
+
+> The new options for processing payments and downloading apps on iOS open new avenues for malware, fraud and scams, illicit and harmful content, and other privacy and security threats.
+
+Okay, enough beating around the bush. [Hide yo kids, hide yo wife](https://www.youtube.com/watch?v=EzNhaLUT520&ref=spyglass.org)...
+
+> That’s why Apple is introducing protections — including Notarization for iOS apps, an authorization for marketplace developers, and disclosures on alternative payments — to reduce risks and deliver the best, most secure experience possible for users in the EU. Even with these safeguards in place, many risks remain.
+
+"Possible" #2\.
+
+Then we start with the press release quotes. Here's Phil Schiller:
+
+> "The changes we’re announcing today comply with the Digital Markets Act’s requirements in the European Union, while helping to protect EU users from the unavoidable increased privacy and security threats this regulation brings."
+
+That is one unhappy Apple Fellow.
+
+> "Our priority remains creating the best, most secure possible experience for our users in the EU and around the world."
+
+"Possible" #3.
+
+> "Importantly, developers can choose to remain on the same business terms in place today if they prefer."
+
+I feel as if the stated and revealed preferences here may line up for Apple.
+
+> In March, Apple will share new resources to help EU users understand the changes they can expect. That includes guidance to help EU users navigate complexities the DMA’s changes bring — including a less intuitive user experience — and best practices for approaching new risks associated with downloading apps and processing payments outside of the App Store.
+
+There's that sweet em dash shade again.
+
+> Inevitably, the new options for developers’ EU apps create new risks to Apple users and their devices. Apple can’t eliminate those risks, but within the DMA’s constraints, the company will take steps to reduce them.
+
+That, Mr. Anderson, is the sound of inevitability, apparently.
+
+> These protections — including Notarization for iOS apps, and authorization for marketplace developers — help reduce some of the privacy and security risks to iOS users in the EU. That includes threats like malware or malicious code, and risks of installing apps that misrepresent their functionality or the responsible developer.
+
+Em dashes!
+
+> However, Apple has less ability to address other risks — including apps that contain scams, fraud, and abuse, or that expose users to illicit, objectionable, or harmful content. In addition, apps that use alternative browser engines — other than Apple’s WebKit — may negatively affect the user experience, including impacts to system performance and battery life.
+
+Apple to users: if you install these apps, you're going to get scammed. And if you use anything other than a WebKit browser, you're battery life is going to suck. Enjoy the changes, which the EU made us do!
+
+> Within the DMA’s constraints, Apple is committed to protecting the privacy, security, and quality of the iOS user experience in the EU as much as possible. For instance, App Tracking Transparency will continue to work with apps distributed outside of the App Store — asking a user’s permission before a developer tracks their data across apps or websites. However, the DMA’s requirements mean that App Store features — including Family Purchase Sharing and Ask to Buy — will not be compatible with apps downloaded from outside of the App Store.
+
+"Possible" #4\. And sorry, no fun features without the App Store. Enjoy.
+
+> This change is a result of the DMA’s requirements, and means that EU users will be confronted with a list of default browsers before they have the opportunity to understand the options available to them. The screen also interrupts EU users’ experience the first time they open Safari intending to navigate to a webpage.
+
+The user experience is going to suck, which the EU made us do!
+
+> The changes also include new disclosures informing EU users of the risks associated with using alternatives to the App Store’s secure payment processing.
+
+Did you know there are risks in not using a secure payment processor? Probably. But did you know that apparently only Apple offers a secure payment processor?
+
+> For apps that use alternative payment processing, Apple will not be able to issue refunds, and will have less ability to support customers encountering issues, scams, or fraud. Helpful App Store features — like Report a Problem, Family Sharing, and Ask to Buy — will also not reflect these transactions. Users may have to share their payment information with additional parties, creating more opportunities for bad actors to steal sensitive financial information.
+
+Good luck with getting a refund, and good luck when you're scammed and defrauded. Do you have a home? Correction: *did* you have a home?
+
+> That includes a fee structure that reflects the many ways Apple creates value for developers’ businesses — including distribution and discovery on the App Store, the App Store’s secure payment processing, Apple’s trusted and secure mobile platform, and all the tools and technology to build and share innovative apps with users around the world.
+
+Only Apple creates such secure products, apparently.
+
+* * *
+
+I'm honestly not sure I can recall a press release dripping with such disdain. Apple may even have a point in many of the points above, but the framing of it would just seem to ensure that Apple is going to continue to be at war with the EU over all of this and the only question now is if these changes placate the body *at all*. Typically, if you're going make some changes and consider the matter closed, you don't do so while emphatically shoving your middle fingers in the air.
+
+Some of these changes do seem good and useful, but most simply [seem like](https://www.threads.net/@mgsiegler/post/C2iRgI8LH-H?ref=spyglass.org) convoluted changes to ensure the status quo actually doesn't change much, if at all. Just remember that, "importantly, developers can choose to remain on the same business terms in place today if they prefer." What do you think Apple prefers?

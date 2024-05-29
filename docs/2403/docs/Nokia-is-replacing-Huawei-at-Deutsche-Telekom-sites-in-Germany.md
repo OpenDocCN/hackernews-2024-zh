@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:39
+-->
+
+# Nokia is replacing Huawei at Deutsche Telekom sites in Germany
+
+> 来源：[https://www.lightreading.com/open-ran/nokia-is-replacing-huawei-at-deutsche-telekom-sites-in-germany](https://www.lightreading.com/open-ran/nokia-is-replacing-huawei-at-deutsche-telekom-sites-in-germany)
+
+A red card in Germany was a massive European setback for Nokia in 2018, when Deutsche Telekom shifted to Ericsson, its Swedish rival, in apparent dissatisfaction with the Finnish vendor. Nokia had supplied the radio access network (RAN) products for about a third of the German incumbent's network. After being replaced by its Swedish competitor, and a subsequent overhaul of its 5G product portfolio, it now has an eye on the other two-thirds.
+
+That has long been the territory of Huawei, a controversial Chinese vendor deemed a security threat by some western officials. Worried about a lack of alternatives, and the difficulty of swapping out equipment and combining vendors, Deutsche Telekom began to experiment with open RAN (O-RAN), a supposed interoperability aid and boost for specialists. At Neubrandenburg, rechristened "O-RAN Town" by the telco, it has tried out products supplied by numerous alternatives to Ericsson and Huawei. In December, it [unveiled plans](https://www.lightreading.com/open-ran/eurobites-deutsche-telekom-nokia-get-serious-in-o-ran-town-) to bring open RAN to 3,000 sites, about 12% of the 5G total.
+
+Named as the key supplier at the time, Nokia has now revealed it is moving into sites that Huawei currently occupies.
+
+"We won this flagship deal with Deutsche Telekom in Germany to replace some of their installed base with Huawei," said Tommi Uitto, the head of Nokia's mobile business group. "It is 3,000 sites of replacement, plus then there would be new sites, in one part of the network in Germany."
+
+Preparing for re-entry
+
+It marks a relatively small but significant re-entry into the Deutsche Telekom footprint for Nokia. And Uitto, who has led the company's mobile turnaround since taking charge in late 2018, clearly hopes there could be a much bigger role for it in future. "Why give somebody just 3,000?" he said. The implication is that Deutsche Telekom plans a more comprehensive overhaul depending on how circumstances evolve.
+
+Uitto evidently spies a big opportunity to advance in open RAN at the expense of his Chinese competitors. "We have to win more from those who don't embrace open RAN than we lose, because many of these operators have to reduce their exposure to so-called high-risk vendors." Despite the recent loss of AT&T business to Ericsson, Nokia claims to have increased its share of the 5G market outside China from 23% to 29% in the last two years. And its overall RAN share excluding China is up from about 23% to 27% over roughly the same period, according to Uitto.
+
+Huawei, meanwhile, remains on the outside of the O-RAN Alliance, the telco-led group behind open RAN specifications. Its top executives continue to reject open and virtual RAN architecture as suboptimal. "We think there are still some problems – the first one is power efficiency, and the other one is performance," said Philip Song, the chief marketing officer of Huawei's carrier business group, during a press conference at Mobile World Congress (MWC) this week.
+
+"There is a lot of collaboration between the radio part and the baseband part and joining together can provide good network performance," he said. When it comes to the power amplifiers used in radios, Huawei remains "one generation ahead of competitors," he said.
+
+But Huawei's aversion to virtual RAN, rather than geopolitical concern, has prompted an operator in one European market to explore alternatives, said a top executive at the telco, requesting anonymity. And a formal ban on the use of Huawei kit remains a distinct possibility in Europe's biggest economy.
+
+Last September, German officials shared a [strategy paper](https://www.lightreading.com/5g/germany-proposes-strict-curbs-on-huawei) that proposed giving Deutsche Telekom, Telefónica and Vodafone until October 2026 to ensure that no more than 25% of the RAN is managed by either Huawei or ZTE, a smaller Chinese vendor. The uncertainty is whether this 25% rule means stripping out components or merely changing management software. Yet managing Chinese hardware with another company's software looks problematic.
+
+Massive attack
+
+By contrast, the combination of Nokia's software functions with third-party radios is a critical aspect of the new arrangement with Deutsche Telekom. Using a standardized interface, the Finnish vendor is pairing its baseband software, hosted in central and distributed units, with radios built by Japan's Fujitsu.
+
+It is already supporting commercial services, said Claudia Nemat, Deutsche Telekom's board member for technology and innovation, during a presentation at MWC this week. "We are addressing a challenged ecosystem and we doubled down on O-RAN," she said. "As I speak, we have real customers live in a multivendor O-RAN environment."
+
+Across sites that use antenna-rich massive MIMO technology, Nokia is down to provide the radio units as well as the baseband products. Unlike Ericsson, it also plans to develop products compatible with the various flavors of open RAN technology, Uitto confirmed. That will mean producing radio units both with and without the equalizer, an interference-addressing network function.
+
+Under a compromise reached last year in Japan, open RAN-compliant baseband products must include equalizers to ensure they work with both types of radio unit. Ericsson has said it will not develop radios without equalizers while insisting that its baseband products will support them. But without directly naming Ericsson, Uitto sounds skeptical.
+
+"If you have baseband in the field, like one of my big competitors, that doesn't support the equalizer, they cannot connect the baseband that doesn't have the equalizer to the radio unit that doesn't have the equalizer because there is an equalizer nowhere," he said. "And that is why a big competitor has a problem with the installed base. You have to change to a new baseband or do cloud RAN. You can't use the existing baseband."

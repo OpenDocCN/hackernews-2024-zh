@@ -1,0 +1,93 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:49:42
+-->
+
+# "Real" anonymous functions for Python [LWN.net]
+
+> 来源：[https://lwn.net/Articles/964839/](https://lwn.net/Articles/964839/)
+
+| **Did you know...?**LWN.net is a subscriber-supported publication; we rely on subscribers to keep the entire operation going. Please help out by [buying a subscription](/subscribe/) and keeping LWN on the net. |
+
+By **Jake Edge**
+March 19, 2024
+
+There are a number of different language-enhancement ideas that crop up with some regularity in the Python community; many of them have been debated and shot down multiple times over the years. When one inevitably arises anew, it can sometimes be difficult to tamp it down, even if it is unlikely that the idea will go any further than the last N times it cropped up. A recent discussion about "real" anonymous functions follows a somewhat predictable path, but there are still reasons to participate in vetting these "new" ideas, despite the tiresome, repetitive nature of the exercise—examples of recurring feature ideas that were eventually adopted [definitely exist](/Articles/808836/).
+
+At the end of January, Dan D'Avella [asked](https://discuss.python.org/t/why-not-real-anonymous-functions/44513) why Python did not have "<q>*real* anonymous functions a la JavaScript or Rust</q>". While Python functions are regular objects that can be assigned to a variable or passed to another function, that is not reflected in the syntax for the language, in his opinion. There is, of course, [`lambda`](https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions), "<q>but its usefulness is quite limited and its syntax is frankly a bit cumbersome</q>". He wondered if more flexible, full-on anonymous functions had been proposed before, saying that he had not found any PEPs of that nature.
+
+Python has two ways to define functions, [`def`](https://docs.python.org/3/reference/compound_stmts.html#function-definitions) for named functions and `lambda` for anonymous functions. While named functions can contain multiple statements, `lambda` is an expression that [cannot contain any statements](https://docs.python.org/3/faq/design.html#why-can-t-lambda-expressions-contain-statements); it returns a function object that evaluates an expression with the parameters given:
+
+```
+    >>> (lambda x: x * 7)(6)
+    42
+
+```
+
+That creates an anonymous function and calls it with a parameter of six, but that is not a particularly idiomatic use of `lambda`. As described in an [LWN article](/Articles/847960/) on proposals for alternative syntax for `lambda`, a common use of the facility is to provide a way for some library functions to extract the actual arguments they should use, as with:
+
+```
+    >>> tuples = [ ('a', 37), ('b', 23), ('c', 73) ]
+    >>> sorted(tuples, key=lambda x: x[1])
+    [('b', 23), ('a', 37), ('c', 73)]
+
+```
+
+That uses a lambda expression to extract the second element of each tuple, which is used as the sort key.
+
+In a response to D'Avella, David Lord [wondered](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/3) if he was asking for "multi-line lambdas", which is an idea that has come up many times over the years. While a lambda expression can actually span more than one physical line, using the `\` line-continuation character, the restriction to a single expression greatly limits what lambdas can do. For more complex computation, named functions, which can be limited to the local scope to avoid any name-collision problems, are the way to go, as a [2006 blog post](https://www.artima.com/weblogs/viewpost.jsp?thread=147358) from Guido van Rossum stated. In his opinion, there is no Pythonic way to embed a multi-statement construct in the middle of an expression.
+
+Lord pointed out that "<q>there are years if not *decades* of previous iterations</q>" of discussions about multi-statement lambdas; he linked to Van Rossum's post to show some of that history and why it is believed that there are unsolvable problems in providing the feature. The problem, in a nutshell, is that Python blocks are delineated using white space, not braces or keywords like `begin` and `end`, so any expression used to create a function with multiple statements would need a way to incorporate white space—or it will not look like Python at all. Van Rossum, though, said that even if acceptable syntax could be found, he still objected to the idea of adding lots of complexity to `lambda` in order to avoid something that is "<q>only a minor flaw</q>".
+
+D'Avella [said](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/4) that Van Rossum's opinion may have been justified 18 years ago, but may no longer be so, "<q>especially in light of developments in other languages</q>". Beyond that, Python itself has changed quite a bit over that time; "<q>Try to imagine using `match` in Python</q>" back when that post was written. While it is true that there have been plenty of changes in the intervening years, D'Avella did not specify how those changes provided reasons to modify the longstanding decision to maintain the restrictions on `lambda`, as several in the thread noted.
+
+Terry Jan Reedy [said](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/8) that one of the hallmarks of Python is its readability and that adding more complicated `lambda` expressions runs counter to that. Both for debugging and testing purposes, named functions are superior, except for the simplest expressions: "<q>Lambda expressions work best when obvious enough to not need testing and when unlikely to be a direct cause of an exception.</q>" In practice, the current lambdas are generally expressive enough, Reedy said.
+
+D'Avella [dismissed](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/11) that as a "<q>perfectly valid</q>" opinion, but one that he disagreed with; based on his experience with other languages, he believes that "<q>anonymous function literals are an elegant and useful construct</q>". The problem, though, as Paul Moore [pointed out](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/13), is that there is a process that needs to be followed so that the core developers will reconsider a longstanding decision of this nature; someone needs to explain why the objections raised before are no longer valid:
+
+> Maybe if you picked one or two of those, and explained precisely why they don't apply any more, that might be a better argument than simply "everything changes, so let's propose something that's been rejected before, one more time".
+> 
+> There may be perfectly good reasons why Python should now support anonymous functions. But if no-one ever puts together a proposal that actually *addresses* the reasons why this idea has failed so many times before, we'll never know.
+
+Part of the problem is that it is difficult to track down the previous discussions of the feature, D'Avella [said](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/24). He had expected to find a rejected PEP, but did not; his searches for other discussions [were not particularly successful](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/21) either. Reedy [pointed to](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/36) a number of different sources for discussions, which are scattered over several mailing lists and, more recently, the [Ideas category](https://discuss.python.org/c/ideas/6) on the Python forum. Part of the disconnect may be that D'Avella is wondering about "anonymous functions", but the discussions in Python circles generally revolve around `lambda`, since that is the existing mechanism in the language. One suspects he would have had more success searching using the term "lambda" since a multi-statement `lambda` is a real anonymous function, as he [agreed](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/27).
+
+More links to previous discussions can be found in a [post](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/38) from Mike Miller. A [thread](https://mail.python.org/archives/list/python-ideas@python.org/thread/KTRI2NOWA2YGFHOHQ2DFVD2O4UBU5ADY/#XS6P33QMBPRZ2C563OPTWG7NJRZ2K7VZ) he pointed to leads to a [2009 post](https://mail.python.org/archives/list/python-ideas@python.org/message/GJ7Z73UVWTVUJDILWWAIMH3VMMTH424O/) from Alyssa Coghlan that "<q>sums up the major problem</q>" with any proposal, [according to Eric V. Smith](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/39). Coghlan said:
+
+> However, for Python, the idea of having anonymous blocks runs headlong into the use of indentation for block delineation. You have to either come up with a non-indentation based syntax for the statements inside the anonymous blocks, essentially inventing a whole new language, or you have to embed significant whitespace inside an expression rather than only having it between statements.
+> 
+> Nobody has come up with a solution to that mismatch which is superior to just naming the block and using a normal def statement to create it.
+
+For Smith, there is no point in looking further until that is resolved:
+
+> I know people will disagree, but for me, if the syntax problem were resolved, then I'd welcome "expressions that produce functions consisting of multiple statements", commonly called multi-line lambdas.
+> 
+> But without a solution to the syntax issue, the whole argument is not worth having.
+
+D'Avella [took a stab](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/45) at some possible syntax for the feature, which, naturally, relied on delimiters around the anonymous block. He used `do` and `end`, but others have tried parentheses or brackets, all of which run aground because they do not look "Pythonic", at least to some. Meanwhile, Clint Hepner [argued](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/52) that some seem to simply want anonymous functions for Python because they are used frequently—and liked, at least by some—in JavaScript. D'Avella, playing the devil's advocate, [wondered](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/53) what the problem was with that line of thinking; multiple different Python features have come from elsewhere after all. But Brendan Barnwell [said](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/60) that those features came to Python, not simply because they existed elsewhere, but because they were useful in the language:
+
+> They were added because another language provided some inspiration for a feature to add *to Python* that might be helpful when writing code *in Python*. It's totally great to have interchange of ideas between different languages, but each language will choose the features that mesh well with its existing constructs.
+
+In order to try to head off future proposals of this sort, Neil Girdhar [suggested](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/62) adding a page to the [Python wiki](https://wiki.python.org/moin/FrontPage) that would simply [describe the proposed change](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/65), its pros and cons, and have links to earlier discussions. Despite some skepticism that a page of that nature would actually help, he created a [page for commonly suggested features](https://wiki.python.org/moin/CommonIdeas) and linked a [new page for multi-line lambdas](https://wiki.python.org/moin/MultiLineLambda) to it. Meanwhile, D'Avella's [attempt](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/80) to attract a core developer to sponsor a PEP that he would write ("<q>with the expectation that it will be rejected</q>") seems to have gone nowhere.
+
+There were some examples of possible use cases for the feature, including [one from Chris Angelico](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/59) and [another from "Voidstar"](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/98), but Cornelius Krupp [pointed out](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/100) that, once again, it is not use cases that are lacking. The use cases need to be compelling enough to overcome the other, syntactic, objections. While D'Avella [agreed](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/104) with that, he noted that there were questions about the justification for the feature in the thread. Krupp [said](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/105) that the syntax was just the first hurdle: "<q>Even if people find a good syntax there is still quite a bit of work to do in [convincing] the python community and the core devs that it is actually a good idea.</q>"
+
+Python famously uses white space, rather than delimiters, to structure its code and it is hard to imagine that changing—ever. Python itself will happily agree:
+
+```
+    >>> from __future__ import braces
+      File "<stdin>", line 1
+    SyntaxError: not a chance
+
+```
+
+Meanwhile, the cost of a name, quite possibly in a local scope, is pretty low; the readability of the resulting code is likely to be better as well. There would certainly be value in having a rejected PEP to point to when the topic inevitably rears its head again, though it may be hard to motivate people to work on a "doomed" proposal. The topic will undoubtedly be raised again, though; as Krupp [pointed out](https://discuss.python.org/t/why-not-real-anonymous-functions/44513/79), it has come up at least three other times in the last few years.
+
+It is, however, a persistent problem in the Python world; people show up with new ideas, or one that has been discussed time and time again, without really wanting to put in the work to see it to completion. Sometimes that work is in finding the earlier discussions and showing why the objections raised then are no longer valid—using examples of where existing code, perhaps from the Python standard library, could be improved. But as we have [seen before](/Articles/888945/), more than [just once](/Articles/891398/), people are often so enamored with their idea that they are surprised that it does not simply sweep all objections aside because of its clear superiority. In a long-established language or other project, however, ideas take a lot of work before they bear fruit; proponents would be well-advised to keep that in mind.
+
+* * *
+
+(
+
+[Log in](https://lwn.net/Login/?target=/Articles/964839/)
+
+to post comments)

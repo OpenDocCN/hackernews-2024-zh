@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:54
+-->
+
+# Dutch man sabotaged Iranian nuclear program without Dutch government's knowledge: report | NL Times
+
+> 来源：[https://nltimes.nl/2024/01/08/dutch-man-sabotaged-iranian-nuclear-program-without-dutch-governments-knowledge-report](https://nltimes.nl/2024/01/08/dutch-man-sabotaged-iranian-nuclear-program-without-dutch-governments-knowledge-report)
+
+In 2008, a Dutchman played a crucial role in the United States and Israeli-led operation to sabotage Iran’s nuclear program. The then 36-year-old Erik van Sabben infiltrated an Iranian nuclear complex and released the infamous Stuxnet virus, paralyzing the country’s nuclear program. The AIVD recruited the man, but Dutch politicians knew nothing about the operation, the [Volkskrant](https://www.volkskrant.nl/nieuws-achtergrond/aivd-speelde-cruciale-rol-bij-sabotage-kernprogramma-iran~ba24df9f/) reports after investigating the sabotage for two years.
+
+A few years ago, the Volkskrant revealed that the Dutch intelligence services AIVD and MIVD had recruited the infiltrator in this sabotage operation. But at the time, it was believed to have been an Iranian engineer. In the meantime, the newspaper continued to investigate the matter, speaking to dozens of people involved, including 19 employees of the AIVD and MIVD.
+
+They told the newspaper that Dutchman Van Sabben infiltrated the underground nuclear complex in the city of Natanz and installed equipment infected with the highly sophisticated Stuxnet virus. According to the newspaper, the software cost over a billion dollars to develop. It caused a large number of nuclear centrifuges to break down, delaying the nuclear program by several years, according to estimates.
+
+No one in the Netherlands knew that this new type of cyber weapon was being used in the operation, the Volkskrant wrote. According to the investigative journalists, the intelligence services knew they were participating in the sabotage of the Iranian nuclear program but not that their agent was bringing in Stuxnet. “The Americans used us,” one intelligence source told the Volkskrant.
+
+Strikingly, the Balkenede IV Cabinet apparently was not informed about the operation at all. According to the newspaper, the Stiekem committee, which translates to “secret committee," where the largest political parties are informed about the intelligence services’ actions, also knew nothing about the Netherlands participating in this operation.
+
+Van Sabben immediately left Iran after successfully sabotaging the country’s nuclear program, the researchers concluded. He died two weeks later in a motorcycle accident near his home in Dubai. Nothing points to foul play, the Volkskrant said after speaking with people at the crash scene. Though, an anonymous MIVD employee told the newspaper that Van Sabben “paid a high price.”
+
+Van Sabben was recruited by the AIVD in 2005, according to the newspaper. His technical background, many contacts in the region, and links with Iran - he already did business in Iran and was married to an Iranian woman with family in the country - made him ideal for the mission.
+
+After his death, an article in the United Arab Emirates newspaper The National praised Van Sabben as an engineer who made an important contribution to the Gulf State. The article noted that he traveled a lot for his work, mentioning Iran along with Sudan, Yemen, and East Africa. According to the Volkskrant, Van Sabben released Stuxnet into the Natanz nuclear complex during one of those trips to Iran. The virus was likely in a water pump that Van Sabben had installed there.
+
+It is unclear whether the Dutchman knew about his role in the sabotage operation, the Volkskrant wrote.
+
+Several parliamentarians demanded clarification about the operation, including why the government and parliament did not know about it. The intelligence services told the newspaper they cannot comment substantively on the publication. An anonymous executive at the AIVD said that the government may have deliberately not been informed of the operation due to the potential political consequences. It was customary to “sweep the Prime Minister’s doorstep clean,” they said.

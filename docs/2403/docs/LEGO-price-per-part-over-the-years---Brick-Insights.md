@@ -1,0 +1,16 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:29:21
+-->
+
+# LEGO price per part over the years - Brick Insights
+
+> 来源：[https://brickinsights.com/statistics/ppp](https://brickinsights.com/statistics/ppp)
+
+## Can we really compare Price Per Part (PPP) between sets?
+
+A couple of weeks ago I received this question by [Jared Hinton](https://rebrickable.com/users/jaredhinton/profile/):
+
+*"Just a quick question on the PPP data. Most years have a average PPP of 20c+ per part. This sounds very high, especially when most sets come way under that (which are then marked as good value). Do Duplo sets get included in the years average PPP figure? Because they tend to be alot higher than LEGO sets. This is the only thing I could think of why the year average is almost double what I'd expect it to be."*
+
+This is a very good observation, and something I hadn't really thought about. I built the PPP comparison when Brick Insights first launched in 2018, almost as an afterthought. I wanted to see if a set was worth buying from a MOCing point of view, and threw it in to help guide me. It was definitely time to take another look at those calculations.

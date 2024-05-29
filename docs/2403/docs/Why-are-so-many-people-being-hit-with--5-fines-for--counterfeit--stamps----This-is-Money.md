@@ -1,0 +1,86 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:44:19
+-->
+
+# Why are so many people being hit with £5 fines for 'counterfeit' stamps? | This is Money
+
+> 来源：[https://www.thisismoney.co.uk/money/bills/article-13244469/Why-people-hit-5-fines-counterfeit-stamps.html](https://www.thisismoney.co.uk/money/bills/article-13244469/Why-people-hit-5-fines-counterfeit-stamps.html)
+
+There is something of a mystery going on at the Royal Mail — but nothing to do with the recent Post Office scandal.
+
+Rather it involves a surge in 'counterfeit' stamps and a hefty £5 penalty for those who receive (and accept) mail posted using one. 
+
+Money Mail has been contacted by dozens of frustrated readers who have been stung with the fine, while others who have bought stamps from legitimate sources say they are mortified at sending out mail to friends and family which the Royal Mail then deems 'counterfeit'.
+
+Shocking: There has been a surge in 'counterfeit' stamps and a hefty £5 penalty for those who receive (and accept) mail posted using one
+
+It all began two years ago when the Royal Mail introduced stamps with barcodes, enabling mail to be tracked and offering a more efficient, secure service.
+
+For customers who had a stash of older stamps without a barcode, the Royal Mail launched the Stamp Swap Out scheme, which meant they could be exchanged for barcoded ones.
+
+Initially, stamps could be swapped only by printing an online form, requesting a Stamp Swap Out form online to be posted to you, visiting a local delivery office or calling customer services. 
+
+But after a campaign by our sister newspaper, The Mail on Sunday, forms were made available in local Post Offices, along with a freepost envelope.
+
+So far so simple. However, although the new stamps portraying King Charles III have a unique barcode, which the Royal Mail says makes it more difficult for the stamps to be reproduced, this may not be the case. 
+
+Take Tony Marcella, a 54-year-old business strategist from Rugby, Warwickshire. He was charged £5 by the Royal Mail to receive a card from an old friend after a ‘fee to pay’ card came through his letterbox.
+
+Fined: Money Mail has been contacted by dozens of frustrated readers who have been stung with the fine
+
+Had she used enough postage, he wondered. Yes — but the yellow sticker on the envelope had a box ticked with ‘counterfeit stamp’. Stamps are considered a ‘secure print item’ in a similar way to bank notes, which means it is a crime to knowingly reuse or sell used or fake stamps. 
+
+Disgruntled, Tony contacted his friend, who explained that this stamp was one of 103 she had received from the Royal Mail after exchanging £95.69 worth of nonbarcoded stamps through the Stamp Swap Out scheme. 
+
+Mortified, she told him she had sent out more than 20 cards with the stamps — if every recipient was charged the fee then the Royal Mail would have made at least £100 in penalties from just one sender. 
+
+Yet given the provenance of the stamps, it appeared to Tony and his friend that the Royal Mail itself was sending out what it subsequently marked as ‘counterfeit’ stamps. 
+
+‘I’m very angry,’ says Tony. 
+
+‘I looked at the surface of the stamp really closely and compared it with other stamps I had at home and I am convinced the stamp marked counterfeit was genuine.’ 
+
+Money Mail contacted stamp experts at Corbitts auctioneer, in Newcastle Upon Tyne, which also reviewed images of Tony’s stamp and confirmed that they believe the stamp is genuine. 
+
+‘The fee used to be £1 for a letter with incorrect postage but now it’s gone up to £5!’ says Tony. 
+
+Indeed, the £5 penalty is four times the price of a standard first-class stamp, which is set to rise to £1.35 on April 2, and more than four times the original penalty price. 
+
+It is unclear at what point these ‘counterfeit’ stamps have entered circulation, and their source — or whether they are genuine and Royal Mail’s scanning technology is at fault. 
+
+However, one Royal Mail postal worker in Kent, who wishes to remain anonymous, says she does not believe there is a criminal network of postal workers making money out of fake stamps, rather that either the machines used to scan the stamps at the sorting offices or the printers that manufacture the stamps are faulty. 
+
+The Post Office says that it receives its stamps directly from the Royal Mail’s secure printers, which it delivers to its branches in secure vans or sends them via secure post from its warehouse in tamper-proof envelopes. 
+
+A Royal Mail spokesman says: ‘Royal Mail uses a controlled process which is secure and robust for the distribution of our stamps and stamp products, including stamps supplied to customers through our Swap Out scheme.’ 
+
+This is of little comfort to 78- year-old charity volunteer Pam James, from Nailsea in North Somerset. 
+
+The mother-of-two was charged £5 by the Royal Mail after she received a card from her former neighbour Lynn with a yellow label on the envelope which had a box ticket to say the second-class stamp was ‘counterfeit’. 
+
+She paid the charge but, bemused, Pam inspected the stamp with a magnifying glass yet could not see any discolouration, strange marks or errors. 
+
+She says: ‘This is scandalous. The barcodes were supposed to help improve things. The price of stamps is going up but the service is going down. I now send people virtual cards.’ 
+
+Customers who buy stamps at Post Offices are given an itemised receipt, which is needed by the company to investigate any allegations of fake stamps. 
+
+Consumer champion Martyn James says official stamps are never discounted.
+
+The Royal Mail recommends checking stamps for unusual colourings, uneven borders or missing security ovals. 
+
+Watch out for sheets of stamps which are sold in quantities other than 25, 50 and 100, it recommends. 
+
+If you suspect that you have accidentally purchased a counterfeit stamp, visit royal mail.com/report-stamp-fraud. 
+
+Royal Mail did not wish to comment on how many penalties it had sent out for ‘counterfeit’ stamps. It would also not confirm whether an internal investigation will be carried out. 
+
+A Royal Mail spokesman says: ‘It is vital we can investigate any instance where a person believes their stamps have been incorrectly identified as counterfeit or pre-used. 
+
+'To do this, we require any customer who believes they have been incorrectly surcharged to send the envelope with the barcoded stamp attached to us, along with the exact location of where the stamp was purchased. 
+
+‘We have a robust, multi-stage process in place when assessing whether barcoded stamps are genuine. We will always happily review individual cases and if an error has been made then we will of course correct it.’ 
+
+Have you been charged £5 for using a ‘counterfeit’ stamp? Email a.cooke@dailymail.co.uk.
+
+Some links in this article may be affiliate links. If you click on them we may earn a small commission. That helps us fund This Is Money, and keep it free to use. We do not write articles to promote products. We do not allow any commercial relationship to affect our editorial independence.

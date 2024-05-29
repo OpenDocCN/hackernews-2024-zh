@@ -1,0 +1,76 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:52:27
+-->
+
+# Renesas to Acquire PCB Design Software Leader Altium to Make Electronics Design Accessible to Broader Market and Accelerate Innovation | Renesas
+
+> 来源：[https://www.renesas.com/us/en/about/press-room/renesas-acquire-pcb-design-software-leader-altium-make-electronics-design-accessible-broader-market](https://www.renesas.com/us/en/about/press-room/renesas-acquire-pcb-design-software-leader-altium-make-electronics-design-accessible-broader-market)
+
+**TOKYO, Japan, February 15, 2024 JST | ** **SAN DIEGO, ** **Calif., February 14, 2024―** Renesas Electronics Corporation (“Renesas”, TSE: 6723), a supplier of advanced semiconductor solutions, and Altium Limited (“Altium”, ASX: ALU), a global leader in electronics design systems, today announced they have entered into a Scheme Implementation Agreement (“SIA”) for Renesas to acquire Altium by way of a Scheme of Arrangement under Australian law (“Scheme”). Under the terms of the transaction, subject to satisfaction of a number of conditions, Renesas will acquire all outstanding shares of Altium for a cash price of A$68.50 per share, representing a total equity value of approximately A$9.1 billion (approximately 887.9 billion yen at an exchange rate of 97 yen to the A$) and an enterprise value of A$8.8 billion (approximately 859.3 billion yen at an exchange rate of 97 yen to the A$). The acquisition enables two industry leaders to join forces and establish an integrated and open electronics system design and lifecycle management platform that allows for collaboration across component, subsystem, and system-level design. The transaction strongly aligns with Renesas’ digitalization strategy and represents the company’s first significant step in bringing enhanced user experience and innovation at the system level for electronics system designers. 
+
+As technology advances, the design and integration of electronic systems become increasingly complex. The current electronics system design flow is a complicated and iterative process that involves multiple stakeholders and design steps, from component selection and evaluation to simulation and PCB physical design. Engineers must be able to design systems that are not only functional but also efficient and cost-effective under shortened development cycles. 
+
+Together, Renesas and Altium, under a shared vision, aim to build an integrated and open electronics system design and lifecycle management platform that unifies these steps at a system level. The acquisition brings together Altium’s sophisticated cloud platform capabilities with Renesas’ strong portfolio of embedded solutions, combining high-performance processors, analog, power and connectivity. The combination will also enable integration with third-party vendors across the ecosystem to execute all electronic design steps seamlessly on the cloud. The electronics system design and lifecycle management platform will deliver integration and standardization of various electronic design data and functions and enhanced component lifecycle management, while enabling seamless digital iteration of design processes to increase overall productivity. This brings significantly faster innovation and lowers barriers to entry for system designers by reducing development resources and inefficiencies.
+
+“Development processes continue to evolve and accelerate. With our Purpose “To Make Our Lives Easier” in mind, our vision is to make electronics design accessible to the broader market to allow more innovation through a cloud-based platform,” said Hidetoshi Shibata, CEO of Renesas. “Addition of Altium will enable us to deliver an integrated and open development platform, making it easier for businesses of all sizes and industries to build and scale their systems. We look forward to working with Altium’s talented team as we continue to invest and drive our combined platform to the next level of value for our customers."
+
+"I strongly believe that electronics is the single most critical industry to building a smart and sustainable world. Renesas’ visionary leadership and commitment to making electronics accessible to all resonates strongly with Altium. Altium’s vision of industry transformation finds its fullest expression in service of this grand vision of Renesas,” said Aram Mirkazemi, CEO of Altium. “Having worked closely with Renesas as a partner for nearly two years, we are excited to be part of the Renesas team as we continue to successfully execute and grow.”
+
+Altium’s history began in 1985 from Australia as one of the world’s first printed-circuit board (PCB) design tool providers. The company has grown into a global market leader with the most popular PCB software tool in use today. Its software tools empower and connect PCB designers, part suppliers and manufacturers to develop and manufacture electronics products faster and more efficiently. With the addition of the world’s first digital platform for design and realization of electronics hardware, Altium 365, Altium’s leading PCB design software creates seamless collaboration across the entire PCB design process. In June 2023, Renesas [announced](https://www.renesas.com/us/en/about/press-room/renesas-chooses-altium-unify-company-wide-pcb-development-and-accelerate-solution-design-partners) that it had standardized development of all PCB design on the Altium 365 cloud-based platform from Altium. Renesas has been working with Altium to publish all its products’ ECAD libraries to the Altium Public Vault. With features such as manufacturer part search on Altium365, customers can choose Renesas parts directly from the Altium library for faster time to market.
+
+The transaction has been *unanimously* approved by the boards of directors of both companies and isexpected to close in the second half of 2024\. Completion of the transaction is subject to approval by Altium shareholders, Australian court approval as well as regulatory approvals and other customary closing conditions. The Altium Board unanimously recommends that Altium shareholders vote in favor of the Scheme, in the absence of a superior proposal and subject to the independent expert concluding (and continuing to conclude) that the Scheme is in the best interests of Altium shareholders. Subject to those same qualifications, each Altium director intends to vote, or cause to be voted, all Altium shares held or controlled by them in favour of the Scheme. Altium will continue to be led by CEO Aram Mirkazemi as a wholly-owned subsidiary of Renesas. 
+
+**Financial Highlights**
+
+The acquisition strengthens Renesas’ financial profile and provides shareholders significant value by accelerating Renesas’ Digitalization strategy. 
+
+Financial highlights of the transaction include:
+
+*   Purchase of all Altium common stock for A$68.50 per share in cash. This represents a premium of approximately 34% to the closing price of Altium common stock on February 14, 2024, the last trading day prior to the transaction announcement, a premium of approximately 39% to Altium's one-month volume-weighted average price (“VWAP”) from January 15, 2024, a premium of approximately 46% to Altium’s three-month VWAP from November 15, 2023 and a premium of approximately 31% to Altium’s all-time high closing price.
+
+*   The all-cash transaction represents an equity value of approximately A$9.1 billion (approximately 887.9 billion yen at an exchange rate of 97 yen to the A$), and an enterprise value of approximately A$8.8 billion (approximately 859.3 billion yen at an exchange rate of 97 yen to the A$).
+
+*   The transaction is immediately accretive to earnings without synergies; the combined company expects to achieve earnings impact from revenue and cost synergies after the completion of the transaction. Altium brings US$263 million revenue, 36.5% EBITDA margin, and 77% recurring revenue. These metrics are based on Altium’s fiscal year ended June 30, 2023.
+
+*   Renesas plans to finance the transaction with bank loans and cash on hand and the transaction is not subject to any financing condition.
+
+*   Renesas expects to deleverage its Net debt/Non-GAAP EBITDA multiple to <1.0x within 3 years after the completion of the transaction.
+
+**Advisors and counsel**
+
+Deutsche Bank is serving as exclusive financial advisor to Renesas; DLA Piper LLP, Covington & Burling LLP and Nagashima Ohno & Tsunematsu are serving as Renesas’ legal counsel. 
+
+J.P. Morgan Securities LLC is serving as exclusive financial advisor to Altium; King & Wood Mallesons and Reed Smith LLP are serving as Altium’s legal counsel.
+
+**Zoom Webcast information**
+
+Renesas and Altium management will host a webcast to discuss details of the transaction at 12:00 p.m. Sydney Time / 10:00 a.m. Japan Time today / 5:00 p.m. Pacific Standard Time on February 14. Shareholders, analysts, investors and media are invited to join the live webcast by registering using the following link: [https://us06web.zoom.us/webinar/register/WN_UZNbsq0GRP63mrabGLcOuA](https://us06web.zoom.us/webinar/register/WN_UZNbsq0GRP63mrabGLcOuA)
+
+After registering, you will receive a confirmation email containing details to access the webinar via conference call or webcast.
+
+A recording and the accompanying presentation relating to the transaction will be available on the [investor relations section](https://www.renesas.com/us/en/about/investor-relations) of the Renesas website after the event.
+
+**About Renesas**
+
+Renesas Electronics Corporation (TSE: 6723) empowers a safer, smarter and more sustainable future where technology helps make our lives easier. The leading [global](https://www.renesas.com/about/company/profile/global.html) provider of microcontrollers, Renesas combines our expertise in embedded processing, analog, power and connectivity to deliver complete semiconductor solutions. These Winning Combinations accelerate time to market for automotive, industrial, infrastructure and IoT applications, enabling billions of connected, intelligent devices that enhance the way people work and live. Learn more at[renesas.com](http://www.renesas.com/). Follow us on [LinkedIn](https://www.linkedin.com/company/renesas/), [Facebook](https://www.facebook.com/RenesasElectronics/), [X](https://twitter.com/renesasglobal), [YouTube](https://www.youtube.com/user/RenesasPresents), and [Instagram](https://www.instagram.com/renesas_global/).
+
+**About Altium**
+
+Altium, Limited (ASX: ALU) is a global software company headquartered in San Diego, California, who are accelerating the pace of innovation through electronics. For over 30 years, Altium has been delivering software that maximizes the productivity of PCB designers and electrical engineers. From individual inventors to multinational corporations, more PCB designers and engineers choose Altium software to design and realize electronics-based products.
+
+**Cautionary note regarding forward-looking statements**
+
+This announcement may contain certain statements that are, or may be deemed to be, forward-looking statements with respect to the financial condition, results of operations and business of Renesas and/or Altium and/or the combined group following completion of the Acquisition and certain plans and objectives of Renesas with respect thereto. These forward-looking statements can be identified by the fact that they do not relate to historical or current facts. Forward-looking statements also often use words such as ‘anticipate’, ‘target’, ‘continue’, ‘estimate’, ‘expect’, ‘‘forecast’, ‘intend’, ‘may’, ‘plan’, ‘goal’, ‘believe’, ‘hope’, ‘aims’, ‘continue’, ‘could’, ‘project’, ‘should’, ‘will’ or other words of similar meaning.  These statements are based on assumptions and assessments made by Renesas and/or Altium (as applicable) in light of their experience and perception of historical trends, current conditions, future developments and other factors they believe appropriate.  By their nature, forward-looking statements involve risk and uncertainty, because they relate to events and depend on circumstances that will occur in the future and the factors described in the context of such forward-looking statements in this announcement could cause actual results and developments to differ materially from those expressed in or implied by such forward-looking statements. Although it is believed that the expectations reflected in such forward-looking statements are reasonable, no assurance can be given that such expectations will prove to be correct and you are therefore cautioned not to place undue reliance on these forward-looking statements which speak only as at the date of this announcement. 
+
+Forward-looking statements are not guarantees of future performance.  Such forward-looking statements involve known and unknown risks and uncertainties that could significantly affect expected results and are based on certain key assumptions.  Many factors could cause actual results to differ materially from those projected or implied in any forward-looking statements.  Due to such uncertainties and risks, readers are cautioned not to place undue reliance on such forward-looking statements, which speak only as of the date of this announcement.  Neither Renesas nor Altium undertakes any obligation to update or revise any forward-looking statement as a result of new information, future events or otherwise, except as required by applicable law.
+
+There are several factors which could cause actual results to differ materially from those expressed or implied in forward-looking statements.  Among the factors that could cause actual results to differ materially from those described in the forward-looking statements are changes in the global, political, economic, business and competitive environments, market and regulatory forces, future exchange and interest rates, changes in tax rates and future business combinations or dispositions.  If any one or more of these risks or uncertainties materializes or if any one or moreof the assumptions prove incorrect, actual results may differ materially from those expected, estimated or projected. Such forward looking statements should therefore be construed in the light of such factors.
+
+No member of the Renesas group or the Altium group nor any of their respective associates, directors, officers, employers or advisers, provides any representation, assurance or guarantee that the occurrence of the events expressed or implied in any forward-looking statements in this announcement will actually occur.
+
+Except as expressly provided in this announcement, no forward-looking or other statements have been reviewed by the auditors of the Renesas group or the Altium group.  All subsequent oral or written forward-looking statements attributable to any member of the Renesas group or the Altium group, or any of their respective associates, directors, officers, employers or advisers, are expressly qualified in their entirety by the cautionary statement above.
+
+###
+
+*(Remarks) All names of products or services mentioned in this press release are trademarks or registered trademarks of their respective owners.*

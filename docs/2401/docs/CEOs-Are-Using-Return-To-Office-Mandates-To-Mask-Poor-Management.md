@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:21:08
+-->
+
+# CEOs Are Using Return To Office Mandates To Mask Poor Management
+
+> 来源：[https://www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/](https://www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/)
+
+ <fbs-accordion>Man pulling red sweater over face</fbs-accordion> getty
+
+At the onset of the pandemic, we found ourselves at a pivotal crossroads that compelled us to reimagine how we work. This shift was as profound as it was inevitable, marking our turn towards a new direction in reshaping the essence of our ways of working. Work from home has now stabilized at ~30% in the U.S. as of December 2023, which is almost four times pre-pandemic levels, according to a recent paper from the [American Economic Association](https://www.aeaweb.org/articles?id=10.1257%2Fjep.37.4.23 "https://www.aeaweb.org/articles?id=10.1257%2Fjep.37.4.23").
+
+The paradigmatic shift induced by remote work has enabled businesses to remodel their operational cost structures and redefine new ways of working. Companies are now navigating a landscape that oscillates between in-person, fully remote, and hybrid workforce models, each presenting its unique set of opportunities and challenges.
+
+According to a recent research paper published by [University of Pittsburgh](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675401 "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675401"), compelling evidence suggests that organizations are leveraging Return-To-Office mandates not to enhance firm value, but rather to reassert control and shift blame for poor performance onto employees. Contrary to the belief that RTO boosts company value, the analysis revealed that RTO mandates are more likely in firms with poor recent stock performance and have had no significant impacts on firm profitability or stock-returns. Moreover, a notable drop in employee job satisfaction was observed, further questioning the efficacy of these mandates.
+
+Offices across the U.S. are at an all-time occupancy low, and commercial real estate is starting to see an all-time high of almost 20% of unleased space, according to the [Wall Street Journal](https://www.msn.com/en-us/money/markets/offices-around-america-hit-a-new-vacancy-record/ar-AA1mCCkd?ocid=finance-verthp-feeds "https://www.msn.com/en-us/money/markets/offices-around-america-hit-a-new-vacancy-record/ar-AA1mCCkd?ocid=finance-verthp-feeds"). The reduction in real estate spend has enabled companies to reduce their operating expenses, thereby positively impacting their financial health. This poses the question: Are return-to-work mandates better for the workforce or for business bottom lines?
+
+<fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation"></fbs-ad>
+
+## Connecting To All Stakeholders
+
+A considerable number of companies continue to grapple with the right model that aligns with the preferences and philosophies of all stakeholders involved - customers, employees, boards, leadership teams, and shareholders. Many companies, albeit reluctantly, were forced to embrace a remote work model during the pandemic, discovering the potential for enhancing productivity while reducing costs for long-term business growth in a virtual environment.
+
+Airbnb exemplified this, having navigated an abrupt halt in revenue at the onset of the pandemic to achieving profitability and executing a successful IPO shortly thereafter, all while operating entirely remotely. Airbnb leveraged their learnings to create a unique [Live and Work Anywhere](https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/ "https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/") program in April 2022, which balanced a blend of remote work and in-person gatherings. The program was a great success because it tied to their business model and promoted remote work for all their stakeholders, including their shareholders, employees, and their customers (guests and hosts).
+
+However, CEOs of companies like WebMD continue to poorly [communicate](https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video "https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video") demands and convey threats to their employees in 2024 by telling their employees, “Don't mess with us.” The irony in this approach is that some of their products, like their [online symptom checker](https://symptoms.webmd.com/ "https://symptoms.webmd.com/"), are tools that help anyone to remotely evaluate their symptoms and determine treatments needed. Why are companies that promote remote services so opposed to enabling remote work, and more importantly, feel the need to threaten their employees?
+
+Last week at the World Economic Forum in Davos, Switzerland, the CEO of L’Oreal insisted that he was certain that remote workers in their organization lacked attachment, passion, and creativity. He went on to explain that remote work was bad for the mental health of employees, according to [Business Insider](https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1 "https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1").
+
+## The Unintended Consequences
+
+Mandating in-office attendance raises questions about the resulting employee behaviors and employer reactions. With enforced attendance, mechanisms like badge access tracking have been implemented in several companies.
+
+Will these enforcements result in action being taken, thereby losing or reprimanding engaged talent, or will this just be an empty threat? Companies that mandate office attendance for their workers will likely inherently create the opposite effect they intended. This will result in a subculture of employees going in to grab a coffee and then leave (coffee-badging) or share their badges with co-workers (shadow-badging) to meet the mandates.
+
+While mandating these extreme return-to-office policies, companies end up restricting their operations to specific geographic locations and are limiting their talent pool to the same boundaries. On the other hand, being completely remote has a direct impact on onboarding new hires into company culture and can sometimes lower engagement and motivation as employees may lose a strong sense of belonging and connection over time. There can also be a disconnect between the desire to work remotely between the leadership teams across various functions within an organization, thereby resulting in inconsistent behaviors.
+
+## What's Next?
+
+Executives should focus on figuring out the right workforce model for their business while recognizing that there is not a one-size-fits-all solution. The key is to focus on implementing a model that is reflective of the nature of their own business model and stakeholder needs. This does not mean that hybrid work with mandating office attendance a few times a week is the only option.
+
+Companies should adopt an intentional and regular gathering strategy for all employees to connect routinely. By doing so, they can recharge their social barometers, which is essential for driving organizational alignment, motivation, and engagement. It’s time to move on from debating what model is best and focus on driving momentum on business outcomes.

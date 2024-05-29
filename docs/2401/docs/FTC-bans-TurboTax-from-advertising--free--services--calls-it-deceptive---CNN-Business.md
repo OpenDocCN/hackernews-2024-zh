@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:04:11
+-->
+
+# FTC bans TurboTax from advertising ‘free’ services, calls it deceptive | CNN Business
+
+> 来源：[https://www.cnn.com/2024/01/22/business/ftc-turbotax-free-services/index.html](https://www.cnn.com/2024/01/22/business/ftc-turbotax-free-services/index.html)
+
+New York CNN  — 
+
+The Federal Trade Commissionruled in a [final order](https://www.ftc.gov/system/files/ftc_gov/pdf/d09408_commission_final_order.pdf) and opinion Monday that TurboTax, the popular tax filing software, engaged in deceptive advertising and banned the company from advertising its services for free unless it is free for all customers.
+
+By running ads for “free” tax services that many customers were not qualified for, the tax filing software violated the FTC Act and deceived consumers, the agency said.
+
+The FTC had first sued Intuit, TurboTax’s owner,for its deceptive advertising in 2022\. The FTC staff alleged most tax filers couldn’t use the company’s “free” services — “[such as those who get a 1099 form for work in the gig economy, or those who earn farm income](https://www.ftc.gov/news-events/news/press-releases/2023/09/administrative-law-judge-issues-initial-decision-ftcs-case-against-intuit-inc).” TurboTax advertising their products as free misled those customers,according to the FTC.
+
+The FTC Administrative Law Judge D. Michael Chappell announced [the initial decision in September](https://www.ftc.gov/news-events/news/press-releases/2023/09/administrative-law-judge-issues-initial-decision-ftcs-case-against-intuit-inc), which the commission upheld Monday. Intuit had appealed to the FTC as part of the process.
+
+In a statement Monday, Intuit said it has appealed “this deeply flawed decision”to federal circuit court outside of the FTC.
+
+“Absolutely no one should be surprised that FTC Commissioners — employees of the FTC — ruled in favor of the FTC as they have done in every appeal for the last two decades. This decision is the result of a biased and broken system where the Commission serves as accuser, judge, jury, and then appellate judge all in the same case,” an an Intuit spokesperson said.
+
+Intuit cannot advertise or market any goods or services as free unless it’s free for all customers, the FTC ordered.
+
+It could also clearly disclose the percentage of customers that actually do qualify for the free service, somewhere close to the “free” claim advertised, the commission said. The FTC added if the service isn’t actually free for the majority of consumers, TurboTax could state that as well.
+
+The FTC ordered Intuit to “disclose clearly and conspicuously all the terms, conditions, and obligations that are required in order to obtain the ‘free’ good or service.”
+
+“The order also prohibits Intuit from misrepresenting any material facts about its products or services such as the price, refund policies or consumers’ ability to claim a tax credit or deduction or to file their taxes online accurately without using TurboTax’s paid service,” the [release](https://www.ftc.gov/news-events/news/press-releases/2024/01/ftc-issues-opinion-finding-turbotax-maker-intuit-inc-engaged-deceptive-practices) from the FTC said.
+
+Last May, [roughly 4.4 million people](https://www.cnn.com/2023/05/09/business/turbotax-settlement/index.html) were to receive checks from TurboTax, following a 50-state settlement with parent company Intuit for allegedly steering millions of low-income Americans away from free tax-filing services.
+
+The investigation opened aftera [2019 ProPublica report](https://www.propublica.org/article/inside-turbotax-20-year-fight-to-stop-americans-from-filing-their-taxes-for-free) that accused the company of steering eligible clients away from federally supported tax filing products by making them difficult to find in web searches — instead directing them toward the paid version of the company’s filing services.
+
+Most customers will get about $30, with some customers that used TurboTax for three consecutive years getting up to $85\. A website has also been set [up for more information](https://agturbotaxsettlement.com/Home/portalid/0).
+
+“TurboTax’s predatory and deceptive marketing cheated millions of low-income Americans who were trying to fulfill their legal duties to file their taxes,” said New York Attorney General Letitia James in a May 4, 2023, [press release](https://ag.ny.gov/press-release/2023/consumer-alert-attorney-general-james-distributes-141-million-settlement). “Today we are righting that wrong and putting money back into the pockets of hardworking taxpayers who should have never paid to file their taxes.”
+
+*CNN’s Jordan Valinsky contributed to this report.*

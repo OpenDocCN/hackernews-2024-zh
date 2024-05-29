@@ -1,0 +1,465 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:21
+-->
+
+# jQuery 4.0.0 BETA! | Official jQuery Blog
+
+> 来源：[https://blog.jquery.com/2024/02/06/jquery-4-0-0-beta/](https://blog.jquery.com/2024/02/06/jquery-4-0-0-beta/)
+
+# jQuery 4.0.0 BETA!
+
+* * *
+
+jQuery 4.0.0 has been in the works for a *long* time, but it is now ready for a beta release! There’s a lot to cover, and the team is excited to see it released. We’ve got bug fixes, performance improvements, and some breaking changes. We removed support for IE<11 after all! Still, we expect disruption to be minimal.
+
+Many of the breaking changes are ones the team has wanted to make for years, but couldn’t in a patch or minor release. We’ve trimmed legacy code, removed some previously-deprecated APIs, removed some internal-only parameters to public functions that were never documented, and dropped support for some “magic” behaviors that were overly complicated.
+
+We will publish a comprehensive upgrade guide before final release, to outline the removed code and how to migrate. The [jQuery Migrate plugin](https://github.com/jquery/jquery-migrate) will also be ready to assist. For now, please try out the beta release and [let us know if you encounter any issues](https://github.com/jquery/jquery/issues).
+
+As usual, the release is available on [our CDN](https://jquery.com/download/) and the npm package manager. Third party CDNs will not be hosting this beta release, but will host the 4.0.0 final release later. Here are some highlights for jQuery 4.0.0 beta.
+
+## Goodbye IE<11
+
+jQuery 4.0 drops support for IE 10 and older. Some may be asking why we didn’t remove support for IE 11\. We plan to remove support in stages, and the next step [will be released in jQuery 5.0](https://github.com/jquery/jquery/pull/5077). For now, we’ll start by removing code specifically supporting IE versions older than 11, giving us a size reduction of [-867 gzipped bytes in one PR](https://github.com/jquery/jquery/pull/4347)!
+
+We also dropped support for other very old browsers, including Edge Legacy, iOS <11, Firefox <65, and Android Browser. No changes should be required on your end. If you need to support any of these browsers, simply stick with jQuery 3.x.
+
+## Deprecated APIs removed
+
+These functions have been deprecated for several versions. It’s time to [remove them](https://github.com/jquery/jquery/issues/4056) now that we’ve reached a major release. These functions were either always meant to be internal or ones that now have native equivalents in all supported browsers. The removed functions are:
+
+## `push`, `sort`, and `splice` removed
+
+The jQuery prototype has long had Array methods that did not behave like any other jQuery methods and were always meant for internal-use only. These methods are `push`, `sort`, and `splice`. We switched our uses of these methods to Array functions instead of the jQuery prototype. For example, `$elems.push( elem )` became `[].push.call( $elems, elem )`. We’re mentioning it here in case there are any plugins out there that may have relied on these methods.
+
+## `focusin` and `focosout` event order
+
+For a long time, browsers did not agree on the order of focus and blur events, which includes `focusin`, `focusout`, `focus`, and `blur`. Finally, the latest versions of all browsers that jQuery 4.0 supports have converged on a common event order. Unfortunately, it differs from the consistent order that jQuery had chosen years ago, which makes this a breaking change. At least everyone is the on the same page now!
+
+jQuery’s order for all four events in previous versions was:
+
+```
+1\. focusout
+2\. blur
+3\. focusin
+4\. focus
+```
+
+Starting with jQuery 4.0, we [no longer override native behavior](https://github.com/jquery/jquery/pull/4362). This means that all browsers except IE will follow the current W3C specification, which is:
+
+```
+1\. blur
+2\. focusout
+3\. focus
+4\. focusin
+```
+
+For those that are curious, the W3C specification previously defined a different order:
+
+```
+1\. focusout
+2\. focusin
+3\. blur
+4\. focus
+```
+
+But, few thought that intuitive and [the spec](https://www.w3.org/TR/uievents/#events-focusevent-event-order) was [changed in 2023](https://github.com/w3c/uievents/issues/88) to match what browsers have already implemented. Ironically, the only browser to ever follow the old spec was Internet Explorer.
+
+## `FormData` support
+
+`jQuery.ajax` has [added support for binary data, including `FormData`](https://github.com/jquery/jquery/pull/5197). Previously, binary data was not a known data type and was converted to a string. That behavior could be disabled by disabling data conversion and handling the data manually, but we decided to make this work automatically. This is technically a breaking change, but should be closer to expected behavior.
+
+## Automatic JSONP promotion removed
+
+Previously, `jQuery.ajax` with `dataType: "json"` with a provided callback would be converted to a JSONP request. Today, the preferred way to interact with a cross-domain backend is with [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), which works in all browsers that jQuery 4.0 supports. This should help avoid unexpected behavior in case a developer is unaware that code can be executed from a remote domain with JSONP.
+
+## jQuery source migrated to ES modules
+
+It was a special day when the jQuery source on the `main` branch was migrated from [AMD](https://requirejs.org/docs/whyamd.html) to [ES modules](https://github.com/jquery/jquery/pull/4541). The jQuery source has always been published with jQuery releases on npm and GitHub, but could not be imported directly as modules without [RequireJS](https://requirejs.org/), which was jQuery’s build tool of choice. We have since switched to [Rollup](https://rollupjs.org/introduction/) for packaging jQuery and we do run all tests on the ES modules separately.
+
+## Trusted Types and CSP
+
+jQuery 4.0 adds support for [Trusted Types](https://twitter.com/kkotowicz/status/1445713282128515074), ensuring that HTML wrapped in [TrustedHTML](https://developer.mozilla.org/en-US/docs/Web/API/TrustedHTML) can be used as input to jQuery manipulation methods in a way that doesn’t violate the `require-trusted-types-for` Content Security Policy directive.
+
+Along with this, while some AJAX requests were already using `<script>` tags to maintain attributes such as `crossdomain`, we have [since switched most asynchronous script requests to use <script> tags](https://github.com/jquery/jquery/pull/4763) to avoid any CSP errors caused by using inline scripts. There are still a few cases where XHR is used for asynchronous script requests, such as when the `"headers"` option is passed (use `scriptAttrs` instead!), but we now use a `<script>` tag whenever possible.
+
+## Updated slim build
+
+The slim build has gotten even smaller in jQuery 4.0.0 with the removal of Deferreds and Callbacks (now below 20k bytes gzipped!). Deferreds have long-supported the [Promises A+ standard](https://promisesaplus.com/), so native Promises can be used instead in most cases and they are available in all of jQuery’s supported browsers except IE11\. Deferreds do have some extra features that native Promises do not support, but most usage can be migrated to Promise methods. If you need to support IE11, it’s best to use the main build or add a polyfill for native Promises.
+
+## Download
+
+You can get the files from the jQuery CDN, or link to them directly:
+
+[https://code.jquery.com/jquery-4.0.0-beta.js](https://code.jquery.com/jquery-4.0.0-beta.js)
+
+[https://code.jquery.com/jquery-4.0.0-beta.min.js](https://code.jquery.com/jquery-4.0.0-beta.min.js)
+
+You can also get this release from npm:
+
+`npm install jquery@4.0.0-beta`
+
+### Slim build
+
+Sometimes you don’t need ajax, or you prefer to use one of the many standalone libraries that focus on ajax requests. And often it is simpler to use a combination of CSS and class manipulation for web animations. Finally, all of jQuery’s supported browsers (except for IE11) now have support for native Promises across the board, so Deferreds and Callbacks are no longer needed in most cases. Along with the regular version of jQuery that includes everything, we’ve released a “slim” version that excludes these modules. The size of jQuery is very rarely a load performance concern these days, but the slim build is about 8k gzipped bytes smaller than the regular version. These files are also available in the npm package and on the CDN:
+
+[https://code.jquery.com/jquery-4.0.0-beta.slim.js](https://code.jquery.com/jquery-4.0.0-beta.slim.js)
+
+[https://code.jquery.com/jquery-4.0.0-beta.slim.min.js](https://code.jquery.com/jquery-4.0.0-beta.slim.min.js)
+
+These updates are already available as the current versions on npm and Bower. Information on all the ways to get jQuery is available at [https://jquery.com/download/](https://jquery.com/download/). Public CDNs receive their copies today, please give them a few days to post the files. If you’re anxious to get a quick start, use the files on our CDN until they have a chance to update.
+
+## Thanks
+
+Thank you to all of you who participated in this release by submitting patches, reporting bugs, or testing, including [Alex](https://github.com/sashashura), [Ahmed S. El-Afifi](https://github.com/aelafifi), [fecore1](https://github.com/fecore1), [Dallas Fraser](https://github.com/fras2560), [Richard Gibson](https://github.com/gibson042), [Michał Gołębiowski-Owczarek](https://github.com/mgol), [Pierre Grimaud](https://github.com/pgrimaud), [Gabriela Gutierrez](https://github.com/gabibguti), [Jonathan](https://github.com/vanillajonathan), [Necmettin Karakaya](https://github.com/Necmttn), [Anders Kaseorg](https://github.com/andersk), [Wonseop Kim](https://github.com/wonseop), [Simon Legner](https://github.com/simon04), [Shashanka Nataraj](https://github.com/ShashankaNataraj), [Pat O’Callaghan](https://github.com/patocallaghan), [Christian Oliff](https://github.com/coliff), [Dimitri Papadopoulos Orfanos](https://github.com/DimitriPapadopoulos), [Wonhyoung Park](https://github.com/wonhyoung05), [Bruno PIERRE](https://github.com/bubbatls), [Baoshuo Ren](https://github.com/renbaoshuo), [Beatriz Rezener](https://github.com/beatrizrezener), [Sean Robinson](https://github.com/skrobinson), [Ed Sanders](https://github.com/edg2s), [Timo Tijhof](https://github.com/Krinkle), [Tom](https://github.com/gaohuia), [Christian Wenz](https://github.com/wenz), [ygj6](https://github.com/ygj6) and the whole jQuery team.
+
+## We’re on Mastodon!
+
+jQuery now has its very own Mastodon account. We will be cross posting to both Twitter and Mastodon from now on. Also, you may be interested in following some of our team members that have Mastodon accounts.
+
+jQuery: [https://social.lfx.dev/@jquery](https://social.lfx.dev/@jquery)
+
+mgol: [https://hachyderm.io/@mgol](https://hachyderm.io/@mgol)
+
+timmywil: [https://hachyderm.io/@timmywil](https://hachyderm.io/@timmywil)
+
+### Ajax
+
+*   Don’t treat array data as binary ([992a1911](https://github.com/jquery/jquery/commit/992a1911d0b6195012edc25fd5a48810d4be64b5))
+*   Allow `processData: true` even for binary data ([ce264e07](https://github.com/jquery/jquery/commit/ce264e0789116e37fe371503537a217c038dfae8))
+*   Support binary data (including FormData) ([a7ed9a7b](https://github.com/jquery/jquery/commit/a7ed9a7b6364273b1b964fd2cf9691dec2cbec6b))
+*   Support `headers` for script transport even when cross-domain ([#5142](https://github.com/jquery/jquery/issues/5142), [6d136443](https://github.com/jquery/jquery/commit/6d1364431b63b0d3bbe1c5fd604131f9db453396))
+*   Support `null` as success functions in `jQuery.get` ([#4989](https://github.com/jquery/jquery/issues/4989), [74978b7e](https://github.com/jquery/jquery/commit/74978b7e892537559850cda7332bdab8106e6354))
+*   Don’t auto-execute scripts unless dataType provided ([#4822](https://github.com/jquery/jquery/issues/4822), [025da4dd](https://github.com/jquery/jquery/commit/025da4dd343e6734f3d3c1b4785b1548498115d8))
+*   Make responseJSON work for erroneous same-domain JSONP requests ([68b4ec59](https://github.com/jquery/jquery/commit/68b4ec59c8f290d680e9db4bc980655660817dd1))
+*   Execute JSONP error script responses ([#4771](https://github.com/jquery/jquery/issues/4771), [a1e619b0](https://github.com/jquery/jquery/commit/a1e619b03a557b47c3e26a5e74af12b63a0d5e73))
+*   Avoid CSP errors in the script transport for async requests ([#3969](https://github.com/jquery/jquery/issues/3969), [07a8e4a1](https://github.com/jquery/jquery/commit/07a8e4a177550025c1a08d7ac754839733943f55))
+*   Drop the json to jsonp auto-promotion logic ([#1799](https://github.com/jquery/jquery/issues/1799), [#3376](https://github.com/jquery/jquery/issues/3376), [e7b3bc48](https://github.com/jquery/jquery/commit/e7b3bc488d01d584262e12a7c5c25f935d0d034b))
+*   Overwrite s.contentType with content-type header value, if any ([#4119](https://github.com/jquery/jquery/issues/4119), [7fb90a6b](https://github.com/jquery/jquery/commit/7fb90a6beaeffe16699800f73746748f6a5cc2de))
+*   Deprecate AJAX event aliases, inline event/alias into deprecated ([23d53928](https://github.com/jquery/jquery/commit/23d53928f383b0e7440bf4b08b7524e6af232fad))
+*   Do not execute scripts for unsuccessful HTTP responses ([#4250](https://github.com/jquery/jquery/issues/4250), [50871a5a](https://github.com/jquery/jquery/commit/50871a5a85cc802421b40cc67e2830601968affe))
+*   Simplify jQuery.ajaxSettings.xhr ([#1967](https://github.com/jquery/jquery/issues/1967), [abdc89ac](https://github.com/jquery/jquery/commit/abdc89ac2e581392b800c0364e0f5f2b6a82cdc6))
+
+### Attributes
+
+*   Shave off a couple of bytes ([b40a4807](https://github.com/jquery/jquery/commit/b40a4807b604efbde51faf075d11e25441af1990))
+*   Don’t stringify attributes in the setter ([#4948](https://github.com/jquery/jquery/issues/4948), [4250b628](https://github.com/jquery/jquery/commit/4250b628783d7bfa92ec6c5550c6e4b22fab6034))
+*   Drop the `toggleClass(boolean|undefined)` signature ([#3388](https://github.com/jquery/jquery/issues/3388), [a4421101](https://github.com/jquery/jquery/commit/a4421101fd6d9d7b0550210f8e8690641733dd9a))
+*   Refactor val(): don’t strip carriage return, isolate IE workarounds ([ff281991](https://github.com/jquery/jquery/commit/ff2819911da6cbbed5ee42c35d695240f06e65e3))
+*   Don’t set the type attr hook at all outside of IE ([9e66fe9a](https://github.com/jquery/jquery/commit/9e66fe9acf0ef27681f5a21149fc61678f791641))
+
+### build
+
+*   set up periodic code scanning analysis ([39c5778c](https://github.com/jquery/jquery/commit/39c5778c649ad387dac834832799c0087b11d5fe))
+
+### Build
+
+*   migrate grunt authors to a custom script ([af79c999](https://github.com/jquery/jquery/commit/af79c99939628255f46f30bced000eba9aa6711f))
+*   Bump follow-redirects from 1.15.1 to 1.15.4 ([56139394](https://github.com/jquery/jquery/commit/56139394705022e4f6756440030ad6f3bf35f5a6))
+*   Bump actions/setup-node and github/codeql-action ([99151d7a](https://github.com/jquery/jquery/commit/99151d7ab0923aa3aeeb1b957a9063e4e20d31ae))
+*   Reformat GitHub workflow Yaml files ([c98597ea](https://github.com/jquery/jquery/commit/c98597eaf5e144ee5e549cb41984687cd1033068))
+*   Bump @babel/traverse & multiple actions ([fb0cc272](https://github.com/jquery/jquery/commit/fb0cc272916dc909552a1b7bc1a39295e564d3a8))
+*   Don’t run CI push workflows for dependabot branches ([635cb152](https://github.com/jquery/jquery/commit/635cb152e7daac658223455aaab2f81204b5b215))
+*   Update ESLint-related packages, fix linting errors ([f47c6a83](https://github.com/jquery/jquery/commit/f47c6a83370675af0eff227d0266b40f9f45514a))
+*   Run pretest before test:* npm scripts ([1ad66aeb](https://github.com/jquery/jquery/commit/1ad66aeb6d7d94f8e4c8e2286569722ca41f9868))
+*   sort branches in compare_size; last run last ([a7fa303f](https://github.com/jquery/jquery/commit/a7fa303fda11ad298875676ffff78143cc49ce95))
+*   run pretest in jenkins script ([cb763072](https://github.com/jquery/jquery/commit/cb763072fee1eb9ec3d4037c50cb0d07836b7af6))
+*   fix inconsistent builds in Node 20 ([7ef9099d](https://github.com/jquery/jquery/commit/7ef9099d328e90d19bc40b64148747e854b13e20))
+*   add commit SHAs and last runs to comparisons ([09972bcc](https://github.com/jquery/jquery/commit/09972bcc680e89e38f56d83043bb368eb7fbda91))
+*   add new factory files to dist eslint ([79223841](https://github.com/jquery/jquery/commit/792238410dc16ba0cc53c2740c47c314ea65d822))
+*   Bump qs, socket.io-parser, socket.io & json5 ([b923047d](https://github.com/jquery/jquery/commit/b923047d29d37f2d5c96f8b33992f322bc7b7944))
+*   migrate most grunt tasks off of grunt ([2bdecf8b](https://github.com/jquery/jquery/commit/2bdecf8b7bd10864e5337a4e24e39476c78cf23a))
+*   Bump actions/checkout, actions/setup-node & github/codeql-action ([42e50f8c](https://github.com/jquery/jquery/commit/42e50f8c21fbfd08092ad81add4ac38982ef0841))
+*   Update mailmap entry for Krinkle ([699bcd39](https://github.com/jquery/jquery/commit/699bcd396fa342c546905805a0cdfedd1959b7ce))
+*   replace CRLF with LF during minify ([48cc402a](https://github.com/jquery/jquery/commit/48cc402a917d6011c7d3e75f779f11ef91b474fb))
+*   Add `exports` to package.json, export slim & esm builds ([#4592](https://github.com/jquery/jquery/issues/4592), [8be4c0e4](https://github.com/jquery/jquery/commit/8be4c0e4f89d6c8f780e5937a0534921d8c7815e))
+*   Switch form Terser to SWC for JS minification (#5286) ([#5285](https://github.com/jquery/jquery/issues/5285), [e2421875](https://github.com/jquery/jquery/commit/e24218758bb21bfdc296731d70f3d48ab786e5f5))
+*   Make sure `*.cjs` & `*.mjs` files use UNIX line endings as well ([198b41c8](https://github.com/jquery/jquery/commit/198b41c8c2cd726b875615023b2b37b213040ad3))
+*   switch preferred email for timmywil ([2b6b5e0a](https://github.com/jquery/jquery/commit/2b6b5e0a3ba3029ec3ad1525a178920765e3adf1))
+*   Bump github/codeql-action & actions/checkout ([4a13266e](https://github.com/jquery/jquery/commit/4a13266efd262a92f05d86b71d715885de103e6d))
+*   Drop individual AMD modules ([5701957b](https://github.com/jquery/jquery/commit/5701957b7223659c52a43f8c2c5465fdf2803df4))
+*   Reference GitHub Actions by commit SHAs ([#5266](https://github.com/jquery/jquery/issues/5266), [784b9ba6](https://github.com/jquery/jquery/commit/784b9ba6e403997161113aa56d1747baed4e0767))
+*   Switch the minifier from UglifyJS to Terser ([27303c6b](https://github.com/jquery/jquery/commit/27303c6be09b8fc24c13454deae234e480cbf995))
+*   Make the `eslint:dev` task not lint the `dist/` folder ([44906a83](https://github.com/jquery/jquery/commit/44906a83d28a81f0107f8418a430db7e040a776b))
+*   Test on Node.js 20, stop testing on Node.js 14 & 19 ([6616acff](https://github.com/jquery/jquery/commit/6616acff0a6c144c3eac3afae8578085bd325834))
+*   Only install Playwright dependencies when needed ([e77bd9d6](https://github.com/jquery/jquery/commit/e77bd9d64fc696cadfe1f8c9ebb50d7609a97b07))
+*   Bump actions/setup-node from 3.5.1 to 3.6.0 ([7e7bd062](https://github.com/jquery/jquery/commit/7e7bd062070b3eca8ee047136ea8575fbed5d70f))
+*   Run GitHub Action browser tests on Playwright WebKit ([b02a257f](https://github.com/jquery/jquery/commit/b02a257f98688aa890e06a85672cd1a54c3ffa3a))
+*   Migrate middleware-mockserver to modern JS ([ce90a484](https://github.com/jquery/jquery/commit/ce90a48450ba40586a6567235abb8fd2df84da97))
+*   remove stale Insight package from custom builds ([c66d4700](https://github.com/jquery/jquery/commit/c66d4700dcf98efccb04061d575e242d28741223))
+*   Limit permissions for GitHub workflows ([c909d6b1](https://github.com/jquery/jquery/commit/c909d6b1ff444e68618b6da13d9c21714f681925))
+*   Test on Node.js 18 & 19, stop testing on Node 12 ([f62d8e21](https://github.com/jquery/jquery/commit/f62d8e2159baf1eabf3b760b85b2dda56d569a09))
+*   Bump actions/setup-node from 3.5.0 to 3.5.1 ([0208224b](https://github.com/jquery/jquery/commit/0208224b5b76d54a39986f78aac97dbf1cccbe38))
+*   Update Grunt from 1.4.1 to 1.5.3 ([aa231cd2](https://github.com/jquery/jquery/commit/aa231cd21421503d319ad6068e7df0fb3baa7fea))
+*   Bump actions/setup-node from 3.4.1 to 3.5.0 ([25400750](https://github.com/jquery/jquery/commit/25400750fb2e08b0a7e1a752a3ca0e9eaec16163))
+*   Update GitHub Actions ([52f452b2](https://github.com/jquery/jquery/commit/52f452b2e8881e5ec5c9e880e277c8ecf633e8dc))
+*   Add dependabot.yml config (GitHub Actions) ([3f8bb2a4](https://github.com/jquery/jquery/commit/3f8bb2a46daf76f1427f49810d06a210ffbc7016))
+*   Test on Node 17, update Grunt & `karma-*` packages ([2525cffc](https://github.com/jquery/jquery/commit/2525cffc42934c0d5c7aa085bc45dd6a8282e840))
+*   Separate the install step from running tests in GitHub Actions ([eef97250](https://github.com/jquery/jquery/commit/eef972508c8be6cc3cd0039d34dc9fe16bac916c))
+*   remove travis.yml and travis mentions from core (#4983) ([5f4d449a](https://github.com/jquery/jquery/commit/5f4d449aa836f376eab2d2ca7585d5476d12f095))
+*   Migrate CI to GitHub Actions ([e23190e6](https://github.com/jquery/jquery/commit/e23190e63cb121da79b92e6641a81a44dcea9252))
+*   Update ESLint & eslint-plugin-import, fixing the build ([9735edd5](https://github.com/jquery/jquery/commit/9735edd5cb7b5ef30bb8acc4d7596a1410a971cc))
+*   Test on Node.js 16 instead of 15 ([0f623fdc](https://github.com/jquery/jquery/commit/0f623fdc8db128657716290cb7d57430e224c977))
+*   Take core-js-bundle from the external directory as well ([345cd22e](https://github.com/jquery/jquery/commit/345cd22e5664655ed315958ed2056610607c12ef))
+*   Restore the external directory ([a684e6ba](https://github.com/jquery/jquery/commit/a684e6ba836f7c553968d7d026ed7941e1a612d8))
+*   Rename master to main across the repository ([8ae477a4](https://github.com/jquery/jquery/commit/8ae477a432f0924cd4bd3bdeaef2c4c15e483a8f))
+*   Test on Node.js 15 ([6984d174](https://github.com/jquery/jquery/commit/6984d1747623dbc5e87fd6c261a5b6b1628c107c))
+*   Explicitly exclude the queue module from the slim build ([a503c691](https://github.com/jquery/jquery/commit/a503c691dc06c59acdafef6e54eca2613c6e4032))
+*   Make the import/no-unused-modules ESLint rule work in WebStorm ([8612018d](https://github.com/jquery/jquery/commit/8612018d4eb570b39532fca8344a187d2e95f98e))
+*   Append .eslintignore paths to grunt eslint paths ([a22b43ba](https://github.com/jquery/jquery/commit/a22b43bad41592ec61e5fa0fcd2b3a3d44f8bfd3))
+*   Use the US spelling of “favor” ([fa0058af](https://github.com/jquery/jquery/commit/fa0058af426c4e482059214c29c29f004254d9a1))
+*   Fix commitplease husky config ([#4735](https://github.com/jquery/jquery/issues/4735), [3a1b338a](https://github.com/jquery/jquery/commit/3a1b338a7a579a45543b031a003abdce4dc6ac67))
+*   Update dependencies ([b5028669](https://github.com/jquery/jquery/commit/b502866960b30863e56968bd35e720905ac58025))
+*   Event: Make sure all source modules’ exports are used (#4648) ([40c3abd0](https://github.com/jquery/jquery/commit/40c3abd0ab049449acab5f2e12c34b9cc3199482))
+*   Update eslint-config-jquery, fix linting violations ([ef4d6ca6](https://github.com/jquery/jquery/commit/ef4d6ca6c3a1b276fedc27b1f3a18823276f01a3))
+*   Followups after introducing ES modules compiled via Rollup ([55cd3a44](https://github.com/jquery/jquery/commit/55cd3a44368d529326b6d9b16ff7c0204fee5516))
+*   Correct code indentations based on jQuery Style Guide ([3d62d570](https://github.com/jquery/jquery/commit/3d62d5704989f17d3a20ae7521d52e9c8c60b4ee))
+*   Reduce the slim build header comment & jQuery.fn.jquery ([812b4a1a](https://github.com/jquery/jquery/commit/812b4a1a837c049b85efb73603105b4245cb0e5c))
+*   Move ESLint max-len disable-directive to dist/.eslintrc.json ([34296ec5](https://github.com/jquery/jquery/commit/34296ec547f0ab6577e8c31815447990a9c01b31))
+*   Test on Node.js 14, stop testing on Node.js 8 & 13 ([88eb22e0](https://github.com/jquery/jquery/commit/88eb22e0599d546f98f6145c53deb086e1d82857))
+*   Enable reportUnusedDisableDirectives in ESLint ([46f9810b](https://github.com/jquery/jquery/commit/46f9810b73a7ad446d7c3711faf92f56b67df3c1))
+*   Resolve Travis config warnings ([5b94a4f8](https://github.com/jquery/jquery/commit/5b94a4f847fe2328b1b8f2340b11b6031f95d2d1))
+*   Enable ESLint one-var rule for var declarations in browser code ([4a7fc854](https://github.com/jquery/jquery/commit/4a7fc8544e2020c75047456d11979e4e3a517fdf))
+*   Add Christian Oliff to .mailmap & AUTHORS.txt ([721744a9](https://github.com/jquery/jquery/commit/721744a9fab5b597febea64e466272eabfdb9463))
+*   Lint the minified jQuery file as well – a Gruntfile fix ([#3075](https://github.com/jquery/jquery/issues/3075), [338f1fc7](https://github.com/jquery/jquery/commit/338f1fc77483a1bc1456e1f4ba1db2049bb45b45))
+*   Lint the minified jQuery file as well ([#3075](https://github.com/jquery/jquery/issues/3075), [89a18de6](https://github.com/jquery/jquery/commit/89a18de64cec73936507ea9feca24d029edea24f))
+*   Add intuitive names to Travis jobs ([e1fab109](https://github.com/jquery/jquery/commit/e1fab10911dfe3b93bf8bd5d276e30e6fc69f780))
+*   Make dev mode work in Karma again, serve source files from disk ([437f389a](https://github.com/jquery/jquery/commit/437f389a24a6bef213d4df507909e7e69062300b))
+*   Tests: Fix custom build tests, verify on Travis ([0f780ba7](https://github.com/jquery/jquery/commit/0f780ba7cc5968d53bba386bdcb59b8d9410873b))
+*   Create a `grunt custom:slim` alias for the Slim build (#4578) ([9b9ed469](https://github.com/jquery/jquery/commit/9b9ed469b43e9fa6e2c752444470ae4c87d03d57))
+*   Make Karma work in ES modules mode ([341c6d1b](https://github.com/jquery/jquery/commit/341c6d1b5abe4829f59fbc32e93f6a6a1afb900f))
+*   Auto-convert sources to AMD ([f37c2e51](https://github.com/jquery/jquery/commit/f37c2e51f36c8f8bab3879064a90e86a685feafc))
+*   Fix the Windows build ([#4548](https://github.com/jquery/jquery/issues/4548), [9fd2fa53](https://github.com/jquery/jquery/commit/9fd2fa5388dba5c71129a1d9e3bb8e4fe6e4eb0b))
+*   Require extensions for ES6 imports, prevent import cycles ([44ac8c85](https://github.com/jquery/jquery/commit/44ac8c8529173711b66046ae5cfefa5bd4892461))
+*   Fix the import path to serialize.js from ajax.js ([07532014](https://github.com/jquery/jquery/commit/075320149ae30a5c593c06b2fb015bdf033e0acf))
+*   Run tests on Travis only on browsers defined in the config ([bcbcdd2b](https://github.com/jquery/jquery/commit/bcbcdd2b2c1bb7075f4f73dc89ca7d65db2a09ed))
+*   Run tests on Firefox ESR as well ([2d5ad6d2](https://github.com/jquery/jquery/commit/2d5ad6d23e0f57c733ce4556d3f2ee93ca99cadb))
+*   Run tests on Node.js 13 in addition to 8, 10 & 12 ([830976e6](https://github.com/jquery/jquery/commit/830976e690b5fffeac860e2fdd07986d087ce824))
+*   Run tests on Travis on FirefoxHeadless as well ([584835e6](https://github.com/jquery/jquery/commit/584835e68239ce55d1fc007b284e8ef4ed2817c2))
+*   Require strict mode in Node.js scripts via ESLint ([bbad821c](https://github.com/jquery/jquery/commit/bbad821c399da92995a11b88d6684970479d4a9b))
+*   Support jquery-release –dry-run flag ([d7d0b52b](https://github.com/jquery/jquery/commit/d7d0b52bda74486f2351baa9d03ca4534de0d733))
+*   Stop copying src/core.js to dist on release ([#4489](https://github.com/jquery/jquery/issues/4489), [9a4d9806](https://github.com/jquery/jquery/commit/9a4d980639dd804ad320685a25b8ff4572e3f595))
+*   Remove the external directory, read from node_modules directly ([d7e64190](https://github.com/jquery/jquery/commit/d7e64190efc411e3973a79fd027bf1afe359f429))
+*   ESLint: forbid unused function parameters ([438b1a3e](https://github.com/jquery/jquery/commit/438b1a3e8a52d3e4efd8aba45498477038849c97))
+*   Fix the regex parsing AMD var-modules (#4389) ([9ec09c3b](https://github.com/jquery/jquery/commit/9ec09c3b4aa5182c2a8b8f51afb861b685a4003c))
+*   Fix AMD dependencies in curCSS ([b220f6df](https://github.com/jquery/jquery/commit/b220f6df88d34dd908f55d57417fcec377787e5c))
+*   Test on Node.js 12, stop testing on Node.js 6 & 11 ([b8d47128](https://github.com/jquery/jquery/commit/b8d4712825a26a7f24c2bdb5a71aa3abcd345dfd))
+*   Fix unresolved jQuery reference in finalPropName ([#4358](https://github.com/jquery/jquery/issues/4358), [87403058](https://github.com/jquery/jquery/commit/874030583c9b94603de467124420e6c7a1c3c8ac))
+*   Update Sizzle from 2.3.3 to 2.3.4 ([#1756](https://github.com/jquery/jquery/issues/1756), [#4170](https://github.com/jquery/jquery/issues/4170), [#4249](https://github.com/jquery/jquery/issues/4249), [0b2c36ad](https://github.com/jquery/jquery/commit/0b2c36adb4e2c048318659e4196e0925da10ead2))
+*   Update the master version to 4.0.0-pre ([c4f2fa2f](https://github.com/jquery/jquery/commit/c4f2fa2fb33d6e52f7c8fad9f687ef970f442179))
+*   Update Sinon from 2.3.7 to 7.3.1, other updates ([fea7a2a3](https://github.com/jquery/jquery/commit/fea7a2a328f475048b4450c5c02a60832fdcfc3c))
+
+### Core
+
+*   Add more info about named exports ([5f869590](https://github.com/jquery/jquery/commit/5f869590924b7dea6a16d176b18700939f4b5290))
+*   Simplify code post browser support reduction ([93ca49e6](https://github.com/jquery/jquery/commit/93ca49e6d1ac23fee33b3bc3b7f4d93dd1a25cb7))
+*   Move the factory to separate exports ([46f6e3da](https://github.com/jquery/jquery/commit/46f6e3da796ee9d28c7c1428793b72d66bcbb0b7))
+*   Use named exports in `src/` ([#5262](https://github.com/jquery/jquery/issues/5262), [f75daab0](https://github.com/jquery/jquery/commit/f75daab09102a4dd5107deadb55d4a169f86254a))
+*   Fix regression in jQuery.text() on HTMLDocument objects ([#5264](https://github.com/jquery/jquery/issues/5264), [a75d6b52](https://github.com/jquery/jquery/commit/a75d6b52fad212820358e8ada3154f2f634e699b))
+*   Selector: Move jQuery.contains from the selector to the core module ([024d8719](https://github.com/jquery/jquery/commit/024d87195ac46690023e2b0b308d4406a8a5a27e))
+*   Drop the root parameter of jQuery.fn.init ([d2436df3](https://github.com/jquery/jquery/commit/d2436df36a4b2ef556907e734a90771f0dbdbcaf))
+*   Don’t rely on splice being present on input ([9c6f64c7](https://github.com/jquery/jquery/commit/9c6f64c7b51d50e334ef1183e2937ad77c0a68b0))
+*   Manipulation: Add basic TrustedHTML support ([#4409](https://github.com/jquery/jquery/issues/4409), [de5398a6](https://github.com/jquery/jquery/commit/de5398a6ad088dc006b46c6a870a2a053f4cd663))
+*   Report browser errors in parseXML ([#4784](https://github.com/jquery/jquery/issues/4784), [89697325](https://github.com/jquery/jquery/commit/8969732518470a7f8e654d5bc5be0b0076cb0b87))
+*   Make jQuery.isXMLDoc accept falsy input ([#4782](https://github.com/jquery/jquery/issues/4782), [fd421097](https://github.com/jquery/jquery/commit/fd421097c56696e4c1c4a99c1aae44c59a722be4))
+*   Drop support for Edge Legacy (i.e. non-Chromium Microsoft Edge) ([#4568](https://github.com/jquery/jquery/issues/4568), [e35fb62d](https://github.com/jquery/jquery/commit/e35fb62db4fb46f031056bb53e393982c03972a1))
+*   Fire iframe script in its context, add doc param in globalEval ([#4518](https://github.com/jquery/jquery/issues/4518), [4592595b](https://github.com/jquery/jquery/commit/4592595b478be979141ce35c693dbc6b65647173))
+*   Exclude callbacks & deferred modules in the slim build as well ([fbc44f52](https://github.com/jquery/jquery/commit/fbc44f52fe76e1b601da76a1d7f8ef27884c06da))
+*   Migrate from AMD to ES modules 🎉 ([d0ce00cd](https://github.com/jquery/jquery/commit/d0ce00cdfa680f1f0c38460bc51ea14079ae8b07))
+*   Use Array.prototype.flat where supported ([#4320](https://github.com/jquery/jquery/issues/4320), [9df4f1de](https://github.com/jquery/jquery/commit/9df4f1de12728b44a4b0f91748f12421008d9079))
+*   Remove private copies of push, sort & splice from the jQuery prototype ([b59107f5](https://github.com/jquery/jquery/commit/b59107f5d7451ac16a7c8755128719be6ec8bf12))
+*   Implement .even() & .odd() to replace POS :even & :odd ([78420d42](https://github.com/jquery/jquery/commit/78420d427cf3734d9264405fcbe08b76be182a95))
+*   Deprecate jQuery.trim ([#4363](https://github.com/jquery/jquery/issues/4363), [5ea59460](https://github.com/jquery/jquery/commit/5ea5946094784f68437ef26d463dfcfbbbaff1f6))
+*   Remove IE-specific support tests, rely on document.documentMode ([#4386](https://github.com/jquery/jquery/issues/4386), [3527a384](https://github.com/jquery/jquery/commit/3527a3840585e6a359cd712591c9c57398357b9b))
+*   Drop support for IE <11, iOS <11, Firefox <65, Android Browser & PhantomJS ([#3950](https://github.com/jquery/jquery/issues/3950), [#4299](https://github.com/jquery/jquery/issues/4299), [cf84696f](https://github.com/jquery/jquery/commit/cf84696fd1d7fe314a11492606529b5a658ee9e3))
+*   Remove deprecated jQuery APIs ([#4056](https://github.com/jquery/jquery/issues/4056), [58f0c00b](https://github.com/jquery/jquery/commit/58f0c00bed695f934bb205c6115e5fe99dd5c27b))
+
+### CSS
+
+*   Fix reliableTrDimensions support test for initially hidden iframes ([b1e66a5f](https://github.com/jquery/jquery/commit/b1e66a5faaf46ffcbcc27c79a9a224aaf851a987))
+*   Selector: Align with 3.x, remove the outer `selector.js` wrapper ([53cf7244](https://github.com/jquery/jquery/commit/53cf7244da2a2040333335c36e435b1c12efdff9))
+*   Make the reliableTrDimensions support test work with Bootstrap CSS ([#5270](https://github.com/jquery/jquery/issues/5270), [65b85031](https://github.com/jquery/jquery/commit/65b85031fb5688361c077bc04e641e4b502671e1))
+*   Make `offsetHeight( true )`, etc. include negative margins ([#3982](https://github.com/jquery/jquery/issues/3982), [bce13b72](https://github.com/jquery/jquery/commit/bce13b72c1753e16cc0db53ebf0f0456bdcf6b48))
+*   Return `undefined` for whitespace-only CSS variable values (#5120) ([7eb00196](https://github.com/jquery/jquery/commit/7eb0019640a5856c42b451551eb7f995d913eba9))
+*   Don’t trim whitespace of undefined custom property ([#5105](https://github.com/jquery/jquery/issues/5105), [ed306c02](https://github.com/jquery/jquery/commit/ed306c0261ab63746040e5d58bb4477c3069a427))
+*   Skip falsy values in `addClass( array )`, compress code ([#4998](https://github.com/jquery/jquery/issues/4998), [a338b407](https://github.com/jquery/jquery/commit/a338b407f2479f82df40635055effc163835183f))
+*   Justify use of rtrim on CSS property values ([655c0ed5](https://github.com/jquery/jquery/commit/655c0ed5e204b1f6427e09d615a49586a7bc84eb))
+*   Trim whitespace surrounding CSS Custom Properties values ([#4926](https://github.com/jquery/jquery/issues/4926), [efadfe99](https://github.com/jquery/jquery/commit/efadfe991a5c287af561a9326bf1427d726c91c1))
+*   Include `show`, `hide` & `toggle` methods in the jQuery slim build ([297d18dd](https://github.com/jquery/jquery/commit/297d18dd13f7b810ea5a4afeefa4cb15d9e16e16))
+*   Remove the opacity CSS hook ([865469f5](https://github.com/jquery/jquery/commit/865469f5e60f55feb28469bb0a7526dd22f04b4e))
+*   Workaround buggy getComputedStyle on table rows in IE/Edge ([#4490](https://github.com/jquery/jquery/issues/4490), [26415e08](https://github.com/jquery/jquery/commit/26415e081b318dbe1d46d2b7c30e05f14c339b75))
+*   Don’t automatically add “px” to properties with a few exceptions ([#2795](https://github.com/jquery/jquery/issues/2795), [00a9c2e5](https://github.com/jquery/jquery/commit/00a9c2e5f4c855382435cec6b3908eb9bd5a53b7))
+
+### Data
+
+*   Refactor to reduce size ([805cdb43](https://github.com/jquery/jquery/commit/805cdb43fd02c3a5783c06b5ec2c9519be0682ab))
+*   Event:Manipulation: Prevent collisions with Object.prototype ([#3256](https://github.com/jquery/jquery/issues/3256), [9d76c0b1](https://github.com/jquery/jquery/commit/9d76c0b163675505d1a901e5fe5249a2c55609bc))
+*   Separate data & css/effects camelCase implementations ([#3355](https://github.com/jquery/jquery/issues/3355), [8fae2120](https://github.com/jquery/jquery/commit/8fae21200e80647fec4389995c4879948d11ad66))
+
+### Deferred
+
+### Deprecated
+
+*   Define `.hover()` using non-deprecated methods ([fd6ffc5e](https://github.com/jquery/jquery/commit/fd6ffc5eb2c12562f2656d2f33865448420252be))
+*   Remove jQuery.trim ([0b676ae1](https://github.com/jquery/jquery/commit/0b676ae12d20721e2df6f6f32f37f7302f8805bf))
+*   Fix AMD parameter order ([f810080e](https://github.com/jquery/jquery/commit/f810080e8e92278bb5288cba7cc0169481471780))
+
+### Dimensions
+
+*   Add offset prop fallback to FF for unreliable TR dimensions ([#4529](https://github.com/jquery/jquery/issues/4529), [3bbbc111](https://github.com/jquery/jquery/commit/3bbbc11111840d6fd5160db13f2c1a9acb05c4c4))
+
+### Docs
+
+*   Fix module links in the package README ([ace646f6](https://github.com/jquery/jquery/commit/ace646f6e83e653f666ba715c200739f1cbdba52))
+*   update watch task in CONTRIBUTING.md ([77d6ad71](https://github.com/jquery/jquery/commit/77d6ad7172db3ae11573df7b322d410b161eb43e))
+*   Fix typos found by codespell ([620870a1](https://github.com/jquery/jquery/commit/620870a1af5287d29c77ec6d5f973116b23793a7))
+*   remove stale gitter badge from readme ([67cb1af7](https://github.com/jquery/jquery/commit/67cb1af7740a956e150e8d93266c4e601f55e8a4))
+*   Remove the “Grunt build” section from the PR template ([988a5684](https://github.com/jquery/jquery/commit/988a56847de301ce18a653f84b07c5af432a269f))
+*   Remove stale badge from README ([bcd9c2bc](https://github.com/jquery/jquery/commit/bcd9c2bc3ddaa04f89f550681ca9c1ec5efc4328))
+*   Update the README of the published package ([edccabf1](https://github.com/jquery/jquery/commit/edccabf10d37b57cbd4eeebc44f3acb67cb2739c))
+*   Remove git.io from a GitHub Actions comment ([016872ff](https://github.com/jquery/jquery/commit/016872ffe03ab9107b1bc62fae674a4809c3b23f))
+*   Update webpack website in README ([01819bc3](https://github.com/jquery/jquery/commit/01819bc3bcc44282e5bb9301c3478d837d1e5152))
+*   add link to patchwelcome and help wanted issues ([924b7ce8](https://github.com/jquery/jquery/commit/924b7ce825962bfe4c16e02eb411c7f66ee75a55))
+*   add link to preview the new CLAs ([683ceb8f](https://github.com/jquery/jquery/commit/683ceb8ff067ac53a7cb464ba1ec3f88e353e3f5))
+*   Fix incorrect `trac-NUMBER` references ([eb9ceb2f](https://github.com/jquery/jquery/commit/eb9ceb2facbeff1c66a41824bd0ac0c56d0c5c62))
+*   remove expired links from old jquery source (#4997) ([ed066ac7](https://github.com/jquery/jquery/commit/ed066ac70270b4bb20b5717501d2d268ef144bd3))
+*   Remove links to Web Archive from source ([#4981](https://github.com/jquery/jquery/issues/4981), [e24f2dcf](https://github.com/jquery/jquery/commit/e24f2dcf3f6bda1a672502e0233c732065cbbe89))
+*   Replace `#NUMBER` Trac issue references with `trac-NUMBER` ([5d5ea015](https://github.com/jquery/jquery/commit/5d5ea015114092c157311c4948f7cc3d8c8e7f8a))
+*   Update the URL to the latest jQuery build in CONTRIBUTING.md ([9bdb16cd](https://github.com/jquery/jquery/commit/9bdb16cd19097da67950a707baac3980bda873f3))
+*   Remove the CLA checkbox in the pull request template ([e1248931](https://github.com/jquery/jquery/commit/e124893132d7a979d7987f978e968a1f889348b6))
+*   update irc to Libera and fix LAMP dead link ([175db73e](https://github.com/jquery/jquery/commit/175db73ec7938e774d9e93d3afdfb35a24466b47))
+*   Update Frequently Reported Issues in the GitHub issue template ([7a6fae6a](https://github.com/jquery/jquery/commit/7a6fae6a7e51ae30a9f3177e8639fbf523ed0915))
+*   Change JS Foundation mentions to OpenJS Foundation ([11611967](https://github.com/jquery/jquery/commit/11611967adf2bd9ff4304132f917629ec1134049))
+*   add SECURITY.md, show security email address ([2ffe54ca](https://github.com/jquery/jquery/commit/2ffe54ca53b4ba2de2012f83c3faf262c1003af9))
+*   Fix typos ([1a7332ce](https://github.com/jquery/jquery/commit/1a7332ce83cdee7d6cd9d45c2a4b83067f53f14b))
+*   Update the link to the jsdom repository ([a62309e0](https://github.com/jquery/jquery/commit/a62309e01b3c76d2b73560ca666c454b7bbfcb77))
+*   Use https for hyperlinks in README ([73415da2](https://github.com/jquery/jquery/commit/73415da25d964ee31ec1804d55f5af0199a1378e))
+*   Remove a mention of the event/alias.js module from README ([3edfa1bc](https://github.com/jquery/jquery/commit/3edfa1bcdc50bca41ac58b2642b12f3feee03a3b))
+*   Update links to EdgeHTML issues to go through Web Archive ([1dad1185](https://github.com/jquery/jquery/commit/1dad1185e0b2ca2a13bf411558eda75fb2d4da88))
+*   direct users to GitHub docs for cloning the repo ([f1c16de2](https://github.com/jquery/jquery/commit/f1c16de29689d2cfaf629f00d682148e99753509))
+*   Change OS X to macOS in README ([5a3e0664](https://github.com/jquery/jquery/commit/5a3e0664d261422f11a78faaf101d70c73b3a5a8))
+*   Update most URLs to HTTPS ([f09d9210](https://github.com/jquery/jquery/commit/f09d92100ffff6208211b200ed0cdc39bfd17fc3))
+*   Convert link to Homebrew from HTTP to HTTPS ([e0022f23](https://github.com/jquery/jquery/commit/e0022f23144fd1dc6db86a5d8c18af47bc14f0f3))
+
+### Effect
+
+*   Fix a unnecessary conditional statement in .stop() ([#4374](https://github.com/jquery/jquery/issues/4374), [110802c7](https://github.com/jquery/jquery/commit/110802c7f22b677ef658963aa95ebdf5cb9c5573))
+
+### Effects
+
+### Event
+
+*   Avoid collisions between jQuery.event.special & Object.prototype ([bcaeb000](https://github.com/jquery/jquery/commit/bcaeb000b777c018ad5d18e01be5060caa8cb158))
+*   Simplify the check for saved data in leverageNative ([dfe212d5](https://github.com/jquery/jquery/commit/dfe212d5a1eed6b4a67d1cbd04ece09bbac33699))
+*   Make trigger(focus/blur/click) work with native handlers ([#5015](https://github.com/jquery/jquery/issues/5015), [6ad3651d](https://github.com/jquery/jquery/commit/6ad3651dbfea9e9bb56e608f72b4ef2f97bd4e70))
+*   Simulate focus/blur in IE via focusin/focusout ([#4856](https://github.com/jquery/jquery/issues/4856), [#4859](https://github.com/jquery/jquery/issues/4859), [#4950](https://github.com/jquery/jquery/issues/4950), [ce60d318](https://github.com/jquery/jquery/commit/ce60d31893deab7d3da592b5173e90b5d50e7732))
+*   Don’t break focus triggering after `.on(focus).off(focus)` ([#4867](https://github.com/jquery/jquery/issues/4867), [e539bac7](https://github.com/jquery/jquery/commit/e539bac79e666bba95bba86d690b4e609dca2286))
+*   Make focus re-triggering not focus the original element back ([#4382](https://github.com/jquery/jquery/issues/4382), [dbcffb39](https://github.com/jquery/jquery/commit/dbcffb396c2db61ff96edc4162602e850797d61f))
+*   Don’t crash if an element is removed on blur ([#4417](https://github.com/jquery/jquery/issues/4417), [5c2d0870](https://github.com/jquery/jquery/commit/5c2d08704e289dd2745bcb0557b35a9c0e6af4a4))
+*   Remove the event.which shim ([#3235](https://github.com/jquery/jquery/issues/3235), [1a5fff4c](https://github.com/jquery/jquery/commit/1a5fff4c169dbaa2df72c656868bcf60ed4413d0))
+*   remove jQuery.event.global ([18db8717](https://github.com/jquery/jquery/commit/18db87172cffbe48b92e30b70249e304863a70f9))
+*   Only attach events to objects that accept data – for real ([#4397](https://github.com/jquery/jquery/issues/4397), [d5c505e3](https://github.com/jquery/jquery/commit/d5c505e35d8c74ce8e9d99731a1a7eab0e0d911c))
+*   Stop shimming focusin & focusout events ([#4300](https://github.com/jquery/jquery/issues/4300), [8a741376](https://github.com/jquery/jquery/commit/8a741376937dfacf9f82b2b88f93b239fe267435))
+*   Prevent leverageNative from registering duplicate dummy handlers ([eb6c0a7c](https://github.com/jquery/jquery/commit/eb6c0a7c97b1b3cf00144de12d945c9c569f935c))
+*   Fix handling of multiple async focus events ([#4350](https://github.com/jquery/jquery/issues/4350), [ddfa8376](https://github.com/jquery/jquery/commit/ddfa83766478268391bc9da96683fc0d4973fcfe))
+
+### Manipulation
+
+*   Generalize a test to support IE ([88690ebf](https://github.com/jquery/jquery/commit/88690ebfc8b5ef8b1e444326c664b590ecc0b888))
+*   Support $el.html(selfRemovingScript) (#5378) ([#5377](https://github.com/jquery/jquery/issues/5377), [937923d9](https://github.com/jquery/jquery/commit/937923d9ee8dfd19008447b5059cbd13ee5a23ac))
+*   Extract domManip to a separate file ([ee6e8740](https://github.com/jquery/jquery/commit/ee6e874075ba1fcd8f9e62cd1ee5c04f6518b6d6))
+*   Don’t remove HTML comments from scripts ([#4904](https://github.com/jquery/jquery/issues/4904), [2f8f39e4](https://github.com/jquery/jquery/commit/2f8f39e457c32c454c50545b0fdaa1d7a4a2f8bd))
+*   Respect script crossorigin attribute in DOM manipulation ([#4542](https://github.com/jquery/jquery/issues/4542), [15ae3614](https://github.com/jquery/jquery/commit/15ae361485056b236a9484a185238f992806e1ff))
+*   Avoid concatenating strings in buildFragment ([9c98e4e8](https://github.com/jquery/jquery/commit/9c98e4e86eda857ee063bc48adbc1a11bb5506ee))
+*   Make jQuery.htmlPrefilter an identity function ([90fed4b4](https://github.com/jquery/jquery/commit/90fed4b453a5becdb7f173d9e3c1492390a1441f))
+*   Selector: Use the nodeName util where possible to save size ([4504fc3d](https://github.com/jquery/jquery/commit/4504fc3d722dd029d861cb47aa65a5edc651c4d3))
+
+### Release
+
+*   use buildDefaultFiles directly and pass version ([b507c864](https://github.com/jquery/jquery/commit/b507c8648f701acd1c48b3c38054ad38d76fd1ca))
+*   copy dist-module folder as well ([63767650](https://github.com/jquery/jquery/commit/63767650b5b171b4671304fd2bb2f2890431929f))
+*   only published versioned files to cdn ([3a0ca684](https://github.com/jquery/jquery/commit/3a0ca684eb21d64a13d7591ce1891b1990e0339c))
+*   remove scripts and dev deps from dist package.json ([7eac932d](https://github.com/jquery/jquery/commit/7eac932da7177104546abef595adf4429eb829b3))
+*   update build command in Release.generateArtifacts ([3b963a21](https://github.com/jquery/jquery/commit/3b963a21662061e0f39ad90f146e73e2223c2b86))
+*   add support for md5 sums in windows ([f088c366](https://github.com/jquery/jquery/commit/f088c36631df3d5dc98408debd147ea5d3618557))
+*   remove the need to install grunt globally ([b2bbaa36](https://github.com/jquery/jquery/commit/b2bbaa36d4d37bd48f954ed3cdbd50d3461a523d))
+*   upgrade release dependencies ([967af732](https://github.com/jquery/jquery/commit/967af73203378db0cc3637adee85c442e246e05a))
+*   Remove an unused chalk dependency ([bfb6897c](https://github.com/jquery/jquery/commit/bfb6897c558dfdccff7ac5fc377b08e806525be3))
+*   Use an in-repository dist README fixture ([358b769a](https://github.com/jquery/jquery/commit/358b769a00c3a09a8ec621b8dcb2d5e31b7da69a))
+*   Update AUTHORS.txt ([1b74660f](https://github.com/jquery/jquery/commit/1b74660f730d34bf728094c33080ff406427f41e))
+*   update AUTHORS.txt ([cf9fe0f6](https://github.com/jquery/jquery/commit/cf9fe0f6a104a0f527c7c3f441485c19e2b19c69))
+
+### Selector
+
+*   Make `selector.js` module depend on `attributes/attr.js` ([#5379](https://github.com/jquery/jquery/issues/5379), [e06ff088](https://github.com/jquery/jquery/commit/e06ff08849057cd099365bf43598c8952fe9956d))
+*   Eliminate `selector.js` depenencies from various modules ([e8b7db4b](https://github.com/jquery/jquery/commit/e8b7db4b0f1e1b8e08578641b30a92b955ccc4ec))
+*   Re-expose jQuery.find.{tokenize,select,compile,setDocument} ([#5259](https://github.com/jquery/jquery/issues/5259), [338de359](https://github.com/jquery/jquery/commit/338de3599039a3ba906214e656bcbe637430c37d))
+*   Stop relying on CSS.supports( “selector(…)” ) ([#5194](https://github.com/jquery/jquery/issues/5194), [68aa2ef7](https://github.com/jquery/jquery/commit/68aa2ef7571e2d9f91fad1aa9e5f956c04dc9ee9))
+*   Backport jQuery selection context logic to selector-native ([#5185](https://github.com/jquery/jquery/issues/5185), [2e644e84](https://github.com/jquery/jquery/commit/2e644e845051703775b35b358eec5d3608a9465f))
+*   Make selector lists work with `qSA` again ([#5177](https://github.com/jquery/jquery/issues/5177), [09d988b7](https://github.com/jquery/jquery/commit/09d988b774e7ff4acfb69c0cde2dab373559aaca))
+*   Implement the `uniqueSort` chainable method ([#5166](https://github.com/jquery/jquery/issues/5166), [5266f23c](https://github.com/jquery/jquery/commit/5266f23cf49c9329bddce4d4af6cb5fbbd1e0383))
+*   Re-introduce selector-native.js ([4c1171f2](https://github.com/jquery/jquery/commit/4c1171f2ed62584211250df0af8302d34c04621a))
+*   Manipulation: Fix DOM manip within template contents ([#5147](https://github.com/jquery/jquery/issues/5147), [3299236c](https://github.com/jquery/jquery/commit/3299236c898136dc1aa57dc5148811203e931895))
+*   Drop support for legacy pseudos, test custom pseudos ([8c7da22c](https://github.com/jquery/jquery/commit/8c7da22caeae8c2c3f7e9869d5f47414669f106c))
+*   Use jQuery `:has` if `CSS.supports(selector(…))` non-compliant ([#5098](https://github.com/jquery/jquery/issues/5098), [d153c375](https://github.com/jquery/jquery/commit/d153c375e67f2c2dba82c2fb079c36b8d795e66a))
+*   Remove the “a:enabled” workaround for Chrome <=77 ([c1ee33ad](https://github.com/jquery/jquery/commit/c1ee33aded44051b8f1288b59d2efdc68d0413cc))
+*   Make empty attribute selectors work in IE again ([#4435](https://github.com/jquery/jquery/issues/4435), [05184cc4](https://github.com/jquery/jquery/commit/05184cc448f4ed7715ddd6a5d724e167882415f1))
+*   Use shallow document comparisons in uniqueSort ([#4441](https://github.com/jquery/jquery/issues/4441), [15750b0a](https://github.com/jquery/jquery/commit/15750b0af270da07917b70457cf09bda97d3d935))
+*   Add a test for throwing on post-comma invalid selectors ([6eee5f7f](https://github.com/jquery/jquery/commit/6eee5f7f181f9ebf5aa428e96356667e3cf7ddbd))
+*   Make selectors with leading combinators use qSA again ([ed66d5a2](https://github.com/jquery/jquery/commit/ed66d5a22b37425abf5b63c361f91340de89c994))
+*   Use shallow document comparisons to avoid IE/Edge crashes ([#4441](https://github.com/jquery/jquery/issues/4441), [aa6344ba](https://github.com/jquery/jquery/commit/aa6344baf87145ffc807a527d9c1fb03c96b1948))
+*   reduce size, simplify setDocument ([29a9544a](https://github.com/jquery/jquery/commit/29a9544a4fb743491a42f827a6cf8627b7b99e0f))
+*   Leverage the :scope pseudo-class where possible ([#4453](https://github.com/jquery/jquery/issues/4453), [df6a7f7f](https://github.com/jquery/jquery/commit/df6a7f7f0f615149266b1a51064293b748b29900))
+*   Bring back querySelectorAll shortcut usage ([cef4b731](https://github.com/jquery/jquery/commit/cef4b73179b8d2a38cfd5e0730111cc80518311a))
+*   Inline Sizzle into the selector module ([47835965](https://github.com/jquery/jquery/commit/47835965bd100a3661d8299d8b769ceeb8b6ce48))
+*   Port Sizzle tests to jQuery ([79b74e04](https://github.com/jquery/jquery/commit/79b74e043a4ee737d44a95094ff1184e40bd5b16))
+
+### Support
+
+*   ensure display is set to block for the support div ([#4832](https://github.com/jquery/jquery/issues/4832), [09f25436](https://github.com/jquery/jquery/commit/09f254361f1fe8a563b8a90fe6a4d269f4b11514))
+
+### Tests
+
+*   Disable the “:lang respects escaped backslashes” test ([#5271](https://github.com/jquery/jquery/issues/5271), [62b9a258](https://github.com/jquery/jquery/commit/62b9a2583460c2384f6de1d0a6aeaf05e51d523b))
+*   Indicate Chrome 112 & Safari 16.4 pass the cssHas support test ([89ef81f8](https://github.com/jquery/jquery/commit/89ef81f86f8f371154e9fd3173be5fb57cb72d5e))
+*   Test AJAX deprecated event aliases properly ([cff28998](https://github.com/jquery/jquery/commit/cff2899885c314d32eea42e9eef6ead6e5da5c2f))
+*   Indicate Firefox 106+ passes the `cssSupportsSelector` test ([716130e0](https://github.com/jquery/jquery/commit/716130e094caf780100a39cfd4526adbd7673b12))
+*   Remove a workaround for a Firefox XML parsing issue ([e7ffe1f1](https://github.com/jquery/jquery/commit/e7ffe1f135dfa68ce3065b2bd319a29a57866dc6))
+*   Fix the link to QUnit CSS file ([8cf39b78](https://github.com/jquery/jquery/commit/8cf39b78e6c36b360dd81268a7f84fb4ca218e15))
+*   Exclude tests based on compilation flags, not API presence ([#5069](https://github.com/jquery/jquery/issues/5069), [fae5fee8](https://github.com/jquery/jquery/commit/fae5fee8b435cc20352d28b0a384b9784b1ad9ed))
+*   Workaround an XML parsing bug in Firefox ([af1cd6f2](https://github.com/jquery/jquery/commit/af1cd6f218f699abc34b1582a910c0df00312aee))
+*   lock colors version to 1.4.0 ([9603b3c8](https://github.com/jquery/jquery/commit/9603b3c899af354a4f538fa5b15f9dac3fcc0f55))
+*   Skip ETag AJAX tests on TestSwarm ([00c060d1](https://github.com/jquery/jquery/commit/00c060d1619d472a2d8c5b104ed76fa3afc2ce97))
+*   Allow statusText to be “success” in AJAX tests ([19ced963](https://github.com/jquery/jquery/commit/19ced963c63372eae5aca9e1a4baec80b78a2b8e))
+*   Make Karma browser timeout larger than the QUnit one ([4fd6912b](https://github.com/jquery/jquery/commit/4fd6912bfd8fffbfabc98a9b0789d28f10af0914))
+*   Don’t remove csp.log in the cspClean action of mock.php ([1019074f](https://github.com/jquery/jquery/commit/1019074f7b1df96ee9d6409ada3dc0562046f6c7))
+*   Load the TestSwarm listener via HTTPS ([d225639a](https://github.com/jquery/jquery/commit/d225639a8ea62863482bd20249077688f60235db))
+*   Switch background image from online file to local 1×1.jpg ([482f8462](https://github.com/jquery/jquery/commit/482f846203e82b1c2620f580e483bf41d11f9f49))
+*   Strip untypical callback parameter characters from mock.php ([a7027463](https://github.com/jquery/jquery/commit/a70274632dc19ff4a64d7bb7657a2cc647ff38b9))
+*   Make more tests run natively in Chrome & Firefox ([50e8e846](https://github.com/jquery/jquery/commit/50e8e84621ff7a314fca253ce73f0519322d8a4d))
+*   Fix tests for not auto-executing scripts without dataType ([d38528b1](https://github.com/jquery/jquery/commit/d38528b17a846b7ca4513b41150a05436546292d))
+*   Recognize callbacks with dots in the Node.js mock server ([df6858df](https://github.com/jquery/jquery/commit/df6858df2ed3fc5c424591a5e09b900eb4ce0417))
+*   Skip the “jQuery.ajax() on unload” test in Safari ([c18dc496](https://github.com/jquery/jquery/commit/c18dc49699bc27481a4af36ed1a0ee1b19c6eb03))
+*   Remove an unused local variable ([82b87f6f](https://github.com/jquery/jquery/commit/82b87f6f0e45ca4e717b4e3a4a20a592709a099f))
+*   Remove remaining obsolete jQuery.cache references ([d96111e1](https://github.com/jquery/jquery/commit/d96111e18b42ae1bc7def72a8a0d156ea39e4d0e))
+*   Workaround failures in recent XSS tests in iOS 8 – 12 ([11066a9e](https://github.com/jquery/jquery/commit/11066a9e6ac183dd710d1bc7aa74a3f809757136))
+*   Add tests for recently fixed manipulation XSS issues ([dc06d68b](https://github.com/jquery/jquery/commit/dc06d68bdc4c2562b5cc530f21e668a17d78ee2d))
+*   Use only one focusin/out handler per matching window & document ([9b732043](https://github.com/jquery/jquery/commit/9b7320435059e30af71d648ab34ac6c00c80f5ef))
+*   Fix flakiness in the “jQuery.ajax() – JSONP – Same Domain” test ([7b0864d0](https://github.com/jquery/jquery/commit/7b0864d0539bbfbb01d88d9bc95369580ffd99bc))
+*   Pass a number of necessary done() calls to assert.async() ([364476c3](https://github.com/jquery/jquery/commit/364476c3dc1231603ba61fc08068fa89fb095e1a))
+*   Remove obsolete jQuery data tests ([eb35be52](https://github.com/jquery/jquery/commit/eb35be528fdea40faab4d89ac859d38dfd024271))
+*   Skip a “width/height on a table row with phantom borders” test in Firefox ([a612733b](https://github.com/jquery/jquery/commit/a612733be0c68d337647a6fcc8f8e0cabc1fc36b))
+*   Don’t test synchronous XHR on unload in Chrome ([323575fb](https://github.com/jquery/jquery/commit/323575fb9bb330a852718d89e323f7ec79549100))
+*   Stop using jQuery.find in tests ([1d624c10](https://github.com/jquery/jquery/commit/1d624c10b4a6b97ac254bcefffa91058556075d2))
+*   Port changes from Sizzle ([ac5f7cd8](https://github.com/jquery/jquery/commit/ac5f7cd8e29ecc7cdf21c13199be5472375ffa0e))
+*   Fix a comment in testinit.js ([7bdf307b](https://github.com/jquery/jquery/commit/7bdf307b51e4d4a891b123a96d4899e31bfba024))
+*   update npo.js and include unminified source instead ([b334ce77](https://github.com/jquery/jquery/commit/b334ce7735ae453bd5643b251f36c3cedce4b3de))
+*   Restrict an event test fallback to TestSwarm ([bde53edc](https://github.com/jquery/jquery/commit/bde53edcf4bd6c975d068eed4eb16c5ba09c1cff))
+*   Fix the new focusin/focusout test in IE ([6f2fae7c](https://github.com/jquery/jquery/commit/6f2fae7c410dcb5876814866a03fc819f0502290))
+*   Fix the core-js polyfill inclusion method ([2e4b79ab](https://github.com/jquery/jquery/commit/2e4b79ab8f7c43d36537a743c4c1a1a5b17e130e))
+
+### Traversing
+
+*   Fix `contents()` on `<object>`s with children in IE ([ccbd6b93](https://github.com/jquery/jquery/commit/ccbd6b93424cbdbf86f07a86c2e55cbab497d7a3))
+*   Fix `contents()` on `<object>`s with children ([#4384](https://github.com/jquery/jquery/issues/4384), [4d865d96](https://github.com/jquery/jquery/commit/4d865d96aa5aae91823c50020b5c19da79566811))

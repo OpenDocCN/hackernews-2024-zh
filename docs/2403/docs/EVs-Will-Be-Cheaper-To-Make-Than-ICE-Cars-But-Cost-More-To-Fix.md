@@ -1,0 +1,44 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:00:17
+-->
+
+# EVs Will Be Cheaper To Make Than ICE Cars But Cost More To Fix
+
+> 来源：[https://jalopnik.com/evs-will-soon-be-cheaper-to-make-than-gas-powered-cars-1851329177](https://jalopnik.com/evs-will-soon-be-cheaper-to-make-than-gas-powered-cars-1851329177)
+
+The cost of [making EVs](https://jalopnik.com/american-south-is-winning-the-ev-manufacturing-battle-1850990016) is decreasing faster than the industry anticipated. EV production will reach [cost parity](https://jalopnik.com/evs-might-not-cost-so-much-thanks-to-cheaper-batteries-1850860684) with ICE-equipped cars in as little three years, and the latest forecast from [Gartner](https://www.gartner.com/en/newsroom/press-releases/2024-03-07-gartner-outlines-a-new-phase-for-electric-vehicles) predicts that EVs will actually be cheaper to make than gas-powered cars by 2027\. One would expect prices to go down as [EVs get cheaper to make](https://jalopnik.com/it-s-time-for-gm-to-prove-it-can-mass-produce-evs-1851263879), but sticker shock could still await buyers when it’s time to [insure](https://jalopnik.com/why-is-my-car-insurance-so-high-on-my-electric-car-1828873708) and [repair](https://jalopnik.com/even-low-milage-teslas-are-often-too-expensive-to-fix-1850053024) these so-called cheap EVs, as [Notebook Check](https://www.notebookcheck.net/Electric-cars-will-be-cheaper-to-make-than-gas-vehicles-but-with-much-higher-repair-and-insurance-costs.812031.0.html) reports.
+
+Ed Begley Jr. On The Past And Present Of Electric Vehicles
+
+<track kind="captions" label="English" src="https://kinja.com/api/videoupload/caption/21414.vtt" srclang="en">
+
+While the cost of EV production keeps going down, the cost of EV repairs keep going up at alarming rates. Despite EVs reaching cost parity with gas cars by 2027, the average cost of repairs following a major accident could increase by 30 percent within that same time frame. This could cause insurance premiums to surge in price, or could lead to insurers flat-out denying coverage of some EV models. Per [Notebook Check](https://www.notebookcheck.net/Electric-cars-will-be-cheaper-to-make-than-gas-vehicles-but-with-much-higher-repair-and-insurance-costs.812031.0.html):
+
+> Some insurers often decide to total an electric vehicle altogether, as the cost of fixing it after an accident becomes prohibitively expensive compared to gas cars with similar damages.
+> 
+> The analysts warn that by the time electric vehicles are expected to become cheaper to make than gas cars, EV repair costs hence insurance premiums will have skyrocketed.
+> 
+> “By 2027, the average cost of an EV body and battery serious accident repair will increase by 30%,” they argue, and ask that automakers bake repairability into the EV production methodology right now, or they will be faced with consumer backlash further down the road.
+> 
+> As a result, vehicles suffering a collision may be more prone to a total write-off as the repair could cost more than its residual value. Equally, more expensive crash repairs may lead to more expensive insurance premiums or even the refusal of insurance companies to cover particular car models.
+
+Right now, EVs are known for having greater up-front costs than comparable gas-powered cars. Making the case for EVs involves comparing their cost over the length of ownership, which yields significant savings due to lower refueling (or recharging) and lower maintenance bills. But lower production costs would invert that formula, making EVs cheaper to buy up-front but more expensive in the long run. At least, when taking into account EV insurance and repair costs.
+
+ Photo: Ron Antonelli (Getty Images) 
+
+That seems to have been the case with Hertz, which touted a new fleet of Tesla Model 3s only to make an about-face and sell off its rental EVs. Hertz expected to save money on fuel and maintenance, but failed to factor in the higher cost of insurance premiums and the possibility of its new EVs being written off due to prohibitively expensive repairs. To make matters worse, [trivial damage](https://jalopnik.com/ev-battery-damage-minor-crash-car-totaled-recycling-1850243294) that would be simple and cheap to fix on a gas-powered car can lead to prolonged wait times for repairs and write-offs in many cases due to the complexity of EV drivetrains and their charging systems.
+
+The issues don’t apply only to EVs that have been involved in minor or major accidents, either. When a component fails on an EV due to a defect or during the course of normal use, the cost to fix fully-electric vehicles can easily exceed their worth, as in the case of this [Renault Zoe](https://jalopnik.com/the-zoe-led-renaults-electric-climb-up-the-sales-charts-1846041613) owner featured in the [*Guardian*](https://www.theguardian.com/money/2024/mar/12/renault-charge-fix-zoe-electric-car)*:*
+
+> We have a 2017 [Renault](https://www.theguardian.com/business/renault) Zoe electric car which we bought secondhand from a friend in 2020\. We were initially very pleased with it. However, in July 2023, it stopped charging. It still drove fine, and there was nothing else wrong with it.
+> 
+> We live in north-west Scotland, and as none of the local garages will deal with EVs it had to go on a low-loader to the Renault dealership in Inverness.
+> 
+> There, the technician established that the connector from the charging socket to the charging unit had burnt out. They said the whole charging unit had to be replaced, and quoted us £7,500 for the work.
+> 
+> As the car is only worth £5,600, this effectively writes it off.
+
+The [*Guardian*](https://www.theguardian.com/money/2024/mar/12/renault-charge-fix-zoe-electric-car)goes on to explain that failing chargers are a “known problem” of the [Renault Zoe](https://jalopnik.com/the-renault-zoe-to-be-replaced-by-retro-ev-that-looks-i-1847414375), which manifests as the car ages. Given the 2017 model year cited by the owner, the car is [not *that* old at seven years](https://jalopnik.com/the-cars-trucks-on-the-road-are-older-than-ever-1850437250#:~:text=Now%2C%20the%20average%20age%20of,all%20time%20high%3A%2012.5%20years.). Or, it doesn’t seem old enough to be sent to scrap because its charging plug would cost more to fix than the whole car is worth. It looks like price parity with gas cars continues to elude EVs, at least until they can boast both lower production *and* repair costs.
+
+ Photo: Loic Venance (Getty Images)

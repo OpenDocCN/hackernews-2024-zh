@@ -1,0 +1,70 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:28:57
+-->
+
+# IP Geolocation Is Twenty-Five Years Old
+
+> 来源：[https://www.sanjayparekh.com/ip-geolocation-is-25-years-old/](https://www.sanjayparekh.com/ip-geolocation-is-25-years-old/)
+
+Twenty-five years ago today, I came up with an idea that changed my trajectory from an employee to an entrepreneur.
+
+#### Always Be Innovating
+
+I had always done "innovative" things. When I was bored at my first professional job, I built (without being asked) a series of scripts to do UNIX-style log file analysis to help me help my customers succeed better. In the first of many poorly chosen product naming decisions, I called this set of scripts "Pipeline" (the scripts that sat out in the field on customers' devices) and "Refinery" (the scripts that ran in the office that analyzed the log files being sent in from the field). I have no idea why I was enamored with crude oil processing, but there you have it. Within weeks of launching this for myself, everyone in my team was clamoring for this to be deployed on their customers' equipment. Eventually, this product became the launching nucleus of a new consulting group within the company. A consulting group, I might add, that I was never asked to join, run, or advise. For my efforts, I received no recognition and zero bonus dollars in compensation. I was not then, nor now, bitter over this, but it made me realize that some organizations do not appreciate the efforts made to improve the state of the business.
+
+While I was at that company, I realized I had become bored. I started looking for jobs because that seemed like the obvious way to change my situation. I was offered a few positions (one by the parent company of the one I was working for), but none ignited my passion.
+
+##### Pay Attention And Innovation Will Find You
+
+On the evening of March 17, 1999, I was at home working on the computer and needed to go to two different websites to order some things for our new house that we were closing on the next month. One site was [FedEx](https://www.fedex.com/?ref=sanjayparekh.com) and the other was [IKEA](https://www.ikea.com/?ref=sanjayparekh.com). Both of these sites had a landing page asking you what country you were in before taking you to the relevant content you came for. Now realize this was before high speed, always on Internet connections. So, taking an extra step with the downloading of associated graphics on a dial-up connection was a painful waste of my time. After all, when we go to the store, we don't enter and declare the language we will converse in or the currency we intend to use - why should our experience be any different on the Internet?
+
+This was less of an "ah ha!" moment than a "how could I fix this?". I immediately set out to discover a solution to this problem. I started using standard networking tools like [traceroute](https://datatracker.ietf.org/doc/html/rfc1393?ref=sanjayparekh.com), [whois](https://datatracker.ietf.org/doc/html/rfc3912?ref=sanjayparekh.com), etc., and realized that I could build a map of the Internet that could then be overlaid onto a geographic map of the world.
+
+#### Is This A Good Idea?
+
+For a few months, I had been speaking with the legal counsel at my company. Not because of any legal issues, instead we had started chatting because he would come by daily to my cubicle to buy [Atomic Fireballs](https://amzn.to/3VeTbOe?ref=sanjayparekh.com). I had orchestrated the purchasing of a foosball table (a [Tornado](https://tornadofoosball.com/?ref=sanjayparekh.com) Cyclone II, in case you're wondering) for the company and then decided I needed to open up a candy shop in my cube because the vending machines were ridiculously priced and I needed funds to maintain the foosball table. (As an aside, even though many ridiculed the foosball table at first, the company later purchased a ping pong table and a pool table to complete an employee game room. Further proof this company was not my forever home.) The lawyer and I had been batting around ideas for months, given the dot-com boom of the late 1990s and our desire to get in on the action.
+
+The day after I came up with the idea, I went to work and shared the idea with him. His first thought was that this was impossible to do, and if not, someone else had already done it. He asked his brother and his brother's friends - folks who were involved in Silicon Valley startups - and they all responded that this was technically possible, no one was doing it, and providing this would be valuable.
+
+Because my first co-founder [was a lawyer](https://en.wikipedia.org/wiki/Rob_Friedman_(baseball_analyst)?ref=sanjayparekh.com), my first task became writing a patent application in excruciating detail instead of writing code. For an engineer, this is a painful exercise. Only years later did I come to appreciate this early effort to protect the intellectual property around my idea, which has led to ten patents in my name and given me the ability to write and secure additional patents around other inventions I've devised.
+
+I will note that the name of the company, [Digital Envoy](https://www.digitalenvoy.com/?ref=sanjayparekh.com), came to me months before the idea. I was at home one evening working on the computer with the news on in the background. In the story, they spoke about a special envoy being sent to some country. I instantly thought to myself, "Digital Envoy would be a great name for something one day." So the name stuck in my head (I tried to use it once for another idea I had at the company I was working at - that idea didn't go anywhere) until there was a chance to use it. I do sometimes wish I still had access to my email address from those days but it has been long enough now that it doesn't really matter.
+
+#### The Team Comes Together And Then Apart
+
+In total, there were four of us initially. The lawyer, a finance guy, my cubicle mate who sat across from me, and myself. My cubicle mate was involved from the start on more of the marketing side, but the whole endeavor was concerning to his significant other so he soon dropped off (we compensated him for the stock we repurchased back). Looking back, this is one of my regrets. I'm still friends with him (we just traded emails a few days ago), but I really wish he had been along for the ride. I think the outcome would have been very different and likely much better if that had happened. He has moved on but sadly is no longer in Atlanta and I haven't seen him, in person, in decades.
+
+So the team became three, and that is what we were through the start and almost all the way to the exit. After raising venture capital, I saw all of the positive and negative with venture capital (this will be a longer post for another day). Having investors who had no practical experience telling us how we should run the business. The drumbeat of monthly (yes, monthly) board meetings. If I've learned anything, it is that having monthly board meetings, even for a fast-moving startup, is like watching grass grow. It isn't fun for anyone and only leads to disillusionment.
+
+After a few years of this, I decided I had enough and I was the first co-founder to leave about two years before our exit. I took a break from working and did a [one-year MBA at Emory](https://goizueta.emory.edu/?ref=sanjayparekh.com), although I remained on the board of Digital Envoy until we exited.
+
+#### Why This Idea
+
+Contrary to popular belief now, the original idea I had was not about restricting access to content (which it is widely used for now by streaming providers) or targeting advertising to people based on their location (which, if you've ever used the web, you know that this is done extensively), but instead making content more accessible to people. It is easy to answer the question about your location when it is presented to you in a language you understand. But what if you land on that FedEx or IKEA page and don't understand the question being asked? That is a roadblock that could exist in the real world (especially when you travel), but why would we allow that roadblock to exist online?
+
+As an aside, I just noticed that FedEx **still** asks you to select your language and location, whereas IKEA takes a guess at your location (I tested this, and they definitely are using IP geolocation technology - I don't know if it's mine).
+
+We had theorized that this technology could be used for all different types of uses across the web. I don't think we really understood how true that would be. When I left my operating role at the company, our technology was being used for everything from ad serving to content control. Some customers were using it to control access to encryption or even accessing gambling ([the client](https://en.wikipedia.org/wiki/Caliente_Hip%C3%B3dromo?ref=sanjayparekh.com) was my fastest deal ever, closing in three days from first contact!). This diversity in clientele was something that allowed us almost never to have an issue with revenue growth. If one sector that we served was lagging, another was leading.
+
+#### We Were SaaS Before There Was SaaS
+
+In the early 2000s, [SaaS](https://en.wikipedia.org/wiki/Software_as_a_service?ref=sanjayparekh.com) was not a recognized "thing" but because our business was built around a dataset that needed to be constantly monitored, updated, and managed, it made sense for us to charge our customers based on a monthly recurring revenue model. We also decided to price finer levels of granularity at a higher price. Access to country-level data would be cheaper than state or city-level data. In truth, there was no added "cost" to determine city-level versus country-level data - it all had to be done at the same time. However, the value proposition for the client was different and provided a more accessible entry point for those just starting at the country level to start using IP geolocation. This was one of the true (lucky) insights that unlocked our business and revenue growth for us. Given a low churn rate (we had over 95% of customers re-sign contracts annually), a recurring revenue business is nearly impossible to mess up.
+
+#### That Time I Testified In Federal Court
+
+Sometimes, weird things happen when you start a company. One of those weird things was I was asked to be an expert witness in a federal lawsuit against an online adult entertainment website. The site owners contended that they could not know where an Internet user was geographically located. Clearly, I had proven the opposite.
+
+I was flown up to Pittsburgh (and I think I quoted way too low for an hourly rate because it was accepted immediately) and got on the witness stand in federal court. It was a pretty calm affair since there was no one in the court other than the prosecution, the defense, and the two website owners. The Department of Justice lawyers were all very friendly and even gave me a transcript of my testimony. By the way, I'm very happy with that being my only appearance in federal court for the rest of my life.
+
+#### The Competition Was Better Funded
+
+One of the early battles we faced with the company was having [a competitor](https://www.crunchbase.com/organization/quova?ref=sanjayparekh.com) arise about a year after we started. The problem was they were a Silicon Valley based startup where the founders had already started and sold companies previously. Our team had never started a company before, let alone sold one. We had never raised capital for a startup. We had never launched a product ourselves as a group or individually. On paper, we were not the horse you would bet on. In fact, in launching the company, we raised $1.5m in funding at the end of 1999 and the beginning of 2000\. When our chief competitor launched in 2000, they started with $10m in funding.
+
+On seeing this, we thought we should talk to them. We thought if it made sense to combine the two companies, we would be able to ride along with them to an eventual large exit. We took the meeting, and during a weekend (so that our employees wouldn't know we were having this conversation), their founding CTO came and talked to us about how they were positioned. He told us they were about to raise a $50m funding round on a $250m valuation. They had already closed that $10m round, so any way you cut it, their funding dwarfed ours. The CTO then followed up on his funding pronouncement with the comment, "So you all can either join us or we'll crush you." As you can imagine, that put a damper on the discussion and the meeting wrapped up soon after.
+
+My two co-founders and I had a brief discussion about this that lasted no less than thirty minutes as we dissected and debated the meeting. That comment of "crushing us" was infuriating. We decided to go it alone, and the results show this was the right decision. In the end, both companies were acquired. Digital Envoy was acquired for more than our total lifetime funding (we went on to raise a $10.5m venture funding round, giving us a total lifetime raise of $12m), while our competitor sold for less than the money they raised. They never did raise that $50m round, although their lifetime funding came in at $58.8m.
+
+#### Thanks To So Many People
+
+I have many more stories, lessons, and some regrets from my days at Digital Envoy that I hope to share in the future, but overall, I'm thankful that I took the leap and launched this company. It changed the trajectory of what I've been able to do and the impact I've made. I want to thank the countless number of individuals who advised, supported, and generally cheered me on throughout the years of Digital Envoy and afterward. Although I may have come up with the initial idea to solve the geographic location problem for the Internet, it would never have been possible without the large number of folks who worked and supported it behind the scenes.

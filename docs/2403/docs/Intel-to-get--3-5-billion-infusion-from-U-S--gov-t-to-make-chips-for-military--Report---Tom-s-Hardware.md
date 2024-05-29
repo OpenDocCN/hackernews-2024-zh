@@ -1,0 +1,20 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:41:33
+-->
+
+# Intel to get $3.5 billion infusion from U.S. gov't to make chips for military: Report | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/tech-industry/intel-to-get-dollar35-billion-from-us-govt-to-make-chips-for-military-report](https://www.tomshardware.com/tech-industry/intel-to-get-dollar35-billion-from-us-govt-to-make-chips-for-military-report)
+
+The U.S. government is set to invest $3.5 billion in Intel to boost the production of advanced chips for military and intelligence purposes, reports [Bloomberg](https://www.bloomberg.com/news/articles/2024-03-06/intel-stands-to-win-3-5-billion-to-produce-chips-for-military?s=31). The payment could be a part of a [rumored total incentive package exceeding $10 billion](https://www.tomshardware.com/tech-industry/intels-chips-act-award-package-exceeds-dollar10-billion-payout-expected-within-two-weeks-report#:~:text=Intel%27s%20CHIPS%20Act%20award%20package,two%20weeks%3A%20Report%20%7C%20Tom%27s%20Hardware) from the [U.S. CHIPS and Science Act](https://www.tomshardware.com/tag/chips-and-science-act) (encompassing both grants and loans) or could be a part of the [proposed Secure Enclave project](https://www.tomshardware.com/tech-industry/intel-potentially-inline-for-billion-dollar-chips-act-funding) that is designed for military and intelligence chips and is funded separately. 
+
+The investment involves funding the Secure Enclave program for three years and is poised to make Intel a leading semiconductor player in the defense market. This program is designed to enhance the [security](https://www.tomshardware.com/tag/security) and reliability of the supply chain for semiconductors used in military and intelligence applications. The funding is reportedly drawn from the broader CHIPS and Science Act grant pool, though it is unclear whether this is part of Intel's rumored $10 billion grants and loans. 
+
+Intel Foundry head Stu Pann recently confirmed in an [interview with Tom's Hardware](https://www.tomshardware.com/pc-components/cpus/intel-foundry-head-stu-pann-explains-companys-plan-to-build-arm-chips-move-more-manufacturing-to-the-us) that the company had signed a major — [$1 billion worth](https://www.tomshardware.com/pc-components/cpus/intel-foundry-head-stu-pann-explains-companys-plan-to-build-arm-chips-move-more-manufacturing-to-the-us) — foundry contract with the U.S. Government and Department of Defense. Under the U.S. government's RAMP-C initiative, many industry players, including [IBM](https://www.tomshardware.com/tag/ibm), [Microsoft](https://www.tomshardware.com/tag/microsoft), and Nvidia, are developing chips for the U.S. military. For Intel, this is a major advantage when it comes to learning how its upcoming nodes perform. However, it should be noted that not all chips for military and intelligence applications need leading-edge fabrication technologies. 
+
+"The government funding allows them to operate with much lower-sophistication PDKs than somebody would normally run test chips with," Pann said. "So that has been really instrumental in helping us learn how our customers view our process/performance, the classic PPAC (power, performance, area, and cost): those test chips tell you what the PPAC looks like." 
+
+This funding announcement comes as the Commerce Department prepares to unveil multi-billion-dollar awards to leading chipmakers, including Intel, Micron, and Samsung. The goal is to bolster domestic semiconductor manufacturing capabilities. The agency has already announced three grants, including a national-security-focused award to BAE Systems's American subsidiary and a $1.5 billion grant to GlobalFoundries for producing older-generation chips, including chips for military and intelligence applications.
+
+Get Tom's Hardware's best news and in-depth reviews, straight to your inbox.

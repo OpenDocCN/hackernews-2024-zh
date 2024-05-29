@@ -1,0 +1,46 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:01:00
+-->
+
+# Canada airline to pay customer after chatbot gave false information - The Washington Post
+
+> 来源：[https://www.washingtonpost.com/travel/2024/02/18/air-canada-airline-chatbot-ruling/](https://www.washingtonpost.com/travel/2024/02/18/air-canada-airline-chatbot-ruling/)
+
+After his grandmother died in Ontario a few years ago, British Columbia resident Jake Moffatt visited Air Canada’s website to book a flight for the funeral. He received assistance from a chatbot, which told him the airline offered reduced rates for passengers booking last-minute travel due to tragedies.
+
+Moffatt bought a nearly $600 ticket for a next-day flight after the chatbot said he would get some of his money back under the airline’s bereavement policy as long as he applied within 90 days, according to a recent civil-resolutions tribunal decision.
+
+But when Moffatt later attempted to receive the discount, he learned that the chatbot had been wrong. Air Canada only awarded bereavement fees if the request had been submitted before a flight. The airline later argued the chatbot wasa separate legal entity “responsible for its own actions,” the decision said.
+
+Moffatt filed a claim with the Canadian tribunal, which ruled Wednesday that Air Canada owed Moffatt more than $600 in damages and tribunal fees after failing to provide “reasonable care.”
+
+As companies have [added artificial intelligence-powered chatbots to their websites](https://www.washingtonpost.com/technology/2024/01/20/openai-use-policy-ai-writing-amazon-x/?itid=lk_inline_manual_9) in hopes of providing faster service, the Air Canada dispute sheds light on issues associated with the growing technology and how courts could approach questions of accountability. The Canadian tribunal in this case came down on the side of the customer, ruling that Air Canada did not ensure its chatbot was accurate.
+
+“While a chatbot has an interactive component, it is still just a part of Air Canada’s website,” tribunal member Christopher Rivers wrote in his decision. “It should be obvious to Air Canada that it is responsible for all the information on its website. It makes no difference whether the information comes from a static page or a chatbot.”
+
+An Air Canada spokesperson said in a statement to The Washington Post that the airline will comply with the tribunal’s decision.
+
+Moffatt first visited Air Canada’s website on Nov. 11, 2022 — the day his grandmother died, according to the tribunal. There, he asked the chatbot about bereavement fares.
+
+“If you need to travel immediately or have already travelled and would like to submit your ticket for a reduced bereavement rate, kindly do so within 90 days of the date your ticket was issued by completing our Ticket Refund Application form,” the chatbot responded, according to the tribunal’s decision.
+
+The chatbot’s responses linked to the [airline’s webpage](https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/bereavement-fares.html#/) that detailed its bereavement travel policy. The webpage states that the airline prohibits “refunds for travel that has already happened.”
+
+Moffatt, relying on the chatbot’s instructions, booked a one-way ticket for about $590 from Vancouver to Toronto, the decision said. A few days later, he paid roughly $627 for a return flight.
+
+On Nov. 17, 2022, Moffatt requested a refund through the airline’s application form. He provided his grandmother’s death certificate and emailed Air Canada employees for the next three months, the decision said.
+
+In February 2023, an Air Canada employee told Moffatt that the chatbot had misled him, the decision said. Moffatt continued to exchange emails with employees but didn’t receive a refund, the decision said, prompting him to file a claim.
+
+Moffatt said he wouldn’t have bought the tickets if he knew he would have to pay the full fare, according to the decision. Moffatt believed he should have paid about $564 total, the decision said, but he ended up paying roughly $1,209.
+
+Air Canada argued that the chatbot is a “separate legal entity,” and the airline shouldn’t be liable for the information the chatbot provides, according to the tribunal’s decision. Air Canada also contended that Moffatt could have found the airline’s bereavement policy by further scanning its website, the decision said.
+
+But Rivers ruled that those claims were unreasonable.
+
+Rivers determined that Moffatt paid about $483 more than he should have. He ordered Air Canada to pay Moffatt that fee in addition to roughly $93 in tribunal fees and $26.80 in prejudgment interest.
+
+“Moffatt says, and I accept, that they relied upon the chatbot to provide accurate information. I find that was reasonable in the circumstances,” Rivers wrote in the ruling. “There is no reason why Mr. Moffatt should know that one section of Air Canada’s webpage is accurate, and another is not.”
+
+*Jonathan Edwards contributed to this report.*

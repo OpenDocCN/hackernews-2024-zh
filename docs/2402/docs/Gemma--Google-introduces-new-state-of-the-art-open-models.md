@@ -1,0 +1,39 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:03:41
+-->
+
+# Gemma: Google introduces new state-of-the-art open models
+
+> 来源：[https://blog.google/technology/developers/gemma-open-models/](https://blog.google/technology/developers/gemma-open-models/)
+
+## Responsible by design
+
+Gemma is designed with our [AI Principles](https://ai.google.dev/responsible?utm_source=agd&utm_medium=referral&utm_campaign=explore-responsible&utm_content) at the forefront. As part of making Gemma pre-trained models safe and reliable, we used automated techniques to filter out certain personal information and other sensitive data from training sets. Additionally, we used extensive fine-tuning and reinforcement learning from human feedback (RLHF) to align our instruction-tuned models with responsible behaviors. To understand and reduce the risk profile for Gemma models, we conducted robust evaluations including manual red-teaming, automated adversarial testing, and assessments of model capabilities for dangerous activities. These evaluations are outlined in our [Model Card](https://www.kaggle.com/models/google/gemma).
+
+We’re also releasing a new [Responsible Generative AI Toolkit](https://ai.google.dev/responsible?utm_source=agd&utm_medium=referral&utm_campaign=explore-responsible&utm_content) together with Gemma to help developers and researchers prioritize building safe and responsible AI applications. The toolkit includes:
+
+*   **Safety classification:** We provide a [novel methodology](https://codelabs.developers.google.com/codelabs/responsible-ai/agile-classifiers) for building robust safety classifiers with minimal examples.
+*   **Debugging:** A model [debugging tool](https://codelabs.developers.google.com/codelabs/responsible-ai/lit-gemma) helps you investigate Gemma's behavior and address potential issues.
+*   **Guidance:** You can access best practices for model builders based on Google’s experience in developing and deploying large language models.
+
+## Optimized across frameworks, tools and hardware
+
+You can fine-tune Gemma models on your own data to adapt to specific application needs, such as summarization or retrieval-augmented generation (RAG). Gemma supports a wide variety of tools and systems:
+
+*   **Multi-framework tools:** Bring your favorite framework, with reference implementations for inference and fine-tuning across multi-framework Keras 3.0, native PyTorch, JAX, and Hugging Face Transformers.
+*   **Cross-device compatibility:** Gemma models run across popular device types, including laptop, desktop, IoT, mobile and cloud, enabling broadly accessible AI capabilities.
+*   **Cutting-edge hardware platforms:** We’ve [partnered with NVIDIA to optimize Gemma for NVIDIA GPUs](https://blogs.nvidia.com/blog/google-gemma-llm-rtx-ai-pc), from data center to the cloud to local RTX AI PCs, ensuring industry-leading performance and integration with cutting-edge technology.
+*   **Optimized for Google Cloud:** Vertex AI provides a broad MLOps toolset with a range of tuning options and one-click deployment using built-in inference optimizations. Advanced customization is available with fully-managed Vertex AI tools or with self-managed GKE, including deployment to cost-efficient infrastructure across GPU, TPU, and CPU from either platform.
+
+## Free credits for research and development
+
+Gemma is built for the open community of developers and researchers powering AI innovation. You can start working with Gemma today using free access in Kaggle, a free tier for Colab notebooks, and $300 in credits for first-time Google Cloud users. Researchers can also apply for [Google Cloud credits](https://docs.google.com/forms/d/e/1FAIpQLSe0grG6mRFW6dNF3Rb1h_YvKqUp2GaXiglZBgA2Os5iTLWlcg/viewform) of up to a collective $500,000 to accelerate their projects.
+
+## Getting started
+
+You can explore more about Gemma and access quickstart guides on [ai.google.dev/gemma](http://ai.google.dev/gemma).
+
+As we continue to expand the Gemma model family, we look forward to introducing new variants for diverse applications. Stay tuned for events and opportunities in the coming weeks to connect, learn and build with Gemma.
+
+We’re excited to see what you create!

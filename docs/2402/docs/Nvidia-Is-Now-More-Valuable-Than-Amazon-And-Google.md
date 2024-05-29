@@ -1,0 +1,40 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:50:14
+-->
+
+# Nvidia Is Now More Valuable Than Amazon And Google
+
+> 来源：[https://www.forbes.com/sites/dereksaul/2024/02/12/nvidia-is-now-more-valuable-than-amazon-and-google/](https://www.forbes.com/sites/dereksaul/2024/02/12/nvidia-is-now-more-valuable-than-amazon-and-google/)
+
+## Topline
+
+Nvidia’s market value surpassed those of fellow technology titans Amazon and Alphabet on Monday, an almost unbelievable feat accomplished as Nvidia’s stock more than quadrupled over the last 15 months as investors bought into Nvidia’s market-leadingposition in artificial intelligence.
+
+ <fbs-accordion class="expandable" current="-1">Nvidia stock's 17,000% runup over the last 10 years is far and away the best of any S&P 500 ... [+] constituent.</fbs-accordion> Getty Images
+
+## Key Facts
+
+Shares of Nvidia rose nearly 3% to an record high of over $740, bringing its market capitalization to $1.83 trillion, narrowly surpassing Alphabet’s $1.82 trillion and Amazon’s $1.8 trillion.
+
+The symbolic passing of the torch caps Nvidia’s remarkable journey as Wall Street flooded into the stock amid the AI boom.
+
+Nvidia’s market cap sat below $300 billion as recently as October 2022, just before the AI wave began to crest, lagging far behind Amazon and Alphabet’s above $1 trillion valuations at the time.
+
+Nvidia is now the fourth most-valuable public company in the world, trailing only Microsoft ($3.1 trillion), Apple ($2.9 trillion) and Saudi Aramco ($2 trillion).
+
+## Key Background
+
+Nvidia is by far the most prominent producer of the semiconductor chip technology powering generative AI. Investors have been impressed not just by the potential for Nvidia to capitalize on the growing interest and corporate spending in AI, but also by its already exploding results. Nvidia’s earnings before interest, taxes, depreciation and amortization (EBITDA) expanded by more than 500% last quarter on a year-over-year basis thanks to runaway growth in its AI unit, far stronger than Amazon and Alphabet’s robust 20% or more earnings growth during the comparable period. Nvidia’s gross revenue and profits are less eye-popping than its trillion-dollar company peers – its $9.2 billion profit last quarter was far smaller than Apple’s and Microsoft’s over $22 billion profits during the comparable stretch – but analysts expect Nvidia’s financials to soon close the gap. Nvidia remains among the most popular stocks on Wall Street even after its more than 50% run-up this year, and is a top pick for analysts at both Goldman Sachs and Bank of America, each of which has an $800 price target for Nvidia, implying 8% further upside for the stock.
+
+## Surprising Fact
+
+Nvidia stock’s 17,000% gain over the last decade is by far the best return of any stock on the S&P 500, nearly tripling the return of silver medalist and fellow chipmaker Advanced Micro Devices. A $1,000 investment in Nvidia a decade ago would now be worth about $175,000.
+
+## What To Watch For
+
+Nvidia will report earnings next Wednesday for its fiscal quarter ending last month. Analysts project the company to report its third consecutive quarter of record sales and profits.
+
+## Further Reading
+
+[ForbesBigger Than Amazon? Nvidia Stock Surges After 'Cosmological' Profit ProjectionsBy Derek Saul](https://www.forbes.com/sites/dereksaul/2023/05/25/bigger-than-amazon-nvidia-stock-surges-after-cosmological-profit-projections/)<fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">[ForbesNvidia Is This Year's Hottest Stock. So Why Are Analysts Disappointed By Its 230% Gain?By Derek Saul](https://www.forbes.com/sites/dereksaul/2023/12/15/nvidia-is-this-years-hottest-stock-so-why-are-analysts-disappointed-by-its-230-gain/)</fbs-ad>

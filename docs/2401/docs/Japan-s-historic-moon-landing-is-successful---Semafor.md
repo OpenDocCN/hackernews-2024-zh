@@ -1,0 +1,14 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:55
+-->
+
+# Japan's historic moon landing is successful | Semafor
+
+> 来源：[https://www.semafor.com/article/01/19/2024/japan-attempts-historic-moon-landing](https://www.semafor.com/article/01/19/2024/japan-attempts-historic-moon-landing)
+
+Japan has successfully landed a spacecraft — dubbed the “moon sniper” — on the lunar surface, but the spacecraft’s solar panels were unable to generate power.
+
+Scientists with Japanese space agency JAXA were [reportedly initially subdued](https://news.sky.com/story/japan-moon-landing-live-brace-for-20-minutes-of-terror-as-sniper-probe-attempts-historic-mission-13051414) after the landing as they waited to make contact with the spacecraft. JAXA’s director later declared that the probe had managed a successful soft landing since it was sending data back to Earth. Without functional solar panels, the probe’s battery will last only a few hours, but scientists expressed hope that the panels could generate electricity once the angle of the sun changes over the coming weeks.
+
+Japan is only the fifth country to [land on the moon](https://www.space.com/japan-first-moon-landing-slim-webcast). The SLIM’s (Smart Lander for Investigating Moon) attempt isn’t Japan’s first: In November 2022, a lander called OMOTENASHI, operating as part of NASA’s Artemis I mission, made a landing attempt but did not meet its destination.

@@ -1,0 +1,136 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:24:36
+-->
+
+# Dealing with surprising human emotions: desk moves | Lara Hogan
+
+> 来源：[https://larahogan.me/blog/desk-moves/](https://larahogan.me/blog/desk-moves/)
+
+# Dealing with surprising human emotions: desk moves
+
+Originally posted Dec 22, 2017 • More resources on [communication & team dynamics](/resources/communication-team/)
+
+Dealing with surprising human emotions is one of the most challenging aspects of being a manager. Generally, when someone appears triggered, or angry, or some other strong emotion that’s surprising, it’s likely that their [amygdala has been hijacked](https://en.wikipedia.org/wiki/Amygdala_hijack), which I’ve [written about before](http://larahogan.me/blog/the-high-road/). Our amygdalas are in charge of our emotional reactions, and they’re critical to our “fight or flight” decisionmaking process. When our core needs feel threatened, our amygdala kicks into high gear.
+
+[Learning about people’s core needs](#learn-your-teammates-biceps-model) critically shifted my management style and approach, as I can now better-understand why someone is reacting in such a surprising way to a situation that I don’t perceive as threatening. One of the smartest people I know, [Paloma Medina](https://www.palomamedina.com/), developed a model to represent folks’ Core Needs: BICEPS^([1](#one)).
+
+Here are humans’ core needs in the [BICEPS](https://www.palomamedina.com/biceps) model:
+
+To illustrate this model, let’s unpack why **desk moves** can bring up strong emotions for people. I joke that in the course of my career as a manager, I’ve seen the biggest displays of human emotion during something that’s otherwise straightforward: desk moves.
+
+For those of you who have never dealt with an emotional reaction to a desk move, you’re probably confused^([2](#two)). Moving where someone sits every day is just logistics, right? You have a group of people in one place, and you need them to start sitting somewhere else. Desk moves are my favorite example of **why managers should understand the brain science** behind why people react they way they do, in otherwise not-that-emotional circumstances.
+
+## Belonging
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Community: A feeling of friendship and closeness with a group, or being part of a tight community of any size.
+*   Community well-being: People are cared for, the whole group feels happy and healthy.
+*   Connection: Feeling kinship and understanding with
+
+When you’re asked to move your desks, or your team is asked to move their desks, how might your Belonging core need feel threatened?
+
+Someone’s desk might be their representation of how they belong to a group. Maybe they used to sit next to a peer team, but now they’ll be on a different floor, and they’re worried about feeling distant or absent or left behind. Maybe their team is being distributed, so they fear they won’t be able to relate to the group in the same way.
+
+If you’re their manager, acknowledge the change is happening, and that you’re eager to help them address this shift in belonging. Partner with them to develop other ways to retain that core need: consider ways to make them feel included, or help them see how their relationships with others is changing, but improving in a different way.
+
+## Improvement/Progress
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Progress towards purpose: You are helping make progress towards an important goal for the company, your team or your own career/life.
+*   Improving the lives of others: You see how your work helps improve things for others
+*   Personal growth: Learning/seeing fast growth in yourself in skills that matter to you.
+
+An announcement of a desk move may surprise someone who doesn’t see how it fits into a broader picture or plan. Desk moves can disrupt that feeling of moving forward, and can feel like a ridiculous distraction from the impact that someone is aiming to have.
+
+If you’re their manager, help them see the bigger picture. Describe leadership’s goal, and what they’re working to achieve with this change. Acknowledge that it may not feel relevant to your direct report’s primary objectives, but there is a broader strategy that they may not feel on a day-to-day basis, and this change is helpful to the larger organization for X, Y, Z reasons.
+
+It may also be helpful to highlight ways in which productively dealing with change can help them grow as a leader or role model. Navigating change is super hard; a person can make a huge impact on others (and personally grow) if they can both model what it looks like to navigate change effectively, and help others do the same.
+
+## Choice
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Choice: Having flexibility, the chance to have more control over key parts of your world
+*   Autonomy: Having clear ownership over a domain where you can do as you wish, without asking for permission
+*   Decision-making: The ability to have make decisions about the things that matter to you
+
+If a desk move is dictated to an individual, rather than allowing them to choose when and where they sit, their sense of control (stemming from choice) may feel threatened. Especially as organizations grow, there will be fewer and fewer opportunities for individuals to have full choice and autonomy over aspects of their work life. Desk moves are often a representation of a larger shift in a company’s culture or scale, so they might see it as an overwhelming representation of more loss of control to come.
+
+If you’re their manager, help them see where they have flexibility, autonomy, and choice in their work. Acknowledge that this is a shift, but remind them of the broader picture at play. Acknowledge that with a growing company, changes will continue to happen—“change is our only constant”—and working here means it’s necessary to adjust as the company changes^([3](#three)).
+
+Additionally, coach them to figure out how to find other avenues for their autonomy and choice. (In the desk move case: how will they decorate it? What day of the week could they start the move? How will they celebrate as a team once the move is checked off the list?) These should be realistic and doable, and will hopefully help address this core need.
+
+## Equality/Fairness
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Access to resources (money, time, space, etc) feels fair/equitable
+*   Access to information is fair: All groups/people have access to information that is relevant to them
+*   Equal reciprocity: You support each other equally
+*   Decisions are fair and everyone is treated as equally important
+
+Desk moves may feel unfair. Some people and groups are treated better than others (closer to the food! better view! better access to conference rooms! more space!). Some groups may have had more input or choice in the decision to move desks, while others did not. Like it or not, where a team sits can *absolutely* reinforce whether you’re the company “cool kids” or not. (It blew my mind when Paloma once pointed out to me something I had never picked up on - that in Engineering, I *absolutely* sat in a cool spot in the office, while HR and Finance definitely did not.)
+
+As a manager, inform teams of the reasons behind a change, to demonstrate that this wasn’t arbitrary. When possible, tie it back to company strategy or objectives (“it’s important for us to sit closer to our stakeholders”, or “this layout will improve our carbon footprint”).
+
+When you get the sense that someone might have their Equality/Fairness core need threatened, get ahead of the communication plan and either develop talking points for all managers to understand and share, or go talk to those individuals slightly ahead of time, which is *technically* unfair! But it could help in their overall understanding.
+
+As a manager, don’t deny how someone feels (they’re telling you about their core needs!). But do clarify that it’s complicated to make everyone feel valued (in this example, not everyone can sit in a high-value spot), and ask them how they think this might be improved in the future.
+
+## Predictability
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Resources: There’s enough certainty about resources (money, personnel hours, space) so you can focus on your job
+*   Time: There’s certainty about when things will occur/when you can prepare for them.
+*   Future challenges: You can anticipate and thus can prepare for future challenges
+*   Direction: Goals, strategy, and direction stay consistent and don’t change too often/fast
+
+The Predicability core need may be threatened by a surprising desk move announcement, especially for those of us who are particularly analytical and data-driven people. Showing up and working from the same physical location (same view, same layout, same chair feeling, same routine) is often a representation for someone’s core Predictability need. When one even small thing in that routine shifts, it can be challenging.
+
+As a manager, help people plan ahead, and do everything you can to reduce the surprise of the change. Give people a long lead time between the announcement and the change. Even better, help people internalize that change is routine, and it’s healthy to become resilient to change (especially in startup environments).
+
+It’s not humanly possible for you to keep every single thing predictable, so don’t shoulder this burden yourself. Coach your direct report on how *they* can regain ownership or certainty of their situation. For example, if you’re not sure when a change will happen, scenario plan with your report so they can feel in control again: “what could you do to mitigate the mayhem?”, “what would help you feel productive this week?”, etc.
+
+## Status
+
+From [Paloma Medina’s BICEPS model](https://www.palomamedina.com/biceps):
+
+*   Status: You hold a title/role that honors your worth among your peers/your industry
+*   Visibility: Your work is highly visible to people that matter
+*   Recognition: Your work is recognized and appreciated in ways that feel good.
+
+The Status core need comes up so often in management work that I often try to address this one first with most people. Status is about understanding where you are in the hierarchy, and some sort of routine recognition of that status. I wrote [this whole blog post](http://larahogan.me/blog/the-high-road/) on a how to take the high road when it feels like your Status is being threatened.
+
+Ask each of your reports early on in your reporting relationship (or, right now!) for recent examples of when they felt recognized: a launch email where they’re thanked? A private handwritten note from you? Someone giving them relief on their oncall shift? Most folks can’t articulate what they prefer right off the bat, so I often ask “do you prefer public or private recognition?” and use that as a baseline. Managers often guess people feel most recognized with money or a title change, but in my experience, those things are good band-aids for Status but don’t cut to the core of this need.
+
+Maybe someone’s desk was near the CEO’s, and now it’s going to be far away. Maybe they had that corner office or best view out the window, and now they won’t. Maybe they liked sitting near others who had the same title, or their manager, or there was some other Status signifier about their desk.
+
+Address this Status core need in the way they feel most valued. “Yes, your desk will no longer be near the CEO, but where you sit isn’t a representation of your value. Your team values your work, and so do I, and that hasn’t changed.” Just like with the equality/fairness value, don’t deny how someone feels (they’re telling you about their core needs!). But do clarify that it’s complicated to make everyone have their status acknowledged with this change, and ask them how they think this might be improved in the future.
+
+## Learn your teammates’ BICEPS model
+
+It’s so helpful to know yourself, and know your teammates’ top core needs. For example, “Status” is the core need that comes up most for me, personally - so when I feel amygdala hijacked and can trace it back to Status, I’m able to remind myself that my Status probably isn’t being threatened right now.
+
+When coaching two people through a conflict, I like to describe this model and ask them which of these core needs (if any) felt relevant to why they reacted the way they did. Understand each other’s core need can be tremendously helpful in de-escalating that amygdala hijacking and returning to a place of empathy.
+
+Talk in your 1:1s about folks’ core needs, write them down, and reread them when triggering things happen. You’ll begin to learn how to address someone’s amygdala hijacking over time, or better yet, pre-empt it!
+
+If you’re looking to level up this skill, learn how to gut-check someone’s articulated needs with them. For example, when someone says they’re looking for status recognition with a higher base salary, it’s possible that there’s another need lying below. Similarly, if someone says having choice is important to them, maybe that’s *actually* because having choice means they have higher status, or things are more fair, or something else. Ask coaching questions to explore your reports’ needs so you can make sure you’re accurately understanding and addressing them.
+
+* * *
+
+¹ If you’ve seen me refer to the SCARF model before and are now confused why I’m switching, here’s why I’m now using the BICEPS model:
+
+*   [SCARF is trademarked by David Rock](http://www.neuroleadership.org/files/NLI_Announcement_Use_of_Terms.pdf): “David has given permission for use in schools, educational settings, and in situations that are non competitive to the work David is involved in.”
+*   Paloma Medina released [BICEPS](https://www.palomamedina.com/biceps) under the Creative Commons Attribution 4.0 International License!
+*   I also really love that BICEPS includes the “I”: Improvement/Progress.
+
+² Please don’t complain to me about how entitled people are to have an emotional response to something like a desk move. Humans are human, and it’s our job as managers to work with them, even if we don’t personally identify with how they’re feeling. I argue that supporting people doesn’t mean acquiescing to them; it means understanding them and communicating clearly about their needs and the broader picture.
+
+³ I usually also add, “this company is a whole new company every N months at our rate of growth. This company today and five years from now may be the right place for someone, but it may not be the right place for them at other times. That’s okay, and that’s natural.”
+
+Folks have the choice to leave, and reapply in the future if they’d like. As a manager, it’s my job to remind them that they are signing up to work through change, and it’s also my job to help folks adjust to change when possible. But as an employee, it’s their job to decide if this company stage is right for them (not the company’s job nor my job to adjust everything for each individual).

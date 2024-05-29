@@ -1,0 +1,34 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:09:31
+-->
+
+# Microsoft lays off 1,900 Activision Blizzard and Xbox employees - The Verge
+
+> 来源：[https://www.theverge.com/2024/1/25/24049050/microsoft-activision-blizzard-layoffs](https://www.theverge.com/2024/1/25/24049050/microsoft-activision-blizzard-layoffs)
+
+> Blizzard team, 
+> 
+> As you may have read in Phil’s note, today is a challenging day as we say goodbye to some of our colleagues. This is a difficult process, but it is one that will best enable Blizzard and Xbox to deliver ambitious games for our players on more platforms and in more places than ever before. We are moving forward with a more focused strategy across Microsoft Gaming that sets us up for sustainable growth and aligns our talent and resources to our top priorities. 
+> 
+> In addition to the events today, Mike Ybarra and I have been discussing his future and some of his personal passions for some time. As many of you know, Mike previously spent more than 20 years at Microsoft. Now that he has seen the acquisition through as Blizzard’s president, he has decided to leave the company. As we move forward, we will continue to build on the positive momentum that Mike created and strive to continue exceeding the expectations of Blizzard’s players. I want to thank Mike for his leadership and for his partnership and counsel since the deal closed. I know he plans to travel and spend more time with his family. We wish him the very best.
+> 
+> Additionally, Allen Adham, Blizzard’s Chief Design Officer, is leaving the company. As one of Blizzard’s cofounders, Allen has had a broad impact on all of Blizzard’s games. His influence will be felt for years to come, both directly and indirectly as Allen plans to continue mentoring young designers across the industry.
+> 
+> The new Blizzard President will be announced next week. 
+> 
+> **What Happens Next** 
+> 
+> Those who are impacted are being informed in meetings starting today. Given the challenging day ahead, anyone who is set up to work from home and would prefer to, can work remotely today. Due to time zones and local holidays, some impacted employees in APAC and EMEA will be informed later this evening and into early next week. After the notifications are complete, leaders will bring their teams together. Please be mindful of this process in your conversations and outreach during these next few days. 
+> 
+> **Details on Today’s Actions** 
+> 
+> The changes announced today reflect a focus on products and strategies that hold the most promise for Blizzard’s future growth, as well as identified areas of overlap across Blizzard and Microsoft Gaming. Today’s actions affect multiple teams within Blizzard, including development teams, shared service organizations and corporate functions. As part of this focus, Blizzard is ending development on its survival game project and will be shifting some of the people working on it to one of several promising new projects Blizzard has in the early stages of development. 
+> 
+> No matter the reason behind these decisions, they are never made lightly. Changes like these affect the lives of colleagues and friends, and we are all grateful for their meaningful contributions to Blizzard and its world class lineup of games. As Phil stated, we will provide our full support to those who are impacted during the transition, including severance benefits informed by local employment laws. 
+> 
+> I understand that this is a challenging time and that it can be a lot to process. I haven’t met many of you yet, and hearing about these decisions from me may be difficult. Today, I am here on Blizzard’s Irvine campus, and I am personally committed to supporting you as teams and individuals, keeping you informed, and approaching this transition period with care and transparency. 
+> 
+> Thank you for working through these changes with us. Together we will continue to create amazing games for our players, with a culture that empowers everyone to be their most authentic selves and do their best work. 
+> 
+> - Matt

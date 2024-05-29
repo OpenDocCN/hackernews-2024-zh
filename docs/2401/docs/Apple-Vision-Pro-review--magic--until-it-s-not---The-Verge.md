@@ -1,0 +1,307 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:21:37
+-->
+
+# Apple Vision Pro review: magic, until it’s not - The Verge
+
+> 来源：[https://www.theverge.com/24054862/apple-vision-pro-review-vr-ar-headset-features-price](https://www.theverge.com/24054862/apple-vision-pro-review-vr-ar-headset-features-price)
+
+There’s a lot of pressure on [the new Apple Vision Pro](/23689334/apple-mixed-reality-headset-augmented-virtual-reality-ar-vr-rumors-specs-features), Apple’s long-awaited entry into the world of computers you wear on your face. Apple claims that the Vision Pro, which starts at $3,499, is the beginning of something called “spatial computing,” which basically boils down to running apps all around you. And the company’s [ads for it](/2024/1/28/24053854/apples-new-vision-pro-ad-is-one-you-mightve-seen-before) do not hedge that pressure even a little: they show people wearing the Vision Pro *all the time*. At work! Doing laundry! Playing with their kids! The ambition is enormous: to layer apps and information over the real world — to augment reality.
+
+Apple *has* to claim that the Vision Pro is the beginning of something new because people have been building headset computers for over a decade now. I [tried on a development prototype](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DLCB19lzAXS8) of the first Oculus Rift in 2013, and *The Verge*’s Adi Robertson, who edited this review, has tried basically every headset that’s been released since. All of that development means there are some pretty good products out there: that first Oculus evolved into the Quest line at Meta, which is now shipping [the Quest 3](/23906313/meta-quest-3-review-vr-mixed-reality-headset) — a very good VR headset with a huge library of games and some AR features of its own, which costs $500.
+
+In the meantime, Apple, from Tim Cook on down, has largely insisted that augmented reality will be [much more valuable than virtual reality](/21077484/apple-tim-cook-ar-augmented-reality). And it’s been building toward AR for a long time: developers have access to AR tools in iOS, and higher-end iPhones and iPads have had lidar depth scanners for a few years now.
+
+The Vision Pro is Apple’s first attempt at building a computer out of all those ideas — a computer that works in the space around you. The goal is for the Vision Pro to be a complete device that can sit right alongside the Mac and the iPad in Apple’s ecosystem of devices and let you get real work done. You can use Excel and Webex and Slack in the Vision Pro, and you can also sit back and watch movies and TV shows on a gigantic virtual 4K HDR display. And you can mirror your Mac’s display and just use the Vision Pro to look at a huge monitor floating in virtual space.
+
+It sounds amazing, and sometimes it is. But the Vision Pro also represents a series of really big tradeoffs — tradeoffs that are impossible to ignore. Some of those tradeoffs are very tangible: getting all this tech in a headset means there’s a lot of weight on your face, so Apple chose to use an external battery pack connected by a cable. But there are other, more philosophical tradeoffs as well. 
+
+As I’ve been using it for the past few days, I kept coming up with a series of questions — questions about whether the tradeoffs were worth it.
+
+*Is using the Vision Pro so good that I’m willing to mess up my hair every time I put it on?*
+
+*Is it so good that I want to lug it around in its giant carrying case instead of my laptop bag?*
+
+*Is it so good that I want to look at the world around me through screens instead of with my own eyes?*
+
+Basically, I keep asking if I prefer using a computer *in there* rather than *out here*. And as interesting as the Vision Pro is, there’s a long way to go before it can beat *out here*.
+
+Photo by Vjeran Pavic / The Verge
+
+### Hardware
+
+Apple doesn’t want anyone to think of the Vision Pro as a VR headset, but it’s a VR headset — albeit a VR headset that *almost* lets you pretend it’s *not* a VR headset. 
+
+You put it on your head in a way that blocks out your vision entirely, and then it shows you a 3D video feed of the world around you passed through from the cameras on the front, as though you can see right through the device. But it can also put you in virtual reality, at various levels of immersion: I spent some time working entirely on the Moon and a lot of time in my kitchen with a bunch of windows floating around a portal into Joshua Tree. 
+
+Defining “reality” is a messy business in computing. The past decade has seen a dizzying race to come up with new words for what head-mounted displays do, including disagreement over what each one of these phrases means. So here’s our interpretation of a few terms used in the review:
+
+**Augmented reality**: virtual projections that are directly related to objects in the physical world, like an automatic translation of a restaurant menu or a virtual poster pinned to a real wall.
+
+**Mixed reality**: a computing system that mixes the virtual and physical without direct interaction between the two, like an app window floating in your living room.
+
+**Virtual reality**: a computing experience that immerses you in a fully virtual space, deliberately blocking out your perception of the physical world.
+
+The Vision Pro is stunning compared to other VR headsets, which are largely plastic and often downright goofy-looking. The Vision Pro, by contrast, is built of magnesium and carbon fiber in an aluminum enclosure that feels like a natural extension of Apple’s familiar design language. There’s a little iPhone 6 in there, a little AirPods Max, a little Apple Watch. It is the cutting edge of technology in a package that seems instantly familiar. Almost everyone I’ve shown it to thinks it looks smaller in person than they expected, especially compared to some of the huge VR headsets we’ve seen over the past decade.
+
+The front display on the Vision Pro is an attempt at keeping you from being isolated from other people while you’re wearing it. In Apple’s photos, it looks like a big, bright screen that shows a video of your eyes to people around you so they feel [comfortable talking to you](/2024/1/2/24022803/apple-vision-pro-jony-ive-zoom-eyes-sunglasses-patent) while you’re wearing the headset — a feature adorably called EyeSight. In reality, it might as well not be there. It’s a low-res OLED with a lenticular panel in front of it to provide a mild 3D effect, and it’s so dim and the cover glass is so reflective, it’s actually hard to see in most normal to bright lighting. When people *do* see your eyes, it’s a low-res, ghostly image of them that feels like CGI. The effect is uncanny — the idea that you’ll be making real eye contact with anyone is a fantasy. And there are no controls or indicators in visionOS for this external display, so you never really know what other people are seeing. Imagine looking someone directly in the eyes and talking to them *without knowing if they can see your eyes* — it’s weird!
+
+*EyeSight is so weird. So, so weird.*
+
+Photo by Amelia Holowaty Krales / The Verge
+
+That cover glass hides a huge array of cameras and sensors. There’s a pair of high-res front cameras for the video passthrough, cameras that face down and to the sides to track your hands, a lidar scanner and TrueDepth cameras for spatial tracking, and infrared floodlights so everything can work in low light. Underneath all *that,* you’ve got an M2 processor and Apple’s new R1 spatial coprocessor and a pair of fans to move the heat from all this tech out the top. The fans were never perceptible during my time testing the Vision Pro, but the heat was: after long sessions, the headset was definitely warm.
+
+On the top edge, you’ll find what feel like larger versions of some familiar Apple Watch controls: a digital crown that adjusts both the volume and the level of virtual reality immersion on the right as you look through the headset and a button on the left that lets you take 3D photos and videos.
+
+You get two headbands in the box: the solo knit band and the dual loop band. They both attach and detach easily; you snap them right on and then pull the little orange tab to disconnect them. The solo band is unquestionably cooler and messes up your hair slightly less — but they both mess up your hair, so if the dual loop fits you better, just go with it. I found the solo loop much more comfortable; I also wish the mounting points were on the outside face so I could pull the band around my head and clip it on instead of constantly pulling it over my hair.
+
+*The front of the Vision Pro is covered in cameras and sensors.*
+
+Photo by Vjeran Pavic / The Verge
+
+*The solo loop is by far the cooler strap.*
+
+Photo by Amelia Holowaty Krales / The Verge
+
+*The huge case costs an additional $199 and looks like a marshmallow from space. I love it.*
+
+Photo by Amelia Holowaty Krales / The Verge
+
+The other two pieces are the light seal, which comes in various sizes, and the headband, which comes in two thicknesses. (You get fitted for these in the store or by scanning your head with an iPhone if you buy online.) Both attach magnetically, which means they also *detach* magnetically — you want to pick this thing up by the frame because grabbing it by the light seal can lead to disaster.
+
+The idea that you’ll be making real eye contact with anyone while wearing the Vision Pro is a fantasy
+
+If you have glasses, you can click in custom Zeiss lens inserts — Apple sent us reader lenses to see what that process looks like, but I just used the Vision Pro while wearing my soft contacts, and it was fine.
+
+The Vision Pro’s speakers are housed in the arms on the side, and they are good and loud and do a convincing job of rendering spatial audio. Things really sound like they are happening where they appear to be happening, which is a neat trick. The speakers are also pretty leaky, so everyone else around you can hear what you’re up to unless you use headphones. You can use any Bluetooth headphones you want, but you get a bunch of extra features if you use the latest AirPods Pro, like lower latency, lossless 48KHz audio, and Apple’s Adaptive Audio system, which automatically mixes in sound from the real world as appropriate.
+
+Since you’ll mostly experience the Vision Pro *in there*, the most noticeable thing about the hardware after a while is that it’s just… heavy. You’re supposed to wear this thing on your face for long stretches of computer time, and depending on which band and light seal you use, the headset alone weighs between 600 and 650 grams. I keep joking that the Vision Pro is an iPad for your face, but it’s heavier than an 11-inch iPad Pro (470 grams) and pushing close to a 12.9-inch iPad Pro (682 grams), so in a very real way, it’s an iPad for your face.
+
+All of the Vision Pro’s heft is totally front-loaded, too. Other big headsets like the Quest Pro (722 grams) have elaborate headbands to balance out their weight, but the Vision Pro just rests it all on the front. Swapping to the dual loop strap helps keep things more stable but doesn’t really reduce the overall sensation of having all that headset on your face. You’re just going to feel it after a while.
+
+*The Vision Pro’s external battery pack is fine, mostly because it’s such a stationary device overall.*
+
+Photo by Vjeran Pavic / The Verge
+
+Notably, the Vision Pro is substantially heavier than the familiar Quest 2 (503g) or even the heavier Quest 3 (515g) — headsets that have built-in batteries. Apple told me that it chose to use an external battery specifically to reduce the headset’s weight. The battery itself is barely worth talking about — it’s a silver brick that weighs another 353 grams with a USB-C port and a motion-activated LED that’s green when it’s charged and orange when it’s not. It connects to the headset with a satisfying twist connector, but the nice braided cable is permanently attached to the battery itself, so don’t break it. You can buy extra batteries for $199, but you can’t hot-swap them; disconnecting the battery from the Vision Pro cuts the power entirely.
+
+I don’t really have strong opinions on this battery setup, which is mostly because nothing about the Vision Pro feels like you’re supposed to move around that much in it, so it’s more or less fine. It’s funny that Apple of all companies shipped this compromise, but it’s also very Apple that the battery is not actually bigger so it can provide more than two and a half hours of run time. (If you plug the battery in, the Vision Pro just runs on wall power for as long as you want.)
+
+Setting up the Vision Pro is dead simple — the headband adjustments are the only manual adjustments involved. Everything else is motorized and sensor-driven. There’s no fiddly lens wheel to dial in; the headset asks you to hold down the digital crown when you first put it on to adjust the lenses to your eyes, and then you go through a pretty standard eye tracking setup. The rest of the setup is almost exactly like any other iOS device: if you have an iPhone, you can bring it close to the Vision Pro to send over all your settings, and you have to agree to some terms and conditions. If you don’t have an iPhone, you’ll have to enter your passwords and so on manually, but it’ll work fine as a standalone device. After all of that, you’re computing in the future.
+
+*See? It’s a VR headset.*
+
+Photo by Vjeran Pavic / The Verge
+
+Apple is very proud of the displays inside the Vision Pro, and for good reason — they represent a huge leap forward in display technology. The two displays are tiny MicroOLEDs with a total of 23 million pixels that are just 7.5 micrometers in size, which is about the size of a red blood cell. And each of *those* tiny pixels is composed of three RGB subpixels laid out in what Apple tells me is an S-stripe pattern. Just thinking about the level of precision required to make these displays and then make them work in a device like this is mind-blowing. 
+
+They also look generally incredible — sharp enough to read text on without even thinking about it, bright enough to do justice to movies. Apple calibrates them for color at the factory so they are also vibrant and color-accurate without looking oversaturated or blown out. They are *so* small, but they work *so* well that they seem huge.
+
+The displays are the main reason the Vision Pro is so expensive — they’re at the heart of the Vision Pro experience and what makes the whole thing work. You are always looking at them, after all. But for all their technical marvels, they are not without tradeoffs of their own when deployed on a device like this.
+
+*The speakers are nice and loud and convincing with spatial audio.*
+
+Photo by Vjeran Pavic / The Verge
+
+See *this* thing — a passthrough VR headset with a silly external battery pack and a display that shows ghostly images of your eyes on the front — is not the big goal. The big goal is AR, or augmented reality. In particular, the big goal is *optical* AR, where light passes directly through unobtrusive glasses to your eyes, with digital information layered over the top of what you’re seeing. AR is a technology with the potential to literally change humanity, and Apple CEO Tim Cook has been talking about how isolating VR headsets are and how important he thinks AR will be for years now. 
+
+*   Tim Cook, [2016](https://9to5mac.com/2016/10/02/tim-cook-talks-steve-jobs-need-for-encryption-at-utah-tech-tour-video/): “Few people are going to view that it’s acceptable to be enclosed in something.”
+*   Tim Cook, [2017](https://www.independent.co.uk/life-style/gadgets-and-tech/features/apple-tim-cook-boss-brexit-uk-theresa-may-number-10-interview-ustwo-a7574086.html): “Unlike Virtual Reality which closes the world out, AR allows individuals to be present in the world.”
+*   Tim Cook, [2017](https://www.bbc.com/news/technology-41590323): “I also like the fact that [AR] doesn’t isolate [...] I’ve never been a fan of VR like that because I think it does the opposite.”
+*   Tim Cook, [2020](https://www.siliconrepublic.com/machines/tim-cook-ar-war-ducks-healthtech): “I think [AR is] something that doesn’t isolate people. We can use it to enhance our discussion, not substitute it for human connection, which I’ve always deeply worried about in some of the other technologies.”
+
+The problem is that the technology to build a true optical AR display that works well enough to replace an everyday computer just isn’t there yet. The Magic Leap 2 is an optical AR headset that’s [cheaper and smaller](/2022/7/12/23205702/magic-leap-2-enterprise-release-price-shipping-date-mixed-reality-ar-headset) than the Vision Pro, but it’s plagued by compromises in field of view and image quality that most people would never accept. 
+
+So Apple’s settled for building a headset with real-time video passthrough — it is the defining tradeoff of the Vision Pro. It is a VR headset masquerading as an AR headset. And let me tell you: the video passthrough on the Vision Pro is *really good*. It works! It’s convincing. You put the headset on, the display comes on, and you’re right back where you were, only with a bunch of visionOS windows floating around. 
+
+It sounds simple, but it is an astonishing engineering achievement to do that in real time, at high resolution, in a computer that fits over your eyes. Apple claims there’s only 12ms of latency between what the cameras see and what’s on the display, and that latency includes the exposure time of the cameras themselves. The actual data processing is *faster*. Do the math, and Apple says there’s not even a frame’s worth of latency; the next frame of video is ready before you’re done looking at the last one.
+
+*Still cameras, still displays.*
+
+Photo by Vjeran Pavic / The Verge
+
+You can also see Apple’s incredible video processing chops right in front of your eyes: I sat around scrolling on my phone while wearing the Vision Pro, with no blown-out screens or weird frame rate issues. I also worked on my Mac in front of a large window while wearing the headset, which is a torture test for dynamic range, and while it wasn’t perfect, it was still usable. It is the best video passthrough that’s ever shipped in a consumer device by far.
+
+If you want me to perceive reality through something, I’d like to see all the colors of the rainbow
+
+The problem is that cameras are still cameras, and displays are still displays. All cameras have motion blur, for example. In low light, cameras either have to increase exposure times at the cost of sharpness or increase ISO at the cost of noise, which then requires noise reduction, which makes things blurry and dull. And cameras and displays both have real limits in terms of color reproduction.
+
+The Vision Pro cannot overcome the inherent nature of cameras and displays. You can easily see motion blur when you move your head in the Vision Pro — motion blur that increases in low light and leads to some weird warping of straight lines. Low light also causes the overall sharpness of the video passthrough to drop as noise reduction kicks in: my iPhone screen got noticeably blurrier when the sun set.
+
+If you’re in a medium-lit room halfway immersed in a dark virtual environment with a bright window open — say, sitting in your kitchen at night with the lights on while writing a review in a Google Docs window floating on a dark beach — you will notice the display brightness slowly ramp up and down as the system tries to average out the brightness of everything you’re looking at. The LCD clock on my microwave flickers when I look at it through these cameras. And Apple’s specs say the display supports 92 percent of the [DCI-P3 color gamut](https://en.wikipedia.org/wiki/DCI-P3), which means the Vision Pro can only show you 49 percent of the colors your eyes can actually see.
+
+Video
+
+The vision pro's video passthrough did not like the clock on my microwave.
+
+The displays have other limitations: the field of view isn’t huge, and the essential nature of looking at tiny displays through lenses makes that field of view feel even smaller. Apple won’t tell me the exact number, but the Vision Pro’s field of view is certainly smaller than the Quest 3’s 110 horizontal degrees. That means there are fairly large black borders around what you’re seeing, a bit like you’re looking through binoculars. 
+
+On top of that, there’s a little bit of distortion and vignetting around the edges of the lenses, and you’ll see some green and pink color fringing at the edges as well, especially in bright environments. All of this makes the usable field of view feel even smaller. If you’re looking at something bright or otherwise high contrast — a white text window floating above a dark desert landscape, for example — you’ll see highlights reflecting in the lenses.
+
+*A screen capture from the Vision Pro and a simulated view of what it feels like to look in the headset.*
+
+I asked Apple about all of this, and yep — that’s how it’s supposed to look. Apple spokesperson Jacqueline Roy told me that a combination of hardware and software in the Vision Pro is specifically designed to minimize these various effects, but they’re definitely in there, and you’ll see them.
+
+You’re constantly being reminded that you’re looking at video on screens, and reality is a lot more interesting than that
+
+If you have been paying attention to VR for the past decade, you know that these are very familiar VR headset display issues. You’re passing light from a screen through lenses mounted on someone’s face and trying to line those lenses up with their eyes, which are notably in different spots on different people’s faces. (Our bodies are designed very badly when it comes to mounting hardware on them.) So a little weirdness at the edges of the displays is not a deal-breaker or even a surprise — except Apple is charging $3,499 for the Vision Pro and making it sound like these displays are perfect enough for you to casually wear this thing while folding laundry. 
+
+I’m serious when I say the Vision Pro has the best video passthrough I’ve ever seen on the sharpest VR displays any normal person will ever come across. But you’re still constantly being reminded that you’re looking at video on screens, and reality is just a lot more interesting than that. There are vanishingly few contexts in reviewing consumer devices where anyone has to care about color gamuts — but if you want me to perceive reality through something, I’d like to see all the colors of the rainbow.
+
+This is the best anyone has ever made *in there* look, and it’s still not nearly as good as *out here.*
+
+*Waiting. Watching. Ready to mess up your hair at a moment’s notice.*
+
+Photo by Vjeran Pavic / The Verge
+
+### Controls
+
+The other thing Apple is very proud of is the eye and hand tracking control system, which is light years beyond any other consumer hand or eye tracking systems out there. You look at things you want to control, you tap your fingers to control them, and that’s how you get around the entire interface. You’re not reaching out and touching things — it’s more like your eyes are the mouse, and your fingers are the button: you tap them together to click on what you’re looking at.
+
+The first few times you use hand and eye tracking on the Vision Pro, it’s awe-inspiring — it feels like a superpower. The Vision Pro’s external cameras just need to see your hands for it to work, and they can see your hands in a pretty large zone around your body. You can have them slung across the back of the couch, resting in your lap, up in the air with your elbows on a table, pretty much anywhere the cameras can see them. It actually takes a minute to realize you don’t have to gesture out in front of you with your hands in the air — and once you figure it out, it’s pretty fun to watch other people instinctively reach their hands up the first time they try the Vision Pro.
+
+But the next few times you use hand and eye tracking, it stops feeling like a superpower — and in some cases, it actively makes using the Vision Pro harder. It turns out that having to *look at what you want to control* is really quite distracting.
+
+Think about every other computer in your life: the input mechanism is independent of whatever you’re looking at. On a laptop, you can click on controls and use the keyboard while keeping your focus on a document. On a phone, you can do things like drag sliders in a photo editing app while keeping your eyes focused on what those changes are actually doing to your photo.
+
+The Vision Pro simply doesn’t work like that — you have to be looking at something in order to click on it, and that means you are constantly taking your attention away from whatever you’re working on to specifically look at the button you need to press next. I spent some time playing a lovely little game called [*Stitch*](https://go.redirectingat.com/?xs=1&id=1025X1701640&url=https%3A%2F%2Fapps.apple.com%2Fus%2Fapp%2Fstitch%2Fid1581052096) *t*hat quickly became maddening because I kept looking away from the piece I wanted to move to the place I wanted to move it, which meant I wasn’t picking it up when I tapped my fingers.
+
+*Reach out and touch faith.*
+
+Photo by Vjeran Pavic / The Verge
+
+visionOS feels also designed for an eye tracking system that’s just slightly more precise than it actually is — a lot of controls are just a little too small and a little too close together to let you quickly bop around the system. You have to look, make *sure* you’re looking at the thing you want, and *then* tap, or you might end up clicking on the wrong thing. Sometimes the fastest way to select what you want is to look away entirely and try again.
+
+It works until it doesn’t. It’s magic until it’s not.
+
+Think about it like this: The keyboard and mouse on a Mac *directly* control the Mac. The click wheel on an iPod directly controlled the iPod. A lot of work has gone into making it feel like the multitouch screen on an iPhone *directly* controls the phone, and when it goes sideways, like when autocorrect fails or an app doesn’t register your taps, it’s not pleasant.
+
+Your eyes and hands *aren’t* directly controlling the Vision Pro: cameras are *watching* your eyes and hands and turning *that* into input, and sometimes the interpretation isn’t perfect. The best example of this is the hilarious on-screen keyboard, which you use by staring at each letter and pinching your fingers to select it or henpecking with two fingers at the floating keys in front of you. It’s not worth using for anything beyond entering a Wi-Fi password — for anything longer, you’ll want to use dictation or connect a Bluetooth keyboard. Why? So you can directly control the input.
+
+It’s not a given that the Vision Pro can always see your hands, either. There’s a pretty large bubble around the front of your body where the cameras can see your hands — it basically extends the length of your arms in a semicircle around the front of your body. But if you lean back in a chair with your arm at your side, it can’t see your hand. If you’re sitting at a table and your hands are on your legs, it might not see your hands. If you’re lying down in a dark room and the IR illuminators can’t reach your hands, the cameras might not be able to see them. If you’re simply standing up with your arms at your sides, it might not be able to see your hands if they drift too far backward.
+
+Photo by Vjeran Pavic / The Verge
+
+I recognize that it is fundamentally silly to complain about a hand tracking system needing to see your hands, and it *is* possible to navigate quite a lot of visionOS with Siri and dictation: you can manage apps, open different virtual immersions, and so on. If you squint, you can see a glimpse of how a computer that you use by talking to it and manipulating things in space might one day work. 
+
+But right now, the limits are obvious. Using the Vision Pro makes you constantly aware of what you are looking at and where your hands are in a way that is unlike any other computer I’ve ever used. When it fails, it’s maddening. (Oddly, Apple’s newest watches [can detect a pinching gesture](/23928706/double-tap-apple-watch-series-9-ultra-2), but there’s no ability to use those as control devices on the Vision Pro.)
+
+The flip side is that a system that’s constantly watching your hands for input tends to register a lot of extra inputs, which can be very funny. I talk through writing video scripts to make sure things flow, and I talk with my hands. So as I was writing the video script for this review in the Vision Pro, the system kept catching my hands moving and started scrolling and clicking on things by accident. I cracked up the first time I realized what was happening. But eventually, it meant that I took the Vision Pro off and wrote the rest of the script on my Mac, which only does things when I actually want it to.
+
+Just as with the displays, I think this is the best eye and hand tracking system anyone’s ever shipped. It really can feel like magic… until it doesn’t. And if you want people to do their computing *in there*, the input system needs to be absolutely rock solid.
+
+### Personas
+
+I won’t go into that much detail on Apple’s deeply weird and extremely uncanny 3D persona system here — the best way to understand them is by watching the video review above, which features a FaceTime call between *The Wall Street Journal*’s Joanna Stern, Marques Brownlee, and me, all using our personas. To quote Marques, personas are really impressive and also really bad. You can see why Apple put the beta label on them; there’s a long way to go before using a persona on a call isn’t distracting at best and, at worst, extremely rude.
+
+*I will say, Joanna’s persona accurately captured her reaction to personas in general here.*
+
+*Marques looks like he’s happy to welcome me into PlayStation Home.*
+
+One small note: personas can show up whenever an app calls for a front-facing camera, so they work in basically everything. I used mine on a Google Meet call in Safari just fine, although the other people on the Meet call did not think it was fine at all.
+
+### Spatial cameras
+
+I would not recommend shooting photos in the Vision Pro unless you really need to. Pressing the shutter button a single time delivers a 2560 x 2560 still, which works out to 6.5 megapixels. As far as I can tell, it’s always from the left main camera, which the EXIF data says has an 18mm f/2.0 lens. The photos look like 6.5-megapixel photos from a tiny camera sensor optimized for video, which is to say that they look pretty bad.
+
+Video is slightly better — the Vision Pro shoots 2200 x 2200 square videos at 30fps. They look a little better than the photos, but there’s still an awful lot of compression going on, and if you happen to watch them on anything but a Vision Pro, you’ll notice some barrel distortion as the camera moves around. None of this feels particularly important: I really can’t think of situations where I’d want to be taking video with the headset on since all these videos and screen captures come with a ton of excess motion from your head moving around. Also, you will look fundamentally ridiculous trying to take photos of your family with this thing on your face. I think it’s fair to assume most Vision Pro buyers also own iPhones, which take great videos, so whatever.
+
+One thing that *is* very convincing is taking spatial videos on [the iPhone 15 Pro Max](/23879619/apple-iphone-15-pro-max-review) and watching them in 3D on the Vision Pro. I took some videos of my daughter at the zoo and around Christmas time, and like any dad, I could probably watch them over and over again forever. They play back in a sort of ghostly white haze, and the overall effect is incredibly bittersweet — you can relive a brief memory, but you’re alone in the headset and can’t share it with anyone else. The other problem is that, currently, you can choose to shoot iPhone video in spatial in 1080p at 30fps or at the full 4K resolution the phone supports but not both. For now, I’m going to stick with the higher-res video, but there’s going to come a time where shooting in spatial by default is the smart move, and that will be a real turning point.
+
+### visionOS
+
+The Vision Pro runs visionOS, which Apple says is based on iPadOS, with a lot of customization around latency and vision to make it work for spatial computing. Starting with the iPad as a foundation represents an incredible head start for Apple — it’s taken years for Meta to build out all the features of the Android-based Quest OS and populate its app store, and it’s still mostly games. Apple gets to start with the full set of mature iPadOS features and [most of the huge iPad app library](/2024/1/18/24043367/apple-vision-pro-apps-good-bad).
+
+It’s funny to keep saying that the Vision Pro is an iPad for your face, but when it comes to the current set of apps, it’s also not totally wrong. Most of them work like iPad apps, and the homescreen comes preloaded with a folder labeled “compatible apps” that’s full of actual iPad apps. It’s hard to judge the app ecosystem for a product that has barely launched, but I feel totally comfortable judging the iPad app ecosystem at this point, and Apple shipping its own podcast and news apps as iPad apps on the Vision Pro feels like a sign in a lot of ways.
+
+Photo by Vjeran Pavic / The Verge
+
+There’s already [controversy in the world of Vision Pro apps](/2023/7/23/23804704/netflix-vision-pro-native-app-apple-ios-ipad-os): some huge developers like Netflix, Spotify, and YouTube have decided to wait before allowing their apps to run on the Vision Pro and aren’t even allowing their iPad apps to run. As always, the open web serves as the pressure release valve for Apple developer politics, and Safari on the Vision Pro is a capable riff on iPad Safari: I watched Netflix in Safari and it worked without a hitch, although you can’t put the video in a nice environment like you can with the native apps. I also watched the NFL playoffs on YouTube TV in Safari on the Vision Pro, and it worked with a few minor hiccups, although it did keep asking me to confirm my location over and over again.
+
+The stranger thing is that Safari on the Vision Pro is pretty disconnected from web-based 3D experiences. Apple has made noise about supporting the WebXR standard, and there are flags in Safari’s advanced preferences to turn on support, but it’s pretty hit-or-miss in terms of actually working right now — it mostly does not.
+
+I asked about this, and Apple told me that it is actively contributing to WebXR and wants to “work with the community to help deliver great spatial computing experiences via the web.” So let’s give that one a minute and see how it goes.
+
+On the other hand, I asked Apple why the huge library of VR video on YouTube doesn’t work at all on the Vision Pro, and the company basically told me it wasn’t good enough to support, saying that “much of this content was created for devices that do not deliver a high-quality spatial experience” and that the company’s efforts were instead focused on “delivering the best spatial media experience possible including spatial photos and videos, Apple Immersive Video, and 3D movies available on Apple TV.”
+
+Translation: don’t hold your breath for YouTube VR support.
+
+Photo by Amelia Holowaty Krales / The Verge
+
+The really big difference between visionOS and iPadOS is that iPadOS has a lot of opinions about how you can arrange apps and how many apps you can run at a time, and visionOS is full-on free-floating window chaos. I love it. It is bananas.
+
+You can open as many apps as you want and put them anywhere you want in space. You can open windows in the kitchen, walk away from them and open some more in the living room, and then go back to the kitchen to find all your old windows waiting for you. Late one night, I made an art gallery of giant Safari windows in our office’s large open cafe area and walked around, looking at huge webpages for a while. I am telling you, it is *wild*.
+
+Sadly, visionOS doesn’t have any ability to share these windows or experiences with anyone else: two people in Vision Pro headsets sitting in the same room can’t see the same things floating in space at the same time. Apple tells me some enterprise developers are working on experiences with shared views, and you can mirror the view from one Vision Pro to another over FaceTime, but in the end, my big Safari art gallery only ever had one patron: me. It’s amazing you can do all of this, but it is also quite lonely to put things all over a space knowing no one else will ever really experience it.
+
+Video
+
+You can put windows anywhere you want — I love it.
+
+To move windows around, you just grab the bar at the bottom and put it wherever you want to in space. You can layer windows, you can put them directly above your head, you can put them on the floor — you can really just do whatever you want. To switch between them, you just look at the window you want and tap your fingers; inactive windows go slightly translucent, which means all kinds of things can be happening at once all over your space.
+
+On top of *that*, you can have apps from three different operating systems on-screen at the same time: native visionOS apps; iPad apps; and then you can also connect your Mac via Wi-Fi and have a whole Mac display with all the chaotic glory of macOS floating around in space. 
+
+One area where visionOS has clear room to improve is window management. There’s no Exposé or Stage Manager to collect all your open windows in front of you or put them into preset arrangements, and the management that does exist is not exactly discoverable or intuitively laid out. You can tap and hold the X button in one app to hide all your *other* apps. If you want to hide *everything*, you double-click the digital crown on the headset itself. If you want to *close* all apps, you just ask Siri; if you want to *quit* a misbehaving app, you hold down the top button and the digital crown simultaneously to bring up a force quit window. It’s a lot of different ideas all at once.
+
+Once you figure out the moves, you can get around, but it takes a minute, and it means you’ll be thinking about window management more than any other iOS device I can think of and maybe even more than a Mac, which has four decades of window management ideas built into it.
+
+Photo by Amelia Holowaty Krales / The Verge
+
+Speaking of the Mac, I know a lot of people are excited about the idea of buying a Vision Pro just to put up giant virtual monitors. There’s good news and bad news about that. The good news is that Mac display sharing works really well, and Apple ecosystem tricks like Handoff and Continuity are pure magic in this context. You can copy on your Mac and paste in visionOS, and it just works. You can open your Mac display in visionOS and drag the mouse off the screen, and suddenly, your Mac’s keyboard and trackpad are controlling visionOS apps. It works just like it does between a Mac and an iPad. I found myself putting a virtual Mac display over my MacBook Pro’s screen and making it look like I had a 50-inch laptop to use Lightroom with — it’s awesome.
+
+There is a lot of very complicated display scaling going on behind the scenes here, but the easiest way to think about it is that you’re basically getting a 27-inch Retina display, like you’d find on an iMac or Studio Display. Your Mac *thinks* it’s connected to a 5K display with a resolution of 5120 x 2880, and it runs macOS at a 2:1 logical resolution of 2560 x 1440, just like a 5K display. (You can pick other resolutions, but the device warns you that they’ll be lower quality.) That virtual display is then streamed as a 4K 3560 x 2880 video to the Vision Pro, where you can just make it as big as you want. The upshot of all of this is that 4K content runs at a native 4K resolution — it has all the pixels to do it, just like an iMac — but you have a grand total of 2560 x 1440 to place windows in, regardless of how big you make the Mac display in space, and you’re not seeing a pixel-perfect 5K image.
+
+It is incredible that all of this works with just a single button click, but all that scaling complication also explains the bad news: you can only have a single Mac display in visionOS. You can’t have multiple Mac monitors floating in space. Maybe next time.
+
+Photo by Vjeran Pavic / The Verge
+
+One of the weirder things about visionOS (and the Vision Pro itself, really) is that there’s not a lot of true AR in the mix — as in, actual interaction between physical objects in your space and digital ones. 
+
+After all these years of Apple talking about AR, I counted exactly three things in my entire time with the Vision Pro that offered a preview of the AR future. One: when you look at your Mac, the Vision Pro sometimes puts up a “connect display” button above it that starts screen sharing. Two: when you’re typing on a Bluetooth keyboard and look down at your hands, it puts a little text preview window above the keyboard so you can see what you’re typing. These are little features, yes, but they are some of the first true AR computing features that have ever shipped on a mainstream device, and they are an incredibly tantalizing glimpse of what might be possible. They also happen to be incredibly useful.
+
+The third AR thing I saw was the loading screen of *Super Fruit Ninja*, which allows you to throw a strawberry at a pig that’s running around on your floor. This seems slightly less historic.
+
+That’s more or less it. There’s not a lot of reality being augmented in the rest of visionOS. There’s an awful lot of what you might call mixed reality: virtual objects floating around in space with no connection to anything real. All those app windows floating around are doing so independently of the physical environment. And in the entertainment context, where Apple lets the Vision Pro fall back into being the VR headset it fundamentally is, it absolutely shines.
+
+Watching movies on the Vision Pro is a ton of fun, especially in the Apple TV app’s immersive movie theater that lets you pick where you want to sit. It’s also very cool to watch a movie in one of Apple’s virtual environments like Mount Hood and see the colors from the screen reflect onto the landscape or look around one of the Disney Plus environments like Avengers Tower. And movies themselves look great — the incredible quality of the Vision Pro’s displays is really obvious when you’re watching something. I watched far more of *Top Gun: Maverick* than I intended to just because it looked so good blown up to drive-in movie size, floating over a mountain.
+
+Photo by Amelia Holowaty Krales / The Verge
+
+Since the Vision Pro sends separate images to each eye, it can do true 3D movies — and Apple and its partners like Disney have already released quite a few. If you have a large Apple movie library, you get the 3D versions for free — you just choose 2D or 3D playback when you hit play. Apple is also making immersive versions of some of its Apple TV Plus shows, which basically means a 180ish-degree 3D video that feels like the best Google Cardboard demo of all time. I watched someone walk a tightrope in *Adventure*, and it was very convincing — but if you’ve never tried this before, I’d be careful that you get used to VR motion before diving into 3D videos. Apple has also promised immersive sports content, but sadly, I wasn’t able to try any of that yet.
+
+You can get pretty far making the argument that the Vision Pro is worth it simply as a very expensive TV — but after a while, the weight of it reminds you that this very nice TV is resting on your face. (I usually made it about 30 minutes to an hour before wanting a break.) It’s also a very expensive TV that doesn’t have HDMI inputs, so you’re limited to Apple’s gaming library, which feels deeply unfair. And unlike any other TV in your life, the Vision Pro can literally DRM your eyes — if you’re watching a movie in the Apple TV app or Disney Plus and go to take a screen capture, the content blacks out. It’s strange to experience a reality where big companies can block you from capturing what you see, even if all you’re trying to do is show people how cool it looks in a review. You can get around DRM screenshots on an iPhone by just taking a photo of the screen, but there’s no such off-ramp for the Vision Pro. 
+
+Speaking of gaming, there aren’t any real VR games or fitness apps here — there’s nothing like *Beat Saber* or *Red Matter* or *Population: One*, all hit games on the Quest. Fitness, in particular, has helped the Quest reach a more mainstream market: [Supernatural’s Chris Milk told me in 2021](/22379859/vr-virtual-reality-fitness-work-out-supernatural-chris-milk-interview) that his user base is 50 / 50 men and women, 60 percent of whom are over 40\. That led to [Meta buying Supernatural outright](/2023/2/1/23575041/meta-within-vr-acquisition-ftc-antitrust-lawsuit-injunction-denied) because [it was worried about Apple buying it first](https://mixed-news.com/en/meta-wanted-to-beat-apple-to-the-punch-buying-supernatural/).
+
+You can get pretty far making the argument that the Vision Pro is worth it simply as a very expensive TV
+
+Yet, there’s just nothing like that on the Vision Pro at launch, even though Apple is so focused on fitness and health across its other devices. I think it’s because the Vision Pro just doesn’t seem suited to those kinds of physical game experiences — it’s heavy, with that external battery, and it’s hard to see how some of these games would even work without controllers. Apple tells me that game developers working in Unity are hard at work porting over more games and that visionOS allows developers to come up with custom hand gestures, which might solve for some of the controller issues — I was able to try a prerelease version of *Super Fruit Ninja* that used a custom slashing gesture in a briefing, and it seemed to work well, but that was about it so far.
+
+One note about VR motion in the Vision Pro: it doesn’t really do anything to protect you from yourself. I am fairly comfortable in VR — my wife and I use Supernatural, and I went through a brief, delightful period of being absolutely addicted to *Gran Turismo 7 VR* on the PSVR 2\. I am pretty aware of my limits in VR motion, and I can do most things without a problem. But the Vision Pro is so convincing and so unconcerned with whether you might have any limits that you can easily go too far too fast and get yourself a little queasy. I watched five minutes of *Avatar: The Way of Water* in 3D in Disney Plus — the Vision Pro is the first consumer device to support high frame rate movies in 3D! — and immediately needed to stop because the motion was just too much. I recommend early adopters go slowly and make sure you find your limits gently. That first bout of VR motion sickness is no joke. 
+
+### Wrap up
+
+The Vision Pro is an astounding product. It’s the sort of first-generation device only Apple can really make, from the incredible display and passthrough engineering, to the use of the whole ecosystem to make it so seamlessly useful, to even getting everyone to pretty much ignore the whole external battery situation. There’s a part of me that says the Vision Pro only exists because Apple is so incredibly capable, stocked with talent, and loaded with resources that the company simply went out and engineered the hell out of the hardest problems it could think of in order to find a challenge.
+
+That’s good! There are a lot of ideas in the Vision Pro, and they’re all executed with the kind of thoughtful intention that few other companies can ever deliver at all, let alone on the first iteration. But the shocking thing is that Apple may have inadvertently revealed that some of these core ideas are actually dead ends — that they can’t ever be executed well enough to become mainstream. This is the best video passthrough headset ever made, and that might mean camera-based mixed reality passthrough could just be a road to nowhere. This is the best hand- and eye-tracking ever, and it feels like the mouse, keyboard, and touchscreen are going to remain undefeated for years to come. There is so much technology in this thing that feels like magic when it works and frustrates you completely when it doesn’t.
+
+Photo by Amelia Holowaty Krales / The Verge
+
+The other way to look at the Vision Pro is that Apple knows all of this, but the technology to build the true AR glasses it has long hinted at is simply not there — so the Vision Pro represents something like a simulator or a developer kit. A dream factory for people to build apps and meaningful use cases for the imagined hardware yet to come: true optical AR glasses that let you share digital experiences with other people. In that framework, this Vision Pro is the hardware Apple *can* ship right now to get everyone thinking about these ideas while it pours all those resources into the hardware it *wants* to build. Maybe! It’s fun to think about that possibility, and a lot of people have already assumed that’s the case.
+
+But one of the oldest rules we have here at *The Verge* is that you have to review what’s in the box — the product that’s shipping today, not the promise of improvements yet to come. And so I keep coming back to all the questions I’ve been asking myself ever since I first strapped the Vision Pro onto my head. Starting, of course, with the most important:
+
+*   Do you want a computer that messes up your hair every time you use it?
+*   Do you want a computer that smears your makeup every time you use it, if you wear makeup?
+*   Do you want a computer that allows the Walt Disney Company to prevent you from taking pictures of what you see?
+*   Do you want to use a computer where you easily can’t show anyone else what you’re looking at?
+*   Do you think the fanciest TV you own should have HDMI inputs?
+*   Do you want to use a computer that doesn’t work as well in a dark room?
+*   Do you want to use a computer that is *always looking at your hands*?
+
+That is a *lot* of tradeoffs — big tradeoffs, not little ones. And the biggest tradeoff of all is that using the Vision Pro is such a lonely experience, regardless of the weird ghost eyes on the front. You’re in there, having experiences all by yourself that no one else can take part in. After using the Vision Pro for a while, I’ve come to agree with what Tim Cook has been saying for so long: headsets are inherently isolating. That’s fine for traditional VR headsets, which have basically turned into single-use game consoles over the past decade, but it’s a lot weirder for a primary computing device.
+
+I don’t want to get work done in the Vision Pro. I get my work done with other people, and I’d rather be *out here* with them.

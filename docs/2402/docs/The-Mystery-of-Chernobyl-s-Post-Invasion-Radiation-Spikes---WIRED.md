@@ -1,0 +1,32 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:32:38
+-->
+
+# The Mystery of Chernobyl’s Post-Invasion Radiation Spikes | WIRED
+
+> 来源：[https://www.wired.com/story/chernobyl-radiation-spike-mystery/](https://www.wired.com/story/chernobyl-radiation-spike-mystery/)
+
+When Russian troops seized control of the Chernobyl nuclear power plant last year, following the invasion of Ukraine, President Volodymyr Zelensky called it “a declaration of war” against Europe. Others warned that Russia’s reckless seizure of the plant could trigger a nuclear disaster to rival Chernobyl’s 1986 radiological accident.
+
+Their fears seemed well-founded when, on the night of the invasion, sensors began reporting sudden spikes in radiation levels in the Chernobyl Exclusion Zone (CEZ)—a 1,000-square-mile forested zone around the plant where radioactive soil from the 1986 disaster had settled.
+
+Forty-two sensors recorded spikes that night and the next morning—some at levels hundreds of times higher than normal. The State Nuclear Regulatory Inspectorate of Ukraine (SNRIU) eased concerns that nuclear material had leaked from the plant, however, when it said the spikes were likely due to “resuspension” of radioactive soil stirred up by Russian military vehicles—an explanation widely accepted by many nuclear experts and the media.
+
+But a group of environmental radiation experts disputes this conclusion. In a paper published in June by the [*Journal of Environmental Radioactivity*](https://www.sciencedirect.com/science/article/pii/S0265931X23001133?via=ihub), they detail why there’s no way soil resuspension could have caused the spikes and speculate that interference from an electronic warfare weapon was behind the surge instead.
+
+Now, in what is becoming a deepening mystery, noted cybersecurity researcher Ruben Santamarta says he believes something else was the cause—data manipulation, possibly through a cyberattack.
+
+Based on patterns he found in the spikes—batches of sensors geographically distant from one another recorded spikes at the exact same moment, while sensors closer to them recorded no elevation—he thinks a remote hacker or someone with direct access to the server processing the data manipulated the numbers.
+
+After an extensive review of the data and other materials, Santamarta says he finds it hard to believe the explanation about soil resuspension was ever considered plausible. And he is surprised that authorities never bothered to examine the data for patterns or, if they did, kept that information from the public. He thinks those patterns discount theories about interference from electronic weapons, and he plans to [present his findings](https://www.blackhat.com/us-23/briefings/schedule/#seeing-through-the-invisible-radiation-spikes-detected-in-chernobyl-during-the-russian-invasion-show-possible-evidence-of-fabrication-32941) at the BlackHat security conference in Las Vegas next week.
+
+“I have collected a significant amount of evidence by different means, including OSINT [open source intelligence], hardware and software reverse engineering, and data analysis of the radiation levels,” he says “I think it is enough to seriously consider the possibility that these radiation spikes were fabricated.”
+
+If Santamarta is right, his finding could have far-reaching implications for radiation-monitoring systems around the world, says a former nuclear safety official who asked to remain anonymous in order to speak freely about the matter. If the data was manipulated, it could undermine trust in radiation-monitoring systems or change how data from them gets reported publicly. Data from radiation monitors is often [distributed publicly in near real time](https://www.epa.gov/radnet/near-real-time-and-laboratory-data-state) so that governments and nuclear experts can actively monitor conditions in populated cities and around nuclear facilities. But this creates a risk that hackers or others could alter data to trigger public alarm before proper verification can occur.
+
+Monitoring Networks
+
+Russian troops entered the CEZ early on the morning of February 24 last year because it’s the shortest and most direct route from Russia-friendly Belarus to Kyiv, Ukraine’s capital 80 miles south of the plant. But some feared Russia’s interest in Chernobyl was more than strategic. They worried the military could cause a disaster using radioactive waste at the plant or drum up false claims that Ukraine was building a dirty bomb there.
+
+After a day-long battle with Ukrainian troops and three hours of negotiations to establish parameters for Russia’s occupation of the plant, Russia took control of Chernobyl’s facilities. At 8:40 pm local time, 10 minutes after the SNRIU indicated that Russia had formally taken control of the plant, seven monitoring stations in the CEZ suddenly began reporting elevated radiation levels. The readings ranged from two to five times the normal radiation rate each sensor had historically detected, but one station showed a level eight times higher than normal.

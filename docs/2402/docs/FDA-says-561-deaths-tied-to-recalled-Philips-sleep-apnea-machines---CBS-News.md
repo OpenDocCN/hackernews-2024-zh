@@ -1,0 +1,54 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:33:11
+-->
+
+# FDA says 561 deaths tied to recalled Philips sleep apnea machines - CBS News
+
+> 来源：[https://www.cbsnews.com/news/fda-sleep-apnea-philips-recall-cpap/](https://www.cbsnews.com/news/fda-sleep-apnea-philips-recall-cpap/)
+
+The Food and Drug Administration says 561 deaths have been reported in connection to recalled Philips devices to treat obstructive sleep apnea and other breathing disorders.
+
+The FDA said that since April 2021 it has received more than 116,000 medical device reports of foam breaking down in Philips CPAP (continuous positive airway pressure) machines and BiPAP sleep therapy devices. That includes 561 reports of death, the agency [said](https://www.fda.gov/medical-devices/safety-communications/update-certain-philips-respironics-ventilators-bipap-machines-and-cpap-machines-recalled-due#:~:text=Since%20April%202021%2C%20the%20FDA,breakdown%20or%20suspected%20foam%20breakdown.&text=*The%20number%20of%20deaths%20has,Philips'%20retrospective%20review%20of%20MDRs) Wednesday.
+
+The Dutch medical device maker has recalled millions of the breathing machines amid reports they were blowing gas and pieces of foam into the airways of those using the devices. 
+
+Polyester-based polyurethane foam used in the devices to reduce sound and vibration can break down, with black pieces of foam or invisible chemicals that can be breathed in or swallowed by the person using the device. "These issues could potentially result in serious injury and require medical intervention to prevent permanent injury," the FDA stated.
+
+The grim tally comes days after Philips said it would [stop selling the machines in the U.S.](https://www.cbsnews.com/news/philips-sleep-apnea-stops-us-sales/) in a settlement with the FDA and the Justice Department expected to cost roughly $400 million, the company disclosed in a regulatory [filing](https://www.sec.gov/Archives/edgar/data/313216/000031321624000001/phg-20231231.htm). 
+
+[Philips reaches $479 million settlement over CPAP machine recall 00:23](https://www.cbsnews.com/video/philips-reaches-479-million-settlement-over-cpap-machine-recall/)
+
+The tentative agreement, which must be approved by a U.S. court, calls for the company to keep servicing apnea machines already being used while stopping to sell new ones until specific conditions are met. 
+
+After an [initial recall announced in June of 2021](https://www.cbsnews.com/news/philips-cpap-machine-recall-ventilators/) to repair or replace about 5.5 million globally, Philips then had to recall a limited number of ventilators after they'd been repaired, according [to](https://www.usa.philips.com/a-w/about/news/archive/standard/news/articles/2022/20221121-philips-respironics-update-related-to-trilogy-100-200-repairs.html) the company.
+
+Philips in late 2023 agreed to [pay at least $479 million to compensate](https://www.cbsnews.com/news/philips-sleep-apnea-product-recall/) users of 20 different breathing devices and ventilators sold in the U.S. between 2008 and 2021\. Claims for financial losses related to the purchase, lease or rent of the recalled machines can be now be [lodged](https://www.respironicscpap-elsettlement.com/) in the wake of a proposed class-action settlement reached in September.
+
+Claims for financial losses related to the purchase, lease or rent of the recalled devices can be made, with eligible users entitled to:
+
+*   a **Device Payment Award** for each recalled device purchased, leased or rented;
+*   a **Device Return Award** of $100 for each recalled device returned by Aug. 9, 2024; and/or
+*   a **Device Replacement Award** for money spent to buy a comparable machine on or after June 14, 2021 and before Sept. 7, 2023 to replace a recalled device.
+
+## How to file a claim
+
+To determine whether one is eligible and for instructions on what steps, if any, are needed to receive a payment, the settlement administrator has set up in interactive website [here](https://www.respironicscpap-elsettlement.com/).
+
+Users can look up their recalled device's serial number to see what device payment award they may be entitled to by clicking [here](https://respironicscpap-elsettlement.angeiontest.com/lookup).
+
+Those who return a recalled Philips machine by the August deadline are entitled to both the return and payment awards without having to submit a claim form and can use prepaid [shipping labels by clicking here](https://www.respironicscpap-elsettlement.com/prepaid-label-request) at no cost. 
+
+Those who spent their own money buying a comparable replacement CPAP or ventilator to replace a recalled device will need to complete a device replacement claim form, which can be found [here](https://www.respironicscpap-elsettlement.com/device-replacement-award). A paper device replacement form can also be found [here](https://angeion-public.s3.amazonaws.com/www.RespironicsCPAP-ELSettlement.com/docs/Device+Replacement+Award+Claim+Form.pdf) or by calling 1-855-912-3432.
+
+The deadline for claim submissions is Aug. 9, 2024.
+
+The settlement does not impact or release any claims for personal injuries or medical monitoring relief, according to the administrator with the U.S. District Court for the Western District of Pennsylvania. 
+
+Roughly 30 million people have sleep apnea, a disorder in which one's airways become blocked during rest, interrupting breathing, according to 2022 [data](https://www.ama-assn.org/delivering-care/public-health/what-doctors-wish-patients-knew-about-sleep-apnea) from the American Medical Association. 
+
+The company investigated all complaints and allegations of malfunction and serious injury of death, and "has found no *c*onclusive data linking these devices and the deaths reported, Philips told CBS MoneyWatch on Thursday.
+
+[Kate Gibson](https://www.cbsnews.com/team/kate-gibson/)
+
+Kate Gibson is a reporter for CBS MoneyWatch in New York, where she covers business and consumer finance.

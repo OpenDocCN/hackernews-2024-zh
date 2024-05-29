@@ -1,0 +1,28 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:47:19
+-->
+
+# Nobody Told EV Owners How Quickly They Burn Through Tires | The Drive
+
+> 来源：[https://www.thedrive.com/news/nobody-told-ev-owners-how-quickly-they-burn-through-tires](https://www.thedrive.com/news/nobody-told-ev-owners-how-quickly-they-burn-through-tires)
+
+In case you missed it, there's been a lot of discourse surrounding electric vehicles and tires lately. Not only do EVs wear through their rubber and [roads](https://www.thedrive.com/news/32810/switching-to-electric-vehicles-will-ruin-our-roads-without-a-gas-tax-replacement) quicker because of [their relatively extreme heft](https://www.thedrive.com/news/40657/the-gmc-hummer-ev-pickup-will-weigh-9046-pounds-report), but the instant power they put down also accelerates the process. Owners are shocked to learn this firsthand because, as [J.D. Power](https://www.jdpower.com/business/press-releases/2024-us-original-equipment-tire-customer-satisfaction-study) reports, their daily drivers chew through tires like they're going out of style. And not only that, but many were supposedly never told this would happen.
+
+This points to a few failings in the car buying process. Since J.D. Power's studies show that EV owners typically anticipate [similar tire wear](https://www.thedrive.com/guides-and-gear/michelin-knows-exactly-when-your-tires-will-wear-out) as internal combustion car owners, it shows that [adoption has leapfrogged education](https://www.thedrive.com/news/were-finally-crossing-the-chasm-with-electric-vehicles). This can be true for both buyers and sellers at new car dealerships. For instance, all the automaker buzz about EVs tends to blind customers to the potential downsides, and salespeople may be unaware or unwilling to share what they know about differences with electric car ownership.
+
+*Ford*
+
+Ashley Edgar, senior director of benchmarking and alternative mobility at J.D. Power, says this is a problem that should be addressed by car companies and tire manufacturers alike:
+
+“The widening satisfaction gap between EVs and gas-powered vehicles highlights an opportunity for tire manufacturers and automakers to educate EV owners on the differences in performance. Additionally, because of the inherent conflict of maximizing vehicle range and optimizing tire wear for EVs, tire manufacturers and automakers need to work together to overcome the challenge without completely sacrificing tire performance in other areas, especially as the EV market continues to increase.”
+
+Now, big-name OEMs like Michelin and Goodyear sell rubber specifically for battery-powered cars. Marketing is one reason, of course, but so are [the legitimately different requirements of EV tires](https://www.thedrive.com/sponsored/grounded-why-ev-specific-tires-are-more-than-marketing-hype). They must strike a different balance of strength, weight, and resiliency without hampering vehicle range or causing excessive noise. That's a tall task when you're dealing with [6,000-pound sedans](https://www.thedrive.com/news/honda-solid-state-batteries-will-offer-same-energy-density-at-half-the-weight) and "midsize" trucks that weigh as much as a dually pickup.
+
+Automotive dealer software company [CDK Global](https://www.cdkglobal.com/) published [a lengthy study about EV service](https://www.cdkglobal.com/insights/ev-service-today-and-tomorrow) in late 2023\. In it, [one respondent said](https://www.wardsauto.com/dealers/tires-are-new-oil-change) that “when it comes to EVs, tires are the new oil change." We [published a story last August](https://www.thedrive.com/news/rivians-tires-are-wearing-out-in-as-little-as-6000-miles-heres-why) about Rivian R1Ts needing new rubber after as few as 6,000 miles. Not all EV owners deal with such egregious wear, but considering most service shops recommend oil changes every 5,000 miles on gasoline-powered cars, the comparison checks out in that case.
+
+*Rivian*
+
+EVs obviously have their place in the future of transportation. Still, the industry has a long way to go in educating customers about the upsides and downsides while also developing products that provide better value for folks. The thing is, there has to be an incentive for companies to do so, and at a time [when it's difficult enough to sell EVs as it is](https://www.thedrive.com/news/slowing-demand-is-making-used-evs-more-affordable-but-theyre-still-not-cheap), what's the likelihood of a salesperson bringing up maintenance costs?
+
+*Got a tip or question for the author? Contact them directly: caleb@thedrive.com*

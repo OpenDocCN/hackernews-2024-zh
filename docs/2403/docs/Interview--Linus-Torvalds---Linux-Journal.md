@@ -1,0 +1,272 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:55:05
+-->
+
+# Interview: Linus Torvalds | Linux Journal
+
+> 来源：[https://www.linuxjournal.com/article/3655](https://www.linuxjournal.com/article/3655)
+
+On August 11, while attending LinuxWorld Expo in San Jose, California, I had the privilege of having lunch with Linus Torvalds. While we had met briefly before, this was the first time I had talked to him face-to-face rather than by e-mail. He turned out to be a very personable young man—very self-assured and articulate. At his keynote the night before, he had exuded this same calm presence, answering questions with aplomb and the confidence that comes from knowing his subject well. He surprised me at lunch by admitting to being nervous about public speaking—it certainly does not show—so I guess he is human after all! I steered clear of the normal topics (Linux and Transmeta), hoping to give you a picture of who exactly Linus is. Here's our conversation.
+
+**Margie**: Let's start at the beginning. Where were you born? When?
+
+**Linus**: Helsinki, Finland, December 28, 1969.
+
+**Margie**: Practically a Christmas birthday!
+
+**Linus**: Yeah, it isn't a good time to be born if you like getting presents. You always get combination presents, but it turned out okay for me. It's a good day. In Finland, it is known as the day of “the children without fault”—not exactly “without fault”, more “almost perfect”.
+
+**Margie**: Looks like it's true. Did you grow up in Helsinki, or did you move around?
+
+**Linus**: I lived in Helsinki all my life, until two and a half years ago. I was as much of a city kid as you can be in Helsinki. It is not a big city—it has half a million people. I basically lived in the central parts of Helsinki all my life. I wouldn't know nature if it jumped out and bit me.
+
+**Margie**: Oh, you never did the outdoors thing—go to the mountains, or...?
+
+**Linus**: No, I never did the outdoors thing. Moving out here to Silicon Valley was like moving out into the suburbs—very different. I am used to living in a five-story building. Here, having a small house with a back yard feels definitely rural.
+
+**Margie**: Well, people here don't consider living in a house rural.
+
+**Linus**: No, I mean it's very different the way people think about living. Cities in the U.S. are much more sprawling because people want to live in their own houses. European countries are older; most people live in—not skyscrapers—but certainly buildings with five, six or seven stories.
+
+**Margie**: How about brothers and sisters?
+
+**Linus**: I have one sister who is sixteen months younger than I am, and I have one half brother who is nine years younger—he is twenty now. I actually have two half brothers in addition to that who are younger than my older daughter. My dad is very virile—more virile than is good for him! What can I say?
+
+**Margie**: Well, it happens. Did you have a fairly happy childhood?
+
+**Linus**: I'd say I had a happy, fairly normal childhood. My parents got divorced when I was small. I lived with my mother and also my grandparents. My mom was a working mother, so I ended up being at my grandparents' house for a large portion of the time—fairly normal years. Probably what happens is you grow up to be fairly independent when you come from a family like that.
+
+**Margie**: That could be. Your parents are both journalists, right?
+
+**Linus**: My whole family is journalists. Everybody—my mom, my dad, my sister is getting into the journalistic thing, my uncle, my grandfather on my father's side—everybody.
+
+**Margie**: Wow—what kind of influence did that have on you?
+
+**Linus**: It doesn't make much of a difference because they are all different kinds of journalists. My mom was a translator; she wasn't the kind of journalist who goes out and searches for stories. She worked for the Finnish newspaper doing translations and news graphics. My dad was more of an “out there” radio journalist, so he was really excited when the Chechnyan war was going on. So he went there and had to wear a bullet-proof vest—he is that kind of person—remember, virile. My uncle works for Finnish TV.. My grandfather used to be the Editor in Chief of a newspaper. Mainly, the whole family had a kind of book-learning experience. It was considered good to know English and important to read well. So it was very natural to go to university and stuff like that.
+
+**Margie**: Did it make you more political? Are you interested in politics?
+
+**Linus**: I'm absolutely uninterested in politics. Probably because—I don't know—it was a fairly political family, so I may have reacted against that by being non-political. I'm not very interested. I'm much more to the left than the right in the U.S. kind of political sense. I'm fairly liberal, but at the same time, I really don't want to go into politics. My parents in the sixties were kind of radical people—they have calmed down a lot! They are not political anymore, but I grew up in a fairly political environment.
+
+**Margie**: The sixties were pretty much like that.
+
+**Linus**: I still meet people who say, “Oh, I knew your Dad! And I remember when you were crawling around under the kitchen table at your home when they had student meetings!” or whatever.
+
+**Margie**: How about religion?
+
+**Linus**: Hmmm, completely a-religious—atheist. I find that people seem to think religion brings morals and appreciation of nature. I actually think it detracts from both. It gives people the excuse to say, “Oh, nature was just created”, and so the act of creation is seen to be something miraculous. I appreciate the fact that, “Wow, it's incredible that something like this could have happened in the first place.” I think we can have morals without getting religion into it, and a lot of bad things have come from organized religion in particular. I actually fear organized religion because it usually leads to misuses of power.
+
+**Margie**: As in holy wars?
+
+**Linus**: Yeah, and I find it kind of distasteful having religions that tell you what you can do and what you can't do. Catholicism is an example of that kind of non-permissiveness, and I think that is very easy to get into if you are an organized religion. Religion is a very strange area. In Finland, nobody cares. Many people are religious in Finland, but it's not a political issue. Over here, religion has become politicized, so you have the fringe people in the news. And then people are afraid to talk about it because it has political implications, and that's usually not true in most of Europe. Religion is a personal matter, but does not matter for anything else. That's how I think it should be done.
+
+**Margie**: Yes, we were founded to keep the two separated. Then the Moral Majority found out what a large constituency they had, and...
+
+**Linus**: Yeah, it's kind of ironic that in many European countries, there is actually a kind of legal binding between the state and the state religion. At the same time, in practice, religion has absolutely nothing to do with everyday life. Maybe the taxes to the church, but that's it. They don't have any political power.
+
+**Margie**: Here it's called tithing, not taxes.
+
+**Linus**: Actually, in Finland they call it taxes—you pay taxes to the church. If you are a member of the church, you pay 2% tax to the church. And that's the amount of legal binding between the church and the state. Apart from that, they are completely separate. In the U.S., church and state claim to be very separate, but you still see the church has a lot of power in politics.
+
+**Margie**: So, were you shy as a child? Or an extrovert?
+
+**Linus**: I was an absolute geek—no social graces whatsoever.
+
+**Margie**: None, eh?
+
+**Linus**: None!
+
+**Margie**: Not popular with the girls?
+
+**Linus**: No, I can't claim I was. I was a complete nerd. I was not unpopular; I wasn't alone or unfriendly or anything like that. But I was certainly not one of the people known by everyone.
+
+**Margie**: So you liked going to school?
+
+**Linus**: Yeah, I liked it. I also liked the social parts. Especially at university, my studies were probably less important than being part of the student organization and going to parties and stuff like that. But especially before university, I had my own thing, which was computers and that is what I did.
+
+**Margie**: When did you start using computers?
+
+**Linus**: I started when I was like ten or eleven. Fairly early on, and it was early enough that you didn't have computer classes because there weren't enough people who had computers in the early '80s. I don't know, not even here probably. If you did computers, you mostly did it on your own. Maybe I had one or two other people in a class who used computers, and I met them once a week to compare notes and stuff like that. I was never into BBSs or anything like that or the Internet, either.
+
+**Margie**: How did you get a computer that early, then?
+
+**Linus**: My grandfather on my mother's side owned one. He was a professor of statistics at Helsinki University. He got a computer because, to him, it was a programmable calculator. This was a home computer and not a very powerful one, but compared to a calculator at the time, it was light-years ahead. He did his own programs and had me kind of help him. Although I wasn't much help, he liked having me around. I was typing in programs—stuff like that. He probably wanted me to learn, but I didn't realize that at the time. And I was doing some playing. He wasn't interested in the games. I was reading the manuals that came with the computer and doing simple things: typing in example programs and expanding on those, like people did. It didn't start off like, the first day I saw the computer I was instantly in love. It was more like, over the years, I just spent a lot of time on the computer until it was apparent that it was my hobby.
+
+**Margie**
+
+: Did you have a motorcycle when you were a kid?
+
+**Linus**: Nope, I didn't have a motorcycle. I had a bike. I don't have a motorcycle now, either. I'm afraid of the damn things.
+
+**Margie**: Are you?
+
+**Linus**: Well, you feel so unprotected on them. They are so hard to control. Just like you have to learn to ride a bicycle, you have to learn to use a motorbike, and I haven't.
+
+Mopeds are really big out in the countryside. That's the way people get around. Before you get a driver's license, you can still get a moped. But I always lived in the absolute center of Helsinki, so I could walk anywhere, take public transportation and whatnot. So I never got into cars or mopeds or anything like that, and I never owned a car until I moved here. Most places in Helsinki, a car is more bother than it is worth. Unless you need it for some specific reason, like transporting a kid. If we had had children then, we probably would have bought a car.
+
+**Margie**: How about sports? Did you play football?
+
+**Linus**: No, I didn't. I was not really bad at sports, but it was never something I found interesting. I played basketball for a while, which was ludicrous because I was always one of the shortest guys in my class. Whatever I am—5 foot 8—I'm not going to be a basketball player! I played basketball basically because my dad thought I should play a sport.
+
+**Margie**: Oh, the virile thing again...
+
+**Linus**: Yeah, he was more of an action kind of person. He's very intelligent, too. In fact, he is one of the more intelligent people I know, but he has his quirks. I was never much of a sports fan.
+
+**Margie**: How about music?
+
+**Linus**: The same. The way I listen to music still is that I put on a radio station that is basically classic rock most of the time.
+
+**Margie**: What do you consider classic rock?
+
+**Linus**: '60s, Beatles, whatever. Perhaps the Beatles is a bit before what I consider classic rock, but it's kind of borderline.
+
+**Margie**: Where did you go to university?
+
+**Linus**: Helsinki University. There are two of them: one is the Helsinki University of Technology, which is actually not inside Helsinki but just on the border outside. Then there is the real University of Helsinki, which is the kind of old-fashioned, European-like university where you have lots of courses like philosophy and languages. They do have a technical department, too, but it's not about technology. For example, computer sciences is really computer *science*—it talks about complexity analysis and things like that. I went to the real University, so I went through all the complexity analysis, what NT completeness means and the spherical side. That was kind of fun, and people always wondered why I wasn't at Helsinki University of Technology which is much more engineering-oriented. I just liked going—I also liked math, so I fit right in at Helsinki University, and at the same time, I had Linux as a side project—the practical side.
+
+**Margie**: When did you start working on Linux?
+
+**Linus**: Spring of 1991—eight and a half years ago. I had taken a course in UNIX and C, the fall semester before. The first time I actually touched UNIX was fall 1990, when I had a UNIX course at Helsinki University. Actually, it was the first UNIX course they ever had at Helsinki University, because it used to be a VAX and VMS place. They had just gotten a UNIX machine for trying out that newfangled thing, and it turned out to be a huge success. Within a few years, they had switched over everything to UNIX. But that first machine was used for this small course in UNIX and C, and I immediately felt that this was what I wanted to have. It made sense. Then when I bought a PC, I wanted UNIX on it, and the rest is kind of history.
+
+**Margie**: Was there a particular professor who influenced you?
+
+**Linus**: There were a lot of people who kind of had a large influence, but none who were really fundamental. I mean, apart from my grandfather, I usually did my own thing. I wouldn't recommend my method of study to anybody else, as it is not very organized. It basically took me eight years to get a degree.
+
+**Margie**: It was a master's, right?
+
+**Linus**: It was my master's, but it should not take people eight years to get a master's! But, the way I study!
+
+**Margie**: So you were having fun, right?
+
+**Linus**: Hmmm, yes.
+
+**Margie**: Well, social life is important too.
+
+**Linus**: Yeah. In Finland, you can afford to take your time because universities are essentially free, and you get subsidies from the government to study. So you can actually live on that subsidy, even though you won't be living well. I was also teaching at the university, being a T.A. at first, and then a junior research assistant, then a junior research person—slowly moving up the ranks. By the time I was starting to get my degree, I had long since realized that I actually didn't like writing papers. I had a hard time writing my thesis, and I decided I couldn't stay at the university forever. Because if you don't like writing papers, then you really don't want to stay at a university. So, that's when I said, “Okay”, and started thinking about something else, and the result was moving to the U.S.
+
+**Margie**: Well, having computers as an early interest gives you a wide range of choices as far as what you might do.
+
+**Linus**: Well, even two and a half years ago when Linux was new—it wasn't known like it is now; it was known only in technical circles—I had my share of interesting job offers. Most people, who get out of university in Finland and go to work, start small—Nokia is obviously very big in Finland as an employer. I had the choice of a number of very interesting and exciting places.
+
+**Margie**: How did you decide on Transmeta?
+
+**Linus**: The timing was good. They flew me over and gave me a tour after I signed an NDA. After the first day, I just thought these people are crazy—they were so far out. Then I went back to the hotel and basically slept on the issue. By the time I came in for the second day of interviews, I had just decided that, “Hey, if I wanted to work for a place that did something exciting, it had better be a bit crazy!” Nobody else was doing anything as exciting. At Transmeta, I had the feeling that, “Okay, this is a company that is doing something nobody else in the world is doing.” And I still think that. Even though I can't say *what* it is, Transmeta is still a good company to work for. You feel that, hey, we're doing something that if it works, it will make a large difference.
+
+**Margie**: Where did you and Tove meet?
+
+**Linus**: We met at university; she was already a kindergarten teacher, which is her real job. She had a degree in child care, a bachelor's. She was thinking of not necessarily being a kindergarten teacher all her life, so she was doing other stuff too. And computer science was actually just an interesting sideline, so we met up at University of Computer Science. That's how we met—not very romantic—no exotic cruising in the Mexican Gulf.
+
+**Margie**: Ahh. When did you meet her?
+
+**Linus**: About six years ago. It was after Linux got started, but certainly long before it made a difference to anyone else.
+
+**Margie**: Was it love at first sight?
+
+**Linus**: No.
+
+**Margie**: It's usually not, right? Seems to me I heard something about her being a martial arts champion or something?
+
+**Linus**: Yeah, for six years running she was the Finnish champion in karate, but she basically stopped doing that after a while. She was into the Kata, the forms—she was doing some fighting too—but Kata is actually doing the forms of karate, correctly, at the right speed, with precision, stuff like that. The competitions she went to were basically showing what she could do.
+
+**Margie**: What about the kids? Tell us their names and ages.
+
+**Linus**: Patricia is the older one. She was born in Finland just two months before we moved, so she is two years and eight months. Daniella is the younger one; she is fifteen months. She was born here.
+
+**Margie**: They are very pretty and well-behaved!
+
+**Linus**: Yeah! They are very well-behaved, and they are used to traveling. Partly because we moved here, we didn't have grandparents to take care of them, so wherever we go, we always take them with us. So they are used to being outside with people and being at restaurants.
+
+**Margie**: Are you planning on having more children?
+
+**Linus**: My wife is—she is still working on me. I'm kind of resigned to having a third one. I like kids. There already will be more time between the second and third than there was between the first two. I think we should wait a bit. Life has been quite hectic with two little kids.
+
+**Margie**: Is Tove wanting a boy?
+
+**Linus**: Well, she always mentions it as a boy, and I bet that if she has another girl, she will start talking about a fourth one!
+
+**Margie**: You better plan on that boy, then!
+
+**Linus**: I am happy with two girls! Maybe when they've grown up a bit, I'll be ready for another.
+
+**Margie**: What about school for the kids? Are y'all going to stay here in the states for them to go to school?
+
+**Linus**: Well, that used to be kind of a major worry between us. We've seen some strange things. Tove was off looking for preschools, because you start so early here in the U.S. I looked closer at one of the papers she brought home, and found it mentioned L. Ron Hubbard. I started asking around about the place, and it turns out they are a scientology school, and they don't mention the fact that they are associated with scientology anywhere in their literature. And that kind of makes me nervous. I don't want to put my child in a scientology school by mistake. We have Patricia enrolled in a school with a good name in the area, and we will see how that goes. She is actually starting preschool this year. Assuming it all works out, we won't have to worry about school that much, not like we used to.
+
+The difference between the U.S. and Finland is just huge in that area. In Finland nobody worries about school, nobody even thinks about it because it's obvious that you go to public school. People who don't send their kids to public school have some particular reason, like their kid needs special attention. There are a few private schools that specialize in languages and stuff like that, but it is uncommon for kids to go to those—normal people usually don't do that. Here, you have to really think about the issue. There are a lot of bad schools and a lot of really good schools—it's more of a decision. Just that difference made us nervous, so we will see.
+
+**Margie**: So you are happy here in the U.S.?
+
+**Linus**: We are happier now. My wife is very happy here too, though she was not at first. She has a much closer-knit family, so our telephone bills used to be totally horrendous. We like the area. I like it from a purely technical standpoint, as well as the weather and things like that. And my wife has just grown to like the area. So we'll see. We are definitely staying here for a few more years, unless the INS puts us out.
+
+**Margie**: Well, I doubt that!
+
+**Linus**: Well, I don't know.
+
+**Margie**: As long as you are gainfully employed, I thought they left you alone.
+
+**Linus**: They do have certain rules, like for example, the visa we have is for three years and we can renew it once. In the meantime, we are trying to get a green card, and we are supposed to be real close now, but “real close now” to the INS might mean a week or four years.
+
+This area is the worst in the entire U.S. The INS is just completely backlogged. They've had cases where they just lost files, and because they lost them, people who have been waiting for a year or two find themselves starting over with the INS saying, “I don't actually know about you.”
+
+**Margie**: What do y'all do for fun?
+
+**Linus**: Usually we are so busy, that we just take the kids out to nearby parks during the week. On weekends, we sometimes go to a small petting zoo close by; we are members, so we get in free. Sometimes we go to these natural reserve areas and just walk. Most of the time, we just stay home and go shopping and stuff like that.
+
+**Margie**: You don't even go to movies?
+
+**Linus**: We have not been to a movie in two and a half years!
+
+**Margie**: Is this because of the children?
+
+**Linus**: It's because of the kids. They are just now becoming the age where we are starting to say, “Hey, one of these days we could go to a kid's movie.”
+
+**Margie**: They have a nanny, right?
+
+**Linus**: We have a few babysitters; we get out sometimes. But again, we don't have grandparents close by who would take them for an evening at the last minute. Instead, we have to decide a week in advance to go out next Friday and get the babysitter—basically, that never happens.
+
+**Margie**: How about fame? You seem to handle it very well.
+
+**Linus**: It doesn't affect me much.
+
+**Margie**: You don't get bothered a lot?
+
+**Linus**: No. I only notice it during the conferences. Otherwise, it happens maybe three or four times a year—other than that, not at all.
+
+**Margie**: What about all the people like me bothering you for interviews?
+
+**Linus**: My e-mail box is a complete disaster area! It's grown over the years from about ten messages a day to a hundred messages a day. I've just gotten used to it. It can be painful; going on vacation for a week means you know beforehand that when you come back, you are going to have to spend two days just reading e-mail.
+
+**Margie**: Do you read it all?
+
+**Linus**: No, but I try to glance through most of it. I handle technical mail better than non-technical mail. They are much easier! You can glance and tell it's important and put it aside or handle it on the spot, and that is a fairly straightforward decision to make. But for non-technical e-mail, you say, “Hmmm...what should I do about this?” You don't have time to decide and handle it right then, so you just put it aside and forget about it.
+
+**Margie**: I think that's the only kind of e-mail I get—the ones that need decisions. Many people in the community think of you as a hero, a role model. Who is yours?
+
+**Linus**: I don't have any. I never had any teen idols or anything like that. I mean, if I had to pick anybody it would have to be my granddad. And then maybe more of the scientist kind of people, like Einstein, people like him. I thought that quantum physics was just the most interesting thing when I was small. But then, that was not very personalized—there wasn't just one person.
+
+**Margie**: What kind of influence did your granddad have on you?
+
+**Linus**: I don't know; he got me into math and computers. He was the kind of “absent-minded professor” type, so often, even when he was there, he wasn't necessarily there mentally! But at the same time, he was probably one of the closest people to me. He died when I was 15\. He was there mainly during my early school years rather than later.
+
+**Margie**: Okay, a couple of silly questions. If you could have any car in the world, what would it be?
+
+**Linus**: Oh, God! We are actually looking at buying a car and have picked a minivan. Yes, it's not the sexy sports car. We're getting a lot of friends and family over from Finland and whenever we go somewhere, we have to take two cars and that is just a pain. So we are getting to be a “real American family”, and we will have a minivan. But that was not the answer you were looking for!
+
+**Margie**: That's okay! Would you rather have a Porsche?
+
+**Linus**: No, I never liked that kind of muscle car—the Corvettes, I didn't like. I find those to be uninteresting—a toy car. I like the Miata, but it's too small; however, the BMW Z3—that kind of car—that, I like. But it's just too impractical when you have two kids. We have considered maybe getting a convertible. When we moved here, we didn't think about that, but actually in California it does make sense much of the time. But we have to get a four-seater anyway, so even then it's not going to be one of the really “fun” cars; it's going to be one of the practical ones.
+
+**Margie**: Do minivans come with sun roofs?
+
+**Linus**: Maybe sun roofs, yes, but not convertible!
+
+**Margie**: What's your favorite color?
+
+**Linus**: It was blue when I was small—the classic boy color. I think it's yellow now. Yellow is a hard color, okay? You can do it too light and it just looks pee-colored. Or you can do it too dark and it becomes too orange, so you have to be careful—blue is safer.
+
+**Margie**: What message would you like to give our readers?
+
+**Linus**: Linux didn't start out as a message to the masses. Unlike Richard Stallman, I really don't have a message. He has one and can go on about it forever. I'm just an engineer. Let's see: Do things well! Do them with heart! What other strategies can I come up with...?
+
+**Margie**: That will do. Thanks very much for taking the time to talk to me.

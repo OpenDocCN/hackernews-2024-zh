@@ -1,0 +1,90 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:36:53
+-->
+
+# What really has a 1 in a million chance?
+
+> 来源：[https://www.stat.berkeley.edu/~aldous/Real-World/million.html](https://www.stat.berkeley.edu/~aldous/Real-World/million.html)
+
+## What really has a 1 in a million chance? This is part of a topic that's fun to do in class. First I ask students
+
+*If you overheard the phrase "1 in a million chance" in someone else's casual conversation, what might they be talking about?*
+
+and students typically offer both iconic examples (winning the lottery, struck by lightning) and more imaginative suggestions. Then I ask
+
+*How could we get data on actual casual usage of the phrase "1 in a million chance"?*
+
+and neither the students nor I can think of anything much more practical than [searching in blogs](https://www.stat.berkeley.edu/~aldous/Real-World/blogs.html), so I show those results. Finally I ask for suggestions for *events that we can convince ourselves really do have a 1 in a million chance* (up to a factor of 2, let's say). Then I go through the students' suggestions; can we quantify the chances, and (if so) are they around 1 in a million?
+
+## Examples and nonexamples
+
+The "bullets" are the examples, with **YES** or **NO** indicating whether the "1 in a million" chance estimate is reasonable, or whether the chance is substantially larger or smaller.
+
+Let's first dispose of obvious examples from games of chance or sampling
+
+If *you* tossed the coins then the first answer would be **NO**, unless I'm very confident you lack the ability to fool me …
+
+One interesting local example is
+
+*   A major earthquake on the Hayward fault in the next 50 minutes. **YES**
+
+**Comment:** [A 2007 estimate](http://pubs.usgs.gov/of/2007/1437/) puts the chance of a major (> 6.7 magnitude) earthquake on the Hayward fault at about 1% per year. Since my classroom is a few hundred yards from the faultline and classes are often 50 minutes, the numbers work out nicely!
+
+Lest others become complacent, one can add e.g.
+
+A different type of example:
+
+*   One of the next 24 babies born in the U.S. will become President. **YES**
+
+**Comment:** The U.S. birth rate is currently about 4.0 million per year. If we guess a President will serve on average about 6 years, then 1 in 6 times 4.0 million = 24 million babies will someday be President. But it would be wrong to point to a particular kindergarten class of 24 kids and assert there's a 1 in a million chance one of them will become President, because of correlation with socioeconomic status of the community.
+
+Another iconic example is
+
+*   Casting the deciding vote in an election .....
+
+This is an interesting classroom topic, because there are a variety of more or less sensible ways to analyze the question, and the answer depends on the circumstances. But the particular setting
+
+*   ....... in a California Statewide election that opinion polls say is too close to call
+
+is a **YES**; [here's the calculation](https://www.stat.berkeley.edu/~aldous/Real-World/election.html) (xxx not edited) that puts the chance at about 13/N where N is the number of votes cast, and there were about 14 million votes cast in California in the 2016 Presidential election.
+
+## Risks to individuals
+
+Since starting this broad "Real World" project I often get emails like the following.
+
+> *I am writing a travel story …* What are the odds of: dying in a plane crash; being kidnapped by pirates; drowning in a rip tide; dying in a car wreck in Latin America, etc etc
+
+These questions do not have simple answers. There are several issues involved in considering risks associated with a particular voluntary activity. Having data on the number of deaths is only half the story, because we also need data on how many people engage in the activity. And to compare risks of different activities we should also consider the time spent on the activity. Consider skiing, for example. We want meaningful data in a format like [an average of 0.7 deaths from skiing or snowboarding per million visits to official U.S. ski areas](http://www.nsaa.org/media/275270/Fatality_Fact_Sheet_9_1_2016.pdf). Then we can write a bullet point
+
+*   dying due to a ski or snowboarding accident during a 1 day visit to an official ski area **YES**
+
+(recall we allow a factor of 2 error). All assertions like this are "population averages" (or *statistical probabilities*, in an old-fashioned phrase) based on past data. The word [micromort](https://en.wikipedia.org/wiki/Micromort) was coined to describe a 1 in a million chance (from population averages) of death from a given activity, and that page gives comparisons of different activities. For example
+
+*   dying in a skydiving jump **NO**
+
+because it is closer to 10 micromorts. But it is important to remember
+
+> **use common sense to judge whether population averages are relevant to a specific individual such as yourself.**
+
+As the variability between individuals increases, then the relevance of population averages decreases. For example using the population average micromort to say
+
+*   you (in the U.S.) being murdered within the next 8 days **NO**
+
+is wrong because I am confident that *you* are not engaging in the activities that make one comparatively likely to get murdered. As another example I would say
+
+*   You being killed during a 200 mile auto trip in California. **YES**
+
+Here the fatality rate in California is about [1 per 105 million vehicle miles](https://cdan.nhtsa.gov/stsi.htm#); I scaled the numbers to account for multiple occupants and because you are a better driver than average. What about our iconic case
+
+*   Being struck by lightning. **NO**
+
+**Comment:** There isn't reliable data on being *struck* by lightning; if you don't seek medical attention you don't get into official statistics, and anyway can you tell the difference between lightning striking the tree you're under, or striking you? There is very good data on [U.S. deaths by lightning](http://www.lightningsafety.noaa.gov/fatalities.shtml), which vary substantially from year to year but have averaged around 30 in recent years. Thus the population average is 1 in 10 million deaths per year, or about 1 in 150,000 lifetime. But neither figure is at all appropriate for a given individual. As I tell students, *your grandmother is too sensible to be outdoors during a thunderstorm* and a disproportional number of deaths are [young men](http://www.lightningsafety.noaa.gov/fatalities/fatalities16.shtml). Chances for an individual vary hugely with their behavior, and there's no way to estimate an individual's chance to within a factor of 2.
+
+Finally, as slightly evil fun in class I ask the students to guess
+
+*   (for a young man) getting breast cancer sometime. **NO:**
+
+**Comment:** My students are surprised to learn that men can get breast cancer; it's rare, but not so rare as they think, about [1 in 1,000](https://www.cancer.org/cancer/breast-cancer-in-men/about/key-statistics.html) lifetime incidence, and 1 in 5,000 deaths. Chances for an individual vary with family history, but it's way more than 1 in a million.
+
+In fact for effects of disease, smoking, obesity etc it is better to use the concept of [microlife](https://en.wikipedia.org/wiki/Microlife), meaning half an hour change of life expectancy, this time period being roughly one millionth of an adult lifetime.

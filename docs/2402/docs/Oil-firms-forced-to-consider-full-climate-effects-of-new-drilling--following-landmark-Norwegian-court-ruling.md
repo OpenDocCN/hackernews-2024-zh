@@ -1,0 +1,69 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:30:39
+-->
+
+# Oil firms forced to consider full climate effects of new drilling, following landmark Norwegian court ruling
+
+> 来源：[https://theconversation.com/oil-firms-forced-to-consider-full-climate-effects-of-new-drilling-following-landmark-norwegian-court-ruling-221810](https://theconversation.com/oil-firms-forced-to-consider-full-climate-effects-of-new-drilling-following-landmark-norwegian-court-ruling-221810)
+
+Norway’s district court in Oslo recently made a [decision](https://www.greenpeace.org/static/planet4-sweden-stateless/2024/01/daf4fe59-oslo-tingretts-dom-og-kjennelse-18.01.2024-deepl-en.pdf) on fossil fuels that deserves the attention of every person concerned about climate change.
+
+This ruling, which compels energy firms to account for the industry’s entire carbon footprint, could change the way oil and gas licenses are awarded in Norway – and inspire similar legal challenges to fossil fuel production in other countries.
+
+The court ruled that three petroleum production licenses, held by energy companies including Equinor and Aker BP, were invalid largely due to the lack of consideration that had been given to so-called “downstream emissions”. That is, emissions from burning the petroleum that these firms would extract from the North Sea (also called scope 3 emissions).
+
+This case is a big win for environmental campaigners who have tried to make oil and gas companies account for the emissions that come from burning their products. Similar efforts have been [defeated](https://www.no5.com/media/news/greenpeace-fails-in-attempt-to-challenge-bp-s-vorlich-field/index.html) in legal challenges elsewhere over the last few years.
+
+As a researcher of climate and energy law, I have [noted in my work](https://academic.oup.com/jiel/article/26/4/817/7425562) how rules on oil and gas licenses are not aligned with national climate targets. I have called for changing these rules so that the downstream emissions the oil and gas from a new field will produce are considered when deciding whether it should go ahead.
+
+Although the judgment only applies to Norway and its implication should not be overstated, it could seed similar arguments in climate litigation elsewhere. This could force governments to consider how drilling for and burning new oil and gas will really affect climate change.
+
+Oil and gas companies applying for exploration and production licenses in new fields are, in most countries, obliged to produce an environmental impact assessment (EIA) for each proposed project. Firms submit these EIAs to the government and they are usually made public. The idea is that public scrutiny and participation will ensure the government’s final decision is informed and transparent.
+
+In many countries, [EIAs must now](https://www.cambridge.org/core/journals/international-and-comparative-law-quarterly/article/abs/climate-assessment-as-an-emerging-obligation-under-customary-international-law/2D0D42C4E488EC511088A30BF3B75429) account for a project’s impact on the climate. But this obligation is typically interpreted as encompassing the emissions from exploration and production only – not from burning the oil and gas extracted.
+
+Despite previous legal challenges and until this recent decision, regulators and courts in oil-producing countries like Norway and the UK have been reluctant to make firms account for the emissions that come from burning the fuels they produce. This is despite the fact these scope 3 or downstream emissions [constitute](https://www.wri.org/resources/data-visualizations/upstream-emissions-percentage-overall-lifecycle-emissions) 67%–95% of overall emissions for oil production.
+
+Downstream emissions make up most of the oil and gas industry’s carbon footprint. [FXQuadro/Shutterstock](https://www.shutterstock.com/image-photo/different-gas-diesel-pistols-347923826)
+
+## Why consider downstream emissions?
+
+Regulators and companies argue that these emissions are not relevant as they do not form a part of the project under consideration. But regulating demand for oil and gas, through higher emission standards for vehicles for example, [is not enough](https://doi.org/10.1080/14693062.2020.1804315) to tackle climate change.
+
+Research [confirms](https://www.nature.com/articles/nature14016) that keeping global heating below 2°C will require a third of the world’s oil and half of its gas reserves to remain underground by 2050\. More recent [assessments](https://www.nature.com/articles/s41586-021-03821-8) based on limiting warming to 1.5°C are even stricter.
+
+Plainly, we cannot keep producing fossil fuels while keeping climate targets alive.
+
+* * *
+
+***Read more: [COP28 president is wrong – science clearly shows fossil fuels must go (and fast)](https://theconversation.com/cop28-president-is-wrong-science-clearly-shows-fossil-fuels-must-go-and-fast-219128)***
+
+* * *
+
+The legal requirements on EIAs in Norway allow room for interpretation, carving a role for courts to clarify if downstream emissions ought to be included. In a 2020 [ruling](https://climatecasechart.com/wp-content/uploads/non-us-case-documents/2020/20201222_HR-2020-846-J_judgment.pdf) by the Norwegian Supreme Court, in a case dubbed People v Arctic Oil, the court decided that downstream emissions were a relevant consideration for environmental assessment.
+
+However, the case concerned opening new areas for firms to bid for licenses and the court ruled that such an assessment was not required at that stage. This new decision concerns the government awarding production licenses for specific fields.
+
+At this stage, firms should have a much better understanding of the geology of the field they intend to drill in, how much oil or gas is there and the quantity of downstream emissions it should yield. The court argued that the government’s interpretation of the law to exclude downstream emissions at this stage is too restrictive and downstream emissions must be considered before granting permits.
+
+## Will the decision inspire further legal challenges?
+
+Despite the clear victory for environmental groups, the practical value of the judgment must be carefully considered.
+
+The judgment will most likely result in an appeal from the Norwegian Ministry of Energy and take months or years to make its way to the country’s Supreme Court for a final decision. While this might delay the drilling, if the government complies with the judgment and requires oil and gas firms to make the necessary downstream emissions assessment it might still proceed with approving new oil production permits – even if the assessment shows considerable downstream emissions.
+
+Will courts in other countries follow suit? Not every country has a written constitution with environmental rights provisions like Norway (the UK doesn’t, for example). But while foreign judgments do not usually serve as precedent, courts often mention applicable decisions in consideration of the relevant facts.
+
+In the UK, a few outstanding cases deal with downstream emissions. For example, environmental campaign groups Greenpeace and Uplift [are challenging](https://www.greenpeace.org.uk/news/uplift-greenpeace-rosebank-legal-case/) the government’s approval of the Rosebank oil and gas field west of Shetland, in part due to its lack of consideration of downstream emissions.
+
+The UK Supreme Court is also expected to hand down judgement in the Finch case. This will decide whether it was lawful for Surrey County Council to approve an oil development without requiring an assessment of downstream emissions.
+
+This builds on similar legal challenges in response to new fossil fuel production in [Australia](https://climatecasechart.com/non-us-case/gloucester-resources-limited-v-minister-for-planning/) and the [US](https://climatecasechart.com/case/wildearth-guardians-v-jewell/). The outcomes of these cases could change the assessment process for all fossil fuel projects.
+
+* * *
+
+***Don’t have time to read about climate change as much as you’d like?***
+*[Get a weekly roundup in your inbox instead.](https://theconversation.com/uk/newsletters/imagine-57?utm_source=TCUK&utm_medium=linkback&utm_campaign=Imagine&utm_content=DontHaveTimeTop) Every Wednesday, The Conversation’s environment editor writes Imagine, a short email that goes a little deeper into just one climate issue. [Join the 30,000+ readers who’ve subscribed so far.](https://theconversation.com/uk/newsletters/imagine-57?utm_source=TCUK&utm_medium=linkback&utm_campaign=Imagine&utm_content=DontHaveTimeBottom)*
+
+* * *

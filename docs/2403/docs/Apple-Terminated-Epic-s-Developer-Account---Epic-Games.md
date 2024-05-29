@@ -1,0 +1,42 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 12:09:51
+-->
+
+# Apple Terminated Epic’s Developer Account - Epic Games
+
+> 来源：[https://www.epicgames.com/site/en-US/news/apple-terminated-epic-s-developer-account](https://www.epicgames.com/site/en-US/news/apple-terminated-epic-s-developer-account)
+
+**March 8, 2024 Update: 
+Apple has told us and committed to the European Commission that they will reinstate our developer account. This sends a strong signal to developers that the European Commission will act swiftly to enforce the Digital Markets Act and hold gatekeepers accountable. We are moving forward as planned to launch the Epic Games Store and bring Fortnite back to iOS in Europe. Onward!**
+
+We recently [announced](https://x.com/EpicNewsroom/status/1758516979705557241?s=20) that Apple approved our Epic Games Sweden AB developer account. We intended to use that account to bring the Epic Games Store and Fortnite to iOS devices in Europe thanks to the Digital Markets Act (DMA). To our surprise, Apple has terminated that account and now we cannot develop the Epic Games Store for iOS. This is a serious violation of the DMA and shows Apple has no intention of allowing true competition on iOS devices. 
+
+The DMA requires Apple to allow third-party app stores, like the Epic Games Store. Article 6(4) of the DMA says: “The gatekeeper shall allow and technically enable the installation and effective use of third-party software applications or software application stores using, or interoperating with, its operating system and allow those software applications or software application stores to be accessed by means other than the relevant core platform services of that gatekeeper.”
+
+In terminating Epic’s developer account, Apple is taking out one of the largest potential competitors to the Apple App Store. They are undermining our ability to be a viable competitor and they are showing other developers what happens when you try to compete with Apple or are critical of their unfair practices.
+
+If Apple maintains its power to kick a third party marketplace off iOS at its sole discretion, no reasonable developer would be willing to  utilize a third party app store, because they could be permanently separated from their audience at any time.
+
+Apple said one of the reasons they terminated our developer account only a few weeks after approving it was because we publicly criticized their proposed DMA compliance plan. Apple cited [this X post](https://x.com/TimSweeneyEpic/status/1762243725533532587?s=20) from [this thread](https://x.com/TimSweeneyEpic/status/1762243716973015465?s=20) written by Tim Sweeney. Apple is retaliating against Epic for speaking out against Apple’s unfair and illegal practices, just as they’ve done to other developers time and time again. 
+
+Apple also claims that Epic is a threat to their ecosystem, but this is an entirely unjustified excuse to terminate one of our accounts. Apple has been a long-time public supporter of Unreal Engine. We also have had ongoing contractual relationships with Apple going back to 2010 for Epic’s games, Unreal Engine, and our other creator tools.
+
+Some of the ways we have worked with Apple for more than a decade:
+
+*   Going back to the early years of the App Store, Epic released Epic Citadel on the App Store in 2010, followed by the award-winning Infinity Blade series of games.
+*   Epic and its subsidiaries have a number of apps that are live in the App Store including [Rocket League Sideswipe](https://apps.apple.com/us/app/rocket-league-sideswipe/id1549027048), [Postparty](https://apps.apple.com/cl/app/postparty/id1595225946?l=en), [RealityScan](https://apps.apple.com/us/app/realityscan-3d-scanning-app/id1584832280), [Live Link Face](https://apps.apple.com/us/app/live-link-face/id1495370836), [Live Link vCAM](https://apps.apple.com/us/app/live-link-vcam/id1547309663), [Unreal Stage](https://apps.apple.com/us/app/unreal-stage/id1611811922), [Unreal Remote 2](https://apps.apple.com/us/app/unreal-remote-2/id1374517532), [Unreal Remote](https://apps.apple.com/us/app/unreal-remote/id398375618), and [Action RPG Game Sample](https://apps.apple.com/us/app/action-rpg-game-sample/id1411473790).
+*   We have a contract with Apple for [Horizon Chase 2](https://apps.apple.com/us/app/horizon-chase-2/id1534920947), an Apple Arcade game built with Unreal Engine by the team at Epic Games Brazil, formerly Aquiris.
+*   Apple markets App Store apps and Arcade games that were built using Epic’s Unreal Engine.
+*   Over the years, Apple has highlighted Epic’s games and technology at the World Wide Developer Conferences and other events.
+*   We are [shipping](https://forums.unrealengine.com/t/support-for-apple-vision-pro-in-unreal/1190042/40) Experimental support for Apple Vision Pro in Unreal Engine 5.4.
+
+The DMA was designed to eliminate the very power imbalance that Apple is proving exists today: they claim to have total control to block competing stores and apps. We will continue to fight to bring true competition and choice to iOS devices in Europe and around the world. 
+
+**How we got here: **
+
+We requested a developer account through Apple’s official process and Apple approved our account. In direct communications with Apple as well as
+
+[public statements](https://store.epicgames.com/en-US/news/epic-games-store-2023-year-in-review)
+
+, Epic has been transparent about our intentions for the developer account and Epic Games Store. We requested one of Apple’s DMA consultations and were denied. At their request, we assured Apple that Epic will comply with all the terms of its developer agreements. Then their lawyers sent our lawyers a letter terminating our Epic Games Sweden AB account. Below is our correspondence with Apple:

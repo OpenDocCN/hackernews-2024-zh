@@ -1,0 +1,90 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 14:31:45
+-->
+
+# Multigenerational Living Often Makes Sense. That Doesn’t Make It Easy | The Walrus
+
+> 来源：[https://thewalrus.ca/multigenerational-living-often-makes-sense-that-doesnt-make-it-easy/](https://thewalrus.ca/multigenerational-living-often-makes-sense-that-doesnt-make-it-easy/)
+
+Now that I live with my mom, my preferred mode of communication with her is by text. We’re in each other’s faces enough these days. Her first messages come in the morning, before sunrise, when she hears my heavy tread from her suite downstairs in our Vancouver Special, a mainstay structure in the city’s residential areas. Once deemed boxy and cookie cutter, the architectural equivalent of a Honda Element, Vancouver Specials are now touted for their ability to accommodate two households, one on each floor. I’m in the kitchen, making my eight-year-old’s school lunch, when my phone buzzes and my mother puts in her breakfast request.
+
+Until she started dialysis at the end of 2022, my widowed, then seventy-one-year-old mother managed to be both active and sedentary, gamely driving in her SUV to a slate of appointments, school pickups for my daughter, and mahjong nights. The arrangement had served us well since we all moved in together in 2021, a decision made with my wife’s approval. My mom had been on her own since my brother married and moved out, right before the [COVID-19](https://thewalrus.ca/tag/covid-19/) pandemic.
+
+In early 2023, dialysis, new medication, and an injury left her on her back most of the day. My brother and I took her to hospital appointments and blood tests that always seemed timed to crater our workdays. We endured her criticisms and round-the-clock bedside requests—my brother, who lives a few minutes away with his wife and in-laws, more stoically than me. While my mother was out of commission, my wife and I took over the school pickups and cooked her meals.
+
+From the outside, we are enacting the best practices of urban family resource management. With rising [housing](https://thewalrus.ca/tag/housing/) costs and changing demographics, multigenerational living has finally gained social acceptance. Advocates trumpet its economic and emotional benefits.
+
+Despite being so on trend, I don’t feel especially cool living with my mom. And even an hour from sunrise, I’m already exhausted.
+
+Multigenerational living, according to a 2019 United Nations [report](https://www.un.org/en/development/desa/population/publications/pdf/popfacts/PopFacts_2019-2.pdf), is a norm for older people in Africa, Asia, and Latin America and the Caribbean. Some scholars argue that, in the United States and in Britain, the nuclear family is a relatively new phenomenon that occurred as industrialization splintered extended households and drove them from their farms to cities in the late nineteenth and early twentieth centuries. In other places, that shift never occurred. The UN report found that over 90 percent of seniors live with family in Afghanistan and Pakistan.
+
+In Canada, there are almost 442,000 [multigenerational households](https://vanierinstitute.ca/sharing-a-roof-multigenerational-homes-in-canada-2021-census-update/), according to the 2021 census, a number that has swollen by about 50 percent since 2001\. The figure would increase further if we expanded the idea of multigenerational living to include families residing in adjacent properties, such as laneway homes. Last January, the Trudeau government began offering a multigenerational home renovation tax credit at an estimated cost of $44 million over the next five years. That month, a *Globe and Mail* headline [proclaimed](https://www.theglobeandmail.com/real-estate/vancouver/article-2023-is-shaping-up-to-be-the-year-of-multigenerational-ownership/) that “2023 Is Shaping Up to Be the Year of the Multi-Family House.” The trend line is clear, and there may be no going back.
+
+The reasons for that trend, at least in Canada, are multifaceted: an aging population and rising life expectancy, increasing housing costs, and shifts in the country’s cultural composition. Multigenerational households are more likely to be found among immigrant and Indigenous communities. In Nunavut, for example, 13.5 percent of all households are multigenerational.
+
+“The idea that it’s better and more worthwhile to strip away any social or familial support and do it all on your own is a scam.”
+
+In immigrant-heavy suburbs like Surrey, BC, and Brampton, Ontario, supersized dwellings built for extended families have been tarred as “monster homes.” One seething missive to the *Province* in 2009 described Surrey’s monster homes as “eyesores . . . riddled with garbage and with numerous cars in the driveway and on the street.” Bending over to similar uproar, some Canadian cities have cracked down on “illegal suites” and lowered the maximum allowable square footage in residential neighbourhoods. A middle-aged friend of mine who grew up in East Vancouver recalled that his family didn’t have cable at their house for a period of time because their service provider had determined that the cable splitter they used to share their TV signal with his grandparents was against company policy.
+
+But the decision to share a roof is now catching on outside of cultural backgrounds where multigenerational living is the norm. After their daughter and son-in-law sold their home in October 2022, Jo Ann Lorimer and her husband welcomed them and their three elementary school–aged boys to their 4,000-square-foot home in Saltair, a community on the east coast of Vancouver Island. Lorimer and her husband also have a forty-one-year-old son, who lives on their twelve-acre property. Lorimer and her daughter cooked meals together, while her son-in-law helped with yard work. (The daughter and her family have since moved out.) “They do cushion our lives,” Lorimer noted at the time. “But I cushion their lives.”
+
+In his 2016 book, *The Death and Life of the Single-Family House*, Nathanael Lauster interviewed Vancouverites who’ve reconceptualized the idea of “home” after their dreams of a detached single-family house bit the dust. As more Canadians have moved in with their parents, Lauster, an associate professor of sociology at the University of British Columbia, says our stories and expectations should similarly shift to validate our own new identities. “If you can’t,” he says, “then it becomes the stigma associated with living with your parents.”
+
+Despite owning a downtown condo, for instance, Herman Cheng and his wife, Moon, live with his mother in a South Vancouver bungalow to help offset her living expenses while paying a below-market price for rent. Cheng frames his living situation in terms of financially assisting his mother, who doesn’t have any wealth outside the value of her house. In Cheng’s arrangement, his mother, who lives upstairs, does all the cooking and pitches in with child care.
+
+In addition to talking about perks like sharing appliances and daily, low-pressure interactions with her parents (as opposed to holiday visits), Michelle Cyca positions her choice as a rejection of the consumerist exhaustion of maintaining an independent household. “The nuclear family is fantasy now,” says the writer (and [frequent contributor](https://thewalrus.ca/author/michelle-cyca/) to this magazine), who welcomed to the world her second child this past spring and shares her parents’ home in Kerrisdale, an affluent Vancouver neighbourhood. “It feels like this capitalist trope. The idea that it’s better and more worthwhile to strip away any social or familial support and do it all on your own is a scam.”
+
+My wife and I are covering the mortgage for a house on which my mother placed a seven-figure down payment, while I’m taking my mother to appointments, hauling out her garbage, and doing her internet troubleshooting. In exchange, we’re living in a space and a long-gentrified neighbourhood we love, one we couldn’t otherwise afford. We also get free child care that consists of trips for dim sum and lightly supervised iPad time for my eight-year-old daughter.
+
+And yet that narrative still gets steamrolled by the stigma. At an appointment at the kidney clinic, my mom will tell the nurse that we live together. I am always quick to blurt out my qualifiers: WITH MY WIFE! AND MY CHILD! (WHOM I CONCEIVED DOING ADULT THINGS!) ON SEPARATE LEVELS!
+
+When describing the tensions of multigenerational living, the people I spoke to named situations that might not feel out of place on *Everybody Loves Raymond*, that American sitcom where the title character’s belligerent parents live across the street.
+
+Michael Kwan, whose mother lives in a suite below the one he shares with his wife and kids, talks about lack of privacy, especially before a second kitchen—a must-have accoutrement, I’ve found, along with separate entrances and doors that lock on both sides—was installed. “It took a long time for my parents to respect the staircase as the boundary between our zone and their zone,” he says. (His father has since passed away.) “That got better, and then it devolved when we became parents, because the kids are just running up and down between the two parts of the house.”
+
+For Cheng, handling conflict between his mother and wife is tough. “They’re fairly friendly to each other,” Cheng says with nervous laughter. “But if there’s something they’re not happy with, they tell me directly.”
+
+My mom and I have had our sitcom moments too: my wife and I laughing as my mom came and went at all hours, the sound of the garage door waking us as she returned from the casino or a mahjong game at one in the morning. Then there are times that leave me feeling like a petulant forty-eight-year-old teenager, responding to her questions with monosyllabic grunts and eye rolling as I storm out of the room.
+
+Given a choice, why would anyone choose to reinhabit their childhood trauma just for cheaper rent?
+
+Like Cheng and Kwan, my ethnically Chinese background should leave me culturally predisposed to living with my mom. Maybe that’s why I end up feeling like a bad Asian, the way I do when I use my horrid Cantonese at a restaurant and get a dismissive response in English.
+
+That sense of guilt is quickly walked back with another realization: *I’ve never wanted to be a good Asian*. Growing up, I rejected the materialism of my Hong Kong Chinese upbringing. (By contrast, my wife and fashion-forward stepson tote around my mom’s old Louis Vuitton bags.) I hated going to Chinese school on Wednesday evenings because it meant that I couldn’t watch *The A-Team*. I disliked the rigid hierarchies—how parents expected default obedience and flew off the handle when it wasn’t received. That ambivalence and sometimes active resistance to my cultural patrimony is, for better or worse, who I am. But living with my mother has been a breach of that firewall.
+
+Old resentments resurface. When I was growing up, my mother, like many Asian moms, could ruthlessly pick away at her sons’ self-esteem. To put it mildly, I was an awkward teenager: bookish, obsessed with girls but too clumsy to do anything beyond yearn. Not infrequently, before I stepped out of the house, my mother, who routinely urged me to lose weight while demanding I finish any leftover food at a restaurant so we wouldn’t have to take it home, would tell me I looked ugly and fat. Pretending those words didn’t matter shaped my personality—prickly and aloof at my worst.
+
+In January, my mother’s medication for latent tuberculosis interfered with her appetite to the point that she fainted and hurt her back. My brother and I took turns taking her to different medical appointments, to acupuncture, to get her hair done. I brought her toast and coffee every day, soup at night. One morning, before an all-day dialysis training session, she started complaining about my brother. “He’s so stupid,” she began. “Stupid” continues to be a frequent putdown, directed at real estate agents and bad drivers as well as friends, relatives, and her sons when they do anything she doesn’t like. (I have a work friend from Hong Kong whom I recall shrugging when I described my mother to her: “She sounds like a typical Chinese mother.”)
+
+“Don’t call him stupid,” I told my mother. “He does so much for you.”
+
+My mother’s face broiled in disgust. “You just wish I was dead,” she barked.
+
+“I don’t care,” I said, leaving my response open ended.
+
+I watched her attempt to put on her shoes, nearly weeping in pain from her wrenched back, until I got on my knees to help her.
+
+Again, I must blurt out my qualifiers: I love my mom, and she has done so much for me, not the least of which includes remortgaging her home in the 1990s so I could do an MFA and later taking care of my daughter, when she was a toddler, for three full days a week when her daycare proved to be a bad fit.
+
+I love her, she is a good mom, and I am not an irredeemably screwed-up person, but—ugh. But this. This—why? Why this? Given a choice, why would anyone choose to reinhabit their childhood trauma just for cheaper rent?
+
+After taking my mother to her appointment, I wrote a stern but collected message in which I outlined my years of resentment, the kind of note I wish I could have written for myself thirty years earlier, the kind of note, one could argue, that I wouldn’t have been able to write if I didn’t live with her. To my surprise, she apologized!
+
+You could say that this new-found level of communication is worth the anguish of multigenerational living. You would be fucking wrong.
+
+Statistics show that police-reported violence [against elders](https://www150.statcan.gc.ca/n1/pub/85-002-x/2022001/article/00011-eng.htm) in Canada increased by 22 percent between 2010 and 2020\. In 2020, about a third of these incidents had been committed by a family member or intimate partner. One 2016 study indicated that about 10 percent of non-institutionalized elders in Kingston, Ontario, and Saint-Hyacinthe, Quebec, reported a family member being violent toward them—defined in the study as “[being] screamed at, insulted, threatened, cursed, talked down to or physically hurt”—in the preceding six months. Being single, having few or weak relationships, being a woman, having self-reported money problems, having issues with mobility and daily activities, and being a smoker all increase one’s likelihood of experiencing violence from a family member.
+
+“Family, frankly, can be bad news,” says Lynn McDonald, a professor emeritus in the faculty of social work at the University of Toronto. As an alternative, McDonald points to [Canada HomeShare](https://www.canadahomeshare.com/), which she created the pilot for in Toronto in 2018 as the head of the National Initiative for the Care of the Elderly. In that program, people over fifty-five rented out their spare bedrooms to post-secondary students, who paid heavily reduced rents and spent about seven hours a week helping their older landlord–roommate. The program, overseen by a social worker, was such a success that it’s now being run in six Canadian locations.
+
+This type of arrangement is successful, McDonald speculates, partly because “there is a bit of a distance. It’s not your mother or your father, and they can’t tell you what to do. And they know it’s not their kid.” When I ask McDonald, who recently partially retired, whether she would ever live with her kids, her response is quick and punctuated by laughter: “Never. *Ever*.” She might consider, however, renting a room to a student.
+
+I quickly game-plan a home swap with, say, three engineering students, but I know it wouldn’t fly with Mom. And yet while Canada HomeShare might not work for everyone, it adds another option. If the best thing about the new trend in multigenerational living is that it’s a choice, then the freedom to choose something that works better for you still remains vital.
+
+I remember when my mother’s mother, my poh-poh, stopped living with us and moved into a senior’s apartment near Vancouver’s Chinatown. My mother and I, talking about it by text, can’t agree when that occurred. She says it was when we relocated to the city from the suburbs, when I was twelve, and Poh-Poh wanted to be closer to friends and allow us to have our own family life. (I remember a few languorous summers I spent in that apartment, playing mahjong with her and watching TV with my brother, well before that age.) In our exchange, my mother reminded me that my grandmother had helped with the down payment on our first house—that equity that lives on in our current home.
+
+For Poh-Poh, multigenerational living was a sacrifice she gladly made, but when the time came, she was ready to chart her own path. She lived on her own for another twenty years or so before she was moved into a nursing home.
+
+“You and Dan”—my brother—“learned good habits from her,” my mother texted me from downstairs. “I am proud of [you two].”
+
+In the months following my mom’s fall, our relationship evened out. I brought her coffee and toast every morning—a tacit acknowledgement of our shifting roles—until she recovered. Now that she’s regained her health, she’s back to her mahjong games, back to picking up my kids and making her medicinal soups. Recently, she drove my wife, our daughter, and me to the airport, and we hit a traffic jam. My mother quickly cut into a side street, tearing through a residential part of Vancouver, crossing two commercial arteries without the help of a friendly traffic light. She was like a seasoned Uber driver, albeit with a septuagenarian’s muffled reflexes. I would probably rate my ride five out of five anyhow, because I am forever non-confrontational, but she and I know how we really stand with each other.

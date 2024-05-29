@@ -1,0 +1,26 @@
+<!--yml
+category: 未分类
+date: 2024-05-27 15:10:57
+-->
+
+# Meet the economist who wants the field to account for nature | MIT Technology Review
+
+> 来源：[https://www.technologyreview.com/2023/12/26/1084603/gretchen-daily-economist-environment-accounting/](https://www.technologyreview.com/2023/12/26/1084603/gretchen-daily-economist-environment-accounting/)
+
+In a recent project undertaken for the Colombian government, for instance, the Natural Capital Project assisted in establishing a conservation plan for the Caribbean Gulf of Morrosquillo and its hinterlands. The region’s Rio Sinú is an essential source of drinking water for many downstream communities but also originates in an area that depends upon logging, ranching, and agriculture for its financial security. Using InVEST, Daily and her team were able to determine the actual cost of silt deposition in the river, particularly for drinking water and hydropower, and the value of maintaining upstream forests that would prevent that congestion from occurring.
+
+“We were able to show that communities in the region were benefiting from this forest in ways they hadn’t necessarily realized,” says Lisa Mandle, lead scientist and director of science-software integration for the Natural Capital Project. “We can never capture the total value of a forest in terms of cultural and spiritual values or even biodiversity, but we can say that it has measurable economic values across dimensions that have not been considered before.”
+
+And that, says Mandle, has created powerful incentives for the Colombian government to think about how to support the communities within that crucial forest.
+
+A similar approach, also crafted by the Natural Capital Project, helps countries determine their gross ecosystem product, or GEP. Modeled after the gross domestic product, the GEP index allows nations to determine the monetary value of their ecological systems. Daily and her team piloted this index in 2014 on both municipal and national scales in China, and it was adopted by the United Nations Statistical Commission in 2021.
+
+“Just as the Great Depression exposed the urgent need for better macroeconomic performance metrics, our current ‘Great Degradation’ of natural capital is making it imperative that we track ecological performance and use that information to guide investments in revitalization and regeneration,” says Daily, who predicts that the GEP metric will be employed globally within the next decade.
+
+In the meantime, she and her team are dedicated to streamlining their ecological assessments in a way that makes the final analysis and visualization easier for political leaders, investors, and local communities to use. Making that information more accessible, she says, will be crucial for fostering a cultural shift toward recognizing humanity’s dependence upon the biosphere.
+
+In many ways, this idea of codifying the value of nature has been 30 years in the making. And it couldn’t have become reality without Daily’s vision, says Qingfeng Zhang, a senior director at the Asian Development Bank, which now includes a Natural Capital Lab inspired and supported by the Stanford project. This initiative, which was launched in 2020, created a platform for the bank to promote sustainable finance with the help of tools that Daily and her team developed.
+
+“Gretchen’s work in the area of environmental science and its implications for public policy has been monumental,” says Zhang. “Her InVEST model and GEP concept are transforming the way governments, corporations, and civil society look at nature. We now have a tangible economic basis to invest in protecting and growing nature.” 
+
+*[Kathryn Miles](https://www.kathrynmiles.net/) is a journalist and the author of five books including, most recently, [Trailed: One Woman's Quest to Solve the Shenandoah Murders](https://www.hachettebookgroup.com/titles/kathryn-miles/trailed/9781643753874/).*

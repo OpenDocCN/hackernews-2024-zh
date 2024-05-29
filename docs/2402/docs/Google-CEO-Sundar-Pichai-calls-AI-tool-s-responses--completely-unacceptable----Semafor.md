@@ -1,0 +1,24 @@
+<!--yml
+category: 未分类
+date: 2024-05-29 13:27:42
+-->
+
+# Google CEO Sundar Pichai calls AI tool’s responses ‘completely unacceptable’ | Semafor
+
+> 来源：[https://www.semafor.com/article/02/27/2024/google-ceo-sundar-pichai-calls-ai-tools-responses-completely-unacceptable](https://www.semafor.com/article/02/27/2024/google-ceo-sundar-pichai-calls-ai-tools-responses-completely-unacceptable)
+
+Google CEO Sundar Pichai addressed the company’s Gemini controversy Tuesday evening, calling the AI app’s problematic responses around race unacceptable and vowing to make structural changes to fix the problem.
+
+Google suspended its Gemini image creation tool last week after it generated embarrassing and offensive results, in some cases declining to depict white people, or inserting photos of women or people of color when prompted to create images of Vikings, Nazis, and the Pope.
+
+The controversy spiraled when Gemini was found to be creating questionable text responses, such as equating Elon Musk’s influence on society with Adolf Hitler’s.
+
+Those comments drew sharp criticisms, especially from conservatives, who accused Google of an anti-white bias.
+
+Most companies offering AI tools like Gemini create guardrails to mitigate abuses and to avoid bias, especially in light of other experiences. For instance, image generation tools from companies like OpenAI have been criticized when they created predominately images of white people in professional roles and depicting Black people in stereotypical roles.
+
+“I know that some of its responses have offended our users and shown bias – to be clear, that’s completely unacceptable and we got it wrong,” Pichai said.
+
+Pichai said the company has already made progress in fixing Gemini’s guardrails. “Our teams have been working around the clock to address these issues. We’re already seeing a substantial improvement on a wide range of prompts,” he said.
+
+Google confirmed the memo, and the full note from Pichai is below.
