@@ -1,196 +1,294 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:32:31'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日14:32:31
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: SIMD in Pure Python | Blog
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 纯Python中的SIMD | 博客
 - en: 来源：[https://www.da.vidbuchanan.co.uk/blog/python-swar.html](https://www.da.vidbuchanan.co.uk/blog/python-swar.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.da.vidbuchanan.co.uk/blog/python-swar.html](https://www.da.vidbuchanan.co.uk/blog/python-swar.html)
 - en: SIMD in Pure Python
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 纯Python中的SIMD
 - en: '*By David Buchanan, 4^(th) January 2024*'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '*戴维·布坎南，2024年1月4日*'
 - en: First of all, this article is an exercise in recreational "because I can" programming.
     If you just want to make your Python code go fast, this is perhaps not the article
     for you. And perhaps Python is not the language you want, either!
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，这篇文章是一种娱乐性的“因为我可以而编程的练习”。如果你只是想让你的Python代码跑得更快，也许这篇文章不适合你。也许Python也不是你想要的语言！
 - en: By the end, I'll explain how I implemented [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
     in pure Python (plus pysdl2 for graphics output) running in 4K resolution at 180fps,
     which represents a ~3800x speedup over a naive implementation.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我将解释我是如何在纯Python中实现[生命游戏](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)（外加pysdl2用于图形输出）以4K分辨率以180fps运行的，这代表了比朴素实现快了~3800倍。
 - en: '![](img/7b57f311eb4ea0c2294d0c82ecd87168.png)'
+  id: totrans-10
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/7b57f311eb4ea0c2294d0c82ecd87168.png)'
 - en: If you're already familiar with SIMD and vectorization, you might want to skip
     this next section.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经熟悉SIMD和矢量化，也许你想跳过下一节。
 - en: A Brief Introduction to SIMD
+  id: totrans-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: SIMD简要介绍
 - en: If you want to get the most performance out of a modern CPU, you're probably
     going to be using [SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)
     instructions - Single Instruction, Multiple Data.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想从现代CPU中获得最佳性能，你可能会使用[SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)指令
+    - 单一指令，多重数据。
 - en: For example, if you have two arrays of length 4, containing 32-bit integers,
     most modern CPUs will let you add the pairwise elements together in a single machine
     instruction (assuming you've already loaded the data into registers). Hopefully
     it's obvious why this is more efficient than looping over the individual array
     elements. Intel CPUs have had this *specific* capability since [SSE2](https://en.wikipedia.org/wiki/SSE2)
     was introduced in the year 2000, but SIMD as a concept predates it by [a lot](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data#History).
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果你有两个长度为4的数组，包含32位整数，大多数现代CPU将允许你将这两个数组的对应元素在一条机器指令中相加（假设你已经将数据加载到寄存器中）。希望这明显地说明了为什么这比遍历单个数组元素更高效。自从2000年引入[SSE2](https://en.wikipedia.org/wiki/SSE2)以来，英特尔CPU就拥有了这种*特定*的功能，但SIMD作为一个概念已经比它更早很多了，可以查看这里[历史](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data#History)。
 - en: Newer CPUs cores have been expanding on these capabilities ever since, meaning
     SIMD instructions are more relevant than ever for maximising CPU throughput.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 新一代CPU核心一直在扩展这些功能，这意味着SIMD指令对于最大化CPU吞吐量比以往任何时候都更加重要。
 - en: If you're programming in a language like C, an optimising compiler will recognise
     code that can be accelerated using SIMD instructions, and automatically emit appropriate
     machine code. Compilers can't optimise everything perfectly, though, so anyone
     who wants to squeeze out the maximum performance might end up using [Intrinsics](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)
     to explicitly tell the compiler which instructions to use. And if *that* still
     isn't enough, you might end up programming directly in assembly.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在像C这样的语言中编程，优化编译器会识别可以使用SIMD指令加速的代码，并自动发出适当的机器代码。然而，编译器无法完美地优化所有内容，因此任何想要挤出最大性能的人可能最终会使用[内在操作](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)来明确告诉编译器使用哪些指令。如果*还*不够，你可能会直接使用汇编语言编程。
 - en: There are many ways to express SIMD programs, but the rest of them are out of
     scope for this article!
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 表达SIMD程序的方式有很多种，但本文的范围不包括这些方式！
 - en: '"Vectorization" is the process of transforming a typical program into one that
     operates over whole arrays of data (i.e. vectors) at once (for example, using
     SIMD). The work done by the optimising compiler described above, or the human
     writing Intrinsic operations, is vectorization.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: “矢量化”是将典型程序转变为一次性（例如，使用SIMD）在整个数据数组（即矢量）上操作的过程。上述优化编译器所做的工作，或者人工编写的内在操作，都属于矢量化。
 - en: A Brief Introduction to CPython
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: CPython的简要介绍
 - en: '[CPython](https://github.com/python/cpython) is the reference implementation
     of the Python language, written mostly in C, hence the name. Other implementations
     exist, but when people say "Python" they''re often implicitly referring to CPython.
     I''ll try to only say Python when I''m referring to the language as a whole, and
     CPython when I''m talking about a CPython implementation detail (which we''ll
     be getting into later).'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[CPython](https://github.com/python/cpython) 是 Python 语言的参考实现，主要用 C 编写，因此得名。还有其他实现存在，但是当人们说“Python”时，他们通常隐含地指的是
+    CPython。我尽量只在提到语言整体时说“Python”，而在谈论 CPython 的实现细节时说“CPython”（我们稍后会深入讨论）。'
 - en: The TL;DR is that CPython compiles your code into a [bytecode](https://docs.python.org/3/glossary.html#term-bytecode)
     format, and then interprets that bytecode at run-time. I'll be referring to that
     bytecode interpreter as the ["VM"](https://docs.python.org/3/glossary.html#term-virtual-machine).
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: TL;DR 是 CPython 将您的代码编译成 [字节码](https://docs.python.org/3/glossary.html#term-bytecode)
+    格式，然后在运行时解释该字节码。我将把这个字节码解释器称为 ["VM"](https://docs.python.org/3/glossary.html#term-virtual-machine)。
 - en: SIMD in Python
+  id: totrans-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[Python 中的 SIMD](https://numpy.org/) '
 - en: Python does not natively have a concept of SIMD. However, libraries like [NumPy](https://numpy.org/)
     exist, allowing for relatively efficient vectorized code. NumPy lets you define
     vectors, or even n-dimensional arrays, and perform operations on them in a single
     API call.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 并不本身具有 SIMD 的概念。然而，存在诸如 [NumPy](https://numpy.org/) 等库，允许相对高效的向量化代码。NumPy
+    允许您定义向量，甚至是 n 维数组，并在单个 API 调用中对它们执行操作。
 - en: '|  |'
+  id: totrans-24
   prefs: []
   type: TYPE_TB
+  zh: '|  |'
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Without NumPy, the above example would require a loop over array elements (or
     a list comprehension, which is fancy syntax for the same thing, more or less).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有 NumPy，上面的例子将需要对数组元素进行循环（或列表推导式，它基本上是相同的事情，或多或少）。
 - en: Internally, NumPy is implemented using native C extensions, which in turn use
     Intrinsics to express SIMD operations. I'm not an expert on NumPy implementation
     details, but you can peruse their SIMD code [here](https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd).
     Note that the code has been customised for various CPU architectures.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在内部，NumPy 是使用本机 C 扩展实现的，这些扩展进而使用 Intrinsics 表示 SIMD 操作。我不是 NumPy 实现细节的专家，但您可以查阅他们的
+    SIMD 代码[这里](https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd)。请注意，该代码已经针对各种
+    CPU 架构进行了定制。
 - en: CPython itself, being an interpreted Python implementation, is slow. But if
     you can structure your program so that all the "real work" gets done inside a
     library like NumPy, it can be surprisingly efficient overall.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: CPython 本身作为一个解释 Python 实现，速度很慢。但如果您可以将程序结构化，以便所有“真正的工作”都在像 NumPy 这样的库内完成，那么整体效率可能会令人惊讶。
 - en: NumPy is excellent and widely used for getting real work done. However, NumPy
     is not "pure" Python!
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy 非常出色并且被广泛用于完成真正的工作。但是，NumPy 不是“纯” Python！
 - en: SIMD in *Pure* Python
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*纯* Python 中的 SIMD'
 - en: By "pure," I mean using only functionality built into the [Python language](https://docs.python.org/3/reference/)
     itself, or the [Python standard library](https://docs.python.org/3/library/index.html).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过“纯”，我指的是仅使用构建在[Python 语言](https://docs.python.org/3/reference/)本身或[Python
+    标准库](https://docs.python.org/3/library/index.html)中的功能。
 - en: This is an entirely arbitrary and self-imposed constraint, but I think it's
     a fun one to work within. It's also vaguely useful, since libraries like NumPy
     aren't available in certain environments.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个完全任意的自我施加的约束，但我认为在这个约束下工作是有趣的。它也是模糊有用的，因为在某些环境中无法使用 NumPy 等库。
 - en: 'Earlier, I said Python doesn''t natively have a concept of SIMD. This isn''t
     entirely true; otherwise the article would end here. Python supports bitwise operations
     over pairs of integers: AND (`&`), OR (`|`), XOR (`^`). If you think about these
     as operations over vectors of booleans, each bit being one bool, it is SIMD!'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前，我说 Python 并不本身具有 SIMD 的概念。这并不完全正确；否则文章会在此结束。Python 支持对整数对进行按位操作：AND（`&`），OR（`|`），XOR（`^`）。如果您将这些操作视为布尔向量的操作，每个位表示一个布尔值，那么它就是
+    SIMD！
 - en: Unlike many other programming languages, Python integers have unlimited precision.
     That is, they can accurately represent integers containing arbitrarily many digits—at
     least, until you run out of memory. This means we can evaluate an unlimited number
     of conceptually-parallel boolean operations with a single python operator.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 与许多其他编程语言不同，Python 整数具有无限精度。也就是说，它们可以准确表示包含任意多位数字的整数——至少，在您耗尽内存之前。这意味着我们可以使用单个
+    Python 运算符评估无限数量的概念上并行的布尔操作。
 - en: 'SIMD over booleans might sound esoteric, but it''s an idea we can immediately
     put to work. A common operation in cryptography is to XOR two byte buffers together.
     An idiomatic implementation might look like this:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 对布尔值进行 SIMD 处理听起来有些神秘，但这是一个我们可以立即投入使用的想法。密码学中的一个常见操作是将两个字节缓冲区进行异或运算。一个惯用的实现可能如下所示：
 - en: '|  |'
+  id: totrans-37
   prefs: []
   type: TYPE_TB
+  zh: '|  |'
 - en: '[PRE1]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'This takes each individual byte (as an integer between 0 and 255) in a and
     b, applies the xor operator to each, and constructs a new `bytes` object from
     the results. Arguably, we are already using the boolean-SIMD concept here; each
     of the 8 bits in a byte are getting XORed in parallel. But we can do better than
     that:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个过程会取 a 和 b 中每个单独的字节（作为介于 0 和 255 之间的整数），对每个字节应用异或运算符，并从结果构造一个新的 `bytes` 对象。可以说，在这里我们已经使用了布尔
+    SIMD 概念；每个字节中的 8 位都在并行异或运算。但我们可以做得更好：
 - en: '|  |'
+  id: totrans-41
   prefs: []
   type: TYPE_TB
+  zh: '|  |'
 - en: '[PRE2]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: This might look a bit ridiculous, and that's because it is. We convert each
     `bytes` object into an arbitrary-precision integer, XOR those two integers together,
     and then convert the resulting integer back to `bytes`. The python `^` operator
@@ -198,23 +296,34 @@
     one CPython VM operation). I'm going to call this approach "pseudo-SIMD". But
     with all this conversion between bytes and integers, surely it must be slower
     overall? Let's benchmark it.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这看起来有点荒谬，因为它确实如此。我们将每个 `bytes` 对象转换为一个任意精度整数，将这两个整数进行异或运算，然后将结果整数转换回 `bytes`。Python
+    的 `^` 运算符只执行一次，一次性处理所有数据（或者更明确地说，一次性进行一次 CPython VM 操作）。我将这种方法称为“伪 SIMD”。但是考虑到所有这些字节和整数之间的转换，它肯定会在整体上变慢吧？让我们进行基准测试。
 - en: Here are my results. The number is time to execute 1 million iterations. I tested
     on CPython 3.11 on an M1 Pro macbook. [Try it on your own machine!](https://gist.github.com/DavidBuchanan314/51bb8f6219ea8bb7a603e0ad19725f6d)
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我的结果。这个数字表示执行 100 万次迭代所需的时间。我在一台 M1 Pro MacBook 上测试了 CPython 3.11。[在你自己的机器上试试吧！](https://gist.github.com/DavidBuchanan314/51bb8f6219ea8bb7a603e0ad19725f6d)
 - en: '[PRE3]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Even for the trivial case of n=1, somehow our wacky pseudo-SIMD function wins,
     by about a third!
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使对于 n=1 这种微不足道的情况，我们那种古怪的伪 SIMD 函数也能以大约三分之一的优势获胜！
 - en: The difference becomes even more pronounced as the buffer size increases, with
     the pseudo-SIMD function being 12x faster for n=1024.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着缓冲区大小的增加，这种差异变得更加显著，对于 n=1024，伪 SIMD 函数快了 12 倍。
 - en: I also threw a numpy implementation into the mix. This isn't really fair on
     numpy, because converting the bytes to and from numpy arrays appears to have quite
     a high constant overhead. In more realistic numpy code, you'd end up keeping your
@@ -222,110 +331,169 @@
     way until n=1024, where it became 3x faster. Evidently, those constant overheads
     become less relevant as <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>
     grows.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还混入了一个 numpy 实现。这对 numpy 来说并不公平，因为将字节转换为 numpy 数组并从中转换似乎有相当大的固定开销。在更现实的 numpy
+    代码中，你最终会将数据保持在 numpy 格式中。因此，numpy 一直比较慢，直到 n=1024 时才快了 3 倍。显然，随着 <math xmlns="http://www.w3.org/1998/Math/MathML"
+    display="inline"><mrow><mi>n</mi></mrow></math> 的增长，这些固定开销变得不那么重要。
 - en: But what if we eliminate the conversion overheads, allowing our functions to
     input and output data in their "native" formats, rather than bytes? For pseudo-SIMD,
     that format is integers, and for numpy it's a `np.array` object.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果我们消除转换的开销，允许我们的函数以它们的“本地”格式输入和输出数据，而不是字节呢？对于伪 SIMD，这种格式是整数，对于 numpy，它是一个
+    `np.array` 对象。
 - en: '[PRE4]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Pseudo-SIMD has the edge for small inputs (perhaps because it doesn't have to
     do any [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)), but for
     large buffers, numpy edges ahead. But only barely! How is our pure-python XOR
     function (which at this point is just the XOR operator itself) able to keep up
     with NumPy's optimised SIMD code?
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于小输入，伪 SIMD 有优势（可能是因为它不需要执行任何 [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)），但对于大缓冲区，numpy
+    会稍微领先。但仅仅一点点！我们的纯 Python XOR 函数（目前只是 XOR 运算符本身）是如何能够跟上 NumPy 的优化 SIMD 代码的呢？
 - en: CPython Internals
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: CPython 内部结构
 - en: Let's take a closer look. Here's the [inner loop](https://github.com/python/cpython/blob/v3.11.5/Objects/longobject.c#L5050-L5051)
     of the code for XORing together two arbitrary-precision integers in CPython 3.11.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们仔细看看。这里是 [内部循环](https://github.com/python/cpython/blob/v3.11.5/Objects/longobject.c#L5050-L5051)
+    的代码，用于在 CPython 3.11 中将两个任意精度整数进行异或运算。
 - en: '|  |'
+  id: totrans-55
   prefs: []
   type: TYPE_TB
+  zh: '|  |'
 - en: '[PRE5]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: It's a simple loop over arrays. No SIMD instructions? Well, there aren't any
     explicit ones, but what does the C compiler do to it? Let's take an *even closer*
     look.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简单的数组循环。 没有 SIMD 指令？ 嗯，并没有明确的指令，但是 C 编译器对它做了什么呢？ 让我们再*更近一步*地看看。
 - en: I loaded libpython into Ghidra and had a look around. The library on my system
     didn't have full symbols, so I searched for cross-references to the exported symbol
     `_PyLong_New`. There were 82 matches, but by an extremely weird stroke of luck
     it was the first function I clicked on.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我加载了 libpython 到 Ghidra 中并四处查看了一下。 我系统上的库没有完整的符号，所以我搜索了导出符号`_PyLong_New`的交叉引用。
+    有 82 个匹配项，但极其奇怪的是，这是我点击的第一个函数。
 - en: 'On my system, the (aarch64) assembly corresponding to the above loop is as
     follows:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的系统上，对应上述循环的（aarch64）汇编如下：
 - en: '[PRE6]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: If you're not a reverse engineer, or even if you are, you're probably thinking
     "WTF is going on here?" This is a fairly typical result of compiler [auto-vectorization](https://en.wikipedia.org/wiki/Automatic_vectorization).
     Ghidra does a terrible job of converting it to meaningful pseudocode, so I'll
     provide my own version (note, this is not a 1:1 mapping, but it should convey
     the general idea)
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你不是一个逆向工程师，甚至如果你是，你可能会想，“这里到底发生了什么？” 这是编译器[自动向量化](https://en.wikipedia.org/wiki/Automatic_vectorization)的一个相当典型的结果。
+    Ghidra 在将其转换为有意义的伪代码方面做得很糟糕，所以我将提供我自己的版本（注意，这不是一对一的映射，但它应该传达出一般的思路）。
 - en: '|'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE7]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '|'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE8]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '|'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The main loop operates using the `q0` and `q1` registers, which according to
     [ARM docs](https://developer.arm.com/documentation/dht0002/a/Introducing-NEON/NEON-architecture-overview/NEON-registers)
     are 128-bit wide NEON registers. As far as I can tell, NEON doesn't stand for
     anything in particular, but it's what ARM calls its SIMD features (by the way,
     their "next-gen" SIMD instruction set is called [SVE](https://developer.arm.com/documentation/102476/0100/Introducing-SVE)).
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 主循环使用`q0`和`q1`寄存器，根据[ARM 文档](https://developer.arm.com/documentation/dht0002/a/Introducing-NEON/NEON-architecture-overview/NEON-registers)，这些是
+    128 位宽的 NEON 寄存器。 就我所知，NEON 并没有特指什么，但这是 ARM 称呼其 SIMD 特性的方式（顺便说一句，他们的“下一代” SIMD
+    指令集被称为[SVE](https://developer.arm.com/documentation/102476/0100/Introducing-SVE)）。
 - en: After the main loop, it xors the remaining 32-bit words, one at a time.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在主循环之后，它会一次异或剩余的 32 位字。
 - en: The key observation here is that our "pseudo-SIMD" implementation is using real
     SIMD instructions under the hood! At least, it is on my system; this may depend
     on your platform, compiler, configuration, etc.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的关键观察是我们的“伪 SIMD”实现在幕后使用了真正的 SIMD 指令！ 至少，在我的系统上是这样的； 这可能取决于您的平台、编译器、配置等。
 - en: If we limit ourselves to bitwise operators, and our numbers are big enough that
     the interpreter overhead is small (in relative terms), we can get real SIMD performance
     speedups in pure Python code. Well, kinda. If you were implementing a specific
     algorithm in assembly, you could generate much more tightly optimised SIMD routines,
     keeping data in registers where possible, avoiding unnecessary loads and stores
     from memory, etc.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将自己限制在按位运算符上，并且我们的数字足够大以至于解释器的开销很小（相对而言），我们可以在纯 Python 代码中获得真正的 SIMD 性能加速。
+    嗯，有点。 如果你在汇编中实现了一个特定的算法，你可以生成更紧密优化的 SIMD 程序，尽可能地将数据保留在寄存器中，避免不必要的内存加载和存储等。
 - en: Another big caveat with this approach is that it involves creating a whole new
     integer to contain the result. This wastes memory space, puts pressure on the
     memory allocator/gc, and perhaps most importantly, it wastes memory bandwidth.
     Although you can write `a ^= b` in Python to denote an in-place XOR operation,
     it still ends up internally allocating a new object to store the result.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法的另一个重大限制是它涉及创建一个全新的整数来容纳结果。 这会浪费内存空间，给内存分配器/垃圾回收器带来压力，也许最重要的是，它会浪费内存带宽。
+    尽管你可以在 Python 中编写 `a ^= b` 来表示就地异或操作，但它仍然会在内部分配一个新对象来存储结果。
 - en: If you're wondering why the NumPy implementation was still slightly faster,
     I believe the answer lies in the way CPython represents its integers. Each entry
     in the `ob_digit` array only represents 30 bits of the overall number. I'm guessing
@@ -333,24 +501,33 @@
     means the in-memory representation has a ~7% overhead compared to optimal packing.
     While I haven't checked NumPy's implementation details, I imagine they pack array
     elements tightly.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想知道为什么NumPy的实现仍然稍微快一些，我认为答案在于CPython表示其整数的方式。`ob_digit`数组中的每个条目只表示整个数字的30位。我猜这使得在算术操作期间处理进位传播更简单。这意味着内存表示与最佳填充相比有大约7%的额外开销。虽然我没有检查过NumPy的实现细节，但我想象它们会紧密地打包数组元素。
 - en: Doing Useful Work
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 进行有用的工作
 - en: Now that we know we can do efficient-ish bitwise SIMD operations, can we build
     something useful from that?
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道我们可以进行高效的按位SIMD操作，我们能否从中构建出一些有用的东西呢？
 - en: One use case is bitsliced cryptography. [Here's](https://github.com/DavidBuchanan314/python-bitsliced-aes)
     my implementation of bitsliced AES-128-ECB in pure Python. It's over 20x faster
     than the next fastest pure-python AES implementation I could find, and in theory
     it's more secure too, due to not having any data-dependent array indexing (but
     I still wouldn't trust it as a secure implementation; use a [proper cryptography
     library!](https://cryptography.io/en/latest/))
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个用例是位切片密码学。[这里是](https://github.com/DavidBuchanan314/python-bitsliced-aes)我纯Python实现的位切片AES-128-ECB。它比我能找到的下一个最快的纯Python
+    AES实现快20多倍，在理论上它也更安全，因为它没有任何数据相关的数组索引（但我仍然不会信任它作为一个安全的实现；使用一个[适当的密码库！](https://cryptography.io/en/latest/))
 - en: For a more detailed introduction to bitslicing, check out [this article](https://timtaubert.de/blog/2018/08/bitslicing-an-introduction/).
     The idea is to express your whole algorithm as a circuit of logic gates, or in
     other words, a bunch of boolean expressions. You can do this for any computation,
@@ -358,31 +535,47 @@
     can use bit-parallel operations (i.e., bitwise SIMD operations) to compute multiple
     instances of your algorithm in parallel. Since AES is a block-based cipher, you
     can use this idea to compute multiple AES cipher blocks concurrently.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 想要更详细地了解位切片，请查看[这篇文章](https://timtaubert.de/blog/2018/08/bitslicing-an-introduction/)。其核心思想是将整个算法表达为逻辑门电路，或者换句话说，一堆布尔表达式。你可以对任何计算都这样做，但AES特别适合。一旦你有了布尔表达式，你就可以使用位并行操作（即位级SIMD操作）来并行计算多个算法实例。由于AES是基于块的密码，你可以利用这个想法同时计算多个AES密码块。
 - en: SWAR
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: SWAR
 - en: We can use Python integers for more than just parallel bitwise operations. We
     can use them for parallel additions, too!
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用Python整数进行的不仅仅是并行的按位操作。我们也可以用它们进行并行相加！
 - en: '|'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE9]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '|'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE10]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '|'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'As shown here, we can pack multiple fixed-width integers into a single Python
     integer, and add them all together at once. However, if they''re tightly packed
     and an integer overflow occurs, this causes unwanted carry propagation between
@@ -393,41 +586,55 @@
     over the course of multiple additions and start causing overflows between lanes
     again. The more padding bits you use between lanes, the more chained additions
     you can survive before masking is required.'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如此所示，我们可以将多个固定宽度的整数打包到一个Python整数中，并一次性将它们全部相加。然而，如果它们被紧密打包并且发生整数溢出，这会在通道之间引起不必要的进位传播。解决方法很简单：稍微分开它们一点。在这个例子中，我使用宽松的4位宽填充来使事情更明显，但原则上你只需要一个单独的填充位。最后，我们使用按位AND运算符来屏蔽任何溢出位。如果我们不这样做，溢出位可能会在多次相加过程中累积，并再次在通道之间引起溢出。在通道之间使用的填充位越多，您就可以在需要掩码之前存活更多链接的加法。
 - en: You can do similar things for subtraction, multiplication by a small constant,
     and bit shifts/rotations, so long as you have enough padding bits to prevent overflows
     in each scenario.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于减法、乘以一个小常数以及位移/旋转，我们可以做类似的事情，只要在每种情况下都有足够的填充位来防止溢出。
 - en: 'The general term for this concept is SWAR, which stands for [SIMD Within A
     Register](https://en.wikipedia.org/wiki/SWAR). But here, rather than using a machine
     register, we''re using an arbitrarily long Python integer. I''m calling this variant
     SWAB: SIMD Within A Bigint.'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个概念的通用术语是 SWAR，代表着[寄存器内的SIMD](https://en.wikipedia.org/wiki/SWAR)。但在这里，我们不是使用机器寄存器，而是使用任意长的Python整数。我将这种变体称为SWAB：大整数内的SIMD。
 - en: SWAB is a useful idea in Python because it maximises the amount of work done
     per VM instruction, reducing the interpreter overhead; the CPU gets to spend the
     majority of its time in the fast native code that implements the integer operations.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中，SWAB是一个有用的想法，因为它最大化了每个VM指令的工作量，减少了解释器的开销；CPU得以花费大部分时间在实现整数操作的快速本机代码中。
 - en: Doing ~~Useful Work~~ Something Fun
+  id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 做~~有用的工作~~有趣的事情
 - en: That's enough theory; now it's time to make Game of Life go fast. First, let
     me describe the "problem" I'm trying to solve. I'll assume you're already broadly
     familiar with Game of Life, but if not, go read the [Wikipedia article.](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就够理论了；现在是时候让生命游戏加速了。首先，让我描述一下我试图解决的“问题”。我假设您已经对生命游戏有了广泛的了解，但如果没有，请阅读[维基百科文章。](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 - en: There are some very clever algorithms for making GoL go fast, the most famous
     being [Hashlife](https://johnhw.github.io/hashlife/index.md.html), which works
     by spotting repeating patterns in both space and time. However, my favourite GoL
     pattern to simulate is ["soup"](https://conwaylife.com/wiki/Soup), i.e., a large
     random starting grid. These chaotic patterns aren't well suited to the Hashlife
     algorithm, so we need to go back to the basics.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些非常聪明的算法可以让生命游戏加速，其中最著名的是[Hashlife](https://johnhw.github.io/hashlife/index.md.html)，它通过发现空间和时间中的重复模式来工作。然而，我最喜欢模拟的GoL模式是[“汤”](https://conwaylife.com/wiki/Soup)，即一个大的随机起始网格。这些混沌模式不适合Hashlife算法，因此我们需要回到基础。
 - en: When you simulate soup in the classic GoL ruleset, it typically dies out after
     a few thousand generations, producing a rather boring arrangement of oscillating
     ["ash"](https://conwaylife.com/wiki/Soup#Ash) (which is back to something Hashlife
@@ -436,27 +643,41 @@
     [DryLife](https://conwaylife.com/wiki/OCA:DryLife). I like DryLife because it
     still exhibits most of the familiar GoL behaviours (for example, gliders) and
     yet the soup lives on indefinitely, creating a pleasing screensaver-like animation.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你在经典的GoL规则集中模拟汤时，它通常会在几千代之后消亡，产生一种相当无聊的振荡[“灰烬”](https://conwaylife.com/wiki/Soup#Ash)排列（这是Hashlife可以快速模拟的）。我更喜欢我的模拟在永恒的混沌中生存下去，而且经典规则集的一个变体几乎可以保证这一点，称为[DryLife](https://conwaylife.com/wiki/OCA:DryLife)。我喜欢DryLife，因为它仍然表现出大多数熟悉的GoL行为（例如，滑翔机），而汤却永远存在，创造出一种令人愉悦的屏保式动画。
 - en: 'The "obvious" implementation of the inner loop of the GoL algorithm looks something
     like this:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: GoL算法内部循环的“显而易见”的实现大致如下：
 - en: '|'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE11]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '|'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE12]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '|'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: It iterates over every cell in the grid, counts up its immediate 8 neighbours,
     and applies the rules to decide if the cell should be alive or not in the next
     iteration. In big-O terms, this is an <math xmlns="http://www.w3.org/1998/Math/MathML"
@@ -464,8 +685,13 @@
     algorithm, where <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>
     is the number of cells in the grid (i.e., width <math xmlns="http://www.w3.org/1998/Math/MathML"
     display="inline"><mrow><mi>×</mi></mrow></math> height).
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 它遍历网格中的每个单元格，计算其周围8个相邻单元格的数量，并应用规则以决定单元格是否在下一个迭代中存活。就大O记法而言，这是一个<math xmlns="http://www.w3.org/1998/Math/MathML"
+    display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>算法，其中<math
+    xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>是网格中单元格的数量（即宽度<math
+    xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>×</mi></mrow></math>高度）。
 - en: 'Although it isn''t made explicit in the snippet above, the state of the cells
     is being stored in a big array, accessed via the `get_cell` and `set_cell` helper
     functions. What if instead of using an array, we stored the whole state in one
@@ -475,27 +701,42 @@
     value, and we can be sure it will never overflow into a 5-bit value, so we can
     store each cell as a 4-bit wide "SWAB lane". Without further ado, here''s the
     equivalent inner-loop code:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管在上面的片段中没有明确说明，但细胞的状态是存储在一个大数组中的，通过`get_cell`和`set_cell`辅助函数访问。如果我们不使用数组，而是将整个状态存储在一个非常长的整数中，并使用SWAB算术一次处理整个事物，会怎样呢？这个过程最棘手的部分将是计算邻居的数量，这些邻居的总和最多可以达到8（或者如果我们还计算初始细胞值的话，达到9）。那是一个4位值，我们可以肯定它不会溢出为5位值，因此我们可以将每个细胞存储为4位宽的“SWAB
+    lane”。不再拖延，这里是等效的内部循环代码：
 - en: '|'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE13]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '|'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE14]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '|'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: (I've omitted some details like wraparound handling; you can see the full code,
     along with definitions of those magic constants, [here](https://github.com/DavidBuchanan314/pyswargol/blob/main/swargol.py))
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: （我省略了一些细节，比如环绕处理；你可以在[这里](https://github.com/DavidBuchanan314/pyswargol/blob/main/swargol.py)看到完整的代码，以及那些神奇常量的定义）
 - en: Aside from the different state representation, this achieves exactly the same
     thing as the previous snippet. The <math xmlns="http://www.w3.org/1998/Math/MathML"
     display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>
@@ -507,18 +748,29 @@
     work being done, hidden away inside the SIMD-accelerated native code of CPython's
     bigint arithmetic routines. This is a *huge* performance win, which I'll quantify
     later. But first, how do we turn that `state` integer into pixels on the screen?
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了不同的状态表示之外，这与前面的片段完全相同。对每个细胞的<math xmlns="http://www.w3.org/1998/Math/MathML"
+    display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>循环已完全消除！嗯，几乎是的。有<math
+    xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo
+    stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> CPython
+    VM操作，但仍然有<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo
+    stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>的工作正在进行，隐藏在CPython的bigint算术例程的SIMD加速本机代码中。这是一个*巨大*的性能优势，我稍后会量化。但首先，我们如何将那个`state`整数转换为屏幕上的像素？
 - en: Blitting
+  id: totrans-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Blitting
 - en: 'To get pixels on the screen, we need to convert the data into a more standard
     format. The very first step is easy: Python integers have a `to_bytes` method
     that serialises them into bytes (like I used in the XOR function example earlier
     in this article). What to do with those bytes next is less obvious.'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在屏幕上显示像素，我们需要将数据转换为更标准的格式。第一步非常简单：Python整数有一个`to_bytes`方法，将它们序列化为字节（就像我之前在本文中的XOR函数示例中使用的那样）。接下来该怎么处理这些字节就不那么明显了。
 - en: 'In the spirit of only using "pure" Python, I came up with a ridiculous hack:
     craft a compressed gzip stream that, when decompressed, converts the weird 4-bits-per-pixel
     buffer into a more standard 8-bits-per-pixel grayscale buffer, and surrounds it
@@ -527,13 +779,18 @@
     player. That code is [here](https://gist.github.com/DavidBuchanan314/acae2aab38953759aacc114b417ed0b9),
     and probably deserves an article of its own, but I''m not going to go into it
     today.'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 在只使用“纯”Python的精神下，我想出了一个荒谬的方法：创建一个压缩的gzip流，当解压缩时，将奇怪的每像素4位缓冲区转换为更标准的每像素8位灰度缓冲区，并将其包含在必要的帧数据中，以成为YUV4MPEG视频流。Python脚本的输出可以通过gzip解压缩器管道传输，随后是视频播放器。那段代码在[这里](https://gist.github.com/DavidBuchanan314/acae2aab38953759aacc114b417ed0b9)，可能值得一篇单独的文章，但我今天不打算深入探讨。
 - en: While this was a great hack, gzip is not an especially efficient [blitter](https://en.wikipedia.org/wiki/Blitter).
     I was able to get about 24fps at full-screen resolution on my 2021 macbook, but
     I really wanted at least 60fps, and that approach wasn't going to cut it.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然这是一个很棒的技巧，但 gzip 不是特别高效的[位块传输器](https://en.wikipedia.org/wiki/Blitter)。在我
+    2021 年的 MacBook 上，我可以在全屏分辨率下获得约 24fps，但我真的希望至少能达到 60fps，而这种方法是不行的。
 - en: The *ideal* approach would probably be to ship the 4bpp data off to the GPU
     as a texture, as-is, and write a [fragment shader](https://www.khronos.org/opengl/wiki/Fragment_Shader)
     capable of unpacking it onto the screen pixels. The only reason I didn't do this
@@ -541,14 +798,20 @@
     we might as well just implement the whole GoL algorithm on the GPU. It'd be way
     faster, but it wouldn't be within the spirit of the completely arbitrary constraints
     I'd set for myself.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '*理想*的方法可能是将 4bpp 数据作为纹理发送到 GPU，并编写一个能够将其解压到屏幕像素上的[片段着色器](https://www.khronos.org/opengl/wiki/Fragment_Shader)。我之所以没这样做，只是因为感觉很愚蠢。感觉很愚蠢是因为如果我们在做
+    GPU 编程，那么我们可能会直接在 GPU 上实现整个 GoL 算法。速度会快得多，但不符合我自己设定的完全任意的约束精神。'
 - en: My compromise here was to use SDL2, via the `pysdl2` bindings. Sure, it's not
     "pure Python," but it *is* very standard and widely available. It feels "right"
     because I can use it to its full extent without completely defeating the purpose
     (like running GoL entirely on the GPU would do).
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在这里的妥协是使用 SDL2，通过 `pysdl2` 绑定。当然，这不是“纯 Python”，但*确实*非常标准和广泛可用。这感觉“正确”，因为我可以充分利用它而不完全背离初衷（就像完全在
+    GPU 上运行 GoL 会做的那样）。
 - en: SDL2 supports a pixel format called `SDL_PIXELFORMAT_INDEX4LSB`, which is a
     4-bit palleted mode. If we set up an appropriate palette (specifying the colours
     for "dead" and "alive" cells, respectively), then we can pass our 4bpp buffer
@@ -557,71 +820,107 @@
     efficient, because the conversion still happens on the CPU, and the amount of
     data sent over to the GPU is much larger than necessary. Despite that, it's a
     whole lot faster than the gzip method, getting around 48fps.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: SDL2 支持一种称为 `SDL_PIXELFORMAT_INDEX4LSB` 的像素格式，这是一种 4 位调色板模式。如果我们设置一个适当的调色板（分别指定“死”和“活”细胞的颜色），那么我们可以将我们的
+    4bpp 缓冲区传递给 SDL，它会知道如何将其转换为发送到 GPU 的正确格式（在这种情况下，`SDL_PIXELFORMAT_ARGB8888`）。这个过程并不是非常高效，因为转换仍然在
+    CPU 上进行，并且发送到 GPU 的数据量远远超过必要。尽管如此，它比 gzip 方法要快得多，达到了约 48fps。
 - en: Parallelization
+  id: totrans-115
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 并行化
 - en: 'We still haven''t hit the 60fps target, and to get there I added some parallelization.
     I summarised my approach in a code comment:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们仍然没有达到 60fps 的目标，为了达到这个目标，我添加了一些并行化。我在代码注释中总结了我的方法：
 - en: '|'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE15]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '|'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE16]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '|'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: That's enough to smash past the 60fps target, reaching ~250fps at my full-screen
     resolution of 3024x1890, using 8 parallel Life processes. At 4K resolution (3840x2160),
     it can reach 180fps.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 这已经足以超过 60fps 的目标，使用 8 个并行的生命进程，在我的全屏分辨率 3024x1890 下，达到了约 250fps。在 4K 分辨率（3840x2160）下，可以达到
+    180fps。
 - en: There are plenty of remaining inefficiencies here that could be improved on,
     but 250fps is already *way* faster than I care about, so I'm not going to optimise
     any further. I think 60fps is the most visually interesting speed to watch at,
     anyway (which can be achieved by turning on vsync).
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里还有许多可以改进的地方，但 250fps 已经比我关心的要*快*得多了，所以我不会进一步优化。我认为 60fps 是最有趣的观看速度（可以通过打开垂直同步来实现）。
 - en: '**Edit:** After having some people test on non-Apple-silicon systems, many
     are struggling to hit 4K60fps. I haven''t done any profiling, but my guess is
     that the bottleneck is the CPU->GPU bandwidth, or maybe just memory bandwidth
     in general. I might revisit this in the future, perhaps implementing the buffer-unpacking
     fragment shader idea I mentioned.'
+  id: totrans-124
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**编辑：**在一些人在非苹果芯片系统上进行测试后，许多人很难达到 4K60fps。我没有做任何分析，但我猜测瓶颈可能是 CPU->GPU 带宽，或者可能只是内存带宽。也许将来我会重新审视这个问题，也许会实现我提到的缓冲区解包片段着色器的想法。'
 - en: Earlier, I said that upgrading from the naive implementation to SWAB gave "huge"
     performance wins, so just how huge are they? If I go back to the naive approach,
     I get an incredible 0.4fps at 4K resolution (and that's *with* 8x parallelism),
     representing a ~450x performance difference. If I get extra mean and force it
     to run on a single thread, it's a 3800x difference relative to the fully optimised
     version. Damn!
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 早些时候，我说从朴素实现升级到 SWAB 取得了“巨大”的性能提升，那么究竟有多大呢？如果我回到朴素的方法，我在 4K 分辨率下获得令人难以置信的 0.4fps（即使
+    *有* 8 倍并行），代表了大约 450 倍的性能差异。如果我更加刻薄，强制它在单个线程上运行，相对于完全优化的版本，差异是 3800 倍。该死！
 - en: As a reminder, both approaches are <math xmlns="http://www.w3.org/1998/Math/MathML"
     display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>,
     but the faster version gets to spend more time within efficient native code.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为提醒，这两种方法都是<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo
+    stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>，但更快的版本可以在高效的本地代码中花更多时间。
 - en: If I rewrote this whole thing in C using SIMD intrinsics (combined with SWAR
     or other tricks), I predict that I'd get somewhere between 10x and 100x further
     speedup, due to more efficient use of SIMD registers and memory accesses. A GPU
     implementation could be faster still. Those speedups would be nice to have, but
     I think it's interesting how far I was able to get just by optimising the Python
     version.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我用 SIMD 内置函数（与 SWAR 或其他技巧结合）在 C 中重写整个东西，我预计我会得到10倍到100倍的速度提升，因为更有效地使用了 SIMD
+    寄存器和内存访问。GPU 实现可能会更快。这些加速效果会很好，但我认为有意思的是，我只是通过优化 Python 版本就能取得这么大的进展。
 - en: The source code is available [here](https://github.com/DavidBuchanan314/pyswargol).
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 源代码可以在[这里](https://github.com/DavidBuchanan314/pyswargol)找到。

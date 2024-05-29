@@ -2,34 +2,41 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:28:53'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:28:53
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'SIEVE is simpler than LRU - SIEVE: an Efficient Turn-Key Eviction Algorithm
     for Web Caches'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SIEVE 比 LRU 更简单 - SIEVE：Web 缓存的高效即插即用淘汰算法
 - en: 来源：[https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/](https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/](https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/)
 - en: SIEVE is simpler than LRU
   id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SIEVE 比 LRU 更简单
 - en: 'Caching is a method of storing temporary data for quick access to keep the
     online world running smoothly. But with limited space comes a critical decision:
     what to keep and discard. This is where **eviction algorithms** come into play.
@@ -38,17 +45,21 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 缓存是一种存储临时数据以便快速访问以保持在线世界运行平稳的方法。但是有限的空间意味着需要做出关键决策：保留什么，丢弃什么。这就是**淘汰算法**发挥作用的地方。我们的团队最近设计了一种名为**SIEVE**的新的缓存淘汰算法：它非常有效且简单，只有一个队列。
 - en: '***Updates***: *The original writing style attracted considerable attention.
     We have updated the blog post for greater clarity and straightforwardness.* We
     also include an easy-to-reproduce result at [https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots](https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots).'
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '***更新***：*原有的写作风格引起了相当大的关注。我们已经更新了博客文章，使其更加清晰和直接。* 我们还在 [https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots](https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots)
+    中包含了一个易于重现的结果。'
 - en: The Importance of Simplicity
   id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简单性的重要性
 - en: It is important to keep cache eviction algorithms simple. Complex algorithms
     can bring headaches from time to time. For example, they can be tricky to debug
     and analyze when the miss ratio is high. Moreover, complexity means CPU cycles
@@ -56,6 +67,7 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 保持缓存淘汰算法简单是很重要的。复杂的算法有时会带来头痛。例如，当未命中率高时，它们可能很难调试和分析。此外，复杂性意味着需要 CPU 周期来做出决策。
 - en: On the flip side, simpler eviction methods usually do an excellent job of providing
     good predictability and throughput. For example, the Apache traffic server uses
     FIFO, [MemC3](https://www.usenix.org/conference/nsdi13/technical-sessions/presentation/fan)
@@ -65,21 +77,27 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，简单的淘汰方法通常非常出色，提供了良好的可预测性和吞吐量。例如，Apache traffic server 使用 FIFO，[MemC3](https://www.usenix.org/conference/nsdi13/technical-sessions/presentation/fan)
+    使用 CLOCK，[Segcache](https://www.usenix.org/conference/nsdi21/presentation/yang-juncheng)
+    使用 FIFO-Merge 淘汰算法。需要注意的是，尽管这些方法在吞吐量方面表现出色，但在缓存效率方面可能会做出一些妥协。
 - en: Meet SIEVE
   id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 认识 SIEVE
 - en: SIEVE is a cache eviction algorithm that decides what to keep in the cache and
     what to discard. It achieves both simplicity and efficiency.
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: SIEVE 是一个缓存淘汰算法，它决定在缓存中保留什么，丢弃什么。它既实现了简单性又实现了效率。
 - en: Design
   id: totrans-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设计
 - en: '**Data structure.** SIEVE requires only one queue and one pointer called "hand".
     **The queue maintains the insertion order between objects**. Each object in the
     queue uses one bit to track the visited/non-visited status. The hand points to
@@ -87,6 +105,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据结构。** SIEVE 只需要一个队列和一个称为“hand”的指针。 **队列在对象之间维护插入顺序**。队列中的每个对象使用一位来跟踪已访问/未访问的状态。手指指向缓存中的下一个淘汰候选对象，并从队列尾部移动到队列头部。'
 - en: '**SIEVE operations.** A cache hit changes the visited bit of the accessed object
     to 1\. SIEVE does not need to perform any operation for a popular object whose
     visited bit is already set. During a cache miss, SIEVE examines the object pointed
@@ -100,10 +119,14 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '**SIEVE 操作。** 缓存命中将访问对象的访问位更改为 1。对于已经设置了访问位的热门对象，SIEVE 不需要执行任何操作。在缓存未命中时，SIEVE
+    检查手指指向的对象。如果它已经被访问过，则将访问位重置，并且手指移动到下一个位置（保留的对象保留在队列的原始位置）。它会一直进行这个过程，直到遇到访问位为
+    0 的对象并将其淘汰。淘汰后，手指指向下一个位置（队列中的上一个对象）。虽然被淘汰的对象大部分时间都在队列的中间，但新对象总是插入到队列的头部。'
 - en: An illustration of SIEVE
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: SIEVE 的示意图
 - en: '**SIEVE vs. CLOCK** At first glance, SIEVE is similar to CLOCK/Second Chance/FIFO-Reinsertion
     - *Note that they are different implementations of the same eviction algorithm*.
     Each algorithm maintains a queue in which each object is associated with a visited
@@ -117,55 +140,68 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**SIEVE vs. CLOCK** 乍一看，SIEVE 与 CLOCK/Second Chance/FIFO-Reinsertion 相似 - *请注意，它们是相同淘汰算法的不同实现*。每个算法维护一个队列，其中每个对象都与一个访问位相关联，以跟踪其访问状态。访问过的对象在淘汰时被保留（也称为“幸存”）。值得注意的是，在
+    SIEVE 和 FIFO-Reinsertion 中，新对象都是插入到队列的头部。然而，SIEVE 中的指针会随着时间从尾部移动到头部，而 FIFO-Reinsertion
+    中的指针会一直停留在尾部。*关键区别在于保留对象的位置*。SIEVE 将其保留在原来的位置，而 FIFO-Reinsertion 将其插入到头部，与新插入的对象一起。'
 - en: SIEVE vs. FIFO-Reinsertion
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: SIEVE vs. FIFO-Reinsertion
 - en: See the [sieve cache implementation code](#sieve-cache-code) at the end of this
     blog post for a detailed example.
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 请参阅本博客文章末尾的 [sieve cache implementation code](#sieve-cache-code) 以获取详细示例。
 - en: Performance
   id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 性能
 - en: 'We evaluate SIEVE to answer the following questions:'
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们评估 SIEVE 来回答以下问题：
 - en: Does SIEVE have higher efficiency than state-of-the-art cache eviction algorithms?
   id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SIEVE 是否比最先进的缓存淘汰算法效率更高？
 - en: Is SIEVE simpler than other algorithms?
   id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SIEVE 是否比其他算法更简单？
 - en: Can SIEVE improve a cache's throughput and scalability?
   id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SIEVE 能否提高缓存的吞吐量和可伸缩性？
 - en: In this blog post, we only show part of our evaluation results. If you're interested
     in the full evaluation, please refer to [our paper](https://yazhuozhang.com/assets/pdf/nsdi24-sieve.pdf).
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本博客文章中，我们只展示了部分评估结果。如果您对完整的评估结果感兴趣，请参阅[我们的论文](https://yazhuozhang.com/assets/pdf/nsdi24-sieve.pdf)。
 - en: Efficiency
   id: totrans-27
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 效率
 - en: Our evaluation, involving over 1559 traces from diverse datasets containing
     247,017 million requests to 14,852 million objects, shows that SIEVE outperforms
     all state-of-the-art eviction algorithms on more than 45% of the traces.
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的评估涉及来自不同数据集的 1559 个跟踪，包含 2,470,017 亿次请求到 14,852 亿个对象，结果显示，SIEVE 在超过 45% 的跟踪上表现优于所有最先进的淘汰算法。
 - en: The following figure shows the miss ratio reduction (from FIFO) of different
     algorithms across traces. The whiskers on the boxplots are defined using p10 and
     p90, allowing us to disregard extreme data and concentrate on the typical cases.
