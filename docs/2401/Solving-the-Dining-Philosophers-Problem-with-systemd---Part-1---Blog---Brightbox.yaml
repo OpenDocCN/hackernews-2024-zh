@@ -2,37 +2,45 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:54:18'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日 14:54:18
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Solving the Dining Philosophers Problem with systemd - Part 1 - Blog - Brightbox
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 systemd 解决哲学家就餐问题 - 第1部分 - 博客 - Brightbox
 - en: 来源：[https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
 - en: Solving the Dining Philosophers Problem with systemd - Part 1
   id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 systemd 解决哲学家就餐问题 - 第1部分
 - en: by **Neil Wilson** • **10 Jan 2024**
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 由**Neil Wilson**发布 • **2024年1月10日**
 - en: Over the years, developers seem to have forgotten that Unix is a Programming
     Environment and not just something you must install to access your web server.
     Unix is a powerful multi-user system with numerous tools that have stood the test
@@ -41,6 +49,8 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 多年来，开发人员似乎已经忘记了 Unix 是一个编程环境，而不仅仅是你必须安装才能访问 Web 服务器的东西。Unix 是一个强大的多用户系统，拥有许多经受时间考验的工具，并且随着
+    systemd 的出现，我们有了一个可以轻松建模状态机的新工具。现在，我们可以仅仅使用 Unix 来解决新类别的问题。
 - en: In this blog post series, we’ll solve the classic [“Dining Philosophers”](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
     concurrency problem with some of the forgotten mechanisms and tools within the
     Unix Programming Environment, some advanced capabilities of systemd and a sprinkling
@@ -48,25 +58,30 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本博客系列中，我们将使用 Unix 编程环境中一些被遗忘的机制和工具、systemd 的一些高级功能以及一些 shell 脚本来解决经典的[“哲学家就餐问题”](https://zh.wikipedia.org/wiki/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98)并且全部操作不会出现死锁。
 - en: Let’s start by building a simple state machine that moves between the `Thinking`,
     `Hungry`, and `Eating` states using the user-level systemd facilities.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先构建一个简单的状态机，使用用户级别的 systemd 设施在`思考`、`饥饿`和`吃饭`的状态之间进行转换。
 - en: Create the server
   id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建服务器
 - en: In these examples, we’ll be using Ubuntu on Brightbox, but any modern distro
     running systemd running anywhere should work.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些示例中，我们将使用 Brightbox 上的 Ubuntu，但是任何运行 systemd 的现代发行版都应该可以工作。
 - en: 'Create a server and log in with the default `ubuntu` user:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建一个服务器并用默认的`ubuntu`用户登录：
 - en: '[PRE0]'
   id: totrans-14
   prefs: []
@@ -77,6 +92,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您登录时，systemd 会自动启动一个用户实例来管理用户级别的单元。您可以通过 systemctl 查看这一点：
 - en: '[PRE1]'
   id: totrans-16
   prefs: []
@@ -87,12 +103,14 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建状态
 - en: 'We can model the three states of the dining philosophers problem using systemd
     target units. We can make the targets mutually exclusive by stating that they
     conflict with each other:'
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用 systemd 目标单元来模拟哲学家就餐问题的三个状态。通过声明它们彼此冲突，我们可以使目标相互排斥：
 - en: '[PRE2]'
   id: totrans-19
   prefs: []
@@ -103,6 +121,7 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着任何时候只有一个目标可以保持活动状态。为了使一个目标转移到另一个目标，我们需要一个计时器单元。
 - en: '[PRE3]'
   id: totrans-21
   prefs: []
@@ -114,11 +133,13 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将计时器单元设为目标的一部分，以便它在目标停止时也停止。这个`RandomizedDelay`、`OnActive`和`Accuracy`的组合将转换时间从0到60秒分布。
 - en: We want to know what the philosopher is thinking about, which we can simulate
     by running a service to call a script.
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想知道哲学家在想些什么，我们可以通过运行一个调用脚本的服务来模拟。
 - en: '[PRE4]'
   id: totrans-24
   prefs: []
@@ -130,10 +151,12 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将脚本的输出记录到不同的 syslog 设施中，这样可以让我们稍后在日志中轻松找到它们。一个`Before`限制确保哲学家在处理饥饿之前记录他们的想法。
 - en: 'Create the contemplation script to output an appropriate thought:'
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建冥想脚本来输出适当的想法：
 - en: '[PRE5]'
   id: totrans-27
   prefs: []
@@ -143,6 +166,7 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们更新目标以引入这些新单元：
 - en: '[PRE6]'
   id: totrans-29
   prefs: []
@@ -152,16 +176,19 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 并重复这个过程来满足吃和饥饿的目标。
 - en: Running the state machine
   id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 运行状态机
 - en: 'To start the simulation, put the files in `$HOME/.config/systemd/user` and
     activate the `thinking` target:'
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始模拟，请将文件放在`$HOME/.config/systemd/user`并激活`thinking`目标：
 - en: '[PRE7]'
   id: totrans-33
   prefs: []
@@ -171,6 +198,7 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看日志以查看模拟进度：
 - en: '[PRE8]'
   id: totrans-35
   prefs: []
@@ -180,6 +208,7 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过仅查看来自我们的脚本的输出来过滤状态噪音：
 - en: '[PRE9]'
   id: totrans-37
   prefs: []
