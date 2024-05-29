@@ -1,69 +1,103 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:49:51'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:49:51
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Laurence Tratt: Faster Shell Startup With Shell Switching'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Laurence Tratt: Faster Shell Startup With Shell Switching'
 - en: 来源：[https://tratt.net/laurie/blog/2024/faster_shell_startup_with_shell_switching.html](https://tratt.net/laurie/blog/2024/faster_shell_startup_with_shell_switching.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tratt.net/laurie/blog/2024/faster_shell_startup_with_shell_switching.html](https://tratt.net/laurie/blog/2024/faster_shell_startup_with_shell_switching.html)
 - en: A few days ago Thorsten Ball wrote a post exhorting Unix users to [optimise
     their shell’s startup time](https://registerspill.thorstenball.com/p/how-fast-is-your-shell).
     It’s excellent advice and well worth following.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 几天前，Thorsten Ball 写了一篇文章，敦促 Unix 用户[优化他们的 shell 启动时间](https://registerspill.thorstenball.com/p/how-fast-is-your-shell)。这是一些建议值得遵循的。
 - en: 'The Unix shell has two major use cases: as an interactive prompt (what we often
     call “the command line”); and as a “scripting” or “non-interactive command” language.
     We normally pick one shell (bash, fish, zsh, etc.) and use it for both use cases.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Unix shell 有两个主要用例：作为一个交互提示（我们通常称之为“命令行”）；以及作为“脚本”或“非交互式命令”语言。我们通常选择一个 shell（bash、fish、zsh
+    等）并将其用于两种用例。
 - en: However, we can use different shells for each use case. People don’t normally
     bother doing so because there is little functional utility in doing so. There
     is, however, a small performance reason for doing so, which I’m going to look
     at in this post. I’m going to call the technique I describe in this post “shell
     switching” since I’m not aware that it has an existing name.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们可以针对每种用例使用不同的 shell。人们通常不会这样做，因为这样做没有多少功能性的效用。然而，有一个小小的性能原因需要这样做，我将在这篇文章中进行讨论。我将描述本文中描述的技术为“shell
+    切换”，因为我不知道它是否已经有一个现有的名称。
 - en: Minimum Shell Overhead
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 最小 Shell 开销
 - en: 'Let’s start by looking at the absolute minimum cost of starting and stopping
     a non-interactive Unix shell when there’s no user configuration . If I create
     a fresh user account with no configuration (other than an empty `~/.zshrc` to
     stop zsh asking me to do setup) bash, fish, and zsh take the following times to
     run on my OpenBSD laptop:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看一下在没有用户配置时启动和停止非交互式 Unix shell 的绝对最低成本。如果我创建一个没有配置的全新用户帐户（除了一个空的 `~/.zshrc`
+    以阻止 zsh 要求我进行设置），bash、fish 和 zsh 在我的 OpenBSD 笔记本上运行需要以下时间：
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Benchmarking numbers from laptops are bad enough, but I’m also using a weird
     operating system — those numbers are clearly untrustworthy. Here’s what happens
     if I run the same benchmarks on a fresh user account on a Debian server:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 笔记本电脑上的基准数据已经够糟糕了，但我也在使用一个奇怪的操作系统——这些数据显然是不可信的。如果我在 Debian 服务器上的一个全新用户帐户上运行相同的基准测试，情况会怎样：
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The numbers between the two machines tell a fairly consistent story: bash and
     zsh are fairly fast, but fish is several times slower. This seems bad for me,
     because I use fish on my local machines, but should I really worry about a mere
     3-15ms minimum overhead? Thorsten argues that I should care for interactive prompts,
     but personally I care just as much about “non-interactive command” execution.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 两台机器之间的数字讲述了一个相当一致的故事：bash 和 zsh 非常快，但 fish 慢几倍。这对我来说似乎很糟糕，因为我在我的本地机器上使用 fish，但我真的应该担心仅有的
+    3-15ms 的最小开销吗？Thorsten 认为我应该关心交互式提示，但就我个人而言，我对“非交互式命令”执行同样关心。
 - en: I run lots of programs which themselves run lots of commands. This can range
     from me running external commands in my editor to running commands on a remote
     machine (with `ssh example.com "cmd arg1 ... argn"`). Although we often overlook
@@ -71,8 +105,12 @@
     `shell -c cmd "arg1 ... argn"` — in other words these commands are one-line shell
     scripts. The overhead of the shell is a cost I am forced to bear each time I run
     such a command.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我运行许多程序，它们本身运行许多命令。这可以从我在我的编辑器中运行外部命令到在远程机器上运行命令（使用 `ssh example.com "cmd arg1
+    ... argn"`）的范围。尽管我们经常忽视这一点，但我们指定的命令通常传递给一个 shell 以 `shell -c cmd "arg1 ... argn"`
+    的方式运行它们，换句话说，这些命令是一行 shell 脚本。shell 的开销是我每次运行这样的命令时被迫承担的成本。
 - en: 'An obvious question is: which shell is used to run sub-commands? Surprisingly,
     there is no simple answer to this, and different programs use different shells
     to run sub-commands. Some use the contents of the `$SHELL` environment variable;
@@ -81,34 +119,51 @@
     the shell in the user database are the same, often a “big” shell like bash, fish,
     or zsh. In many of the cases I care about, my non-interactive commands are run
     with one of these big shells, so the overhead of them is something I care about.'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个明显的问题是：用于运行子命令的 shell 是哪个？令人惊讶的是，这并没有一个简单的答案，不同的程序使用不同的 shell 来运行子命令。有些使用
+    `$SHELL` 环境变量的内容；有些使用用户数据库中设置的 shell（即 `/etc/passwd` 和其它文件）；有些使用硬编码的 shell（例如
+    `/bin/sh`）。在大多数情况下，`$SHELL` 和用户数据库中的 shell 是相同的，通常是一个“大” shell，如 bash、fish 或 zsh。在我关心的许多情况下，我的非交互式命令是使用这些大
+    shell 之一运行的，因此它们的开销是我关心的。
 - en: 'In practice, the overhead I experience when running non-interactive commands
     is much higher than the bare minimum would suggest. As luck would have it, I have
     fairly comparable fish and zsh configurations (I migrated from the latter to the
     former a year or two back). Executing a command as my normal user account shows
     what the overhead of the shell plus my configuration is:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，当我运行非交互式命令时，我经历的开销远远高于最低限度所示的。幸运的是，我的 fish 和 zsh 配置相当可比（一两年前我从后者迁移到前者）。以我的普通用户帐户执行命令可以显示出
+    shell 加上我的配置的开销：
 - en: '[PRE2]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Not only are those times 10-20x more than the minimum but they’re slow enough
     to be visible to me slow, aged human eyes! And it gets worse, depending on the
     machine. One of the servers I use frequently is fairly slow (in CPU and IO): if
     the relevant files aren’t in cache, fish and zsh with my configuration add 300ms
     (a third of a second!) overhead.'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 不仅这些时间比最低限度高 10-20 倍，而且它们足够慢，以至于慢慢地对我这个老年人的眼睛可见！而且，这还会因机器而异。我经常使用的服务器之一相当慢（在
+    CPU 和 IO 方面）：如果相关文件不在缓存中，fish 和 zsh 加上我的配置会增加 300 毫秒（三分之一秒！）的开销。
 - en: Reducing Shell Overhead
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 减少 Shell 开销
 - en: Last year I got particularly frustrated when I was executing huge numbers of
     commands, locally and remotely. My normal user shell (depending on the machine,
     fish or zsh) was adding noticeable overhead.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 去年，当我本地和远程执行大量命令时，我特别沮丧。我的普通用户 shell（根据机器不同，可能是 fish 或 zsh）增加了可观的开销。
 - en: The first thing I did was to change some of my configuration so that it was
     skipped in non-interactive (i.e. “scripting”) mode. That helped a bit, but it’s
     harder than it looks. For example, with zsh I always get confused by when, and
@@ -116,193 +171,292 @@
     files are loaded. fish has a different model of which files are executed when,
     overloading my poor brain. Whatever shells I might use in the future will probably
     do something different again.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我所做的第一件事是更改一些配置，以便在非交互式（即“脚本”）模式下跳过它。这有点帮助，但比看起来更难。例如，对于 zsh，我总是被加载 `~/.zlogin`、`~/.zprofile`、`~/.zshenv`
+    和 `~/.zshrc` 配置文件的时间以及顺序搞混。fish 有一个不同的文件执行模型，让我这可怜的大脑不堪重负。不管我将来可能使用的是什么 shell，它们可能会再次做出不同的改变。
 - en: I then had a different idea. I want a fully featured shell like fish or zsh
     for interactive prompts, but I don’t care what’s used for non-interactive commands.
     Indeed, at a basic level, most Unix shells implement [the same base language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html).
     Even fish, which is explicitly not compatible with this standard, is in practice
     mostly compatible.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我有了不同的想法。我想要一个像 fish 或 zsh 这样功能齐全的 shell 用于交互提示，但我不在乎非交互式命令使用什么。事实上，在基本水平上，大多数
+    Unix shell 都实现了[相同的基础语言](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)。即使
+    fish 明确不与此标准兼容，实际上它大部分是兼容的。
 - en: 'Most modern Unices come with a small shell installed in `/bin/sh` — for example,
     ksh in OpenBSD or dash in Debian. Here’s our fresh user account running `/bin/sh`
     on my OpenBSD laptop:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数现代 Unix 系统都安装了一个小型 shell，位于 `/bin/sh` —— 例如，在 OpenBSD 中是 ksh，在 Debian 中是
+    dash。这是我们在我的 OpenBSD 笔记本电脑上运行 `/bin/sh` 的新用户帐户：
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'That’s faster than any of the “big” shells, even if only by a couple of milliseconds.
     The performance story is similar on the Linux server:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使只有几毫秒，但这比任何“大” shell 都要快。在 Linux 服务器上的性能情况类似：
 - en: '[PRE4]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Both ksh and dash are too bare-bones for me to want to use them as an interactive
     shell, so I don’t want to switch to them wholesale. Instead, what I want to do
     is use `/bin/sh` for non-interactive commands and fish (or another “big” shell)
     for interactive prompts.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: ksh和dash都太简陋了，我不想将它们作为交互式Shell使用，所以我不想彻底切换到它们。相反，我想在非交互式命令中使用`/bin/sh`，在交互提示符中使用fish（或另一个“大型”Shell）。
 - en: Shell Switching
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Shell切换
 - en: It turns out to be straightforward to use one shell for non-interactive commands
     and another for interactive prompts.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果证明，使用一个Shell来运行非交互式命令，另一个Shell来运行交互提示符非常简单。
 - en: First, I set my user shell to `/bin/sh` (with `chsh -c /bin/sh`). However, when
     I login at a terminal I’m now using ksh or dash, when I want to use fish or zsh.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我将用户Shell设置为`/bin/sh`（使用`chsh -c /bin/sh`）。然而，当我在终端登录时，我现在使用的是ksh或dash，而我想使用fish或zsh。
 - en: '`/bin/sh` always starts by loading and executing the shell script in `~/.profile`.
     In that file we need to work out if we’re running a non-interactive command or
     an interactive prompt. This stymied me for a while, but it turns out to be fairly
     easy. Shells set an environment variable `$-` which will contain the letter “i”
     if the shell is an interactive prompt.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '`/bin/sh`总是从`~/.profile`加载并执行shell脚本。在该文件中，我们需要确定我们是在运行非交互式命令还是交互式提示符。这让我困惑了一段时间，但事实证明这相当容易。Shell设置了一个环境变量`$-`，如果Shell是交互式提示符，则其中将包含字母“i”。'
 - en: 'With this knowledge, the minimum version of shell switching is to put the following
     in `~/.profile`:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个知识，最简单的Shell切换版本是将以下内容放入`~/.profile`中：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If I’m starting an interactive prompt, this `exec`s fish (i.e. overwrites the
     `/bin/sh` process with `fish`), otherwise it sticks with `/bin/sh`. Interestingly,
     because `login` sets `$SHELL`, and fish doesn’t change that value, my fish shell
     reports `/bin/sh` as the value for `$SHELL`. Thus, whether a program uses `$SHELL`
     or the shell set in the user database to run a sub-command they always get a value
     of `/bin/sh`, which is what I want!
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我启动一个交互提示符，这个`exec`执行fish（即用`fish`覆盖`/bin/sh`进程），否则它会保持`/bin/sh`。有趣的是，因为`login`设置了`$SHELL`，而fish没有更改该值，所以我的fish
+    shell报告`$SHELL`的值为`/bin/sh`。因此，无论一个程序使用`$SHELL`还是用户数据库中设置的shell来运行子命令，它们总是得到`/bin/sh`的值，这正是我想要的！
 - en: 'Happily my small `.profile` is so quick to execute that it has no meaningful
     impact on our benchmark:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的小`.profile`文件执行起来非常快，对我们的基准测试没有实质性影响：
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'I can even see how long it takes shell switching to execute fish for an interactive
     prompt:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我甚至可以看到Shell切换执行fish的交互提示符需要多长时间：
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: If I run this benchmark with fish directly, the resulting benchmark numbers
     are statistically indistinguishable. Shell switching is fast!
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我直接用fish运行这个基准测试，得到的基准数值在统计上是无法区分的。Shell切换很快！
 - en: 'One question is: do we *need* some configuration even in `~/.profile`? Personally
     I don’t. If you do, the good news is that most of the time spent in shell startup
     tends to be spent on executing things humans want in interactive prompts. Adding
     a line or two to `~/.profile` which, say, adds directories to `$PATH` seems unlikely
     to add much overhead.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个问题是：我们在`~/.profile`中是否*需要*一些配置？我个人不需要。如果你需要，好消息是大多数时间都花在shell启动上，通常用于执行人类在交互提示符中想要的东西。在`~/.profile`中添加一两行代码，例如将目录添加到`$PATH`中，似乎不太可能增加太多开销。
 - en: Protecting Against Failing Shell Execution
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 防止Shell执行失败
 - en: 'A handful of times over the years I’ve found myself using a system where the
     shell binary doesn’t work: either it doesn’t exist; or it fails to execute. In
     both cases, this tends to happen during a system update and the end result is
     that I can’t login.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些年来，有几次我发现自己在使用一个shell二进制文件不起作用的系统上：要么它不存在；要么它无法执行。在这两种情况下，这通常发生在系统更新期间，最终结果是我无法登录。
 - en: 'It’s possible to minimally extend “shell switching” so that `~/.profile` catches
     the obvious cases of this, meaning that `/bin/sh` ends up being my fall-back interactive
     prompt if my “big” shell doesn’t work:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 最小程度地扩展“Shell切换”以便`~/.profile`捕获这些明显情况是可能的，这意味着如果我的“大型”Shell不起作用，`/bin/sh`最终会成为我的备用交互提示符：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You may notice a degree of paranoia here. First this does a fast check that
     a binary called “fish” exists (`command -v fish` returns non-zero if it doesn’t).
     Second it tries actually running fish to see if the binary at least minimally
     runs without exiting (using the `--version` flag as a proxy for this). Only if
     that succeeds does it `exec fish`.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会注意到这里有一定程度的偏执。首先，它会快速检查一个名为“fish”的二进制文件是否存在（如果不存在，则`command -v fish`返回非零）。其次，它尝试实际运行
+    fish 看看二进制文件是否至少能够最小化地运行而不退出（使用`--version`标志作为代理）。只有在成功运行后，它才会`exec fish`。
 - en: Summary
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: 'If you care about the speed of non-interactive command execution then shell
     switching is a simple technique for optimising this without effecting the configuration
     of your interactive prompt. It involves:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你关心非交互式命令执行的速度，那么 shell 切换是一种简单的优化技术，可以在不影响交互提示配置的情况下进行优化。它涉及：
 - en: setting your shell to `/bin/sh`.
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置你的 shell 为`/bin/sh`。
 - en: putting code into `~/.profile` which `exec`s a different shell when an interactive
     prompt is detected.
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将代码放入`~/.profile`中，当检测到交互式提示时，`exec`另一个 shell。
 - en: I’ve been running with this setup for nearly 12 months, and it’s caused me no
     problems, but has given me a useful speed boost!
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经使用这个设置运行了将近12个月，它没有给我造成任何问题，但却给了我一个有用的速度提升！
 - en: '*Update (2024-01-16)* The original code I gave for `~/.profile` contained `[[...]]`
     which isn’t POSIX compatible, and causes dash (and potentially other strict shells)
     to error. I’ve replaced it with `case ... esac` which is POSIX compatible. I reran
     the two benchmarks affected, though neither changed in statistically significant
     ways.'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更新（2024-01-16）* 我在`~/.profile`中提供的原始代码包含`[[...]]`，这不符合 POSIX 规范，并导致 dash（以及可能是其他严格的
+    shell）出错。我已将其替换为 POSIX 兼容的`case ... esac`。我重新运行了受影响的两个基准测试，但两者都没有在统计上显著变化。'
 - en: '*Update (2024-01-18)* Fixed typo: `login` sets `$SHELL`, not `/bin/sh`.'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更新（2024-01-18）* 修正拼写错误：`login`设置`$SHELL`，而不是`/bin/sh`。'
 - en: '[Newer](/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更新的](/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html)'
 - en: 2024-01-16 14:50
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024-01-16 14:50
 - en: '[Older](/laurie/blog/2024/choosing_what_to_read.html)'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更旧的](/laurie/blog/2024/choosing_what_to_read.html)'
 - en: 'If you’d like updates on new blog posts: follow me on'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想获取新博客文章的更新：关注我
 - en: '[Mastodon](https://mastodon.social/@ltratt)'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '[长毛象](https://mastodon.social/@ltratt)'
 - en: or
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 或
 - en: '[Twitter](https://twitter.com/laurencetratt)'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Twitter](https://twitter.com/laurencetratt)'
 - en: ; or
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: ；或
 - en: '[subscribe to the RSS feed](../blog.rss)'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅 RSS feed](../blog.rss)'
 - en: ; or
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: ；或
 - en: '[subscribe to email updates](/laurie/newsletter/)'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅电子邮件更新](/laurie/newsletter/)'
 - en: ':'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: ：
 - en: Footnotes
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 脚注
 - en: Comments
+  id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 评论

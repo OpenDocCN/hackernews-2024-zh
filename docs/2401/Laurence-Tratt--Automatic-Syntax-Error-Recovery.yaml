@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:39:17'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日 14:39:17
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Laurence Tratt: Automatic Syntax Error Recovery'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Laurence Tratt: 自动语法错误恢复'
 - en: 来源：[https://tratt.net/laurie/blog/2020/automatic_syntax_error_recovery.html](https://tratt.net/laurie/blog/2020/automatic_syntax_error_recovery.html)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tratt.net/laurie/blog/2020/automatic_syntax_error_recovery.html](https://tratt.net/laurie/blog/2020/automatic_syntax_error_recovery.html)
 - en: 'Programming is the best antidote to arrogance I’ve come across — I make so
     many errors that I am continually reminded of my own fallibility. Broadly speaking,
     I think of errors as severe or minor. Severe errors are where I have fundamentally
@@ -36,6 +42,7 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 编程是我碰到的傲慢的最好解药 — 我犯了这么多错误，以至于我不断地被提醒到我的自身缺陷。广义地说，我认为错误分为严重和轻微。严重的错误是我对我正在创建的系统的某些事物有根本性的误解。每个严重的错误都是一个定制问题，通常需要定制工具来理解和修复它。相比之下，轻微的错误是重复性的，很快就可以修复。但是，它们也比严重的错误*要*多得多：即使是缩短程序员修复一类轻微错误所需的时间几秒钟，考虑到它们经常发生，也是值得的。
 - en: 'The most minor of minor errors, and also I suspect the most frequent, are syntax
     errors. They occur for three main reasons: mental sloppiness; inaccurate typing
     ; or an incomplete understanding of the language’s syntax. The latter case is
@@ -49,6 +56,7 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 最微小的错误之一，我怀疑也是最频繁的，就是语法错误。它们出现的主要原因有三个：粗心大意；打字不准确；或者对语言语法的理解不完整。后一种情况通常是我们经历的一个简短学习阶段的一部分，我不确定对于它会有什么好的解决方案。然而，前两种情况非常普遍。当我犯了一个小错别字时，我希望编译器或IDE中的解析器能准确地指出语法错误的位置，然后从中恢复，并像我没有犯错误一样继续。由于编译通常远非瞬间完成，而且我经常犯多个错误（不仅仅是语法错误），良好质量的语法错误恢复提高了我的编程效率。
 - en: 'Unfortunately, LR parsers – [of which I am particularly fond](/laurie/blog/entries/which_parsing_approach.html)
     – have a poor reputation for syntax error recovery. I’m going to show in this
     article that this isn’t inevitable, and that it’s possible to do surprisingly
@@ -60,32 +68,40 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，LR解析器 – [我特别喜欢的](/laurie/blog/entries/which_parsing_approach.html) – 在语法错误恢复方面声誉不佳。我将在本文中展示，这并不是不可避免的，而且对于任何LR语法来说，都可以做出出乎意料的好的自动语法错误恢复。如果你想了解更多细节，你可能会对我和[Lukas
+    Diekmann](https://diekmann.co.uk/) 最近发表的论文《别慌！更好，更少，LR解析器的语法错误》感兴趣。该论文还有一个相当简短的附带演讲，如果你觉得这样的东西有帮助的话：
 - en: '[https://www.youtube.com/embed/PGRnk-bzTdU](https://www.youtube.com/embed/PGRnk-bzTdU)'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://www.youtube.com/embed/PGRnk-bzTdU](https://www.youtube.com/embed/PGRnk-bzTdU)'
 - en: VIDEO
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 视频
 - en: For everyone else, let’s continue. To make our lives easier, for the rest of
     this article I’m going to shorten “syntax error recovery” to “error recovery”.
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于其他人，让我们继续。为了让我们的生活更轻松，在本文的剩余部分中，我将“语法错误恢复”缩写为“错误恢复”。
 - en: Outlining the problem
   id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述问题
 - en: 'Let’s see error recovery in action in a widely used compiler — `javac`:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在一个广泛使用的编译器中看看错误恢复的效果 — `javac`：
 - en: '[Click to start/stop animation]'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点击开始/停止动画]'
 - en: 'As a quick reminder, ‘`int x y;`’ isn’t valid Java syntax. `javac` correctly
     detects a syntax error after the ‘`x`’ token and then tries to recover from that
     error. Since ‘`int x;`’ *is* valid Java, `javac` assumes that I meant to put a
@@ -97,6 +113,8 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一个快速提醒，'`int x y;`'不是有效的Java语法。`javac`在‘`x`’标记之后正确检测到语法错误，然后尝试从该错误中恢复。由于'`int
+    x;`'是有效的Java语法，`javac`假定我是想在'`x`'之后放一个分号，*修复*我的输入，并继续解析。这是错误恢复的好处：我的愚蠢的语法错误没有阻止编译器继续它的工作。然而，错误恢复的坏处立即显现出来：'`y;`'不是有效的Java语法，因此`javac`立即输出第二个虚假的语法错误，这并不是我的错。
 - en: Of course, I have deliberately picked an example where `javac` does a poor job
     but I regret to inform you that it didn’t take me very long to find it. Many parsers
     do such a poor job of error recovery that experienced programmers often scroll
@@ -107,33 +125,40 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我故意挑选了一个`javac`表现不佳的例子，但我遗憾地告诉你，我没花多少时间就找到了它。许多解析器在错误恢复方面做得很差，以至于经验丰富的程序员经常会滚动到第一个语法错误的位置，忽略修复和任何后续的语法错误。错误恢复不仅没有帮助，而且很容易产生相反的效果，使我们在一大堆虚假错误中寻找真正的错误时变慢下来。
 - en: 'Let’s look at the modern compiler that I most often use as an exemplar of good
     error messages, `rustc`. It often does a good job in the face of syntax errors:'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看我最常用的现代编译器，也是一个良好错误消息的典范，`rustc`。它在面对语法错误时通常做得很好：
 - en: '[Click to start/stop animation]'
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点击开始/停止动画]'
 - en: 'However, even `rustc` can be tripped up when presented with simple syntax errors:'
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，即使是`rustc`在面对简单的语法错误时也可能会出错：
 - en: '[Click to start/stop animation]'
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点击开始/停止动画]'
 - en: 'Some language implementations don’t even bother trying to recover from syntax
     errors. For example, even if I make two easily fixable syntax errors in a file,
     CPython stops as soon as it encounters the first:'
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些语言实现甚至不费力地尝试从语法错误中恢复。例如，即使我在一个文件中制造了两个容易修复的语法错误，CPython一旦遇到第一个错误就会停止：
 - en: '[Click to start/stop animation]'
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点击开始/停止动画]'
 - en: As all this might suggest, error recovery is hard to do well, and it’s unlikely
     that it will ever fully match human intuition about how syntax errors should be
     fixed. The root of the problem is that when we hit an error while parsing, there
@@ -143,6 +168,7 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如这一切可能暗示的那样，良好的错误恢复很难做到，并且很难完全符合人类关于如何修复语法错误的直觉。问题的根源在于，当我们在解析时遇到错误时，一般来说有无限多种方式可以尝试恢复解析。由于探索无限需要一段时间，错误恢复必须使用某种启发式规则。
 - en: The more knowledge a parser has of the language it is parsing, the more refined
     that heuristic can be. Hand-written parsers have a fundamental advantage here,
     because one can add as much knowledge about the language’s semantics as one wants
@@ -154,6 +180,7 @@
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析器对其解析语言的了解程度越深，其启发式规则就越精细。手写解析器在这方面有着根本的优势，因为你可以向解析器添加关于语言语义的任意多知识。然而，以这种方式扩展手写解析器并不是一件小事，特别是对于语法庞大的语言而言。很难得到准确的数据，但我见过不止一个解析器耗费了少数人年的努力，其中大部分用于错误恢复。我们中没有多少人有那么多时间来解决这个问题。
 - en: 'Automatically generated parsers, in contrast, are at a clear disadvantage:
     their only knowledge of the language is that expressed via its grammar. Despite
     that, automatically generated LL parsers are often able to do a tolerable job
@@ -161,6 +188,7 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 相比之下，自动生成的解析器处于明显的劣势：它们对语言的唯一了解就是通过其语法表达的。尽管如此，自动生成的LL解析器通常能够做到对错误的容忍性工作得还不错。
 - en: 'Unfortunately, LR parsers have a not undeserved reputation for doing a poor
     job of error recovery. Yacc, for example, requires users to sprinkle `error` tokens
     throughout their grammar in order to have error recovery in the resulting parser:
