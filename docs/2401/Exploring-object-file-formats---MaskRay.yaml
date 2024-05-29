@@ -290,27 +290,33 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个重大转变被 System V Release 4 所采纳，标志着目标文件格式设计的新时代。在1990年代，许多 Unix 和类 Unix 操作系统，包括
+    Solaris、IRIX、HP-UX、Linux 和 FreeBSD，都转向了 ELF。
 - en: Symbols
   id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 符号
 - en: The minimum of a symbol control structure needs to encode the name, section,
     and value. We can require that every symbol is defined in relation to some section.
     We can use a section index of zero to represent an undefined symbol.
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 符号控制结构的最小值需要编码名称、节和值。我们可以要求每个符号都是相对于某个节定义的。我们可以使用节索引为零来表示未定义的符号。
 - en: In a minimum object file format with only few hard-coded sections (a.out), the
     section field can be omitted. A type field can be used to decide whether the symbol
     can reference a function or a data object.
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在仅有少量硬编码节的最小对象文件格式中（a.out），节字段可以省略。可以使用类型字段来决定符号是否可以引用函数或数据对象。
 - en: '|'
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE0]'
   id: totrans-47
   prefs: []
@@ -320,6 +326,7 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE1]'
   id: totrans-49
   prefs: []
@@ -329,11 +336,13 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The symbol name is represented as a 32-bit index into the string table. A 32-bit
     integer suffices, while a 16-bit integer would be too small.
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 符号名称表示为指向字符串表的 32 位索引。32 位整数足够了，而 16 位整数则太小了。
 - en: '`st_shndx` uses a size-saving trick. The 16-bit member encodes a section index.
     If the member is `SHN_XINDEX` (0xffff), then the actual value is contained in
     the associated section of type `SHT_SYMTAB_SHNDX`. This is a very nice trick because
@@ -342,6 +351,9 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '`st_shndx` 使用了一种节省空间的技巧。16 位成员编码一个节索引。如果成员是 `SHN_XINDEX`（0xffff），那么实际值包含在类型为
+    `SHT_SYMTAB_SHNDX` 的相关节中。这是一个非常好的技巧，因为节的数量几乎总是小于 0xff00。在病态情况下，可能会有更多的节，需要一个类型为
+    `SHT_SYMTAB_SHNDX` 的节。'
 - en: '`st_info` specifies the symbol''s type (4 bits) and binding (4 bits) attributes.
     Types are allocated very conservatively and usually imply different linker behaviors.
     The inherently different linker behaviors for symbol types are not that many.
@@ -353,6 +365,9 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '`st_info` 指定了符号的类型（4 位）和绑定（4 位）属性。类型分配非常保守，通常意味着不同的链接器行为。对于符号类型的本质上不同的链接器行为并不那么多。所以
+    4 位看起来很小，但在实践中已经足够了。正如我们将要了解的那样，这明显比 COFF 的类型和存储类表示要小得多。符号的绑定是用于区分局部/弱/全局的。保留的
+    4 位可以容纳更多的值，但只有 GNU 保留了一个值 (`STB_GNU_UNIQUE`)（在我看来是一个错误的特性）。'
 - en: In COFF, function symbols can use an auxiliary symbol record to encode the size
     of function (`x_fsize`; `TotalSize` in PE). In ELF, `st_size` is a fixed member,
     used for copy relocations and symbolizers. If we eliminate copy relocations and
@@ -360,14 +375,18 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 COFF 中，函数符号可以使用辅助符号记录来编码函数的大小 (`x_fsize`；在 PE 中为 `TotalSize`)。在 ELF 中，`st_size`
+    是一个固定成员，用于复制重定位和符号化。如果我们消除复制重定位并且不需要符号化启发式方法，这个字段将变成垃圾。
 - en: Here is a demonstration if we remove `st_size`.
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们去掉 `st_size`，这里是一个演示。
 - en: '|'
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE2]'
   id: totrans-57
   prefs: []
@@ -377,6 +396,7 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE3]'
   id: totrans-59
   prefs: []
@@ -386,15 +406,18 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Symbols (a.out)
   id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 符号（a.out）
 - en: '|'
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE4]'
   id: totrans-63
   prefs: []
@@ -404,6 +427,7 @@
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE5]'
   id: totrans-65
   prefs: []
@@ -413,6 +437,7 @@
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: a.out uses a `nlist` to represent a symbol table entry. In the original format
     for PDP-11, the assembler generates symbols of at most 7 bytes. `n_name[8]` can
     hold the name with a NUL end. Unix's appreciation of shorter identifier names
@@ -420,6 +445,8 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: a.out 使用 `nlist` 来表示符号表条目。在 PDP-11 的原始格式中，汇编器生成的符号最多为 7 字节。`n_name[8]` 可以保存带有
+    NUL 结尾的名称。Unix 对更短的标识符名称的欣赏与此相关:)
 - en: To support longer names, extensions add a string table after the symbol table,
     and allow `n_name` to be interpreted as an index (`n_strx`) into the string table.
     This member then becomes a size-saving trick by inlining a short name (8 bytes
@@ -428,6 +455,8 @@
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了支持更长的名称，扩展在符号表之后添加了一个字符串表，并允许将 `n_name` 解释为一个索引 (`n_strx`) 到字符串表中。然后，这个成员通过将短名称（8
+    字节或更少）内联到结构中来节省空间。一些变体，如 binutils 的 64 位 a.out 格式，专门使用索引并移除了 `n_name`。
 - en: '`n_type`, broken down into three sub-fields, describes whether a symbol is
     defined or undefined, external or local, and the symbol type. The values listed
     on the FreeBSD manpage are also used on PDP-11.'
