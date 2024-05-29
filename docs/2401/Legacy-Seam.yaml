@@ -1,43 +1,63 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:33:31'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:33:31
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Legacy Seam
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**传统接缝**'
 - en: 来源：[https://martinfowler.com/bliki/LegacySeam.html](https://martinfowler.com/bliki/LegacySeam.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://martinfowler.com/bliki/LegacySeam.html](https://martinfowler.com/bliki/LegacySeam.html)
 - en: 'When working with a legacy system it is valuable to identify and create seams:
     places where we can alter the behavior of the system without editing source code.
     Once we''ve found a seam, we can use it to break dependencies to simplify testing,
     insert probes to gain observability, and redirect program flow to new modules
     as part of legacy displacement.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在与传统系统合作时，识别并创建接缝是有价值的：可以在不编辑源代码的情况下更改系统行为的地方。一旦找到接缝，我们就可以使用它来打破依赖关系，以简化测试，插入探针以增加可观察性，并将程序流重定向到新模块，作为传统置换的一部分。
 - en: 'Michael Feathers coined the term “seam” in the context of legacy systems in
     his book [Working Effectively with Legacy Code](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20).
     His definition: **“a seam is a place where you can alter behavior in your program
     without editing in that place”**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 迈克尔·菲瑟斯在他的书[《与传统代码高效工作》](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20)中首次提出了“接缝”这个术语。他的定义是：**“接缝是在程序中可以更改行为而不必编辑该位置的地方”**。
 - en: Here's an example of where a seam would be handy. Imagine some code to calculate
     the price of an order.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一个接缝会很方便的示例。想象一下一些用于计算订单价格的代码。
 - en: '[PRE0]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The function `calculateShipping` hits an external service, which is slow (and
     expensive), so we don't want to hit it when testing. Instead we want to introduce
     a [stub](/bliki/TestDouble.html), so we can provide a canned and deterministic
@@ -45,73 +65,110 @@
     responses from the function, but we can't edit the code of `calculatePrice` inside
     the test. Thus we need to introduce a seam around the call to `calculateShipping`,
     something that will allow our test to redirect the call to the stub.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数`calculateShipping`会命中一个外部服务，这个服务很慢（而且昂贵），所以我们不希望在测试时调用它。相反，我们想引入一个[存根](/bliki/TestDouble.html)，这样我们就可以为每个测试场景提供一个预先定义的确定性响应。不同的测试可能需要函数的不同响应，但我们不能在测试内部编辑`calculatePrice`的代码。因此，我们需要在对`calculateShipping`的调用周围引入一个接缝，使我们的测试能够将调用重定向到存根。
 - en: One way to do this is to pass the function for `calculateShipping` as a parameter
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一种方法是将`calculateShipping`函数作为参数传递
 - en: '[PRE1]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: A unit test for this function can then substitute a simple stub.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 对该函数的一个单元测试可以替代一个简单的存根。
 - en: '[PRE2]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Each seam comes with an **enabling point**: “a place where you can make the
     decision to use one behavior or another” [[WELC]](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20).
     Passing the function as parameter opens up an enabling point in the caller of
     `calculateShipping`.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个接缝都有一个**启用点**：“可以在该点决定使用哪种行为或另一种行为的地方”[[WELC]](https://www.amazon.com/gp/product/0131177052/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0131177052&linkCode=as2&tag=martinfowlerc-20)。将函数作为参数传递在`calculateShipping`的调用者中开辟了一个启用点。
 - en: This now makes testing a lot easier, we can put in different values of shipping
     costs, and check that `applyShippingDiscounts` responds correctly. Although we
     had to change the original source code to introduce the seam, any further changes
     to that function don't require us to alter that code, the changes all occur in
     the enabling point, which lies in the test code.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在测试变得更加容易了，我们可以输入不同的运费值，并检查`applyShippingDiscounts`是否能正确响应。尽管我们必须更改原始源代码以引入接缝，但对该函数的任何进一步更改都不需要我们修改该代码，所有更改都发生在启用点，即测试代码中。
 - en: Passing a function as a parameter isn't the only way we can introduce a seam.
     After all, changing the signature of `calculateShipping` may be fraught, and we
     may not want to thread the shipping function parameter through the legacy call
     stack in the production code. In this case a lookup may be a better approach,
     such as using a service locator.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 将函数作为参数传递并不是我们引入接缝的唯一方式。毕竟，改变`calculateShipping`的签名可能会带来风险，而且我们可能不想在生产代码中将航运函数参数传递给传统调用堆栈。在这种情况下，查找可能是更好的方法，比如使用服务定位器。
 - en: '[PRE3]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The locator allows us to override the behavior by defining a subclass.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 定位器允许我们通过定义一个子类来覆盖行为。
 - en: '[PRE5]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: We can then use an enabling point in our test
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们可以在测试中使用一个启用点
 - en: '[PRE6]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: This kind of service locator is a classical object-oriented way to set up a
     seam via function lookup, which I'm showing here to indicate the kind of approach
     I might use in other languages, but I wouldn't use this approach in TypeScript
     or JavaScript. Instead I'd put something like this into a module.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种服务定位器是通过函数查找设置缝隙的经典面向对象的方式，我在这里展示它是为了表明我可能会在其他语言中使用的方法，但我不会在 TypeScript 或
+    JavaScript 中使用这种方法。相反，我会将类似这样的内容放入一个模块中。
 - en: '[PRE7]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: We can then use the code in a test like this
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以像这样在测试中使用这段代码。
 - en: '[PRE8]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: As the final example suggests, the best mechanism to use for a seam depends
     very much on the language, available frameworks, and indeed the style of the legacy
     system. Getting a legacy system under control means learning how to introduce
@@ -121,28 +178,38 @@
     A team can spend several months figuring out how to introduce seams into a well-worn
     legacy system. The best mechanism for adding seams to a legacy system may be different
     to what we'd do for similar flexibility in a green field.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如最后一个例子所暗示的，用于缝隙的最佳机制在很大程度上取决于语言、可用框架，以及遗留系统的风格。控制遗留系统意味着学习如何在代码中引入各种缝隙，以提供正确类型的启用点，同时将对遗留软件的干扰降到最低。虽然函数调用是引入此类缝隙的一个简单示例，但在实践中它们可能更为复杂。一个团队可能会花费几个月的时间来思考如何将缝隙引入一个熟悉的遗留系统中。向遗留系统添加缝隙的最佳机制可能与我们在绿地上为了类似的灵活性所做的不同。
 - en: Feathers's book focuses primarily on getting a legacy system under test, as
     that is often the key to being able to work with it in a sane way. But seams have
     more uses than that. Once we have a seam, we are in the position to place probes
     into the legacy system, allowing us to increase the observability of the system.
     We might want to monitor calls to `calculateShipping`, figuring out how often
     we use it, and capturing its results for separate analysis.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Feathers 的书主要关注于将遗留系统置于测试之下，因为这通常是能够以理智的方式与其一起工作的关键所在。但是缝隙的用途不止于此。一旦我们有了一个缝隙，我们就可以将探针放入遗留系统中，从而增加系统的可观察性。我们可能想要监视对
+    `calculateShipping` 的调用，弄清楚我们使用它的频率，并将其结果捕获进行单独分析。
 - en: But probably the most valuable use of seams is that they allow us to migrate
     behavior away from the legacy. A seam might redirect high-value customers to a
     different shipping calculator. Effective legacy displacement is founded on introducing
     seams into the legacy system, and using them to gradually move behavior into a
     more modern environment.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，缝隙最有价值的用途可能是它们允许我们将行为迁移到遗留之外。一个缝隙可以将高价值客户重定向到不同的运费计算器。有效的遗留位移基于在遗留系统中引入缝隙，并使用它们逐渐将行为转移到更现代的环境中。
 - en: Seams are also something to think about as we write new software, after all
     every new system will become legacy sooner or later. Much of my design advice
     is about building software with appropriately placed seams, so we can easily test,
     observe, and enhance it. If we write our software with testing in mind, we tend
     to get a good set of seams, which is a reason why [Test Driven Development](/bliki/TestDrivenDevelopment.html)
     is such a useful technique.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 缝隙也是我们编写新软件时要考虑的事情，毕竟每个新系统迟早都会成为遗留系统。我的许多设计建议都是关于使用适当放置的缝隙构建软件，这样我们就可以轻松测试、观察和增强它。如果我们编写软件时考虑测试，我们往往会得到一个很好的缝隙集，这就是为什么
+    [测试驱动开发](/bliki/TestDrivenDevelopment.html) 是如此有用的技术的原因之一。
