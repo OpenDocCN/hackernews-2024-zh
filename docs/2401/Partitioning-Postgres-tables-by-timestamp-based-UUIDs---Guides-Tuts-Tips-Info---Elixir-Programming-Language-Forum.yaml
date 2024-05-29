@@ -1,206 +1,310 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:43:39'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:43:39
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Partitioning Postgres tables by timestamp based UUIDs - Guides/Tuts/Tips/Info
     - Elixir Programming Language Forum
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用基于时间戳的 UUID 对 Postgres 表进行分区 - 指南/教程/提示/信息 - Elixir 编程语言论坛
 - en: 来源：[https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916](https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916](https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916)
 - en: Recently we partitioned a table with 28 million rows by its ULID to improve
     query speeds and reduce query timeouts. To do this I ended up pulling together
     various bits of information across the internet and thought it might be worth
     compressing it into a guide for future reference and discussion on areas I might
     have missed!
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我们通过其 ULID 对表进行了分区，以提高查询速度并减少查询超时。为了做到这一点，我最终在互联网上汇总了各种信息，认为将其压缩成一个指南以供将来参考和讨论我可能忽略的领域可能是值得的！
 - en: The problem
+  id: totrans-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 问题
 - en: We had a very large table (28 million) rows that we were getting timeouts querying
     on anything other than the primary key. No matter what indexes we threw at the
     table we couldn’t get queries to complete in an acceptable time for use on the
     front end of the application.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有一个非常庞大的表（2800 万行），除了主键之外，我们在任何其他内容上都会遇到查询超时。无论我们向表中添加什么索引，我们都无法在可接受的时间内完成查询，以便在应用程序的前端使用。
 - en: Constraints
+  id: totrans-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 约束
 - en: The table in question was where we stored and processed payloads from our customers,
     so it needed to be very quick for individual lookups in order to update its state
     as it was processed into the application and fast for broader retrieval to display
     on the front end of our application.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 所涉及的表是我们从客户那里存储和处理有效负载的表，因此对于个体查找来说，它需要非常快以便在处理到应用程序中时更新其状态，并且对于更广泛的检索来说，它需要快速以在我们应用程序的前端显示。
 - en: Problems with partitioning
+  id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 分区的问题
 - en: Partitioning had always been an option and something we had attempted previously.
     Our original attempt to speed it up had been partitioning the table on the insertion
     time of the record but, if you’ve ever done partitioning before you will know,
     you cannot have a globally unique index.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 分区一直是一个选择，并且是我们之前尝试过的东西。我们最初试图加快速度是对记录的插入时间进行分区，但是，如果您以前进行过分区，您将知道，您不能拥有全局唯一索引。
 - en: To create a unique or primary key constraint on a partitioned table, the partition
     keys must not include any expressions or function calls and the constraint’s columns
     must include all of the partition key columns. This limitation exists because
     the individual indexes making up the constraint can only directly enforce uniqueness
     within their own partitions; therefore, the partition structure itself must guarantee
     that there are not duplicates in different partitions.
+  id: totrans-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 要在分区表上创建唯一或主键约束，分区键不能包含任何表达式或函数调用，约束的列必须包含所有分区键列。存在此限制是因为构成约束的各个索引只能直接在自己的分区内强制执行唯一性；因此，分区结构本身必须保证不同分区中没有重复项。
 - en: Without the globally unique index for the id of the payload meant that queries
     for a specific payload had to check every partition. This made the individual
     processing of a given payload too slow to make this a workable scenario.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有针对有效负载 ID 的全局唯一索引意味着对特定有效负载的查询必须检查每个分区。这使得对给定有效负载的个体处理过程过慢，无法使其成为可行的情况。
 - en: Partitioning with ULIDs
+  id: totrans-15
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 ULID 进行分区
 - en: The solution then was to have the id of the payload be a ULID based on its `inserted_at`
     and partition the tables on the timestamp component of the ULID it generated on
     the database! This means we could retain a global index for quick individual row
     lookups and have a way to ignore irrelevant partitions based on the id.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 那时的解决方案是使有效负载的 ID 成为基于其`inserted_at`的 ULID，并根据数据库生成的 ULID 的时间戳组件对表进行分区！这意味着我们可以保留快速个体行查找的全局索引，并有一种忽略基于
+    ID 的无关分区的方法。
 - en: This took a few different steps…
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这经历了几个不同的步骤…
 - en: Preparing the database
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据库
 - en: Postgres doesn’t with with ULIDs directly but between Ecto and Postgres they
     are cast to a UUID in the database. We needed a method for Postgres to take a
     ULID and convert it to the corresponding UUID that we can work with in SQL.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Postgres 不直接使用 ULID，但在 Ecto 和 Postgres 之间，它们在数据库中被转换为 UUID。我们需要一种方法，让 Postgres
+    接受 ULID 并将其转换为我们可以在 SQL 中使用的相应 UUID。
 - en: We added the functions [here](https://github.com/scoville/pgsql-ulid) to a migration
     to make them available on the database.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将函数[添加到这里](https://github.com/scoville/pgsql-ulid)以便将它们可用于数据库中。
 - en: While you’re on the database it’s worth ensuring that [`enable_partition_pruning`](https://www.postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITION-PRUNING)
     is enabled as this is how Postgres is able to ignore irrelevant partitions.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您在数据库上时，值得确保[`enable_partition_pruning`](https://www.postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITION-PRUNING)已启用，因为这是
+    PostgreSQL 能够忽略不相关分区的方式。
 - en: Functions for manipulating ULIDs
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 用于操作 ULID 的函数
 - en: To create the partitions we needed to be able to get the time portion of the
     ULID and get the bounds of any ids possible within the time.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 要创建分区，我们需要能够获取 ULID 的时间部分，并获取在时间范围内可能存在的任何 id 的边界。
 - en: This required slicing the time portion of the ULID and setting either “0” or
     “Z” depending on which bound we needed.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这需要切片 ULID 的时间部分，并根据我们需要的边界设置“0”或“Z”。
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Ensuring that timestamp and ids timestamp match
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 确保时间戳和 id 的时间戳匹配
 - en: This is not strictly necessary for tables where the insertion time is close
     enough to the autogeneration of the id that you wont get too much drift but if
     there could be drift, or you want to partition on an timestamp that wont necessarily
     correlate with the id here is how. The following is all performed on the schema.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于插入时间与 id 的自动生成时间接近的表来说，这并不是绝对必要的，但如果可能存在偏差，或者您想要根据不一定与 id 相关联的时间戳进行分区，那么这是如何实现的。
+    以下操作全部在架构中执行。
 - en: Start by turning off the autogeneration of the id.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先关闭自动生成 id 的功能。
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Check if the changeset has an id, and if it doesn’t add one based on the timestamp
     you want to use. In the following example I have used `occurred_at`.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查更改集是否具有 id，如果没有，则根据您要使用的时间戳添加一个。 在以下示例中，我使用了`occurred_at`。
 - en: '[PRE2]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Finally add it as part of your changeset.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，将其添加为更改集的一部分。
 - en: '[PRE3]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Database migration
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据库迁移
 - en: I cannot take full credit for this as it’s adapted from [Matthew Johnston’s
     work on partitioning](https://mattjohnston.co/posts/postgres-partitions-elixir-migration/),
     changed to work with id’s.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不能完全归功于这一点，因为它是从[马修·约翰斯顿（Matthew Johnston）关于分区的工作](https://mattjohnston.co/posts/postgres-partitions-elixir-migration/)改编而来的，改成了与
+    id 相匹配。
 - en: We need to start with a couple of helper functions to help us partition on month.
     You might want something different so feel free to modify to fit your requirements.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要从几个辅助函数开始，以帮助我们根据月份进行分区。 您可能希望使用不同的东西，所以请随时修改以满足您的要求。
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We use the functions above and our ULID functions earlier to have a query that
     will generate the query to make each partition.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用上述函数以及我们之前的 ULID 函数来生成查询，以创建每个分区的查询。
 - en: '[PRE5]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Finally we can tie it all together with out table creation!
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以通过我们的表创建将所有内容联系起来！
 - en: '[PRE6]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: That’s it you’ve just created your partitioned table based on the timestamp
     based UUID!
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这样，您刚刚基于基于时间戳的 UUID 创建了分区表！
 - en: Improving your query speeds
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 提升您的查询速度
 - en: Now your Ecto queries can utilize the id to only query partitions that contain
     the data they are looking for skipping other partitions that don’t hold any relevant
     data. We use a combination of the database and ULID functions we created earlier
     in the `where` call.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，您的 Ecto 查询可以利用 id 仅查询包含所需数据的分区，跳过不包含任何相关数据的其他分区。 我们在`where`调用中使用了我们早些时候创建的数据库和
+    ULID 函数的组合。
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Conclusion
+  id: totrans-46
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: So we went from queries taking multiple minutes to sub-second, zero timeouts
     and we were also able to retain very quick lookups on individual rows!
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，我们从需要花费几分钟的查询变为几秒钟内完成，零超时，并且我们还能够保留对单个行进行非常快速的查找！
 - en: I hope that this helps others after me, and if you’ve got any suggestions on
     where you might do something slightly differently let me know! (I’ve only been
     working with Elixir for a little over a year now and I suspect there are some
     code smells etc in the above)
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望这对我之后的其他人有所帮助，如果你有任何建议，可以告诉我在哪里可能会有一些略有不同的地方！（我只是在 Elixir 上工作了一年多一点，我怀疑上面的代码中可能存在一些代码气味等）
