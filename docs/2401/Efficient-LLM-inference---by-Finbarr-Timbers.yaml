@@ -1,51 +1,74 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: '分类: 未分类'
 - en: 'date: 2024-05-27 14:30:02'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: '日期: 2024-05-27 14:30:02'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Efficient LLM inference - by Finbarr Timbers
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 高效的 LLM 推理 - 由 Finbarr Timbers 撰写
 - en: 来源：[https://www.artfintel.com/p/efficient-llm-inference](https://www.artfintel.com/p/efficient-llm-inference)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.artfintel.com/p/efficient-llm-inference](https://www.artfintel.com/p/efficient-llm-inference)
 - en: 'Lately, I’ve been thinking a lot about inference, and particularly, how to
     serve a given LLM more efficiently. The scenario is as follows: Your boss comes
     to you and says *Hey Finbarr, we’re about to go bankrupt because we’re spending
     all of our investor’s money on GPUs serving our 300B parameter model that raps
     in the style of [John Kenneth Galbraith](https://en.wikipedia.org/wiki/John_Kenneth_Galbraith).
     What can we do?*'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我一直在思考推理，特别是如何更高效地为给定的 LLM 提供服务。情景如下：您的老板来找您，说*嘿，Finbarr，我们快要破产了，因为我们正在花光所有投资者的钱来为我们的
+    300B 参数模型提供服务，这个模型以[约翰·肯尼思·加尔布雷斯](https://en.wikipedia.org/wiki/John_Kenneth_Galbraith)的风格说唱。我们能做些什么？*
 - en: 'Broadly speaking, there are three main classes of things you can do:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 广义上来说，您可以做三类主要的事情：
 - en: You can quantize the parameters of your model (*quantization*), where you keep
     your model exactly the same, but use less precision for each of the parameters.
+  id: totrans-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您可以对模型的参数进行量化（*量化*），在这种情况下，您保持模型完全相同，但对每个参数使用较低的精度。
 - en: You can distill a smaller version of your model (*distillation*), where you
     copy the architecture of your model to make it smaller and/or more efficient and
     then train this new, smaller model to mimic the outputs of the original, large
     model.
+  id: totrans-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您可以蒸馏模型的较小版本（*蒸馏*），在这种情况下，您复制模型的架构以使其更小和/或更有效，然后训练这个新的、较小的模型来模拟原始大模型的输出。
 - en: You can spend a bunch of time profiling your code and reduce the overhead without
     changing the architecture or parameters (*optimization*).
+  id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您可以花费大量时间对代码进行分析，并减少开销，而无需改变架构或参数（*优化*）。
 - en: The first place to start, somewhat obviously, is optimization. The amount of
     overhead that most programs have is ridiculous, and by simply profiling your code,
     you can often find surprising amounts of overhead. For instance, I once had a
@@ -54,14 +77,19 @@
     optimizations to make that faster, but he was *also* using a list to do lookups
     in a performance critical loop. I changed the list to a dict and made the code
     200x faster.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，开始优化的地方是最佳选择。大多数程序的开销都是荒谬的，通过简单地分析代码，您往往可以找到令人惊讶的开销。例如，我曾经有一个同事请求帮助优化他的代码。他正在训练一个神经网络来执行复杂的计算，并实施了一堆性能优化以加快速度，但他*还*在性能关键的循环中使用列表进行查找。我将列表更改为字典后，代码运行速度提高了
+    200 倍。
 - en: This isn’t a rare occurrence. Every time I’ve profiled code, I’ve been surprised
     at the resulting profile. So if you’re having performance issues (don’t worry,
     it happens to all of us, it’s natural), the first thing you should do is profile
     your code.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不是一个罕见的情况。每次我分析代码时，最终的分析结果都让我感到惊讶。所以，如果您遇到性能问题（别担心，这种情况发生在我们所有人身上，这是自然的），您应该做的第一件事就是对代码进行分析。
 - en: For most people, this will be sufficient. Just removing the overhead from your
     code and batching requests in the naive way will get you to the point where you
     can serve requests in a cost-effective manner, *particularly* if you have traditional
@@ -69,39 +97,51 @@
     now at the point where the only remaining optimizations are implementing arcane
     kernels in Triton which requires hiring grizzled old CUDA experts away from Nvidia.
     What’s the next step you can take to use your GPUs effectively?
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于大多数人来说，这已经足够了。仅仅通过去除代码中的开销并以朴素的方式批处理请求，就可以使您能够以成本有效的方式提供请求，*尤其是*如果您拥有传统的软件利润空间。但假设您已经进行了大量分析，现在您所剩下的唯一优化是在
+    Triton 中实现奥秘内核，这需要从 Nvidia 招聘经验丰富的老 CUDA 专家。那么，您可以采取哪些措施来有效地利用您的 GPU？
 - en: Now, you’re left with quantization and distillation. Quantization, where you
     use less precise weights for your neural network without changing anything else
     about it, has been talked about a lot lately. Llama.cpp, for instance, used this
     to great effect to reduce the memory required to store the llama weights by 4x.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，你剩下的是量化和蒸馏。最近，人们经常谈论量化，即在不改变神经网络其他任何内容的情况下，使用精度较低的权重。例如，Llama.cpp 就很好地利用了这一点，将储存
+    Llama 权重所需的内存减少了 4 倍。
 - en: Distillation has received less attention but has historically been an important
     part of serving models at scale. This is because distillation generally works
     much, much better than quantization, and if you have the resources, should be
     the way you do things.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'There’s a key caveat there: if you have the resources.'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[Get 20% off a group subscription](https://www.artfintel.com/subscribe?group=true&coupon=9ee370da)'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s go back to our hypothetical scenario. You’re a hardworking ML engineer
     at CoherentOpenStability, where you’re trying to reduce the inference costs for
     your latest and greatest LLM, StableClaudius-4\. You’ve already profiled your
     code and reduced all of the overhead that you can. You now have a few options:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: You come up with a research breakthrough which lets you accomplish the same
     thing, for cheaper. E.g. you design a new sparse attention mechanism which works
     well.
+  id: totrans-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You make your model smaller.
+  id: totrans-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -111,32 +151,39 @@
     OpenAI/Anthropic/DeepMind, and collect a ridiculously high salary for being a
     large language model whisperer. Most of us cannot do this. So we’re stuck trying
     to come up with a smaller model that accomplishes the same things.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'How should we come up with a smaller model? A few options:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: You train a smaller model in the exact same way as your original model.
+  id: totrans-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You distill your big model into a smaller model.
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You quantize your existing model.
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'In my opinion, the literature indicates a clear & obvious ranking: distillation
     is strictly better than training a smaller model, and quantizing is *probably*
     better than training a smaller model.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: There aren’t as many distillation papers as I would like, but the two that come
     to mind are [DistilBERT](https://arxiv.org/abs/1910.01108) and the [original distillation
     paper](https://arxiv.org/abs/1503.02531) from Hinton et. al. In DistilBERT, the
     authors reduce the model size by 40% while only hurting performance by 3%.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: In the Hinton et. al paper, they’re able to match the performance of an ensemble
@@ -146,6 +193,7 @@
     a particularly wasteful way to increase model size, but that’s still impressive
     result, and much better than training a model from scratch to perform the same
     task (which had only 58.9% accuracy).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: The problem with distillation, however, is that it requires training a smaller
@@ -154,6 +202,7 @@
     at public API prices (5e11 tokens * 2e-6 $/token = $1e6), or $400k if we assume
     OpenAI has a 60% margin. Given that it cost approximately $5M to train GPT-3 initially,
     this would add 10-20% to that already large cost. Not prohibitive, but expensive.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: If you can afford this cost, great! Do it. It’s almost certainly going to give
@@ -164,20 +213,24 @@
     a 30B model at one level of precision and serving a 60B model with twice the level
     of precision, as most GPUs are twice as fast at running models with half the precision
     (e.g. [A100s](https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf)).
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: This figure shows the tradeoff between using various model sizes with various
     levels of precision. Let’s compare two points for the [OPT](https://arxiv.org/abs/2205.01068)
     line of work.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: Model precision Bit precision Mean zeroshot accuracy $10^{11}$ 8 0.675 $10^{11}$
     16 0.65 $10^{12}$ 8 0.725 $10^{12}$ 16 0.7
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'What we see is that, given a total number of model bits, we prefer the model
     with *fewer* bits per parameter. Intuitively, this makes sense: we don’t see a
     benefit from training half as many parameters with fp64 vs fp32.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we look at another figure, this time from the [OPT paper](https://arxiv.org/abs/2205.01068),
@@ -188,6 +241,7 @@
     for a 8% decrease in accuracy. Not quite as good as the model size/accuracy tradeoffs
     we see with distillation, but I think that most businesses would have to strongly
     consider the tradeoff.'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: The other thing to keep in mind about quantization is that it’s remarkably cheap
@@ -198,21 +252,25 @@
     full model, with cost scaling linearly in the number of parameters, so a 20B model
     would cost ~$500k, and requires a lot of data (~100B tokens to be [Chinchilla
     optimal](https://arxiv.org/abs/2203.15556)).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: So quantizing is great. But what, exactly, *is* quantization, and how does it
     work?
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: The idea behind quantization is simple. Computers, due to their discrete nature,
     can’t natively store floating point numbers. digital numerical representations
     are based on **bits**, namely 1s or 0s. These bits are assembled into **binary**.
     In a binary integer representation, you can represent a range of
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: using a signed integer, where n is the number of bits. One bit is reserved to
     represent whether or not the number is positive or negative, and n - 1 bits are
     used to represent the magnitude.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: This works well, and is reasonably efficient. However, the problem comes when
@@ -221,28 +279,34 @@
     is to reserve 1 bit to indicate the positivity/negativity of the number, m bits
     to represent the magnitude of the number (the ***exponent***), and (n - m - 1)
     bits to represent the precision of the number (the significand)
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: The significand is just a (n-m-1)-bit unsigned integer, and can thus represent
     values up to 2^{n - m - 1}.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: In a 32-bit floating point number (single precision), 1 bit is used for the
     sign, 8 bits for the exponent, and 23 bits for the significand.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: In a 16-bit floating point number (half precision), 1 bit is used for the sign,
     5 bits for the exponent, and 10 bits for the significand.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: In a 64-bit floating point number (double precision), 1 bit is used for the
     sign, 11 bits for the exponent, and 52 bits for the significand.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: Note where the additional bits are going— they are mostly going to the significand,
     which adds *precision*, rather than *magnitude*. In other words, this lets us
     distinguish between *smaller* numbers, rather than allowing us to represent *bigger*
     ones.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'By default, all major tensor programming frameworks use 32-bit precision to
@@ -250,6 +314,7 @@
     to be a good default. There are very few applications which benefit from the additional
     precision (mostly scientific computing applications). However, in practice, most
     of the bleeding edge work now uses 16-bits.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: But ok. Now that you’ve read through my digression on how precision works in
@@ -257,6 +322,7 @@
     *actually* lower the precision of your weights? The naive approach is to simply
     truncate your weights at a given level of precision. As a simple example, if your
     weight is 0.534345, naive truncating the weights will convert it to 0.534.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'The [SOTA model for quantizing to 4-bits or below](https://twitter.com/Tim_Dettmers/status/1642885684057997313?s=20)
@@ -266,54 +332,83 @@
     the network by reducing the number of bits, we can reduce the impact it has on
     inference accuracy by training weights to directly minimize the difference between
     the two:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[将到 4 位或更低的量化模型](https://twitter.com/Tim_Dettmers/status/1642885684057997313?s=20)
+    是 GPTQ。还有其他一些方法是 LLM.int8() 和 ZeroQuant。我将在未来的文章中深入讨论这些，但在这里，我将专注于 GPTQ。GPTQ 的基本思想是，虽然通过减少比特数来减少网络中包含的信息必然会导致信息下降，但我们可以通过训练权重直接减少两者之间的差异来减少其对推理准确性的影响：'
 - en: 'Let’s walk through an example. Let’s say that x = 0.323, and as above, w =
     0.534345\. Then, keeping everything as a float32, the activation output is:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过一个例子来说明。假设 x = 0.323，并且如上所述，w = 0.534345。然后，保持所有内容为 float32，激活输出是：
 - en: \(x \cdot w = 0.323 \cdot 0.534345 = 0.172593435\)
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: \(x \cdot w = 0.323 \cdot 0.534345 = 0.172593435\)
 - en: which, rounded to 6 decimal points (the precision for float32s), gives us an
     output of 0.172593.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 四舍五入到 6 个小数点（float32 的精度），我们得到输出为 0.172593。
 - en: Rounding naively, our output is
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 天真地四舍五入，我们的输出是
 - en: \(x \cdot w_{\text{naive}} = 0.323 \cdot 0.534 = 0.172482\)
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: \(x \cdot w_{\text{naive}} = 0.323 \cdot 0.534 = 0.172482\)
 - en: The difference here is 1.114e-4\. If we use GPTQ, we solve
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的差异是 1.114e-4。如果我们使用 GPTQ，我们解决了
 - en: \(\text{argmin}_{\hat{w}} (0.172593435 - 0.323 \cdot \hat{w})^2\)
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: \(\text{argmin}_{\hat{w}} (0.172593435 - 0.323 \cdot \hat{w})^2\)
 - en: which gives us
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给我们带来了
 - en: \(\hat{w} = \frac{0.172593435}{0.323} = 0.534345\)
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: \(\hat{w} = \frac{0.172593435}{0.323} = 0.534345\)
 - en: which, rounded to 3 decimal points (the precision for float16s)… gives us precisely
     the same answer as naively rounding, but with more effort.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 四舍五入到 3 个小数点（float16 的精度）... 与天真地四舍五入给出了完全相同的答案，但需要更多的工作。
 - en: 'Presumably this would matter more in other scenarios? I haven’t been able to
     come up with a simple example that makes GPTQ worth it. But in actual deployment
     scenarios, GPTQ claimed a significant difference (RTN meaning “round to nearest”):'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 据推测，在其他情况下这可能更重要？我无法想出一个简单的例子来证明 GPTQ 值得。但在实际部署场景中，GPTQ 声称有显著差异（RTN 意为“四舍五入”）：
 - en: So this is a method that works much better than naively rounding, and is cheap.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以这是一种比天真地四舍五入更好的方法，而且很便宜。
 - en: Quantization isn’t magic. Ultimately, you’re always sacrificing accuracy for
     performance. Maybe you won’t lose a lot. But you’ll never *gain* accuracy, so
     at best you’re staying the same.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 量化并不是魔法。最终，你总是在性能上牺牲精度。也许你不会损失很多。但你永远不会 *获得* 精度，所以充其量你只是保持不变。
 - en: It’s also unclear how often the tradeoff is worth it. [Tim Dettmers scaling
     law for quantization](https://arxiv.org/abs/2212.09720). If you’re using half
     the precision, it might be worth using *the same precision* and half the weights
@@ -322,15 +417,23 @@
     For many practitioners, the cost to *serve* a model heavily outweighs the cost
     to ***train*** the model. If this is you, you might not care about quantizing
     one.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种权衡值得多少次也不清楚。[Tim Dettmers 的量化扩展定律](https://arxiv.org/abs/2212.09720)。如果你使用了一半的精度，也许值得使用
+    *相同的精度* 和一半的权重，并且在[更多数据上训练两倍长的时间](https://finbarr.ca/llms-not-trained-enough/)。例如，[replit
+    就是这么做的](https://blog.replit.com/replit-developer-day-recap#newmodel)。对于许多从业者来说，为模型提供服务的成本远远超过了训练模型的成本。如果你是这样的人，你可能不关心量化。
 - en: Even if you do, distillation will typically outperform quantization. So if you
     *can* distill the model, you probably should. It’s only when you don’t have the
     resources to do this that quantization is clearly worth it.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使你这样做，蒸馏通常也会优于量化。所以如果你 *可以* 蒸馏模型，你可能应该这样做。只有当你没有资源这样做时，量化才明显值得。
 - en: Finally, with quantization, you only get a linear speedup as you decrease the
     number of bytes. That’s pretty good! But ideally we’d want to see much better
     scaling. Perhaps some sort of sparsity will do better.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，通过量化，你只会在减少字节数量时获得线性加速。这相当不错！但理想情况下，我们希望看到更好的缩放。也许某种稀疏性会做得更好。
