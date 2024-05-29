@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:26:26'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: blog/entries/parallelising_hnsw.md at main · GavinMendelGleason/blog · GitHub
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md](https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,12 +28,14 @@
     and very readable paper [Yu A. Malkov, D. A. Yashunin](https://arxiv.org/abs/1603.09320)
     which has given rise to a large number of implementations which are at the core
     of many popular vector databases.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: The HNSW is a method of searching for vectors in a dataset which are *close*
     to a given query vector. The basic idea of an HNSW is to make a series of proximity
     graphs, organized in a stack which allows us to zoom-in as we approach ever closer
     neighborhoods.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: The top layer of the HNSW has relatively few elements, and we can quickly find
@@ -35,15 +43,18 @@
     down. Each layer down is an order of magnitude larger, but contains all of the
     points from above. In this we can we zoom in on an even closer alternative, and
     drill down another layer.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, when we reach the bottom, we search around a bit for candidates in
     our neighborhood and end up with an priority queue of candidates ordered by distance.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: The HNSW approach is essentially probabilistic. We try to find candidates to
     match by choosing randomly, in the hopes that being pretty well connected via
     super-nodes, we will not end up getting too far from matches in our local minimum.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: This makes the structure very appealing from the point of view of incremental
@@ -52,6 +63,7 @@
     putting it in ever higher layers in a log-like way. This should, hopefully, be
     somewhat self-balancing as new vectors come into the system we promote them to
     supernodes of the tree for routing in a random manner.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: This approach of creating tiered proximity graphs radically cuts down on the
@@ -59,169 +71,237 @@
     new elements are added. Vector distance computations over large vectors, such
     as exist in embeddings, can become prohibitavely expensive very quickly when the
     number of vectors is large.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Parallelising the approach
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '[](#parallelising-the-approach)'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: The algorithm outlined in the Malkov, Yashunin paper is however not very ameanable
     to parallelisation. It relies on the previously constructed index to search its
     way to good neighbors. There is a lot of opportunity for contention over resources
     when parallelising it naively (as the authors have found).
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: However, if we have a large batch job of vectors to add simultaneously, there
     are very clear methods of building the index faster using parallelism. This can
     play well with the above incremental approach. In addition we can think of a mixed-incremental
     batch job, which is somewhere intermediate between the two approaches.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，如果我们有大量同时添加的向量批处理作业，则可以使用并行方法更快地构建索引。这可以与上述增量方法很好地配合。此外，我们还可以考虑混合增量批处理作业，该作业介于两种方法之间。
 - en: Constructing One Layer at a Time
+  id: totrans-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 逐层构建
 - en: '[](#constructing-one-layer-at-a-time)'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#逐层构建)'
 - en: The simplest, batch parallel approach assuming we are creating an index *ex
     nihilo* constructs an HNSW *one layer at a time*.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的批处理并行方法假设我们正在*从无到有*地创建一个索引，逐层构建HNSW。
 - en: We do this by first choosing a number of layers based on the input indexing
     data *N*. This can be done with a calculation that takes the log of N at a base
     M related to the number of elements in a neighborhood.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先根据输入索引数据*N*选择层数。这可以通过计算以邻域中的元素数量为基数的M的对数来完成。
 - en: Next we segment our input into overlapping slices, each one including a prefix
     of the data of length `M^i` for each layer `i` starting with `i=0`. At each layer
     we use our single layer generation.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将输入分成重叠的片段，每个片段包括长度为`M^i`的数据前缀，其中`i`表示层级，从`i=0`开始。在每一层，我们使用单层生成方法。
 - en: This approach of layer at a time generation is much more amenable to parallelism,
     especially as the layer sizes increase. However, it is also more sensitive to
     the order in which the data is ingested. For this reason it is necessary to ensure
     a randomisation of the input batch or you can end up with a very poorly constructed
     layer.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 按层生成方法更加适合并行处理，特别是随着层大小的增加。但是，它也更加敏感于数据被摄取的顺序。因此，必须确保输入批处理的随机化，否则可能会得到一个构造不良的层。
 - en: 'The (rusty) pseudocode might be written as:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: （生锈的）伪代码可以写为：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This single layer generation consists of the following steps:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 此单层生成包括以下步骤：
 - en: In parallel, iterate over all vectors in this layer, looking for their closest
     matches in the layer above.
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 并行地，对该层中的所有向量进行迭代，寻找它们在上一层中的最接近匹配项。
 - en: Partition the set according to these super-neighborhoods. If we are the first
     layer to be constructed, this is simply one partition.
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 根据这些超邻域划分集合。如果我们是第一层构建的，这只是一个分区。
 - en: Go through each partition node by node, select candidate neighbors from this
     partition, and the next best partition, and the next best after that, with exponentially
     decaying probability. Truncate this to the neighborhood size (M). This will build
     up our initial neighborhood set of distances for this node.
+  id: totrans-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 逐个分区节点遍历，从该分区和下一个最佳分区，以及接下来的下一个最佳分区中选择候选邻居，按指数衰减的概率。将此截断为邻域大小（M）。这将构建此节点的初始邻域距离集。
 - en: Go through every node and make neighborhoods bidirectional (unless evicted as
     our distance exceeds the worst case within a neighborhood max size.
+  id: totrans-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 遍历每个节点并使邻域成为双向的（除非因为我们的距离超出了邻域最大大小的最坏情况而被驱逐）。
 - en: For each node, in parallel, write the neighborhoods into the neighborhood vector.
     This can be done in parallel since each neighborhood is independent and of fixed
     size.
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对于每个节点，可以并行地将邻域写入邻域向量。这可以并行进行，因为每个邻域是独立的且大小固定。
 - en: Unfortunately the above algorithm can leave some things unreachable. We found
     that on small data sets, the recall was quite high, often exceeding .999, however
     once we reach the 10s of millions, the algorithm can leave vectors orphaned, and
     recall can drop as below 0.90 (depending on the size of the search queue).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，上述算法可能会使一些东西无法到达。我们发现在小数据集上，召回率相当高，通常超过0.999，但一旦达到数百万，该算法可能会使向量变成孤立的，并且召回率可能会下降至0.90以下（取决于搜索队列的大小）。
 - en: 'Luckily there is a strategy for dealing with the stragglers, using the following
     algorithm:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，有一种处理滞留者的策略，使用以下算法：
 - en: Starting from layer zero, and proceeding upwards, find all points which are
     disconnected or distant from a super-node.
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从零层开始，向上进行，找到所有与超节点断开连接或距离较远的点。
 - en: Segment these into neigbhorhoods and choose a representative super-node for
     promotion, which we add to the next layer up.
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将这些分段为邻域，并选择一个代表性的超节点进行提升，然后将其添加到上一层中。
 - en: Repeat for the layer above.
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对上一层重复此过程。
 - en: Using this strategy ensures that all vectors are routable through *some* path,
     though it's possible that greedy routing will lead to some loss of recall despite.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用此策略可确保所有向量都可通过*某些*路径进行路由，尽管贪婪路由可能导致一些召回损失。
 - en: The search mechanism works exactly as with the HNSW, except that we don't need
     all of the layers to be constructed yet. We simply stop searching when we've gotten
     to the last layer that has been constructed. This allows us to construct neighborhoods
     by using the pre-existing routing of the layers above.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 搜索机制与 HNSW 完全相同，只是我们不需要构建所有的层。我们只需要在到达已构建的最后一层时停止搜索。这样一来，我们就可以利用上面层的预先存在的路由来构建邻域。
 - en: Incrementally Extending The Index
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 逐步扩展索引
 - en: '[](#incrementally-extending-the-index)'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#incrementally-extending-the-index)'
 - en: Building *ex nihilo* is not the only way you want to build an index in practice.
     One of the big advantages to the HNSW algorithm is its incremental nature. In
     fact, we can just reuse the original algorithm to extend the structure and it
     works perfectly well.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 从零开始构建并不是你想要在实践中构建索引的唯一方式。HNSW 算法的一个重要优势是其增量性质。实际上，我们可以只需重复使用原始算法来扩展结构，它也可以完美地工作。
 - en: However, there is another common mode of operation, which is a batch update
     - where we have inserts, updates and deletes.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，还有另一种常见的操作模式，即批量更新——我们进行插入、更新和删除操作。
 - en: 'We can create a sort of half-way house between the two algorithms, with either
     of the two as degenerate cases as follows:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在两种算法之间创建一种折中方案，其中两种算法都是极端情况，具体如下：
 - en: Sample from an exponential distribution defined by the neighborhood size M,
     N times, where N is the number of new vectors. Create a count of these bins and
     use it as the prefix counts per layer of the vector.
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从由邻域大小 M 定义的指数分布中抽样，共抽样 N 次，其中 N 是新向量的数量。创建这些箱的计数，并将其用作向量每层的前缀计数。
 - en: Create any new layers (that are higher than previous) using the prefixes (if
     such exist) with the generate_layer algorithm above.
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用上述 generate_layer 算法中的前缀（如果存在）创建任何新层（高于之前的层）。
 - en: Use a modified version of the generate_layer algorithm as above performing all
     steps for only the new nodes.
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用上面的 generate_layer 算法的修改版本，仅为新节点执行所有步骤。
 - en: Append the new nodes and new neighborhoods to the end of the existing layer.
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将新节点和新邻域追加到现有层的末尾。
 - en: HNSW creates a very nice indexing structure, but the method of construction
     does not need to be a trickle down approach. It is quite possible to perform the
     steps in batches which enable much greater parallelism to be exploited.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: HNSW 创建了一种非常好的索引结构，但构建方法不需要采取渐进式方法。完全可以分批执行步骤，从而能够利用更大的并行性。
