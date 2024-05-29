@@ -1,30 +1,45 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:35:26'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:35:26
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Learning Regular Languages with L* Algorithm
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 L* 算法学习正则语言
 - en: 来源：[https://rahul.gopinath.org/post/2024/01/04/lstar-learning-regular-languages/](https://rahul.gopinath.org/post/2024/01/04/lstar-learning-regular-languages/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://rahul.gopinath.org/post/2024/01/04/lstar-learning-regular-languages/](https://rahul.gopinath.org/post/2024/01/04/lstar-learning-regular-languages/)
 - en: TLDR; This tutorial is a complete implementation of Angluin’s L-star algorithm
     with PAC learning for inferring input grammars of blackbox programs in Python
     (i.e. without using equivalence queries). Such grammars are typically useful for
     fuzzing such programs. The Python interpreter is embedded so that you can work
     through the implementation steps.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: TLDR；本教程是 Dana Angluin 的 L* 算法的完整实现，使用 Python 进行推断黑盒程序的输入语法（即不使用等价查询）。这种语法通常对于对此类程序进行模糊测试非常有用。Python
+    解释器被嵌入其中，以便您可以逐步完成实现步骤。
 - en: In many previous posts, I have discussed how to [parse with](/post/2023/11/03/matching-regular-expressions/),
     [fuzz with](/post/2021/10/22/fuzzing-with-regular-expressions/), and manipulate
     regular and context-free grammars. However, in many cases, such grammars may be
@@ -32,8 +47,10 @@
     in some way that the input was accepted or not, what can we do to learn the actual
     input specification of the blackbox? In such cases, the best option is to try
     and learn the input specification.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在许多以前的帖子中，我已经讨论了如何[解析](/post/2023/11/03/matching-regular-expressions/)、[模糊测试](/post/2021/10/22/fuzzing-with-regular-expressions/)和操作正则和上下文无关语法。然而，在许多情况下，这些语法可能不可用。如果您得到一个黑盒程序，在该程序以某种方式指示输入是否被接受，我们该怎么办才能学习到黑盒的实际输入规范呢？在这种情况下，最好的选择是尝试学习输入规范。
 - en: This particular research field which investigates how to learn the input specification
     of blackbox programs is called blackbox *grammar inference* or *grammatical inference*
     (see the **Note** at the end for a discussion on other names). In this post, I
@@ -44,183 +61,261 @@
     Angluin in the same paper also talks about how to update this algorithm to make
     use of the PAC (*Probably Approximately Correct*) framework from Valiant ^(. Angluin
     expands on this further in 1988 ^.))
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个特定的研究领域探讨了如何学习黑盒程序的输入规范，被称为黑盒*语法推断*或*语法推理*（有关其他名称的讨论，请参见结尾处的**注释**）。在这篇文章中，我将讨论一种经典算法，用于学习输入规范，称为
+    L*。L* 算法是由 Dana Angluin 在 1987 年发明的^(. 虽然最初的算法使用了所谓的等价查询，假设您可以单独检查学习到的语法的正确性，而不需要使用
+    yes/no oracle，但在同一篇论文中，Angluin 也谈到了如何更新该算法，以利用 Valiant 的 PAC（*Probably Approximately
+    Correct*）框架^(. Angluin 在 1988 年进一步展开了这一内容^.))
 - en: Contents
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 内容
 - en: '[Prerequisites](#prerequisites)'
+  id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[先决条件](#prerequisites)'
 - en: '[Grammar Inference](#grammar-inference)'
+  id: totrans-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[语法推断](#grammar-inference)'
 - en: '[ObservationTable](#observationtable)'
+  id: totrans-12
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[观察表](#observationtable)'
 - en: '[Convert Table to Grammar](#convert-table-to-grammar)'
+  id: totrans-13
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[将表格转换为语法](#convert-table-to-grammar)'
 - en: '[Cleanup Grammar](#cleanup-grammar)'
+  id: totrans-14
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[清理语法](#cleanup-grammar)'
 - en: '[Closed](#closed)'
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[已关闭](#closed)'
 - en: '[Add prefix](#add-prefix)'
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[添加前缀](#add-prefix)'
 - en: '[Consistent](#consistent)'
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[一致](#consistent)'
 - en: '[Add suffix](#add-suffix)'
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[添加后缀](#add-suffix)'
 - en: '[Teacher](#teacher)'
+  id: totrans-19
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[老师](#teacher)'
 - en: '[PAC Learning](#pac-learning)'
+  id: totrans-20
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[PAC 学习](#pac-learning)'
 - en: '[Check Grammar Equivalence](#check-grammar-equivalence)'
+  id: totrans-21
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[检查语法等价性](#check-grammar-equivalence)'
 - en: '[L star main loop](#l-star-main-loop)'
+  id: totrans-22
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[L* 主循环](#l-star-main-loop)'
 - en: '[The F1 score.](#the-f1-score)'
+  id: totrans-23
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[F1 分数](#the-f1-score)'
 - en: '[Definitions](#definitions)'
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[定义](#definitions)'
 - en: '[Notes](#notes)'
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[备注](#notes)'
 - en: '[Context Free Languages](#context-free-languages)'
+  id: totrans-26
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[上下文无关语言](#context-free-languages)'
 - en: '[Artifacts](#artifacts)'
+  id: totrans-27
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[文物](#artifacts)'
 - en: '**Important:** [Pyodide](https://pyodide.readthedocs.io/en/latest/) takes time
     to initialize. Initialization completion is indicated by a red border around *Run
     all* button.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**重要提示：** [Pyodide](https://pyodide.readthedocs.io/en/latest/) 的初始化需要一些时间。初始化完成时，*运行所有*
+    按钮周围会出现红色边框。'
 - en: <details><summary>Available Packages</summary> These are packages that refer
     either to my previous posts or to pure python packages that I have compiled, and
     is available in the below locations. As before, install them if you need to run
     the program directly on the machine. To install, simply download the wheel file
     (`pkg.whl`) and install using `pip install pkg.whl`.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary>可用包</summary>这些包要么是指向我的以前的帖子，要么是我编译的纯 Python 包，并且位于以下位置。与之前一样，如果需要在机器上直接运行程序，请安装它们。要安装，只需下载轮文件（`pkg.whl`），然后使用`pip
+    install pkg.whl`进行安装。
 - en: '[simplefuzzer-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/simplefuzzer-0.0.1-py2.py3-none-any.whl)
     from "[The simplest grammar fuzzer in the world](/post/2019/05/28/simplefuzzer-01/)".'
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[simplefuzzer-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/simplefuzzer-0.0.1-py2.py3-none-any.whl)来自"[世界上最简单的语法模糊测试器](/post/2019/05/28/simplefuzzer-01/)"。'
 - en: '[rxfuzzer-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/rxfuzzer-0.0.1-py2.py3-none-any.whl)
     from "[Fuzzing With Regular Expressions](/post/2021/10/22/fuzzing-with-regular-expressions/)".'
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[rxfuzzer-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/rxfuzzer-0.0.1-py2.py3-none-any.whl)来自"[使用正则表达式进行模糊测试](/post/2021/10/22/fuzzing-with-regular-expressions/)"。'
 - en: '[earleyparser-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/earleyparser-0.0.1-py2.py3-none-any.whl)
     from "[Earley Parser](/post/2021/02/06/earley-parsing/)".'
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[earleyparser-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/earleyparser-0.0.1-py2.py3-none-any.whl)来自"[Earley
+    解析器](/post/2021/02/06/earley-parsing/)"。'
 - en: '[cfgrandomsample-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/cfgrandomsample-0.0.1-py2.py3-none-any.whl)
     from "[Uniform Random Sampling of Strings from Context-Free Grammar](/post/2021/07/27/random-sampling-from-context-free-grammar/)".'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[cfgrandomsample-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/cfgrandomsample-0.0.1-py2.py3-none-any.whl)来自"[上下文无关文法的均匀随机抽样](/post/2021/07/27/random-sampling-from-context-free-grammar/)"。'
 - en: '[cfgremoveepsilon-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/cfgremoveepsilon-0.0.1-py2.py3-none-any.whl)
     from "[Remove Empty (Epsilon) Rules From a Context-Free Grammar.](/post/2021/09/29/remove-epsilons/)".'
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[cfgremoveepsilon-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/cfgremoveepsilon-0.0.1-py2.py3-none-any.whl)来自"[从上下文无关文法中去除空（ε）规则](/post/2021/09/29/remove-epsilons/)"。'
 - en: '[gatleastsinglefault-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/gatleastsinglefault-0.0.1-py2.py3-none-any.whl)
     from "[Specializing Context-Free Grammars for Inducing Faults](/post/2021/09/09/fault-inducing-grammar/)".'
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[gatleastsinglefault-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/gatleastsinglefault-0.0.1-py2.py3-none-any.whl)来自"[专门化上下文无关语法以引入故障](/post/2021/09/09/fault-inducing-grammar/)"。'
 - en: '[hdd-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/hdd-0.0.1-py2.py3-none-any.whl)
     from "[Hierarchical Delta Debugging](/post/2019/12/04/hdd/)".'
+  id: totrans-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[hdd-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/hdd-0.0.1-py2.py3-none-any.whl)来自"[分层增量调试](/post/2019/12/04/hdd/)"。'
 - en: '[ddset-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/ddset-0.0.1-py2.py3-none-any.whl)
     from "[Simple DDSet](/post/2020/08/03/simple-ddset/)".</details>'
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[ddset-0.0.1-py2.py3-none-any.whl](https://rahul.gopinath.org/py/ddset-0.0.1-py2.py3-none-any.whl)来自"[简单的
+    DDSet](/post/2020/08/03/simple-ddset/)"。</details>'
 - en: Prerequisites
+  id: totrans-38
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: We need the fuzzer to generate inputs to parse and also to provide some utilities
     such as conversion of regular expression to grammars, random sampling from grammars
     etc. Hence, we import all that.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要模糊测试器生成输入以进行解析，并提供一些实用工具，例如将正则表达式转换为语法，从语法中随机抽样等。因此，我们导入所有这些内容。
 - en: Grammar Inference
+  id: totrans-40
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 语法推断
 - en: Let us start with the assumption that the blackbox program accepts a [regular
     language](https://en.wikipedia.org/wiki/Regular_language). By *accept* I mean
     that the program does some processing with input given rather than error out.
     For example, if the blackbox actually contained a URL parser, it will *accept*
     a string that look like a URL, and *reject* strings that are not in the URL format.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们假设黑盒程序接受[正则语言](https://en.wikipedia.org/wiki/Regular_language)。通过 *接受*，我指的是该程序对给定的输入进行一些处理而不是报错。例如，如果黑盒实际上包含一个
+    URL 解析器，它将 *接受* 一个看起来像 URL 的字符串，并 *拒绝* 不符合 URL 格式的字符串。
 - en: So, given such a program, and you are not allowed to peek inside the program
     source code, how do you find what the program accepts? assuming that the program
     accepts a regular language, we can start by constructing a [DFA](https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
     (A deterministic finite state machine).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，给定这样一个程序，且你不被允许窥视程序源代码，你如何找出程序接受什么？假设该程序接受一个正则语言，我们可以从构建一个[DFA](https://en.wikipedia.org/wiki/Deterministic_finite_automaton)（确定有限状态机）开始。
 - en: Finite state machines are of course the bread and butter of computer science.
     The idea is that the given program can be represented as a set of discrete states,
     and transitions between them. The DFA is initialized to the start state. A state
@@ -228,6 +323,7 @@
     as *accepting*. That is, starting from the start state, and after consuming all
     the symbols in the input, the state reached is one of the accept states, then
     we say that the input was *accepted* by the machine.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: Given this information, how would we go about reconstructing the machine? An
@@ -239,15 +335,18 @@
     least one suffix string, which when fed into the pair of states, produces different
     answers – i.e. for one, the machine accepts (or reaches one of the accept states),
     while for the other is rejected (or the end state is not an accept).
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: Given this information, a data structure for keeping track of our experiments
     presents itself – the *observation table* where we keep our prefix strings as
     rows, and suffix strings as columns. The cell content simply marks whether program
     accepted the prefix + suffix string or not. So, here is our data structure.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: ObservationTable
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -255,12 +354,15 @@
     as an internal dict `_T`. We also keep the prefixes in `P` and suffixes in `S`.
     We initialize the set of prefixes `P` to be \({\epsilon}\) and the set of suffixes
     `S` also to be \({\epsilon}\). We also add a few utility functions.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: Using the observation table with some pre-cooked data.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: Convert Table to Grammar
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -269,6 +371,7 @@
     rows may correspond to the same state (as the cell contents are the same). The
     *start state* is given by the state that correspond to the \(\epsilon\) row. A
     state is accepting if it on query of \(\epsilon\) i.e. `''`, it returns 1.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: The formal notations are as follows. The notation \([p]\) means the state corresponding
@@ -278,37 +381,50 @@
     that resulted in a particular state as its *access prefix*, and we denote the
     access prefix of a state \(s\) by \(\lfloor{}s\rfloor\) (this is not used in this
     post). The following is the DFA from our table.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'states: \(Q = {[p] : p \in P}\)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'start state: \(q0 = [\epsilon]\)'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'transition function: \([p](a) \rightarrow [p.a]\)'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 转移函数：\([p](a) \rightarrow [p.a]\)
 - en: 'accepting state: \(F = {[p] : p \in P : [[p,\epsilon]] = 1}\)'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '接受状态：\(F = {[p] : p \in P : [[p,\epsilon]] = 1}\)'
 - en: For constructing the grammar from the table, we first identify all distinguished
     states. Next, we identify the start state, followed by accepting states. Finally,
     we connect states together with transitions between them.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了从表中构建语法，我们首先识别所有区分状态。接下来，我们识别起始状态，接着是接受状态。最后，我们将状态与它们之间的转移连接起来。
 - en: Let us try the observation to grammar conversion for an observation table that
     corresponds to recognition of the string `a`. We will use the alphabet `a`, `b`.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试将观察转换为文法，对应于识别字符串 `a` 的观察表。我们将使用字母 `a`、`b`。
 - en: Cleanup Grammar
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 清理语法
 - en: This gets us a grammar that can accept the string `a`, but it also has a problem.
     The issue is that the key `<00>` has no rule that does not include `<00>` in its
     expansion. That is, `<00>` is an infinite loop that once the machine goes in,
@@ -317,46 +433,69 @@
     as the cost, then that nonterminal produces an infinite loop and hence both the
     nonterminal, as well as any rule that references that nonterminal have to be removed
     recursively.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样我们得到一个可以接受字符串 `a` 的语法，但它也存在问题。问题在于键 `<00>` 没有一个规则不包含 `<00>` 在其扩展中。也就是说，`<00>`
+    是一个无限循环，一旦机器进入其中，就无法退出。我们需要删除这样的规则。我们使用 LimitFuzzer 的 `compute_cost()` 函数来做到这一点。思路是如果一个非终结符的所有规则的成本都为
+    `inf`，那么该非终结符产生了一个无限循环，因此必须递归地删除该非终结符以及引用该非终结符的任何规则。
 - en: We can wrap up everything in one method.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将所有事情都封装在一个方法中。
 - en: once again
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 再一次
 - en: Now that we are convinced that we can produce a DFA or a grammar out of the
     table let us proceed to examining how to produce this table.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们确信我们可以从表中生成一个 DFA 或语法，让我们继续检查如何生成这个表。
 - en: We start with the start state in the table, because we know for sure that it
     exists, and is represented by the empty string in row and column, which together
     (prefix + suffix) is the empty string `''` or \(\epsilon\). We ask the program
     if it accepts the empty string, and if it accepts, we mark the corresponding cell
     in the table as *accept* (or `1`).
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从表中的起始状态开始，因为我们确定它存在，并且由行和列中的空字符串表示，这两者（前缀 + 后缀）都是空字符串 `''` 或 \(\epsilon\)。我们询问程序是否接受空字符串，如果接受，我们将表中对应的单元格标记为*接受*（或
+    `1`）。
 - en: For any given state in the DFA, we should be able to say what happens when an
     input symbol is fed into the machine in that state. So, we can extend the table
     with what happens when each input symbol is fed into the start state. This means
     that we extend the table with rows corresponding to each symbol in the input alphabet.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 DFA 中的任何给定状态，我们应该能够说当输入符号被输入到该状态的机器中时会发生什么。因此，我们可以扩展表格，说明每个输入符号被输入到起始状态时会发生什么。这意味着我们扩展表格，使其包含与输入字母表中的每个符号相对应的行。
 - en: So, we can initialize the table as follows. First, we check whether the empty
     string is in the language. Then, we extend the table `T` to `(P u P.A).S` using
     membership queries. This is given in `update_table()`
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以初始化表格如下。首先，我们检查空字符串是否在语言中。然后，我们使用成员查询将表格 `T` 扩展到 `(P u P.A).S`。这在 `update_table()`
+    中给出。
 - en: The update table has two parts. First, it takes the current set of prefixes
     (`rows`) and determines the auxiliary rows to compute based on extensions of the
     current rows with the symbols in the alphabet (`auxrows`). This gives the complete
     set of rows for the table. Then, for each suffix in `S`, ensure that the table
     has a cell, and it is updated with the oracle result.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新表格有两个部分。首先，它获取当前的前缀集合（`rows`）并确定要基于当前行与字母表中的符号的扩展来计算的辅助行（`auxrows`）。这给出了表格的完整行集合。然后，对于
+    `S` 中的每个后缀，确保表格具有单元格，并且更新为预期结果。
 - en: Using init_table and update_table
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 init_table 和 update_table
 - en: Since we want to know what state we reached when we fed the input symbol to
     the start state, we add a set of cleverly chosen suffixes (columns) to the table,
     determine the machine response to these suffixes (by feeding the machine prefix+suffix
@@ -370,103 +509,150 @@
     suffix, that also distinguishes the state from the start state. Once we have identified
     a new state, we can then extend the DFA with transitions from this new state,
     and check whether more states can be identified.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们想要知道当我们将输入符号提供给起始状态时我们到达了哪个状态，我们向表中添加了一组聪明选择的后缀（列），确定了机器对这些后缀的响应（通过为每个组合提供机器前缀+后缀），并检查是否识别了除起始状态以外的任何新状态。通过某个后缀，可以将通过前缀到达的新状态与起始状态区分开来，如果在消耗特定前缀后，接着特定后缀，机器转移到
+    *接受*，但是当将机器放在起始状态时提供相同的后缀时，终止状态不是*接受*。（即机器接受前缀 + 后缀，但不接受单独的后缀）。对称地，如果机器不接受字符串前缀
+    + 后缀，但接受字符串后缀，则这也将状态与起始状态区分开来。一旦我们确定了一个新状态，我们就可以扩展DFA以包含从这个新状态开始的转换，并检查是否可以识别更多状态。
 - en: While doing this, there is one requirement we need to ensure. The result of
     transition from every state for every alphabet needs to be defined. The property
     that ensures this for the observation table is called *closedness* or equivalently,
     the observation table is *closed* if the table has the following property.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在执行此操作时，有一个要求我们需要确保。每个字母的每个状态转换的结果都需要定义。确保观察表具有此属性的属性称为*闭合性*，或者等价地说，如果表具有以下属性，则观察表是*闭合的*。
 - en: Closed
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 闭合
 - en: The idea is that for every prefix we have, in set \(P\), we need to find the
     state that is reached for every \(a \in A\). Then, we need to make sure that the
     *state* represented by that prefix exists in \(P\). (If such a state does not
     exist in P, then it means that we have found a new state).
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 思想是对于我们拥有的每个前缀，在集合\(P\)中，我们需要为每个\(a \in A\)找到到达的状态。然后，我们需要确保由该前缀表示的*状态*存在于\(P\)中。（如果在P中不存在这样的状态，则意味着我们已经找到了一个新状态）。
 - en: 'Formally: An observation table \(P \times S\) is closed if for each \(t \in
     P·A\) there exists a \(p \in P\) such that \([t] = [p]\)'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 形式上：如果对于每个\(t \in P·A\)，存在\(p \in P\)使得\([t] = [p]\)，则观察表\(P \times S\)是封闭的。
 - en: Using closed.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用闭合。
 - en: Add prefix
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 添加前缀
 - en: Using add_prefix
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 add_prefix
 - en: This is essentially the intuition behind most of the grammar inference algorithms,
     and the cleverness lies in how the suffixes are chosen. In the case of L*, when
     we find that one of the transitions from the current states result in a new state,
     we add the alphabet that caused the transition from the current state and the
     suffix that distinguished the new state to the suffixes (i.e, a + suffix is added
     to the columns).
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 这基本上是大多数语法推理算法背后的直觉，而聪明之处在于后缀的选择方式。在L*的情况下，当我们发现从当前状态的一个转换导致一个新状态时，我们将导致从当前状态进行转换的字母和区分新状态的后缀添加到后缀中（即，将
+    a + 后缀添加到列中）。
 - en: This particular aspect is governed by the *consistence* property of the observation
     table.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个特定的方面受到观察表的*一致性*属性的控制。
 - en: Consistent
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一致
 - en: An observation table \(P \times S\) is consistent if, whenever \(p1\) and \(p2\)
     are elements of P such that \([p1] = [p2]\), for each \(a \in A\), \([p1.a] =
     [p2.a]\). *If* there are two rows in the top part of the table repeated, then
     the corresponding suffix results should be the same. If not, we have found a counter
     example. So we report the alphabet and the suffix that distinguished the rows.
     We will then add the new string (a + suffix) as a new suffix to the table.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果观察表\(P \times S\)是一致的，则每当\(p1\)和\(p2\)是P的元素，使得\([p1] = [p2]\)时，对于每个\(a \in
+    A\)，\([p1.a] = [p2.a]\)。*如果*表的顶部有两行重复，则相应的后缀结果应该相同。如果不是，则我们找到了一个反例。因此，我们报告区分行的字母和后缀。然后，我们将新字符串（a
+    + 后缀）作为新后缀添加到表中。
 - en: Add suffix
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 添加后缀
 - en: Using add_suffix
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 add_suffix
 - en: (Of course readers will quickly note that the table is not the best data structure
     here, and just because a suffix distinguished two particular states does not mean
     that it is a good idea to evaluate the same suffix on all other states. These
     are ideas that will be explored in later algorithms).
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: （当然，读者很快就会注意到，表格并不是这里最好的数据结构，并且仅仅因为一个后缀区分了两个特定状态，并不意味着评估相同后缀在所有其他状态上都是一个好主意。这些是稍后算法将要探讨的想法）。
 - en: Finally, L* also relies on a *Teacher* for it to suggest new suffixes that can
     distinguish unrecognized states from current ones.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，L*也依赖于*教师*，以便它提出可以将未识别状态与当前状态区分开的新后缀。
 - en: Teacher
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教师
 - en: We now construct our teacher. We have two requirements for the teacher. The
     first is that it should fulfil the requirement for Oracle. That is, it should
     answer `is_member()` queries. Secondly, it should also answer `is_equivalent()`
     queries. First, we define the oracle interface.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们构建我们的教师。我们对教师有两个要求。第一个是它应该满足Oracle的要求。也就是说，它应该回答`is_member()`查询。其次，它还应该回答`is_equivalent()`查询。首先，我们定义Oracle接口。
 - en: As I promised, we will be using the PAC framework rather than the equivalence
     oracles.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我所承诺的，我们将使用PAC框架而不是等价物或者预言机。
 - en: We define a simple teacher based on regular expressions. That is, if you give
     it a regular expression, will convert it to an acceptor based on a [parser](/post/2021/02/06/earley-parsing/)
     and a generator based on a [random sampler](/post/2021/07/27/random-sampling-from-context-free-grammar/),
     and will then use it for verification of hypothesis grammars.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们根据正则表达式定义了一个简单的教师。也就是说，如果你给它一个正则表达式，它将会将其转换为基于[解析器](/post/2021/02/06/earley-parsing/)的接受器和基于[随机抽样器](/post/2021/07/27/random-sampling-from-context-free-grammar/)的生成器，并将用于验证假设语法。
 - en: PAC Learning
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PAC 学习
 - en: PAC learning was introduced by Valiant in 1984 ^(as a way to think about inferred
     models in computational linguistics and machine learning. The basic idea is that
     given a blackbox model, we need to be able to produce samples that can then be
@@ -485,22 +671,33 @@
     parameter. Given the desired \(\delta\) and \(\epsilon\) Angluin provides a formula
     to compute the number of calls to make to the membership oracle at the \(i^{th}\)
     equivalence query.)
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: PAC学习是由Valiant于1984年提出的，^(作为一种思考计算语言学和机器学习中推断模型的方法。基本思想是，鉴于一个黑盒模型，我们需要能够生成样本，然后对模型进行测试以构建推断模型（即训练模型）。在训练期间进行抽样，我们必须假设一些抽样过程，因此需要一个用于训练的分布。根据PAC学习，我们只能保证对使用来自同一分布的样本进行测试的学习模型的性能。鉴于我们从分布中抽样，由于非确定性的存在，有可能数据的分布不如我们所希望的那样广泛，因此训练数据以一定概率不是最优的。这反映了所学模型的质量。这通过置信区间的概念来表示，并由\(\delta\)参数表示。也就是说，\(1
+    - \delta\)量化了我们对模型的信心。接下来，鉴于任何训练数据，由于训练数据是有限的，我们学习的语法是实际语法的近似，并且将始终存在一个错误项。这个错误由\(\epsilon\)参数量化。鉴于所需的\(\delta\)和\(\epsilon\)，Angluin提供了一个公式来计算在第\(i^{th}\)等价查询中调用成员预言的次数。）
 - en: \[n=\lceil\frac{1}{\epsilon}\times log(\frac{1}{\delta}+i\times log(2))\rceil\]
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: \[n=\lceil\frac{1}{\epsilon}\times log(\frac{1}{\delta}+i\times log(2))\rceil\]
 - en: In essence the PAC framework says that there is \(1 - \delta\) probability that
     the model learned will be approximately correct. That is, it will classify samples
     with an error rate less than \(\epsilon\).
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上，PAC框架表明，模型学习的正确性将以\(1 - \delta\)的概率近似正确。也就是说，它将以小于\(\epsilon\)的错误率对样本进行分类。
 - en: We input the PAC parameters delta for confidence and epsilon for accuracy
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们输入PAC参数delta以获得置信度和epsilon以获得准确性
 - en: 'We can define the membership query `is_member()` as follows:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以定义成员查询`is_member()`如下：
 - en: 'Given a grammar, check whether it is equivalent to the given grammar. The PAC
     guarantee is that we only need `num_calls` for the `i`th equivalence query. For
     equivalence check here, we check for strings of length 1, then length 2 etc, whose
@@ -509,85 +706,121 @@
     teacher*, that tries to respond with a shortest possible counter example. We #
     also take the easy way out and only check for a maximum length of 10. (I will
     revisit this if there is interest on expanding this).'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定一个语法，检查它是否等价于给定的语法。PAC保证是我们只需要`num_calls`对于第`i`个等价查询。在这里等价检查，我们检查长度为1的字符串，然后长度为2的字符串等等，它们的总和应该是`num_calls`。我们采用了简单的方法，只是将`num_calls`作为每个字符串长度的调用次数。我们有一个称为*合作老师*，试图以尽可能短的反例回答。我们#也采用了简单的方法，只检查最大长度为10的情况。（如果有兴趣扩展此内容，我将重新审视这一点）。
 - en: Due to the limitations of our utilities for random sampling, we need to remove
     epsilon tokens from places other than the start rule.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们随机抽样工具的限制，我们需要从除了开始规则之外的地方删除epsilon标记。
 - en: Next, we have a helper for producing the random sampler, and the parser for
     easy comparison.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们有一个用于生成随机采样器的辅助程序，以及用于简单比较的解析器。
 - en: Check Grammar Equivalence
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 检查语法等价性
 - en: Checking if two grammars are equivalent to a length of string for n count.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查两个语法是否等价于字符串长度为n的计数。
 - en: Let us test this out.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们测试一下。
 - en: L star main loop
+  id: totrans-100
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: L星主循环
 - en: Given the observation table and the teacher, the algorithm itself is simple.
     The L* algorithm loops, doing the following operations in sequence. (1) keep the
     table closed, (2) keep the table consistent, and if it is closed and consistent
     (3) ask the teacher if the corresponding hypothesis grammar is correct.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定观察表和老师，算法本身很简单。L*算法循环执行以下操作。（1）保持表封闭，（2）保持表一致，如果封闭和一致（3）询问老师相应的假设语法是否正确。
 - en: Using it
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用它
 - en: we define a match function for converting syntax error to boolean
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们为将语法错误转换为布尔值定义了一个匹配函数
 - en: The F1 score.
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: F1得分。
 - en: There is of course an additional question here. From the perspective of language
     learning for software engineering *how we learned* is less important than *what
     we learned*. That is, the precision and recall of the model that we learned is
     important. I have discussed how to compute the precision and recall, and the F1
     score [previously](/post/2021/01/28/grammar-inference/). So, we can compute the
     precision and recall as follows.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这里还有一个额外的问题。从软件工程语言学习的角度来看，*我们是如何学习的*比*我们学到了什么*更不重要。也就是说，我们学到的模型的精确度和召回率很重要。我已经讨论了如何计算精确度和召回率，以及F1得分[之前](/post/2021/01/28/grammar-inference/)。因此，我们可以如下计算精确度和召回率。
 - en: Definitions
+  id: totrans-106
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 定义
 - en: 'Input symbol: A single symbol that is consumed by the machine which can move
     it from one state to another. The set of such symbols is called an alphabet, and
     is represented by \(A\).'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入符号：由机器消耗的单个符号，可以将其从一个状态移动到另一个状态。这些符号的集合称为字母表，用\(A\)表示。
 - en: 'Membership query: A string that is passed to the blackbox. The blackbox answers
     yes or no.'
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 成员查询：传递给黑盒子的字符串。黑盒子回答是或否。
 - en: 'Equivalence query: A grammar that is passed to the teacher as a hypothesis
     of what the target language is. The teacher answers yes or a counter example that
     behaves differently on the blackbox and the hypothesis grammar.'
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 等价查询：作为目标语言假设的语法传递给老师。老师回答是或者在黑盒子和假设语法上表现不同的反例。
 - en: 'Prefix closed: a set is prefix closed if all prefixes of any of its elements
     are also in the same set.'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 前缀封闭：如果集合的任何元素的所有前缀也在同一集合中，则集合是前缀封闭的。
 - en: 'Suffix closed: a set is suffix closed if all suffixes of any of its elements
     are also in the same set.'
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 后缀封闭：如果集合的任何元素的所有后缀也在同一集合中，则集合是后缀封闭的。
 - en: 'Observation table: A table whose rows correspond to the *candidate states*.
     The rows are made up of prefix strings that can reach given states — commonly
     represented as \(S\), but here we will denote these by \(P\) for prefixes — and
@@ -600,41 +833,57 @@
     — prefix + suffix. That is \(T[s,e] = O(s.e)\). The table has two properties:
     *closedness* and *consistency*. If these are not met at any time, we take to resolve
     it.'
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 观察表：其行对应于*候选状态*的表。行由可以到达给定状态的前缀字符串组成——通常表示为\(S\)，但在这里我们将这些表示为\(P\)表示前缀——列由用于区分这些状态的后缀字符串组成——通常表示为\(E\)表示扩展，但我们将在此处使用\(S\)表示后缀。该表包含辅助行，用于扩展每个项目\(p
+    \in P\)与每个字母\(a \in A\)，如我们稍后在*闭合性*中讨论的那样。该表定义了算法推断的语言。表的内容是来自于一个由行和列标签组成的字符串的答案——前缀+后缀。即\(T[s,e]
+    = O(s.e)\)。表具有两个属性：*闭合性*和*一致性*。如果任何时候这些属性没有得到满足，我们将采取措施解决它。
 - en: 'The state: A state in the DFA is represented by a prefix in the observation
     table, and is named by the pattern of 1s and 0s in the cell contents. We represent
     a state corresponding the prefix \(p\) as \([p]\).'
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 状态：DFA中的状态由观察表中的前缀表示，并由单元格内容中1和0的模式命名。我们将与前缀\(p\)对应的状态表示为\([p]\)。
 - en: Closedness of the observation table means that for each \(p \in P\) and each
     \(a \in A\), the state represented by the auxiliary row \([p.a]\) (i.e., its contents)
     exists in \(P\). That is, there is some \(p' \in P\) such that \([p.a] == [p']\).
     The idea is that, the state corresponding to \([p]\) accepts alphabet \(a\) and
     transitions to the state \([p']\), and \(p'\) must be in the main set of rows
     \(P\).
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 观察表的闭合性意味着对于每个\(p \in P\)和每个\(a \in A\)，由辅助行\([p.a]\)（即其内容）表示的状态存在于\(P\)中。也就是说，存在某个\(p'
+    \in P\)使得\([p.a] == [p']\)。其思想是，与\([p]\)对应的状态接受字母\(a\)并转移到状态\([p']\)，而\(p'\)必须在主行集\(P\)中。
 - en: Consistency of the observation table means that if two prefixes represents the
     same state (i.e. the contents of two rows are equal), that is \([p1] = [p2]\)
     then \([p1 . a] = [p2 . a]\) for all alphabets. The idea is that if two prefixes
     reach the state, then when fed any alphabet, both prefixes should transition to
     the same next state (represented by the pattern produced by the suffixes).
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 观察表的一致性意味着如果两个前缀表示相同的状态（即两行的内容相等），即\([p1] = [p2]\)，那么对于所有字母\([p1 . a] = [p2
+    . a]\)。其思想是，如果两个前缀达到状态，则当输入任何字母时，这两个前缀应该转移到相同的下一个状态（由后缀产生的模式表示）。
 - en: The candidate states `P` is prefix closed, while the set of suffixes `S` is
     suffix closed.
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 候选状态`P`是前缀闭合的，而后缀集合`S`是后缀闭合的。
 - en: Notes
+  id: totrans-117
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: While there is no strict specifications as to what grammar induction, inference,
     identification, and learning is, according to [Higuera](http://videolectures.net/mlcs07_higuera_giv/),
     Grammar inference is about learning **the** grammar (i.e. the representation)
@@ -648,12 +897,16 @@
     given data. Closely related fields are grammar mining, grammar recovery, and grammar
     extraction which are all whitebox approaches based on program or related artifact
     analysis. Language acquisition is another related term.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管关于语法归纳、推理、识别和学习没有严格的规范，但根据[Higuera](http://videolectures.net/mlcs07_higuera_giv/)的说法，语法推理是关于在提供有关某种语言的信息时学习**语法**（即表示），并侧重于目标，即语法。也就是说，你假设目标语法存在。然后，尝试根据你的观察来猜测那个语法。另一方面，如果你不相信某个特定的目标语法存在，但想尽最大努力学习底层原理，或者找到一个能解释数据的语法，那么这就是语法归纳。（这也在Higuera的书《语法推理》的前言中提到）也就是说，它侧重于给定数据的最佳可能语法。密切相关的领域是语法挖掘、语法恢复和语法提取，它们都是基于程序或相关工件分析的白盒方法。语言习得是另一个相关术语。
 - en: Context Free Languages
+  id: totrans-119
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 无上下文语言
 - en: Here, we discussed how to infer a regular grammar. In many cases the blackbox
     may accept a language that is beyond regular, for example, it could be context-free.
     The nice thing about L* is that it can provide us a close approximation of such
@@ -661,12 +914,18 @@
     grammar thus produced, and try and identify context-free structure in that DFA
     based on recognition of repeating structures. It is still an open question on
     how to recover the context-free structure from such a DFA.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们讨论了如何推断正则语法。在许多情况下，黑匣子可能接受超出正则语言范围的语言，例如，它可能是上下文无关的。关于L*的好处是它可以为我们提供一个接近这种上下文无关语言的正则语法的近似值。然后，可以取得的正则语法，然后尝试并识别基于识别重复结构的DFA中的上下文无关结构。如何从这样的DFA中恢复上下文无关结构仍然是一个悬而未决的问题。
 - en: Artifacts
+  id: totrans-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 人工制品
 - en: The runnable Python source for this notebook is available [here](https://github.com/rahulgopinath/rahulgopinath.github.io/blob/master/notebooks/2024-01-04-lstar-learning-regular-languages.py).
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 本笔记本的可运行Python源代码在[这里](https://github.com/rahulgopinath/rahulgopinath.github.io/blob/master/notebooks/2024-01-04-lstar-learning-regular-languages.py)可用。
