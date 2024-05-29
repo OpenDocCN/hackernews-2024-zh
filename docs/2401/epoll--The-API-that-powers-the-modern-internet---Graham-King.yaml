@@ -1,71 +1,104 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:42:10'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:42:10
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'epoll: The API that powers the modern internet · Graham King'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: epoll：推动现代互联网的API · Graham King
 - en: 来源：[https://darkcoding.net/software/epoll-the-api-that-powers-the-modern-internet/](https://darkcoding.net/software/epoll-the-api-that-powers-the-modern-internet/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://darkcoding.net/software/epoll-the-api-that-powers-the-modern-internet/](https://darkcoding.net/software/epoll-the-api-that-powers-the-modern-internet/)
 - en: You used [epoll](https://man7.org/linux/man-pages/man7/epoll.7.html) to fetch
     this blog post. For almost anything you do on the Internet the server will be
     running Linux and it will use `epoll` to receive and answer your request in a
     timely and affordable manner.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 你使用[epoll](https://man7.org/linux/man-pages/man7/epoll.7.html)来获取这篇博客文章。几乎你在互联网上做的任何事情，服务器都会运行Linux，并使用`epoll`及时且经济地接收和回应你的请求。
 - en: epoll is what makes Go such a great language for writing server software. Here
     is epoll in [Go’s netpoll](https://github.com/golang/go/blob/f229e7031a6efb2f23241b5da000c3b3203081d6/src/runtime/netpoll_epoll.go#L101-L126).
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: epoll是使Go成为编写服务器软件的绝佳语言的原因。以下是Go中的epoll在[netpoll中的使用](https://github.com/golang/go/blob/f229e7031a6efb2f23241b5da000c3b3203081d6/src/runtime/netpoll_epoll.go#L101-L126)。
 - en: epoll is what makes nginx the [most popular web server](https://news.netcraft.com/archives/2021/12/22/december-2021-web-server-survey.html)
     in the world (this blog runs nginx). Here is [nginx’s use of epoll](https://github.com/nginx/nginx/blob/a64190933e06758d50eea926e6a55974645096fd/src/event/modules/ngx_epoll_module.c#L784-L800).
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: epoll是使nginx成为[世界上最受欢迎的Web服务器](https://news.netcraft.com/archives/2021/12/22/december-2021-web-server-survey.html)的原因（这个博客正在运行nginx）。以下是[nginx对epoll的使用](https://github.com/nginx/nginx/blob/a64190933e06758d50eea926e6a55974645096fd/src/event/modules/ngx_epoll_module.c#L784-L800)。
 - en: and it is often what we mean when we say ‘async’ in most programming languages.
     For example, of Rust’s two main async frameworks, async-std uses [polling](https://github.com/smol-rs/polling/blob/master/src/epoll.rs#L156-L157)
     and tokio uses [mio](https://github.com/tokio-rs/mio/blob/dca2134ef355b3c0d00e8e338e44e7d9ed63edac/src/sys/unix/selector/epoll.rs#L68).
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在大多数编程语言中，当我们说“异步”时，通常指的是这种情况。例如，Rust的两个主要异步框架中，async-std使用[轮询](https://github.com/smol-rs/polling/blob/master/src/epoll.rs#L156-L157)，而tokio使用[mio](https://github.com/tokio-rs/mio/blob/dca2134ef355b3c0d00e8e338e44e7d9ed63edac/src/sys/unix/selector/epoll.rs#L68)。
 - en: 'Aside: All of the above work on many operating systems and support API’s other
     than `epoll`, which is Linux specific. The Internet is [mostly made of](https://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Public_servers_on_the_Internet)
     [Linux](https://w3techs.com/technologies/details/os-unix), so epoll is the API
     that matters.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了`epoll`之外，以上所有工作在许多操作系统上都能运行，并支持其他API。因为互联网[主要由](https://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Public_servers_on_the_Internet)
+    [Linux](https://w3techs.com/technologies/details/os-unix)组成，所以epoll是最重要的API。
 - en: The problem
+  id: totrans-11
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 问题
 - en: 'The core problem of running a network service, the problem epoll fixes, is
     that your network is very fast and your clients network is very slow. A server
     handling a request typically looks like this:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行网络服务的核心问题，也是epoll解决的问题，是你的网络非常快，而客户端的网络非常慢。处理请求的服务器通常是这样的：
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: During the “read” and “write” parts above the server is idle, waiting for data
     or acknowledgments of that data to move across the network.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的“读”和“写”部分期间，服务器处于空闲状态，等待数据或该数据的确认在网络上移动。
 - en: Before epoll
+  id: totrans-15
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 在epoll之前
 - en: Before epoll the standard way to overcome this was to run a pool of processes
     each handling a different user request, typically with Apache [mod_prefork](https://httpd.apache.org/docs/2.4/mod/prefork.html).
     While one process waits on the user to acknowledge a packet of data, a different
@@ -74,116 +107,167 @@
     Multi-threading was risky as many libraries were not thread safe. Steven’s 2004
     reference [UNIX Network Programming](https://amzn.to/3FUlV4n) has a chapter discussing
     preforked vs prethreaded designs, because those were your options back then.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在epoll之前，克服这个问题的标准方法是运行一个进程池，每个进程处理一个不同的用户请求，通常使用Apache的[mod_prefork](https://httpd.apache.org/docs/2.4/mod/prefork.html)。当一个进程等待用户确认数据包时，另一个进程可以使用CPU。一个新兴的替代方法是使用线程池，它比进程池轻，可以处理低数百个并发用户。多线程是有风险的，因为许多库不是线程安全的。Steven在2004年的参考书[UNIX网络编程](https://amzn.to/3FUlV4n)中有一章讨论了preforked
+    vs prethreaded设计，因为那时候这是你的选择。
 - en: Then along came everybody, and even hundreds of concurrent users turned out
     not to be enough. An influential article, [The C10K problem](http://www.kegel.com/c10k.html)
     started this discussion in 1999\. It was not uncommon for web requests to timeout.
     People would [mirror](https://en.wikipedia.org/wiki/Mirror_site) popular sites
     in an effort to spread the traffic.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后所有人都来了，即使是数百个并发用户也不够。一篇有影响力的文章，《The C10K problem》（[英文链接](http://www.kegel.com/c10k.html)）于1999年开始讨论这个问题。网络请求超时并不少见。人们会[镜像](https://en.wikipedia.org/wiki/Mirror_site)流行的站点以试图分散流量。
 - en: The solution
+  id: totrans-18
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 解决方案
 - en: In 2000 Jonathan Lemon solved this problem for FreeBSD 4.3 by designing and
     building [kqueue/kevent](https://people.freebsd.org/~jlemon/papers/kqueue.pdf),
     making BSD the early choice for high performance networking.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 2000年，Jonathan Lemon为FreeBSD 4.3解决了这个问题，设计并构建了[kqueue/kevent](https://people.freebsd.org/~jlemon/papers/kqueue.pdf)，使得BSD成为高性能网络的早期选择。
 - en: Independently, in July 2001 Davide Libenzi solved the problem for Linux, with
     the [first draft of epoll](http://www.xmailserver.org/linux-patches/nio-improve.html),
     which [evolved](https://lwn.net/Articles/16026/), was [merged](https://lwn.net/Articles/13481/)
     into Linux kernel 2.5.44 (a development release) in October 2002 and became widely
     available in December 2003 with the release of stable kernel 2.6.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 独立地，2001年7月，Davide Libenzi为Linux解决了这个问题，使用了[epoll的第一个草案](http://www.xmailserver.org/linux-patches/nio-improve.html)，它[发展了](https://lwn.net/Articles/16026/)，并[合并](https://lwn.net/Articles/13481/)到了Linux内核2.5.44（一个开发版本）中，于2002年10月，并于2003年12月通过发布稳定的内核2.6而普及开来。
 - en: Jim Blandy has a fantastic [comparison of threads vs epoll-based async here](https://github.com/jimblandy/context-switch).
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Jim Blandy在这里有一个[线程与基于epoll的异步的精彩比较](https://github.com/jimblandy/context-switch)。
 - en: How it works
+  id: totrans-22
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 工作原理
 - en: epoll allows a single thread or process to register interest in a long list
     of network sockets (it supports things other than network sockets such as pipes
     and terminals, but you rarely have thousands of those). An `epoll_wait` call will
     then block until one of those is ready for reading or writing. A single thread
     using epoll can handle tens of thousands of concurrent (and mostly idle) requests.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: epoll允许单个线程或进程注册对一长串网络套接字的兴趣（它支持除网络套接字之外的其他东西，例如管道和终端，但你很少有成千上万个这样的东西）。然后，epoll_wait调用将阻塞，直到其中一个准备好读取或写入。使用epoll的单个线程可以处理数以万计的并发（并且大多数是空闲的）请求。
 - en: 'The downside of epoll is that it changes the architecture of your application.
     Instead of a handling each connection with a straightforward `{read request, handle,
     write response}`, you now have a main loop more akin to a game engine. The code
     becomes:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: epoll的缺点是它改变了应用程序的架构。现在，你不再是用直线代码处理每个连接，例如`{读请求，处理，写响应}`，而是有一个更类似游戏引擎的主循环。代码变成了：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: You might be part way through reading a request on one of the ready sockets,
     and part way through writing a response on another socket. You have to remember
     your state, do only as much I/O as the socket can take without blocking, and then
     epoll_wait again. A large part of the popularity of Go, and of the ‘async/await’
     model in languages like C#, Javascript and Rust, is that they hide that event
     loop, allowing you to write straight-line code as if you were still doing thread-per-connection.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能正在读取一个已准备好的套接字上的请求的一部分，并且正在写另一个套接字上的响应的一部分。你必须记住你的状态，只做套接字不会阻塞的I/O，并再次调用
+    epoll_wait。Go语言和像C＃、JavaScript和Rust这样的语言中的'async/await'模型之所以如此受欢迎的一大部分原因是它们隐藏了事件循环，使您能够编写直线代码，就好像您仍在执行每个连接一个线程的操作。
 - en: Conclusion
+  id: totrans-27
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 结论
 - en: Without epoll either the economics of today’s Internet would look quite different
     (fewer requests per machine, so more machines, costing more money), or we’d be
     running our servers on a BSD. And without BSD’s kqueue (which preceded epoll by
     two years), we’d really be in trouble because the only alternatives were proprietary
     (/dev/poll in Solaris 8 and I/O Completion Ports in Windows NT 3.5).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果没有epoll，今天的互联网经济将会大不相同（每台机器的请求较少，因此需要更多的机器，成本更高），或者我们会在BSD上运行我们的服务器。而没有BSD的kqueue（比epoll早两年），我们真的会陷入困境，因为唯一的替代方案是专有的（Solaris
+    8中的/dev/poll和Windows NT 3.5中的I/O完成端口）。
 - en: epoll has been improved since it’s initial release, particularly with EPOLLONESHOT
     and EPOLLEXCLUSIVE flags, but the core API has stayed the same. epoll solved the
     C10K problem on Linux, which powers the Internet, allowing us to build fast and
     cheap Internet services.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: epoll自其初始发布以来已经得到了改进，特别是EPOLLONESHOT和EPOLLEXCLUSIVE标志，但核心API保持不变。epoll解决了Linux上的C10K问题，它驱动了互联网，使我们能够构建快速而廉价的互联网服务。
 - en: Thanks Davide!
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢Davide！
 - en: '[Discuss on Hacker News](https://news.ycombinator.com/item?id=38948091)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[在 Hacker News 上讨论](https://news.ycombinator.com/item?id=38948091)'
 - en: '* * *'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'Addendum: predecessors'
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 附录：前身
 - en: Linux had `poll` and `select` before `epoll`. They were designed to handle a
     handful of file descriptors and they scale O(n) on that count. epoll scales O(1).
     [Kerrisk](https://amzn.to/3r3IVIf) has performance numbers showing poll and select
     becoming unusable beyond the hundreds of file descriptors, while epoll remains
     fast into the tens of thousands.
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Linux在`epoll`之前就有`poll`和`select`。它们设计用于处理少量文件描述符，并且在这方面的规模为O(n)。`epoll`的规模为O(1)。[Kerrisk](https://amzn.to/3r3IVIf)提供的性能数据显示，`poll`和`select`在数百个文件描述符以上就变得无法使用，而`epoll`在数万个文件描述符上仍然保持快速。
 - en: 'Linux also had signal-driven I/O before `epoll`. To quote [UNIX Network Programming](https://amzn.to/3FUlV4n):'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Linux 在`epoll`之前也有信号驱动 I/O。引用 [UNIX 网络编程](https://amzn.to/3FUlV4n)：
 - en: Unfortunately, signal-driven I/O is next to useless with a TCP socket
+  id: totrans-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不幸的是，对于 TCP 套接字，信号驱动 I/O 几乎毫无用处。
 - en: and
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: and
 - en: The only real-world use of signal-driven I/O with sockets that the authors were
     able to find is the NTP server, which uses UDP.
+  id: totrans-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 作者们能够找到的唯一实际使用信号驱动 I/O 与套接字的例子是 NTP 服务器，它使用 UDP。
 - en: Davide Libenzi kindly read this post before publication
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在发布前，Davide Libenzi友善地阅读了这篇文章。

@@ -1,47 +1,59 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:40:30'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Error handling in Go web apps shouldn't be so awkward - Boldly Go
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://boldlygo.tech/posts/2024-01-08-error-handling/](https://boldlygo.tech/posts/2024-01-08-error-handling/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Updated 2024-01-10 to include [Domain-specific errors](https://boldlygo.tech/posts/2024-01-08-error-handling/#domain-specific-error-codes)
     and [limitations](https://boldlygo.tech/posts/2024-01-08-error-handling/#other-limitations)
     sections.*'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this post I’m going to describe an error-handling pattern I’ve found to
     be fairly elegant when writing REST, gRPC, or other services in Go. I have three
     goals in writing this post:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: To explain the pattern I’ve implemented for a few clients, so that others developing
     on the same codebase will understand it.
+  id: totrans-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: To give others a pattern they may wish to implement in their own applications.
+  id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: To solicit feedback. Is there a better pattern out there I haven’t seen yet?
     Are there tweaks I can make to this pattern to make it better?
+  id: totrans-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -49,24 +61,30 @@
     simple HTTP status codes. But the same principles can be used for gRPC services
     as well, or even arbitrary error codes for a CLI tool. Or even all of the above
     simultaneously, which I may expand on in a later post.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: The problem
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Before I explain the pattern I use, let me explain what it replaces, so that
     we might understand the problems it’s meant to solve.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s look at a simple HTTP handler, using the standard library’s [HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc)
     pattern, which simply fetches a widget record from the database, and serves it
     to the client as JSON
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: While this should be a more or less realistic example, it’s intentionally over-simplified
     from what I typically find in production services. In particular, I’ve never seen
     [`http.Error`](https://pkg.go.dev/net/http#Error) used in a real service. Much
@@ -76,9 +94,11 @@
     I’ll assume your app replaces the `http.Error()` call with something more sophisticated.
     Which likely means your code is even more annoying and repetitive than what I’ve
     shown above.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'That aside, let me call out a few specific problems I see with the above code:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: The error handling is repetitive, and non-idiomatic. Go is (in)famous for its
@@ -86,6 +106,7 @@
     the [HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc) signature doesn’t return
     an error. Instead, for every error, we must (a) serve the error, and separately
     (b) return.
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -94,90 +115,130 @@
     and error-prone. There’s no DRY here. In a single handler like this, maybe it’s
     not a big deal. But it would be nice if we had some sort of default HTTP status
     code for an error—probably 500 / Internal Server Error.
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们必须明确处理每种错误情况的HTTP状态。如果你有几十个或几百个处理程序（你很可能有），这很快就会变得重复和容易出错。这里没有DRY。在像这样的单个处理程序中，也许这不是什么大问题。但如果我们对一个错误有一些默认的HTTP状态码会很好——可能是500
+    / Internal Server Error。
 - en: This handler has to concern itself with database internals. In particular, it
     checks whether we received a [`sql.ErrNoRows`](https://pkg.go.dev/database/sql#pkg-variables)
     error. The HTTP handler should be completely database agnostic, so this detail
     should not need to be exposed here. This is some ugly tight-coupling we can get
     rid of.
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这个处理程序需要关注数据库内部。特别是，它检查我们是否收到了[`sql.ErrNoRows`](https://pkg.go.dev/database/sql#pkg-variables)错误。HTTP处理程序应该是完全与数据库无关的，所以这个细节不应该在这里暴露。这是一些丑陋的紧耦合，我们可以摆脱它。
 - en: What if, instead…
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如果，相反…
 - en: 'What if, instead:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果，相反：
 - en: for every error, we could simply `return err`, and the right thing would happen?
     The error would be rendered to the proper format, and sent to the user?
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于每个错误，我们只需`return err`，正确的事情就会发生？错误将被渲染为适当的格式，并发送给用户？
 - en: the magic that renders the error would know the proper HTTP status to set, too?
     400 for invalid input, 404 for not found, 401 for unauthorized access, etc?
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 渲染错误的魔法也会知道设置适当的HTTP状态码，是吗？无效输入为400，未找到为404，未经授权的访问为401等？
 - en: the data store, whether an SQL database, or MongoDB, or the filesystem, would
     just tell us “this error means not found”, and that could be automatically converted
     to a 404 instead of the handler knowing the implementation details?
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据存储，无论是SQL数据库、MongoDB还是文件系统，都只会告诉我们“这个错误意味着未找到”，而不是处理程序了解实现细节？
 - en: The pattern I’m about to describe gives us all of these things. Not only that,
     but it enables a number of other emergant patterns which are quite powerful as
     well. I’ll mention some of them at the end, and may write more extensively about
     some of them later on (let me know if that would interest you).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我即将描述的模式给了我们所有这些东西。不仅如此，它还能启用许多其他相当强大的新兴模式。我将在最后提到其中一些，并可能稍后更详细地写一些关于它们的内容（如果你感兴趣的话，请告诉我）。
 - en: Idiomatic error handling
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 惯用的错误处理
 - en: 'The three behaviors I’ve described that we want all depend on two things, the
     first of which is “idiomatic error handling”. We need to be able to simply `return
     err` in our handlers. Unfortunately, the standard libray doesn’t give us this.
     But some third-party frameworks do. The most popular one I’m familiar with is
     [labstack echo](https://echo.labstack.com/), whose [`HandlerFunc`](https://pkg.go.dev/github.com/labstack/echo/v4#HandlerFunc)
     looks like this:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我描述的三个行为都取决于两件事情，第一件事是“惯用的错误处理”。我们需要能够简单地在处理程序中`return err`。不幸的是，标准库没有给我们这个。但一些第三方框架确实给了我们。我熟悉的最流行的一个是[labstack
+    echo](https://echo.labstack.com/)，其[`HandlerFunc`](https://pkg.go.dev/github.com/labstack/echo/v4#HandlerFunc)看起来是这样的：
 - en: '[PRE1]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'But I don’t believe you should need to adopt a heavy framework like Echo just
     to get handy error-handling primitives. So you can do this yourself. Here’s a
     simple adapter function pattern you can use:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我不认为你需要采用像Echo这样的重型框架才能获得方便的错误处理原语。所以你可以自己做。以下是一个简单的适配器函数模式，你可以使用它：
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'With such an adapter function, our earlier handler gets simplified to:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这样的适配器函数，我们早期的处理程序得到了简化：
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Of course this requires that we actually *use* the adapter function when setting
     up our routes:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这要求我们在设置路由时实际上*使用*适配器函数：
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Of course we’ve also actually *broken* this endpoint. It now treats *all* errors
     as internal server errors. So we’ll address that next.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我们也确实*破坏了*这个端点。它现在将*所有*错误都视为内部服务器错误。所以下一步我们将解决这个问题。
 - en: But first, an experiment I’m working on
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 但首先，我正在进行一个实验
 - en: But before we do, I want to call out an experimental library I’m working on,
     with the hope it may eventually become an official proposal to the standard library
     (although I think it’s a long shot it would be accepted) to extend the definition
@@ -186,66 +247,95 @@
     and it adds -`WithError` variants to `http.Handler`, `http.HandlerFunc`, `ServeHTTP`,
     and related middlewares. It’s based on work I’ve been using for years with clients,
     but now living in its own stand-alone library for easy inclusion, if you wish.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在此之前，我想提到一个实验性库，我希望它最终可能成为向标准库提案的官方提案（尽管我认为它会被接受的机会很小），以扩展[`http.HandlerFunc`](https://pkg.go.dev/net/http#HandlerFunc)类型的定义，以包含可选的错误返回值。该库是[gitlab.com/flimzy/httpe](https://pkg.go.dev/gitlab.com/flimzy/httpe)，它为`http.Handler`，`http.HandlerFunc`，`ServeHTTP`和相关中间件添加了-WithError`变体。这是我多年来一直与客户一起使用的工作基础上的工作，但现在它已经成为一个独立的自包含库，如果您愿意的话，可以轻松地包含它。
 - en: 'If you choose to use this library, the new version of the handler remains unchanged,
     but in places of calling `customHandler`, you could do:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您选择使用这个库，处理程序的新版本保持不变，但在调用`customHandler`的地方，您可以这样做：
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The main advantage to the `httpe` library over your own custom handler is that
     it provides support for middleware adapters, and inter-mixing standard and error-enabled
     handlers, with some behind-the-scenes error propagation. But that’s beyond the
     scope of this post.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '`httpe`库比您自己的自定义处理程序的主要优势在于，它提供了对中间件适配器的支持，并且可以混合使用标准和启用错误的处理程序，并且在幕后进行错误传播。但这超出了本文的范围。'
 - en: How to handle different HTTP statuses
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何处理不同的HTTP状态
 - en: The second thing these improvements depends on is some way to specify an HTTP
     status. We’ve observed that while this new handler pattern makes error handling
     *simpler*, it also breaks it, by treating all errors as 500 / Internal Server
     Error (or whatever arbitrary status you set in your `customHandler` function).
     Let’s address that now.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些改进的第二件事取决于某种指定HTTP状态的方法。我们观察到，虽然这种新的处理程序模式使错误处理*更简单*，但它也打破了它，通过将所有错误视为500
+    / 内部服务器错误（或者您在`customHandler`函数中设置的任意状态）。让我们现在解决这个问题。
 - en: Errors are interfaces
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 错误是接口
 - en: 'Recall that in Go, the `error` type is an interface type, define as:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 请回忆，在Go语言中，`error`类型是一个接口类型，定义如下：
 - en: '[PRE6]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: This is powerful, because it means we can create our own custom error types.
     And what’s more, for our purposes, we can *extend* the error type to include other
     methods.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很强大，因为它意味着我们可以创建自己的自定义错误类型。而且，对于我们的目的来说，我们可以*扩展*错误类型以包含其他方法。
 - en: 'We want to take advantage of both of these capabilities to create a custom
     error type that includes an HTTP status, and add a method to expose that status.
     Here’s the simple custom type we’ll be using:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想要利用这两种功能来创建一个包含HTTP状态的自定义错误类型，并添加一个公开该状态的方法。这是我们将使用的简单自定义类型：
 - en: '[PRE7]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Now already this is a “complete” error type. It already satisfies the `error`
     interface by virtue of embedding the `error` type (so its methods are promoted
     to our type’s methods). And it includes a status code. But we need a couple more
     pieces to make this complete. First, let’s add an `Unwrap` method, to allow [`errors.Unwrap`](https://pkg.go.dev/errors#Unwrap)
     and the related [`errors.Is`](https://pkg.go.dev/errors#Is) and [`errors.As`](https://pkg.go.dev/errors#As),
     etc, to work properly:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在已经是一个“完整”的错误类型了。它已经通过嵌入`error`类型（因此其方法被提升为我们类型的方法）来满足`error`接口。并且包含一个状态码。但是我们需要一些额外的部分来使其完整。首先，让我们添加一个`Unwrap`方法，以允许[`errors.Unwrap`](https://pkg.go.dev/errors#Unwrap)和相关的[`errors.Is`](https://pkg.go.dev/errors#Is)和[`errors.As`](https://pkg.go.dev/errors#As)等正确工作：
 - en: '[PRE8]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'And now we also want to add a method to expose the included status. Strictly
     speaking, this isn’t *necessary*. You *can* get at the status code by type-converting
     an error back to the `statusError` type with a type assertion, or with the use
@@ -254,51 +344,67 @@
     not the case!) Further, by exposing the status via an interface method, we have
     the freedom to use multiple implementations of our custom error type, which is
     something I virtually always do. So let’s add that detail:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Now, you could name your method whatever you want. I’ve settled on `HTTPStatus`,
     after initially using simply `Status()`, because it’s less ambiguous, but still
     short enough not to be annoying. You can just as eaisly use any other method (or
     multiple methods). For example, maybe you want `JSONRPCStatus()` if you’re building
     a JSON-RPC service. Or if you’re building a gRPC service, there’s already an interface
     defined for you: `GRPCStatus() *status.Status`.'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: Using our custom error type
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now that we have our `statusError` type, let’s incorporate it into our handler,
     to un-break our status code handling:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'So now we’ve (mostly) unbroken our status codes. The one exception is the database
     call. We treat all errors as status 500, when we should treat a missing widget
     as 404\. The solution here is to make our data access layer aware of these new
     error types:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'One last thing: We need to update our `customHandler` to understand this new
     error type:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Okay… so now we’re back to a fully-functional widget handler. And we’ve also
     decoupled our databaes logic from our HTTP handler. So that’s a win.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: Further improvments
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -308,61 +414,81 @@
     data access layer and handler are in the same package. Ick. We really don’t want
     that. So let’s move our custom error type to its own package. And we’ll add a
     convenient and descriptive constructor function, as well.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Now our handler can be updated to the slightly more readable:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Setting a default status
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'We can do one other big improvement to this setup: Setting a default status.'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: In fact, you may have noticed that our improved `customHandler` func *has no
     default status*. This means that if we pass it an error that doesn’t include an
     HTTP status, it will try to serve an HTTP response with status of `0`. Probably
     not ideal.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s solve this problem by adding a helper function to our `apperr` package,
     which can also be used from other places:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'With this new function in our pocket, our custom handler can be simplified
     and improved:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: And our handler can also be improved by omitting the call to `apierr.WithStatus`
     when we want the default status of 500 / Internal Server Error.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: Further improvements
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This is really only the beginning of what using an app-wide standard error extension
     and matching handlers can provide.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next areas I usually improve on apps where I implement this pattern is
     to add a couple standard middlewares:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: Logging middleware
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -370,41 +496,54 @@
     And it eliminates the “need” to log an error every time it happens–just pass it
     to your caller, and let the middleware log it for you. Here’s a simplified example,
     using the function signatures in [gitlab.com/flimzy/httpe](https://pkg.go.dev/gitlab.com/flimzy/httpe):'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Keep in mind that a handler can still call `w.WriteHeader` with a status distinct
     from that contained in `err` (or even in the absence of an error). So a robust
     implementation will check for that as well.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: Error-serving middleware
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: An improvement over the `customHandler` function shown above, is to move the
     error serving into a middleware. This does require the `httpe` package, or a similar
     implemenatation, that can work with middlewares.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Panc-recovery middleware
+  id: totrans-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Most web apps have this (or they should!), but a version that works with error-returning
     handlers can be nice, as it just has to convert panics to errors, rather than
     serving them directly:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Domain-specific error codes
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -415,33 +554,43 @@
     domain-specific error codes. Simply make your custom error types also return the
     appropriate HTTP (or JSON-RPC or gRPC or whatever…) codes as well. After such
     a change, our above database method might look more like:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Then the various callers can do their own error inspection, as appropriate:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: I leave the exact implementation of `apperror.ErrWidgetNotFound` and the associated
     functions as an exercise for the reader.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: Caveats
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This approach doesn’t come without some drawbacks. It’s worth calling a few
     of them out.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: It’s non-standard. Obviously. There’s a cost in verbosity to be paid to convert
     from an error-returning handler to a standard handler. Although it seems many
     people are happy to pay this cost, in the form of adopting a heavy framework that
     offers this benefit (along with others, of course).
+  id: totrans-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -452,6 +601,7 @@
     Each response can have only a single status, obviously. And if you call `w.WriteHeader()`,
     that one generally takes precident (unless you’ve implemented your own `http.ResponseWriter`
     with different behavior).
+  id: totrans-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -464,41 +614,49 @@
     an HTTP status with an error, it’s not apparent what other code consumes that
     status, or how its used. Of course, the purpose of this post is to help solve
     this drawback.
+  id: totrans-100
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Other limitations
+  id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This is by no means a one-size-fits-all solution. A couple of obvious limitations
     I have run into on various applications:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: It doesn’t provide any ergonomic way to specify a non-200, non-error status
     (such as 201). For this, you still must fall back on `w.WriteHeader()`.
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Some applications would be better served with a function signature such as `func(*http.Request)
     (any, error)`, such that a response (likely to be renderd as JSON) is the first
     return argument.
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What’s next?
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I mentioned at the outset that this pattern tends to lend itself to additional
     improvements. Let me just mention a few, without going into detail here. If you’d
     like a longer explanation on any of these, [let me know](https://boldlygo.tech/contact).
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: Include additional metadata in errors. Stack traces are an obvious one, which
     is nicely provided by [`github.com/pkg/errors`](https://pkg.go.dev/github.com/pkg/errors),
     for example. Expand your logging middleware to extract the stack trace and include
     it in logs.
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -507,6 +665,7 @@
     a 500 status, to avoid the risk of potentially reporting sensitive information,
     which can happen in some unsanitized errors. HTTP statuses 401 and 403 are also
     good candidates for this.
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -515,12 +674,14 @@
     gritty details that the error originally included. Add a `Public() string` method
     to such errors, and send the `Public()` version to your users, and the `Error()`
     version to your logs.
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: HTTP statuses not detailed enough for you? Maybe you need to distinguish between
     `widget not found` and `user not found`? You can create your own internal error
     status/codes, for use internally, which resolve to a common HTTP status.
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -529,24 +690,37 @@
     a validation library such as [github.com/go-playground/validator/v10](https://pkg.go.dev/github.com/go-playground/validator/v10)
     in place of `strconv` calls—which returns an error with 400 status. Then your
     handler can just pass that error through.
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 寻找简化代码的方法。例如，从处理程序示例中，考虑将对 `r.ParseForm` 和 `strconv.Atoi` 的调用移到一个公共函数中，或者使用验证库，如[github.com/go-playground/validator/v10](https://pkg.go.dev/github.com/go-playground/validator/v10)替换
+    `strconv` 调用——该库会返回带有400状态的错误。然后你的处理程序只需将该错误传递过去。
 - en: What other use cases have you seen, or can you think of? [I’d love to hear from
     you](https://boldlygo.tech/contact).
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 你见过或者想到其他的用例吗？[我很乐意听到你的意见](https://boldlygo.tech/contact)。
 - en: Is there a better way?
+  id: totrans-113
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有更好的方法吗？
 - en: I don’t know.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不知道。
 - en: I’m always on the lookout for a better way to do things.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 我一直在寻找更好的方法来做事。
 - en: If you know of a better pattern, or even small ways I can improve on this pattern,
     please, let me know! I’d love to learn from you!
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你知道更好的模式，甚至是我可以改进这种模式的小方法，请告诉我！我很愿意向你学习！
