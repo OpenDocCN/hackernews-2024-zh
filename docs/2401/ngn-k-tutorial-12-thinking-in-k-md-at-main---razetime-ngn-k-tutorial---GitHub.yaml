@@ -1,33 +1,51 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:44:53'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:44:53
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: ngn-k-tutorial/12-thinking-in-k.md at main · razetime/ngn-k-tutorial · GitHub
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: ngn-k-tutorial/12-thinking-in-k.md at main · razetime/ngn-k-tutorial · GitHub
 - en: 来源：[https://github.com/razetime/ngn-k-tutorial/blob/main/12-thinking-in-k.md](https://github.com/razetime/ngn-k-tutorial/blob/main/12-thinking-in-k.md)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://github.com/razetime/ngn-k-tutorial/blob/main/12-thinking-in-k.md](https://github.com/razetime/ngn-k-tutorial/blob/main/12-thinking-in-k.md)
 - en: Thinking in an array language
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 以数组语言思考
 - en: '[](#thinking-in-an-array-language)'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#thinking-in-an-array-language)'
 - en: '*You can view the full source code for this chapter at [GitHub](/razetime/ngn-k-tutorial/blob/main/code/matmul.k).*'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*你可以在[GitHub](/razetime/ngn-k-tutorial/blob/main/code/matmul.k)上查看本章的完整源代码。*'
 - en: Since you are now properly acquainted with K, let's do some programming. Most
     K programming happens through the REPL, because it is very useful to iterate upon
     previous code. ngn/k with rlwrap has history with the up/down arrow keys, and
@@ -35,8 +53,12 @@
     are tested in the REPL, and then moved to actual code. Note that ngn/k's prettyprinting
     always returns valid k data, and you can precompute some things beforehand to
     speed up your program.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于你现在已经对 K 有了适当的了解，让我们来做一些编程吧。大多数 K 编程都发生在 REPL 中，因为迭代先前的代码非常有用。ngn/k 与 rlwrap
+    一起具有使用上/下箭头键进行历史记录的功能，这应该足以开始在 K 中开发更大的程序了。函数在 REPL 中进行测试，然后移至实际代码中。请注意，ngn/k
+    的漂亮打印始终返回有效的 K 数据，你可以预先计算一些东西以加快程序速度。
 - en: 'A K script is always executed like it was typed in the repl, that is: Each
     line is executed, and its return value is printed *unless* it ends with a semicolon.
     A script also allows multiline definitions, which are convenient for readability.
@@ -45,141 +67,215 @@
     and your file will be executed, and its data will be loaded. You can load a file
     into the REPL more than once, overwriting older data. The repl help accessed with
     `\` lists more useful commands as well.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: K 脚本始终像在 repl 中键入一样执行，也就是说：每一行都会被执行，并且如果行末不是分号，则打印其返回值。脚本还允许多行定义，这对于可读性很方便。通常情况下，你可能会在脚本中保存工作，并希望在
+    repl 中使用它。为了使用你存储的数据和函数，只需在 repl 中输入 `\l file.k`，你的文件将被执行，并加载其数据。你可以多次将文件加载到 REPL
+    中，覆盖旧数据。通过 `\` 访问的 repl 帮助还列出了更多有用的命令。
 - en: 'K programming (and array programming in general), is a continuous process of
     simplifying your patterns. A big, unwieldy pattern has one or more ways to condense
     to a smaller, more declarative, easy to read pattern. This is discussed in a lot
     of detail in [Patterns and Anti-patterns in APL: Escaping the Beginner''s Plateau
     - Aaron Hsu - Dyalog ''17](https://www.youtube.com/watch?v=9xCJ3BCIudI), if you''d
     like to understand it better.'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 'K 编程（以及数组编程一般来说）是一个不断简化你的模式的持续过程。一个庞大、难以管理的模式有一种或多种方法可以将其压缩为一个更小、更声明式、更易于阅读的模式。如果你想更好地理解这一点，可以在
+    [Patterns and Anti-patterns in APL: Escaping the Beginner''s Plateau - Aaron Hsu
+    - Dyalog ''17](https://www.youtube.com/watch?v=9xCJ3BCIudI) 中详细讨论这个问题。'
 - en: 'A common problem most people have in K is the need to translate a common, well
     known algorithm to K, usually taken from a programming website like geeksforgeeks,
     or a Wikipedia article. Let us take an example: Matrix Multiplication.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: K 中大多数人遇到的常见问题是需要将常见的、众所周知的算法转换为 K，通常是从编程网站（如 geeksforgeeks）或维基百科文章中提取的。让我们以矩阵乘法为例。
 - en: 'From [this wikipedia article](https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm),
     the iterative algorithm for matrix multiplication is as follows:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据[这篇维基百科文章](https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm)，矩阵乘法的迭代算法如下：
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'If you want, you can try translating this to K. A direct translation would
     be:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你愿意，可以尝试将此内容翻译成 K。直接翻译如下：
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This is the worst K code I''ve ever written, because we are trying to write
     K like an imperative language, and K doesn''t work well with that design. The
     main problems are:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我写过的最糟糕的 K 代码，因为我们试图将 K 写成一种命令式语言，而 K 并不适合这种设计。主要问题是：
 - en: Many, many globals are assigned
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 很多，很多全局变量被赋值
 - en: multiple nested loops
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多重嵌套循环
 - en: lots of modification
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 大量修改
 - en: Luckily, there are a lot of things we can simplify here, and we can address
     these problems one by one.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，我们这里有很多可以简化的东西，我们可以逐个解决这些问题。
 - en: 'Let us begin at the innermost loop:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从最内层的循环开始：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The first and simplest fix we can make is summing using a fold (`/`).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以做的第一个和最简单的修复是使用 fold（`/`）来求和。
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: One global down, 9 more to go.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个全局变量解决了，还有 9 个。
 - en: The next global we can remove is `C`. Since `'` (each) returns an array, C doesn't
     need to be modified. We can simply return the value of the nested loop.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以移除的下一个全局变量是`C`。由于`'`（每个）返回一个数组，C不需要修改。我们可以简单地返回嵌套循环的值。
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Now, we have three loops with no modification, which makes our job much easier.
     The main variables to look at now are `i`, `j`, and `k`.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们有了三个没有修改的循环，这让我们的工作变得更容易。现在要查看的主要变量是`i`、`j`和`k`。
 - en: '`i` indexes each row of A.'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`i`索引A的每一行。'
 - en: '`j` indexes each column of B.'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`j`索引B的每一列。'
 - en: '`k` indexes each column of A and row of B.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`k`索引A的每一列和B的每一行。'
 - en: Basically, `k` is responsible for pairing each row of A with each column of
     B, which are then multiplied. Hence, we can eliminate the middle man here, and
     directly match them without `k`. This also eliminates one loop, and removes the
     need for `m`.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本上，`k`负责将A的每一行与B的每一列配对，然后将它们相乘。因此，我们可以在这里消除中间人，并直接匹配它们而不需要`k`。这也消除了一个循环，并消除了对`m`的需求。
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Next, to remove `j`, we need to take each column of `B` and pair it with `A[i]`.
     To do this, we transpose `B` and pair each element with eachright (`/:`).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，要移除`j`，我们需要取`B`的每一列并将其与`A[i]`配对。为此，我们对`B`进行转置，并将每个元素与eachright (`/:`)配对。
 - en: '[PRE6]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'In order to remove `i`, we do a similar thing: Use eachleft to pair each row
     of `A` with each column of `B`.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了移除`i`，我们做了类似的事情：使用eachleft将`A`的每一行与`B`的每一列配对。
 - en: '[PRE7]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: We need no more globals!
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不再需要全局变量了！
 - en: Now *that* is matrix multiplication in K. This is the most direct algorithmic
     conversion of matrix multiplication. Now we will look at ways to shorten it, and
     remove more loops.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，*这就是*在K中的矩阵乘法。这是矩阵乘法的最直接的算法转换。现在我们将看看如何缩短它，并移除更多的循环。
 - en: '`+` (transpose) is costly, and we can remove it. What we are currently doing
     is naive. Instead of multiplying each row of `x` with each column of `y`, we can
     conform each row of B to the whole of A, doing the same thing implicitly.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '`+`（转置）是昂贵的，我们可以移除它。我们当前正在做的事情是简单的。我们可以将B的每一行调整到A的整个范围内，隐式地执行相同的操作。'
 - en: 'Now, we have a function which can be easily made tacit. With the rules from
     [Chapter 3](#trains), we get our final result:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们有一个可以轻松转换为被动语态的函数。按照[第三章](#trains)的规则，我们得到最终结果：
 - en: A matrix multiplication function you can be proud of. This process may seem
     like it has a lot of steps, but condensing code will become much easier and intuitive
     as you practice your skill in K.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个值得自豪的矩阵乘法函数。这个过程可能看起来有很多步骤，但随着您在K中练习技能，压缩代码将变得更加容易和直观。
 - en: Matrix multiplication is a simple procedure which works well with K's array
     support. We will be seeing more algorithms that don't play well with K, and how
     to handle them in future chapters.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 矩阵乘法是一个简单的过程，很适合K的数组支持。我们将在未来的章节中看到更多不适用于K的算法以及如何处理它们。
