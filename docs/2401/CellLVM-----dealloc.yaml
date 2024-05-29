@@ -2,50 +2,61 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:32:12'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:32:12
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: CellLVM // -dealloc
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: CellLVM // -dealloc
 - en: 来源：[https://belkadan.com/blog/2023/12/CellLVM/](https://belkadan.com/blog/2023/12/CellLVM/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://belkadan.com/blog/2023/12/CellLVM/](https://belkadan.com/blog/2023/12/CellLVM/)
 - en: 'A few weeks ago I posted this:'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 几周前我发布了这个：
 - en: <https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4>
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: <https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4>
 - en: '[(screen recording)](https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4)'
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[（屏幕录像）](https://belkadan.com/blog/2023/12/CellLVM/CellLVM.mp4)'
 - en: Which, if you’re not interested in watching a video right now, is a proof-of-concept
     LLVM to Excel spreadsheet compiler.
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你现在不想观看视频的话，这是一个LLVM到Excel电子表格编译器的概念证明。
 - en: What.
   id: totrans-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 什么。
 - en: The night before, I was talking with friends about [CSV](https://en.wikipedia.org/wiki/Comma-separated_values),
     in particular joking about alignment charts and what counted as “true” CSV. Someone
     pointed out that assembly, as conventionally printed, could be a CSV, to which
@@ -53,16 +64,19 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 前一天晚上，我和朋友们谈论了[CSV](https://en.wikipedia.org/wiki/Comma-separated_values)，特别是开玩笑地谈论了对齐图表以及什么被认为是“真正的”CSV。有人指出，按照传统方式打印的汇编代码可以作为CSV，对此我回应道
 - en: ooh, asm in Excel nearly wraps around to being a good idea
   id: totrans-12
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 哦，Excel中的汇编几乎回到了一个好主意
 - en: your labels are row references
   id: totrans-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 你的标签是行引用
 - en: 'As I lay in bed, I realized that this was a better match than I initially thought.
     Forget the CSV part, row references are what let Excel do *computation.* And while
     you could make that work with assembly, there’s an alternative that’s a much better
@@ -70,11 +84,13 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我躺在床上时，我意识到这比我最初想象的更匹配。忘记CSV部分，行引用是让Excel进行*计算*的关键。虽然你可以用汇编实现这个功能，但有一个更好的选择：LLVM。
 - en: SSA Format
   id: totrans-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: SSA格式
 - en: '[LLVM](https://llvm.org) is a library for building compilers and related tools—the
     one used by Swift and Rust, actually. ^(At its core is a stripped-down language
     also called LLVM, or maybe “[the LLVM instruction set](https://llvm.org/docs/LangRef.html)”.
@@ -85,6 +101,7 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '[LLVM](https://llvm.org)是用于构建编译器及相关工具的库——实际上是Swift和Rust使用的库。^(它的核心是一种简化的语言，也称为LLVM，或者可能是“[LLVM指令集](https://llvm.org/docs/LangRef.html)”。“除了被设计为编译高级语言的中间阶段之外，这种语言的独特之处在于，每个局部变量仅被分配一次值，作为一个简单的表达式，只能依赖于它之前的变量。这被称为[静态单赋值形式](https://en.wikipedia.org/wiki/Static_single-assignment_form)。”)'
 - en: My insight, which I don’t think is new, is that Excel formulas work the same
     way. Any cell with a formula has that formula defined up front, and values flow
     through the spreadsheet based on the references set in the formulas—just like
@@ -93,16 +110,19 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的洞察力，我认为这并不是新的，是Excel公式也是同样的工作方式。任何带有公式的单元格都会提前定义该公式，并且值根据公式中设置的引用在电子表格中流动——就像SSA一样。因此，对于LLVM和Excel都支持的操作，应该可以将LLVM函数重写为执行相同计算的Excel表格！
 - en: 'I went to sleep excited about that idea. I woke up and realized the primary
     problem with it: what about loops?'
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我兴奋地入睡了，想着那个想法。醒来后我意识到它的主要问题：循环怎么办呢？
 - en: Phi Nodes
   id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Phi节点
 - en: 'In order for SSA to represent branching control flow (such as a conditional
     increment), it has to have some notion of history when the branches join back
     up. The conventional way to do this is with a special kind of expression called
@@ -116,6 +136,7 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让SSA能够表示分支控制流程（例如条件递增），在分支合并时它必须具有某种历史概念。传统的方法是使用一种特殊类型的表达式，称为*phi节点*，它基本上表示“如果我们来自真块，则使用x[1]作为值；如果我们来自else块，则使用x[2]作为值”。名称“phi”并不是任何东西的缩写；它显然只是意味着接近“if”的反向。^(这种形式也适用于开关（只是有更多可能的前导），甚至循环：循环体的前导可能是循环的入口，也可能是循环*上一次*的最后一个块。)
 - en: 'But spreadsheets don’t have loops, do they? I searched around a bit and discovered
     I was incorrect: Excel spreadsheets *do* support loops, in the form of “iterative
     calculation”. As long as the formulas converge on a fixed point within a certain
@@ -124,6 +145,7 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是电子表格没有循环，对吧？我搜索了一下，发现我错了：Excel电子表格*确实*支持循环，以“迭代计算”的形式。只要公式在一定步数内收敛到一个固定点，Excel会找到它。所以现在我需要弄清楚如何以这样一种方式编码循环，使得它们实际上会收敛。
 - en: 'At this point I got up from my bed and started messing around in Google Sheets.
     (It was a weekend, I didn’t have to go to work.) And I hit on a solution: a variation
     of the classic “program counter” used by real CPUs. If you keep track of the number
@@ -133,52 +155,64 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这时，我从床上站起来，在Google表格中开始胡乱操作。（那天是周末，我不用去上班。）然后我找到了一个解决方案：一种实际CPU使用的经典“程序计数器”的变体。如果你跟踪你访问的块的数量，计数重复，那么你总是知道“当前”块是什么，更重要的是知道“上一个”块是什么。这意味着你可以实现phi节点。
 - en: 'Here’s what a phi expression looks like in Excel:'
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是Excel中phi表达式的样子：
 - en: '| `=CHOOSE(` | A phi is a choice… |'
   id: totrans-24
   prefs: []
   type: TYPE_TB
+  zh: '| `=CHOOSE(` | Phi是一个选择… |'
 - en: '| `XMATCH(` | of values based on a source… |'
   id: totrans-25
   prefs: []
   type: TYPE_TB
+  zh: '| `XMATCH(` | 基于来源值的… |'
 - en: '| `MAX(` | which is the most recent (max) PC… |'
   id: totrans-26
   prefs: []
   type: TYPE_TB
+  zh: '| `MAX(` | 这是最新的（最大）PC… |'
 - en: '| `IF(B5=ROW(),C5,0),` | of the branch in row 5, if it was coming here… |'
   id: totrans-27
   prefs: []
   type: TYPE_TB
+  zh: '| `IF(B5=ROW(),C5,0),` | 如果来自第5行的分支要来到这里… |'
 - en: '| `IF(B10=ROW(),C10,0),` | the branch in row 10, if it was coming here… |'
   id: totrans-28
   prefs: []
   type: TYPE_TB
+  zh: '| `IF(B10=ROW(),C10,0),` | 如果来自第10行的分支要来到这里… |'
 - en: '| `C7-0.5),` | and the current row, 7, as a last resort… |'
   id: totrans-29
   prefs: []
   type: TYPE_TB
+  zh: '| `C7-0.5),` | 和当前行7，作为最后一手… |'
 - en: '| `{C5,C10,C7-0.5}),` | which we get as an index with `XMATCH`… |'
   id: totrans-30
   prefs: []
   type: TYPE_TB
+  zh: '| `{C5,C10,C7-0.5}),` | 我们通过`XMATCH`得到的索引… |'
 - en: '| `B4,B8,B7)` | and `CHOOSE` the correct value |'
   id: totrans-31
   prefs: []
   type: TYPE_TB
+  zh: '| `B4,B8,B7)` | 然后`CHOOSE`出正确的值 |'
 - en: Not pretty but it gets the job done. And with that, I knew it was possible,
     and I set off to build the compiler.
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 不够漂亮，但它完成了工作。有了这一点，我知道了这是可能的，然后着手构建编译器。
 - en: The Compiler
   id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 编译器
 - en: The actual compiler is a scant 150 lines of code, partly because it barely implements
     anything, but also because it’s not actually doing much work. All of the hard
     parts are in LLVM (and its wrapper, [LLVMSwift](https://github.com/llvm-swift/LLVMSwift),
@@ -188,6 +222,7 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际的编译器仅有150行代码，部分是因为它几乎没有实现任何功能，但也因为它实际上没有做太多工作。所有的艰辛工作都在LLVM（以及它的包装，[LLVMSwift](https://github.com/llvm-swift/LLVMSwift)，我不得不[派生出的](https://belkadan.com/source/LLVMSwift/)）和[xslxwriter](https://libxlsxwriter.github.io/)（以及[它自己的包装](https://github.com/damuellen/xlsxwriter.swift)）中。没有这些预先存在的库，这么快完成这项工作是不可能的。
 - en: 'The compiler makes two passes over a single LLVM function: one to assign rows
     to instructions and basic blocks, and one to translate each instruction into a
     formula, 1:1\. There are only three relevant columns: a label with the instruction
@@ -196,6 +231,7 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器在单个LLVM函数上进行两次操作：一次是为指令和基本块分配行，另一次是将每条指令翻译成公式，1：1。\只有三列相关：包含指令类型的标签，每条指令的值，以及上面描述的“程序计数器”。[如果你愿意，可以阅读整篇文章。](https://belkadan.com/source/CellLVM/)
 - en: The result is a command-line tool that takes LLVM bitcode as input and produces
     an xlsx file as output. It throws an error if there’s more than one function in
     the input, or if there’s an operation it doesn’t support (like, say, subtraction).
@@ -205,6 +241,7 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果是一个命令行工具，以LLVM位代码为输入，并生成xlsx文件为输出。如果输入中有超过一个函数，或者有一个它不支持的操作（比如减法），它会抛出错误。但我确实认为这是一个有效的概念验证！当然也是一个成功的项目——这一点很重要，尤其是在[这些天我在工作之外几乎没有时间在电脑上花太多时间。](https://belkadan.com/blog/2021/07/Keyboard-Pants/)
 - en: '[The output from the video above is on Google Sheets](https://docs.google.com/spreadsheets/d/1_K4gMtS0GGviPAIFkhGZmXXFXvuaAatxcx2ulM1XZXk/edit),
     though you’ll have to make your own copy if you want to “run” it. It adds its
     two inputs, then doubles them until the result is greater than 50\. (Which is
