@@ -1,174 +1,259 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:20:44'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:20:44
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Profiling your Numba code
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 对你的 Numba 代码进行性能分析
 - en: 来源：[https://pythonspeed.com/articles/numba-profiling/](https://pythonspeed.com/articles/numba-profiling/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://pythonspeed.com/articles/numba-profiling/](https://pythonspeed.com/articles/numba-profiling/)
 - en: If you’re writing numeric Python code, [Numba](/articles/numba-faster-python/)
     can be a great way to speed up your program. By compiling a subset of Python to
     machine code, Numba lets you write for loops and other constructs that would be
     too slow in normal Python. In other words, it’s similar to Cython, C, or Rust,
     in that it lets you write compiled extensions for Python.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你正在编写数值 Python 代码，[Numba](/articles/numba-faster-python/) 可能是加速程序的好方法。通过将
+    Python 的子集编译为机器代码，Numba 允许你编写在普通 Python 中速度太慢的循环和其他结构。换句话说，它类似于 Cython、C 或 Rust，因为它允许你为
+    Python 编写编译扩展。
 - en: 'Numba code isn’t always as fast as it could be, however. This is where profiling
     is useful: it can find at least some of the bottlenecks in your code.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，Numba 代码并不总是像它可能的那样快。这就是性能分析有用的地方：它可以找出你代码中至少一些的瓶颈。
 - en: 'In this article we’ll cover:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将讨论：
 - en: Profila, a new profiler I’ve released that is specifically designed for Numba
     code.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Profila，我发布的一个新性能分析器，专门设计用于 Numba 代码。
 - en: The limits of profiling. There are many potential performance enhancements that
     a profiler can’t and won’t help you discover.
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '性能分析的局限性。性能分析器无法发现和帮助你发现的潜在的许多性能增强。 '
 - en: 'Introducing Profila: a profiler for Numba'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 介绍 Profila：一个专门为 Numba 设计的性能分析器
 - en: '[Profila](https://github.com/pythonspeed/profila) is a profiler specifically
     designed to identify which lines of code in your Numba code are slow. It works
     via sampling: it runs a `gdb` process that connects to your process every 10ms
     or so, gets a backtrace, and uses that to identify which lines of code were running.
     Get enough samples, and you’ll get a sense of where the most time was spent in
     your program.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Profila](https://github.com/pythonspeed/profila) 是一个专门设计的性能分析器，用于识别你的 Numba
+    代码中哪些行代码运行较慢。它通过采样工作：每隔大约 10ms 运行一个 `gdb` 进程，连接到你的进程，获取回溯信息，然后使用它来确定哪些行代码正在运行。获取足够的样本，你将了解到程序中花费时间最多的地方。'
 - en: Let’s see Profila in action! We’re going to profile the following program, which
     dithers an image, switching it from grayscale to black and white. (This is the
     initial naive version that I then [optimized for performance in a different article](/articles/optimizing-dithering/).)
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看 Profila 的实际效果！我们将对以下程序进行性能分析，该程序将图像抖动，将其从灰度转换为黑白。（这是最初的朴素版本，我随后在[另一篇文章中对其进行了性能优化](/articles/optimizing-dithering/)。）
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'We then install `gdb` and `profila`:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们安装 `gdb` 和 `profila`：
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'And now we can use Profila to profile the code:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以使用 Profila 来对代码进行性能分析：
 - en: '[PRE2]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Optimizing the code
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 优化代码
 - en: First, notice from the top of the output that 37.8 + 1.9 = about 40% of the
     samples were either bad, or not running Numba code. This includes time spent importing
     modules, running regular Python code, compiling the Numba code, and so on. That
     means 60% of the time was spent running actual Numba code.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，从输出的顶部注意到，37.8 + 1.9 = 大约 40% 的样本要么是不好的，要么不是运行 Numba 代码。这包括花费在导入模块、运行常规 Python
+    代码、编译 Numba 代码等的时间。这意味着 60% 的时间花费在运行实际的 Numba 代码上。
 - en: Then, we can see the combination of `np.round()` and `new_value = np.uint8(np.round(old_value
     / 255.0)) * 255` is 30.2 + 9.8 = 40% of total samples. So that means 40/60, two
     thirds of the time, was spent in that one line of code, turning `old_value` into
     `new_value`.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以看到 `np.round()` 和 `new_value = np.uint8(np.round(old_value / 255.0))
+    * 255` 的组合占总样本的 30.2 + 9.8 = 40%。所以这意味着 40/60，三分之二的时间，都花费在了这一行代码上，将 `old_value`
+    转换为 `new_value`。
 - en: 'As we saw in [the original article](/articles/optimizing-dithering/) featuring
     this example, we can replace this code:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在[原文](/articles/optimizing-dithering/)中看到的这个示例，我们可以将这段代码替换为：
 - en: '[PRE3]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'With a much simper version:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 用一个更简单的版本：
 - en: '[PRE4]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'If we profile this optimized version we’ll see:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们对这个优化版本进行分析，我们将看到：
 - en: '[PRE5]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: As was the case in the [original article](/articles/optimizing-dithering/),
     our code now runs 3× as fast!
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像在[原文](/articles/optimizing-dithering/)中一样，我们的代码现在运行速度提高了 3 倍！
 - en: And this time we didn’t have to guess, we had a profiler to point us at the
     main bottleneck.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次我们不必猜测，我们有一个性能分析器指向主要的瓶颈。
 - en: The limits of profiling
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 性能分析的局限性
 - en: While profiling is extremely helpful, it won’t always tell you everything you
     need to know to speed up your code. To learn more about all of these issues, check
     out my [upcoming book on writing high-performance low-level code](/products/lowlevelcode/).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Limit #1: Compiled code doesn’t always match the source code'
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Consider the following example:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If we profile it, we get:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Why is `orig += 789` listed, but not the other lines adding `123_000_000` and
     `456_000`? Because thanks to compiler optimizations, they no longer exist in the
     compiled version as distinct operations. We can for example inspect the generated
     assembly for the function and search for 789:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The three added numbers (`123_000_000`, `456_000`, `789`) have been combined
     by the compiler into a single number (`123_456_789`) which presumably is being
     used with a single addition operation, instead of three.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'Limit #2: You need a mental model of how CPU execution works'
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Recall that in our optimized dithering function we saw the following profiling
     results:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Why is the first calculation so much more expensive than the later ones? They
     seem to be doing more or less the same thing.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'One hypothesis is instruction-level parallelism: the CPU is able to go ahead
@@ -176,22 +261,28 @@
     not because it’s any different, but because it’s *first*. We can partially test
     this hypothesis by changing the order of the statements and profiling again. Here’s
     the result:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Now the line `result[y, x + 1] += error * 7 // 16` has a much lower percentage
     of samples than in the previous version of the code, even though it’s running
     the exact same number of times and doing the exact same calculation. The only
     thing that has changed is the order of execution.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: A mental model of a CPU that just executes code linearly, with no parallelism,
     is not sufficient to understand these results.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'Limit #3: Faster code may require a more holistic view'
+  id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -201,9 +292,11 @@
     usage by two thirds, and also runs 50% even faster than the second version. It
     does so by changing the structure of the algorithm, rather than just focusing
     on a single line or two of code.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Give Profila a try!
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -211,5 +304,6 @@
     So try it out, and please let me know about any bugs you find, your success stories,
     or any feedback at all, [in the GitHub issue tracker](https://github.com/pythonspeed/profila/issues/new)
     or by email.'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
