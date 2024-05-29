@@ -88,6 +88,9 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2011年的某个时候，当我随意翻阅Mac OS X的man页面时，我注意到它有能力将WebDAV服务器挂载为本地文件系统。我早已知道这一点，但对我来说并不算什么有趣的事情，只是有一个命令行界面可以实现这一点。几天后，我恍然大悟，“你可以用这种方式实现用户空间文件系统！”
+    这个想法很简单，只需在本地主机上托管一个WebDAV服务器并运行一个命令来挂载它。这个想法是一个有趣的技巧，但我有一个更有趣的技巧的想法：编写一个模拟FUSE
+    ABI但使用WebDAV作为后端透明挂载在Mac OS X上的库。我说ABI，是因为我不仅在源码级别上这样做，我会使用`DYLD_INSERT_LIBRARIES`欺骗预编译程序，让它们使用我的库。davfuse的工作于2012年7月17日开始。
 - en: I spent nights and weekends over the next year implementing the idea. When I
     was finally done, it just worked. I was ecstatic. davfuse was [released on September
     11th, 2013](https://news.ycombinator.com/item?id=6369172), unfortunately to little
@@ -100,11 +103,13 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来的一年里，我花了很多晚上和周末实现了这个想法。最终，它顺利运作。我欣喜若狂。davfuse于2013年9月11日发布，不幸的是，没有引起太多关注。我并没有花太多精力宣传这个库，因为davfuse只是用来证明概念的。在我开始着手davfuse的时候，我了解到Windows也原生支持挂载WebDAV文件系统。突然间，绝大多数桌面计算用户可以体验到用户空间文件系统，这使得这项技术非常强大。我的目标随之变成了利用这项技术在Windows上生产一款杀手级应用。
 - en: Safe
   id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Safe
 - en: I was an avid user of [EncFS](https://vgough.github.io/encfs/) during this time.
     It was a convenient way for me to store my encrypted my files on my Dropbox. So
     the idea was simple, create a user-friendly version of EncFS that ran on Windows
@@ -113,6 +118,8 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此期间，我是[EncFS](https://vgough.github.io/encfs/)的忠实用户。这是我在Dropbox上存储加密文件的便捷方式。因此，这个想法很简单，就是创建一个可以在Windows和Mac
+    OS X上运行的用户友好版本的EncFS。工作于2013年7月26日开始，并且[于2014年4月14日发布](https://news.ycombinator.com/item?id=7588369)。
 - en: When you’re building something, you want to [focus on one innovative thing](https://boringtechnology.club/)
     so you don’t get distracted and can release something on time. In this case, I
     focused on the wrong thing. For various reasons, even though it worked well enough,
@@ -128,16 +135,20 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在构建项目时，你希望[专注于一项创新的事情](https://boringtechnology.club/)，这样就不会分心，可以按时发布产品。但在这种情况下，我专注于了错误的事情。由于各种原因，尽管它足够好用，EncFS并不适合在Windows上长期使用。对于交付这种类型的产品，我本应该专注于设计一个在Windows和Mac
+    OS X上无缝运行的可信加密系统，而不是简单地用用户友好的方式包装EncFS。实际上，构建Safe并不像简单地用用户友好的方式包装EncFS那样简单。事实上，EncFS最终成为了我的一种束缚，而非我生产力的助力，因为我承诺兼容EncFS。这限制了我改进加密的能力。Safe实际上并没有任何用户，我也不想处理已经废弃的产品，所以我就关闭了它。
 - en: Even though the code of davfuse and Safe have become useless, I learned a lot
     about software engineering and product development during my time building them.
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管davfuse和Safe的代码已经变得无用，但在构建它们的过程中，我学到了很多关于软件工程和产品开发的知识。
 - en: SMB and dbxfs
   id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SMB和dbxfs
 - en: While WebDAV works reasonably well it’s not as efficient as it could be for
     this use case. While implementing davfuse, a coworker asked me why I decided to
     use WebDAV instead of SMB. I was aware of SMB but I had assumed it was a complex
@@ -147,6 +158,7 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管WebDAV运行得相当不错，但对于这种用途来说并不高效。在实现davfuse时，一位同事问我为什么决定使用WebDAV而不是SMB。我知道SMB，但我一直认为它是一种复杂和神秘的网络技术，所以一开始根本没考虑使用它。他向我保证它是一种简单的二进制协议，比WebDAV更高效。我把这个想法记在心里。
 - en: Sometime during 2015 I transitioned to using an [ARM Linux desktop](https://en.wikipedia.org/wiki/Novena_(computing_platform)).
     This forced me to look for a Dropbox alternative. One thing I never liked about
     the official Dropbox application was that it was based on synchronization. I didn’t
@@ -160,6 +172,7 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2015年的某个时候，我转而开始使用[ARM Linux桌面](https://en.wikipedia.org/wiki/Novena_(computing_platform))。这迫使我寻找一个Dropbox的替代品。我从来不喜欢官方Dropbox应用程序的一点是它基于同步。我实际上并不需要同步功能，因为我的桌面永远是在线的，我的网络连接速度也很快，所以我不介意实时下载文件。我也认为构建一个实时的Dropbox文件系统不会太困难。所有这些因素导致我试图建立一个。不过这一次我打算用Python写（为了开发效率），而且我会使用SMB而不是WebDAV（这最终是一个错误）。dbxfs的工作始于2015年8月22日。
 - en: I structured dbxfs in two parts. The generic user space file system functionality
     was contained in a Python package called [userspacefs](https://pypi.org/project/userspacefs/)
     whereas the Dropbox-specific functionality was contained in a package called [dbxfs](https://pypi.org/project/userspacefs/).
@@ -169,6 +182,7 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将dbxfs分为两个部分。通用的用户空间文件系统功能被包含在一个名为[userspacefs](https://pypi.org/project/userspacefs/)的Python包中，而Dropbox特定的功能被包含在一个名为[dbxfs](https://pypi.org/project/userspacefs/)的包中。dbxfs将是userspacefs包的第一个使用者。我这样做是为了以防其他人想要使用dbxfs使用的用户空间文件系统功能（我认为没有人真的使用过）。
 - en: dbxfs was publicly [released on October 3rd, 2018](https://news.ycombinator.com/item?id=18133450).
     The reason it took so long was that I was just using it privately and didn’t really
     want to deal with having to support other people using it. It was always intended
@@ -182,11 +196,13 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: dbxfs于2018年10月3日公开[发布](https://news.ycombinator.com/item?id=18133450)。它花了很长时间的原因是我一直在私下使用它，而且确实不想处理其他人使用它的问题。它始终是一个供黑客使用的工具，以[suckless](https://www.suckless.org/)的方式。就像我提到的，它是一个被动的副业，只是为了在我做其他事情的时候支持我。最初发布时仅支持Linux和macOS，那时我使用的唯一的平台。两天后，也就是2018年10月5日，我加入了OpenBSD支持，我有时用。我最初计划在不久之后添加Windows支持，但我不用Windows，也没有人要求，所以我没做。
 - en: Windows Support
   id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Windows支持
 - en: 'Fast-forward to the second half of 2023\. I had some down time due to various
     life changes and I decided to do some cleanup on dbxfs. This time around, I decided
     to make sure the entire userspacefs package passed under mypy’s strict type checking.
@@ -202,6 +218,9 @@
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 快进到 2023 年下半年。由于生活中的各种变化，我有一些空闲时间，决定对 dbxfs 进行一些清理。这一次，我决定确保整个用户空间文件系统包在mypy的严格类型检查下通过。这需要一些对SMB服务器代码的重构。为了确保在重构过程中
+    SMB 服务器代码仍然工作正常，我将我的 Windows VM 指向它。这揭示了一个我长时间忘记了的问题：Windows 不允许你在任意端口挂载SMB服务器。这意味着你无法运行用户空间SMB服务器，因为你必须绑定到仅允许管理员用户使用的端口445。另一个问题是，Windows
+    的最近版本默认禁用了对SMBv1的支持。有一些额外的支持代码和UAC提示可以解决这两个问题，但这将大大降低用户空间文件系统方法的实用性。
 - en: So that killed any passive hopes I had in the back of my mind about easily getting
     this to work on Windows. This really bugged me. It was like a loose end in the
     back of my mind became even looser and I just didn’t like that. It also was a
@@ -213,6 +232,8 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这杀死了我对于轻松让这在Windows上运作的希望。这让我很困扰。这就像我想象中的一个松散的尾端变得更松了，我不喜欢这种感觉。另一个让我失望的是，SMB最终并没有成为我所希望的WebDAV的可行高效替代方案。不管怎样，我觉得我必须解决这个问题。我知道从我在davfuse和Safe工作时，WebDAV在Windows上是可行的，所以我开始把我的davfuse
+    WebDAV服务器代码移植到Python，最终的目标是将dbxfs完全移植到Windows。这是在 2023 年 10 月底。
 - en: The lion’s share of the work was completed right at the end of 2023. Along the
     way I cleaned up the userspacefs API so that there was no impedance mismatch with
     Python’s os module. I.e. you could implement the [userspacefs file system API
@@ -224,11 +245,14 @@
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 大部分工作是在 2023 年末完成的。在这个过程中，我清理了用户空间文件系统 API，以便与 Python 的 os 模块没有任何阻力。也就是说，你可以使用几乎零胶水代码使用
+    Python 的 os 模块实现 [用户空间文件系统API](https://thelig.ht/code/userspacefs/file/userspacefs/stdlibfs.py.html)。我还将文件系统API全面[用代码记录下来](https://thelig.ht/code/userspacefs/file/userspacefs/abc.py.html)，这对于mypy的类型检查非常有帮助。我还为dbxfs添加了一个基本的GUI，这样Windows用户就不必使用命令行了。我对一切的成果感到满意。
 - en: Big Unfortunate Caveat
   id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个重大的不幸的情况
 - en: While I was in the middle of adding the Windows support, it turns out that [Microsoft
     has suddenly decided to deprecate WebDAV support](https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features).
     To get around this, userspacefs will show a UAC prompt to re-enable the service
@@ -238,12 +262,14 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 正当我在添加Windows支持的过程中，微软突然决定停用WebDAV支持。为了解决这个问题，用户空间文件系统将显示一个UAC提示，以重新启用服务，如果服务被禁用的话。除此之外，并没有太多可说的了，Windows确实应该允许在任何端口挂载SMB。如果有微软工程师看到这个消息，请与我联系。
 - en: '*Edit 2024-01-05: A friend has informed me that Windows now provides an explicit
     API for user space file systems called [Projfs](https://learn.microsoft.com/en-us/windows/win32/projfs/projected-file-system).
     It looks promising.*'
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*2024-01-05编辑：一位朋友告诉我，Windows 现在提供了一个显式的用户空间文件系统 API，名为[Projfs](https://learn.microsoft.com/en-us/windows/win32/projfs/projected-file-system)。看起来很有前途。*'
 - en: '*Edit 2024-01-05: [marwis on Hacker News](https://news.ycombinator.com/item?id=38887069)
     has commented that recent versions of Windows 11 allow [mounting SMB on alternative
     ports](https://techcommunity.microsoft.com/t5/storage-at-microsoft/smb-alternative-ports-now-supported-in-windows-insiders/ba-p/3974509).
