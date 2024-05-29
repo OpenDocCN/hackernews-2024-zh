@@ -1,47 +1,69 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:22:40'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:22:40
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Innovating S3 Bucket Retrieval: Langchain Community S3 Loaders with OpenAI
     API'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创新的 S3 存储桶检索：Langchain 社区 S3 加载器与 OpenAI API
 - en: 来源：[https://blog.min.io/langchain-openai-s3-loader/](https://blog.min.io/langchain-openai-s3-loader/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.min.io/langchain-openai-s3-loader/](https://blog.min.io/langchain-openai-s3-loader/)
 - en: In the rapidly evolving world of data storage and processing, combining efficient
     cloud storage solutions with advanced AI capabilities presents a transformative
     approach to handling vast volumes of data. This article demonstrates a practical
     implementation using MinIO, Langchain and OpenAI’s GPT-3.5 model, focusing on
     summarizing documents stored in MinIO buckets.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在不断发展的数据存储和处理领域，将高效的云存储解决方案与先进的人工智能能力相结合，提供了一种处理大量数据的变革性方法。本文演示了使用 MinIO、Langchain
+    和 OpenAI 的 GPT-3.5 模型的实际实现，重点是摘要存储在 MinIO 存储桶中的文档。
 - en: The Power of MinIO
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: MinIO 的威力
 - en: MinIO is open-source, high-performance object storage that is fully compatible
     with the Amazon S3 API. Known for its scalability, MinIO is ideal for storing
     unstructured data such as photos, videos, log files, backups and container images.
     It’s not just about storage; MinIO also offers features like data replication,
     lifecycle management and high availability, making it a top choice for modern
     cloud-native applications.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: MinIO 是开源的、高性能的对象存储，完全兼容 Amazon S3 API。以其可扩展性而闻名，MinIO 非常适合存储非结构化数据，如照片、视频、日志文件、备份和容器映像。这不仅仅是存储；MinIO
+    还提供数据复制、生命周期管理和高可用性等功能，使其成为现代云原生应用的首选。
 - en: Integrating Langchain and OpenAI
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 集成 Langchain 和 OpenAI
 - en: '[Langchain](https://www.langchain.com/?ref=blog.min.io), a Python-based tool,
     facilitates the interaction between document loaders and AI models. In our use
     case, we combine Langchain with OpenAI’s [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5?ref=blog.min.io)
@@ -52,89 +74,138 @@
     Github repository](https://github.com/minio/blog-assets?ref=blog.min.io) in the
     [langchain-s3-minio](https://github.com/minio/blog-assets/tree/main/langchain-s3-minio?ref=blog.min.io)
     directory.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Langchain](https://www.langchain.com/?ref=blog.min.io)，一个基于 Python 的工具，促进了文档加载器与
+    AI 模型之间的交互。在我们的用例中，我们将 Langchain 与 OpenAI 的 [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5?ref=blog.min.io)
+    模型结合起来，从 MinIO 存储桶中摘要文档。这个设置展示了人工智能如何从大量数据中提取重要信息，简化数据分析和解释。有关本文的附加信息和支持材料，如笔记本和加载的文档，请访问
+    [MinIO Github 存储库](https://github.com/minio/blog-assets?ref=blog.min.io) 中的 [langchain-s3-minio](https://github.com/minio/blog-assets/tree/main/langchain-s3-minio?ref=blog.min.io)
+    目录。'
 - en: Installing Langchain
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装 Langchain
 - en: 'Before diving into the implementation, ensure you have Langchain installed.
     Install it via pip:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入实现之前，请确保已安装 Langchain。通过 pip 安装：
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This will encapsulate all the required libraries we will be using for our S3
     loaders and OpenAI model.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将封装我们将用于 S3 加载器和 OpenAI 模型的所有必需的库。
 - en: '**Step 1:** Langchain S3 Directory and File Loaders'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**第一步：** Langchain S3 目录和文件加载器'
 - en: Initially, we focus on loading documents using Langchain's `S3DirectoryLoader`
     and `S3FileLoader`. These loaders are responsible for fetching multiple and single
     documents from specified directories and files in MinIO buckets.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初，我们专注于使用 Langchain 的 `S3DirectoryLoader` 和 `S3FileLoader` 加载文档。这些加载器负责从 MinIO
+    存储桶中的指定目录和文件获取多个和单个文档。
 - en: MinIO Configurations and Langchain S3 File Loader
+  id: totrans-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: MinIO 配置和 Langchain S3 文件加载器
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Python Langchain Example - S3 File Loader
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Python Langchain 示例 - S3 文件加载器
 - en: 'Langchain S3 Directory Loader:'
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Langchain S3 目录加载器：
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Python Langchain Example - S3 Directory Loader
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Python Langchain 示例 - S3 目录加载器
 - en: '**Step 2:** Summarizing with OpenAI'
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**第二步：** 使用 OpenAI 进行摘要'
 - en: After loading the documents, we use OpenAI's GPT-3.5 model (which are included
     in the Langchain library via `ChatOpenAI`) to generate summaries. This step illustrates
     the model's capability to understand and condense the content, providing quick
     insights from large documents.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在加载文档之后，我们使用 OpenAI 的 GPT-3.5 模型（通过 `ChatOpenAI` 包含在 Langchain 库中）生成摘要。这一步展示了模型理解和压缩内容的能力，从大型文档中提供快速见解。
 - en: To access the OpenAI API, you can acquire an API key by visiting the [OpenAI
     platform](https://platform.openai.com/api-keys?ref=blog.min.io). Once you have
     the key, integrate it into the code below, to harness the power of GPT-3.5 for
     document summarization.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 要访问 OpenAI API，您可以通过访问[OpenAI平台](https://platform.openai.com/api-keys?ref=blog.min.io)获取API密钥。一旦您获得了密钥，将其集成到以下代码中，以利用GPT-3.5的强大功能进行文档摘要。
 - en: 'Code Example for Document Summarization:'
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文档摘要的代码示例：
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Python Langchain Example - Summarizing Documents with OpenAI API
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python Langchain 示例 - 使用OpenAI API对文档进行摘要
 - en: '*Below is the output from running this demo, and is a result of integrating
     LangChain with OpenAI’s GPT-3.5 and MinIO S3 storage; the output has been shortened
     for demonstrative purposes:*'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*下面是运行此演示的输出，是将LangChain与OpenAI的GPT-3.5和MinIO S3存储集成的结果；为了演示目的，输出已经被缩短：*'
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Response from OpenAI API
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenAI API的响应
 - en: This method highlights an interesting way to load documents from S3 storage
     into an LLM using the Langchain framework to process them, while OpenAI’s GPT-3.5
     model generates a concise summary and key points of the `MinIO_Quickstart.md`
@@ -143,12 +214,16 @@
     of essential aspects like installation, server configuration, SDKs and other MinIO
     features. It showcases the capability of AI in extracting and presenting critical
     information from comprehensive data sources.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 该方法突显了一种有趣的方式，使用Langchain框架从S3存储中加载文档并处理它们，而OpenAI的GPT-3.5模型则生成了`play.min.io`服务器中获取的`MinIO_Quickstart.md`的简洁摘要和要点。利用AI来分析和概括广泛的文档，为用户提供了快速而全面的理解，涵盖了安装、服务器配置、SDK和其他MinIO功能等重要方面。它展示了AI从综合数据源中提取和呈现关键信息的能力。
 - en: Loading Documents from MinIO Buckets with Langchain
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Langchain从MinIO存储桶加载文档
 - en: The integration of MinIO, Langchain and OpenAI offers a compelling toolset for
     managing large data volumes. While Langchain's S3 loaders, S3DirectoryLoader and
     S3FileLoader, play an important role in retrieving documents from MinIO buckets,
@@ -159,32 +234,49 @@
     storage, including file uploads, bucket management and more. For additional information,
     please see [Quickstart Guide — MinIO Object Storage for Linux](https://min.io/docs/minio/linux/developers/python/minio-py.html?ref=blog.min.io),
     [Python Client API Reference — MinIO Object Storage for Linux](https://min.io/docs/minio/linux/developers/python/API.html?ref=blog.min.io).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: MinIO、Langchain和OpenAI的集成为管理大数据量提供了强大的工具集。虽然Langchain的S3加载器S3DirectoryLoader和S3FileLoader在从MinIO存储桶检索文档方面发挥了重要作用，但它们仅用于将数据加载到Langchain中。这些加载器不执行与上传数据到存储桶相关的操作。对于上传、修改或管理存储桶策略等任务，*MinIO
+    Python SDK*是适当的工具。该SDK提供了一套全面的功能，用于与MinIO存储进行交互，包括文件上传、存储桶管理等。有关更多信息，请参阅[快速入门指南
+    —— 用于Linux的MinIO对象存储](https://min.io/docs/minio/linux/developers/python/minio-py.html?ref=blog.min.io)、[Python客户端API参考
+    —— 用于Linux的MinIO对象存储](https://min.io/docs/minio/linux/developers/python/API.html?ref=blog.min.io)。
 - en: While Langchain streamlines the process of fetching and processing data using
     AI models, the heavy lifting of data management within the MinIO buckets is dependent
     on the MinIO Python SDK. This is an important distinction that must be understood
     by developers and data engineers building efficient, AI-integrated storage solutions.
     For a thorough understanding of MinIO's capabilities and how to utilize its Python
     SDK for various storage operations, refer to MinIO's official [documentation](https://docs.min.io/docs/python-client-api-reference.html?ref=blog.min.io).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然Langchain通过使用AI模型简化了获取和处理数据的过程，但在MinIO存储桶中进行数据管理的重任依赖于MinIO Python SDK。这是开发人员和数据工程师必须了解的重要区别，他们构建高效的、与AI集成的存储解决方案。要全面了解MinIO的功能以及如何利用其Python
+    SDK进行各种存储操作，请参阅MinIO的官方[文档](https://docs.min.io/docs/python-client-api-reference.html?ref=blog.min.io)。
 - en: By using MinIO object storage as the primary data repository for AI and ML processes,
     you can simplify your data management pipeline. MinIO excels as a one-stop solution
     for [storing, managing, and retrieving large datasets](https://blog.min.io/the-architects-guide-to-the-modern-data-stack/),
     which is crucial for effective AI and ML operations. This streamlined approach
     reduces complexity and overhead, potentially accelerating insights by ensuring
     swift access to data.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 MinIO 对象存储用作 AI 和 ML 过程的主要数据存储库，可以简化数据管理流程。 MinIO 凭借其出色的一站式解决方案，[存储、管理和检索大型数据集](https://blog.min.io/the-architects-guide-to-the-modern-data-stack/)，这对于有效的
+    AI 和 ML 操作至关重要。 这种简化的方法减少了复杂性和开销，可能通过确保对数据的快速访问来加速洞察力。
 - en: For those interested in delving deeper into the integration of MinIO with Langchain
     to enhance LLM tool-use, the article “[Developing Langchain Agents with MinIO
     SDK for LLM Tool-Use](https://blog.min.io/minio-langchain-tool)” offers a comprehensive
     exploration of the subject.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些对将 MinIO 与 Langchain 集成以增强 LLM 工具使用感兴趣的人士，《[使用 MinIO SDK 开发 Langchain 代理以增强
+    LLM 工具使用](https://blog.min.io/minio-langchain-tool)》一文全面探讨了这个主题。
 - en: Good luck in your development endeavors! We hope [MinIO](https://min.io/download?ref=blog.min.io)
     continues to play a key role in your AI/ML journey. Reach out to us on [Slack](https://slack.min.io/?ref=blog.min.io)
     and share your insights and discoveries!
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在您的发展努力中祝您好运！我们希望 [MinIO](https://min.io/download?ref=blog.min.io) 继续在您的 AI/ML
+    旅程中发挥关键作用。 在 [Slack](https://slack.min.io/?ref=blog.min.io) 上与我们联系，分享您的见解和发现！
