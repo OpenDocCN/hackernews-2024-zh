@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:50:34'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:50:34
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Exploring object file formats | MaskRay
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 探索对象文件格式 | MaskRay
 - en: 来源：[https://maskray.me/blog/2024-01-14-exploring-object-file-formats](https://maskray.me/blog/2024-01-14-exploring-object-file-formats)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://maskray.me/blog/2024-01-14-exploring-object-file-formats](https://maskray.me/blog/2024-01-14-exploring-object-file-formats)
 - en: My journey with the LLVM project began with a deep dive into the world of lld
     and binary utilities. Countless hours were spent unraveling the intricacies of
     object file formats and shaping LLVM's relevant components. Though my interests
@@ -32,11 +38,14 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我与 LLVM 项目的旅程始于对 lld 和二进制工具的深入研究。无数个小时都花在了解对象文件格式的复杂性和塑造 LLVM 相关组件上。尽管我的兴趣已经扩展，但对象文件格式仍然是我个人着迷的领域，经常让我卷入
+    LLVM 内潜在变化的讨论中。
 - en: This article compares several prominent object file formats, drawing upon my
     experience and insights.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文比较了几种显著的对象文件格式，借鉴了我的经验和见解。
 - en: At the heart of each format lies the representation of essential components
     like symbols, sections, and relocations. For each control structure, We'll begin
     with ELF, a widely used format, before venturing into the landscapes of other
@@ -44,30 +53,37 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 每种格式的核心都是对象的基本组件，如符号、节和重定位的表示。对于每个控制结构，我们将从 ELF 开始，这是一种广泛使用的格式，然后再进入其他显著格式的领域。
 - en: '## History of object file formats'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '## 对象文件格式的历史'
 - en: Before delving into the technical side, I will share some notes about my archaeological
     journey.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入技术方面之前，我将分享一些关于我的考古之旅的笔记。
 - en: a.out
   id: totrans-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: a.out
 - en: The a.out format was designed for PDP-11 and appeared on the first version of
     Unix. The quantities were 16-bit, but can be naturally extended to 32-bit or 64-bit.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: a.out 格式是为 PDP-11 设计的，并出现在 Unix 的第一个版本中。数量是 16 位的，但可以自然地扩展为 32 位或 64 位。
 - en: 'In Proceedings of the Summer 1990 USENIX Conference, *ELF: An Object File to
     Mitigate Mischievous Misoneism* by James Q. Arnold provided some description.'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '在 1990 年夏季 USENIX 会议的论文《ELF: An Object File to Mitigate Mischievous Misoneism》中，James
+    Q. Arnold 提供了一些描述。'
 - en: For 32-bit machines, the a.out format was extended in several ways. Most obviously,
     16-bit quantities were enlarged to 32-bit values. The symbol table changed to
     allow names of unlimited length. Relocation entries also changed significantly.
@@ -78,39 +94,46 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于 32 位机器，a.out 格式在几个方面进行了扩展。最明显的是，16 位的量被扩展为 32 位值。符号表发生了变化，允许无限长度的名称。重定位条目也发生了显著变化。更大的程序和不同的重定位约定使得需要将重定位条目与显式地址关联起来，而不是依赖于程序段和重定位记录之间的隐式对应关系。
 - en: Many Unix and Unix-like operating systems, including SunOS, HP-UX, BSD, and
     Linux, used a.out before switching to ELF.
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多 Unix 和类 Unix 操作系统，包括 SunOS、HP-UX、BSD 和 Linux，在转换为 ELF 之前都使用了 a.out。
 - en: 'The most noticeable extension is dynamic shared library support. (This feature
     is distinct from static shared library, where each shared library needs a fixed
     address in the address space.) There are two flavors:'
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 最显著的扩展是动态共享库支持。（此功能与静态共享库不同，静态共享库需要在地址空间中的每个共享库都有一个固定的地址。）有两种风格：
 - en: '[FreeBSD a.out(5)](https://man.freebsd.org/cgi/man.cgi?a.out(5)) provides a
     nice description.'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '[FreeBSD a.out(5)](https://man.freebsd.org/cgi/man.cgi?a.out(5))提供了很好的描述。'
 - en: If you follow recent years' Linux kernel news, there were some discussions when
     Linux eventually [removed a.out support](https://git.kernel.org/linus/987f20a9dcce3989e48d87cff3952c095c994445)
     in 2022.
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你关注最近几年的 Linux 内核新闻，你会发现在 2022 年 Linux 最终[移除了对 a.out 的支持](https://git.kernel.org/linus/987f20a9dcce3989e48d87cff3952c095c994445)时有所讨论。
 - en: COFF
   id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: COFF
 - en: 'a.out supports three fixed loadable sections TEXT, DATA, and BSS, which is
     too restrictive. COFF introduces custom section support and allows up to 32767
     sections. The ELF paper contains some remarks:'
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: a.out 支持三个固定的可加载节 TEXT、DATA 和 BSS，这太过限制性了。COFF 引入了自定义节支持，并允许最多 32767 节。ELF 论文中有一些评论：
 - en: Common Object File Format (COFF), was designed primarily to support electronic
     switching systems (the telephone network). Its distinguishing features were multiple
     sections (text, data, uninitialized memory, reserved memory, overlays, etc.),
@@ -120,67 +143,82 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: COFF（通用对象文件格式）主要设计用于支持电子交换系统（电话网络）。其特点是多个部分（文本、数据、未初始化内存、保留内存、叠加、等等）、对多个目标处理器的某些支持、为
+    C 语言量身定制的符号表和重定位的定义结构，以及调试信息。
 - en: According to `scnhdr.h` in System V Release 2 for NS32xxx, COFF was designed
     no later than 1982\. Then, System V Release 3 adopted COFF, which motivated a
     lot of follow-ups.
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据 System V Release 2 中的 `scnhdr.h`，COFF 最迟于 1982 年设计。然后，System V Release 3
+    采用了 COFF，这激发了很多后续工作。
 - en: Windows extended COFF to the [Portable Executable (PE) format](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format).
     Symbian OS before 9 used PE as well.
   id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Windows 扩展了 COFF 至 [可移植可执行文件（PE）格式](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format)。Symbian
+    OS 在 9 之前也使用了 PE。
 - en: Texas Instruments [modified COFF](https://software-dl.ti.com/ccs/esd/documents/sdto_cgt_A-Brief-History-of-TI-Object-File-Formats.html)
     for its TI toolset and then switched to ELF.
   id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 德州仪器为其 TI 工具集修改了 COFF，然后转换为 ELF。
 - en: ECOFF used by Tru64 UNIX changed symbol representation.
   id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Tru64 UNIX 使用的 ECOFF 改变了符号表示。
 - en: IBM developed XCOFF (COFF combined with the TOC module format concept, CSECT,
     etc) and used it for AIX.
   id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: IBM 开发了 XCOFF（COFF 结合了 TOC 模块格式概念、CSECT 等），并将其用于 AIX。
 - en: 'Key drawbacks:'
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要缺点：
 - en: Hard-wiring debugging information tailored for the C language into the symbol
     structure is complex, space-inefficient, and ugly.
   id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将专为 C 语言量身定制的调试信息硬编码到符号结构中是复杂的、空间效率低下的，而且丑陋的。
 - en: The auxiliary symbol record design is inflexible and inefficient.
   id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 辅助符号记录设计不灵活且效率低下。
 - en: Not 32-bit-aligned symbol and section structures caused performance issue to
     earlier systems.
   id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 早期系统中不是 32 位对齐的符号和段结构导致了性能问题。
 - en: No support for [weak symbols](/blog/2021-04-25-weak-symbol). PE implemented
     an inflexible weak definition mechanism called "weak externals".
   id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不支持[弱符号](/blog/2021-04-25-weak-symbol)。PE 实现了一种不灵活的弱定义机制，称为“弱外部”。
 - en: Mach-O
   id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Mach-O
 - en: Carnegie Mellon University developed the Mach kernel as a proof of the microkernel
     concept. The operating system used a format derived from a.out with minor modifications,
     named the Mach object file format. The abbreviation, Mach-O, is often used instead.
@@ -188,6 +226,8 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡内基梅隆大学开发了 Mach 内核作为微内核概念的证明。操作系统使用了从 a.out 派生的格式，并进行了微小的修改，命名为 Mach 对象文件格式。缩写
+    Mach-O 经常被使用。NeXTSTEP 操作系统，然后是 Darwin 采用了 Mach-O。
 - en: Dynamic shared library support on Mach-O came later than other object file formats.
     In a NeXTSTEP manual released in 1995, I can find `MH_FVMLIB` (fixed virtual memory
     library, which appears to be a static shared library scheme) but not `MH_DYLIB`
@@ -195,37 +235,46 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O 上的动态共享库支持晚于其他目标文件格式。在 1995 年发布的 NeXTSTEP 手册中，我可以找到 `MH_FVMLIB`（固定虚拟内存库，似乎是一种静态共享库方案），但找不到
+    `MH_DYLIB`（现代 macOS 用于 .dylib 文件的格式）。
 - en: 'Key drawbacks:'
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要缺点：
 - en: No [COMDAT](/blog/2021-07-25-comdat-and-section-group) support.
   id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 没有 [COMDAT](/blog/2021-07-25-comdat-and-section-group) 支持。
 - en: Scarcity of relocation types.
   id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 重定位类型的稀缺性。
 - en: 255 section limit. `.subsections_via_symbols` has some downsides (discussed
     later).
   id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 255 节点限制。`.subsections_via_symbols` 有一些缺点（稍后讨论）。
 - en: In my opinion, Mach-O is the most limited among Mach-O/PE/ELF. However, I want
     to acknowledge certain innovative features like `.subsections_via_symbols` and
     `S_ATTR_LIVE_SUPPORT`.
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，Mach-O 在 Mach-O/PE/ELF 中是最受限制的。但我要承认某些创新特性，如 `.subsections_via_symbols`
+    和 `S_ATTR_LIVE_SUPPORT`。
 - en: ELF
   id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: ELF
 - en: 'Frustrations and inherent constraints of COFF, coupled with a self-imposed
     byte order dilemma, AT&T introduced a groundbreaking format: Executable and Linking
     Format (ELF). ELF revisited fixed content and hard-wired concepts in previous
@@ -234,6 +283,7 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: COFF 的挫败感和固有限制，再加上自我施加的字节顺序困境，AT&T 推出了一种开创性的格式：可执行和链接格式（ELF）。ELF 重新审视了先前目标文件格式中的固定内容和硬编码概念，删除了不必要的元素，并使控制结构更加灵活。
 - en: This pivotal shift was embraced by System V Release 4, marking a new era in
     object file format design. In the 1990s, many Unix and Unix-like operating systems,
     including Solaris, IRIX, HP-UX, Linux, and FreeBSD, switched to ELF.
@@ -384,20 +434,24 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '`n_type`分解为三个子字段，描述了符号是否已定义或未定义、外部或本地以及符号类型。FreeBSD手册页中列出的值也用于PDP-11。'
 - en: For a defined symbol, `n_type` describes whether it is relative to TEXT, DATA,
     or BSS.
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于已定义的符号，`n_type`描述了它是相对于TEXT、DATA还是BSS。
 - en: Symbols (COFF)
   id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 符号（COFF）
 - en: '|'
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE6]'
   id: totrans-73
   prefs: []
@@ -407,6 +461,7 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE7]'
   id: totrans-75
   prefs: []
@@ -416,6 +471,7 @@
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: COFF adopts a.out's approach to save space in symbol names. This likely made
     sense when most symbols were shorter. However, with today's often lengthy symbol
     names, this inlining technique complicates code and increases the control structure
@@ -423,26 +479,31 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: COFF采用了a.out的方法来节省符号名称的空间。这在大多数符号较短时可能是合理的。然而，随着今天常常较长的符号名称，这种内联技术使得代码复杂化并增加了控制结构大小（从4到8字节）。
 - en: 'The section number is a 16-bit signed integer, supporting up to 32,767 sections.
     Positive values indicate a section index, while special values include:'
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 节号是一个16位有符号整数，支持最多32,767个节。正值表示节索引，而特殊值包括：
 - en: '`N_UNDEF` (0): Undefined symbol (distinct from a.out''s `n_type` representation).'
   id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`N_UNDEF`（0）：未定义的符号（与a.out的`n_type`表示不同）。'
 - en: '`N_ABS` (-1): Symbol has an absolute value.'
   id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`N_ABS`（-1）：符号具有绝对值。'
 - en: '`N_DEBUG` (-2): Special debugging symbol (value is meaningless).'
   id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`N_DEBUG`（-2）：特殊的调试符号（值无意义）。'
 - en: 'COFF''s `n_type` and `n_sclass` encode C'' type and storage class information.
     PE assigns longer names to these types and storage classes longer names, e.g.,
     `IMAGE_SYM_TYPE_CHAR/IMAGE_SYM_TYPE_SHORT`, `IMAGE_SYM_CLASS_AUTOMATIC/IMAGE_SYM_CLASS_EXTERNAL`.
@@ -450,29 +511,36 @@
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: COFF的`n_type`和`n_sclass`编码了C语言的类型和存储类信息。PE为这些类型和存储类分配了更长的名称，例如，`IMAGE_SYM_TYPE_CHAR/IMAGE_SYM_TYPE_SHORT`，`IMAGE_SYM_CLASS_AUTOMATIC/IMAGE_SYM_CLASS_EXTERNAL`。虽然大部分数值保持一致，但存在一些细微差异：
 - en: PE's `IMAGE_SYM_TYPE_VOID` (1) is different from System V Release 3's `#define
     T_ARG 1 /* function argument (only used by compiler) */`.
   id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PE的`IMAGE_SYM_TYPE_VOID`（1）与System V Release 3的`#define T_ARG 1 /* function
+    argument (only used by compiler) */`不同。
 - en: PE's `IMAGE_SYM_CLASS_WEAK_EXTERNAL` (105) is different from System V Release
     3's `#define C_ALIAS 105 /* duplicate tag */`.
   id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PE的`IMAGE_SYM_CLASS_WEAK_EXTERNAL`（105）与System V Release 3的`#define C_ALIAS
+    105 /* duplicate tag */`不同。
 - en: Symbols with `C_EXT` (`IMAGE_SYM_CLASS_EXTERNAL`) are global and added to the
     linker's global symbol table, akin to ELF's `STB_GLOBAL` symbol binding.
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有`C_EXT`（`IMAGE_SYM_CLASS_EXTERNAL`）的符号是全局的，并添加到链接器的全局符号表中，类似于ELF的`STB_GLOBAL`符号绑定。
 - en: System V ships a symbolic debugger (sdb), which utilizes `n_type` and `n_sclass`.
     If we acknowledge that the debugging information format is outdated, `n_type`
     and `n_class` serve as a wasteful counterpart to to ELF's `st_info`.
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: System V提供了一个符号调试器（sdb），它利用`n_type`和`n_sclass`。如果我们承认调试信息格式已经过时，`n_type`和`n_class`就成为ELF的`st_info`的冗余对应物。
 - en: '`n_numaux` relates to Auxiliary Symbol Records, allowing extra information
     but introducing non-uniform symbol table entries. While seemingly beneficial,
     their use cases are limited and could often be encoded using separate sections.
@@ -481,14 +549,17 @@
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '`n_numaux`与辅助符号记录相关，允许额外的信息，但引入了不规则的符号表条目。虽然看似有益，但它们的用例有限，通常可以使用单独的节进行编码。在PE中，辅助符号记录可以表示弱定义，但不支持弱引用。它们还可以为节符号提供额外的信息。'
 - en: ECOFF defines Local Symbol Entry (SYMR) and External Symbol Entry (EXTR).
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: ECOFF定义了本地符号入口（SYMR）和外部符号入口（EXTR）。
 - en: '|'
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE8]'
   id: totrans-90
   prefs: []
@@ -498,6 +569,7 @@
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE9]'
   id: totrans-92
   prefs: []
@@ -507,15 +579,18 @@
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Symbols (Mach-O)
   id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 符号（Mach-O）
 - en: '|'
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE10]'
   id: totrans-96
   prefs: []
@@ -525,6 +600,7 @@
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE11]'
   id: totrans-98
   prefs: []
@@ -534,6 +610,7 @@
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Mach-O's `nlist` and `nlist_64` are not that different from a.out's, with `n_other`
     changed to `n_sect` to indicate the section index. The 8-bit n_sect field restricts
     representable sections to 255 without out-of-band data (discussed later). If we
@@ -542,24 +619,29 @@
   id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O的`nlist`和`nlist_64`与a.out的差别不大，只是将`n_other`更改为`n_sect`以表示节索引。8位的n_sect字段限制了可表示的节数为255，不包括带外数据（稍后讨论）。如果我们将`n_sect`扩展为32位，结构大小将增加到24字节，与`Elf64_Sym`相同。
 - en: Like a.out, the `N_EXT` bit of `n_type` indicates an external symbol. The `N_PEXT`
     bit indicates a private external symbol.
   id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 像a.out一样，`n_type`的`N_EXT`位表示外部符号。`N_PEXT`位表示私有外部符号。
 - en: Key bits in `n_desc` are `N_WEAK_DEF`, `N_WEAK_REF`, and `N_ALT_ENTRY`.
   id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '`n_desc`中的关键位是`N_WEAK_DEF`、`N_WEAK_REF`和`N_ALT_ENTRY`。'
 - en: Sections
   id: totrans-103
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 节
 - en: '|'
   id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE12]'
   id: totrans-105
   prefs: []
@@ -569,6 +651,7 @@
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE13]'
   id: totrans-107
   prefs: []
@@ -578,18 +661,21 @@
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The section name is represented as a 32-bit index into the string table. If
     we use a 16-bit integer, a large number of section names with a symbol suffix
     (e.g. `.text.foo` `.text.bar`) could make the index overflow.
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 段名称表示为对字符串表的 32 位索引。如果我们使用 16 位整数，大量带有符号后缀的段名称（例如 `.text.foo` `.text.bar`）可能会导致索引溢出。
 - en: '`sh_type` categorizes the section''s contents and semantics. It avoids hard-coding
     magic names in many scenarios. Technically a 16-bit type could work pretty well
     but was deemed insufficient for flexibility.'
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sh_type` 对段的内容和语义进行分类。在许多情况下，它避免了在代码中硬编码魔术名称。从技术上讲，16 位类型可以很好地工作，但被认为对灵活性不足。'
 - en: '`sh_flags` describe miscellaneous attributes, e.g. writable and executable
     permissions, and whether the section should appear in a loadable segment. This
     member is 32-bit in `Elf32_Shdr` while 64-bit in `Elf64_Shdr`. In practice no
@@ -598,6 +684,8 @@
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sh_flags` 描述了各种属性，例如可写和可执行权限，以及该段是否应该出现在可加载段中。在 `Elf32_Shdr` 中，此成员为 32 位，而在
+    `Elf64_Shdr` 中为 64 位。实际上，没有任何架构定义了位于 32 到 63 的标志，因此此成员有点浪费。'
 - en: Location and size. `sh_offset` gives the byte offset from the beginning of the
     file to the first byte in the section. To support object files larger than 4GiB,
     this member has to be 64-bit. `sh_size` gives the section's size in bytes. A section
@@ -606,6 +694,8 @@
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置和大小。`sh_offset` 给出了从文件开头到段中第一个字节的字节偏移量。为了支持大于 4GiB 的目标文件，此成员必须为 64 位。`sh_size`
+    给出了段的大小（以字节为单位）。`SHT_NOBITS` 类型的段在文件中不占用空间。为了支持大于 4GiB 的段，此成员必须为 64 位。
 - en: Address and alignment. `sh_addr` describes the address at which the section's
     first byte should reside for an executable or shared object. It should be zero
     for relocatable files. `sh_addralign` holds the address alignment. In practice
@@ -617,17 +707,22 @@
   id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 地址和对齐。`sh_addr` 描述了可执行文件或共享对象中段的第一个字节应该位于的地址。对于可重定位文件，应将其置零。`sh_addralign` 保存地址对齐。在实践中，即使通用
+    ABI 不要求，此成员必须是 2 的幂。在 ELF64 中，此成员为 64 位，允许对齐达到 `2**63`。实际上，大于页面大小（如果启用了大页，则为最大的大页大小）的对齐没有意义，并且
+    2**31 的最大值足够。因此，我们可以使用 log2 值来保存对齐。
 - en: Connection information. `sh_link` holds a section index. `sh_info` holds either
     a section index or a symbol index. If you recall that `st_shndx` is 16 bits for
     very solid reason, you will know that the two fields are somewhat wasteful.
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 连接信息。`sh_link` 保存段索引。`sh_info` 保存段索引或符号索引。如果您记得 `st_shndx` 为 16 位有很好的原因，您将知道这两个字段有点浪费。
 - en: For a table of fixed-size entries, `sh_entsize` holds the entry size in bytes.
     In some use cases this member is not a power of two. In practice, one byte suffices.
   id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于固定大小条目的表，`sh_entsize` 以字节为单位保存条目大小。在某些用例中，此成员不是 2 的幂。实际上，一个字节就足够了。
 - en: While ELF's section header structure is designed for flexibility, potential
     optimizations could reduce its size without significant loss of functionality.
     By using smaller data types for `sh_flags`, `sh_link`, `sh_info`, and `sh_entsize`
@@ -635,10 +730,13 @@
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 ELF 的段头结构设计灵活，但通过在实际需要的基础上使用较小的数据类型来缩小 `sh_flags`、`sh_link`、`sh_info` 和 `sh_entsize`
+    的结构，我们可以使结构显着变小，而功能损失不大。
 - en: '|'
   id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE14]'
   id: totrans-118
   prefs: []
@@ -648,6 +746,7 @@
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE15]'
   id: totrans-120
   prefs: []
@@ -657,21 +756,26 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Reducing `sh_type` into 2 bytes loses flexibility a bit. If this deems insufficient,
     we could take 3 bits from `sh_addralign` (by turning it into a bitfield) and give
     them to `sh_type`.
   id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 `sh_type` 缩减为 2 个字节会稍微减少灵活性。如果这被认为不够，我们可以从 `sh_addralign` 中取出 3 位（通过将其转换为位字段），并将它们给予
+    `sh_type`。
 - en: Sections (COFF)
   id: totrans-123
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 段（COFF）
 - en: '|'
   id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE16]'
   id: totrans-125
   prefs: []
@@ -681,6 +785,7 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE17]'
   id: totrans-127
   prefs: []
@@ -690,27 +795,33 @@
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: PE's section control structure demonstrates a minor modification compared to
     COFF, `s_paddr => VirtualSize`.
   id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 COFF 相比，PE 的段控制结构进行了轻微修改，`s_paddr => VirtualSize`。
 - en: The presented structure measures as 40 bytes when `long` is 4 bytes. If we extend
     `s_paddr, s_vaddr, s_size, s_scnptr, s_relptr, s_lnnoptr` to 8 bytes, the structure
     will be of 64 bytes.
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 `long` 为 4 字节时，所呈现的结构的大小为 40 字节。如果我们将 `s_paddr, s_vaddr, s_size, s_scnptr,
+    s_relptr, s_lnnoptr` 扩展为 8 字节，则结构将为 64 字节。
 - en: The section name supports up to 8 bytes. A longer name would require an extension
     similar to the symbol control structure.
   id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 节名称支持最多8个字节。更长的名称将需要类似于符号控制结构的扩展。
 - en: Encoding both `s_paddr` and `s_vaddr` is wasteful. ELF encodes the physical
     address in the segment and therefore removes the member from its section structure.
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 编码`s_paddr`和`s_vaddr`都是浪费的。ELF将物理地址编码到段中，因此从其节结构中删除了该成员。
 - en: COFF embeds the location and size of relocations into the section structure.
     This is actually pretty nice. A 16-bit `s_nreloc` may appear restritive but is
     sufficient for relocatable files. In practice, the number of relocations can exceed
@@ -718,15 +829,18 @@
   id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: COFF将重定位的位置和大小嵌入到节结构中。这实际上相当不错。16位的`s_nreloc`可能看起来受限制，但对于可重定位文件是足够的。实际上，可重定位链接可以使单个节的重定位数量超过65536。
 - en: '`s_lnnoptr` and `s_nlnno` point to line number entries, which relate addresses
     to source file line numbers. The embedded nature is inflexible.'
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: '`s_lnnoptr`和`s_nlnno`指向行号条目，将地址与源文件行号相关联。嵌入式的本质是不灵活的。'
 - en: '|'
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE18]'
   id: totrans-136
   prefs: []
@@ -736,6 +850,7 @@
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE19]'
   id: totrans-138
   prefs: []
@@ -745,21 +860,25 @@
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: This simple format is deprecated. In DWARF, special opcodes in line number information
     can encode the information in a more space-efficient way and present more information
     like the column number.
   id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种简单的格式已经过时了。在DWARF中，行号信息中的特殊操作码可以更节省空间地编码信息，并提供更多信息，比如列号。
 - en: Sections (Mach-O)
   id: totrans-141
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 节（Mach-O）
 - en: '|'
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE20]'
   id: totrans-143
   prefs: []
@@ -769,6 +888,7 @@
   id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE21]'
   id: totrans-145
   prefs: []
@@ -778,10 +898,12 @@
   id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: How does Mach-O end up with such a huge section structure? Let's find out...
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O是如何得到如此巨大的节结构的？让我们找出原因...
 - en: A Mach-O binary is divided into segments, each housing one or more sections.
     The section structure encodes the section name and the segment name, both can
     be up to 16 bytes. This representation allows the section names to be read without
@@ -790,12 +912,15 @@
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O二进制文件被划分为段，每个段包含一个或多个节。节结构编码了节名称和段名称，两者都可以长达16个字节。这种表示允许读取节名称而无需字符串表，但对于描述性名称来说限制较大。节语义是从名称派生的（不像ELF）。
 - en: The segment name is redundantly encoded within the section structure. We could
     derive the segment from the section name and flags, e.g., `S_ATTR_SOME_INSTRUCTIONS
     => __TEXT` , `S_ZEROFILL => ZeroFill __DATA` .
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 段名冗余地编码在节结构中。我们可以从节名和标志中派生段，例如，`S_ATTR_SOME_INSTRUCTIONS => __TEXT`，`S_ZEROFILL
+    => ZeroFill __DATA`。
 - en: 'There is a severe limitation: maximum of 255 sections due to `nlist::n_sect`
     being a `uint8_t`. This is apparently too restrictive. Thankfully, an innovative
     feature `.subsections_via_symbols` overcomes the limitation. The feature uses
@@ -806,15 +931,19 @@
   id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个严重的限制：由于`nlist::n_sect`是`uint8_t`，最多只能有255个部分。这显然太过严格了。幸运的是，一个创新的特性`.subsections_via_symbols`克服了这个限制。该特性使用一个整体部分，并使用“原子”将其划分为片段（子部分）。这比ELF的`-ffunction-sections
+    -fdata-sections -fno-unique-section-names`更加节省空间。但是，这里有汇编器的限制、重定位处理的复杂性以及可能导致无法确保两个非局部符号不被重新排序的潜在损失。
 - en: Like COFF, Mach-O embeds the location and size of relocations into the section
     structure.
   id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 像COFF一样，Mach-O将重定位的位置和大小嵌入到节结构中。
 - en: '`reserved1` and `reserved2` are used similarly to ELF''s connection information.'
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: '`reserved1`和`reserved2`与ELF的连接信息类似。'
 - en: '`__TEXT,__stub` (like ELF''s `.plt`), `__TEXT,__got` (like ELF''s `.got`),
     `__TEXT,__la_symbol_ptr` (like ELF''s `.got.plt`), and `__DATA,__thread_ptrs`
     set `reserved1` as an index into the indirect symbol table (the offset is specified
@@ -822,21 +951,26 @@
   id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: '`__TEXT,__stub`（类似于ELF的`.plt`）、`__TEXT,__got`（类似于ELF的`.got`）、`__TEXT,__la_symbol_ptr`（类似于ELF的`.got.plt`）和`__DATA,__thread_ptrs`将`reserved1`设置为间接符号表的索引（偏移量由`LC_DYSYMTAB`命令中的`indirectsymoff`指定）。'
 - en: For `__TEXT,__stub`, `reserved2` is the size of one entry, e.g., 6 for x86-64
     (`jmpq *__la_symbol_ptr(%rip)`). This is analogous to ELF x86-64's [`DT_X86_64_PLTSZ`](/blog/2023-02-19-linker-notes-on-x86#mark-plt).
     For other sections, `reserved2` is zero.
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于`__TEXT,__stub`，`reserved2`是一个条目的大小，例如，对于x86-64是6（`jmpq *__la_symbol_ptr(%rip)`）。这类似于ELF
+    x86-64的[`DT_X86_64_PLTSZ`](/blog/2023-02-19-linker-notes-on-x86#mark-plt)。对于其他节，`reserved2`为零。
 - en: Relocations
   id: totrans-155
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重定位
 - en: '|'
   id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE22]'
   id: totrans-157
   prefs: []
@@ -846,6 +980,7 @@
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE23]'
   id: totrans-159
   prefs: []
@@ -855,25 +990,30 @@
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '`r_info` specifies the symbol table index with respect to which the relocation
     must be made, and the type of relocation to apply.'
   id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: '`r_info` 指定必须进行重定位的符号表索引，以及要应用的重定位类型。'
 - en: 'ELFCLASS32: 8-bit type, 24-bit symbol index'
   id: totrans-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ELFCLASS32：8 位类型，24 位符号索引
 - en: 'ELFCLASS64: 32-bit type, 32-bit symbol index'
   id: totrans-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ELFCLASS64：32 位类型，32 位符号索引
 - en: 'There are two variants, REL and RELA. Let''s quote the generic ABI:'
   id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两个变体，REL 和 RELA。让我们引用通用 ABI：
 - en: As specified previously, only Elf32_Rela and Elf64_Rela entries contain an explicit
     addend. Entries of type Elf32_Rel and Elf64_Rel store an implicit addend in the
     location to be modified. Depending on the processor architecture, one form or
@@ -884,23 +1024,27 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如前所述，只有 Elf32_Rela 和 Elf64_Rela 条目包含显式修正值。类型为 Elf32_Rel 和 Elf64_Rel 的条目在要修改的位置存储隐式修正值。根据处理器架构，一种形式或另一种形式可能是必要的或更方便的。因此，特定机器的实现可能仅使用一种形式，或根据上下文使用任一形式。
 - en: Relocatable files need a lot of relocatable types while executables and shared
     objects need only a few. The former is often called static relocations while the
     latter is called dynamic relocations.
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 可重定位文件需要很多重定位类型，而可执行文件和共享对象只需要很少。前者通常称为静态重定位，而后者称为动态重定位。
 - en: Of the few dynamic relocation types, most do not need the addend member. lld
     provides an option `-z rel` to use `SHT_REL/DT_REL` dynamic relocations.
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 在少数动态重定位类型中，大多数不需要修正值成员。lld 提供了一个选项 `-z rel` 来使用 `SHT_REL/DT_REL` 动态重定位。
 - en: If we disregard the REL dynamic relocation scenario, then all modern architectures
     use RELA exclusively. Most architectures encode the immediate with only few bits,
     which are inadequate for many relocatable file uses.
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们忽略 REL 动态重定位方案，那么所有现代架构都仅使用 RELA。大多数架构仅用几位编码立即数，这对于许多可重定位文件的用途来说是不足够的。
 - en: ELFCLASS64, with its 64-bit members, doubles the size compared to ELFCLASS32's
     32-bit members. Since relocations often comprise a substantial portion of object
     files, this size difference can lead to user concerns. However, in practice, a
@@ -910,20 +1054,26 @@
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: ELFCLASS64，其具有 64 位成员，与 ELFCLASS32 的 32 位成员相比，大小翻倍。由于重定位通常占据对象文件的重要部分，因此这种大小差异可能会引起用户关注。然而，在实践中，即使在
+    64 位上下文中，24 位符号索引通常也足够。因此，如果 64 位架构的重定位类型要求小于 256，则 ELFCLASS32 可以是一个可行且更节省空间的选项。
 - en: In March 2024, I proposed [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf)
     as an alternative relocation format.
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 2024 年 3 月，我提出了 [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf)
+    作为另一种重定位格式。
 - en: Relocations (a.out)
   id: totrans-171
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重定位（a.out）
 - en: '|'
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE24]'
   id: totrans-173
   prefs: []
@@ -933,6 +1083,7 @@
   id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE25]'
   id: totrans-175
   prefs: []
@@ -942,29 +1093,35 @@
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '`r_symbolnum` mirrors ELF''s `ELF32_R_SYM`.'
   id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: '`r_symbolnum` 映射 ELF 的 `ELF32_R_SYM`。'
 - en: 'The other bitfields, resembling ELF''s `ELF32_R_TYPE`, but split into distinct
     fields:'
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外一组位域，类似于 ELF 的 `ELF32_R_TYPE`，但分为不同的字段：
 - en: Reserving dedicated semantics for individual bits can limit adaptability. COFF
     and ELF opted to remove bitfields in favor of a type to provide greater flexibility.
   id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 为个别位保留专用语义可能会限制适应性。COFF 和 ELF 选择删除位字段，以提供更大的灵活性。
 - en: Relocations (COFF)
   id: totrans-180
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重定位（COFF）
 - en: '|'
   id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE26]'
   id: totrans-182
   prefs: []
@@ -974,6 +1131,7 @@
   id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE27]'
   id: totrans-184
   prefs: []
@@ -983,45 +1141,56 @@
   id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: This format resembles ELF's `Elf32_Rel`.
   id: totrans-186
   prefs: []
   type: TYPE_NORMAL
+  zh: 此格式类似于 ELF 的 `Elf32_Rel`。
 - en: '`r_vaddr` gives the virtual address of the location at which to apply the relocation
     action. If we interpret `r_vaddr` as an offset (as PE does) and restrict section
     size to 32 bits, we could reuse this structure for 64-bit architectures.'
   id: totrans-187
   prefs: []
   type: TYPE_NORMAL
+  zh: '`r_vaddr` 给出要应用重定位操作的位置的虚拟地址。如果我们将 `r_vaddr` 解释为偏移量（如 PE 所做），并将节大小限制为 32 位，则我们可以将此结构重用于
+    64 位架构。'
 - en: '`r_symndx` is a 32-bit symbol table index.'
   id: totrans-188
   prefs: []
   type: TYPE_NORMAL
+  zh: '`r_symndx` 是一个 32 位符号表索引。'
 - en: '`r_type` is a 16-bit relocation type, limited in number compared to ELF.'
   id: totrans-189
   prefs: []
   type: TYPE_NORMAL
+  zh: '`r_type` 是一个 16 位重定位类型，与 ELF 相比数量有限。'
 - en: COFF generally supports fewer relocation types than ELF. System V Release 3
     defines very few relocations for each architecture. In binutils, `include/coff/*.h`
     files define relocations for more architectures.
   id: totrans-190
   prefs: []
   type: TYPE_NORMAL
+  zh: COFF 通常支持的重定位类型比 ELF 少。System V Release 3 为每个架构定义了很少的重定位。在 binutils 中，`include/coff/*.h`
+    文件为更多的架构定义了重定位。
 - en: While ELF uses the REL/RELA for both relocatable files and executables, in PE
     image files, the import address table and base relocation table (`.reloc`) are
     a completely different design.
   id: totrans-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 ELF 在可重定位文件和可执行文件中都使用 REL/RELA，但在 PE 映像文件中，导入地址表和基址重定位表（`.reloc`）是完全不同的设计。
 - en: Relocations (Mach-O)
   id: totrans-192
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重定位（Mach-O）
 - en: '|'
   id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE28]'
   id: totrans-194
   prefs: []
@@ -1031,6 +1200,7 @@
   id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE29]'
   id: totrans-196
   prefs: []
@@ -1040,6 +1210,7 @@
   id: totrans-197
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Mach-O's relocation structure closely mirrors a.out's with adapted `r_symbolnum`
     meaning. When `r_extern == 0` (local), the `r_symbolnum` member references a section
     index instead of a symbol index. This is to support custom sections, breaking
@@ -1047,80 +1218,99 @@
   id: totrans-198
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O 的重定位结构与 a.out 的紧密相似，并适应了`r_symbolnum`的含义。当`r_extern == 0`（本地）时，`r_symbolnum`成员引用节索引而不是符号索引。这是为了支持自定义节，打破传统
+    a.out 的三节限制（文本、数据和 bss）。
 - en: As aforementioned, dedicating bits to bitfields (`r_pcrel`, `r_length`, and
     `r_scattered` greatly restricted the number of relocation types.
   id: totrans-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，为位域（`r_pcrel`、`r_length` 和 `r_scattered`）分配位数严重限制了重定位类型的数量。
 - en: Related to the relocation type limitation, a `.long foo - .` in a data section
     requires a pair of relocations, `SUBTRACTOR` and`/UNSIGNED`. I have some notes
     on [Port LLVM XRay to Apple systems](/blog/2023-06-18-port-llvm-xray-to-apple-systems).
   id: totrans-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 与重定位类型限制相关的是，在数据段中的`.long foo - .`需要一对重定位，`SUBTRACTOR` 和`/UNSIGNED`。我在[将 LLVM
+    XRay 移植到 Apple 系统](/blog/2023-06-18-port-llvm-xray-to-apple-systems)上有一些注释。
 - en: Mach-O uses a number of sections in the `__LINKEDIT` segment to communicate
     information to dyld.
   id: totrans-201
   prefs: []
   type: TYPE_NORMAL
+  zh: Mach-O 使用一些节在`__LINKEDIT`段中向 dyld 传递信息。
 - en: Dennis MacAlistair Ritchie's [`A.OUT (V)` manpage](https://www.bell-labs.com/usr/dmr/www/man51.pdf)
     (1971) describes the original a.out format. The header contains 6 words.
   id: totrans-202
   prefs: []
   type: TYPE_NORMAL
+  zh: Dennis MacAlistair Ritchie 的[`A.OUT (V)` manpage](https://www.bell-labs.com/usr/dmr/www/man51.pdf)（1971）描述了原始的
+    a.out 格式。头部包含 6 个字。
 - en: a "br .+14" instruction (205(8))
   id: totrans-203
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个“br .+14”指令（205(8)）
 - en: The size of the program text
   id: totrans-204
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 程序文本的大小
 - en: The size of the symbol table
   id: totrans-205
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 符号表的大小
 - en: The size of the relocation bits area
   id: totrans-206
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 重定位位区域的大小
 - en: The size of a data area
   id: totrans-207
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据区域的大小
 - en: A zero word (unused at present)
   id: totrans-208
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个零字词（目前未使用）
 - en: The text relocations are implicit.
   id: totrans-209
   prefs: []
   type: TYPE_NORMAL
+  zh: 文本重定位是隐含的。
 - en: Later versions introduced new magic numbers, separated text relocations and
     data relocations, and added an entry point (`a_entry`).
   id: totrans-210
   prefs: []
   type: TYPE_NORMAL
+  zh: 较新版本引入了新的魔数，分离了文本重定位和数据重定位，并添加了入口点（`a_entry`）。
 - en: Size comparison
   id: totrans-211
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 大小比较
 - en: TODO
   id: totrans-212
   prefs: []
   type: TYPE_NORMAL
+  zh: 待办事项
 - en: Size reduction opportunities
   id: totrans-213
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 减小体积的机会
 - en: ELFCLASS32 structures are already compact, offering limited size reduction potential.
     ELFCLASS64 structures, while flexible, can be optimized by sacrificing some flexibility
     (64-bit quantities). The 64-bit symbol control structure is compact, but section
@@ -1128,6 +1318,8 @@
   id: totrans-214
   prefs: []
   type: TYPE_NORMAL
+  zh: ELFCLASS32 结构已经很紧凑，提供了有限的体积减小潜力。ELFCLASS64 结构虽然灵活，但可以通过牺牲一些灵活性（64 位数量）来进行优化。64
+    位符号控制结构很紧凑，但节和重定位非常浪费，如果我们可以牺牲一些灵活性。
 - en: As the ELF paper acknowledges, "Relocatable and executable files do not necessarily
     have the same constraints, and we considered using two file formats. Eventually,
     we decided the two activities were similar enough that a single format would suffice."
@@ -1137,6 +1329,8 @@
   id: totrans-215
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如 ELF 论文所承认的那样，“可重定位和可执行文件并不一定具有相同的约束，我们考虑使用两种文件格式。最终，我们决定这两种活动相似到足以只使用一种格式。”检查可执行文件的工具比可重定位文件更多。因此，自然地，我们可能只想更改可重定位文件。我们可以将
+    ELFCLASS32 可重定位文件用于 64 位架构吗？
 - en: Well, x86-64 and AArch64 make a clear distinct of ELFCLASS32 and ELFCLASS64\.
     ELFCLASS32 is for ILP32 (x32, aarch64_ilp32) while ELFCLASS64 is for LP64\. However,
     the discontinued Itanium architecture sets a precedent that ELFCLASS32 can be
@@ -1145,6 +1339,9 @@
   id: totrans-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，x86-64 和 AArch64 对 ELFCLASS32 和 ELFCLASS64 有明显的区分。ELFCLASS32 适用于 ILP32（x32，aarch64_ilp32），而
+    ELFCLASS64 适用于 LP64。然而，被停用的 Itanium 架构为 ELFCLASS32 可以用于 LP64 程序树立了一个先例。引用它的 psABI（*Intel
+    Itanium Processorspecific Application Binary Interface (ABI)*）。
 - en: For Itanium architecture ILP32 relocatable (i.e. of type ET_REL) objects, the
     file class value in e_ident[EI_CLASS] must be ELFCLASS32. For LP64 relocatable
     objects, the file class value may be either ELFCLASS32 or ELFCLASS64, and a conforming
@@ -1154,6 +1351,9 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于 Itanium 架构 ILP32 可重定位（即类型 ET_REL）对象，e_ident[EI_CLASS]中的文件类值必须为 ELFCLASS32。对于
+    LP64 可重定位对象，文件类值可以是 ELFCLASS32 或 ELFCLASS64，并且符合规范的链接器必须能够处理其中一个或两个类。ET_EXEC 或
+    ET_DYN 对象文件类型必须对 ILP32 使用 ELFCLASS32，对 LP64 程序使用 ELFCLASS64。
 - en: ''
   id: totrans-218
   prefs:
@@ -1165,6 +1365,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 出现在 LP64 程序的 ELFCLASS32 可重定位对象中的地址被零扩展隐式扩展到 64 位。
 - en: ''
   id: totrans-220
   prefs:
@@ -1177,28 +1378,34 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 注意：在 LP64 程序中合法的一些构造，例如超出 32 位范围的绝对 64 位地址，可能需要使用 ELFCLASS64 可重定位对象文件。
 - en: Given the prior art, it seems promising to allow ELFCLASS32 when the code size
     concerns people. Ideally there should be a marker to distinguish ILP32 and LP64-using-ELFCLASS32
     object files.
   id: totrans-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于先前的成果，当代码大小引起人们关注时，允许 ELFCLASS32 似乎是有希望的。理想情况下，应该有一个标记来区分使用 ILP32 和 LP64 的
+    ELFCLASS32 对象文件。
 - en: The primary changes reside in the assembler and linker. It's also important
     to ensure that binary manipulation programs (like objcopy) and dump tools are
     happy with them.
   id: totrans-223
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要的变化在汇编器和链接器中。还要确保二进制操作程序（如 objcopy）和转储工具对它们满意。
 - en: Further optimization potential lies in exploring the use of `Elf32_Rel` instead
     of `Elf32_Rela` for even smaller relocations.
   id: totrans-224
   prefs: []
   type: TYPE_NORMAL
+  zh: 进一步的优化潜力在于探索使用 `Elf32_Rel` 而不是 `Elf32_Rela`，以实现更小的重定位。
 - en: Replacing control structures
   id: totrans-225
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 替换控制结构
 - en: This approach is independent of whether ELFCLASS32 is adopted and can be applied
     to both ELFCLASS32 and ELFCLASS64\. The ELF paper is clear, "ELF allows extension
     and redefinition for other control structures." However, caution is warranted
@@ -1207,6 +1414,7 @@
   id: totrans-226
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法与是否采用 ELFCLASS32 无关，可以应用于 ELFCLASS32 和 ELFCLASS64。ELF 论文清楚地指出，“ELF 允许扩展和重新定义其他控制结构”。但是，由于许多工具依赖于现有结构，因此需要谨慎。
 - en: One promising example is `Elf32_Shdr_minimized`, a custom structure reduced
     to 32 bytes from the standard `Elf32_Shdr`'s 40 bytes. While I would be nervous,
     but if we reduce `sh_type` to a `uint16_t`, the structure size can reduce to 28
@@ -1214,21 +1422,27 @@
   id: totrans-227
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个有希望的例子是 `Elf32_Shdr_minimized`，一个定制结构，从标准的 `Elf32_Shdr` 的 40 字节减少到 32 字节。虽然我会有些紧张，但如果我们将
+    `sh_type` 缩小到一个 `uint16_t`，结构大小可以减少到 28 字节。
 - en: stabs
   id: totrans-228
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: stabs
 - en: Earlier debuggers operated using a debugging information format called "stabs"
     (short for symbol table entries; dating back to at least UNIX/32V in 1979). Stabs
     is encoded using extra symbol table entries in the a.out object file format.
   id: totrans-229
   prefs: []
   type: TYPE_NORMAL
+  zh: 早期的调试器使用了一种名为“stabs”的调试信息格式（缩写为符号表条目；至少可追溯到 1979 年的 UNIX/32V）。Stabs 是使用 a.out
+    对象文件格式中的额外符号表条目进行编码的。
 - en: '|'
   id: totrans-230
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE30]'
   id: totrans-231
   prefs: []
@@ -1238,6 +1452,7 @@
   id: totrans-232
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE31]'
   id: totrans-233
   prefs: []
@@ -1247,6 +1462,7 @@
   id: totrans-234
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Stabs was ported to COFF for System V Release 2, used on some machines. System
     V Release 4 switched to ELF and abandoned stabs in favor of a newly developed
     format called DWARF. Its debugger sdb was rewritten to support DWARF, and stabs
@@ -1256,16 +1472,22 @@
   id: totrans-235
   prefs: []
   type: TYPE_NORMAL
+  zh: Stabs 被移植到 COFF 上，用于 System V Release 2，在一些机器上使用。System V Release 4 切换到了 ELF，并放弃了
+    stabs，转而采用了一种新开发的格式叫做 DWARF。它的调试器 sdb 被重写以支持 DWARF，不再支持 stabs。（DWARF 的第一个版本后来于
+    1992 年 1 月由 UNIX 国际编程语言特别兴趣小组（SIG）发布。）
 - en: However, stabs continued to be used in other operating systems, including *BSD,
     AIX, and IRIX. For example, the GNU assembler added stabs support for ELF (`n_strx`
     is 32-bit).
   id: totrans-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，stabs 继续在其他操作系统中使用，包括 *BSD、AIX 和 IRIX。例如，GNU 汇编器为 ELF 添加了 stabs 支持（`n_strx`
+    是 32 位）。
 - en: GCC 13 [removed stabs support](https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=7e0db0cdf01e9c885a29cb37415f5bc00d90c029).
   id: totrans-237
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC 13 [移除了 stabs 支持](https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=7e0db0cdf01e9c885a29cb37415f5bc00d90c029)。
 - en: Stabs is less efficient than DWARF. When compiling a non-trivial program (so
     that the boilerplate in DWARF is less significant), you may observe that `.stab`
     and `.stabstr` consume more space than `.debug_*` sections, even if DWARF is more
@@ -1273,11 +1495,14 @@
   id: totrans-238
   prefs: []
   type: TYPE_NORMAL
+  zh: Stabs 比 DWARF 不那么高效。当编译一个非平凡程序（因此 DWARF 中的样板不那么重要）时，你可能会观察到 `.stab` 和 `.stabstr`
+    消耗的空间比 `.debug_*` 节更多，即使 DWARF 更具表现力且包含更多信息。
 - en: Heterogeneity and challenge
   id: totrans-239
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 异构性和挑战
 - en: While the diversity of operating systems and architectures poses complexity
     for application developers, the object file format heterogeneity presents a unique
     challenge for toolchain development, probably not very tangible by application
@@ -1285,6 +1510,7 @@
   id: totrans-240
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管操作系统和体系结构的多样性给应用程序开发者带来了复杂性，但对象文件格式的异构性为工具链开发提供了独特的挑战，可能对应用程序开发者和用户并不是非常明显。
 - en: Integrating features like Link Time Optimization (LTO), Profile-Guided Optimization
     (PGO), and sanitizers has complexity due to object file format-specific limitations
     and nuances. While most developers primarily concern themselves with a specific
