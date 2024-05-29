@@ -1,33 +1,49 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:01:42'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:01:42
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Indexing iCloud Photos with AI Using LLaVA and pgvector | by Mustafa Akin |
     Medium
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 LLaVA 和 pgvector 对 iCloud 照片进行索引 | 作者 Mustafa Akin | Medium
 - en: 来源：[https://medium.com/@mustafaakin/indexing-icloud-photos-with-ai-using-llava-and-pgvector-fd58182febf6](https://medium.com/@mustafaakin/indexing-icloud-photos-with-ai-using-llava-and-pgvector-fd58182febf6)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@mustafaakin/indexing-icloud-photos-with-ai-using-llava-and-pgvector-fd58182febf6](https://medium.com/@mustafaakin/indexing-icloud-photos-with-ai-using-llava-and-pgvector-fd58182febf6)
 - en: Indexing iCloud Photos with AI Using LLaVA and pgvector
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 LLaVA 和 pgvector 对 iCloud 照片进行索引
 - en: A straightforward idea, gluing stuff together until it works, but it’s a glimpse
     of what’s possible with help of local AIs in near future
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个直接的想法，将东西粘在一起直到它能够工作，但这只是在未来可能借助本地人工智能的一瞥
 - en: 'I’ve been fascinated about the rise of AI. However, for the most of the part,
     it feels like magic. I like to get to the bottom fo the things as much as possible.
     My favorite courses at CS Undergrad were Digital Design, Computer Architecture,
@@ -40,8 +56,12 @@
     all the time”, and “I know for loop order is important for optimal cache performance
     in some architectures”, “oh internet is 1500 bytes of messages exchanged. it’s
     a miracle it works at this scale” etc.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我一直对人工智能的崛起感到着迷。然而，大多数时间，它感觉像魔术一样。我尽可能地想深入了解事物的底层。我在计算机科学本科最喜欢的课程是数字设计、计算机体系结构、操作系统和网络，我在其中排名前1%（除了网络，该死的电子学生）。我非常喜欢它们。尽管我父亲在我大约10岁时教我
+    Visual Basic 和数据库，但是参加这些课程最终让我豁然开朗。这感觉就像 Neo 最终看到了矩阵只是垂直的 `<marquee>` 中的绿色代码，但我的启示版本要逊色得多：“这就是64位
+    CPU 的意思”和“哦，原来超线程一直都意味着2倍的 CPU”，以及“我知道 for 循环的顺序对于某些架构的最佳缓存性能是重要的”，“哦，互联网是1500字节的消息交换。奇迹般地，它在这个规模上能够工作”等等。
 - en: But, the AI changed everything for me. To be frank, I have almost no idea what’s
     going on with the latest developments. And this is coming from a CS PhD drop-out
     (*partly due to military obligation postponement and partly due to self-discovery
@@ -50,56 +70,76 @@
     to work on operating systems, distributing systems and networking (which were
     my favorite), but only shiny things like Bioinformatics with 50 people in one
     paper and old machine learning.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，对我来说，人工智能改变了一切。坦率地说，我几乎不知道最新发展的情况。这来自于一个计算机科学博士辍学者（*部分是因为军事义务延期，部分是自我发现过程*），他别无选择，只能选修几门经典（换句话说，枯燥）的人工智能和机器学习课程，因为吹得很厉害，几乎没有认真的教授愿意研究操作系统、分布式系统和网络（这是我最喜欢的），而只有像生物信息学这样的闪亮东西，一篇论文里有50个人和老旧的机器学习。
 - en: The way the modern AIs work, and you can literally download a bunch of them
     in a single file and operate in less than 8GB RAM in a M1 machine is fucking amazing.
     But, as most of us does not need to deal with CPU architectures all the day, we
     don’t have to really understand how matrix multiplication ends up the sand having
     some sort of artificial intelligence.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代人工智能的工作方式，你可以从一个单一文件中下载一堆它们，并在 M1 机器中的不到8GB RAM 中运行，真是令人惊叹。但是，由于大多数人不需要整天处理
+    CPU 架构，我们实际上不需要真正理解矩阵乘法是如何最终导致某种形式的人工智能的。
 - en: For a while, I wanted to play with LLMs and concept of RAG for a while for an
     internal sue case at [Resmo](https://mustafaakin.dev/posts/2024-01-08-indexing-icloud-photos-with-ai-using-llava/www.resmo.com)
     but I did not have strong use cases. Let me put out this for once. Adding an AI/LLM
     powered chatbot to your website for customer support, summarizing documentation
     or converting natural language to SQL is only slightly useful; but yeah it probably
     enables you to say you have “AI” in your product.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一段时间，我想尝试一下 LLMs 和 RAG 概念，为 [Resmo](https://mustafaakin.dev/posts/2024-01-08-indexing-icloud-photos-with-ai-using-llava/www.resmo.com)
+    的内部使用案例，但我没有强大的用例。让我这次尝试一下。在您的网站上添加一个由 AI/LLM 提供支持的聊天机器人进行客户支持，对文档进行摘要或将自然语言转换为
+    SQL 只是略微有用；但是，是的，这可能让您说您的产品中有“人工智能”。
 - en: So, to avoid blabbering any further, in short my hobby project is leveraging
     a multi-modal LLM that can understand images, and improve the semantic search
     on my photo archive in iCloud. Apple Photos can already recognize the things on
     the image and provide a full text search on images. However, it can only detect
     objects and colors. I found the Google Photos search much better.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了避免再多废话，简而言之，我的业余项目是利用一个可以理解图像的多模式LLM，并改进iCloud照片档案中的语义搜索。苹果照片已经可以识别图像上的物体并对图像进行全文搜索。然而，它只能检测到物体和颜色。我发现谷歌照片搜索效果要好得多。
 - en: Describing iCloud Photos using LLM
+  id: totrans-13
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 描述iCloud照片使用LLM
 - en: As I said, during my MsC and PhD, I had to take several ML/AI courses and know
     better that there are state of the art labeling and segmentation algorithms for
     images that perform very well and work much more efficiently than an LLM. But
     I want to try this idea.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我所说，在我的硕士和博士期间，我不得不修过几门ML/AI课程，并更加了解到有最先进的标注和图像分割算法，其性能非常好，比LLM工作效率要高得多。但我想尝试这个想法。
 - en: How about we ask an LLM and what it sees in an image, and embed the response
     as a vector using a popular algorithm and let the users search on that? Nothing
     state of the art, but it’s an interesting case. Obviously the performance will
     be dependent upon the recognition of the LLM, but can an open-source model be
     good enough to search my photos? If it’s good enough, can it evolve into something
     else? Let’s dive in.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以问一个LLM它在图像中看到了什么，并使用一种流行的算法将响应嵌入为一个向量，然后让用户在上面搜索？并不是最先进的，但这是一个有趣的案例。显然，性能将取决于LLM的识别，但一个开源模型能否足够好地搜索我的照片呢？如果足够好，它能否演变成其他东西？让我们深入探讨。
 - en: For starters, if you are using iCloud Photos, all of your Photos thumbnails
     are searchable in a local directory, even if all the Photos are not in your Mac
     due to storage concerns. There is also an SQLite database of your Photos and I
     had a [descriptive blog on it in 2019](/@mustafaakin/how-to-organize-your-messy-albums-on-photos-app-on-macos-with-some-sql-and-image-processing-9e6a2566f6f0),
     however the schemas seem to have changed and you have better luck on the [Simon
     Willison’s blog](https://simonwillison.net/2020/May/21/dogsheep-photos/).
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 起步时，如果你正在使用iCloud照片，你所有的照片缩略图都可以在一个本地目录中进行搜索，即使所有的照片由于存储问题而不在你的Mac上。你的照片还有一个SQLite数据库，我在2019年的[描述性博客](/@mustafaakin/how-to-organize-your-messy-albums-on-photos-app-on-macos-with-some-sql-and-image-processing-9e6a2566f6f0)中有介绍，但是模式似乎已经改变了，你在[Simon
+    Willison的博客](https://simonwillison.net/2020/May/21/dogsheep-photos/)上可能会有更好的运气。
 - en: To keep things simple, I made a code to recursively list the JPEG files in the
     thumbnails folder of iCloud which can be found in **`~/Pictures/Photos Library.photoslibrary/resources/derivatives**/.
     They are smaller versions of the original photos, but they are more than enough
@@ -107,19 +147,26 @@
     executable [llamafile](https://github.com/Mozilla-Ocho/llamafile) which makes
     deployment extremely easy. This has a REST API that I can call and all I need
     to do is to encode the images.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持简单，我编写了一个代码，递归列出了iCloud缩略图文件夹中的JPEG文件，这些文件可以在**`~/Pictures/Photos Library.photoslibrary/resources/derivatives**/找到。它们是原始照片的缩小版本，但对于我们的用例来说已经足够了。作为LLM模型，我选择了带有Q4的LLaVA，并使用了只需执行的[llamafile](https://github.com/Mozilla-Ocho/llamafile)，这样部署就变得非常容易了。它具有一个我可以调用的REST
+    API，我所需要做的就是对图像进行编码。
 - en: Prompts
+  id: totrans-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 提示
 - en: I don’t like the term prompt engineering. In my opinion, it’s not a deep enough
     subject with several branches to be called actual engineering, it feels like an
     insult to actual engineering. If we called every trial and error without really
     understanding the root cause engineering, it would cheapen what real engineering’s
     all about.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不喜欢术语提示工程。在我看来，这不是一个足够深入的主题，有好几个分支都可以称为真正的工程，这感觉像是对真正的工程的侮辱。如果我们称每次试错而没有真正理解根本原因的东西为工程，那么就会贬低真正工程的价值。
 - en: I tried several prompts to understand what would give a better description for
     the images. Considering each generation takes around 10 seconds on my M1 Max 64GB
     machine with LLaVA 7B Q4 model (I used the REST API, I’m sure it could be better),
@@ -127,12 +174,17 @@
     releasing anything against benchmarks, but I’ll be sharing a few examples on what
     LLaVA generates with different prompts using different temperatures and compare
     7B and 13B parameter models.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我尝试了几个提示，以了解哪一个能为图片提供更好的描述。考虑到每一代在我的M1 Max 64GB机器上使用LLaVA 7B Q4模型大约需要10秒（我使用了REST
+    API，我相信它可能会更好），我没有太多的选择。由于我不再是博士研究生，我不会发布任何违背基准的东西，但我将分享一些使用不同提示和不同温度生成的LLaVA示例，并比较7B和13B参数模型。
 - en: What about ChatGPT?
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么关于ChatGPT？
 - en: Of course, GPT4V (ChatGPT with Vision model) generates perfect descriptions
     for my images in great detail. But at what cost? All the LLM and RAG examples
     around blogs and YouTube **defaults with OpenAI,** and it makes me **sad**. Don’t
@@ -146,72 +198,104 @@
     proprietary. I’m grateful for the work OpenAI does to advance the area, but there
     are even special LLMs that can even work on edge. I also don’t want to upload
     my whole album to a firm with questionable privacy practices.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，GPT4V（带有视觉模型的ChatGPT）能够以极大的细节生成我的图片的完美描述。但是以什么代价呢？所有博客和YouTube上的LLM和RAG示例**默认使用OpenAI**，这让我**伤心**。不要误会，我很感激它们的存在，但是能够在你的计算机上运行带有视觉的LLM是很惊人的，无论他们做了什么，我们都不应该依赖于一家公司。我是一位老Linux用户，买不起Macbook，没有Linux的话，一个免费的操作系统和一个包管理器，我的编程技能不会进步得这么快（我觉得Windows阻碍了很多细节）。所以不要成为一个对估值1000亿美元的公司唯命是从的人，支持开源LLM，不要默认为专有。我感激OpenAI为推动这个领域所做的工作，但是甚至有一些特殊的LLM甚至可以在边缘工作。我也不想把整个相册上传到一个隐私做法可疑的公司。
 - en: '**Prompt 1:** “A chat between a user and an artificial intelligence assistant.
     The assistant gives detailed answers to the human’s questions.'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 1:** “用户与人工智能助手之间的聊天。助手对人类的问题给出详细的答复。'
 - en: USER:[img-10]Describe this image in detail
+  id: totrans-24
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 用户：[img-10]详细描述这张图片
 - en: ASSISTANT:”
+  id: totrans-25
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '**助手:**”'
 - en: '**Prompt 2:** “Concise image summary request.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 2:** “简洁的图像摘要请求。'
 - en: USER:[img-10] Provide a brief, concise description of this image, highlighting
     only the most essential elements in a few words.
+  id: totrans-27
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 用户：[img-10]请简要、简洁地描述这张图片，只突出显示最重要的元素，用几个词。
 - en: ASSISTANT:”
+  id: totrans-28
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '**助手:**”'
 - en: '**Prompt 3:** “Detailed image analysis dialogue.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 3:** “详细图像分析对话。'
 - en: USER:[img-10] I need a thorough analysis of this image, including all elements,
     colors, and any noticeable features.
+  id: totrans-30
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 用户：[img-10]我需要对这张图片进行彻底的分析，包括所有元素、颜色和任何显著的特征。
 - en: ASSISTANT:”
+  id: totrans-31
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '**助手:**”'
 - en: '**Prompt 4:** “Interactive session for image analysis and description.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 4:** “图像分析和描述的交互式会话。'
 - en: USER:[img-10] Please provide a comprehensive description of this image, focusing
     on all visible details.
+  id: totrans-33
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 用户：[img-10]请提供这张图片的全面描述，重点介绍所有可见的细节。
 - en: ASSISTANT:”
+  id: totrans-34
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '**助手:**”'
 - en: '**ChatGPT**: Describe this image in detail'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ChatGPT**: 详细描述这张图片'
 - en: 'Image 1: A flyover over the Sphere'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 图片1：飞越球体
 - en: This is an amazing structure. Taken in December 2023 after re:Invent and catching
     Influenza
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个令人惊叹的结构。在重新:Invent之后的2023年12月拍摄并感染流感
 - en: '**Prompt 1**: The image captures a unique aerial view of an airport with multiple
     large passenger jets parked on the runway. In addition to these planes, there
     are several cars and trucks visible around the area, likely serving various purposes
@@ -222,13 +306,17 @@
     for visitors in the area. The combination of planes, cars, trucks, and green golf
     courses creates an interesting snapshot of urban life with aviation infrastructure
     intertwined within it.”'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 1**：这张图片捕捉到了一个独特的机场高空视角，机场跑道上停放着多架大型客机。除了这些飞机外，周围还可以看到几辆汽车和卡车，很可能是为了服务于各种目的，比如运输或飞机维护。场景还包括了两个靠近机场的高尔夫球场，一个位于图片中心附近，另一个则更靠左侧。这些球场为繁忙的机场环境提供了对比的元素，并为该地区的游客提供了娱乐机会。飞机、汽车、卡车和绿色高尔夫球场的结合创造了一个有趣的城市生活快照，航空基础设施与之交织在一起。'
 - en: '**Prompt 2**: A plane flying over a golf course.'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 2**：一架飞机飞过高尔夫球场。'
 - en: '**Prompt 3**: The image features a cityscape with an airplane flying overhead,
     providing a unique perspective of the urban landscape. A large golf course is
     visible below, adding greenery to the scene. There are numerous cars and trucks
@@ -239,9 +327,11 @@
     soaring above adds an interesting element to this urban landscape photo. Overall,
     it’s a captivating image that showcases both nature and human-made structures
     coexisting within the same environment.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 3**：这张图片展示了一个城市景观，一架飞机在头顶飞过，为城市景观提供了独特的视角。一个大型高尔夫球场在下方可见，为场景增添了绿意。整个区域散布着许多汽车和卡车，表明这很可能是白天，人们在通勤或在城市周围旅行。除了这些元素外，城市各处还有几个交通灯，帮助规范下方街道上的车辆流量。一架大型蓝色飞机在上空翱翔，为这张城市景观照片增添了一种有趣的元素。总的来说，这是一张引人入胜的图片，展示了自然与人造结构共存于同一环境中的情景。'
 - en: '**Prompt 4**: The image is an aerial view of a golf course with many trees
     and green grass. There are several cars parked in the vicinity, as well as some
     buildings surrounding the area. In addition to the vehicles on land, there’s also
@@ -250,9 +340,11 @@
     course and the aerial viewpoint from above. The scene is a blend of nature and
     urban elements, creating a picturesque environment for those who enjoy outdoor
     activities like golfing.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 4**：这张图片是一个高空视角的高尔夫球场，有许多树木和绿草。附近停着几辆车，还有一些建筑物环绕着这个区域。除了陆地上的车辆外，还可以看到一架飞机飞过高尔夫球场。这个独特的视角既提供了人们在地面上玩耍或参观球场的活动的见解，又提供了从空中俯瞰的视角。这个场景是自然与城市元素的融合，为那些喜欢户外活动如高尔夫的人们创造了一种风景如画的环境。'
 - en: '**ChatGPT**: The image depicts a scenic aerial view from an airplane, showcasing
     a sprawling cityscape bathed in warm sunlight. In the foreground, we see the airplane’s
     wing, giving a sense of height and movement. Below, the city is densely packed
@@ -266,18 +358,24 @@
     a desert-like environment surrounding the urban area. The sunlight casts long
     shadows from the buildings, indicating either sunrise or sunset, adding to the
     serene ambiance of the scene.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ChatGPT**：图片展示了从飞机上俯瞰的风景，展示了一个被温暖阳光照射的广阔城市景观。在前景中，我们看到飞机的机翼，给人一种高度和运动的感觉。在下方，城市密集地布满各种建筑物，包括似乎是大型酒店综合体的建筑，这表明这是一个以旅游业闻名的大都市地区。有一个引人注目的建筑物，有一个弯曲的蓝色玻璃屋顶，与周围的建筑物形成鲜明对比。郁郁葱葱的绿地，可能是高尔夫球场或公园，与城市环境形成对比，有修剪整齐的草坪和点缀其中的树木。道路和高速公路穿过城市，车辆的微小点缀表明了城市生活的喧嚣。城市以外的地形变得更加贫瘠，表明城市周围是一种类似沙漠的环境。阳光从建筑物投下长长的阴影，表明是日出或日落，增添了场景的宁静氛围。'
 - en: 'Image 2: Belgrade The Temple of Saint Sava'
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 图片 2：贝尔格莱德圣萨瓦大教堂
 - en: You can see my wife and daughter posing. This is the nicest place that has direct
     flight to Ankara without requiring a visa that we can bring a 2 year old with
     minimal hassle.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到我妻子和女儿在摆姿势。这是我们可以带着一个两岁孩子最少麻烦直飞安卡拉而不需要签证的最好的地方。
 - en: '**Prompt 1**: The image features a large, ornate church with two prominent
     towers and an impressive dome. There are several people walking around the area
     outside of the church, some carrying handbags or backpacks as they explore the
@@ -286,16 +384,20 @@
     and serene, with visitors enjoying their time at this historic landmark. The church’s
     architecture adds a sense of grandeur to the scene, making it an attractive destination
     for those who appreciate its beauty and historical significance.”'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 1**：图片展示了一座大型、华丽的教堂，有两座突出的塔楼和一个令人印象深刻的圆顶。教堂外有几个人在周围走动，一些人提着手提包或背包，探索周围环境。一些人可以看到站在入口附近，而其他人则沿着附近的人行道走动。整体氛围显得宁静祥和，游客们享受着在这个历史地标上的时光。教堂的建筑增添了场景的壮丽气息，使其成为那些欣赏其美丽和历史意义的人们吸引的目的地。”'
 - en: '**Prompt 2**: The image shows a large church with people walking in front of
     it. A man is seen carrying a pink bag while others are walking around the area,
     possibly visiting or attending an event at the church. There’s also a bench nearby
     for those who wish to sit and relax during their visit.'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 2**：图片显示了一座大教堂，前面有人们在走动。一个男人提着一个粉色的包，而其他人则在该区域周围走动，可能是在参观或参加教堂的活动。附近还有一张长椅，供那些希望在访问期间坐下来放松的人使用。'
 - en: '**Prompt 3**: “ The image depicts a large, white church with two prominent
     domes and an ornate clock tower. A crowd of people is gathered outside the building,
     walking around or standing near it. There are at least 14 individuals visible
@@ -303,9 +405,12 @@
     suggesting they might be tourists visiting the church. The overall atmosphere
     appears to be that of a busy day with people engaging in different activities
     outside the impressive building.”'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 3**：“图片描述了一座宏伟的白色教堂，有两个突出的圆顶和一个华丽的钟楼。人群聚集在建筑物外面，走动或站在附近。在场景中至少可以看到 14
+    个人以不同的姿势。其中一些人肩上背着背包，这表明他们可能是在参观教堂的游客。整体氛围似乎是繁忙的一天，人们在壮观建筑物外从事不同的活动。”'
 - en: '**Prompt 4**: The image features a large white church with an ornate domed
     roof and several tall, narrow towers. It is surrounded by lush green trees that
     add beauty to the scene. A crowd of people can be seen walking around outside
@@ -314,9 +419,12 @@
     while others are further away. One person is carrying a handbag as they walk through
     the area near the church. The scene captures a sense of community and leisurely
     activity in front of this magnificent building.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 4**：图像显示了一座大型的白色教堂，拥有装饰华丽的圆顶屋顶和几座高大的，狭窄的塔楼。周围绿树成荫，为景色增添了美感。一群人可以在教堂外面漫步，享受这个风景如画的场景。总共有
+    13 个人在整个图像中可见；有些人靠近前景，而其他人则更远。一个人在教堂附近的区域走动时拿着一个手提包。这个场景捕捉到了在这座壮观建筑前的社区活动和悠闲氛围。'
 - en: '**ChatGPT**: This image depicts the front view of a grand church under a clear
     blue sky with a few wispy clouds. The church has a large central dome topped with
     a cross and is flanked by smaller domes, all with a green patina. The facade is
@@ -328,17 +436,24 @@
     possibly to enter the church. Various trees and a monument with inscriptions are
     also visible in the plaza area. It’s a sunny day, and the overall atmosphere is
     peaceful and leisurely.'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ChatGPT**：这张图像描绘了一座宏伟教堂的正面视图，天空晴朗，只有几朵薄云。教堂有一个带有十字架的大圆顶，并被较小的圆顶环绕，所有的圆顶都有绿色的铜锈。立面是白色的，有装饰性细节和多个拱形入口，入口上方是金色的马赛克或绘画。教堂前有一个宽敞的广场，上面散落着几个人。一位穿着黑色
+    T 恤和短裤的男子走在前景，拿着一个粉红色的文件或文件夹，而在右边，一对夫妇并肩行走。在左边，一群人似乎在排队，可能是为了进入教堂。广场区域还可见各种树木和带有铭文的纪念碑。这是一个阳光明媚的日子，整体氛围平静而悠闲。'
 - en: 'Image 3: Two luggage in hotel room'
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 图像 3：酒店房间里的两个行李箱。
 - en: This is from re:Invent again, [Venetian Vegas](https://www.venetianlasvegas.com/)
     with a very unique decor
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是来自 re:Invent 的再次提醒，[Venetian Vegas](https://www.venetianlasvegas.com/)，具有非常独特的装饰。
 - en: '**Prompt 1**: The image features two suitcases placed next to each other on
     the floor. One of them is larger, occupying most of the space in front of it,
     while the smaller one stands beside it. Both suitcases are wheeled bags with handles
@@ -346,13 +461,17 @@
     or corner, possibly waiting to be picked up or placed elsewhere. The overall scene
     suggests that someone might have recently arrived at their destination or is preparing
     for travel.'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 1**：图像显示了两个箱子放在地板上并排放置。其中一个较大，占据了大部分前方空间，而较小的一个则站在它旁边。这两个箱子都是带有手柄的轮胎箱，方便携带。它们似乎是靠在墙壁或角落旁边并排坐着，可能在等待被拿走或放置到其他地方。整个场景表明，可能有人最近到达了目的地或正在准备旅行。'
 - en: '**Prompt 2**: Two pieces of luggage sitting next to each other.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 2**：两件行李箱并排坐着。'
 - en: '**Prompt 3**: The image features a hotel room with two suitcases placed on
     the floor. One of them is larger and has a handle, while the other one appears
     to be smaller or possibly broken down into multiple pieces. Both suitcases are
@@ -362,9 +481,11 @@
     at the far end of the room. Additionally, there is an umbrella placed further
     back within the scene. The presence of these items suggests that this hotel room
     might be used for temporary accommodation or travel purposes.'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 3**：图像显示了一个酒店房间，地板上放着两个箱子。其中一个较大，带有一个手柄，而另一个则看起来较小，可能是破损或分解成多个部分。这两个箱子都放在房间里靠近墙壁的位置。房间本身包含各种元素，如位于图像右侧的床，左侧的另一件较小的家具以及在房间远端靠近一起的两把椅子。此外，场景中还放置了一把伞。这些物品的存在表明，这个酒店房间可能用于临时住宿或旅行目的。'
 - en: '**Prompt 4**: The image displays a hallway with two pieces of luggage placed
     next to each other. One suitcase is larger and gray, while the second one appears
     smaller in size. Both are positioned close together on wheels for easy transportation.
@@ -373,9 +494,11 @@
     this is likely an area used by travelers or commuters. The hallway itself has
     various patterns and colors on its walls, creating a visually appealing environment
     for those passing through it.'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 4**：图像显示了一个走廊，两个行李箱并排放置在一起。一个行李箱较大，是灰色的，而第二个看起来较小。两个行李箱都靠在一起，方便携带，配有轮子。附近还可以看到一个手提包。除了行李之外，场景左侧还有一个背包，进一步说明这可能是旅客或通勤者使用的区域。走廊本身的墙壁上有各种图案和颜色，为过路人营造了视觉上令人愉悦的环境。'
 - en: '**ChatGPT**: The image shows two pieces of luggage placed on a tiled floor
     against a wall with a striped wallpaper pattern. On the left, there is a smaller,
     patterned carry-on suitcase with a houndstooth design in black and white. It features
@@ -390,46 +513,61 @@
     there is a wooden chair rail separating the wallpaper from the wainscoting below.
     There’s a slight shadow cast by the suitcases onto the wall and floor, indicating
     ambient lighting in the room.'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ChatGPT**：图像显示了两个行李箱放置在瓷砖地板上，靠墙摆放，墙上有条纹壁纸图案。在左边，有一个较小的、带图案的随身箱，设计为黑白交错的千鸟格。它有一个伸缩手柄，似乎有两个前袋，一个比另一个大。箱子上还挂有一个小黑色标签。在它旁边，右边是一个较大的硬壳行李箱，具有凹凸设计。它是浅色的，可能是灰色或米白色，也配有伸缩手柄和四个万向轮，这是为了便于移动的常见特点。地板由拼花的石砖制成，混合了米色、米白色和黑色大理石图案。行李箱后面的墙壁上装饰着双色条纹壁纸，交替着米色和较深的棕褐色。条纹是垂直的，墙壁上的壁板下有一个木制椅子扶手。行李箱在墙壁和地板上投下了轻微的阴影，表明房间里有环境光。'
 - en: 'Image 4: My daughter playing in sand with toys'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 图像 4：我的女儿在沙地上玩耍，带着玩具。
 - en: She is really an outdoor person.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 她真是一个户外爱好者。
 - en: '**Prompt 1**: The image features a young girl playing in the sand on a dirt
     road. She is surrounded by various toys, including several cars and trucks spread
     across the ground near her. A few other items can be seen as well: two bottles
     are located towards the right side of the scene, while another car and a spoon
     are placed closer to the center. The girl appears to be enjoying herself in this
     playful environment with her sandy creations around her.'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 1**：图像展示了一个年幼的女孩在土路上玩耍。她被各种玩具围绕着，包括散落在她周围地面上的几辆车和卡车。场景右侧可以看到两个瓶子，而另一辆车和一把勺子则放在中心位置附近。女孩似乎在这个有趣的环境中享受着自己和她周围的沙土创作。'
 - en: '**Prompt 2**: A little girl playing in the sand.'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 2**：一个小女孩在沙地上玩耍。'
 - en: '**Prompt 3**: The image depicts a young girl playing in the sand at a park.
     She is sitting on her knees, surrounded by various toys such as cars and trucks
     scattered around her. There are also two teddy bears placed nearby, one closer
     to the left side of the scene and another towards the right. The child appears
     engaged with these playthings while enjoying her time in the sandy area.'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 3**：图像描述了一个年幼的女孩在公园的沙地上玩耍。她跪坐在地上，周围散落着各种玩具，如汽车和卡车。附近还有两只泰迪熊，一只靠近场景的左侧，另一只靠近右侧。这个孩子似乎在享受这些玩具，同时也在沙地上玩得很开心。'
 - en: '**Prompt 4**: The image depicts a little girl playing in the sand, surrounded
     by various toys. She is wearing pink clothing and appears focused on her playtime
     activities. There are several cars scattered around her, as well as multiple trucks
     nearby. Additionally, there’s a handbag placed close to one of the vehicles. The
     scene suggests that this little girl might be enjoying some outdoor fun in a sandy
     area with various toys and objects for entertainment.'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示 4**：图像描绘了一个小女孩在沙地上玩耍，周围散落着各种玩具。 她穿着粉色衣服，似乎专注于玩耍。 她周围有几辆散落的汽车，以及附近的几辆卡车。
+    此外，有一个手提包放在其中一辆车旁边。 场景表明，这个小女孩可能在沙地上玩耍，周围有各种各样的玩具和娱乐物品。'
 - en: '**ChatGPT**: This image shows a young child playing in a sandbox. The child,
     appearing to be a toddler, is wearing a pink outfit with their hair pulled up,
     possibly in pigtails. There is a variety of colorful plastic toys scattered around
@@ -440,13 +578,19 @@
     grass, and you can see a couple of young trees supported by stakes in the background.
     It’s a sunny day with the shadow of the child visible on the sand, indicating
     either morning or afternoon.'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ChatGPT**：这张图显示了一个小孩子在沙箱里玩耍。 这个孩子，看起来是个蹒跚学步的孩子，穿着粉色的衣服，可能是扎着辫子的头发。 周围散落着各种彩色的塑料玩具，包括一个黄色的卡车、一个红色的铲子、一个蓝色的桶和其他各种各样的沙玩具。
+    沙地区域一侧被草边界线环绕着，可以看到一小部分白色的边界标志或线条。 这看起来像是一个户外游乐区，可能是在后院或公园里。 沙箱外的地面上长满了草，背景中可以看到几棵年轻的树，用支撑棍支撑着。
+    这是一个阳光明媚的日子，可以看到孩子的影子投在沙地上，表明是早上或下午。'
 - en: Embeddings and pgvector
+  id: totrans-64
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 嵌入和pgvector
 - en: I remember the emergence of word2vec in my university years, and it felt like
     a magic back then and still does. As I said, I don’t need to understand all the
     details how it works underneath (but it’d be really helpful), but the fundamentals
@@ -456,39 +600,60 @@
     work, with abstracting that part, I can move on with my life and do multi-dimensional
     vector similarity. I stored the state of my application on my favorite database
     Postgres, and with pgvector extension, querying the similarity was extremely easy.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我记得 word2vec 在我大学时代的出现，那时感觉就像魔法一样，现在依然如此。 正如我所说，我不需要理解它在底层如何工作的所有细节（但如果了解会非常有帮助），只需要了解它的基本原理。
+    给定一个字符串，嵌入模型将其转换为一个向量，您可以运行一个简单的距离算法来查找相关的或与您的查询相似的字符串。 即使我不在乎模型是如何训练的和嵌入是如何工作的，通过抽象出这一部分，我也可以继续我的生活，并进行多维向量相似度。
+    我将我的应用程序状态存储在我最喜欢的数据库 Postgres 中，使用 pgvector 扩展，查询相似性非常容易。
 - en: Python Code for generating descriptions, embeddings and querying them
+  id: totrans-66
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 生成描述、嵌入和查询它们的 Python 代码
 - en: This is just iterating the files in my iCloud Photo library, prompting local
     LLaVA using HTTP API.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是在我的 iCloud 照片库中迭代文件，使用 HTTP API 提示本地 LLaVA。
 - en: '[PRE0]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: For querying the data, we use the same embedding model, and just ask pgvector
     to bring the closest vectors. I did not use any indexing because the data is already
     small, but pgvector supports indexes like [IVFFlat](https://github.com/pgvector/pgvector#ivfflat)
     and [HNSW](https://github.com/pgvector/pgvector#hnsw) for faster retrieval with
     a small hit to correctness. But since these are just image descriptions, I’m sure
     it would not matter much.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于查询数据，我们使用相同的嵌入模型，只需询问 pgvector 带来最接近的向量。 我没有使用任何索引，因为数据已经很小，但是 pgvector 支持像
+    [IVFFlat](https://github.com/pgvector/pgvector#ivfflat) 和 [HNSW](https://github.com/pgvector/pgvector#hnsw)
+    这样的索引，以加快检索速度，并对正确性造成小小的影响。 但由于这些只是图像描述，我相信这不会有太大影响。
 - en: '[PRE1]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In the end, I’ve used the [ipyplot](https://github.com/karolzak/ipyplot) library
     to show a grid of images with their labels and distance to my query. I’ve exhausted
     my Python knowledge and can’t wait to go back to writing some Kotlin.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我使用了 [ipyplot](https://github.com/karolzak/ipyplot) 库来显示一个图像网格，带有它们的标签和与我的查询的距离。
+    我已经用尽了我的 Python 知识，迫不及待地想回到写一些 Kotlin。
 - en: Results
+  id: totrans-72
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结果
 - en: Well, the results are surprisingly good in my dataset of ~4000 images. I tried
     different quantization ranging from LLaVA 7B-Q4 to LLaVA 13B-FP16, and it did
     not matter much for my use case. Of course, if it was an official benchmark, and
@@ -496,129 +661,189 @@
     slightly higher score, but the performance of it is substantially lower and was
     not worth it in my dataset to fool around. Also this is just a beginning. The
     searches are very naive.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，在我的约 4000 张图像数据集中，结果出奇地好。我尝试了不同的量化，从 LLaVA 7B-Q4 到 LLaVA 13B-FP16，对于我的用例来说并没有太大关系。当然，如果这是一个官方基准测试，并且我们有一个实际的数据集进行比较，我相信更大的模型会导致稍微更高的分数，但它的性能要低得多，对于我的数据集来说不值得去折腾。而且这只是一个开始。搜索非常天真。
 - en: '**Query 1: “**black car” and “white car”'
+  id: totrans-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**查询 1：“**黑色汽车”和“白色汽车”'
 - en: I wanted to test simple queries first. Car is one the most recurring theme in
     my albums and I wanted to test if it can distinguish black and white with a very
     short query.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想先测试简单的查询。汽车是我相册中最常见的主题之一，我想测试它是否可以通过一个非常简短的查询来区分黑色和白色。
 - en: “black car” — Well all of the cars are black. The first one was a very cool
     car with drifting. In the last picture, it even detected an orange traffic cone
     from just the reflection, it’s impressive.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: “黑色汽车” — 嗯，所有的汽车都是黑色的。第一张是一辆非常酷的汽车，进行漂移。在最后一张图片中，它甚至从反射中检测到了一个橙色交通锥，这令人印象深刻。
 - en: “white car” — you can see it hallucinates a lot in the first picture as there
     is not much to tell. If the AI would be confident and not make up stuff, it’d
     be really great.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: “白色汽车” — 你可以看到在第一张图片中它的幻觉很多，因为没有太多可说的。如果 AI 能够自信而不虚构，那将会非常棒。
 - en: 'Query 2: “rainy night”'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询 2：“雨夜”
 - en: None of the photos are taken at night. But there is some rain factor and a bit
     dark so not bad.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有一张照片是在夜晚拍摄的。但是有一些雨因素和一点黑暗，所以还不错。
 - en: First one is snow and no rain. Second and third one is rainy.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一张是雪而没有雨。第二和第三张是雨天。
 - en: 'Query 3: “transporting stuff”'
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询 3：“运输货物”
 - en: I used this because it’s can be considered an abstract subject. Surprisingly,
     all of the pictures are “transporting” some “stuff” in unique ways. The second
     one is troubling though, I reported them to authorities.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我选择了这个因为它可以被视为一个抽象的主题。令人惊讶的是，所有的图片都以独特的方式“运输”一些“东西”。然而第二张图片让人感到困扰，我已经向有关部门报告了。
 - en: Yes, it’s a child in a very dangerous vehicle.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，这是一个孩子坐在一辆非常危险的车里。
 - en: 'Query 4: “toddler playing outside, sunny and grass”'
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询 4：“幼儿在外面玩耍，阳光明媚，青草茵茵”
 - en: In the first photo, there is no sun & shadows visible, but it’s a vibrant green,
     so the LLM summarizes it as summer and it matches.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一张照片中，看不到太阳和阴影，但它是一片繁茂的绿色，所以 LLm 将其总结为夏天，这是匹配的。
 - en: 'Query 5: “colorful night” vs “dark night”'
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询 5：“丰富多彩的夜晚”与“黑夜”
 - en: I tried this query knowing it would match the Vegas. If I was searching for
     more specific things I assume it’d work better, as you can see the extensive descriptions
     with minimal hallucination. If there are lots of objects, LLaVA can generate nice
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我试过这个查询，知道它会匹配拉斯维加斯。如果我在寻找更具体的事物，我认为它会更有效，因为你可以看到通过最少的幻觉生成的广泛描述。如果有很多对象，LLaVA可以生成漂亮的
 - en: “colorful night” — -no other than Vegas of course
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: “丰富多彩的夜晚” — 当然就是拉斯维加斯了。
 - en: “dark night” — Dark and scary skies with uncertainty
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: “黑夜” — 黑暗而可怕的天空，充满不确定性。
 - en: 'Query 6: “network switch”'
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询 6：“网络交换机”
 - en: Of course, my photo album contains various network equipment. LLaVA thought
     that the pipes in the middle picture were colorful cables. I’m sorry for the third
     one.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我的照片集中包含各种网络设备。 LLaVA认为中间图片中的管道是彩色电缆。对于第三张图片，我感到抱歉。
 - en: Really sorry for the eye sore in the 3rd one.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于第三张照片造成的视觉不适，我真的很抱歉。
 - en: What’s next?
+  id: totrans-93
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 接下来呢？
 - en: I like to blog. I like to share my insights and experiences, so it somehow inspires
     other people or give an idea. If I see an actual product being built upon any
     of the ideas here, I would be more than happy. This is my goal. I have no time
     or relevant experience to pursue further on this idea. Otherwise, instead of this
     blog, it’d be on a pitch deck.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 我喜欢写博客。我喜欢分享我的见解和经验，这样可以激励其他人或者给出一个想法。如果我看到任何想法在这里被实际建成产品，我将会非常高兴。这是我的目标。我没有时间或相关经验来进一步追求这个想法。否则，它不会是一个博客，而会是一个演示文稿。
 - en: There are still possible improvements upon what I’ve shared so far. A user of
     this product will likely search for very specific things, like “blue t-shirt baby
     on Christmas”, not paragraphs of data. However, the LLM outputs are much longer
     than typical user query. I’m not really sure if it is a good idea to run very
     different string lengths using vector embeddings.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我分享的内容仍然有可能改进。该产品的用户可能会搜索非常具体的东西，比如“圣诞节上的蓝色婴儿T恤”，而不是一大段数据。然而，LLM 的输出比典型的用户查询要长得多。我不太确定是否明智地使用向量嵌入来处理非常不同长度的字符串。
 - en: '**Possible Improvements**'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '**可能的改进**'
 - en: Incorporate metadata of the image such as location, date taken
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将图像的元数据（如位置、拍摄日期）整合进来
 - en: Use face recognition and (if available) names of people
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用人脸识别和（如果可用）人名
 - en: Categorizing the images with short prompts, clustering common themes
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用简短的提示词对图像进行分类，聚类共同主题
 - en: Using multiple prompts to describe objects, scenery, emotion, colors, and other
     specific themes independently rather than a generic description for consistency
     and make sure queries can take advantage of this segmentation
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用多个提示来独立描述对象、场景、情感、颜色和其他具体主题，而不是一种通用的描述，以保持一致性，并确保查询可以利用这种分段
 - en: Re-ranking of the results, incorporate classic information retrieval techniques
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对结果进行重新排名，结合经典的信息检索技术
 - en: Testing with various quantizations, speeding up the process any how
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用不同的量化方法进行测试，加速过程

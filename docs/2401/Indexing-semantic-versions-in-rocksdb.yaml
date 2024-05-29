@@ -1,170 +1,260 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:31:42'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:31:42
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Indexing semantic versions in rocksdb
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在rocksdb中索引语义版本
 - en: 来源：[https://blog.aawadia.dev/2024/01/02/index-semver-rocksdb/](https://blog.aawadia.dev/2024/01/02/index-semver-rocksdb/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.aawadia.dev/2024/01/02/index-semver-rocksdb/](https://blog.aawadia.dev/2024/01/02/index-semver-rocksdb/)
 - en: Introduction
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 介绍
 - en: A recent requirement that came up was the need to index an attribute for a bunch
     of records, which was of type semantic version. The attribute contained a `major.minor.patch`
     type value denoting the version of some external thing. The requirement was to
     be able do queries that would filter out rows with versions `>` or `<` than a
     specific version.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近出现的一个需求是需要为一堆记录索引一个属性，该属性的类型是语义版本。该属性包含一个`major.minor.patch`类型的值，表示某个外部事物的版本。要求是能够进行过滤版本`>`或`<`某个特定版本的行。
 - en: This functional requirement can be reduced to a technical definition, which
     is to provide an index on the semantic version attribute of the records that allows
     for range queries and point lookups (efficiently).
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个功能需求可以简化为技术定义，即为记录的语义版本属性提供一个允许进行范围查询和点查找（高效）的索引。
 - en: So, how do you create an index ?
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，如何创建索引呢？
 - en: Foundational idea
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基本理念
 - en: When an index needs to be created on a piece of data, the first approach is
     to always hold the keys in a hash map where the keys are sorted. The technical
     primitive data structure here is a hashmap where the keys are sorted. Why sorted?
     Because the sorting allows for `lg(n)` based range queries. This is how we get
     both point lookups and range queries.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 当需要在数据片段上创建索引时，第一种方法始终是将键保存在一个哈希映射中，其中键是排序的。这里的技术原始数据结构是一个哈希映射，其中键是排序的。为什么要排序？因为排序允许基于`lg(n)`的范围查询。这就是我们得到点查找和范围查询的方式。
 - en: So, how do I create a hashmap where the keys are sorted?
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我怎么创建一个键排序的哈希映射？
 - en: Implementation
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实施
 - en: A hashmap where the keys are sorted is called the `SortedMap` interface and
     some implementations of it are `TreeMap` and `ConcurrentSkipListMap`.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 键排序的哈希映射称为`SortedMap`接口，其中一些实现是`TreeMap`和`ConcurrentSkipListMap`。
 - en: Bringing it back
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 把它带回来
 - en: So bringing all of this back up the levels to the requirement - I can create
     a sorted map of semantic versions that point back to the record’s primary key,
     which would I can then expose via the query layer out to the world.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，将所有这些重新提升到需求级别 - 我可以创建一个语义版本的排序映射，指回记录的主键，然后通过查询层将其暴露给世界。
 - en: Rocksdb
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Rocksdb
 - en: Rocksdb is an embeddable kv store that is a sorted map persisted to disk. We
     can piggy back on this feature and let rocksdb do the heavy lifting of keeping
     the keys sorted.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Rocksdb是一个可嵌入的kv存储，是一个持久化到磁盘的排序映射。我们可以利用这个功能，让rocksdb负责保持键排序。
 - en: However, there is a gotcha here - Let’s look at a code example of what happens
     when the semantic versions are inserted and then printed back out
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这里有一个需要注意的地方 - 让我们看一个代码示例，看看在插入语义版本然后再打印出来时会发生什么。
 - en: '|'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The ordering is all messed up. `10.2.4` should be the last one and `1.2.4-rc.1`
     should come before `1.2.4`.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 排序完全乱了。`10.2.4`应该是最后一个，而`1.2.4-rc.1`应该在`1.2.4`之前。
 - en: This is happening because rocksdb doesn’t really know that I am putting semantic
     version strings in the key - there is no meaning to it - it is just a byte array
     and thus is getting ordered lexicographically. This also happens on linux when
     doing an `ls` to list out folders, the name 10 comes before 2
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为rocksdb实际上不知道我正在将语义版本字符串放入键中 - 这没有意义 - 它只是一个字节数组，因此被按字典顺序排序。这也发生在linux上，当执行`ls`列出文件夹时，名称10在2之前。
 - en: What we need to do is tell rocksdb how to do the comparision so that it can
     do the sorting based on our provided logic.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要做的是告诉rocksdb如何执行比较，以便它可以根据我们提供的逻辑进行排序。
 - en: The interface to write a comparator that rocksdb can understand is the classic
     -1 [a < b], 0 [ a == b], 1 [ a > b] style return when a and b are compared
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写rocksdb可以理解的比较器的接口是经典的 -1 [a < b]，0 [ a == b]，1 [ a > b]样式的返回，当a和b被比较时
 - en: The best part is that these comparators can be writted directly in kotlin/java
     code and used - no need to patch the c++ rocksdb code. That is an amazing feature
     and a huge win for the development effort.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 最棒的部分是这些比较器可以直接在kotlin/java代码中编写并使用 - 无需修补c++ rocksdb代码。这是一个令人惊奇的功能，也是开发工作的巨大成功。
 - en: Semantic Version comparator
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 语义版本比较器
 - en: Using the library `semver4j` to do the heavy lifting of the comparisions and
     parsing. An implementation of a `SemverCompare` object that can be fed into Rocksdb
     looks like
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用库`semver4j`来执行比较和解析的繁重工作。一个可以被输入到 Rocksdb 中的`SemverCompare`对象的实现看起来像是
 - en: '|'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: This can then be passed in as `options` to rocksdb at startup. `val options
     = Options().setCreateIfMissing(true).setComparator(SemVerCompare(ComparatorOptions().setUseDirectBuffer(false)))`
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样就可以在启动时作为`options`传递给 rocksdb。`val options = Options().setCreateIfMissing(true).setComparator(SemVerCompare(ComparatorOptions().setUseDirectBuffer(false)))`
 - en: The same example as before now looks like
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前相同的示例现在看起来是这样的
 - en: '|'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE4]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '|'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE5]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: It works! The keys are now sorted based on actual semantic versioning rules.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 它奏效了！现在密钥根据实际语义版本规则进行排序。
