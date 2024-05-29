@@ -1,44 +1,64 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:25:12'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:25:12
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Git Things
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Git 事务
 - en: 来源：[https://matklad.github.io/2023/12/31/git-things.html#Git-Things](https://matklad.github.io/2023/12/31/git-things.html#Git-Things)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://matklad.github.io/2023/12/31/git-things.html#Git-Things](https://matklad.github.io/2023/12/31/git-things.html#Git-Things)
 - en: Should every commit pass the tests? If it should, then your [not rocket science
     rule](https://graydon2.dreamwidth.org/1597.html) implementation must be verifying
     this property. It probably doesn’t, and only tests the final result of merging
     the feature branch into the main branch.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个提交都应该通过测试吗？如果应该，那么你的[不是火箭科学规则](https://graydon2.dreamwidth.org/1597.html)实现必须验证这个属性。它可能不是，只测试将特性分支合并到主分支的最终结果。
 - en: That’s why for typical project it is useful to *merge* pull requests into the
     main branch — the linear sequence of merge commits is a record of successful CI
     runs, and is a set of commits you want to `git bisect` over.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么对于典型项目将拉取请求*合并*到主分支中是有用的——合并提交的线性序列是成功 CI 运行的记录，并且是你想要通过`git bisect`的一组提交。
 - en: 'Within a feature branch, not every commit necessary passes the tests (or even
     builds), and that is a useful property! Here’s some ways this can be exploited:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在特性分支中，并不是每个提交都必须通过测试（甚至构建），这是一个有用的属性！以下是一些利用这一点的方法：
 - en: When fixing a bug, add a failing test first, as a separate commit. That way
     it becomes easy to verify for anyone that the test indeed fails without the follow
     up fix.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 修复错误时，首先添加一个失败的测试，作为一个单独的提交。这样任何人都可以轻松验证测试确实失败了，没有后续的修复。
 - en: 'Related advice: often I see people commenting out tests that currently fail,
     or tests that are yet to be fixed in the future. That’s bad, because commented-out
     code rots faster than the JavaScript framework of the day. Instead, adjust the
@@ -46,49 +66,69 @@
     `// TODO:` comment explaining what would be the correct result. This prevents
     such tests from rotting and also catches cases where the behavior is fixed by
     an unrelated change.'
+  id: totrans-10
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 相关建议：我经常看到人们注释掉当前失败的测试，或者是将来要修复的测试。这是不好的，因为注释掉的代码比当天的 JavaScript 框架更快腐烂。相反，调整断言使其锁定当前（错误的）行为，并添加清晰的
+    `// TODO:` 注释，解释正确的结果是什么。这样可以防止这些测试腐烂，并且也能捕获到通过其他无关变化修复了行为的情况。
 - en: To refactor an API which has a lot of usages, split the work in two commits.
     In the first commit, change the API itself, but don’t touch the usages. In the
     second commit, mechanically adjust all call sites.
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要重构一个具有大量使用情况的 API，可以将工作分成两个提交。在第一个提交中，更改 API 本身，但不要触及使用情况。在第二个提交中，机械地调整所有调用点。
 - en: That way during review it is trivial to separate meaningful changes from a large,
     but trivial diff.
+  id: totrans-12
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 在审查过程中，将有意义的更改与大量但不重要的差异分开变得非常简单。
 - en: '`git mv` is fake. For a long time, I believed that `git mv` adds some special
     bit of git metadata which tells it that the file was moved, such that it can be
     understood by `diff` or `blame`. That’s not the case: `git mv` is essentially
     `mv` followed by `git add`. There’s nothing in git to track that a file was moved
     specifically, the “moved” illusion is created by the diff tool when it heuristically
     compares repository state at two points in time.'
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`git mv` 是假的。很长一段时间，我相信 `git mv` 添加了一些特殊的 git 元数据，告诉它文件被移动了，这样就可以被 `diff` 或
+    `blame` 理解。事实并非如此：`git mv` 本质上是 `mv` 后跟 `git add`。在 git 中没有任何东西来跟踪文件是否被特定移动，"移动"
+    的幻觉是由 diff 工具创建的，它在启发式地比较两个时间点的存储库状态时产生。'
 - en: 'For this reason, if you want to reliably record file moves during refactors
     in git, you should do two commits: the first commit *just* moves the file without
     any changes, the second commit applies all the required fixups.'
+  id: totrans-14
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 出于这个原因，如果你想要在 git 中可靠地记录重构期间的文件移动，你应该做两个提交：第一个提交*只是*移动文件而没有任何更改，第二个提交应用所有所需的修复。
 - en: 'Speaking of moves, consider adding this to your `gitconfig`:'
+  id: totrans-15
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 谈到移动文件，请考虑将以下内容添加到你的`gitconfig`中：
 - en: '[PRE0]'
+  id: totrans-16
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This way, moved lines will be colored differently in `diff`, so that code motions
     not confused with additions and deletions, and are easier to review. It is unclear
     to me why this isn’t the default, and why this isn’t an option in GitHub’s UI.
+  id: totrans-17
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这样，移动的行将在`diff`中以不同的颜色显示，以便代码动作不会与添加和删除混淆，并且更容易审查。我不清楚为什么这不是默认设置，以及为什么这不是 GitHub
+    UI 中的选项。
 - en: “Merge into main, but rebase feature branches” might be a hard rule to wrap
     your head around if you are new to git. Luckily, it’s easy to use not-rocket-science
     rule to enforce this property. The history is as much a part of your project as
@@ -97,131 +137,188 @@
     are at it, it would be a good idea to test that no large large files are present
     in the repository — the size of a repository only grows, and you can’t easily
     remove large blobs from the repo later on!
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: “合并到主分支，但重置功能分支”可能是一个难以理解的严格规则，如果你是 git 新手的话。幸运的是，可以使用非常规则来强制执行这个属性。历史记录与源代码一样重要。你可以编写一个测试，该测试
+    shell 到 git 并检查历史记录中的合并提交是否只来自合并机器人。在此过程中，最好也测试一下存储库中是否存在大型文件 —— 存储库的大小只会增加，而且你无法轻易地后来删除大型二进制对象！
 - en: Let me phrase this in the most inflammatory way possible :)
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我以最具煽动性的方式来表达这个观点 :)
 - en: If your project has great commit messages, with short and precise summary lines
     and long and detailed bodies, this probably means that your CI and code review
     process suck.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的项目具有出色的提交信息，具有简短而精确的摘要行和长而详细的正文，这可能意味着你的持续集成和代码审查流程有问题。
 - en: Not all changes are equal. In a typical project, most of the changes that *should*
     be made are small and trivial — some renames, visibility tightening, “attention
     to details” polish in user-visible features.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 并非所有的变更都是相等的。在一个典型的项目中，大多数应该进行的变更都是小而微不足道的 —— 一些重命名、可见性调整、对用户可见功能中的“细节关注”进行打磨。
 - en: However, in a typical project, landing a trivial change is slow. How long would
     it take you to fix `it's/its` typo in a comment? Probably 30 seconds to push the
     actual change, 30 minutes to get the CI results, and 3 hours for a review roundtrip.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在一个典型的项目中，落地一个微不足道的变更是缓慢的。你需要多长时间来修复注释中的`it's/its`拼写错误？实际更改可能需要 30 秒，获取 CI
+    结果可能需要 30 分钟，审查往返可能需要 3 小时。
 - en: The fixed costs to making a change are tremendous. Main branch gatekeeping strongly
     incentivizes against trivial changes. As a result, such changes either are not
     being made, or are tacked onto larger changes as a drive by bonus. In any case,
     the total number of commits and PRs goes down. And you are crafting a novel of
     a commit message because you have to wait for your previous PR to land anyway.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 进行变更的固定成本是巨大的。主分支的门禁制度极大地激励了反对微不足道的变更。结果，这类变更要么不会被执行，要么作为附带的奖励附加到较大的变更中。无论如何，提交和
+    PR 的总数都会减少。你正在编写一篇长篇大论的提交消息，因为你必须等待之前的 PR 完成才能进行下一个。
 - en: What can be done better?
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 有什么可以做得更好的吗？
 - en: '*First*, make changes smaller and more frequent. Most likely, this is possible
     for you. At least, I tend to out-commit most colleagues ([example](https://github.com/intellij-rust/intellij-rust/graphs/contributors)).
     That’s not because I am more productive — I just do work in smaller batches.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '*第一*，使变更更小更频繁。很可能，这对你来说是可能的。至少，我倾向于在提交方面胜过大多数同事（[示例](https://github.com/intellij-rust/intellij-rust/graphs/contributors)）。这不是因为我更有生产力
+    —— 我只是以更小的批次进行工作。'
 - en: '*Second*, make CI asynchronous. At no point in your workflow you should be
     waiting for CI to pass. You should flag a change for merging, move on to the next
     thing, and only get back if CI fails. This is something bors-ng does right — it’s
     possible to `r+` a commit immediately on submission. This is something GitHub
     merge queue does wrong — it’s impossible to add a PR to queue until checks on
     the PR itself are green.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '*第二*，将持续集成设为异步。在整个工作流程中，你都不应该等待持续集成通过。你应该标记一个变更以进行合并，然后继续下一项任务，只有在持续集成失败时才回头查看。这是
+    bors-ng 做得对的地方 —— 可以立即在提交时进行`r+`操作。这是 GitHub 合并队列做错的地方 —— 在 PR 本身的检查未通过之前，无法将
+    PR 添加到队列中。'
 - en: '*Third*, our review process is backwards. Review is done *before* code gets
     into main, but that’s inefficient for most of the non-mission critical projects
     out there. A better approach is to optimistically merge most changes as soon as
     not-rocket-science allows it, and then later review the code in situ, in the main
     branch. And instead of adding comments in web ui, just changing the code in-place,
     sending a new PR ccing the original author.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '*第三*，我们的审查过程是反向的。审查是在代码进入主分支之前进行的，但对于大多数非关键任务项目来说，这是低效的。更好的方法是在非关键性变更允许的情况下，尽快乐观地合并大多数变更，然后稍后在主分支中对代码进行审查。而不是在
+    web ui 中添加评论，而是直接在原地更改代码，发送一个新的 PR 并抄送原作者。'
 - en: Maintainers SHALL NOT make value judgments on correct patches.
+  id: totrans-28
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 维护者不应该对正确的补丁进行价值判断。
 - en: Maintainers SHALL merge correct patches from other Contributors rapidly.
+  id: totrans-29
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 维护者应该快速地合并其他贡献者的正确补丁。
 - en: ''
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: …
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: …
 - en: ''
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Any Contributor who has value judgments on a patch SHOULD express these via
     their own patches.
+  id: totrans-33
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 任何对补丁有价值判断的贡献者应该通过他们自己的补丁来表达这些价值判断。
 - en: '[Collective Code Construction Contract](https://rfc.zeromq.org/spec/42/)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[集体代码建设合同](https://rfc.zeromq.org/spec/42/)'
 - en: I am skeptical that this exact workflow would ever fly, but I am cautiously
     optimistic about [Zed’s](https://zed.dev) idea about just allowing two people
     to code in the same editor at the same time. I think that achieves a similar effect,
     and nicely dodges unease about allowing temporarily unreviewed code.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我怀疑这个确切的工作流程是否有可能，但我对[Zed的](https://zed.dev)关于允许两个人同时在同一编辑器中编码的想法持谨慎乐观的态度。我认为这实现了类似的效果，并且很好地规避了允许暂时未经审核的代码引起的不安。
 - en: Ok, back to git!
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，回到git！
 - en: '*First*, not every project needs a clean history. Have you ever looked at the
     git history of your personal blog or dotfiles? If you haven’t, feel free to use
     a `.` as a commit message. I do that for [https://github.com/matklad/matklad.github.io](https://github.com/matklad/matklad.github.io),
     it works fine so far.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*首先*，并不是每个项目都需要一个清晰的历史记录。你有没有看过你个人博客或dotfiles的git历史？如果你没有，可以用`.`作为提交信息。我在[https://github.com/matklad/matklad.github.io](https://github.com/matklad/matklad.github.io)上这样做，到目前为止效果很好。'
 - en: '*Second*, not every change needs a great commit message. If a change is really
     minor, I would say `minor` is an okay commit message!'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '*其次*，并不是每个变动都需要一个很好的提交信息。如果一个变动真的很小，我会说`minor`是一个可以的提交信息！'
 - en: '*Third*, some changes absolutely do require very detailed commit messages.
     If there *is* a context, by all means, include all of it into the commit message
     (and spill some as comments in the source code). And here’s a tip for this case:
     *write the commit message first!*'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '*第三*，一些变动确实需要非常详细的提交信息。如果有*上下文*，请尽量将所有内容包含在提交信息中（并在源代码中作为注释洒一些）。在这种情况下，这里有一个小贴士：*先写提交信息！*'
 - en: When I work on a larger feature, I start with `git commit --allow-empty` to
     type out what I set to do. Most of the time, by the third paragraph of the commit
     message I realize that there’s a flaw in my plan and refine it. So, by the time
     I get to actually writing the code, I am already on the second iteration. And,
     when I am done, I just amend the commit with the actual changes, and the commit
     message is already there, needing only minor adjustments.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我致力于一个较大的特性时，我从`git commit --allow-empty`开始写下我要做的事情。大多数情况下，在提交信息的第三段，我意识到我的计划中存在一个缺陷并加以完善。因此，当我开始编写代码时，我已经在第二轮迭代了。而当我完成时，我只需用实际的更改修改提交，并且提交信息已经在那里，只需要进行微调。
 - en: 'And the last thing I want to touch about commit messages: `man git-commit`
     tells me that the summary line should be shorter than 50 characters. This feels
     obviously wrong, that’s much too short! [Kernel docs](https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html)
     suggest a much more reasonable 70-75 limit! And indeed, looking at a some recent
     kernel commits, 50 is clearly not enough!'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一件关于提交信息的事情：`man git-commit`告诉我，摘要行应该少于50个字符。这显然是错误的，那太短了！[内核文档](https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html)建议更合理的70-75限制！确实，看看最近的一些内核提交，50显然不够！
 - en: '[PRE1]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Happy new year, dear reader!
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 亲爱的读者，新年快乐！
