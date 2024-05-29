@@ -2,101 +2,122 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:29:17'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:29:17
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Fastest Autograd in the West
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 西部最快的自动微分
 - en: 来源：[https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html](https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html](https://arogozhnikov.github.io/2023/12/28/fastest-autograd.html)
 - en: Who needs fast autograd? Seemingly everyone these days!
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 谁需要快速自动微分？看起来现在每个人都需要！
 - en: 'And once upon a time I needed an autograd that is **actually fast**. Leaving
     project details aside, here are the requirements:'
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 从前，我需要一个**实际快速**的自动微分。抛开项目细节，以下是要求：
 - en: we test many computation graphs (graph is changing constantly)
   id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们测试许多计算图（图形不断变化）
 - en: many-many scalar operations with roughly **10k—100k nodes** in each graph
   id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个图中有大量数量的标量操作，大约有**10k—100k 个节点**
 - en: every graph should be compiled and ran around **10k times** both forward and
     backward
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个图形应该在前向和后向方向上编译和运行约**10k 次**
 - en: this should be done **wicked fast**, and with a convenient pythonic interface
   id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这应该**非常快**，并且具有方便的 python 接口
 - en: 'Path that awaits us ahead:'
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们前方的道路：
 - en: autograd in torch
   id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: torch 中的自动微分
 - en: autograd in jax
   id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: jax 中的自动微分
 - en: autograd in python
   id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: python 中的自动微分
 - en: autograd in rust
   id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: rust 中的自动微分
 - en: autograd in C
   id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: C 中的自动微分
 - en: autograd in assembly
   id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 汇编中的自动微分
 - en: Plus a significant amount of sloppy code and timings on M1 macbook.
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 再加上相当数量的草率代码和 M1 macbook 上的定时。
 - en: Let’s autograd in pytorch
   id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们在 pytorch 中使用自动微分
 - en: 'We start our journey with pytorch — the default autograd engine in research.
     We’ll create a graph with many nodes, and to keep things simple our benchmark
     has only several kinds of operations: unary (softplus), binary (multiplication),
@@ -104,11 +125,14 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从 pytorch 开始我们的旅程——这是研究中默认的自动微分引擎。我们将创建一个具有许多节点的图形，为了保持简单，我们的基准测试只有几种操作：一元（softplus），二元（乘法），n
+    元（求和）和 n 到 n（softmax）。
 - en: This allows using just a few operations, but resembles a realistic load. All
     benchmarks in this post will reimplement the same logic as below.
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使得只使用几个操作，但类似于真实负载。本文中的所有基准测试都将重新实现与下文相同的逻辑。
 - en: '[PRE0]'
   id: totrans-23
   prefs: []
@@ -118,19 +142,23 @@
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 10k 个操作 x 100 次迭代的运行时间：11.3 秒
 - en: 'Run-time for 10k ops x 10k iterations: **1130 seconds** (estimate)'
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 10k 个操作 x 10k 次迭代的运行时间：**1130 秒**（估计）
 - en: Given we created 100M python objects, it’s actually quite fast. And yes, that’s
     not going to deliver an interactive experience.
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于我们创建了 100M 个 python 对象，这实际上是相当快的。是的，这不会提供交互式体验。
 - en: Let’s also discuss `torch.compile`, a major innovation in pytorch 2.0.
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也讨论一下`torch.compile`，这是 pytorch 2.0 中的一个重大创新。
 - en: 'At 100 operations torch.compile takes 4.5 seconds. Execution gets faster: for
     100 operations and 10k iterations it takes 4.52 seconds with torch.compile and
     10.4 seconds without. Compilation + execution are still in the same ballpark.
@@ -138,21 +166,26 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 100 次操作，torch.compile 需要 4.5 秒。执行变得更快：对于 100 次操作和 10k 次迭代，使用 torch.compile
+    需要 4.52 秒，而不使用需要 10.4 秒。编译 + 执行仍在同一个范围内。对于更大的图形（1k 操作），`torch.compile` 会崩溃。
 - en: Let’s autograd in jax
   id: totrans-29
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们在 jax 中使用自动微分
 - en: Jax is the new cool kid… well, not that new anymore. But in some aspects it
     is very interesting. Jax’s focus on JIT-compiling static graphs is very suitable
     for the problem at hand.
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Jax 是新的潮流... 嗯，不那么新了。但在某些方面，它非常有趣。Jax 关注即时编译静态图，非常适合手头的问题。
 - en: 'Implementation for benchmark is similar to pytorch:'
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 基准测试的实现类似于 pytorch：
 - en: '[PRE1]'
   id: totrans-32
   prefs: []
@@ -162,104 +195,127 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有即时编译计算速度极慢：
 - en: 1k ops x 10 iterations => 15.9 seconds
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 1k 个操作 x 10 次迭代 => 15.9 秒
 - en: 10k ops x 10k iterations => 159,000 seconds (estimate)
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 10k 个操作 x 10k 次迭代 => 159,000 秒（估计）
 - en: That’s a bit longer than forever! But whole point of jax is to JIT-compile stuff.
     So let’s do it.
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这比永远都要长一点！但是 jax 的整个重点是即时编译。所以让我们开始吧。
 - en: 'jit: compilation of 1k ops = 47 seconds'
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 即时编译：1k 个操作的编译 = 47 秒
 - en: 'jit: run-time for 1k ops x 10k iterations = 0.66 seconds'
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 即时编译：运行 1k 个操作 x 10k 次迭代 = 0.66 秒
 - en: 'jit: 10k ops x 10k iterations (compilation + run-time) => **470 seconds** (estimate)'
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 即时编译：10k 个操作 x 10k 次迭代（编译 + 运行时间）=> **470 秒**（估计）
 - en: Speed up in execution time is more than impressive, but we spend >99% of time
     compiling.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 执行时间的加速超乎想象，但我们花费了 >99% 的时间在编译上。
 - en: Tensorflow
   id: totrans-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: Tensorflow
 - en: Someone will mention TF anyway. I’ll leave this as an exercise for you, TF fans.
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 有人总会提及 TF。我将把这留给 TF 的粉丝作为练习。
 - en: Let’s autograd in python
   id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们在 python 中使用自动微分
 - en: Done with baselines, time to see if we can speed things up.
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 基准测试完成，是时候看看我们是否可以加速了。
 - en: Let’s create a simplistic pseudo-framework and see how it competes with previous
     candidates. We’ll implement a tape-like autograd where operations order is explicitly
     tracked in a tape.
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个简单的伪框架，并看看它与之前的候选者相比如何。我们将实现一个类似磁带的自动求导，其中操作顺序在磁带中被明确跟踪。
 - en: <details><summary class="code-summary">show autograd engine in plain python</summary>
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary class="code-summary">展示纯 Python 中的自动求导引擎</summary>
 - en: '[PRE2]</details>'
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE2]</details>'
 - en: 'and reimplement reference task using our new pseudo-framework:'
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 并使用我们的新伪框架重新实现参考任务：
 - en: <details><summary class="code-summary">show benchmarking code</summary>
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary class="code-summary">展示基准测试代码</summary>
 - en: '[PRE3]</details>'
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE3]</details>'
 - en: 'Run-time for 10k ops and 10k iterations: **312 seconds**.'
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 10k 次操作和 10k 次迭代的运行时间：**312 秒**。
 - en: Expectably not fast. But compared to previous candidates, that’s actually quite
     competitive!
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 预料之中不快。但与之前的候选相比，这实际上是相当有竞争力的！
 - en: Let’s autograd in python, again
   id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们再次在 Python 中进行自动求导。
 - en: This time we move all values into tape instead of keeping in variables. Additionally
     tape will keep a ‘static graph’ of computations by recording indices of variables
     participating in every operation.
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次我们将所有值都移动到磁带中，而不是保留在变量中。此外，磁带将通过记录每次操作中参与的变量的索引来保留计算的‘静态图’。
 - en: <details><summary class="code-summary">show code for autograd in plain python</summary>
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary class="code-summary">展示纯 Python 中自动求导的代码</summary>
 - en: '[PRE4]'
   id: totrans-56
   prefs: []
@@ -269,20 +325,25 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 和相应的启动代码
 - en: '[PRE5]</details>'
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE5]</details>'
 - en: 'Run-time for 10k ops x 10k iterations: **94 seconds**'
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 10k 次操作 x 10k 次迭代的运行时间：**94 秒**
 - en: As we see, moving all values into tape and switching to operating on indices
     is quite an efficient strategy. We still use python, but are now ~5-10 fold faster
     than `pytorch` or `jax`.
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如我们所见，将所有值移动到磁带中并切换到操作索引的策略相当有效。我们仍然使用 Python，但现在比 `pytorch` 或 `jax` 快约 5-10
+    倍。
 - en: 'At this point, I want to mention one more experiment: code above is organized
     to be `numba`-friendly. [Numba](https://numba.readthedocs.io/en/stable/) is famous
     for speeding up number crunching in python with minimal changes by providing just-in-time
@@ -291,20 +352,25 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我想提到另一个实验：上面的代码是为了使其友好于 `numba` 而组织的。[Numba](https://numba.readthedocs.io/en/stable/)
+    以提供即时编译，通过提供即时编译，以最小的更改加快 Python 中的数值计算而闻名。最近添加的 `numba.typed.List` 使得可以有效地处理列表的列表。
 - en: 'Run-time with numba, 10k ops x 10k iterations: **41 second**.'
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 numba 的运行时间，10k 次操作 x 10k 次迭代：**41 秒**。
 - en: At this point we’re >10-fold faster than jax/pytorch (and still writing code
     in python).
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我们比 jax/pytorch 快了超过 10 倍（仍然在 Python 中编写代码）。
 - en: Let’s autograd in rust
   id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们在 Rust 中进行自动求导。
 - en: Once we moved graph tracking to tape, we can now use something fast to run computations
     for us. For instance, rust. For rust↔python interop I’ve used a small wrapper
     around [rustimport](https://github.com/mityax/rustimport). `Rustimport` allows
@@ -313,21 +379,27 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们将图跟踪移动到磁带中，我们现在可以使用一些快速的方法来运行计算。例如，Rust。对于 Rust ↔ Python 的互操作性，我使用了一个围绕
+    [rustimport](https://github.com/mityax/rustimport) 的小包装器。`Rustimport` 允许方便地“导入”一个单独的
+    Rust 文件，而不创建一个完整的 Rust 项目。
 - en: 'Some optimization remarks:'
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些优化说明：
 - en: '`softmax` was a bottleneck, so I switched to creating temporary arrays on stack
     instead of Vecs, which required specializing on input sizes'
   id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`softmax` 成为了一个瓶颈，所以我转而在堆栈上创建临时数组，而不是 Vecs，这需要对输入大小进行特化。'
 - en: I followed rust-y approach with iterators to reduce number of boundary checks
   id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我遵循了 Rust 风格的迭代器方法来减少边界检查的数量。
 - en: I wondered if match with multiple options checked one-by-one is slow. In synthetic
     tests it seemed to be relatively fast, but I wish jump table optimization was
     implemented here (e.g. it is supported for [enums](https://users.rust-lang.org/t/match-statement-efficiency/4488)
@@ -337,91 +409,112 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我想知道一次检查多个选项的匹配是否慢。在合成测试中，它似乎相对快速，但我希望在这里实现跳转表优化（例如，对于 Rust 中的 [enums](https://users.rust-lang.org/t/match-statement-efficiency/4488)
+    支持此优化，并且 clang [在 C 中使用](https://stackoverflow.com/questions/60109992/why-is-a-switch-not-optimized-the-same-way-as-chained-if-else-in-c-c)
+    此优化来进行 switch-case）。
 - en: <details><summary class="code-summary">show rust code for minimal autograd</summary>
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary class="code-summary">展示最小自动求导的 Rust 代码</summary>
 - en: '[PRE6]</details>'
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE6]</details>'
 - en: 'Run-time for 10k ops x 10k iterations: **1.4 seconds**'
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 10k 次操作 x 10k 次迭代的运行时间：**1.4 秒**
 - en: 'Success: we are in the realm of interactive experiences.'
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功：我们处于交互式体验的领域。
 - en: Recall we started from >1000 seconds. But should we stop here?
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 记得我们开始时超过了 1000 秒。但是我们应该在这里停下来吗？
 - en: Let’s autograd in C
   id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们在 C 中进行自动微分。
 - en: Time to implement autograd logic in C. For interop with python I use [python-cffi](https://cffi.readthedocs.io/en/stable/index.html).
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 C 中实现自动微分逻辑的时间到了。为了与 Python 进行交互，我使用 [python-cffi](https://cffi.readthedocs.io/en/stable/index.html)。
 - en: 'I went bananas on optimization:'
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对优化进行了疯狂的尝试：
 - en: I used the fact that output nodes are placed consequentially in memory, so we
     pass only index of the first output
   id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我利用了输出节点在内存中是连续放置的事实，因此我们只传递第一个输出的索引。
 - en: number of inputs is limited to 8, and those are baked into struct as `int[8]`,
     not `int *` to avoid jumps in memory
   id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入数量限制为 8，并且这些输入作为 `int[8]` 嵌入到结构体中，而不是 `int *`，以避免内存跳转
 - en: dynamic stack allocations of variable size (compared to rust, those are straightforward
     in C)
   id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 动态堆栈分配可变大小（与 Rust 相比，在 C 中这些很简单）
 - en: '`-O3`, and unsafe math: `-ffast-math`. Even experimented memory alignment and
     restrict-ing pointers, but no luck'
   id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-O3`，以及不安全的数学运算：`-ffast-math`。甚至尝试了内存对齐和限制指针，但没有运气'
 - en: <details><summary class="code-summary">show me some code in C</summary>
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary class="code-summary">给我看一些 C 代码</summary>
 - en: '[PRE7]</details>'
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE7]</details>'
 - en: 'Run-time for 10k ops x 10k iterations: **0.99 second**'
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 10k 次操作 x 10k 次迭代的运行时间：**0.99 秒**
 - en: I liked ergonomics of rust better, but achieving high speed in C is way easier.
     Rust’s interop with python is also way more convenient.
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 我更喜欢 Rust 的人体工程学，但在 C 中实现高速度要容易得多。Rust 与 Python 的交互也更方便。
 - en: Let’s autograd in C (again)
   id: totrans-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 让我们再次在 C 中进行自动微分。
 - en: Another approach I’ve taken is to ‘compile’ traced graph to C. So python produces
     a long C file where operations are called one-by-one with explicit indices, something
     like
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我采取的另一种方法是将跟踪的图形“编译”成 C。因此，Python 生成一个长长的 C 文件，其中操作被一个接一个地调用，具有显式索引，类似于
 - en: '[PRE8]'
   id: totrans-88
   prefs: []
@@ -435,16 +528,20 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 源代码很长，输出很多，为了加快编译速度，我们可以在 clang 中设置 `-O0`。使用 `-O0` 会产生较慢的二进制文件，但有趣的是 *并没有* 加速编译速度。我得到的最佳结果是大约
+    1 分钟的编译时间和 1 秒的完整运行时间。令人惊讶的是，消除参数的 switch/case 和内存查找并没有导致更快的执行。
 - en: Given that recompilation is needed any time the graph is changed, real time
     experienced by user is 1 minute. That’s a no go.
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于每次图形变化都需要重新编译，用户体验的实时性为 1 分钟。这是不可接受的。
 - en: Assembly
   id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 汇编
 - en: In this endeavor to get maximal speed, I decided to go down to assembly. Otherwise
     it feels like an incomplete journey. We can map a computational graph to just
     a set of low-level instruction, and avoid “costly” compilation. These days x86/64
@@ -453,6 +550,8 @@
   id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在追求最大速度的努力中，我决定降到汇编层面。否则，感觉就像是一次不完整的旅程。我们可以将计算图映射到一组低级指令，并避免“昂贵”的编译。如今，x86/64
+    已经不再是王者，但 armv7/armv8 也不是 —— 为几种架构编写汇编是完全不合理的。
 - en: 'So … how about using webassembly? It is low-level, fast to compile, and still
     cross-platform. Projects like `wasmer`/`wasmtime` allow interacting with wasm
     code from other languages. That’s my first encounter with WASM, and I’ve got quite
@@ -462,6 +561,9 @@
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以 …… 使用 WebAssembly 如何？它是低级别的，编译速度快，而且跨平台。像 `wasmer`/`wasmtime` 这样的项目允许从其他语言与
+    wasm 代码进行交互。这是我第一次接触 WASM，我对它的印象相当积极：WASM 结合了 lisp 风格的语法（用于高效的流式解析）和堆栈机的执行模型。与经典的堆栈机不同，也不同于经典的汇编，WASM
+    允许对表达式进行分组，例如
 - en: '[PRE9]'
   id: totrans-94
   prefs: []
@@ -473,6 +575,7 @@
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种便利性使得在 WASM 中编写的代码比传统的汇编更易读。抽象级别看起来对我来说刚刚好 —— 低级指令，但无需管理寄存器分配。
 - en: Webassembly is still very close to assembly in terms of instructions, i.e. there
     is no `exp`, `log`, let alone `log1p` and alike. Fortunately, there is a WASM
     [implementation](https://gist.github.com/going-digital/02e46c44d89237c07bc99cd440ebfa43)
