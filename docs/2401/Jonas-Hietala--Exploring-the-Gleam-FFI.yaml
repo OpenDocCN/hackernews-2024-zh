@@ -1,30 +1,45 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:43:44'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:43:44'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Jonas Hietala: Exploring the Gleam FFI'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Jonas Hietala: 探索 Gleam FFI'
 - en: 来源：[https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/](https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/](https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/)
 - en: My brain is a curious thing. I’m on a business trip right now and I’ve set aside
     time to finish some important todos I want and need to get done. But instead of
     focusing on them, I started playing around with [Gleam](https://gleam.run/ "Gleam
     is a friendly language for building type-safe systems that scale!")—a young and
     interesting programming language.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的大脑是一个好奇的东西。我现在正在出差，本来应该抽出时间完成一些我想要并且需要完成的重要待办事项。但是我没有专注于它们，而是开始玩弄一个年轻而有趣的编程语言——[Gleam](https://gleam.run/
+    "Gleam is a friendly language for building type-safe systems that scale!")。
 - en: My (current) favorite programming languages are [Rust](https://www.rust-lang.org/
     "Rust programming language") and [Elixir](https://elixir-lang.org/ "Elixir programming
     language"). They’re really different from each other, but they work well together
@@ -32,284 +47,450 @@
     This is useful because one of the drawbacks with Elixir (or rather the Erlang
     VM that Elixir runs on) is raw computational performance, something that Rust
     excels at.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我（目前）最喜欢的编程语言是 [Rust](https://www.rust-lang.org/ "Rust programming language")
+    和 [Elixir](https://elixir-lang.org/ "Elixir programming language")。它们彼此之间非常不同，但它们在一起工作得很好，因为
+    Rust 可以很容易地通过 Erlang NIFs [嵌入](https://github.com/rusterlium/rustler)。这很有用，因为
+    Elixir（或者说 Elixir 运行的 Erlang 虚拟机）的一个缺点是原始的计算性能，而 Rust 擅长这方面。
 - en: Another drawback with Elixir is the lack of typing (although [improvements are
     underway](https://nitter.net/josevalim/status/1744395345872683471)). This is what
     drew me to Gleam, which feels like Elixir but with Rust types on top—a fantastic
     sales pitch.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Elixir 的另一个缺点是缺乏类型（虽然[正在进行改进](https://nitter.net/josevalim/status/1744395345872683471)）。这就是我被
+    Gleam 吸引的原因，它感觉像 Elixir，但在上面加了 Rust 类型——一个非常棒的销售点。
 - en: A big drawback with young languages is that there aren’t a lot of libraries
     out there, so you’ll have to roll your own solutions most of the time. But the
     beauty of targeting existing platforms is that you can also leverage their libraries,
     which in Gleam’s case means all Erlang and Elixir libraries (or JavaScript, depending
     on your compilation target). This is accomplished via Gleam’s FFI, which is quite
     convenient.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 年轻语言的一个很大的缺点是没有太多的库，所以大部分时间你都得自己动手解决。但是，针对现有平台的美妙之处在于你也可以利用它们的库，而在 Gleam 的情况下，这意味着所有
+    Erlang 和 Elixir 库（或者 JavaScript，取决于你的编译目标）。这是通过 Gleam 的 FFI 实现的，相当方便。
 - en: Let’s explore.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来探索一下。
 - en: 'If you want to follow along, make sure you have the respective compilers installed.
     I’ll base the examples from a clean new repo:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想跟着进行，确保你已经安装了相应的编译器。我将以一个干净的新存储库为例：
 - en: 'As shown in [the Gleam Book](https://gleam.run/book/tour/external-functions.html)
     calling standard Erlang functions is straightforward. You declare foreign functions
     with the `@external` keyword and then call them as normal:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如[《Gleam 书籍》](https://gleam.run/book/tour/external-functions.html)中所示，调用标准的
+    Erlang 函数非常简单。你用 `@external` 关键字声明外部函数，然后像正常一样调用它们：
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'That if run will call the `uniform` function in the `rand` Erlang module:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果运行，这将调用 `rand` Erlang 模块中的 `uniform` 函数：
 - en: '[PRE1]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This works for standard libraries, but you can access other Erlang libraries
     on [Hex](https://hex.pm/) by adding them as dependencies in `gleam.toml`:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这适用于标准库，但你可以通过在 `gleam.toml` 中将它们添加为依赖项来访问 [Hex](https://hex.pm/) 上的其他 Erlang
+    库：
 - en: '[PRE2]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Declare and call it like before:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 声明并像以前一样调用它：
 - en: '[PRE3]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'And Gleam will download and compile the Erlang dependency:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且 Gleam 会下载并编译 Erlang 依赖：
 - en: '[PRE4]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: If you want to write Erlang code yourself and call that, it’s also very easy.
     The gleam compiler will compile and include `.erl` files automatically.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想自己编写 Erlang 代码并调用它，这也非常容易。Gleam 编译器会自动编译和包含 `.erl` 文件。
 - en: 'For example this file `src/erlib.erl`:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 比如这个文件 `src/erlib.erl`：
 - en: '[PRE5]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Declare and call the function in gleam like before:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 声明并像以前一样调用 gleam 中的函数：
 - en: '[PRE6]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'You can also call Gleam functions from Erlang. With for example this pong function
     in `src/mypong.gleam`:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以从 Erlang 调用 Gleam 函数。比如说，在 `src/mypong.gleam` 中有这样一个 pong 函数：
 - en: '[PRE7]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'You can call the Gleam function with `module:function()`:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以用 `module:function()` 调用 Gleam 函数：
 - en: '[PRE8]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: If you want to include Gleam code into an existing Elixir project, look at [MixGleam](https://github.com/gleam-lang/mix_gleam)
     on how to teach `mix` how to work with Gleam code and dependencies. But if you
     want to include Elixir code into your Gleam project, you can do that just as easily
     as with Erlang.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想在现有的 Elixir 项目中包含 Gleam 代码，请查看[MixGleam](https://github.com/gleam-lang/mix_gleam)，了解如何教`mix`如何处理
+    Gleam 代码和依赖关系。但如果你想在 Gleam 项目中包含 Elixir 代码，你可以像使用 Erlang 一样轻松地做到这一点。
 - en: 'Declaring foreign Elixir functions uses the same `@external` keyword:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 声明外部 Elixir 函数使用相同的`@external`关键字：
 - en: '[PRE10]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Note that Elixir modules gets an `Elixir` prefix and that we’re still calling
     external Erlang code as Elixir gets compiled to Erlang.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，Elixir 模块会得到一个`Elixir`前缀，并且我们仍然将外部 Erlang 代码称为 Elixir，因为 Elixir 被编译为 Erlang。
 - en: 'Dependencies are added from [Hex](https://hex.pm/), exactly the same as with
     Erlang dependencies:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 依赖项是从[Hex](https://hex.pm/)添加的，与 Erlang 依赖项完全相同：
 - en: '[PRE11]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Calling our own Elixir code is just as easy as with Erlang. Just include it
     in your source directory, like this `src/exlib.ex`:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 调用我们自己的 Elixir 代码和调用 Erlang 一样容易。只需将其包含在您的源目录中，像这样`src/exlib.ex`：
 - en: '[PRE12]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'And refer to the module as `Elixir.Exlib`:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 并将模块称为`Elixir.Exlib`：
 - en: '[PRE13]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Keep in mind that:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住：
 - en: You can’t directly call Elixir macros (they happen on compile time).
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你不能直接调用 Elixir 宏（它们在编译时发生）。
 - en: If you include Elixir you’ll also include the Elixir standard library. Erlang
     might be a better choice if you want something more lightweight.
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果你包含了 Elixir，你也会包含 Elixir 标准库。如果你想要更轻量级的东西，Erlang 可能是一个更好的选择。
 - en: In the beginning I wrote that you could easily call Rust code from Elixir via
     [rustler](https://github.com/rusterlium/rustler). You can call Rust from Gleam
     as well, either via Erlang or Elixir. [Rustler](https://github.com/rusterlium/rustler)
     recommends to use `mix` with Elixir, but we can do this with Erlang and keep using
     the Gleam toolchain.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始时我写道，你可以通过[rustler](https://github.com/rusterlium/rustler)很容易地从 Elixir 中调用
+    Rust 代码。你也可以通过 Erlang 或 Elixir 从 Gleam 调用 Rust。[Rustler](https://github.com/rusterlium/rustler)建议使用
+    Elixir 的`mix`，但我们可以通过 Erlang 来做到这一点，并继续使用 Gleam 工具链。
 - en: 'First we need to create a Rust project somewhere. We can create it in the top
     level of the Gleam repo or in a `native/` folder or wherever. For this example
     I’ll just leave it at the top:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要在某处创建一个 Rust 项目。我们可以将它创建在 Gleam 仓库的顶层，或者在一个`native/`文件夹中，或者任何其他地方。对于这个示例，我将它留在顶层：
 - en: 'On the Rust side I’ll use [rustler](https://github.com/rusterlium/rustler)
     to create the NIF:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Rust 方面，我将使用[rustler](https://github.com/rusterlium/rustler)来创建 NIF：
 - en: '[PRE15]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'And in `rslib/src/lib.rs` we’ll tag the function we want to expose with [rustler](https://github.com/rusterlium/rustler):'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 而在`rslib/src/lib.rs`中，我们将要暴露的函数标记为[rustler](https://github.com/rusterlium/rustler)：
 - en: '[PRE16]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'We want to build this as a dynamic library, so we’ll need to update `Cargo.toml`:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望将其构建为一个动态库，所以我们需要更新`Cargo.toml`：
 - en: '[PRE17]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Then build it in release mode:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后以发布模式构建它：
 - en: '[PRE18]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: This should generate the library at `target/release/librslib.so`. Yes, my naming
     choice here sucked, but let’s roll with it.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该会在`target/release/librslib.so`生成库。是的，我这里的命名选择很糟糕，但我们继续吧。
 - en: 'For Gleam to be able to use this file we need to copy it to `priv/` (relative
     to the Gleam root, not the Rust project):'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让 Gleam 能够使用这个文件，我们需要将它复制到`priv/`（相对于 Gleam 根目录，而不是 Rust 项目）：
 - en: '[PRE19]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'The file layout should look something like this:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件布局应该看起来像这样：
 - en: '[PRE20]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'To include the library we’ll use some Erlang. We’ll use `src/rslib.erl` similar
     to before, but with [Erlang NIFs](https://www.erlang.org/doc/tutorial/nif.html):'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 要包含库，我们将使用一些 Erlang。我们将使用`src/rslib.erl`，类似于之前，但使用[Erlang NIFs](https://www.erlang.org/doc/tutorial/nif.html)：
 - en: '[PRE21]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: We now load the `librslib` library, declare `truly_random` as a NIF with `-nifs(..)`
     and add a function placeholder that will be replaced when the library loads. librs
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在加载`librslib`库，将`truly_random`声明为一个 NIF，并添加一个函数占位符，在库加载时将被替换。librs
 - en: 'With the Erlang code in place what’s left is to call the Erlang function from
     Gleam:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在放置了 Erlang 代码后，剩下的就是从 Gleam 调用 Erlang 函数：
 - en: '[PRE22]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: And now we can call our [truly random](https://xkcd.com/221/) Rust function!
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以调用我们的[真正随机](https://xkcd.com/221/)的 Rust 函数了！
 - en: 'While Rust is amazing, and it’s great that we can call it from Gleam, there
     are some drawbacks to be aware of:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 Rust 很棒，我们可以从 Gleam 调用它真是太好了，但也有一些需要注意的缺点：
 - en: The glue is verbose as we need to duplicate the function name a bunch of times.
+  id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于我们需要多次复制函数名称，所以粘合剂很冗长。
 - en: Building the library and moving it to `priv/` isn’t handled by the Gleam toolchain.
     I’ve seen some people use a Makefile to build the library and then copy it to
     `priv/`.
+  id: totrans-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 构建库并将其移动到 `priv/` 目录不是 Gleam 工具链处理的事情。我见过一些人使用 Makefile 来构建库，然后将其复制到 `priv/`
+    目录。
 - en: NIFs can crash the whole runtime. While Rust is safer than C, it can still bring
     the whole runtime down and not just a single Erlang process.
+  id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: NIF 可以使整个运行时崩溃。虽然 Rust 比 C 更安全，但它仍然可能使整个运行时崩溃，而不仅仅是一个 Erlang 进程。
 - en: Calling Gleam code from Rust seems harder. I found an example of [calling Elixir
     or Erlang function from Rust](https://github.com/Qqwy/elixir-rustler_elixir_fun
     "Calling Elixir code from Rust"), but I haven’t looked at in more detail.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 Rust 调用 Gleam 代码似乎更困难。我找到了一个[从 Rust 调用 Elixir 或 Erlang 函数的示例](https://github.com/Qqwy/elixir-rustler_elixir_fun
+    "Calling Elixir code from Rust")，但我还没有仔细研究它。
 - en: Gleam can also compile to JavaScript, and this blog post wouldn’t be complete
     without a short example.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: Gleam 也可以编译为 JavaScript，而且没有一个简短的示例，这篇博文就不完整了。
 - en: 'To compile for JavaScript we can add `target = javascript` to our `gleam.toml`
     or use the target flag:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 要编译为 JavaScript，我们可以将 `target = javascript` 添加到我们的 `gleam.toml` 文件中，或者使用目标标志：
 - en: '[PRE23]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'Like before when we called Erlang and Elixir files, if you add a JavaScript
     source file in `src/` it will automatically get included. For example this `src/jslib.mjs`:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像以前调用 Erlang 和 Elixir 文件一样，如果你在 `src/` 目录下添加一个 JavaScript 源文件，它将自动包含进来。例如这个
+    `src/jslib.mjs`：
 - en: '[PRE24]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'And to declare the foreign function, we now use the relative file instead of
     the library name:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且为了声明外部函数，我们现在使用相对文件而不是库名：
 - en: '[PRE25]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'And when run you’ll see that we can call the JavaScript `ping` function which
     in turns calls our Gleam `pong` function:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行时，你会发现我们可以调用 JavaScript 的 `ping` 函数，它会调用我们的 Gleam 的 `pong` 函数：
 - en: '[PRE26]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: You can inspect the output JavaScript files in `build/dev/javascript/myapp/`,
     which is very useful when debugging or trying to understand the code Gleam generates.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以检查位于 `build/dev/javascript/myapp/` 中的输出 JavaScript 文件，在调试或尝试理解 Gleam 生成的代码时非常有用。
 - en: I hope this post gives helps you understand how to get started with Gleam’s
     FFI system. I haven’t looked into Gleam more than a few days, but given how easy
     it is to get access to my other favorite languages and their ecosystems, I don’t
     have to worry that I’ll be missing out on some crucial functionality if I’m going
     to create something real with Gleam.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望这篇文章能帮助你了解如何开始使用 Gleam 的 FFI 系统。我对 Gleam 的了解不超过几天，但考虑到我可以轻松访问到其他我喜欢的语言及其生态系统，如果我要用
+    Gleam 创造一些真实的东西，我不必担心会错过一些关键的功能。
