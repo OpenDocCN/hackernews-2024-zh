@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:57:55'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:57:55'
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Pratt Parsers: Expression Parsing Made Easy – journal.stuffwithstuff.com'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Pratt 解析器：轻松解析表达式 – journal.stuffwithstuff.com
 - en: 来源：[https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
 - en: 'Every now and then, I stumble onto some algorithm or idea that’s so clever
     and such a perfect solution to a problem that I feel like I got smarter or gained
     [a new superpower](http://xkcd.com/208/) just by learning it. [Heaps](http://en.wikipedia.org/wiki/Heap_%28data_structure%29)
@@ -33,6 +39,8 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 时不时地，我会偶然发现一些算法或思想，它们非常聪明，对于解决问题来说是如此完美的解决方案，以至于我觉得通过学习它们我变得更聪明或获得了 [一种新的超能力](http://xkcd.com/208/)。堆就是其中之一，几乎是我在截断的计算机科学教育中得到的唯一东西。我最近又发现了另一种：Pratt
+    或“自顶向下运算符优先级”解析器。
 - en: When you’re writing a parser, [recursive descent](http://en.wikipedia.org/wiki/Recursive_descent)
     is as easy as spreading peanut butter. It excels when you can figure out what
     to parse based on the next bit of code you’re looking at. That’s usually true
@@ -41,6 +49,8 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你编写一个解析器时，[递归下降](http://en.wikipedia.org/wiki/Recursive_descent) 就像涂抹花生酱一样简单。当你可以根据你正在查看的代码的下一部分来确定解析什么时，它就会表现出色。这通常适用于语言语法的声明和语句级别，因为大多数语法从关键字开始——`class`、`if`、`for`、`while`
+    等等。
 - en: Parsing gets trickier when you get to expressions. When it comes to infix operators
     like `+`, postfix ones like `++`, and even mixfix expressions like `?:`, it can
     be hard to tell what kind of expression you’re parsing until you’re halfway through
@@ -51,17 +61,21 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析在处理表达式时变得更加棘手。当涉及到中缀运算符如`+`，后缀运算符如`++`，甚至是混合表达式如`?:`时，直到解析到一半时才能确定正在解析的表达式是什么类型的，这可能会很困难。你
+    *可以* 用递归下降来实现这一点，但这很繁琐。你必须为每个优先级水平编写单独的函数（例如 JavaScript 有 17 个优先级），手动处理结合性，并且将你的语法分散到一堆解析代码中，直到变得难以看清楚。
 - en: Peanut butter and jelly, the secret weapon
   id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 花生酱和果冻，秘密武器
 - en: Pratt parsing solves that. If recursive descent is peanut butter, Pratt parsing
     is the jelly. When you mix the two together, you get a simple, terse, readable
     parser that can handle any grammar you throw at it.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Pratt 解析解决了这个问题。如果递归下降是花生酱，那么 Pratt 解析就是果冻。当你把两者结合在一起时，你得到了一个简单、简洁、易读的解析器，可以处理任何你投入其中的语法。
 - en: Pratt’s technique for handling operator precedence and infix expressions is
     so simple and effective it’s a mystery why almost no one knows about it. After
     the seventies, top down operator precedence parsers seem to have fallen off the
@@ -72,12 +86,17 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Pratt 处理运算符优先级和中缀表达式的技术是如此简单和有效，以至于几乎没有人知道它是为什么。在七十年代之后，自顶向下的运算符优先级解析器似乎已经消失了。Douglas
+    Crockford 的 [JSLint](http://www.jslint.com/) 使用它来 [解析 JavaScript](http://crockford.com/javascript/tdop/tdop.html)，但他的处理方式是
+    [极少数](http://effbot.org/zone/simple-top-down-parsing.htm) 关于此的现代文章之一。
 - en: Part of the problem, I think, is that Pratt’s terminology is opaque, and Crockford’s
     article is itself rather murky. Pratt uses terms like “null denominator” and Crockford
     mixes in extra stuff like tracking lexical scope that obscures the core idea.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为问题的一部分在于，Pratt 的术语是晦涩的，而 Crockford 的文章本身也相当混沌。Pratt 使用诸如“null denominator”之类的术语，而
+    Crockford 则混入了额外的东西，比如跟踪词法作用域，这使得核心思想变得模糊。
 - en: This is where I come in. I won’t do anything revolutionary. I’ll just try to
     get the core concepts behind top down operator precedence parsers and present
     them as clearly as I can. I’ll switch out some terms to (I hope) clarify things.
@@ -338,11 +357,14 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为前缀和中缀表达式分别设置单独的表格很重要，因为有时我们对于同一 TokenType 既有前缀解析器又有中缀解析器。例如，`(`的前缀解析器处理像`a
+    * (b + c)`这样的表达式中的分组。同时，`(`的*中缀*解析器处理函数调用，如`a(b)`。
 - en: 'Now, after we parse the leading prefix expression, we look for an infix parser
     that matches the next token and wraps the prefix expression as an operand:'
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，在我们解析前缀表达式之后，我们查找匹配下一个令牌并将前缀表达式包装为操作数的中缀解析器：
 - en: '[PRE10]'
   id: totrans-53
   prefs: []
@@ -353,6 +375,7 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 相当直接。我们可以这样为二元算术运算符`+`实现一个中缀解析器：
 - en: '[PRE11]'
   id: totrans-55
   prefs: []
@@ -365,11 +388,13 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 中缀解析器也适用于后缀运算符。我称它们为“中缀”，但它们实际上是“除前缀之外的任何东西”。如果在令牌之前有一些前导子表达式，那么该令牌将由中缀解析器处理。这包括后缀表达式和像`?:`这样的混合式表达式。
 - en: 'Postfix expressions are as simple as single-token prefix parselets: they just
     take the `left` operand and wraps it in another expression:'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 后缀表达式与单令牌前缀解析器一样简单：它们只是取`left`操作数，并将其包装在另一个表达式中：
 - en: '[PRE12]'
   id: totrans-58
   prefs: []
@@ -379,6 +404,7 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Mixfix 也很简单。它类似于递归下降：
 - en: '[PRE13]'
   id: totrans-60
   prefs: []
@@ -390,11 +416,14 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '现在我们可以解析前缀、后缀、中缀甚至混合式表达式。凭借相当少量的代码，我们可以解析像`a + (b ? c! : -d)`这样的复杂嵌套表达式。我们完成了，对吧？嗯...
+    差不多了。'
 - en: Excuse you, aunt Sally
   id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 劳驾你了，阿姨莎莉
 - en: Our parser *can* parse all of this stuff, but it doesn’t parse it with the right
     precedence or associativity. If you throw `a - b - c` at the parser, it will parse
     the nested expressions like `a - (b - c)`, which isn’t right. (Well, actually
@@ -402,6 +431,8 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的解析器*可以*解析所有这些东西，但它没有以正确的优先级或结合性进行解析。如果你将`a - b - c`传递给解析器，它将解析嵌套表达式，如`a -
+    (b - c)`，这是不正确的。（嗯，实际上它是*正确的*——是结合性的。我们需要它是*左*的。）
 - en: And this *last* step where we fix that is where Pratt parsers go from pretty
     nice to totally radical. We’ll make two simple changes. We extend `parseExpression()`
     to take a *precedence*—a number that tells which expressions can be parsed by
@@ -410,11 +441,13 @@
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 而这个*最后*一步，我们解决了这个问题，这就是 Pratt 解析器从相当好到完全激进的地方。我们会做两个简单的更改。我们扩展`parseExpression()`以接受*优先级*——一个数字，表示哪些表达式可以通过该调用进行解析。如果`parseExpression()`遇到一个优先级低于允许的表达式，它将停止解析并返回到目前为止所拥有的内容。
 - en: 'To make that check we need to know the precedence of any given infix expression.
     We’ll let the parselet specify it:'
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了进行该检查，我们需要知道任何给定中缀表达式的优先级。我们让解析器指定它：
 - en: '[PRE14]'
   id: totrans-66
   prefs: []
@@ -424,6 +457,7 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个，我们的核心表达式解析器看起来像这样：
 - en: '[PRE15]'
   id: totrans-68
   prefs: []
@@ -434,6 +468,7 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 那依赖于一个微小的辅助函数，以获取当前令牌的优先级，或者如果没有中缀解析器，则获取默认值：
 - en: '[PRE16]'
   id: totrans-70
   prefs: []
@@ -444,6 +479,7 @@
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样。为了将优先级编入 Bantam 的语法中，我们设置了一个小的优先级表：
 - en: '[PRE17]'
   id: totrans-72
   prefs: []
@@ -457,6 +493,7 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使我们的运算符以正确的优先级解析其操作数，它们在递归调用`parseExpression()`时会将适当的值传递回去。例如，处理`+`运算符的[BinaryOperatorParselet](https://github.com/munificent/bantam/blob/master/src/com/stuffwithstuff/bantam/parselets/BinaryOperatorParselet.java)实例在解析其右操作数时传递`Precedence.SUM`。
 - en: Associativity is easy too. If an infix parselet calls `parseExpression()` with
     the *same* precedence that it returns for its own `getPrecedence()` call, you
     get left associativity. To be right-associative, it just needs to pass in *one
@@ -464,17 +501,20 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合性也很容易。如果中缀解析器在其自身的`getPrecedence()`调用中返回相同的优先级，并使用`parseExpression()`进行调用，你将得到左结合性。要成为右结合，它只需要传入比那个优先级小*一个*。
 - en: Go forth and multiply
   id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 前进并繁殖
 - en: I’ve rewritten the [parser for Magpie](https://github.com/munificent/magpie/blob/master/src/com/stuffwithstuff/magpie/parser/MagpieParser.java)
     using this and it worked like a charm. I’m also working on a JavaScript parser
     using this technique and again it’s been a great fit.
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经使用这种方法重写了[Magpie的解析器](https://github.com/munificent/magpie/blob/master/src/com/stuffwithstuff/magpie/parser/MagpieParser.java)，它运行得非常完美。我还正在使用这种技术开发一个JavaScript解析器，同样效果很好。
 - en: I Pratt parsers to be simple, terse, extensible (Magpie, for example, uses this
     to [let you extend its own syntax](/2011/02/13/extending-syntax-from-within-a-language/)
     at runtime), and easy to read. I’m at the point where I can’t imagine writing
@@ -482,7 +522,9 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为Pratt解析器应该是简单的、简洁的、可扩展的（例如，Magpie就使用这个特性在运行时[让你扩展自己的语法](/2011/02/13/extending-syntax-from-within-a-language/)），并且易于阅读。我已经到了无法想象以其他方式编写解析器的地步。我从未想过会说出这样的话，但是现在解析器感觉很容易。
 - en: To see for yourself, just take a look at [the complete program](https://github.com/munificent/bantam).
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 想要亲自见识，只需查看[完整的程序](https://github.com/munificent/bantam)。
