@@ -179,15 +179,19 @@
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 8x8 位图字体 *能用*，但它确实不太美观，并且相当有限：我们只能使用愿意编码到这个小小的 8x8 网格中的任何字体，并且我们无法使用在线和公共领域中提供的众多字体。此外，我们的
+    8x8 网格并没有提供描述曲线的好方法，而在某些字体中这是必不可少的（看看这个`a`！）。
 - en: Most importantly, writing a new font renderer sounds like fun.
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 最重要的是，编写一个新的字体渲染器听起来很有趣。
 - en: TrueType
   id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: TrueType
 - en: 'For the next leap in our text rendering journey, we turn to TrueType: the de
     facto standard for encoding and distributing fonts. Unlike our humble 8x8 bitmaps,
     TrueType fonts are distributed as structured binary files (`.ttf`). We’ll need
@@ -195,6 +199,7 @@
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们文本渲染之旅的下一个飞跃中，我们转向 TrueType：用于编码和分发字体的事实上的标准。与我们的简单 8x8 位图不同，TrueType 字体以结构化二进制文件（`.ttf`）的形式分发。我们需要解析这些文件并将它们的数据渲染成像素。
 - en: There’s few things in this world I love more than taking an opaque binary and
     gradually uncovering the organization that was present all along. Dissecting the
     underlying and general structure of a binary is as gratifying as anything I can
@@ -202,6 +207,7 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个世界上，我喜欢的事情少之又少，比起一开始就存在的组织逐渐揭示的不透明二进制的结构更令我满意的事情几乎没有。分解二进制的底层和一般结构像我能想象到的任何事情一样令人满足。
 - en: The [TrueType specification](https://developer.apple.com/fonts/TrueType-Reference-Manual/)
     gives a great introduction to the problem space (I highly recommend the overviews
     in `Digitizing Letterforms` and especially `Instructing Fonts`), but it doesn’t
@@ -209,6 +215,7 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[TrueType 规范](https://developer.apple.com/fonts/TrueType-Reference-Manual/)给出了问题领域的很好介绍（我强烈推荐`数字化字形`和尤其是`指导字体`中的概述），但它并没有在“从这里开始解析”方面提供太多指引。我将为你省去麻烦。'
 - en: TTFs are structured somewhat similarly to Mach-Os. This is quite a nice surprise,
     because I’ve spent [a lot of time parsing Mach-Os](https://github.com/datatheorem/strongarm/)!
     Both file formats were developed ~~at Apple~~ around the same time, so I suppose
@@ -216,6 +223,7 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: TTFs 的结构与 Mach-Os 有些相似。这真是一个令人惊喜的发现，因为我花了[很多时间解析 Mach-Os](https://github.com/datatheorem/strongarm/)！由于这两种文件格式都是在相同的时间左右发展起来的，所以我想它们可能有一些设计上的相似之处。
 - en: TTFs and Mach-Os are both largely structured around a flat series of sections,
     each of which is described by a table of contents at the beginning of the file.
     In the case of TTFs, each of these sections will contain some metadata or other
@@ -223,22 +231,26 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: TTFs 和 Mach-Os 在很大程度上都是围绕一系列平面部分构造的，文件开头有一个目录表来描述每个部分。对于 TTFs，这些部分中的每一个都将包含我们在渲染字体过程中需要的一些元数据或其他信息。
 - en: '![](img/2f03984ada9bca2e04b2e49f115ecd51.png)'
   id: totrans-37
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/2f03984ada9bca2e04b2e49f115ecd51.png)'
 - en: Before taking a look at these sections becomes fruitful, though, we need to
     know the fundamental process for describing fonts used by TrueType. The specification
     does a great job, so I’ll keep myself brief.
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始查看这些部分变得有意义之前，我们需要了解 TrueType 使用的描述字体的基本流程。规范做得很好，所以我会简要概括一下。
 - en: The collection of lines and curves used to visually represent a particular letter
     is referred to as a *glyph*. As an example, the glyph `b` consists of a vertical
     line and a semicircle.
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于视觉表示特定字母的线条和曲线的集合被称为 *字形*。例如，字形`b`由一条竖线和一个半圆组成。
 - en: Without further information, though, our renderer won’t know *which* glyph represents
     each character. We’ll need some additional metadata to convert from a character
     within a *character map* (such as ASCII or Unicode) to the *glyph* that a particular
@@ -248,6 +260,8 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，没有更多的信息，我们的渲染器就不会知道 *哪个* 字形代表着每个字符。我们需要一些额外的元数据，以便从 *字符映射* 中的一个字符（如 ASCII
+    或 Unicode）转换为特定字体用于视觉表示该字符的 *字形*。TTF 的工作是描述如何绘制字体表示的所有字形，并描述字符映射与这些字形之间的对应关系。
 - en: TrueType describes how to draw each glyph by listing a series of points, which
     collectively compose the *outline* of each glyph. It’s up to the renderer to connect
     these points into lines, to turn these lines into curves, and to ‘color inside
@@ -255,19 +269,24 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: TrueType通过列出一系列点来描述如何绘制每个字形，这些点共同构成每个字形的*轮廓*。连接这些点成线，将这些线转化为曲线，并根据需要‘在线内着色’，这都是渲染器的工作。这里有更多的细微差别，但这就是基本情况。
 - en: '![](img/a923630a3af9626fc6ab1786bfac129c.png) ![](img/a8846ea8a05bdb7879ec2495ca8bf318.png)
     *Rendering points without connecting them into lines*'
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '![](img/a923630a3af9626fc6ab1786bfac129c.png) ![](img/a8846ea8a05bdb7879ec2495ca8bf318.png)
+    *不将渲染点连接成线*'
 - en: Things start to look a lot more comprehensible once you connect the dots.
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你连接了这些点，事情看起来就更加容易理解了。
 - en: Coloring inside the lines turns out to be more difficult than you might imagine.
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在线内着色原来比你想象的要困难得多。
 - en: My first implementation of this renderer didn’t draw any curves, but instead
     directly connected the points with straight lines. My colleague Amos [implemented](https://github.com/codyd51/axle/pull/47)
     the ability for the renderer to interpolate the glyph outline along the curves
@@ -275,37 +294,45 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我第一次实现这个渲染器时没有绘制任何曲线，而是直接用直线连接了点。我的同事Amos [实现了](https://github.com/codyd51/axle/pull/47)
+    渲染器沿着字体描述的曲线插值轮廓的能力，这确实改善了外观。谢谢，Amos！
 - en: '![](img/2190a7d64c3d781a5c1cbce04f64abbe.png)*Before and after Amos''s work
     to interpolate along curves*'
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '![](img/2190a7d64c3d781a5c1cbce04f64abbe.png)*在Amos的插值曲线工作之前和之后*'
 - en: Tangled Text Tables
   id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 纠缠的文本表格
 - en: 'Each section in the TTF is identified by a 4-character ASCII name. Different
     sections in the TTF contain different important metadata, such as:'
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: TTF中的每个部分都由一个4字符的ASCII名称标识。TTF中的不同部分包含不同的重要元数据，例如：
 - en: '`glyf`: The set of points for each glyph outline in the font (most important!)'
   id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`glyf`：字体中每个字形轮廓的一组点（最重要的！）'
 - en: '`hmtx`: Spacing information, i.e. how far to advance the cursor after drawing
     each glyph'
   id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`hmtx`：间距信息，即绘制每个字形后移动光标的距离'
 - en: '`cmap`: The correspondence of Unicode codepoints to glyph indexes'
   id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`cmap`：Unicode码点到字形索引的对应关系'
 - en: 'Each of these sections contains a bunch of structured data describing their
     contents. Here, our first mini challenge presents itself. TTF was designed in
     an era in which neither RAM nor core cycles were cheap. Therefore, the designers
@@ -314,18 +341,21 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个部分都包含一堆描述其内容的结构化数据。在这里，我们的第一个迷你挑战出现了。TTF是在RAM和核心周期都不便宜的时代设计的。因此，格式的设计者们确保它尽可能容易地完成渲染器的工作。为此，他们将两项责任转嫁给了字体文件本身：
 - en: Efficient data structures that the renderer can walk to retrieve info (for example,
     lookup tables to map a character code to a glyph index)
   id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 渲染器可以遍历以检索信息的有效数据结构（例如，查找表，将字符代码映射到字形索引）
 - en: Pre-computation of some values used during lookup (for example, scaling parameters
     for binary searching a character map)
   id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 预先计算一些查找过程中使用的值（例如，用于二分查找字符映射的缩放参数）
 - en: 'These optimizations aren’t so relevant today, but we’ll need to work with them
     nonetheless. The first one is particularly important: TTF is designed to be *loaded
     directly into memory* and read by the renderer *in-place*, without the renderer
@@ -335,6 +365,7 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些优化在今天可能并不那么重要，但我们仍然需要与它们一起工作。第一个特别重要：TTF被设计为*直接加载到内存*并由渲染器*就地*读取，而不是由渲染器填充自己的中间数据结构。~~然而，令人费解的是~~，TTF将所有字段都存储为大端格式，所以我们肯定需要在我们的端口之前做一些工作，才能读取到任何合理的值。
 - en: To be able to define and read from these font structures with minimal boilerplate
     and repetition, I set things up such that I could wrap any font structure fields
     in `BigEndianValue`. After I call `.into()`, everything is done and dusted and
@@ -343,6 +374,7 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了能够以最少的样板和重复定义并从这些字体结构中读取，我设置了这样一个机制，即我可以用`BigEndianValue`包装任何字体结构字段。一旦我调用了`.into()`，一切都搞定了，我就可以继续我的日常工作了。提前一点点的结构定义，后续就能写出轻松简单的解析代码！
 - en: '`rust_programs/ttf_renderer/src/parser.rs`'
   id: totrans-57
   prefs: []
