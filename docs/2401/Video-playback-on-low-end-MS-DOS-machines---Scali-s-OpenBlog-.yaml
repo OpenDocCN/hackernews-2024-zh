@@ -284,6 +284,8 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，我只是采取了一种快速而粗糙的方法。问题在于音频缓冲区的大小与帧速率直接相关。也就是说，音频缓冲区的长度正好等于一帧的长度。这就是原始 XDC
+    播放器中魔术的实现方式：当音频缓冲区完成时，SB 将生成一个中断。然后中断处理程序将显示一个新的帧。这意味着音频缓冲区非常短。
 - en: As I said earlier, that is suboptimal, because you get a glitch everytime you
     start a new buffer. So ideally you want the largest possible buffers, to reduce
     glitching to a minimum. However, for now I just went for a quick-and-dirty solution
@@ -299,6 +301,10 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我之前所说，这是次优的，因为每次启动新缓冲区时都会出现故障。因此，理想情况下，您希望使用尽可能大的缓冲区，以将故障降至最低。但是，至少目前我只是采取了一种快速而粗糙的解决方案，只是在每次中断时重新启动音频缓冲区。将这添加到现有代码中是微不足道的。这将导致每帧出现故障。但是，这种故障是由于在
+    DSP 上启动新缓冲区所需的时间。当我写这篇文章时，假设您使用高采样率。正如我在文章中所写的，向 DSP 发送新命令需要大约 316 个 CPU 循环，在
+    4.77 MHz 的 8088 上，而 22 kHz 的单个样本则需要 216 个 CPU 循环。显然，在较低的采样率下，每个样本所需的时间更长，而 DSP
+    的时间应该保持不变。所以这意味着在较低的速率下，故障变得不太明显，也许在低到一定程度的速率下，根本就不会注意到。
 - en: I may revisit this code at some point, and modify the buffering of audio in
     a way that I can apply some of the ideas in my earlier article, by using a large
     DMA buffer. But for now at least SB 1.x works. And the code checks the DSP version,
@@ -308,16 +314,20 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可能会在某个时候重新访问这段代码，并以一种可以应用我早期文章中的一些想法的方式修改音频缓冲区。但至少目前 SB 1.x 可以工作。代码会检查 DSP
+    版本，因此仅在检测到 1.x SB 时才使用此回退。SB 2.0 和更高版本应该仍然像以前一样工作，因此它们不会受到此添加的任何影响。
 - en: So now what?
   id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 现在该怎么办？
 - en: Well, one way to use this is to create new content, targeted specifically at
     lower sample rates that work better on these newly supported sound devices.
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，使用这种方法的一种方式是创建新内容，专门针对更低的采样率，这些采样率在这些新支持的声音设备上更有效。
 - en: Another way is to run existing content on faster machines. 8088 Domination uses
     22 kHz audio, which is a pretty bad case for bit-banged devices. But a reasonably
     fast 286 will have no problem with that. So you should be able to play back the
@@ -325,6 +335,8 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是在更快的机器上运行现有内容。8088 Domination 使用 22 kHz 音频，对于按位设备来说是一个相当糟糕的情况。但是一个相当快的
+    286 不会有问题。所以你应该能够在足够快的机器上原样播放 8088 Domination 内容。
 - en: A third method is to downgrade the existing content. The audio buffers are stored
     at the end of each frame. It is trivial to downsample the buffers in-place. A
     turbo XT should be able to play the video content on PC speaker/Covox when the
@@ -333,6 +345,8 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 第三种方法是降级现有内容。音频缓冲区存储在每个帧的末尾。在原地对缓冲区进行降采样是微不足道的。一个 Turbo XT 应该能够在音频从 22 kHz 降采样到
+    8-11 kHz 范围内时在 PC 扬声器/Covox 上播放视频内容，我想。
 - en: And when you modify the audio anyway, you could also pre-apply the translation
     table, so it won’t have to be done at runtime, shaving off some precious CPU-cycles
     per sample, which will definitely improve performance. Some extra feature flags
@@ -341,6 +355,8 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 而当你无论如何修改音频时，你也可以预先应用翻译表，这样就不必在运行时进行，减少每个样本的宝贵 CPU 循环，这肯定会提高性能。一些额外的特征标志可以引入到
+    XDV 格式的特征字节中，以标记 PWM 编码或 Tandy 编码音频。
 - en: Anyway, feel free to experiment and have fun. [See the next post](https://scalibq.wordpress.com/2024/01/02/some-results-from-the-modified-xdc-movie-player-for-8088-cga/)
     for some of my results, and a modified version of 8088 Domination to toy around
     with.
