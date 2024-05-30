@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-29 13:25:52'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:25:52
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A Retrospective on Requests - cat /dev/brain
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 对`Requests`的回顾 - cat /dev/brain
 - en: 来源：[https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests](https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests](https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests)
 - en: After writing my [thoughts on github3.py](/2024/01/a-retrospective-on-github3py)
     down here, someone was asking about Python libraries that people recommend new
     Python developers read for learning how to structure code and use the packaging
@@ -35,11 +41,13 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我写下[对github3.py的想法](/2024/01/a-retrospective-on-github3py)之后，有人询问有关Python库的事情，人们推荐新的Python开发人员阅读哪些内容以了解如何构建代码并使用打包系统。我的最初反应是“不要听信那些告诉你阅读`python-requests`作为良好示例的人的话。”当被问及解释时，我解释了，但意识到大多数人只知道Requests会为他们做一些正确的TLS和其他HTTP行为，但我怀疑没有人真正了解这个项目内部有多糟糕。
 - en: API Design
   id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: API设计
 - en: 'One thing many people can likely agree on is the design of the interface for
     `python-requests` is (mostly) intuitive and lends itself to rapid development,
     prototyping, and is very nice when working in a REPL. If you''re unfamiliar, here
@@ -47,6 +55,7 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多人可能会同意`python-requests`接口设计（大部分）直观，并且适合快速开发、原型设计，并且在REPL中工作时非常方便。如果你不熟悉，这里有一些例子：
 - en: '[PRE0]'
   id: totrans-9
   prefs: []
@@ -64,11 +73,13 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的一个问题是人们*停止*在模块根部定义的函数上的频率有多高。这些函数的工作方式是每个都实例化一个新的`requests.Session`。`Session`对象经常被遗忘和忽视，但可以极大地改善一个人使用`python-requests`的体验。它提供了连接池（因此，如果您重复调用同一域，它将尝试为您保持连接活动，对它们进行池化，并重用它们，以便减少设置连接所需的时间），它提供了一种配置请求的其他方面的方法，否则您需要将其作为函数参数传递，并提供了许多其他人体验良好的优势。
 - en: What's Wrong with the API
   id: totrans-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API有什么问题
 - en: 'Well for one thing, what you see here is far from all of the API surface area.
     There are *many* more parameters to the function, some of which cooperate with
     each other and some of which don''t. Above we already had the example of sending
@@ -78,6 +89,7 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，你在这里看到的远非所有的API表面积。函数有*很多*更多的参数，其中一些彼此合作，一些不合作。在此之前，我们已经有了发送JSON数据的示例；但在此之前，许多人依赖于其他数据序列化格式。下一个看起来最简单的是`application/x-www-form-urlencoded`。使用`python-requests`的一个示例是：
 - en: '[PRE1]'
   id: totrans-13
   prefs: []
@@ -88,6 +100,7 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，因为`python-requests`严重依赖于`urllib3`，我们可以很容易地支持`multipart/form-data`。可以通过几种方式完成：
 - en: '[PRE2]'
   id: totrans-15
   prefs: []
@@ -97,6 +110,7 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您不可用，这些将看起来像：
 - en: '[PRE3]'
   id: totrans-17
   prefs: []
@@ -107,6 +121,7 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这主要是最后一个，但它包含了所有项目，因为每个请求都建立在上一个之上。
 - en: Using `data` here, makes things confusing for a lot of people. Some expect that
     value to be URL form encoded but it doesn't. Sometimes they expect that a file
     in `files` be URL form encoded. And yes, these use-cases are documented but if
@@ -115,10 +130,12 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里使用`data`，会让很多人感到困惑。有些人期望该值为URL表单编码，但实际不是。有时他们希望`files`中的文件被URL表单编码。是的，这些用例是有文档记录的，但如果人们不知道他们想要使用`multipart/form-data`编码，他们可能不会查看描述该交互的部分。
 - en: 'Furthermore, what happens if someone does:'
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，如果有人做了什么：
 - en: '[PRE4]'
   id: totrans-21
   prefs: []
@@ -131,10 +148,12 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我预计除非他们已经遇到过这个问题，否则没有人能猜到这种交互。这里的实际行为是完全忽略了`json`参数（好吧，[不完全忽略](https://github.com/psf/requests/blob/96b22fa18c00831656ee4b286bf1c9062459b00a/src/requests/models.py#L494-L570)，我们对数据进行序列化，然后将其丢弃）。
 - en: 'This leads to one other way in which users can easily frustrate themselves:'
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致了用户可以轻松使自己感到沮丧的另一种方式：
 - en: '[PRE5]'
   id: totrans-24
   prefs: []
@@ -150,11 +169,14 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在上面指定了自己的标头，但依赖于Requests为您序列化原生Python对象，那么您可能会使用错误的Content-Type，这将导致最好是`400
+    Bad Request`响应，最坏的情况下，在服务器中产生非常错误的行为。如果您覆盖了`Content-Length`标头，那么可能会引起许多其他问题，包括中介在请求到达目的地之前终止您的请求，或者它们重新编写标头（取决于中介的类型）。无论哪种方式，这都不是代码所表现的行为。
 - en: How Could It Be Better?
   id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 如何更好？
 - en: This is a great API for a proof of concept and it makes things simple. That
     said, it hides a lot of what it does and in some ways that causes issues for users.
   id: totrans-27
@@ -309,11 +331,14 @@
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，`python-requests`添加了对环境变量`CURL_CA_BUNDLE`和`REQUESTS_CA_BUNDLE`的支持，以解决第一个问题。很好！太棒了！除了直到最近，如果你执行`export
+    REQUESTS_CA_BUNDLE=`，你实际上禁用了所有使用`python-requests`看到那个导出的环境变量的 TLS 验证。
 - en: '... And It''s a Bit Too Limited'
   id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '... 而且有点太受限了'
 - en: 'When `python-requests` was created there was no `ssl.SSLContext` object in
     Python, and only after Python 2.7''s lifespan was increased did it get backported
     to 2.7. Even still, it''s continued to become a better and better interface to
@@ -325,27 +350,33 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 当`python-requests`创建时，Python 中没有`ssl.SSLContext`对象，并且仅在 Python 2.7 的生命周期增加后才将其返回到
+    2.7。即使如此，它仍然继续成为配置 Python 的 TLS 的更好和更好的接口。我们从未有过一个很好的方法将其整合到`python-requests`中，因为它可能与现有的设置和配置相互作用。为了方便使用，我们可能需要发布一个新的主要版本并创建重大的破坏性更改。就目前而言，当前的维护者没有足够的时间来：
 - en: Implement those changes
   id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实现这些更改
 - en: Coach and review contributions for those changes
   id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 辅导和审查那些更改的贡献
 - en: Handle the influx of people complaining about the changes or needing assistance
     upgrading
   id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 处理抱怨更改或需要升级辅助的人们的大量到来
 - en: Cookies
   id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Cookies
 - en: 'Python comes with `http.cookies` and `http.cookiejar` and has had versions
     of those since Python 2\. For almost as long, there has been a custom cookie jar
     implementation for `python-requests`. The idea is to make the cookie jar feel
@@ -355,6 +386,9 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 自带`http.cookies`和`http.cookiejar`，自 Python 2 开始就有这些版本。几乎与此同时，`python-requests`
+    也有了一个自定义的 cookie jar 实现。其思想是让 cookie jar 感觉像一个 Python 字典。这可能看起来是一个很好的人体工程学设计，但不同的域名可以在同一个
+    Session 中设置相同名称的 cookie，例如：
 - en: '[PRE6]'
   id: totrans-54
   prefs: []
@@ -370,11 +404,14 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果你在这些 cookie 中使用相同的`requests.Session`，那么你如何通过 cookie 名称（例如，`sessionId`）访问
+    cookie jar 呢？你会得到一个异常！
 - en: That's not intuitive at all and it's why most (if not all) cookie jar implementations
     in languages always want you to use a real method that requires the domain name.
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一点根本不直观，这就是为什么大多数（如果不是全部）语言中的 cookie jar 实现始终希望你使用一个真正需要域名的方法。
 - en: Ignoring the poorly thought out user experience, there's also a problem of cookie
     jar policies not working correctly with the `python-requests` cookie jar and no
     way to set a default one without significantly more work - so for the people who
@@ -383,15 +420,19 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 忽略了设计不周的用户体验，还有一个问题是 cookie jar 策略无法与`python-requests`的 cookie jar 正确工作，并且没有办法设置一个默认的策略，除非做出更多的工作——所以对于那些在乎的人来说，他们的生活比起库根本不尝试处理
+    cookie 来说更糟糕。
 - en: Timeouts
   id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 超时
 - en: '`python-requests` supports setting timeouts per request, e.g.,'
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '`python-requests`支持为每个请求设置超时，例如，'
 - en: '[PRE8]'
   id: totrans-61
   prefs: []
@@ -402,12 +443,14 @@
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很有效，但是，一旦行为对用户来说是令人惊讶的时候，又会有问题。
 - en: '`python-requests` will try each record in a DNS lookup when trying to connect
     to a remote. If this is unclear to you, a DNS lookup on a domain can return multiple
     results, e.g.,'
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 当尝试连接到远程主机时，`python-requests` 会尝试对 DNS 查找中的每个记录进行尝试。如果这让你不明白，在域上进行的 DNS 查找可能会返回多个结果，例如，
 - en: '[PRE9]'
   id: totrans-64
   prefs: []
@@ -424,16 +467,21 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果我们向`salesforce.com`发出请求，并且前七个 IP 地址无法访问，那么你将最多等待大约 14 秒。此外，如果第八个地址需要 1.8
+    秒，你实际的等待时间（也称为“墙钟时间”）至少是 15.8 秒，然后才会开始接收数据。如果你有不同的读取超时时间，服务器发送数据的时间几乎可以达到这个时间。所以假设`23.1.106.133`花了
+    14 秒来写入它的第一个字节，并且你的超时设置为 15 秒，那么你的实际等待时间将超过 30 秒。这与你可能期望的 17 秒非常不同。
 - en: Retries
   id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重试
 - en: 'Today, if you revisit the [SSLError example](requests-sslerror) and inspect
     that exception itself you''ll see something like:'
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天，如果你重新访问[SSL 错误示例](requests-sslerror)并检查该异常本身，你会看到类似以下的内容：
 - en: '[PRE10]'
   id: totrans-68
   prefs: []
@@ -443,12 +491,14 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个非常难读，但让我简要解释一下：
 - en: First we caught a `SSLCertVerificationError` and re-raised that as an `SSLError`
     with the original exception wrapped inside
   id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先我们捕获了一个`SSLCertVerificationError`，然后将其作为一个带有原始异常的`SSLError`重新引发
 - en: Then we caught the `SSLError` in the retry logic built into `urllib3` and realized
     we were out of retries so we wrapped the `SSLError` and raised a `MaxRetryError`
     exception indicating we'd exhausted retries
@@ -456,12 +506,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后我们在内置到`urllib3`中的重试逻辑中捕获了`SSLError`，意识到我们已经用完了重试次数，所以我们包装了`SSLError`并引发了一个`MaxRetryError`异常，表示我们已经用完了重试次数
 - en: Then requests caught the `MaxRetryError`, inspected it and raised an `SSLError`
     of it's own.
   id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后 requests 捕获了`MaxRetryError`，对其进行了检查，并引发了自己的`SSLError`。
 - en: What I want to emphasize here is point 2\. This trips up so many users because
     they see `Max retries exceeded with url:` and didn't explicitly configure retries
     so they assume `python-requests` is doing something intelligent. It's not, it's
