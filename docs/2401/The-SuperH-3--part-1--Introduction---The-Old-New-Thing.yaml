@@ -1,248 +1,387 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:58:57'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:58:57
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'The SuperH-3, part 1: Introduction - The Old New Thing'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SuperH-3，第 1 部分：介绍 - 旧日新物
 - en: 来源：[https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749](https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749](https://devblogs.microsoft.com/oldnewthing/20190805-00/?p=102749)
 - en: 'The SuperH-3, part 1: Introduction'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SuperH-3，第 1 部分：介绍
 - en: '[Windows CE supported the Hitachi SuperH-3 and SuperH-4 processors](https://www.hpcfactor.com/support/windowsce/wce2.asp).
     These were commonly abbreviated SH-3 and SH-4, or just SH3 and SH4, and the architecture
     series was known as SHx.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Windows CE 支持日立 SuperH-3 和 SuperH-4 处理器](https://www.hpcfactor.com/support/windowsce/wce2.asp)。这些常常被缩写为
+    SH-3 和 SH-4，或者只是 SH3 和 SH4，架构系列被称为 SHx。'
 - en: I’ll cover the SH-3 processor in this series, with some nods to the SH-4 as
     they arise. But the only binaries I have available for reverse-engineering are
     SH-3 binaries, so that’s where my focus will be.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将在此系列中介绍 SH-3 处理器，同时在必要时提及 SH-4。但我现在可用于逆向工程的唯一二进制文件是 SH-3 二进制文件，所以我的重点将在此。
 - en: The SH-3 is the next step in the processor series that started with the SH-1
     and SH-2\. It was succeeded by the SH-4 as well as the offshoots SH-3e and SH-3-DSP.
     The SH-4 is probably most famous for being the processor behind the Sega Dreamcast.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 是从 SH-1 和 SH-2 开始的处理器系列的下一步。它被 SH-4 取代，同时也有 SH-3e 和 SH-3-DSP 的分支。SH-4 最著名的可能是作为
+    Sega Dreamcast 背后的处理器。
 - en: As with all the processor retrospective series, I’m going to focus on how Windows
     CE used the processor in user mode, with particular focus on the instructions
     you will see in compiled code.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 与所有处理器回顾系列一样，我将重点关注 Windows CE 在用户模式下如何使用处理器，特别关注你将在编译代码中看到的指令。
 - en: The SH-3 is a 32-bit RISC-style (load/store) processor with fixed-length 16-bit
     instructions. The small instruction size permits higher code density than its
     contemporaries, with Hitachi claiming a code size reduction of a third to a half
     compared to processors with 32-bit instructions. The design was apparently so
     successful that [ARM licensed it for their Thumb instruction set](https://lwn.net/Articles/647636/).
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 是一款 32 位 RISC 风格（加载/存储）处理器，具有固定长度的 16 位指令。小型指令尺寸允许比同类产品更高的代码密度，日立声称与具有
+    32 位指令的处理器相比，代码大小减少了三分之一到一半。这一设计显然非常成功，以至于[ARM 授权其用于他们的 Thumb 指令集](https://lwn.net/Articles/647636/)。
 - en: The SH-3 can operate in either big-endian or little-endian mode. Windows CE
     uses it in little-endian mode.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 可以在大端或小端模式下运行。Windows CE 将其用于小端模式。
 - en: 'The SH-3 has sixteen general-purpose integer registers, each 32 bits wide,
     and formally named `r0` through `r15`. They are conventionally used as follows:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 有十六个通用整数寄存器，每个寄存器宽度为 32 位，正式命名为 `r0` 到 `r15`。它们通常如下使用：
 - en: '| Register | Meaning | Preserved? |'
+  id: totrans-14
   prefs: []
   type: TYPE_TB
+  zh: '| 寄存器 | 含义 | 是否保留？ |'
 - en: '| `r0` | return value | No |'
+  id: totrans-15
   prefs: []
   type: TYPE_TB
+  zh: '| `r0` | 返回值 | 否 |'
 - en: '| `r1` |   | No |'
+  id: totrans-16
   prefs: []
   type: TYPE_TB
+  zh: '| `r1` |   | 否 |'
 - en: '| `r2` |   | No |'
+  id: totrans-17
   prefs: []
   type: TYPE_TB
+  zh: '| `r2` |   | 否 |'
 - en: '| `r3` |   | No |'
+  id: totrans-18
   prefs: []
   type: TYPE_TB
+  zh: '| `r3` |   | 否 |'
 - en: '| `r4` | argument 1 | No |'
+  id: totrans-19
   prefs: []
   type: TYPE_TB
+  zh: '| `r4` | 第 1 个参数 | 否 |'
 - en: '| `r5` | argument 2 | No |'
+  id: totrans-20
   prefs: []
   type: TYPE_TB
+  zh: '| `r5` | 第 2 个参数 | 否 |'
 - en: '| `r6` | argument 3 | No |'
+  id: totrans-21
   prefs: []
   type: TYPE_TB
+  zh: '| `r6` | 第 3 个参数 | 否 |'
 - en: '| `r7` | argument 4 | No |'
+  id: totrans-22
   prefs: []
   type: TYPE_TB
+  zh: '| `r7` | 第 4 个参数 | 否 |'
 - en: '| `r8` |   | Yes |'
+  id: totrans-23
   prefs: []
   type: TYPE_TB
+  zh: '| `r8` |   | 是 |'
 - en: '| `r9` |   | Yes |'
+  id: totrans-24
   prefs: []
   type: TYPE_TB
+  zh: '| `r9` |   | 是 |'
 - en: '| `r10` |   | Yes |'
+  id: totrans-25
   prefs: []
   type: TYPE_TB
+  zh: '| `r10` |   | 是 |'
 - en: '| `r11` |   | Yes |'
+  id: totrans-26
   prefs: []
   type: TYPE_TB
+  zh: '| `r11` |   | 是 |'
 - en: '| `r12` |   | Yes |'
+  id: totrans-27
   prefs: []
   type: TYPE_TB
+  zh: '| `r12` |   | 是 |'
 - en: '| `r13` |   | Yes |'
+  id: totrans-28
   prefs: []
   type: TYPE_TB
+  zh: '| `r13` |   | 是 |'
 - en: '| `r14`, aka `fp` | frame pointer | Yes |'
+  id: totrans-29
   prefs: []
   type: TYPE_TB
+  zh: '| `r14`，又称 `fp` | 帧指针 | 是 |'
 - en: '| `r15`, aka `sp` | stack pointer | Yes |'
+  id: totrans-30
   prefs: []
   type: TYPE_TB
+  zh: '| `r15`，又称 `sp` | 栈指针 | 是 |'
 - en: We’ll learn more about the conventions when we study [calling conventions](https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们学习[调用约定](https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792)时，我们会更多地了解惯例。
 - en: There are actually two sets (banks) of the first eight registers (`r0` through
     `r7`). User-mode code uses only bank 0, but kernel mode can choose whether it
     uses bank 0 or bank 1\. (And when it’s using one bank, kernel mode has special
     instructions available to access the registers from the other bank.)
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，前八个寄存器（`r0` 到 `r7`）有两组（银行）。用户模式代码只使用银行 0，但内核模式可以选择使用银行 0 或银行 1。（当内核模式使用一个银行时，有特殊的指令可用于从另一个银行访问寄存器。）
 - en: 'The SH-3 does not support floating point operations, but the SH-4 does. There
     are sixteen single-precision floating point registers which are architecturally
     named `fpr0` through `fpr15`, but which the Microsoft assembler calls `fr0` through
     `fr15`. They can be paired up to produce eight double-precision floating point
     registers:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 不支持浮点运算，但 SH-4 支持。有十六个单精度浮点寄存器，它们的体系结构名称为 `fpr0` 到 `fpr15`，但是微软汇编器称其为 `fr0`
+    到 `fr15`。它们可以配对以产生八个双精度浮点寄存器：
 - en: '| Double-precision register | Single-precision register pair |'
+  id: totrans-34
   prefs: []
   type: TYPE_TB
+  zh: 双精度寄存器 | 单精度寄存器对 |
 - en: '| `dr0` | `fr0` | `fr1` |'
+  id: totrans-35
   prefs: []
   type: TYPE_TB
+  zh: '| `dr0` | `fr0` | `fr1` |'
 - en: '| `dr2` | `fr2` | `fr3` |'
+  id: totrans-36
   prefs: []
   type: TYPE_TB
+  zh: '| `dr2` | `fr2` | `fr3` |'
 - en: '| `dr4` | `fr4` | `fr5` |'
+  id: totrans-37
   prefs: []
   type: TYPE_TB
+  zh: '| `dr4` | `fr4` | `fr5` |'
 - en: '| `dr6` | `fr6` | `fr7` |'
+  id: totrans-38
   prefs: []
   type: TYPE_TB
+  zh: '| `dr6` | `fr6` | `fr7` |'
 - en: '| `dr8` | `fr8` | `fr9` |'
+  id: totrans-39
   prefs: []
   type: TYPE_TB
+  zh: '| `dr8` | `fr8` | `fr9` |'
 - en: '| `dr10` | `fr10` | `fr11` |'
+  id: totrans-40
   prefs: []
   type: TYPE_TB
+  zh: '| `dr10` | `fr10` | `fr11` |'
 - en: '| `dr12` | `fr12` | `fr13` |'
+  id: totrans-41
   prefs: []
   type: TYPE_TB
+  zh: '| `dr12` | `fr12` | `fr13` |'
 - en: '| `dr14` | `fr14` | `fr15` |'
+  id: totrans-42
   prefs: []
   type: TYPE_TB
+  zh: '| `dr14` | `fr14` | `fr15` |'
 - en: If you try to perform a floating point operation on an SH-3, it will trap, and
     the kernel will emulate the instruction. As a result, floating point on an SH-3
     is very slow.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在 SH-3 上执行浮点运算，将会触发陷阱，内核将模拟该指令。因此，SH-3 上的浮点运算非常慢。
 - en: Windows NT requires that the stack be kept on a 4-byte boundary. I did not observe
     any red zone.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Windows NT 要求栈保持在 4 字节边界上。我没有观察到任何红色区域。
 - en: 'There are also some special registers:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一些特殊的寄存器：
 - en: '| Register | Meaning | Preserved? | Notes |'
+  id: totrans-46
   prefs: []
   type: TYPE_TB
+  zh: '| 寄存器 | 含义 | 是否保留？ | 备注 |'
 - en: '| `pc` | program counter | duh | instruction pointer, must be even |'
+  id: totrans-47
   prefs: []
   type: TYPE_TB
+  zh: '| `pc` | 程序计数器 | 显而易见 | 指令指针，必须是偶数 |'
 - en: '| `gbr` | global base register | No | bonus pointer register |'
+  id: totrans-48
   prefs: []
   type: TYPE_TB
+  zh: '| `gbr` | 全局基址寄存器 | 否 | 额外的指针寄存器 |'
 - en: '| `sr` | status register | No | Flags |'
+  id: totrans-49
   prefs: []
   type: TYPE_TB
+  zh: '| `sr` | 状态寄存器 | 否 | 标志 |'
 - en: '| `mach` | multiply and accumulate high | No | For multiply-add operations
     |'
+  id: totrans-50
   prefs: []
   type: TYPE_TB
+  zh: '| `mach` | 高乘积累加 | 否 | 用于乘加运算 |'
 - en: '| `macl` | multiply and accumulate low | No | For multiply-add operations |'
+  id: totrans-51
   prefs: []
   type: TYPE_TB
+  zh: '| `macl` | 低乘积累加 | 否 | 用于乘加运算 |'
 - en: '| `pr` | procedure register | Yes | Return address |'
+  id: totrans-52
   prefs: []
   type: TYPE_TB
+  zh: '| `pr` | 过程寄存器 | 是 | 返回地址 |'
 - en: Some calling conventions for the SH-3 say that `mach` and `macl` are preserved,
     or that `gbr` is reserved, but in Windows CE, they are all scratch.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些 SH-3 的调用约定规定 `mach` 和 `macl` 是保留的，或者 `gbr` 是保留的，但在 Windows CE 中，它们都是临时的。
 - en: '[We’ll take a closer look at the status register later](https://devblogs.microsoft.com/oldnewthing/20190807-00/?p=102769).'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[稍后我们将更仔细地研究状态寄存器](https://devblogs.microsoft.com/oldnewthing/20190807-00/?p=102769)。'
 - en: 'The architectural names for data sizes are as follows:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据大小的体系结构名称如下：
 - en: '**byte**: 8-bit value'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**byte**：8 位值'
 - en: '**word**: 16-bit value'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**word**：16 位值'
 - en: '**longword**: 32-bit value'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**longword**：32 位值'
 - en: '**quadword**: 64-bit value'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**quadword**：64 位值'
 - en: Unaligned memory accesses will fault. [We’ll look more closely at unaligned
     memory access later](https://devblogs.microsoft.com/oldnewthing/20190821-00/?p=102794).
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 非对齐的内存访问将引发错误。[稍后我们将更仔细地研究非对齐的内存访问](https://devblogs.microsoft.com/oldnewthing/20190821-00/?p=102794)。
 - en: The SH-3 has branch delay slots. Ugh, branch delay slots. What’s worse is that
     some branch instructions have branch delay slots and some don’t. Yikes! [We’ll
     discuss this in more detail when we get to control transfer](https://devblogs.microsoft.com/oldnewthing/20190816-00/?p=102788).
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 具有分支延迟槽。啊，分支延迟槽。更糟糕的是，一些分支指令有分支延迟槽，而另一些则没有。呀！[我们将在控制转移时更详细地讨论这个问题](https://devblogs.microsoft.com/oldnewthing/20190816-00/?p=102788)。
 - en: Instructions on the SH-3 are generally written with source on the left and destination
     on the right. For example,
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 上的指令通常以左侧为源，右侧为目的编写。例如，
 - en: '[PRE0]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The SH-3 can potentially retire two instructions per cycle, although internal
     resource conflicts may prevent that. For example, an `ADD` can execute in parallel
     with a comparison instruction, but it cannot execute in parallel with a `SUB`
     instruction. In the case of a resource conflict, only one instruction is retired
     during that cycle.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: SH-3 每个周期最多可以退役两条指令，尽管内部资源冲突可能会阻止这种情况发生。例如，一个 `ADD` 指令可以与一个比较指令并行执行，但不能与一个 `SUB`
+    指令并行执行。在资源冲突的情况下，仅有一条指令在该周期内退役。
 - en: After an instruction that modifies flags, the new flags are not available for
     a cycle, and after a load instruction, the result is not available for two cycles.
     There are other pipeline hazards, but those are the ones you are likely to encounter.
     If you try to use the results of a prior instruction too soon, the processor will
     stall. (Don’t forget that the SH-3 is dual-issue, so two cycles can mean up to
     four instructions.)
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在修改标志位的指令之后，新的标志位在一个周期内不可用，在加载指令之后，结果在两个周期内不可用。还有其他的流水线障碍，但这些是你可能会遇到的。如果你试图过早使用先前指令的结果，处理器将会停滞。（不要忘记SH-3是双发射的，所以两个周期可能意味着多达四条指令。）
 - en: Okay, that’s enough background. [We’ll dig in next time by looking at addressing
     modes](https://devblogs.microsoft.com/oldnewthing/20190806-00/?p=102752).
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，背景介绍到此为止。[我们下次将通过查看寻址模式来深入了解](https://devblogs.microsoft.com/oldnewthing/20190806-00/?p=102752)。
