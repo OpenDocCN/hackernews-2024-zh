@@ -2,51 +2,63 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:58:12'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:58:12
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A very small Rust binary indeed · Graham King
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 确实是非常小的 Rust 二进制文件 · Graham King
 - en: 来源：[https://darkcoding.net/software/a-very-small-rust-binary-indeed/](https://darkcoding.net/software/a-very-small-rust-binary-indeed/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://darkcoding.net/software/a-very-small-rust-binary-indeed/](https://darkcoding.net/software/a-very-small-rust-binary-indeed/)
 - en: '*Updated 2022-10-30*'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更新于 2022-10-30*'
 - en: How small can we make an x86_64 Linux Rust binary? Can it compete with a pure
     assembly program? Let’s find out! On the way we’ll learn things about how programs
     are loaded on Linux and appreciate how flexible Rust can be.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: x86_64 Linux 的 Rust 二进制文件能有多小？它能与纯汇编程序竞争吗？让我们找出来！在此过程中，我们将了解有关 Linux 上如何加载程序的信息，并赞赏
+    Rust 的灵活性。
 - en: 'Starting point: 3.6 MiB'
   id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 起始点：3.6 MiB
 - en: 'Create a project: `cargo new --vcs=none smallrs`'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建一个项目：`cargo new --vcs=none smallrs`
 - en: 'Replace `src/main.rs` with the simplest possible Rust program:'
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 用最简单的 Rust 程序替换 `src/main.rs`：
 - en: '[PRE0]'
   id: totrans-11
   prefs: []
@@ -58,26 +70,31 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能会认为这不是最简单的可能的 Rust 程序：`fn main() { }`会更简单。您是对的，但这是因为 Rust 运行时为您做了些什么。
 - en: 'As you will know from [studying your Kerrisk](https://amzn.to/3bLdcYg) there
     are only two ways a program can terminate:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您从[学习您的 Kerrisk](https://amzn.to/3bLdcYg) 中所知，程序只有两种终止方式：
 - en: being killed by a signal,
   id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 被信号杀死，
 - en: requesting it’s own termination by calling [exit](https://man7.org/linux/man-pages/man2/exit.2.html).
   id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过调用[退出](https://man7.org/linux/man-pages/man2/exit.2.html)来请求自己的终止。
 - en: If you don’t exit the CPU will try running instructions past the end of your
     program, hit an invalid instruction, and kill your program.
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果不退出，CPU 将尝试运行程序末尾的指令，触发无效指令，并终止程序。
 - en: Why don’t you have to do this in Rust? The default return type of `fn main()
     {}`, or any function that doesn’t provide a return type, is `()`. The [Termination
     trait](https://doc.rust-lang.org/std/process/trait.Termination.html) is implemented
@@ -85,6 +102,8 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么在 Rust 中不需要这样做？`fn main() {}`的默认返回类型，或者任何不提供返回类型的函数，是`()`。为`()`实现了[终止特性](https://doc.rust-lang.org/std/process/trait.Termination.html)，这使得您的[主函数默认返回
+    SUCCESS](https://github.com/rust-lang/rust/blob/2807f28de550fb6074dc4fb2f3099865de01bc1e/library/std/src/process.rs#L2152-L2157)。
 - en: That SUCCESS return value gets picked up by the [Rust runtime](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139).
     Something must then make the `exit` syscall with that value, either rustc or LLVM,
     but let’s not go *too* deep. By the time we’re done, all this machinery will be
@@ -92,10 +111,13 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功的返回值将被[Rust 运行时](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139)捕获。然后必须使用该值进行`exit`系统调用，可以是
+    rustc 或 LLVM，但我们不要深入研究。等我们完成时，所有这些机制都将消失。
 - en: 'Build that program, confirm it works, and check the size:'
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建该程序，确认其可用，并检查大小：
 - en: '[PRE1]'
   id: totrans-20
   prefs: []
@@ -105,16 +127,19 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 三点五兆字节！这一点都不好。我们应该做得更好。
 - en: 'The biggest gain is strip: 300 KiB'
   id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 最大的收益是`strip`：300 KiB
 - en: 'The easiest and largest gain is simply to `strip` the symbols from the binary.
     You can do this manually:'
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单且最大的收益就是从二进制文件中`strip`掉符号。您可以手动执行此操作：
 - en: '[PRE2]'
   id: totrans-24
   prefs: []
@@ -124,6 +149,7 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者`cargo`可以替您完成（这更好）。将此添加到您的`Cargo.toml`：
 - en: '[PRE3]'
   id: totrans-26
   prefs: []
@@ -134,25 +160,30 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能会在发布前忘记执行此操作，所以现在您不会忘记。轻松赢得。
 - en: 'Easy but modest gains: 260 KiB'
   id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简单但收益适中：260 KiB
 - en: If you search for advice online on shrinking a Rust binary you’ll find these
     easy changes which aren’t particularly relevant to us here, but let’s add them
     anyway. In a real program they will probably help.
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在网上搜索关于缩小 Rust 二进制文件的建议，您会发现这些简单的更改，这些对我们来说并不特别相关，但我们还是将它们添加进来。在真实的程序中，它们可能会有所帮助。
 - en: All of these go in the `[profile.release]` section of `Cargo.toml`.
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些都放在`Cargo.toml`的`[profile.release]`部分。
 - en: 'No gain:'
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有收益：
 - en: '[PRE4]'
   id: totrans-32
   prefs: []
@@ -162,6 +193,7 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 小利益：
 - en: '[PRE5]'
   id: totrans-34
   prefs: []
@@ -172,6 +204,7 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一行简化了恐慌处理并为我们赢得了约 8k。第二行启用了链接时优化，为我们赢得了约 30 KiB，但会减慢构建速度。
 - en: 'Most projects will be use the standard library (`std`), and so will have to
     stop here. A final thing you can try is [re-building the standard library](https://doc.rust-lang.org/cargo/reference/unstable.html#build-std),
     which may allow some optimizations. Remove `panic = "abort"` ([because](https://github.com/rust-lang/wg-cargo-std-aware/issues/29))
@@ -179,30 +212,38 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数项目将使用标准库（`std`），因此到这里就必须停止了。您可以尝试的最后一件事是[重新构建标准库](https://doc.rust-lang.org/cargo/reference/unstable.html#build-std)，这可能允许进行一些优化。删除`panic
+    = "abort"`（[因为](https://github.com/rust-lang/wg-cargo-std-aware/issues/29)）并尝试这样做：
 - en: cargo build –release -Z build-std –target x86_64-unknown-linux-gnu
   id: totrans-37
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: cargo build –release -Z build-std –target x86_64-unknown-linux-gnu
 - en: It doesn’t help us here, and **where we’re going, there are no standard libraries**.
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 它对我们没有帮助，**我们所去的地方，没有标准库**。
 - en: 'libc instead of the standard library: 16 KiB'
   id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 libc 而不是标准库：16 KiB
 - en: Removing the Rust standard library (`std::*`) will get us our second biggest
     gain after `strip`.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 删除 Rust 标准库（`std::*`）将使我们获得`strip`之后的第二大收益。
 - en: '[The std::process::exit function](https://github.com/rust-lang/rust/blob/4e808f87ccb706d339c9ea10c3c9a9c9fd7fc6cb/library/std/src/sys/unix/os.rs#L644-L646)
     just calls libc:'
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '[std::process::exit 函数](https://github.com/rust-lang/rust/blob/4e808f87ccb706d339c9ea10c3c9a9c9fd7fc6cb/library/std/src/sys/unix/os.rs#L644-L646)
+    只调用 libc：'
 - en: '[PRE6]'
   id: totrans-42
   prefs: []
@@ -213,6 +254,7 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们放弃标准库，直接使用 libc。首先在 `Cargo.toml` 中添加对 `libc` 的依赖：
 - en: '[PRE7]'
   id: totrans-44
   prefs: []
