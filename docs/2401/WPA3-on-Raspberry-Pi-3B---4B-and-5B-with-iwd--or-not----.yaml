@@ -1,111 +1,164 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:04:22'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:04:22
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: WPA3 on Raspberry Pi 3B+, 4B and 5B with iwd (or not...)
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 树莓派3B+，4B和5B上的WPA3与iwd（或不使用...）
 - en: 来源：[https://rachelbythebay.com/w/2024/01/24/wpa3/](https://rachelbythebay.com/w/2024/01/24/wpa3/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://rachelbythebay.com/w/2024/01/24/wpa3/](https://rachelbythebay.com/w/2024/01/24/wpa3/)
 - en: WPA3 on Raspberry Pi 3B+, 4B and 5B with iwd (or not...)
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 树莓派3B+，4B和5B上的WPA3与iwd（或不使用...）
 - en: 'Okay, it''s been several months since I [last](/w/2023/11/07/wpa3/) wrote about
     WPA3 on Raspberry Pi hardware. Now, I have some good news: it now mostly works,
     assuming you''re willing to do a little tinkering. You no longer have to wrangle
     custom firmwares and binary blobs into place. That''s been done for you.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，距离我上次写有关树莓派硬件上的[WPA3](/w/2023/11/07/wpa3/)已经过去了几个月。现在，我有一些好消息：现在它基本上可以工作了，只要你愿意做一点小调整。你不再需要折腾自定义固件和二进制块。这已经为你做好了。
 - en: 'One important thing here: I''m only talking about Raspbian/Raspberry Pi OS
     here, and then only bookworm (12). If you''re running something else, none of
     this may apply. For all I know, it might have been working all along if your distribution
     figured it out sooner.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一件重要的事情：我只在这里谈论Raspbian/Raspberry Pi OS，而且只谈论bookworm（12）。如果你正在运行其他东西，这些都可能不适用。我所知道的是，如果你的发行版更早地弄清楚了这一点，它可能一直在工作。
 - en: So then, if you have a 3B+, 4B or 5B on bookworm, get ready to rock.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，如果你有一个在bookworm上的3B+，4B或5B，准备好行动。
 - en: Every so often I look at the list of package updates coming down the pipe through
     apt for my systems, and usually groan at the usual round of CVE patches. But,
     this time I saw something rather different. It's a change to "firmware-brcm80211",
     and what's this? Something specific to the CYW43455 that the 3B+ and later use?
     Oh, that's interesting, right?
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我时不时地查看通过apt传送到我的系统的软件包更新列表，通常对通常的一轮CVE补丁感到沮丧。但是，这一次我看到了一些不同的东西。这是对“firmware-brcm80211”的更改，这是什么？某些特定于3B+和后续使用的CYW43455的东西？哦，这很有趣，对吧？
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I wondered if this would stop the madness, and so applied it and rebooted. "iw
     phy" showed the good news - at the very bottom, it now supports both SAE_OFFLOAD
     and SAE_OFFLOAD_AP. This means it can actually do SAE... but you're going to have
     to say goodbye to wpa_supplicant in favor of iwd.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想知道这是否会停止疯狂，所以我应用它并重新启动了。"iw phy"显示了一个好消息-在底部，它现在支持SAE_OFFLOAD和SAE_OFFLOAD_AP。这意味着它实际上可以执行SAE...但是你将不得不放弃wpa_supplicant，转而使用iwd。
 - en: If you switched over to NetworkManager for consistency with the rest of the
     bookworm changes, this is not a big deal. If you're running your network some
     other way, you get to figure this out yourself.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你为了与bookworm的其他更改保持一致而切换到了NetworkManager，这并不是什么大问题。如果你以其他方式运行你的网络，你得自己弄清楚这个问题。
 - en: 'The steps work out like this: apt update, then apt upgrade so you get the firmware-brcm80211
     from January 17th (or later, once this post gets old, I guess). Then apt install
     iwd.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 步骤如下：apt update，然后apt upgrade，这样你就可以从1月17日（或更晚，我猜一旦这篇文章变老了）起得到firmware-brcm80211。然后apt
+    install iwd。
 - en: Assuming you've been running your Pi in a crappy non-WPA3 network, go into nmtui
     or equivalent and disable that network. In a minute or two, you're not going to
     need it any more.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你一直在一个糟糕的非WPA3网络中运行你的Pi，进入nmtui或等效的操作，禁用那个网络。一两分钟后，你将不再需要它了。
 - en: 'Then disable wpa_supplicant and drop a bit of config into /etc/NetworkManager/conf.d/iwd.conf:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后禁用wpa_supplicant，并在`/etc/NetworkManager/conf.d/iwd.conf`中添加一点配置：
 - en: '[PRE1]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Reboot ... or do equivalent wrangling of drivers and binary crap to get it to
     unload and reload the fresh stuff. Then run "iw phy" again. If it says SAE_OFFLOAD
     and SAE_OFFLOAD_AP, you're ready to proceed. If not, well, something's wrong,
     and you should turn on the crappy old non-WPA3 network again.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 重新启动…或进行等效的驱动程序和二进制垃圾的摆弄，使其卸载并重新加载新的东西。然后再次运行“iw phy”。如果它显示SAE_OFFLOAD和SAE_OFFLOAD_AP，那么你已经准备好继续了。如果没有，那么，嗯，出了点问题，你应该重新启用那个糟糕的旧的非WPA3网络。
 - en: Assuming it worked, then go into nmtui or whatever and tell it to activate the
     actual WPA3-only network. Paste in your PSK and let it go, and a few seconds later
     you should be in business.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设它工作了，然后进入nmtui或其他任何工具，告诉它激活实际的WPA3-only网络。粘贴你的PSK并让它运行，几秒钟后你应该可以开始工作了。
 - en: That's it. That's all it takes.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样。这就是全部所需。
 - en: Now then, what about the 3B, you might ask. It's on a different chip that doesn't
     even do 5 GHz, so changing the 43455 firmware wouldn't help any. It seems to be
     a 43430 instead, and I have no idea if there's any chance of getting a similar
     firmware change for it. Obviously, if this changes, I'll post something about
     it, too.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，你可能会问起3B怎么样。它在一个不做5 GHz的不同芯片上，所以改变43455固件也没用。看起来像是43430，我不知道是否有机会得到类似的固件更改。显然，如果情况改变，我也会发帖更新。
 - en: I can't comment on the other models, like the Zeroes and the other weird little
     boards they have. I only have access to these relatively normal models, and that's
     what I was able to work on.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不能评论其他型号，比如Zeroes和其他奇怪的小板子。我只能接触到这些相对正常的型号，这也是我能够处理的。
 - en: Go forth and have better networks!
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 前进吧，拥有更好的网络！
 - en: '* * *'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'January 24, 2024: This post has an [update](/w/2024/01/24/fail/).'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年1月24日：这篇帖子有一个[更新](/w/2024/01/24/fail/)。
