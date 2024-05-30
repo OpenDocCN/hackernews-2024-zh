@@ -833,6 +833,7 @@
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们读取了全 ASCII 向量，则可以跳过验证过程，直接扩展和存储向量。我们使用最大归约来确定是否只有 ASCII 字节，其结果我们还可以用于其他快速路径：
 - en: '[PRE13]'
   id: totrans-131
   prefs: []
@@ -844,11 +845,13 @@
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '`这个快速路径需要在验证之后发生。我们只关心从 b1 和 b2 创建 b12，这使我们可以大大简化代码，从而简化了一般情况。'
 - en: We don't need to bother with shifting to remove the prefix from b1, there are
     only two possibilities, and one is to do nothing, hence a masked and fits perfectly.
   id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不需要为了从 b1 中移除前缀而进行位移，只有两种可能性，而且其中一种是不进行任何操作，因此掩码和适合得很好。
 - en: We still can't use a masked widening multiply without first widening the destination
     operand, but we can use a simple `vmerge` to select between the two possible shift
     values. The addition can then be done using a masked widening add because the
@@ -856,10 +859,12 @@
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在扩展目标操作数之前，我们仍然不能使用掩码扩展乘法，但是我们可以使用简单的`vmerge`来在两个可能的位移值之间进行选择。由于目的地已经扩展了，因此可以使用掩码扩展加法来进行加法。
 - en: 'Now we need to zero extend again and we are done:'
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们需要再次进行零扩展，然后就完成了：
 - en: '[PRE14]'
   id: totrans-136
   prefs: []
@@ -870,10 +875,12 @@
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: '`我将这个留给读者去理解，注意所有三字节及以下字节的 UTF-8 字符的代码点都适合于 16 个字节。'
 - en: '[PRE15]`'
   id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE15]`'
 - en: '[PRE16]'
   id: totrans-139
   prefs: []
@@ -883,19 +890,24 @@
   id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: size_t vl8m4 = __riscv_vsetvlmax_e8m4();
 - en: const vbool2_t m2even = __riscv_vmseq(__riscv_vand(__riscv_vid_v_u8m4(vl8m4),
     **1**, vl8m4), **0**, vl8m4);
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: const vbool2_t m2even = __riscv_vmseq(__riscv_vand(__riscv_vid_v_u8m4(vl8m4),
+    **1**, vl8m4), **0**, vl8m4);
 - en: '#define DOWN __riscv_vreinterpret_u16m8'
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: '#define DOWN __riscv_vreinterpret_u16m8'
 - en: '#define UP __riscv_vreinterpret_u32m8'
   id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: '#define UP __riscv_vreinterpret_u32m8'
 - en: '[PRE17]'
   id: totrans-144
   prefs: []
@@ -905,75 +917,94 @@
   id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: '*...*'
 - en: '*b1234 = __riscv_vsrl(b1234, ...);*'
   id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '*b1234 = __riscv_vsrl(b1234, ...);*'
 - en: '*/* convert [000000000000aaaa|aaaaaabbbbbbbbbb]*'
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 转换为 [000000000000aaaa|aaaaaabbbbbbbbbb]*'
 - en: '** to      [110111bbbbbbbbbb|110110aaaaaaaaaa] */*'
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: '** 转换为      [110111bbbbbbbbbb|110110aaaaaaaaaa] */*'
 - en: vuint32m8_t sur = __riscv_vsub(b1234, **0x10000**, vlOut);
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: vuint32m8_t sur = __riscv_vsub(b1234, **0x10000**, vlOut);
 - en: sur = __riscv_vor(__riscv_vsll(sur, **16**, vlOut),
   id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: sur = __riscv_vor(__riscv_vsll(sur, **16**, vlOut),
 - en: __riscv_vsrl(sur, **10**, vlOut), vlOut);
   id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: __riscv_vsrl(sur, **10**, vlOut), vlOut);
 - en: sur = __riscv_vand(sur, **0x3FF03FF**, vlOut);
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: sur = __riscv_vand(sur, **0x3FF03FF**, vlOut);
 - en: sur = __riscv_vor(sur, **0xDC00D800**, vlOut);
   id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: sur = __riscv_vor(sur, **0xDC00D800**, vlOut);
 - en: '*/* merge 1 byte b1234 and 2 byte sur */*'
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 合并 1 字节 b1234 和 2 字节 sur */*'
 - en: vbool4_t m4 = __riscv_vmsgtu(b1234, **0xFFFF**, vlOut);
   id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: vbool4_t m4 = __riscv_vmsgtu(b1234, **0xFFFF**, vlOut);
 - en: b1234 = __riscv_vmerge(b1234, sur, m4, vlOut);
   id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: b1234 = __riscv_vmerge(b1234, sur, m4, vlOut);
 - en: '*/* swap b1234 two byte pairs */*'
   id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 交换 b1234 的两个字节对 */*'
 - en: '*/* compress and store */*'
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 压缩并存储 */*'
 - en: vbool2_t mOut = __riscv_vmor(__riscv_vmsne(DOWN(b1234), **0**, vlOut***2**),
     m2even, vlOut***2**);
   id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: vbool2_t mOut = __riscv_vmor(__riscv_vmsne(DOWN(b1234), **0**, vlOut***2**),
+    m2even, vlOut***2**);
 - en: b1234 = UP(__riscv_vcompress(DOWN(b1234), mOut, vlOut***2**));
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: b1234 = UP(__riscv_vcompress(DOWN(b1234), mOut, vlOut***2**));
 - en: size_t vlDest = __riscv_vcpop(mOut, vlOut***2**);
   id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: size_t vlDest = __riscv_vcpop(mOut, vlOut***2**);
 - en: __riscv_vse16_v_u16m8(dest, DOWN(b1234), vlDest);
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: __riscv_vse16_v_u16m8(dest, DOWN(b1234), vlDest);
 - en: '[PRE18]'
   id: totrans-163
   prefs: []
@@ -983,39 +1014,49 @@
   id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 重新解析最后一个字符 + 尾巴 */*'
 - en: '*if (count > tail) {*'
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '*if (count > tail) {*'
 - en: '*if ((src[0] >> 6) == 0b10) --dest;*'
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: '*if ((src[0] >> 6) == 0b10) --dest;*'
 - en: '*while ((src[0] >> 6) == 0b10 && tail < count)*'
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: '*while ((src[0] >> 6) == 0b10 && tail < count)*'
 - en: '*--src, ++tail;*'
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: '*--src, ++tail;*'
 - en: '*/* go back one more, when on high surrogate */*'
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: '*/* 在高代理时再回退一个 */*'
 - en: if (dest[-**1**] >= **0xD800** && dest[-**1**] <= **0xDBFF**)
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: if (dest[-**1**] >= **0xD800** && dest[-**1**] <= **0xDBFF**)
 - en: --dest;
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: --dest;
 - en: '*}*'
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: '*}*'
 - en: '[PRE19][PRE20]'
   id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE19][PRE20]'
