@@ -1,33 +1,41 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:39:00'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'The memory remains: Permanent memory with systemd and a Rust allocator · Graham
     King'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://darkcoding.net/software/rust-systemd-memory-remains/](https://darkcoding.net/software/rust-systemd-memory-remains/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: We are going to **stitch three things** together to make Rust objects that **survive
     program restart**. The memory backing the object will continue existing while
     the program restarts.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: Systemd’s [File Descriptor Store](https://systemd.io/FILE_DESCRIPTOR_STORE/)
     (systemd 254+) allows us to give any file descriptor to systemd, and later ask
     for it back. The file stays open when we `systemctl restart <prog>`. Yes this
     is similar to [socket activation](https://darkcoding.net/software/systemd-socket-activation-in-go/).
+  id: totrans-7
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -36,12 +44,14 @@
     only as long as a reference to it exists. It effectively gives us a file descriptor
     pointing to a chunk of allocated memory. It behaves like a regular file so we
     can map it into regular memory with [mmap](https://www.man7.org/linux/man-pages/man2/mmap.2.html).
+  id: totrans-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Rust’s [Allocator trait](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)
     which allows us to control the memory an object lives in (Rust nightly since at
     least 2 years ago). We will select our allocator with [Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in).
+  id: totrans-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -51,26 +61,33 @@
     into our object. Finally we wrap the allocator and the ‘restorer’ in a function
     which figures out whether we are allocating a new object or recovering an existing
     one.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s an arbitrary object we will use throught the post:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Note the rather awkward `name` array. We don’t want any pointers in our object,
     so no `String` or `Vec` because those would also need to go in our permanent memory
     store.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: The `repr(C)` ensures that the in-memory layout (representation) of this object
     doesn’t change between versions of our binary. Rust makes no promises on memory
     layout unless you request a specific representation. (Thank you Harry Stern on
     Hacker News for catching this).
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: A Rust Allocator
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -78,184 +95,282 @@
     sytem allocator, which on Linux uses malloc. [Looking at the assembly](/software/underrust-rust-assembly-output/)
     we see it call `__rust_alloc` (via `GLOBAL_OFFSET_TABLE`) which calls `__rdl_alloc`
     which calls glibc’s `malloc`.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '`malloc` will get memory from the operating system ([details](https://darkcoding.net/software/how-memory-is-allocated/))
     by either moving the program break (`sbrk` syscall) or by memory mapping an anonymous
     region (via `mmap` syscall).'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Rust (nightly) allows us to implement our own allocator. Here is an allocator
     that delegates to the system allocator - the allocator you’re using if you don’t
     know which one you’re using.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust（夜间版）允许我们实现我们自己的分配器。这是一个委托给系统分配器的分配器 - 如果你不知道自己使用的是哪个分配器，则是你正在使用的分配器。
 - en: '[PRE1]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We use it like this:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们像这样使用它：
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: An allocator backed by persistent memory
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 由持久内存支持的分配器
 - en: Now that we know how to write an allocator, let’s make the memory it uses be
     in a file systemd owns. We need to call `memfd_create`, then `mmap` that file
     descriptor, and finally give it to systemd.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道如何编写分配器了，让我们使其使用的内存位于 systemd 拥有的文件中。我们需要调用 `memfd_create`，然后 `mmap` 该文件描述符，最后将其交给
+    systemd。
 - en: 'There are two cases:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种情况：
 - en: 'Create: When we are creating a new allocation we need to call `memfd_create`,
     and then give that file descriptor to systemd by calling [sd_pid_notify_with_fds](https://www.freedesktop.org/software/systemd/man/latest/sd_pid_notify_with_fds.html).'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建：当我们创建新的分配时，我们需要调用 `memfd_create`，然后通过调用 [sd_pid_notify_with_fds](https://www.freedesktop.org/software/systemd/man/latest/sd_pid_notify_with_fds.html)
+    将该文件描述符交给 systemd。
 - en: 'Restore: When we are starting up we ask systemd for the fd by calling [sd_listen_fds_with_names](https://www.freedesktop.org/software/systemd/man/latest/sd_listen_fds_with_names.html).
     Then we only need to `mmap`.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 恢复：当我们启动时，我们通过调用 [sd_listen_fds_with_names](https://www.freedesktop.org/software/systemd/man/latest/sd_listen_fds_with_names.html)
+    询问 systemd 获取 fd。然后我们只需要 `mmap`。
 - en: In either case after `mmap` we end up with a bag of bytes, which we need to
     convince Rust is a `Person`. That’s what `buf_addr as *mut u8 as *mut T` is doing
     (here `T` is `Person`).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论哪种情况，在 `mmap` 之后，我们都会得到一堆字节，我们需要让 Rust 相信它是一个 `Person`。这就是 `buf_addr as *mut
+    u8 as *mut T` 做的事情（这里的 `T` 是 `Person`）。
 - en: 'We use the allocator like this:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用分配器的方式如下：
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '`Person` is an arbitrary object, there’s one at the start of this post.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Person` 是一个任意的对象，在这篇文章的开头就有一个。'
 - en: Each object must have a name which we associate with the FD in systemd. On restore
     that allows us to map the correct FD back to the object.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个对象必须有一个名称，我们将其与 systemd 中的 FD 关联起来。在恢复时，这允许我们将正确的 FD 映射回对象。
 - en: The memory only exists while the program is active (meaning running or restarting).
     If the program is stopped systemd will evict it’s file descriptor from the store.
     Hence the long sleep at the end of main.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 内存仅在程序处于活动状态（即运行或重新启动）时存在。如果程序停止，systemd 将从存储中驱逐它的文件描述符。因此，在 main 结尾处有长时间的休眠。
 - en: systemd file descriptor store
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: systemd 文件描述符存储
 - en: 'Typically now we’d create a systemd `.service` file making sure to enable the
     File Descriptor store - it doesn’t default. Here we’ll use `systemd-run`:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，我们会创建一个 systemd 的 `.service` 文件，确保启用文件描述符存储 - 这不是默认的。在这里我们将使用 `systemd-run`：
 - en: '`systemd-run --user --service-type=exec --unit=remains -p FileDescriptorStoreMax=16
     ./target/debug/remains`'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`systemd-run --user --service-type=exec --unit=remains -p FileDescriptorStoreMax=16
+    ./target/debug/remains`'
 - en: Note that here ‘remains’ is the unit name (–unit=) not the binary. Then we treat
     it like any other systemd service except it’s in the user scope.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，在这里 'remains' 是单元名称（--unit=），而不是二进制文件。然后我们将其视为任何其他 systemd 服务，只是它在用户范围内。
 - en: 'It’s output is in `journalctl --user -u remains`:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出在 `journalctl --user -u remains` 中：
 - en: '[PRE4]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Restart it:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 重新启动它：
 - en: '[PRE5]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Now `p1.count` increases, it survives restart:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在 `p1.count` 增加，它在重新启动后保留：
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Stop it like this: `systemctl --user stop remains`.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 像这样停止它：`systemctl --user stop remains`。
 - en: After that `stop` the fd is no longer stored. If we `start` now the count will
     reset.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在那之后，`stop` 后，fd 就不再存储。如果我们现在 `start`，计数将重置。
 - en: systemd 254+ (Fedora 39+) allows us to set `FileDescriptorStorePreserve=yes`
     to keep the store alive even when our program is stopped.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: systemd 254+（Fedora 39+）允许我们设置 `FileDescriptorStorePreserve=yes` 来保持存储在程序停止时的存储器活动。
 - en: Improvements
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 改进
 - en: When I have done [online upgrades in the past](https://darkcoding.net/software/online-upgrades-in-go/)
     the amount of state that I couldn’t recreate was quite small. I either stored
     that state in Redis or wrote it to a temporary file, as a single serialized object.
     Hence the systemd allocator above can only allocate once, hopefully that’s all
     we’d need.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在过去的 [在线升级](https://darkcoding.net/software/online-upgrades-in-go/) 中，我无法重新创建的状态量非常小。我要么将该状态存储在
+    Redis 中，要么将其写入临时文件，作为单个序列化对象。因此，上述 systemd 分配器只能分配一次，希望这就是我们所需的全部。
 - en: To make it work with multiple objects ideally we could estimate up-front how
     much space we might need, and size the file and mmap space on first call. This
     is helpful if all we want is a couple of `String` or a `Vec` in we persistent
     object. The objects could go sequentially in the file, we’d maintain an index
     of their positions. An mmap can grow (`mremap` syscall) but there’s no guarantee
     that there is space to grow into.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使其与多个对象一起使用，理想情况下我们可以预估我们可能需要多少空间，并在首次调用时对文件和 mmap 空间进行大小调整。如果我们想要的只是一些`String`或一个`Vec`在我们的持久化对象中，这是很有帮助的。对象可以按顺序放在文件中，我们将维护它们位置的索引。一个
+    mmap 可以增长（`mremap`系统调用），但不能保证有空间可以增长。
 - en: If estimating size up-front is not possible we’d need to add a new file whenever
     the current one can no longer grow. systemd’s `FileDescriptorStoreMax` will need
     to be set large enough, and each file will need a unique string passed to `sd_pid_notify_with_fds`’s
     `FDNAME`. A global index points to the file, and each file has an index of offsets
     to the ojects. And now we’re writing a real memory allocator.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果事先估算大小不可能，那么每当当前文件不能再增长时，我们就需要添加一个新文件。systemd 的 `FileDescriptorStoreMax` 将需要设置得足够大，并且每个文件都需要一个唯一的字符串传递给
+    `sd_pid_notify_with_fds` 的 `FDNAME`。一个全局索引指向文件，每个文件都有一个指向对象偏移的索引。现在我们正在编写一个真正的内存分配器。
 - en: Instead of packing the objects we could make an allocator factory (the design
     pattern) and have each allocator deal with a single object in a single file. Simpler,
     but only suitable if we have a limited number of objects.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以制作一个分配器工厂（设计模式），而不是打包对象，并让每个分配器处理单个文件中的单个对象。更简单，但只适用于我们有限数量的对象。
 - en: A fun exercise is to change the allocator to be backed by a disk file. The bytes
     on disk will be exactly how the object is laid out in memory.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个有趣的练习是将分配器更改为由磁盘文件支持。磁盘上的字节将与内存中的对象布局完全相同。
 - en: Clone and Pin notes
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 克隆和 Pin 注释
 - en: 'Let’s go back to this allocation:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到这个分配：
 - en: '[PRE7]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: If we call this `let p2 = p1.clone()` (after adding `#[derive(Clone)]` to `Person`)
     the Box isn’t cloned but dereferenced. `clone` is called directly on `Person`.
     We end up with a new Person object on the stack. No problems there.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们调用这个 `let p2 = p1.clone()`（在 `Person` 上添加了 `#[derive(Clone)]` 之后），`Box`
+    不会被克隆，而是被解引用。`clone` 直接在 `Person` 上调用。我们最终会在堆栈上得到一个新的 Person 对象。没有问题。
 - en: If instead we do `let p2 = Box::clone(p1)` the box itself is cloned. A `Box`
     internally is a tuple of a pointer and an allocator. We would need to `#[derive(Clone)]`
     on `SystemdAlloc` for it to compile, but that’s just where our problems will start.
     Rust will clone the allocator and call allocate on it. Our allocator is only designed
     for single use. See the previous section for notes on that.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们改用 `let p2 = Box::clone(p1)`，则 `Box` 本身会被克隆。`Box` 内部实际上是一个指针和一个分配器的元组。我们需要在
+    `SystemdAlloc` 上使用 `#[derive(Clone)]` 才能使其编译通过，但这只是我们问题的开始。Rust 将克隆分配器并调用其分配函数。我们的分配器只设计用于单次使用。有关此的说明，请参见前一节。
 - en: '`Pin` and async contexts in general are not something an allocator needs to
     worry about. The object in the allocation might change (e.g. with `std::mem::swap`)
     but we are only concerned with the allocation itself, not with what’s inside it.
     As cliched programmers, we care about the `Box`, not the `Person` :-)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Pin` 和一般的异步上下文并不是分配器需要担心的事情。分配中的对象可能会改变（例如，使用 `std::mem::swap`），但我们只关注分配本身，而不关心其中的内容。作为老套的程序员，我们关心的是
+    `Box`，而不是 `Person` :-)'
 - en: Happy allocating!
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 开心地分配吧！
 - en: The title is indeed a reference to the Metallica / Marianne Faithfull song.
     This is not an endorsement of Metallica after “… And Justice for All”.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 标题确实是对 Metallica / Marianne Faithfull 歌曲的引用。这并不是在 “… And Justice for All” 之后对
+    Metallica 的认可。
