@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:29:06'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Async Rust in a Nutshell
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.shuttle.rs/blog/2024/02/29/async-rust](https://www.shuttle.rs/blog/2024/02/29/async-rust)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,6 +30,7 @@
     at the same time, on two different CPUs. Concurrent execution means that a single
     CPU makes progress on more than one task at the same time, by interleaving the
     execution of those tasks.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: The Rust standard library gives bindings and abstractions for the underlying
@@ -31,11 +38,13 @@
     is managed by the operating system, you can have as many threads as CPU cores,
     but there can also be more, and the operating system decides when to execute what.
     This can be potentially very heavy and has lots of overhead.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'So we are stuck with two ways: Either run everything sequentially or use OS
     threads to execute in parallel, which can cause overhead. None of them might be
     the best solution for some domains, like web or networking applications.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Async tries to fix those problems. Async is a way to write code sequentially,
@@ -43,22 +52,28 @@
     idea is to split up existing code into tasks then execute a portion of code, and
     have an async runtime pick the next task which needs to be executed. The runtime
     then decides when to execute what, and can do so in a very efficient way.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: It also takes advantage of the fact that most of the time, the CPU is waiting
     for something to happen, like a network request or a file to be read. Look at
     the following line of code.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: All we do is establish a TCP connection. But this takes time. Not necessarily
     noticeable for you, but for computers, this means doing nothing, just waiting
     for the connection to be established. This is a time that we can use better.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Async Primitives
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -66,6 +81,7 @@
     programming has been around for a while, and you might have seen similar things
     in JavaScript or C#. But in Rust, things might look similar at first but are different
     if we take a closer look.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'One big difference is that Rust does not have an async runtime. We need an
@@ -74,6 +90,7 @@
     should have the power to choose the runtime that fits their needs. Conceptually,
     this is different to e.g. Go, which comes with only one concurrency model: goroutines.
     And developers are stuck with that.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: In Rust, we can decide which one we use. Still, Rust gives us a way to prep
@@ -81,51 +98,67 @@
     trait. The `Future` trait is the core of async programming in Rust. It is a trait
     that represents a value that is not yet available but will be available at some
     point in the *future*. This is very similar to `Promise` in JavaScript.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'Everything that implements a `Future` can be executed in an async runtime.
     The `Future` trait is defined as follows:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: It's pretty simple. It has one associated type `Output`, which, well, represents
     the future value. And it has one method called `poll`, which comes with a `Context`
     and returns a `Poll`.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: '`Poll` is an enum with two states. Either `Pending`, which means that we wait
     for a value. Or `Ready`, meaning that the value is available. The `Ready` variant
     holds the output of type `Output`.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '`Context` currently only serves to provide access to a `Waker` object. The
     `Waker` is necessary to tell the runtime to poll this task again.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Okay, okay, what's that? Polling, waking? Let's dig deeper.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: Execution
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: As said before, the `Future` trait is used to abstract tasks that can be executed
     in an async runtime. But how does this work?
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: To be fair, in detail, it depends on the async runtime in use, but a few basic
     concepts are the same for all of them.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 公平地说，具体取决于所使用的异步运行时，但基本概念对所有运行时都是相同的。
 - en: '[Nick Cameron](https://www.ncameron.org/blog/what-is-an-async-runtime/) has
     written an overview on this topic, to sum it up:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Nick Cameron](https://www.ncameron.org/blog/what-is-an-async-runtime/)撰写了关于这个主题的概述，总结如下：'
 - en: 'An asynchronous runtime has an executor. An executor typically has two key
     APIs: `spawn` and `block_on`. `block_on` is used to wait for a task to complete
     on the current thread. `spawn` is used to start a new task on the executor, but
@@ -135,57 +168,85 @@
     the task up when it''s ready. This can be some IO event on the operating system,
     like a TCP connection that has been established. If there''s nothing asynchronous
     happening, the `Future` will return `Poll::Ready` with the return value.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 异步运行时具有执行器。执行器通常具有两个关键的 API：`spawn`和`block_on`。`block_on`用于在当前线程上等待任务完成。`spawn`用于在执行器上启动一个新任务，但是非阻塞的。它会立即返回。返回值取决于`Future`。是否有异步事件发生？然后轮询`Future`将立即返回`Poll::Pending`，但也设置了规则，以便执行器在准备就绪时唤醒任务。这可以是操作系统上的某个
+    IO 事件，例如已建立的 TCP 连接。如果没有发生任何异步事件，`Future`将返回带有返回值的`Poll::Ready`。
 - en: Once an event has happened, the waker indicates to the executor to poll the
     same future again, there might already be a result.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦事件发生，唤醒器指示执行器再次轮询相同的未来，可能已经有了结果。
 - en: 'Sugar: `async` and `await`'
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 语法糖：`async` 和 `await`
 - en: Okay, so all you need to have is functions or structs that implement `Future`,
     and you're done with it. Right? Right? Well, it's not that easy, literally. Implementing
     the `Future` trait can be very daunting, and it's not very ergonomic.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，所以您只需要有实现`Future`的函数或结构体，就完成了。对吗？对吗？好吧，实际上并不是那么简单。实现`Future` trait 可能会非常令人望而生畏，并且不太符合人体工程学。
 - en: 'That''s why Rust has introduced the `async` and `await` keywords. To make something
     async, it needs to return a `Future`. So if you want to have a method `read_to_string`,
     and this is the synchronous version:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么 Rust 引入了`async`和`await`关键字。要使某些东西异步，它需要返回一个`Future`。因此，如果您想要一个`read_to_string`方法，这是同步版本：
 - en: '[PRE3]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The async version would look like this:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 异步版本的代码如下：
 - en: '[PRE4]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: There is syntactic sugar for writing this. Instead of returning a `Future`,
     you can declare it as `async`.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一种写法的语法糖。您可以将其声明为`async`，而不是返回一个`Future`。
 - en: '[PRE5]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You also don't need to poll by yourself. You can use the `await` keyword to
     wait for the result of a `Future`.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 您也不需要自己轮询。您可以使用`await`关键字等待`Future`的结果。
 - en: '[PRE6]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Under the hood, the Rust compiler creates the futures for you. It does so by
     splitting up your code into several tasks, with every `await` being a break-point
     separating the tasks. The compiler then creates a state machine for you, and the
     `Future` trait is implemented for you. With every `await`, the state machine is
     polled and potentially moves to the next state. The Tokio team shows wonderfully
     [how those Futures can be implemented or created by the compiler in this tutorial](https://tokio.rs/tokio/tutorial/async).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在底层，Rust 编译器会为您创建 futures。它通过将您的代码分成几个任务来实现这一点，每个`await`都是一个断点，分隔任务。然后编译器为您创建一个状态机，并为您实现`Future`
+    trait。随着每个`await`，状态机被轮询，并可能转移到下一个状态。Tokio 团队在[这个教程中很好地展示了编译器如何实现或创建这些 Futures](https://tokio.rs/tokio/tutorial/async)。
 - en: Speaking of Tokio. Tokio is one of the most popular runtimes out there and has
     been designed for asynchronous execution of network applications. It has also
     been the playground for the early days of async and is stable, used in production,
@@ -193,12 +254,18 @@
     comes with the necessary abstractions for OS events, but a feature-rich runtime
     with different modes, and async representations of standard library IO and networking
     features. If you want to start out with Async in Rust, Tokio is a good choice.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 谈到 Tokio。Tokio 是最受欢迎的运行时之一，专为网络应用程序的异步执行而设计。它还是早期异步的试验场，并且稳定，用于生产，并且很可能也是您正在使用的任何
+    Web 框架的基础。它不仅具有操作系统事件所必需的抽象，还具有不同模式的功能丰富的运行时，以及标准库 IO 和网络功能的异步表示。如果您想在 Rust 中开始使用异步，Tokio
+    是一个不错的选择。
 - en: Async methods in Traits
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Trait 中的异步方法
 - en: 'All that jazz leads up to one of the most wanted, yet most awaited features
     in async Rust: Defining async methods in traits. This feature has landed [recently
     in Rust](https://blog.rust-lang.org/2023/12/21/async-fn-rpit-in-traits.html) and
@@ -206,33 +273,49 @@
     to write in the beautiful `async` / `await` syntax, yet the compiler needs to
     prepare `Future` trait implementations for an automatically generated state machine,
     and this can get really complex.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这一切都导致了异步 Rust 中最想要的、但最期待的功能之一：在 trait 中定义异步方法。这个功能最近已经[在 Rust 中实现](https://blog.rust-lang.org/2023/12/21/async-fn-rpit-in-traits.html)，但仍然有一些限制。底层的问题是，我们作为开发者想要用美丽的`async`/`await`语法编写代码，但是编译器需要为自动生成的状态机准备`Future`
+    trait 的实现，这可能变得非常复杂。
 - en: Let's look at an example that wants to define a writing interface for a chat
     application, called `ChatSink`. This is how I want to write it.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个例子，想要为名为`ChatSink`的聊天应用程序定义一个写入接口。这就是我想要写的样子。
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Once we want to transfer this into something that uses `Future` implementations,
     things get a bit hairy. Instead of the `async` method, we need to define a `Future`
     return type, but we don't know which `Future` it's going to be! This will be defined
     by the implementor of the trait at some later stage. So all we can do is to say
     that whatever comes, it will implement the `Future` trait. This is done by using
     the `impl` keyword.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们想将这个转换为使用`Future`实现的东西，事情就会变得有点棘手。我们不需要定义一个`async`方法，而是需要定义一个`Future`返回类型，但我们不知道它将是哪个`Future`！这将由稍后的特征实现者定义。所以我们能做的就是说，无论发生什么，它都将实现`Future`
+    trait。这是通过使用`impl`关键字来完成的。
 - en: '[PRE8]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The interesting thing though is that `impl Trait` is also just syntactic sugar
     for an associated type. In reality, something like this would be generated.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过有趣的是，`impl Trait`也只是一个关联类型的语法糖。实际上，会生成类似这样的东西。
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'But that''s not all, we left out a very important detail. Compared to other
     `impl Trait` resolutions, a `Future` needs to add a lifetime parameter. This is
     related to how futures are handled internally: They don''t execute code, they
@@ -242,15 +325,22 @@
     of Rust, all those references need to live as long as the future itself. To make
     sure that this information is available, we need to add a lifetime parameter to
     the `Future` trait.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这还不是全部，我们遗漏了一个非常重要的细节。与其他`impl Trait`解决方案相比，`Future`需要添加一个生命周期参数。这与内部处理未来的方式有关：它们不执行代码，只是将执行代码的机会传递给另一个运行时环境，即我们之前提到的执行器！异步函数会创建这样的未来，并且它们需要保留所有对输入参数的引用。根据
+    Rust 的所有权规则，所有这些引用都需要与未来本身一样长。为了确保这些信息可用，我们需要向`Future` trait添加一个生命周期参数。
 - en: 'Which leads to a feature called *generic associated types*. An equivalent version
     of the `ChatSink` trait would look like this:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致了一个称为*泛型相关类型*的特性。`ChatSink` trait 的等效版本将如下所示：
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: But until Rust 1.75, all of that was not possible. This has changed, but it
     still comes with a few limitations. `impl Trait` currently does not allow to add
     user-defined trait bounds, a feature that is necessary if you as a developer want
@@ -258,24 +348,33 @@
     async code only should work on a single thread or on a multi-threaded runtime,
     adding the `Send` and `Sync` marker traits is something you want to define on
     your own (more on those marker traits [here](https://doc.rust-lang.org/nomicon/send-and-sync.html)).
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 但直到 Rust 1.75，所有这些都是不可能的。这已经改变了，但仍然存在一些限制。`impl Trait`目前不允许添加用户定义的 trait 约束，这是一个必要的功能，如果你作为开发者想要实现一个来自库的
+    trait。更不用说如果你想要决定你的异步代码只应该在单个线程上工作还是在多线程运行时上工作，添加`Send`和`Sync`标记特性是你想要自己定义的（有关这些标记特性的更多信息，请参见[这里](https://doc.rust-lang.org/nomicon/send-and-sync.html)）。
 - en: Why do I need to know all of that?
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我为什么需要知道这一切？
 - en: To be fair, this is a lot of information and goes into the nitty gritty details
     of what async Rust is all about. But there's a reason to that. Like everything
     in Rust, things appear easy and straightforward at first, but once you dig deeper,
     you'll find that there's a lot of complexity and a lot of things to consider.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 公平地说，这是大量信息，并且深入探讨了异步 Rust 的方方面面。但这是有原因的。就像 Rust 中的每一样东西一样，一开始似乎很容易和简单，但一旦深入挖掘，你会发现有很多复杂性和需要考虑的事情。
 - en: The same happens with async programming in Rust. Defining async methods is something
     that you definitely have done. You are reading the Shuttle blog after all, and
     async powers web development in Rust. At first, they are easy, but suddenly you
     might end up seeing error messages that you can't get a hold of.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Rust 中的异步编程也是如此。定义异步方法是你肯定做过的事情。毕竟，你正在阅读 Shuttle 博客，而异步为 Rust 中的 Web 开发提供了动力。起初，它们很容易，但突然间你可能会看到你无法掌握的错误消息。
 - en: You define a resource in your async function, wrap it in a `std::sync::Mutex`
     and get it's `MutexGuard` once you lock it. Suddenly you decide to make a call
     to async API and pass an `.await` point. The compiler will scream at you, because
@@ -287,15 +386,24 @@
     for the automatic `Future` implementation, all those references and resources
     need to be thread-safe. There are more pitfalls, but this is something for another
     time.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你的异步函数中定义一个资源，将其包装在`std::sync::Mutex`中，并在锁定后获取其`MutexGuard`。突然间你决定调用一个异步 API
+    并传递一个`.await`点。编译器会对你大喊大叫，因为`MutexGuard`不实现`Send` trait，你不能将它传递给另一个线程。但是为什么你需要将它传递给另一个线程呢？你只是调用了一个异步函数？这就是运行时的东西。你的运行时配置可能是多线程的，你永远不知道哪个工作线程执行当前任务。由于你需要保持所有资源准备好自动实现`Future`，所有这些引用和资源都需要是线程安全的。还有更多陷阱，但这是另一个时间的事情了。
 - en: Further Reading
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'If you''ve gotten this far, you might be interested in the following resources:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经走到这一步，你可能对以下资源感兴趣：
 - en: And of course, everything you read on this very blog.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，你在这个博客上读到的一切都是如此。
