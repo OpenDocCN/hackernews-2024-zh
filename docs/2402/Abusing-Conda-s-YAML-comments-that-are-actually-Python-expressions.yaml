@@ -1,241 +1,328 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:21:41'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Abusing Conda's YAML comments that are actually Python expressions
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://astrid.tech/2024/02/24/0/conda-recipe-selector-abuse/](https://astrid.tech/2024/02/24/0/conda-recipe-selector-abuse/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Abusing Conda's YAML comments that are actually Python expressions
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: my favorite build system, jinja-preprocessed-eval-preprocessed YAML
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 2024-02-24 01:25*
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[python](/t/python) [Anaconda](/t/anaconda) [cybersecurity](/t/cybersecurity)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'I was trying to submit a Conda package to [Conda Forge](https://conda-forge.org/),
     and I needed a way to mark it as Linux and MacOS only. As it turns out, you are
     supposed to define something like this in your `meta.yaml` build configuration
     file:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: What this seems to mean is, “skip the build if we are in windows.” Why is it
     a comment? I don’t know, but that’s what it is.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: This package also is a Python 3.9 and above thing – we don’t support 3.8 or
     under. So, how do I add that constraint?
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Well, turns out this strange construct is called a “selector,” and there’s a
     section about what you can do with it in the [Conda docs](https://docs.conda.io/projects/conda-build/en/stable/resources/define-metadata.html#preprocessing-selectors)
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: You can add selectors to any line, which are used as part of a preprocessing
     stage. Before the `meta.yaml` file is read, each selector is evaluated and if
     it is `False`, the line that it is on is removed. A selector has the form `# [<selector>]`
     at the end of a line.
+  id: totrans-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: ''
+  id: totrans-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-17
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Oh, that makes sense. Cursed, because YAML *shouldn’t* look like this with multiple
     keys in one object, but it makes sense.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: A selector is a valid Python statement that is executed.
+  id: totrans-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Wait… what?
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Because the selector is any valid Python expression, complicated logic is possible:'
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: ''
+  id: totrans-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-23
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Wait, *WHAT*?
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: So… what it’s saying is… this is what I want?
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: I put that into my `meta.yaml` and… turns out it made it work!
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: But then, I got wondering, what *other* kinds of “complicated logic” is allowed
     in this selector?
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: Trying to accomplish arbitrary code execution
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I borrowed the following `meta.yaml` file from [conda-forge’s example](https://github.com/conda-forge/staged-recipes/blob/main/recipes/example/meta.yaml),
     but stripped it down a lot.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Then, I inserted the following string to see if it would work.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'I ran `conda build`:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: It spits out a lot of output. We don’t need to go over all of it. It seemed
     to have immediately quit.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: But, checking `/tmp/foo`…
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: It fucking worked!!!
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: Where can the selector be placed?
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I thought it might be smart to do something like this so that I don’t accidentally
     spit out a falsy value and make conda actually build the project, instead of only
     doing whatever shenanigans I was trying to accomplish.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Why didn’t it work? Maybe it’s because the selector code is searching specifically
     for a comment with stuff in front of it. I don’t know. Either way, I can live
     with putting it on one of the attributes.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: Making it run a shell command
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s try to have it run a shell. This can’t be too hard, right?
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Seems like it didn’t like that. Probably because it specifically accepts an
     expression, not a series of statements.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: After a bit of digging around, turns out the answer was `exec()` (plus a `or
     True` to make it not build).
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[PRE13]conda build purge[PRE14]'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: Making it talk to other computers
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'At this point, you can kinda just run whatever. Installing `netcat`, I used
     this:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'In a separate shell, I opened a server:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Performing a build…
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: … conda froze! But in the other tab, I got the message.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: I typed `asdfasdf` into the server tab, and got data back in the builder.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Making it spawn a reverse shell
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This is, of course, the logical final step. In fact, this selector doesn’t even
     need netcat.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Exploitability?
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -243,6 +330,7 @@
     isn’t already exploitable. As far as I know, `conda build` doesn’t do containerization
     or other security measures like that, so any amount of exploitation I can do here
     is probably already exploitable by the build script.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: I mean, I guess I *could* see a potential case where `conda build` has a command
@@ -250,6 +338,7 @@
     but without executing any scripts, and the user would expect that no arbitrary
     code execution is happening. In practice, I don’t think that’s really common –
     most people probably just run `conda build`.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: However, this is great for recipe developers – this mechanism lets you make
@@ -258,46 +347,58 @@
     with an “a,” combine this with curl and an HTTP server to act as a killswitch
     for builds, make the metadata evaluation step “borrow” peoples’ SSH keys, and
     more!
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: What’s the code that actually calls eval?
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The great thing about open source is that you can actually answer this question!
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: In the [conda-build repository](https://github.com/conda/conda-build), I searched
     for `eval`, and [this was the function](https://github.com/conda/conda-build/blob/cc7bb532eff61451853a8195f39688a2101a9548/conda_build/metadata.py#L255-L257)
     that seems to do it.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'This code was last touched… [2017, in PR #1753](https://github.com/conda/conda-build/pull/1753).
     And that wasn’t the thing that actually introduced the `eval()`, that commit just
     moved it to a different place. [Here’s what it used to look like before that commit](https://github.com/conda/conda-build/blob/761b3dc00e85ab3f8e7443417cd1d3888d2cce04/conda_build/metadata.py#L109-L112):'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: The comment came [in this 2016 commit](https://github.com/conda/conda-build/commit/d52852da9722e4b9b19664f7d0614b5ee5dfebdf#diff-a3f5613bda9366e31149c65731327047d4e29204c9e0508fd55416115b39a6bdR110-R111)
     from either [a group called Quantified Code](https://github.com/quantifiedcode)
     (whose website, [www.quantifiedcode.com](http://www.quantifiedcode.com/), appears
     to no longer work), or some automated tool they appear to have written. The `eval()`,
     on the other hand, came from [this 2,532-line commit in 2014 with the very informative
     title of “add new files”](https://github.com/conda/conda-build/commit/fe7f773010f4c8c200298c83a4164ca404626d52#diff-a3f5613bda9366e31149c65731327047d4e29204c9e0508fd55416115b39a6bdR52-R53).
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: I tried searching the issues to see if anyone has complained about how silly
     this `eval()` is, but I didn’t find anything. Perhaps people don’t mind at all.
     Perhaps there are even other people out there who are including shell scripts
     in their selectors!
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -306,17 +407,20 @@
     have done if I wanted to implement something like this was cut the selector/jinja/YAML
     crap and just let the user write a Python script to generate this if you want
     your damn “flexibility.”
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: Okay, fine, maybe people really like their selector/jinja/YAML configs, and
     I really just had to deal with that fact. In that case, I would just was write
     a 100-200 line parser and interpreter for selector booleans. But my guess is that
     they probably rushed this and didn’t really fix it either.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: Honestly, maybe I’m just being really negative. I’ll leave the final word to
     ChatGPT, who I have asked to help us be more optimistic about arbitrarily-executable
     YAML comments.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: Arbitrary code execution within configuration file comments epitomizes the flexibility
@@ -328,9 +432,13 @@
     integration/continuous deployment (CI/CD) workflows. This capability fosters a
     culture of innovation, enabling rapid iteration, experimentation, and optimization,
     while ensuring infrastructure scalability and reliability.
+  id: totrans-83
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 配置文件注释中的任意代码执行体现了现代 DevOps 实践的灵活性和敏捷性，为开发人员提供了无与伦比的定制化、动态配置管理、自我文档化、自动化和高级配置选项。通过在注释中利用可执行代码片段，团队可以迅速适应不断变化的需求，将基础设施即代码（IaC）原则无缝集成到敏捷部署流水线和持续集成/持续部署（CI/CD）工作流程中。这种能力促进了创新文化的形成，实现了快速迭代、实验和优化，同时确保了基础设施的可扩展性和可靠性。
 - en: 'EDIT 2024-04-18: make title more informative'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 'EDIT 2024-04-18: 使标题更具信息性'
