@@ -281,6 +281,7 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能注意到我在“常数时间”周围使用引号。我实际上不喜欢这个术语，因为我觉得它非常误导：
 - en: There is no need for the execution time to be **constant**. Variations in execution
     time have no impact on security as long as those variations have *no relation*
     to any secret information.
@@ -288,64 +289,76 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 执行时间**不需要**是**恒定的**。只要这些变化与任何秘密信息**没有关系**，执行时间的变化对安全性没有影响。
 - en: Execution **time** is not the only way for information to leak. As I described
     earlier, what your code does during that time is also quite important.
   id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 执行**时间**不是信息泄漏的唯一途径。正如我之前所描述的，你的代码在这段时间内做了什么也非常重要。
 - en: “Secret-independent resource usage” might be a more accurate term. I digress.
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: “秘密独立资源使用”可能是一个更准确的术语。我岔开了话题。
 - en: 'Here is the golden rule of writing code that is “constant-time”:'
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写“常数时间”代码的黄金法则如下：
 - en: Secret information may only be used in an input to an instruction if that input
     has no impact on what resources will be used and for how long.
   id: totrans-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 秘密信息只能用作指令的输入，如果该输入对将使用的资源和使用时间没有影响。
 - en: 'In practice, this golden rule has a few implications:'
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，这个黄金法则有几个含义：
 - en: Secret values cannot be used to decide what code to execute next (i.e. it cannot
     be used as a condition to a branch instruction)
   id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 秘密值不能用作下一条要执行的代码的决定因素（即它不能用作分支指令的条件）
 - en: Secret values cannot be used to decide what memory address to access.
   id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 秘密值不能用来决定访问哪个内存地址。
 - en: Secret values cannot be used as input to variable-time instructions like DIV
     on x86 (smaller numbers divide faster).
   id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 秘密值不能用作x86上的DIV等变量时间指令的输入（较小的数字除法速度更快）。
 - en: If you write all of your code in assembly, carefully keep track of what values
     are secret, and follow the golden rule, you should hopefully produce code that
     does not leak secret information via timing.
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你把所有的代码都写成汇编语言，并仔细跟踪哪些值是秘密的，并遵循黄金法则，你应该能够产生不通过时间泄漏秘密信息的代码。
 - en: Oh, and by the way, whether a particular instruction is “constant-time” can
     vary by architecture and by processor model, and there isn’t any official documentation
     for this behaviour… but I’ll save that story for another time.
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，顺便说一下，特定指令是否“常数时间”可能会因体系结构和处理器型号的不同而变化，并且没有任何官方文档来说明这种行为……但我会把这个故事留到另一个时间。
 - en: So… assembly?
   id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 所以……汇编？
 - en: Some people enjoy working directly with assembly (you know who you are). For
     the rest of us, it’s not so great if we have to write any and all crypto code
     in assembly. So how can we write code in high-level languages that will still
@@ -353,11 +366,13 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些人喜欢直接使用汇编语言进行工作（你知道你是谁）。对于我们其他人来说，如果我们不得不用汇编语言编写任何加密代码，那就不太好了。那么我们如何在高级语言中编写代码，即使编译后仍遵循黄金法则？
 - en: 'The answer is: it’s complicated. Today’s languages and compilers weren’t really
     built for this, so it’s a challenge.'
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是：这很复杂。今天的语言和编译器实际上并不是为此而构建的，所以这是一个挑战。
 - en: The usual approach is to write code that *looks* constant-time. Document which
     variables you want to keep secret. Avoid using those variables in the conditions
     of `if` statements and loops. Avoid using those variables when calculating an
@@ -367,6 +382,7 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常的做法是编写*看起来*是常数时间的代码。记录你想要保密的变量。避免在`if`语句和循环的条件中使用这些变量。在计算数组索引时避免使用这些变量（因为数组索引确定了要访问的数组中的内存地址）。避免在操作中使用这些变量，这些操作可能会编译成变量时间指令，比如除法或取模。
 - en: But this doesn’t always work. The compiler might decide that your code would
     be faster if it used variable-time instructions. There are even cases where an
     optimizing compiler will see that you are trying to, say, avoid using an if statement,
@@ -374,17 +390,20 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这并不总是有效。编译器可能会决定，如果使用变量时间指令，您的代码会更快。甚至有些情况下，优化编译器会看到你试图，比如避免使用if语句，而编译器*会把if语句放回去，因为它知道这样做会更快*。
 - en: So… assembly.
   id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 所以……汇编。
 - en: 'Given the lack of language and compiler support, the only reliable way to know
     if code in a high-level language is secure against timing attacks is to check
     the compiler’s output. One common approach looks something like this:'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于缺乏语言和编译器支持，了解高级语言中的代码是否安全抵御定时攻击的唯一可靠方法是检查编译器的输出。一种常见的方法看起来是这样的：
 - en: Try to limit [inlining](https://en.wikipedia.org/wiki/Inline_expansion) of functions
     that are sensitive to timing attacks. Inlining would make it much harder to know
     if you have checked all the code that needs checking.
@@ -392,24 +411,28 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尽量限制对容易受到定时攻击的函数进行[内联](https://zh.wikipedia.org/wiki/%E5%85%A7%E7%BD%AE%E5%B1%95%E5%BC%80)。内联会使得很难知道你是否已经检查了所有需要检查的代码。
 - en: Read the relevant parts of the assembly output to see if it matches what you
     expect
   id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 阅读汇编输出的相关部分，看看是否与您的预期相匹配
 - en: Pray to $PREFERRED_DEITY, since updating the compiler or changing unrelated
     parts of the application might change the compiler’s output
   id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 祈祷$PREFERRED_DEITY，因为更新编译器或更改应用程序的不相关部分可能会改变编译器的输出。
 - en: Adam Langley has done some interesting work at Google to make this process easier
     by [patching Valgrind](https://github.com/agl/ctgrind). Efforts to automate this
     verification process are definitely helpful.
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Adam Langley在Google做了一些有趣的工作，通过[修补Valgrind](https://github.com/agl/ctgrind)来简化这个过程。自动化这个验证过程的努力绝对是有帮助的。
 - en: My belief is that, ultimately, the best solutions are going to involve teaching
     compilers to understand how to produce code that is not vulnerable to timing attacks.
     In the meantime, the most practical solution for high-level timing-attack-resistant
@@ -418,3 +441,4 @@
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我相信，最终，最好的解决方案将涉及教导编译器如何生成不容易受到定时攻击的代码。与此同时，对于高级别定时攻击抵抗的加密代码，最实际的解决方案是谨慎编码与手动或自动验证编译器输出相结合。
