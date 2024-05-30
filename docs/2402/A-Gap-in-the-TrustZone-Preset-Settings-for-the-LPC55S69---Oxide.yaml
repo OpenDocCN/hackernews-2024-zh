@@ -1,23 +1,35 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:40:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:40:58'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A Gap in the TrustZone Preset Settings for the LPC55S69 / Oxide
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: LPC55S69 / Oxide 中 TrustZone 预设设置的一个空白
 - en: 来源：[https://oxide.computer/blog/lpc55s69-tzpreset](https://oxide.computer/blog/lpc55s69-tzpreset)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://oxide.computer/blog/lpc55s69-tzpreset](https://oxide.computer/blog/lpc55s69-tzpreset)
 - en: The LPC55S69 offers debug access via [standard ARM interfaces (SWD)](https://developer.arm.com/documentation/ihi0031/g/?lang=en).
     Debug access can be configured to be always available, always disabled, or only
     available to authenticated users. These settings are designed to be applied at
@@ -27,46 +39,68 @@
     are also locked out, preventing further modification from user code except in
     specific authenticated circumstances. Because debug access is highly sensitive,
     it makes sense to minimize the amount of time the ROM spends with it enabled.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: LPC55S69 通过[标准 ARM 接口（SWD）](https://developer.arm.com/documentation/ihi0031/g/?lang=en)提供调试访问。调试访问可以配置为始终可用、始终禁用或仅对经过身份验证的用户可用。这些设置设计为在制造时通过[
+    CMPA](https://github.com/nxp-mcuxpresso/spsdk/blob/09c711a8fd4c54f126a7dfe1b3ae8bb361c5473e/spsdk/data/pfr/cmpa/lpc55s6x_1b.xml)区域应用。在执行
+    ROM 时默认禁用调试，只有在跳转到用户代码之前（如果允许）才启用调试（如果允许）。调试设置也被锁定，防止用户代码进一步修改，除非在特定的身份验证情况下。由于调试访问非常敏感，因此尽量减少
+    ROM 启用调试的时间是有道理的。
 - en: If the debug settings are applied last, this means that the TrustZone preset
     settings must be applied before them. Combine this information with the implementation
     detail of how the preset setting are applied, **if the code faults after `VTOR`
     is changed but before we apply the debug settings, it will be possible to run
     in user controlled code with debug registers open for modification**.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果调试设置是最后应用的，这意味着 TrustZone 预设设置必须在其之前应用。将此信息与预设设置的实现细节相结合，**如果在更改了`VTOR`之后但在应用调试设置之前代码发生故障，将有可能在用户可控代码中运行，并且调试寄存器可用于修改**。
 - en: How easy is it to actually trigger this? Very easy. Other registers in the preset
     structure include settings for the MPU. Setting the enable bit in `MPU_CTRL` without
     any other regions set is enough to trigger the fault. NXP actually says in their
     manual that you need to make sure the entire ROM region is configured as secure
     privileged and executable otherwise "boot process will fail". "fail" in this case
     is vectoring off into the appropriate fault handler of the user code.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际触发这个问题有多容易？非常容易。预设结构中的其他寄存器包括 MPU 的设置。只需设置`MPU_CTRL`中的使能位，而不设置其他区域就足以触发故障。NXP
+    在他们的手册中实际上说，您需要确保整个 ROM 区域配置为安全特权和可执行，否则“启动过程将失败”。在这种情况下，“失败”意味着跳转到用户代码的适当故障处理程序。
 - en: 'This makes the following sequence possible:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使得以下序列成为可能：
 - en: Have debug disabled in the CMPA
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 禁用 CMPA 中的调试功能
 - en: Sign an image with TrustZone preset settings with a valid `VTOR` and MPU settings
     that exclude the ROM region
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用具有有效的 `VTOR` 和排除 ROM 区域的 MPU 设置的 TrustZone 预设设置对图像进行签名
 - en: Have the `MemManage` fault handler follow the standard sequence to enable debugging
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使 `MemManage` 故障处理程序按标准顺序启用调试
 - en: The image will trigger the fault handler and have debugging enabled despite
     the settings in the CMPA
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尽管在 CMPA 中的设置禁用了调试功能，但图像将触发故障处理程序并启用调试功能
 - en: This does require access to the secure boot signing key, but it’s a departure
     from the presentation of the CMPA settings as being independent of any possible
     settings in an image.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这确实需要访问安全启动签名密钥，但它与将 CMPA 设置呈现为与图像中可能的任何设置独立的方式不同。
