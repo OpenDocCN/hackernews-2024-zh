@@ -1,44 +1,65 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:34:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:34:58
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Compiling Rust is testing | Kobzol’s blog
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust 编译即是测试 | Kobzol 的博客
 - en: 来源：[https://kobzol.github.io/rust/2024/02/04/compiling-rust-is-testing.html](https://kobzol.github.io/rust/2024/02/04/compiling-rust-is-testing.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://kobzol.github.io/rust/2024/02/04/compiling-rust-is-testing.html](https://kobzol.github.io/rust/2024/02/04/compiling-rust-is-testing.html)
 - en: 'Edit: it looks like some people misunderstood what I wanted to express with
     this post. So, to avoid further confusion, pretty much the only thing that I wanted
     to say here was this: I know that waiting for a Rust program to compile sucks,
     but we should not forget all the benefits that this compilation process brings
     us in return. (Yes, this post could have been a tweet).'
+  id: totrans-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 编辑：看起来有些人误解了我在这篇文章中想要表达的意思。所以，为了避免进一步混淆，我想在这里唯一想说的是：我知道等待 Rust 程序编译很糟糕，但我们不应忘记编译过程所带来的所有好处。（是的，这篇文章本可以发在推特上）。
 - en: This post is a very short contemplation of Rust compilation (times). Don’t expect
     anything super insightful, just a bunch of thoughts that came up while I was listening
     to the [Rustacean Station](https://rustacean-station.org/episode/cliff-crosland/)
     podcast.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章是关于 Rust 编译（时间）的非常简短的思考。不要期望有什么超级深刻的见解，只是我在听 [Rustacean Station](https://rustacean-station.org/episode/cliff-crosland/)
+    播客时想到的一堆想法。
 - en: I’m currently analysing the results of the [Rust 2023 annual survey](https://blog.rust-lang.org/2023/12/18/survey-launch.html)
     (full results coming Soon™, hopefully sometime in February) and as usually, one
     of the most common complaints is long compilation time of Rust programs. This
     is certainly not a surprise, of course, as compilation times are often being cited
     as one of the biggest frustrations that people have with Rust.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我目前正在分析 [Rust 2023 年度调查](https://blog.rust-lang.org/2023/12/18/survey-launch.html)
+    的结果（完整结果即将发布™，希望在二月份的某个时候）。像往常一样，其中最常见的抱怨之一是 Rust 程序的长时间编译。当然，这一点并不奇怪，因为编译时间经常被引用为人们对
+    Rust 最大的不满之一。
 - en: As a member of the [Compiler performance working group](https://www.rust-lang.org/governance/teams/compiler#Compiler%20performance%20working%20group),
     I’m constantly on the lookout for approaches that could improve the speed of the
     Rust compiler. Currently, there are exciting things on the horizon, like the [parallel
@@ -54,15 +75,29 @@
     not wrong, since especially when compared to some other languages like Go or even
     Python, the compilation speed of Rust might never be considered to be *fast enough*
     for all use-cases.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为 [编译器性能工作组](https://www.rust-lang.org/governance/teams/compiler#Compiler%20performance%20working%20group)
+    的成员，我一直在寻找能够提高 Rust 编译速度的方法。目前，有一些令人兴奋的事情在即，比如 [并行前端](https://blog.rust-lang.org/2023/11/09/parallel-rustc.html)
+    和 [Cranelift 后端](https://github.com/rust-lang/rustc_codegen_cranelift?tab=readme-ov-file#download-using-rustup)
+    现在可以在 `nightly` 上使用，并且 `lld` 链接器 [正在慢慢地](https://github.com/rust-lang/rust/issues/71515)
+    成为 Linux 上的默认链接器。还有一些 [各种各样](/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html)
+    [的](https://nnethercote.github.io/perf-book/build-configuration.html#minimizing-compile-times)
+    [技巧](https://www.pingcap.com/blog/rust-compilation-model-calamity)，可以立即提高你在 `stable`
+    上的编译速度。然而，这些事情需要时间，即使它们都被实现并默认使用，即使我们对编译器进行了很多其他改进，有些程序员仍然会认为 Rust 编译速度太慢了。他们并没有错，因为特别是与一些其他语言如
+    Go 或甚至 Python 相比，Rust 的编译速度可能永远都不会被认为是 *足够快* 的，适用于所有用例。
 - en: The codegen backend (LLVM), and sometimes the linker, is often being cited as
     a large source of slowness when compiling Rust, and truly so, since both can be
     bottlenecks. I’m personally putting a lot of hope into the Cranelift backend (or
     even a [Rust interpreter](https://rust-lang.zulipchat.com/#narrow/stream/122651-general/topic/rustc_codegen_c/near/412964166)?)
     and faster linkers (`lld` or `mold`), to improve Rust’s compilation speed.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码生成后端（LLVM），有时链接器，在编译 Rust 时经常被引用为较大的减速源，而确实如此，因为两者都可能成为瓶颈。我个人对 Cranelift 后端（甚至是
+    [Rust 解释器](https://rust-lang.zulipchat.com/#narrow/stream/122651-general/topic/rustc_codegen_c/near/412964166)？）和更快的链接器（`lld`
+    或 `mold`）寄予了很多希望，以提高 Rust 的编译速度。
 - en: However, it turns out that for cases that I consider to be latency-bound, where
     you want to perform the `make a change -> run tests` development loop as quickly
     as possible, using a non-optimized (`debug`) incremental build, the frontend of
@@ -74,8 +109,11 @@
     that the language made a long time ago, or the determination of the compiler to
     provide exceptional error messages, which introduces a non-trivial performance
     cost even in the happy path where there are no errors.)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，事实证明，对于我认为是延迟限制的情况，其中您希望尽快执行 `修改 -> 运行测试` 的开发循环，使用非优化（`debug`）增量构建，编译器前端往往是真正的瓶颈（或者至少，它占据了编译的一个非常重要的部分）^(。同样，随着并行前端和其他未来的改进，这将会得到很大的改善，但与此同时，也有一些基本因素限制了前端的速度。无论是语言很久以前做出的一般性
+    [设计决策](https://www.pingcap.com/blog/rust-compilation-model-calamity)，还是编译器提供优异错误消息的决心，即使在没有错误的快乐路径上，这也会引入非常重要的性能成本。)
 - en: While thinking about this, I realized something that I haven’t explicitly thought
     about before, even though it’s kind of obvious. If you’re used to e.g. Python,
     where you can make an incremental change and then rerun tests immediately, any
@@ -83,8 +121,11 @@
     about Rust, since when I repeatedly perform the `make a change -> run tests` loop,
     I have considered the compilation time to just be a delay before I can run my
     tests again.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在思考这个问题的同时，我意识到了一件以前没有明确想过的事情，即使这显然是很明显的。如果你习惯于例如 Python，你可以做出增量改变然后立即重新运行测试，任何编译时间都可能看起来纯粹是开销。在某种程度上，我对
+    Rust 也有这种看法，因为当我重复执行`做出改变 -> 运行测试`的循环时，我认为编译时间只是延迟了我再次运行测试的时间。
 - en: 'But there’s also another way to look at this: **The compilation itself is a
     part of your test suite!** Since Rust can catch so many issues during compilation
     already, I think that it could be interesting to explicitly think about the compilation
@@ -97,8 +138,11 @@
     issues much later down the road. In a way, this could be seen as the compiler
     performing an integration test on your codebase during compiling, where it checks
     that the individual parts of your program compose together in a reasonable way.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 但也有另一种看待这个问题的方式：**编译本身就是你的测试套件的一部分！** 由于 Rust 可以在编译期间捕获这么多问题，我认为明确地思考编译过程作为你整体测试套件的第一部分可能会很有趣。在代码中明确说明的任何接口（函数签名、特性、变量类型等）都是一个小单元测试，而任何编译错误则是该单元测试失败。特别地，这也推广到整个程序的架构。Rust
+    因引导（有时甚至是强制）你采用某些架构模式而臭名昭著，尤其是关于数据所有权，这可以防止以后可能导致问题的烦人问题。在某种程度上，这可以看作是编译器在编译时对你的代码库进行集成测试，检查你程序的各个部分如何合理组合在一起。
 - en: Of course, this is not a new revelation by any means, as one of biggest cited
     advantages of Rust is that it helps with [shifting left](https://en.wikipedia.org/wiki/Shift-left_testing),
     i.e. moving many bugs from production (runtime) to development (compile time),
@@ -108,9 +152,15 @@
     move semantics](https://www.thecodedmessage.com/posts/cpp-move/), lifetimes and
     other features, Rust “executes many more tests” during compilation than any other
     “mainstream” programming language, so to speak.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这并不是什么新的发现，因为 Rust 最常引用的优势之一是它有助于[向左移动](https://zh.wikipedia.org/wiki/%E5%90%91%E5%B7%A6%E6%B5%8B%E8%AF%95)，即将许多
+    bug 从生产环境（运行时）移动到开发环境（编译时），从而降低了修复这些 bug 的成本。你可以说，所有静态类型并且有合理类型系统的语言都提供了同样的好处。但是，我认为由于枚举、模式匹配、所有权、[破坏性移动语义](https://www.thecodedmessage.com/posts/cpp-move/)、生命周期和其他特性，Rust
+    在编译期间“执行了更多的测试”，比其他“主流”编程语言要多得多，可以这么说。
 - en: Well, that’s all that I wanted to express in this post. If you have any comments
     or thoughts, please let me know on [Reddit](https://www.reddit.com/r/rust/comments/1aiscx5/compiling_rust_is_testing/).
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，这就是我在这篇文章中想表达的全部内容。如果您有任何评论或想法，请在[Reddit](https://www.reddit.com/r/rust/comments/1aiscx5/compiling_rust_is_testing/)上告诉我。
