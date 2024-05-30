@@ -1,64 +1,90 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:36:01'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日14:36:01
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Trade-offs between Different CRDTs
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 不同CRDT之间的权衡
 - en: 来源：[https://interjectedfuture.com/trade-offs-between-different-crdts/](https://interjectedfuture.com/trade-offs-between-different-crdts/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://interjectedfuture.com/trade-offs-between-different-crdts/](https://interjectedfuture.com/trade-offs-between-different-crdts/)
 - en: What are the trade-offs between different kinds of CRDTs (Conflict-free Replicated
     Data Types)? Most introductory talks cover just state-based and operations-based
     CRDTs because that's what the original paper formulated. But since then, there
     have been other variations, and I haven't seen much written about them in blog
     posts, so I'll cover their trade-offs here.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同类型的CRDT之间有什么权衡？大部分的初级讲座只涵盖了基于状态和基于操作的CRDT，因为那是原始论文制定的内容。但自那时以来，已经出现了其他变种，我在博客文章中也没看到有太多关于它们的写作，所以我会在这里涵盖它们的权衡。
 - en: The basics of [CRDTs](https://crdt.tech/) are covered in a lot of other different
     places [^1], so I won't try to speed run it here. Let's just jump into the differences.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[CRDTs](https://crdt.tech/)的基础知识在许多其他不同的地方被涵盖[^1]，所以我不会在这里尝试加速介绍。让我们直接谈论它们的差异。'
 - en: State-based CRDTs (Convergent CRDTs)
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基于状态的CRDT（收敛CRDT）
 - en: In State-based CRDTs, a replica's state can be updated by a merge operation
     with another replica's state. But if the [network is unreliable and can deliver
     events out of order](https://architecturenotes.co/fallacies-of-distributed-systems/),
     how would all the replicas achieve convergence and agreement of all their states?
     The trick is simply to restrict ourselves to data structures and operations that
     are immune to net-splits and out-of-order delivery.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在基于状态的CRDT中，一个副本的状态可以通过与另一个副本的状态进行合并操作来更新。但是，如果[网络不可靠并且可以无序交付事件](https://architecturenotes.co/fallacies-of-distributed-systems/)，那么所有副本如何实现收敛和达成它们所有状态的一致？诀窍就是简单地限制自己使用对网络分裂和无序交付免疫的数据结构和操作。
 - en: First, the internal data structure of the CRDT must be monotonically increasing.
     Second, the merge operation has to be commutative, associative, and idempotent
     with respect to the internal data structures.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，CRDT的内部数据结构必须是单调递增的。其次，合并操作必须对内部数据结构具有交换律、结合律和幂等性。
 - en: These constraints make the CRDT immune to the unreliable network. As long as
     all replicas eventually see every state update event, they're guaranteed to converge
     to the same state. Due to the use of vector clocks, replicas coming in and out
     of the network are easily handled. The internal bookkeeping grows linearly with
     the number of replicas.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些约束使得CRDT对不可靠的网络具有免疫性。只要所有的副本最终看到每个状态更新事件，它们就能保证收敛到相同的状态。由于使用向量时钟，副本进出网络都很容易处理。内部簿记随着副本数量的增加而线性增长。
 - en: The rest of the design problem is how to build useful data structures out of
     only monotonically increasing elements. Luckily, there is already a [menagerie
     of CRDTs](https://github.com/pfrazee/crdt_notes/tree/68c5fe81ade109446a9f4c24e03290ec5493031f#portfolio-of-basic-crdts)
     that can model numbers, arrays, maps, strings, and other common data structures.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 设计问题的剩余部分是如何构建有用的数据结构，只利用单调递增的元素。幸运的是，已经有一系列的CRDT可以模拟数字、数组、映射、字符串和其他常见的数据结构。
 - en: 'State-based CRDTs are theoretically sound, but in practice, it has a glaring
     downside: they require sending the entire state of a replica over the network
     to other replicas. This can be prohibitive for all but the smallest states like
@@ -69,49 +95,77 @@
     internal bookkeeping. For anything beyond a counter or register, this internal
     bookkeeping can be too big for sets and maps. And as the number of replicas grows,
     it can grow too big too quickly.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于状态的CRDT在理论上是合理的，但在实践中有一个显著的缺点：他们需要将一个副本的整个状态发送到其他副本的网络上。这对除了最小状态（如计数器和寄存器）以外的所有情况来说都是禁止的。因为CRDT需要在某个逻辑时间点上维护“哪个副本说了什么”的内部簿记，以便解决任何新状态变化的冲突。最终用户查询这个内部簿记以获取当前值，比如从实际状态、内部簿记计算的功能视图。对于除了计数器或寄存器之外的任何情况，这个内部簿记对于集合和映射来说可能会太大。随着副本数量的增加，它可能会变得太大，太快。
 - en: Therefore, most current CRDT implementations are not state-based but op-based.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，大多数当前的CRDT实现不是基于状态的，而是基于操作的。
 - en: 💡
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 💡
 - en: '- Uses merge function to converge'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 使用合并函数进行收敛'
 - en: '- Merge function needs to be commutative, associative, and idempotent'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 合并函数需要是可交换的、可结合的和幂等的'
 - en: '- Internal data structure needs to be monotonically increasing'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构需要单调增加'
 - en: 👍
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 👍
 - en: '- Easy syncing protocol that just broadcasts new state to other replicas'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 简单的同步协议只需向其他副本广播新状态'
 - en: '- Does not need to keep a history to sync (as we''ll see later)'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 不需要保留历史记录进行同步（稍后我们会看到）'
 - en: 👎
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 👎
 - en: '- Sending the entire state over the wire is impractical for all but the simplest
     CRDTs'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 将整个状态通过网络传输对于除了最简单的CRDTs之外的所有CRDTs来说都是不切实际的'
 - en: '- Internal data structure grows linearly with the number of replicas'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构随副本数量呈线性增长'
 - en: '- Harder to accommodate replicas that come in and out of the network'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 难以容纳进出网络的副本'
 - en: Operation-based CRDTs (Commutative CRDTs)
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基于操作的CRDT（可交换CRDT）
 - en: Current practical implementations of CRDTs opt for a way to ship smaller pieces
     of data over the wire while retaining the same properties as a state-based CRDT.
     We will give up a merge function and instead use a defined set of operations that
@@ -120,8 +174,10 @@
     of uncoordinated syncing between replicas. The operations will need to be both
     commutative and associative, but unlike the merge function, they do not have to
     be idempotent.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前CRDT的实际实现选择了一种在保留状态CRDT的同时通过网络传输更小数据块的方式。我们放弃合并函数，而是使用一组可用于状态的定义操作。这类似于在[效果系统中定义命令](https://guide.elm-lang.org/effects/)。与以前一样，这些操作需要受到限制，以便在副本之间满足不协调的同步属性。这些操作必须既可交换又可结合，但与合并函数不同，它们不必是幂等的。
 - en: Without idempotency, the syncing protocol now cannot just be an out-of-order
     delivery of updates like in state-based CRDTs. Instead, we require the operations
     to be delivered in causal order. When a replica syncs and catches up to the latest
@@ -129,31 +185,41 @@
     result in the same state, due to the commutative and associative properties of
     the operations. We're shifting part of the complexity of the merge function into
     the sync protocol.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果没有幂等性，那么同步协议就不能再像状态CRDTs中那样仅仅是无序传递更新了。相反，我们需要以因果顺序传递操作。当副本进行同步并赶上最新状态时，操作将按因果顺序应用。任何并发操作都会因为操作的可交换和可结合属性而导致相同状态。我们将部分合并函数的复杂性转移到同步协议中。
 - en: Our internal bookkeeping to converge to the same state with concurrent operations
     doesn't use vector clocks. Instead, we can keep a log of the causal history of
     all the operations that occurred. Our internal bookkeeping no longer grows with
     the number of replicas, but instead with the number of events.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们用于在并发操作下收敛到相同状态的内部记账不使用向量时钟。相反，我们可以保留发生的所有操作的因果历史记录。我们的内部记账不再随副本数量增长，而是随事件数量增长。
 - en: Op-based CRDTs can scale easily with the number of replicas and with an unknown
     number of replicas that come in and out of the network easily. However, like blockchains,
     it has an ever-growing internal bookkeeping if it wants to allow any replica to
     sync regardless of how long it has been offline.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于操作的CRDT可以轻松地随着副本数量和进出网络的副本数量进行扩展。然而，就像区块链一样，如果要允许任何副本进行同步而不管它离线多久，那么它将有一个不断增长的内部记账。
 - en: There are two ways to address this ever-growing bookkeeping. One or the other
     may be feasible depending on the requirements of your application.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种方法可以解决这个不断增长的记账问题。根据你的应用要求，其中一种可能更可行。
 - en: 'The first is to adopt what accountants do: close books at the end of every
     month and quarter. All replicas keep a rolling window of the latest N days of
     data and throw away data that''s older than N days. And if a replica has been
     offline longer than a certain number of days, then they cannot be expected to
     sync and will need to reload from the latest.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一种方法是采用会计师的做法：每个月和每个季度结账。所有副本都保留最新N天数据的滚动窗口，并且丢弃早于N天的数据。如果一个副本离线时间超过一定天数，那么它们就不能被期望进行同步，并且需要重新加载最新数据。
 - en: 'The second is to keep all the history, but find ways to compress it. This is
     what the CRDT library [Automerge does](https://youtu.be/x7drE24geUw?si=syBk3NTxeDQekk30&t=3201).
     This can sound like a bad idea, but we already have software that keeps its entire
@@ -162,64 +228,97 @@
     we don''t do enough of it. Disks are comparatively cheap now, and the [benefits
     of immutability](https://interjectedfuture.com/persistent-data-structure-redux/)
     far outweigh the downsides.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二种方法是保留所有历史记录，但找到压缩的方法。这就是CRDT库[Automerge所做的](https://youtu.be/x7drE24geUw?si=syBk3NTxeDQekk30&t=3201)。这听起来可能不是一个好主意，但我们已经有软件每天都保留其整个历史使用：[Git](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)。当然，并非所有应用要求都允许我们这样做，但在我看来，我们没有足够的做这个。现在，磁盘相对便宜，而[不变性的好处](https://interjectedfuture.com/persistent-data-structure-redux/)远远超过了不足之处。
 - en: To query for the value of an op-based CRDT, we can apply all operations from
     the history log to an empty state to get the current state. Alternatively, we
     can keep a cache of the latest state in memory and update it on every operation.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 要查询基于操作的CRDT的值，我们可以将所有操作从历史日志应用到空状态，以获取当前状态。或者，可以在内存中保存最新状态的缓存，并在每次操作时更新它。
 - en: 💡
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 💡
 - en: '- Applies operations to converge state'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 应用操作以收敛状态'
 - en: '- Operations need to be commutative and associative'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 操作需要是可交换和结合的'
 - en: '- Internal data structure needs to be monotonically increasing'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构需要单调递增'
 - en: 👍
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 👍
 - en: '- Small amount of data sent over the network to sync'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 发送到同步的网络上的数据量很小'
 - en: '- Easier to accommodate replicas that come in and out of the network'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 更容易适应进出网络的复制品'
 - en: '- Data is immutable, hence diffs, undos, and comparisons are easy.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据是不可变的，因此差异，撤销和比较都很容易。
 - en: 👎
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 👎
 - en: '- Syncing protocol needs to implement causal delivery of operations'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要实现操作的因果传递的同步协议
 - en: '- Internal data structure is a history of operations that grows linearly with
     the number of operations'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构是随操作数量线性增长的操作历史'
 - en: Delta-state CRDTs
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Δ-状态 CRDTs
 - en: Delta-state CRDTs try to solve the data-over-the-wire problem differently. Instead
     of breaking the merge function into operations to send over the wire, we try to
     calculate the minimum amount of state to send to other replicas to sync.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 增量状态 CRDTs 试图以不同的方式解决数据传输问题。我们尝试计算发送到其他复制品同步的最小状态量，而不是将合并函数分解为通过电线发送的操作。
 - en: 'There are two versions of delta-state CRDTs. In the [first δ-state CRDT paper](https://arxiv.org/pdf/1410.2803.pdf),
     we do something similar to op-based CRDTs: we create a set of operations, called
     delta-mutators) that are used to update the state. But instead of sending these
     operations over the wire, delta-mutators generate a diff between the states before
     the delta-mutator was applied and after it was applied. The diff is then stored
     in a buffer to be sent out to all other replicas.'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两个版本的增量状态 CRDTs。在[第一篇 Δ-状态 CRDT 论文](https://arxiv.org/pdf/1410.2803.pdf)中，我们做了类似于基于操作的
+    CRDTs 的操作：我们创建一组操作，称为增量变异器，用于更新状态。但是，我们不会将这些操作发送到网络上，而是增量变异器生成在应用增量变异器之前和之后状态之间的差异。然后，将差异存储在缓冲区中发送到所有其他复制品。
 - en: But this buffer isn't a queue. The buffer holds the diff between the current
     state and the state when the buffer was last sent to other replicas. This is possible
     because the delta-mutator diffs are composable. This means if we have two diffs,
@@ -228,13 +327,19 @@
     with d[12] ⨆ d[23]). Hence, the application of d[12] and then d[23] is the same
     as the application of the composition D[13]. The paper calls these compositions,
     delta-groups.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，此缓冲区不是队列。缓冲区保存当前状态和上次将缓冲区发送给其他复制品的状态之间的差异。这是可能的，因为增量变异器的差异是可组合的。这意味着如果我们有两个差异，d[12]（State
+    X[1] 和 State X[2] 之间的差异）和 d[23]（State X[2] 和 State X[3] 之间的差异），那么两个差异的组合将是 D[13]（使用
+    d[12] ⨆ d[23] 计算）。因此，将 d[12] 应用于 d[23] 是与组合 D[13] 的应用相同。论文称这些组合为增量群。
 - en: And because the diffs exist in the same join-semilattice as the states, you
     can use the same merge function to merge the diffs received from other replicas
     into your own local state.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为差异存在于与状态相同的连接半格中，所以您可以使用相同的合并函数将来自其他复制品的差异合并到您自己的本地状态中。
 - en: The [second Δ-state paper](https://web.archive.org/web/20230607175939/https://novasys.di.fct.unl.pt/~alinde/publications/a12-van_der_linde.pdf)
     takes a slightly different approach. While the 𝛿-state CRDT has a replica send
     the same diff to all other replicas, in the Δ-state CRDT, we notice that the information
@@ -243,81 +348,132 @@
     send to each replica. Therefore, we can toss the buffer and calculate the exact
     diff of the state that another replica needs. But by trading off the buffer, you
     now need to keep track of tombstones.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[第二份Δ-state论文](https://web.archive.org/web/20230607175939/https://novasys.di.fct.unl.pt/~alinde/publications/a12-van_der_linde.pdf)采用了稍微不同的方法。虽然𝛿-state
+    CRDT要求一个副本将相同的增量发送给所有其他副本，但在Δ-state CRDT中，我们注意到有关每个副本拥有状态的哪一部分的信息已经被编码进了CRDT的向量时钟内部记录中。因此，我们可以针对每个副本定制需要发送的增量。因此，我们可以丢掉缓冲区并计算另一个副本需要的状态的确切增量。但是通过牺牲缓冲区，你现在需要追踪墓碑。'
 - en: Delta-CRDTs retain the idempotency property of state-based CRDTs but do not
     require lots of bandwidth to sync replicas.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Delta-CRDT保留了基于状态的CRDT的幂等性属性，但不需要大量带宽来同步副本。
 - en: 💡
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 💡
 - en: '- Merge either full state or deltas to converge'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 合并时要么合并全部状态，要么合并增量以实现收敛'
 - en: '- Merge function needs to be commutative, associative, and idempotent'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 合并函数需要是可交换的、可结合的和幂等的'
 - en: '- Internal data structure needs to be monotonically increasing'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构需要单调递增'
 - en: 👍
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 👍
 - en: '- Small amount of data sent over the network to sync'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 发送到网络上的数据量很小以便同步'
 - en: '- Syncing protocol is simple and just needs to broadcast to all other replicas'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 同步协议很简单，只需要向所有其他副本广播'
 - en: 👎
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 👎
 - en: '- Internal data structure grows with the number of replicas'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 随着副本数量的增加，内部数据结构也会增长'
 - en: '- Internal data structure can get complex, like using'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 内部数据结构可能会变得复杂，比如使用'
 - en: '[Dots](https://www.bartoszsypytkowski.com/optimizing-state-based-crdts-part-2/)'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点](https://www.bartoszsypytkowski.com/optimizing-state-based-crdts-part-2/)'
 - en: .
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: .
 - en: '- Merge function implementation can get complex.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '- 合并函数的实现可能会变得复杂。'
 - en: The Search Continues
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 搜索继续
 - en: While all of these CRDTs have strengths and weaknesses, I'm looking for something
     where I don't have to compromise. Next time, I'll cover my search into Merkle
     CRDTs. In the meantime, [follow me on twitter](https://twitter.com/iamwil).
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些CRDT都有各自的优缺点，我在寻找一种不需要妥协的东西。下次，我将介绍我对Merkle CRDTs的搜索。与此同时，可以[关注我的 Twitter](https://twitter.com/iamwil)。
 - en: '* * *'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '[^1]: Here''s some introductory material on CRDTs I found helpful'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '[^1]: 这是我发现有用的CRDTs的介绍材料'
 - en: '- [An interactive intro to CRDTs](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [CRDTs交互式介绍](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)'
 - en: '- [An introduction to state-based CRDTs](https://www.bartoszsypytkowski.com/the-state-of-a-state-based-crdts/)'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [基于状态的CRDTs简介](https://www.bartoszsypytkowski.com/the-state-of-a-state-based-crdts/)'
 - en: '- [CRDTs for non-academics](https://www.youtube.com/watch?v=vBU70EjwGfw)'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [非学者的CRDTs](https://www.youtube.com/watch?v=vBU70EjwGfw)'
 - en: '- [CRDT: The Hard Parts](https://www.youtube.com/watch?v=x7drE24geUw)'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [CRDT：困难之处](https://www.youtube.com/watch?v=x7drE24geUw)'
 - en: '- [Readings in CRDTs](https://christophermeiklejohn.com/crdt/2014/07/22/readings-in-crdts.html)'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [CRDTs阅读材料](https://christophermeiklejohn.com/crdt/2014/07/22/readings-in-crdts.html)'
 - en: '- [crdt.tech](https://crdt.tech)'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '- [crdt.tech](https://crdt.tech)'
