@@ -1,287 +1,430 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:44:10'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:44:10
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: What are File Descriptors in Linux
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Linux 中的文件描述符是什么
 - en: 来源：[https://linuxtldr.com/file-descriptors-linux/](https://linuxtldr.com/file-descriptors-linux/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://linuxtldr.com/file-descriptors-linux/](https://linuxtldr.com/file-descriptors-linux/)
 - en: In this article, you will learn everything about file descriptors, like their
     uses in Linux, what a file descriptor table is, how to view the file descriptors
     under a specific process, and how to change the limit of a file descriptor in
     Linux.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你将学习关于文件描述符的一切，比如它们在 Linux 中的用途、文件描述符表是什么、如何在特定进程下查看文件描述符，以及如何在 Linux 中更改文件描述符的限制。
 - en: '## What are File Descriptors in Linux?'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '## Linux 中的文件描述符是什么？'
 - en: A file descriptor is a positive integer that acts as a unique identifier (or
     handle) for “files” and other I/O resources, such as pipes, sockets, blocks, devices,
     or terminal I/O.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件描述符是一个正整数，作为“文件”和其他 I/O 资源（如管道、套接字、块、设备或终端 I/O）的唯一标识符（或句柄）。
 - en: All the file descriptor records are kept in a file descriptor table in the kernel.
     When a file is opened, a new file descriptor (or integer value) is given to that
     file in the file descriptor table.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有文件描述符记录都保存在内核中的文件描述符表中。当一个文件被打开时，在文件描述符表中为该文件分配一个新的文件描述符（或整数值）。
 - en: For example, if you open a “`example_file1.txt`” file (which is nothing but
     a process), it will be allocated with the available file descriptor (for example,
     101), and a new entry will be created in the file descriptor table.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果你打开一个“`example_file1.txt`”文件（其实就是一个进程），它将被分配一个可用的文件描述符（例如 101），并在文件描述符表中创建一个新条目。
 - en: And when you open another file like “`example_file2.txt`“, it will be allocated
     to another available file descriptor like 102, and another entry will be created
     in the file descriptor table.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你打开另一个文件像“`example_file2.txt`”时，它将被分配给另一个可用的文件描述符，如 102，并在文件描述符表中创建另一个条目。
 - en: '| File Descriptor | Process |'
+  id: totrans-12
   prefs: []
   type: TYPE_TB
+  zh: '| 文件描述符 | 进程 |'
 - en: '| --- | --- |'
+  id: totrans-13
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| 101 | example_file1.txt |'
+  id: totrans-14
   prefs: []
   type: TYPE_TB
+  zh: '| 101 | example_file1.txt |'
 - en: '| 102 | example_file2.txt |'
+  id: totrans-15
   prefs: []
   type: TYPE_TB
+  zh: '| 102 | example_file2.txt |'
 - en: The file descriptor for the referenced file will be available for use by another
     process once you close the file.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 引用文件的文件描述符在你关闭文件后将可供另一个进程使用。
 - en: So, when you open hundreds of files or other I/O resources in your Linux system,
     there will be 100 entries in the file descriptor table, and each entry will reference
     a unique file descriptor (or integer value like 100, 102, 103…) to identify the
     file.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，当你在 Linux 系统中打开数百个文件或其他 I/O 资源时，文件描述符表中将有 100 个条目，并且每个条目都将引用一个唯一的文件描述符（或类似
+    100、102、103... 的整数值）来标识文件。
 - en: What is the File Descriptor Table in Linux?
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Linux 中的文件描述符表是什么？
 - en: When a process or I/O device makes a successful request, the kernel returns
     a file descriptor to that process and keeps the list of current and all running
     process file descriptors in the file descriptor table, which is somewhere in the
     kernel.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个进程或 I/O 设备发出成功请求时，内核会向该进程返回一个文件描述符，并将当前和所有运行中的进程文件描述符列表保存在文件描述符表中，该表位于内核的某个地方。
 - en: Now, your process might depend on other system resources like input and output;
     as this event is also a process, it also has a file descriptor, which will be
     attached to your process in the file descriptor table.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，你的进程可能依赖于其他系统资源，如输入和输出；由于这个事件也是一个进程，它也有一个文件描述符，该文件描述符将附加到文件描述符表中的你的进程上。
 - en: Each file descriptor in the file descriptor table points to an entry in the
     kernel’s global file table. The file table entry maintains the record of file
     (or other I/O resource) modes like (`r`)ead, (`w`)rite, and (`e`)xecute.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件描述符表中的每个文件描述符都指向内核全局文件表中的一个条目。文件表条目维护文件（或其他 I/O 资源）模式的记录，如 (`r`)ead、(`w`)rite
+    和 (`e`)xecute。
 - en: Also, the file table entry points to a third table known as the inode table
     that points to actual file information like size, modification date, pointer,
     etc.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，文件表条目指向一个称为 inode 表的第三个表，该表指向实际文件信息，如大小、修改日期、指针等。
 - en: '## Predefined File Descriptors'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '## 预定义文件描述符'
 - en: 'By default, three types of standard POSIX file descriptors exist in the file
     descriptor table, and you might already be familiar with them as [data streams
     in Linux](https://linuxtldr.com/understanding-streams-in-linux/):'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，文件描述符表中存在三种类型的标准 POSIX 文件描述符，你可能已经熟悉它们作为 [Linux 中的数据流](https://linuxtldr.com/understanding-streams-in-linux/)：
 - en: '| File Descriptor | Name | Abbreviation |'
+  id: totrans-25
   prefs: []
   type: TYPE_TB
+  zh: '| 文件描述符 | 名称 | 缩写 |'
 - en: '| --- | --- | --- |'
+  id: totrans-26
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| `0` | Standard Input | stdin |'
+  id: totrans-27
   prefs: []
   type: TYPE_TB
+  zh: '| `0` | 标准输入 | stdin |'
 - en: '| `1` | Standard Output | stdout |'
+  id: totrans-28
   prefs: []
   type: TYPE_TB
+  zh: '| `1` | 标准输出 | stdout |'
 - en: '| `2` | Standard Error | stderr |'
+  id: totrans-29
   prefs: []
   type: TYPE_TB
+  zh: '| `2` | 标准错误 | stderr |'
 - en: Apart from them, every other process has its own set of file descriptors, but
     few of them (except for some daemons) also utilize the above-mentioned file descriptors
     to handle input, output, and errors for the process.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了它们之外，每个其他进程都有自己的一组文件描述符，但其中少数（除了一些守护进程）也利用了上述提到的文件描述符来处理进程的输入、输出和错误。
 - en: To make sure that the process is using the above file descriptor, just look
     for the above file descriptor (in integer format) under “`/proc/PID/fd/`“, where
     PID stands for “process identifier.”
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 要确保进程正在使用上述文件描述符，只需在“`/proc/PID/fd/`”下查找上述文件描述符（以整数格式表示），其中 PID 代表“进程标识符”。
 - en: For example, I’ve started the GEDIT editor on my system, which uses all of the
     file descriptors mentioned above, as shown.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我在我的系统上启动了 GEDIT 编辑器，它使用了上述所有文件描述符，如图所示。
 - en: List all of a Running Process’s File Descriptors
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 列出运行进程的所有文件描述符
 - en: As you just learned, each running process in Linux has its own set of file descriptors,
     but it also uses others to identify the specific file when communicating with
     kernel space via system calls or library calls.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您刚刚学到的，Linux 中的每个运行进程都有自己的一组文件描述符，但也使用其他文件描述符来标识与内核空间通过系统调用或库调用进行通信的特定文件。
 - en: Find the Process ID (or PID)
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 查找进程 ID（或 PID）
 - en: First, find out your process identifier (or PID) using the [ps command](https://linuxtldr.com/ps-command/)
     before viewing the file descriptors under it.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，使用 [ps 命令](https://linuxtldr.com/ps-command/)找出您的进程标识符（或 PID），然后查看其下的文件描述符。
 - en: '[PRE0]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Replace “`gedit`” with your running process name, or you can place “`$$`” to
     pass the current bash session.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 用您正在运行的进程名称替换“`gedit`”，或者您可以放置“`$$`”以传递当前 bash 会话。
 - en: 'Now, you have two ways to list the file descriptors under a specific process,
     followed by:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，您有两种方法来列出特定进程下的文件描述符，接着是：
 - en: Using the ls command
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用 ls 命令
 - en: List all of the file descriptors and the files they refer to under a certain
     PID by listing the content of the “`/proc/PID/fd/`” path, where PID is the process
     ID, using the [ls command](https://linuxtldr.com/ls-command/).
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 [ls 命令](https://linuxtldr.com/ls-command/)列出“`/proc/PID/fd/`”路径下某个 PID 下的所有文件描述符及其所指向的文件。
 - en: '[PRE1]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Output:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出：
 - en: Using the lsof command
+  id: totrans-44
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用 lsof 命令
 - en: The lsof command is used to list the information about running processes in
     the system and can also be used to list the file descriptor under a specific PID.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: lsof 命令用于列出系统中运行进程的信息，并且也可用于列出特定 PID 下的文件描述符。
 - en: For that, use the “`-d`” flag to specify a range of file descriptors, with the
     “`-p`” option specifying the PID. To combine this selection, use the “`-a`” flag.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，请使用“`-d`”标志指定文件描述符的范围，“`-p`”选项指定 PID。要组合此选择，请使用“`-a`”标志。
 - en: '[PRE2]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Output:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出：
 - en: What is the Purpose of File Descriptors in the First Place?
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 首先，文件描述符的目的是什么？
 - en: The file descriptor, along with the file table, keep track of each running process’s
     permissions in your system and maintain data integrity.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件描述符与文件表一起，跟踪系统中每个运行进程的权限，并维护数据完整性。
 - en: A running process can inherit the functionality of another process by inheriting
     its file descriptor, as you just learned in this article.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个运行中的进程可以通过继承其文件描述符来继承另一个进程的功能，正如您在本文中所学到的。
 - en: '**What Happens If You Run Out of File Descriptors?**'
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**如果文件描述符用尽会发生什么？**'
 - en: This is crucial because a file descriptor is an integer value that the kernel
     returns to the process (or other I/O resource) after a successful attempt to open
     a file.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一点至关重要，因为文件描述符是内核在成功打开文件后返回给进程（或其他 I/O 资源）的整数值。
 - en: There is a limit to the number of file descriptors (or integer values) that
     can be given to a process. When that limit is reached, data can be lost.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于一个进程，可以给它分配的文件描述符（或整数值）数量是有限制的。当达到该限制时，数据可能会丢失。
 - en: 'In Linux, generally, there are two types of file descriptors: process-level
     file descriptors and system-level file descriptors.'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，在 Linux 中有两种类型的文件描述符：进程级文件描述符和系统级文件描述符。
 - en: Process-Level File Descriptor Limits
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 进程级文件描述符限制
 - en: Check the current process-level file descriptor limit using the ulimit command.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ulimit 命令检查当前进程级文件描述符限制。
 - en: '[PRE3]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Output:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出：
 - en: Reset the limit by adding a custom positive number after the command.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在命令之后添加自定义正数来重置限制。
 - en: '[PRE4]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Note that non-root users are also able to use the above command to change the
     process-level limits (<Kernel 2.4.x), but you need to add the following lines
     in “`/etc/security/limits.conf`” to assign the user modification permission:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: System-Level File Descriptor Limits
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Check the limit of the system-level descriptor using the [cat command](https://linuxtldr.com/cat-command/).
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Output:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: Modify the file with the new value by using the “`>`” [redirection symbol](https://linuxtldr.com/understanding-streams-in-linux/).
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: After modifying the above file, modify the value in the “`nr_open`” file.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Final Tips!
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I hope this article makes it clear for you to understand the workings of file
     descriptors in Linux computing.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: If you have any questions or queries related to this topic, then feel free to
     ask them in the comment section.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
