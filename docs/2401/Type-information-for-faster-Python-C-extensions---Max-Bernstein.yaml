@@ -1,43 +1,65 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:46:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 14:46:58
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Type information for faster Python C extensions | Max Bernstein
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为更快的 Python C 扩展提供类型信息 | Max Bernstein
 - en: 来源：[https://bernsteinbear.com//blog/typed-c-extensions/](https://bernsteinbear.com//blog/typed-c-extensions/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://bernsteinbear.com//blog/typed-c-extensions/](https://bernsteinbear.com//blog/typed-c-extensions/)
 - en: '**Update:** The paper version of this post is accepted at PLDI SOAP 2024\.
     Take a look at the [preprint](/assets/img/dr-wenowdis.pdf) (PDF).'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**更新：** 这篇文章的纸质版本已被 PLDI SOAP 2024接受。请查看[预印本](/assets/img/dr-wenowdis.pdf)（PDF）。'
 - en: PyPy is an alternative implementation of the Python language. PyPy’s C API compatibility
     layer has some performance issues. [CF Bolz-Tereick](https://cfbolz.de/) and I
     are working on a way to make PyPy’s C API interactions much faster. It’s looking
     very promising. Here’s a sketch of how it works.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: PyPy 是 Python 语言的另一种实现。PyPy 的 C API 兼容层存在一些性能问题。[CF Bolz-Tereick](https://cfbolz.de/)
+    和我正在研究一种使 PyPy 的 C API 交互速度更快的方法。看起来非常有希望。以下是它的大致工作原理的草图。
 - en: The C API as lingua franca
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 作为通用语言的 C API
 - en: Python is pretty widely-used. For years, CPython was the only implementation,
     and CPython was not designed to be fast. The Python community needed some programs
     to go faster and determined that the best path forward was to write some modules
     in C and interact with them from Python. Worked just fine.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 的使用相当广泛。多年来，CPython 是唯一的实现，而且 CPython 并不是为了速度而设计的。Python 社区需要一些程序运行得更快，并确定最佳路径是在
+    C 中编写一些模块，并从 Python 中与它们交互。效果很好。
 - en: Then other Python runtimes like PyPy came along. PyPy includes a JIT compiler
     and its execution of normal Python code is *very* fast, at least until it hits
     a call from Python to a C extension function. Then things go a little bit sideways.
@@ -46,433 +68,645 @@
     second of all because the binding API for the aforementioned C modules (“The C
     API”) requires a totally different object and memory representation than PyPy
     has internally.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他 Python 运行时，如 PyPy，也随之而来。PyPy 包含一个 JIT 编译器，它执行普通 Python 代码的速度*非常*快，至少在调用从
+    Python 到 C 扩展函数时是这样。然后事情有点走样了。首先，PyPy JIT 不能“看到”本地代码；它是由其他编译器在 JIT 之外生成的，因此是不透明的。其次，因为前述
+    C 模块的绑定 API（“C API”）需要完全不同的对象和内存表示，而不是 PyPy 内部所具有的。
 - en: PyPy has its own object model, runtime, and moving garbage collector, all to
     get better performance. Unfortunately, this means that whenever you call a C API
     function from PyPy, it has to stop what it’s doing, set up some C API scaffolding,
     do the C API call, and then take down the scaffolding.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: PyPy 有自己的对象模型、运行时和移动垃圾收集器，这一切都是为了获得更好的性能。不幸的是，这意味着每当你从 PyPy 调用 C API 函数时，它都必须停下正在做的事情，设置一些
+    C API 脚手架，进行 C API 调用，然后拆除脚手架。
 - en: For example, the C API is centered around `PyObject` pointers. PyPy does not
     use `PyObject`s in the normal execution of Python code. When it interacts with
     C API code, it has to allocate a `PyObject`, make it point into the PyPy heap,
     call the C API function, and then (potentially) free the `PyObject`. (This ignores
     GIL stuff and exception checking, which is also an issue.)
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，C API 以 `PyObject` 指针为中心。在 Python 代码的正常执行过程中，PyPy 不使用 `PyObject`。当它与 C API
+    代码交互时，它必须分配一个 `PyObject`，使其指向 PyPy 堆，调用 C API 函数，然后（可能）释放 `PyObject`。（这忽略了 GIL
+    问题和异常检查，这也是一个问题。）
 - en: Fig. 1 - C extensions deal in `PyObject*` so any runtime that wants to interface
     with them has to also deal in `PyObject*`.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图 1 - C 扩展以`PyObject*`为中心，因此任何希望与它们交互的运行时也必须以`PyObject*`为中心。
 - en: That’s a lot of overhead. (And there’s more, too. See Antonio Cuni’s [excellent
     blog post](https://www.pypy.org/posts/2018/09/inside-cpyext-why-emulating-cpython-c-8083064623681286567.html).)
     And it’s a hard problem that has bitten multiple alternative Python runtimes^.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是很多额外开销。（而且还有更多。另请参阅 Antonio Cuni 的[卓越博文](https://www.pypy.org/posts/2018/09/inside-cpyext-why-emulating-cpython-c-8083064623681286567.html)。）这是一个棘手的问题，已经影响了多个替代
+    Python 运行时^。
 - en: 'In addition to the overhead of boxing into a `PyObject`, the underlying C function
     that the C extension calls may not even *need* the `PyObject` to exist in the
     first place. For example, a lot of C API functions are structured like this:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了将其装箱为 `PyObject` 的开销之外，C 扩展调用的底层 C 函数甚至可能*不需要*首先存在 `PyObject`。例如，很多 C API
+    函数的结构都是这样的：
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In this example, the `PyObject*` code `inc` is only a wrapper around another
     function `inc_impl` that works directly on C integers.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，`PyObject*` 代码 `inc` 只是另一个直接处理 C 整数的函数 `inc_impl` 的包装器。
 - en: Fig. 2 - The runtimes still have to manufacture `PyObject*` even if the underlying
     C code doesn’t know anything about Python. The unboxing is an another source of
     overhead, unfortunately.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 图2 - 即使底层 C 代码对 Python 一无所知，运行时仍然必须制造 `PyObject*`。不幸的是，解包是另一个开销的来源。
 - en: All of the bits in the middle between the JIT and the C implementation (the
     entire `inc` function, really) are “wasted work” because the work is not needed
     for the actual execution of the user’s program.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: JIT 和 C 实现之间的所有中间位（实际上整个 `inc` 函数）都是“浪费的工作”，因为这些工作对用户程序的实际执行是不需要的。
 - en: So even if the PyPy JIT is doing great work and has eliminated memory allocation
     in Python code—PyPy could have unboxed some heap allocated Python integer object
     into a C long, for example—it still has to heap allocate a `PyObject` for the
     C API… only to throw it away soon after.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以即使 PyPy JIT 做得很好，并且已经在 Python 代码中消除了内存分配（例如，PyPy 可能已经将一些堆分配的 Python 整数对象解包为
+    C 长整型），它仍然必须为 C API 堆分配一个 `PyObject`…只是不久之后就会丢弃它。
 - en: If there was a way to communicate to PyPy that `inc` expects a `long` and is
     going to unbox it into a C `long` (and will also return a C `long`), it wouldn’t
     need to do any of these shenanigans.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果有一种方式可以告诉 PyPy `inc` 需要一个 `long` 并将其解包为 C `long`（还会返回一个 C `long`），那么它就不需要做所有这些小动作了。
 - en: And yes, ideally there wouldn’t be a C API call at all. But sometimes you have
     to (perhaps because you have no control over the code), and you might as well
     speed up that call. Let’s see if it can be done.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，理想情况下根本不应该有 C API 调用。但有时你必须这样做（也许因为你无法控制代码），你也可以加快这个调用。让我们看看是否能做到。
 - en: Potsdam
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 波茨坦
 - en: This is where I come into this. I was at the ECOOP conference in 2022 where
     [CF](https://cfbolz.de/) introduced me to some other implementors of alternative
     Python runtimes. I got to talk to the authors of PyPy and ZipPy and GraalPython
     over some coffee and beer. They’re really nice.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我参与其中的地方。我在 2022 年的 ECOOP 大会上，[CF](https://cfbolz.de/)介绍了我给一些其他替代 Python
+    运行时的实现者。我和 PyPy、ZipPy 和 GraalPython 的作者们在喝咖啡和啤酒的时候交谈了一下。他们人都很好。
 - en: They’ve been collectively working on a project called HPy. HPy is a new design
     for a C API Python that takes alternative runtimes into account. As part of this
     design, they were [investigating a way to pipe type information](https://github.com/hpyproject/hpy/issues/129)
     from C extension modules through the C API and into a place where the host runtime
     can read it.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们一直在共同努力开发一个名为 HPy 的项目。HPy 是一个考虑到替代运行时的 C API Python 的新设计。作为这一设计的一部分，他们正在[研究一种方法来通过
+    C API 将类型信息](https://github.com/hpyproject/hpy/issues/129)从 C 扩展模块传递到主机运行时可以读取的地方。
 - en: It’s a tricky problem because not only is there a C API, but also a C ABI (note
     the “B” for “binary”). While an API is an abstract contract between caller and
     callee for how to call a function, an ABI is more concrete. In the case of the
     C ABI, it means not changing struct layouts or sizes, adding function parameters,
     things like that. This is kind of a tight constraint and it wasn’t clear what
     the best backward-compatible way to add type information was.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个棘手的问题，因为不仅有 C API，还有 C ABI（注意“B”代表“二进制”）。虽然 API 是调用方和被调用方之间如何调用函数的抽象约定，但
+    ABI 更具体。在 C ABI 的情况下，这意味着不改变结构布局或大小，添加函数参数等。这是一种相当严格的约束，不清楚添加类型信息的最佳向后兼容方式是什么。
 - en: Sometime either in this meeting or shortly after, I had an idea for how to do
     it without changing the API or ABI and I decided to take a stab at implementing
     it for [Cinder](https://github.com/facebookincubator/cinder/) (the Python runtime
     I was working on at the time).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次会议或不久之后的某个时候，我有了一个关于如何在不更改 API 或 ABI 的情况下完成它的想法，并决定为 [Cinder](https://github.com/facebookincubator/cinder/)（我当时正在开发的
+    Python 运行时）尝试实现它。
 - en: 'The solution: sketchy C things?'
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解决方案：不靠谱的 C 东西？
 - en: In order to better understand the problems, let’s take a look at the kind of
     type information we want to add. This is the kind of type metadata we want to
     add to each typed method, represented as a C struct.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解问题，让我们看看我们想要添加的类型信息的类型。这是我们想要添加到每个有类型的方法中的类型元数据，表示为一个 C 结构。
 - en: '[PRE1]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In this artificially limited example, we store the type information for one
     argument (but more could be added in the future), the type information for the
     return value, and the underlying (non-`PyObject*`) C function pointer.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个人为限制的示例中，我们存储了一个参数的类型信息（但是未来可能会添加更多），返回值的类型信息，以及底层（非`PyObject*`）C函数指针。
 - en: But it’s not clear where to put that in a `PyMethodDef`. The existing `PyMethodDef`
     struct looks like this. It contains a little bit of metadata and a C function
     pointer (the `PyObject*` one). In an ideal world, we would “just” add the type
     metadata to this struct and be done with it. But we can’t change its size for
     ABI reasons.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但不清楚将它放在`PyMethodDef`中的什么位置。现有的`PyMethodDef`结构看起来是这样的。它包含一些元数据和一个C函数指针（`PyObject*`）。在理想情况下，我们可以“只是”向这个结构体添加类型元数据，并且完成它。但出于ABI理由，我们无法改变其大小。
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'What to do? Well, I decided to get a little weird with it and see if we could
     sneak in a pointer to the metadata somehow. My original idea was to put the entire
     `PyPyTypedMethodMetadata` struct *behind* the `PyMethodDef` struct (kind of like
     how `malloc` works), but that wouldn’t work so well: `PyMethodDef`s are commonly
     statically allocated in arrays, and we can’t change the layout of those arrays.'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 该怎么办？我决定搞得有点奇怪，并查看是否可以以某种方式将指针暗中放置到元数据中。我的最初想法是将整个`PyPyTypedMethodMetadata`结构体*放在*`PyMethodDef`结构体的后面（有点类似于`malloc`的工作方式），但那样不太好：`PyMethodDef`通常是静态分配在数组中的，我们无法更改这些数组的布局。
 - en: But what we *can* do is point the `ml_name` field to a buffer inside another
     struct^.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们*能*做的是将`ml_name`字段指向另一个结构体内部的缓冲区^。
 - en: 'Then, when we notice that a method is marked as typed (with a new `METH_TYPED`
     flag we can add to the `ml_flags` bitset), we can read backwards to find the `PyPyTypedMethodMetadata`
     struct. Here’s how you might do that in C:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，当我们注意到一个方法被标记为类型化（使用我们可以添加到`ml_flags`位集中的新`METH_TYPED`标志），我们可以倒退读取以找到`PyPyTypedMethodMetadata`结构体。下面是你在C中可能会这样做的方式：
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: And here’s a diagram to illustrate this because it’s really weird and confusing.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个示意图来说明这一点，因为它真的很奇怪和令人困惑。
 - en: I started off with a [mock implementation](https://gist.github.com/tekknolagi/f4acd2202f6448d4a5813a43eda90121)
     of this in C (no Python C API, just fake structures to sketch it out) and it worked.
     So I implemented a hacky version of it in Cinder, but never shipped it because
     my integration with Cinder was a little too hacky. I [wrote up the ideas](https://github.com/faster-cpython/ideas/issues/546)
     for posterity in case someone wanted to take up the project.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我用C做了一个[模拟实现](https://gist.github.com/tekknolagi/f4acd2202f6448d4a5813a43eda90121)（没有Python
+    C API，只是假的结构来勾勒出它）,它起作用了。所以我在Cinder中实现了一个妥协版本，但从未发布，因为我的与Cinder的集成有些太妥协了。我为了后代的记录[写下了这些想法](https://github.com/faster-cpython/ideas/issues/546)，以防有人想承担这个项目。
 - en: A year later, nobody else had, so I decided to poke CF and see if we could implement
     it in PyPy. We’ll see how that implementation looks in a minute. But first, an
     aside on where C extensions come from.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 一年后，没有人采用，所以我决定找CF看看我们是否可以在PyPy中实现它。我们马上就会看到这个实现是什么样子。但首先，让我们来看看C扩展是从哪里来的。
 - en: Where do all the C extensions come from?
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 所有的C扩展都是从哪里来的？
 - en: Well, in PyPy, there are none in the standard library. PyPy has been almost
     entirely written in Python so that the code is visible to the JIT. But people
     like using Python packages, and some Python packages contain C extensions.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，在PyPy中，标准库中没有。PyPy几乎完全用Python编写，以便JIT能够看到代码。但人们喜欢使用Python包，有些Python包包含C扩展。
 - en: There are a couple of different ways to write a C extension. The “simplest”
     (as in, all the components are visible and there is no magic and there are no
     external dependencies) is to hand-write it. If you don’t want to do that, you
     can also use a binding generator to write the glue code for you. I have the most
     experience with Cython, but other binding generators like nanobind, pybind11,
     and even CPython’s own Argument Clinic exist too!
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写C扩展有几种不同的方法。 “最简单的”（即，所有组件都是可见的，没有魔法，也没有外部依赖）是手写它。如果你不想这样做，你也可以使用绑定生成器来为你编写粘合代码。我在Cython上有最丰富的经验，但其他绑定生成器如nanobind，pybind11，甚至CPython自己的Argument
+    Clinic也存在！
 - en: Hand-written
+  id: totrans-44
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 手写的
 - en: Let’s recall the `inc`/`inc_impl` function from earlier. That’s a reasonable
     example of a function that could be integrated as a hand-written C extension to
     Python. In order to make it callable from Python, we have to make a full C extension
     module. In this case, that’s just a list of function pointers and how to call
     them.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回顾一下之前的 `inc`/`inc_impl` 函数。这是一个合理的例子，可以将其集成为手写的 C 扩展到 Python 中。为了使其可以从 Python
+    调用，我们必须创建一个完整的 C 扩展模块。在这种情况下，这只是一个函数指针列表以及如何调用它们。
 - en: '[PRE4]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We have an array of `PyMethodDef` structs, one for each method we want to wrap.
     Then we have a `PyModuleDef` to define the module, which can also contain attributes
     and some other stuff. Then we provide a sort of `__new__` function for the module,
     in the form of a `PyInit_` function. This is found by `dlopen` in the C extension
     loader built into Python.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有一个 `PyMethodDef` 结构体的数组，每个方法我们都想要进行包装。然后我们有一个 `PyModuleDef` 来定义模块，其中还可以包含属性和一些其他内容。然后我们提供了一种模块的
+    `__new__` 函数，以 `PyInit_` 函数的形式。这是由 Python 中内置的 C 扩展加载器中的 `dlopen` 发现的。
 - en: It’s possible to manually augment this module by adding a `PyPyTypedMethodMetadata`
     struct and a `METH_TYPED` flag. It’s a little cumbersome, but if it speeds up
     interactions with the module… well, extension authors might be cajoled into adding
     the type information or at least accepting a pull request.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以手动扩展此模块，方法是添加一个 `PyPyTypedMethodMetadata` 结构体和一个 `METH_TYPED` 标志。这有点繁琐，但如果加速与模块的交互…嗯，扩展作者可能会被说服添加类型信息，或者至少接受一个拉取请求。
 - en: But not all extensions are hand-written. Many are generated by binding generators
     like Cython. And Cython is interesting because it can generate the type signatures
     automatically…
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 但并非所有扩展都是手工编写的。许多是由诸如 Cython 之类的绑定生成器生成的。而且 Cython 很有趣，因为它可以自动生成类型签名…
 - en: Cython
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Cython
 - en: Unlike many other binding generators for Python, Cython provides a fully-featured
     Python-like programming language that compiles to C. The types obey different
     rules than in normal Python code and can be used for optimization. Cython also
     has primitive types. Let’s see an example.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 与许多其他用于 Python 的绑定生成器不同，Cython 提供了一个完全功能齐全的类似 Python 的编程语言，它可以编译为 C 语言。类型服从不同于普通
+    Python 代码的规则，并且可以用于优化。Cython 还具有原始类型。让我们看一个例子。
 - en: In this snippet of Cython code, we make a function that adds two machine integers
     and returns a machine integer.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这段 Cython 代码中，我们制作了一个将两个机器整数相加并返回一个机器整数的函数。
 - en: '[PRE5]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Cython will generate a very fast C function that adds two machine integers.
     Calls to this from Cython are type checked at compile time and will be as fast
     as your C compiler allows:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Cython 将生成一个非常快速的 C 函数，用于将两个机器整数相加。对于这些函数的调用在 Cython 中在编译时进行类型检查，并且将尽可能快地进行，就像您的
+    C 编译器允许的那样。
 - en: '[PRE6]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Since we used `cpdef` instead of `cdef`, Cython will also generate a wrapper
     C extension function so that this function can be called from Python.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们使用了 `cpdef` 而不是 `cdef`，Cython 还会生成一个包装的 C 扩展函数，这样就可以从 Python 中调用该函数。
 - en: This means that the generated Cython wrapper code looks like (a much uglier
     version of) below. **You don’t need to understand or really even read** the big
     blob of cleaned-up and annotated generated code below. You just need to say “ooh”
     and “aah” and “wow, so many if-statements and so much allocation and so many function
     calls.”
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着生成的 Cython 包装器代码看起来像（一个更加丑陋的版本）下面。**您不需要理解或者实际上甚至不需要阅读** 下面的大量整理过的和带有注释的生成代码。您只需要说“哦”和“啊”以及“哇，这么多的
+    if 语句和这么多的分配和这么多的函数调用”。
 - en: And it’s also a little worse than the `METH_O` example above since it has to
     unwrap an array of fastcall args and do some argument processing.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 与上面的 `METH_O` 示例稍有不同，因为它必须展开一个快速调用参数的数组并进行一些参数处理。
 - en: '[PRE7]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Now, to be clear: this is probably the fastest thing possible for interfacing
     with CPython. Cython has been worked on for years and years and it’s *very* fast.
     But CPython isn’t the only runtime in town and the other runtimes have different
     performance characteristics, as we explored above.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，要明确一点：这可能是与 CPython 交互的最快的方法了。Cython 已经开发了很多年了，它非常快。但是 CPython 不是唯一的运行时，而其他运行时具有不同的性能特征，正如我们上面所探讨的那样。
 - en: 'Since so many C extension are generated with Cython, there’s a big opportunity:
     if we manage to get the Cython compiler to emit typed metadata for the functions
     it compiles, those functions could become *much* faster under runtimes such as
     PyPy.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于许多 C 扩展是由 Cython 生成的，这是一个很大的机会：如果我们设法让 Cython 编译器为其编译的函数生成带有类型的元数据，那么这些函数在
+    PyPy 等运行时下可能会变得 *非常* 快。
 - en: In order to justify such a code change, we have to see how much faster the typed
     metadata makes things. So let’s benchmark.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了证明这样的代码更改是合理的，我们必须看看类型元数据使事情变得多快。所以让我们来进行基准测试。
 - en: A small, useless benchmark
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个小小的、没什么用的基准测试
 - en: Let’s try benchmarking the interpreter interaction with the native module with
     a silly benchmark. It’s a little silly because it’s not super common (in use cases
     I am familiar with anyway) to call C code in a hot loop like this without writing
     the loop in C as well. But it’ll be a good reference for the maximum amount of
     performance we can win back.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试用一个愚蠢的基准测试来测试与本地模块的解释器交互。这有点愚蠢，因为在我熟悉的用例中，不太常见（无论如何）在不在 C 中编写循环的情况下调用 C
+    代码。但这将是一个很好的参考，可以看到我们可以恢复多少性能。
 - en: '[PRE8]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: We’ll try running it with CPython first because CPython doesn’t have this problem
     making `PyObject`s—that is just the default object representation in the runtime.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将先用 CPython 运行它，因为 CPython 不会出现这种问题，它不会制造 `PyObject`——这只是运行时的默认对象表示。
 - en: '[PRE9]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Okay so the text output is a little fudged since I actually measured this with
     `hyperfine`, but you get the idea. CPython takes a very respectable 850ms to go
     back and forth with C *10 million times*.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，文本输出有点模糊，因为实际上我是用`hyperfine`测量的，但你明白我的意思。CPython在*C回溯和前进*的过程中需要850ms，这是非常令人尊敬的。
 - en: Now let’s see how PyPy does on time, since it’s doing a lot more work at the
     boundary.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看看 PyPy 在时间上的表现，因为它在边界处做了更多的工作。
 - en: '[PRE10]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Yeah, okay, so all that extra unnecessary work that PyPy does (before our changes)
     ends up really adding up. Our benchmark of `inc` takes *three times as long* as
     CPython. Oof. But this post is all about adding types. What if we add types to
     the C module and measure *with* our changes to PyPy?
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，好吧，所以在我们的改变之前，PyPy 做的所有额外不必要的工作最终真的会积少成多。我们对 `inc` 的基准测试比 CPython *慢三倍*。哎呀。但本文的重点是添加类型。如果我们给
+    C 模块添加类型并且*在*我们对 PyPy 的更改进行测量呢？
 - en: 'Here are the changes to the C module:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是 C 模块的变化：
 - en: '[PRE11]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'And now let’s run it with our new patched PyPy:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们用我们的新修补过的 PyPy 运行它：
 - en: '[PRE12]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 168ms! To refresh your memory, that’s **5x** faster than CPython and **13x**
     faster than baseline PyPy. I honestly did not believe my eyes when I saw this
     number. And CF and I think there is *still room for more* improvements like doing
     the signature/metadata finding inside the JIT instead of calling that C function.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 168ms！为了提醒你，这比 CPython 快**5倍**，比基准 PyPy 快**13倍**。当我看到这个数字时，我老实说不敢相信我的眼睛。我认为还有*更多的改进空间*，比如在
+    JIT 内部进行签名/元数据查找，而不是调用那个 C 函数。
 - en: This is extraordinarily promising.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是非常有前途的。
 - en: But as I said before, most applications don’t consist of a Python program calling
     a C function and only a C function in a tight loop. It would be important to profile
     how this change affects a *representative* workload. That would help motivate
     the inclusion of these type signatures in a binding generator such as Cython.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 但正如我之前所说，大多数应用程序不是由一个 Python 程序调用一个 C 函数并且只有一个 C 函数在一个紧密的循环中。重要的是要分析这种变化如何影响*代表性*工作负载。这将有助于激励像
+    Cython 这样的绑定生成器中包含这些类型签名。
 - en: In the meantime, let’s take a look at how the changes look in the PyPy codebase.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，让我们来看看 PyPy 代码库中的这些变化是什么样的。
 - en: 'Implementing in PyPy: PyPy internals'
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 PyPy 中实现：PyPy 内部
 - en: 'PyPy is comprised of two main parts:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: PyPy 由两个主要部分组成：
 - en: A Python interpreter
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个 Python 解释器
 - en: A tool to transform interpreters into JIT compilers
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将解释器转换为 JIT 编译器的工具
 - en: This means that instead of writing fancy JIT compiler changes to get this to
     work, we wrote an interpreter change. Their `cpyext` (C API) handling code already
     contains a little “interpreter” of sorts to make calls to C extensions. It looks
     at `ml_flags` to distinguish between `METH_O` and `METH_FASTCALL`, for example.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着我们不是编写了一些花哨的 JIT 编译器更改来使其工作，而是编写了一个解释器更改。他们的 `cpyext`（C API）处理代码已经包含了一个小型的“解释器”，用于调用
+    C 扩展。例如，它查看 `ml_flags` 来区分 `METH_O` 和 `METH_FASTCALL`。
 - en: 'So we added a new case that looks like this pseudocode:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们添加了一个看起来像这样的新情况的伪代码：
 - en: '[PRE13]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Since the JIT probably already knows about the types of the arguments to the
     C extension function (and probably has also unboxed them), all of the intermediate
     checks and allocation can be elided. This makes for much less work!
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 JIT 可能已经知道 C 扩展函数的参数类型（可能也已经解开了它们），所有中间检查和分配都可以省略。这就减少了很多工作！
 - en: To check out the actual changes to PyPy, look at [this stack of commits](https://github.com/pypy/pypy/compare/3a06bbe5755a1ee05879b29e1717dcbe230fdbf8...branches/py3.10-mb-typed-sig-experiments).
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 要查看PyPy的实际更改，请看[这些提交记录](https://github.com/pypy/pypy/compare/3a06bbe5755a1ee05879b29e1717dcbe230fdbf8...branches/py3.10-mb-typed-sig-experiments)。
 - en: Next steps
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 下一步
 - en: 'This project isn’t merged or finished. While we have a nice little test suite
     and a microbenchmark, ideally we would do some more:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个项目还没有合并或完成。虽然我们有一个不错的小测试套件和一个微基准，但理想情况下，我们还应该做一些更多的事情：
 - en: Get other native types (other int types, double) working
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使其他本地类型（其他整数类型，双精度）工作
 - en: Get multiple parameters working (fastcall)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使多个参数工作（快速调用）
 - en: Hack a proof of concept of this idea into Cython
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Cython中推敲一个这个想法的概念证明
 - en: Make the signature more expressive
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使签名更具表达性
 - en: Perhaps we should have a mini language kind of like CPython’s Argument Clinic
+  id: totrans-95
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 或许我们应该有一种类似于CPython的Argument Clinic的迷你语言
 - en: Integrate this into other runtimes such as GraalPython or even CPython
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将其集成到其他运行时，比如GraalPython甚至CPython
 - en: While this won’t help CPython *just* yet, they might find it useful when they
     do some more optimizations in the JIT
+  id: totrans-97
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 虽然这暂时对CPython没有帮助*，但当他们在JIT中进行更多优化时，他们可能会觉得很有用
 - en: Let us know if you have any ideas!
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有任何想法，请告诉我们！
 - en: Updates and other ideas
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更新和其他想法
 - en: '*lifthrasiir* on Hacker News [points out](https://news.ycombinator.com/item?id=38989823)
     that this struct should be versioned for future-proofing. They also suggest potentially
     avoiding `METH_TYPED` by shipping a sort of sibling symbol `_PyPyTyped_foo` for
     each `foo`. That’s interesting.'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Hacker News*上的*lifthrasiir* [指出](https://news.ycombinator.com/item?id=38989823)
+    这个结构应该进行版本化以未雨绸缪。他们还建议可能避免使用`METH_TYPED`，而是为每个`foo`发货一种类似的兄弟符号`_PyPyTyped_foo`。这很有趣。'
 - en: Wenzel Jakob (of pybind11 and nanobind fame) wrote in that we should not ignore
     overloads (apparently fairly common in the wild) in our implementation. Apparently
     people like to make, for example, `myextension.abs(x)` where the call to `abs_float`
     or `abs_int` is dispatched in the binding glue (a real example that I found in
     a search on GitHub is [available here](https://github.com/lief-project/LIEF/blob/58f499a22221cee7ab6682986b1504b90acd8556/api/python/src/ELF/init.cpp#L100)).
     A JIT like PyPy could make the dynamic dispatch go away.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: pybind11和nanobind的著名人士Wenzel Jakob指出，我们不应该在我们的实现中忽略重载（显然在野外相当常见）。显然，人们喜欢编写`myextension.abs(x)`，其中对`abs_float`或`abs_int`的调用在绑定胶水中被分派（我在GitHub上的搜索中找到的一个真实例子是[在此处可用](https://github.com/lief-project/LIEF/blob/58f499a22221cee7ab6682986b1504b90acd8556/api/python/src/ELF/init.cpp#L100)）。像PyPy这样的JIT可能会取消动态分派。
 - en: 'Another idea, from CF, a little more difficult: what if the Cython compiler
     could generate Python code or bytecode? Or, what if PyPy could ingest Cython code?'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个想法，来自CF，可能更加困难：Cython编译器能否生成Python代码或字节码？又或者，PyPy是否能吸收Cython代码？
