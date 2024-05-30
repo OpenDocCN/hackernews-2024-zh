@@ -1,109 +1,150 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:46:43'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:46:43
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Understanding and Coding Self-Attention, Multi-Head Attention, Cross-Attention,
     and Causal-Attention in LLMs
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 理解和编写LLMs中的自注意力、多头注意力、交叉注意力和因果注意力
 - en: 来源：[https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention](https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention](https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention)
 - en: This article will teach you about self-attention mechanisms used in transformer
     architectures and large language models (LLMs) such as GPT-4 and Llama. Self-attention
     and related mechanisms are core components of LLMs, making them a useful topic
     to understand when working with these models.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将教你关于变压器架构和大型语言模型（LLMs）中使用的自注意力机制及其相关机制。自注意力和相关机制是LLMs的核心组件，当与这些模型一起工作时，了解它们将非常有用。
 - en: However, rather than just discussing the self-attention mechanism, we will code
     it in Python and PyTorch from the ground up. In my opinion, coding algorithms,
     models, and techniques from scratch is an excellent way to learn!
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们不仅仅讨论自注意力机制，还将从头开始用 Python 和 PyTorch 编写它。在我看来，从零开始编写算法、模型和技术是学习的绝佳方式！
 - en: '* * *'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: As a side note, this article is a modernized and extended version of "[Understanding
     and Coding the Self-Attention Mechanism of Large Language Models From Scratch](https://sebastianraschka.com/blog/2023/self-attention-from-scratch.html),"
     which I published on my old blog almost exactly a year ago. Since I really enjoy
     writing (and reading) 'from scratch' articles, I wanted to modernize this article
     for *Ahead of AI*.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便提一下，本文是我在几乎一年前在我的旧博客上发表的现代化和扩展版的 “[从零开始理解和编写大型语言模型的自注意力机制](https://sebastianraschka.com/blog/2023/self-attention-from-scratch.html)”
+    。由于我非常喜欢写（和阅读）“从零开始”的文章，我想将这篇文章现代化为*Ahead of AI*。
 - en: Additionally, this article motivated me to write the book *[Build a Large Language
     Model (from Scratch)](http://mng.bz/amjo)*, which is currently in progress. Below
     is a mental model that summarizes the book and illustrates how the self-attention
     mechanism fits into the bigger picture.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，这篇文章激发了我写书*[从零开始构建大型语言模型](http://mng.bz/amjo)*的灵感，该书目前正在进行中。下面是一种总结该书并说明自注意力机制如何融入整体思路的思维模型。
 - en: To keep the length of this article somewhat reasonable, I'll assume you already
     know about LLMs and you also know about attention mechanisms on a basic level.
     The goal and focus of this article is to understand how attention mechanisms work
     via a Python & PyTorch code walkthrough.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使本文长度合理，我假设你已经了解了LLMs，也对基本水平的注意力机制有所了解。本文的目标和重点是通过Python和PyTorch代码演示了解注意力机制的工作原理。
 - en: Since its introduction via the original transformer paper ([Attention Is All
     You Need](https://arxiv.org/abs/1706.03762)), self-attention has become a cornerstone
     of many state-of-the-art deep learning models, particularly in the field of Natural
     Language Processing (NLP). Since self-attention is now everywhere, it's important
     to understand how it works.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 自注意力机制通过原始的变压器论文（[Attention Is All You Need](https://arxiv.org/abs/1706.03762)）的介绍而得到引入，已经成为许多最先进的深度学习模型的基石，尤其是在自然语言处理（NLP）领域。由于自注意力现在无处不在，了解它的工作原理就显得尤为重要。
 - en: The concept of "attention" in deep learning [has its roots in the effort to
     improve Recurrent Neural Networks (RNNs)](https://arxiv.org/abs/1409.0473) for
     handling longer sequences or sentences. For instance, consider translating a sentence
     from one language to another. Translating a sentence word-by-word is usually not
     an option because it ignores the complex grammatical structures and idiomatic
     expressions unique to each language, leading to inaccurate or nonsensical translations.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深度学习中，“注意力”这个概念 [源于改进递归神经网络（RNNs）的努力](https://arxiv.org/abs/1409.0473) 来处理更长的序列或句子。例如，考虑将一种语言的句子翻译成另一种语言。逐字翻译一句话通常不可行，因为它忽略了每种语言独特的复杂语法结构和习语表达，导致不准确或荒谬的翻译。
 - en: An incorrect word-by-word translation (top) compared to a correct translation
     (bottom)
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误的逐字逐句翻译（上）与正确翻译（下）的对比
 - en: To overcome this issue, attention mechanisms were introduced to give access
     to all sequence elements at each time step. The key is to be selective and determine
     which words are most important in a specific context. [In 2017, the transformer
     architecture](https://arxiv.org/abs/1706.03762) introduced a standalone self-attention
     mechanism, eliminating the need for RNNs altogether.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了克服这个问题，引入了注意力机制，使每个时间步骤都能访问所有序列元素。关键是要选择性地确定在特定上下文中哪些单词最重要。[2017年，变压器架构](https://arxiv.org/abs/1706.03762)引入了一个独立的自注意力机制，完全消除了对循环神经网络的需求。
 - en: (For brevity, and to keep the article focused on the technical self-attention
     details, I am keeping this background motivation section brief so that we can
     focus on the code implementation.)
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: （为了简洁起见，并且让文章集中讨论技术性自注意力的细节，我将这个背景动机部分保持简短，以便我们可以专注于代码实现。）
 - en: A visualization from the “Attention is All You Need” paper ([https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762))
     showing how much the word “making” depends or focuses on other words in the input
     via attention weights (the color intensity is proportional the attention weight
     value).
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自“注意力机制就是一切”的论文（[https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)）的可视化，显示了单词“making”在输入中通过注意力权重依赖或关注其他单词的程度（颜色强度与注意力权重值成比例）。
 - en: We can think of self-attention as a mechanism that enhances the information
     content of an input embedding by including information about the input's context.
     In other words, the self-attention mechanism enables the model to weigh the importance
     of different elements in an input sequence and dynamically adjust their influence
     on the output. This is especially important for language processing tasks, where
     the meaning of a word can change based on its context within a sentence or document.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将自注意力看作是一种通过包含有关输入上下文的信息来增强输入嵌入信息内容的机制。换句话说，自注意力机制使模型能够衡量输入序列中不同元素的重要性并动态调整它们对输出的影响。这对于语言处理任务尤其重要，因为单词的含义可以根据其在句子或文档中的上下文而改变。
 - en: Note that there are many variants of self-attention. A particular focus has
     been on making self-attention more efficient. However, most papers still implement
     the original scaled-dot product attention mechanism introduced in the [Attention
     Is All You Need paper](https://arxiv.org/abs/1706.03762) since self-attention
     is rarely a computational bottleneck for most companies training large-scale transformers.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，自注意力有许多变体。特别关注的是使自注意力更高效。然而，大多数论文仍然实现了[Attention Is All You Need论文](https://arxiv.org/abs/1706.03762)中介绍的原始缩放点积注意力机制，因为自注意力对于大多数公司训练大规模变压器来说很少成为计算瓶颈。
 - en: 'So, in this article, we focus on the original scaled-dot product attention
     mechanism (referred to as self-attention), which remains the most popular and
     most widely used attention mechanism in practice. However, if you are interested
@@ -112,573 +153,876 @@
     *[A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107)*
     review, and the recent [FlashAttention](https://arxiv.org/abs/2205.14135) and
     [FlashAttention-v2](https://arxiv.org/abs/2307.08691) papers.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在本文中，我们将专注于原始的缩放点积注意力机制（称为自注意力），它仍然是实践中最流行和最广泛使用的注意力机制。但是，如果您对其他类型的注意力机制感兴趣，请查看[2020年](https://arxiv.org/abs/2009.06732)
+    *[高效变压器：一项调查](https://arxiv.org/abs/2009.06732)*，[2023年](https://arxiv.org/abs/2302.01107)
+    *[关于变压器高效训练的调查](https://arxiv.org/abs/2302.01107)* 综述以及最近的[FlashAttention](https://arxiv.org/abs/2205.14135)和[FlashAttention-v2](https://arxiv.org/abs/2307.08691)
+    论文。
 - en: Before we begin, let's consider an input sentence *"Life is short, eat dessert
     first"* that we want to put through the self-attention mechanism. Similar to other
     types of modeling approaches for processing text (e.g., using recurrent neural
     networks or convolutional neural networks), we create a sentence embedding first.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始之前，让我们考虑一个输入句子*"Life is short, eat dessert first"*，我们想要通过自注意力机制处理。与处理文本的其他类型的建模方法类似（例如，使用循环神经网络或卷积神经网络），我们首先创建一个句子嵌入。
 - en: For simplicity, here our dictionary `dc` is restricted to the words that occur
     in the input sentence. In a real-world application, we would consider all words
     in the training dataset (typical vocabulary sizes range between 30k to 50k entries).
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 为简单起见，在这里我们的字典 `dc` 限定为出现在输入句子中的单词。在实际应用中，我们考虑训练数据集中的所有单词（典型的词汇量介于 3 万到 5 万个条目之间）。
 - en: '**In:**'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**Out:**'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Next, we use this dictionary to assign an integer index to each word:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们使用这个字典给每个单词分配一个整数索引：
 - en: '**In:**'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '**Out:**'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, using the integer-vector representation of the input sentence, we can use
     an embedding layer to encode the inputs into a real-vector embedding. Here, we
     will use a tiny 3-dimensional embedding such that each input word is represented
     by a 3-dimensional vector.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，利用输入句子的整数向量表示，我们可以使用嵌入层将输入编码为实向量嵌入。在这里，我们将使用一个小的 3 维嵌入，这样每个输入单词都用一个 3 维向量表示。
 - en: Note that embedding sizes typically range from hundreds to thousands of dimensions.
     For instance, Llama 2 utilizes embedding sizes of 4,096\. The reason we use 3-dimensional
     embeddings here is purely for illustration purposes. This allows us to examine
     the individual vectors without filling the entire page with numbers.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，嵌入大小通常范围从数百到数千维。例如，Llama 2 使用 4,096 维的嵌入。这里使用 3 维嵌入纯粹是为了说明的目的。这样我们就可以检查单个向量，而不会填满整个页面。
 - en: 'Since the sentence consists of 6 words, this will result in a 6×3-dimensional
     embedding:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于该句子由 6 个单词组成，这将导致一个 6×3 维的嵌入：
 - en: '**In:**'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Out:**'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now, let's discuss the widely utilized self-attention mechanism known as the
     scaled dot-product attention, which is an integral part of the transformer architecture.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们讨论广泛使用的自注意机制，即称为缩放点积注意力，它是变压器结构的一个组成部分。
 - en: Self-attention utilizes three weight matrices, referred to as ***W[q]***, ***W[k]***,
     and ***W[v]***, which are adjusted as model parameters during training. These
     matrices serve to project the inputs into *query*, *key*, and *value* components
     of the sequence, respectively.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 自注意力利用三个权重矩阵，称为 ***W[q]***、***W[k]*** 和 ***W[v]***，这些矩阵在训练过程中作为模型参数进行调整。这些矩阵用于将输入投影为序列的
+    *查询*、*键* 和 *值* 组成部分。
 - en: 'The respective query, key and value sequences are obtained via matrix multiplication
     between the weight matrices ***W*** and the embedded inputs ***x***:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过权重矩阵 ***W*** 和嵌入输入 ***x*** 之间的矩阵乘法来获取相应的查询、键和值序列：
 - en: 'Query sequence: ***q^((i))*** = ***x^((i))W[q]*** for *i* in sequence *1 …
     T*'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '查询序列: ***q^((i))*** = ***x^((i))W[q]*** 对于序列 *1 … T*'
 - en: 'Key sequence: ***k^((i))*** = ***x^((i))W[k]*** for *i* in sequence *1 … T*'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '键序列: ***k^((i))*** = ***x^((i))W[k]*** 对于序列 *1 … T*'
 - en: 'Value sequence: ***v^((i))*** = ***x^((i))W[v]*** for *i* in sequence *1 …
     T*'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '值序列: ***v^((i))*** = ***x^((i))W[v]*** 对于序列 *1 … T*'
 - en: The index *i* refers to the token index position in the input sequence, which
     has length *T*.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 索引 *i* 指的是输入序列中的标记索引位置，其长度为 *T*。
 - en: Computing the query, key, and value vectors via the input x and weights W.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过输入 ***x*** 和权重 ***W*** 计算查询、键和值向量。
 - en: Here, both ***q^((i))*** and ***k^((i))*** are vectors of dimension ***d[k]***.
     The projection matrices ***W[q]*** and ***W[k]*** have a shape of ***d*** × ***d[k]***
     , while ***W[v]*** has the shape ***d*** × ***d[v]*** .
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，***q^((i))*** 和 ***k^((i))*** 都是 ***d[k]*** 维向量。投影矩阵 ***W[q]*** 和 ***W[k]***
+    的形状为 ***d*** × ***d[k]*** ，而 ***W[v]*** 的形状为 ***d*** × ***d[v]***。
 - en: (It's important to note that ***d*** represents the size of each word vector,
     ***x***.)
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: （重要的是要注意，***d*** 表示每个单词向量的大小，***x***。）
 - en: Since we are computing the dot-product between the query and key vectors, these
     two vectors have to contain the same number of elements (***d[q] = d[k]***). In
     many LLMs, we use the same size for the value vectors such that ***d[q] = d[k]
     = d[v]***. However, the number of elements in the value vector ***v^((i))***,
     which determines the size of the resulting context vector, can be arbitrary.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们计算查询和键向量的点积，所以这两个向量必须包含相同数量的元素（***d[q] = d[k]***）。在许多 LLMs 中，我们为值向量使用相同的大小，使得
+    ***d[q] = d[k] = d[v]***。然而，决定生成的上下文向量的大小的值向量 ***v^((i))*** 的元素数量可以是任意的。
 - en: 'So, for the following code walkthrough, we will set ***d[q] = d[k] = 2*** and
     use ***d[v] = 4***, initializing the projection matrices as follows:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在下面的代码演示中，我们将设置 ***d[q] = d[k] = 2***，并使用 ***d[v] = 4***，初始化投影矩阵如下：
 - en: '**In:**'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE6]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: (Similar to the word embedding vectors earlier, the dimensions ***d[q], d[k],
     d[v]*** are usually much larger, but we use small numbers here for illustration
     purposes.)
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: （与之前的词嵌入向量类似，维度 ***d[q]***、***d[k]***、***d[v]*** 通常要大得多，但这里我们使用小数以进行说明。）
 - en: 'Now, let''s suppose we are interested in computing the attention vector for
     the second input element -- the second input element acts as the query here:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，假设我们有兴趣计算第二个输入元素的注意力向量 -- 第二个输入元素在这里充当查询：
 - en: For the following sections below, we focus on the second input, ***x***(2)
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于下面的各节，我们重点关注第二个输入，***x***(2)。
 - en: 'In code, this looks like as follows:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中，这看起来如下所示：
 - en: '**In:**'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE7]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '**Out:**'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE8]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'We can then generalize this to compute the remaining key, and value elements
     for all inputs as well, since we will need them in the next step when we compute
     the unnormalized attention weights later:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们随后可以将此推广为计算所有输入的其余键和值元素，因为我们稍后在计算未标准化注意力权重时会需要它们的帮助：
 - en: '**In:**'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE9]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**Out:**'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE10]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Now that we have all the required keys and values, we can proceed to the next
     step and compute the unnormalized attention weights ***ω*** (omega), which are
     illustrated in the figure below:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经拥有所有所需的键和值，我们可以继续下一步并计算未标准化的注意力权重 ***ω***（omega），如下图所示：
 - en: Computing the unnormalized attention weights ***ω*** (omega)
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算未标准化的注意力权重 ***ω***（omega）
 - en: As illustrated in the figure above, we compute ***ω[i,j]*** as the dot product
     between the query and key sequences, ***ω[i,j]** =*  ***q^((i))***  ***k^((j))***.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上图所示，我们将 ***ω[i,j]*** 计算为查询和键序列之间的点积，***ω[i,j]** =*  ***q^((i))***  ***k^((j))***。
 - en: 'For example, we can compute the unnormalized attention weight for the query
     and 5th input element (corresponding to index position 4) as follows:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们可以计算查询和第 5 个输入元素（对应索引位置 4）的未标准化注意力权重如下：
 - en: '**In:**'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE11]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: (Note that ***ω*** is the symbol for the Greek letter "omega", hence the code
     variable with the same name above.)
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: （请注意，***ω*** 是希腊字母“omega”的符号，因此上面的代码变量与之同名。）
 - en: '**Out:**'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE12]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Since we will need those unnormalized attention weights ***ω*** to compute
     the actual attention weights later, let''s compute the ***ω*** values for all
     input tokens as illustrated in the previous figure:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们稍后需要这些未标准化的注意力权重 ***ω*** 来计算实际的注意力权重，让我们计算所有输入令牌的 ***ω*** 值，如上图所示：
 - en: '**In:**'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE13]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '**Out:**'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE14]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The subsequent step in self-attention is to normalize the unnormalized attention
     weights, ***ω***, to obtain the normalized attention weights, ***α*** (alpha),
     by applying the softmax function. Additionally, 1/√{***d[k]***} is used to scale
     ***ω*** before normalizing it through the softmax function, as shown below:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 自注意力中的后续步骤是将未标准化的注意力权重 ***ω*** 规范化为通过 softmax 函数获得的标准化的注意力权重 ***α***（alpha）。此外，在通过
+    softmax 函数规范化之前，使用 1/√{***d[k]***} 对 ***ω*** 进行缩放，如下所示：
 - en: Computing the normalized attention weights ***α***
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算标准化注意力权重 ***α***
 - en: The scaling by ***d[k]*** ensures that the Euclidean length of the weight vectors
     will be approximately in the same magnitude. This helps prevent the attention
     weights from becoming too small or too large, which could lead to numerical instability
     or affect the model's ability to converge during training.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过 ***d[k]*** 的缩放确保权重向量的欧氏长度大致相同。这有助于防止注意力权重变得太小或太大，这可能导致数值不稳定或影响模型在训练过程中的收敛能力。
 - en: 'In code, we can implement the computation of the attention weights as follows:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中，我们可以实现注意力权重的计算如下：
 - en: '**In:**'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE15]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '**Out:**'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE16]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Finally, the last step is to compute the context vector ***z^((2))***, which
     is an attention-weighted version of our original query input ***x^((2))***, including
     all the other input elements as its context via the attention weights:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，最后一步是计算上下文向量 ***z^((2))***，它是我们原始查询输入 ***x^((2))*** 的一个加权版本，通过注意力权重包括所有其他输入元素作为其上下文：
 - en: The attention weights are specific to a certain input element. Here, we chose
     input element ***x**(2).*
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意力权重是特定于某个输入元素的。这里，我们选择了输入元素 ***x**(2)***。
 - en: 'In code, this looks like as follows:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中，这看起来如下所示：
 - en: '**In:**'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE17]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '**Out:**'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE18]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Note that this output vector has more dimensions (***d[v] = 4***) than the original
     input vector (***d**  **= 3***) since we specified ***d[v]**  **> d*** earlier;
     however, the embedding size choice ***d[v]*** is arbitrary.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，这个输出向量的维度比原始输入向量更多（***d[v] = 4***），因为我们之前指定了 ***d[v] > d***；然而，嵌入大小选择 ***d[v]***
+    是任意的。
 - en: 'Now, to wrap up the code implementation of the self-attention mechanism in
     the previous sections above, we can summarize the previous code in a compact `SelfAttention`
     class:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，为了结束前面章节中自注意力机制的代码实现，我们可以将前面的代码总结为一个紧凑的`SelfAttention`类：
 - en: '**In:**'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE19]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Following PyTorch conventions, the `SelfAttention` class above initializes
     the self-attention parameters in the `__init__` method and computes attention
     weights and context vectors for all inputs via the `forward` method. We can use
     this class as follows:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 遵循PyTorch的约定，上面的`SelfAttention`类在`__init__`方法中初始化自注意力参数，并通过`forward`方法为所有输入计算注意力权重和上下文向量。我们可以如下使用这个类：
 - en: '**In:**'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE20]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '**Out:**'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE21]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'If you look at the second row, you can see that it matches the values in `context_vector_2`
     from the previous section exactly: `tensor([0.5313, 1.3607, 0.7891, 1.3110])`.'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你看第二行，你会发现它与前一节中`context_vector_2`中的值完全匹配：`tensor([0.5313, 1.3607, 0.7891,
+    1.3110])`。
 - en: In the very first figure, at the top of this article (also shown again for convenience
     below), we saw that transformers use a module called *multi-head attention*.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文顶部的第一幅图中（下面再次显示以方便查看），我们看到transformer使用了一个名为*multi-head attention*的模块。
 - en: How does this "multi-head" attention module relate to the self-attention mechanism
     (scaled-dot product attention) we walked through above?
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个"多头"注意力模块如何与我们上面介绍的自注意力机制（缩放点积注意力）相关？
 - en: 'In scaled dot-product attention, the input sequence was transformed using three
     matrices representing the query, key, and value. These three matrices can be considered
     as a single attention head in the context of multi-head attention. The figure
     below summarizes this single attention head we covered and implemented previously:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缩放点积注意力中，输入序列使用表示查询、键和值的三个矩阵进行转换。在多头注意力的上下文中，这三个矩阵可以被认为是一个单独的注意力头。下图总结了我们之前涵盖并实现的这个单个注意力头：
 - en: Summarizing the self-attention mechanism implemented previously
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结之前实现的自注意力机制
 - en: As its name implies, multi-head attention involves multiple such heads, each
     consisting of query, key, and value matrices. This concept is similar to the use
     of multiple kernels in convolutional neural networks, producing feature maps with
     multiple output channels.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如其名称所示，多头注意力涉及多个这样的头，每个头包含查询、键和值矩阵。这个概念类似于卷积神经网络中使用多个核生成具有多个输出通道的特征图。
 - en: 'Multi-head attention: self-attention with multiple heads'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力：带有多个头的自注意力
 - en: 'To illustrate this in code, we can write a `MultiHeadAttentionWrapper` class
     for our previous `SelfAttention` class:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在代码中说明这一点，我们可以为之前的`SelfAttention`类编写一个`MultiHeadAttentionWrapper`类：
 - en: '[PRE22]'
+  id: totrans-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'The `d_*` parameters are the same as before in the `SelfAttention` class --
     the only new input parameter here is the number of attention heads:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '`d_*`参数与`SelfAttention`类中以前的相同--这里唯一的新输入参数是注意力头的数量：'
 - en: '`d_in`: Dimension of the input feature vector.'
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`d_in`: 输入特征向量的维度。'
 - en: '`d_out_kq`: Dimension for both query and key outputs.'
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`d_out_kq`: 查询和键的输出维度。'
 - en: '`d_out_v`: Dimension for value outputs.'
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`d_out_v`: 值的输出维度。'
 - en: '`num_heads`: Number of attention heads.'
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`num_heads`: 注意力头的数量。'
 - en: We initialize the `SelfAttention` class `num_heads` times using these input
     parameters. And we use a PyTorch `nn.ModuleList` to store these multiple `SelfAttention`
     instances.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用这些输入参数初始化`SelfAttention`类`num_heads`次。我们使用PyTorch的`nn.ModuleList`来存储这些多个`SelfAttention`实例。
 - en: Then, the `forward` pass involves applying each `SelfAttention` head (stored
     in `self.heads`) to the input `x` independently. The results from each head are
     then concatenated along the last dimension (`dim=-1`). Let's see it in action
     below!
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，`forward`传递涉及独立地将每个`SelfAttention`头（存储在`self.heads`中）应用于输入`x`。然后，每个头的结果沿着最后一个维度（`dim=-1`）进行连接。让我们在下面看看它的实际操作！
 - en: 'First, let''s suppose we have a single Self-Attention head with output dimension
     1 to keep it simple for illustration purposes:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们假设我们有一个单一的自注意力头，输出维度为1，以便简单地进行说明：
 - en: '**In:**'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE23]'
+  id: totrans-122
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '**Out:**'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE24]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'Now, let''s extend this to 4 attention heads:'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们扩展到4个注意力头：
 - en: '**In:**'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: '**In:**'
 - en: '[PRE25]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '**Out:**'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Out:**'
 - en: '[PRE26]'
+  id: totrans-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: Based on the output above, you can see that the single self-attention head created
     earlier now represents the first column in the output tensor above.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于上面的输出，你可以看到之前创建的单个自注意力头现在代表了上面输出张量的第一列。
 - en: 'Notice that the multi-head attention result is a 6×4-dimensional tensor: We
     have 6 input tokens and 4 self-attention heads, where each self-attention head
     returns a 1-dimensional output. Previously, in the Self-Attention section, we
     also produced a 6×4-dimensional tensor. That''s because we set the output dimension
     to 4 instead of 1\. In practice, why do we even need multiple attention heads
     if we can regulate the output embedding size in the `SelfAttention` class itself?'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，多头注意力的结果是一个 6×4 维的张量：我们有 6 个输入令牌和 4 个自注意力头，每个自注意力头返回一个 1 维输出。在之前的自注意力部分中，我们也生成了一个
+    6×4 维的张量。这是因为我们将输出维度设置为 4 而不是 1。实际上，如果我们可以在 `SelfAttention` 类本身中调节输出嵌入大小，为什么我们需要多个注意力头呢？
 - en: The distinction between increasing the output dimension of a single self-attention
     head and using multiple attention heads lies in how the model processes and learns
     from the data. While both approaches increase the capacity of the model to represent
     different features or aspects of the data, they do so in fundamentally different
     ways.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 单个自注意力头增加输出维度和使用多个注意力头的区别在于模型处理和从数据中学习的方式。虽然这两种方法都增加了模型表示数据不同特征或方面的能力，但它们的方式根本不同。
 - en: For instance, each attention head in multi-head attention can potentially learn
     to focus on different parts of the input sequence, capturing various aspects or
     relationships within the data. This diversity in representation is key to the
     success of multi-head attention.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，多头注意力中的每个注意力头都有可能学会聚焦于输入序列的不同部分，捕捉数据中的各种方面或关系。这种表示上的多样性是多头注意力成功的关键。
 - en: Multi-head attention can also be more efficient, especially in terms of parallel
     computation. Each head can be processed independently, making it well-suited for
     modern hardware accelerators like GPUs or TPUs that excel at parallel processing.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力也可以更加高效，特别是在并行计算方面。每个头可以独立处理，使其非常适合现代硬件加速器，如 GPU 或 TPU，这些加速器擅长并行处理。
 - en: In short, the use of multiple attention heads is not just about increasing the
     model's capacity but about enhancing its ability to learn a diverse set of features
     and relationships within the data. For example, the 7B Llama 2 model uses 32 attention
     heads.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，使用多个注意力头不仅仅是增加模型的容量，而是增强其学习数据中各种特征和关系的能力。例如，7B Llama 2 模型使用了 32 个注意力头。
 - en: In the code walkthrough above, we set ***d_q = d_k = 2*** and ***d_v = 4***.
     In other words, we used the same dimensions for query and key sequences. While
     the value matrix ***W_v*** is often chosen to have the same dimension as the query
     and key matrices (such as in PyTorch's [MultiHeadAttention](https://pytorch.org/docs/stable/generated/torch.nn.MultiheadAttention.html)
     class), we can select an arbitrary number size for the value dimensions.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码演示中，我们设定 ***d_q = d_k = 2*** 以及 ***d_v = 4***。换句话说，我们使用相同的维度来处理查询和键序列。尽管值矩阵
+    ***W_v*** 通常选择与查询和键矩阵具有相同的维度（比如在 PyTorch 的 [MultiHeadAttention](https://pytorch.org/docs/stable/generated/torch.nn.MultiheadAttention.html)
+    类中），我们可以为值维度选择任意数量的大小。
 - en: Since the dimensions are sometimes a bit tricky to keep track of, let's summarize
     everything we have covered so far in the figure below, which depicts the various
     tensor sizes for a single attention head.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于维度有时候比较难以跟踪，请看下面的图总结到目前为止我们所涵盖的所有内容，图中描述了单个注意力头的各种张量大小。
 - en: Another view of the self-attention mechanism implemented previously, with a
     focus on the matrix dimensions
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 先前实施的自注意力机制的另一种观点，重点是矩阵维度
 - en: Now, the illustration above corresponds to the *self*-attention mechanism used
     in transformers. One particular flavor of this attention mechanism we have yet
     to discuss is *cross*-attention.
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，上面的插图对应于变压器中使用的*自我*-注意力机制。我们尚未讨论的此注意力机制的一个特定类型是*交叉*-注意力。
 - en: What is cross-attention, and how does it differ from self-attention?
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么是跨注意力，它与自注意力有何不同？
 - en: In self-attention, we work with the same input sequence. In cross-attention,
     we mix or combine two *different* input sequences. In the case of the original
     transformer architecture above, that's the sequence returned by the encoder module
     on the left and the input sequence being processed by the decoder part on the
     right.
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 在自注意力中，我们使用相同的输入序列。在跨注意力中，我们混合或结合两个*不同*的输入序列。在上面的原始变压器架构中，这是左侧编码器模块返回的序列和右侧解码器部分正在处理的输入序列。
 - en: Note that in cross-attention, the two input sequences `x_1` and `x_2` can have
     different numbers of elements. However, their embedding dimensions must match.
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，在交叉注意力中，两个输入序列 `x_1` 和 `x_2` 可能具有不同数量的元素。但是，它们的嵌入维度必须匹配。
 - en: The figure below illustrates the concept of cross-attention. If we set `x_1`
     *=* `x_2`, this is equivalent to self-attention.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图说明了交叉注意力的概念。如果我们设置 `x_1` *=* `x_2`，这相当于自注意力。
 - en: (Note that the queries usually come from the decoder, and the keys and values
     typically come from the encoder.)
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: （注意，查询通常来自解码器，而键和值通常来自编码器。）
 - en: 'How does that work in code? We will adopt and modify the `SelfAttention` class
     that we previously implemented in the Self-Attention section and only make some
     minor modifications:'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中如何实现呢？我们将采用并修改我们之前在自注意力部分中实现的 `SelfAttention` 类，并仅进行一些微小的修改：
 - en: '**In:**'
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE27]'
+  id: totrans-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'The differences between the `CrossAttention` class and the previous `SelfAttention`
     class are as follows:'
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: '`CrossAttention` 类与先前的 `SelfAttention` 类的区别如下：'
 - en: The `forward` method takes two distinct inputs, `x_1` and `x_2`. The queries
     are derived from `x_1`, while the keys and values are derived from `x_2`. This
     means that the attention mechanism is evaluating the interaction between two different
     inputs.
+  id: totrans-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`forward` 方法接受两个不同的输入，`x_1` 和 `x_2`。查询来自 `x_1`，而键和值来自 `x_2`。这意味着注意力机制正在评估两个不同输入之间的交互。'
 - en: The attention scores are calculated by taking the dot product of the queries
     (from `x_1`) and keys (from `x_2`).
+  id: totrans-150
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意力分数是通过计算查询（来自 `x_1`）和键（来自 `x_2`）的点积来计算的。
 - en: Similar to `SelfAttention`, each context vector is a weighted sum of the values.
     However, in `CrossAttention`, these values are derived from the second input (`x_2`),
     and the weights are based on the interaction between `x_1` and `x_2`.
+  id: totrans-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 与 `SelfAttention` 类似，每个上下文向量都是值的加权和。但是，在 `CrossAttention` 中，这些值来自第二个输入 (`x_2`)，而权重基于
+    `x_1` 和 `x_2` 之间的交互。
 - en: 'Let''s see it in action:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看它的运行情况：
 - en: '**In:**'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE28]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: '**Out:**'
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE29]'
+  id: totrans-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: 'Notice that the first and second inputs don''t have to have the same number
     of tokens (here: rows) when computing cross-attention:'
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，计算交叉注意力时，第一个和第二个输入的标记数量（这里是行）不必相同：
 - en: '**In:**'
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE30]'
+  id: totrans-159
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: '**Out:**'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE31]'
+  id: totrans-161
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: We talked a lot about language transformers above. In the original transformer
     architecture, cross-attention is useful when we go from an input sentence to an
     output sentence in the context of language translation. The input sentence represents
     one input sequence, and the translation represent the second input sequence (the
     two sentences can different numbers of words).
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在上面谈了很多关于语言转换器的内容。在原始 transformer 架构中，当我们在语言翻译的上下文中从输入句子到输出句子时，交叉注意力非常有用。输入句子代表一个输入序列，而翻译代表第二个输入序列（两个句子的单词数量可以不同）。
 - en: Another popular model where cross-attention is used is Stable Diffusion. Stable
     Diffusion uses cross-attention between the generated image in the U-Net model
     and the text prompts used for conditioning as described in [High-Resolution Image
     Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752) -- the
     original paper that describes the Stable Diffusion model that was later adopted
     by Stability AI to implement the popular Stable Diffusion model.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个使用交叉注意力的热门模型是 Stable Diffusion。 Stable Diffusion 在 U-Net 模型中生成的图像和用于条件的文本提示之间使用交叉注意力，如
+    [具有潜在扩散模型的高分辨率图像合成](https://arxiv.org/abs/2112.10752) 中描述的——这是描述 Stable Diffusion
+    模型的原始论文，后来由 Stability AI 采用以实现流行的 Stable Diffusion 模型。
 - en: In this section, we are adapting the previously discussed self-attention mechanism
     into a causal self-attention mechanism, specifically for GPT-like (decoder-style)
     LLMs that are used to generate text. This causal self-attention mechanism is also
@@ -686,132 +1030,204 @@
     it corresponds to the “masked multi-head attention” module — for simplicity, we
     will look at a single attention head in this section, but the same concept generalizes
     to multiple heads.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，我们将先前讨论的自注意力机制调整为因果自注意力机制，专门用于生成文本的类似 GPT（解码器风格）的 LLM。这种因果自注意力机制通常也被称为“掩码自注意力”。在原始
+    transformer 架构中，它对应于“掩码多头注意力”模块——为简单起见，我们将在本节中查看一个注意力头，但相同的概念可以推广到多个头。
 - en: Causal self-attention ensures that the outputs for a certain position in a sequence
     is based only on the known outputs at previous positions and not on future positions.
     In simpler terms, it ensures that the prediction for each next word should only
     depend on the preceding words. To achieve this in GPT-like LLMs, for each token
     processed, we mask out the future tokens, which come after the current token in
     the input text.
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 因果自注意力确保序列中某个位置的输出仅基于先前位置的已知输出，而不是未来位置。简单来说，它确保了每个下一个单词的预测仅取决于前面的单词。为了在类似 GPT
+    的 LLMs 中实现这一点，对于每个处理的标记，我们都会屏蔽未来的标记，这些标记位于输入文本中当前标记之后。
 - en: The application of a causal mask to the attention weights for hiding future
     input tokens in the inputs is illustrated in the figure below.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 在输入中对隐藏未来输入标记的注意力权重应用因果掩码如下图所示。
 - en: 'To illustrate and implement causal self-attention, let''s work with the unweighted
     attention scores and attention weights from the previous section. First, we quickly
     recap the computation of the attention scores from the previous *Self-Attention*
     section:'
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明和实现因果自注意力，让我们使用前一节的未加权注意力得分和注意力权重。首先，我们快速回顾一下前一节*自注意力*部分中的注意力得分的计算：
 - en: '**In:**'
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE32]'
+  id: totrans-169
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: '**Out:**'
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE33]'
+  id: totrans-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: Similar to the *Self-Attention* section before, the output above is a 6×6 tensor
     containing these pairwise unnormalized attention weights (also called attention
     scores) for the 6 input tokens.
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前的*自注意力*部分类似，上面的输出是一个包含这些成对未归一化的注意力权重（也称为注意力得分）的 6×6 张量，用于 6 个输入标记。
 - en: 'Previously, we then computed the scaled dot-product attention via the softmax
     function as follows:'
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前，我们通过 softmax 函数计算了缩放点积注意力，如下所示：
 - en: '**In:**'
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE34]'
+  id: totrans-175
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: '**Out:**'
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE35]'
+  id: totrans-177
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: The 6×6 output above represents the attention weights, which we also computed
     in the *Self-Attention* section before.
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的 6×6 输出表示了注意力权重，我们也在*自注意力*部分之前计算过。
 - en: 'Now, in GPT-like LLMs, we train the model to read and generate one token (or
     word) at a time, from left to right. If we have a training text sample like "Life
     is short eat desert first" we have the following setup, where the context vectors
     for the word to the right side of the arrow should only incorporate itself and
     the previous words:'
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，在类似 GPT 的 LLMs 中，我们训练模型逐个标记（或单词）从左到右读取和生成。如果我们有一个训练文本样本如“Life is short eat
+    desert first”，我们有以下设置，其中箭头右侧的词的上下文向量应仅包含其自身和前面的词：
 - en: The simplest way to achieve this setup above is to mask out all future tokens
     by applying a mask to the attention weight matrix above the diagonal, as illustrated
     in the figure below. This way, “future” words will not be included when creating
     the context vectors, which are created as a attention-weighted sum over the inputs.
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述设置的最简单方法是通过将注意力权重矩阵在对角线以上应用掩码来屏蔽所有未来的标记，如下图所示。这样，“未来”的单词在创建上下文向量时将不被包括在内，这些向量是对输入的注意力加权和。
 - en: Attention weights above the diagonal should be masked out
+  id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 应屏蔽掉对角线以上的注意力权重
 - en: 'In code, we can achieve this via PyTorch''s [tril](https://pytorch.org/docs/stable/generated/torch.tril.html#)
     function, which we first use to create a mask of 1''s and 0''s:'
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中，我们可以通过 PyTorch 的 [tril](https://pytorch.org/docs/stable/generated/torch.tril.html#)
+    函数实现这一点，首先我们使用它来创建一个由 1 和 0 组成的掩码：
 - en: '**In:**'
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE36]'
+  id: totrans-184
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: '**Out:**'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE37]'
+  id: totrans-186
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: 'Next, we multiply the attention weights with this mask to zero out all the
     attention weights above the diagonal:'
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将注意力权重与这个掩码相乘，将对角线以上的所有注意力权重归零：
 - en: '**In:**'
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE38]'
+  id: totrans-189
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: '**Out:**'
+  id: totrans-190
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE39]'
+  id: totrans-191
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'While the above is one way to mask out future words, notice that the attention
     weights in each row don''t sum to one anymore. To mitigate that, we can normalize
     the rows such that they sum up to 1 again, which is a standard convention for
     attention weights:'
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然上述是屏蔽未来单词的一种方法，但请注意，每行中的注意力权重不再总和为一。为了缓解这一点，我们可以规范化行，使它们再次总和为 1，这是注意力权重的标准约定：
 - en: '**In:**'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入：**'
 - en: '[PRE40]'
+  id: totrans-194
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: '**Out:**'
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出：**'
 - en: '[PRE41]'
+  id: totrans-196
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: As we can see, the attention weights in each row now sum up to 1.
+  id: totrans-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所看到的，每一行中的注意力权重现在总和为 1。
 - en: Normalizing attention weights in neural networks, such as in transformer models,
     is advantageous over unnormalized weights for two main reasons. First, normalized
     attention weights that sum to 1 resemble a probability distribution. This makes
@@ -819,121 +1235,178 @@
     terms of proportions. Second, by constraining the attention weights to sum to
     1, this normalization helps control the scale of the weights and gradients to
     improve the training dynamics.
+  id: totrans-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 在神经网络中对注意权重进行归一化，例如在变换模型中，比未归一化的权重有两个主要优势。首先，归一化的注意权重之和为1类似于概率分布。这使得更容易以比例的形式解释模型对输入的各个部分的关注。其次，通过约束注意权重之和为1，这种归一化有助于控制权重和梯度的规模，以改善训练动态。
 - en: '**More efficient masking without renormalization**'
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
+  zh: '**没有重新归一化的更有效的屏蔽**'
 - en: 'In the causal self-attention procedure we coded above, we first compute the
     attention scores, then compute the attention weights, mask out attention weights
     above the diagonal, and lastly renormalize the attention weights. This is summarized
     in the figure below:'
+  id: totrans-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们上面编写的因果自注意力过程中，我们首先计算注意分数，然后计算注意权重，屏蔽掉对角线上方的注意权重，最后重新归一化注意权重。下图总结了这一点：
 - en: The previously implemented causal self-attention procedure
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 先前实施的因果自注意力过程
 - en: 'Alternatively, there is a more efficient way to achieve the same results. In
     this approach, we take the attention scores and replace the values above the diagonal
     with negative infinity before the values are input into the softmax function to
     compute the attention weights. This is summarized in the figure below:'
+  id: totrans-202
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，有一种更有效的方法来实现相同的结果。在这种方法中，我们取注视分数，并在输入softmax函数计算注视权重之前用负无穷替换对角线上的值。在下图中总结了这一点：
 - en: An alternative, more efficient approach to implementing causal self-attention
+  id: totrans-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 实施因果自注意力的另一种更有效的方法
 - en: 'We can code up this procedure in PyTorch as follows, starting with masking
     the attention scores above the diagonal:'
+  id: totrans-204
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在PyTorch中编写这个过程，首先是对注视分数进行上三角部分的mask：
 - en: '**In:**'
+  id: totrans-205
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入:**'
 - en: '[PRE42]'
+  id: totrans-206
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: The code above first creates a `mask` with 0s below the diagonal, and 1s above
     the diagonal. Here, `torch.triu` (**u**pper **tri**angle) retains the elements
     on and above the main diagonal of a matrix, zeroing out the elements below it,
     thus preserving the upper triangular portion. In contrast, `torch.tril` (**l**ower
     **t**riangle) keeps the elements on and below the main diagonal.
+  id: totrans-207
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码首先创建一个带有对角线以下为0，对角线以上为1的`mask`。在这里，`torch.triu`（**u**pper **tri**angle）保留矩阵的主对角线及其以上的元素，将其以下的元素归零，从而保留上三角部分。相反，`torch.tril`（**l**ower
+    **t**riangle）保留主对角线及其以下的元素。
 - en: The `masked_fill` method then replaces all the elements above the diagonal via
     positive mask values (1s) with `-torch.inf`, with the results being shown below.
+  id: totrans-208
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，通过正面mask值（1s）将对角线以上的所有元素替换为`-torch.inf`，结果如下所示。
 - en: '**Out:**'
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出:**'
 - en: '[PRE43]'
+  id: totrans-210
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: 'Then, all we have to do is to apply the softmax function as usual to obtain
     the normalized and masked attention weights:'
+  id: totrans-211
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们只需像往常一样应用softmax函数，就可以得到归一化和屏蔽的注意权重：
 - en: '**In:**'
+  id: totrans-212
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入:**'
 - en: '[PRE44]'
+  id: totrans-213
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: '**Out:**'
+  id: totrans-214
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出:**'
 - en: '[PRE45]'
+  id: totrans-215
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: Why does this work? The softmax function, applied in the last step, converts
     the input values into a probability distribution. When `-inf` is present in the
     inputs, softmax effectively treats them as zero probability. This is because `e^(-inf)`
     approaches 0, and thus these positions contribute nothing to the output probabilities.
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么这样做？在最后一步应用的softmax函数将输入值转换为概率分布。当输入中存在`-inf`时，softmax有效地将其视为零概率。这是因为`e^(-inf)`接近于0，因此这些位置对输出概率没有贡献。
 - en: IIn this article, we explored the inner workings of self-attention through a
     step-by-step coding approach. Using this as a foundation, we then looked into
     multi-head attention, a fundamental component of large language transformers.
+  id: totrans-217
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们通过逐步编码的方式探索了自注意力的内部工作。基于此，我们进一步研究了多头注意力，这是大型语言变换器的基本组件。
 - en: We then also coded cross-attention, a variant of self-attention that is particularly
     effective when applied between two distinct sequences. And lastly, we coded causal
     self-attention, a concept crucial for generating coherent and contextually appropriate
     sequences in decoder-style LLMs such as GPT and Llama.
+  id: totrans-218
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们还编写了交叉注意力，这是自注意力的一种变体，当应用于两个不同序列之间时特别有效。最后，我们编写了因果自注意力，这是在诸如GPT和Llama等解码器风格LLM中生成连贯和语境适当序列的关键概念。
 - en: By coding these complex mechanisms from scratch, you hopefully gained a good
     understanding of the inner workings of the self-attention mechanism used in transformers
     and LLMs.
+  id: totrans-219
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过从零开始编写这些复杂的机制，希望您对transformers和LLMs中使用的自注意力机制的内部工作原理有了很好的理解。
 - en: (Note that the code presented in this article is intended for illustrative purposes.
     If you plan to implement self-attention for training LLMs, I recommend considering
     optimized implementations like [Flash Attention](https://arxiv.org/abs/2307.08691),
     which reduce memory footprint and computational load.)
+  id: totrans-220
   prefs: []
   type: TYPE_NORMAL
+  zh: （请注意，本文中提供的代码仅用于说明目的。如果您计划为训练LLMs实现自注意力，我建议考虑优化的实现，如[Flash Attention](https://arxiv.org/abs/2307.08691)，它们可以减少内存占用和计算负载。）
 - en: If you liked this article, my [Build a Large Language Model from Scratch](http://mng.bz/amjo)
     book explains how LLMs work using a similar (but more detailed) from-scratch approach.
     This includes coding the data processing steps, LLM architecture, pretraining,
     finetuning, and alignment stages.
+  id: totrans-221
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你喜欢这篇文章，我的[从零开始构建大型语言模型](http://mng.bz/amjo)书籍通过类似（但更详细）的从零开始的方法来解释LLMs的工作原理。这包括编码数据处理步骤、LLM架构、预训练、微调和对齐阶段。
 - en: The book is currently part of Manning's early access program, where new chapters
     will be released regularly. (Purchasers of the currently discounted early access
     version through Manning will also receive the final book upon its release.) The
     corresponding code is [available on GitHub](https://github.com/rasbt/LLMs-from-scratch).
+  id: totrans-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 该书目前是Manning早期获取计划的一部分，新章节将定期发布。（通过Manning购买目前打折的早期获取版本的购买者也将在发布时收到最终的书籍。）相应的代码可在[GitHub上获得](https://github.com/rasbt/LLMs-from-scratch)。
 - en: '* * *'
+  id: totrans-223
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '*This magazine is personal passion project that does not offer direct compensation.
     However, for those who wish to support me, please consider purchasing a copy of
     [one of my books](https://sebastianraschka.com/books). If you find them insightful
     and beneficial, please feel free to recommend them to your friends and colleagues.*'
+  id: totrans-224
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这本杂志是一个个人的热情项目，不提供直接的报酬。然而，对于那些希望支持我的人，请考虑购买[我的其中一本书](https://sebastianraschka.com/books)的副本。如果你觉得它们富有见地并且有益，请随时向你的朋友和同事推荐。*'
 - en: '**Your support means a great deal! Thank you!**'
+  id: totrans-225
   prefs: []
   type: TYPE_NORMAL
+  zh: '**您的支持意义重大！谢谢！**'

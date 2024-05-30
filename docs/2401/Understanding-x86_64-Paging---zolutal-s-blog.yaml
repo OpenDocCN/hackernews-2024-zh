@@ -1,39 +1,57 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:49:47'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:49:47
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Understanding x86_64 Paging - zolutal’s blog
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 理解 x86_64 分页 - zolutal 的博客
 - en: 来源：[https://zolutal.github.io/understanding-paging/](https://zolutal.github.io/understanding-paging/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://zolutal.github.io/understanding-paging/](https://zolutal.github.io/understanding-paging/)
 - en: I’ve spent quite a lot of time messing with x86_64 page tables, understanding
     address translation is not easy and when I started learning about it I felt like
     a lot of the material out there on how it works was hard for me to wrap my head
     around. So in this blog post I am going to attempt to provide a kind of “what
     I wish I had when learning about paging”.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我花了相当多的时间研究 x86_64 页表，理解地址转换并不容易，当我开始学习时，我觉得关于它是如何工作的材料很难理解。所以在这篇博客文章中，我将尝试提供一种“我在学习分页时希望拥有的东西”的形式。
 - en: Quick note, I’ll only be discussing paging in the context of PML4 (Page Map
     Level 4) since it’s currently the dominant x86_64 paging scheme and probably will
     be for a while still.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 快速说明，我只会讨论 PML4（页面映射级别 4）的分页上下文，因为它目前是主流的 x86_64 分页方案，而且可能会在相当长的一段时间内保持主导地位。
 - en: environment
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 环境
 - en: 'Its not necessary, but I recommend that you have a Linux kernel debugging setup
     with QEMU + gdb prepared to follow along with. If you’ve never done this, maybe
     give this repo a shot: [easylkb](https://github.com/deepseagirl/easylkb) (I’ve
@@ -41,64 +59,94 @@
     the environment yourself, the practice mode on any of the Kernel Security challenges
     on [pwn.college](https://pwn.college/) would also work (`vm connect` and `vm debug`
     are the commands to know).'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不是必需的，但我建议您准备好具有 QEMU + gdb 的 Linux 内核调试设置以跟随操作。如果您从未尝试过这样做，也许可以尝试这个仓库：[easylkb](https://github.com/deepseagirl/easylkb)（我从未使用过，但我听说过好评），或者如果您想避免自己设置环境，[pwn.college](https://pwn.college/)
+    上的任何内核安全挑战的实践模式也可以（`vm connect` 和 `vm debug` 是要知道的命令）。
 - en: I suggest this because I think running the same commands I am on your own and
     being able to perform a page walk based on what you can see in gdb is a good test
     of understanding.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我建议这样做是因为我认为在你自己运行相同的命令并能够根据在 gdb 中看到的内容执行页面漫游是一个很好的理解测试。
 - en: wtf is a page
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个页面是什么玩意儿
 - en: On x86_64 a page is a 0x1000 byte slice of memory which is 0x1000 byte aligned.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 x86_64 上，一个页是内存的 0x1000 字节切片，它是 0x1000 字节对齐的。
 - en: This is the reason why if you ever look at /proc/<pid>/maps you see that all
     the address ranges will start and end with an address ending with 0x000 because
     the minimum size of a memory mapping on x86_64 is page size (0x1000 bytes) and
     pages are required to be ‘page aligned’ (the last 12 bits must be zero).
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么如果您曾经查看过 /proc/<pid>/maps，您会发现所有地址范围都以一个以 0x000 结尾的地址开始和结束，因为在 x86_64
+    上内存映射的最小大小是页面大小（0x1000 字节），而且页面需要‘页面对齐’（最后 12 位必须为零）。
 - en: A ‘Virtual Page’ will be resolved to a single ‘Physical Page’ (aka ‘Page Frame’)
     by your MMU though many Virtual Pages may refer to the same Physical Page.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: ‘虚拟页’将通过您的 MMU 解析为一个单独的‘物理页’（又称‘页面框’），尽管许多虚拟页可能指向同一个物理页。
 - en: what is in a virtual address
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个虚拟地址中有什么
 - en: PML4, as one might guess, has four level of paging structures, these paging
     structures are called ‘Page Tables’. A page table is a page-sized memory region
     which contains 512 8-byte page table entries. Each entry of a page table will
     refer to either the next level page table or to the final physical address a virtual
     address resolves to.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: PML4，正如人们可能猜到的，有四级分页结构，这些分页结构称为‘页表’。一个页表是一个页大小的内存区域，其中包含 512 个 8 字节的页表条目。每个页表的条目将引用下一级的页表或虚拟地址解析到的最终物理地址。
 - en: The entry from a page table that is used for address translation is based on
     the virtual address of the memory access. With 512 entries per level, that means
     9-bits of the virtual address are used at every level to index into the corresponding
     page table.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于地址转换的页表条目是基于内存访问的虚拟地址的。每一级有 512 个条目，这意味着在每一级上，有 9 位虚拟地址被用于索引到相应的页表中。
 - en: 'Say we have an address like this:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有这样一个地址：
 - en: '`0x7ffe1c9c9000`'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '`0x7ffe1c9c9000`'
 - en: 'The last 12 bits of this address represent the offset within the physical page:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个地址的最后 12 位表示物理页内的偏移量：
 - en: '`0x7ffe1c9c9000 & 0xfff = 0x0`'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '`0x7ffe1c9c9000 & 0xfff = 0x0`'
 - en: This means that once we determine the physical address of the page this virtual
     address resolves to, we will add zero to the result to get the final physical
     address.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着一旦我们确定了虚拟地址解析到的页的物理地址，我们将在结果中加上零以得到最终的物理地址。
 - en: 'After the last 12 bits, which is again just the offset within the final page,
     a virtual address is comprised of indicies into the page tables. As mentioned
     each level of paging uses 9 bits of the virtual address, so the lowest level of
@@ -107,689 +155,1043 @@
     we just need to shift right by another nine bits each time and again mask off
     the lower nine bits as our index. Doing this for the address above gives us these
     indicies:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在最后的12位之后，即再次只是最终页面内的偏移量，虚拟地址由指向页表的索引组成。如上所述，每个分页级别使用虚拟地址的9位，因此，分页结构的最低级别，即页表，由地址的下一个9位索引（通过位掩码`&
+    0x1ff`对移位值）索引。对于接下来的级别，我们只需每次向右移动另外九位，再次掩盖最低的九位作为我们的索引。对于上面的地址，这样做给我们这些索引：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: all your base
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 所有你的基地
 - en: Now that we know how to index into page tables and vaguely what they contain,
     where actually are they???
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道如何索引页表和它们大致包含什么，那么它们实际上在哪里呢？
 - en: Well each thread of your CPU has a page table base register called `cr3`.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，你CPU的每个线程都有一个称为`cr3`的页表基址寄存器。
 - en: '`cr3` holds the physical address of the highest level of the paging structure,
     aka the Page Global Directory (PGD).'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cr3`保存了分页结构的最高级别，也就是页面全局目录（PGD）的物理地址。'
 - en: 'From gdb, when debugging the kernel, you can read the contents of `cr3` like
     this:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 从gdb，在调试内核时，你可以像这样读取`cr3`的内容：
 - en: '[PRE1]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The `cr3` register can hold some additional information besides just the PGD
     address depending on what processor features are in use, so a more general way
     of getting the physical address of the PGD from the `cr3` register is to mask
     off the lower 12 bits of its contents like so:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cr3`寄存器可以保存一些额外的信息，而不仅仅是PGD地址，这取决于正在使用的处理器功能，因此从`cr3`寄存器获取PGD的物理地址的更一般方法是像这样屏蔽其内容的低12位：'
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: page table entries
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 页表条目
 - en: 'Lets look at what is at that physical address we got from `cr3` in gdb. The
     `monitor xp/...` command that is exposed to gdb by the QEMU Monitor lets us print
     out the physical memory of the vm and doing `monitor xp/512gx ...` will print
     the entire contents, all 512 entries, of the PGD referred to by `cr3`:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看从`cr3`中获取的物理地址在gdb中是什么。通过QEMU Monitor向gdb公开的`monitor xp/...`命令让我们打印出vm的物理内存，执行`monitor
+    xp/512gx ...`将打印出由`cr3`引用的PGD的所有512个条目的整个内容：
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This produces a lot of output and most of it is zero, so I’m only including
     the tail of the output here.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这产生了大量输出，其中大部分是零，所以我只在这里包含了输出的尾部。
 - en: This output probably doesn’t mean much to you yet, but we can observe some patterns
     in the data, lots of the 8-byte entries end in `0x67`, for example.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个输出可能对你来说还没有意义，但是我们可以观察数据中的一些模式，例如很多8字节的条目以`0x67`结尾。
 - en: decoding a PGD entry
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解码PGD条目
 - en: From the PGD output above, lets take the PGD entry at `0x000000010d664f50` with
     value `0x0000000123fca067` as an example to see how to decode an entry.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面的PGD输出中，让我们以值为`0x0000000123fca067`的`0x000000010d664f50`处的PGD条目为例，看看如何解码一个条目。
 - en: 'and lets do this with the binary representation of that entry’s value:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用那个条目值的二进制表示来做一下：
 - en: '[PRE4]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Here is a little diagram to show what each bit in the entry represents:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个小图示，显示条目中的每个位表示什么：
 - en: '[PRE5]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'and here’s a key for what each of those labels mean:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是这些标签的含义：
 - en: NX (Not Executable) – if this bit is set, no memory mapping that is a descendant
     of this PGD entry will be executable.
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NX（不可执行）- 如果设置了此位，则不会执行此PGD条目的任何内存映射的后代。
 - en: Reserved – these values must be zero.
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 保留-这些值必须为零。
 - en: PUD Physical Address – the physical address of the PUD associated with this
     PGD entry.
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PUD物理地址-与此PGD条目关联的PUD的物理地址。
 - en: Accessed – If any pages referred to by this entry or its descendants, this bit
     will be set by the MMU, and can be cleared by the OS.
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 已访问-如果由该条目或其后代引用的任何页面，此位将由MMU设置，并且可以由OS清除。
 - en: Page Cache Disabled (PCD) – pages descendant of this PGD entry should not enter
     the CPU’s cache hierarchy, sometimes also called the ‘Uncacheable’ (UC) bit.
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 页面高速缓存禁用（PCD）- 此PGD条目的后代页面不应进入CPU的高速缓存层次结构，有时也称为“不可缓存”（UC）位。
 - en: Page Write Through (WT) – writes to pages descendant of this PGD entry should
     immediately write to RAM rather than buffering writes to CPU cache before eventually
     updating RAM.
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 页面写穿（WT）- 写入此PGD条目的后代页面应立即写入RAM，而不是在最终更新RAM之前缓冲写入CPU缓存。
 - en: User/Supervisor – if this bit is unset, pages descendant of this PGD cannot
     be accessed unless in supervisor mode.
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当此位未设置时，用户/监督员无法访问此PGD的后代页，除非处于监督模式。
 - en: Read/Write – if this bit is unset, pages descendant of this PGD cannot be written
     to.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 读/写 - 当此位未设置时，此PGD的后代页无法被写入。
 - en: Present – if this bit is unset then the processor will not use this entry for
     address translation and none of the other bits will apply.
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 存在 - 如果此位未设置，则处理器不会使用此条目进行地址转换，其他位也不会应用。
 - en: 'The bits that we really care about here are the the Present bit, the ones representing
     the physical address of the next level of the paging structures, the PUD Physical
     Address bits, and the permission bits: NX, User/Supervisor, and Read/Write.'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里我们真正关心的位是存在位，表示下一级分页结构的物理地址的位，PUD物理地址位，以及权限位：NX、用户/监督员和读/写。
 - en: The Present bit is super important because without it set the rest of the entry
     is ignored.
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 存在位非常重要，因为如果没有设置，那么条目的其余部分将被忽略。
 - en: The PUD Physical Address lets us continue page walking by telling us where the
     physical address of the next level of the paging structures is at.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PUD物理地址让我们通过告诉我们下一级分页结构的物理地址位于哪里来继续页行走。
 - en: The Permission bits all apply to pages which are descendants of the PGD entry
     and determine how those pages are able to be accesssed.
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 权限位都适用于作为PGD条目后代的页面，确定这些页面可以如何被访问。
 - en: 'The remaining bits are not as important for our purposes:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 其余位对我们的目的并不那么重要：
 - en: The Accessed bit is set if the entry was used in translating a memory access,
     its not important for page walking.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果条目在转换内存访问中被使用，则访问位被设置，对于页行走而言并不重要。
 - en: Page Cache Disabled and Page Write Through are not used for normal memory mappings
     and do not affect page translation or permissions so lets ignore them.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 页面缓存禁用和页面写入缓存对于正常内存映射不会被使用，也不会影响页面转换或权限，因此让我们忽略它们。
 - en: 'So decoding this entry, we learn:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，解码此条目，我们了解到：
 - en: 'The PUD is Present:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: PUD存在：
 - en: '[PRE6]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The mappings in the PUD and below may be able to be Writable:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: PUD及以下的映射可能是可写的：
 - en: '[PRE7]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The mappings in the PUD and below may be able to be User accessible:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: PUD及以下的映射可能可以被用户访问：
 - en: '[PRE8]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The PUD’s physical address ( bits (51:12] ) is `0x123fca000`:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: PUD的物理地址（位（51:12]）是`0x123fca000`：
 - en: '[PRE9]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The mappings in the PUD and below may be able to be Executable:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: PUD及以下的映射可能是可执行的：
 - en: '[PRE10]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: decoding entries for all levels
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解码所有级别的条目
 - en: Now that we’ve seen how to decode a PGD entry, decoding the rest of the levels
     aren’t so much different, at least in the common case.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经看到如何解码PGD条目，解码其他级别并没有太大区别，至少在常见情况下是这样。
 - en: For all of these diagrams ‘X’ means the bit can be either zero or one, otherwise,
     if a bit is set to a specific value then that value is either required by the
     architecture or by the specific encoding shown by the diagram.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有这些图表中，“X”表示该位可以是零或一，否则，如果某位设置为特定值，则该值要么是架构所要求的，要么是图表所示编码要求的。
 - en: PGD
+  id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PGD
 - en: '[PRE11]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This one we’ve already seen, I described it in detail in the previous section,
     but here it is without that specific PGD entry filled in.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一点我们已经看过了，在前一节中我进行了详细描述，但没有填写特定的PGD条目。
 - en: PUD
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PUD
 - en: '[PRE12]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: As you can see the diagram above for the PUD is very similar to the one for
     the PGD, the only difference is the introduction of the ‘Page Size’ bit. The Page
     Size bit being set changes how we need to interpret a PUD entry quite a lot. For
     this diagram we are assuming it is unset, which is the most common case.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您在上面的PUD图表中所见，与PGD的图表非常相似，唯一的区别是引入了“页大小”位。设置页大小位会改变我们如何解释PUD条目。对于此图表，我们假设未设置，这是最常见的情况。
 - en: PMD
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PMD
 - en: '[PRE13]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Again, the PMD diagram is very similar to the previous diagram, and like with
     the PUD entry, we are ignoring the Page Size bit for now.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，PMD图表与上一个图表非常相似，就像PUD条目一样，我们现在忽略了"页大小"位。
 - en: PT
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PT
 - en: '[PRE14]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: At the Page Table entry things get more interesting, there are some new fields/attributes
     that weren’t there in the previous levels.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在页表条目中，情况变得更有趣，出现了一些以前级别中不存在的新字段/属性。
 - en: 'Those new fields/attributes are:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些新字段/属性包括：
 - en: 'Memory Protection Key (MPK or PK): This is an x86_64 extension that allows
     assigning a 4-bit keys to pages which can be used to configure memory permissions
     for all pages with that key.'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 内存保护密钥（MPK或PK）：这是一个x86_64扩展，允许为具有特定密钥的所有页面分配4位密钥，用于配置所有具有该密钥的页面的内存权限。
 - en: 'Global: This has to do with how the TLB (Translation Lookaside Buffer, the
     MMU’s cache for virtual to physical address translations) caches the translation
     for th page, this bit being set means the page will not be flushed from the TLB
     on context switch, this is commonly enabled on Kernel pages to reduce TLB misses.'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 全局：这与 TLB（转换后备缓冲区，MMU 用于虚拟地址到物理地址转换的缓存）如何缓存页面的翻译有关，设置此位意味着页面不会在上下文切换时从 TLB 中刷新，这通常在内核页面上启用以减少
+    TLB 未命中。
 - en: 'Page Attribute Table (PAT): If set, the MMU should consult the Page Attribute
     Table MSR when determining whether the ‘Memory Type’ of the page, e.g. whether
     this page is ‘Uncacheable’, ‘Write Through’, or one of a few other memory types.'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 页面属性表（PAT）：如果设置，MMU 在确定页面的‘内存类型’时应查阅页面属性表 MSR，例如，此页面是否为‘不可缓存’、‘写穿透’或其他一些内存类型之一。
 - en: 'Dirty: This bit is similar to the accessed bit, it gets set by the MMU if this
     page was written to and must be reset by the OS.'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 脏：这个位类似于已访问位，如果此页面被写入，则 MMU 将设置该位，并且必须由操作系统复位。
 - en: None of these actually affect the address translation itself, but the configuration
     of the Memory Protection Key can mean that the expected memory access permissions
     for the page referred to by this entry may be stricter than what is encoded by
     the entry itself.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些都实际上不会影响地址转换本身，但是内存保护键的配置可能意味着由该条目引用的页面的预期内存访问权限可能比条目本身编码的严格。
 - en: Unlike the previous levels, since this is the last level, the entry holds the
     final physical address of the page associated with the virtual address we are
     translating. Once you apply a bit-mask to get the physical address bytes and add
     the last 12 bits of the original virtual address (the offset within the page),
     you have your physical address!
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 与前几个级别不同，由于这是最后一级，所以条目保存了与正在转换的虚拟地址相关联的页面的最终物理地址。一旦您应用位掩码以获取物理地址字节并添加原始虚拟地址的最后
+    12 位（页面内部的偏移量），您就获得了物理地址！
 - en: 'Hopefully, this doesn’t seem so bad, the general case of page walking is just
     a few steps:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望这听起来并不那么糟糕，页面遍历的一般情况只需几个步骤：
 - en: Convert the virtual address to indicies and a page offset by shifting the address
     and applying bitmasks
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过移位地址和应用位掩码将虚拟地址转换为索引和页面偏移量
 - en: Read `cr3` to get the physical address of the PGD
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 读取 `cr3` 以获取 PGD 的物理地址。
 - en: 'For each level until the last:'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于每个级别直到最后一个：
 - en: Use the indicies calculated from the virtual address to know what entry from
     the page table to use
+  id: totrans-98
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用从虚拟地址计算出的索引来知道从页面表中使用哪个条目
 - en: Apply a bitmask to the entry to get the physical address of the next level
+  id: totrans-99
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将位掩码应用于条目，以获取下一级的物理地址。
 - en: On the final level, again find the entry corresponding with the index from the
     virtual address
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在最终级别上，再次找到与虚拟地址相对应的条目。
 - en: Apply a bitmask to get the physical address of the page associated with the
     virtual address
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将位掩码应用于虚拟地址，以获取与虚拟地址相关联的页面的物理地址。
 - en: Add offset within the page from the virtual address to the page’s physical address
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将虚拟地址中的偏移量添加到页面的物理地址，以获得页面内部的偏移量。
 - en: Done!
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 完成！
 - en: hugeify
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 巨化
 - en: As mentioned, the previous diagrams for the PUD and PMD are for the common case,
     when the Page Size bit is not set.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，PUD 和 PMD 的先前图表是针对普通情况的，即当页大小位未设置时。
 - en: So, what about when it is set?
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，当设置时呢？
 - en: When it is set that is effectively telling the MMU, pack it up, we’re done here,
     don’t keep page walking, the current entry holds the physical address of the page
     we are looking for.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 当设置时，这实际上告诉 MMU，收拾好了，我们在这里完成了，不要继续遍历页面，当前条目保存了我们正在寻找的页面的物理地址。
 - en: 'But there is a bit more to it than that, the physical address of the page in
     entries where the Page Size bit is set isn’t for a normal 4KB (0x1000 byte) page,
     it is a ‘Huge Page’ which comes in two variants: 1GB Huge Pages and 2MB Huge Pages.'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 但不仅仅是这样，当页面大小位被设置时，条目中页面的物理地址不是正常的 4KB（0x1000 字节）页面，而是‘巨大页面’，有两种变体：1GB 巨大页面和
+    2MB 巨大页面。
 - en: When a PUD entry has the Page Size bit set then it refers to a 1GB Huge Page,
     and when a PMD has the Page Size bit set it refers to a 2MB Huge Page.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 PUD 条目设置了页面大小位时，它指的是 1GB 的巨大页面，而当 PMD 设置了页面大小位时，它指的是 2MB 的巨大页面。
 - en: But where do the 1GB and 2MB numbers come from?
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是 1GB 和 2MB 的数字是从哪里来的呢？
 - en: Each page table level holds up to 512 entries, that means a PT can refer to
     at most 512 pages and `512 * 4KB = 2MB`. So a Huge Page at the PMD level effectively
     means that the entry refers to a page that is the same size as a full PT.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个页表级别最多可容纳 512 个条目，这意味着 PT 最多可以指向 512 页，`512 * 4KB = 2MB`。因此，PMD 级别的巨大页面有效地意味着该条目指向与完整
+    PT 大小相同的页面。
 - en: 'Extending this to the PUD level, we just multiply by 512 again to get the size
     of a full PMD that has full PTs: `512 * 512 * 4KB = 1GB`.'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此扩展到 PUD 级别，我们再次乘以 512 得到具有完整 PT 的完整 PMD 的大小：`512 * 512 * 4KB = 1GB`。
 - en: Huge Page PUD
+  id: totrans-113
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 巨大页面 PUD
 - en: '[PRE15]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: When the page size bit is set notice that the PUD entry looks more like a PT
     entry than a normal PUD entry, which makes sense because it is also referring
     to a page rather than a page table.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 当页面大小位被设置时，注意到 PUD 条目看起来更像是 PT 条目而不是普通的 PUD 条目，这是有道理的，因为它也是指向页面而不是页表。
 - en: 'There are some distinctions from a PT entry though:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 PT 条目有一些区别：
 - en: The Page Size bit is where the Page Attribute Table (PAT) bit is at on a PT,
     so the PAT bit is relocated to bit 12.
+  id: totrans-117
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 页面大小位就是 PT 上的 Page Attribute Table (PAT) 位所在的位置，因此 PAT 位被重新定位到位 12。
 - en: The physical address of a 1GB Huge Page is required to have 1GB alignment in
     physical memory, this is why the new reserved bits exist and why bit 12 is able
     to be repurposed as the PAT bit.
+  id: totrans-118
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 1GB 巨大页面的物理地址需要在物理内存中具有 1GB 对齐，这就是新的保留位存在以及为什么位 12 能够被重新用作 PAT 位的原因。
 - en: Overall, not too much new here, the only other differences when dealing with
     huge pages really is that a different bitmask needs to be applied to the address
     to get the bits for the physical address of the page, also the 1GB alignment means
     when calculating the physical address of a virtual address within the page we
     need to use a mask based on 1GB alignment instead of 4KB alignment.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，这里没有太多新东西，处理巨大页面时唯一的其他区别实际上是需要对地址应用不同的位掩码以获取页面的物理地址位，此外，1GB 对齐意味着在计算页面内虚拟地址的物理地址时，我们需要使用基于
+    1GB 对齐而不是 4KB 对齐的掩码。
 - en: Huge Page PMD
+  id: totrans-120
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 巨大页面 PMD
 - en: '[PRE16]'
+  id: totrans-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: This is very similar to the PUD entry with the Page Size bit set, the only thing
     that has changed is that since the alignment is smaller for the 2MB pages at this
     level, there are less reserved bits set.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与设置了页面大小位的 PUD 条目非常相似，唯一变化的是，由于此级别的 2MB 页面的对齐更小，因此设置的保留位较少。
 - en: The 2MB alignment means the offset within the huge page should be calculated
     using a mask based on 2MB alignment.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 2MB 对齐意味着在巨大页面内的偏移量应使用基于 2MB 对齐的掩码来计算。
 - en: going for a walk
+  id: totrans-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 开始遍历
 - en: So the last section was a lot of diagrams, in this section lets look at how
     to actually do a page walk manually in gdb.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 上一节有很多图表，这一节让我们看看如何在 gdb 中手动执行页面遍历。
 - en: preparation
+  id: totrans-126
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 准备工作
 - en: 'With a booted up vm and gdb attached I first will pick an address to do a page
     walk on, as an example I’ll use the current stack pointer while running in the
     kernel:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用启动的虚拟机和附加了 gdb 的情况下，我首先会选择一个地址进行页面遍历，作为示例，我将使用内核中运行时的当前堆栈指针：
 - en: '[PRE17]'
+  id: totrans-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Now we have the address we are going to walk, lets also get the physical address
     of the PGD from `cr3`:'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了要遍历的地址，让我们也从 `cr3` 中获取 PGD 的物理地址：
 - en: '[PRE18]'
+  id: totrans-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'I’ll use this little python function to extract the page table offsets from
     the virtual address:'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将使用这个小小的 Python 函数来从虚拟地址中提取页表偏移量：
 - en: '[PRE19]'
+  id: totrans-132
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'which outputs this:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样输出：
 - en: '[PRE20]'
+  id: totrans-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: PGD
+  id: totrans-135
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PGD
 - en: 'The index we got for the PGD based on the virtual address was 511, multiplying
     511 by 8 will let us get the byte offset into the PGD that the PGD entry for our
     virtual address starts at:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们根据虚拟地址得到的 PGD 的索引是 511，将 511 乘以 8 将使我们得到 PGD 条目的字节偏移量，该偏移量是我们虚拟地址的 PGD 条目起始位置处：
 - en: '[PRE21]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'adding that offset to the PGD’s physical address gets us the physical address
     of the PGD entry:'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 将该偏移量添加到 PGD 的物理地址上得到 PGD 条目的物理地址：
 - en: '[PRE22]'
+  id: totrans-139
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'and reading the physical memory at that address gets us the PGD entry itself:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 读取该地址处的物理内存得到 PGD 条目本身：
 - en: '[PRE23]'
+  id: totrans-141
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Looks like the entry has the last three bits (present, user, and writeable)
     set, and the top bit (NX) is unset, meaning there aren’t any restrictions so far
     on the permissions of the pages associated with this virtual address.
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来条目的最后三位（存在、用户和可写）已设置，并且顶部位（NX）未设置，这意味着到目前为止与此虚拟地址关联的页面的权限没有任何限制。
 - en: 'Masking the bits [12, 51) gives us the physical address of the PUD:'
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 对位 [12, 51) 进行掩码运算得到 PUD 的物理地址：
 - en: '[PRE24]'
+  id: totrans-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: PUD
+  id: totrans-145
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PUD
 - en: 'The index we got for the PUD based on the virtual address was 510, multiplying
     510 by 8 will let us get the byte offset into the PUD that the PUD entry for our
     virtual address starts at:'
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据虚拟地址得到的 PUD 索引是 510，将 510 乘以 8 将让我们得到 PUD 的字节偏移量，即我们的虚拟地址所在的 PUD 条目开始的地方：
 - en: '[PRE25]'
+  id: totrans-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'adding that offset to the PUD’s physical address gets us the physical address
     of the PUD entry:'
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 将该偏移添加到 PUD 的物理地址上，我们就得到了 PUD 条目的物理地址：
 - en: '[PRE26]'
+  id: totrans-149
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'and reading the physical memory at that address gets us the PUD entry itself:'
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 读取该地址处的物理内存将得到 PUD 条目本身：
 - en: '[PRE27]'
+  id: totrans-151
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: At this level we need to start paying attention to the Size Bit (bit 7), because
     if it is a 1GB page we would stop our page walk here.
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此级别，我们需要开始注意大小位（位 7），因为如果是 1GB 页，我们将在此处停止分页。
 - en: '[PRE28]'
+  id: totrans-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Seems it is unset on this entry so we will continue page walking.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来此条目未设置，因此我们将继续进行分页。
 - en: Notice also that the PUD entry ends in 0x3 and not 0x7 like the previous level,
     the bottom two bits (present, writeable) are still set but the third bit, the
     user bit is now unset. That means that usermode accesses to pages belonging to
     this PUD entry will result in a page fault due to the failed permission check
     on the access.
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 还要注意 PUD 条目结尾是 0x3 而不是像前一级别那样是 0x7，底部两位（存在、可写）仍然被设置，但第三位，用户位现在未设置。这意味着属于此 PUD
+    条目的页面的用户模式访问将因访问的权限检查失败而导致页面故障。
 - en: The NX bit is still unset, so pages belonging to this PUD can still be executable.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: NX 位仍未设置，因此属于此 PUD 的页面仍可执行。
 - en: 'Masking the bits [12, 51) gives us the physical address of the PMD:'
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 对位 [12, 51) 进行屏蔽得到了 PMD 的物理地址：
 - en: '[PRE29]'
+  id: totrans-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: PMD
+  id: totrans-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PMD
 - en: 'The index we got for the PMD based on the virtual address was 70, multiplying
     70 by 8 will let us get the byte offset into the PMD that the PMD entry for our
     virtual address starts at:'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据虚拟地址得到的 PMD 索引是 70，将 70 乘以 8 将让我们得到 PMD 的字节偏移量，即我们的虚拟地址所在的 PMD 条目开始的地方：
 - en: '[PRE30]'
+  id: totrans-161
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'adding that offset to the PMD’s physical address gets us the physical address
     of the PMD entry:'
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 将该偏移添加到 PMD 的物理地址上，我们就得到了 PMD 条目的物理地址：
 - en: '[PRE31]'
+  id: totrans-163
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: 'and reading the physical memory at that address gets us the PMD entry itself:'
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 读取该地址处的物理内存将得到 PMD 条目本身：
 - en: '[PRE32]'
+  id: totrans-165
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: Again, at this level we need paying attention to the Size Bit, because if it
     is a 2MB page we will stop our page walk here.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，在此级别，我们需要注意大小位，因为如果是 2MB 页，我们将在此处停止分页。
 - en: '[PRE33]'
+  id: totrans-167
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: Looks like our virtual address refers to a 2MB Huge Page! so the physical address
     in this PMD entry is the physical address of that Huge Page.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来我们的虚拟地址指向一个 2MB 巨大页面！因此，此 PMD 条目中的物理地址是该巨大页面的物理地址。
 - en: Also, looking at the permission bits, looks like the page is still present and
     writeable and the user bit is still unset, so this page is only accessible from
     supervisor mode (ring-0).
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，查看权限位，看起来页面仍然存在且可写，并且用户位仍未设置，因此此页面仅从超级用户模式（ring-0）可访问。
 - en: 'Unlike the previous levels, the top bit, the NX bit, is set:'
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 与前几个级别不同，最高位，NX 位，被设置为 1：
 - en: '[PRE34]'
+  id: totrans-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: So this Huge Page is not executable memory.
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这个巨大页面不是可执行内存。
 - en: 'Applying a bitmask on bits [21:51) gets us the physical address of the huge
     page:'
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 对位 [21:51) 进行位掩码操作将得到巨大页面的物理地址：
 - en: '[PRE35]'
+  id: totrans-174
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: Now we need to apply a mask to the virtual address based on 2MB page alignment
     to get the offset into the Huge Page.
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们需要根据 2MB 页对齐来对虚拟地址应用位掩码以获得对巨大页面的偏移量。
 - en: '2MB is equivalent to `1<<21` so applying a bitmask of `(1ull<<21)-1` will get
     us the offset:'
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 2MB 等于 `1<<21`，因此应用位掩码 `(1ull<<21)-1` 将得到偏移量：
 - en: '[PRE36]'
+  id: totrans-177
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'Now adding this offset to the base address of the 2MB Huge Page will get us
     the physical address associated with the virtual address we started with:'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在将此偏移添加到 2MB 巨大页面的基地址上将得到与我们起始的虚拟地址相关联的物理地址：
 - en: '[PRE37]'
+  id: totrans-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: 'Looks like the Virtual Address: `0xffffffff88c07da8` has a Physical Address
     of: `0x8c07da8`!'
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来虚拟地址：`0xffffffff88c07da8` 的物理地址是：`0x8c07da8`！
 - en: checking ourselves
+  id: totrans-181
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 检查自己
 - en: 'There are a few ways to test that we page walked correctly, an easy check is
     to just dump the memory at the virtual and physical address and compare them,
     if they look the same we were probably right:'
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几种方法可以测试我们是否正确地进行了分页，一个简单的检查是只需转储虚拟地址和物理地址处的内存并进行比较，如果它们看起来相同，我们可能是正确的：
 - en: 'Physical:'
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 物理：
 - en: '[PRE38]'
+  id: totrans-184
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: 'Virtual:'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 虚拟：
 - en: '[PRE39]'
+  id: totrans-186
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: Looks good to me!
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来不错！
 - en: 'Another way to check is using the `monitor gva2gpa` (guest virtual address
     to guest physical address) command exposed to gdb by the QEMU Monitor:'
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种检查方法是使用 QEMU Monitor 提供的 `monitor gva2gpa`（客户虚拟地址到客户物理地址）命令：
 - en: '[PRE40]'
+  id: totrans-189
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: Assuming QEMU is doing address translation correctly (probably a fair assumption),
     then looks like we have double confirmation that our page walk was successful!
+  id: totrans-190
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设 QEMU 正确执行地址转换（这可能是一个合理的假设），那么看起来我们已经双重确认我们的页表遍历成功了！
 - en: wrapping up
+  id: totrans-191
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结束
 - en: Hopefully by the end of this you have a pretty solid understanding of how paging
     works on x86_64 systems. I wanted to pack a lot of information into the post so
     it took some thought to figure out how to organize all of it and I’m still not
     sure if this was a great way to go about it.
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望到此结束时，你已经对 x86_64 系统上的分页是如何工作有了相当扎实的理解。我希望在这篇文章中包含了大量信息，所以需要一些思考来确定如何组织所有内容，但我仍然不确定这是否是一个很好的方法。
 - en: Anyways, I think paging is pretty neat and I think its one of those things where
     once you get it you’ve got it, but getting to that point can take some time and
     some screwing around in gdb.
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，我觉得分页挺不错的，我认为这是一种一旦掌握就能轻松掌握的东西，但要达到那个水平可能需要一些时间和在 gdb 中一些折腾。
 - en: 'I’d also like to mention that the inspiration for the diagrams of the various
     page table entries I made for this post came from the documentation of the [blink](https://github.com/jart/blink/)
     project: [blink/machine.h](https://github.com/jart/blink/blob/46d82a0ced97c0df1fc645c5d81a88f0d142fbfd/blink/machine.h#L61).'
+  id: totrans-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还想提一下，我为本文制作的各种页表条目的图表灵感来自于 [blink](https://github.com/jart/blink/) 项目的文档：[blink/machine.h](https://github.com/jart/blink/blob/46d82a0ced97c0df1fc645c5d81a88f0d142fbfd/blink/machine.h#L61)。
 - en: Thanks for reading!
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢阅读！
