@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:39:59'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Beyond the 1 MB barrier in DOS - by Julio Merino
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos](https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     to maximize the use of the 1 MB address space inherited from the 8086—even after
     the 80286 introduced support for 16 MB of memory and the 80386 opened the gates
     to 4 GB.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'I know I promised that this follow-up article would be about DJGPP, but before
@@ -31,69 +38,83 @@
     the post; *LOADALL*, which I didn’t know about until you readers mentioned it;
     and *DOS extenders*, which I was planning to describe in the DJGPP article but
     they are a better fit for this one.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: So… strap your seat belts on and dive right in for another tour through the
     ancient techniques that DOS had to pull off to peek into the memory address space
     above the first MB. And get your hands ready because we’ll go over assembly code
     for a step-by-step jump into unreal mode.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Having read the preceding post, you should know by now what the real, protected,
     and VM86 modes of the x86 processors are. But there is one extra unofficial mode
     I did not talk about, and that is the *unreal mode*. The mode with the coolest
     name if you ask me.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Unreal mode is a special state of the processor in which the CPU acts as if
     it was in real mode… but with segment descriptors that allow it to reference memory
     above the 1 MB limit. These segments are impossible to define in real mode but,
     with different tricks for the 80286 and 80386, they become a possibility.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'To understand how unreal mode works, we need to go back to the diagram I presented
     earlier describing the address resolution process that the 80286’s MMU executes
     on every memory access:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Diagram representing the operations that the 80286 does, in hardware, to resolve
     a segment:address memory reference.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'As you can see in the diagram, for every memory access of the form `segment:offset`,
     the MMU:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: decodes the segment selector specified by `segment` to determine whether to
     query the GDT or LDT and which segment descriptor to read,
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: reads the determined segment descriptor by indexing into the GDT or LDT tables,
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: decodes the segments’ base address and limit as stored in the descriptor,
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: checks the privileges of the executing code against the protections recorded
     in the descriptor,
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: and ensures the `offset` is within the segment limit defined in the descriptor.
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Only after these steps complete successfully, the memory access is allowed;
     otherwise, the processor raises a General Protection Fault exception.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: This is all conceptually good until you realize that the GDT and LDT live in
     main memory… and main memory is slow—*excruciatingly* so in processor time. Having
     to read from main memory to resolve *every* memory access, even with a good L1
     or L2 cache, would have a big performance impact on most applications.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: To resolve this inefficiency, the processor has a cache of segment descriptors.
@@ -101,12 +122,14 @@
     from the GDT or LDT tables and store them in the cache. Instructions that reference
     memory, such as `MOV AX, DS:1234h`, read the descriptors from the cache without
     ever reaching out to main memory.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: Diagram representing how the instructions used to load a register like DS are
     decoupled from the instructions that later consume the details about DS. It is
     crucial to note how the segment descriptor cache completely shields the second
     instruction from accessing main memory to resolve the address.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'So far so good, but let’s add another twist. The diagram I presented earlier
@@ -115,34 +138,47 @@
     cache to peek at the segment limits and protection settings. This means that,
     for real mode to work as 8086 code expects, the cache must contain values that
     are compatible with real mode: in particular, the limits must be set to 64 KB.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止一切都很顺利，但让我们再加上另一个转折。我之前提出的显示 80286 如何解析内存地址的图不仅适用于保护模式：它也适用于实模式。在两种模式下，处理器都会访问描述符缓存以查看段限制和保护设置。这意味着为了使实模式按照
+    8086 代码的期望工作，缓存必须包含与实模式兼容的值：特别是，限制必须设置为 64 KB。
 - en: But what if we could somehow load arbitrary segment descriptors into the processor’s
     cache and leverage those in real mode? If we could do that, we could increase
     the segment limits stored in the cache, and then any memory references that use
     those cached descriptors would be able to bypass the real mode rules and access
     extended memory directly.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，如果我们能够以某种方式将任意段描述符加载到处理器的缓存中，并在实模式中利用它们会怎么样呢？如果我们能做到这一点，我们可以增加缓存中存储的段限制，然后使用那些缓存的描述符的任何内存引用都能够绕过实模式规则，直接访问扩展内存。
 - en: And this, dear reader, is what unreal mode is about. There is a ton of nuance
     about how this mode was discovered and how it got its name, and to learn more
     about that story, I’ll redirect you to [OS/2 Museum’s excellent history of the
     unreal mode](https://www.os2museum.com/wp/a-brief-history-of-unreal-mode/). But
     keep in mind that unreal mode is a clutch that DOS applications used to access
     memory above the 1 MB mark while avoiding expensive protected mode switches.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 亲爱的读者，这就是虚拟模式的全部内容。关于如何发现这种模式以及它如何得名有很多微妙之处，要了解更多关于这个故事的内容，我将把你重定向到[OS/2 博物馆对虚拟模式的精彩历史](https://www.os2museum.com/wp/a-brief-history-of-unreal-mode/)。但请记住，虚拟模式是
+    DOS 应用程序用来访问 1 MB 以上内存并避免昂贵的保护模式切换的工具。
 - en: Before describing how we can switch the processor to unreal mode, we must first
     look at how we can actually take advantage of this mode.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在描述如何将处理器切换到虚拟模式之前，我们必须首先看看我们实际上如何利用这种模式。
 - en: 'In the 80286 case, unreal mode is annoying to use: the 80286 is a 16-bit CPU,
     which means that the `offset` part of a memory reference is limited to 64 KB.
     We can configure segments whose base address lies beyond the 1 MB address space,
     allowing us to read extended memory from real mode, but we can only do so in 64
     KB chunks at a time.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 80286 的情况下，虚拟模式使用起来很麻烦：80286 是一个 16 位 CPU，这意味着内存引用的 `offset` 部分限制为 64 KB。我们可以配置基地址位于
+    1 MB 地址空间之外的段，允许我们从实模式读取扩展内存，但我们一次只能以 64 KB 的块读取。
 - en: 'The 80386 fares better due to it being a 32-bit CPU: the `offset` part of a
     memory reference can be expressed as a 32-bit quantity. We can do both `MOV AX,
     DS:[SI]` and `MOV AX, DS:[ESI]`, which means that if `DS` has a base of zero,
@@ -150,8 +186,12 @@
     `ESI` offset. Crucially, and contrary to what some people think, we can issue
     these two variants from 16-bit real mode: 32-bit instructions are *not* restricted
     to protected mode.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 80386 是一个 32 位 CPU，所以表达内存引用的 `offset` 部分可以表示为 32 位数量。我们可以执行 `MOV AX, DS:[SI]`
+    和 `MOV AX, DS:[ESI]` 两种操作，这意味着如果 `DS` 的基地址为零，我们可以在使用 `ESI` 偏移时引用 4 GB 地址空间中的任何内存位置。至关重要的是，与一些人认为的相反，我们可以在
+    16 位实模式下执行这两个变体：32 位指令并不受限于保护模式。
 - en: 'The way the 80386 allows 32-bit instructions in 16-bit mode and vice versa
     is via two properties. The first is an instruction width setting at the code segment
     level: segment descriptors can indicate that the code they contain is 16-bit or
@@ -161,76 +201,107 @@
     operates in *the opposite* mode of what is configured in the current code segment:
     e.g. if the current code segment is a 16-bit segment, the `0x66` prefix marks
     32-bit instructions.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 80386 允许在 16 位模式和 32 位模式之间切换的方式有两个属性。第一个是代码段级别的指令宽度设置：段描述符可以指示其包含的代码是 16 位还是
+    32 位。实模式的默认设置是假设代码段设置为 16 位，但在保护模式下，我们可以选择任何我们喜欢的设置。第二个是 `0x66` 指令前缀，它告诉处理器以下指令在当前代码段配置的模式的*相反*模式中运行：例如，如果当前代码段是
+    16 位段，`0x66` 前缀标记 32 位指令。
 - en: Knowing this, we can see that unreal mode is most useful in the 80386 because,
     once enabled, code can easily reference any extended memory address using 32-bit
     offsets and the `0x66` prefix. But the 16-bit constraints of the 80286 don’t make
     unreal mode less useful given how much the DOS ecosystem needed to escape the
     real mode address space limitations and how difficult it was to leave protected
     mode in the 80286.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 知道了这一点，我们可以看到在 80386 中，虚拟模式最有用，因为一旦启用，代码可以使用 32 位偏移和 `0x66` 前缀轻松引用任何扩展内存地址。但是，80286
+    的 16 位限制并不会使虚拟模式变得不那么有用，考虑到 DOS 生态系统需要摆脱实模式地址空间限制的程度，以及在 80286 中离开保护模式的困难程度。
 - en: 'With that out of the way, what we are missing in our discussion are the ways
     by which to enter unreal mode. There are at least two: the undocumented LOADALL
     instruction and an unsupported jump from protected mode to real mode. Let’s take
     a look at both.'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然这一点已经解决了，我们讨论中缺少的是进入虚拟模式的方式。至少有两种：未记录的 LOADALL 指令和从保护模式跳转到实模式的不受支持的跳转。让我们来看看两者。
 - en: LOADALL is an undocumented instruction of the 80286 and 80386 processors. This
     instruction has a long history and I’m not going to cover it in detail because
     [others have done a much better job than I could](https://rep-lodsb.mataroa.blog/blog/intel-286-secrets-ice-mode-and-f1-0f-04/).
     I’ll restrict my explanation to what the instruction does and why it is useful
     to enter unreal mode.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: LOADALL 是 80286 和 80386 处理器的一个未记录指令。这个指令有着悠久的历史，我不打算详细介绍，因为[其他人已经做得比我好得多了](https://rep-lodsb.mataroa.blog/blog/intel-286-secrets-ice-mode-and-f1-0f-04/)。我将把我的解释限制在这条指令的功能以及为什么它对进入虚拟模式有用上。
 - en: Simply put, all LOADALL does is, as its name implies, set all processor registers
     at once with values that come from a memory region. This is similar to the widely
     unused built-in task switching functionality of x86 processors, which reloads
     the processor state with register values stored in a [Task State Segment (TSS)](https://en.wikipedia.org/wiki/Task_state_segment)
     descriptor.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，`LOADALL` 所做的就是，顾名思义，一次性将所有处理器寄存器设置为来自内存区域的值。 这类似于 x86 处理器的广泛未使用的内置任务切换功能，它重新加载寄存器值存储在
+    [任务状态段（TSS）](https://en.wikipedia.org/wiki/Task_state_segment) 描述符中的处理器状态。
 - en: 'But LOADALL has some quirks that the TSS descriptor doesn’t have, and those
     are what make it interesting. Witness the contents of the memory that LOADALL
     reads on an 80286:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是 `LOADALL` 有一些 `TSS` 描述符没有的怪癖，这些怪癖才是它的有趣之处。 见证 `LOADALL` 在 80286 上读取的内存内容：
 - en: '[PRE0]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Registers, registers, more registers, descriptor cache… Wait, what? Entries
     for the *cached* segment descriptors? That’s interesting. These are the actual
     values for the segment descriptors that the processor stores in its internal cache.
     Which means that, by issuing a carefully-crafted LOADALL, we can tell the processor
     to set the cached descriptors to values that are nonsensical for the current operation
     mode—and the processor does *not* complain.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 寄存器，寄存器，更多寄存器，描述符缓存……等等？ *缓存的* 段描述符的条目？ 那很有趣。 这些是处理器存储在其内部缓存中的段描述符的实际值。 这意味着，通过发出一个精心制作的
+    `LOADALL`，我们可以告诉处理器将缓存的描述符设置为对于当前操作模式来说毫无意义的值——而处理器不会抱怨。
 - en: In essence, with just one instruction, we can tell the processor that the cached
     descriptors have base addresses above the 1 MB limit and/or that they have limits
     larger than 64 KB. And the processor will just accept those into the cache and
     use them for future memory references.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上，仅需一条指令，我们就可以告诉处理器，缓存的描述符具有超过 1 MB 限制的基地址和/或具有大于 64 KB 的限制。 处理器将只接受这些并将它们用于未来的内存引用。
 - en: As it turns out, `HIMEM.SYS` did leverage LOADALL and we can even find its [original
     source code](https://github.com/neozeed/himem.sys-2.06) to peek into [how it achieved](https://github.com/neozeed/himem.sys-2.06/blob/main/oemsrc/xm286.asm#L241)
     this feat. It’s not trivial to do, but the performance gains of such an undocumented
     instruction were too hard to pass on in order to implement efficient transfers
     between conventional and extended memory.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实证明，`HIMEM.SYS` 确实利用了 `LOADALL`，我们甚至可以找到它的 [原始源代码](https://github.com/neozeed/himem.sys-2.06)，来窥视它是如何实现这一壮举的。
+    这并不是件简单的事，但是这种未记录的指令所带来的性能提升太难以忽视，以至于无法在传统内存和扩展内存之间实现有效的传输。
 - en: This made me curious so I tried replicating LOADALL’s usage in [DOSBox](https://www.dosbox.com/)
     and… failed because DOSBox does not implement this instruction—which is understandable
     because it was not documented, it was very specific to two processors, and it
     apparently was not widely used outside of `HIMEM.SYS`. Maybe more-accurate processor
     emulators supply it, but I didn’t bother trying.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这让我很好奇，所以我尝试在 [DOSBox](https://www.dosbox.com/) 中复制 `LOADALL` 的用法，但是……失败了，因为
+    DOSBox 没有实现这个指令——这是可以理解的，因为它没有记录，它非常特定于两个处理器，而且显然在 `HIMEM.SYS` 之外几乎没有被广泛使用。 也许更准确的处理器仿真器提供了它，但我没费心去尝试。
 - en: 'Which brings us to the other way to enter unreal mode: an unsupported jump
     from protected mode to real mode in the 80386.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就带我们到了另一种进入虚拟模式的方法：从 80386 的保护模式到实模式的不受支持的跳转。
 - en: 'Protected mode fascinated me as a child when I read about it in books that
     didn’t “belong” to my age. After having dipped my toes in 8086 assembly and having
     toyed around with boot sectors and the like, I fantasized about how protected
@@ -238,12 +309,17 @@
     my own operating system and I remember writing code that tried to enter protected
     mode and always failed—yet it sounded so easy from the books: just set bit 0 of
     `CR0` to 1!'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 保护模式让我着迷，小时候我在不属于我年龄的书中读到它时就是如此。 在涉足 8086 汇编并玩弄引导扇区等后，我幻想着保护模式“解锁”了巨大的力量。 我知道我必须学会这些黑魔法来编写自己的操作系统，我记得写了一些尝试进入保护模式的代码，但总是失败了——然而从书本上看起来似乎很容易：只需将
+    `CR0` 的第 0 位设置为 1 即可！
 - en: The assembly and processor books I read once upon a time and that got me interested
     in all of this low-level systems programming.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 曾经阅读过的汇编和处理器书籍使我对所有这些底层系统编程感兴趣。
 - en: 'It wasn’t until many years later, around 2007, that I decided I wanted to fulfill
     my long-term dream to write an operating system. At that point, I invested some
     time to get protected mode to work—and I finally did, with interrupts enabled
@@ -252,36 +328,52 @@
     having to get many teeny tiny details right just so that the machine doesn’t crash.
     You do it right and you see absolutely nothing; you do it wrong and you see absolutely
     nothing either.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 直到多年后，大约在2007年左右，我决定实现我的长期梦想，编写一个操作系统。 那时，我花了一些时间让保护模式正常工作——最终我成功了，中断也被启用了。
+    （剧透警告：尽管如此，我从未写过操作系统……还没写吗？） 但是即使这样做了，进入保护模式总是一种令人沮丧的体验，必须要把很多微小的细节搞对，以免机器崩溃。
+    你做对了，什么也看不到； 你做错了，也看不到任何东西。
 - en: 'But wait. Why am I telling you all this? Ah yes, because another way of entering
     unreal mode is the following dance:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是等等。 我为什么要告诉你所有这些呢？ 哦对了，因为另一种进入虚拟模式的方法如下：
 - en: Switch to protected mode.
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 切换到保护模式。
 - en: Set up segment registers to segment descriptors that provide access to the full
     address space, causing the cached descriptors to have a 4 GB limit.
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置段寄存器到提供对完整地址空间访问权限的段描述符，导致缓存的描述符具有4 GB 的限制。
 - en: Switch back to real mode with the previous unsupported segment configuration
     in place.
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 切换回以前不受支持的段配置的实模式。
 - en: Upon switching back to real mode, the properties of the segment descriptors
     that don’t make sense in real mode (those limits higher than 64 KB) are *sticky*,
     meaning that no architectural operations such as `MOV DS, AX` touch those bits
     of the cache. With that, it becomes possible to address extended memory.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 切换回实模式后，不适合实模式的段描述符属性（那些高于 64 KB 的限制）是*粘性的*，意味着没有像 `MOV DS, AX` 这样的体系结构操作会触及缓存的这些位。有了这个，就可以访问扩展内存了。
 - en: Diagram representing how a real mode segment descriptor load does not modify
     the limit or flags already stored in the descriptor cache.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示实模式段描述符加载不修改已存储在描述符缓存中的限制或标志的图表。
 - en: Unfortunately, the 80286 did not have a mechanism to switch from protected mode
     back to real mode. Creative folks found ways to do this by triple-faulting the
     CPU and carefully setting registers to skip the BIOS POST code, but this process
@@ -289,90 +381,133 @@
     lack of this feature in the 80286 was a major complaint from OS vendors because
     it made it difficult to support running DOS programs from within a modern operating
     system.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，80286 没有机制可以从保护模式切换回实模式。有创意的人发现了通过 CPU 三次错误来执行此操作，并仔细设置寄存器以跳过 BIOS POST
+    代码的方法，但此过程非常缓慢，因此无法频繁切换。当时，80286 中缺乏此功能是操作系统供应商的主要抱怨，因为这使得难以支持在现代操作系统中运行 DOS 程序。
 - en: Intel addressed those concerns with the launch of the 80386 and its new VM86
     mode. But… that wasn’t the only change. The 80386 also added the ability to return
     to real mode from protected mode—with a lot of caveats. Intel was prescriptive
     in how exactly to return to real mode and never described what would happen if
     you didn’t follow the rules to the letter… which was essentially begging for someone
     to try and see what would happen when doing that.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 英特尔在 80386 的推出中解决了这些问题，并引入了新的 VM86 模式。但是……这并不是唯一的变化。80386 还添加了从保护模式返回到实模式的能力，带有许多注意事项。英特尔对如何确切地返回实模式做出了规定，并从未描述如果你不完全按照规则去做会发生什么……这实际上是在恳求某人去尝试并看看在这样做时会发生什么。
 - en: The answer, as we saw above, is unreal mode.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上所述，答案是虚幻模式。
 - en: All of the above research made me really curious so I got the urge to see unreal
     mode in action. So, in preparation for this article, I wrote a trivial DOS program
     that enters unreal mode and shows it working.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 以上所有的研究让我非常好奇，所以我有冲动看看虚幻模式的运行情况。因此，在为这篇文章做准备时，我编写了一个进入虚幻模式并展示其工作的微不足道的 DOS 程序。
 - en: As in the past, getting this demo to a functional state was a frustrating experience
     of fighting with carefully-crafted register values and memory offsets, DOSBox
     crashes, and [Bochs](https://bochs.sourceforge.io/) oddities. But in the end my
     demo ran successfully, and because I couldn’t find any trivial, readily-available
     sample piece of code online that did this, I concluded that I *had to* present
     it to you here for posterity’s sake.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 与过去一样，将这个演示变成一个功能性状态是一次令人沮丧的经历，与精心制作的寄存器值和内存偏移、DOSBox 崩溃以及 [Bochs](https://bochs.sourceforge.io/)
+    的怪异行为作斗争。但最终我的演示成功运行了，因为我找不到任何在线可用的简单示例代码，可以执行此操作，所以我断定我*必须*在这里为后人呈现它。
 - en: 'So. Let’s get our hands dirty. All you need is [~~Doom Emacs~~](https://github.com/doomemacs/doomemacs)
     a text editor, [NASM](https://www.nasm.org/), and DOSBox. Our goal is to:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以。让我们动手吧。你只需要一个文本编辑器 [~~Doom Emacs~~](https://github.com/doomemacs/doomemacs)、[NASM](https://www.nasm.org/)
+    和 DOSBox。我们的目标是：
 - en: write a flat COM executable,
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编写一个扁平的 COM 可执行文件，
 - en: without sections (code and data mixed),
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 不使用段（代码和数据混合），
 - en: all in 16-bit code with the occasional 32-bit operation override,
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所有都在 16 位代码中完成，偶尔使用 32 位操作覆盖，
 - en: that enters protected mode,
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 进入保护模式，
 - en: that stores a string somewhere in extended memory far from the reach of real
     mode,
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在远离实模式可达范围的扩展内存中存储一个字符串，
 - en: that drops back to (un)real mode,
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 切换回（非）实模式，
 - en: that copies the string we stored in extended memory to conventional memory,
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将我们存储在扩展内存中的字符串复制到常规内存中，
 - en: that tells DOS to print the string we fetched,
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 告诉 DOS 打印我们提取的字符串，
 - en: and that finally returns to DOS to prove that DOS still works.
+  id: totrans-64
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后回到 DOS 以证明 DOS 仍然有效。
 - en: Let’s begin.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: 'The first thing we have to do is set up the GDT. We’ll use statically-configured
     descriptors in the code, like these:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们必须做的第一件事是设置 GDT。我们将在代码中使用静态配置的描述符，就像这样：
 - en: '[PRE1]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The GDT presented above defines four descriptors:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面介绍的 GDT 定义了四个描述符：
 - en: The null descriptor, which is unused but must be present.
+  id: totrans-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 空描述符，未使用但必须存在。
 - en: The code descriptor (`CODE_DESC`) for our COM executable. This is configured
     to 16 bits so that we don’t have to mix 16-bit and 32-bit sections in the same
     source file (which is easy but I wanted to avoid). Note also that the base address
@@ -380,186 +515,282 @@
     where DOS loaded our executable. We cannot predict this and all the offsets built
     into the code must remain valid when in protected mode, so we must compute this
     dynamically.
+  id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们 COM 可执行文件的代码描述符（`CODE_DESC`）。这被配置为 16 位，这样我们就不必在同一个源文件中混合 16 位和 32 位段（这很容易但我想避免）。还要注意基地址为零，但我们将在运行时修补它，指向
+    DOS 加载我们的可执行文件的实际位置。我们无法预测这一点，代码中内置的所有偏移量在保护模式下必须保持有效，因此我们必须动态计算它。
 - en: The data and stack descriptor (`DATA_DESC`) for our COM executable. For the
     same reasons as the code descriptor, we must compute its base address at runtime.
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们 COM 可执行文件的数据和堆栈描述符（`DATA_DESC`）。出于与代码描述符相同的原因，我们必须在运行时计算其基地址。
 - en: A linear data descriptor (`LINEAR_DESC`) to be able to reference the whole 4
     GB address space. We’ll use this one to set up the segments for unreal mode.
+  id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用于能够引用整个 4 GB 地址空间的线性数据描述符（`LINEAR_DESC`）。我们将使用这个来为虚幻模式设置段。
 - en: 'Next up, we need to define the descriptor for the GDT itself right after the
     GDT data section:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要在 GDT 数据部分之后定义 GDT 本身的描述符：
 - en: '[PRE2]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Easy, but again, note how `gdt_base` is zero. The address to the GDT needs to
     be a linear address, and because we don’t know where the COM file will be loaded,
     we have to compute this address at runtime.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单，但是再次注意 `gdt_base` 是零。GDT 的地址必须是一个线性地址，因为我们不知道 COM 文件将加载到哪里，所以我们必须在运行时计算这个地址。
 - en: 'After this, it’s time to start the code section. The first thing we do is fix
     up all of the base addresses we left blank in the GDT itself and the GDT descriptor.
     Note that, because we target a COM binary (or a boot sector if you are so inclined),
     we can assume that `CS`, `DS`, `ES`, and `SS` all point to the same place, which
     makes things significantly easier:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，是时候启动代码部分了。我们要做的第一件事是修复我们在 GDT 本身和 GDT 描述符中留空的所有基地址。请注意，因为我们针对的是一个 COM 二进制文件（或者如果你愿意的话，是一个引导扇区），我们可以假设
+    `CS`、`DS`、`ES` 和 `SS` 都指向同一个地方，这样会大大简化事情：
 - en: '[PRE3]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Then, we do preparatory work to enter protected mode: namely, we disable the
     [Non-Maskable Interrupt (NMI)](https://wiki.osdev.org/Non_Maskable_Interrupt)
     and interrupts in general, and we enable the A20 gate:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们做准备工作以进入保护模式：即，我们禁用了[非屏蔽中断 (NMI)](https://wiki.osdev.org/Non_Maskable_Interrupt)和一般中断，并启用了
+    A20 门：
 - en: '[PRE4]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'And then, we can finally do the magic to enter protected mode by loading the
     GDT descriptor, updating the `PE` (0th) bit in the `CR0` register, and doing a
     long jump:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们终于可以做些魔法来进入保护模式了，通过加载 GDT 描述符，更新 `CR0` 寄存器中的 `PE`（0th）位，并进行一次长跳转：
 - en: '[PRE5]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'That’s it. We have reached the protected mode realm! How exciting is *that*?
     We are now in a 16-bit code segment but the machine state is mostly “unusable”.
     None of the segment registers except `CS` are valid and interrupts are disabled
     (because we didn’t bother to set up the IDT—and we don’t have to for this simple
     experiment). So let’s do the minimum set up that we need:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 那就是。我们已经进入了受保护模式的领域！*那*是多么令人兴奋啊？我们现在处于一个 16 位的代码段，但是机器状态大多是“不可用的”。除了 `CS` 之外，所有段寄存器都无效，并且中断被禁用（因为我们没有费心设置
+    IDT——对于这个简单的实验，我们也不必这样做）。所以让我们做一些我们需要的最小设置：
 - en: '[PRE6]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Now that the basic segments are configured, let’s copy the `msg` string built
     into the binary into extended memory. We do this by pointing `ES` to our linear
     segment and using the `EXTENDED_ADDR` offset, which I set to an arbitrary 4 MB:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在基本段已经配置好了，让我们将内置在二进制文件中的 `msg` 字符串复制到扩展内存中。我们通过将 `ES` 指向我们的线性段，并使用我设置为任意 4
+    MB 的 `EXTENDED_ADDR` 偏移量来实现这一点：
 - en: '[PRE7]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Once this is done, we prepare the `FS` segment with a large limit so that we
     can use it from unreal mode and restore `ES` to the conventional values:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦完成了这个，我们将使用一个很大的限制来准备 `FS` 段，以便我们可以从虚拟模式中使用它，并将 `ES` 恢复到传统值：
 - en: '[PRE8]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: And, with that, we are ready to pivot back to real mode…
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且，有了这个，我们已经准备好回到实模式了…
 - en: '[PRE9]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '… except that it isn’t “valid” real mode! Remember that we left `FS` configured
     with a high, non-standard limit of 4 GB? Such non-standard limit remains in the
     segment cache. But before leveraging that, let’s make our new machine state functional
     to continue executing the COM binary:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: …除非它不是“有效的”实模式！记住我们把 `FS` 配置为一个高、非标准的 4 GB 限制了吗？这样的非标准限制仍然保留在段缓存中。但在利用它之前，让我们使我们的新机器状态功能正常以继续执行
+    COM 二进制文件：
 - en: '[PRE10]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'We can now also reenable interrupts, which we must do before we decide to return
     to DOS:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们也可以重新启用中断了，在我们决定返回 DOS 之前必须这样做：
 - en: '[PRE11]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: But, crucially, we keep the A20 enabled in order to correctly reference extended
     memory later on!
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，至关重要的是，我们保持 A20 启用，以便以后正确引用扩展内存！
 - en: And after all of this dance, that’s really it. We are in unreal mode. Any memory
     references we make through the `FS` segment register can use offsets beyond the
     1 MB limit no matter what its segment base is and no matter if the segment base
     *changes*.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有这一切之后，就真的是这样了。我们处于虚拟模式中。我们通过 `FS` 段寄存器进行的任何内存引用都可以使用超出 1 MB 限制的偏移量，无论它的段基址是什么，无论段基址是否*更改*。
 - en: 'Easy to say, hard to believe. Let’s prove that this is true. Let’s first fetch
     the message we stored in extended memory by copying it to conventional memory:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 说起来容易，做起来难。让我们证明这是真的。让我们首先获取我们存储在扩展内存中的消息，将其复制到传统内存中：
 - en: '[PRE12]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'And now that we got it copied, let’s call into DOS to print the message and
     return control to DOS:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们把它复制过来了，让我们调用 DOS 打印消息并返回控制权给 DOS：
 - en: '[PRE13]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: If all goes well, you should see `Hello, unreal mode!` in the console and the
     usual `C:\>` prompt should greet you again.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一切顺利，你应该在控制台上看到 `Hello, unreal mode!`，并且通常的 `C:\>` 提示符应该再次出现。
 - en: 'But, wait, there is more! If you happen to be running this under Bochs—and
     I recommend that you do because it offers much better debugging facilities than
     DOSBox—you can pause the simulation with `CTRL+C` and dump the segment registers
     with `sreg`:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，等等，还有更多！如果你碰巧是在 Bochs 下运行这个——我建议你这样做，因为它提供的调试工具比 DOSBox 要好得多——你可以用 `CTRL+C`
+    暂停仿真，并用 `sreg` 转储段寄存器：
 - en: '[PRE14]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Pay attention to the details for the `limit` field of all the segment registers.
     You can see how the value is `0x0000ffff` for all of them as you’d expect in real
     mode… but `FS`’s limit is the non-standard `0xffffffff`. We did it. We are in
     unreal mode and DOS still runs fine. (In fact, remember that `HIMEM.SYS` itself
     *does* leverage unreal mode and this driver was active almost all the time in
     a DOS installation.)
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意所有段寄存器的 `limit` 字段的细节。你可以看到对于所有的段寄存器，它们的值都是 `0x0000ffff`，正如你在实模式中期望的那样……但
+    `FS` 的限制是非标准的 `0xffffffff`。我们做到了。我们处于虚拟模式中，DOS 仍然正常运行。（事实上，请记住，`HIMEM.SYS` 本身确实利用了虚拟模式，这个驱动几乎一直在
+    DOS 安装中活跃。）
 - en: 'Once you download the source code, you can build it with:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦您下载了源代码，您可以用以下命令构建它：
 - en: '[PRE15]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: And once built, you can run it within DOSBox by copying the binary into a directory
     you mount within the emulator or use [mtools](https://www.gnu.org/software/mtools/)
     to copy it into a DOS boot disk image for Bochs.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建完成后，您可以通过将二进制文件复制到模拟器中挂载的目录中或使用 [mtools](https://www.gnu.org/software/mtools/)
+    将其复制到 Bochs 的 DOS 引导磁盘映像中，在 DOSBox 中运行它。
 - en: 'If you resisted the urge to keep toying with the example code presented above
     and are still reading, great! We can continue onto our final topic: [DOS extenders](https://en.wikipedia.org/wiki/DOS_extender).
     These programs are what truly set DOS free from the 1 MB address space limitations
     and thus are the right way to conclude this article.'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你抵制住了对上面提供的示例代码继续摆弄的冲动，并且仍在阅读，太棒了！我们可以继续我们的最终话题：[DOS 扩展程序](https://en.wikipedia.org/wiki/DOS_extender)。这些程序才是真正使
+    DOS 摆脱 1 MB 地址空间限制的东西，因此它们是结束这篇文章的正确方式。
 - en: A DOS extender, in rough terms, is a wrapper for your code that enters protected
     mode and transfers control back to you. This is very useful because, by running
     in protected mode, your *code* segment can span more than 640 KB, finally letting
     you run large binaries without resorting to ancient spells like [overlays](https://en.wikipedia.org/wiki/Overlay_(programming)).
     But if that was the only thing that a DOS extender did, it would be too simple
     of a thing and not make it a DOS-anything.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 粗略地说，DOS 扩展程序是一个为你的代码包装器，它进入保护模式并将控制权转让给你。这非常有用，因为通过在保护模式下运行，你的*代码*段可以跨越超过 640
+    KB，最终让你可以运行大型二进制文件，而不必诉诸于古老的咒语，比如[覆盖](https://en.wikipedia.org/wiki/Overlay_(programming))。但如果这是一个
+    DOS 扩展程序唯一的功能，那就太简单了，不足以使其成为 DOS 的任何东西。
 - en: Representation of the structure of a DOS-extended application and how it relates
     to a DOS extender, DOS drivers, and raw hardware access.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展应用程序结构的表示以及它与 DOS 扩展程序、DOS 驱动程序和原始硬件访问的关系。
 - en: The crucial feature that DOS extenders provide is a mechanism to call *back*
     into the BIOS and DOS to access the services these provide. In particular, this
     means accessing *drivers* and *the file system*. They do so by exposing the same
     [DOS API](https://en.wikipedia.org/wiki/DOS_API) of the real mode host in protected
     mode, and they do this so that they can transparently service it in an efficient
     manner.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展程序提供的关键功能是提供一种机制来*回调*到 BIOS 和 DOS 以访问它们提供的服务。特别是，这意味着访问*驱动程序*和*文件系统*。它们通过在保护模式下公开与实模式主机相同的[DOS
+    API](https://en.wikipedia.org/wiki/DOS_API)来做到这一点，并且它们这样做是为了能够以高效的方式透明地为其提供服务。
 - en: 'The general mechanics behind DOS extenders are very similar to what I described
     earlier: they enter protected mode to use extended memory and run your code, but
     they *temporarily* return to real mode to issue BIOS and DOS service calls. Unfortunately,
@@ -568,23 +799,35 @@
     optimize large buffer transfers to minimize the number of switches when they *do*
     have to switch modes. In other words, DOS extenders are their own mini OS on top
     of DOS.'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展程序的一般机制与我之前描述的非常相似：它们进入保护模式以使用扩展内存并运行你的代码，但它们*暂时*返回实模式以发出 BIOS 和 DOS 服务调用。不幸的是，这种天真的实现会相当低效，因此
+    DOS 扩展程序实际上在保护模式下服务各种 API，以避免返回到实模式，并且在它们*确实*需要切换模式时，它们优化大型缓冲区传输以最小化切换次数。换句话说，DOS
+    扩展程序是建立在 DOS 之上的自己的迷你操作系统。
 - en: 'DOS extenders were widely used in games, and you may well remember the iconic
     message that DOOM printed on startup:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展程序在游戏中被广泛使用，你可能还记得 DOOM 在启动时打印的标志性消息：
 - en: '[PRE16]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: These messages came from [DOS/4G](https://en.wikipedia.org/wiki/DOS/4G), the
     most common DOS extender of all. The reason it was so common is because the “W
     version” was the free (but limited) edition of DOS/4G, and it shipped with the
     popular [Watcom](https://en.wikipedia.org/wiki/Watcom_C/C%2B%2B) C compiler that
     produced protected mode binaries. But pay attention to “run-time” in that message.
     Why run-time?
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些消息来自[DOS/4G](https://en.wikipedia.org/wiki/DOS/4G)，这是所有 DOS 扩展程序中最常见的一个。它之所以如此常见，是因为“W
+    版本”是 DOS/4G 的免费（但有限）版本，并且它随着流行的[Watcom](https://en.wikipedia.org/wiki/Watcom_C/C%2B%2B)
+    C 编译器一起发货，该编译器生成保护模式二进制文件。但要注意那条消息中的“运行时”。为什么是运行时？
 - en: DOS extenders were not the only system component that entered protected mode.
     By the time DOS extenders became popular, Windows was already a thing and Windows
     likes protected mode too. And as we saw in the previous post, DOS itself came
@@ -592,40 +835,58 @@
     so that it could easily reference extended memory. So what if you wanted to run
     a popular DOS-extended program, say DOOM, inside one of these also-popular protected
     mode environments?
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展程序并不是进入保护模式的唯一系统组件。在 DOS 扩展程序变得流行之时，Windows 已经存在了，而且 Windows 也喜欢保护模式。正如我们在上一篇文章中看到的那样，DOS
+    本身带有 `EMM386.EXE`，另一个将 DOS 放入 VM86 实例中的迷你超级监视程序，以便它可以轻松引用扩展内存。那么，如果你想在其中一个流行的保护模式环境中运行一款流行的
+    DOS 扩展程序，比如 DOOM，会怎么样呢？
 - en: Tough luck. Nesting protected modes was impossible until [virtualization appeared](https://en.wikipedia.org/wiki/X86_virtualization).
     VM86 was close to what was necessary but it didn’t allow running protected mode
     programs from within it. So, how did this work? How could you run a DOS-extended
     program inside Windows or while `EMM386.EXE` was running?
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，嵌套保护模式直到[虚拟化出现](https://en.wikipedia.org/wiki/X86_virtualization)之前是不可能的。VM86
+    接近必要的东西，但它不允许在其中运行保护模式程序。那么，这是如何工作的？在 Windows 或 `EMM386.EXE` 运行时如何运行 DOS 扩展程序？
 - en: 'Like in any computing problem, the answer is simple: by means of an abstraction
     layer! To support this flow, Microsoft defined the [DOS Protected Mode Interface
     (DPMI)](https://en.wikipedia.org/wiki/DOS_Protected_Mode_Interface), an API to
     abstract the core services to interact with protected mode. DPMI is *not* a replacement
     for a DOS extender though: DPMI is an API that DOS extenders themselves use to
     deal with protected mode operations.'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像在任何计算问题中一样，答案很简单：通过一个抽象层！为了支持这种流程，微软定义了[DOS Protected Mode Interface（DPMI）](https://en.wikipedia.org/wiki/DOS_Protected_Mode_Interface)，一个用于抽象核心服务以与保护模式交互的
+    API。不过，DPMI *不是* DOS 扩展程序的替代品：DPMI 是 DOS 扩展程序自己用来处理保护模式操作的 API。
 - en: Simple representation of the role that DPMI plays in DOS-extended applications
     and different host operating systems.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 扩展应用程序中 DPMI 扮演的角色的简单表示和不同的主机操作系统。
 - en: In the case of DOS-extended programs, the first thing that they do at startup
     is check if a DPMI kernel is present. If one exists, such as when the DOS program
     runs within Windows, then the DOS extender leverages Windows’ DPMI services and
     delegates all operations to Windows. But if such a provider isn’t running, the
     DOS extender starts the DPMI kernel typically built into itself.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在DOS扩展程序的情况下，它们在启动时首先要做的是检查是否存在DPMI内核。如果存在，例如当DOS程序在Windows中运行时，则DOS扩展程序会利用Windows的DPMI服务，并将所有操作委托给Windows。但如果没有运行这样的提供者，DOS扩展程序就会启动通常内置于其内部的DPMI内核。
 - en: If you want to see even more code in action, I refer you to skim through the
     sources of the free [DOS/32](https://sourceforge.net/projects/dos32a/) extender
     and the free [CWSDPMI](https://en.wikipedia.org/wiki/CWSDPMI) host.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想看更多代码实例，我建议你浏览免费的[DOS/32](https://sourceforge.net/projects/dos32a/)扩展器和免费的[CWSDPMI](https://en.wikipedia.org/wiki/CWSDPMI)主机的源代码。
 - en: And with that, I’m hoping that the next article will finally be the one talking
     about DJGPP and everything *else* it had to do to make Unix applications run semi-seamlessly
     on DOS… unless some other preparatory essay becomes necessary!
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望下一篇文章最终会谈论到DJGPP以及一切*其他*它必须做的事情，以便在DOS上实现Unix应用程序的半无缝运行… 除非有其他必要的准备性文章！
