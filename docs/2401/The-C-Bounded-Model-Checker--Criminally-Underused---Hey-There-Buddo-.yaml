@@ -1,187 +1,289 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:20:32'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:20:32
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'The C Bounded Model Checker: Criminally Underused | Hey There Buddo!'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: C有界模型检查器：鲜为人知的使用 | 嗨，伙计！
 - en: 来源：[https://www.philipzucker.com/cbmc_tut/](https://www.philipzucker.com/cbmc_tut/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.philipzucker.com/cbmc_tut/](https://www.philipzucker.com/cbmc_tut/)
 - en: 'Follow along on a google colab: [https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb](https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb)'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Google Colab上跟着做：[https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb](https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb)
 - en: '[PRE0]'
+  id: totrans-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Whenever I’m tinkering around in C, I would love for some easy way to check
     my work. There is a variety of options (turn on all warnings, inbuilt compiler
     [static analyzers](https://developers.redhat.com/articles/2022/04/12/state-static-analysis-gcc-12-compiler#a_taint_mode_for_c),
     sanitizers ([address](https://clang.llvm.org/docs/AddressSanitizer.html), thread,
     cfi), [infer](https://fbinfer.com/), going hardcore interactive theorem prover
     mode), but an undersung one is using automatic static verifiers.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当我在C语言中摸索时，我都希望有一种简单的方法来检查我的工作。有各种各样的选项（打开所有警告，内置编译器[静态分析器](https://developers.redhat.com/articles/2022/04/12/state-static-analysis-gcc-12-compiler#a_taint_mode_for_c)，[sanitizers](https://clang.llvm.org/docs/AddressSanitizer.html)（地址，线程，cfi），[infer](https://fbinfer.com/)，进入强大的交互式定理证明器模式），但其中一个不太被重视的方法是使用自动静态验证器。
 - en: I’m very impressed by the [Software Verification Competition](https://sv-comp.sosy-lab.org/)
     style solvers, in particular [CBMC](https://github.com/diffblue/cbmc) ([Documentation](https://diffblue.github.io/cbmc//index.html)).
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对[软件验证竞赛](https://sv-comp.sosy-lab.org/)风格的求解器印象深刻，特别是[CBMC](https://github.com/diffblue/cbmc)（[文档](https://diffblue.github.io/cbmc//index.html)）。
 - en: I thought CBMC might be defunct, since it’s [main webpage](https://www.cprover.org/cbmc/)
     does not show recent development, but actually the [github repo](https://github.com/diffblue/cbmc)
     is very active. It appears Amazon is investing in it’s usage with a number of
     significant C projects having CBMC based specs ad verification.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我以为CBMC可能已经停用了，因为它的[主页](https://www.cprover.org/cbmc/)没有显示最近的开发，但实际上[github仓库](https://github.com/diffblue/cbmc)非常活跃。看来亚马逊正在投资于它的使用，许多重要的C项目都有基于CBMC的规范和验证。
 - en: It’s pretty easy to install and use. Just get a release from the [github repo](https://github.com/diffblue/cbmc/releases)
     (the one in apt is rather stale)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装和使用都很简单。只需从[github仓库](https://github.com/diffblue/cbmc/releases)获取一个发布版（apt上的版本相对过时）
 - en: 'Here’s a basic example:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个基本的例子：
 - en: Obviously the following program will fail the assert
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，下面的程序会触发断言失败
 - en: '[PRE1]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: It’s normal code. I can compiler and run it and the assertion triggers.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是正常的代码。我可以编译和运行它，断言会触发。
 - en: '[PRE2]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: But I can also run the source through cbmc
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我也可以通过cbmc运行源代码。
 - en: '[PRE4]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: We can also compile this program. It runs just fine.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们也可以编译这个程序。它运行得很好。
 - en: '[PRE6]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: CBMC however runs all possible executions, discovering an erroring value the
     uninitialized variable could take on. We can also track the execution line by
     line with the `--trace` option
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，CBMC运行所有可能的执行路径，发现了未初始化变量可能采用的错误值。我们也可以使用`--trace`选项逐行跟踪执行。
 - en: '[PRE7]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: If we put this assertion inside a guarding if, it is no longer possible to trigger
     the assertion.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们把这个断言放在一个守护if中，就不可能再触发这个断言了。
 - en: '[PRE9]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Here is a simple functional correctness example. We can write a `myabs` function
     and ask if indeed the result is always positive.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简单的功能正确性示例。我们可以编写一个`myabs`函数并询问结果是否始终为正。
 - en: '[PRE11]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[PRE13]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Say whaaaaaaa???? Oh yeah. Going through the trace see it picked negative maxint.
     In two’s complement, there is one more negative number available than positive
     number. So it is not clear to me what the compiler should do here actually. I
     would guess it is allowed to do anything.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 说什么？？？？？？？？？哦，对。通过跟踪，看到它选了负的maxint。在二进制补码中，负数的数量比正数多一个。所以实际上不清楚编译器应该在这里做什么。我猜它可以做任何事情。
 - en: Here is something you are more likely to care about, checking for common memory
     bugs like buffer overflows, etc
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是你更可能关心的东西，检查常见的内存错误，如缓冲区溢出等
 - en: '[PRE14]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[PRE15]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Whaaaaa!? Where’s the bug?!
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 哇！？哪里有bug？！
 - en: Yeah, CBMC requires flags to turn on these default checks, for better or worse.
     I kind of wish there was a do eveything flag, but to my knowledge there isn’t.
     Here is a pile of possibly useful bugs to look for.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，CBMC需要标志来打开这些默认检查，无论好坏。我有点希望有一个做所有事情的标志，但据我所知没有。这里有一堆可能有用的bug可以查找。
 - en: '[PRE16]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '[PRE17]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Next Time
+  id: totrans-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 下次
 - en: I think that’s enough for today, but we’ve only scratched the surface. But to
     whet some appetite, here’s some uneditted bits about loops and comparative checking.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为今天的内容就够了，但我们只是触及了表面。但为了激发一些兴趣，这里是关于循环和比较检查的一些未编辑的片段。
 - en: '[https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ](https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ)'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ](https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ)'
 - en: VIDEO
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 视频。
 - en: Loops
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 循环。
 - en: Ok, we’ve painted a rosy picture so far. Obviously CBMC does not scale to arbitrarily
     large and difficult problems
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，到目前为止，我们已经描绘了一个美好的画面。显然，CBMC不会扩展到任意大型和困难的问题。
 - en: The basic technique is to uniwind them. All is not lost, many loops (for loops
     in particular) can be completelyb unwound. You can add `--unwinding-assertions`
     to know if you’ve covered all possible executions. Ever if you can’t, passing
     these chekcs does give you some confidence.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本技术是展开它们。一切并没有失去，许多循环（特别是for循环）可以完全展开。您可以添加 `--unwinding-assertions` 以了解是否已覆盖所有可能的执行。即使你不能，通过这些检查确实会给你一些信心。
 - en: If you’re going to the next level there is also the ability to add invariant
     annotations. I’m not sure if CBMC can infer these successfully
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您要进入下一个级别，还可以添加不变量注释的功能。我不确定CBMC是否能成功推断这些。
 - en: On bigger problems, I’ve had some success fiddling with the
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在更大的问题上，我在调试方面取得了一些成功。
 - en: Comparative Checking
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 比较检查。
 - en: Comparative checking of programs can be useful for reducing both the specification
     and verification burden. In addition, there are some relational properties (“hyperproperties”)
     that require talking about two different runs of a program. The canonical example
@@ -189,160 +291,257 @@
     of the states, they must end with identical low security parts of the state. This
     is true if there is only influence or information transferral going from low to
     high.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序的比较检查对于减少规范和验证负担都很有用。此外，还有一些关系属性（“超属性”）需要讨论程序的两个不同运行。典型的例子是信息安全。如果您运行两个具有相同低安全状态部分的程序，它们必须以相同低安全状态部分结束。如果只有从低到高的影响或信息传递，这是正确的。
 - en: Translation validation
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 翻译验证。
 - en: Refinement
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 精炼。
 - en: Security properties
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 安全属性。
 - en: Bug fixing
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 修复错误。
 - en: The simplest approach to doing comparative verification so is to use the more
     commonly available single program verifier on the “product program”.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 进行比较验证的最简单方法是在“产品程序”上使用更常见的单个程序验证器。
 - en: '[PRE18]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: There are many bits of software out there that have security vulnerabilities.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多软件存在安全漏洞。
 - en: Obviously, the easiest and most likely solution is to change the code in source,
     recompile, and push out the new version. This is not always possible or desirable
     however.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，最简单且最可能的解决方案是在源代码中更改代码，重新编译并推送新版本。然而，这并不总是可能或可取的。
 - en: Even recompiling the original program may introduce bugs due to compiler difference
     versions
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 即使重新编译原始程序也可能因为编译器版本的不同而引入错误。
 - en: You may not have the source
+  id: totrans-61
   prefs:
   - PREF_UL
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 您可能没有源代码。
 - en: It is in general an interesting problem to consdier the 50 year software stack.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，考虑50年的软件堆栈是一个有趣的问题。
 - en: 'Worse is better: A use case for dumb compilers'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 更糟的是更好：一个愚蠢编译器的用例。
 - en: Bits and Bobbles
+  id: totrans-64
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一些小东西。
 - en: 'Here’s a list of serious C projects with CBMC instrumentation, many from Amazon:
     https://model-checking.github.io/cbmc-training/projects.html. They are playing
     a similar role to unit tests for library functions.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个带有CBMC仪器的严肃C项目列表，其中许多来自亚马逊：[https://model-checking.github.io/cbmc-training/projects.html](https://model-checking.github.io/cbmc-training/projects.html)。它们在库函数的单元测试中扮演着类似的角色。
 - en: SV Comp https://sv-comp.sosy-lab.org/ - CPAchecker UAutomizer are very successful
     in the competition. I have not used them as much
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: SV Comp [https://sv-comp.sosy-lab.org/](https://sv-comp.sosy-lab.org/) - CPAchecker
+    UAutomizer在竞赛中非常成功。我没有多少使用过它们。
 - en: Klee, symcc are symbolic executors. Similar in many respects to a bounded model
     checker. I think the biggest philosophical difference is they aren’t really centered
     around ensuring bug absence, instead around bug finding, which is a little different.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Klee，symcc是符号执行器。在许多方面类似于有界模型检查器。我认为最大的哲学区别在于它们并不真正围绕着确保不存在错误，而是围绕着查找错误，这有些不同。
 - en: Frama-C VST https://github.com/verifast/verifast graham seemed to like this
     one
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Frama-C VST [https://github.com/verifast/verifast](https://github.com/verifast/verifast)
+    格雷厄姆似乎喜欢这个。
 - en: '[esbmc](http://esbmc.org/) is a C bounded model checker.'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '[esbmc](http://esbmc.org/) 是一个C有界模型检查器。'
 - en: Comparing a C function to it’s grammar?
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 将C函数与它的语法进行比较？
 - en: '[PRE19]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Nice, fairly easy to use [homepage](https://www.cprover.org/cbmc/) [https://arxiv.org/abs/2302.02384](https://arxiv.org/abs/2302.02384)
     `sudo apt install cbmc` [https://github.com/diffblue/cbmc](https://github.com/diffblue/cbmc)
     gitbub [https://diffblue.github.io/cbmc/](https://diffblue.github.io/cbmc/) docs
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单易用 [首页](https://www.cprover.org/cbmc/) [https://arxiv.org/abs/2302.02384](https://arxiv.org/abs/2302.02384)
+    `sudo apt install cbmc` [https://github.com/diffblue/cbmc](https://github.com/diffblue/cbmc)
+    github [https://diffblue.github.io/cbmc/](https://diffblue.github.io/cbmc/) 文档
 - en: '[https://github.com/diffblue/aws-training](https://github.com/diffblue/aws-training)
     [https://model-checking.github.io/cbmc-training/](https://model-checking.github.io/cbmc-training/)
     [https://github.com/model-checking/cbmc-starter-kit](https://github.com/model-checking/cbmc-starter-kit)
     starter kit template [https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html](https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html)
     insstrumenting a maloc [https://github.com/model-checking/cbmc-proof-debugger](https://github.com/model-checking/cbmc-proof-debugger)'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://github.com/diffblue/aws-training](https://github.com/diffblue/aws-training)
+    [https://model-checking.github.io/cbmc-training/](https://model-checking.github.io/cbmc-training/)
+    [https://github.com/model-checking/cbmc-starter-kit](https://github.com/model-checking/cbmc-starter-kit)
+    入门套件模板 [https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html](https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html)
+    对maloc进行检测 [https://github.com/model-checking/cbmc-proof-debugger](https://github.com/model-checking/cbmc-proof-debugger)'
 - en: '[manual](http://www.cprover.org/cprover-manual/) see tutorial'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '[手册](http://www.cprover.org/cprover-manual/) 参见教程'
 - en: '[PRE20]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: All kinds of analysuis options
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 各种分析选项
 - en: User defined stuff via `assert` or specialized
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户通过 `assert` 或专用功能定义的内容
 - en: Supports lots of different smt and sat backended. Generic dimacs, Could toss
     into kissat
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持多种不同的 SMT 和 SAT 后端。通用 dimacs，可以投入 kissat
 - en: ESBMC
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: ESBMC
 - en: C++ frontend
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: C++ 前端
 - en: Float support
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 浮点支持
 - en: Still actually developd
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 仍然在实际开发中
 - en: '[https://awslabs.github.io/aws-proof-build-assistant/](https://awslabs.github.io/aws-proof-build-assistant/)
     [https://github.com/awslabs/aws-c-common](https://github.com/awslabs/aws-c-common)
     corejson [https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc](https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc)
     s2n-tls [https://github.com/aws/s2n-tls/tree/main/tests/cbmc](https://github.com/aws/s2n-tls/tree/main/tests/cbmc)
     [https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc](https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc)
     [https://github.com/aws/s2n-quic](https://github.com/aws/s2n-quic)'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://awslabs.github.io/aws-proof-build-assistant/](https://awslabs.github.io/aws-proof-build-assistant/)
+    [https://github.com/awslabs/aws-c-common](https://github.com/awslabs/aws-c-common)
+    corejson [https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc](https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc)
+    s2n-tls [https://github.com/aws/s2n-tls/tree/main/tests/cbmc](https://github.com/aws/s2n-tls/tree/main/tests/cbmc)
+    [https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc](https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc)
+    [https://github.com/aws/s2n-quic](https://github.com/aws/s2n-quic)'
 - en: bounded proof vs harnes vs contracts
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 有界证明 vs 起搏器 vs 合同
 - en: '[https://crates.io/crates/libcprover_rust/5.91.0](https://crates.io/crates/libcprover_rust/5.91.0)
     rust api'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://crates.io/crates/libcprover_rust/5.91.0](https://crates.io/crates/libcprover_rust/5.91.0)
+    rust api'
 - en: '[https://dl.acm.org/doi/pdf/10.1145/3551349.3559523](https://dl.acm.org/doi/pdf/10.1145/3551349.3559523)
     CBMC-SSM: Bounded Model Checking of C Programs with Symbolic Shadow Memory [https://github.com/diffblue/cbmc/issues/7757](https://github.com/diffblue/cbmc/issues/7757)'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://dl.acm.org/doi/pdf/10.1145/3551349.3559523](https://dl.acm.org/doi/pdf/10.1145/3551349.3559523)
+    CBMC-SSM：使用符号化阴影内存对 C 程序进行有界模型检查 [https://github.com/diffblue/cbmc/issues/7757](https://github.com/diffblue/cbmc/issues/7757)'
 - en: '[PRE21]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '[PRE22]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '[PRE23]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '[PRE24]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: '[PRE25]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
