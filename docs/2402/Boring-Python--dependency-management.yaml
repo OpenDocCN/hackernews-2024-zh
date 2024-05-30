@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:37:36'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Boring Python: dependency management'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/](https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Boring Python: dependency management'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -27,6 +34,7 @@
        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tags"
     viewBox="0 0 16 16"><title>Categories:</title></svg> [Django](/weblog/categories/django/),
     [Python](/weblog/categories/python/)'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is the first in hopefully a series of posts I intend to write about how
@@ -45,44 +53,53 @@
     it does you’ll be able to feel reasonably confident (if that’s the right word
     for such a situation) that the source of it was something in your own code that
     you can diagnose and fix.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'And so I’m planning several posts exploring different aspects of making Python
     development boring (in this sense). But for this first installment, I’ll be talking
     about one of the internet’s favorite topics: managing dependencies.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re just interested in the end result, the process I recommend is pretty
     simple and can be found in the section titled “putting it all together”. The rest
     of this post exists to explain, in as much detail as I can manage, all the things
     going on behind those simple-looking recommendations, and why I make those specific recommendations.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: A quick introduction to Python packaging
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '[I’ve written about this before](/weblog/2020/jan/05/packaging/), but to make
     sure this is clear I want to do a quick refresher.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'As I see it, there are three basic aspects to “packaging”, and one of the difficult
     things about “packaging” discussions is lack of clarity around which are being
     discussed. They are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Given some working code, define and produce from it a distributable artifact.
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Given that someone has produced a distributable artifact, use it to cause the
     corresponding code to appear, in working form, somewhere else.
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Given the existence of potentially many separate projects or versions of projects
     with their own independent and potentially-conflicting sets of dependencies, make
     it possible to work on and run more than one at a time.
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -90,6 +107,7 @@
     they are: (1) setuptools, (2) pip, (3) virtual environments. These three tools
     are your foundation, and for truly “boring” Python development work, I would argue
     that you should stick to them almost exclusively.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: I know there are other tools out there, and more being developed. Most of the
@@ -102,51 +120,71 @@
     at least — they’re all over a decade old, and their end-user interfaces evolve
     *incredibly* slowly, when they evolve at all. They’re reliable. They’re well-understood.
     That’s exactly what I want and exactly what I recommend.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我知道还有其他工具，并且还在不断开发中。大部分人对“Python打包”领域的感知变化和变革都围绕着试图为我上面列出的三个方面提供单一界面的工具。我个人不使用或推荐任何此类工具，因为，再次强调，我的目标是*无聊的*
+    —— 我希望一旦初始设置完成就尽量少地关心这些事情，并且这主要意味着不成为早期采用者。我提到的三个核心默认工具在软件领域至少已经存在并且稳定了很长一段时间
+    —— 它们都已经超过十年了，并且它们的最终用户界面演化得*极其*缓慢，如果有的话。它们是可靠的。它们被充分理解。这正是我想要的，也是我*推荐的。
 - en: Now, maybe you’ll read this and decide to use something else. Or maybe you’ll
     take my advice and start out with the default tooling, and then later on decide
     to change. But even if you do end up thinking something else is the best choice
     for your team/project, I think you will benefit greatly from at least trying out
     the default tools and understanding how to use them for their respective aspects
     of packaging.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，也许你会阅读这篇文章并决定使用其他工具。或者你可能会采纳我的建议并从默认工具开始，然后以后再决定更改。但即使你最终认为其他东西对你的团队/项目是最佳选择，我认为你至少应该尝试一下默认工具，并了解如何将它们用于打包的各个方面。
 - en: Also, I should note here that my use case for Python is deploying networked
     (primarily web) services, on servers. If you primarily use Python for, say, machine
     learning or data science, you are likely to already be a happy user of a completely
     different world of tools (such as Anaconda and notebooks). Please continue using
     them! They suit your use case really well, and replacing them with my preferred
     workflow would be a regression for you.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我应该在这里说明一下，我对Python的用途是部署网络（主要是Web）服务，部署在服务器上。如果你主要使用Python进行机器学习或数据科学，那么你很可能已经是完全不同世界工具（如Anaconda和笔记本）的快乐用户了。请继续使用它们！它们非常适合你的用例，并且用我的首选工作流来替换它们对你来说将是一个退步。
 - en: Now, let’s get started.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们开始吧。
 - en: Requirements
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 要求
 - en: 'The eventual goal is to invoke `pip install` to, well, do what it says: install
     a bunch of Python packages. But how to tell `pip` *which* packages to install?
     There are a couple of options:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终目标是调用`pip install`，嗯，就是它说的：安装一堆Python包。但如何告诉`pip`*要*安装哪些包呢？有几种*选项：
 - en: 'Passing a list of package names on the command line: `pip install package1
     package2 …`'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在命令行上传递一个包名称列表：`pip install package1 package2 …`
 - en: 'Passing a file containing a list of package names: `pip install -r filename`'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 传递一个包名称列表的文件：`pip install -r filename`
 - en: The second option is generally referred to as a “requirements file”, and by
     convention when you’re using only one such file, it’s named `requirements.txt`.
     I’m going to recommend a multi-file setup, though, so we’ll hold off on naming
     for now.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个选项通常称为“要求文件”，按照惯例，当你只使用一个这样的文件时，它的命名为`requirements.txt`。但我将推荐一个多文件设置，所以我们暂时不讨论命名。
 - en: 'It’s also worth being clear on the purpose of a requirements file: it’s to
     take a particular environment you already have, and reproduce it somewhere else.
     Which means that a requirements file typically should list *all* packages to install
@@ -154,20 +192,26 @@
     of individual distributable packages (the `dependencies` section of a `pyproject.toml`
     packaging config file), which generally specify broad ranges that the package
     is tested against and compatible with, and only direct dependencies.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 还值得明确一下要求文件的目的：它是为了在其他地方重现你已经有的特定环境。这意味着要求文件通常应列出要安装的*所有*包和*确切版本*。这与单个可分发包的依赖声明（`pyproject.toml`打包配置文件的`dependencies`部分）不同，后者通常指定了包被测试和兼容的广泛范围，并且只是直接依赖。
 - en: 'If you’re deploying services written in Python, you *can* build them as distributable
     packages. I just don’t recommend it, for a few reasons:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你部署的服务是用Python编写的，你*可以*将它们构建成可分发的包。我只是不推荐这样做，原因有几个：
 - en: The convenience of distributable packages is that you can re-use them across
     multiple projects/services/etc. For example, you might have an auth setup you
     want to use in all your services, and build it as a package that can be installed
     by those services. When the thing you’re deploying *is* the service, this is much
     less important.
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可分发包的便利之处在于你可以在多个项目/服务等中重复使用它们。例如，你可能有一个认证设置想要在所有服务中使用，并将其构建为可以由这些服务安装的包。当你部署的东西*就是*服务时，这就不那么重要了。
 - en: It’s overwhelmingly likely, here in 2022, that your deployment will consist
     of building some type of container and then pushing it to some type of container
     runtime/orchestration system, and that the manifest which defines that container
@@ -175,9 +219,11 @@
     make much sense to build a package from the code and then pull it into the container
     to be installed; just copy the source tree into the container, rather than adding
     extra steps for no benefit.
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在2022年，在这里，你的部署极有可能包括构建某种类型的容器，然后将其推送到某种类型的容器运行时/编排系统中，并且定义该容器的清单将与服务的代码一起进行版本控制。在这种情况下，从代码构建包然后将其拉入容器进行安装就没有太多意义了；只需将源代码树复制到容器中，而不是为了没有好处而添加额外的步骤。
 - en: 'Copying the source tree as-is into your container avoids some potential issues,
     primarily around imports: a common error made by people building packages for
     the first time is relying — often without realizing it! — on the fact that in
@@ -186,16 +232,19 @@
     environment with a specific working directory, and even then only by accident
     ([the solution to this, if you’re curious, is to force your local development
     workflow to depend on the installability of your package](https://hynek.me/articles/testing-packaging/)).'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Ultimately, what you *want* is to take a known-good, working environment from
     a developer’s machine, and reproduce exactly that environment on your servers.
     That’s just what requirements files are for.
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: More requirements
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -204,6 +253,7 @@
     `requirements/` directory in your source-code repository and placing requirements
     files in it, rather than putting the files themselves top-level, or putting them
     somewhere else.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: Now, why multiple files? Well, because there are often multiple types of dependencies
@@ -214,14 +264,17 @@
     you put in the production container the fewer things you have that can go wrong,
     so I generally like to install those only when the test suite is actually going
     to be run.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: You can split this up further if you want — I’ve done finer-grained splits of
     dependencies before — but at the very least I think you should be keeping test-only
     dependencies separate from the rest.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: Seeing the trees in the forest
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -232,6 +285,7 @@
     install -r` from it. You’ll get Django 4.0.4… and also `asgiref` and `sqlparse`,
     and depending on your platform and Python version possibly also `backports.zoneinfo`
     and `tzdata`, because those are dependencies declared by Django.'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'So how do you see, and control, your entire dependency tree? Well, one option
@@ -243,15 +297,18 @@
     command that takes a list of the packages you directly care about, and outputs
     a requirements file containing the entire tree, with all direct and indirect dependencies,
     pinned to exact versions.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: If you really want to write your own script to do this, I won’t stop you, but
     I’ve used `pip-compile` at multiple jobs now and on my own personal projects and
     been happy enough with it that it’s the only non-standard Python packaging tool
     I’m willing to recommend people use.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: Hashing it out
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -260,6 +317,7 @@
     to a reproducible environment. But not *all* of the way, because this process
     implicitly relies on the integrity of the Python Package Index to serve you the
     same package every time and not silently swap out something different or even malicious.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, I should be clear here: every single breathless OMG SUPPLY CHAIN ATTACK
@@ -268,6 +326,7 @@
     “Django”, or similar. I’ve *never* seen one making a tenable claim of compromise
     of package maintainers’ accounts, or of PyPI itself. PyPI has been reliable and
     trustworthy to an incredibly high degree.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'But even the folks who run PyPI have put thought — see [PEP 458](https://peps.python.org/pep-0458/)
@@ -275,6 +334,7 @@
     of the scarier scenarios and how PyPI can be made more resilient to them. And
     you should be thinking about those scenarios, too: PyPI has been highly trustworthy,
     but there’s a reason why the saying is “trust, but verify”.'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: It’s worth noting here that signed packages, as many operating-system vendors
@@ -285,27 +345,32 @@
     small set of trusted keys. You *can*, and some package authors *do*, PGP-sign
     PyPI uploads anyway, but standard Python package tooling doesn’t do anything with
     the signatures.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'But in the absence of a small set of trusted package signers, the next best
     thing is just reproducibility: ensuring that what you get the next time you `pip
     install` will be the same as what you got *this* time (when, presumably, you verified
     that it was what you expected it to be), or if not that the installation will fail.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this you can use pip’s [hash-checking mode](https://pip.pypa.io/en/stable/cli/pip_install/#hash-checking-mode),
     where in addition to the package name and version, you also list the expected
     hash or hashes of the package. When this is provided, pip’s behavior changes as follows:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '*All* packages to be installed must specify hashes, including all indirect
     dependencies. If any package does not have a hash specified, the installation
     will fail.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If any package’s actual hash does not match its expected hash, the entire installation
     attempt fails.
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -316,27 +381,32 @@
     have different hashes. This can be worked around by specifying *multiple* hashes
     for such packages, listing one hash for each platform-specific variant you expect
     to install.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: To manually obtain the hashes for your dependency tree you can run `pip download`
     to download all the packages locally, and then `pip hash` on each one to obtain
     the hash. For platform-specific packages you can manually download each platform
     variant and `pip hash` them.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: Or, once again, you can script this, and once again the pip-tools project *has*
     scripted it; the `--generate-hashes` argument to `pip-compile` will automatically
     calculate and insert all necessary package hashes (including all platform variants)
     into the compiled requirements file.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: Invocations
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Before putting all this together, it’s worth covering one more detail: how
     to invoke the tools. This may seem a bit silly, since they all provide command-line
     entry points: just run `pip install`, right?'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'But there’s a potential issue here: in a moment I’m going to recommend creating
@@ -344,6 +414,7 @@
     environments coexisting on the same machine. This is certainly a useful feature,
     but it does come with a new concern, which is how to ensure you’re using and running
     things in the environment you expect to be using.'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: One common way to run into trouble here is having one Python environment’s package
@@ -351,8 +422,11 @@
     one’s `bin/` directory is first on your general `$PATH`. If you just run `pip
     install` you’ll get the second one’s instance of `pip`, which may not be at all
     what you want.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里遇到麻烦的一个常见方式是，一个Python环境的包目录在你的`$PYTHONPATH`中排在第一位，而你却不知道另一个Python环境的`bin/`目录在你的通用`$PATH`中排在第一位。如果你只是运行`pip
+    install`，你将得到第二个实例的`pip`，这可能根本不是你想要的。
 - en: 'This is why the official Python packaging guides, and official documentation
     for tools like `pip`, always use a different approach: they run `python -m pip`
     instead of `pip`, and `python -m venv` instead of a standalone script like `virtualenv`.
@@ -361,16 +435,23 @@
     and while it doesn’t guarantee that you’ll invoke the Python interpreter you were
     expecting, it does prevent a lot of potential hard-to-debug issues that can accidentally
     result from things like manually hacking around with paths.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么官方的Python打包指南和像`pip`这样的工具的官方文档总是采用不同的方法的原因：它们运行`python -m pip`而不是`pip`，以及`python
+    -m venv`而不是像`virtualenv`这样的独立脚本。`-m`标志允许一个Python模块被作为脚本运行（只要它被编写成暴露出这个入口点，`pip`和`venv`都有），虽然它不能保证你会调用到你期望的Python解释器，但它确实可以防止很多潜在的难以调试的问题，这些问题可能是因为手动修改路径而意外发生的。
 - en: Putting it all together
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 把所有这些放在一起
 - en: That was a lot of explanation for what ends up being, ultimately, a fairly simple
     process to actually use. So now let’s finally take a look at it.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些解释最终都归结为一个实际使用起来相当简单的过程。所以现在让我们终于来看看它。
 - en: 'First things first: always work in, and deploy in, a virtual environment. Even
     if you think you don’t need one. In fact, *especially* if you don’t think you
     need one. Virtual environments (originally the third-party `virtualenv` module,
@@ -385,8 +466,10 @@
     package that turns out to depend on the distro’s own Python, for example — using
     one from the start will save you from potentially having a pager go off one night
     when suddenly the wrong Python is being invoked.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先要做的是：始终在虚拟环境中工作和部署。即使你认为你不需要。事实上，*尤其*是如果你认为你不需要。虚拟环境（最初是第三方的`virtualenv`模块，现在核心功能已经在标准库中作为`venv`模块提供）提供了对特定Python环境和安装的一组包的隔离，当你想要或需要拥有多个这样的环境时，这是非常方便的。即使你部署在一个你*知道*只有一个Python解释器的容器中，我仍然建议你在其中创建一个虚拟环境；它们创建起来不需要任何成本，如果你最终*确实*在容器中使用了多个Python解释器——这很容易发生，如果你使用一个具有专门Python的基础镜像，然后安装一个依赖于发行版自己Python的系统包，例如——从一开始就使用一个将为你节省一些潜在的问题，比如在一个晚上突然间调用了错误的Python时，它会让你可能会被唤醒。
 - en: If you’re developing locally and not using a local container build, just invoke
     `python -m venv` however you like, and activate it before running any packaging-related
     commands. There are several popular conventions for this, and I won’t push any
@@ -394,8 +477,10 @@
     of placing your virtual environments, whether it’s to put them all in a single
     directory, or always in a hidden directory at the root of a project’s source tree,
     or something else.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你是在本地开发而不是使用本地容器构建，只需按照你喜欢的方式调用`python -m venv`，并在运行任何与打包相关的命令之前激活它。有几种流行的约定，我不会强加给你任何具体的，但我建议你采用某种标准的方式来放置你的虚拟环境，无论是将它们放在一个单独的目录中，还是始终将它们放在项目源树的根目录下的隐藏目录中，或者其他什么方式。
 - en: In a container, you have a choice of whether to put it the virtual environment
     in some system-wide location like `/opt` (which is, as far as I can tell, the
     choice least offensive to filesystem hierarchy standards), or if you’re running
@@ -404,17 +489,23 @@
     to non-root after packages have been installed, because it ensures the virtual
     environment’s package-install location is not writeable by the user the container
     runs as.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在容器中，你可以选择将虚拟环境放在类似于`/opt`这样的系统范围位置（就我所知，这是对文件系统层次结构标准影响最小的选择），或者如果你正在以非root用户身份运行容器（你应该这样做），则将其放在该用户的主目录中。我个人倾向于将其放在系统范围的位置，然后在安装完包后降级为非root用户，因为这样可以确保虚拟环境的包安装位置对容器运行的用户不可写。
 - en: 'But no matter where you put it, “activation” is a simple matter: set the environment
     variable `VIRTUAL_ENV` to the path to the virtual environment and then put `$VIRTUAL_ENV/bin`
     onto `$PATH` to be sure any accidental direct invocations of scripts will work.
     Which means that so far it’s going to be:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 但无论你把它放在哪里，“激活”都是一个简单的过程：将环境变量`VIRTUAL_ENV`设置为虚拟环境的路径，然后将`$VIRTUAL_ENV/bin`加入`$PATH`以确保任何意外直接调用脚本都能正常工作。这意味着到目前为止它会是这样的：
 - en: '[PRE0]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'You should have at least a couple of requirements files containing your dependencies;
     I tend to name them `app.txt` and `tests.txt` to distinguish the general app dependencies
     from the test-only ones, but you can name them however you like. If you take my
@@ -424,36 +515,47 @@
     to drive common dev tasks, so a `make requirements` target that invokes pip-tools
     is pretty standard for me, and usually I have it run something like this inside
     the container:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'And the container can simply pull in the compiled requirements files and install them:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This gets you:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: As reproducible and consistent an environment as possible, all the way from
     local development through to production, especially if you do local dev in containers
     and build from the same `Dockerfile` or other manifest both locally and for production.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Instant warning if any of your dependencies suddenly changes: if a package
     somehow gets surreptitiously replaced, the install step will fail on a hash mismatch.'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Minimal worries about conflicts with a “system Python” or its packages.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Packages can run code during installation**'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'Python packages come in two forms: “source” or “sdist” packages, which typically
@@ -466,21 +568,25 @@
     packages, on the other hand, are simple archives whose installation process consists
     of extracting the files and putting them in the correct locations; there are no
     install-time hooks for running code.'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can tell `pip` to use *only* wheel packages, by passing [the `--only-binary`
     flag](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-only-binary) and
     either a list of packages or the special value `:all:`. For example: `python -m
     pip install --only-binary :all: -r requirements/app.txt`.'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: I strongly recommend trying this option first, and sticking with it if it works.
     Unfortunately, not all packages provide `.whl` format, so you may not be able
     to force it for your entire install. If you run into a package that doesn’t provide
     a wheel, you can still require all other packages to use wheels.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: Staying up-to-date
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -490,6 +596,7 @@
     applying updated versions of dependencies, you’re likely to end up with painful
     upgrade-the-whole-world-at-once moments when you hit a milestone like a major
     library/framework version reaching the end of its upstream support cycle.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: This is where things get a little bit tricky, because the usual way you’d automatically
@@ -498,12 +605,14 @@
     any updates. For example, if you want to use the Django 3.2 LTS release, you might
     specify `Django>=3.2.0,<4.0`. And then you’d always get the latest 3.2-series
     Django release.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: And you can do this if you want; you’ll likely want to combine it with pip-tools
     or your own scripting to perform the equivalent “compilation” of the full pinned
     and hashed dependency tree, and then you’ll automatically pull updated versions
     every time you recompile the dependencies.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: 'The only potential downside is the same as the upside: you get updated every
@@ -518,24 +627,33 @@
     But again, that’s me and my preference for being as boring as possible; I don’t
     mind spending a little time each week dealing with the dependabot PRs if it prevents
     a pager from going off at 2AM.'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一的潜在缺点与优势相同：每次重新编译依赖项时都会更新。当它起作用时，这很棒，但当它不起作用时就不那么好了。就个人而言，我倾向于采用超级无聊的方法，即显式地逐个应用更新，而不是隐式地批量应用更新。为此，我倾向于配置并使用[dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates)或其他代码托管平台的等效工具。我的dependabot经验是它只要用就可以了——它甚至理解pip-tools风格的需求，并且会做正确的事情。因此，我通常喜欢设置它，让它每周定期提出拉取请求，然后手动审核并应用这些拉取请求。但再说一次，这只是我和我尽可能无聊的偏好；如果这样可以防止凌晨2点的警报响起，我不介意每周花点时间处理dependabot
+    PRs。
 - en: And of course, if you just want got get security updates and not every single
     version bump of every dependency, several code-hosting platforms have that built-in
     as a feature now, and there are also third-party services like [pyup](https://pyup.io)
     that will do it for you.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，如果您只想要安全更新而不是每个依赖项的每个版本升级，那么现在有几个代码托管平台已经将此作为一个功能内置，还有像[pyup](https://pyup.io)这样的第三方服务可以为您完成。
 - en: And that’s a wrap
+  id: totrans-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 就是这样了。
 - en: As promised, that was a lot of words for what’s really a pretty simple process,
     but there’s a lot of complexity — necessary complexity, of a sort that pops up
     in any software packaging ecosystem — lurking underneath, and explaining *that*
     is what drives up the word count.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 如承诺的那样，这实际上是一个相当简单的过程，但其中有很多复杂性——一种在任何软件打包生态系统中都会出现的必要复杂性——潜伏在下面，解释*那*是什么导致了文字的增加。
 - en: But hopefully you now understand how to do “boring” Python dependency management,
     using only the standard Python packaging tools and *optionally* pip-tools for
     the “already scripted this bit so you don’t have to” factor. And hopefully you
@@ -545,10 +663,14 @@
     are the result of nearly a decade of trying, across four different employers,
     to settle on a dependency management workflow that kept things up to date with
     minimal risk of causing pagers to go off.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 但希望你现在明白了如何进行“无聊”的Python依赖管理，仅使用标准Python打包工具和*可选的*pip-tools用于“已经编写了此部分，所以您不必”因素。希望您了解我为什么推荐上述特定工作流程。即使您不想采纳我的建议，我希望认为了解它们以及我为何提出它们对您有所帮助。对我来说，这些建议是在四家不同雇主处尝试了近十年的结果，目的是确定一个使事物保持最新的依赖管理工作流程，同时最小化引起警报的风险。
 - en: Meanwhile I’ve got some ideas for further “boring Python” articles, including
     why to keep using Python at all when its trendiness, at least for my own domain
     of web apps, seems to be on the decline — but those will have to wait for another day.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，我对进一步的“无聊Python”文章有一些想法，包括为什么在其潮流性，至少对于我自己的网络应用程序领域而言，似乎在下降时仍然要继续使用Python——但这些想法将得等到另一个日子。
