@@ -1,31 +1,47 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:18:28'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:18:28
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The Big Little Guide to Message Queues
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 消息队列的一本小指南
 - en: 来源：[https://sudhir.io/the-big-little-guide-to-message-queues](https://sudhir.io/the-big-little-guide-to-message-queues)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://sudhir.io/the-big-little-guide-to-message-queues](https://sudhir.io/the-big-little-guide-to-message-queues)
 - en: The Big Little Guide to Message Queues
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 消息队列的一本小指南
 - en: A guide to the fundamental concepts that underlie message queues, and how they
     apply to popular queueing systems available today.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列的基本概念指南，以及它们如何应用于今天流行的队列系统。
 - en: Message Queues are now fairly prevalent—there are so many of them showing up
     so fast you'd think they were [rabbits](https://www.rabbitmq.com) with an unlimited
     supply of [celery](https://docs.celeryproject.org/en/stable/), resulting in an
@@ -35,8 +51,11 @@
     that could help with [publishing and subscribing](https://cloud.google.com/pubsub),
     it would be so much easier to make a [zero-effort](https://zeromq.org) choice
     😕
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列现在相当普遍——它们如此快速地出现，以至于你会认为它们就像是🐇[兔子](https://www.rabbitmq.com)，拥有🥦[无限供应的芹菜](https://docs.celeryproject.org/en/stable/)，导致了🧟一个[卡夫卡式](https://kafka.apache.org)的情况，做出决定就像试图用手接住一条[河流](https://redis.io/topics/streams-intro)。如果只有更少的[简单](https://aws.amazon.com/sns)[服务](https://aws.amazon.com/sqs/)可以帮助进行[发布和订阅](https://cloud.google.com/pubsub)，那么做一个[零工作](https://zeromq.org)的选择将会更容易
+    😕
 - en: Whether we use them by themselves as-is to move data between parts of our application,
     or as an integral part of the architecture (like event driven systems), message
     queues are here to stay. In a way, they've been here all along—just without as
@@ -44,50 +63,70 @@
     Which implementation do we pick? Does it even matter which one we use? And do
     we need to learn each of them individually, or are there more general concepts
     that apply to all message queues?
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论我们是将它们单独使用来在应用程序的各部分之间传输数据，还是将它们作为架构的一个组成部分（比如事件驱动系统），消息队列都会存在。从某种程度上来说，它们一直都在——只是没有那么多的名字。但是它们是什么？为什么它们有用？我们如何有效地使用它们？我们要选择哪种实现？我们选择使用哪一种实现真的重要吗？我们需要单独学习每种实现，还是有更一般的观念适用于所有消息队列？
 - en: 'In this guide, we''ll talk about:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本指南中，我们将讨论：
 - en: What message queues are and their history.
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息队列是什么及其历史。
 - en: Why they're useful and what mental models to use when reasoning about them.
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为何它们有用以及推理时使用的心智模型。
 - en: Delivery guarantees that the queuing systems make (at-least-once, at-most-once,
     and exactly-once semantics).
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 队列系统提供的传递保证（至少一次、至多一次和正好一次语义）。
 - en: Ordering and FIFO guarantees and how they effect sequencing, parallelism and
     performance.
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 排序和FIFO保证以及它们对排序、并行和性能的影响。
 - en: 'Patterns for fan-out and fan-in: delivering one message to many systems or
     messages from many systems into one.'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扇出和扇入模式：将一个消息传递给多个系统，或将来自多个系统的消息传递到一个系统中。
 - en: Notes on the pros and cons of many popular systems available today.
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于今天许多流行系统的优缺点的笔记。
 - en: What are message queues?
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是消息队列？
 - en: Message Queues are a way to transfer information between two systems. This information—a
     message—can be data, metadata, signals, or a combination of all three. The systems
     that are sending and receiving messages could be processes on the same computer,
     modules of the same application, services that might be running on different computers
     or technology stacks, or entirely different kinds of systems altogether—like transferring
     information from your software into an email or an SMS on the cellphone network.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列是在两个系统之间传递信息的一种方式。这个信息——一条消息——可以是数据、元数据、信号，或者以上三者的组合。发送和接收消息的系统可以是同一台计算机上的进程、同一个应用程序的模块、在不同计算机或技术栈上运行的服务，或者完全不同类型的系统——比如将信息从您的软件传递到电子邮件或手机网络上的短信。
 - en: The idea of a messaging system has been around a very long time, from the message
     boxes used for moving information between people or office departments (literally
     where the words *inbox* and *outbox* come from), to telegrams, to your local postal
@@ -96,8 +135,11 @@
     [tubes](https://www.google.com/search?q=pneumatic+tubes&source=lnms&tbm=isch&sa=X&biw=2560&bih=1366)
     that moved messages through buildings and cities using compressed air until a
     few decades ago (and are still used in some places today).
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息系统的概念已经存在了很长时间，从用于在人们或办公室部门之间传递信息的消息箱（文字*收件箱*和*发件箱*的来源），到电报，再到您当地的邮政或快递服务。在物理世界中，与我们在计算中拥有的最接近的消息系统可能是几十年前（今天仍然在一些地方使用）通过压缩空气在建筑物和城市之间传递消息的[气动管](https://en.wikipedia.org/wiki/Pneumatic_tube)
+    [管道](https://www.google.com/search?q=pneumatic+tubes&source=lnms&tbm=isch&sa=X&biw=2560&bih=1366)。
 - en: The kinds of messages we transfer today might be a note that something technical
     happened, like CPU usage exceeding a limit; or a business event of interest, like
     a customer placing an order; or a signal, like a command that tells another service
@@ -107,12 +149,16 @@
     message gets from the system where it originates (the *producer*, *source, publisher*
     or *sender*) to the system where's it's supposed to go (the *consumer*, *subscriber*,
     *destination* or *receiver*).
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天我们传输的消息可能是一条指出发生了某个技术事件的注释，例如 CPU 使用量超过了限制；或者是一条商业事件，例如客户下订单；或者是一个信号，例如告诉另一个服务执行某些操作的命令。每条消息的内容完全由您的应用程序及其目的的架构驱动——因此，在本指南的其余部分，我们不需要关心消息内部的内容——我们更关心的是消息如何从其产生的系统（*生产者*、*来源、发布者*或*发送者*）传递到其应该到达的系统（*消费者*、*订阅者*、*目的地*或*接收者*）。
 - en: And Why Do We Need Them?
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么我们需要它们呢？
 - en: We need message queues because no system exists or works in isolation—all systems
     need to communicate with other systems in structured ways that they both can understand,
     and at a controlled speed that they both can handle. Any non-trivial process needs
@@ -122,55 +168,76 @@
     these messages around using API calls, file systems, or many other abuses of the
     natural order of things; but all of these are ad-hoc implementations of the message
     queue that we sometimes refuse to acknowledge we need.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要消息队列，因为没有任何系统存在或独立运行——所有系统都需要以它们都能理解的结构化方式与其他系统通信，并以它们都能处理的受控速度通信。任何非平凡的过程都需要一种方法在每个过程阶段之间传递信息；任何工作流都需要一种方法在该工作流的各个阶段之间传递中间产品。消息队列是处理此移动的绝佳方式。有许多方法可以使用
+    API 调用、文件系统或许多其他违反自然秩序的方式将这些消息传递过去；但所有这些都是消息队列的特定实现，我们有时拒绝承认我们需要它们。
 - en: 'The simplest mental model for a message queue is a very long tube that you
     can roll a ball into. You write your message on a ball, roll it into the tube,
     and someone or something else receives it at the other end. There are a lot of
     interesting benefits with this model, some of which are:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列的最简单心智模型是一个非常长的管道，您可以将球滚入其中。您在球上写上您的消息，将其滚入管道，然后另一个人或物体会在另一端接收到它。这个模型有很多有趣的好处，其中一些是：
 - en: We don't need to worry about *who or what* is going to receive the message –
     that's one less responsibility for the sender to be concerned about.
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们不需要担心*谁或什么*会接收消息——这减轻了发送者的一个责任。
 - en: We don't need to worry about *when* the receiver is going to pick up the message.
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们不需要担心*接收者*何时收到消息。
 - en: We can put *as many* messages as we want into the tube (let's assume we have
     a infinitely long tube) at whatever *speed* is comfortable to us.
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们可以将*任意数量*的消息放入管道中（假设我们有一个无限长的管道），以我们舒适的*速度*。
 - en: The receiver will *never be impacted* by our actions—they will pull out as many
     messages as they want at whatever rate is comfortable to them.
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 接收者将*永远不会受到*我们行动的影响——他们会以他们舒适的速度拉出他们想要的任意数量的消息。
 - en: Neither the sender nor the receiver are concerned with *how* the other works.
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送者和接收者都不关心*对方*如何工作。
 - en: Neither the sender nor the receiver are concerned with the *capacity or load*
     of the other.
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送者和接收者都不关心对方的*容量或负载*。
 - en: Neither system is concerned with *where* the other one is – they may or many
     not reside on the same computer, network, continent or even the same planet.
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 两个系统都不关心另一个系统在*哪里*——它们可能在同一台计算机、网络、大陆甚至同一颗行星上，也可能不在。
 - en: Each of these advantages (and this isn't even an exhaustive list) has very important
     benefits in software development—what they all have in common is *decoupling*.
     One system is decoupled from the other in terms of responsibility, time, bandwidth,
     internal workings, load and geography. And decoupling is a very desirable part
     of any distributed or complex system—the more decoupled the parts of the system
     are, the easier it is to independently build, test, run, maintain and scale them.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些优势中的每一个（这甚至不是一个详尽的列表）在软件开发中都有着非常重要的好处——它们所有的共同点都是*解耦*。一个系统与另一个系统在责任、时间、带宽、内部工作、负载和地理位置方面都是解耦的。解耦是任何分布式或复杂系统中非常理想的部分——系统的各个部分解耦得越多，就越容易独立地构建、测试、运行、维护和扩展它们。
 - en: Most systems interact with other outside or third-party systems as well—if we
     build a shopping site we might interact with a payment processor, and let’s say
     we attempt to directly communicate with the payment processor on each user click.
@@ -183,16 +250,20 @@
     like logistics or delivery systems, and we quickly have a paralysing mess that
     makes it difficult to decide anything at all. If one system goes down, the other
     systems have effectively gone down as well, for no fault of their own.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数系统还与其他外部或第三方系统进行交互——如果我们建立一个购物网站，我们可能会与支付处理器进行交互，假设我们尝试在每次用户点击时直接与支付处理器进行通信。如果我们的系统负载过重，我们也会让其他系统承受相同的负载。反之亦然——如果我们的支付提供商需要向我们发送数百万条关于过去支付状态的信息，我们的系统最好准备好了。这两个系统现在是*耦合*的。一个系统的决策和行动对另一个系统有着重大影响，因此在做出每个决定时都需要考虑到双方的需求。如果将足够多的其他系统加入到混合中，比如物流或交付系统，我们很快就会陷入一个让人难以决策的混乱局面。如果一个系统崩溃了，其他系统也会无故崩溃。
 - en: We’re also in trouble if we want to switch out any one of these systems for
     another one, like a new payment processor or delivery system. We’d have to make
     deep changes in multiple places in our application, and it’s even more difficult
     to build code to split our messages between multiple providers—we may want to
     use a ratio to load balance them or split them by geography; or dynamically switch
     between them based on each provider’s availability or cost.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要将其中任何一个系统替换为另一个系统，比如一个新的支付处理器或交付系统，我们就会遇到麻烦。我们将不得不在我们的应用程序的多个地方进行深层次的更改，而且在构建代码以在多个提供商之间分割我们的消息时更加困难——我们可能想要使用比例来平衡负载，或者根据每个提供商的可用性或成本动态地在它们之间进行切换。
 - en: Message queues offer the decoupling that solves a lot of these problems. If
     we set up a queue between two systems that need to communicate with each other,
     they can now go about their work without having to worry about each other at all—we
@@ -200,12 +271,16 @@
     the other system to come to us through another queue as well. We now have clear
     points at which we can add rules or make the changes we require, without either
     system knowing or caring about what's different.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列提供了解耦的解决方案，解决了许多这些问题。如果我们在需要相互通信的两个系统之间设置一个队列，它们现在可以在完全不必担心彼此的情况下进行工作——我们将针对任何系统的消息放入一个队列中，我们也期望从另一个队列中得到来自另一个系统的信息。现在我们有了明确的点，在这些点上我们可以添加规则或进行我们需要的更改，而不需要任何一个系统知道或关心有什么不同。
 - en: So what's the catch?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 那么问题来了，有什么限制吗？
 - en: Are message queues the holy grail of computing, though? Do they solve all the
     world's problems? No, of course not. There are plenty of situations where we might
     not want to use them. And we certainly don't want to use a queue just because
@@ -215,8 +290,10 @@
     always be more complex than one system that doesn't have to communicate. If you
     have a system that’s simple enough to not require communication with any others,
     there simply isn't any reason to reach for a queue.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息队列是计算的圣杯吗？它们解决了所有世界的问题吗？当然不是。有很多情况下我们可能不想使用它们。我们当然也不希望仅仅因为有一个易于使用的队列并且认为使用它可能很有趣而使用队列。有一些系统非常简单，根本不需要它——消息队列是减少通信系统复杂性的一种方法，但是两个通信系统总是比一个不需要通信的系统更复杂。如果您有一个简单到不需要与任何其他系统通信的系统，那么根本没有理由去使用队列。
 - en: There are also systems that communicate with each other, but where the complexity
     added by that communication added is insignificant and not worth worrying about.
     Or more often the systems are already coupled, in the sense that they all need
@@ -224,8 +301,10 @@
     and a data service (in an *OLTP* system). There's not much point in decoupling
     them with a queue, because neither can do anything useful without the direct involvement
     of the other.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一些系统彼此通信，但通信增加的复杂性微不足道，不值得担心。或者更常见的情况是系统已经耦合在一起，从功能上来说它们都需要一起工作。一个非常常见的例子是应用程序服务器和数据服务（在*OLTP*系统中）。使用队列解耦它们并没有多大意义，因为没有一个可以在没有直接参与另一个的情况下执行任何有用的操作。
 - en: Then there's performance to consider as well—the whole point of decoupling two
     systems with regards to time and load is so that they can each process information
     at their own pace—but we certainly would *not* want this to happen in performance
@@ -234,59 +313,81 @@
     on the messages you send) but will remove any guarantees we need about the exact
     time taken for each piece of work. If predictability is more important than throughput,
     we're better off without a queue.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后还要考虑性能——解耦两个系统的整个目的是使它们可以按照自己的节奏处理信息，但是我们肯定不希望这种情况发生在对性能敏感的应用程序或实时系统中。队列可能会帮助我们同时处理更多的工作（接收者可能有许多进程并行处理您发送的消息），但会消除我们对每个工作时间的准确性所需的任何保证。如果可预测性比吞吐量更重要，我们最好不要使用队列。
 - en: Using a queue might increase the time taken to process each *individual* message,
     but will allow you process many more messages at the same time across different
     computers—so your total number of messages processed per minute or hour, or *throughput*,
     will increase.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用队列可能会增加处理每个*单独*消息所需的时间，但会允许您同时在不同计算机上处理更多的消息——因此您每分钟或每小时处理的消息总数，或*吞吐量*，将增加。
 - en: If we do have multiple systems that need to communicate, and that communication
     needs to be *durable* (if we’ve put a message into a queue, we want to be sure
     that the messaging system isn’t going to ‘forget’ about it) and decoupled, a message
     queue is indispensable.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有多个需要通信的系统，并且通信需要是*持久*的（如果我们把消息放入队列，我们希望消息系统不会‘忘记’它），并且解耦，那么消息队列是不可或缺的。
 - en: Arguing Semantics
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 辩论语义
 - en: 'There''s simply no way to learn about message queues without reading and/or
     arguing about delivery guarantees and semantics, so we might as well get to that
     quickly. People who build message queues will claim that their system offers one
     of three delivery guarantees—that each message you put into the queue will be
     delivered:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有办法学习有关消息队列而不阅读和/或辩论交付保证和语义，所以我们最好快点做这个。构建消息队列的人会声称他们的系统提供了三种交付保证之一：你放入队列的每条消息都会被传递：
 - en: '*at-least* once.'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*至少*一次。'
 - en: '*at-most* once.'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*最多*一次。'
 - en: '*exactly* once.'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*确切*一次。'
 - en: Which guarantees we're using will have a massive impact on the design and working
     of our system, so let's unpack each of them one by one.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用的保证将对我们系统的设计和工作产生巨大影响，因此让我们逐一拆分它们。
 - en: At-Least Once
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 至少一次
 - en: This is the most common delivery mechanism, and it's the simplest to reason
     about and implement. If I have a message for you, I will read it to you, and keep
     doing so again and again until you acknowledge it. That's it. In a system which
     works on an at-least-once basis, this means that when you receive a message from
     the queue and don't delete/acknowledge it, you will receive it again in the future,
     and will keep receiving it until you explicitly delete/acknowledge it.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最常见的传递机制，也是最容易理解和实现的。如果我有一条消息要传递给你，我会读给你听，一遍又一遍，直到你确认接收到为止。就是这样。在一个至少一次的基础上工作的系统中，这意味着当你从队列接收到一条消息并且没有删除/确认它时，你将在未来再次收到它，并且会一直收到直到你明确删除/确认它。
 - en: The reason this is the most common guarantee is that it's simple and gets the
     job done 100% of the time—there's no edge case in which the message gets lost.
     Even if the receiver crashes before acknowledging the message, it will simply
@@ -300,8 +401,10 @@
     been sent to you, the message will be sent again. This simple remedy of sending
     the message again in case of any problem on any side is what makes this guarantee
     so reliable.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 之所以这是最常见的保证，是因为它简单且百分之百完成工作——没有消息丢失的边缘情况。即使接收者在确认消息之前崩溃，它也会简单地再次接收相同的消息。另一方面，作为接收者的你需要准备多次接收相同的消息——即使你并没有必要经历崩溃。这是因为提供至少一次是保护队列服务不会错过消息的最简单方式——如果你的确认未能通过网络到达队列系统，那么消息将被再次发送。如果存在持续存储你的确认的问题，消息将被再次发送。如果队列系统在正确跟踪发送给你的内容之前重新启动，消息将被再次发送。在任何一方出现问题时，简单的再次发送消息的方法是使得此保证如此可靠的原因。
 - en: But is message duplication/repetition a problem? That's really up to you and
     your application or use-case. If the message is a timestamp and a measurement,
     for example, there's no problem with receiving a million duplicates. But if you're
@@ -312,8 +415,10 @@
     you store a unique permanent marker to keep track of your actions, often in the
     same database transaction as taking the action itself. The prevents you from repeating
     that action again even if the message is duplicated.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是消息的重复/重复是一个问题吗？这真的取决于你和你的应用程序或用例。例如，如果消息是一个时间戳和一个测量值，那么接收到一百万个副本是没有问题的。但是如果你是根据消息来转移资金，那肯定是个问题。在这些情况下，你将需要在接收端使用事务性（ACID）数据库，并且可能会将消息ID记录在唯一索引中，以便它不能重复。这就是使用*幂等令牌*或_墓碑_——当你对消息进行操作时，你会存储一个唯一的永久标记来跟踪你的操作，通常与执行操作本身在同一个数据库事务中。即使消息重复，也会阻止你再次执行该操作。
 - en: If you handle duplication, or if your messages are naturally resistant to duplication,
     your systems are said to be *idempotent*. This means you can safely handle receiving
     the same message multiple times, without corrupting your work. It also often means
@@ -323,12 +428,16 @@
     message, they'll simply send it again. The senders are then responsible for making
     sure that they use the same tombstone or idempotency token if and when they re-send
     messages.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你处理了重复，或者你的消息自然抵制重复，那么你的系统就被称为*幂等*。这意味着你可以安全地处理多次接收相同的消息，而不会破坏你的工作。这通常也意味着你可以容忍发送者多次发送相同的消息——请记住，发送者发送消息时通常也会遵循至少一次的原则。如果发送者无法记录他们已经发送了特定的消息，他们将简单地重新发送。然后发送者负责确保他们在重新发送消息时使用相同的墓碑或幂等令牌。
 - en: At Most Once
+  id: totrans-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 最多一次
 - en: This is a pretty rare semantic, used for messages where duplication is so horribly
     explosive (or the message so utterly unimportant) that we'd prefer not to send
     the message at all, rather than send it twice. At-most-once once implies that
@@ -339,18 +448,24 @@
     send it (in case the message is horribly explosive), or has not even bothered
     to record the message at all, and is just passing it on like a router passes on
     a UDP packet.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一种非常罕见的语义，用于那些重复性非常糟糕（或消息非常不重要）的消息，我们宁愿不发送消息，而不是发送两次。至多一次意味着排队系统将尝试将消息传递给您一次，但仅此而已。如果您收到并确认了消息，则一切都很好，但如果您没有收到，或者出现任何问题，该消息将永远丢失——要么是因为排队系统在尝试发送消息之前费尽心思记录了传递给您的情况（以防消息爆炸），要么根本没有记录消息，而只是像路由器传递UDP数据包一样传递消息。
 - en: This semantic usually comes into play for messaging systems that are either
     acting as stateless information routers; or in those cases where a repeat message
     is so destructive that an investigation or reconciliation is necessary in case
     there's any failure.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种语义通常适用于那些作为无状态信息路由器的消息系统；或者在重复消息如此破坏性地时必须进行调查或协调的情况下。
 - en: Exactly Once
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 精确一次
 - en: This is the holy grail of messaging, and also the fountain of a lot of snake-oil.
     It implies that every message is guaranteed to be delivered and processed exactly
     once, no more and no less. Everyone who builds or uses distributed systems has
@@ -358,67 +473,97 @@
     either (1) learn why it's impossible, figure out idempotency, and use at-least-once,
     or (2) they try to build a half-assed “exactly-once” system and sell it for lots
     of money to those who haven't figured out (1) yet.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是消息传递的圣杯，也是许多伪科学的源泉。这意味着每条消息都保证准确地传递和处理一次，不多不少。每个构建或使用分布式系统的人生都有一个时刻，他们会想“这有多难？”，然后他们要么（1）学会为什么这是不可能的，找出幂等性，并使用至少一次，要么（2）他们试图构建一个半吊子的“精确一次”系统，并将其卖给那些还没有弄清楚（1）的人。
 - en: 'The impossibility of exactly-once delivery arises from two basic facts:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 精确一次传递的不可能性源于两个基本事实：
 - en: senders and receivers are imperfect
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送方和接收方都是不完美的
 - en: networks are imperfect
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 网络是不完美的
 - en: 'If you think about the problem deeply, there are a lot of things that can go
     wrong:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您深思熟虑这个问题，有很多事情可能会出错：
 - en: a sender might be unable to record (they *forget*) that they've sent the message
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送方可能无法记录（他们*忘记*）已发送消息
 - en: the network call to send the message might fail
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送消息的网络调用可能会失败
 - en: the messaging system’s database might not be able to record the message
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息系统的数据库可能无法记录消息
 - en: the acknowledgement that the messaging system has recorded the message might
     not reach the sender over the network
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息系统记录消息的确认可能无法通过网络到达发送方
 - en: the sender might not be able to record the acknowledgement that the messaging
     system has received the message
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发送方可能无法记录消息系统已接收到消息的确认。
 - en: 'Let''s say all goes well while sending the message—when the messaging system
     tries to deliver the message to the receiver:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设在发送消息时一切顺利——当消息系统尝试将消息传递给接收者时：
 - en: the message might not reach the receiver over the network
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息可能无法通过网络到达接收方
 - en: the receiver might not be able to record the message in its database
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 接收方可能无法将消息记录在其数据库中
 - en: the acknowledgement from the receiver might not reach the messaging system over
     the network
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 接收者的确认可能无法通过网络到达消息系统
 - en: the messaging system’s database might not be able to record that the message
     has been delivered
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 消息系统的数据库可能无法记录消息已被传递
 - en: Given all the things that can go wrong, it's impossible for any messaging system
     to guarantee exactly-once delivery. Even if the messaging system is godlike in
     its perfection, most of the things that can go wrong are outside of it or in the
@@ -431,19 +576,26 @@
     a messsage that's already been deleted/acknowledged—but this doesn't mean that
     the whole system including publisher + queue + subscriber has gained full exactly-once
     guarantees.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到可能出现的所有问题，任何消息系统都不可能保证精确一次的交付。即使消息系统在完美性上类似神一般，大多数可能出现问题的情况都在其之外或在互连网络中。一些系统确实尝试使用“精确一次”这个词组，通常是因为它们声称它们的实现永远不会出现上述任何消息系统的问题——但这并不意味着整个系统会神奇地具有精确一次的语义，即使这些声明实际上是真的。这通常意味着排队系统具有某种形式的排序、锁定、散列、定时器和幂等令牌，可以确保它永远不会重新交付已经被删除/确认的消息——但这并不意味着整个系统，包括发布者
+    + 队列 + 订阅者，都获得了完全的精确一次保证。
 - en: 'Most good messaging system engineers understand this and will [explain](https://www.lightbend.com/blog/how-akka-works-exactly-once-message-delivery)
     to their users why this semantic is unworkable. The simpler and more reliable
     way to handle messages is go back to the basics and embrace at-least-once with
     idempotency measures at every point on the sending, receiving and queuing process:
     if at first you don''t succeed, retry, retry, retry...'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数优秀的消息系统工程师都明白这一点，并会向他们的用户[解释](https://www.lightbend.com/blog/how-akka-works-exactly-once-message-delivery)为什么这种语义是行不通的。处理消息的更简单、更可靠的方法是回归基础，并在发送、接收和排队过程的每个环节采取至少一次的幂等性措施：如果一开始失败了，重试，重试，重试...
 - en: Ordering vs Parallelism
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 顺序 vs 并行ism
 - en: After delivery semantics, another common question on peoples’ minds is “why
     can’t we just process messages in parallel while also making sure we process them
     in order?”. Unfortunately this is another tradeoff imposed on us by the tyranny
@@ -454,8 +606,11 @@
     well, which maintains strict sequential ordering. Before making a choice between
     the two, let’s go over what the difference is and why there needs to be a difference
     at all.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在交付语义之后，人们心中另一个常见的问题是“为什么我们不能同时并行处理消息，同时又确保按顺序处理它们？”不幸的是，这又是逻辑暴政强加给我们的另一个权衡。按顺序完成工作和同时完成多项工作总是相互冲突的。大多数消息队列系统会要求你选择其中之一——AWS
+    SQS最初优先考虑了并行性而不是严格的顺序；但最近还引入了一个单独的 FIFO（先进先出）排队系统，它保持严格的顺序。在做出选择之前，让我们了解一下两者的区别以及为什么需要有区别。
 - en: Returning to our earlier metaphor for a queue—a long tube into which we roll
     messages written on a ball—we probably imagined the tube to be just a little wider
     than a single ball. There's really no way the balls could overtake or pass each
@@ -471,15 +626,19 @@
     processing the first message. Though the messages were *received from the queue*
     strictly in the order that they were put in, if there are multiple receiving agents
     there’s no way to say the messages will *be processed in that order*.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到我们对队列的早期隐喻——一个长长的管道，我们在其中滚动写在球上的消息——我们可能想象管道只比一个球稍微宽一点。在管道内，球实际上无法超越或相互通行，所以接收者唯一能取出这些消息的方式是一个接一个地按照放入的顺序。这保证了严格的顺序，但对我们的接收者施加了严格的限制。接收方只能有*一个*代理人在处理每条消息——如果有多个代理人，就无法保证消息按顺序处理。因为每个新代理人都可以独立处理每条消息，他们可以随时完成并开始下一条消息。如果有两个代理人，A和B，代理人A接收第一条消息，代理人B接收第二条消息；代理人B可以在代理人A完成处理第一条消息之前完成处理第二条消息并开始处理第三条消息。尽管消息是按照放入的顺序*从队列接收*的，但如果有多个接收代理人，则无法保证消息*按照那个顺序被处理*。
 - en: The agents could use a [distributed](https://redis.io/topics/distlock) [lock](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS)
     of some kind to co-ordinate with each other, but this is basically the same as
     having only one agent—the lock would only allow one agent to work at any given
     time. This also means that one agent crashing would result in a *deadlock* with
     no work being done.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 代理人可以使用某种[分布式](https://redis.io/topics/distlock) [锁](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS)来协调彼此，但这基本上与只有一个代理人相同——锁只允许一个代理人在任何给定时间工作。这也意味着一个代理人崩溃将导致*死锁*，没有任何工作被完成。
 - en: One way for the messaging system to guarantee order would be for the tube to
     refuse to give out the next ball until and unless the last ball that was received
     has been destroyed (the last message has been deleted/acknowledged). This is what
@@ -487,8 +646,10 @@
     last one has been acknowledged or deleted—but this means that only one agent can
     possibly be working at a time, even if there are *N* agents waiting to receive
     messages from the queue.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息系统保证顺序的一种方法是，管道拒绝在最后一个接收到的球被销毁（最后一条消息被删除/确认）之前，提供下一个球。这就是一般情况下FIFO队列所做的——只有在最后一个消息被确认或删除之后才会提供下一条消息——但这意味着即使有*N*个代理人等待从队列接收消息，只能有一个代理人可能在工作。
 - en: Sometimes, this is exactly what we want. Some operations are easier to control
     effectively when we only have to deal with a single agent, like enforcing rules
     on financial transactions; respecting [rate limits](https://redis.io/commands/incr#pattern-rate-limiter);
@@ -498,8 +659,11 @@
     that must somehow co-ordinate their work with each other will benefit from the
     special case of *N = 1*. The key takeaway is that requiring a guaranteed order
     means we have to process messages sequentially on only one receiver at a time.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，这正是我们想要的。有些操作只涉及一个单一代理人时更容易有效控制，比如强制执行金融交易规则；尊重[速率限制](https://redis.io/commands/incr#pattern-rate-limiter)；或者通常处理假设总是按顺序处理的消息格式。但是很多这些“好处”并不是真正来自于使用FIFO排序的决定——任何我们必须以某种方式协调彼此工作的*N*接收者的场景都会从*N
+    = 1*的特殊情况中受益。关键是，要求有保证的顺序意味着我们必须一次只能在一个接收者上顺序处理消息。
 - en: This restriction also places severe pressure on the queuing system, so you'll
     find that FIFO queues are often more expensive and have less capacity than their
     parallel counterparts. This is because the same logical limits apply to the internal
@@ -509,8 +673,11 @@
     backup services in order to maintain the ordering guarantees. In AWS SQS, the
     FIFO queues are about 2X more expensive than the parallel queues, and are constrained
     to a few hundred messages per second when strict FIFO ordering is required.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一限制也给队列系统带来了严重压力，因此你会发现 FIFO 队列通常比其并行对应物更昂贵，容量更小。这是因为相同的逻辑限制也适用于队列系统的内部实现——大多数工作都需要受限于单个代理或服务器，并且该系统需要保持可靠性。任何增加冗余的努力都需要主服务和备份服务之间的同步协调，以保持排序保证。在
+    AWS SQS 中，FIFO 队列比并行队列贵约 2 倍，并且在需要严格 FIFO 排序时受到几百条消息每秒的限制。
 - en: So the only way to move forward with a FIFO message queue is to accept that
     the entire message processing architecture is going to have an intrinsic speed
     limit. Many systems will support [group headings](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html)
@@ -520,12 +687,17 @@
     each other. This allows some parallelisation inside the queue (like having two
     FIFO tubes instead of one), but we need to remember that the message bandwidth
     inside each group heading will still be limited.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，继续使用 FIFO 消息队列的唯一方法就是接受整个消息处理架构将具有内在速度限制的事实。许多系统将支持队列内的[组标题](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html)，以指示我们希望在哪些消息上严格排序——我们可能会说所有属于“付款”的消息都需要
+    FIFO，而所有属于“订单”的消息都需要 FIFO，但它们不需要在彼此之间是 FIFO。这允许队列内部进行一些并行化（比如有两个 FIFO 管道而不是一个），但我们需要记住每个组标题内的消息带宽仍然会受到限制。
 - en: Parallel != Random
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 并行 != 随机
 - en: Does that mean that the ordering in parallel queues is completely random? Sometimes,
     yes, but most often no. In SQS, the analogy is more that instead of having one
     tube from the sender to receiver, there are multiple tubes. They might also branch
@@ -543,8 +715,13 @@
     with over 250 billion messages waiting to be consumed, with the receiver reading
     and acknowledging over a million messages a second. And that’s just one queue
     operated by one customer.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是否意味着并行队列中的顺序完全是随机的？有时是，但大多数情况下不是。在 SQS 中，类比更像是，与其从发送方到接收方有一个管道，不如说有多个管道。它们可能在途中分支或汇合。这并不意味着你滚入的消息的顺序是有意随机化的——在大量消息中，你仍然可以预期较早的消息通常会在后来的消息之前收到。这更像是一种*尽力而为*的排序，即尽最大努力保持排序完整性，但由于逻辑上已经不可能，因此它并不是系统的重要优先级。这也允许像
+    SQS 这样的消息系统扩展到几乎无限的容量——因为如果你滚入了大量消息，队列系统可以简单地添加更多的管道。正如你所能想象的，这将支持同时任意数量的接收者，以及任意数量的发送者。这种简单性是
+    SQS 能够扩展到令人难以置信的数量的原因，其中一个案例是[有一个队列](https://twitter.com/timbray/status/1246157403663388672)等待消费超过
+    2500 亿条消息，接收者每秒读取并确认超过一百万条消息。而这仅仅是一个客户操作的一个队列。
 - en: Most problems that seem like they have a hard FIFO requirement can often lend
     themselves to parallelism and out-of-order delivery with a little bit of creativity.
     The sender adding a timestamp into the message is one way to help with this, like
@@ -555,18 +732,24 @@
     contents of the message—if we're messaging the percentage of a file downloaded,
     for example, seeing 41%, 42% and 43% always means that the current value is 43%—even
     if we see them out of order as 41%, 43% and 42%.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数看似有严格先进先出（FIFO）要求的问题通常都可以通过一点创意转化为并行性和无序传递。发送者将时间戳添加到消息中是帮助解决此问题的一种方法，就像在只有最后一个消息重要的测量消息的情况下一样。在更具事务性的系统中，发送者通常可以将一个[单调递增的计数器](https://www.postgresql.org/docs/current/functions-sequence.html)添加到消息中。如果这是不可能的，我们可能可以根据消息的内容来处理此问题——例如，如果我们正在发送文件下载的百分比，那么看到41%，42%和43%总是意味着当前值为43%——即使我们以41%，43%和42%的顺序看到它们。
 - en: While it's often a bad idea to change our systems to accommodate the tools we
     use, designing our messages to allow for out-of-order delivery and idempotency
     makes the system more resilient in general, while also letting use more parallel
     messaging systems—often saving time, money and a lot of operational work.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然根据我们使用的工具来改变系统通常不是一个好主意，但设计我们的消息以允许无序传递和幂等性会使系统在一般情况下更具弹性，同时也允许我们使用更多并行消息系统——通常节省时间、金钱和大量运营工作。
 - en: Fan Out / In
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Fan Out / In**'
 - en: When building a distributed system there's often a need to have the same message
     sent to multiple receivers—besides the usual receiver of the message, we also
     often want the same message sent to other places, like an archive, an audit log
@@ -575,8 +758,10 @@
     single *event bus* in your application, where all the messages posted into this
     event bus are automatically sent to all of your services. This is called a *fan-out*
     problem, where a message from one producer needs to reach many consumers.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在构建分布式系统时，通常需要将相同的消息发送到多个接收者——除了通常接收消息的接收者外，我们还经常希望将相同的消息发送到其他位置，例如存档、审核日志（用于合规性和安全检查）或我们仪表板的分析器。如果您正在使用具有多个服务的事件驱动架构，您可能希望在您的应用程序中使用单一的*事件总线*，该事件总线中的所有发布到此事件总线的消息都会自动发送到您的所有服务。这称为*扇出*问题，其中来自一个生产者的消息需要到达多个消费者。
 - en: The inverse problem, where a single receiver is tasked with reading the messages
     posted to multiple queues is also common—in the example we considered above, a
     receiver that was archiving all messages or creating an audit log would probably
@@ -586,15 +771,19 @@
     confirmed orders, failed payments, successful shipping and many more. This is
     a *fan-in* problem, where the messages from many producers need to reach the same
     consumer.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向问题，即一个单一的接收器被分配了从多个队列中读取消息的任务也很常见——在上面考虑的例子中，一个将所有消息存档或创建审核日志的接收器可能会接收组织中生成的所有消息，位于每个队列上。在服务体系结构中，将通知处理分开处理也很常见——因此，通知系统可能需要接收有关新确认订单、付款失败、成功发货等的消息。这是一个*扇入*问题，其中来自许多生产者的消息需要到达相同的消费者。
 - en: If all the producers are putting their messages directly into queues, this would
     be a really difficult problem to solve—we'd have to somehow intercept our queues,
     and reliably copy the messages into multiple queues. Building, configuring and
     maintaining this switchboard simply isn't worth the time or the effort—especially
     when we could just use *topics* instead.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果所有的生产者都直接将它们的消息放入队列，那么这将是一个非常困难的问题要解决——我们必须以某种方式拦截我们的队列，并可靠地将消息复制到多个队列中。构建、配置和维护这个交换机根本不值得时间和精力——尤其是当我们可以使用*主题*时。
 - en: One way to think about topics is that they're similar to the headings you'd
     see on a notice board at a school or an office. Producers post messages under
     a specific topic on a board, and everyone interested in that topic will see the
@@ -607,16 +796,20 @@
     short span of time. The answer here, again, is to just use a message queue to
     soak up the messages from the topics at whatever rate they're generated. The receivers
     can then process them at their own pace.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 想到主题的一种方式是，它们类似于您在学校或办公室的公告板上看到的标题。生产者在公告板上的特定主题下发布消息，对该主题感兴趣的所有人都将看到该消息。消息系统发送消息到感兴趣的接收者最常见的方式是HTTP(S)请求，有时也称为*webhook*。在像HTTP请求这样的推送式系统中，无论接收者是否准备好，消息都会被推送到接收者。这重新引入了我们之前谈到的耦合，我们希望避免——我们不希望我们的接收者在短时间内因为数十/数百/数千/数百万个webhook的压力而崩溃。这里的答案再次是只需使用消息队列以任何速率从主题中吸收消息。然后，接收者可以以自己的速度处理它们。
 - en: Automatically copying a message from one topic into one or more queues isn't
     strictly a message queue feature, but it is complementary—most full-featured messaging
     systems will offer a way to do this. Producers will still continue to put messages
     into a single place as usual, but this will be a topic, and internally the messages
     will be copied to multiple queues, each of which will be read by their respective
     receivers.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 将消息从一个主题自动复制到一个或多个队列并不严格属于消息队列功能，但它是互补的——大多数功能齐全的消息传递系统都会提供这样的方法。生产者仍然会像往常一样将消息放入一个地方，但这将是一个主题，而消息将在内部复制到多个队列中，每个队列都将由其各自的接收者读取。
 - en: In AWS, the service that provides topic based messaging is the Simple Notification
     Service ([SNS](https://aws.amazon.com/sns/)). Here you create a topic and publish
     messages into it—the API to publish a message into an SNS topic is very similar
@@ -624,42 +817,58 @@
     to care about the difference. SNS then has options available to publish that message
     into any number of *subscribed* SQS queues (at no extra charge). Each of these
     subscribed SQS queues would then be processed by their respective receivers.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在AWS中，提供基于主题的消息传递的服务是简单通知服务（[SNS](https://aws.amazon.com/sns/)）。在这里，您创建一个主题并将消息发布到其中——发布消息到SNS主题的API与将消息发布到SQS队列非常相似，大多数生产者不必关心其中的区别。然后SNS有可用选项将该消息发布到任意数量的*订阅*的SQS队列（不收取额外费用）。然后，这些订阅的SQS队列将由各自的接收者处理。
 - en: If you're working with a different system like Apache Kafka, you'll see similar
     concepts there as well - you'll have *topics* that you publish messages into,
     and any number of consumers can each read all the messages in a topic. Google's
     Pub/Sub system integrates topics and queues as well.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你正在使用类似Apache Kafka之类的不同系统，你也会在那里看到类似的概念——你将会有*主题*，你可以向其中发布消息，而任意数量的消费者可以分别读取主题中的所有消息。Google的Pub/Sub系统也集成了主题和队列。
 - en: 'This combination of these scenarios is common enough that there''s a simple
     well established pattern to handle it:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些场景的组合是足够常见的，以至于有一个简单而成熟的模式来处理它：
 - en: Publish every message to one appropriate topic.
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将每条消息发布到一个适当的主题。
 - en: Create a queue for each receiver.
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为每个接收者创建一个队列。
 - en: Link up each receiver's queue to the topics that the receiver is interested
     in.
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将每个接收者的队列与接收者感兴趣的主题链接起来。
 - en: Since it's usually possible to subscribe a queue to any number of topics, there's
     no extra plumbing required at a receiver to process messages from multiple topics.
     And of course, it's possible to have any number of message queues subscribed to
     a single topic. This kind of setup supports both fan-out as well as fan-in, and
     keeps your architecture open to expansion and changes in the future.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于通常可以将队列订阅到任意数量的主题，因此在接收者端处理来自多个主题的消息不需要额外的管道工作。当然，也可以将任意数量的消息队列订阅到单个主题。这种设置支持扇出和扇入，并且使您的架构能够在未来进行扩展和更改。
 - en: Poison Pills & Dead Letters
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 毒丸（Poison Pills）和死信（Dead Letters）
 - en: As morbid as that sounds, when setting up systems to talk to multiple other
     systems there are bound to be mistakes that happen. The usual problem is that
     a subscriber is hooked up to receive messages from a topic it knows nothing about
@@ -673,8 +882,10 @@
     repeatedly, unsuccessfully each time, it'll move it out into a special queue called
     a *dead letter queue*. We'd want to hook this queue up to an alarm of some sort,
     so we'll quickly know something weird is going on.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管听起来很阴森，但在设置系统与多个其他系统进行通信时，肯定会发生错误。通常的问题是，一个订阅者被连接到接收来自一个它一无所知的主题的消息，以一种它不理解的消息格式。发生了什么？订阅者忽略消息吗？还是确认/删除它？忽略它不会错，因为消息会一次又一次地返回在至少一次的系统中？但是删除/确认我们不处理的消息更糟糕吗？在我们伸手拿着由倒下的树木制成的哲学书之前，我们可能想要在我们的队列上配置一个*死信队列*。这是许多队列系统给我们的一个特性，如果系统看到一个消息被重复地发送出去进行处理，每次都不成功，它就会将其移出到一个特殊的队列，称为*死信队列*。我们希望将这个队列连接到某种警报上，这样我们就会很快知道发生了一些奇怪的事情。
 - en: A much worse scenario is one in which the message is explosive in some way—maybe
     it's formatted in XML instead of JSON, or contains user generated content carrying
     a malformed input attack that causes your parsing code to crash... your subscriber
@@ -688,27 +899,38 @@
     message so many times that it moves it to the dead letter queue. You do need to
     make sure there are no security implications, though, and remember that this is
     an easy [DoS attack](https://en.wikipedia.org/wiki/Denial-of-service_attack).
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 更糟糕的情况是，消息以某种方式爆炸性地呈现——也许它是用 XML 格式化而不是 JSON，或者包含着用户生成的内容，其中携带了一个格式错误的输入攻击，导致你的解析代码崩溃...
+    你的订阅者刚刚吞下了一颗*毒丸*。当这颗毒丸到达订阅者时会发生什么，这在很大程度上取决于你的技术堆栈，所以不用说你要仔细考虑订阅者代码中的错误处理和异常。好消息是，如果你配置了一个*死信队列*，那么默默失败可能是一个不错的选择。毒丸最终会出现在*死信队列*中，并且可以被检查。即使毒消息正在崩溃你的订阅者，使用进程管理器进行自动重启通常足以重试消息，以至于将其移动到死信队列。但是你确实需要确保没有安全问题，并记住这是一种简单的[拒绝服务攻击](https://en.wikipedia.org/wiki/Denial-of-service_attack)。
 - en: Remember to always verify your incoming messages, both in terms of whether the
     message is structured the way you expect it to be, and if you're the intended
     recipient.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 记得要始终验证你收到的消息，无论是消息是否按照你期望的方式结构化，还是你是否是预期的接收者。
 - en: The Q-List
+  id: totrans-102
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Q 列表
 - en: Here's a list of some of the more popular message queuing systems available
     right now, with a list of how the concepts we've seen so far apply to each of
     them. This isn't an exhaustive list of course, so let me know [@sudhirj](https://twitter.com/sudhirj)
     if you think there are any that are missing or misrepresented.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是目前一些更流行的消息队列系统的列表，其中列出了我们到目前为止所见过的概念如何适用于每个系统。当然，这并不是一个详尽的列表，所以如果你认为有任何遗漏或误传的地方，请告诉我[@sudhirj](https://twitter.com/sudhirj)。
 - en: AWS SNS & SQS
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: AWS SNS & SQS
 - en: AWS runs two services that integrate with each other to provide full message
     queuing functions. The [SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html)
     service is a pure message queue—it allows you to create a queue, send a message,
@@ -718,8 +940,13 @@
     the call wait for a message for up to 20 seconds, so an effective pattern is to
     poll the `ReceiveMessage` API in an infinite loop with the 20 second wait turned
     on.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: AWS 运行两个相互集成的服务，提供完整的消息队列功能。[SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html)
+    服务是一个纯消息队列——它允许您创建队列、发送消息和接收消息。就是这样。SQS 队列上的 [`ReceiveMessage`](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html)
+    API 仅支持拉取，因此您需要在接收方准备处理消息时调用它。有一个 `WaitTimeSeconds` 选项，用于在调用等待消息时阻塞，最多等待 20 秒，因此一个有效的模式是使用
+    20 秒等待在无限循环中轮询 `ReceiveMessage` API。
 - en: The topics and fan-out / fan-in functions come with the integration of [SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html),
     which works on the construct of a *topic*. This allows a message to be posted
     into a topic, as opposed to a queue. You can then subscribe any number of SQS
@@ -728,25 +955,38 @@
     option, which makes posting a message into an SNS topic effectively equivalent
     to posting it into an SQS queue—no transformations or packaging of any sort will
     be applied onto the message.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 主题和扇出/扇入功能通过 [SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
+    的集成提供，它工作在*主题*的构造上。这允许将消息发布到主题，而不是队列。然后，您可以订阅任意数量的 SQS 队列到一个主题中，因此发布到主题的消息会立即免费复制到所有订阅的队列。您将想要启用
+    [*raw message*](https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html)
+    选项，这使得将消息发布到 SNS 主题实际上等同于将其发布到 SQS 队列中——不会对消息进行任何形式的转换或打包。
 - en: SQS & SNS are both fully managed services, so there are no servers to maintain
     or software to install. You're charged based on the number of messages you send
     and receive, and AWS handles scaling to any load.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: SQS 和 SNS 都是完全托管的服务，因此无需维护服务器或安装软件。您根据发送和接收消息的数量收费，而 AWS 处理任何负载的扩展。
 - en: FIFO options are available on [SNS](https://aws.amazon.com/blogs/aws/introducing-amazon-sns-fifo-first-in-first-out-pub-sub-messaging/)
     and [SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html),
     with different pricing and capacity guarantees. AWS uses the term *message group
     ID* to denote a group heading under which all messages are FIFO. Messages inside
     a group heading are delivered in order by not giving out the next message until
     the previous message is deleted.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [SNS](https://aws.amazon.com/blogs/aws/introducing-amazon-sns-fifo-first-in-first-out-pub-sub-messaging/)
+    和 [SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html)
+    上都提供了 FIFO 选项，具有不同的定价和容量保证。AWS 使用术语*消息组 ID*来表示一个组标题，该组标题下的所有消息均为 FIFO。组标题中的消息按顺序传递，直到前一个消息被删除才会发送下一条消息。
 - en: Google Pub/Sub
+  id: totrans-109
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 谷歌 Pub/Sub
 - en: Google provides the [Pub/Sub](https://cloud.google.com/pubsub/docs/overview)
     service as part of their cloud platform to handle message queues and topics in
     an integrated service. The concept of topics exists as you'd expect it, while
@@ -756,25 +996,34 @@
     do a [*webhook*](https://cloud.google.com/pubsub/docs/push) style POST of the
     message to your server, letting you acknowledge it with a success return status
     code.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 谷歌提供 [Pub/Sub](https://cloud.google.com/pubsub/docs/overview) 服务作为其云平台的一部分，用于处理集成服务中的消息队列和主题。主题的概念存在如您所预期的那样，而队列被称为*订阅*。按预期，将多个订阅与一个主题关联将消息复制到所有关联的订阅。除了允许订阅者从订阅中拉取消息外，Pub/Sub
+    还可以通过 [*webhook*](https://cloud.google.com/pubsub/docs/push) 样式的 POST 将消息发送到您的服务器，让您使用成功返回状态代码进行确认。
 - en: This is also a fully managed system, like AWS. You're charged based on the number
     of messages you send, and Google handles scaling the system to whatever capacity
     you need. It also has a few features that aren't available in the SNS+SQS combo,
     like allowing you to look into your historical record using timestamps and [replay
     messages](https://cloud.google.com/pubsub/docs/replay-overview).
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也是一个完全托管的系统，就像 AWS 一样。您根据发送的消息数量收费，谷歌会处理系统的扩展，以满足您需要的任何容量。它还具有一些 SNS+SQS 组合中不可用的功能，例如允许您使用时间戳查看历史记录并进行[重放消息](https://cloud.google.com/pubsub/docs/replay-overview)。
 - en: '[FIFO functionality](https://cloud.google.com/pubsub/docs/ordering) exists
     inside the context of an *ordering key*, which allows you to ensure that messages
     inside an ordering key are processed in sequence by not giving you the next message
     until the previous one has been acknowledged.'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '[FIFO 功能](https://cloud.google.com/pubsub/docs/ordering)存在于*排序键*的上下文中，这允许您确保在排序键内的消息按顺序处理，直到上一个消息被确认之前，不会给出下一个消息。'
 - en: AWS EventBridge
+  id: totrans-113
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: AWS EventBridge
 - en: A new offering from AWS, [EventBridge](https://aws.amazon.com/eventbridge/)
     offers a fully managed *event bus*—this is a varition on the concept of queues
     and topics, where all messages are posted into a single bus with no visible topic
@@ -786,12 +1035,17 @@
     specific options. This makes it easy to manage the event bus as a separately configurable
     rule-based switchboard, while also allowing easy plugins for archival, auditing,
     monitoring, alerting, replay, etc.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: AWS 的一个新产品，[EventBridge](https://aws.amazon.com/eventbridge/)提供了一个完全托管的*事件总线*—这是对队列和主题概念的变种，其中所有消息都发布到一个单一的总线中，没有可见的主题分离。相反，每条消息都需要按照一个标准格式进行结构化，其中包含有关消息主题的信息。总线然后会读取消息，并将其路由到已表示有兴趣接收有关该主题的消息的订阅者。总线到订阅者的实际交付机制可以是
+    SQS 队列、Webhooks 或许多其他平台特定选项。这使得很容易将事件总线管理为一个单独可配置的基于规则的交换机，同时也允许易于插件化的存档、审计、监视、警报、重放等功能。
 - en: Redis Streams
+  id: totrans-115
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Redis Streams
 - en: Redis has a relatively new [Streams](https://redis.io/topics/streams-intro)
     feature that works great for message queues. It works by creating topics on the
     fly and adding messages to them with the `XADD` command. Reading the messages
@@ -802,8 +1056,11 @@
     Each message sent to a topic becomes available independently in each consumer
     group, which can then be subscribed to with `XREADGROUP`. Messages can be acknowledged
     with `XACK`.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: Redis 具有一个相对较新的[Streams](https://redis.io/topics/streams-intro)功能，非常适用于消息队列。它通过动态创建主题并使用`XADD`命令向其添加消息来工作。通过`XREAD`可以直接从主题中读取消息，因此每个订阅者都可以维护自己的状态（最后读取的偏移量）以读取消息。为了避免每个订阅者都必须维护其当前状态，使用`XGROUP
+    CREATE`创建*消费者组*更合理，它们是队列的等价物。发送到主题的每条消息在每个消费者组中都独立可用，然后可以使用`XREADGROUP`订阅。可以使用`XACK`确认消息。
 - en: The Redis Streams are automatically FIFO ordered using a timestamp that can
     either be auto-generated or manually set. This also means that messages can only
     be processed by one consumer agent at a time. To get around this limitation and
@@ -812,18 +1069,24 @@
     `LPUSH` messages into a topic, and then `RPOPLPUSH` them into other lists, each
     representing a queue, or more accurately its work in progress. `LREM` works to
     delete/acknowledge the message.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: Redis Streams 使用时间戳自动进行 FIFO 排序，该时间戳可以自动生成或手动设置。这也意味着消息一次只能由一个消费者代理处理。为了解决这个限制并与许多消费者代理并行工作，文档中描述了一个单独的非流式模式，基本上是将消息`LPUSH`到一个主题中，然后将它们`RPOPLPUSH`到其他列表中，每个列表代表一个队列，或更准确地说是其进行中的工作。`LREM`用于删除/确认消息。
 - en: Redis is an open source system that you can install and maintain yourself or
     find managed hosting for. Depending on how durable you need the system to be you
     might want to figure out the best [persistence](https://redis.io/topics/persistence)
     mechanism to use.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: Redis 是一个开源系统，您可以自行安装和维护，或找到托管服务提供商。根据您需要系统持久性的程度，您可能需要确定最佳的[持久性](https://redis.io/topics/persistence)机制。
 - en: Apache Kafka
+  id: totrans-119
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Apache Kafka
 - en: '[Kakfa](https://kafka.apache.org/documentation/) is a popular message broker
     that works on the concepts of *producers* publishing messages, called *events*,
     to *topics*. The events in a topic are split into *partitions*, using a partition
@@ -833,20 +1096,29 @@
     the concept of a *consumer group* applies, same as Redis Streams. A *consumer
     group* is effectively a queue, where every event posted to a topic is available
     for processing in every associated *consumer group*.'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Kafka](https://kafka.apache.org/documentation/) 是一款流行的消息代理，其工作原理基于 *生产者* 发布消息（称为
+    *事件*）到 *主题*。主题中的事件根据主题内的分区键分成 *分区*，每个分区内保持 FIFO 排序。事件可以通过套接字流式传输给 *消费者*，或者由消费者查询以实现更解耦的方法。对于不希望维护状态的消费者，*消费者组*
+    的概念适用，与 Redis Streams 相同。*消费者组* 实际上是一个队列，主题中发布的每个事件都可以在与之关联的每个 *消费者组* 中进行处理。'
 - en: Kafka is open source, but is a complicated to install and maintain, which makes
     it suitable for larger projects and teams. It scales based on how well you split
     your events in to partitions—the more partitions you have the more Kafka can distribute
     work, and each partition has only as much capacity as the server that's in charge
     of managing it. Managed hosting options are avaiable, but they tend to have high
     base costs compared to managed services like SNS+SQS, Pub/Sub or RabbitMQ.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: Kafka 是开源的，但是安装和维护起来相对复杂，这使得它适用于更大的项目和团队。它根据你如何将事件拆分成分区来扩展——分区越多，Kafka 分发工作的能力就越强，每个分区的容量仅取决于负责管理它的服务器。有托管选项可用，但与像
+    SNS+SQS、Pub/Sub 或 RabbitMQ 这样的托管服务相比，它们往往具有较高的基本成本。
 - en: RabbitMQ
+  id: totrans-122
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: RabbitMQ
 - en: RabbitMQ is a popular open source message broker that supports a variety of
     [protocols](https://www.rabbitmq.com/protocols.html), with [direct support](https://www.rabbitmq.com/tutorials/tutorial-five-python.html)
     for the concepts of topics and queues. RabbitMQ operates under both *at-most-once*
@@ -857,12 +1129,18 @@
     to ask for *confirmations* when publishing messages, and require mandatory *acknowledgements*
     when reading them. Queues are FIFO by default, with the option to enforce sequential
     processing with acknowledgements.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: RabbitMQ 是一款流行的开源消息代理，支持各种[协议](https://www.rabbitmq.com/protocols.html)，并直接支持主题和队列的概念。RabbitMQ
+    在 *至多一次* 和 *至少一次* 两种模式下运行，其中 *至多一次* 是一种快速的基于内存的模式，如果需要，偶尔会将消息写入磁盘（您可以在持久化或瞬态队列之间进行选择）。如果您希望获得更可靠但速度较慢的至少一次系统，可以使用[可靠性指南](https://www.rabbitmq.com/reliability.html)中描述的操作在发布消息时请求
+    *确认*，并在读取时要求强制性的 *确认*。队列默认为 FIFO，可以选择使用确认强制顺序处理。
 - en: NSQ
+  id: totrans-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: NSQ
 - en: The first truly distributed message queue in this list, [NSQ](https://nsq.io)
     is interesting because it's built from the group up to be decentralized. There's
     no single point to connect to to publish or subscribe to messages—every NSQ node
@@ -870,18 +1148,26 @@
     to publish messages to *topics*, and each topic can be linked to one or more *channels*—which
     are the equivalent of queues. Every message published to a topic is available
     in all its linked *channels*.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个列表中第一个真正分布式的消息队列是 [NSQ](https://nsq.io)，它很有趣，因为它从一开始就是分散式构建的。没有单一点可以连接到以发布或订阅消息——每个
+    NSQ 节点实际上都是一个完整的服务器，并与每个其他节点通信。节点允许您将消息发布到 *主题*，并且每个主题可以链接到一个或多个 *通道* —— 这相当于队列。发布到主题的每条消息都可在其所有链接的
+    *通道* 中使用。
 - en: NSQ is [defaults](https://nsq.io/overview/features_and_guarantees.html) to non-durable,
     at-least-once, un-ordered messaging, but has a few configuration options to tweak
     things. It's specially worth considering if your servers are highly networked
     with each other and you want a system without a single point of failure.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: NSQ默认为非持久化、至少一次、无序的消息传递，但有一些配置选项可以调整。如果你的服务器彼此高度联网，并且你希望一个没有单点故障的系统，那么考虑NSQ是特别值得的。
 - en: NATS
+  id: totrans-127
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: NATS
 - en: '[NATS](https://docs.nats.io/) is a high performance distributed messaging system
     that''s made for fast in-memory messaging. It supports topic based [broadcast](https://docs.nats.io/nats-concepts/pubsub)
     (topics are called *subjects*), where all messages sent to the *subject* are sent
@@ -889,24 +1175,32 @@
     where each message in the queue is sent to any one subscriber agent. There isn''t
     a built-in way to have topics linked to queues, but that should be possible to
     do programmatically.'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: '[NATS](https://docs.nats.io/)是一个高性能的分布式消息系统，专为快速内存消息传递而设计。它支持基于主题的[广播](https://docs.nats.io/nats-concepts/pubsub)（主题称为*主题*），其中所有发送到*主题*的消息都发送到所有订阅代理；以及[分布式队列](https://docs.nats.io/nats-concepts/queue)，队列中的每条消息都发送到任何一个订阅代理。虽然没有内置的方法将主题链接到队列，但应该可以通过编程方式实现。'
 - en: NATS supports both *at-most-once* and *at-least-once* delivery, and by providing
     a [streaming system](https://docs.nats.io/nats-streaming-concepts/intro) and an
     [experimental persistence system](https://github.com/nats-io/jetstream). It also
     has support for subscribing to multiple topics based on subject name patterns,
     which makes it easier to do fan-in and multi-tenancy.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: NATS 支持*至多一次*和*至少一次*交付，并提供了一个[流系统](https://docs.nats.io/nats-streaming-concepts/intro)和一个[实验性持久化系统](https://github.com/nats-io/jetstream)。它还支持根据主题名称模式订阅多个主题，这使得进行扇入和多租户变得更容易。
 - en: NATS works great when you need a high throughput distributed system—it's also
     pretty easy to run, and supports complex network topology, like having regional
     clusters with connections between them.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: NATS 在需要高吞吐量分布式系统时效果很好——而且运行起来也相当容易，并支持复杂的网络拓扑结构，比如在区域集群之间建立连接。
 - en: The Tail Message
+  id: totrans-131
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 尾消息
 - en: These are just a few of the options available right now, and still more are
     being developed as distributed computing develops and cloud providers grow. I've
     found that the important thing when evaluating or using queueing systems is to
@@ -914,22 +1208,30 @@
     overviews to get rough idea of how they're implemented. Beneath the surface, the
     same concepts apply to all of them, just under different name and configuration
     options.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些只是当前可用的一些选项，随着分布式计算的发展和云提供商的增长，还会有更多的选项正在被开发。我发现在评估或使用队列系统时，重要的是要理解它们提供的语义和保证。我通过阅读它们的架构概述来了解它们是如何实现的。在表面之下，所有这些系统都适用相同的概念，只是在不同的名称和配置选项下。
 - en: If you're running your workloads in a particular cloud provider, the default
     topic/queue system they offer will usually work fine, as long as you understand
     what semantics they're offering in each mode. If you're managing your own installation
     of a queue system, the same thing applies—except you need to be a lot more concerned
     about the limit imposed by the operating decisions you're making, like how many
     nodes you're running, failover configuration, drive space, etc.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在特定的云提供商上运行工作负载，他们提供的默认主题/队列系统通常会很好地工作，只要你了解每种模式提供的语义。如果你管理自己的队列系统安装，情况也是一样的——只是你需要更加关注你所做操作决策所施加的限制，比如运行的节点数量、故障转移配置、驱动器空间等等。
 - en: Thanks for reading, reach out to me [@sudhirj](https://twitter.com/sudhirj)
     or join the discussion on [Hacker News](https://news.ycombinator.com/item?id=25591492)
     if you have questions or disagree with anything.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢阅读，请通过[@sudhirj](https://twitter.com/sudhirj)与我联系，或在[Hacker News](https://news.ycombinator.com/item?id=25591492)上参与讨论，如果你有任何问题或不同意什么。
 - en: Special thanks to [@svethacvl](https://twitter.com/svethacvl) for proofreading,
     and [@wallyqs](https://twitter.com/wallyqs) for notes on NATS.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别感谢[@svethacvl](https://twitter.com/svethacvl)进行校对，以及[@wallyqs](https://twitter.com/wallyqs)提供关于NATS的笔记。
