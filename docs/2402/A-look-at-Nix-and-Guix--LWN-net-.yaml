@@ -1,35 +1,54 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-29 13:27:53'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024 年 5 月 29 日 13:27:53
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A look at Nix and Guix [LWN.net]
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 查看 Nix 和 Guix [LWN.net]
 - en: 来源：[https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/](https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/](https://lwn.net/SubscriberLink/962788/f0745ec735f074b0/)
 - en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
     articles possible. |'
+  id: totrans-6
   prefs: []
   type: TYPE_TB
+  zh: '| **本文由 LWN 订阅者提供支持** LWN.net 的订阅者使这篇文章及其周围的一切成为可能。如果您喜欢我们的内容，请[订阅](/subscribe/)并使下一组文章成为可能。
+    |'
 - en: By **Daroc Alden**
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 由**Daroc Alden**撰写
 - en: February 27, 2024
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024 年 2 月 27 日
 - en: '[Nix](https://nixos.org/) and [Guix](https://guix.gnu.org/) are a pair of unusual
     package managers based on the idea of declarative configurations. Their associated
     Linux distributions — NixOS and the Guix System — take the idea further by allowing
@@ -37,8 +56,12 @@
     entire system. Both have been [previously](/Articles/712318) [mentioned](/Articles/891752)
     on LWN, but not covered extensively. They offer different takes on the central
     idea of treating packages like immutable values.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Nix](https://nixos.org/) 和 [Guix](https://guix.gnu.org/) 是一对基于声明性配置思想的非同寻常的软件包管理器。它们关联的
+    Linux 发行版——NixOS 和 Guix 系统——通过允许用户定义一个描述整个系统状态的单个集中配置，进一步发展了这一思想。它们以不同的方式对待将软件包视为不可变值的核心思想。在
+    LWN 上[先前](/Articles/712318)[提到过](/Articles/891752)，但没有受到广泛报道。它们提供了不同的方法来处理将软件包视为不可变值的核心思想。'
 - en: In a normal Linux distribution, the set of packages, services, and configuration
     files installed on a system is built up over time using tools that do not inherently
     require knowledge of programming. This approach can be convenient, making it possible
@@ -47,19 +70,26 @@
     with the same set of tools, services, and tweaks when it comes time to migrate
     to a new host. The majority of Linux distributions lack any kind of centralized
     record of why each package was installed or each configuration option was changed.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在普通的 Linux 发行版中，系统上安装的软件包、服务和配置文件集是随着时间逐渐积累起来的，使用的工具不需要编程知识。这种方法很方便，可以简单地安装一个缺失的软件包，然后将来就可以访问它。这种方法的缺点是，当需要迁移到新主机时，重建具有相同工具、服务和调整集合的新系统是多么困难。大多数
+    Linux 发行版缺乏任何关于为何安装每个软件包或更改每个配置选项的集中记录。
 - en: 'NixOS and Guix offer an alternative: specify your setup with a programmable
     configuration file, and then let the package manager arrange for the software
     available on the system to reflect that. These configurations can include comments,
     version control, and the ability to factor out common parts for different machines,
     making it much easier to keep track of why something was configured or installed.'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: NixOS 和 Guix 提供了一种替代方案：使用可编程配置文件指定您的设置，然后让软件包管理器安排系统上可用的软件反映这一设置。这些配置可以包括注释、版本控制和将公共部分分离出来以供不同机器使用，这样可以更轻松地跟踪某些配置或安装的原因。
 - en: The key idea
+  id: totrans-12
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 主要思想
 - en: Nix is a "<q>purely functional package manager</q>". Unlike other package managers,
     Nix uses a general programming language of the same name for configuration, albeit
     one optimized for the task of describing packages. The Nix language takes inspiration
@@ -72,8 +102,12 @@
     only the information about the produced values that actually ends up being required.
     This lets Nix programs skip performing computations for optional dependencies
     that don't end up being used.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 是一个“纯函数式软件包管理器”。与其他软件包管理器不同，Nix 使用同名的通用编程语言进行配置，尽管这种语言针对描述软件包进行了优化。Nix 语言受到了[ML](https://en.wikipedia.org/wiki/ML_(programming_language))语言家族的启发，特别是[Haskell](https://www.haskell.org/)。与
+    Haskell 一样，Nix 程序通过组合函数（“功能”部分）来处理和产生不可变值，这些函数不具有副作用（“纯”部分）。评估 Nix 程序会产生一组构建动作，供软件包管理器运行时采取，但本身不会构建或安装任何东西。Nix
+    还是惰性的，只计算实际上需要的关于产生值的信息。这使得 Nix 程序可以跳过为未使用的可选依赖项执行计算的步骤。
 - en: Each Nix program describes a "derivation" — "<q>a specification for running
     an executable on precisely defined input files to repeatably produce output files
     at uniquely determined file system paths.</q>" Derivations describe a specific
@@ -81,8 +115,11 @@
     in the form of required dependencies, build tools, source code, etc. Nix doesn't
     permit implicit dependencies between build tasks, requiring all prerequisites
     to be specified explicitly.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个 Nix 程序描述一个“派生”——“用于在精确定义的输入文件上运行可执行文件，以重复地在唯一确定的文件系统路径上产生输出文件的规范。” 派生描述了要执行的特定构建任务，包括构建任务的所有必需输入，如所需的依赖关系、构建工具、源代码等。Nix
+    不允许构建任务之间的隐式依赖关系，要求所有先决条件都要明确指定。
 - en: 'The benefit of using this model is that the full state of the system is specified
     in the same place, using the same language. The configuration not only includes
     the installed packages, but also the configuration files destined for `/etc`,
@@ -91,11 +128,15 @@
     [nginx](https://nginx.org/en/), which builds nginx, sets up its configuration
     files, sets up a systemd service for nginx itself, and creates systemd timers
     for renewing HTTPS certificates with LetsEncrypt:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种模型的好处是系统的完整状态在同一位置使用相同的语言进行了指定。配置不仅包括已安装的软件包，还包括用于`/etc`的配置文件，systemd服务文件，文件系统挂载点，用户，内核配置选项，驱动程序等等。例如，这是一个用于运行[nginx](https://nginx.org/en/)的配置模块，它构建nginx，设置其配置文件，为nginx本身设置systemd服务，并为使用LetsEncrypt更新HTTPS证书创建systemd定时器：
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The code that actually implements these options is [defined](https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/services/web-servers/nginx/default.nix)
     in [nixpkgs](https://github.com/NixOS/nixpkgs), NixOS's package repository, in
     the same language as the rest of the configuration. Becoming truly proficient
@@ -104,8 +145,10 @@
     of common setups. The [options search](https://search.nixos.org/options) or `nix search`
     command-line tool also let users search for configuration options and available
     packages.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际实现这些选项的代码在[Nixpkgs](https://github.com/NixOS/nixpkgs)中[定义](https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/services/web-servers/nginx/default.nix)，NixOS的软件包仓库，使用与其余配置相同的语言。要真正熟练掌握Nix可能需要一些时间，但大多数配置相对简单，并且[NixOS手册](https://nixos.org/manual/nixos/stable/)提供了常见设置的示例。[选项搜索](https://search.nixos.org/options)或`nix search`命令行工具还允许用户搜索配置选项和可用软件包。
 - en: Derivations are [nearly all reproducible](https://reproducible.nixos.org/),
     with the same inputs generating the same outputs. Some packages still include
     randomness or information about the timing of the build, which foil reproducibility.
@@ -114,8 +157,10 @@
     build process, this reproducibility allows the result of derivations to be cached.
     Nix keeps the cache of previously evaluated derivations under `/nix/store/`, indexed
     by the hash of the derivation's inputs.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 演绎几乎都是[可复制的](https://reproducible.nixos.org/)，相同的输入会生成相同的输出。一些软件包仍然包含随机性或构建时间的信息，这会破坏可复制性。目前正在努力修补这些软件包，以实现项目完全可复制构建的目标。结合演绎记录构建过程中的所有输入这一事实，这种可复制性允许对演绎结果进行缓存。Nix将以演绎输入的哈希索引，保留先前评估的演绎缓存，位于`/nix/store/`下。
 - en: Nixpkgs contains definitions for more than 80,000 packages. These packages are
     built, cached, and shared by [Hydra](https://hydra.nixos.org/build/248007843/download/1/hydra/),
     NixOS's build farm. So, despite the fact that a NixOS configuration describes
@@ -127,12 +172,17 @@
     system, as can be done by Gentoo users), but most users just download binary versions
     of most of their packages, and know that they're getting the same result as having
     built from scratch.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Nixpkgs包含超过80000个软件包的定义。这些软件包由[NixOS构建农场](https://hydra.nixos.org/build/248007843/download/1/hydra/)Hydra构建、缓存和共享。因此，尽管NixOS配置描述了如何从头开始获取和构建所有选定的软件，但如果用户依赖于nixpkgs中的软件包定义，则他们可能能够从Hydra下载派生物的缓存输出。由于这一点，NixOS将自己称为混合源/二进制分发
+    —— 用户可以从头开始构建软件（包括[调整构建标志](https://nixos.wiki/wiki/Build_flags)以适应其系统，就像Gentoo用户可以做的那样），但大多数用户只是下载大多数软件包的二进制版本，并且知道他们得到的结果与从头开始构建的结果相同。
 - en: Multiple versions
+  id: totrans-20
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 多个版本
 - en: Another benefit of arranging for the system to be built in this way is the ability
     to depend on multiple versions of the same package. Because each derivation references
     its build inputs explicitly, there is no requirement that a single global version
@@ -143,8 +193,10 @@
     don't need to solve version conflicts. It is a bit of a double-edged sword, however,
     because it does mean that it is easy to depend on several versions of a package
     without meaning to, which can bloat the size of a NixOS installation.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这种方式安排系统构建的另一个好处是能够依赖于同一软件包的多个版本。因为每个演绎都明确引用了其构建输入，所以并不需要存在一个满足每个依赖软件包需求的全局版本的编译器或共享库。这使得保持具有特定需求的旧软件运行更容易，减少了一旦常见依赖项有重大更新时需要同时更新生态系统中的每个软件包的负担，并且意味着维护者不需要解决版本冲突。然而，这也是一个双刃剑，因为这意味着很容易无意中依赖于多个软件包版本，这可能会使NixOS安装的大小变得庞大。
 - en: Being able to keep multiple versions of packages actually extends to being able
     to keep multiple versions of the system's entire configuration. When re-building
     a system using Nix, the derivation of the previous configuration remains available,
@@ -154,14 +206,18 @@
     such as to try out a new program or grab a seldom-used command-line tool, can
     be installed into a temporary environment without interfering with the overall
     system configuration.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 能够保留软件包的多个版本实际上扩展到能够保留系统整个配置的多个版本。在使用 Nix 重新构建系统时，以前配置的派生仍然可用，并且可以通过引导加载程序进行切换。因此，用户可以毫无顾虑地升级，因为通过重新启动可以解决尝试新配置引入的任何问题。同样，只需要短时间的软件，例如尝试新程序或获取很少使用的命令行工具，可以安装到临时环境中，而不会干扰整个系统配置。
 - en: It is difficult to overstate how useful this ability is in practice. It is often
     possible to put a Linux system into an unworkable state by doing something unusual.
     While a lot can be learned from troubleshooting these issues, it is inconvenient
     when what is needed is a functional system.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，很难过分强调这种能力在实践中的用处。通过执行一些不寻常的操作，往往可以使 Linux 系统变得无法工作。虽然可以从解决这些问题中学到很多东西，但在需要一个可用系统时，这是不方便的。
 - en: Referring to dependencies directly, the way NixOS does, causes problems with
     software not packaged for use on the distribution. Unlike a typical distribution,
     NixOS only uses `/usr/bin` for [`env`](https://man7.org/linux/man-pages/man1/env.1.html),
@@ -171,12 +227,19 @@
     usually need to be adapted to run on NixOS. There are some [tools](https://nixos.org/manual/nixpkgs/stable/#sec-fhs-environments)
     available to make a chroot environment that puts binaries in the expected places,
     however, so this is usually not much of a hassle.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 直接引用依赖项，就像 NixOS 那样，会导致无法在分发上使用的软件的问题。与典型的发行版不同，NixOS 仅使用 `/usr/bin` 用于 [`env`](https://man7.org/linux/man-pages/man1/env.1.html)，以允许运行以
+    `#!/usr/bin/env` 开头的 shell 脚本。假设系统二进制文件将位于 `/usr/bin` 或其他 [标准位置](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
+    的 shell 脚本或其他程序通常需要适应在 NixOS 上运行。然而，有一些 [工具](https://nixos.org/manual/nixpkgs/stable/#sec-fhs-environments)
+    可用于创建 chroot 环境，将二进制文件放置在期望的位置，因此这通常不会带来太多麻烦。
 - en: Guix
+  id: totrans-25
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: Guix
 - en: 'The Nix approach to package management has its benefits, but the Nix language
     also has its quirks. Learning to use a new programming language on top of a new
     package-management philosophy may seem like a tall order. The Guix project is
@@ -187,8 +250,13 @@
     contributors than Nix, and is somewhat younger as a project — Guix received its
     first commit in 2012, whereas Nix dates to 2003 — so the number of packages available
     in Guix is somewhat lower.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管 Nix 的软件包管理方式有其优点，但 Nix 语言也有其特点。在全新的软件包管理理念之上学习使用一种新的编程语言可能看起来是一项艰巨的任务。Guix
+    项目致力于创建一个使用 Nix 风格软件包管理，但使用更广泛、通用和一致的编程语言——Scheme 的发行版。Guix 是 GNU 项目，因此仅打包自由软件（与
+    Nix 不同，Nix 在一个配置选项后打包非自由软件）。它的贡献者也比 Nix 少得多，并且作为一个项目有些年轻——Guix 的第一个提交是在 2012 年，而
+    Nix 的起源可以追溯到 2003 年——因此 Guix 中可用的软件包数量略少一些。
 - en: Despite this, Guix has made several interesting advances of its own, including
     fully [bootstrappable builds](/Articles/841797/). Guix is now capable of building
     itself almost entirely [from source](https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/)
@@ -200,26 +268,43 @@
     without recompiling the dependent package. This permits rolling out security updates
     to fundamental libraries without waiting for the build farm to rebuild all of
     Guix's packages.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，Guix 自身也取得了一些有趣的进展，包括完全可 [自举构建](/Articles/841797/)。现在 Guix 几乎完全可以在 x86_64
+    上从 [源代码](https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/)
+    构建自己，这对该项目来说是一个重要的里程碑。Ekaitz Zárraga 在 2024 年的 FOSDEM 上就 [将该支持扩展到 RISC-V](https://fosdem.org/2024/schedule/event/fosdem-2024-1755-risc-v-bootstrapping-in-guix-and-live-bootstrap/)
+    进行了演讲。Guix 还具有一些 NixOS 缺乏的功能，例如能够将安全更新 "[嫁接](https://guix.gnu.org/manual/en/html_node/Security-Updates.html)"
+    到一个软件包上。这允许将一个软件包的运行时依赖的更更新版本替换掉（可能是为了修复某些安全问题）而无需重新编译依赖的软件包。这使得可以在不等待构建系统重新构建所有
+    Guix 软件包的情况下推出基础库的安全更新。
 - en: 'A section of a Guix configuration comparable to the Nix configuration given
     above would look like:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 与上述 Nix 配置相比，Guix 配置的一部分如下所示：
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This configuration has a few differences. For one thing, Guix uses [GNU Shepherd](https://www.gnu.org/software/shepherd/)
     as an init system, instead of systemd. For another, the code shown here is not
     a standalone file that is imported by the main configuration file. Instead, the
     user would need to import this file and then add `%my-nginx-service` and `%my-certbot-service`
     to the services list for their system configuration by hand.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 此配置有一些不同之处。首先，Guix 使用[GNU Shepherd](https://www.gnu.org/software/shepherd/)作为
+    init 系统，而不是 systemd。其次，这里显示的代码不是一个独立的文件，而是被主配置文件导入的。相反，用户需要导入此文件，然后手动将 `%my-nginx-service`
+    和 `%my-certbot-service` 添加到其系统配置的服务列表中。
 - en: Experimenting
+  id: totrans-31
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 实验
 - en: Nix and Guix (the package managers) both work on other distributions. Some distributions,
     such as Ubuntu and Debian, provide packages for them. For users of other distributions,
     Nix provides [installation instructions](https://nixos.org/download) and [uninstallation
@@ -227,8 +312,13 @@
     only provides [installation instructions](https://guix.gnu.org/manual/en/html_node/Installation.html),
     but maintainer Tobias Geerinckx-Rice [helpfully notes](https://mail.gnu.org/archive/html/help-guix/2021-01/msg00107.html)
     that one can read the installer script to see what ought to be removed.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 和 Guix（包管理器）都可以在其他发行版上使用。一些发行版，如 Ubuntu 和 Debian，为它们提供了软件包。对于其他发行版的用户，Nix
+    提供了[安装说明](https://nixos.org/download)和[卸载说明](https://nixos.org/manual/nix/stable/installation/uninstall)。Guix
+    只提供了[安装说明](https://guix.gnu.org/manual/en/html_node/Installation.html)，但维护者 Tobias
+    Geerinckx-Rice [友好地指出](https://mail.gnu.org/archive/html/help-guix/2021-01/msg00107.html)可以阅读安装脚本来了解应该删除的内容。
 - en: In either case, using the package managers on another distribution can be useful
     for creating temporary environments, even if they cannot provide whole-system
     configuration. Individual programming languages often provide a solution for temporary
@@ -237,8 +327,12 @@
     which can install dependencies not packaged by the language's package manager.
     Somewhat fewer ship a `guix.scm` file serving the same purpose, but several GNU
     projects do.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在任何一种情况下，即使它们无法提供整个系统配置，也可以在其他发行版上使用这些包管理器来创建临时环境非常有用。许多编程语言通常会为临时开发环境提供解决方案（例如，Python
+    的[虚拟环境](https://docs.python.org/3/library/venv.html)）。现在许多项目都提供了一个 `shell.nix`
+    文件作为与语言无关的替代方案，该文件可以安装语言包管理器未打包的依赖项。一些 GNU 项目提供了一个 `guix.scm` 文件，提供了相同的目的，但提供此类文件的项目要少一些。
 - en: NixOS and Guix offer a compelling alternatives to traditional distributions
     by rethinking how package management can be done. Their design permits incredible
     flexibility, simplifying package management for distribution maintainers and giving
@@ -246,17 +340,27 @@
     binary packaging. Despite this, it seems unlikely that either will replace traditional
     package managers, especially when other distributions are receiving some of the
     same benefits of reproducibility using [other techniques](/Articles/954059).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: NixOS 和 Guix 通过重新思考如何进行软件包管理，提供了传统发行版的引人注目的替代方案。它们的设计允许令人难以置信的灵活性，简化了发行版维护者的软件包管理，并为用户提供了对计算机配置方式的额外控制，而不牺牲二进制包管理。尽管如此，它们似乎不太可能取代传统的软件包管理器，特别是当其他发行版也通过[其他技术](/Articles/954059)获得了可重现性的一些好处时。
 - en: '* * *'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: (
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: （
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/962788/)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[登录](https://lwn.net/Login/?target=/Articles/962788/)'
 - en: to post comments)
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 发表评论）
