@@ -1,113 +1,171 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:21:01'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:21:01
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Considering, Then Abandoning JSX for Strongly-Typed YAML Configuration — KSH
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 考虑过，然后放弃了 JSX 以用于强类型 YAML 配置 — KSH
 - en: 来源：[https://kirbysayshi.com/2020/03/21/considering-then-abandoning-jsx-for-structured-yaml-config.html](https://kirbysayshi.com/2020/03/21/considering-then-abandoning-jsx-for-structured-yaml-config.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://kirbysayshi.com/2020/03/21/considering-then-abandoning-jsx-for-structured-yaml-config.html](https://kirbysayshi.com/2020/03/21/considering-then-abandoning-jsx-for-structured-yaml-config.html)
 - en: What follows is an exploration into strongly-typed alternatives to writing templated
     YAML by hand (wait, what?). If you just want the answers, skip ahead! But part
     of this realization is the journey, as with most things.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是一次探索，探讨手动编写模板化 YAML 的强类型替代方案（等等，什么？）。如果你只想要答案，请跳过！但这个认识的一部分是旅程，就像大多数事情一样。
 - en: YAML
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: YAML
 - en: 'YAML is a markup language that, among other things, is often used to configure
     build pipelines, software packaging, and service deployment. YAML likely found
     itself here due to its simplicity: unlike JSON, you mostly don’t need to worry
     about escaping quotes (or typing them) and special characters.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: YAML 是一种标记语言，除其他用途外，通常用于配置构建流水线、软件打包和服务部署。YAML 之所以出现在这里，可能是因为它的简单性：与 JSON 不同，你大多数情况下不需要担心引号的转义（或输入引号）和特殊字符。
 - en: 'But YAML has some shortcomings that become apparent in large documents that
     are expected to be human-editable. It considers whitespace significant, generally,
     so it’s easy to lose track of structural indentation when dealing with large documents
     (just trust me on this). Additionally, syntax errors are easy:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是 YAML 有一些缺点，在预计需要人工编辑的大型文档中会变得明显。它认为空格是有意义的，通常情况下，当处理大型文档时很容易丢失结构缩进（相信我）。另外，语法错误也很容易：
 - en: '[PRE0]'
+  id: totrans-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'It’s easy to accidentally make something a literal string instead of a list:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 很容易意外地将某些东西变成文字字符串而不是列表：
 - en: '[PRE1]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'And finally, it’s tough to know what’s truly valid according to an arbitrary
     schema. Take a snippet from a typical [.travis.yml](https://github.com/spotify/NFPlayerJS/blob/master/.travis.yml):'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，很难知道根据任意模式什么才是真正有效的。来看一段典型的 [.travis.yml](https://github.com/spotify/NFPlayerJS/blob/master/.travis.yml)
+    中的片段：
 - en: '[PRE2]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: How is the author supposed to know which keys are valid (e.g. that `language`
     is a valid key)? And what about the values? Which are lists, which are properties?
     Which are exclusive, or which depend on other keys and values being present?
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者应该如何知道哪些键是有效的（例如，`language` 是一个有效的键）？值又如何？哪些是列表，哪些是属性？哪些是独占的，或者取决于其他键和值是否存在？
 - en: To be fair, the majority of these issues are not unique to YAML. JSON, HTML,
     XML, CSS, and many more declarative languages all have the common problem of requiring
     tooling to encode relationships and conventions beyond basic syntax. But this
     hits YAML especially hard because it has found its way into the DevOps world (e.g.
     popularity) and has some ambiguous syntax (some examples shown above) in an attempt
     to be as human-readable and human-authorable as possible.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 公平地说，大多数这些问题并不特定于 YAML。JSON、HTML、XML、CSS 和许多其他声明性语言都存在一个常见问题，即需要工具来编码关系和基本语法以外的约定。但
+    YAML 受到的影响特别大，因为它已经进入了 DevOps 领域（例如流行），并且具有一些模棱两可的语法（如上文所示），试图尽可能地易读易写。
 - en: 'I’ve seen these issues worked around using several methods:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我见过用几种方法解决这些问题的情况：
 - en: A validation tool, script, or build process that runs after the user has authored
     the YAML.
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用户编写 YAML 后运行的验证工具、脚本或构建流程。
 - en: '[Extensive documentation for 1](https://docs.travis-ci.com/user/customizing-the-build).'
+  id: totrans-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[1 的详细文档](https://docs.travis-ci.com/user/customizing-the-build)。'
 - en: A CLI wizard or prompt that walks the user through the possibilities and then
     generates YAML.
+  id: totrans-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个命令行向导或提示，引导用户了解可能性，然后生成 YAML。
 - en: But Then Someone Needs Logic
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 但是某人需要逻辑
 - en: 'Since we’re in DevOps land, have you ever seen someone do this:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们处于 DevOps 领域，你是否见过有人这样做过：
 - en: '[PRE3]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'And then consumed like this:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后像这样使用：
 - en: '[PRE4]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Effectively, templated YAML.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，这是模板化的 YAML。
 - en: For the user, it’s not the worst (it at least cuts down on boilerplate / repetition!),
     but still has all of the problems stated before.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于用户来说，这并不是最糟糕的选择（至少减少了样板/重复！），但仍然存在前面提到的所有问题。
 - en: For the developer of these templates (which *might* be the same person as the
     user…), it’s a nightmare. You are both defining a schema and producing some YAML
     that must conform to some *other* schema because presumably the final generated
@@ -116,121 +174,180 @@
     of language (YAML) and string-template syntax (in this case something like [Jinja](https://jinja.palletsprojects.com/)
     or [Mustache](https://mustache.github.io/))? Most editors work around this today
     by creating specific modes for editing HTML in PHP, for example.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这些模板的开发者（可能与用户是同一人…），这是一场噩梦。你既要定义一个模式，又要生成一些 YAML，这些 YAML 必须符合另一个模式，因为假定最终生成的
+    YAML 是由你 *不* 编写的系统使用的。此外，大多数代码编辑器和工具都会出现问题，因为它们怎么能准备好处理语言（YAML）和字符串模板语法（在这种情况下可能是类似
+    [Jinja](https://jinja.palletsprojects.com/) 或 [Mustache](https://mustache.github.io/)
+    的东西）的确切组合？大多数编辑器今天通过创建特定的模式来编辑 PHP 中的 HTML 等来解决这个问题。
 - en: 'Again, this is not specific to YAML: PHP generating HTML, and even my own [Vash](https://github.com/kirbysayshi/vash/)
     come to mind.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，这并不特定于 YAML：PHP 生成 HTML，甚至我的自家 [Vash](https://github.com/kirbysayshi/vash/)
+    也是如此。
 - en: 'This example also includes some SQL-like language that requires string interpolation.
     So we’re two string-interpolated languages deep: twice the chance for error and
     need for manual testing.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个例子还包括一些类似 SQL 的语言，需要字符串插值。所以我们现在有两种需要字符串插值的语言：错误的机会和手动测试的需求增加了一倍。
 - en: Likely the only way to know if you’ve done everything correct in a system like
     this is to push to a CI server, and hope for useful feedback. The tooling is often
     too complicated (or impossible, if it relies on remote data or a hosted system)
     to install locally.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能在这样的系统中唯一确定您是否做得完全正确的方法是推送到 CI 服务器，并希望得到有用的反馈。工具通常太复杂了（或者如果依赖于远程数据或托管系统，则不可能安装到本地）。
 - en: Take a Moment to Breathe
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 深呼吸一下
 - en: Where are we?
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在哪里？
 - en: This hypothetical example expects…
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个假设性示例期望…
 - en: a developer to author plain YAML…
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 开发人员编写纯粹的 YAML…
 - en: that is input to a script as the model to a template…
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 作为模板的模型输入到脚本中…
 - en: that outputs YAML…
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输出 YAML…
 - en: that declares a configuration for some other system.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 声明配置以供其他系统使用。
 - en: 'Let’s name the three portions of this process:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们给这个过程命名三个部分：
 - en: 'User: The developer writing the YAML.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用户：编写 YAML 的开发人员。
 - en: 'Template: The script that expands the YAML into more YAML.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 模板：将 YAML 扩展为更多 YAML 的脚本。
 - en: 'System X: The other system that accepts declarative YAML that is expected to
     conform to a schema. It’s the entire reason we’re using YAML.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: X 系统：接受声明式 YAML 并且预期符合模式的其他系统。这是我们使用 YAML 的整个原因。
 - en: How can we make this less error-prone?
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们如何使这个过程更少出错？
 - en: 'We probably cannot rewrite System X, and why would we want to? It presumably
     does its job really well and is configured using an interoperable and well-defined
     data format: YAML!'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能无法重写 X 系统，而且我们为什么要这样做呢？它可能真的做得很好，并且是使用可互操作性和定义良好的数据格式：YAML！
 - en: The Template is probably doing more than just expanding the template. But for
     now, let’s assume all it does is expand the template and push it somewhere. And
     no one said it has to receive a template, right? If there’s nothing to expand,
     it will just pass the YAML through! (We hope…)
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 模板可能不仅仅是扩展模板。但暂时，让我们假设它所做的一切都只是扩展模板并将其推送到某个地方。而且谁也没有说它必须接收一个模板，对吧？如果没有什么可以扩展的，它就会直接传递
+    YAML！（我们希望…）
 - en: That means we can have the largest impact by improving the experience of the
     developer while they’re authoring the YAML.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着我们可以通过改进开发人员在编写 YAML 时的体验来产生最大的影响。
 - en: A Solution If Everything Worked as You Expected
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如果一切都按照您的预期进行了解决方案
 - en: 'Three things would drastically improve this experience for the developer:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 有三件事会极大地改善开发人员的体验：
 - en: Type safety, both syntactically and schema-wise, to reduce the amount of runtime
     validation and testing to near zero
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类型安全，既在语法上又在模式上，以将运行时验证和测试的数量减少到接近零
 - en: Excellent real time feedback loop due to IDE / editor support without needing
     to write custom plugins or modes
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 由于 IDE/编辑器的支持，无需编写自定义插件或模式，即可获得出色的实时反馈循环
 - en: A configuration paradigm that is widely understood and allows for unit encapsulation
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个广为人知且允许单元封装的配置范式
 - en: After mulling on this, something that satisfies all three is type-safe JSX written
     in a language like TypeScript.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过深思熟虑，满足所有三者的东西是像 TypeScript 这样的语言中写的类型安全的 JSX。
 - en: TypeScript provides the type safety, and, as we’ll see later, can also provide
     a good amount of schema validation due to its ergonomic and expressive type system
     ([tuples](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple)
     are one example). It offers default value setting and additional logic that can
     be statically checked, unlike a string template language.
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: TypeScript 提供了类型安全性，并且，正如我们稍后将看到的那样，由于其人性化和表达力强的类型系统（[元组](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple)是一个例子），它还可以提供相当多的模式验证。它提供了可以静态检查的默认值设置和附加逻辑，这与字符串模板语言不同。
 - en: TypeScript and JSX are widely supported in multiple IDEs and language servers.
     [It even works in a web browser via the TS Playground!](https://www.typescriptlang.org/play/)
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: TypeScript 和 JSX 在多个 IDE 和语言服务器中得到了广泛支持。[它甚至可以在 Web 浏览器中通过 TS Playground 运行！](https://www.typescriptlang.org/play/)
 - en: JSX and React-like components, if you squint and tilt your brain a little, are
     actually an example of a declarative configuration paradigm augmented by a programming
     language (in this case TypeScript). They describe a UI using data, which is then
@@ -238,160 +355,224 @@
     Components can also be encapsulated via functions, which allows for unit testing.
     Encapsulation allows for creature comforts like splitting up large units into
     separate files (wow!) using JavaScript’s well-supported ES Modules.
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: JSX 和类似 React 的组件，如果您眯起眼睛并稍微动动脑筋，实际上是由编程语言（在本例中是 TypeScript）增强的声明式配置范式的一个例子。它们使用数据描述
+    UI，然后由另一个系统（Web 浏览器）呈现。就像 YAML 在我们的示例中一样。组件还可以通过函数封装，这允许进行单元测试。封装允许像使用 JavaScript
+    的 ES 模块一样将大单元拆分成单独的文件（哇！）。
 - en: 'Our dashboard example from before, likely written by one developer and used
     by many many others:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们之前的仪表板示例，可能由一个开发人员编写，然后被许多其他人使用：
 - en: '[PRE5]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'And the user would consume it like:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户将会这样使用它：
 - en: '[PRE6]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Why is this better than YAML templates?
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么这比 YAML 模板更好？
 - en: The user/developer receives immediate feedback via code-completion and ubiquitous
     tooling. They will receive hints that `<Dashboard />` must be a child of `<Dashboards>`,
     and receive compile-time errors if any properties from `<Dashboard />` are missing.
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用户/开发人员通过代码补全和普遍的工具支持获得即时反馈。他们会收到提示，即 `<Dashboard />` 必须是 `<Dashboards>` 的子项，并且如果来自
+    `<Dashboard />` 的任何属性缺失，则会收到编译时错误。
 - en: The various units of this template are encapsulated, and can be shared. For
     example, the user could `import { Dashboard } from 'our-shared-templates';` and
     never need to know that YAML is even involved.
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这个模板的各个单元都被封装起来，可以共享。例如，用户可以 `import { Dashboard } from 'our-shared-templates';`，甚至不需要知道
+    YAML 的存在。
 - en: The developer can use logic and default-setting easily and clearly.
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 开发人员可以轻松清晰地使用逻辑和默认设置。
 - en: No one needs to worry about preserving the final whitespace to create valid
     YAML, a common problem with templating languages.
+  id: totrans-64
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 没有人需要担心保留最终的空白来创建有效的 YAML，这是模板语言常见的问题。
 - en: Unfortunately, not everything works as we would expect! At least not yet.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，并不是一切都如我们所期望的那样运作！至少目前还没有。
 - en: 'JSX as TypeScript has implemented it [treats the result type of JSX as opaque](https://www.typescriptlang.org/docs/handbook/jsx.html#the-jsx-result-type).
     It doesn’t manifest greatly in the example above, but this choice places restrictions
     on what can and cannot be type-checked within JSX: React `children` cannot be
     strongly typed. You can specify that `children` must be present, but unfortunately
     it simplifies, eventually, into `{} | undefined | null`.'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: 'Something like this is impossible to enforce as incorrect behavior:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: See the [full example link](https://www.typescriptlang.org/play/?jsx=2#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgIilQ3wG4AocmATzCUWJmQGcBXAGxgB4BhOJAB4wkAOwAmzOAAoAdHJRQA5swBccFCOoBtALoBKOAF4AfOs2nDDdDBnJrAUXZIQo7uThwACgpQvhUZl5jLQAGHQAadzgecmMKKlp6TxwwSUsAbyiAeiy4ABUAC2BJAH12CAgAa2YSuGYYHBFFdmo4GjoxcLgoYEUCmAB+bNyAIQBVPLgASTyAcgBlOAA5AHk8mWG4ACl5gA0ZR2dXOGK4CDAUAEdWeg0xODEIJEkRCHgwImYkKAA3ekVRN9gGgTiJMNAQCgYMAICINh4cnB5hA4K84JCYP44AB3ApQtqJAC0imoIBEKHqwMk2Pojy6+JgBXoonuwHgnwg7D+zE2MBRKAJdDg7GAlXoAAM0EV2GIiCI1FJ0gBfOAAH1RHHYargrHESEwwBESDEel0USlwBlcrUdgwLA43HaSAgmDgABEKQUAEYQBRiYI6ChK+KYXUYGEid2en1+5hSD7nVReFLMAyZDxEGCsKCRrjGdIJ1IyC1W0RKrhZOLkJWUUMicOwqPMb2+qBieMptTpVG+JBqeo9JqkOBKtNRTPZ3P5wvMGTklzlytB2th6GNuVib5SMcZpBZnPSKIeLge5sxtvMYxHjxwE-R1v3edIQz4FiQERffKgZ74SvXjzpFkABU+RMnA4LsOU2KGoodQFBAHD3F69BEPczDXL0zTPGY9yYCglptCiaC4GAlr0F6rDwGyDxPC8bwAIRwEBWQ1jeN5cGIwA-MYFacdx14VqeLaxleHh6MuQA)
     demonstrating the lack of red squiggles.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: Until JSX via TS supports generics in `JSX.Element`, we’re kind of stuck with
     the above. It’s better than strings, but still not quite eloquent enough to warrant
     the investment.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: An Aside About JSX for Those That Want To Know
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Feel free to skip ahead if you already “get” how JSX transpiles and works. I
     dug into this in order to better investigate an ergonomic alternative to JSX,
     and decide whether I should hew close to JSX’s transpiled output or not.
+  id: totrans-72
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: JSX, since it transpiles to function calls, executes everything in reverse (inside-out)
     from how a markup language would actually be parsed (outside-in). It also adjusts
     `children` to be within the `props`, which mandates a bit of complexity.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '`D` above is transpiled to:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'And the output:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: I’ve purposefully left the types in the above examples as “open” (using `any`)
     as possible. Once you try to narrow them, they [get complex and nearly circular](https://www.typescriptlang.org/play?#code/C4TwDgpgBAygwgUQDYQLYQHbADwCgpQAKUEAHsJgCYDOUA3lAMYAWAlkpQE6YBcsiKdFgDaAXSgBfKAF56TNh24Y+8ZGkzAxkgDT4ocEuSq0AFGE4B7MNT6EAlDIB8-NUOAyoZy9dsPpz1UENXGdZOj1GVDA+OABuPXMrGyJ4iXjcADMAVwxGYFYLDCZuAEMKVw08AmIyCgwaORZ2Ll4XIJFxCV0CA1rjT0SfIj8AgXUsEJNI6P1tKEHk4gAfKAwspCQ5gDodpsVWwPHNUTsVMbdsQjm4Z3CCRkLqdwWAdVZgZjgFFqLZLyS9AQAPxyHZbBZzPY-SSAqB8BhQpSSBwlWiEdL3R7uCDtdxhWHTboEebeZKvd6fb5KPRpCKPCwoLZICwAcxMOKOdniBG4wCynCKHLcqVwuAeGCeUAAShASnkPHdirLyrjcLTMjk8gUigAREwORW8-lFEyw7CUVgAN0csII2DAjgAEjjmdgAPQOs1ui3WvRctWivX+oA).
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'The important summary:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: JSX transpiles to Function calls
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Those Function calls output a *description* of the Component and the props it
     will receive (including its `children` descriptions)
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The description(s) are walked, and the Components executed, to eventually output
     commands / mutations / instructions against a DOM (or another target)
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'We can either try to hew close to JSX’s transpiled output, or go with something
     simpler or more ergonomic. Back to our dashboard example:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Straight functions:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Straight functions with 1:1 between props & children:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Arrays / s-expression-like:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: And there’s the s-expression + varargs version too that I’ll skip for now.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'So there are lots of options, but none standout as amazing. How to choose?
     These two questions might help:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: How will the developer specify the schema and data restrictions (e.g. what’s
     the authoring experience like)?
+  id: totrans-94
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: What is the least ambiguous syntax for a human to write and read?
+  id: totrans-95
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -399,83 +580,106 @@
     due to accommodating HTML’s flexibility, we probably don’t need that at all: we
     know and are likely required to specify the exact hierarchy to comply with System
     X’s schema.'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: Ok, back to solutions.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: A Solution Today
+  id: totrans-98
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: If JSX is out, then an alternative that works today is to just use functions
     (yay, even fewer tools and concepts!).
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: 'We have two problems to solve then:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: What do they look like? e.g. What is the API and what syntax will we use? We
     want to allow the developer to specify the schema and data restrictions using
     the least ambiguous syntax possible.
+  id: totrans-101
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'How do we actually output YAML? (We skipped this problem when talking about
     our hopeful JSX solution…) SPOILER: We’re going to cheat a bit!'
+  id: totrans-102
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Let’s tackle both!
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: This Definitely Works
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'I’m sick of `Dashboards`, let’s switch to something more fun. Like Pokemon!
     Let’s describe the restrictions:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
 - en: A “bench” can contain between 1 - 6 “Pokemon”
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A “Pokemon” has some data, like “name”, “level”, etc.
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A “Pokemon” can have between 1 - 4 “moves”
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A “move” has a name and some statistics, like “power”.
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'In YAML (just the data, no rules):'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Now, let’s encode the “rules”:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Some things to note here:'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
 - en: We’ve encoded the 1-6 pokemon by using [TS tuple syntax](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple).
     The `?` allows for optional pokemon slots!
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We’re using [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypet)
     to say “Whatever the `Pokemon` component returns” rather than some sort of `React.ElementType`
     or `JSX.Element` or otherwise intermediate generic representation.
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -483,6 +687,7 @@
     There’s no need to have an implicit convention for `children` when we’re dealing
     with strongly typed functions as opposed to open-ended hierarchical config (or
     HTML).
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -491,50 +696,68 @@
     Since my main mission here is type-safe config and not a JS -> YAML React Reconciler,
     we’re going to cheat (as SPOILED above!). Turns out it’s very easy to convert
     JSON to YAML!
+  id: totrans-118
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'These “rules” in use look like this:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Note that the `Move` component does not specify the `power` value, since that
     is now handled via an exhaustive union! Additionally we’ve encoded all valid names
     and tied them to their statistics (obviously if this were a full Pokemon game
     we’d have a *lot* more moves!).
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-122
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Checkout the [the full example](https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAIQKaQBYAoAOAnOHAZwC5EBvAKEURzgGtUBbBMgbWpsQCVUoQ8YACoBPHKgA8UMajjBEABQbMEAPgA0nGr36DR4qTLmLlLMKoD8mrjz4DhMw+ONLGZy9a477+ydOfyrirmVlq2ug4G-rKBpmqhNt56jtEucSGcALoA3JQAvgCUFJx4doLFNgBG6BAYZPiERAB0dG4InHm5eZSUoJCwCCZtYLgExGRUNGAAhkyoZABEAMoAjiAweFAANqgLiAA+iAsAwhjTeDAAXucAJgu5NDsAbqhbZGAgTNV4D4gsL6REBxEmVIn4jPIALJwF4eMJJMFOGKIaGwhJeUG+JHGVGoOEgiJY1JQmF4ixZLpFSaIUoRCpcJqMhrEDpdHp9aDwJC40aNCacGZzRbIECVSo7FCoWZ7Q4LADq0ygqDwiAA4uAZUcAGJbWZ8DAEADuys1CwAol8TZT6URDTAoLVELziE1BagqWEINMiKgjiKxRK0NL+TYaLT7BREIyWmMiOpaHBjXgyAAWACsiE6YW6nu9vvNlrwCxDofD5XIUaZsfjdCTqYADJnfjQczYvT7tbq5lADYmTSWbGWkBXo8y4wm64gAJyNrM2Vtcdv5hVKlXqsDF+mD0GR0fVifKhtN7M9Gw3VDAaYgLZQAeLhBEKCIAD6YHeqBeKoAvLRY669c2XBDi+YCAd0Lb5D0qAAB50JsiDnpe15PhyAwjGOEyFPSwFoJgWDUjQrTBOwYQ0EEZj4aRXBuosqzrJsOwLJ4oaIM8rxkAATAA7Mxob-KggLAixXA8hWNF+qK4q+kGTB7IUvEsaJiDifKirKmqGqZgUClcJkVHyVR5EIJRwnKXqiynOcVy3ExVGPB+7GIGmKY6TQ-GCXZImkvhZlCp2eo9kaJpaa5XkvD5KkWt8cnaZ5eksYUYTxVpXRAA).
     Don’t worry, it’s short.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: And of course, if we put something where it doesn’t belong, we get errors.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Unfortunately those errors are not as helpful as we’d like. Since TypeScript
     is structurally-typed, it’s comparing properties and their values. The first one
     it finds not matching is `name`, and then complains that the literals do not match
     (`"Charizard"` vs `Move` names).
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before we move on though, just to prove that this works:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 在   在我们继续之前，只是为了证明这确实有效：
 - en: '[PRE20]'
+  id: totrans-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: More Easily-Read Errors
+  id: totrans-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 更容易阅读的错误
 - en: If we want better developer errors, we have to move towards an even *more* declarative
     syntax, at the cost of worse authoring ergonomics and greater type complexity
     (just look at the [full type declarations for React](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/6bd457dec0fde7ac2b89b3b0dfca23b8e9eb9185/types/react/index.d.ts#L102)
@@ -544,45 +767,69 @@
     function rather than outputting structures directly by our “components”. [And,
     we’d have to write a much more complex renderer to then walk the declarative structure
     and convert it to JSON / YAML. I tried, and it’s not even type safe!](https://www.typescriptlang.org/play?#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-xgSkL+HENiCx4L2F5D8MID2-slnkz+ds7Qwi8VXMGcYuYFhA7x21AoLQxKVnNI2AAQn2Y-IqqNIC4C4E4OllS8gzI2EIdhGBNC-E8LiSAkgomZKfvePx4gDAOTFRgAA1MqyFULoXMPYU-PZLjWVDzEBYDAVgeX0paTqkFChMyGhOAeAylRECmsqVoyR0jtDqCfssjVwFvWLAEOs-5GxAWu2BaCxSSyKkaphb4+FQSkViBRVZFhGKyBYvjjir1UKCXUwOOYMoChrBOtCKS24FKL5ZPQtSimRbA1xGZXqmV4gTicrwNy95Ky+XojiIK8VChRXislSyxtYg5WGEVbiVV6qNVhC1bXI0Cgh1svEEak17arkMv3EVUN2QiFZhKDOiQ+hcI1tEeI11jB1ACA9UVTNfyfVQpEmsjZa72YlvJZSytmhg3HpfW8u9a6W1tpWcBd53BqnIXXtxBp+LmGwr8QEuNbAE30U6JbXFa6CWwXyjyjdvSOldJ6e0-pb6JDFHPLEoZcxDlZC0KbLQt69obvrdKpd9cOUxFbTyztAqrS9sgP24Vg6G2sdHQq+ASrJ2RquQSi1UqDnDpXU6jdFqQU7oNLGW1bp7U-o1S6thmJr3NgYwBADHGgOVJA1s8DfFulKWg9J2DMaEOIqQ4m2z6GYP8PYTmhxVbC1rtw0RgjeHiMUbJaR8jP9wuMGo7R7txna3Mfk6x5tZmuP8u7bx4VfalUSrk-quuonx0qrVVJrZs7ZOLoNYp39ymt2WrU9GG1B7tOOt-XpqRF6KaGaiAl+9KzAPEss3te9wkGAEvwfkzQk2BBcJiLM+8lCeHRrhQhmby3HOrcCQAKTYgAeSaJsOkBhmn9Jm0422yFQhLJ4apMAtBNLIA0alByTkHLIBo-icKkV2QsBmew177DPvrHe6gXypkUBxWgAlZ77pFvcIqVA904MsoBm3teHG204jAxPl7NiABHLIGAcCMCENbTOHgABMAB2TB7yO7Y97u+FA39Z4agRtnL+FG-6u0Z8AjUvxEbFHDvTlWjPceoFZ7-SnHO7Zc+QfPPnadICU8F+AkXKyHhwD25AAAYgAVVgPr9gfBIBsT4GgXXHgADiE8AASjLIDDCUusZx7C5TulAloPA4xGV+8dwAdTt2BEPoew-h-eZjt04uSaoBII5PQAAvAgFBydyhzQAFgAKx07+QznHseWfc-Z5g+Xs9FfA352r4Xd889i4L33SX3OZel5VlLnnuEleVxV9XjXlTjjXj75AF+zcgA)
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要更好的开发者错误信息，我们必须朝着*更*声明式的语法迈进，尽管这会牺牲编写人员的人体工程学和增加类型复杂性（只需看看[React的完整类型声明](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/6bd457dec0fde7ac2b89b3b0dfca23b8e9eb9185/types/react/index.d.ts#L102)或上面的播放器中的[`React.createElement`的例子](https://www.typescriptlang.org/play?#code/C4TwDgpgBAygwgUQDYQLYQHbADwCgpQAKUEAHsJgCYDOUA3lAMYAWAlkpQE6YBcsiKdFgDaAXSgBfKAF56TNh24Y+8ZGkzAxkgDT4ocEuSq0AFGE4B7MNT6EAlDIB8-NUOAyoZy9dsPpz1UENXGdZOj1GVDA+OABuPXMrGyJ4iXjcADMAVwxGYFYLDCZuAEMKVw08AmIyCgwaORZ2Ll4XIJFxCV0CA1rjT0SfIj8AgXUsEJNI6P1tKEHk4gAfKAwspCQ5gDodpsVWwPHNUTsVMbdsQjm4Z3CCRkLqdwWAdVZgZjgFFqLZLyS9AQAPxyHZbBZzPY-SSAqB8BhQpSSBwlWiEdL3R7uCDtdxhWHTboEebeZKvd6fb5KPRpCKPCwoLZICwAcxMOKOdniBG4wCynCKHLcqVwuAeGCeUAAShASnkPHdirLyrjcLTMjk8gUigAREwORW8-lFEyw7CUVgAN0csII2DAjgAEjjmdgAPQOs1ui3WvRctWivX+oA))。我们的函数需要返回一些TypeScript无法结构匹配的东西，这样就可以给出非常清晰简洁的错误信息。我们还需要创建一个中间函数，而不是直接输出“组件”的结构。[而且，我们还需要编写一个更复杂的渲染器来遍历声明性结构并将其转换为JSON
+    / YAML。我试过了，甚至都不安全！](https://www.typescriptlang.org/play?#code/PQKhCgAIUgVALAppARAGQJYCMBOBDHAT0gGEB7AE0RShGHHABdCAHZAJUTwGNGBRADaIAtogB2jADwAFSAF5IAbwC+AGjjzIAZ0Y4MYgObqSmvGMIBtALoA+TYqiQA1vooAuOAG5HLHGRZaHtLekJDc8BgCFDjiHgAUnDz8QqISkAA+kACuYlQAZvqIFACU1hmQYlkCAiGQVFhZBgByZIyIHjp6ht7K3kysHFy8AJJieYg4MRSCIuJSsJCIAB5tuVqQcQB02wQGgZBmllbF8naHdgqJvDOpUo7AwJDSBHiibThakrA2FgAMVqpHJxGFkcGJYAMvnZlqsKOsrslZhJJPpxjgnupOvojJBURNSHYAPxPSAeMSIABuE0Bo
 - en: So it’s probably not worth it. But if you have a better idea, try it and let’s
     talk! I probably just missed something.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以可能不值得。但如果你有更好的想法，请尝试并让我们交流！我可能只是漏掉了什么。
 - en: Summary
+  id: totrans-132
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: You can strongly-type, compile-time validate, and add logic to YAML (or any
     data format, really) by using TypeScript to generate YAML-compatible JSON structures.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用 TypeScript 生成与 YAML 兼容的 JSON 结构，从而对 YAML（或任何数据格式，真的）进行强类型、编译时验证和添加逻辑。
 - en: 'Back to our original example, converted to this paradigm:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到我们最初的例子，转换为这种范例：
 - en: '[PRE21]'
+  id: totrans-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: We get some great YAML!
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们得到了一些很棒的 YAML！
 - en: '[PRE22]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: And, it was completely type safe, using the built-in capabilities and paradigms
     of TypeScript, with excellent authoring experience, and we could even write unit
     tests if we wanted.
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 它完全是类型安全的，使用了 TypeScript 的内置功能和范例，具有出色的创作体验，如果需要的话，我们甚至可以编写单元测试。
 - en: Thanks for making it this far on this extremely long post! If you have better
     ideas, or just thoughts in general, please let me know. This post took weeks of
     on and off thinking and tinkering, as I learned about the limitations of JSX via
     TS and how the React typings work. I am also [not the first to consider the shortcomings
     of YAML at scale](https://github.com/dvdsgl/ts-yaml).
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢您在这篇非常长的文章中一直阅读到这里！如果您有更好的想法，或者只是一般的想法，请让我知道。这篇文章经过了数周的断断续续的思考和摸索，当我了解到 JSX
+    通过 TS 的限制以及 React 类型的工作原理时。我也[不是第一个考虑 YAML 在规模上的不足之处](https://github.com/dvdsgl/ts-yaml)。
 - en: Special thanks to Jose Falcon for providing feedback on this post.
+  id: totrans-140
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 特别感谢 Jose Falcon 在此文中提供反馈。
