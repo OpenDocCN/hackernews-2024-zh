@@ -1,58 +1,87 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:48:39'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:48:39
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'SQLite: Wal2 Mode Notes'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SQLite：Wal2 模式备注
 - en: 来源：[https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md](https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md](https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md)
 - en: Activating/Deactivating Wal2 Mode
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 激活/停用 Wal2 模式
 - en: '"Wal2" mode is very similar to "wal" mode. To change a database to wal2 mode,
     use the command:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Wal2" 模式与 "wal" 模式非常相似。要将数据库更改为 wal2 模式，请使用以下命令：'
 - en: '[PRE0]'
+  id: totrans-8
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'It is not possible to change a database directly from "wal" mode to "wal2"
     mode. Instead, it must first be changed to rollback mode. So, to change a wal
     mode database to wal2 mode, the following two commands may be used:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 不可能直接从 "wal" 模式更改为 "wal2" 模式。相反，它必须首先更改为回滚模式。因此，要将 wal 模式数据库更改为 wal2 模式，可以使用以下两个命令：
 - en: '[PRE1]'
+  id: totrans-10
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'A database in wal2 mode may only be accessed by versions of SQLite compiled
     from this branch. Attempting to use any other version of SQLite results in an
     SQLITE_NOTADB error. A wal2 mode database may be changed back to rollback mode
     (making it accessible by all versions of SQLite) using:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 以 wal2 模式的数据库只能通过从此分支编译的 SQLite 版本访问。尝试使用任何其他版本的 SQLite 会导致 SQLITE_NOTADB 错误。使用以下命令可将
+    wal2 模式数据库改回回滚模式（使其可由所有版本的 SQLite 访问）：
 - en: '[PRE2]'
+  id: totrans-12
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The Advantage of Wal2 Mode
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Wal2 模式的优势
 - en: In legacy wal mode, when a writer writes data to the database, it doesn't modify
     the database file directly. Instead, it appends new data to the "<database>-wal"
     file. Readers read data from both the original database file and the "<database>-wal"
@@ -61,8 +90,12 @@
     the wal file into the database file is called a "checkpoint", and may be done
     explictly (either by "PRAGMA wal_checkpoint" or sqlite3_wal_checkpoint_v2()),
     or automatically (by configuring "PRAGMA wal_autocheckpoint" - this is the default).
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在传统的 wal 模式中，当写入者向数据库写入数据时，它不会直接修改数据库文件。相反，它会将新数据追加到“<数据库>-wal”文件中。读取者从原始数据库文件和“<数据库>-wal”文件中读取数据。在某个时候，数据从“<数据库>-wal”文件复制到数据库文件中，之后可以删除或覆盖
+    wal 文件。从 wal 文件中复制数据到数据库文件称为“检查点”，可以显式地完成（通过“PRAGMA wal_checkpoint”或sqlite3_wal_checkpoint_v2()），也可以自动完成（通过配置“PRAGMA
+    wal_autocheckpoint”—这是默认的）。
 - en: Checkpointers do not block writers, and writers do not block checkpointers.
     However, if a writer writes to the database while a checkpoint is ongoing, then
     the new data is appended to the end of the wal file. This means that, even following
@@ -75,12 +108,18 @@
     are also circumstances in which long-running readers may prevent a checkpointer
     from checkpointing the entire wal file - also causing the wal file to grow indefinitely
     in a busy system.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查点不会阻塞写入者，写入者也不会阻塞检查点。然而，如果在检查点正在进行时写入者向数据库写入数据，那么新数据会被追加到 wal 文件的末尾。这意味着，即使在检查点之后，wal
+    文件也不能被覆盖或删除，因此所有后续的事务也必须被追加到 wal 文件。检查点的工作不会被浪费——SQLite 会记住已经被复制到数据库文件的 wal 文件的哪些部分，以便下一个检查点不必再次复制——但这也意味着，如果检查点永远没有机会无障碍地完成而不被写入者追加到
+    wal 文件，wal 文件可能会无限增长。在繁忙的系统中还有一些情况，长时间运行的读取者可能会阻止检查点将整个 wal 文件检查点——也会导致 wal 文件无限增长。
 - en: Wal2 mode does not have this problem. In wal2 mode, wal files do not grow indefinitely
     even if the checkpointer never has a chance to finish uninterrupted.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: Wal2 模式不会出现这个问题。在 wal2 模式下，即使检查点永远不能无障碍地完成，wal 文件也不会无限增长。
 - en: In wal2 mode, the system uses two wal files instead of one. The files are named
     "<database>-wal" and "<database>-wal2", where "<database>" is of course the name
     of the database file. When data is written to the database, the writer begins
@@ -89,35 +128,50 @@
     point the first wal file can be checkpointed (after which it can be overwritten).
     Then, once the second wal file has grown large enough and the first wal file has
     been checkpointed, writers switch back to the first wal file. And so on.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 wal2 模式下，系统使用两个 wal 文件而不是一个。文件的命名为“<数据库>-wal”和“<数据库>-wal2”，其中“<数据库>”当然是数据库文件的名称。当数据写入数据库时，写入器首先将新数据追加到第一个
+    wal 文件中。一旦第一个 wal 文件增长到足够大，写入器就会切换到向第二个 wal 文件追加数据。此时，可以对第一个 wal 文件进行检查点（之后可以覆盖它）。然后，一旦第二个
+    wal 文件增长到足够大并且第一个 wal 文件已经检查点，写入器就会切换回第一个 wal 文件。依此类推。
 - en: Application Programming
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 应用程序编程
 - en: 'From the point of view of the user, the main differences between wal and wal2
     mode are to do with checkpointing:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 从用户的角度看，wal 和 wal2 模式之间的主要区别与检查点有关：
 - en: In wal mode, a checkpoint may be attempted at any time. In wal2 mode, the checkpointer
     has to wait until writers have switched to the "other" wal file before a checkpoint
     can take place.
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 wal 模式下，可以随时尝试检查点。在 wal2 模式下，检查点器必须等到写入器切换到“另一个”wal 文件后才能进行检查点。
 - en: In wal mode, the wal-hook (callback registered using sqlite3_wal_hook()) is
     invoked after a transaction is committed with the total number of pages in the
     wal file as an argument. In wal2 mode, the argument is either the total number
     of uncheckpointed pages in both wal files, or - if the "other" wal file is empty
     or already checkpointed - 0.
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 wal 模式下，wal 钩子（使用 sqlite3_wal_hook() 注册的回调）在事务提交后被调用，并将 wal 文件中的总页数作为参数。在
+    wal2 模式下，参数是两个 wal 文件中未检查点的总页数，或者如果“另一个” wal 文件为空或已经检查点，则为 0。
 - en: Clients are recommended to use the same strategies for checkpointing wal2 mode
     databases as for wal databases - by registering a wal-hook using sqlite3_wal_hook()
     and attempting a checkpoint when the parameter exceeds a certain threshold.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 建议客户使用与 wal 数据库相同的策略来检查点 wal2 模式数据库 - 通过使用 sqlite3_wal_hook() 注册 wal 钩子，并在参数超过一定阈值时尝试检查点。
 - en: However, it should be noted that although the wal-hook is invoked after each
     transaction is committed to disk and database locks released, it is still invoked
     from within the sqlite3_step() call used to execute the "COMMIT" command. In BEGIN
@@ -125,5 +179,9 @@
     this may reduce concurrency. In such systems, instead of executing a checkpoint
     from within the wal-hook, a thread might defer this action until after the application
     mutex has been released.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，应该注意的是，尽管 wal 钩子在每个事务提交到磁盘并释放数据库锁后被调用，但它仍然是在用于执行“COMMIT”命令的 sqlite3_step()
+    调用内部被调用的。在 BEGIN CONCURRENT 系统中，“COMMIT”通常由应用程序互斥体保护，这可能会降低并发性。在这种系统中，不应该在 wal
+    钩子内部执行检查点，而是可以在应用程序互斥体释放后再执行此操作。
