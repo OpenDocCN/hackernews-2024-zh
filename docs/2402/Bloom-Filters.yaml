@@ -399,6 +399,7 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们使用上面的JavaScript计算需要多少<s-word>位</s-word>后，我们可以使用以下函数来计算要使用的最佳哈希函数的数量：
 - en: '[PRE3]'
   id: totrans-58
   prefs: []
@@ -411,10 +412,12 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 暂停一下，思考一下哈希函数的数量如何根据布隆过滤器的大小和您希望添加的项目数量而增长。当布隆过滤器变大时，您认为会使用更多还是更少的哈希函数？项目数量增加时呢？
 - en: <s-graph id="graph6" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph6" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
 - en: The more items you plan to add, the fewer hash functions you should use. Yet,
     a larger bloom filter means you can use more hash functions. More hash functions
     keep the false-positive rate lower for longer, but more items fills up the bloom
@@ -423,11 +426,13 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 您计划添加的项目越多，使用的哈希函数越少。然而，较大的布隆过滤器意味着您可以使用更多的哈希函数。更多的哈希函数可以在更长时间内保持误报率较低，但更多的项目会更快地填满布隆过滤器。这是一个复杂的平衡行为，我感谢数学家为我们做出了艰苦的努力来弄清楚这一点。
 - en: '[#](#caution) Caution'
   id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#caution) 注意'
 - en: While we can stand on the shoulders of giants and pick the optimal number of
     <s-word>bits</s-word> and hash functions for our bloom filter, it's important
     to remember that these rely on you giving good estimates of the number of items
@@ -438,32 +443,38 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我们可以站在巨人的肩膀上，为我们的布隆过滤器选择最佳数量的<s-word>位</s-word>和哈希函数，但重要的是要记住，这些依赖于您对您希望添加的项目数量给出良好估计，并选择一个适合您用例的误报率。这些数字可能很难想出，我建议保守估计。如果不确定，使用比您认为需要的布隆过滤器更大可能更好。
 - en: '[#](#removing-items-from-a-bloom-filter) Removing items from a bloom filter'
   id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#removing-items-from-a-bloom-filter) 从布隆过滤器中删除项目'
 - en: We've spent the whole post talking about adding things to a bloom filter, and
     the optimal parameters to use. We haven't spoken at all about removing items.
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们整篇文章都在讨论向布隆过滤器添加东西和使用的最佳参数。我们根本没有谈论过删除项目。
 - en: And that's because you can't!
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 那是因为你不能！
 - en: In a bloom filter, we're using <s-word>bits</s-word>, individual 1s and 0s,
     to track the presence of items. If we were to remove an item by setting its <s-word>bits</s-word>
     to 0, we might also be removing other items by accident. There's no way of knowing.
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在布隆过滤器中，我们使用<s-word>位</s-word>，即单独的1和0，来跟踪项目的存在。如果我们通过将其<s-word>位</s-word>设置为0来删除一个项目，那么我们可能会意外地删除其他项目。没有办法知道。
 - en: Click the buttons of the bloom filter below to see this in action. First we
     will add "foo", then "baz", and then we will remove "baz". Hit "clear" if you
     want to start again.
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击下面的布隆过滤器按钮，看看它在实际操作中的效果。首先我们会添加"foo"，然后是"baz"，然后我们会移除"baz"。如果想重新开始，请点击“清除”。
 - en: <s-add-remove bfid="bf3"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
     <s-bloom-filter id="bf3" hashes="sha1,sha256,sha512" bits="32" class="bf">The
     end result of this sequence is a bloom filter that doesn't contain "baz", but
@@ -473,6 +484,9 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-add-remove bfid="bf3"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf3" hashes="sha1,sha256,sha512" bits="32" class="bf">这个序列的最终结果是一个不包含"baz"的布隆过滤器，但也不包含"foo"。因为"foo"和"baz"都设置了<s-word>位</s-word>
+    <s-bitlink bfid="bf3">27</s-bitlink>，所以在移除"baz"时我们意外地覆盖了"foo"的存在。
 - en: Something else you might have noticed playing with the above example is that
     if you add "foo" and then attempt to remove "baz" before having added it, nothing
     happens. Even though <s-bitlink bfid="bf3">27</s-bitlink> is set, <s-word>bits</s-word>
@@ -482,17 +496,23 @@
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能已经注意到玩上面的示例时还有另一件事，那就是如果你添加了"foo"然后试图在添加"baz"之前移除它，什么也不会发生。即使设置了<s-bitlink
+    bfid="bf3">27</s-bitlink>，但<s-word>位</s-word> <s-bitlink bfid="bf3">18</s-bitlink>
+    和 <s-bitlink bfid="bf3">23</s-bitlink> 没有设置，所以布隆过滤器不包含"baz"。因此，它不会取消设置<s-bitlink
+    bfid="bf3">27</s-bitlink>。
 - en: '[#](#counting-bloom-filters) Counting bloom filters'
   id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#counting-bloom-filters) 计数布隆过滤器'
 - en: While you can't remove items from a standard bloom filter, there are variants
     that allow you to do so. One of these variants is called a "counting bloom filter,"
     which uses an array of counters instead of bits to keep track of items.
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然您无法从标准布隆过滤器中删除项目，但有一些变体允许您这样做。其中一种变体称为“计数布隆过滤器”，它使用计数器数组而不是位来跟踪项目。
 - en: <s-add-remove bfid="bf4"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
     <s-bloom-filter id="bf4" counting="true" hashes="sha1,sha256,sha512" bits="32"
     class="bf">Now when you go through the sequence, the end result is that the bloom
@@ -500,6 +520,9 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-add-remove bfid="bf4"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf4" counting="true" hashes="sha1,sha256,sha512" bits="32"
+    class="bf">现在当你按照这个顺序进行时，最终结果是布隆过滤器仍然包含"foo"。它解决了这个问题。
 - en: The trade-off, though, is that counters are bigger than <s-word>bits</s-word>.
     With 4 bits per counter you can increment up to 15\. With 8 bits per counter you
     can increment up to 255\. You'll need to pick a counter size sufficient to never
@@ -510,11 +533,13 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，要权衡的是，计数器比<s-word>位</s-word>更大。每个计数器占用4个位时，您可以增加到15。每个计数器占用8个位时，您可以增加到255。您需要选择足够大的计数器大小，以确保永远不会达到最大值，否则您将面临破坏布隆过滤器的风险。与标准布隆过滤器相比，使用8倍的内存可能是一件大事，特别是如果您首先使用布隆过滤器来节省内存。要认真考虑是否真的需要能够从布隆过滤器中删除项目。
 - en: Counting bloom filters also introduce the possibility of false-negatives, which
     are impossible in standard bloom filters. Consider the following example.
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 计数布隆过滤器还引入了误判的可能性，在标准布隆过滤器中是不可能的。考虑以下示例。
 - en: '<s-add-remove bfid="bf5"><add value="loved"><add value="your"><remove value="response"><clear></clear></remove></add></add></s-add-remove>
     <s-bloom-filter id="bf5" counting="true" hashes="sha1,sha256,sha512" bits="32"
     class="bf">Because "loved" and "response" both hash to the <s-word>bits</s-word>
@@ -524,6 +549,10 @@
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-add-remove bfid="bf5"><add value="loved"><add value="your"><remove value="response"><clear></clear></remove></add></add></s-add-remove>
+    <s-bloom-filter id="bf5" counting="true" hashes="sha1,sha256,sha512" bits="32"
+    class="bf">因为"loved"和"response"都哈希到<s-word>位</s-word> <s-bitlink bfid="bf5">5</s-bitlink>、<s-bitlink
+    bfid="bf5">22</s-bitlink>和<s-bitlink bfid="bf5">26</s-bitlink>，所以当我们移除"response"时也会移除"loved"。如果我们将此写成JavaScript，问题会更加清晰：
 - en: '[PRE4]'
   id: totrans-77
   prefs: []
@@ -536,11 +565,13 @@
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使我们确定在这段代码中添加了"loved"，调用`contains`仍然会返回`false`。这种误判在标准布隆过滤器中是不可能发生的，这也削弱了使用布隆过滤器的一个主要好处：首先保证不会有误判。
 - en: '[#](#bloom-filters-in-the-real-world) Bloom filters in the real-world'
   id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#现实世界中的布隆过滤器) 现实世界中的布隆过滤器'
 - en: Real-world users of bloom filters include [Akamai](https://www.akamai.com/),
     who use them to avoid caching web pages that are accessed once and never again.
     They do this by storing all page accesses in a bloom filter, and only writing
@@ -553,6 +584,7 @@
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 布隆过滤器的实际用户包括[阿卡迈](https://www.akamai.com/)，他们使用布隆过滤器来避免缓存只访问一次且再也不访问的网页。他们通过将所有页面访问存储在布隆过滤器中，并且仅在布隆过滤器表示之前已经见过它们时才将它们写入缓存来实现这一点。这确实导致了一些页面在第一次访问时被缓存，但这没关系，因为这仍然是一种改进。对于他们来说，将所有页面访问存储在`Set`中是不切实际的，因此他们接受小的误判率，以换取显著更小的布隆过滤器。如果您感兴趣，阿卡迈发布了一篇[论文](https://web.archive.org/web/20210814193152/https://www.akamai.com/us/en/multimedia/documents/technical-publication/algorithmic-nuggets-in-content-delivery-technical-publication.pdf)，其中详细介绍了这一点。
 - en: Google's [BigTable](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/68a74a85e1662fe02ff3967497f31fda7f32225c.pdf)
     is a distributed key-value store, and uses bloom filters internally to know what
     keys are stored within. When a read request for a key comes in, a bloom filter
@@ -564,17 +596,21 @@
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 谷歌的[BigTable](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/68a74a85e1662fe02ff3967497f31fda7f32225c.pdf)是一个分布式键值存储，它在内部使用布隆过滤器来知道哪些键存储在内部。当针对一个键的读取请求到来时，首先会在内存中检查布隆过滤器以查看该键是否在数据库中。如果不在，BigTable
+    可以立即返回"未找到"而无需从磁盘读取。有时，布隆过滤器会说一个键可能在数据库中，但实际上并不在，但这没关系，因为当这种情况发生时，磁盘访问将确认该键实际上不在数据库中。
 - en: '[#](#conclusion) Conclusion'
   id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#结论) 结论'
 - en: Bloom filters, while niche, can be a huge optimisation in the right situation.
     They're a wonderful application of hash functions, and a great example of making
     a deliberate trade-off to achieve a specific goal.
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 布隆过滤器虽然是一个小众产品，但在适当的情况下可以极大地优化。它们是哈希函数的一个很好的应用，也是为了实现特定目标而进行明确权衡的一个很好的例子。
 - en: Trade-offs, and combining simpler building blocks to create more complex, purpose-built
     data structures, are present everywhere in software engineering. Being able to
     spot where a data structure could net a big win can separate you from the pack,
@@ -582,21 +618,26 @@
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 在软件工程中，权衡和将更简单的构建块组合起来创建更复杂、目标明确的数据结构无处不在。能够发现一个数据结构可以带来巨大收益的地方可以使您脱颖而出，并将您的职业提升到一个新的水平。
 - en: I hope you've enjoyed this post, and that you find a way to apply bloom filters
     to a problem you're working on.
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望您喜欢这篇文章，并且找到一种方法将布隆过滤器应用到您正在解决的问题中。
 - en: '*Join the discussion on [Hacker News](https://news.ycombinator.com/item?id=39439505)
     or [Lobste.rs](https://lobste.rs/s/gwyglz/visual_interactive_guide_bloom_filters)!*'
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '*加入 [Hacker News](https://news.ycombinator.com/item?id=39439505) 或 [Lobste.rs](https://lobste.rs/s/gwyglz/visual_interactive_guide_bloom_filters)
+    上的讨论吧！*'
 - en: '[#](#acknowledgements) Acknowledgements'
   id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#致谢) 致谢'
 - en: 'Enormous thank you to my reviewers, without whom this post would be a shadow
     of what you read today. In no particular order:'
   id: totrans-88
