@@ -1,45 +1,57 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:03:35'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why the fuck are we templating yaml? | lbr.
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://leebriggs.co.uk/blog/2019/02/07/why-are-we-templating-yaml](https://leebriggs.co.uk/blog/2019/02/07/why-are-we-templating-yaml)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I was at [cfgmgmtcamp 2019](https://cfgmgmtcamp.eu) in Ghent, and [did a talk](https://www.youtube.com/watch?v=eBm3oyUmoAo&feature=youtu.be&t=18586)
     which I think was well received about the need for some Kubernetes configuration
     management as well as the solution we built for it at $work, [kr8](https://kr8.rocks).
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'I made a statement during the talk which ignited some fairly fierce discussion
     both online, and at the conference:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'To put this into my own words:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: At some point, we decided it was okay for us to template yaml. When did this
     happen? How is this acceptable?
+  id: totrans-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: After some conversation, I figured it was probably best to back up my claims
     in some way. This blog post is going to try to do that.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: The configuration problem
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -50,25 +62,30 @@
     out how to manage this complexity. It’s incredibly likely that the reason you
     have multiple configuration files is because the $thing that uses that config
     is slightly different from its companions. Examples of this include:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Applications deployed in different environments, like dev, stg and prod
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Applications deployed in different regions, like Europe or North American
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Obviously, not *all* the configuration is different here, but it’s likely the
     configuration differs enough that you want to be able to differentiate between
     the two.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: This configuration complexity has been well known for Operators (System Administrators,
     DevOps engineers, whatever you want to call them) for some years now. An entire
     discpline grew up around this in Configuration Management, and each tool solved
     this problem in their own way, but ultimately, they used YAML to get the job done.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: My favourite method has always been [hiera](https://puppet.com/docs/puppet/6.2/hiera_intro.html)
@@ -76,9 +93,11 @@
     the variables of specific config needs is incredibly powerful and flexible, and
     has generally meant you don’t actually need to do any templating of yaml at all,
     except perhaps for embedding Puppet facts into the yaml.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Did we go backwards?
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -89,25 +108,32 @@
     tools, but I firmly believe we (as an industry) got something really, really wrong
     when we designed them. To examine that, let’s take a look at example of a helm
     chart taking a custom parameter
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: Helm Charts
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Helm charts can take external parameters defined by an `values.yaml` file which
     you specify when rendering the chart. A simple example might look like this:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s say my external parameter is simple - it’s a string. It’d look a bit
     like this:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: That’s not so bad right? You just specify a value for `image` in your values.yaml
     and you’re on your way.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'The real problem starts to get highlighted when you want to do more complicated
@@ -115,58 +141,75 @@
     *know* you have to specify an image for a Kubernetes deployment. However, what
     if you’re working with something like an optional field? Well, then it gets a
     little more unwieldy:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Optional values just make things ugly in templating languages, and you can’t
     just leave the value blank, so you have to resort to ugly loops and conditionals
     that are probably going to bite you later.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s say you need to go a step further, and you need to push an array or map
     into the config. With helm, you’d do something like this.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Firstly, let’s ignore the madness of having a templating function `toYaml` to
     convert yaml to yaml and focus more on the whitespace issue here.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'YAML has strict requirements and whitespace implementation rules. The following,
     for example, is not valid or complete yaml:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Generally, if you’re handwriting something, this isn’t necessarily a problem
     because you just hit backspace twice and it’s fixed. However, if you’re generating
     YAML using a templating system, you can’t do that - and if you’re operating above
     5 or 10 configuration files, you probably want to be *generating* your config
     rather than writing it.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: So, in the above example, you want to embed the values of `.Values.podAnnotations`
     under the annotations field, which is indented already. So you’re having to not
     only indent your values, but indent them correctly.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'What makes this *even more confusing* is that the go parser doesn’t actually
     know anything about YAML at all, so if you try to keep the syntax clean and indent
     the templates like this:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You actually can’t do that, because the templating system gets confused. This
     is a singular example of the complexity and difficulty you end up facing when
     generating config data in YAML, but when you really start to do more complex work,
     it really starts to become obvious that this isn’t the way to go.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: Needless to say, this isn’t what I want to spend *my* time doing. If fiddling
@@ -175,146 +218,222 @@
     don’t want to spend my time writing configuration in JSON without comments and
     accidentally missing commas all over the shop. We (as an industry) decided a long
     time ago that shit wasn’t going to work and that’s why YAML exists.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 毋庸置疑，这不是我想要花费 *我的* 时间去做的事情。如果在一个并不真正为此设计的模板系统中摆弄空白要求是适合你的，那么我不会阻止你。我也不想花时间在没有注释的
+    JSON 配置中写配置，而且不小心漏掉逗号到处都是。我们（作为一个行业）很早就决定这样做是行不通的，这就是为什么有 YAML 的原因。
 - en: So what should we do instead? That’s where [jsonnet](https://jsonnet.org) comes
     in.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们应该怎么做呢？这就是 [jsonnet](https://jsonnet.org) 的用武之地。
 - en: JSON, Jsonnet & YAML
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: JSON、Jsonnet 和 YAML
 - en: 'Before we actually talk about Jsonnet, it’s worth reminding people of a very
     important (but oft forgotten point). [YAML is a superset of JSON](https://yaml.org/spec/1.2/spec.html#id2759572)
     and converting between the two is trivial. Many applications and programming languages
     will parse JSON and YAML natively, and many can convert between the two very simple.
     For example, in Python:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们真正讨论 Jsonnet 之前，值得提醒大家一个非常重要（但常常被忽视的）观点。[YAML 是 JSON 的一个超集](https://yaml.org/spec/1.2/spec.html#id2759572)，在两者之间进行转换是微不足道的。许多应用程序和编程语言可以原生地解析
+    JSON 和 YAML，并且许多可以在两者之间进行简单的转换。例如，在 Python 中：
 - en: '[PRE5]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: So with that in mind, let’s talk about Jsonnet.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，考虑到这一点，让我们来谈谈 Jsonnet。
 - en: Welcome to the church of Jsonnet
+  id: totrans-44
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 欢迎来到 Jsonnet 教堂
 - en: Jsonnet is a relatively new, little known (outside the Kubernetes community?)
     language that calls itself a *data templating language*. It’s definitely a good
     exercise to read and consume the Jsonnet [design rationale](https://jsonnet.org/articles/design.html)
     page to get an idea why it exists, but if I was going to define in a nutshell
     what its purpose is - it’s to generate JSON config.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Jsonnet 是一种相对较新的、鲜为人知的（在 Kubernetes 社区之外？）语言，自称为*数据模板语言*。阅读并消化 Jsonnet [设计原理](https://jsonnet.org/articles/design.html)
+    页面绝对是一个不错的练习，以了解它存在的原因，但如果我要简要地定义它的目的 - 它是用来生成 JSON 配置的。
 - en: So, how does it help, exactly?
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，它到底如何帮助呢？
 - en: Well, let’s take our earlier example - we want to generate some JSON config
     specifying a parameter (ie, the image string). We can do that very very easily
     with Jsonnet using external variables.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，让我们来看看之前的例子 - 我们想要生成一些 JSON 配置来指定一个参数（即，图像字符串）。我们可以使用 Jsonnet 并通过外部变量来非常非常容易地做到这一点。
 - en: 'Firstly, let’s define some Jsonnet:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们定义一些 Jsonnet：
 - en: '[PRE6]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Then, we can generate it using the Jsonnet command line tool, passing in the
     external variable as we need to:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以使用 Jsonnet 命令行工具来生成它，根据需要传入外部变量：
 - en: '[PRE7]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Easy!
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单吧！
 - en: Optional fields
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 可选字段
 - en: Before, I noted that if you wanted to define an optional field, with YAML templating
     you had to define if statements for everything. With Jsonnet, you’re just defining
     code!
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前，我提到如果你想要定义一个可选字段，使用 YAML 模板，你必须为每个字段定义 if 语句。但是，使用 Jsonnet，你只需定义代码！
 - en: '[PRE8]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The output here, because our variable is null, means that we never actually
     populate resourceGroup. If you specify a value, it will appear:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的输出，因为我们的变量是 null，意味着我们实际上从未填充 resourceGroup。如果你指定一个值，它将出现：
 - en: '[PRE9]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Maps and parameters
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 映射和参数
 - en: 'Okay, now let’s look at our previous annotation example. We want to define
     some pod annotations, which takes a YAML map as its input. You want this map to
     be configurable by specifying external data, and obviously doing that on the command
     line sucks (you’d be very unlikely to specify this with Helm on the command line,
     for example) so generally you’d use Jsonnet imports to this. I’m going to specify
     this config as a variable and then load that variable into the annotation:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，现在让我们看看我们之前的注解示例。我们想要定义一些 pod 注解，它以 YAML 映射作为输入。你希望这个映射可以通过指定外部数据来配置，并且显然在命令行上这样做很麻烦（例如，你很少会在命令行上使用
+    Helm 来指定这个）所以通常你会使用 Jsonnet 导入来完成。我将把这个配置指定为一个变量，然后将该变量加载到注解中：
 - en: '[PRE10]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This might just be my bias towards Jsonnet talking, but this is so dramatically
     easier than faffing about with indentation that I can’t even begin to describe
     it.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能只是我对 Jsonnet 的偏见在说话，但这比纠结缩进简直容易得多，我甚至无法描述它有多简单。
 - en: Additional goodies
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 附加好处
 - en: The final thing I wanted to quickly explore, which is something that I feel
     can’t really be done with Helm and other yaml templating tools, is the concept
     of manipulating existing objects in config.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后我想快速探讨的是，这是我认为不能真正用Helm和其他yaml模板工具完成的概念，那就是操作配置中现有对象的概念。
 - en: 'Let’s take our example above with the annotations, and look at the result file:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们以带有注释的上面的示例为例，来看看结果文件：
 - en: '[PRE11]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Now, let’s say for example I wanted to append a set of annotations to this annotations
     map. In any templating system, I’d probably have to rewrite the whole map.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，假设例如我想要向这个注释映射中添加一组注释。在任何模板系统中，我可能都必须重新编写整个映射。
 - en: 'Jsonnet makes this *trivial*. I can simply use the `+` operator to add something
     to this. Here’s a (poor) example:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Jsonnet使这个*变得微不足道*。我可以简单地使用`+`运算符将某些内容添加到其中。这里是一个（糟糕的）示例：
 - en: '[PRE12]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The end result is this:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终结果是这样的：
 - en: '[PRE13]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Obviously, in this case, it’s more code to this, but as your example get more
     complex, it becomes extremely useful to be able to manipulate objects this way.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，在这种情况下，需要更多的代码，但是当你的示例变得更加复杂时，能够以这种方式操作对象变得非常有用。
 - en: Kr8
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Kr8
 - en: We use all of these methods in [kr8](https://kr8.rocks) to make creating and
     manipulating configuration for multiple Kubernetes clusters easy and simple. I
     highly recommend you check it out if any of the concepts you’ve found here have
     found you nodding your head.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在 [kr8](https://kr8.rocks) 中使用所有这些方法，使得为多个 Kubernetes 集群创建和操作配置变得简单易行。如果您在这里找到的任何概念使您点头，我强烈推荐您去了解一下。
