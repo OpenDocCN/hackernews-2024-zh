@@ -2,66 +2,81 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:35:58'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:35:58
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'TIL: Go’s CompareAndSwap is not always Compare-and-swap'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: TIL：Go 的 CompareAndSwap 并不总是 Compare-and-swap。
 - en: 来源：[https://lu.sagebl.eu/notes/go-cas/](https://lu.sagebl.eu/notes/go-cas/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lu.sagebl.eu/notes/go-cas/](https://lu.sagebl.eu/notes/go-cas/)
 - en: 'TIL: Go’s CompareAndSwap is not always Compare-and-swap'
   id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: TIL：Go 的 CompareAndSwap 并不总是 Compare-and-swap。
 - en: Published on 7 January 2024
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 发布于 2024 年 1 月 7 日
 - en: Go's standard package `sync/atomics` provides programmers with functions to
     use the underlying CPU-level atomic operations such as *compare-and-swap* (CAS),
     through `atomic.CompareAndSwapT` (where `T` is an integer type).
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Go 的标准包 `sync/atomics` 通过 `atomic.CompareAndSwapT`（其中 `T` 是整数类型）为程序员提供了使用底层
+    CPU 级别原子操作的函数，如 *compare-and-swap*（CAS）。
 - en: '**Problem**: Not all CPU architectures offers a CAS instruction to rely on
     to implement `atomic.CompareAndSwapT`. However, Go must compile that function
     code to something semantically equivalent—let''s see what.'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**问题**：并非所有的 CPU 架构都提供了 CAS 指令来实现 `atomic.CompareAndSwapT`。然而，Go 必须将该函数代码编译成语义上等效的东西——让我们看看是什么。'
 - en: <details><summary>What is a compare-and-swap?</summary>
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary>什么是比较和交换？</summary>
 - en: Conceptually, CAS is an operation defined as followed, except it's atomic.
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 从概念上讲，CAS 是一个操作，如下所示，只不过它是原子性的。
 - en: '[PRE0]</details>'
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE0]</details>'
 - en: x86_64 (AMD64)
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: x86_64 (AMD64)
 - en: Let's take a look at how `atomic.CompareAndSwapInt64` works with `int64`. The
     function calls a lower-level function `Cas64` which is defined in assembly language
     as follows. It's a mapping to x86_64's `LOCK CMPXCHG` ("Compare and Exchange")
@@ -69,6 +84,8 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看 `atomic.CompareAndSwapInt64` 如何与 `int64` 一起工作。该函数调用一个低级别的函数 `Cas64`，它的汇编语言定义如下。它是对
+    x86_64 的 `LOCK CMPXCHG`（“比较并交换”）指令的映射，用于执行 CAS。
 - en: '[PRE1]'
   id: totrans-15
   prefs: []
@@ -78,6 +95,7 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码来自[Go 1.21.5 源代码](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_amd64.s;l=46-53)。
 - en: 'Remarks: `LOCK` is not an instruction, it''s a prefix to make `CMPXCHG` atomic
     in concurrent contexts. `AX`, `BX`, `CX` and `FP` are translated into real corresponding
     registers during compilation; The Go assembler does not use the actual architecture''s
@@ -85,32 +103,39 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 备注：`LOCK` 不是一条指令，它是一种前缀，使 `CMPXCHG` 在并发环境中变为原子操作。`AX`、`BX`、`CX` 和 `FP` 在编译期间会被转换为实际对应的寄存器；Go
+    汇编器不会直接使用实际架构的寄存器名称。
 - en: Not much more to say, the Go function translates to the equivalent CPU instruction,
     here.
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有更多可说的了，Go 函数在这里转换为相应的 CPU 指令。
 - en: Arm64 (AArch64)
   id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Arm64 (AArch64)
 - en: The Arm64 case is interesting. The function `Cas64` defined for Arm64 has two
     ways to perform a CAS operation.
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Arm64 的情况很有趣。针对 Arm64 定义的函数 `Cas64` 有两种执行 CAS 操作的方式。
 - en: With the `CASAL` instruction, which is similar to AMD64's `CMPXCHG`.
   id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `CASAL` 指令，类似于 AMD64 的 `CMPXCHG`。
 - en: With the `LDAXR` and `STLXR` instructions, enclosing the hand-coded CAS logic
     in-between.
   id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `LDAXR` 和 `STLXR` 指令，将手工编码的 CAS 逻辑封装在其中。
 - en: The `CASAL` instructions is part of the [Armv8.1-A Large System Extension (LSE)](https://learn.arm.com/learning-paths/servers-and-cloud-computing/lse/intro/)
     that provides CAS operations. If the CPU supports it, this path is taken. If the
     CPU does not support LSE, then the function fallbacks on another path, performing
@@ -118,6 +143,9 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '`CASAL` 指令是[Armv8.1-A 大系统扩展（LSE）](https://learn.arm.com/learning-paths/servers-and-cloud-computing/lse/intro/)的一部分，提供
+    CAS 操作。如果 CPU 支持它，就会采用这种方式。如果 CPU 不支持 LSE，则函数会退而求其次，通过 `LDAXR` 和 `STLXR` 的帮助执行一个“模拟”的
+    CAS。'
 - en: '[PRE2]'
   id: totrans-24
   prefs: []
@@ -127,6 +155,7 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: （我添加了注释。）
 - en: I was curious about the Arm64 case, because typical RISC architectures are not
     usually keen to provide instructions that operate directly on memory like x86_64.
     With RISC, one usually needs to load a value from memory, operates on it, and
@@ -134,6 +163,8 @@
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对 Arm64 的情况很感兴趣，因为典型的 RISC 架构通常不太愿意直接在内存上进行操作，就像 x86_64 那样。在 RISC 中，通常需要分别从内存加载值，对其进行操作，然后将值存储到内存中，而不像
+    CAS 那样。
 - en: In theory LSE instructions such as `CASAL` should boost code performance. It
     appeared to be true on micro-benchmarks simulating cases of high contention, but
     according to some [benchmarks conducted by the author of the *MySQL on ARM* blog](https://mysqlonarm.github.io/ARM-LSE-and-MySQL/),
@@ -141,6 +172,8 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上，诸如`CASAL`之类的 LSE 指令应该提升代码性能。在模拟高争用情况的微基准测试中似乎是正确的，但根据一些[由 *MySQL on ARM*
+    博客的作者进行的基准测试](https://mysqlonarm.github.io/ARM-LSE-and-MySQL/)，结果在真实工作负载中更为平缓。
 - en: RISC-V 64 (RV64A)
   id: totrans-28
   prefs:
