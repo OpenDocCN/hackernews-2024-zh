@@ -1,116 +1,170 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:42:04'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:42:04
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: You can’t follow me
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 你无法关注我
 - en: 来源：[https://so.nwalsh.com/2024/01/06-mastodon](https://so.nwalsh.com/2024/01/06-mastodon)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://so.nwalsh.com/2024/01/06-mastodon](https://so.nwalsh.com/2024/01/06-mastodon)
 - en: A few days ago, I stumbled over a couple of weblog posts that talked about adding
     [Mastodon](https://en.wikipedia.org/wiki/Mastodon_(social_network)) to (mostly)
     static sites. I thought that sounded kind of“Kind of cool.” Always a bad sign!
     cool.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 几天前，我偶然发现了几篇关于将[Mastodon](https://en.wikipedia.org/wiki/Mastodon_(social_network))添加到（主要是）静态网站的博客文章。我觉得那听起来有点“有点酷。”这总是一个不好的迹象！酷。
 - en: So, I poked at things a bit. If I was serious about implementing a full-fleged
     [ActivityPub](https://en.wikipedia.org/wiki/ActivityPub) client or server, I’d
     dig in and work out what other implementors use for testing environments, I’d
     read the specifications, etc.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，我稍微摸了一下。如果我认真考虑要实现一个完整的[ActivityPub](https://en.wikipedia.org/wiki/ActivityPub)客户端或服务器，我会深入挖掘并了解其他实施者在测试环境中使用的工具，我会阅读规范等等。
 - en: 'But this looked like low(er) hanging fruit, and I thought I might get it working
     with just a bit of fun hacking. I think the problem can be broken down into just
     a few steps:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这看起来像是低风险的成果，我想我可以通过一点有趣的黑客技术使它起作用。我认为问题可以分解为几个步骤：
 - en: Publish a “[WebFinger](https://en.wikipedia.org/wiki/WebFinger)” endpoint (easy).
+  id: totrans-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 发布一个“[WebFinger](https://en.wikipedia.org/wiki/WebFinger)”端点（容易）。
 - en: Support a user, with an inbox and an outbox.
+  id: totrans-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 支持用户，带有收件箱和发件箱。
 - en: Handle “follow” and “unfollow” messages on the inbox.
+  id: totrans-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 处理收件箱中的“关注”和“取消关注”消息。
 - en: Publish posts to followers in the outbox.
+  id: totrans-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将帖子发布到发件箱的关注者。
 - en: I assume that replies get sent back to the inbox as posts, though I can’t actually
     prove that to myself with a few minutes of casual web searching.
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我假设回复会作为帖子发送回收件箱，尽管我不能通过几分钟的随意网页搜索来证明这一点。
 - en: The first hurdle is that all of the communcations have to be HTTPS, which [is
     inconvenient](/2023/12/31-https) for testing purposes. Then there was a fair bit
     of effort necessary to get [better isolation](/2024/01/06-isolation) for the test
     rig.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个障碍是所有通信都必须是 HTTPS，这对于测试目的来说[不方便](/2023/12/31-https)。然后，为了获得[更好的隔离](/2024/01/06-isolation)，需要进行相当大的努力。
 - en: Once I had that up and running, I could fire up [a Mastodon server](https://github.com/martinheinz/mastodon-local)
     on my laptop. But could it follow my test weblog?
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我搞定了这个，我就可以在我的笔记本电脑上启动一个[Mastodon 服务器](https://github.com/martinheinz/mastodon-local)了。但它能关注我的测试博客吗？
 - en: Pointing my Mastodon instance at `@so@sotest.nwalsh.com` was fine. It hit the
     webfinger endpoint, hit the user endpoint, and posted something to the inbox.
     Fantastic! Next, I edited a few things to get some more debugging details about
     the messages being sent to my endpoints, deployed those changes, went back to
     the Mastodon instance and tried again.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 将我的 Mastodon 实例指向 `@so@sotest.nwalsh.com` 没问题。它击中了 webfinger 端点，击中了用户端点，并且向收件箱发布了一些内容。太棒了！接下来，我编辑了一些内容，以获取有关发送到我的端点的消息的更多调试详细信息，部署了这些更改，然后回到
+    Mastodon 实例并再次尝试。
 - en: Nothing happened. I mean, the Mastodon instance was happy to show me the user
     to follow, but it didn’t actually hit the endpoints again.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么都没发生。我的意思是，Mastodon 实例很高兴地向我展示了要关注的用户，但实际上并没有再次击中端点。
 - en: I spent *a long time* poking about at the various places in the Mastodon server
     were caching could be performed. I ran the “cache clear” tasks, I fussed with
     the `nginx` configuration to turn off proxy caching, I did everything I could
     think of. To no avail.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我花了 *很长时间* 在 Mastodon 服务器中各个地方进行挠头，这些地方可能进行了缓存。我运行了“清除缓存”任务，我在 `nginx` 配置中忙于关闭代理缓存，我做了我能想到的一切。但毫无结果。
 - en: I was frustrated, but I discovered that I could make something happen by clicking
     “Follow” so I dug in there a bit.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很沮丧，但我发现通过点击“关注”我可以让一些事情发生，所以我稍微深入研究了一下。
 - en: 'Next up: we’ve got all these digital signatures to deal with. There are examples
     on the web of the sorts of things that need to be done, but all the ones I could
     find were in [TypeScript](https://en.wikipedia.org/wiki/TypeScript). That’s a
     hurdle I didn’t feel like trying to overcome today.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来：我们有所有这些数字签名要处理。网上有一些需要做的事情的示例，但我找到的所有示例都是用[TypeScript](https://en.wikipedia.org/wiki/TypeScript)写的。这是我今天不想克服的障碍。
 - en: And then I realized that to validate the signature, I’d have to hit the endpoint
     of the user attempting to follow me, e.g., `https://localhost/user/admin`, to
     get the user’s public key.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我意识到，为了验证签名，我必须击中尝试关注我的用户的端点，例如，`https://localhost/user/admin`，以获取用户的公钥。
 - en: Well 🤬! 🤬! 🤬! 🤬!
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 好气啊！🤬！🤬！🤬！🤬！
 - en: There’s no way that’s going to work from my `sotest` server on a different host.
     So to test this, I’d need *both* ends of the communcation to be on the public
     internet with proper certificates. And I’d have to work out how to disable caching.
     And I’d have to reverse-engineer some TypeScript (or work out how to use TypeScript).
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 从我的`sotest`服务器上到不同主机的方式行不通。所以为了测试这个，我需要*通信的两端*都在公共互联网上，并且有适当的证书。而且我还得想办法禁用缓存。我还得逆向工程一些
+    TypeScript（或者学会如何使用 TypeScript）。
 - en: I gave myself a day to see if I could make progress. I did not. (At least, not
     the kind of progress I was hoping to make.)
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我给了自己一天时间，看看我能否取得进展。我没有。（至少，不是我希望取得的那种进展。）
 - en: I officially give up. (At least for now.)
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正式放弃了。（至少暂时放弃。）
