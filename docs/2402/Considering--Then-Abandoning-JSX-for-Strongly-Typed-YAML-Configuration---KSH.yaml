@@ -432,10 +432,14 @@
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: JSX 在 TypeScript 中的实现[将 JSX 的结果类型视为不透明](https://www.typescriptlang.org/docs/handbook/jsx.html#the-jsx-result-type)。在上面的示例中并不明显，但这个选择限制了在
+    JSX 中可以和不能被类型检查的内容：React `children` 不能被强类型化。你可以指定 `children` 必须存在，但不幸的是，最终简化为
+    `{} | undefined | null`。
 - en: 'Something like this is impossible to enforce as incorrect behavior:'
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的东西无法强制执行为错误行为：
 - en: '[PRE7]'
   id: totrans-68
   prefs: []
@@ -446,17 +450,20 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 参见[完整示例链接](https://www.typescriptlang.org/play/?jsx=2#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgIilQ3wG4AocmATzCUWJmQGcBXAGxgB4BhOJAB4wkAOwAmzOAAoAdHJRQA5swBccFCOoBtALoBKOAF4AfOs2nDDdDBnJrAUXZIQo7uThwACgpQvhUZl5jLQAGHQAadzgecmMKKlp6TxwwSUsAbyiAeiy4ABUAC2BJAH12CAgAa2YSuGYYHBFFdmo4GjoxcLgoYEUCmAB+bNyAIQBVPLgASTyAcgBlOAA5AHk8mWG4ACl5gA0ZR2dXOGK4CDAUAEdWeg0xODEIJEkRCHgwImYkKAA3ekVRN9gGgTiJMNAQCgYMAICINh4cnB5hA4K84JCYP44AB3ApQtqJAC0imoIBEKHqwMk2Pojy6+JgBXoonuwHgnwg7D+zE2MBRKAJdDg7GAlXoAAM0EV2GIiCI1FJ0gBfOAAH1RHHYargrHESEwwBESDEel0USlwBlcrUdgwLA43HaSAgmDgABEKQUAEYQBRiYI6ChK+KYXUYGEid2en1+5hSD7nVReFLMAyZD
 - en: Until JSX via TS supports generics in `JSX.Element`, we’re kind of stuck with
     the above. It’s better than strings, but still not quite eloquent enough to warrant
     the investment.
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 JSX 通过 TS 支持 `JSX.Element` 的泛型之前，我们有点束手无策。它比字符串好，但仍然不够简洁，无法引起投资的兴趣。
 - en: An Aside About JSX for Those That Want To Know
   id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 对于那些想了解 JSX 的人的一些注意事项
 - en: Feel free to skip ahead if you already “get” how JSX transpiles and works. I
     dug into this in order to better investigate an ergonomic alternative to JSX,
     and decide whether I should hew close to JSX’s transpiled output or not.
@@ -464,12 +471,15 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果您已经“理解”了 JSX 的转译和工作原理，请随意跳过。我深入研究这个问题，以便更好地调查与 JSX 的转译输出相比的人体工程学替代方案，并决定是否应该接近
+    JSX 的转译输出。
 - en: JSX, since it transpiles to function calls, executes everything in reverse (inside-out)
     from how a markup language would actually be parsed (outside-in). It also adjusts
     `children` to be within the `props`, which mandates a bit of complexity.
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: JSX，因为它转译为函数调用，执行顺序与标记语言实际解析的顺序相反（从内到外）。它还调整了 `children` 以在 `props` 中，这需要一些复杂性。
 - en: '[PRE8]'
   id: totrans-74
   prefs: []
@@ -479,6 +489,7 @@
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '`D` 转译为：'
 - en: '[PRE9]'
   id: totrans-76
   prefs: []
@@ -488,6 +499,7 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出如下：
 - en: '[PRE10]'
   id: totrans-78
   prefs: []
@@ -498,32 +510,38 @@
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的示例中，我故意保留了类型为“开放”的（使用 `any`）。一旦你试图缩小范围，它们[变得复杂且几乎循环](https://www.typescriptlang.org/play?#code/C4TwDgpgBAygwgUQDYQLYQHbADwCgpQAKUEAHsJgCYDOUA3lAMYAWAlkpQE6YBcsiKdFgDaAXSgBfKAF56TNh24Y+8ZGkzAxkgDT4ocEuSq0AFGE4B7MNT6EAlDIB8-NUOAyoZy9dsPpz1UENXGdZOj1GVDA+OABuPXMrGyJ4iXjcADMAVwxGYFYLDCZuAEMKVw08AmIyCgwaORZ2Ll4XIJFxCV0CA1rjT0SfIj8AgXUsEJNI6P1tKEHk4gAfKAwspCQ5gDodpsVWwPHNUTsVMbdsQjm4Z3CCRkLqdwWAdVZgZjgFFqLZLyS9AQAPxyHZbBZzPY-SSAqB8BhQpSSBwlWiEdL3R7uCDtdxhWHTboEebeZKvd6fb5KPRpCKPCwoLZICwAcxMOKOdniBG4wCynCKHLcqVwuAeGCeUAAShASnkPHdirLyrjcLTMjk8gUigAREwORW8-lFEyw7CUVgAN0csII2DAjgAEjjmdgAPQOs1ui3WvRctWivX+oA)。
 - en: 'The important summary:'
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 重要的摘要：
 - en: JSX transpiles to Function calls
   id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: JSX 转译为函数调用
 - en: Those Function calls output a *description* of the Component and the props it
     will receive (including its `children` descriptions)
   id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这些函数调用输出组件的 *描述* 及其将接收到的属性（包括其 `children` 的描述）
 - en: The description(s) are walked, and the Components executed, to eventually output
     commands / mutations / instructions against a DOM (or another target)
   id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 描述被遍历，并执行组件，最终输出 DOM（或其他目标）的命令/变更/指令
 - en: 'We can either try to hew close to JSX’s transpiled output, or go with something
     simpler or more ergonomic. Back to our dashboard example:'
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以尝试与 JSX 的转译输出保持接近，或者选择更简单或更符合人体工程学的方案。回到我们的仪表板示例：
 - en: '[PRE11]'
   id: totrans-85
   prefs: []
@@ -533,6 +551,7 @@
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 直接的函数：
 - en: '[PRE12]'
   id: totrans-87
   prefs: []
@@ -542,6 +561,7 @@
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 直接的函数，1:1 与属性和子代之间的对应关系：
 - en: '[PRE13]'
   id: totrans-89
   prefs: []
@@ -551,6 +571,7 @@
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 数组 / S 表达式样式：
 - en: '[PRE14]'
   id: totrans-91
   prefs: []
@@ -560,22 +581,26 @@
   id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有 S 表达式 + 变长参数版本，现在我会跳过它。
 - en: 'So there are lots of options, but none standout as amazing. How to choose?
     These two questions might help:'
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以有很多选择，但没有一个突出的。如何选择？这两个问题可能会有所帮助：
 - en: How will the developer specify the schema and data restrictions (e.g. what’s
     the authoring experience like)?
   id: totrans-94
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 开发人员将如何指定模式和数据限制（例如，作者体验如何）？
 - en: What is the least ambiguous syntax for a human to write and read?
   id: totrans-95
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 人类编写和阅读的最不模糊的语法是什么？
 - en: 'It also turns out that while React / JSX need the general concept of `children`
     due to accommodating HTML’s flexibility, we probably don’t need that at all: we
     know and are likely required to specify the exact hierarchy to comply with System
@@ -583,24 +608,30 @@
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '同时，发现 React / JSX 需要 `children` 的概念是由于适应 HTML 的灵活性，而我们可能根本不需要: 我们知道并可能需要指定与系统
+    X 的模式相一致的确切层次结构。'
 - en: Ok, back to solutions.
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，回到解决方案。
 - en: A Solution Today
   id: totrans-98
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 今天的解决方案
 - en: If JSX is out, then an alternative that works today is to just use functions
     (yay, even fewer tools and concepts!).
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 JSX 不行，那么今天可行的替代方案就是只使用函数（耶，甚至更少的工具和概念！）。
 - en: 'We have two problems to solve then:'
   id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们需要解决两个问题：
 - en: What do they look like? e.g. What is the API and what syntax will we use? We
     want to allow the developer to specify the schema and data restrictions using
     the least ambiguous syntax possible.
@@ -608,50 +639,60 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 它们是什么样子的？例如 API 是什么，我们会使用什么语法？我们希望允许开发人员使用最不模糊的语法来指定模式和数据限制。
 - en: 'How do we actually output YAML? (We skipped this problem when talking about
     our hopeful JSX solution…) SPOILER: We’re going to cheat a bit!'
   id: totrans-102
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们到底如何输出 YAML？（当我们谈到我们希望的 JSX 解决方案时，我们跳过了这个问题…）剧透：我们要稍微作弊一下！
 - en: Let’s tackle both!
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们同时解决这两个问题！
 - en: This Definitely Works
   id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 这绝对有效
 - en: 'I’m sick of `Dashboards`, let’s switch to something more fun. Like Pokemon!
     Let’s describe the restrictions:'
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 我受够了 `仪表板`，让我们换成更有趣的东西。比如宝可梦！让我们描述一下限制条件：
 - en: A “bench” can contain between 1 - 6 “Pokemon”
   id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “椅子”可以包含 1 - 6 个“宝可梦”
 - en: A “Pokemon” has some data, like “name”, “level”, etc.
   id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “宝可梦”具有一些数据，如“name”、“level”等。
 - en: A “Pokemon” can have between 1 - 4 “moves”
   id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “宝可梦”可以有 1 - 4 个“招式”
 - en: A “move” has a name and some statistics, like “power”.
   id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “招式”有一个名字和一些统计数据，比如“power”。
 - en: 'In YAML (just the data, no rules):'
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 YAML 中（只有数据，没有规则）：
 - en: '[PRE15]'
   id: totrans-111
   prefs: []
@@ -661,6 +702,7 @@
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们编码“规则”：
 - en: '[PRE16]'
   id: totrans-113
   prefs: []
@@ -670,12 +712,15 @@
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里要注意一些事情：
 - en: We’ve encoded the 1-6 pokemon by using [TS tuple syntax](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple).
     The `?` allows for optional pokemon slots!
   id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们使用[TS 元组语法](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple)来编码
+    1-6 个宝可梦。`?` 允许可选的宝可梦位置！
 - en: We’re using [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypet)
     to say “Whatever the `Pokemon` component returns” rather than some sort of `React.ElementType`
     or `JSX.Element` or otherwise intermediate generic representation.
@@ -683,6 +728,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们使用 [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypet)
+    来表示“无论 `Pokemon` 组件返回的是什么”，而不是某种 `React.ElementType` 或 `JSX.Element` 或其他中间泛型表示。
 - en: We’ve named the `children` explicitly as what they are, in this case `pokemon`.
     There’s no need to have an implicit convention for `children` when we’re dealing
     with strongly typed functions as opposed to open-ended hierarchical config (or
@@ -691,6 +738,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们明确将 `children` 命名为它们所代表的，在这种情况下是 `pokemon`。在处理强类型函数而不是开放式层次结构配置（或 HTML）时，我们不需要对
+    `children` 使用隐式约定。
 - en: We’re returning just a simple JS object. I looked into building YAML directly
     via AST, and unfortunately hit some obstacles due to [types being out of date](https://github.com/eemeli/yaml/issues/102).
     Since my main mission here is type-safe config and not a JS -> YAML React Reconciler,
@@ -700,10 +749,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们现在只返回了一个简单的 JavaScript 对象。我尝试直接通过 AST 构建 YAML，但不幸的是，由于 [类型已过时](https://github.com/eemeli/yaml/issues/102)，我遇到了一些障碍。由于我的主要任务是类型安全的配置，而不是
+    JS -> YAML 的 React 一致化，我们会稍微作弊（就像上面的剧透一样！）。原来将 JSON 转换为 YAML 非常容易！
 - en: 'These “rules” in use look like this:'
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里使用的“规则”如下：
 - en: '[PRE17]'
   id: totrans-120
   prefs: []
@@ -716,6 +768,8 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，`Move` 组件未指定 `power` 值，因为现在通过穷举联合来处理！此外，我们已经编码了所有有效名称并将其绑定到它们的统计数据（显然，如果这是一个完整的宝可梦游戏，我们会有
+    *很多* 更多的招式！）。
 - en: '[PRE18]'
   id: totrans-122
   prefs: []
@@ -726,10 +780,12 @@
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查[完整示例](https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAIQKaQBYAoAOAnOHAZwC5EBvAKEURzgGtUBbBMgbWpsQCVUoQ8YACoBPHKgA8UMajjBEABQbMEAPgA0nGr36DR4qTLmLlLMKoD8mrjz4DhMw+ONLGZy9a477+ydOfyrirmVlq2ug4G-rKBpmqhNt56jtEucSGcALoA3JQAvgCUFJx4doLFNgBG6BAYZPiERAB0dG4InHm5eZSUoJCwCCZtYLgExGRUNGAAhkyoZABEAMoAjiAweFAANqgLiAA+iAsAwhjTeDAAXucAJgu5NDsAbqhbZGAgTNV4D4gsL6REBxEmVIn4jPIALJwF4eMJJMFOGKIaGwhJeUG+JHGVGoOEgiJY1JQmF4ixZLpFSaIUoRCpcJqMhrEDpdHp9aDwJC40aNCacGZzRbIECVSo7FCoWZ7Q4LADq0ygqDwiAA4uAZUcAGJbWZ8DAEADuys1CwAol8TZT6URDTAoLVELziE1BagqWEINMiKgjiKxRK0NL+TYaLT7BREIyWmMiOpaHBjXgyAAWACsiE6YW6nu9vvNlrwCxDofD5XIUaZsfjdCTqYADJnfjQczYvT7tbq5lADYmTSWbGWkBXo8y4wm64gAJyNrM2Vtcdv5hVKlXqsDF+mD0GR0fVifKhtN7M9Gw3VDAaYgLZQAeLhBEKCIAD6YHeqBeKoAvLRY669c2XBDi+YCAd0Lb5D0qAAB50JsiDnpe15PhyAwjGOEyFPSwFoJgWDUjQrTBOwYQ0EEZj4aRXBuosqzrJsOwLJ4oaIM8rxkAATAA7Mxob-KggLAixXA8hWNF+qK4q+kGTB7IUvEsaJiDifKirKmqGqZgUClcJkVHyVR5EIJRwnKXqiynOcVy3ExVGPB+7GIGmKY6TQ-GCXZImkvhZlCp2eo9kaJpaa5XkvD5KkWt8cnaZ5eksYUYTxVpXRAA)。别担心，很短。
 - en: And of course, if we put something where it doesn’t belong, we get errors.
   id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，如果我们把东西放在不合适的地方，就会出现错误。
 - en: '[PRE19]'
   id: totrans-125
   prefs: []
@@ -742,6 +798,8 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，这些错误并不像我们希望的那样有用。由于 TypeScript 是结构类型的，它在比较属性及其值。它找到的第一个不匹配的是 `name`，然后抱怨文字不匹配（`"Charizard"`
+    vs `Move` names）。
 - en: 'Before we move on though, just to prove that this works:'
   id: totrans-127
   prefs: []
