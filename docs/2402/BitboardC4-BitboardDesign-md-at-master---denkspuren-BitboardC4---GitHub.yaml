@@ -1,30 +1,46 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:21:34'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:21:34
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: BitboardC4/BitboardDesign.md at master · denkspuren/BitboardC4 · GitHub
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: BitboardC4/BitboardDesign.md at master · denkspuren/BitboardC4 · GitHub
 - en: 来源：[https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md](https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md](https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md)
 - en: Bitboards and Connect Four
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 比特棋盘和Connect Four
 - en: '[](#bitboards-and-connect-four)'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#比特棋盘和Connect Four)'
 - en: '[Fhourstones](https://en.wikipedia.org/wiki/Fhourstones) is a benchmark that
     is based on a highly efficient [implementation](http://tromp.github.io/c4/fhour.html)
     of the game [Connect Four](https://en.wikipedia.org/wiki/Connect_Four). Its author,
@@ -34,50 +50,74 @@
     a one denoting the player''s token, a zero denoting either an empty position or
     an opponent''s token. The encoding is designed for speed in operating with the
     board. Especially querying the board for four in a row is extremely fast.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Fhourstones](https://en.wikipedia.org/wiki/Fhourstones) 是基于 [Connect Four](https://en.wikipedia.org/wiki/Connect_Four)
+    的高效实现的一个基准测试。其作者，[John Tromp](http://tromp.github.io/)，使用两个比特棋盘来代表每个玩家的棋盘视角。[比特棋盘](https://en.wikipedia.org/wiki/Bitboard)将当前位置编码为一系列的1和0；1表示玩家的标记，0表示空位置或对手的标记。该编码设计用于快速操作棋盘。特别是查询四个连续位的棋盘非常快。'
 - en: I figured that my students struggle with understanding John's implementation.
     That's why I created this document. My explanation leans on John's code. However,
     we don't go through John's code line by line. Instead, I try to help you get the
     point of the encoding and the way using it. Equipped with this understanding it
     should be fairly easy to figure out the details of John's implementation by yourself.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我发现我的学生们很难理解John的实现。这就是为什么我创建了这份文件。我的解释依赖于John的代码。但我们不逐行查看John的代码。相反，我试图帮助您理解编码和使用它的方式。有了这样的理解，应该很容易自己弄清楚John的实现的细节。
 - en: Enjoy,
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 祝您愉快，
 - en: Dominikus Herzberg
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Dominikus Herzberg
 - en: A Binary Board Encoding for Connect Four
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Connect Four 的二进制棋盘编码
 - en: '[](#a-binary-board-encoding-for-connect-four)'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#connect-four的二进制棋盘编码)'
 - en: We discuss the data structures required first, before we move on explaning how
     to use them.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先讨论所需的数据结构，然后再解释如何使用它们。
 - en: Using Two Longs to Encode the Board
+  id: totrans-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用两个长整数编码棋盘
 - en: '[](#using-two-longs-to-encode-the-board)'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '[](#使用两个长整数编码棋盘)'
 - en: In Java and in many other programming languages, a so-called long integer is
     composed of eight bytes. Eight bytes are 64 bits (1 byte = 8 bits). If presented
     as a series of ones and zeros, the most significant bit (MSB) is on the left hand
     side, the least significant bit (LSB) is on the right hand side. That's why we
     number the bits in the way shown below from right to left. Remember, programmers
     start counting with zero ;-)
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Java和许多其他编程语言中，所谓的长整数由八个字节组成。八个字节为64位（1字节=8位）。如果将其表示为一系列的1和0，最高有效位（MSB）位于左侧，最低有效位（LSB）位于右侧。这就是为什么我们按照下面从右到左的方式编号位。记住，程序员从零开始计数
+    ;-)
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Connect Four is played on a vertical board with seven columns and six rows.
     That makes 42 slots. The board with these 42 slots is shown in the diagram below.
     We add an additional row on top for convenience purposes. This additional row
@@ -85,103 +125,145 @@
     adding two more columns and a bit. The bits of the top row (6, 13, 20, etc.) and
     the bits on the right (49 - 63) are seemingly unused but nonetheless important
     and not to forget in their role when it comes to manipulating the bits.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Connect Four 是在一个有七列六行的垂直棋盘上进行的。共有42个插槽。下图显示了具有这42个插槽的棋盘。为方便起见，我们在顶部添加了一行额外的行。顶部的这一额外行仅用于计算。同样，位于第49至63位之间的位，添加了两列和一个位。顶部行（6、13、20等）和右侧的位（49
+    - 63）看似未使用，但在操作位时仍然非常重要，不容忽视。
 - en: The numbers indicate the position in the bit representation of a long integer.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字指示长整数的位表示中的位置。
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Let''s take an example, given the following position:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们举个例子，考虑以下局面：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Connect Four is played by two players. There is one bitboard for each player.
     We encode the position separately for each player. One bitboard encodes the position
     with tokens `X` only, the other bitboard the position with tokens `O` only.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Connect Four由两名玩家进行。每个玩家都有一个比特棋盘。我们分别为每个玩家编码位置。一个比特棋盘只编码位置为`X`的标记，另一个比特棋盘只编码位置为`O`的标记。
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Shown as a flat series of ones and zeros the two bitboards look like this. Leading
     zeros, i.e. the bits beyond position 48, are cut off.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如下所示，将两个比特棋盘显示为一系列的1和0。前导零，即位置48之外的位被切掉。
 - en: '[PRE4]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Got it? It's not that hard to understand, is it? This encoding is the key to
     the magic that makes bitboards so fast.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 明白了吗？理解起来并不难，不是吗？这种编码是使比特棋盘如此快速的魔法关键。
 - en: 'Subsequently, we assume that both bitboards are stored in an array declared
     `long[] bitboard`. The array contains only two bitboards (two long integers),
     of course: one encoding the `X`s on the board, the other one encoding the `O`s.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们假设两个比特棋盘都存储在声明为`long[] bitboard`的数组中。当然，该数组只包含两个比特棋盘（两个长整数）：一个编码着棋盘上的`X`，另一个编码着`O`。
 - en: 'To work with a series of bits you need operations to manipulate them. All we
     need is two kinds of operations: to shift bits and to combine bits.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 要操作一系列位，您需要操作来操作它们。我们只需要两种操作：移位和组合位。
 - en: The operators `>>` and `<<` shift bits to the right and to the left, respectively.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作符`>>`和`<<`向右和向左移动位。
 - en: Saying e.g. `0b10101110 >> 3` means that three bits are shifted out to the right
     with three zeros being shifted in on the left. Here, the prefix `0b` indicates
     that the following digits represent a binary number and not a decimal number.
     Assumed that `0b10101110` is a binary number of maximum eight bits, the result
     is `0b00010101`.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Accordingly, `0b10101110 << 3` shifts three bits out to the left and shifts
     in three zeros on the right. The result is `0b01110000` if we assume a length
     of eight bits.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: The only two operators we need in this context are the so-called XOR-operator
     and the AND-operator.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: The XOR-operator (written as `^`) takes two binary numbers, say `0b10101110
     ^ 0b10011111`, and compares bits of the same position. If both bits are not equal,
     the result is a one; otherwise it's a zero. That's the rule for the XOR-operator.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: If we write the second number below the first number, the bit positions are
     easier to compare. Only pairs of `10` and `01` result in a `1`.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: That is, `0b10101110 ^ 0b10011111` results in `0b00110001`.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: The AND-operator (written as `&`) also takes two binary numbers. Comparing the
     bits of both numbers, it returns a one only if the first bit *and* the second
     bit are one; therwise it returns zero for the position under consideration. For
     example
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: In other words, `0b10101110 & 0b10011111` results in `0b10001110`.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: For more information on bit shifting and other bit operations such as OR, AND
     and NOT you might consult Wikipedia on [Bitwise Operations](https://en.wikipedia.org/wiki/Bitwise_operation).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Let's Play with the Bitboards
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '[](#lets-play-with-the-bitboards)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'To demonstrate the use of bitboards we implement four methods: make a move
@@ -190,34 +272,43 @@
     our means of communication, we use pseudo-code which is close to TypeScript and
     Java. Only slight adaptations are required for any of the two languages. It is
     up to you to properly embed this code in a class statement.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before we look into the methods, we need some few data the methods operate
     on: `height`, `counter` and `moves`. Together with the bitboard array (see above)
     the implementation of the methods is almost trivial. So, pay a little bit attention
     to the data required.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: Before we look into the methods more closely, there is an additional piece of
     information tracked that speeds up making and undoing moves. The position to be
     filled next in a column is remembered in an array declared `int[] height`. For
     the example shown,
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'the values for `height` are:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The variable `height` serves as a memory where the next token goes given the
     column. Otherwise we would need to search for the next empty slot given the bottom
     of a column. Having a memory saves searching and makes things faster. And that
     is what we are up to with bitboards. We want to be as fast as possible with manipulating
     a board representation of Connect Four.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: Another piece of information we track is the number of moves done, a `counter`.
@@ -225,6 +316,7 @@
     decrement the counter. For incrementation we use the increment operator `++` (add
     one), for decrementation we use the decrement operator `--` (subtract one). We
     use incrementation and decrementation also for manipulating the `height` per column.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: There is a neat trick to determine whether it is `X`'s or `O`'s turn to move
@@ -234,13 +326,16 @@
     it is odd if the LSB is one. Using the AND-operator, `counter & 1` returns `0`
     for even counts and `1` for odd counts. We will use this trick to determine, which
     bitboard of the two we are interested in.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: Maintain a History of Moves Done
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[](#maintain-a-history-of-moves-done)'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: In a variable called `moves`, actually an array declared `int[] moves`, we remember
@@ -248,116 +343,167 @@
     is made. `moves[0]` stores the first move, `moves[1]` the second and so on. We
     use `counter` to write to the right cell in `moves` when we make a move as well
     as to recall the last move, when we undo it.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个名为 `moves` 的变量中，实际上是一个声明为 `int[] moves` 的数组，我们记住到目前为止所做的移动。移动由在进行移动时给定的列表示。`moves[0]`
+    存储第一个移动，`moves[1]` 存储第二个移动，依此类推。我们使用 `counter` 来在进行移动时写入 `moves` 中的正确单元格，以及在撤销移动时回忆最后一次移动。
 - en: Have a look at the code that describes how to make a move given a column; the
     column being an integer value ranging from `0` to `6` including both limiting
     values. It's just three line of code in the body of `makeMove`.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 看一下描述如何在给定列进行移动的代码；列是一个从`0`到`6`的整数值，包括这两个限定值。这仅是在 `makeMove` 主体中的三行代码。
 - en: '[PRE9]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The code says:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码说：
 - en: Given the column `col`, get the index(!) of the position stored in `height`
     for that column, shift a single bit (`1L`) to that position in the binary representation
     of the bitboard and store the result in `move`; afterwards (because the increment
     operator is in postfix position), `height[col]` is incremented by one.
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 给定列 `col`，获取存储在 `height` 中该列位置的索引(!)，将一个单独的位(`1L`)移动到位板的二进制表示中的该位置，并将结果存储在 `move`
+    中；随后（因为增量运算符位于后缀位置），`height[col]` 增加一。
 - en: '`bitboard[counter & 1]` gets us the bitboard of the party (either `X` or `O`)
     on turn. The bit `move` is simply set via the XOR-operator on the corresponding
     bitboard. `bitboard[counter & 1] ^= move;` is a shortcut for `bitboard[counter
     & 1] = bitboard[counter & 1] ^ move;`.'
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`bitboard[counter & 1]` 获取轮到的一方（`X` 或 `O`）的位板。通过异或运算符，位 `move` 简单地设置在相应的位板上。`bitboard[counter
+    & 1] ^= move;` 是 `bitboard[counter & 1] = bitboard[counter & 1] ^ move;` 的简写。'
 - en: Store the column `col` in the history of `moves`, afterwards (because `++` is
     again in postfix position) increment the `counter`.
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将列 `col` 存储在 `moves` 的历史记录中，之后（因为 `++` 再次位于后缀位置）增加 `counter`。
 - en: Even if you are not into the details of a programming language (which makes
     it three lines of code instead of, say, five), you should get the idea of what's
     going on.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使你不熟悉编程语言的细节（这使得它变成了三行代码，而不是，比如说，五行），你也应该理解发生了什么。
 - en: 'Method `undoMove` basically reverses the steps done in `makeMove`. See yourself:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 方法 `undoMove` 基本上是反转 `makeMove` 中所做的步骤。自己看：
 - en: '[PRE10]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The column (`col`) is determined from the history of `moves`; prior to accessing
     the history (because `--` is in prefix position), `counter` is decremented. This
     step "reverses" the last action in `makeMove`, so to speak.
+  id: totrans-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 列(`col`)是从 `moves` 的历史记录中确定的；在访问历史记录之前（因为 `--` 位于前缀位置），`counter` 被减一。这一步"反转"了
+    `makeMove` 中的最后一个动作，可以这么说。
 - en: We decrement and store the new `height` for `col` first (again, `--` is in prefix
     position), take the new value and shift a bit (`1L`) to the corresponding position
     in the bit pattern and store it in `move`.
+  id: totrans-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先我们减少并存储 `col` 的新 `height`（再次，`--` 位于前缀位置），然后取新值并将位(`1L`)移动到位模式的相应位置，并将其存储在
+    `move` 中。
 - en: We unset the bit in the corresponding bitboard. This step "reserves" the second
     action in `makeMove`, the setting of the bit.
+  id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们取消相应位板中的位。这一步"预留"了 `makeMove` 中的第二个动作，即设置位的动作。
 - en: We are getting to the heart, why we are using bitboards. Since we need to check
     for four in a row almost every time a move is made, it is in our interest to get
     the check done as quickly as possible. Speed improves the number of positions
     investigated per second, and the sheer number of positions crunched correlates
     with the perceived computer's "intelligence" of play.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在深入了解，为什么我们要使用位板。由于我们几乎每次进行移动都需要检查是否有四个连续，我们有兴趣尽快完成检查。速度提高了每秒调查的位置数量，而调查的位置数量与被感知为计算机"智能"的玩法相关。
 - en: Look again at the encoding of positions in a bitboard.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次看看位板中位置的编码。
 - en: '[PRE11]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: To check if there are four in a row horizontally, we need for example to look
     at positions 11, 18, 25 and 32 whether they are all set to one. Likewise, we might
     check positions 21, 28, 35 and 42\. The underlying positional pattern is that
     the positions looked at differ by a constant number of 7\. Take the leftmost position
     (here 11 and 21, respectively), add 7 and 7 and 7 again, you get the four positions
     to look at.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查水平方向是否有四个连续，我们需要例如查看位置11、18、25和32是否全部设置为一。同样，我们可能会检查位置21、28、35和42。底层的位置模式是，所查看的位置之间的差值是一个常数7。以最左边的位置为例（这里分别是11和21），加7、7和7，你得到了要查看的四个位置。
 - en: Vertically, the difference is 1, take position 15 and 16 as an example. Diagonally
     it's either a difference of 8 (take 16 and 24 as an example) or a difference of
     6 (take 30 and 36).
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在垂直方向上，差别是1，以位置15和16为例。在对角线上，要么是8的差别（以16和24为例），要么是6的差别（以30和36为例）。
 - en: So, the "magic" difference numbers on the bitboard are 1, 6, 7 and 8.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，位板上的"魔术"差值为1、6、7和8。
 - en: 'Let''s take a bitboard and shift a copy of it by 6 to the right, another copy
     by twice as much, and a final copy by thrice as much to the right. Then let''s
     "overlay" all copies with the AND-operator. The effect is that all of the diagonally
     ( \ ) distributed positions of the bitboard making up four in a row (diagonally)
     are now queried: Is each one of you a one? If so, we identified four bits in a
     row.'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们拿一个位板，并将其拷贝向右移动6次，另一个拷贝移动两倍，最后一个拷贝移动三倍。然后让我们使用AND运算符"叠加"所有的拷贝。效果是，现在我们查询了位板的所有沿对角线(\)分布的位置，这些位置组成了一排（对角线上的）四个位：你们每一个都是一吗？如果是，我们就识别出了四个连续的位。
 - en: The point is that bit shifting and combining bits make it a parallel computation
     for all positions on the board! You don't look at an individual position, you
     look at all the positions on the board at once and check for their neighbors being
     another three bits set as well.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键是位移和位组合使得它成为了对棋盘上所有位置的并行计算！你不是看一个个体位置，而是一次性地看整个棋盘上的所有位置，并检查它们的邻居是否另外有三个位也被设置了。
 - en: If you get the basic idea, the following code should come as no surprise. The
     code literally does what we just described.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你理解了基本思想，下面的代码应该不会让你感到意外。这段代码字面上就是我们刚刚描述的内容。
 - en: '[PRE12]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Notice that the additional row on the top of the regular board (positions 6,
     13, 20, 27, 34, 41, 48) and the additional rows at the right (position 49 and
     up) are essential. They hold values of zero and are vital to prevent us from finding
@@ -365,61 +511,87 @@
     has 27 next; "luckily", position 27 -- being a member of the additional top row
     -- is always zero. Without these additional row and columns our bitboards would
     not work.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，正常棋盘顶部的额外行（位置为6、13、20、27、34、41、48）和右侧的额外行（位置为49及以上）是至关重要的。它们保持值为零，并且对于防止我们找到跨越“边界”的四个连续位置是至关重要的。例如，检查对角线9、15、21后面有27；“幸运的是”，位置27
+    -- 作为额外顶部行的成员 -- 总是为零。如果没有这些额外行和列，我们的位棋盘就无法正常工作。
 - en: The code above is highly regular and redundant. We might choose to capture the
     "magic" numbers in an array called `directions` and iterate over the numbers in
     a `for`-loop.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码非常规则且冗余。我们可以选择将“魔术”数字捕获到名为`directions`的数组中，并在`for`循环中对数字进行迭代。
 - en: '[PRE13]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You might catch the point that shifting a bitpattern once, twice and thrice
     is a bit of overdoing things. In case you want to save one shift operation and
     a multiplication by 3, you can use an intermediate variable called `bb` and get
     a little bit better off. In terms of machine code this saves you a few cycles
     of computations. Other than that the following code does exactly the same as our
     more verbose version of `isWin` does.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会注意到，对一个位模式进行一次、两次和三次位移有点过分了。如果你想要节省一个位移操作和乘以3的乘法操作，你可以使用一个名为`bb`的中间变量，这样你就能稍微好一点。在机器码方面，这样做可以节省几个循环的周期。除此之外，以下代码与我们
 - en: '[PRE14]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Per direction the routine needs one assignment, two shifts, two binary AND-operations,
     one multiplication, and a comparison, i.e. seven operations which relate to almost
     seven machine code or byte code instructions. A full evaluation considering all
     four directions requires four times that much, that is 4 x 7 = 28 instructions.
     Including the instructions required for the `for`-statement, we might end up with
     30-something instructions altogether.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个方向的例程需要一个赋值操作，两个位移操作，两个二进制与操作，一个乘法操作和一个比较操作，即七个操作，几乎与七个机器码或字节码指令相关。考虑到所有四个方向的全面评估，需要四倍的指令量，即4
+    x 7 = 28条指令。包括`for`语句所需的指令，我们可能最终需要大约30多条指令。
 - en: On a machine crunching 2 billion instructions per second, we can run 50 million
     checks of `isWin` per second (assuming 40 instructions per check). That's quite
     a number.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每秒运行20亿条指令的计算机上，我们可以每秒运行5000万次`isWin`检查（假设每次检查需要40条指令）。这是一个相当大的数字。
 - en: Last but not least, we need a generator to identify possible moves in a given
     situation of play. The list of moves (`int[] moves`) is calculated by `listMoves`
     and returned, each value representing a column which is not full yet.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后但同样重要的是，我们需要一个生成器来识别给定游戏局势中可能的移动。移动列表（`int[] moves`）由`listMoves`计算并返回，每个值表示一个尚未满的列。
 - en: '[PRE15]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: We do so with a helper variable called `TOP`, which encodes the positions of
     the additional row on top of the board (positions 6, 13, 20, 27, 34, 41, 48).
     When we simulate the code for making a move (shifting a bit by `height[col]`),
     that bit is not supposed to land in the additional top row, marking the column
     full. If the column is not full, the column gets listed in `moves`.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们通过一个名为`TOP`的辅助变量来实现，它编码了棋盘顶部额外行的位置（位置为6、13、20、27、34、41、48）。当我们模拟进行移动的代码（通过`height[col]`进行位移）时，该位不应该落在额外的顶部行上，标记着列已满。如果列不满，该列将被列入`moves`。
 - en: '* * *'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: That's it folks.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样了，朋友们。
 - en: 'If you think things through you realize that bitboards are just a highly optimized
     data structure. The underlying idea is a board encoding by means of an one-dimensional
     array of integers. Splitting the array into two arrays, one for each party, makes
@@ -427,15 +599,21 @@
     also qualify as a special case of a bit array. Indexing becomes bit shifting,
     reading and writing become bit operations. And with bit operations comes parallelization:
     per direction you check for four in a row for each position on the board.'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你仔细思考，你会意识到位棋盘只是一个高度优化的数据结构。其基本思想是通过一个整数一维数组对棋盘进行编码。将数组分成两个数组，每个数组代表一方，这实质上就是两个位数组。而且，使用长整型作为位数组的特殊情况也是可以的。索引变成了位移，读取和写入变成了位操作。而且，位操作带来了并行化：每个方向上，你都检查每个位置的四个连续位置。
 - en: I hope you enjoyed the fun being on a bit level, even when you are using Java,
     TypeScript or any other "high-level" language.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望你享受了在位级别上的乐趣，即使你正在使用Java、TypeScript或任何其他“高级”语言。
 - en: 'In case you are a german native speaker, you might be interested in watching
     a video of mine: [Bitboards for Tic-Tac-Toe](https://www.youtube.com/watch?v=5t5jzkO0t7w).
     The four directions (remember the "magic" numbers) get part of the bit encoding,
     which makes the check for three in a row superfast.'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您是德语母语者，您可能会对观看我的视频感兴趣：[井字游戏的位棋盘](https://www.youtube.com/watch?v=5t5jzkO0t7w)。四个方向（记住“魔术”数字）成为位编码的一部分，这使得检查三个一排变得超级快速。
