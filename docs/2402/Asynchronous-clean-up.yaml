@@ -307,6 +307,9 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准库将添加一个新的 API，异步版本的`catch_unwind`。当它捕获到返回`Pending`的展开时，它本身将返回`Pending`并取消 panic
+    状态。当再次对它进行轮询时，它设置 panic 状态并对自身进行轮询，通过它包装的未来的`poll_cancel`方法进一步进行。最终，`poll_cancel`返回准备就绪，此时异步`catch_unwind`将返回
+    panic 错误。
 - en: 'If `poll_cancel` returns `Pending` while unwinding not inside of the async
     `catch_unwind`, one of two choices can be made: either the entire process aborts,
     or control jumps immediately to the innermost `catch_unwind` without executing
@@ -314,16 +317,19 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在不在异步`catch_unwind`内展开的情况下，`poll_cancel`返回`Pending`，则可以选择以下两种方式之一：要么整个过程中止，要么立即跳转到最内层的`catch_unwind`，而不执行任何进一步的展开代码。可能前者是更安全的选择。
 - en: In addition to upgrading to handle cancellation, runtimes would need to upgrade
     to use the asynchronous version of `catch_unwind`.
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了升级以处理取消，运行时还需要升级以使用异步版本的`catch_unwind`。
 - en: '`do` &mldr; `final`'
   id: totrans-36
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '`do` &mldr; `final`'
 - en: 'The second step to make async clean up work is totally separate from supporting
     async cancellation: it’s a way to do clean up other than destructors. This will
     solve several problems: first, it will solve the general “clean up with meaningful
@@ -334,6 +340,7 @@
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使异步清理工作起效的第二步是完全独立于支持异步取消的：这是一种除了析构函数之外进行清理的方法。这将解决几个问题：首先，它将解决之前讨论过的通用“带有有意义返回值的清理”问题（无论它们返回`Result`还是`Future`）。其次，它将提供一种进行临时清理而无需创建具有析构函数的自定义保护类型的烦琐方法，目前需要进行一次性临时清理的代码都需要这样做。
 - en: 'The basic concept is to add a new kind of block construct, which has a way
     to specify code that runs whenever that block exits. I’ve chosen the syntax `do`
     &mldr; `final`, because both of these are already reserved words without meaning
@@ -342,10 +349,13 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本概念是添加一种新类型的块结构，它有一种方法指定每当该块退出时运行的代码。我选择了`do` &mldr; `final`的语法，因为这两个词已经是 Rust
+    中的保留字而没有意义。你可以很容易地想象其他语法：Go 的`defer`块基本上是相同的功能，但具有较少的块结构化语法。
 - en: 'For example:'
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如：
 - en: '[PRE1]'
   id: totrans-40
   prefs: []
@@ -358,16 +368,19 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码可以以3种不同的方式退出`do`块：它可以正常退出，`fallible_call`可以返回错误，或者该块可能会 panic。在所有情况下，最终块将在继续之前运行，因此无论发生什么，它都将打印消息“`退出块`”。
 - en: The `final` block must always evaluate to `()`, and the entire construct will
     evaluate to the type that the `do` block evaluates to.
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '`final`块必须始终评估为`()`，整个结构将评估为`do`块评估为的类型。'
 - en: 'This reduces the pattern of “ad hoc guards” to relatively simple constructs.
     Consider this example:'
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将“临时保护”模式简化为相对简单的结构。考虑这个例子：
 - en: '[PRE2]'
   id: totrans-44
   prefs: []
@@ -379,6 +392,7 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果用户的意图是每次闭包退出时调用`unbar`，它们将失败：如果闭包通过 panic 或返回错误退出，则不会调用`unbar`。出于这个原因，在这种情况下使用临时保护类型：
 - en: '[PRE3]'
   id: totrans-46
   prefs: []
@@ -389,6 +403,7 @@
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这种情况添加这么多代码是相当多的。`do` &mldr; `final`块会使整个过程更简单：
 - en: '[PRE4]'
   id: totrans-48
   prefs: []
@@ -399,6 +414,7 @@
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 它们还有助于处理可失败清理中的错误。考虑关闭文件的情况：
 - en: '[PRE5]'
   id: totrans-50
   prefs: []
@@ -411,6 +427,7 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 UNIX 系统上，通过调用`close(2)`来关闭文件。如果该调用返回错误会发生什么？标准库会忽略它。这部分是因为对于`close(2)`出现错误，你没有太多可以做的，正如标准库中的注释所阐明的那样：
 - en: '[PRE6]'
   id: totrans-52
   prefs: []
@@ -420,6 +437,7 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: “Worse is better.”
 - en: 'However, a user may still want some level of control over what happens in this
     case, even if just to log that an error occurred (which can be used to assist
     in debugging any incident that may arise). Toward that end, `File` could also
@@ -429,6 +447,8 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，用户可能仍然希望在这种情况下有一定程度的控制，即使只是记录发生错误（这可以用于协助调试可能发生的任何事件）。为此，`File`也可以有一个返回`Result`的
+    close 方法。用户然后可以使用`final`块来调用该方法，并根据需要处理错误：
 - en: '[PRE7]'
   id: totrans-55
   prefs: []
@@ -439,12 +459,14 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在`final`块中等待
 - en: 'Both of these use cases are completely separate from async clean up, but the
     feature is also useful for async clean up, because `final` blocks would be able
     to contain `await` expressions. For example:'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种用例与异步清理完全分离，但该功能对于异步清理也很有用，因为`final`块将能够包含`await`表达式。例如：
 - en: '[PRE8]'
   id: totrans-58
   prefs: []
