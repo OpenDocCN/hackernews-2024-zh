@@ -2,34 +2,41 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:58:27'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:58:27'
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A vision of a multi-threaded Emacs • Core Dumped
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个多线程 Emacs 的愿景 • Core Dumped
 - en: 来源：[https://coredumped.dev/2022/05/19/a-vision-of-a-multi-threaded-emacs/](https://coredumped.dev/2022/05/19/a-vision-of-a-multi-threaded-emacs/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://coredumped.dev/2022/05/19/a-vision-of-a-multi-threaded-emacs/](https://coredumped.dev/2022/05/19/a-vision-of-a-multi-threaded-emacs/)
 - en: 'Starting in Emacs 26 some very ambitious changes were added. Basic thread support
     was enabled, laying the groundwork for a future concurrent emacs. The [docs](https://www.gnu.org/software/emacs/manual/html_node/elisp/Threads.html)
     layout this possibility:'
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 Emacs 26 开始，一些非常雄心勃勃的更改被添加了。基本线程支持被启用，为未来的并发 Emacs 打下了基础。[文档](https://www.gnu.org/software/emacs/manual/html_node/elisp/Threads.html)阐述了这种可能性：
 - en: Emacs Lisp provides a limited form of concurrency, called threads. All the threads
     in a given instance of Emacs share the same memory. Concurrency in Emacs Lisp
     is “mostly cooperative”, meaning that Emacs will only switch execution between
@@ -39,6 +46,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Emacs Lisp 提供了一种有限的并发形式，称为线程。给定 Emacs 实例中的所有线程共享相同的内存。Emacs Lisp 中的并发“主要是协作性的”，这意味着
+    Emacs 仅在明确定义的时间点之间在线程之间切换执行。但是，Emacs 线程支持的设计方式允许以后实现更细粒度的并发
 - en: What would a future with fine-grained concurrency look like? Could we have an
     Emacs that uses more then 1 thread? This post sketches out some rough ideas of
     what that could look like from an elisp perspective. I am going to take the easy
@@ -47,6 +56,7 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 未来具有细粒度并发的情景会是什么样子？我们能够拥有使用多个线程的 Emacs 吗？本文概述了一些从 elisp 角度看可能的情景。我将采取最简单的方法，完全忽略*如何*实际实现这一点，只是猜测大概的可能性。
 - en: The `thread` feature is specifically trying to enable *concurrency*, which is
     the ability to interweave lines of execution to make progress on more then one
     program at a time. This is the model used by async/await and coroutines. Concurrency
@@ -59,10 +69,13 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '`thread` 特性专门旨在实现*并发*，即交织执行线程以同时推进多个程序的能力。这是异步/等待和协程使用的模型。当你的应用程序受到 IO 限制时，并发是很有用的。该库使您能够在指定点之间切换并发程序，这就是为什么它被称为*协作*并发。另一方面，*并行*是实际上同时运行多个程序的能力。当您的应用程序受到
+    CPU 限制时，这是很有用的。详细解释请参阅[此文章](https://oxylabs.io/blog/concurrency-vs-parallelism)。'
 - en: There are two main scenarios where concurrency/parallelism are useful.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 并发/并行是有用的两种主要场景。
 - en: When I want some elisp task done in the background without blocking my main
     user thread, I can use concurrency. This includes things like handling filter
     output, indexing buffers, watching for changes, etc. The background task will
@@ -71,6 +84,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当我想要在后台执行一些 elisp 任务而不阻塞我的主用户线程时，我可以使用并发。这包括处理过滤器输出、索引缓冲区、监视更改等任务。后台任务将从主线程“窃取”空闲时间以逐步完成其工作。
 - en: When I want to get the results of some task faster, I need parallelism. This
     includes things like updating or searching buffers, applying font lock, or loading
     code. In order to do these task faster I need multiple threads running at the
@@ -79,6 +93,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当我想要更快地完成某个任务的结果时，我需要并行性。这包括更新或搜索缓冲区、应用字体锁定或加载代码等任务。为了更快地执行这些任务，我需要同时运行多个线程。
 - en: Note that parallelism can service both use case 1 and 2, but concurrency can
     only deal with use case 1\. In some sense, parallelism is a superset of concurrency.
     All parallel code is concurrent, but concurrent code is not necessarily parallel.
@@ -87,38 +102,48 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，并行性可以同时服务用例 1 和 2，但并发只能处理用例 1。在某种意义上，并行性是并发性的一个超集。所有并行代码都是并发的，但并发代码并不一定是并行的。因此，我对一个并行的
+    Emacs 感兴趣远远超过一个仅仅是并发的 Emacs。
 - en: 'My oversimplification of parallel languages breaks them into three categories:'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对并行语言的过度简化将其分为三类：
 - en: Level 1 - memory unsafe and data races allowed
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Level 1 - 内存不安全且允许数据竞争
 - en: Languages where incorrect code can lead to corruption of the program state and
     segfaults. This includes C++ and Swift.
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 不正确的代码可能导致程序状态的损坏和分段错误的语言。这包括 C++ 和 Swift。
 - en: Level 2 - memory safe and data races allowed
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Level 2 - 内存安全但允许数据竞争
 - en: Languages where parallelism is memory safe, but can still lead to data races.
     This includes Java and Go.
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有并行性的语言是内存安全的，但仍可能导致数据竞争。这包括 Java 和 Go。
 - en: Level 3 - memory safe and no data races
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Level 3 - 内存安全且没有数据竞争
 - en: Languages that enable [fearless concurrency](https://doc.rust-lang.org/book/ch16-00-concurrency.html)
     by eliminating unguarded access to shared-memory. This includes Clojure, Rust,
     and TCL.
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过消除对共享内存的无保护访问，使得具有[无畏并发性](https://doc.rust-lang.org/book/ch16-00-concurrency.html)的语言。这包括
+    Clojure、Rust 和 TCL。
 - en: Generally the closer you are Level 1 the more footguns there are, but the more
     performance you can squeeze out. The higher you go the easier concurrent code
     is to write, but you have less performance and control. The exception to this
@@ -126,6 +151,8 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，您离 Level 1 越近，越容易犯错，但可以挤出更高的性能。您越高，编写并发代码就越容易，但性能和控制就越少。唯一的例外是 Rust，它是一个安全的
+    Level 3 语言，性能与 Level 1 相当。
 - en: 'So where do we want Emacs to land on this spectrum? The creator of [nogil](https://github.com/colesbury/nogil)
     python, a multi-threaded python implementation, [said this](https://docs.google.com/document/d/18CXhDb1ygxg-YXNBJNzfzZsDFosB5e6BfnXLlejd9l0/edit):'
   id: totrans-22
