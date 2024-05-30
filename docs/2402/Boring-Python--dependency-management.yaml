@@ -2,33 +2,40 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:37:36'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:37:36
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Boring Python: dependency management'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 无聊的 Python：依赖管理
 - en: 来源：[https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/](https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/](https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/)
 - en: 'Boring Python: dependency management'
   id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 无聊的 Python：依赖管理
 - en: '[<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar"
     viewBox="0 0 16 16"><title>Published on:</title></svg> May 13, 2022](/weblog/2022/may/13/)
        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tags"
@@ -37,6 +44,10 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar"
+    viewBox="0 0 16 16"><title>发布于：</title></svg> 2022年5月13日](/weblog/2022/may/13/)
+       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tags"
+    viewBox="0 0 16 16"><title>分类：</title></svg> [Django](/weblog/categories/django/)，[Python](/weblog/categories/python/)'
 - en: 'This is the first in hopefully a series of posts I intend to write about how
     to build/manage/deploy/etc. Python applications in as boring a way as possible.
     So before I go any further, I want to be absolutely clear on what I mean by “boring”:
@@ -56,12 +67,14 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我希望能成为一系列文章中的第一篇，我打算写一些关于如何以尽可能无聊的方式构建/管理/部署等 Python 应用程序的内容。所以在我进一步探讨之前，我想要非常清楚地解释一下我所说的“无聊”是什么意思：我并不是指“可靠”、“无错误”或“没有事故”。虽然有些重叠，并且我将要推荐的一些事情可以帮助减少错误，但我还想要明确一点：会有错误。会有某些功能或者可能是整个服务挂掉的事故。对我来说，“无聊”意味着这些事故的*来源*。管理自己的代码以及难免偶尔会出现的错误和其他问题已经够困难了；你不想通过使用来构建、管理和部署它的工具和流程来增加错误或者其他令人意外的问题。所以当我说某件事“无聊”时，我的意思是它不太可能增加另一个导致在凌晨2点手机报警的错误或让人不快的惊喜；手机报警*当然*会在凌晨2点响起，但当它响起时，你应该能够相当有信心（如果这是一个合适的词来形容这种情况的话），那是由你自己的代码中的某些东西引起的，你可以诊断和修复。
 - en: 'And so I’m planning several posts exploring different aspects of making Python
     development boring (in this sense). But for this first installment, I’ll be talking
     about one of the internet’s favorite topics: managing dependencies.'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我计划撰写几篇文章，探讨不同方面使 Python 开发变得无聊（在这个意义上）。但是在这个系列的第一篇中，我将谈论互联网上最喜欢的话题之一：管理*依赖*。
 - en: If you’re just interested in the end result, the process I recommend is pretty
     simple and can be found in the section titled “putting it all together”. The rest
     of this post exists to explain, in as much detail as I can manage, all the things
@@ -69,33 +82,39 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你只对最终结果感兴趣，我推荐的流程非常简单，可以在“把所有东西放在一起”部分找到。本文的其余部分旨在尽可能详细地解释那些看似简单的建议背后的所有事情，以及我为什么做出那些具体的建议。
 - en: A quick introduction to Python packaging
   id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Python 包装的简要介绍
 - en: '[I’ve written about this before](/weblog/2020/jan/05/packaging/), but to make
     sure this is clear I want to do a quick refresher.'
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[我以前写过这方面的文章](/weblog/2020/jan/05/packaging/)，但为了确保清楚，我想做一个快速的复习。'
 - en: 'As I see it, there are three basic aspects to “packaging”, and one of the difficult
     things about “packaging” discussions is lack of clarity around which are being
     discussed. They are:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，“打包”有三个基本方面，关于“打包”讨论的一个困难之处是缺乏关于讨论的哪些方面的明确性。它们是：
 - en: Given some working code, define and produce from it a distributable artifact.
   id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 鉴于有一些可用的代码，从中定义并生成一个可分发的*构件*。
 - en: Given that someone has produced a distributable artifact, use it to cause the
     corresponding code to appear, in working form, somewhere else.
   id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 鉴于某人已经生成了一个可分发的构件，使用它来导致相应的代码以工作形式出现在其他地方。
 - en: Given the existence of potentially many separate projects or versions of projects
     with their own independent and potentially-conflicting sets of dependencies, make
     it possible to work on and run more than one at a time.
@@ -103,6 +122,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 鉴于可能存在许多独立的项目或项目版本，它们具有各自独立且可能冲突的依赖关系集，使得可以同时处理和运行多个项目。
 - en: 'Python’s packaging ecosystem has default tools for each of these. In order,
     they are: (1) setuptools, (2) pip, (3) virtual environments. These three tools
     are your foundation, and for truly “boring” Python development work, I would argue
@@ -110,6 +130,8 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 的打包生态系统为这些任务提供了默认工具。它们依次是：(1) setuptools，(2) pip，(3) 虚拟环境。这三个工具是你的基础，对于真正“无聊”的
+    Python 开发工作，我会主张你几乎完全只使用它们。
 - en: I know there are other tools out there, and more being developed. Most of the
     perceived change and churn in “Python packaging” is around tools that try to provide
     a single interface for all three of the aspects I’ve listed above. I don’t personally
@@ -236,6 +258,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将源树原样复制到你的容器中可以避免一些潜在的问题，主要是相关导入：初次构建包时人们常犯的一个常见错误是依赖于 — 通常是潜意识地！ — Python 中当前工作目录始终在导入路径上的事实。结果，他们最终构建的包只能在原始的本地开发环境中“工作”，只能依靠特定的工作目录，即使在原始的本地开发环境中也只是偶然发现的（[如果你好奇的话，解决这个问题的方法是迫使你的本地开发工作流依赖于你的包的可安装性](https://hynek.me/articles/testing-packaging/)）。
 - en: Ultimately, what you *want* is to take a known-good, working environment from
     a developer’s machine, and reproduce exactly that environment on your servers.
     That’s just what requirements files are for.
@@ -243,11 +266,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '最终，你*想要*的是从开发者的机器上获取一个已知为良好的工作环境，并确保在你的服务器上精确复制该环境。这正是需求文件的用法。  '
 - en: More requirements
   id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更多需求
 - en: As I mentioned above, I’m advocating a setup which will use multiple requirements
     files. This involves a bit of organization, so I recommend creating a top-level
     `requirements/` directory in your source-code repository and placing requirements
@@ -256,6 +281,7 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我上面提到的，我倡导使用多个需求文件的设置。这需要一些组织，所以我建议在你的源代码仓库中创建一个顶层的`requirements/`目录，并在其中放置需求文件，而不是将文件放在顶层，或将它们放在其他地方。
 - en: Now, why multiple files? Well, because there are often multiple types of dependencies
     and you often want to select only a particular subset to install. The most common
     such split is between general always-needed packages, and packages which are only
@@ -267,17 +293,20 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，需要多个文件？这是因为通常有多种依赖类型，你通常只想选择安装其中的特定子集。最常见的拆分是通常需要的常规包和仅在运行测试套件时才需要的包之间的拆分；生产容器没有必要安装所有仅限测试的依赖项，并且通常生产容器中放入的代码越少，出错的可能性就越小，因此我通常只在确实要运行测试套件时才安装那些依赖。
 - en: You can split this up further if you want — I’ve done finer-grained splits of
     dependencies before — but at the very least I think you should be keeping test-only
     dependencies separate from the rest.
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你愿意，你可以进一步拆分它 — 我以前做过更精细的依赖拆分 — 但至少我认为你应该把仅供测试的依赖与*其余*的内容分开。
 - en: Seeing the trees in the forest
   id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在树木中看到树林
 - en: 'Now we run into our first clear problem: what’s in a requirements file is not
     necessarily what will be installed. Or, to be specific: is not necessarily *all*
     of what will be installed. Suppose, for example, that you put `Django==4.0.4`
@@ -288,6 +317,9 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们遇到了第一个明显的问题：需求文件中的内容并不一定是将要安装的内容。或者更具体地说：并不一定是将要安装的*所有*内容。比如，假设你在你的需求文件中放入`Django==4.0.4`（我写下这篇文章时的最新版本），然后从它那里运行`pip
+    install -r`。你将得到 Django 4.0.4… 还有`asgiref`和`sqlparse`，以及根据你的平台和 Python 版本的不同可能还有`backports.zoneinfo`和`tzdata`，因为这些都是由
+    Django 声明的依赖。
 - en: 'So how do you see, and control, your entire dependency tree? Well, one option
     is to list out your direct dependencies, `pip install` them locally in a virtual
     environment, then run `pip freeze` to see the full list of what was installed,
@@ -300,6 +332,8 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么你如何看到和控制你整个的依赖树呢？一个方法是列出你的直接依赖，本地在虚拟环境中`pip install`它们，然后运行`pip freeze`以查看安装的所有内容，然后将任何间接的依赖添加到你的需求文件中。如果你愿意，你甚至可以编写脚本来实现这一点，而且事实上有人*已经*编写了脚本：[pip-tools
+    项目](https://pypi.org/project/pip-tools/)，它提供了一个`pip-compile`命令，它接受你直接关心的包列表，并输出一个包含整个树的需求文件，其中包含所有直接和间接依赖项，并固定到确切的版本。
 - en: If you really want to write your own script to do this, I won’t stop you, but
     I’ve used `pip-compile` at multiple jobs now and on my own personal projects and
     been happy enough with it that it’s the only non-standard Python packaging tool
@@ -307,11 +341,14 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你真的想要编写自己的脚本来做这个事情，我不会阻止你，但我在多个工作中使用过`pip-compile`，在自己的个人项目上也用过，并且对它比较满意，以至于它是我愿意推荐给别人使用的唯一非标准
+    Python 打包工具。
 - en: Hashing it out
   id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 推敲它
 - en: Tracking the full dependency tree, and having the ability (thanks to `pip-tools`)
     to see both the full tree and just the direct dependencies, gets most of the way
     to a reproducible environment. But not *all* of the way, because this process
@@ -320,6 +357,8 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 跟踪完整的依赖树，以及有能力（多亏了`pip-tools`）查看完整的树和直接依赖项，基本上可以实现可重现的环境。但不是*完全*，因为这个过程隐含地依赖于
+    Python Package Index 的完整性，每次都会给你提供同样的包，而不会悄悄地交换成其他包，甚至是恶意的包。
 - en: 'Now, I should be clear here: every single breathless OMG SUPPLY CHAIN ATTACK
     ON PYPI article I’ve ever seen has just been sensationalized typosquatting. Things
     like registering a package named “Dajngo” and hoping to catch people who mistyped
@@ -329,6 +368,8 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我在这里应该说清楚：我曾经看过的每篇风格激进的OMG供应链攻击PYPI的文章都只是夸大其词的字母误差。诸如注册名为“Dajngo”的软件包，希望能够捕捉到拼写错误为“Django”的人，或者类似的事情。我*从未*见过任何一个可以提出关于软件包维护者账户或PyPI本身的妥协的可宣称的文章。
+    PyPI一直是非常可靠和值得信赖的。
 - en: 'But even the folks who run PyPI have put thought — see [PEP 458](https://peps.python.org/pep-0458/)
     and [PEP 480](https://peps.python.org/pep-0480/) for two examples — into some
     of the scarier scenarios and how PyPI can be made more resilient to them. And
@@ -337,6 +378,8 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 但即使是运行PyPI的人们也已经考虑过一些更可怕的情况——参见[PEP 458](https://peps.python.org/pep-0458/)和[PEP
+    480](https://peps.python.org/pep-0480/)的两个例子——以及PyPI如何能够更加抗攻击。您也应该考虑这些情况：PyPI一直是非常值得信赖的，但是“信任，但*要验证”的原因是有道理的。
 - en: It’s worth noting here that signed packages, as many operating-system vendors
     use, are not really a solution for PyPI. OS vendors tend to have a small set of
     specially-trusted package maintainers, so there’s a small set of signing keys
@@ -348,6 +391,7 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里值得注意的是，像许多操作系统供应商使用的签名软件包并不是PyPI的真正解决方案。操作系统供应商倾向于有一小部分特别信任的软件包维护者，因此需要跟踪一小部分签名密钥。像PyPI这样的存储库对于任意成员发布软件包是开放的，这与只有一小部分受信任的密钥是不兼容的。你*可以*，而且一些软件包作者*确实*会对PyPI上传进行PGP签名，但标准Python软件包工具并不处理这些签名。
 - en: 'But in the absence of a small set of trusted package signers, the next best
     thing is just reproducibility: ensuring that what you get the next time you `pip
     install` will be the same as what you got *this* time (when, presumably, you verified
@@ -355,12 +399,14 @@
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是在缺乏一小部分可信赖的软件包签名者的情况下，下一个最好的选择就是可重现性：确保下次`pip install`得到的与*此*次相同（当时，你可能已经验证了它是否符合预期），或者如果不是，安装将失败。
 - en: 'For this you can use pip’s [hash-checking mode](https://pip.pypa.io/en/stable/cli/pip_install/#hash-checking-mode),
     where in addition to the package name and version, you also list the expected
     hash or hashes of the package. When this is provided, pip’s behavior changes as follows:'
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 对此，您可以使用pip的[hash-checking模式](https://pip.pypa.io/en/stable/cli/pip_install/#hash-checking-mode)，除了软件包名称和版本外，还要列出软件包的预期哈希或哈希值。当提供此信息时，pip的行为将更改如下：
 - en: '*All* packages to be installed must specify hashes, including all indirect
     dependencies. If any package does not have a hash specified, the installation
     will fail.'
@@ -368,12 +414,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*所有*要安装的软件包都必须指定哈希值，包括所有间接依赖项。如果任何软件包未指定哈希值，则安装将失败。'
 - en: If any package’s actual hash does not match its expected hash, the entire installation
     attempt fails.
   id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果任何软件包的实际哈希值与其预期哈希值不匹配，则整个安装尝试将失败。
 - en: This is as close as you can get to fully-reproducible environments using the
     standard Python packaging tool chain. The only room for variation here is if your
     dependencies include packages with compiled extensions, and you install onto multiple
@@ -384,6 +432,7 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是您可以使用标准Python打包工具链获得的最接近完全可重现环境。这里唯一的变化空间是，如果您的依赖项包括带有编译扩展的软件包，并且您在多个不同的平台上安装；不同平台的编译软件包自然会有不同的哈希值。这可以通过为此类软件包指定*多个*哈希值来解决，为您期望安装的每个平台特定变体列出一个哈希值。
 - en: To manually obtain the hashes for your dependency tree you can run `pip download`
     to download all the packages locally, and then `pip hash` on each one to obtain
     the hash. For platform-specific packages you can manually download each platform
@@ -391,6 +440,8 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要手动获取您依赖项树的哈希值，您可以运行`pip download`将所有软件包下载到本地，然后在每个软件包上运行`pip hash`以获取哈希值。对于特定于平台的软件包，您可以手动下载每个平台变体并对其进行`pip
+    hash`。
 - en: Or, once again, you can script this, and once again the pip-tools project *has*
     scripted it; the `--generate-hashes` argument to `pip-compile` will automatically
     calculate and insert all necessary package hashes (including all platform variants)
@@ -398,17 +449,20 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，再次，您可以编写脚本来执行此操作，并且pip-tools项目*已经*对其进行了脚本化；`pip-compile`的`--generate-hashes`参数将自动计算并插入所有必要的软件包哈希值（包括所有平台变体）到编译后的要求文件中。
 - en: Invocations
   id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 调用方式
 - en: 'Before putting all this together, it’s worth covering one more detail: how
     to invoke the tools. This may seem a bit silly, since they all provide command-line
     entry points: just run `pip install`, right?'
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将所有这些内容组合在一起之前，值得注意的是如何调用这些工具的一个细节：这可能看起来有点愚蠢，因为它们都提供了命令行入口点：只需运行`pip install`，对吗？
 - en: 'But there’s a potential issue here: in a moment I’m going to recommend creating
     a Python virtual environment, which opens up the possibility of multiple Python
     environments coexisting on the same machine. This is certainly a useful feature,
@@ -417,6 +471,7 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是这里存在一个潜在问题：我即将建议创建一个Python虚拟环境，这打开了在同一台机器上存在多个Python环境的可能性。这当然是一个有用的功能，但它带来了一个新的关注点，那就是如何确保你使用和运行的是你期望的环境。
 - en: One common way to run into trouble here is having one Python environment’s package
     directory be first on your `$PYTHONPATH` while, unbeknownst to you, a different
     one’s `bin/` directory is first on your general `$PATH`. If you just run `pip
@@ -518,6 +573,9 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 您应该至少有几个包含您的依赖项的要求文件；我倾向于将它们命名为 `app.txt` 和 `tests.txt` 来区分一般应用程序依赖项和仅用于测试的依赖项，但您可以根据自己的喜好来命名它们。如果您采纳了我的建议，让
+    pip-tools 提供“编译”直接依赖项列表到所有依赖项的完整固定和散列树的实现，您将需要为此进行一步。我工作的大多数项目都使用 `Makefile` 来驱动常见的开发任务，因此对我来说，调用
+    pip-tools 的 `make requirements` 目标非常标准，通常我在容器内运行类似这样的东西：
 - en: '[PRE1]'
   id: totrans-66
   prefs: []
@@ -527,6 +585,7 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且容器可以简单地拉取编译后的要求文件并安装它们：
 - en: '[PRE2]'
   id: totrans-68
   prefs: []
@@ -536,6 +595,7 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做将为您带来：
 - en: As reproducible and consistent an environment as possible, all the way from
     local development through to production, especially if you do local dev in containers
     and build from the same `Dockerfile` or other manifest both locally and for production.
@@ -543,21 +603,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尽可能保持可重现和一致的环境，从本地开发到生产，特别是如果您在容器中进行本地开发并从同一个 `Dockerfile` 或其他清单构建本地和生产环境。
 - en: 'Instant warning if any of your dependencies suddenly changes: if a package
     somehow gets surreptitiously replaced, the install step will fail on a hash mismatch.'
   id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果您的任何依赖项突然更改，立即发出警告：如果某个包以某种方式被替换，安装步骤将在哈希不匹配时失败。
 - en: Minimal worries about conflicts with a “system Python” or its packages.
   id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于与“系统 Python”或其包的冲突，几乎没有什么担心。
 - en: '**Packages can run code during installation**'
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '**包可以在安装期间运行代码**'
 - en: 'Python packages come in two forms: “source” or “sdist” packages, which typically
     have the file extension `.tar.gz`, and “wheel” packages, which have the file extension
     `.whl`. A source package historically includes a `setup.py` script which specifies
@@ -571,6 +635,9 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 包有两种形式：“源”或“sdist”包，通常文件扩展名为 `.tar.gz`，以及“wheel”包，文件扩展名为 `.whl`。源包历史上包含一个
+    `setup.py` 脚本，该脚本指定了如何构建和安装它（尽管这正在逐渐由静态的 `pyproject.toml` 配置文件替代），并且该脚本将在安装期间运行。如果您意外安装了一个恶意软件包，它可以在安装期间的
+    `setup.py` 脚本中运行任意代码，这将非常糟糕。另一方面，wheel 包是简单的归档文件，其安装过程包括提取文件并将其放在正确的位置；没有运行代码的安装时钩子。
 - en: 'You can tell `pip` to use *only* wheel packages, by passing [the `--only-binary`
     flag](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-only-binary) and
     either a list of packages or the special value `:all:`. For example: `python -m
@@ -578,6 +645,9 @@
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '你可以通过传递[ `--only-binary` 标志](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-only-binary)和要么一系列包要么特殊值
+    `:all:` 来告诉 `pip` 仅使用 wheel 包。例如：`python -m pip install --only-binary :all: -r
+    requirements/app.txt`。'
 - en: I strongly recommend trying this option first, and sticking with it if it works.
     Unfortunately, not all packages provide `.whl` format, so you may not be able
     to force it for your entire install. If you run into a package that doesn’t provide
@@ -585,11 +655,14 @@
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我强烈建议首先尝试这个选项，如果有效就坚持使用。不幸的是，并非所有包都提供 `.whl` 格式，因此您可能无法强制将其用于整个安装。如果遇到一个不提供
+    wheel 的包，您仍然可以要求所有其他包都使用 wheels。
 - en: Staying up-to-date
   id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 保持更新
 - en: The only thing still missing is updates as new versions of your dependencies
     are released. For security updates this is pretty crucial, but it’s also useful
     to have even for non-security updates; if you’re not regularly looking for and
@@ -599,6 +672,7 @@
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一仍然缺少的是在释放新版本的依赖项时更新。对于安全更新来说，这非常关键，但即使对于非安全更新也是有用的；如果您不定期寻找并应用更新的依赖项版本，那么当您达到像主要库/框架版本达到上游支持周期结束这样的里程碑时，您可能会遇到痛苦的整体升级。
 - en: This is where things get a little bit tricky, because the usual way you’d automatically
     pick up updates is by specifying a range of versions you’re willing to accept
     for direct dependencies, and periodically rebuilding your full tree to pick up
@@ -608,6 +682,8 @@
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是事情变得有点棘手的地方，因为您通常会自动选择更新的方式是指定您愿意接受的直接依赖项版本范围，并定期重新构建完整树以获取任何更新。例如，如果您想使用
+    Django 3.2 LTS 发行版，您可能会指定 `Django>=3.2.0,<4.0`。然后您将始终获得最新的 3.2 系列 Django 发布。
 - en: And you can do this if you want; you’ll likely want to combine it with pip-tools
     or your own scripting to perform the equivalent “compilation” of the full pinned
     and hashed dependency tree, and then you’ll automatically pull updated versions
@@ -615,6 +691,7 @@
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您愿意，您可以这样做；您可能希望将其与 pip-tools 或自己的脚本结合使用，以执行完整固定和散列依赖树的等效“编译”，然后每次重新编译依赖项时都会自动拉取更新的版本。
 - en: 'The only potential downside is the same as the upside: you get updated every
     time you recompile the dependencies. Which is great when it works, and not so
     great when it doesn’t. Personally, I lean toward the super-boring approach, which
