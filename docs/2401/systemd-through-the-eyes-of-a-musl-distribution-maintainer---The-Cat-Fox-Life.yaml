@@ -1,86 +1,125 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:33:33'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 14:33:33
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: systemd through the eyes of a musl distribution maintainer – The Cat Fox Life
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过一个 musl 发行版维护者的视角看 systemd——The Cat Fox Life
 - en: 来源：[https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/](https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/](https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/)
 - en: Welcome back to FOSS Fridays! This week, I’m covering a real pickle.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 欢迎回到 FOSS Fridays！本周，我将涵盖一个真正棘手的问题。
 - en: I’m acutely aware of the flames this blog post will inspire, but I feel it is
     important to write nevertheless. I volunteer my time towards helping to maintain
     a Linux distribution based on the musl libc, and I am writing an article about
     systemd. This is my take and my take alone. It is not the opinion of the project
     – or, as far as I am aware, any of the other volunteers working on it.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我非常清楚这篇博文会引发怎样的争议，但我觉得写下它是很重要的。我自愿投入时间来帮助维护一个基于 musl libc 的 Linux 发行版，并且我正在写一篇关于
+    systemd 的文章。这是我的看法，也是我一个人的看法。这并不代表该项目的意见——或者，据我所知，任何其他志愿者的意见。
 - en: systemd, as a service manager, is not actually a bad piece of software by itself.
     The fact it can act as both a service manager and an inetd(8) replacement is really
     cool. The unit file format is very nice and expressive. Defining mechanism and
     leaving policy to the administrator is a good design.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为服务管理器的 systemd 本身并不是一个坏软件。它既可以作为服务管理器，也可以作为 inetd(8) 的替代品，这实在是很酷。单元文件格式非常好，表达力强。定义机制，将策略留给管理员，是一个很好的设计。
 - en: Of course, nothing exists in a vacuum. I don’t like the encouragement to link
     daemons to libsystemd for better integration – all of the *useful* integrations
     can be done with more portable measures. And I really don’t like the fact they
     consider glibc to be “the Linux API” when musl, Bionic, and other libcs exist.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，没有什么是孤立存在的。我不喜欢鼓励将守护进程链接到 libsystemd 以获得更好的集成——所有*有用的*集成都可以通过更可移植的措施完成。而且我真的不喜欢他们认为
+    glibc 是“Linux API”，而 musl、Bionic 和其他 libc 却存在。
 - en: 'I’d like to dive into detail on the good and the bad of systemd, as seen through
     my eyes as all of: end user, administrator, and developer.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想详细讨论 systemd 的优点和缺点，从我的角度来看，我是所有角色的：终端用户、管理员和开发人员。
 - en: 'Service management: Good'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 服务管理：良好
 - en: Unit files are easy to write by hand, and also easy to generate in an automated
     fashion. You can write a basic service in a few lines, and grow into using the
     other features as needs arise – or you can write a very detailed file, dozens
     of lines long, making it exact and precise.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 单元文件可以手工编写，也可以轻松生成自动化。你可以用几行代码编写一个基本的服务，随着需求的增加，逐渐使用其他功能——或者你可以编写一个非常详细的文件，几十行长，使其准确而精确。
 - en: Parallel service starting and socket activation are first-class citizens as
     well, which is something very important to making boot-up faster and more reliable.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 并行服务启动和套接字激活也是一流的公民，这对于加快启动速度和提高可靠性非常重要。
 - en: The best part about it is the concept that this configuration exactly describes
     the way the system should appear and exist while it is running. This is similar
     to how network device standards work – see NETCONF and its stepchild RESTCONF.
     You define how you want the device to look when it is running, apply the configuration,
     and eventually the device becomes consistent to that configuration.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 最好的部分是，这个配置确切地描述了系统在运行时的外观和存在方式。这类似于网络设备标准的工作方式——请参阅 NETCONF 及其衍生物 RESTCONF。您定义了设备在运行时应该如何看起来，应用配置，最终设备将一致到该配置。
 - en: This is a far cry from OpenRC or SysV init scripts, which focus almost exclusively
     on spawning processes. It’s a powerful paradigm shift, and one I wholeheartedly
     welcome and endorse.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与 OpenRC 或 SysV init 脚本大相径庭，后者几乎完全专注于生成进程。这是一个强大的范式转变，我全力支持和认可。
 - en: Additionally, the use of cgroups per managed unit means that process tracking
     is always available, without messy pid files or requiring daemons to never fork.
     This is another very useful feature that not only helps with overall system control,
     but also helps debugging and even security auditing. When cgroups are used in
     this way, you always know which unit spawned any process on a fully-managed system.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，每个受管单元使用 cgroups 意味着进程跟踪始终可用，无需混乱的 pid 文件或要求守护进程不要分叉。这是另一个非常有用的功能，不仅有助于整体系统控制，还有助于调试甚至安全审计。当
+    cgroups 以这种方式使用时，您始终知道完全受管系统上的任何进程是由哪个单元生成的。
 - en: 'Lack of competition: Not good'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缺乏竞争：不太好
 - en: There is no reason that another service manager couldn’t exist with all of these
     features. In fact, I hope that there will be competition to systemd that is taken
     seriously by the community. Having a single package being all things for all use
@@ -88,19 +127,27 @@
     every single user – this may seem obvious, but that means it is more difficult
     for it to evolve. Evolution of the system may, and in some cases already has,
     break a wide number of use cases and machines.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有理由另一个服务管理器不可能拥有所有这些功能。事实上，我希望会有一个受到社区重视的与 systemd 竞争的服务管理器存在。一个单一软件包包含所有用例的情况会带来重大问题。systemd
+    的变化必然会影响到每一个用户 - 这似乎是显而易见的，但这意味着它更难以发展。系统的演进可能会，而且在某些情况下已经，破坏大量的用例和设备。
 - en: Additionally, without competition there is no external pressure nudging it towards
     ideas and concepts that perhaps the maintainers aren’t sure about. GCC and Clang
     learn from each other’s successes and failures and use that knowledge to make
     each other better. There is no package doing that with systemd right now. Innovation
     is stifled where choice is removed.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，没有竞争就没有外部压力推动它朝着也许维护者们并不确定的想法和概念发展。GCC 和 Clang 从彼此的成功和失败中学习，并利用这些知识使彼此变得更好。现在没有任何软件包在这方面与
+    systemd 一起做这样的事情。当选择被移除时，创新就会受到压制。
 - en: 'Misnaming **glib**c as “the Linux API”: Bad'
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将 **glib**c 错称为“Linux API”：糟糕
 - en: I am also unhappy about systemd’s [lack of musl libc support](https://github.com/systemd/systemd/issues/10130).
     That is probably a blessing for me, because it’s an easy reason to avoid trying
     to ship it in Adélie. While I have just spent five paragraphs noting how great
@@ -108,12 +155,18 @@
     is where most articles go off the deep end, but I want to provide some constructive
     criticism on some of the issues I’ve personally faced and felt while using systemd-based
     machines.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也对 systemd [缺乏 musl libc 支持](https://github.com/systemd/systemd/issues/10130)感到不满。这对我来说可能是个福音，因为这是一个很容易避免在
+    Adélie 中尝试发布它的理由。虽然我刚刚花了五段时间指出 systemd 在服务管理方面有多么出色，但在很多其他方面它真的很差劲。这是大多数文章离题的地方，但我想就我个人在使用基于
+    systemd 的机器时遇到和感受到的一些问题提供一些建设性的批评。
 - en: 'The Journal: Very bad'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 日志记录系统：非常糟糕
 - en: journald is my least-favourite feature of systemd, bar none. While I understand
     the reasons why it was designed the way it was, I do not appreciate that it is
     the only way to log on a systemd system. Sure, you can ForwardToSyslog and set
@@ -121,8 +174,12 @@
     exist. However, that is not only excess processor power and memory usage for negative
     gain, it’s also an additional attack surface. It would be great if there were
     a “stub” journald that was strictly a forwarder with no other code.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: journald 是我对 systemd 最不喜欢的功能，毫无疑问。虽然我理解它被设计的原因，但我不喜欢它是 systemd 系统中唯一的日志记录方式。当然，您可以将其
+    ForwardToSyslog 并将日志记录设置为仅内存，并假装 journald 不存在。但是，这不仅是多余的处理器功耗和内存使用量以及负面收益，还是额外的攻击面。如果有一个严格的仅用于转发的“存根”
+    journald，那就太好了，而没有其他代码。
 - en: I am also unhappy with how the journal tries to “eat” core files. While the
     Linux default setting of “putting a file named ‘core’ in $CWD” is absolutely unusable
     for development *and* production, the weird mixture of FS and binary journal makes
@@ -134,18 +191,28 @@
     all the information from the journal, and have a single journal entry that points
     to *that* file if the administrator is interested in more information about the
     crash?
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对日志记录系统试图“吞噬”核心文件的方式也感到不满。虽然 Linux 的默认设置“在 $CWD 中放置一个名为‘core’的文件”绝对不能用于开发 *和*
+    生产，但 FS 和二进制日志的奇怪混合使事情变得不必要复杂。[文档](https://www.man7.org/linux/man-pages/man8/systemd-coredump.8.html)甚至明确指出，核心文件可能存在而没有相应的日志条目，并且日志条目可能指向不再存在的核心文件。然而，他们使用
+    xattrs 在核心文件中放置“一些元数据”。为什么不只是有一个旁路文件（也许是 [core 文件名].info 或 .json 或 .whatever），其中包含来自日志的所有信息，并且如果管理员对崩溃更多信息感兴趣，则有一个单独的日志条目指向
+    *该* 文件？
 - en: 'resolved: A solution looking for a problem'
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: resolved：解决方案在寻找问题
 - en: resolved might a decent idea on its own, but there are already other packages
     that can provide a local caching resolver without the many problems of resolved.
     Moreover, the very idea of a DNS resolver being part of “the system layer” seems
     ill-advised to me.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: resolved 看起来可能是一个不错的主意，但已经有其他软件包可以提供本地缓存解析器，而不具备 resolved 的诸多问题。此外，“系统层”中包含
+    DNS 解析器的想法似乎对我来说不明智。
 - en: DNSSEC support is [experimental](https://github.com/systemd/systemd/pull/28386#issuecomment-1783825023)
     and [not handled correctly](https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/2038897),
     and [they readily admit that](https://github.com/systemd/systemd/issues/25676#issuecomment-1634810897).
@@ -153,26 +220,37 @@
     valuable to have on endpoints. I don’t really think resolved can be taken seriously
     without it. It’s beyond me how no one has contributed this feature to such a widely-used
     package.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: DNSSEC 支持是 [实验性的](https://github.com/systemd/systemd/pull/28386#issuecomment-1783825023)，并且[处理不正确](https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/2038897)，[他们也承认了](https://github.com/systemd/systemd/issues/25676#issuecomment-1634810897)。了解自己的局限是可以的，但
+    DNSSEC 对终端点非常重要。我真的不认为 resolved 没有这个功能是可以认真对待的。我无法理解为什么没有人为如此广泛使用的软件包贡献这个功能。
 - en: There are odd issues with local domain search. This is made more complicated
     on home networks where a lot of what it does is overkill. On enterprise networks,
     it’s likely a bad fit anyway, which makes me question why it supports everything
     it does.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 本地域搜索存在奇怪的问题。这在家庭网络中更加复杂，因为它的大部分功能都是多余的。在企业网络中，它很可能不合适，这让我质疑为什么它支持它支持的所有功能。
 - en: Lastly, and relatedly, in my opinion resolved tries to shoehorn too many odd
     features and protocols without having the basics done first. mDNS is better taken
     care of by a dedicated package like Avahi. LLMNR support has been [deprecated
     by its creator Microsoft](https://techcommunity.microsoft.com/t5/networking-blog/aligning-on-mdns-ramping-down-netbios-name-resolution-and-llmnr/ba-p/3290816)
     in favour of mDNS for over a year. As LLMNR has always been [a security risk](https://www.blackhillsinfosec.com/how-to-disable-llmnr-why-you-want-to/),
     I’m not sure why the support was added in the first place.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，与此相关的是，在我看来 resolved 试图在没有先完成基础工作的情况下塞入太多奇怪的功能和协议。mDNS 最好由专用软件包如 Avahi 处理。LLMNR
+    支持已经被其创建者微软[弃用](https://techcommunity.microsoft.com/t5/networking-blog/aligning-on-mdns-ramping-down-netbios-name-resolution-and-llmnr/ba-p/3290816)一年多了，以支持
+    mDNS。由于 LLMNR 一直以来都是[安全风险](https://www.blackhillsinfosec.com/how-to-disable-llmnr-why-you-want-to/)，我不确定为什么一开始就添加了支持。
 - en: '**nspawn**: Niche tool for niche uses'
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**nspawn**：用于特定用途的小众工具。'
 - en: Any discussion including resolved would be remiss without mentioning the main
     reason it exists, and that is nspawn. It’s an interesting take on being “in between”
     chroot and a full container like Docker. It has niche uses, and I don’t have any
@@ -181,59 +259,84 @@
     shared state between host and container, so nspawn wouldn’t make sense there.
     And when I grab for Podman, I want full isolation, which I feel more comfortable
     handing to a package that has more tooling around it.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何讨论都要提到 resolved 的主要存在原因，那就是 nspawn。这是对于“介于”chroot 和像 Docker 这样的完整容器的一种有趣尝试。它有小众用途，我对此没有什么实质性的抱怨，但我从未在我的任何工作中发现过它有用，所以我对它不是很了解。通常，当我使用
+    chroot 时，我希望主机和容器之间共享状态，所以 nspawn 在那里没有意义。而当我使用 Podman 时，我希望完全隔离，这让我更愿意使用有更多工具支持的软件包。
 - en: 'Ancillary tools: Why in the system layer?'
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 附属工具：为什么要放在系统层？
 - en: networkd is immature, doesn’t have a lot of support for advanced use cases,
     and has no GUI for end users. I don’t know why they want to stuff networking into
     the “system layer” when NetworkManager exists and keeps all the networking goop
     *out* of the system layer.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: networkd 尚不成熟，对于高级用例支持不足，并且没有面向最终用户的图形界面。我不明白为什么他们想要将网络堆叠进“系统层”，当 NetworkManager
+    存在并将所有网络繁琐的事务 *排除在* 系统层之外。
 - en: timedated seems like a cute way to allow users to change timezones via a PolicyKit
     action but otherwise seems like something that would be better taken care of by
     a “real” NTP client like Chrony or NTP. And again, I don’t know why it should
     live in the system layer.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: timedated 看起来像是一种可爱的方式，允许用户通过 PolicyKit 操作更改时区，但除此之外，它似乎更适合由“真正的”NTP 客户端（如 Chrony
+    或 NTP）处理。而且，我不明白为什么它应该存在于系统层。
 - en: systemd-boot only supports EFI, which makes it non-portable and inflexible.
     You won’t find EFI on Power or Z, and I have plenty of ARM boards that don’t support
     mainline U-Boot as well. This really isn’t a problem with systemd-boot, as it’s
     totally understandable to only want to deal with a single platform’s idiosyncrasies.
     What is concerning is the fact that distros like Fedora are pivoting away from
     GRUB in favour of it, which means they are losing even more portability.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: systemd-boot仅支持EFI，这使它不具备可移植性和灵活性。你在Power或Z上找不到EFI，而且我有很多ARM板也不支持主线U-Boot。这并不是systemd-boot的问题，因为只想处理单个平台的特殊性是完全可以理解的。令人担忧的是，像Fedora这样的发行版正在摆脱GRUB，转而支持systemd-boot，这意味着它们失去了更多的可移植性。
 - en: 'In conclusion: A summary'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结：一份摘要
 - en: 'What I really want to make clear with this article is:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我真正想通过这篇文章表明的是：
 - en: I don’t blindly hate systemd, and in fact I really admire many of its qualities
     as an actual service manager. What I dislike is its attempt to take over what
     they term the “system layer”, when there are no alternatives available.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我并不盲目地憎恨 systemd，事实上，我真的很钦佩它作为一个实际的服务管理器的许多特质。我不喜欢的是它试图接管他们所谓的“系统层”，当没有其他选择可用时。
 - en: The problems I have with systemd are tangible and not just hand-wavy “Unix good,
     sysd bad”.
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我对systemd的问题是实际的，而不仅仅是模糊的“Unix好，sysd坏”。
 - en: If there was an effort to have systemd separate from all of the other tentacles
     it has grown, I would genuinely push to have it be available as a service manager
     in Adélie. I feel that as a service manager – and only as a service manager –
     it would provide a fantastic user experience that cannot be rivaled by other existing
     solutions.
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果有人努力让systemd与其生长出的所有其他触手分离，我真的会推动将其作为Adélie的服务管理器可用。我认为作为一个服务管理器——只是作为一个服务管理器——它将提供一种无法与其他现有解决方案相媲美的出色用户体验。
 - en: Thank you for reading. Have a great day, and please remember that behind every
     keyboard is a real person with real feelings.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 谢谢您的阅读。祝您拥有美好的一天，请记住，在每个键盘背后都是一个有着真实感受的真实人。

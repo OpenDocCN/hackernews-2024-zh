@@ -1,156 +1,243 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:53:34'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:53:34'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'systemd: enable indefinite service restarts - Michael Stapelberg'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: systemd：启用无限服务重启 - Michael Stapelberg
 - en: 来源：[https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/](https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/](https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/)
 - en: When a service fails to start up enough times in a row, systemd gives up on
     it.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个服务连续启动失败了足够多次时，systemd 就放弃了它。
 - en: On servers, this isn’t what I want — in general it’s helpful for automated recovery
     if daemons are restarted indefinitely. As long as you don’t have circular dependencies
     between services, all your services will eventually come up after transient failures,
     without having to specify dependencies.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在服务器上，这不是我想要的 —— 一般来说，如果守护进程无限地重新启动，对于自动恢复是有帮助的。只要你的服务之间没有循环依赖，所有的服务在瞬时故障后最终都会启动起来，而不需要指定依赖关系。
 - en: 'This is particularly useful because specifying dependencies on the systemd
     level introduces footguns: when interactively stopping individual services, systemd
     also stops the dependents. And then you need to remember to restart the dependent
     services later, which is easy to forget.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这特别有用，因为在 systemd 级别上指定依赖关系会引入一些问题：当交互式停止单个服务时，systemd 也会停止依赖的服务。然后你需要记得稍后重新启动依赖的服务，这很容易被忘记。
 - en: Enabling indefinite restarts for a service
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启用服务的无限重新启动
 - en: 'To make systemd restart a service indefinitely, I first like to create a drop-in
     config file like so:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使 systemd 无限重新启动一个服务，我首先喜欢创建一个如下的 drop-in 配置文件：
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Then, I can enable the restart behavior for individual services like `prometheus-node-exporter`,
     without having to modify their `.service` files (which needs manual effort when
     updating):'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我可以为单个服务（如 `prometheus-node-exporter`）启用重新启动行为，而无需修改它们的 `.service` 文件（在更新时需要手动操作）：
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Changing the defaults for all services
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 改变所有服务的默认设置
 - en: 'If most of your services set `Restart=always` or `Restart=on-failure`, you
     can change the system-wide defaults for `RestartSec` and `StartLimitIntervalSec`
     like so:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的大部分服务设置了 `Restart=always` 或 `Restart=on-failure`，你可以像这样更改系统范围内的默认值：
 - en: '[PRE2]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: What do the default settings do?
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 默认设置是做什么的？
 - en: So why do we need to change these settings to begin with?
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么我们为什么需要改变这些设置呢？
 - en: 'The default systemd settings (as of systemd 255) are:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认的 systemd 设置（截至 systemd 255）是：
 - en: '[PRE3]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This means that services which specify `Restart=always` are restarted 100ms
     after they crash, and if the service crashes more than 5 times in 10 seconds,
     systemd does not attempt to restart the service anymore.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着，指定了 `Restart=always` 的服务会在崩溃后的 100ms 后重新启动，如果服务在 10 秒内崩溃超过 5 次，systemd
+    将不再尝试重新启动该服务。
 - en: 'It’s easy to see that for a service which takes, say, 100ms to crash, for example
     because it can’t bind on its listening IP address, this means:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 很容易看出，对于一个服务，比如说，需要花费 100ms 来崩溃，例如，因为它无法绑定到它的监听 IP 地址，这意味着：
 - en: '| time | event |'
+  id: totrans-23
   prefs: []
   type: TYPE_TB
+  zh: '| 时间 | 事件 |'
 - en: '| --- | --- |'
+  id: totrans-24
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| T+0 | first start |'
+  id: totrans-25
   prefs: []
   type: TYPE_TB
+  zh: '| T+0 | 第一次启动 |'
 - en: '| T+100ms | first crash |'
+  id: totrans-26
   prefs: []
   type: TYPE_TB
+  zh: '| T+100ms | 第一次崩溃 |'
 - en: '| T+200ms | second start |'
+  id: totrans-27
   prefs: []
   type: TYPE_TB
+  zh: '| T+200ms | 第二次启动 |'
 - en: '| T+300ms | second crash |'
+  id: totrans-28
   prefs: []
   type: TYPE_TB
+  zh: '| T+300ms | 第二次崩溃 |'
 - en: '| T+400ms | third start |'
+  id: totrans-29
   prefs: []
   type: TYPE_TB
+  zh: '| T+400ms | 第三次启动 |'
 - en: '| T+500ms | third crash |'
+  id: totrans-30
   prefs: []
   type: TYPE_TB
+  zh: '| T+500ms | 第三次崩溃 |'
 - en: '| T+600ms | fourth start |'
+  id: totrans-31
   prefs: []
   type: TYPE_TB
+  zh: '| T+600ms | 第四次启动 |'
 - en: '| T+700ms | fourth crash |'
+  id: totrans-32
   prefs: []
   type: TYPE_TB
+  zh: '| T+700ms | 第四次崩溃 |'
 - en: '| T+800ms | fifth start |'
+  id: totrans-33
   prefs: []
   type: TYPE_TB
+  zh: '| T+800ms | 第五次启动 |'
 - en: '| T+900ms | fifth crash within 10s |'
+  id: totrans-34
   prefs: []
   type: TYPE_TB
+  zh: '| T+900ms | 10 秒内的第五次崩溃 |'
 - en: '| T+1s | systemd gives up |'
+  id: totrans-35
   prefs: []
   type: TYPE_TB
+  zh: '| T+1s | systemd 放弃 |'
 - en: Why does systemd give up by default?
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: systemd 为什么默认放弃？
 - en: I’m not sure. If I had to speculate, I would guess the developers wanted to
     prevent laptops running out of battery too quickly because one CPU core is permanently
     busy just restarting some service that’s crashing in a tight loop.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不确定。如果我必须猜测，我会猜测开发人员想要防止笔记本电脑因为一个 CPU 核心永久忙于重新启动一些在紧密循环中崩溃的服务而过快地耗尽电池。
 - en: 'That same goal could be achieved with a more relaxed `DefaultRestartSec=` value,
     though: With `DefaultRestartSec=5s`, for example, we would sufficiently space
     out these crashes over time.'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用更宽松的 `DefaultRestartSec=` 值也可以达到同样的目的：例如，使用 `DefaultRestartSec=5s`，我们可以足够地将这些崩溃在时间上分开。
 - en: There is [some recent discussion upstream](https://github.com/systemd/systemd/issues/30804)
     regarding changing the default. Let’s see where the discussion goes.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些[最近的讨论](https://github.com/systemd/systemd/issues/30804)关于改变默认值。让我们看看讨论的结果。
 - en: I run a blog since 2005, spreading knowledge and experience for almost 20 years!
     :)
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 我从 2005 年开始经营博客，传播知识和经验已经将近 20 年啦！ :)
 - en: If you want to support my work, you can [buy me a coffee](https://www.buymeacoffee.com/stapelberg).
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想支持我的工作，您可以[给我买杯咖啡](https://www.buymeacoffee.com/stapelberg)。
 - en: Thank you for your support! ❤️
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢您的支持！ ❤️
