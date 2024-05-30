@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:25:52'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: A Retrospective on Requests - cat /dev/brain
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests](https://blog.ian.stapletoncordas.co/2024/02/a-retrospective-on-requests)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -26,9 +32,11 @@
     realized that most people only know that Requests does the right things for them
     for TLS and some other HTTP behaviour, but I doubt anyone understands just how
     bad the project is internally.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: API Design
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -36,11 +44,14 @@
     `python-requests` is (mostly) intuitive and lends itself to rapid development,
     prototyping, and is very nice when working in a REPL. If you''re unfamiliar, here
     are some examples:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The one problem here is how often people *stop* at the functions defined at
     the root of the module. The way these functions work is by each instantiating
     a new `requests.Session`. The `Session` object is so often forgotten and ignored
@@ -50,9 +61,11 @@
     there's less time spent setting up a connection) it provides a way to configure
     many of the other aspects of the request that you otherwise need to pass as function
     parameters, and many other ergonomic benefits.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: What's Wrong with the API
+  id: totrans-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -62,26 +75,36 @@
     JSON data; but before that many people have relied on other data serialization
     formats. The next simplest looking one is `application/x-www-form-urlencoded`.
     An example of how to do that with `python-requests` is:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'After that, because `python-requests` heavily depends on `urllib3`, we can
     easily support `multipart/form-data`. That can be done in a few ways:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If you''re unavailable, these will look like:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This is primarily the last one but it has all the items because each request
     builds upon the last.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Using `data` here, makes things confusing for a lot of people. Some expect that
@@ -89,26 +112,34 @@
     in `files` be URL form encoded. And yes, these use-cases are documented but if
     people don't know that they want to use `multipart/form-data` encoding, they might
     not look at the section that describes that interaction.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Furthermore, what happens if someone does:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: I expect no one could guess what the interaction **unless** they've already
     encountered this. The actual behaviour here is that the `json` argument is completely
     ignored (well [not completely](https://github.com/psf/requests/blob/96b22fa18c00831656ee4b286bf1c9062459b00a/src/requests/models.py#L494-L570),
     we serialize the data and then throw it away).
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'This leads to one other way in which users can easily frustrate themselves:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If you specify your own header above but are relying on Requests to serialize
     native Python objects for you, you risk using the wrong Content-Type which will
     cause at best `400 Bad Request` responses and at worst, *very* wrong behaviour
@@ -116,81 +147,107 @@
     other issues including intermediaries either terminating your request before it
     reaches the destination, or them rewriting the header (depending on the type of
     intermediary). Either way, it's not the behaviour *indicated* by the code.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: How Could It Be Better?
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: This is a great API for a proof of concept and it makes things simple. That
     said, it hides a lot of what it does and in some ways that causes issues for users.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个概念验证的好API，使事情变得简单。话虽如此，它隐藏了很多它的功能，从某些方面来看，这对用户造成了问题。
 - en: 'There are many ways this could be improved for users. There''s no one right
     answer here. Here are some ideas though that can help with some of the problems
     above:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 有很多方法可以改进用户体验。在这里没有一个正确的答案。以下是一些想法，可以解决上述某些问题：
 - en: 'Keep the semi-functional API but change how the parameters work:'
+  id: totrans-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 保留半功能API，但更改参数的工作方式：
 - en: Get rid of `json` and `files`, consolidate everything into `data` **but** provide
     classes like `JSONData` or `MultipartFormData` or `UrlEncodedFormData` which can
     take the basic Python structures. These classes would all implement a [protocol](https://peps.python.org/pep-0544/)
     (or interface/[abstract base class](https://docs.python.org/3/library/abc.html))
     allowing users that care about customizing aspects of this to do so. It's them
     very explicit and obvious what the behaviour is.
+  id: totrans-30
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 摆脱`json`和`files`，将一切整合到`data`中，**但是**提供诸如`JSONData`或`MultipartFormData`或`UrlEncodedFormData`之类的类，可以接受基本的Python结构。这些类都将实现一个[协议](https://peps.python.org/pep-0544/)（或接口/[抽象基类](https://docs.python.org/3/library/abc.html)），允许关心定制方面的用户这样做。这样做非常明确和明显，行为是什么。
 - en: Make the class above responsible for validating that conflicting headers have
     not been specified and raising an exception otherwise. (Ideally this logic is
     baked into the class users would inherit from so they need specify an attribute
     with the headers they care about (with reasonable defaults) and the base class
     would do the rest.)
+  id: totrans-31
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使上面的类负责验证是否已指定冲突的标头，并在否则引发异常。（理想情况下，这种逻辑被内置到用户将继承的类中，因此他们需要指定一个属性，其中包含他们关心的标头（具有合理的默认值），基类将做剩下的工作。）
 - en: Provide something a bit nicer than the class names suggested above that is still
     clear enough
+  id: totrans-32
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 提供比上述建议的类名稍微好一些的东西，但仍然足够清晰。
 - en: 'Choose something a bit more familiar to other languages:'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 选择与其他语言稍微更熟悉的东西：
 - en: Many other languages have a Request object that can be built up and operated
     on. Many have excellent APIs around the way headers can be manipulated.
+  id: totrans-34
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 许多其他语言都有一个可以构建并操作的Request对象。许多具有优秀的API，围绕头部的操作方式可以进行操作。
 - en: Provide a builder object for the Request object to easily chain methods together
     (this looks like the builders in [pyca/cryptography](https://cryptography.io/en/latest/)
     or more generically [the builder pattern](https://en.wikipedia.org/wiki/Builder_pattern))
+  id: totrans-35
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为Request对象提供一个构建器对象，以便轻松地链接方法（这看起来像[pyca/cryptography](https://cryptography.io/en/latest/)中的构建器，或更通用的[构建器模式](https://en.wikipedia.org/wiki/Builder_pattern)）。
 - en: I think the first would be the least disruptive and most likely to be accepted
     by users, but to make it work well, I'd be pretty firm about `data` not accepting
     anything that doesn't implement the protocol.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为第一个是最不会造成干扰且最有可能被用户接受的，但为了使其工作良好，我会对`data`很严格，不接受不实现该协议的任何东西。
 - en: The latter feels better long term though because I don't know many developers
     that only work in Python and never in another language such that they haven't
     seen the benefits of that pattern.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 长期来看，后者感觉更好，因为我不知道有多少开发人员只在Python中工作，从未在其他语言中工作，以至于他们没有看到该模式的好处。
 - en: TLS Just Works™
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: TLS Just Works™
 - en: The feature that I think attracted **most** people to `python-requests` initially
     was how easy it was to get verified TLS by default. This was not easy with `httplib`/`http.client`
     or `urllib`, `urllib2`/`urllib.request` at the time. `httplib2` and `urllib3`
@@ -199,45 +256,61 @@
     `python-requests` did was create `certifi` to package the [Mozilla Trust Bundle](https://wiki.mozilla.org/index.php?title=CA/IncludedCertificates&redirect=no)
     and rely on that as well to always provide a reliable source for a CA root trust
     bundle.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为**大多数**人最初被吸引到`python-requests`的特性是它是多么容易通过默认方式获得验证的TLS。在那个时候
 - en: '... Until It Doesn''t'
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '...直到不行为止'
 - en: Mozilla licenses most things under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
     which is often argued about whether or not it's permissible within various companies
     under policies (if they have any) around open source libraries.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Mozilla大多数东西都使用[MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/)许可证，关于它是否在各种公司的政策（如果有的话）下是可接受的，经常有争论。
 - en: Further, many people create things that live in zip files as executables with
     `python-requests` and Python's handling of files that are not python containing
     data that are packaged appropriately and need to be accessed from that zip file
     from code inside the zip file is not the greatest.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，许多人创建存储在zip文件中的东西，作为可执行文件与`python-requests`一起使用，而Python对不包含数据的文件的处理并不是最好的。
 - en: 'Additionally, people build those things but don''t consider that potentially
     someone might need to provide alternative settings for TLS:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，人们构建这些东西，但没有考虑到潜在的某人可能需要提供TLS的替代设置：
 - en: They might be talking to an internal hosted instance with a private CA and private
     chain of trust. `certifi` will not be helpful there.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们可能正在与具有私有CA和私有信任链的内部托管实例通信。`certifi`在这方面将不会有帮助。
 - en: They may need to provide a client certificate and key to perform mutual TLS
     authentication (a.k.a., mTLS).
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们可能需要提供客户端证书和密钥来执行双向TLS身份验证（也称为mTLS）。
 - en: To remedy this, `python-requests` added support for the environment variables
     `CURL_CA_BUNDLE` and `REQUESTS_CA_BUNDLE` to solve the first point. Great! Fantastic!
     Except that up until recently, if you did `export REQUESTS_CA_BUNDLE=` you effectively
     disabled all TLS verification for anything using `python-requests` that sees that
     exported environment variable.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: '... And It''s a Bit Too Limited'
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -249,22 +322,27 @@
     configurations. To make it easy to use, we''d likely have to release a new major
     version and create significant breaking changes. As it stands, the current maintainers
     do not have enough time to:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: Implement those changes
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Coach and review contributions for those changes
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Handle the influx of people complaining about the changes or needing assistance
     upgrading
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Cookies
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -274,20 +352,27 @@
     like a Python dictionary. This might seem like a great ergonomic design, except
     that it''s possible for two different domains to set cookies in the same Session
     with the same name, for example:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: So if you use the same `requests.Session` for these cookies, how do you then
     access the cookie jar by cookie name (e.g., `sessionId`)? You get an exception!
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: That's not intuitive at all and it's why most (if not all) cookie jar implementations
     in languages always want you to use a real method that requires the domain name.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: Ignoring the poorly thought out user experience, there's also a problem of cookie
@@ -295,30 +380,39 @@
     way to set a default one without significantly more work - so for the people who
     do care, their lives are measurably worse than if the library hadn't tried to
     handle cookies at all.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: Timeouts
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '`python-requests` supports setting timeouts per request, e.g.,'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This works well, except, once again when the behaviour is surprising to the
     user.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '`python-requests` will try each record in a DNS lookup when trying to connect
     to a remote. If this is unclear to you, a DNS lookup on a domain can return multiple
     results, e.g.,'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: So if we were making a request to `salesforce.com`, and the first seven IP addresses
     were unreachable, you would be waiting approximately 14 seconds at worst. Further
     if that eighth takes 1.8 seconds, your real-time wait (also known as "wall clock")
@@ -327,35 +421,44 @@
     say `23.1.106.133` takes 14 seconds to write it's first byte and your timeout
     is set to 15 seconds, then your wall clock experience is over 30 seconds. That's
     very different from 17 seconds like you might otherwise expect.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: Retries
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Today, if you revisit the [SSLError example](requests-sslerror) and inspect
     that exception itself you''ll see something like:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'This is quite difficult to read, but allow me to briefly parse this for you:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: First we caught a `SSLCertVerificationError` and re-raised that as an `SSLError`
     with the original exception wrapped inside
+  id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Then we caught the `SSLError` in the retry logic built into `urllib3` and realized
     we were out of retries so we wrapped the `SSLError` and raised a `MaxRetryError`
     exception indicating we'd exhausted retries
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Then requests caught the `MaxRetryError`, inspected it and raised an `SSLError`
     of it's own.
+  id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -363,32 +466,44 @@
     they see `Max retries exceeded with url:` and didn't explicitly configure retries
     so they assume `python-requests` is doing something intelligent. It's not, it's
     setting `max_retries=0` by default.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想在这里强调的是第二点。这让很多用户感到困惑，因为他们看到“达到url的最大重试次数：”，而且没有明确地配置重试，所以他们认为`python-requests`正在做一些智能的事情。事实并非如此，它默认设置`max_retries=0`。
 - en: To be clear, this isn't related to us attempting to connect to multiple addresses
     in a DNS record either. This is purely, "we've established a connection and are
     retrying the request".
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 要明确，这与我们尝试连接到DNS记录中的多个地址无关。这纯粹是指，“我们已建立连接并正在重试请求”。
 - en: 'There are a few ways to configure retries today in `python-requests` that [I''ve
     already documented here](/2014/12/retries-in-requests). What would be better would
     be to not have to reach into `urllib3` at all. Further, it would be significantly
     better if the exceptions weren''t converted to strings such that after a layer
     or two you no longer can inspect the exceptions themselves. Again, if I show some
     examples of the exception above:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天有几种方法可以在`python-requests`中配置重试，[我已经在这里记录过](/2014/12/retries-in-requests)。更好的方式是根本不需要完全依赖`urllib3`。此外，如果异常不被转换为字符串，那就会更好，因为这样经过一两层后，你就无法再检查这些异常了。再次，如果我展示一些上面的异常的例子：
 - en: '[PRE11]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This hides a great deal of information from the user which is not present in
     either the `SSLError` or `MaxRetryError` exception instances.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会向用户隐藏大量信息，这些信息在`SSLError`或`MaxRetryError`异常实例中都不存在。
 - en: Without being able to introspect things you don't get a great way of detecting
     what happened in your code to more intelligently handle an exception.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 无法内省事物，你无法很好地检测到在你的代码中发生了什么以更智能地处理异常。
 - en: To be clear, `urllib3` 's retries are *excellent*, but for `python-requests`
     users, it doesn't behave exactly as they'd expect. They don't get any information
     about what happened and they have very little visibility into how it all works
@@ -397,23 +512,31 @@
     this does not interact with that at all. As a result, a lot of functionality is
     lost when those users end up using `urllib3` retries (because there are no `python-requests`
     retries).
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 要明确，`urllib3` 的重试功能 *很好*，但对于`python-requests`的用户来说，它的行为并不完全符合他们的预期。他们没有得到任何关于发生了什么的信息，也很少能够了解它是如何工作的，因为它发生在不同的地方。此外，如果他们有一些与`Session`对象集成的代码来进行身份验证或跟踪速率限制，那么这与那完全不会交互。因此，当这些用户最终使用`urllib3`的重试时（因为没有`python-requests`的重试），会丢失很多功能。
 - en: As an interim to anything improving in `python-requests` (which it likely won't),
     I **strongly** recommend [stamina](https://github.com/hynek/stamina)
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为对`python-requests`中任何改进的暂时措施（很可能不会有），我**强烈**推荐使用[stamina](https://github.com/hynek/stamina)
 - en: Transport Adaptors
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 传输适配器
 - en: Transport Adapters were a great idea that were introduced in 1.0\. These were
     intended to help users customize the behaviour of things and allow them to support
     URI schemes other than `http` and `https` (e.g., `file`, `unix`). This is an undisputed
     success (with a bunch of bumps along the way). There are libraries that implement
     those two popular schemes already.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 传输适配器是在1.0中引入的一个很好的想法。这些旨在帮助用户定制各种行为，并允许它们支持除`http`和`https`之外的URI方案（例如，`file`，`unix`）。这是一个毋庸置疑的成功（虽然途中有很多坎坷）。已经有一些库实现了这两种流行的方案。
 - en: Where things tend to fall apart is when you look at what can be specified in
     a Transport Adapter. `python-requests` uses a `urllib3.PoolManager` for the default
     `HTTPAdapter`. There are configuration options for that manager that are configurable
@@ -423,16 +546,23 @@
     adapter layer. If there are additional options you want to configure on the connection's
     socket, you need to effectively sub-class the `HTTPAdapter` to add things to the
     initialization of the `PoolManager`. .
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 事情往往会出现问题的地方是当你查看传输适配器中可以指定的内容时。`python-requests`使用一个`urllib3.PoolManager`作为默认的`HTTPAdapter`。该管理器有一些配置选项，可以在默认适配器中进行配置，因此知道需要更改这些选项的人可以创建一个新的适配器，并使用他们想要使用的值。问题出现在其他选项或请求参数上，这些在此时
+    *需要* 在适配器层指定。如果有其他选项要在连接的套接字上配置，你需要有效地对`HTTPAdapter`进行子类化，以在`PoolManager`的初始化中添加内容。
 - en: 'If you''ve ever used Golang''s `net/http` library, you may have seen that the
     `Client` type has a `Transport` member defined as an interface `RoundTripper`
     . A popular pattern looks like:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您曾经使用过Golang的`net/http`库，您可能会看到`Client`类型定义了一个`Transport`成员，定义为接口`RoundTripper`。一个常见的模式如下：
 - en: '[PRE12]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This is very easy to compose multiple transports. Behaviour like this is not
     easily or readily implemented with `python-requests`. It's possible depending
     on how you structure things or need them to work, but by and large, most people
@@ -442,12 +572,16 @@
     how the adapter is used in `python-requests`. This is the right idea, but the
     wrong implementation and at this point, it's very hard to fix without breaking
     lots of users.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很容易组合多个传输方式。`python-requests`很难或不容易实现这样的行为。这取决于你如何构建或需要它们工作，但总的来说，大多数人不能这样做，因为他们倾向于想要在自定义适配器中改变的内容。这意味着，如果你发现自己需要一个自定义适配器，你突然需要更多地了解`python-requests`和`urllib3`以及适配器在`python-requests`中的使用方式。这是正确的想法，但实现得不对，而且在这一点上，很难修复而不会影响到大量用户。
 - en: Request Preparation
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 请求准备
 - en: 'As you may have guessed from my [thoughts on github3.py](/2024/01/a-retrospective-on-github3py),
     I have strong opinions about things that need to be simple. Today, under the covers
     the API functional parameters are converted to a `Request` object which is then
@@ -457,32 +591,44 @@
     the interface for people who want to do things very differently from how `python-requests`
     intends. Do you want to do weird things with your URL? Use a `Request`, `prepare()`
     it, then `Session.send()` it. What could go wrong? Well:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您可能已经从我对[github3.py的看法](/2024/01/a-retrospective-on-github3py)中猜到的，我对需要简单的事物有着强烈的看法。今天，在底层，API功能参数被转换为一个`Request`对象，然后被"准备"成一个`PreparedRequest`。`PreparedRequest`是可变的，并且是做所有准备工作的地方。所有准备工作的代码都与`PreparedRequest`类绑定在一起。组织问题搁置不谈，这些类旨在成为希望以与`python-requests`不同的方式进行操作的人的接口。您想对URL做奇怪的事情吗？使用`Request`，`prepare()`它，然后`Session.send()`它。会有什么问题呢？嗯：
 - en: authentication is stored as a property on a `Session`, is a parameter to the
     functional API, and is also something you can attach to a `Request`
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 认证被存储为`Session`的属性，是功能API的参数，并且也是您可以附加到`Request`的内容
 - en: likewise, a `Session` stores cookies and will attach them to appropriate requests
     (based on the cookie settings) and you can pass cookies into your request
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 同样，`Session`存储cookies，并将它们附加到适当的请求上（基于cookie设置），您可以将cookies传递到您的请求中
 - en: headers can be set on a `Session` and are sent into a `Request` as well
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 头信息可以设置在`Session`上，并且也会发送到`Request`中
 - en: So what happens when you need to use this flow? Well, for that reason we added
     `Session.prepare_request` but still there are issues people run into. Some people
     use this flow to avoid aspects of a `Session` but the most reliable way of getting
     what you expect from the flow is to involve the `Session`.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么当您需要使用这个流程时会发生什么呢？嗯，因此我们添加了`Session.prepare_request`但仍然存在人们遇到的问题。有些人使用这个流程来避免`Session`的某些方面，但从流程中得到您期望的最可靠方式是涉及`Session`。
 - en: Authentication
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 认证
 - en: By and large, this actually typically works pretty well. If you're using a `Session`
     to only ever talk to one remote, you can attach the authentication to the `Session`
     and have it applied to every request. If you're not, the basic authentication
@@ -496,12 +642,16 @@
     for 2 or more domains and one redirects you to the other. If urllib3 handles that
     redirect as part of it's retry logic, then you'll likely end up with an exception
     instead of a response that can trigger the re-authentication flow.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，这实际上通常效果相当不错。如果您只使用一个`Session`来与一个远程进行通信，您可以将认证信息附加到`Session`上，并应用于每个请求。如果不是这样，您可以附加到请求的基本认证类型并不真正理解这一点。然而，编写一些能够理解这一点的东西作为Requests的认证处理程序是微不足道的（[requests-toolbelt有一个处理程序用于此](https://toolbelt.readthedocs.io/en/latest/authentication.html#authhandler)）。除此之外，正如我在谈论重试时所暗示的那样，如果您想利用内置于urllib3中的出色重试逻辑，您将不再获得认证处理程序将其上下文应用于新请求的能力。因此，即使是toolbelt的认证处理程序也无法处理您已告诉它如何为2个或更多域管理凭据并且其中一个将您重定向到另一个的情况。如果urllib3将该重定向作为其重试逻辑的一部分处理，那么您可能最终会收到一个异常而不是触发重新认证流程的响应。
 - en: Internal Design May Be Artful, But It's Not Good Software
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 内部设计可能是巧妙的，但不是好的软件
 - en: 'After receiving our first security disclosure, I was told that Requests wasn''t
     a serious project but instead one person''s art project and thus we shouldn''t
     fix the vulnerability. This was despite the project being touted as being used
@@ -509,16 +659,22 @@
     about it''s #1 download spot on PyPI. So when I say it might be artful, I''m trying
     to take a neutral stance on what is art and what isn''t art and whether the internals
     of Requests are actually beautiful art.'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在收到我们的第一个安全通报后，有人告诉我Requests不是一个严肃的项目，而是一个人的艺术项目，因此我们不应该修复这个漏洞。这尽管该项目被宣传为被多个国际政府机构、政治活动和以其在PyPI上的#1下载点而自豪。所以当我说它可能是巧妙的时，我试图保持中立，不对什么是艺术和什么不是艺术以及Requests的内部是否真的是美丽的艺术发表意见。
 - en: As far as I'm concerned, the factoring of the code is very poor. It makes it
     borderline unmaintainable.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我而言，代码的因子分解非常糟糕。这使得它几乎难以维护。
 - en: '`SessionRedirectMixin`'
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`SessionRedirectMixin`'
 - en: Requests handles redirects because early on, urllib3 either didn't or it's handling
     elided the intermediate request and response history hiding it from the user (I
     really don't remember which). Either way, in the great 1.0 refactor that pissed
@@ -528,73 +684,98 @@
     logic in it and it expects a lot of methods and properties that are defined on
     the class it's mixed into. In other words, it's not really a mixin. It's also
     not a neat abstraction or useful refactoring.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: Requests处理重定向是因为早期，urllib3要么没有处理，要么其处理省略了中间请求和响应历史记录，隐藏了它们（我真的不记得哪个了）。无论哪种方式，在大规模的1.0重构中，这几乎惹恼了每个用户
 - en: I think it could have been a step in the right direction with code that didn't
     expect to have the ability to make a new request but instead took "configuration"
     and spat out an instruction to the Session as to what to do next (follow the redirect,
     stop due to a non-redirect status, etc.). That is not what we got.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为这可能是朝着正确方向迈出的一步，使用不能发起新请求的代码而是使用“配置”并生成指示Session下一步做什么的指令（跟随重定向，因为非重定向状态而停止等）。但我们并没有得到这样的结果。
 - en: utils
+  id: totrans-101
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 实用工具
 - en: Requests has always had modules intended for its use and only its use. At some
     point, we tried to document them for ourselves and that led to people using them
     externally and then filing bugs against them. This is a perfect example of 3 adults
     who did not consent explicitly to the use, but Python says that we must have because
     we didn't hide them well enough.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: Requests一直都有为其使用和仅限使用的模块。在某些情况下，我们试图为自己撰写文档，结果导致人们在外部使用这些模块，并就此报告错误。这是一个很好的例子，三位成年人并未明确同意使用，但Python认为我们必须使用，因为我们没能隐藏好这些模块。
 - en: Connection Pooling
+  id: totrans-103
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 连接池
 - en: One feature requests always advertised as if it was its own was connection pooling.
     However, that feature was always based entirely on urllib3's connection pooling
     logic. And on top of that, we didn't even use it correctly.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: Requests总是宣传其自己拥有的一个功能是连接池。然而，这个功能从来都是基于urllib3的连接池逻辑。而且在此基础上，我们甚至没有正确使用它。
 - en: Today, each Transport Adapter instantiates its own [PoolManager](https://urllib3.readthedocs.io/en/stable/reference/urllib3.poolmanager.html#urllib3.PoolManager).
     This is to avoid having to manage [Connection Pools](https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html)
     in the Transport Adapter. However, a single Pool Manager could be used for both
     adapters without issue. There's no security reason not to do this and certainly
     no performance reason to prefer separate pools.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 如今，每个传输适配器都会实例化自己的[PoolManager](https://urllib3.readthedocs.io/en/stable/reference/urllib3.poolmanager.html#urllib3.PoolManager)。这是为了避免在传输适配器中管理[连接池](https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html)。然而，一个Pool
+    Manager可以用于两个适配器而没有问题。没有任何安全理由不这样做，当然也没有性能理由更倾向于分开的连接池。
 - en: Requests Often Believes It Knows Better than urllib3
+  id: totrans-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Requests经常自认为比urllib3更懂
 - en: Until [recently](https://github.com/psf/requests/pull/6226/files), Requests
     worked around urllib3 to do chunked transfer-encoding requests. This required
     digging into urllib3 a bit more than that library reasonably expects users to
     do and introduced bugs long term as urllib3 continued to evolve. On its face this
     is one of those technical debt items that makes sense in the moment but in reality
     should have been contributed to urllib3 and then immediately removed from Requests.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: '[最近](https://github.com/psf/requests/pull/6226/files)之前，Requests采用对urllib3进行变通来进行分块传输编码请求。这要求对urllib3进行更深入的挖掘，而urllib3在长期演变过程中引入了漏洞。从表面上看，这是一个在当下颇具意义的技术债务，但实际上应该被贡献给urllib3，并且立即从Requests中删除。'
 - en: I can speak for the fact that we (the current maintainers) just don't have that
     kind of time but this ties back into a post I wrote recently about [saying no](https://blog.ian.stapletoncordas.co/2023/11/no-should-be-your-default).
     If I had known better, I would absolutely have argued against accepting this in
     `python-requests` at all. That would have provided some pressure to move this
     to urllib3 directly and make it work for `python-requests` rather than the opposite
     way things happened.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可以证明我们（目前的维护人员）确实没有那么多时间，但这和我最近写的一篇关于[拒绝的文章](https://blog.ian.stapletoncordas.co/2023/11/no-should-be-your-default)有关。如果我更了解情况，我绝对会坚决反对在`python-requests`中接受这一点。这将为将此迁移到urllib3并使其为`python-requests`工作提供一些压力，而不是以相反的方式发生。
 - en: Proxies
+  id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 代理
 - en: While `python-requests` can handle proxies, it can't handle sophisticated proxies
     that modern businesses rely on as well. Specifically, its support for TLS over
     HTTPS proxies is very poor. In order to support internal proxies that likely have
     their own trust bundles, we would need to significantly change the API of Requests.
     There are many ways we could do this, but every time we add to the API, it adds
     to the maintenance burden and it invariably upsets someone.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '`python-requests`虽然能够处理代理，但对于现代企业所依赖的复杂代理却无能为力。具体而言，它对HTTPS代理上的TLS支持非常差。为了支持内部代理，我们需要大幅改变Requests的API。虽然有很多方法可以做到这一点，但每次添加新的API都会增加维护负担，并且总会有人感到不满。'
 - en: There was a very promising [pull request to add support for HTTPS proxies](https://github.com/psf/requests/pull/5665)
     and it does *the right thing* by relying on the logic in urllib3\. However, adding
     that support correctly creates a conundrum. How do we support those custom TLS
@@ -602,51 +783,70 @@
     to the API. The number of parameters to the request methods is already huge and
     there is no end of drift between the documentation of those parameters on the
     various places they're supported.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个很有前途的[拉取请求来添加对HTTPS代理的支持](https://github.com/psf/requests/pull/5665)，并且它确实正确地依赖于urllib3中的逻辑。然而，正确添加该支持却产生了一个困境。我们如何支持那些定制的TLS包？这次变更通过向API添加参数来扩展API。请求方法的参数数量已经非常庞大，在支持这些参数的各处文档之间的漂移也是没有尽头的。
 - en: My preference here is to do something that makes what is happening clearer,
     but that's also a different kind of API expansion. More directly, I'd like to
     continue supporting the current way of specifying proxies as a dictionary mapping
     the protocol to the proxy URI and then translate that to a dictionary that maps
     the protocol to an object that holds the configuration. Then for folks that know
     what they need for this, they can instead reach for that object directly, e.g.,
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 我更偏向于做一些让事情更清晰的事情，但这也是一种不同类型的API扩展。更直接地，我希望继续支持当前的代理指定方式，即将协议映射到代理URI的字典，然后将其转换为映射协议到保存配置的对象的字典。那些了解他们需要什么的人可以直接寻找该对象，例如，
 - en: '[PRE13]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Under the covers, any dictionary that was the prior API would be transparently
     converted to this `Proxies` object. The difficulty here is that `Session` has
     an attribute called `proxies` and people expect it to be a dictionary (reasonably
     so because that's what it has been for roughly a decade). This brings us then
     to the next pattern I truly abhor.o
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在幕后，任何先前 API 中的字典都会被透明地转换为这个 `Proxies` 对象。难点在于 `Session` 有一个名为 `proxies` 的属性，人们期望它是一个字典（这是合理的，因为它大约已经是一个字典十年左右了）。于是这就引出了我真正厌恶的下一个模式。
 - en: Compatibility Objects That Pretend To Be Standard Types
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 兼容性对象，假装是标准类型
 - en: So many things were initially designed to be a simple built-in type in Python
     and as the user base grew we found that to be insufficient. We always need something
     that gives us the ability to do things that give users an escape hatch of sorts
     to do more complex things.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初，很多东西设计为 Python 中的简单内置类型，但随着用户基数的增长，我们发现这是不够的。我们总是需要一些东西，让我们有能力做一些事情，为用户提供一种逃生舱的方式来做更复杂的事情。
 - en: To then preserve backwards compatibility, we reach for the ability to implement
     those interfaces into the new objects and pretend that the code relying on the
     old thing will just continue to work. This almost always goes sideways eventually.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持向后兼容性，我们会实现那些接口到新的对象中，并假装依赖于旧对象的代码将继续运行。这几乎总是最终会出问题。
 - en: For one thing, the already often incorrect typeshed hints for `python-requests`
     are immediately wrong again. For another, people tend to make changes in `python-requests`
     as drive-by contributions that end up breaking these subtly which we don't discover
     for quite a while because they're so subtle.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，对于 `python-requests`，已经经常不正确的 typeshed 提示立即又变得错误了。 另一方面，人们倾向于对 `python-requests`
+    进行改动，这些改动以匆忙提交的方式进行，最终会破坏这些微妙的改动，但由于它们如此微妙，我们很长一段时间内都无法发现这些问题。
 - en: Test Coverage Is Abysmal
+  id: totrans-119
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 测试覆盖率低下
 - en: Of course, everything above is both a contributing factor to and a result of
     the abysmal test coverage in `python-requests`. The measure of coverage may not
     itself be horrible. But the test cases are not an appropriate number of permutations
@@ -655,12 +855,17 @@
     when something else changes subtly it is broken. In reality, the API should have
     been designed to prevent those things from ever working but that never happened
     and breaking that now would appear to many as a violation of backwards compatibility.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，以上所有内容都既是导致，也是 `python-requests` 测试覆盖率不足的结果。覆盖率本身可能不是可怕的。但测试用例数并不足以确定用户尝试的一些不明智或不可取行为的行为。结果，有时对于某个给定的用户来说，某些功能似乎可以工作，但当其他东西微妙地改变时，它就会断掉。实际上，API
+    本应该被设计成防止这些事情永远能够工作，但这从未发生过，而现在突然破坏它对许多人来说看起来像是违反了向后兼容性原则。
 - en: Stable APIs and Behaviour
+  id: totrans-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 稳定的 API 和行为
 - en: Last but not least, after 1.0 there was a very concerted effort to not break
     users like that again, ever. That has led to a significant amount of friction
     in `python-requests`. We struggle often to be able to make an informed decision
@@ -668,17 +873,24 @@
     reasonable requests are blocked until we have the time and ability to make a backwards
     incompatible release (e.g., 3.0 - which itself already has a lot of baggage tied
     to it). This leads invariably to frustrated users and maintainers.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后但并非不重要的是，在版本 1.0 之后，我们非常努力地不再像那样再次破坏用户。这导致了 `python-requests` 中出现了大量的摩擦。我们经常在能否做出一个对用户不会造成问题的明智决定与否方面挣扎。这意味着一些完全合理的请求被阻塞，直到我们有时间和能力做出不向后兼容的发布（例如
+    3.0 - 它本身已经有很多与之相关的包袱）。这最终会导致用户和维护者感到沮丧。
 - en: Conclusion
+  id: totrans-123
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: There's a lot of history in `python-requests`. There's a lot of reasons for
     it to have existed but there's also a lot of reasons why despite it's "for Humans"
     tag line, it really doesn't feel that way for a lot of people.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: '`python-requests` 中有很多历史。有许多原因可以解释它的存在，但也有很多原因说明，尽管它有一个“面向人类”的标签，但对很多人来说，它真的并不感觉如此。'
 - en: There's a lot that can be improved, but really if you're asking yourself why
     hasn't it been just look back at the very last section. The project effectively
     has had it's feet cemented to the ground by one very disruptive release many years
@@ -687,18 +899,24 @@
     to allow us to move past these, but those changes are huge refactors that we just
     don't have the appetite for as a team of three. Beyond that, we struggle with
     what to name the next version.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 有很多地方可以改进，但如果你问自己为什么还没去做就看一看前面所述的最后一部分。项目很长时间以来实际上被一个非常具有破坏性的发布所束缚，无法前进。同样地，我们希望修复这些问题，我已经无数次尝试重新设计以让我们能够通过向后兼容性来超越这些问题，但这些改变都是巨大的重构，我们作为一个三人团队对此没有兴趣。而且，我们还在为下一个版本取什么名字而苦苦挣扎。
 - en: A lot of promises were made without any apparent intention of following through
     on them for a 3.0 release. And now, if we were to release a 3.0, we'd have to
     explain why all that promised work wasn't done (and to the folks that sent money,
     what happened to their money).
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 大量的承诺在进行 3.0 版本发布时没有表现出任何明显的意图要实现。而现在，如果我们要发布 3.0 版本，我们不得不解释为什么所有那些承诺的工作都没做（对于那些捐款的人来说，他们的钱发生了什么）。
 - en: In short, the project feels dead. That's a shame, but that's my feeling on the
     matter. It's hard to introduce new, necessary, and beneficial features. It's hard
     to fix gnarly bugs. It's hard to improve the user experience and it's consistently
     been because of one particular person over the years. A few of us have tried to
     bring that stability but it has never seemed to be enough.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，这个项目感觉已经死了。这很遗憾，但这是我的看法。很难引入新的、必要的和有益的功能。很难修复棘手的 bug。很难提高用户体验，这一直是由于多年来的一个人。我们中的一些人尝试过带来那种稳定性，但似乎从未足够。
