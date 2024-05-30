@@ -1,146 +1,206 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:25:18'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:25:18
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Using a Markov chain to generate readable nonsense with 20 lines of Python
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用20行Python生成可读的胡言乱语
 - en: 来源：[https://benhoyt.com/writings/markov-chain/](https://benhoyt.com/writings/markov-chain/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://benhoyt.com/writings/markov-chain/](https://benhoyt.com/writings/markov-chain/)
 - en: Using a Markov chain to generate readable nonsense with 20 lines of Python
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用20行Python生成可读的胡言乱语
 - en: November 2023
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 2023年11月
 - en: '**Go to:** [Algorithm](#the-algorithm) | [Examples](#some-better-examples)
     | [Python implementation](#python-implementation) | [Conclusion](#conclusion)'
+  id: totrans-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**转到：**[算法](#the-algorithm) | [示例](#some-better-examples) | [Python实现](#python-implementation)
+    | [结论](#conclusion)'
 - en: I recently learned how to generate text using a simple [Markov chain](https://en.wikipedia.org/wiki/Markov_chain).
     The generated text is readable but is also complete nonsense; as prose it’s not
     worth much, but for predicting the next word like your phone keyboard’s suggestions,
     it’s surprisingly useful.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最近学会了如何使用简单的[马尔科夫链](https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BE)生成文本。生成的文本可读，但也完全是胡言乱语；作为散文，它没有多大价值，但对于预测下一个词，就像你手机键盘的建议一样，它非常有用。
 - en: I learned about this algorithm in chapter 3 of Kernighan and Pike’s book [*The
     Practice of Programming*](https://www.cs.princeton.edu/~bwk/tpop.webpage/), where
     they implement such a generator in various programming languages to discuss program
     design and data structures.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我是在Kernighan和Pike的书[*编程实践*](https://www.cs.princeton.edu/~bwk/tpop.webpage/)第3章中学到这个算法的，他们在各种编程语言中实现了这样一个生成器，来讨论程序设计和数据结构。
 - en: Note that this algorithm is only one small use for Markov chains, which are
     a much more general statistical concept.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，这个算法只是马尔科夫链的一个小应用，而马尔科夫链是一个更一般的统计概念。
 - en: The algorithm
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这个算法
 - en: 'The algorithm is easy to explain: start with an input text whose phrases will
     be used to generate the output. For every pair of words in the input, record a
     list of the possible words that come after the word pair.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个算法很容易解释：从一个输入文本开始，其中的短语将被用于生成输出。对于输入中的每一对词，记录可能出现在这对词后面的单词列表。
 - en: Once you’ve built that data structure, you can generate as much or as little
     output as you want. Start with any pair of words that occurs in the input, and
     then randomly pick one of the possible third words. Then move along, so the second
     word in the pair is the word you just generated, randomly pick another word, and
     so on.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你建立了那个数据结构，你就可以生成任意多或任意少的输出。从输入中任选一对词开始，然后随机选择可能的第三个词。接着继续，第二个词是刚刚生成的词，再随机选择另一个词，依此类推。
 - en: That’s all there is to it!
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这样！
 - en: 'This algorithm uses pairs of words, also called [bigrams](https://en.wikipedia.org/wiki/Bigram).
     You could generalise the algorithm to use single words or trigrams instead of
     pairs. However, as *The Practice of Programming* points out:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个算法使用的是单词对，也称为[双字组](https://zh.wikipedia.org/wiki/%E5%8F%8C%E5%AD%97%E7%BB%84)。你可以将算法推广为使用单个单词或三字组而不是对子。然而，正如《编程实践》指出的那样：
 - en: Making the prefix shorter tends to produce less coherent prose; making it longer
     tends to reproduce the input text verbatim. For English text, using two words
     to select a third is a good compromise; it seems to recreate the flavor of the
     input while adding its own whimsical touch.
+  id: totrans-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 使前缀更短会产生不太连贯的散文；使其更长会基本复制输入文本。对于英文文本，使用两个词来选择第三个词是一个不错的折中；它似乎能够再现输入的风格，同时又添加了自己的古怪触摸。
 - en: 'Let’s work through an example. For small inputs, you want some repetition for
     it to work, so as input we’ll use the last five of the Ten Commandments from the
     King James Bible:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过一个例子来演示一下。对于小输入，你希望有一些重复才能使其工作，所以我们将使用《圣经》（《国王詹姆士圣经》）中最后五条十诫作为输入：
 - en: Thou shalt not kill.
+  id: totrans-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不可杀人。
 - en: ''
+  id: totrans-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Thou shalt not commit adultery.
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不可奸淫。
 - en: ''
+  id: totrans-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Thou shalt not steal.
+  id: totrans-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不可偷窃。
 - en: ''
+  id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Thou shalt not bear false witness against thy neighbour.
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不可作假见证。
 - en: ''
+  id: totrans-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Thou shalt not covet thy neighbours house, thou shalt not covet thy neighbours
     wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any
     thing that is thy neighbours.
+  id: totrans-27
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 不可垂涎邻居的房屋，也不可垂涎邻居的妻子，他的男仆、女仆，他的牛、他的驴，以及他的一切所有。
 - en: 'Here’s what the “possible third words” data structure looks like, showing the
     first few entries with the word pair on the left and the possibilities separated
     by `|` on the right:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是“可能的第三个词”数据结构的样子，显示了左边的词对和右边以`|`分隔的可能性的前几个条目：
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: So if you start with “shalt not”, you randomly choose “kill.”, “commit”, “steal.”,
     “bear”, or “covet” as the next word. Because “covet” appears twice in the list
     of possibilities, it’s twice as likely to be chosen as the next word.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: You can see how we’ve included capital letters and punctuation in the words.
     This keeps the word-splitting simpler, but it also means the generated output
     will automatically generate “sentences” with capitalization and punctuation that
     actually occurred in the input. It’s quite a neat trick!
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'What does the generated output look like? Let’s try it using the Ten Commandments
     input above:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Thou shalt not bear false witness against thy neighbour. Thou shalt not commit
@@ -148,29 +208,36 @@
     shalt not commit adultery. Thou shalt not covet thy neighbours house, thou shalt
     not steal. Thou shalt not commit adultery. Thou shalt not steal. Thou shalt not
     covet thy neighbours…
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: As you can see, the problem with using such a small input text is that the output
     is often a verbatim copy of the input text – or something randomly close to it.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: If you use a larger input text, you get much more interesting output.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: Some better examples
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Below are some more fun outputs using larger input texts. We’ll generate 100
     words from each input. The books were sourced from [Project Gutenberg](https://www.gutenberg.org/).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: Using my articles
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Using the [articles I’ve written](/writings/) as input:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'Especially if you need to return a value, but are now very flat – almost 5x
@@ -181,24 +248,29 @@
     `OrderedMap<int>`. But because Lox strings don’t support escape sequences, there’s
     no `null` or `undefined`, and you have it! A minimalist Make in one of its revenue
     comes from the…'
+  id: totrans-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'I love how it captures most of my technical interests: performance, idiomatic
     code, backwards compatibility, AWK, CSV, little languages, and so on. It’s no
     ChatGPT, but if you squint the text looks quite plausible!'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: Note how the output even includes valid Markdown from the input (though I removed
     a couple of links).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Using *Alice in Wonderland*
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Here’s one using Lewis Carroll’s *Alice in Wonderland* as input. The book is
     more or less nonsense to begin with, so this almost works:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'A large rose-tree stood near the entrance of the cakes, and was delighted to
@@ -208,20 +280,29 @@
     all at once. The Dormouse had closed its eyes again, to see what was going off
     into a large fan in the pool, “and she sits purring so nicely by the hand, it
     hurried off, without waiting for the limited right of replacement…'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 大门口附近有一棵大玫瑰树，她高兴地发现她的火烈鸟匆匆离去；“他们的名字叫艾尔希、莱茜和蒂莉；他们不能证明我做了：否认是毫无意义的。我想迪娜接下来会给我送去消息！”
+    她打开了门，突然打了一个喷嚏。睡鼠又闭上了眼睛，看着池塘里的大扇子，“她坐在手边那么好地发出咕噜声，就匆匆离开了，不等待被有限的替代权…
 - en: Using the Old Testament (from the King James Bible)
+  id: totrans-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用旧约圣经（来自于《英王詹姆士圣经》）
 - en: Note how the output includes (nonsensical) verse numbers, which were part of
     the input.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意输出包含了（无意义的）诗句编号，这些是输入的一部分。
 - en: Look for the roast the king of Babylon gets!
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 寻找巴比伦王的烤肉！
 - en: Benjamin, Jaasiel the son of Berachiah, the son of Jehoiakim king of Gomorrah,
     and toward the holy gods is in your own will. 22:30 On the south in the porch
     of the sea, over against the mount out of the LORD shall smite the waves thereof.
@@ -229,25 +310,36 @@
     the priest; 13:17 And the king of Babylon roasted in the name of the dust. 18:1
     Then answered one of them, did Joshua take, and put his hand over the servants
     of Saul my father nor my life from perishing by…
+  id: totrans-49
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 本雅明、贝拉基雅的儿子雅西勒、摩西的儿子约雅敬，至于圣神是在你的意志里。22:30 在海门的南边，在主的门廊上，对着那出自主的山，他的浪潮袭击着它。107:26
+    他们堆积起来埋葬他们，他们，他们的孩子，向祭司们展示；13:17 巴比伦王在尘土的名字下被烤了。18:1 其中一个回答说，约书亚拿了，把他的手放在我父亲扫罗的仆人身上，我生命不会从…
 - en: Using the New Testament (from the King James Bible)
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用新约圣经（来自于《英王詹姆士圣经》）
 - en: Kind of funny that the New Testament output starts with “Moses”, a key Old Testament
     figure (but whose name appears 80 times in the New Testament too).
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，新约的输出以 “摩西” 开头，他是旧约中的一个关键人物（但他的名字在新约中也出现了 80 次）。
 - en: 'My computer also seems rather heretical: “we have preached the word of the
     body is the will of man”.'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的电脑看起来也有些异端邪说：“我们已经传播了人的意志的话”。
 - en: And yes, [“throughly”](https://en.wiktionary.org/wiki/throughly) is an (archaic)
     word.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，[“thoroughly”](https://en.wiktionary.org/wiki/throughly) 是一个（古语）词。
 - en: 'Moses, ye would that we dwell in them. 2:11 Wherefore remember, that by my
     voice against them. 20:20 And they said, Is not this he that humbleth himself
     shall be given, and he will throughly purge his floor, and gather the wheat into
@@ -255,17 +347,24 @@
     of man, it shall be: but we have sent for me? 10:30 And Jesus went into the kingdom
     of God. 5:6 Let no man may say, Thou fool, that he was nigh to Joppa, and the
     other side. 10:33 But whosoever shall…'
+  id: totrans-54
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 摩西，你们要住在那里。2:11 因此你们要记念，要凭我的声音起来反对他们。20:20 他们说，这不是他使人谦卑的吗？他会彻底地清除他的地，把小麦收集到海中，得到粮食：因为我们已经传播了人的意志的话，它将是如此的：但是我们有没有派人来找我？10:30
+    耶稣进入了神的国度。5:6 不要让人说，你这个傻瓜，他离约帕不远，另一边。10:33 但是无论是谁…
 - en: Using *The War of the Worlds*
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用《世界大战》
 - en: And one more, for good measure. This is using *The War of the Worlds*, by H.
     G. Wells.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 再加一个，以确保准确。这是使用 H. G. 威尔斯的《世界大战》。
 - en: At Halliford I had the appearance of that blackness looks on a Derby Day. My
     brother turned down towards the iron gates of Hyde Park. I had seen two human
     skeletons—not bodies, but skeletons, picked clean—and in the pit—that the man
@@ -273,57 +372,87 @@
     as if by a man on a bicycle, children going to seek food, and told him it would
     be a cope of lead to him, therefore. That, indeed, was the dawn of the houses
     facing the river to Shepperton, and the others. An insane resolve possessed…
+  id: totrans-57
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在 Halliford，我看起来像是德比赛马日上的黑暗一样。我兄弟朝向海德公园的铁门走去。我曾见过两具人类骷髅 —— 不是尸体，而是被清理干净的骨架 ——
+    在深坑里 —— 男人开车经过并停在逃亡者面前，却没有提供帮助。客栈关门了，就像是有人骑自行车经过一样，孩子们去寻找食物，并告诉他那对他来说将是一份铅的抵押。事实上，那是面向河边通往谢珀顿的房子和其他房子的黎明。一种疯狂的决心占据了…
 - en: With insane resolve, let’s now look at the Python code I used to implement this.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 怀着疯狂的决心，现在让我们看一下我用来实现这一切的 Python 代码。
 - en: Python implementation
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Python 实现
 - en: 'First, here’s the full program – it’s 24 lines with blanks and comments, 16
     without:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，这是完整的程序 - 有24行空格和注释，没有空格和注释的话只有16行：
 - en: '[PRE1]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: You can judge for yourself, but I think it’s fairly readable.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以自行判断，我认为它相当可读。
 - en: 'The program expects the number of words as a command-line argument (`sys.argv[1]`),
     and the input text on standard input. To run it, use a command like this:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 该程序期望以命令行参数的形式输入单词的数量（`sys.argv[1]`），并从标准输入接收输入文本。要运行它，使用如下命令：
 - en: '[PRE2]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The code is also available as a GitHub Gist: [markov.py](https://gist.github.com/benhoyt/619cf3113866450aa31d8a2c1f8e01dc).
     This program is hardly original – I hereby give you permission to do whatever
     you want with it.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 该代码也可作为GitHub的Gist：[markov.py](https://gist.github.com/benhoyt/619cf3113866450aa31d8a2c1f8e01dc)。这个程序并不是原创
+    - 我在这里允许你对它做任何你想做的事情。
 - en: Conclusion
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: I find it fascinating that a simple data structure and a random number generator
     can produce such interesting output.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我发现简单的数据结构和随机数生成器能产生如此有趣的输出，真是令人着迷。
 - en: I also think the trick of including capital letters and punctuation in the recorded
     “words” is quite clever. It’s not a trick at all, of course, but an elegant design
     choice that makes the program simpler *and* the output better. I wonder how many
     similar design choices are hiding in existing programs, waiting to be simplified?
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为在记录的“单词”中包含大写字母和标点符号的技巧非常聪明。当然，这并不是一个技巧，而是一种优雅的设计选择，使程序更简单 *且* 输出更好。我想知道还有多少类似的设计选择隐藏在现有的程序中，等待简化？
 - en: Have fun generating text from your own inputs!
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 快来尝试用你自己的输入生成文本吧！
 - en: I’d love it if you [sponsored me on GitHub](https://github.com/sponsors/benhoyt/)
     – it will motivate me to work on my open source projects and write more good content.
     Thanks!
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你愿意在GitHub上给我[赞助](https://github.com/sponsors/benhoyt/)，这将激励我继续开发我的开源项目并写更多优质内容。谢谢！
