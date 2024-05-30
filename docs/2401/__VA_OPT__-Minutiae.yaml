@@ -1,74 +1,110 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:18:38'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:18:38'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: __VA_OPT__ Minutiae
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: __VA_OPT__ 细节
 - en: 来源：[https://www.corsix.org/content/va-opt-minutiae](https://www.corsix.org/content/va-opt-minutiae)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.corsix.org/content/va-opt-minutiae](https://www.corsix.org/content/va-opt-minutiae)
 - en: 'Let''s say we''re writing C code, and would like to define a macro for `printf`-with-newline.
     We might start with:'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们正在编写 C 代码，并且想要为 `printf`-带换行定义一个宏。我们可能会这样开始：
 - en: '[PRE0]'
+  id: totrans-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: So far so good; we can write `printfln("1+1 is %d", 1+1)` and it'll print `1
     + 1 is 2` followed by a newline. However, simpler cases such as `printfln("Hello")`
     result in a syntax error, as this macro expands to `printf("Hello" "\n",)`, which
     is invalid due to the trailing comma.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止都还好；我们可以写 `printfln("1+1 是 %d", 1+1)`，它会打印 `1 + 1 是 2` 并后跟一个换行符。然而，诸如 `printfln("Hello")`
+    的简单情况导致语法错误，因为这个宏会扩展为 `printf("Hello" "\n",)`，由于末尾逗号而无效。
 - en: '**The non-standard solution**'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**非标准解决方案**'
 - en: 'One conventional solution is to rely on a non-standard language extension whereby
     inserting `##` between `,` and `__VA_ARGS__` has a *special effect*:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种常规解决方案是依赖于一种非标准语言扩展，其中在 `,` 和 `__VA_ARGS__` 之间插入 `##` 会产生 *特殊效果*：
 - en: '[PRE1]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'With this, both `printfln("1+1 is %d", 1+1)` and `printfln("Hello")` work fine.
     However, combining the two into something like `printfln("Wrote %d chars", printfln("Hello"))`
     results in a mysterious error. To figure out why, we need to look into exactly
     what *special effect* this non-standard language extension has. The [GNU C Preprocessor
     documentation on Variadic Macros](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/cpp/Variadic-Macros.html)
     says:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种方法，`printfln("1+1 是 %d", 1+1)` 和 `printfln("Hello")` 都能正常工作。然而，将两者组合成类似
+    `printfln("Wrote %d chars", printfln("Hello"))` 的东西会导致一个神秘的错误。要弄清楚原因，我们需要仔细研究这种非标准语言扩展具有什么
+    *特殊效果*。[GNU C 预处理器关于可变宏的文档](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/cpp/Variadic-Macros.html)中提到：
 - en: The `##` token paste operator has a special meaning when placed between a comma
     and a variable argument. If you write [...] and the variable argument is left
     out [...], then the comma before the `##` will be deleted. This does not happen
     if you pass an empty argument, nor does it happen if the token preceding `##`
     is anything other than a comma.
+  id: totrans-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 当将 `##` 符号粘贴操作符置于逗号和可变参数之间时，具有特殊意义。如果你写入 [...] 并且可变参数被省略 [...], 那么在 `##` 之前的逗号将被删除。如果传递空参数，或者
+    `##` 之前的标记不是逗号，则不会发生这种情况。
 - en: 'Meanwhile, the [GCC documentation on Variadic Macros](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Variadic-Macros.html)
     says:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，[GCC 可变宏文档](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc/Variadic-Macros.html)中提到：
 - en: If the variable arguments are omitted or empty, the `##` operator causes the
     preprocessor to remove the comma before it. If you do provide some variable arguments
     in your macro invocation, GNU CPP does not complain about the paste operation
     and instead places the variable arguments after the comma. Just like any other
     pasted macro argument, these arguments are not macro expanded.
+  id: totrans-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果省略了可变参数或为空，则 `##` 运算符会导致预处理器删除其前面的逗号。如果在宏调用中提供了一些可变参数，GNU CPP 不会对粘贴操作抱怨，而是将可变参数放在逗号后面。与任何其他粘贴的宏参数一样，这些参数不会被宏展开。
 - en: 'The last sentence of this 2^(nd) piece of documentation tells us what is going
     on: macro arguments are *usually* expanded before being substituted, but this
     *doesn''t* happen to macro arguments used as operands to `#` or `##`. In either
@@ -80,12 +116,17 @@
     expands to `printf("Wrote %d chars" "\n", printfln("Hello"))` without expanding
     the inner `printfln`, which the compiler then tries to parse as a call to the
     non-existent *function* `printfln`.'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二段文档的最后一句告诉我们正在发生什么：宏参数通常在替换之前扩展，但是宏参数用作 `#` 或 `##` 操作数时则不会发生。在任一情况下，在执行替换后，将对结果标记进行重新扫描以进行更多扩展，尽管在此重新扫描期间原始宏将被停用。在扩展之前替换和在重新扫描期间扩展之间唯一重要的可观察到的区别是，在前者中原始宏是活动的，但在后者中原始宏是停用的。因此，`printfln("Wrote
+    %d chars", printfln("Hello"))` 展开为 `printf("Wrote %d chars" "\n", printfln("Hello"))`，而不会展开内部的
+    `printfln`，这之后编译器尝试解析为调用不存在的 *函数* `printfln`。
 - en: The two pieces of documentation are contradictory as to what happens if the
     variable arguments are present but empty (as in `printfln("Hello",)`). In practice
     the 1^(st) piece of documentation is correct; the comma is kept if the variable
     arguments are present but empty.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'The *nor does it happen if the token preceding `##` is anything other than
@@ -95,247 +136,353 @@
     also delete the comma in `, x ## __VA_ARGS__` when `x` expands to nothing. Things
     also seem to get funky if more pasting immediately follows `, ## __VA_ARGS__`.
     As examples:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: '| `#define F(x, ...)` as | `F()` | `F(1)` | `F(,)` | `F(1,)` | `F(1,2)` |'
+  id: totrans-19
   prefs: []
   type: TYPE_TB
 - en: '| `,##__VA_ARGS__` | empty | empty | `,` | `,` | `,2` |'
+  id: totrans-20
   prefs: []
   type: TYPE_TB
 - en: '| `,##__VA_ARGS__ x` | empty | `1` | `,` | `,1` | `,2 1` |'
+  id: totrans-21
   prefs: []
   type: TYPE_TB
 - en: '| `,##__VA_ARGS__##x` | `,` | error | `,` | error | error† or `,21`‡ |'
+  id: totrans-22
   prefs: []
   type: TYPE_TB
 - en: '| `,##x##__VA_ARGS__` | empty | error | `,` | error | error |'
+  id: totrans-23
   prefs: []
   type: TYPE_TB
 - en: '| `,x##__VA_ARGS__` | `,`† or empty ‡ | `,1` | `,` | `,1` | `,12` |'
+  id: totrans-24
   prefs: []
   type: TYPE_TB
 - en: † According to gcc 13.2.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: ‡ According to clang 17.0.1.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: In the cases where gcc and clang differ, who is to say which is correct? After
     all, there is no standard documenting the desired behaviour for non-standard language
     extensions.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: '**Enter `__VA_OPT__`**'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Rather than standardise this mess, the [C](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3033.htm)
     and [C++](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0306r4.html)
     languages adopted a different solution, namely `__VA_OPT__`. With `__VA_OPT__`,
     our motivating example looks like:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In this, `__VA_OPT__(,)` expands to nothing if the variable arguments are absent
     or empty or become empty after macro expansion, whereas it expands to `,` otherwise.
     There's no token pasting going on, so `printfln("Wrote %d chars", printfln("Hello"))`
     now works. The other behavioural difference is that the odd-looking `printfln("Hello",)`
     now expands to the valid `printf("Hello" "\n")`, as does `printfln("Hello", EMPTY)`
     in the context of `#define EMPTY /*nothing*/`.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'The standard didn''t stop there though; there can be more than just a `,` within
     `__VA_OPT__`. Any `(`-`)`-balanced token sequence is allowed, and it can even
     access the arguments of the macro invocation, so for example it is valid to have:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Then `M(1)` expands to `(0)` and `M(1,2)` expands to `(0 - (1))`.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '**What about whitespace?**'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'Compilers seem to disagree on the behaviour of whitespace just after `__VA_OPT(`
     or just before the matching `)`. Consider:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The observed results are:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | gcc 13.2 | clang 17.0.1 |'
+  id: totrans-39
   prefs: []
   type: TYPE_TB
 - en: '| s | `"~~"` | `"~ ~"` |'
+  id: totrans-40
   prefs: []
   type: TYPE_TB
 - en: '| sa | `"~~~"` | `"~ ~ ~"` |'
+  id: totrans-41
   prefs: []
   type: TYPE_TB
 - en: 'One interpretation is that gcc is correct, based on this paragraph from the
     standard: ([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
     6.10.4.1¶7)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: The preprocessing token sequence for [...] a va-opt-replacement [...] consists
     of the results of the expansion of the contained pp-tokens as the replacement
     list of the current function-like macro before removal of placemarker tokens,
     rescanning, and further replacement.
+  id: totrans-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于[...]一个va-opt-replacement[...]的预处理标记序列[...]由当前函数宏的替换列表中包含的pp-token的展开结果组成，在删除占位符标记、重新扫描和进一步替换之前。
 - en: 'Combined with an earlier paragraph about replacement lists: ([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
     6.10.4¶7)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合一个关于替换列表的早期段落：([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
+    6.10.4¶7)
 - en: '[...] Any white-space characters preceding or following the replacement list
     of preprocessing tokens are not considered part of the replacement list for either
     form of macro.'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[...] 在预处理标记的替换列表之前或之后的任何空白字符都不被视为宏的替换列表的一部分，无论是哪种形式的宏。'
 - en: '**What does `__VA_OPT__()` expand to?**'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**`__VA_OPT__()`展开为什么？**'
 - en: 'The short answer should be *nothing*, based on the rules for expanding it:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据扩展规则，简短答案应该是*无*：
 - en: If the variable arguments are absent or empty or become empty after macro expansion,
     the expansion of `__VA_OPT__()` is a single placemarker token.
+  id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果可变参数不存在、为空或在宏展开后变为空，则`__VA_OPT__()`的展开是一个单一的占位符标记。
 - en: Otherwise, if used as an operand of `##`, the expansion of `__VA_OPT__()` is
     a single placemarker token (because an empty expansion becomes a placemarker in
     this context).
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 否则，如果作为`##`的操作数使用，`__VA_OPT__()`的展开是一个单一的占位符标记（因为在这种情况下，空展开会变成一个占位符）。
 - en: Otherwise, the expansion of `__VA_OPT__()` is empty (though a single placemarker
     token would be equally valid, as it'll evaporate away in due course).
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 否则，`__VA_OPT__()`的展开为空（尽管一个单独的占位符标记同样有效，因为它将会在适当的时候消失）。
 - en: '`#__VA_OPT__()` therefore becomes an obfuscated way of writing `""`. Meanwhile,
     `__VA_OPT__()` as an operand of `##` can be used to force the *other* operand
     to be in a `##` context. For example, the undesirable behaviour of `, ## __VA_ARGS__`
     can be reproduced via:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，`#__VA_OPT__()`成为了编写`""`的一种模糊方式。与此同时，作为`##`操作数的`__VA_OPT__()`可以用来强制*其他*操作数处于`##`上下文中。例如，通过以下方式可以复制`,`不良行为：`##
+    __VA_ARGS__`：
 - en: '[PRE5]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If `__VA_OPT__()` expands to nothing, regardless of whether the variable arguments
     are absent or empty or become empty after macro expansion, then it might seem
     rational to optimise it away. There''s a corner case though: determining whether
     the variable arguments become empty after macro expansion requires macro expanding
     them, and macro expansion of the (non-standard) `__COUNTER__` macro has visible
     side-effects. Consider:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果`__VA_OPT__()`展开为什么都没有，无论可变参数是否不存在、为空或在宏展开后变为空，都可能会被优化掉。但也有一个边界情况：确定可变参数在宏展开后是否为空需要对其进行宏展开，并且（非标准的）`__COUNTER__`宏的宏展开具有可见的副作用。考虑：
 - en: '[PRE6]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: For the above, gcc 13.2 returns 2, whereas clang 17.0.1 returns 1, indicating
     that clang optimised away the `__VA_OPT__()`.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于上述情况，gcc 13.2返回2，而clang 17.0.1返回1，这表明clang优化掉了`__VA_OPT__()`。
 - en: '**Token pasting and `__VA_OPT__`**'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Token pasting and `__VA_OPT__`**'
 - en: 'The standard is careful to say that the expansion of `__VA_OPT__` can contain
     placemarker tokens: ([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
     6.10.4.1¶7, emphasis mine)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准特别指出`__VA_OPT__`的展开可以包含占位符标记：([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
+    6.10.4.1¶7，我加重了这一点)
 - en: The preprocessing token sequence for [...] a va-opt-replacement [...] consists
     of the results of the expansion of the contained pp-tokens as the replacement
     list of the current function-like macro **before removal of placemarker tokens**,
     rescanning, and further replacement.
+  id: totrans-58
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于[...]一个va-opt-replacement[...]的预处理标记序列[...]由当前函数宏的替换列表中包含的pp-token的展开结果组成，**在删除占位符标记、重新扫描和进一步替换之前**。
 - en: 'These placemarker tokens were originally a fiction dreamt up by the standard
     to provide a succinct description of the semantics of `##`:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些占位符标记最初是标准设想出来的，目的是提供对`##`语义的简洁描述：
 - en: The operands of `##` always produce at least one token. If an operand were to
     produce zero tokens, it instead produces a single placemarker token.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`##`的操作数始终至少生成一个标记。如果一个操作数生成零个标记，则它将生成一个单一的占位符标记。'
 - en: If one operand of `##` is a placemarker token, the result of `##` is the other
     operand.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果`##`的一个操作数是一个占位符标记，则`##`的结果是另一个操作数。
 - en: Placemarker tokens are removed after `##` processing and before rescan.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在`##`处理之后和重新扫描之前，占位符标记会被删除。
 - en: 'Before `__VA_OPT__`, it was possible to ignore this fiction, and [implement
     the preprocessing algorithm](https://www.spinellis.gr/blog/20060626/) with careful
     rules around `##` evaluation rather than producing and later removing placemarker
     tokens. It becomes harder to maintain this fiction with `__VA_OPT__`. Consider:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `__VA_OPT__` 之前，可以忽略这个虚构，并且[用周围对 `##` 评估的小心规则来实现预处理算法](https://www.spinellis.gr/blog/20060626/)，而不是生成并稍后删除占位符令牌。使用
+    `__VA_OPT__` 维护这个虚构变得更加困难。考虑：
 - en: '[PRE7]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Then `G(,,)` expands to the single token `15`, while `G(2,3,4,-)` expands to
     the three tokens `12` `33` `45`. If `y` is empty, then the inner `y ## y` should
     produce a placemarker, and then things get interesting:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '`G(,,)` 展开为单个令牌 `15`，而 `G(2,3,4,-)` 展开为三个令牌 `12` `33` `45`。如果 `y` 是空的，那么内部的
+    `y ## y` 应该产生一个占位符，然后事情就变得有趣起来：'
 - en: '| Expansion of | Result | Notes |'
+  id: totrans-66
   prefs: []
   type: TYPE_TB
+  zh: '| 展开结果 | 结果 | 注意事项 |'
 - en: '| `G(2,,4,-)` | `12` `45` | The `__VA_OPT__` expands to `2``4`. |'
+  id: totrans-67
   prefs: []
   type: TYPE_TB
+  zh: '| `G(2,,4,-)` | `12` `45` | `__VA_OPT__` 展开为 `2``4`。 |'
 - en: '| `G( ,,4,-)` | `1` `45` | The placemarker inhibits merging to `145`. |'
+  id: totrans-68
   prefs: []
   type: TYPE_TB
+  zh: '| `G( ,,4,-)` | `1` `45` | 占位符阻止了合并到 `145`。'
 - en: '| `G(2,, ,-)` | `12` `5` | The placemarker inhibits merging to `125`. |'
+  id: totrans-69
   prefs: []
   type: TYPE_TB
+  zh: '| `G(2,, ,-)` | `12` `5` | 占位符阻止了合并到 `125`。'
 - en: '| `G( ,, ,-)` | `1` `5`† or `15`‡ | The correct result is the merged `15`.
     |'
+  id: totrans-70
   prefs: []
   type: TYPE_TB
+  zh: '| `G( ,, ,-)` | `1` `5`† 或 `15`‡ | 正确结果是合并后的 `15`。'
 - en: † According to gcc 13.2.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: † 根据 gcc 13.2。
 - en: ‡ According to clang 17.0.1.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: ‡ 根据 clang 17.0.1。
 - en: 'The other fun observation is that macro arguments within `__VA_OPT__` get macro
     expanded, even if the `__VA_OPT__` itself is an operand of `##`. Consider:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个有趣的观察是，在 `__VA_OPT__` 中的宏参数会被宏展开，即使 `__VA_OPT__` 本身是 `##` 的操作数。考虑：
 - en: '[PRE8]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Then `H1(__LINE__)` expands to `x__LINE__`, whereas `H2(__LINE__)` expands to
     something like `x3`.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '`H1(__LINE__)` 展开为 `x__LINE__`，而 `H2(__LINE__)` 展开为类似 `x3` 的东西。'
 - en: '**Further reading**'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: '[P1042R1](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1042r1.html)
     tweaked the `__VA_OPT__` semantics slightly a few years ago.'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[P1042R1](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1042r1.html)
+    在几年前略微调整了 `__VA_OPT__` 的语义。'
 - en: '`__VA_OPT__` can be (ab)used for [recursive macros](https://www.scs.stanford.edu/~dm/blog/va-opt.html).'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`__VA_OPT__` 可以被（滥）用于[递归宏](https://www.scs.stanford.edu/~dm/blog/va-opt.html)。'
