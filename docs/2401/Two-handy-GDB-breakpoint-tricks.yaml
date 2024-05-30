@@ -1,46 +1,70 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:19:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:19:58'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Two handy GDB breakpoint tricks
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 两个方便的 GDB 断点技巧
 - en: 来源：[https://nullprogram.com/blog/2024/01/28/](https://nullprogram.com/blog/2024/01/28/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://nullprogram.com/blog/2024/01/28/](https://nullprogram.com/blog/2024/01/28/)
 - en: January 28, 2024
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024 年 1 月 28 日
 - en: nullprogram.com/blog/2024/01/28/
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: nullprogram.com/blog/2024/01/28/
 - en: Over the past couple months I’ve discovered a couple of handy tricks for working
     with GDB breakpoints. I figured these out on my own, and I’ve not seen either
     discussed elsewhere, so I really ought to share them.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在过去的几个月里，我发现了一些处理 GDB 断点的方便技巧。这些技巧是我自己发现的，我没有看到其他地方讨论过，所以我真的应该分享它们。
 - en: Continuable assertions
+  id: totrans-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 可继续的断言
 - en: 'The `assert` macro in typical C implementations [leaves a lot to be desired](/blog/2022/06/26/),
     as does `raise` and `abort`, so I’ve suggested alternative definitions that behave
     better under debuggers:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的 C 实现中的`assert`宏[留下了很多问题](/blog/2022/06/26/)，`raise` 和 `abort` 也是如此，所以我建议了行为在调试器下更好的替代定义：
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Each serves a slightly [different purpose](/blog/2023/10/08/#macros) but still
     has the most important property: Immediately halt the program *directly on the
     defect*. None have an occasionally useful secondary property: Optionally allow
@@ -48,90 +72,130 @@
     any of these macros then there is no reliable continuation. Even manually nudging
     the instruction pointer over the assertion isn’t enough. Compilers assume that
     the program cannot continue through the condition and generate code accordingly.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个都有稍微[不同的目的](/blog/2023/10/08/#macros)，但仍然具有最重要的属性：*直接在缺陷上立即停止程序*。没有一个具有偶尔有用的次要属性：可选择允许程序通过缺陷继续执行。如果程序达到这些宏的任何一个的主体，那么就没有可靠的继续执行。即使手动将指令指针移到断言上方也不够。编译器假定程序无法通过条件继续执行，并相应地生成代码。
 - en: 'The MSVC ecosystem has a solution for this on x86: `int3`. The portable name
     is `__debugbreak`, a name [I’ve borrowed elsewhere](/blog/2022/07/31/).'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: MSVC 生态系统在 x86 上有一个解决方案：`int3`。可移植名称是 `__debugbreak`，一个名称[我曾经在其他地方借用过](/blog/2022/07/31/)。
 - en: '[PRE1]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'On x86 it inserts an `int3` instruction, which fires an interrupt, trapping
     in the attached debugger, or otherwise abnormally terminating the program. Because
     it’s an interrupt, it’s expected that the program might continue. It even leaves
     the instruction pointer on the next instruction. As of this writing, GCC has no
     matching intrinsic, but Clang recently added `__builtin_debugtrap`. In GCC you
     need some less portable inline assembly: `asm ("int3")`.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 x86 上，它插入一个 `int3` 指令，触发中断，陷入附加调试器，或者以其他异常方式终止程序。因为它是一个中断，所以预计程序可能会继续执行。它甚至将指令指针留在下一条指令上。截至撰写本文时，GCC
+    没有相匹配的内部函数，但是 Clang 最近添加了 `__builtin_debugtrap`。在 GCC 中，您需要一些不太便携的内联汇编：`asm ("int3")`。
 - en: 'However, regardless of how you get an `int3` in your program, GDB does not
     currently understand it. The problem is that feature I mentioned: The instruction
     pointer does not point at the `int3` but the next instruction. This confuses GDB,
     causing it to break in the wrong places, possibly even in the wrong scope. For
     example:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，无论您如何在程序中获得`int3`，GDB 目前都不理解它。问题在于我提到的特性：指令指针不指向`int3`，而是指向下一条指令。这使得 GDB
+    困惑，导致它在错误的位置断开，甚至可能在错误的范围内断开。例如：
 - en: '[PRE2]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'With `int3` at the very end of the loop, GDB will break at the *top* of the
     next loop iteration, because that’s where the instruction pointer lands by the
     time GDB is involved. It’s a similar story when placed at the end of a function,
     leaving GDB to break in the caller. To resolve this, we need the instruction pointer
     to still be “inside” the breakpoint after the interrupt fires. Easy! Add a `nop`:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 将`int3`放在循环的最后，GDB 将在下一个循环迭代的*顶部*断开，因为这是 GDB 参与时指令指针所在的位置。当放置在函数的末尾时，情况类似，留下
+    GDB 在调用者处断开的情况。为了解决这个问题，我们需要在中断触发后仍然使指令指针“位于”断点内。简单！添加一个`nop`：
 - en: '[PRE3]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This behaves beautifully, eliminating all the problems GDB has with a plain
     `int3`. Not only is this a solid basis for a continuable assertion, it’s also
     useful as a fast conditional breakpoint, where conventional conditional breakpoints
     are far too slow.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个行为非常好，消除了 GDB 对普通`int3`的所有问题。这不仅是一个可继续的断言的坚实基础，而且作为一个快速的条件断点也很有用，传统的条件断点速度太慢了。
 - en: '[PRE4]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Could GDB handle `int3` better? Yes! Visual Studio, for instance, does not
     require the `nop` instruction. As far as I know there is no ARM equivalent compatible
     with GDB (or even LLDB). The closest instruction, `brk #0x1`, does not behave
     as needed.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 'GDB能更好地处理`int3`吗？是的！比如，Visual Studio就不需要`nop`指令。据我所知，没有与GDB（甚至LLDB）兼容的ARM等效指令。最接近的指令，`brk
+    #0x1`，不会表现出所需的行为。'
 - en: Named positions
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 命名位置
 - en: 'GDB’s built-in user interface understands three classes of breakpoint positions:
     symbols, context-free line numbers, and absolute addresses. When you set some
     breakpoints and (re)start a program under GDB, each kind of breakpoint is handled
     differently:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: GDB的内置用户界面了解三种断点位置的类别：符号、无上下文的行号和绝对地址。当在GDB下设置一些断点并重新启动程序时，每种断点的处理方式是不同的：
 - en: Resolve each symbol, placing a breakpoint on its run-time address.
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 解析每个符号，在其运行时地址上设置断点。
 - en: Map each file+lineno tuple to a run-time address, and place a breakpoint on
     that address. If the line does not exist (i.e. the file is shorter), skip it.
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将每个文件+行号元组映射到运行时地址，并在该地址上放置一个断点。如果该行不存在（即文件较短），则跳过它。
 - en: Place breakpoints exactly on each absolute address. If it’s not a mapped address,
     don’t start the program.
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将断点准确地放在每个绝对地址上。如果不是映射地址，请不要启动程序。
 - en: The first is the best case because it adapts to program changes. Modify the
     code, recompile, and the breakpoint generally remains where you want it.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一种情况是最好的，因为它可以适应程序的更改。修改代码，重新编译，断点通常仍然放在您想要的位置上。
 - en: The third is the least useful. These breakpoints rarely survive across rebuilds,
     and sometimes not even across reruns.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 第三种情况最不实用。这些断点很少能在重建后保存下来，有时甚至在重新运行后也不行。
 - en: The second is in the middle between useful and useless. If you edit the source
     file which has the breakpoint — likely, because you placed the breakpoint there
     for a reason — chances are high that the line number is no longer correct. Instead
@@ -140,51 +204,76 @@
     effectively](https://lists.sr.ht/~skeeto/public-inbox/%3C2d3d7662a361ddd049f7dc65b94cecdd%40disroot.org%3E#%3C20240112210447.mxhvo7bg4mjp4jyz@nullprogram.com%3E)
     through external code edits! GDB front ends tend to handle it better, especially
     when they’re also the code editor and so directly observe all edits.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二种情况介于有用和无用之间。如果您编辑了源文件，其中有断点——很可能是因为您放置了断点——那么该行号可能已不再正确。相反它会漂移，需要手动替换。这是繁琐的，GDB应该做得更好。认为这是不合理的吗？Visual
+    Studio调试器正是[非常有效地](https://lists.sr.ht/~skeeto/public-inbox/%3C2d3d7662a361ddd049f7dc65b94cecdd%40disroot.org%3E#%3C20240112210447.mxhvo7bg4mjp4jyz@nullprogram.com%3E)通过外部代码编辑处理这些情况！GDB前端在处理这些情况时更好，尤其是当它们也是代码编辑器直接观察所有编辑时。
 - en: 'As a workaround we can get the first kind by temporarily *naming* a line number.
     This requires editing the source, but remember, the very reason we need it is
     because the source in question is actively changing. How to name a line? C and
     C++ labels give a name to program position:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一种变通方法，我们可以通过临时*命名*行号来获得第一种。这需要编辑源代码，但请记住，我们需要这样做的原因正是因为涉及的源代码正在积极变化。如何给一行命名？C和C++标签给程序位置命名：
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The name `loop` is local to `example`, but the qualified `example:loop` is a
     global name, as suitable as any other symbol. I could, say, reliably trace the
     progress of this loop despite changes to its position in the source.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 名称`loop`是局部的`example`，但限定的`example:loop`是一个全局名，与其他符号一样合适。我可以，比如，可靠地追踪该循环的进度，尽管它在源代码中的位置发生了变化。
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'One downside is dealing with `-Wunused-label` (enabled by `-Wall`), and so
     I’ve considered disabling the warning in [my defaults](/blog/2023/04/29/). **Update**:
     Matthew Fernandez pointed out that the `unused` label attribute eliminates the
     warning, solving my problem:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个不利之处是处理`-Wunused-label`（开启了`-Wall`），因此我考虑在[我的默认设置](/blog/2023/04/29/)中禁用该警告。**更新**:马修·费尔南德斯指出，`unused`标签属性消除了警告，解决了我的问题：
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'More often I use an assembly label, usually named `b` for convenience:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我更经常使用一个汇编标签，通常方便地命名为`b`：
 - en: '[PRE8]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Like `int3`, sometimes it’s necessary to give it a `nop` so that GDB has something
     on which to break. “Enabling” it at any time is quick:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 像`int3`一样，有时需要给它一个`nop`，以便GDB有东西可以中断。随时“启用”它速度很快：
 - en: Because it’s not [`.globl`](https://sourceware.org/binutils/docs/as/Global.html),
     it’s a weak symbol, and I can place up to one per translation unit, all covered
     by the same GDB breakpoint item (less useful than it sounds). I haven’t actually
     checked, but I probably more often use `dprintf` with such named lines than actual
     breakpoints.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为它不是[`.globl`](https://sourceware.org/binutils/docs/as/Global.html)，它是一个弱符号，我可以在每个翻译单元中放置最多一个，都由相同的GDB断点项目覆盖（听起来没有那么有用）。我实际上还没有检查，但我可能更经常使用`dprintf`来命名这样的行，而不是实际的断点。
 - en: If you have similar tips and tricks of your own, I’d like to learn about them!
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有自己的类似技巧，我很想学习！
