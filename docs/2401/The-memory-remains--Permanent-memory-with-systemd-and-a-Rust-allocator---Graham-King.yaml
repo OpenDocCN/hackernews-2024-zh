@@ -2,35 +2,42 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:39:00'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日14:39:00
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'The memory remains: Permanent memory with systemd and a Rust allocator · Graham
     King'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 内存保留：永久内存和Rust分配器与systemd · Graham King
 - en: 来源：[https://darkcoding.net/software/rust-systemd-memory-remains/](https://darkcoding.net/software/rust-systemd-memory-remains/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://darkcoding.net/software/rust-systemd-memory-remains/](https://darkcoding.net/software/rust-systemd-memory-remains/)
 - en: We are going to **stitch three things** together to make Rust objects that **survive
     program restart**. The memory backing the object will continue existing while
     the program restarts.
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们要**将三件事**连在一起，以创建在程序重新启动时**仍然存在的Rust对象**。对象背后的内存将在程序重启时继续存在。
 - en: Systemd’s [File Descriptor Store](https://systemd.io/FILE_DESCRIPTOR_STORE/)
     (systemd 254+) allows us to give any file descriptor to systemd, and later ask
     for it back. The file stays open when we `systemctl restart <prog>`. Yes this
@@ -39,6 +46,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Systemd的[文件描述符存储](https://systemd.io/FILE_DESCRIPTOR_STORE/)（systemd 254+）允许我们将任何文件描述符交给systemd，然后稍后请求回来。当我们`systemctl
+    restart <prog>`时，文件保持打开状态。是的，这类似于[套接字激活](https://darkcoding.net/software/systemd-socket-activation-in-go/)。
 - en: The [memfd_create](https://www.man7.org/linux/man-pages/man2/memfd_create.2.html)
     syscall (Linux 3.17+) creates an anonymous file that only exists in memory, and
     only as long as a reference to it exists. It effectively gives us a file descriptor
@@ -48,6 +57,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[memfd_create](https://www.man7.org/linux/man-pages/man2/memfd_create.2.html)系统调用（Linux
+    3.17+）创建一个仅存在于内存中的匿名文件，只要对它的引用存在。它有效地为我们提供了指向一块分配的内存的文件描述符。它行为类似于常规文件，所以我们可以用[mmap](https://www.man7.org/linux/man-pages/man2/mmap.2.html)将其映射到常规内存中。'
 - en: Rust’s [Allocator trait](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)
     which allows us to control the memory an object lives in (Rust nightly since at
     least 2 years ago). We will select our allocator with [Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in).
@@ -55,6 +66,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Rust的[分配器特性](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)允许我们控制对象所在的内存（至少在两年前的Rust
+    nightly）。我们将用[Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in)来选择我们的分配器。
 - en: We will make a Rust allocator which creates a memfd, shares it with systemd,
     mmap’s it, and uses that memory as the allocation our allocator returns. When
     the program restarts we ask systemd for our memfds, mmap it, and convert that
@@ -64,10 +77,12 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将制作一个Rust分配器，它创建一个memfd，与systemd共享，将其映射，然后使用该内存作为我们的分配器返回的分配。当程序重新启动时，我们向systemd请求我们的memfd，将其映射，并将其转换为我们的对象。最后，我们将分配器和"恢复者"包装在一个函数中，该函数会判断我们是在分配一个新对象还是恢复一个现有对象。
 - en: 'Here’s an arbitrary object we will use throught the post:'
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一些我们将在文中使用的任意对象：
 - en: '[PRE0]'
   id: totrans-12
   prefs: []
@@ -79,6 +94,7 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意那个相当尴尬的`name`数组。我们不想在我们的对象中有任何指针，所以不会有`String`或`Vec`，因为那些也需要存储在我们的永久内存存储中。
 - en: The `repr(C)` ensures that the in-memory layout (representation) of this object
     doesn’t change between versions of our binary. Rust makes no promises on memory
     layout unless you request a specific representation. (Thank you Harry Stern on
@@ -86,11 +102,14 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '`repr(C)`确保了这个对象的内存布局（表示）在我们的二进制版本之间不会改变。除非你请求特定的表示，Rust不会对内存布局进行承诺。（感谢Hacker
+    News上的Harry Stern提出这一点）。'
 - en: A Rust Allocator
   id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个Rust分配器
 - en: If we allocate an object on the heap with `Box`, by default it will use the
     sytem allocator, which on Linux uses malloc. [Looking at the assembly](/software/underrust-rust-assembly-output/)
     we see it call `__rust_alloc` (via `GLOBAL_OFFSET_TABLE`) which calls `__rdl_alloc`
@@ -98,12 +117,14 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们用`Box`在堆上分配一个对象，默认情况下它将使用系统分配器，在Linux上使用malloc。[观察汇编](/software/underrust-rust-assembly-output/)，我们看到它调用`__rust_alloc`（通过`GLOBAL_OFFSET_TABLE`）然后调用`__rdl_alloc`，最后调用glibc的`malloc`。
 - en: '`malloc` will get memory from the operating system ([details](https://darkcoding.net/software/how-memory-is-allocated/))
     by either moving the program break (`sbrk` syscall) or by memory mapping an anonymous
     region (via `mmap` syscall).'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '`malloc`会从操作系统获取内存（[详情](https://darkcoding.net/software/how-memory-is-allocated/)），通过移动程序断点（`sbrk`系统调用）或通过内存映射匿名区域（通过`mmap`系统调用）。'
 - en: Rust (nightly) allows us to implement our own allocator. Here is an allocator
     that delegates to the system allocator - the allocator you’re using if you don’t
     know which one you’re using.
