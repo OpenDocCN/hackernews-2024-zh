@@ -1,206 +1,319 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:25:18'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日14:25:18
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Why My Print Didn't Output Before a Segmentation Fault - Ye Lin's Random stuff
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么我的打印在分段错误之前没有输出 - 叶林的随机东西
 - en: 来源：[https://blog.yelinaung.com/posts/what-happened-to-my-print/](https://blog.yelinaung.com/posts/what-happened-to-my-print/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.yelinaung.com/posts/what-happened-to-my-print/](https://blog.yelinaung.com/posts/what-happened-to-my-print/)
 - en: So, as I was learning some [C](https://beej.us/guide/bgc/), at the pointers/segfault,
     I was trying this code myself.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，当我学习一些[C](https://beej.us/guide/bgc/)时，在指针/段错误中，我自己尝试了这段代码。
 - en: '[PRE0]'
+  id: totrans-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then compile it and run it in the terminal.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在终端中编译并运行它。
 - en: '[PRE1]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: To my surprise, it did not print out both “Hello!” and “Another Hello!” and
     the program just crashed with “Segmentation fault (core dumped)” (aka segfault).
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 令我惊讶的是，它没有打印出“Hello！”和“Another Hello！”并且程序只是以“分段错误（核心已转储）”（也称为segfault）崩溃。
 - en: For “Another Hello!”, I get it. Program crashed before it reached to that line.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于“Another Hello!”，我明白了。程序在达到那一行之前崩溃了。
 - en: How about “Hello!” ? What’s going on here ? Is it the segfault that prevented
     printing out ? Before we go further, allow me to expand a bit on this segfault
     thing.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: “Hello！”怎么样？这里发生了什么？是段错误阻止了打印吗？在我们进一步之前，让我稍微扩展一下这个段错误的东西。
 - en: The first line declares a pointer `p` that should hold an integer type and we
     are setting it to `NULL` (nowhere/no actual thing).
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一行声明一个指针`p`，应该保存一个整数类型，并将其设置为`NULL`（没有实际内容）。
 - en: In the second line tries to writes “5” to the memory location pointed to by
     `p`. But `p` doesn’t exist. It’s invalid memory access and causes a crash which
     is [segfault](https://en.wikipedia.org/wiki/Segmentation_fault)!
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第二行尝试将“5”写入由`p`指向的内存位置。但是`p`不存在。这是无效的内存访问，导致崩溃，即[段错误](https://en.wikipedia.org/wiki/Segmentation_fault)!
 - en: Wait, how does this crash prevent the program to print out “Hello!” in terminal?
     It seems like nothing to do with our `printf` since it comes before the crash
     happens.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 等等，这个崩溃怎么阻止程序在终端打印“Hello！”？好像与我们的`printf`无关，因为它发生在崩溃之前。
 - en: What happens when you do `printf` ? In most system, it prints out the data to
     the output device, in this case, the terminal. It turns out the output devices
     are “line buffered”. Line buffering means the outputs are stored in a place called
     “buffer” before they are printed out and will be printed out later on certain
     conditions. The condidtions, according to the [GNU C guidelines](https://www.gnu.org/software/libc/manual/html_node/Flushing-Buffers.html)
     are
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你执行`printf`时会发生什么？在大多数系统中，它会将数据打印到输出设备，即终端。结果输出设备是“行缓冲”。行缓冲意味着输出被存储在一个称为“缓冲区”的地方，直到满足特定条件才会被打印出来。根据[GNU
+    C指南](https://www.gnu.org/software/libc/manual/html_node/Flushing-Buffers.html)的条件
 - en: '* * *'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: (Copied straight from the guide)
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: （直接从指南中复制）
 - en: 'Flushing output on a buffered stream means transmitting all accumulated characters
     to the file. There are many circumstances when buffered output on a stream is
     flushed automatically:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缓冲流上刷新输出意味着将所有累积的字符传输到文件中。有许多情况下，流上的缓冲输出会自动刷新：
 - en: When you try to do output and the output buffer is full.
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当尝试进行输出并且输出缓冲区已满时。
 - en: When the stream is closed. See Closing Streams.
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当流关闭时。参见关闭流。
 - en: When the program terminates by calling exit. See Normal Termination.
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当程序通过调用退出终止时。参见正常终止。
 - en: When a newline is written, if the stream is line buffered.
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当写入新行时，如果流是行缓冲的。
 - en: Whenever an input operation on any stream actually reads data from its file.
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每当在任何流上进行输入操作实际上从其文件中读取数据时。
 - en: '* * *'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: It is true for printing something to the terminal as well as writing something
     to a file. In our little program, the program crashed due to segfault and did
     not manage to flush the buffer. The program abruptly ended.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于将某些东西打印到终端以及将某些东西写入文件，这是正确的。在我们的小程序中，由于段错误而崩溃，并且未能刷新缓冲区。程序突然结束了。
 - en: Now, how can we force the program to print out “Hello!” in terminal before anything
     crashed ? That will help with debugging things like until at whihc point my program
     executed before it crashed.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们如何才能强制程序在任何东西崩溃之前在终端打印出“Hello！”？这将有助于调试诸如在崩溃之前我的程序执行到哪个点之类的事情。
 - en: Well, the easy way is remove the error part of the program!
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，简单的方法是移除程序的错误部分！
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Compile it and run it again!
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次编译并运行它！
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, all goes well, `main()` returns successfully and everything is flushed
     out to the output device. I see my prints!
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，一切都顺利进行，`main()`成功返回，并且所有内容都被刷新到输出设备。我看到我的打印！
 - en: Newline (`\n`)
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 换行符（`\n`）
 - en: But..how about I want to keep things the same way and have my prints. I wanna
     have the cake and eat it too.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是..如果我想保持事情原样并输出我的内容呢。我想两全其美。
 - en: Rememer, in one of the conditions above, it says that “When a newline is written,
     if the stream is line buffered”.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住，在上面的某个条件中，它说“当写入换行时，如果流是行缓冲的”。
 - en: For that, I can use a newline character (`\n`) to force the program flush to
     the buffer. We can keep the rest in the same way. Let’s see if that works.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 对此，我可以使用换行符（`\n`）强制程序刷新缓冲区。我们可以以同样的方式保持其余部分。让我们看看这是否有效。
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Yes! I see my “Hello!” here.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的！我在这里看到了我的“Hello！”。
 - en: '[PRE5]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The “Another Hello!” didn’t make it but that’s ok. The program crashed before
     it reaches to that line.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: “另一个Hello！”没有出现，但没关系。程序在到达那一行之前就崩溃了。
 - en: 'Checking the exit code of the program:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查程序的退出代码：
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The `fflush` function also flushes the output buffer to the output device without
     the use of newline character (`\n`).
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '`fflush` 函数还可以在不使用换行符 (`\n`) 的情况下刷新输出缓冲区到输出设备。'
 - en: '[PRE7]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: will output
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出结果
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: stderror is always unbuffered
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: stderror 总是不带缓冲的
 - en: Someone on HN [said](https://news.ycombinator.com/reply?id=38830109&goto=item%3Fid%3D38803367%2338830109)
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: HN 上的某人[说](https://news.ycombinator.com/reply?id=38830109&goto=item%3Fid%3D38803367%2338830109)
 - en: 'If you use stderr, you get this for free: stderr is always unbuffered (see
     [here](https://linux.die.net/man/3/stderr)).'
+  id: totrans-49
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果你使用 stderr，你就可以免费获得这个：stderr 总是不带缓冲的（参见[这里](https://linux.die.net/man/3/stderr)）。
 - en: '[PRE9]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: works the same
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 也能起作用
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Same exit code as the previous example as well.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 与前面例子相同的退出代码。
 - en: Well, that’s been my little TIL and hope you learn something as well!
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，这就是我的小发现，希望你也能学到一些！
 - en: References
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参考资料
