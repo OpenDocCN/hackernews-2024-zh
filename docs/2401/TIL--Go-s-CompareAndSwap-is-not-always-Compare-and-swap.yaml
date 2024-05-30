@@ -1,50 +1,64 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:35:58'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'TIL: Go’s CompareAndSwap is not always Compare-and-swap'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lu.sagebl.eu/notes/go-cas/](https://lu.sagebl.eu/notes/go-cas/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'TIL: Go’s CompareAndSwap is not always Compare-and-swap'
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Published on 7 January 2024
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Go's standard package `sync/atomics` provides programmers with functions to
     use the underlying CPU-level atomic operations such as *compare-and-swap* (CAS),
     through `atomic.CompareAndSwapT` (where `T` is an integer type).
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '**Problem**: Not all CPU architectures offers a CAS instruction to rely on
     to implement `atomic.CompareAndSwapT`. However, Go must compile that function
     code to something semantically equivalent—let''s see what.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: <details><summary>What is a compare-and-swap?</summary>
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Conceptually, CAS is an operation defined as followed, except it's atomic.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]</details>'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: x86_64 (AMD64)
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -52,38 +66,48 @@
     function calls a lower-level function `Cas64` which is defined in assembly language
     as follows. It's a mapping to x86_64's `LOCK CMPXCHG` ("Compare and Exchange")
     instruction that performs the CAS.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The code is from [Go 1.21.5 source](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_amd64.s;l=46-53).
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'Remarks: `LOCK` is not an instruction, it''s a prefix to make `CMPXCHG` atomic
     in concurrent contexts. `AX`, `BX`, `CX` and `FP` are translated into real corresponding
     registers during compilation; The Go assembler does not use the actual architecture''s
     regsiter names directly.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Not much more to say, the Go function translates to the equivalent CPU instruction,
     here.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Arm64 (AArch64)
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The Arm64 case is interesting. The function `Cas64` defined for Arm64 has two
     ways to perform a CAS operation.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: With the `CASAL` instruction, which is similar to AMD64's `CMPXCHG`.
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: With the `LDAXR` and `STLXR` instructions, enclosing the hand-coded CAS logic
     in-between.
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -91,45 +115,61 @@
     that provides CAS operations. If the CPU supports it, this path is taken. If the
     CPU does not support LSE, then the function fallbacks on another path, performing
     an "emulated" CAS with the help of `LDAXR` and `STLXR`.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: (I added the comments.)
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: I was curious about the Arm64 case, because typical RISC architectures are not
     usually keen to provide instructions that operate directly on memory like x86_64.
     With RISC, one usually needs to load a value from memory, operates on it, and
     then stores the value into memory in distinct steps, unlike CAS does.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: In theory LSE instructions such as `CASAL` should boost code performance. It
     appeared to be true on micro-benchmarks simulating cases of high contention, but
     according to some [benchmarks conducted by the author of the *MySQL on ARM* blog](https://mysqlonarm.github.io/ARM-LSE-and-MySQL/),
     the results are more mitigated on real workloads.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: RISC-V 64 (RV64A)
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: RISC-V 64（RV64A）
 - en: RV64A's `LRD` and `SCD` instructions are equivalent to Arm64's `LDAXR` and `STLXR`
     seen previously. The hand-coded logic is similar, too.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: RV64A的`LRD`和`SCD`指令与之前看到的Arm64的`LDAXR`和`STLXR`是等效的。手动编写的逻辑也类似。
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Code from [Go source](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_riscv64.s;l=59-73).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码来自[Go源代码](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_riscv64.s;l=59-73)。
 - en: 'It seems that RISC-V is purer than Arm64; it does not provide a ready-to-use
     CAS instruction. CAS must be done by hand with the LL/SC pattern. I found an interesting
     rationale in the RISC-V instruction manual:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来RISC-V比Arm64更纯粹；它不提供现成的CAS指令。CAS必须用LL/SC模式手动完成。在RISC-V指令手册中我发现了一个有趣的原因：
 - en: '<q>Both compare-and-swap (CAS) and LR/SC can be used to build lock-free data
     structures. After extensive discussion, we opted for LR/SC for several reasons:
     1) CAS suffers from the ABA problem, which LR/SC avoids because it monitors all
@@ -137,19 +177,27 @@
     2) CAS would also require a new integer instruction format to support three source
     operands (address, compare value, swap value) as well as a different memory system
     message format, which would complicate microarchitecture</q>'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: <q>比较和交换（CAS）和LR/SC都可以用于构建无锁数据结构。经过广泛讨论，我们选择了LR/SC，原因有几点：1）CAS存在ABA问题，LR/SC可以避免这个问题，因为它监视对地址的所有访问，而不仅仅检查数据值的变化；2）CAS还需要一个新的整数指令格式来支持三个源操作数（地址、比较值、交换值），以及一个不同的内存系统消息格式，这会使微架构复杂化</q>
 - en: Additional notes
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 附加说明
 - en: 'I looked at Go''s implementation because that''s what I use. Unsurprisingly,
     other implementations take the same approach: use LL/SC when CAS does not exist
     *in silico*, and for Arm64 use one or another pattern depending on the availability
     of LSE. The previously linked article says as follows:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我查看了Go的实现，因为那是我使用的。毫不奇怪，其他实现采用了相同的方法：在计算机中**不存在CAS**时使用LL/SC，对于Arm64，根据LSE的可用性使用一种模式或另一种模式。之前链接的文章如下所示：
 - en: <q>GCC auto emits a code with dynamic check with both variants (lse and non-lse).
     Runtime a decision is taken and accordingly said variant is executed.</q>
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: <q>GCC自动使用两种变体（lse和non-lse）进行动态检查的代码。运行时根据情况做出决定，并相应地执行所选的变体。</q>
