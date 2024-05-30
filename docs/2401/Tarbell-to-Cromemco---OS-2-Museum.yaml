@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:05:16'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Tarbell to Cromemco | OS/2 Museum
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.os2museum.com/wp/tarbell-to-cromemco/](https://www.os2museum.com/wp/tarbell-to-cromemco/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,11 +28,13 @@
     I came across a disk image of [86-DOS 1.14](https://archive.org/details/86-dos-1.14).
     I ran the older 86-DOS versions in the SIMH simulator which can emulate the Cromemco
     disk controller supported by 86-DOS.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: Unfortunately the 86-DOS 1.14 disk was meant to be used with the different and
     incompatible Tarbell disk controllers. SIMH doesn’t emulate the Tarbell controller
     and the disk can’t be booted.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Then it occurred to me that 86-DOS came with all the required source code and
@@ -36,6 +44,7 @@
     was different, and therefore only the boot loader and the I/O system (both within
     the reserved tracks) were different; the actual files on the FAT file system were
     identical.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Everything necessary is on the 86-DOS 1.14 disk, all that’s missing is a way
@@ -45,13 +54,16 @@
     86-DOS 1.10 disk. With that in hand, it is possible to attach both the (bootable)
     Cromemco 86-DOS 1.10 disk and the (non-bootable) Tarbell 86-DOS 1.14 disk to SIMH
     and boot.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'The boot disk will be A: and B: will be the not-yet-bootable Tarbell disk.
     The tools on the 1.14 disk have no trouble running under 86-DOS 1.10.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Prepare SIMH environment
+  id: totrans-11
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -60,44 +72,55 @@
     already been done and an archive with the required disk images and SIMH can be
     obtained [here](/files/tarbell-to-cromemco.zip). The SIMH emulator set up to run
     86-DOS originally came from [here](https://web.archive.org/web/20080819181906/http://www.86dos.org/).
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: To use the two-disk setup, run ‘altairz80 tartocro’ on a Windows machine. Keep
     in mind that to exit SIMH, you can use Ctrl-Break.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Once 86-DOS boots, the first step is editing BOOT.ASM and DOSIO.ASM to support
     Cromemco rather than Tarbell controllers.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: To do that, there is EDLIN, which is… not a very nice editor, but it *does*
     work. Basic EDLIN documentation can be [found on Bitsavers](http://bitsavers.informatik.uni-stuttgart.de/pdf/seattleComputer/86-DOS_0.3_Users_Manual_1980.pdf#page=13&zoom=auto,-138,657).
     EDLIN has its own command line; to get at a specific line, enter the line number.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: Fix BOOT.ASM
+  id: totrans-16
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'In BOOT.ASM, CROMEMCOLARGE must be enabled and TARBELLDOUBLE disabled. To do
     that, change line 18 from ‘CROMEMCOLARGE: EQU 0’ to ‘CROMEMCOLARGE: EQU 1’ and
     line 20 from ‘TARBELLDOUBLE: EQU 1’ to ‘TARBELLDOUBLE: EQU 0’.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Note that to copy the template (previous line contents) in EDLIN, the F3 key
     does not work but it is possible to press Esc and then U (this must be capital
     U not lowercase u; in other words, first press Esc and then Shift+U).
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Write out the modified file and exit EDLIN by entering ‘E’ on the EDLIN command
     line (in this version, the E can be lowercase). The SIMH output will look about
     like this:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Fix DOSIO.ASM
+  id: totrans-21
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -106,31 +129,39 @@
     won’t assemble). To do that, change line 26 from ‘TARBELLDD: EQU 1’ to ‘TARBELLDD:
     EQU 0’, line 27 from ‘CROMEMCO4FDC: EQU 0’ to ‘CROMEMCO4FDC: EQU 1’, and finally
     change line 47 from ‘FASTSEEK: EQU 0’ to ‘FASTSEEK: EQU 1’.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Assemble modified source
+  id: totrans-23
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'Now assemble the modified source files. To avoid creating large listing files
     which take up too much disk space, it is necessary to use the rather odd syntax
     of the SCP assembler as follows:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The assembler always assumes .ASM extension for source files. The fake ‘bbz’
     extension tells ASM to look for the source .ASM file on drive B:, also use drive
     B: to output the resulting .HEX file, and to produce no listing file (.PRN).'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: Now the HEX files need to be converted to binary (.COM) files. That is accomplished
     by the HEX2BIN utility. Simply run ‘hex2bin boot’ and ‘hex2bin dosio’. There should
     now be a fresh BOOT.COM and DOSIO.COM.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Install modified code
+  id: totrans-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -138,45 +169,60 @@
     on the disk. The boot sector is the first sector, and the I/O system immediately
     follows it on the first track. Conveniently, the DEBUG utility can do all the
     hard work.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'To put the boot sector in place, run ‘debug boot.com’, then enter ‘w 100 1
     0 1’ and finally exit DEBUG with ‘q’. Like this:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The W command has four arguments. The first is the starting address, in this
     case 100h because .COM files are loaded at address 100h in the program segment.
     The second argument is the drive, with drive B: being addressed as drive 1 in
     DEBUG. The third argument is the starting record/sector, and zero is the boot
     sector. The fourth and last argument is the number of records to copy (one).'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Now the process must be repeated for the I/O system. Run ‘debug dosio.com’ and
     then ‘w 100 1 1 8’, exit DEBUG with ‘q’.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The W command is almost the same, except it writes 8 sectors and starts at logical
     sector 1 (the sector immediately following the boot sector).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: Boot it up
+  id: totrans-36
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'If everything went well, the modified 86-DOS 1.14 disk is now bootable in SIMH:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: And there it is! 86-DOS 1.14 running in SIMH on the emulated Cromemco controller.
     All the necessary tools were on the 1.14 disk itself, the only thing missing was
     a way to run them. Borrowing an existing SIMH compatible 86-DOS disk did the trick.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是！在模拟的Cromemco控制器上运行的86-DOS 1.14。所有必要的工具都在1.14磁盘上，唯一缺少的是运行它们的方法。借用一个现有的SIMH兼容的86-DOS磁盘解决了这个问题。
