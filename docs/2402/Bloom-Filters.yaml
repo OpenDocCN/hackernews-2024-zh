@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:01:50'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Bloom Filters
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://samwho.dev/bloom-filters/](https://samwho.dev/bloom-filters/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,61 +29,76 @@
     about a tool you may not have heard of before. It's a niche tool that won't apply
     to many problems, but when it does you'll find it invaluable. It's called a "bloom
     filter."
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: <s-dog name="sage" mode="warning">**Before you continue!** This post assumes
     you know what a **hash function** is, and if you don't it's going to be tricky
     to understand. Sam has written a post about hash functions, and recommendeds that
     you **[read this first](/hashing).**</s-dog>
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#what-bloom-filters-can-do) What bloom filters can do'
+  id: totrans-8
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Bloom filters are similar to the `Set` data structure. You can add items to
     them, and check if an item is present. Here''s what it might look like to use
     a bloom filter in JavaScript, using a made-up `BloomFilter` class:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: While this looks almost identical to a `Set`, there are some key differences.
     Bloom filters are what's called a **probabilistic data structure**. Where a `Set`
     can give you a concrete "yes" or "no" answer when you call `contains`, a bloom
     filter can't. Bloom filters can give definite "no"s, but they can't be certain
     about "yes."
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the example above, when we ask `bf` if it contains `"Ant"` and `"Rhino"`,
     the `true` that it returns isn''t a guarantee that they''re present. We know that
     they''re present because we added them just a couple of lines before, but it would
     be possible for this to happen:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: We'll demonstrate *why* over the course of this post. For now, we'll say that
     when bloom filters return `true` it doesn't mean "yes", it means "maybe". When
     this happens and the item has never been added before, it's called a **false-positive**.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: The opposite, claiming "no" when the answer is "yes," is called a **false-negative**.
     A bloom filter will *never* give a false-negative, and this is what makes them
     useful.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: <s-dog name="haskie" mode="confused">A data structure that lies to you?! How
     could that possibly be useful?</s-dog>
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: It's not strictly lying, it's just not giving you a definite answer. Let's look
     at an example where we can use this property to our advantage.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#when-bloom-filters-are-useful) When bloom filters are useful'
+  id: totrans-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -86,12 +107,14 @@
     the list every time a user navigates the browser. If the link they're trying to
     visit is in the list, you warn the user that they might be about to visit a malicious
     website.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: If we assume there are, say, 1,000,000 malicious links on the Internet, and
     each link is 20 characters long, then the list of malicious links would be 20MB
     in size. This isn't a huge amount of data, but it's not small either. If you have
     lots of users and want to keep this list up to date, the bandwidth could add up.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: However, if you're happy to accept being wrong 0.0001% of the time (1 in a million),
@@ -100,6 +123,7 @@
     1 in every million links visited. If you wanted to take it even further, and you
     were happy to accept being wrong 0.1% of the time (1 in 1000), the bloom filter
     would only be 1.8MB.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: This use-case isn't hypothetical, either. Google Chrome used a bloom filter
@@ -109,41 +133,56 @@
     make an API call to check the full list to be sure. No more spurious warnings,
     and the bloom filter would save you from having to call the API for every link
     visited.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#how-bloom-filters-work) How bloom filters work'
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#how-bloom-filters-work) 布隆过滤器如何工作'
 - en: At its core, a bloom filter is an array of <s-word>bits</s-word>. When it is
     created, all of the <s-word>bits</s-word> are set to 0\. We're going to represent
     this as a grid of circles, with each circle representing 1 <s-word>bit</s-word>.
     Our bloom filters in this post are all going to have 32 <s-word>bits</s-word>
     in total.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '在本贴中，布隆过滤器的核心是一个<s-word>bit</s-word>数组。创建时，所有的<s-word>bit</s-word>都设置为0。我们将以圆圈的网格表示这一点，每个圆圈代表一个<s-word>bit</s-word>。本文中的布隆过滤器总共有32个<s-word>bit</s-word>。  '
 - en: <s-dog name="sam" padding="false">I'm experimenting with alternate colour palettes.
     If you find the above difficult to read, or just don't like it, please try [this
     one](?palette=tol#bf0) and let me know what you think. [Click here](?palette=wong#bf0)
     to go back to normal.</s-dog>
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-dog name="sam" padding="false">我正在尝试备用的颜色调色板。如果你觉得上面的难以阅读，或者只是不喜欢，试试[这个](?palette=tol#bf0)，然后告诉我你的想法。[点击这里](?palette=wong#bf0)返回正常。</s-dog>
 - en: To add an item to the bloom filter, we're going to hash it with 3 different
     hash functions, then use the 3 resulting values to set 3 <s-word>bits</s-word>.
     If you're not familiar with hashing, I recommend reading [my post](/hashing) about
     it before continuing.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将项目添加到布隆过滤器中，我们将使用3个不同的哈希函数对其进行哈希，然后使用3个结果值来设置3个<s-word>bit</s-word>。如果您不熟悉哈希，请在继续之前阅读[我的帖子](/hashing)。
 - en: 'For this post I''m choosing to use 3 of the [SHA](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms)
     family of hash functions: <s-word>sha1</s-word>, <s-word>sha256</s-word>, and
     <s-word>sha512</s-word>. Here''s what our bloom filter looks like if we add the
     value "foo" to it:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本帖子，我选择使用[SHA](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms)哈希函数家族的3个：
+    <s-word>sha1</s-word>、<s-word>sha256</s-word>和<s-word>sha512</s-word>。如果我们将值“foo”添加到其中，我们的布隆过滤器看起来是这样的：
 - en: <s-bloom-filter id="bf1" class="bf" hashes="sha1,sha256,sha512" bits="32"><add
     value="foo"></add></s-bloom-filter>
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-bloom-filter id="bf1" class="bf" hashes="sha1,sha256,sha512" bits="32"><add
+    value="foo"></add></s-bloom-filter>
 - en: The <s-word>bits</s-word> in positions <s-bitlink bfid="bf1" highlight="true">15</s-bitlink>,
     <s-bitlink bfid="bf1">16</s-bitlink> and <s-bitlink bfid="bf1">27</s-bitlink>
     have been set. Other <s-word>bits</s-word>, e.g. <s-bitlink bfid="bf1">1</s-bitlink>
@@ -155,48 +194,68 @@
     and 16 with <s-word>sha512</s-word>. The table below shows what's happening, and
     you can try inputting your own values to see what <s-word>bits</s-word> they would
     set if added.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置为<s-bitlink bfid="bf1" highlight="true">15</s-bitlink>、<s-bitlink bfid="bf1">16</s-bitlink>和<s-bitlink
+    bfid="bf1">27</s-bitlink>的<s-word>bit</s-word>已被设置。其他的<s-word>bit</s-word>，如<s-bitlink
+    bfid="bf1">1</s-bitlink>没有被设置。您可以将鼠标悬停在本段落中的<s-word>bit</s-word>上，以在可视化中突出显示它们。我们通过对我们的3个哈希函数的每个哈希值进行哈希，然后对我们的布隆过滤器中的<s-word>bit</s-word>数取模来达到这种状态。取模是指除以32后的余数，因此我们得到了27个<s-word>sha1</s-word>，15个<s-word>sha256</s-word>和16个<s-word>sha512</s-word>。下表显示了发生的情况，您可以尝试输入您自己的值，看看它们添加了哪些<s-word>bit</s-word>。
 - en: <hash-values id="hv1" bfid="bf1" value="foo" mod="32">Go ahead and <s-word>add</s-word>
     a few of your own values to our bloom filter below and see what happens. There's
     also a <s-word>check</s-word> button that will tell you if a value is present
     within the bloom filter. A value is only considered present if all of the <s-word>bits</s-word>
     checked are set. You can start again by hitting the <s-word>clear</s-word> button.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: <hash-values id="hv1" bfid="bf1" value="foo" mod="32">继续，并在下面的我们的布隆过滤器中添加一些你自己的值，看看会发生什么。还有一个<s-word>check</s-word>按钮，会告诉你布隆过滤器中是否存在某个值。只有当所有检查的<s-word>bit</s-word>都被设置时，才会认为存在该值。您可以通过点击<s-word>clear</s-word>按钮重新开始。</hash-values>
 - en: <s-word-adder bfid="bf2"></s-word-adder>
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-word-adder bfid="bf2"></s-word-adder>
 - en: You might occasionally notice that only 2, or even 1, <s-word>bits</s-word>
     get set. This happens when 2 or more of our hash functions produce the same value,
     or we attempt to set a <s-word>bit</s-word> that has already been set. Taking
     that a bit further, have a think about the implications of a bloom filter that
     has every <s-word>bit</s-word> set.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能偶尔会注意到只有2个，甚至1个<s-word>bit</s-word>被设置。当我们的2个或更多哈希函数产生相同的值，或者我们尝试设置已经被设置的<s-word>bit</s-word>时，就会发生这种情况。再深入思考一下，想想每个<s-word>bit</s-word>都被设置的布隆过滤器的含义。
 - en: <s-dog name="haskie" mode="concerned">Hmm... If every <s-word>bit</s-word> is
     set, then won't the bloom filter claim it contains every item you check? That's
     a false-positive every time!</s-dog>
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-dog name="haskie" mode="concerned">嗯...如果每个<s-word>bit</s-word>都被设置了，那么布隆过滤器不会宣称包含你检查的每个项目吗？那每次都是假阳性！</s-dog>
 - en: Exactly right. A bloom filter with every <s-word>bit</s-word> set is equivalent
     to a `Set` that always returns `true` for `contains`. It will claim to contain
     everything you ask it about, even if that thing was never added.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实如此。每个设置了的布隆过滤器<s-word>bit</s-word>等同于一个总是返回`true`的`Set`，对于`contains`它将声称包含你问的一切，即使那件事从未被添加过。
 - en: '[#](#false-positive-rates) False-positive rates'
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#false-positive-rates) 假阳性率'
 - en: The rate of false-positives in our bloom filter will grow as the percentage
     of set <s-word>bits</s-word> increases. Drag the slider below the graph to see
     how the false-positive rate changes as the number of set <s-word>bits</s-word>
     increases.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着设置<s-word>bit</s-word>的百分比增加，我们的布隆过滤器中假阳性的比率将增长。拖动图表下方的滑块，查看随着设置<s-word>bit</s-word>数量增加，假阳性率如何变化。
 - en: <s-graph id="graph1" drawupto="0"><axes></axes></s-graph>
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph1" drawupto="0"><axes></axes></s-graph>
 - en: It grows slowly at first, but as we get closer to having all <s-word>bits</s-word>
     set the rate increases. This is because we calculate the false-positive rate as
     `x^3`, where `x` is the percentage of set <s-word>bits</s-word> and `3` is the
@@ -205,109 +264,155 @@
     If we assume that our hash function has an equal chance of setting any of the
     bits, then the chance that all 3 hash functions set a bit that is already set
     is `0.5 * 0.5 * 0.5`, or `x^3`.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先增长得很慢，但当我们接近所有<s-word>bits</s-word>都被设置时，速率会增加。这是因为我们将误判率计算为`x^3`，其中`x`是已设置<s-word>bits</s-word>的百分比，`3`是使用的哈希函数数量。为了举例说明为什么我们用这个公式计算，想象一下我们有一块一半位被设置的布隆过滤器，`x
+    = 0.5`。如果我们假设我们的哈希函数有平等的机会设置任何位，那么所有3个哈希函数都设置已经设置的位的机会是`0.5 * 0.5 * 0.5`，或者`x^3`。
 - en: Let's have a look at the false-positive rate of bloom filters that use different
     numbers of hash functions.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看使用不同数量的哈希函数的布隆过滤器的误判率。
 - en: <s-graph id="graph2" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph><s-dog
     name="haskie">It looks like more hash functions we use, the better our false-positive
     rate is. Doesn't that mean we should always use lots of hash functions? Why don't
     we use, like, 100?</s-dog>
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph2" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph><s-dog
+    name="haskie">看起来我们使用的哈希函数越多，误判率就越低。这不意味着我们应该总是使用大量哈希函数吗？为什么我们不使用，比如说，100个？</s-dog>
 - en: The problem that using lots of hash functions introduces is that it makes the
     bloom filter fill up faster. The more hash functions you use, the more <s-word>bits</s-word>
     get set for each item you add. There's also the cost of hashing itself. Hash functions
     aren't free, and while the hash functions you'd use in a bloom filter try to be
     as fast as possible, it's still more expensive to run 100 of them than it is to
     run 3.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用大量哈希函数引入的问题是布隆过滤器填充速度更快。你使用的哈希函数越多，为每个添加的项设置的<s-word>bits</s-word>就越多。还有哈希本身的成本。哈希函数并不是免费的，虽然你在布隆过滤器中使用的哈希函数尽可能快，但运行100个哈希函数的成本仍然比运行3个要高。
 - en: It's possible to calculate how full a bloom filter will be after inserting a
     number of items, based on the number of hash functions used. The graph below assumes
     a bloom filter with 1000 <s-word>bits</s-word>.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以根据所使用的哈希函数数量计算插入一定数量项后布隆过滤器的填充程度。下面的图表假设布隆过滤器有1000个<s-word>bits</s-word>。
 - en: <s-graph id="graph3" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph3" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
 - en: The more hash functions we use, the faster we set all of the bits. You'll notice
     that the curve tails off as more items are added. This is because the more <s-word>bits</s-word>
     that are set, the more likely it is that we'all attempt to set a <s-word>bit</s-word>
     that has already been set.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用的哈希函数越多，设置所有<s-word>bits</s-word>的速度就越快。随着添加更多项，你会注意到曲线逐渐平缓。这是因为设置的<s-word>bits</s-word>越多，我们尝试设置已经设置过的<s-word>bit</s-word>的可能性就越大。
 - en: In practice, 1000 <s-word>bits</s-word> is a very small bloom filter, occupying
     only 125 bytes of memory. Modern computers have a lot of memory, so let's crank
     this up to 100,000 <s-word>bits</s-word> (12.5kB) and see what happens.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，1000个<s-word>bits</s-word>是一个非常小的布隆过滤器，只占用125字节的内存。现代计算机有很多内存，所以让我们把这个提高到100,000个<s-word>bits</s-word>（12.5kB）看看会发生什么。
 - en: <s-graph id="graph4" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph4" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
 - en: The lines barely leave the bottom of the graph, meaning the bloom filter will
     be very empty and the false-positive rate will be low. All this cost us was 12.5kB
     of memory, which is still a very small amount by 2024 standards.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 线条几乎不离开图表底部，这意味着布隆过滤器将非常空，误判率将很低。这一切只花费了我们12.5kB的内存，根据2024年的标准仍然是一个非常小的数量。
 - en: '[#](#tuning-a-bloom-filter) Tuning a bloom filter'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#调整布隆过滤器) 调整布隆过滤器'
 - en: Picking the correct number of hash functions and <s-word>bits</s-word> for a
     bloom filter is a fine balance. Fortunately for us, if we know up-front how many
     unique items we want to store, and what our desired false-positive rate is, we
     can calculate the optimal number of hash functions, and the required number of
     <s-word>bits</s-word>.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择正确的哈希函数数量和一定数量的<s-word>bits</s-word>对于布隆过滤器来说是一个微妙的平衡。幸运的是，如果我们预先知道要存储多少个唯一项以及我们期望的误判率是多少，我们可以计算出最佳的哈希函数数量和所需的<s-word>bits</s-word>数量。
 - en: The [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) page on Wikipedia
     covers the mathematics involved, which I'm going to translate into JavaScript
     functions for us to use. I want to stress that you don't need to understand the
     maths to use a bloom filter or read this post. I'm including the link to it only
     for completeness.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[布隆过滤器](https://zh.wikipedia.org/wiki/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
+    页面上涵盖了所涉及的数学内容，我将把它翻译成 JavaScript 函数以供我们使用。我要强调的是，你不需要理解数学就能使用布隆过滤器或阅读本文。我只是为了完整性才包含了它的链接。'
 - en: '[#](#optimal-number-of-bits) Optimal number of bits'
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#最佳比特数) 最佳比特数'
 - en: The following JavaScript function, which might look a bit scary but bear with
     me, takes the number of items you want to store (`items`) and the desired false-positive
     rate (`fpr`, where 1% == `0.01`), and returns how many <s-word>bits</s-word> you
     will need to achieve that false-positive rate.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下JavaScript函数可能看起来有点吓人，但请耐心等待，它接受您想要存储的项数（`items`）和期望的误判率（`fpr`，其中1% == `0.01`），并返回您需要多少<s-word>bits</s-word>才能实现该误判率。
 - en: '[PRE2]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We can see how this grows for a variety of `fpr` values in the graph below.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到在下面的图表中为各种`fpr`值的增长情况。
 - en: <s-graph id="graph5" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-graph id="graph5" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
 - en: '[#](#optimal-number-of-hash-functions) Optimal number of hash functions'
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#最佳哈希函数数) 最佳哈希函数数'
 - en: 'After we''ve used the JavaScript above to calculate how many <s-word>bits</s-word>
     we need, we can use the following function to calculate the optimal number of
     hash functions to use:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Pause for a second here and have a think about how the number of hash functions
     might grow based on the size of the bloom filter and the number of items you expect
     to add. Do you think you'll use more hash functions, or fewer, as the bloom filter
     gets larger? What about as the number of items increases?
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: <s-graph id="graph6" drawupto="0"><legend position="top-left"><axes></axes></legend></s-graph>
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: The more items you plan to add, the fewer hash functions you should use. Yet,
@@ -315,9 +420,11 @@
     keep the false-positive rate lower for longer, but more items fills up the bloom
     filter faster. It's a complex balancing act, and I am thankful that mathematicians
     have done the hard work of figuring it out for us.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#caution) Caution'
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -328,27 +435,33 @@
     use-case. These numbers might be difficult to come up with, and I recommend erring
     on the side of caution. If you're not sure, it's likely better to use a larger
     bloom filter than you think you need.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#removing-items-from-a-bloom-filter) Removing items from a bloom filter'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We've spent the whole post talking about adding things to a bloom filter, and
     the optimal parameters to use. We haven't spoken at all about removing items.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: And that's because you can't!
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: In a bloom filter, we're using <s-word>bits</s-word>, individual 1s and 0s,
     to track the presence of items. If we were to remove an item by setting its <s-word>bits</s-word>
     to 0, we might also be removing other items by accident. There's no way of knowing.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: Click the buttons of the bloom filter below to see this in action. First we
     will add "foo", then "baz", and then we will remove "baz". Hit "clear" if you
     want to start again.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: <s-add-remove bfid="bf3"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
@@ -357,6 +470,7 @@
     doesn't contain "foo" either. Because both "foo" and "baz" set <s-word>bit</s-word>
     <s-bitlink bfid="bf3">27</s-bitlink>, we accidentally clobber the presence of
     "foo" while removing "baz".
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: Something else you might have noticed playing with the above example is that
@@ -365,21 +479,25 @@
     <s-bitlink bfid="bf3">18</s-bitlink> and <s-bitlink bfid="bf3">23</s-bitlink>
     are not, so the bloom filter cannot contain "baz". Because of this, it won't unset
     <s-bitlink bfid="bf3">27</s-bitlink>.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#counting-bloom-filters) Counting bloom filters'
+  id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: While you can't remove items from a standard bloom filter, there are variants
     that allow you to do so. One of these variants is called a "counting bloom filter,"
     which uses an array of counters instead of bits to keep track of items.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: <s-add-remove bfid="bf4"><add value="foo"><add value="baz"><remove value="baz"><clear></clear></remove></add></add></s-add-remove>
     <s-bloom-filter id="bf4" counting="true" hashes="sha1,sha256,sha512" bits="32"
     class="bf">Now when you go through the sequence, the end result is that the bloom
     filter still contains "foo." It solves the problem.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: The trade-off, though, is that counters are bigger than <s-word>bits</s-word>.
@@ -389,10 +507,12 @@
     8x more memory than a standard bloom filter could be a big deal, especially if
     you're using a bloom filter to save memory in the first place. Think hard about
     whether you really need to be able to remove items from your bloom filter.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: Counting bloom filters also introduce the possibility of false-negatives, which
     are impossible in standard bloom filters. Consider the following example.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: '<s-add-remove bfid="bf5"><add value="loved"><add value="your"><remove value="response"><clear></clear></remove></add></add></s-add-remove>
@@ -401,18 +521,23 @@
     <s-bitlink bfid="bf5">5</s-bitlink>, <s-bitlink bfid="bf5">22</s-bitlink>, and
     <s-bitlink bfid="bf5">26</s-bitlink>, when we remove "response" we also remove
     "loved". If we write this as JavaScript the problem becomes more clear:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Even though we know for sure we''ve added "loved" in this snippet, the call
     to `contains` will return `false`. This sort of false-negative can''t happen in
     a standard bloom filter, and it removes one of the key benefits of using a bloom
     filter in the first place: the guarantee of no false-negatives.'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#bloom-filters-in-the-real-world) Bloom filters in the real-world'
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -425,6 +550,7 @@
     a `Set`, so they accept the small false-positive rate in favour of the significantly
     smaller bloom filter. Akamai released a [paper](https://web.archive.org/web/20210814193152/https://www.akamai.com/us/en/multimedia/documents/technical-publication/algorithmic-nuggets-in-content-delivery-technical-publication.pdf)
     about this that goes into the full details if you're interested.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: Google's [BigTable](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/68a74a85e1662fe02ff3967497f31fda7f32225c.pdf)
@@ -435,42 +561,56 @@
     the bloom filter will say a key might be in the database when it isn't, but this
     is fine because when that happens a disk access will confirm the key in fact isn't
     in the database.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#conclusion) Conclusion'
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Bloom filters, while niche, can be a huge optimisation in the right situation.
     They're a wonderful application of hash functions, and a great example of making
     a deliberate trade-off to achieve a specific goal.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: Trade-offs, and combining simpler building blocks to create more complex, purpose-built
     data structures, are present everywhere in software engineering. Being able to
     spot where a data structure could net a big win can separate you from the pack,
     and take your career to the next level.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: I hope you've enjoyed this post, and that you find a way to apply bloom filters
     to a problem you're working on.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: '*Join the discussion on [Hacker News](https://news.ycombinator.com/item?id=39439505)
     or [Lobste.rs](https://lobste.rs/s/gwyglz/visual_interactive_guide_bloom_filters)!*'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#acknowledgements) Acknowledgements'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Enormous thank you to my reviewers, without whom this post would be a shadow
     of what you read today. In no particular order:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 我要特别感谢我的审稿人，没有他们，这篇文章就不会是今天你所读到的样子。顺序不分先后：
 - en: '[rylon](https://rylon.dev), [Indy](https://indy.codes), [Aaron](https://twitter.com/AaronKalair),
     Sophie, [Davis](https://dvsj.in), [ed](https://eduardmoldovan.com), [Michael Drury](https://github.com/mike12345567),
     [Anton Zhiyanov](https://antonz.org/), [Christoph Berger](https://appliedgo.net/),
     [Andrew Kingston](https://github.com/aptkingston), [Tom Hall](https://thattommyhall.com).</s-bloom-filter></s-bloom-filter></s-bloom-filter></hash-values>'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '[rylon](https://rylon.dev), [Indy](https://indy.codes), [Aaron](https://twitter.com/AaronKalair),
+    Sophie, [Davis](https://dvsj.in), [ed](https://eduardmoldovan.com), [Michael Drury](https://github.com/mike12345567),
+    [Anton Zhiyanov](https://antonz.org/), [Christoph Berger](https://appliedgo.net/),
+    [Andrew Kingston](https://github.com/aptkingston), [Tom Hall](https://thattommyhall.com)。'
