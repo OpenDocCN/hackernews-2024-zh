@@ -1,49 +1,71 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:03:39'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日15:03:39
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Turning off Rust's borrow checker, completely
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 完全关闭Rust的借用检查器
 - en: 来源：[https://iter.ca/post/rust-skip-borrowck/](https://iter.ca/post/rust-skip-borrowck/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://iter.ca/post/rust-skip-borrowck/](https://iter.ca/post/rust-skip-borrowck/)
 - en: I recently came across [`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html),
     a Rust macro that makes it so the borrow checker is “turned off” for a function.
     It transforms the code of a function to transform reference manipulations into
     unsafe code that does that without the borrow checker knowing.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最近遇到了[`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html)，这是一个Rust宏，使得借用检查器对于一个函数“关闭”。它将函数的代码转换为不使用借用检查器的不安全代码来进行引用操作。
 - en: 'Of course, this is not the sort of thing you would want to use in production,
     or really for anything other than education and experimentation. However, it made
     me curious if it could be implemented at a lower level: can we patch the compiler
     to remove the borrow checker? Yes.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这不是您想要在生产中使用的东西，或者真的只能用于教育和实验。然而，这让我好奇是否可以在更低的级别实现它：我们可以修补编译器以删除借用检查器吗？可以。
 - en: 'The obvious way to do that would be to just not run the pass that does borrow
     checking. The `analysis` pass (technically it’s a [query](https://rustc-dev-guide.rust-lang.org/query.html)
     not a pass but that’s not relevant here) of the compiler does a lot of things,
     including some borrow checking. Let’s just not run the `analysis` pass! Just return
     early so that no analysis is run:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 显而易见的方法是不运行进行借用检查的传递。编译器的`analysis`传递（在技术上，它是一个[查询](https://rustc-dev-guide.rust-lang.org/query.html)，而不是一个传递，但这在这里不相关）做了很多事情，包括一些借用检查。让我们不运行`analysis`传递！直接返回，以便不运行任何分析：
 - en: '[PRE0]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: That makes it so the rest of the function isn’t run, and causes an `unreachable
     statement` warning when compiling the compiler.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致函数的其余部分不会运行，并在编译编译器时引发`unreachable statement`警告。
 - en: 'This kinda works. Most valid Rust code still works with this patched compiler.
     It is occasionally prone to internal compiler errors (ICEs), and sometimes you
     get some extra ✨*bonus errors*✨ as a result of parts of the compiler assuming
@@ -52,11 +74,15 @@
     option: ignoring errors entirely. Deep within the part of the compiler that emits
     errors is `HandlerInner::emit_diagnostic`, which emits an error diagnostic. Part
     of that function checks if we’re emitting an error, and if so increments a counter:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有点奏效。大多数有效的Rust代码仍然可以使用这个修补过的编译器。偶尔会出现内部编译器错误（ICEs），有时你会因为编译器的某些部分假设分析部分已经执行而得到一些额外的✨*奖励错误*✨。但遗憾的是，移除了分析传递仍然会导致一些借用检查。我们需要使用核心选项：完全忽略错误。在编译器发出错误的一部分，有一个`HandlerInner::emit_diagnostic`，它会发出一个错误诊断。该函数的一部分会检查是否正在发出错误，如果是，则递增一个计数器：
 - en: '[PRE1]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Before starting codegen, the compiler checks if the error count is non-zero,
     and aborts if so. But if we just remove that call to `bump_lint_err_count`, the
     number of errors will always be zero. The errors will still be displayed, but
@@ -66,66 +92,100 @@
     get to see all of them at once. But by not incrementing the error count, we’ll
     fool the compiler into thinking there are no errors! Here’s [the patch](https://github.com/rust-lang/rust/commit/709edf2581ad86d02897ba169eb6d92aeda5c11d)
     if you want to follow along at home.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在启动代码生成之前，编译器会检查错误计数是否为非零，如果是，则会中止。但是，如果我们只是去掉对`bump_lint_err_count`的调用，错误数量将始终为零。错误仍然会显示，但不会阻止编译成功。通常，编译器在出现错误后不会停止，而是继续进行，然后仅在下一阶段编译之前中止。这样，如果某些代码存在多个错误，你将一次性看到所有错误。但是通过不增加错误计数，我们将欺骗编译器认为没有错误！如果你想一起跟踪，这里是[补丁](https://github.com/rust-lang/rust/commit/709edf2581ad86d02897ba169eb6d92aeda5c11d)。
 - en: This means that errors are generated and displayed, but the patched compiler
     just ignores the fact that there are errors and tries to generate code anyways.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着会生成和显示错误，但修补的编译器无视了错误的存在，并尝试生成代码。
 - en: This can’t catch some fatal errors that stop compilation right away, but luckily
     most errors let the compiler keep going until some future stopping point (but
     that future stopping point won’t happen now, since the error count is always 0).
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不能捕获一些立即停止编译的致命错误，但幸运的是大多数错误会让编译器继续进行，直到某个未来的停止点（但由于错误计数始终为0，所以现在不会发生）。
 - en: 'At this point, I was pretty sure that this wouldn’t *actually* work. It does.
     Here’s [an example of Rust code that the borrow checker doesn’t like](https://blog.logrocket.com/introducing-the-rust-borrow-checker/#inpractice):'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我相当确信这实际上不会起作用。但它确实可以。这里是[一个借用检查器不喜欢的Rust代码示例](https://blog.logrocket.com/introducing-the-rust-borrow-checker/#inpractice)：
 - en: '[PRE2]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'And here’s what happens when we run that through our patched compiler:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是当我们通过我们的修补后的编译器运行时发生的情况：
 - en: '[PRE3]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'There’s an error, but due to our patch the compiler just keeps going along.
     And as a result, the compiled program produces garbage data: `Some(-501713657)`
     is not an element in the list.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个错误，但由于我们的补丁，编译器只会继续进行。结果，编译后的程序产生垃圾数据：`Some(-501713657)`不是列表中的元素。
 - en: 'Here’s how it handles an example from [`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html#expanded):'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是它如何处理来自[`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html#expanded)的示例：
 - en: '[PRE4]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Again, it just outputs garbage data.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，它只会输出垃圾数据。
 - en: 'Here are the *fun* ways our patched compiler handles various error conditions:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是我们的修补后编译器处理各种错误条件的*有趣*方法：
 - en: Many result in an internal compiler error since codegen assumes that other parts
     of the compiler did their job
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 许多结果会导致内部编译器错误，因为代码生成器假定编译器的其他部分已经完成了它们的工作。
 - en: If you have non-exhaustive patterns the compiler tries to execute an illegal
     instruction and coredumps
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果你有非穷尽模式，编译器会尝试执行非法指令并核心转储。
 - en: Sometimes format strings that reference variables affected by errors cause an
     ICE, so you effectively have to always do `std::io::stdout().write_all(...)` instead
     of `println!`
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有时引用受错误影响的变量的格式字符串会导致内部编译器错误，因此你实际上必须始终执行`std::io::stdout().write_all(...)`而不是`println!`。
 - en: Please remember not to use this for anything other than testing!
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住不要将其用于除测试之外的任何其他用途！
 - en: '* * *'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
