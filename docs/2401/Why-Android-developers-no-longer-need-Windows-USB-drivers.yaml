@@ -1,174 +1,274 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:27:22'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:27:22
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Why Android developers no longer need Windows USB drivers
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么安卓开发者不再需要 Windows USB 驱动程序？
 - en: 来源：[https://fabiensanglard.net/android_windows_driver/](https://fabiensanglard.net/android_windows_driver/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://fabiensanglard.net/android_windows_driver/](https://fabiensanglard.net/android_windows_driver/)
 - en: December 30, 2023
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 2023年12月30日
 - en: Why Android developers no longer need Windows USB drivers
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么安卓开发者不再需要 Windows USB 驱动程序？
 - en: '* * *'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: In the early days of the platform, Android developers working from Linux and
     Mac OS X connected their device via an USB cable and were good to go. Windows
     users had to find and then install drivers. That was super-annoying.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在平台的早期阶段，使用 Linux 和 Mac OS X 的安卓开发者通过 USB 线连接设备就可以开始工作了。而 Windows 用户则必须寻找并安装驱动程序。那真是超级烦人。
 - en: Nowadays there is no more need for drivers. What happened?
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如今不再需要驱动程序。发生了什么？
 - en: USB Driver/OS 101
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: USB 驱动程序/操作系统 101
 - en: '* * *'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: When you plug an USB device into a port, the operating system needs to load
     drivers for its interface(s). This is done by inspecting the USB Descriptors hierarchy.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你将 USB 设备插入端口时，操作系统需要为其接口加载驱动程序。这是通过检查 USB 描述符层次结构完成的。
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Oftentimes, reading the Device Descriptor [Vendor ID (VPI) and Product ID (PID)
     fields](https://www.keil.com/pack/doc/mw/USB/html/_u_s_b__device__descriptor.html)[^([1])](#footnote_1)
     is enough to decide which drivers should be loaded.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，仅仅读取设备描述符的[厂商 ID（VPI）和产品 ID（PID）字段](https://www.keil.com/pack/doc/mw/USB/html/_u_s_b__device__descriptor.html)[^([1])](#footnote_1)就足以决定应加载哪些驱动程序。
 - en: All three major OSs ship with "default" Device Class drivers so most USB devices
     work auto-magically[^([2])](#footnote_2). If I connect my ErgoDox EZ keyboard,
     Windows attaches `hidusb.sys.` to it[^([3])](#footnote_3) and I don't need a driver.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 三大主要操作系统都自带“默认”设备类驱动程序，因此大多数 USB 设备都能自动运行[^([2])](#footnote_2)。如果我连接我的 ErgoDox
+    EZ 键盘，Windows 会将`hidusb.sys.`连接到它[^([3])](#footnote_3)，而我不需要驱动程序。
 - en: If Windows cannot find a built-in Device Class driver (or if they are better
     matches), it loads user-installed drivers. e.g. an Apple Magic Trackpad will also
     get `hidusb.sys` unless Bingxing Wang's [awesome driver](https://github.com/imbushuo/mac-precision-touchpad/tree/master)
     is installed, in which case Windows loads `AmtPtpDeviceUm.dll` (with support for
     right-click and multi-finger gestures).
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 Windows 找不到内置的设备类驱动程序（或者有更好的匹配项），它会加载用户安装的驱动程序。例如，如果安装了王冰星的[出色驱动程序](https://github.com/imbushuo/mac-precision-touchpad/tree/master)，则连接苹果魔术触控板时，Windows
+    会加载`AmtPtpDeviceUm.dll`（支持右键单击和多指手势）而不是`hidusb.sys`。
 - en: Why it did not work
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么它不起作用
 - en: '* * *'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: If no driver can be found, Linux loads `usbfs` which lets user-space programs
     access the device. Mac OS does the same, with `IOKit`. Windows reports an error.
     No driver is loaded and the Android device cannot be accessed.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果找不到驱动程序，Linux 会加载`usbfs`，让用户空间程序访问设备。Mac OS 也是如此，使用`IOKit`。Windows 则报告错误。没有加载驱动程序，无法访问安卓设备。
 - en: Why it worked with an android driver
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么它使用安卓驱动程序
 - en: '* * *'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: To understand what is going on when a driver is installed, let's inspect the
     "brain" from [Google USB Driver](usb_driver_r13-windows.zip), `android_winusb.inf`.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解驱动程序安装时发生的情况，让我们检查来自[Google USB 驱动程序](usb_driver_r13-windows.zip)的“大脑”，`android_winusb.inf`。
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'In `INF` parlance, it instructs "When VID=0x18D1 and PID=0x4E11 (a.k.a: a Google
     Nexus One), load `winusb` driver".'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`INF`术语中，它指示“当 VID=0x18D1 且 PID=0x4E11（即：Google Nexus One）时，加载`winusb`驱动程序”。
 - en: What is WinUSB? Alike Linux's `usbfs` and Mac OS's `IOKit` it is an USB driver
     which allows user-space programs to enumerate interfaces and write/read into/from
     the endpoints[^([4])](#footnote_4). That is what `adb` (the [Android Debug Bridge](https://en.wikipedia.org/wiki/Android_Debug_Bridge))
     uses to chat with an Android device.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么是 WinUSB？类似于 Linux 的`usbfs`和 Mac OS 的`IOKit`，它是一种 USB 驱动程序，允许用户空间程序列举接口并读写端点[^([4])](#footnote_4)。这就是`adb`（[Android
+    调试桥](https://en.wikipedia.org/wiki/Android_Debug_Bridge)）用来与安卓设备通信的方式。
 - en: Why Android devices no longer need a windows driver
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么安卓设备不再需要 Windows 驱动程序？
 - en: '* * *'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The method previously described has an obvious flaw. If an Android device VID/PID
     are not listed, `winusb` is not loaded.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 先前描述的方法存在一个明显的缺陷。如果安卓设备的 VID/PID 没有列出，`winusb` 就不会加载。
 - en: Windows 8 has a better way than `INF` files to discover which driver an interface
     needs. It asks directly to the device!
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Windows 8 有比`INF`文件更好的方法来发现接口需要哪个驱动程序。它直接向设备询问！
 - en: When a device is connected, the OS issues a String Descriptors request at index
     `0xEE`. If the device is Microsoft OS Descriptors (MOD) compatible, it returns
     the string `M\0S\0F\0T\01\000\0\0`. In this case, Windows requests the [Extended
     Compat ID OS Feature Descriptor](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-defined-usb-descriptors).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 当设备连接时，操作系统会发出一个索引为 `0xEE` 的字符串描述符请求。如果设备兼容 Microsoft OS 描述符（MOD），它将返回字符串 `M\0S\0F\0T\01\000\0\0`。在这种情况下，Windows
+    会请求 [扩展兼容性 ID OS 特征描述符](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-defined-usb-descriptors)。
 - en: We can inspect this descriptor on a Pixel 6 with `libusb`'s `xusb`.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用 `libusb` 的 `xusb` 在 Pixel 6 上检查此描述符。
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This device was set up with both Media Transfer Protocol and developer mode
     enabled. For each of these interfaces, the Feature Descriptor instructs which
     driver it needs. Respectively `mtp.sys` for the first interface and `winusb.sys`
     on the second interface.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 该设备已设置为同时启用媒体传输协议和开发者模式。对于这两个接口，特征描述符指示需要哪个驱动程序。分别是第一个接口的 `mtp.sys` 和第二个接口的
+    `winusb.sys`。
 - en: With `winusb.sys` loaded, user-space executables such as `adb` can open the
     device, claim the interface, and get the developer rolling. No need for drivers
     anymore!
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用加载了 `winusb.sys` 的用户空间可执行文件，如 `adb`，可以打开设备，声明接口，并使开发者投入使用。不再需要驱动程序！
 - en: Which devices support Microsoft OS Descriptors?
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 哪些设备支持 Microsoft OS 描述符？
 - en: '* * *'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Josh Gao (@jmga, adb developer at the time) pointed out that he introduced MOD
     support in Android 10 (API 29)[^([5])](#footnote_5). And he also wrote a CTS test
     for it so all Android devices shipping after API 29 should have it.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 乔希·高（@jmga，当时是 adb 开发者）指出他在 Android 10（API 29）[^([5])](#footnote_5) 中引入了 MOD
+    支持。他还为此编写了一个 CTS 测试，因此 API 29 后的所有 Android 设备都应该具有该功能。
 - en: Extended Properties OS Feature Descriptor
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展属性 OS 特征描述符
 - en: '* * *'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: More recent devices like the Pixel 8 have an Extended Properties OS Feature
     Descriptor. It can feature GUID, help pages, URLs, and even icons.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 像 Pixel 8 这样的较新设备具有扩展属性 OS 特征描述符。它可以包含 GUID、帮助页面、URL，甚至图标。
 - en: '[PRE3]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: References
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 参考资料
 - en: '* * *'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '* * *'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '*'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '*'
