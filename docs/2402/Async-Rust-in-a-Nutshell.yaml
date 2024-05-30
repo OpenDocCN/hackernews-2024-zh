@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:29:06'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:29:06
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Async Rust in a Nutshell
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust异步简介
 - en: 来源：[https://www.shuttle.rs/blog/2024/02/29/async-rust](https://www.shuttle.rs/blog/2024/02/29/async-rust)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.shuttle.rs/blog/2024/02/29/async-rust](https://www.shuttle.rs/blog/2024/02/29/async-rust)
 - en: Computers are just as fast as they can be. One way to speed up our programs
     is to do things in parallel, or concurrently. There is a fine distinction between
     those two terms. Parallel execution means that we execute two different tasks
@@ -33,6 +39,8 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算机的速度已经尽可能地快了。 加速程序的一种方法是并行执行或同时执行。 这两个术语之间有微妙的区别。 并行执行意味着我们同时在两个不同的CPU上执行两个不同的任务。
+    并发执行意味着单个CPU同时在多个任务上取得进展，通过交错执行这些任务的方式。
 - en: The Rust standard library gives bindings and abstractions for the underlying
     operating system. This includes threads, a way to run code in parallel. The parallelism
     is managed by the operating system, you can have as many threads as CPU cores,
@@ -41,12 +49,15 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust标准库为底层操作系统提供绑定和抽象。 这包括线程，一种并行运行代码的方法。 并行性由操作系统管理，您可以拥有与CPU核心一样多的线程，但也可以有更多，操作系统决定何时执行何任务。
+    这可能会非常沉重，并且具有很多开销。
 - en: 'So we are stuck with two ways: Either run everything sequentially or use OS
     threads to execute in parallel, which can cause overhead. None of them might be
     the best solution for some domains, like web or networking applications.'
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我们被困在两种方式中：要么顺序运行所有内容，要么使用OS线程并行执行，这可能会导致开销。 对于某些领域，例如Web或网络应用程序，可能都不是最佳解决方案。
 - en: Async tries to fix those problems. Async is a way to write code sequentially,
     but execute it concurrently without you managing any threads or execution. The
     idea is to split up existing code into tasks then execute a portion of code, and
@@ -55,12 +66,15 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 异步尝试解决这些问题。 异步是一种顺序编写代码但并行执行代码的方法，而您无需管理任何线程或执行。 思路是将现有代码拆分为任务，然后执行代码的一部分，并让异步运行时选择需要执行的下一个任务。
+    然后运行时决定何时执行何任务，并且可以以非常有效的方式执行此操作。
 - en: It also takes advantage of the fact that most of the time, the CPU is waiting
     for something to happen, like a network request or a file to be read. Look at
     the following line of code.
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 它还利用了大部分时间CPU在等待某些事情发生，例如网络请求或文件读取。 看一下以下代码行。
 - en: '[PRE0]'
   id: totrans-11
   prefs: []
@@ -72,11 +86,13 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们所做的只是建立一个TCP连接。 但这需要时间。 对于您来说可能并不明显，但对于计算机来说，这意味着什么都不做，只是等待连接建立。 这是我们可以更好地利用的时间。
 - en: Async Primitives
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 异步原语
 - en: Concurrent execution is nothing new in the world of programming. Also, async
     programming has been around for a while, and you might have seen similar things
     in JavaScript or C#. But in Rust, things might look similar at first but are different
@@ -84,6 +100,7 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 并发执行在编程世界中并不新鲜。 此外，异步编程已经存在一段时间了，您可能已经在JavaScript或C#中看到了类似的东西。 但在Rust中，乍一看可能看起来相似，但如果我们仔细观察，它们是不同的。
 - en: 'One big difference is that Rust does not have an async runtime. We need an
     async runtime that manages the correct execution of tasks, but the involved Rust
     teams argue that there is no "one size fits all" async runtime, and developers
@@ -93,6 +110,8 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个重要的区别是Rust没有异步运行时。 我们需要一个异步运行时来管理任务的正确执行，但涉及的Rust团队认为没有“一刀切”的异步运行时，并且开发人员应该有选择符合其需求的运行时的权力。
+    从概念上讲，这与例如Go不同，后者只提供了一种并发模型：goroutines。 并且开发人员被困在其中。
 - en: In Rust, we can decide which one we use. Still, Rust gives us a way to prep
     our tasks for the async executor. This is done by an abstraction using the `Future`
     trait. The `Future` trait is the core of async programming in Rust. It is a trait
@@ -101,11 +120,14 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Rust中，我们可以决定使用哪种方式。 尽管如此，Rust为我们提供了一种准备好我们的任务以供异步执行器使用的方法。 这通过使用`Future`特征的抽象来完成。
+    `Future`特征是Rust中异步编程的核心。 它是一种代表尚未可用但将来某时将可用的值的特征。 这与JavaScript中的`Promise`非常相似。
 - en: 'Everything that implements a `Future` can be executed in an async runtime.
     The `Future` trait is defined as follows:'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有实现了`Future`的东西都可以在异步运行时执行。 `Future`特征定义如下：
 - en: '[PRE1]'
   id: totrans-18
   prefs: []
@@ -117,12 +139,14 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很简单。 它有一个关联类型`Output`，代表着未来的值。 它有一个名为`poll`的方法，带有`Context`并返回一个`Poll`。
 - en: '`Poll` is an enum with two states. Either `Pending`, which means that we wait
     for a value. Or `Ready`, meaning that the value is available. The `Ready` variant
     holds the output of type `Output`.'
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Poll`是一个具有两种状态的枚举。 要么是`Pending`，意味着我们在等待一个值。 要么是`Ready`，意味着值是可用的。 `Ready`变体保存类型为`Output`的输出。'
 - en: '[PRE2]'
   id: totrans-21
   prefs: []
@@ -133,20 +157,24 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Context`目前仅用于提供对`Waker`对象的访问。 `Waker`是告诉运行时再次轮询此任务的必要性。'
 - en: Okay, okay, what's that? Polling, waking? Let's dig deeper.
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，好的，那是什么？ 轮询，唤醒？ 让我们深入了解一下。
 - en: Execution
   id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 执行
 - en: As said before, the `Future` trait is used to abstract tasks that can be executed
     in an async runtime. But how does this work?
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，`Future`特征用于抽象可以在异步运行时执行的任务。 但这是如何工作的？
 - en: To be fair, in detail, it depends on the async runtime in use, but a few basic
     concepts are the same for all of them.
   id: totrans-26
