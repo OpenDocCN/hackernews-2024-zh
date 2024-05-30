@@ -2,52 +2,64 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:20:23'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月29日13:20:23
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Coding the anime "woosh" screen on Amiga - @dansalvato
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Amiga 上编写动漫“嗖”的屏幕 - @dansalvato
 - en: 来源：[https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/](https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/](https://dansalva.to/coding-the-anime-woosh-screen-on-amiga/)
 - en: </images/20240223/1.mp4#t=0.01>
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: </images/20240223/1.mp4#t=0.01>
 - en: Your browser does not support the video tag.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 您的浏览器不支持视频标签。
 - en: The Amiga was a spectacle of graphics and sound when it debuted in 1985\. While
     it can trivially display colorful images like in the above example, doing so in
     the context of a game engine presents a lot of unique challenges.
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Amiga 在 1985 年首次亮相时是一个图形和声音的奇观。 尽管它可以轻松显示像上面的例子中那样的彩色图像，但在游戏引擎的上下文中这样做会带来许多独特的挑战。
 - en: If you haven't seen the gameplay proof-of-concept video for Magicore Anomala,
     you can check it out [here](https://www.youtube.com/watch?v=4SB20aFHc08).
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您还没有看过 Magicore Anomala 的游戏概念验证视频，可以在[这里](https://www.youtube.com/watch?v=4SB20aFHc08)
+    查看。
 - en: 'Challenge 1: The RAM requirements'
   id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 挑战 1：RAM 要求
 - en: A run-of-the-mill Amiga 500 has 512kb of "Chip RAM" and 512kb of expansion RAM
     (sometimes called "Slow RAM"), which is the platform target for Magicore. Only
     Chip RAM can be used by the Amiga chipset to present graphics and sound, which
@@ -56,6 +68,8 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 一台普通的 Amiga 500 有 512kb 的“Chip RAM”和 512kb 的扩展 RAM（有时称为“慢 RAM”），这是 Magicore
+    的平台目标。 只有 Chip RAM 可以被 Amiga 芯片组用于显示图形和声音，这使得它更有价值 - 所有其他类型的扩展 RAM 只能被 CPU 访问。
 - en: The fullscreen character graphic (CG) is a 320x240 bitmap with 32 colors, which
     takes up 48kb of RAM uncompressed. That is a *lot*. Between all the common assets,
     level data, and screen memory allocations, we don't want to afford that kind of
@@ -63,69 +77,84 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 全屏字符图形（CG）是一个 320x240 的位图，带有 32 种颜色，未压缩时占用 48kb 的 RAM。 那是*很多*。 在所有常见资产、关卡数据和屏幕内存分配之间，我们不想为此类开销花费太多的
+    RAM。
 - en: Thankfully, I recently added support for asset compression, using the ZX0 compression
     format. Compressed, the CG is about 8kb, which is acceptable.
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，我最近添加了对资产压缩的支持，使用 ZX0 压缩格式。 经过压缩，CG 大约为 8kb，这是可以接受的。
 - en: When the level assets are loaded, the compressed CG is loaded into the expansion
     RAM. Then, right before it gets displayed, I unpack it into Chip RAM.
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当加载关卡资产时，压缩的 CG 被加载到扩展 RAM 中。 然后，在显示之前，我将其解压缩到 Chip RAM 中。
 - en: 'The trick is that instead of finding 48kb of free Chip RAM to use, I reuse
     other parts of screen memory:'
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 诀窍在于，我没有找到 48kb 的空闲 Chip RAM 来使用，而是重复使用屏幕内存的其他部分：
 - en: The room background image (the grassy field, in this example)
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 房间背景图像（在这个例子中是草地）
 - en: The screen layer used to render hazardous objects (not shown in the video)
   id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用于呈现危险对象的屏幕层（视频中未显示）
 - en: The textbox screen area (as seen in the gameplay proof-of-concept video)
   id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 文本框屏幕区域（如游戏概念验证视频中所示）
 - en: All three of these memory regions are contiguous in RAM, and they come out to
     48,000 bytes, which is the *exact* size of the CG!
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这三个内存区域在 RAM 中是连续的，并且总共有 48,000 字节，这恰好是 CG 的*确切*大小！
 - en: It's also okay to overwrite the room background image, because we can restore
     it after the CG is done being displayed.
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 重写房间背景图像也没关系，因为在 CG 显示完毕后我们可以恢复它。
 - en: In the video below, I force the CG to always be shown on the screen, so we can
     watch how the data gets decompressed and overwritten.
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的视频中，我强制 CG 始终显示在屏幕上，以便我们可以观察数据如何被解压缩和覆盖。
 - en: </images/20240223/2.mp4#t=0.01>
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: </images/20240223/2.mp4#t=0.01>
 - en: Your browser does not support the video tag.
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 您的浏览器不支持视频标签。
 - en: Pretty cool, right? As you can see, the CG takes maybe 500ms to fully decompress.
     But that "loading time" is hidden into the flow of the cutscene.
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 很酷，对吧？ 如您所见，CG 可能需要 500ms 才能完全解压缩。 但是这种“加载时间”被隐藏在剧情的流程中。
 - en: 'Challenge 2: The "screen split" effect'
   id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 挑战 2：屏幕分割效果
 - en: I was initially thinking about doing a vertical wipe for the screen transition.
     But for that to look nice, the wipe would have to be a gradient, adjusting the
     color palette every scanline. That's pretty possible, but the coprocessor (copper)
@@ -134,6 +163,8 @@
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初我考虑使用垂直擦拭进行屏幕过渡。 但是要使其看起来漂亮，擦拭必须是一个渐变，每条扫描线都调整颜色板。 这是相当可能的，但是协处理器（铜）单独很难在单个水平空白中设置所有
+    32 种颜色，说实话，我不想应对“竞争光束”。
 - en: The screen split effect is easier to pull off, and I think it looks cooler to
     the common viewer. In fact, the copper was practically purpose-designed for this
     effect! Check out [this](https://www.youtube.com/watch?v=YlAhRJjOhDg) video, which
@@ -141,10 +172,13 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 屏幕分割效果更容易实现，并且我认为对于普通观众来说看起来更酷。 实际上，铜基本上是为此效果而设计的！ 请查看[这个](https://www.youtube.com/watch?v=YlAhRJjOhDg)
+    视频，它演示了一个类似的效果直接内置到 Amiga Workbench 中。
 - en: 'This demonstrates two special features of Amiga working in tandem:'
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这展示了 Amiga 同时工作的两个特殊功能：
 - en: The copper runs in parallel to the CPU with its own instruction list. Those
     instructions can tell it to change certain hardware registers at specific lines
     on the screen.
@@ -152,6 +186,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 铜线与 CPU 并行，有自己的指令列表。 这些指令可以告诉它在屏幕的特定行上更改某些硬件寄存器。
 - en: The screen memory can be changed to *anywhere* in Chip RAM by setting screen
     pointers in the hardware registers. That means you can have multiple bitmap screens
     and switch between them whenever you want—every frame (e.g. for double buffering),
@@ -160,6 +195,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 屏幕内存可以通过设置硬件寄存器中的屏幕指针将其更改为 Chip RAM 中的*任何位置*。 这意味着您可以拥有多个位图屏幕，并在您想要的任何时候切换 -
+    每帧（例如，用于双缓冲），甚至一帧中多次切换。
 - en: Let's say my "main" screen memory begins at `0x20000`. Normally, I instruct
     the copper to arm the bitplane DMA registers with this address. Once I enable
     the bitplanes, the DMA happily marches through this region of memory, drawing
@@ -167,22 +204,26 @@
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我的“主”屏幕内存从`0x20000`开始。通常，我会指示铜将位平面DMA寄存器与此地址配对。一旦我启用位平面，DMA就会快乐地遍历这个内存区域，将其数据绘制到屏幕上，同时递增地址指针。
 - en: There is an interesting trick. Let's say each horizontal line takes up `0x100`
     bytes of screen memory. What if I set the screen pointer to `0x20800` instead?
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个有趣的技巧。假设每个水平线占用`0x100`字节的屏幕内存。如果我将屏幕指针设置为`0x20800`呢？
 - en: The screen will appear to "scroll up" by 8 lines, because the screen officially
     starts 8 lines down into memory.
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 屏幕将向上滚动8行，因为屏幕正式从内存的第8行开始。
 - en: I have the top half of the split scroll up in this fashion. Then, at the split
     point, the copper is instructed to shut off bitplane DMA (and change the BG color
     to red).
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将分割的顶部以这种方式向上滚动。然后，在分割点处，铜被指示关闭位平面DMA（并将BG颜色更改为红色）。
 - en: Now, all the bitplane-related hardware registers are effectively frozen in time.
     Once we reach the bottom of the split, the copper resets the BG color and resumes
     bitplane DMA. The display picks up right where it left off, just lower down on
@@ -190,11 +231,13 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，所有与位平面相关的硬件寄存器实际上都被冻结在时间中。一旦我们到达分割的底部，铜就会重置BG颜色并恢复位平面DMA。显示器会在离开的地方恢复，只是在屏幕下方！
 - en: 'If you''re wondering what this looks like, here is the copperlist used for
     the effect:'
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想知道这是什么样子，这里是用于效果的铜线列表：
 - en: '[PRE0]'
   id: totrans-37
   prefs: []
@@ -206,38 +249,45 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样！每一帧，我都使用CPU根据当前分割的宽度调整`vs_TCopTop`和`vs_TCopBottom`。（未显示：根据上文描述调整顶部分割的屏幕指针。）
 - en: 'Challenge 3: The "motion lines"'
   id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 挑战3： "运动线"
 - en: You can't reach full anime without having the lines that go "woosh" in the background.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有了在背景中"嗖嗖"的线条，你就无法达到完全的动画效果。
 - en: I use sprites to draw the lines, which is a good choice because they can be
     drawn and moved fully independently from screen memory. The issue is that Amiga
     sprites are both very limited and very complicated.
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用精灵来绘制线条，这是一个很好的选择，因为它们可以完全独立于屏幕内存进行绘制和移动。问题在于Amiga精灵既非常有限又非常复杂。
 - en: Sprite colors
   id: totrans-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 精灵颜色
 - en: Sprites share a color palette with bitplanes, meaning I want to use up as few
     colors as possible. The sprite is only 3 colors, leaving 28 for the CG (and 1
     for the background).
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 精灵与位平面共享调色板，这意味着我想尽可能地使用尽少的颜色。精灵只有3种颜色，为CG（以及背景）留下了28种颜色。
 - en: The problem is that different sprites use different colors in the palette. The
     first two sprites use colors 16-19, the second two sprites use colors 20-23, and
     so on.
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题是不同的精灵在调色板中使用不同的颜色。前两个精灵使用颜色16-19，第二个两个精灵使用颜色20-23，依此类推。
 - en: This changes if you combine sprites. By "attaching" two sprites together, they
     become one sprite with a 16-color palette (colors 16-31). That means for the motion
     lines, I can use 4 attached sprites, and use only colors 29-31 in the graphic.
@@ -245,17 +295,20 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您合并精灵，情况会改变。通过“附加”两个精灵在一起，它们将成为具有16色调色板（颜色16-31）的一个精灵。这意味着对于运动线，我可以使用4个附加的精灵，并且只使用图形中的颜色29-31。这是对愚蠢限制的愚蠢解决方法。
 - en: Reusing a sprite graphic
   id: totrans-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重复使用精灵图形
 - en: The first 4 bytes of a sprite graphic are actually "control bits" that tell
     the Amiga the position and height of the sprite. That is actually a pain—what
     if we want to draw the same graphic in multiple locations?
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 精灵图形的前4个字节实际上是告诉Amiga精灵的位置和高度的“控制位”。这实际上很麻烦——如果我们想要在多个位置绘制相同的图形怎么办？
 - en: My first thought was to manually set the hardware registers for sprite control
     bits, but I simply could not get the sprite to display on screen when doing this.
     Amiga sprite DMA works similarly to bitplane DMA; it has a pointer to the sprite
@@ -265,27 +318,32 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的第一个想法是手动设置精灵控制位的硬件寄存器，但是这样做时我无法让精灵在屏幕上显示。Amiga精灵DMA的工作原理类似于位平面DMA；它有一个指向精灵数据的指针，它按顺序遍历以将其显示到屏幕上。但是当手动设置控制位时，我就无法做到这一点。我相信这是可以做到的，但我决定找另一种方法。
 - en: I instead created 8 fake sprites that are only 4 bytes large—*just* the control
     bits. I set all the sprite pointers to those fake sprites.
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我创建了8个虚假精灵，它们只有4个字节大——*只是*控制位。我将所有精灵指针都设置为这些虚假精灵。
 - en: Around line 19, the sprite DMA looks at all the sprite pointers and arms itself
     with the control bits, preparing to draw the data to the screen at the specified
     position.
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 大约在第19行，精灵DMA会查看所有精灵指针，并用控制位武装自己，准备在指定位置向屏幕绘制数据。
 - en: 'Once it does so, I pull a switcheroo: I change all the sprite pointers to the
     "motion line" graphic. Now, the DMA is armed to draw all the sprites at different
     positions, but using the same graphic.'
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦这样做了，我就换个花样：我将所有精灵指针更改为“运动线”图形。现在，DMA已经准备好在不同位置绘制所有精灵，但使用相同的图形。
 - en: 'Again, this can be trivially done in the copperlist:'
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，在铜线列表中可以轻松完成这一点：
 - en: '[PRE1]'
   id: totrans-53
   prefs: []
@@ -296,6 +354,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 当位平面关闭时，精灵不会被绘制
 - en: 'Before the CG reaches the top of the screen, there is a bunch of empty space
     between the top of the screen and the start of the CG. If bitplanes are enabled
     during this time, they will draw junk data to the screen. Here is an example of
@@ -303,18 +362,22 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在CG到达屏幕顶部之前，屏幕顶部和CG起始之间有一堆空白空间。如果在此期间启用位平面，它们将向屏幕绘制垃圾数据。这是一个例子：
 - en: </images/20240223/3.mp4#t=0.01>
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: </images/20240223/3.mp4#t=0.01>
 - en: Your browser does not support the video tag.
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 您的浏览器不支持视频标签。
 - en: Dang, that's actually kind of cool-looking. Missed opportunity?
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 哎呀，那实际上看起来有点酷。错过的机会？
 - en: In that screen region, we want to disable bitplanes so that the DMA doesn't
     run away with junk data like that.
   id: totrans-59
