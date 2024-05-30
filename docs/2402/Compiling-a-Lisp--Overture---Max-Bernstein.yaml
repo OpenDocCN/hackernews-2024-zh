@@ -1,336 +1,498 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:29:46'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:29:46
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Compiling a Lisp: Overture | Max Bernstein'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 编译一种 Lisp：序章 | Max Bernstein
 - en: 来源：[https://bernsteinbear.com/blog/compiling-a-lisp-0/](https://bernsteinbear.com/blog/compiling-a-lisp-0/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://bernsteinbear.com/blog/compiling-a-lisp-0/](https://bernsteinbear.com/blog/compiling-a-lisp-0/)
 - en: '*Many thanks to Kartik Agaram and Leonard Schütz for proofreading these posts.*'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*非常感谢 Kartik Agaram 和 Leonard Schütz 对这些帖子进行校对。*'
 - en: In my [last series](/blog/lisp/), I wrote about building a Lisp interpreter.
     This time, we’re going to write a Lisp compiler.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的[上一个系列](/blog/lisp/)中，我写了关于构建 Lisp 解释器的内容。这次，我们将写一个 Lisp 编译器。
 - en: 'This series is an adaptation of Abdulaziz Ghuloum’s excellent paper [An Incremental
     Approach to Compiler Construction](/assets/img/11-ghuloum.pdf), with several key
     differences:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个系列是 Abdulaziz Ghuloum 的优秀论文[编译器构造的渐进方法](/assets/img/11-ghuloum.pdf)的改编，有几个关键的区别：
 - en: Our implementation is in C, instead of Scheme
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们的实现是用 C 编写的，而不是 Scheme
 - en: Our implementation generates machine code directly, instead of generating text
     assembly
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们的实现直接生成机器代码，而不是生成文本汇编
 - en: Our implementation may omit some runtime data structures
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们的实现可能省略了一些运行时数据结构
 - en: See [my implementation](https://github.com/tekknolagi/ghuloum) for reference,
     but note that it may be incomplete and also may look a little bit different than
     the compiler detailed in these posts.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关参考，请参见[我的实现](https://github.com/tekknolagi/ghuloum)，但请注意，它可能是不完整的，而且看起来可能与这些帖子中详细描述的编译器有些不同。
 - en: You probably have a couple questions, like *why Lisp?* and *why compile directly
     to x86-64?* and *why C?* and *come on, another Lisp series?*, and those are all
     very reasonable questions that will be answered in due time.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能有几个问题，比如 *为什么是 Lisp？* 和 *为什么直接编译成 x86-64？* 和 *为什么是 C？* 和 *来吧，又是一个 Lisp 系列？*，这些都是非常合理的问题，将会在适当的时候回答。
 - en: I want to implement this compiler in another language than Scheme because it
     will prevent me from copying too much of the code from the paper. Even though
     the paper doesn’t actually contain the source for the whole compiler (most of
     it is, after all, left as exercises for the reader), I think I will learn a lot
     more when I have to write all of the code by myself. I get to make my own mistakes
     and you get to watch me make and fix them in “real” time.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想要用另一种语言实现这个编译器，而不是 Scheme，因为这样可以防止我从论文中抄袭太多代码。即使这篇论文实际上并未包含整个编译器的源代码（毕竟，大部分代码都留作读者的练习），但我认为当我自己编写所有代码时，我会学到更多。我可以犯自己的错误，你可以在“真实”时间内看着我犯错并加以修正。
 - en: 'I also don’t want to generate text assembly, but those reasons are a little
     different than my reason for choosing another implementation language:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也不想生成文本汇编，但这些原因与我选择其他实现语言的原因有些不同：
 - en: 'First, I think that would be harder to test: I want to have an in-process unit
     test suite that compiles Lisp programs and executes them on-the-fly. Shelling
     out to a system assembler like `as` or `nasm` would be somewhat error prone. What
     if the person building this doesn’t have the assembler I need? Sure, I could also
     write a small assembler as part of this compiler, but that’s a lot of work. Harder
     than just generating x86-64 directly, perhaps.'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我认为那会更难测试：我想要有一个进程内单元测试套件，可以编译 Lisp 程序并在运行时执行它们。调用系统汇编器（如`as`或`nasm`）会有一定的错误风险。如果构建这个的人没有我需要的汇编器怎么办？当然，我也可以在这个编译器的一部分中编写一个小汇编器，但那是很多工作。也许比直接生成
+    x86-64 还要困难。
 - en: Second, I want to learn more about machine architecture. While `add a, b` seems
     like one machine instruction, it could probably be encoded in 50 different ways
     depending on whether `a` and `b` are registers, stack locations, other memory
     addresses, immediates, which registers they are, etc. Shelling out to an assembler
     abstracts a lot of that detail away. I *want* to get my hands dirty. Hopefully
     you do, too.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，我想更多地了解机器体系结构。虽然`add a, b`看起来像一个机器指令，但根据`a`和`b`是寄存器、栈位置、其他内存地址、即时数、它们是哪些寄存器等等，它可能以
+    50 种不同的方式进行编码。调用汇编器抽象了许多细节。我*想要*弄脏我的手。希望你也是。
 - en: I chose Lisp because that’s what the Ghuloum paper uses, and because Lisp can
     be represented as a small, compact, dynamically typed language. Many interpreter
     implementations are under 200 lines. I don’t think this compiler will be that
     short, though.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我选择 Lisp，因为 Ghuloum 论文使用了它，并且因为 Lisp 可以被表示为一种小型、紧凑、动态类型的语言。许多解释器的实现都不到 200 行。但我认为这个编译器不会那么短。
 - en: For questions, comments, and suggestions please post on [this sr.ht elist](https://lists.sr.ht/~max/compiling-lisp).
     It’s a public inbox that I can use to discuss and receive patches. I got the idea
     from [Chris Wellons](https://nullprogram.com/).
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关问题、评论和建议，请在[这个 sr.ht elist](https://lists.sr.ht/~max/compiling-lisp)上发布。这是一个公共邮箱，我可以用来讨论和接收补丁。我从[Chris
+    Wellons](https://nullprogram.com/)那里得到了这个想法。
 - en: Background knowledge
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 背景知识
 - en: 'In order to get the most out of this series, I recommend having at least passing
     familiarity with the following:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了充分利用这个系列，我建议您至少对以下内容有一定的了解：
 - en: C or a C-like language
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: C 或类 C 语言
 - en: some kind of assembly language
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 某种汇编语言
 - en: '*Abstract Syntax Trees* and recursive tree traversal'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*抽象语法树*和递归树遍历'
 - en: no particular aversion to parentheses
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 没有对括号特别厌恶
 - en: Having the background helps your focus be more on the bigger picture than the
     minutia, but it is by no means required. I expect most of this series to be fairly
     readable. If it’s not, that’s a bug and you should report it to me.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些背景知识，你的注意力更多地放在了大局而不是细枝末节上，但这并不是必需的。我预计这个系列大部分内容都会很容易阅读。如果不是，请报告给我。
 - en: Structure of the series
+  id: totrans-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 系列的结构
 - en: I plan on writing this series in installments where each installment adds a
     feature of some kind. Maybe that feature is a new bit of Lisp functionality, or
     maybe it’s a refactoring of the compiler, or maybe it’s a compiler optimization.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我计划分期写这个系列，每个分期都添加一种功能。也许这个功能是一种新的 Lisp 功能，也许是编译器的重构，也许是编译器优化。
 - en: For this reason, each post will tend to depend on the code and understanding
     from previous posts. As such, I recommend reading the series in order. I’ll still
     try to keep the big ideas understandable for those who don’t.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，每个帖子通常都会依赖于以前帖子的代码和理解。因此，建议按顺序阅读系列。我仍然会尝试让那些不懂的人理解大概的想法。
 - en: At each stage of the compiler, we should have a battery of tests that ensure
     that the features we have already build continue to work as expected.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在编译器的每个阶段，我们应该有一组测试，以确保我们已经构建的功能继续按预期工作。
 - en: 'I plan on adhering to this rough plan:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我计划遵循这个大致计划：
 - en: '[Compile integers](/blog/compiling-a-lisp-2/)'
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译整数（[/blog/compiling-a-lisp-2/](/blog/compiling-a-lisp-2/)）
 - en: '[Compile other immediate constants](/blog/compiling-a-lisp-3/) (booleans, ASCII
     characters, the empty list)'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译其他即时常量（布尔值、ASCII 字符、空列表）（[/blog/compiling-a-lisp-3/](/blog/compiling-a-lisp-3/)）
 - en: '[Compile unary primitives](/blog/compiling-a-lisp-4/) (`add1`, `sub1`, `integer->char`,
     `char->integer`, `null?`, `zero?`, etc)'
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译一元原语（[`add1`、`sub1`、`integer->char`、`char->integer`、`null?`、`zero?` 等）（[/blog/compiling-a-lisp-4/](/blog/compiling-a-lisp-4/)）
 - en: '[Compile binary primitives](/blog/compiling-a-lisp-5/) (`+`, `-`, `*`, `/`,
     `=`, etc)'
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译二元原语（`+`、`-`、`*`、`/`、`= `等）（[/blog/compiling-a-lisp-5/](/blog/compiling-a-lisp-5/)）
 - en: '[Read expressions from strings](/blog/compiling-a-lisp-6/)'
+  id: totrans-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从字符串读取表达式（[/blog/compiling-a-lisp-6/](/blog/compiling-a-lisp-6/)）
 - en: '[Compile local variables](/blog/compiling-a-lisp-7/) (`let`-expressions)'
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译本地变量（[`let` 表达式](/blog/compiling-a-lisp-7/)）
 - en: '[Compile conditional expressions](/blog/compiling-a-lisp-8/) (`if`-expressions)'
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译条件表达式（`if` 表达式）（[/blog/compiling-a-lisp-8/](/blog/compiling-a-lisp-8/)）
 - en: '[Compile heap allocation](/blog/compiling-a-lisp-9/) (`cons`)'
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译堆分配（[`cons`](/blog/compiling-a-lisp-9/)）
 - en: Compile heap allocation (strings, symbols, etc)
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译堆分配（字符串、符号等）
 - en: '[Compile procedure calls](/blog/compiling-a-lisp-11/) (`labels`, `code`, and
     `labelcall`)'
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译过程调用（`labels`、`code` 和 `labelcall`）（[/blog/compiling-a-lisp-11/](/blog/compiling-a-lisp-11/)）
 - en: Compile closures
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译闭包
 - en: Add tail-call optimization
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加尾递归优化
 - en: Compile complex constants (`quote`)
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译复杂常量（`quote`）
 - en: Compile variable assignment (`set!`)
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译变量赋值（`set!`）
 - en: Add macro expander
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加宏展开器
 - en: Add extended forms using macro expander (`let*`, `letrec`, etc)
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用宏展开器添加扩展表单（`let*`、`letrec` 等）
 - en: Add support for libraries and separate compilation
+  id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加对库和分离编译的支持
 - en: Compile foreign function calls
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译外部函数调用
 - en: Add error checking to primitives and procedure calls
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在原语和过程调用中添加错误检查
 - en: Compile variable-arity procedures (aka varargs)
+  id: totrans-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译可变参数过程（又称可变参数）
 - en: Compile `apply`
+  id: totrans-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编译 `apply`
 - en: Add output ports (kind of like `FILE*`)
+  id: totrans-53
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加输出端口（类似于 `FILE*`）
 - en: Add `write`, `display`
+  id: totrans-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加 `write`、`display`
 - en: Add input ports
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加输入端口
 - en: Add a tokenizer in Lisp
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Lisp 中添加一个标记器
 - en: Add a reader in Lisp
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Lisp 中添加一个读取器
 - en: Add a Lisp interpreter (or compiler) in Lisp
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Lisp 中添加一个 Lisp 解释器（或编译器）
 - en: 'With optional add-ons also described in the initial paper:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 也包括在初始论文中描述的可选附加组件：
 - en: Big numbers, IEEE754 floats, complex numbers
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 大数、IEEE754 浮点数、复数
 - en: User-defined macros
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用户定义的宏
 - en: A module system
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个模块系统
 - en: Heap overflow handler and garbage collector
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 堆溢出处理程序和垃圾回收器
 - en: Stack overflow handler
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 栈溢出处理程序
 - en: Improved code generation
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 改进的代码生成
 - en: 'And optional add-ons not described in the original paper:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始论文中未描述的可选附加组件：
 - en: An intermediate representation for optimization
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用于优化的中间表示
 - en: Generate executables and write them to disk
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 生成可执行文件并将其写入磁盘
 - en: An interpreter with optional just-in-time compiler
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 带有可选的即时编译器的解释器
 - en: 'You may have noticed that this is a *lot* of steps, and there are some steps
     that I intend to take but have completely omitted because I want to roll them
     into other posts. Things like:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能已经注意到这是*许多*步骤，而且有些步骤我打算采取，但完全省略了，因为我想将它们合并到其他帖子中。像这样的东西：
 - en: Code generation infrastructure (a writable buffer, `mmap`/`mprotect`, etc)
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 代码生成基础设施（可写缓冲区、`mmap`/`mprotect`等）
 - en: Compiler data structures (variable environments, label environments, etc)
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编译器数据结构（变量环境、标签环境等）
 - en: Testing infrastructure (unit testing, integration testing)
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测试基础设施（单元测试、集成测试）
 - en: 'So it’s really actually more work than I listed above. This series may take
     a long time. It may take some twisty turns. It may take some shortcuts. But there
     is good news: I’ve already written the compiler up to compiling heap allocation
     (still working on procedure calls), and even if I don’t finish this series there
     is still Ghuloum’s excellent paper to learn from.'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以实际上这要比我上面列出的工作多得多。这个系列可能需要很长时间。它可能会有些曲折。它可能会有些捷径。但是好消息是：我已经写完了编译器，直到编译堆分配（仍在处理过程调用），即使我没有完成这个系列，仍然可以从
+    Ghuloum 的优秀论文中学到东西。
 - en: Next up, [the smallest program](/blog/compiling-a-lisp-1/).
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，[最小程序](/blog/compiling-a-lisp-1/)。
 - en: Mini Table of Contents
+  id: totrans-76
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 迷你目录
 - en: '* * *'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'Here are some other links you might find useful or interesting while following
     along with this series:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在跟进本系列时，以下是您可能会发现有用或有趣的一些其他链接：
