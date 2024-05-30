@@ -224,10 +224,12 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 直觉上我以为这个依赖会使程序*变大*，但事实并非如此。libc 包是一个包装器，主要包含函数定义。代码本身是动态链接的。
 - en: 'Then change `src/main.rs` to this:'
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后将`src/main.rs`改成这样：
 - en: '[PRE8]'
   id: totrans-47
   prefs: []
@@ -238,6 +240,7 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们停止使用标准库（`#![no_std]`），这对我们造成了两个变化：
 - en: Rust needs to know which function to call when something panics, and [the default
     one](https://github.com/rust-lang/rust/blob/ef9b49881ba99248b68dbdebbebd50155587c509/library/std/src/panicking.rs#L531)
     is in the standard library so we have to provide our own.
@@ -245,6 +248,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Rust 需要知道在恐慌时调用哪个函数，而[默认的函数](https://github.com/rust-lang/rust/blob/ef9b49881ba99248b68dbdebbebd50155587c509/library/std/src/panicking.rs#L531)在标准库中，所以我们必须提供我们自己的。
 - en: '`#![no_std]` in a binary always seems to imply `#![no_main]`. As we’ll see
     in a minute programs don’t actually start at `main`. There’s a fair bit of libc
     and rust code between the start of the program and the normal Rust `fn main` being
@@ -254,10 +258,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在二进制中使用`#![no_std]`总是意味着`#![no_main]`。正如我们马上就会看到的那样，程序实际上并不是从`main`开始的。在程序开始和正常的
+    Rust `fn main` 被调用之间有相当多的 libc 和 rust 代码。大部分的机制都在标准库中，但我们现在没有了，所以我们必须提供一个更早的入口点。
 - en: What does that get us?
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给我们带来了什么？
 - en: '[PRE9]'
   id: totrans-52
   prefs: []
@@ -267,15 +274,18 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个巨大的改进，**但这是终点吗？当然不是！**
 - en: How small should it be? The assembler version is 352 bytes.
   id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 它应该有多小？汇编版本是 352 字节。
 - en: 'Here’s the same program using [nasm](https://nasm.us/). Save it to `exit.s`:'
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是使用[nasm](https://nasm.us/)的相同程序。保存到`exit.s`中：
 - en: '[PRE10]'
   id: totrans-56
   prefs: []
@@ -285,6 +295,7 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 汇编并链接它：
 - en: '[PRE11]'
   id: totrans-58
   prefs: []
@@ -294,6 +305,7 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查它的大小：
 - en: '[PRE12]'
   id: totrans-60
   prefs: []
@@ -303,6 +315,7 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 352 字节！现在开始吧！让我们尽量接近这个数值。
 - en: Notice that there’s no `main` function in our assembly version. The first 64
     bytes of a Linux binary are the [ELF header](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header).
     When Linux loads a file it looks at the `e_entry` field of that ELF header, jumps
@@ -310,10 +323,13 @@
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意我们的汇编版本中没有`main`函数。Linux 二进制文件的前 64 字节是[ELF 头](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header)。当
+    Linux 加载一个文件时，它查看 ELF 头的`e_entry`字段，跳转到该地址并开始解码那里的字节，假设它们是 CPU 指令。
 - en: 'Re-link `exit` with symbols:'
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 重新链接`exit`与符号：
 - en: '[PRE13]'
   id: totrans-64
   prefs: []
@@ -323,6 +339,7 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到入口点：
 - en: '[PRE14]'
   id: totrans-66
   prefs: []
@@ -332,6 +349,7 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到匹配的符号：
 - en: '[PRE15]'
   id: totrans-68
   prefs: []
@@ -342,6 +360,7 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与我们汇编中的`_start`符号相匹配。将它命名为`_start`只是一个约定和默认值，你可以告诉链接器从任何地方开始。
 - en: There’s no machinery here - we jump straight to our code. By contrast in our
     latest Rust version there is a `_start` provided by libc (I think), which calls
     `__rt_lang_start`, which calls our C-style `main` function (`rt` here stands for
@@ -349,22 +368,27 @@
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里没有任何机制 - 我们直接跳到我们的代码。相比之下，在我们最新的 Rust 版本中，由 libc 提供了一个 `_start`（我想），它调用 `__rt_lang_start`，然后调用我们的
+    C 风格的`main`函数（`rt`这里代表“运行时”，C 确实有一个小运行时）。
 - en: In the first version of our code there were many more layers because the C runtime
     calls the Rust runtime ([all of this](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139)
     linked earlier)) which calls our `main`.
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们代码的第一个版本中，有更多的层，因为 C 运行时调用了 Rust 运行时（[这里的所有内容](https://github.com/rust-lang/rust/blob/91ffbc43b18842594adb997c8eea8c51035bf0e1/library/std/src/rt.rs#L139)之前链接的）然后调用我们的`main`。
 - en: In Rust can we provide our own `_start` and go straight there? I was delighted
     to discover **you very much can**.
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Rust 中我们能提供自己的`_start`然后直接去那里吗？我很高兴地发现**你完全可以**。
 - en: 'No libc either: 13 KiB'
   id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 也没有 libc：13 KiB
 - en: At the very beginning I said that a program has to call `exit`, and that usually
     we don’t have to worry about that because the runtime takes care of it for. Well,
     we’re not going to have a runtime. Nothing is going to nicely wrap our `main`
@@ -373,11 +397,13 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一开始我说过程序必须调用`exit`，通常我们不用担心这个，因为运行时会为我们处理。好吧，我们不会有运行时了。没有任何东西会很好地包装我们的`main`函数，并将返回值转换为程序的退出代码。我们将不得不在汇编中自己做，使用和`exit.s`相同的代码。
 - en: 'Remove the `libc` dependency from `Cargo.toml`. Then replace `src/main.rs`
     with this:'
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 从`Cargo.toml`中删除`libc`依赖项。然后用这个替换`src/main.rs`：
 - en: '[PRE16]'
   id: totrans-76
   prefs: []
@@ -388,6 +414,7 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要告诉 C 编译器我们提供了自己的入口点，告诉它不要包含它自己的启动文件。
 - en: '[PRE17]'
   id: totrans-78
   prefs: []
@@ -398,10 +425,12 @@
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意这里不需要`target-cpu=native`。（除了需要！我花钱买了 AVX-512，该死的，我希望你使用它！）
 - en: 'Let’s check how we’re doing for size:'
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来检查一下大小：
 - en: '[PRE18]'
   id: totrans-81
   prefs: []
@@ -411,21 +440,25 @@
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 收益有限，因为 C 运行时非常小。
 - en: We should be able to do better. The reason we can’t is that, **all along, we
     have been the victims of a dastardly [sabotage](https://www.youtube.com/watch?v=z5rRZdiu1UE)**.
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该能做得更好。我们不能做到的原因是，**一直以来，我们都是[阴险的破坏行为](https://www.youtube.com/watch?v=z5rRZdiu1UE)**的受害者。
 - en: 'Linker flags: 400 bytes'
   id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 链接器标志：400 字节
 - en: Open up `target/release/smallrs` in a hex editor (I like [hexyl](https://github.com/sharkdp/hexyl))
     and take a look. What do you see? Page and pages of zeros, that’s what!
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个十六进制编辑器中打开`target/release/smallrs`（我喜欢[hexyl](https://github.com/sharkdp/hexyl)），看一看。你看到了什么？一页又一页的零！
 - en: The linker, in it’s wisdom, has been page-aligning the sections of our binary.
     The zeros fill space right before 0x1000 (4k) and 0x3000 (4k * 3). Normally this
     makes a lot of sense, we want our code to fit into as few 4k pages as possible;
@@ -433,12 +466,14 @@
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 链接器在其智慧中，已经对我们的二进制文件的各个部分进行了页面对齐。零填充在0x1000（4k）和0x3000（4k * 3）之前的空间。通常这是有道理的，我们希望我们的代码能够适应尽可能少的4k页面；但在这种情况下不是！
 - en: 'Why didn’t this happen with our assembly version? Because I cheated, that’s
     why, by passing `ld` the `-n` and `-N` flags, which switch off the page aligning.
     Let’s do that here also:'
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么我们的汇编版本没有出现这种情况？因为我作弊了，那就是为什么，通过向`ld`传递`-n`和`-N`标志，关闭页面对齐。让我们也在这里这样做：
 - en: '[PRE19]'
   id: totrans-88
   prefs: []
@@ -448,16 +483,19 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在好多了！
 - en: I’m not sure why I need `--no-dynamic-linker` here. Presumably the dynamic linker
     expects sections to be page aligned. We’re a static binary with no dependencies,
     so it’s not a problem.
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不确定为什么我需要在这里使用`--no-dynamic-linker`。大概是因为动态链接器希望部分对齐。我们是一个没有依赖关系的静态二进制文件，所以这不是一个问题。
 - en: 'Let’s compare the assembly binary to ours to find the remaining differences:'
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们将汇编二进制文件与我们的二进制文件进行比较，以找出剩余的差异：
 - en: '[PRE20]'
   id: totrans-92
   prefs: []
@@ -470,41 +508,49 @@
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '`static-pie`意味着它是一个[Position Independent Executable](https://en.wikipedia.org/wiki/Position-independent_code#Position-independent_executables)，这是一种防止一种缓冲区溢出攻击的安全特性。现在它基本上在所有地方都是默认启用的。我们不接受不受信任的用户输入，所以我们会禁用它。'
 - en: '(Aside: There might be a better way of disabling PIE than the linker flag I
     use. The rustc linker code mentions `LinkOutputKind::StaticNoPicExe` which I think
     is what we want, but I couldn’t figure out how to set that in Cargo.toml)'
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: （另外：可能有一种比我使用的链接器标志更好的方法来禁用PIE。rustc链接器代码提到了`LinkOutputKind::StaticNoPicExe`，我认为这是我们想要的，但我无法弄清楚如何在Cargo.toml中设置它）
 - en: The `BuildID` is inserted by the linker to uniquely identify the file. I don’t
     know what it’s for, but it does not bring joy. The best argument I could find
     online for it was that it might help when analysing core files. Out it goes.
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '`BuildID`是链接器插入的，用于唯一标识文件。我不知道它是用来做什么的，但它没有带来喜悦。我在网上找到的最好的论点是，在分析核心文件时可能会有所帮助。让它消失吧。'
 - en: 'RUSTFLAGS will have:'
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: RUSTFLAGS将有：
 - en: -Ctarget-cpu=native
   id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: -Ctarget-cpu=native
 - en: -Clink-args=-nostartfiles
   id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: -Clink-args=-nostartfiles
 - en: -Clink-args=-Wl,-n,-N,–no-dynamic-linker,–no-pie,–build-id=none
   id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: -Clink-args=-Wl,-n,-N,–no-dynamic-linker,–no-pie,–build-id=none
 - en: 'Here is our final build command:'
   id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们的最终构建命令：
 - en: '[PRE21]'
   id: totrans-101
   prefs: []
@@ -514,16 +560,19 @@
   id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 四百字节！
 - en: The next steps would be to figure our where the extra almost 50 bytes is coming
     from, but I’m going to call it good enough and have lunch.
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步将是找出额外的近50字节是从哪里来的，但我认为目前已经足够了，我要去吃午饭了。
 - en: 'Update: Bigger programs'
   id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更新：更大的程序
 - en: That’s as far as we can go with such a simple example. In a more real-world
     setup we can get this far and our binary still isn’t small enough (I’m going to
     use [Demeter Deploy](https://github.com/grahamking/demeter-deploy) as the example,
@@ -532,43 +581,51 @@
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我们在如此简单的示例中所能做到的。在更真实的设置中，我们可以走到这一步，但我们的二进制文件仍然不够小（我将使用[Demeter Deploy](https://github.com/grahamking/demeter-deploy)作为示例，但你不需要它来跟进），所以我添加了一些关于减小更复杂程序大小的笔记。
 - en: The most helpful activity is monitoring the binary size after every change.
     A quite small Rust change can pull in lots of library code and bloat the binary.
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 最有帮助的活动是在每一次更改后监视二进制文件的大小。一个相当小的Rust更改可能会引入大量的库代码并使二进制文件膨胀。
 - en: Don’t panic
   id: totrans-107
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 不要panic
 - en: 'Doing anything that can panic will pull in the panic machinery, which pulls
     in the voluminous print/format machinery. [Indexing is where I noticed this](https://github.com/grahamking/demeter-deploy/blob/b2892473313d9769793cbfd3aa19a6c5c79fa451/seed/src/main.rs#L525):'
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 做任何可能导致panic的事情都会引入panic机制，这将引入庞大的print/format机制。[索引是我注意到这一点的地方](https://github.com/grahamking/demeter-deploy/blob/b2892473313d9769793cbfd3aa19a6c5c79fa451/seed/src/main.rs#L525)：
 - en: 'BIG: `my_thing[idx]`, gives a binary of 7608 bytes.'
   id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: BIG：`my_thing[idx]`，得到一个7608字节的二进制文件。
 - en: 'SMALL: `my_thing.get_unchecked(idx)`, with that single change the binary is
     now 2976 bytes.'
   id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SMALL：`my_thing.get_unchecked(idx)`，仅通过这一次更改，二进制文件现在为2976字节。
 - en: 'This only applies if the overflow check is included. If the compiler is able
     to elide the size check (typically because you do it yourself: `if x < arr.len()
     { arr[x] }`) then indexing is fine.'
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 这仅适用于包括溢出检查的情况。如果编译器能够省略大小检查（通常是因为你自己这样做：`if x < arr.len() { arr[x] }`），那么索引是可以的。
 - en: Avoid fat pointers
   id: totrans-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 避免fat指针
 - en: A slice is a fat pointer containing the address of the backing array and it’s
     size. An array is just the data itself. If we can avoid storing slices it saves
     two `usize` (16 bytes). For example in [this ERRS array](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L94)
@@ -576,22 +633,28 @@
   id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 切片是一个包含背景数组地址及其大小的fat指针。数组只是数据本身。如果我们能避免存储切片，可以节省两个`usize`（16字节）。例如，在[这个 ERRS
+    数组](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L94)中，我通过使用`&[u8;
+    8]`而不是`&[u8]`节省了约200字节。
 - en: A `&str` is also a fat pointer, also 16 bytes. By storing only the address of
     a null terminated string we can cut that in half, for example in [these error
     messages](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L66-L75).
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '`&str`也是一个fat指针，也是16字节。通过仅存储空终止字符串的地址，我们可以将其减半，例如在[这些错误消息中](https://github.com/grahamking/demeter-deploy/blob/0115ab369179cdbe6d155da9261d3cc36635c2a8/seed/src/main.rs#L66-L75)。'
 - en: Remove sections
   id: totrans-115
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 移除部分
 - en: 'LLVM will include more ELF sections than necessary. List these with `readelf
     -S`:'
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: LLVM将包含比必要更多的ELF部分。使用`readelf -S`列出这些：
 - en: '[PRE22]'
   id: totrans-117
   prefs: []
@@ -602,11 +665,13 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 与同一程序的纯汇编版本相比，我们这里有更多的部分。这是我们要删除它们的方法：
 - en: '`.eh_frame_hdr`: Loader flag `--no-eh-frame-hdr`'
   id: totrans-119
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`.eh_frame_hdr`：加载器标志`--no-eh-frame-hdr`'
 - en: '`.eh_frame`: Manually with `objcopy`.'
   id: totrans-120
   prefs:
