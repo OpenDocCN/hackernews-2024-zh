@@ -118,11 +118,19 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为提醒，在 `print_strings` 的参数中出现占位符 `auto` 使 `print_strings` 成为一个[缩写函数模板](https://timsong-cpp.github.io/cppwp/n4861/dcl.fct#18)，为占位符的每次出现引入了一个隐式模板类型参数。使用
+    `auto&&` 而不是 `auto` 或 `auto&` 被称为[转发引用](https://timsong-cpp.github.io/cppwp/n4861/temp.deduct.call#3)，它可以接受左值引用和右值引用（这是一个令人困惑的语法，因为在大多数情况下，后缀
+    `&&` 只匹配右值引用）。我们需要转发引用的普遍性，因为`"one"`是一个左值（类型为 `const char(&)[4]`），而 `std::string{"two"}`
+    是一个 prvalue——前者不能被右值引用捕获，后者不能被非 const 左值引用捕获。最后，注意 [类型约束](https://en.cppreference.com/w/cpp/language/constraints)
+    [`convertible_to`](https://en.cppreference.com/w/cpp/concepts/convertible_to)
+    限制了与模板参数匹配的类型；没有这个约束，程序仍然可以工作，但是对于不兼容类型的 `print_strings` 调用会生成不太直观的错误消息，更糟糕的是，`print_strings`
+    函数的任何重载都会导致模糊错误。
 - en: Expanding parameter packs
   id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**扩展参数包**'
 - en: 'A captured parameter pack must be used in a *pattern* that is *expanded* with
     an ellipsis (`...`). A pattern is a set of tokens containing the identifiers of
     one or more parameter packs. When a pattern contains more than one parameter pack,
@@ -132,6 +140,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个捕获的参数包必须在一个*模式*中使用，并用省略号（`...`）*扩展*。模式是包含一个或多个参数包的标识符的一组标记。当一个模式包含多个参数包时，所有包必须具有相同的长度。这个长度决定了模式在扩展中被概念上复制的次数，每个位置在扩展包(s)中都有一次。这里有一个简单的例子：
 - en: '[PRE1]'
   id: totrans-16
   prefs: []
@@ -147,6 +156,7 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第 3 行，函数 `expand` 捕获一个模板参数包 `C`，它由一系列零个或多个类型组成，这些类型必须
 - en: In line 7, `tuple<C...>` expands the pack `C` in a *template-argument-list*,
     while `tpl(c...)` expands `c` in an [*initializer-list*](https://timsong-cpp.github.io/cppwp/n4868/dcl.init.general#nt:initializer-list)
     (which, not to be confused with `std::initializer_list`, is the term in the C++
@@ -156,6 +166,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第 7 行，`tuple<C...>` 在*模板参数列表*中扩展包 `C`，而 `tpl(c...)` 在[*初始化列表*](https://timsong-cpp.github.io/cppwp/n4868/dcl.init.general#nt:initializer-list)中扩展
+    `c`（不要与 `std::initializer_list` 混淆，这是 C++ 语法中表示传递给函数调用和构造函数的逗号分隔表达式列表的术语）。
 - en: In line 9, we expand the pattern `C(std::toupper(c))` in another initializer
     list. This is an example of a pattern with two packs, `C` and `c`, both of which
     have the same length and are expanded in lockstep. ([`std::toupper`](https://en.cppreference.com/w/cpp/string/byte/toupper)
@@ -165,11 +177,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第 9 行，我们在另一个初始化列表中扩展模式 `C(std::toupper(c))`。这是一个有两个包 `C` 和 `c` 的模式的例子，它们的长度相同，并且以同步方式扩展。([`std::toupper`](https://en.cppreference.com/w/cpp/string/byte/toupper)
+    返回的是 `int` 而不是 `char`，所以它的结果需要一个转换，虽然在这种情况下我们可以等效地写成 `char(std::toupper(c))...`。)
 - en: In line 10, we again expand `c` in an initializer list.
   id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第 10 行，我们再次在初始化列表中扩展 `c`。
 - en: 'In most cases, an expanded pattern is conceptually equivalent to a number of
     copies of the pattern equal to the size of the parameter pack. Unless otherwise
     noted, a pattern is expanded by appending an ellipsis (`...`). It is illegal to
@@ -179,6 +194,7 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数情况下，扩展模式在概念上等同于模式的副本数量等于参数包的大小。除非另有说明，否则模式通过附加省略号（`...`）来扩展是非法的。以下是可以扩展模式的[上下文](https://timsong-cpp.github.io/cppwp/n4868/temp.variadic#5)的列表：
 - en: In **initializer-lists** (as shown above), including pack expansion in the arguments
     to a function call. Conceptually, such a pack expansion is equivalent to a comma-separated
     list of instances of the pattern.
@@ -186,12 +202,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**初始化列表**（如上所示）中，在函数调用的参数中包含包扩展。概念上，这样的包扩展相当于模式实例的逗号分隔列表。
 - en: 'In **base specifier lists**, to specify one base class for each member of a
     type parameter pack, e.g.:'
   id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**基类指定符列表**中，为类型参数包的每个成员指定一个基类，例如：
 - en: '[PRE2]'
   id: totrans-24
   prefs:
@@ -205,6 +223,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在类构造函数的**成员初始化列表**中初始化基类时，包扩展根据类型参数包初始化一系列基类：
 - en: '[PRE3]'
   id: totrans-26
   prefs:
@@ -217,12 +236,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**模板参数列表**中，如`std::tuple<C...>`，参数包扩展为等效于逗号分隔的模板参数列表。
 - en: In lambda **capture lists**, the pattern expansion is equivalent to a comma-separated
     list of captures. E.g.,
   id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在lambda的**捕获列表**中，模式展开等同于一个逗号分隔的捕获列表。例如，
 - en: '[PRE4]'
   id: totrans-29
   prefs:
@@ -237,6 +258,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**函数参数**和**模板参数**中，包扩展的行为类似于模式的逗号分隔列表。在函数参数中的一个例子是`expand(C...c)`的定义中的扩展`C`，请参见[上文](#expand-5)。在模板参数中的一个例子是这里`Inner`的`T`的扩展：
 - en: '[PRE5]'
   id: totrans-31
   prefs:
@@ -252,6 +274,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 请注意，在这些情况下，省略号发挥了双重作用，既用于展开一个参数包又用于捕获另一个参数包。`...`必须始终紧接在捕获的参数包的标识符之前。这意味着省略号位于数组和函数类型的模式中间，而不是末尾，但模式仍然会像往常一样展开。例如：
 - en: '[PRE6]'
   id: totrans-33
   prefs:
@@ -264,6 +287,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**using声明**中，该模式在概念上扩展为一系列`using`声明。
 - en: '[PRE7]'
   id: totrans-35
   prefs:
@@ -277,6 +301,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 很显然，当基类中每个方法`f`的类型签名不同时，`using`模式是最有用的——否则调用`f`将是模棱两可的。请参见[multilambda](#multilambda)以了解`using`模式的一个很好的用法。
 - en: In an **alignment specifier**, the argument must be a single parameter pack
     and the ellipsis goes inside the `alignas` operator. The result is an alignment
     restriction compatible with all the types (if the pack expands to types) or all
@@ -288,6 +313,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在**对齐说明符**中，参数必须是单个参数包，省略号放在`alignas`运算符内。结果是一个与所有类型兼容的对齐限制（如果参数包展开为类型）或所有二的幂次方（如果参数包展开为整数二的幂次方）。在下面的示例中，类型`storage<int,
+    void*>`将对齐到既兼容`int`又兼容`void*`的地址。（还请注意，在花括号中展开的`sizeof(T)...`以创建一个`std::initializer_list<std::size_t>`参数用于`std::max`。）
 - en: '[PRE8]'
   id: totrans-38
   prefs:
@@ -302,6 +329,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 标准还允许**属性列表**中存在包扩展。但是，这个特性不适用于任何标准属性，并且必须用于特定于编译器的属性。
 - en: 'While a pack expansion mostly behaves like a series of copies of the pattern,
     it is [okay](https://timsong-cpp.github.io/cppwp/n4868/temp.variadic#example-6)
     to have a pack of size zero even when the program wouldn’t otherwise be syntactically
@@ -311,6 +339,8 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '虽然包扩展在大多数情况下都像是模式的副本系列，但即使在程序在语法上不被合法形成时，也可以有一个大小为零的包。例如，虽然`f(x,)`和`struct
+    MyStruct : {};`不是有效的C++语法，但`f(x, pack...)`和`struct MyStruct : Base... {};`即使`pack`和`Base`为空参数包时也是可以的。'
 - en: 'A pattern may itself contain an expanded parameter pack, in which case there
     is no need for the inner and outer packs to contain the same number of elements.
     The expansion of the inner pack simply becomes part of the pattern around the
@@ -318,6 +348,7 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个模式本身可能包含一个已展开的参数包，在这种情况下，内部和外部包不需要包含相同数量的元素。内部包的展开只需成为外部包周围的模式的一部分。例如：
 - en: '[PRE9]'
   id: totrans-42
   prefs: []
@@ -330,11 +361,13 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，包扩展在上述列出的上下文之外是*无效的*。特别是，您不能展开一个自由浮动的表达式（虽然请参阅下文的[折叠](#folds)），也不能展开`switch`语句中的`case`子句。
 - en: '`sizeof...(pack)`'
   id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`sizeof...(pack)`'
 - en: The [`sizeof...` operator](https://timsong-cpp.github.io/cppwp/n4868/expr.sizeof#4)
     returns a `std::size_t` corresponding to the number of elements in a parameter
     pack. While technically considered a pack expansion, it only ever returns a single
@@ -343,17 +376,20 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`sizeof...`操作符](https://timsong-cpp.github.io/cppwp/n4868/expr.sizeof#4)返回一个与参数包中元素数量对应的`std::size_t`。虽然在技术上被认为是一个包扩展，但它只返回一个单一值。与普通的`sizeof`不同，`sizeof...`的参数[必须始终](https://timsong-cpp.github.io/cppwp/n4868/expr.unary#general-1)用括号括起来，并且必须由一个单一标识符命名参数包。'
 - en: Folds
   id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 折叠
 - en: 'Another special form of pack expansion is [folds](https://timsong-cpp.github.io/cppwp/n4868/temp.variadic#10),
     introduced in C++17\. Above, we showed a function [`sum`](#sum) that summed a
     set of integers. This function can be implemented far more concisely with a fold:'
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种特殊形式的包扩展是[C++17](https://timsong-cpp.github.io/cppwp/n4868/temp.variadic#10)中引入的折叠。上面，我们展示了一个函数[`sum`](#sum)，它对一组整数求和。这个函数可以用折叠来实现得更加简洁：
 - en: '[PRE10]'
   id: totrans-48
   prefs: []
@@ -1354,11 +1390,13 @@
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个缺点是您将不得不使用额外的一组大括号来调用该函数，如`alsmost_good3({obj, Obj{}})`，以及您只能对`std::initializer_list`的成员进行`const`访问，因此它不适用于我们的示例`Obj`类型，其中`use()`方法不是`const`。
 - en: Array of function pointers
   id: totrans-168
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 函数指针数组
 - en: Sometimes you need to convert a runtime constant into a compile-time constant
     without manually writing out every possible value in a `switch` statement. The
     best way to do this is to initialize an array of function pointers using a parameter
@@ -1366,6 +1404,7 @@
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，您需要将运行时常量转换为编译时常量，而不是手动编写`switch`语句中的每个可能的值。这样做的最佳方法是使用参数包展开初始化函数指针数组。
 - en: As an example, suppose you wish to serialize a [`std::variant`](https://en.cppreference.com/w/cpp/utility/variant)
     `v`. You can serialize the current type of the variant by serializing the number
     `v.index()`. Then you can serialize the body of the variant with [`std::visit`](https://en.cppreference.com/w/cpp/utility/variant/visit).
@@ -1375,12 +1414,14 @@
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，假设您希望序列化[`std::variant`](https://en.cppreference.com/w/cpp/utility/variant)`v`。您可以通过序列化变体的当前类型来序列化数字`v.index()`。然后，您可以使用[`std::visit`](https://en.cppreference.com/w/cpp/utility/variant/visit)来序列化变体的主体。要反序列化`v`，您必须反转该过程。首先，反序列化索引值`i`。然后通过将`v`设置为包含其第`i`个类型来将`v.index()`设置为`i`。最后，使用`std::visit`反序列化内容。
 - en: 'Unfortunately, the problem with this plan is that the inverse of `v.index()`—a
     method to *set* the index of the variant—does not exist. We could try to implement
     such a function by brute-force, but the result will be problematic:'
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，该计划的问题在于`v.index()`的逆过程——设置变体索引的方法——不存在。我们可以尝试通过蛮力来实现这样的功能，但结果将是有问题的：
 - en: '[PRE42]'
   id: totrans-172
   prefs: []
@@ -1395,6 +1436,7 @@
   id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码的较小问题是编写起来非常乏味。即使`emplace`对于变体的每个索引确实是一个不同的函数，按这种方式写出来也很痛苦。更严重的问题是上述函数仅适用于具有恰好3个案例的变体。只有2个案例的变体没有`emplace<2>`的有效代码，因此在这样的类型上调用`set_index`将无法编译。
 - en: 'What we need is a way to take a runtime constant and convert it to a compile
     time constant we can supply as a template parameter to `v.emplace<`∘`>()`. We
     can represent compile-time constants with the template type [`std::integral_constant`](https://en.cppreference.com/w/cpp/types/integral_constant),
@@ -1403,6 +1445,7 @@
   id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要的是一种方法，可以将运行时常量转换为我们可以作为模板参数提供给`v.emplace<`∘`>()`的编译时常量。我们可以使用模板类型[`std::integral_constant`](https://en.cppreference.com/w/cpp/types/integral_constant)表示编译时常量，该类型具有返回表示类型的整数值的`constexpr`转换操作符。在概念上，我们想做类似于这样的事情：
 - en: '[PRE43]'
   id: totrans-175
   prefs: []
@@ -1416,6 +1459,7 @@
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这是没有意义的，因为`0_const`和`1_const`是不同类型的。函数只能返回一种类型（显然不能依赖于运行时参数）。为了让函数产生依赖于运行时参数的类型，而不是返回类型，函数需要调用一个重载的函数对象。因此，我们必须实现类似于以下内容的内容：
 - en: '[PRE44]'
   id: totrans-177
   prefs: []
@@ -1429,6 +1473,7 @@
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，现在我们知道函数应该是什么样子了，但我们仍然有一个问题，即它仅适用于`n`的固定数量的值。甚至不是一个固定的最大值，而是一个固定的数量。但是，我们可以通过将最大值作为参数，然后使用`std::make_index_sequence`来生成参数包，将其展开为函数指针数组来解决这个问题。
 - en: '[PRE45]'
   id: totrans-179
   prefs: []
@@ -1448,6 +1493,7 @@
   id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于上述代码的一些说明。首先，请注意，[`invoke_array`](#with-n-15)由于是数组，因此其所有元素都必须是相同类型。因此，我们确实需要[`detail::with_integral_constant`](#with-n-3)是一个函数，而不是一个lambda表达式，以确保数组的所有元素具有相同的类型。我们可以创建一个[`std::function<R(F&&)>`](https://en.cppreference.com/w/cpp/utility/functional/function)的数组，但是`std::function::~function`不是一个`constexpr`析构函数，因此`invoke_array`可能不是`constexpr`，这可能会抑制一些编译器优化。（注意，在某些情况下，如果您有没有变量捕获的非通用lambda，则可以通过在lambda前面加上`+`来将其转换为普通函数指针，如`+[]{}`。）
 - en: Next, note that we supply the number of possible values, `N`, as the first template
     argument to [`with_n`](#with-n-12), and this argument is mandatory. By using `std::array::at`,
     we ensure that an exception will be thrown for out-of-bounds values of `n`. Note
