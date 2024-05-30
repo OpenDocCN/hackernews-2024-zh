@@ -1,170 +1,238 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:06:57'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:06:57'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A beginner's guide to constant-time cryptography
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个初学者的常数时间加密指南
 - en: 来源：[https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html)
 - en: For programmers new to cryptography, there are plenty of “known unknowns” –
     unfamiliar terms like “elliptic curves” and “random oracles”, and unnecessarily
     long acronyms (“RSASSA-PKCS-v1_5”, like really?). But what really gives cryptography
     its reputation is the unknown unknowns. The things that catch even experienced
     developers by surprise.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于新手程序员来说，密码学有许多“已知未知数”——不熟悉的术语如“椭圆曲线”和“随机预言”，以及不必要的长缩略语（“RSASSA-PKCS-v1_5”，真的吗？）。但真正让密码学声名显赫的是未知未知数。即使是经验丰富的开发人员也会被意外所惊讶的事物。
 - en: '**Quick: where’s the vulnerability in this code?** (I used JavaScript here,
     but the same vulnerability would occur in Python, Ruby, and most other languages.)'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速问：这段代码的漏洞在哪里？**（我这里使用了JavaScript，但在Python、Ruby和大多数其他语言中，同样的漏洞都会发生。）'
 - en: '[PRE0]'
+  id: totrans-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: If you spotted it, nice work. I’m guessing you have at least a passing interest
     in cryptography.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你发现了它，干得漂亮。我猜你对密码学至少有些兴趣。
 - en: If you didn’t, here’s how the exploit works. The comparison operator, “!==”,
     is vulnerable to a timing attack. The string comparison compares the two keys
     one byte at a time, stopping as soon as it finds an offset where the two strings
     do not match. As a result, `checkApiKey` will take longer if the two keys start
     with the same bytes. It’s sort of like if the error message itself said “wrong
     key, but you got the first 2 bytes right!”.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你没注意，这里是漏洞的利用方式。比较运算符“!==”对定时攻击是脆弱的。字符串比较逐字节进行比较，一旦找到两个字符串不匹配的偏移量，就停止比较。因此，如果两个键的起始字节相同，`checkApiKey`将花费更长的时间。这有点像错误消息本身说“密钥错误，但你得到了前2个字节正确！”。
 - en: Now, it may not *seem* significant that an attacker can see how many bytes of
     their key were a match, but it can actually be **fatal to security**. The attacker
     can crack the first byte of the key by trying all 256 possibilities, and observing
     which one caused the comparison to take longer. Now, armed with the first byte,
     they can do the same with the second byte, and the third, and so on, until they
     have recovered the entire key.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，也许看起来*没什么*大不了的，攻击者可以看到他们的密钥有多少字节匹配，但这实际上对安全性是**致命的**。攻击者可以通过尝试所有256种可能性来破解密钥的第一个字节，并观察哪一个导致比较花费更长的时间。现在，拥有了第一个字节后，他们可以对第二个字节、第三个字节等进行同样的操作，直到完全恢复密钥。
 - en: For a 16-byte key, a normal brute force attack would require about 1.7 x 10^38
     guesses on average – impossible in most contexts. With a timing attack, however,
     full key recovery can be possible with only a few thousand guesses.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于16字节的密钥，普通的暴力破解攻击平均需要约1.7 x 10^38次猜测——在大多数情况下是不可能的。然而，使用定时攻击，完全恢复密钥可能只需几千次猜测。
 - en: Are attacks like this practical? Yes, especially if you are in a shared hosting
     environment like EC2 or DigitalOcean, allowing attackers to get a low latency
     connection to your server. See [this paper for details of practical exploitation
     (pdf)](https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/TimeTrial.pdf).
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种攻击实际吗？是的，特别是如果你处于像EC2或DigitalOcean这样的共享主机环境中，允许攻击者与您的服务器建立低延迟连接。详细内容请参阅[此论文中的实际利用细节（pdf）](https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/TimeTrial.pdf)。
 - en: That sounds bad, so why don’t you just…?
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 听起来很糟糕，为什么不简单地……？
 - en: 'A common suggestion in response to this vulnerability goes something like this:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 对这种漏洞的常见建议如下：
 - en: '`checkApiKey(inputKey, correctKey);`'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`checkApiKey(inputKey, correctKey);`'
 - en: '`sleep for random amount of time`'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sleep for random amount of time`'
 - en: continue with rest of program…
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 继续执行程序的其余部分…
 - en: The program sleeps for a random amount of time, so now an attacker can’t get
     precise timing measurements. The attack is thwarted!
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序会随机休眠一段时间，所以攻击者无法得到精确的时间测量。攻击被挫败了！
 - en: Unfortunately, this doesn’t really work well. The first problem is that your
     attacker might possess Statistics™. We can add noise to the attacker’s measurements,
     but the attacker can respond by collecting more measurements and using ~~magical
     formulas~~ [statistical classifiers (pdf)](https://www.blackhat.com/docs/us-15/materials/us-15-Morgan-Web-Timing-Attacks-Made-Practical-wp.pdf)
     to see through the noise. We can add more noise, which forces the attacker to
     collect even more samples, but now our code is slow.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，这种方法效果并不好。第一个问题是你的攻击者可能拥有 Statistics™。我们可以向攻击者的测量数据添加噪音，但攻击者可以通过收集更多的测量数据并使用~~神奇的公式~~[统计分类器（pdf）](https://www.blackhat.com/docs/us-15/materials/us-15-Morgan-Web-Timing-Attacks-Made-Practical-wp.pdf)来看穿噪音。我们可以添加更多的噪音，迫使攻击者收集更多样本，但这会使我们的代码变慢。
 - en: 'There’s another problem here too, but let’s look at another common suggestion
     first:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里还有另一个问题，但让我们先看看另一个常见的建议：
 - en: '`set finishTime = now + ESTIMATED_DURATION_OF_COMPUTATION`'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`set finishTime = now + ESTIMATED_DURATION_OF_COMPUTATION`'
 - en: '`checkApiKey(inputKey, correctKey);`'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`checkApiKey(inputKey, correctKey);`'
 - en: '`sleep until finishTime`'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sleep until finishTime`'
 - en: continue with rest of program…
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 继续执行程序的其余部分…
 - en: Here, the program chooses a finish time before `checkApiKey` is called. If we
     assume that `ESTIMATED_DURATION_OF_COMPUTATION` is a constant, then this code
     should always take the same amount of time.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，程序在调用`checkApiKey`之前选择了一个完成时间。如果我们假设`ESTIMATED_DURATION_OF_COMPUTATION`是一个常量，那么这段代码应该始终需要相同的时间。
 - en: There are problems with this approach too. First, how do we choose a reliable
     value for `ESTIMATED_DURATION_OF_COMPUTATION`? Too high a value is a problem for
     performance, while too low a value risks not being long enough to hide the computation’s
     time. It’s not clear that it’s possible to have any reliable strategy other than
     “choose an absurdly high value”. There are too many situation- and hardware-dependent
     factors to account for here.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法也存在问题。首先，我们如何选择`ESTIMATED_DURATION_OF_COMPUTATION`的可靠值？值太高会影响性能，而值太低会导致隐藏计算时间的时间不够长的风险。除了“选择一个非常高的值”之外，没有明确可靠的策略。这里有太多的情况和硬件相关因素需要考虑。
 - en: The other problem, which I alluded to earlier, is much messier. Modern computers
     don’t perform computations one at a time. Even single-core computers execute multiple
     tasks concurrently using [context switches](https://en.wikipedia.org/wiki/Context_switch).
     While your program is sleeping, the CPU is free to work on other tasks. In other
     words, the amount of time your code spends sleeping affects how quickly other
     tasks finish… which is something a skilled attacker can measure.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个问题，我之前提到过，更混乱。现代计算机不是一次执行一个计算的。即使是单核计算机也会使用[上下文切换](https://en.wikipedia.org/wiki/Context_switch)同时执行多个任务。当您的程序处于休眠状态时，CPU可以自由地处理其他任务。换句话说，您的代码花费在睡眠上的时间会影响其他任务完成的速度......这是一个技术娴熟的攻击者可以测量的东西。
 - en: OK, so why don’t we replace `sleep` with a [busy loop](https://en.wikipedia.org/wiki/Busy_waiting)?
     Now the CPU will be busy from the time we start the `checkApiKey` function until
     `finishTime`. So an attacker can’t learn anything from measuring timing, right?
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，那我们为什么不用[忙等待](https://en.wikipedia.org/wiki/Busy_waiting)替换`sleep`呢？现在，CPU将从我们启动`checkApiKey`函数到`finishTime`的时间一直繁忙。所以攻击者无法从测量时间中学到任何东西，对吧？
 - en: … Not quite. Modern CPUs have multiple physical cores and features like [simultaneous
     multithreading](https://en.wikipedia.org/wiki/Simultaneous_multithreading) (Intel
     calls it “hyper-threading”). Even if one logical core is 100% occupied by a thread,
     other tasks might still be executed in parallel on other cores. Depending on what
     it’s doing exactly, **your code will produce a subtle but measurable pattern of
     interference in the performance of other threads and processes on the same hardware**.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: …并非完全如此。现代CPU有多个物理核心和诸如[同时多线程](https://en.wikipedia.org/wiki/Simultaneous_multithreading)（英特尔称其为“超线程”）之类的功能。即使一个逻辑核心被一个线程100%占用，其他任务仍然可能在其他核心上并行执行。根据它的确切操作，**您的代码将在同一硬件上的其他线程和进程的性能中产生微妙但可测量的干扰模式**。
 - en: Suppose your code spends most of its time waiting for memory to load. The CPU
     will be free to schedule more [execution units](https://en.wikipedia.org/wiki/Execution_unit)
     to another hardware thread, and the other processes’ CPU-heavy computations will
     be largely unaffected by your process. However, if another process needs to access
     memory as well, it will compete with your process for memory bandwidth and may
     run more slowly as a result.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您的代码大部分时间都在等待内存加载。CPU将空闲以将更多的[执行单元](https://en.wikipedia.org/wiki/Execution_unit)调度到另一个硬件线程，并且其他进程的CPU密集型计算将基本不受您的进程的影响。但是，如果另一个进程也需要访问内存，则它将与您的进程竞争内存带宽，可能会因此运行更慢。
 - en: Conversely, if your code is CPU-bound (like, say, a busy loop), other processes
     will have the memory bus to themselves, but parts of the CPU core will be completely
     available.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，如果您的代码是CPU绑定的（例如，一个繁忙的循环），其他进程将拥有内存总线，但CPU核心的部分将完全可用。
 - en: It gets worse
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 情况更糟糕
 - en: That’s a simple example of the kind of information your code leaks to other
     threads and processes running on the same hardware. Processes/threads will compete
     for space in the same CPU caches, evicting each others’ entries. This leaks information
@@ -173,85 +241,108 @@
     vs floating-point). The list goes on. In fact, there’s an entire subsection of
     academic literature devoted to researching how microarchitectural implementation
     details can be exploited in this way.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是您的代码向其他线程和在同一硬件上运行的进程泄露的信息类型的简单示例。进程/线程将竞争在同一CPU缓存中的空间，互相驱逐彼此的条目。这泄漏了关于正在访问哪些内存位置的信息。特定执行单元的争用可能会显示出正在进行的计算类型（例如整数算术/逻辑与浮点数）。这个列表还在继续。事实上，有一整个学术文献分支专门研究微架构实现细节如何以这种方式被利用。
 - en: Did I mention that this all happens at the hardware level? These interference
     patterns can show up in other containers and VMs running on the same machine.
     [Researchers have shown (pdf)](https://cseweb.ucsd.edu/~hovav/dist/cloudsec.pdf)
     that these information leaks are not stopped by the per-tenant isolation used
     in cloud computing environments like EC2 and Azure. It’s hard to fix hardware.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我提到了这一切都发生在硬件级别吗？这些干扰模式可能会出现在运行在同一台机器上的其他容器和虚拟机中。[研究人员已经证明（pdf）](https://cseweb.ucsd.edu
 - en: Constant-time to the rescue
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 常量时间拯救
 - en: So what do we do about all of this? How do we prevent hardware from leaking
     out secret information through timing?
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 那我们该怎么办？我们如何防止硬件通过计时泄漏秘密信息？
 - en: The technique that has emerged as best practice over the last ten years is to
     write code that is “constant-time”. We can’t really hide what kinds of computations
     we’re doing, but we can write our code so that secret information has no influence
     on how we use hardware resources. In other words, even if an attacker can see
     exactly what hardware resources our program uses and when, they still won’t learn
     anything secret.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去十年中被视为最佳实践的技术是编写“常量时间”的代码。我们实际上无法隐藏我们正在进行的计算类型，但我们可以编写我们的代码，使得秘密信息不影响我们如何使用硬件资源。换句话说，即使攻击者可以准确地看到我们的程序使用了哪些硬件资源以及何时使用，他们仍然不会了解到任何秘密信息。
 - en: 'You might notice that I use scare quotes around “constant-time”. I don’t really
     like the term as I find it quite misleading:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: There is no need for the execution time to be **constant**. Variations in execution
     time have no impact on security as long as those variations have *no relation*
     to any secret information.
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Execution **time** is not the only way for information to leak. As I described
     earlier, what your code does during that time is also quite important.
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: “Secret-independent resource usage” might be a more accurate term. I digress.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is the golden rule of writing code that is “constant-time”:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: Secret information may only be used in an input to an instruction if that input
     has no impact on what resources will be used and for how long.
+  id: totrans-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'In practice, this golden rule has a few implications:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: Secret values cannot be used to decide what code to execute next (i.e. it cannot
     be used as a condition to a branch instruction)
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Secret values cannot be used to decide what memory address to access.
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Secret values cannot be used as input to variable-time instructions like DIV
     on x86 (smaller numbers divide faster).
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If you write all of your code in assembly, carefully keep track of what values
     are secret, and follow the golden rule, you should hopefully produce code that
     does not leak secret information via timing.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Oh, and by the way, whether a particular instruction is “constant-time” can
     vary by architecture and by processor model, and there isn’t any official documentation
     for this behaviour… but I’ll save that story for another time.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: So… assembly?
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -259,10 +350,12 @@
     the rest of us, it’s not so great if we have to write any and all crypto code
     in assembly. So how can we write code in high-level languages that will still
     follow the golden rule when compiled?
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'The answer is: it’s complicated. Today’s languages and compilers weren’t really
     built for this, so it’s a challenge.'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: The usual approach is to write code that *looks* constant-time. Document which
@@ -271,42 +364,50 @@
     array index (since the array index determines what memory address in the array
     to access). Avoid using those variables in operations that probably compile into
     variable-time instructions, like division or modulus.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: But this doesn’t always work. The compiler might decide that your code would
     be faster if it used variable-time instructions. There are even cases where an
     optimizing compiler will see that you are trying to, say, avoid using an if statement,
     and the compiler *puts the if statement back in because it knows it will be faster*.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: So… assembly.
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Given the lack of language and compiler support, the only reliable way to know
     if code in a high-level language is secure against timing attacks is to check
     the compiler’s output. One common approach looks something like this:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: Try to limit [inlining](https://en.wikipedia.org/wiki/Inline_expansion) of functions
     that are sensitive to timing attacks. Inlining would make it much harder to know
     if you have checked all the code that needs checking.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Read the relevant parts of the assembly output to see if it matches what you
     expect
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Pray to $PREFERRED_DEITY, since updating the compiler or changing unrelated
     parts of the application might change the compiler’s output
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Adam Langley has done some interesting work at Google to make this process easier
     by [patching Valgrind](https://github.com/agl/ctgrind). Efforts to automate this
     verification process are definitely helpful.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: My belief is that, ultimately, the best solutions are going to involve teaching
@@ -314,5 +415,6 @@
     In the meantime, the most practical solution for high-level timing-attack-resistant
     crypto code is careful coding paired with a manual or automated verification of
     compiler output.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
