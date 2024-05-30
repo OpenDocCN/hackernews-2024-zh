@@ -1,96 +1,147 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:43:51'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 14:43:51
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The case of the vector with an impossibly large size - The Old New Thing
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个拥有不可能大尺寸的向量的情况 - The Old New Thing
 - en: 来源：[https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242](https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242](https://devblogs.microsoft.com/oldnewthing/20240105-00/?p=109242)
 - en: The case of the vector with an impossibly large size
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个拥有不可能大尺寸的向量的情况
 - en: 'A customer had a program that crashed with this stack:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个客户的程序崩溃了，并且出现了以下堆栈：
 - en: '[PRE0]'
+  id: totrans-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: They wondered if some recent change to Windows was the source of the problem,
     since it didn’t happen as much in earlier versions of Windows.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们纳闷是否最近对Windows进行了一些更改导致了问题的源头，因为在早期版本的Windows中并没有发生这种情况。
 - en: The stack trace pointed to `Widget::<wbr>IsEnabled`, which was crashing on the
     first instruction because it was given an invalid `this` pointer.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 堆栈跟踪指向了 `Widget::<wbr>IsEnabled`，它在第一条指令上崩溃，因为它被给了一个无效的 `this` 指针。
 - en: '[PRE1]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The `Widget` pointer came from a `std::vector` that is a member of the `Standard­Widgets`
     class.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Widget` 指针来自于 `Standard­Widgets` 类的成员 `std::vector`。'
 - en: '[PRE2]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The code crashed at this call to `Widget::<wbr>GetCost`:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码在对 `Widget::<wbr>GetCost` 的调用处崩溃：
 - en: '[PRE3]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The customer’s debugging showed that at the point of the crash, not only was
     the `widget` garbage, but the `m_widgets` vector had an impossibly large number
     of elements. The `m_widgets` is expected to have only four widgets, but it somehow
     found itself with ten, and sometimes as many as a hundred widgets. Of course,
     they were nearly all corrupted.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户的调试显示，在崩溃点，不仅 `widget` 是垃圾，而且 `m_widgets` 向量有着不可能的大量元素。预期 `m_widgets` 只有四个小部件，但它不知何故发现自己有十个，有时甚至有一百个小部件。当然，它们几乎都是损坏的。
 - en: 'Here’s the code that lazy-initializes the widget list:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是懒惰初始化小部件列表的代码：
 - en: '[PRE4]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The customer noted that the `reserve` method is always called with the value
     4, and the code never pushes more than four items into the vector. They admitted
     that if there is a problem creating all four of the standard widgets, the vector
     could end up with fewer than four widgets, but it should never have *more* than
     four.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户指出，`reserve` 方法始终以值4调用，代码从未向向量推送超过四个项目。他们承认，如果存在创建所有四个标准小部件的问题，则向量可能最终只有少于四个小部件，但永远不应该有
+    *超过* 四个。
 - en: You already have multiple clues that point toward what the customer’s problem
     is. I’ll give you some time to think about it.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经有了多个线索，指向客户问题的所在。我会给你一些时间去思考它。
 - en: In the meantime, let’s look at other issues with how the code lazy-initializes
     the widget list.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，让我们看看代码懒惰初始化小部件列表的其他问题。
 - en: As the customer noted, if there is a problem creating any of the four standard
     widgets, the failure is propagated to the caller of `Lazy­Initialize­Widget­List`,
     and `get_TotalCost` in turn propagates the error to its own caller, and it never
     gets to the point where it walks through the vector adding up all the costs.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如客户所指出的，如果有任何四个标准小部件中的一个创建问题，失败就会传播给 `Lazy­Initialize­Widget­List` 的调用者，并且
+    `get_TotalCost` 反过来将错误传播给自己的调用者，它永远不会到达遍历所有成本并将它们相加的地步。
 - en: If there is a memory allocation failure at the `reserve()`, or if there is a
     problem with the first standard widget, then the vector remains empty, and a second
     call to `Lazy­Initialize­Widget­List` will make a new attempt at initialization.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在 `reserve()` 处发生内存分配失败，或者第一个标准小部件出现问题，则向量保持空白，第二次调用 `Lazy­Initialize­Widget­List`
+    将尝试新的初始化。
 - en: If there is a problem with the second or subsequent standard widget, however,
     things get weird. The `Lazy­Initialize­Widget­List` function returns a failure,
     which causes `get_TotalCost` to return failure. But the second time someone calls
@@ -98,24 +149,36 @@
     assume that everything was initialized. This time, the `get_TotalCost` method
     will proceed with the summation and perform an out-of-bounds array access when
     it gets to the widget that failed to be created.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果第二个或后续标准小部件存在问题，情况就会变得奇怪。`Lazy­Initialize­Widget­List` 函数返回失败，导致 `get_TotalCost`
+    返回失败。但是第二次有人调用 `get_TotalCost` 时，`Lazy­Initialize­Widget­List` 将看到一个非空向量，并假设一切都已经初始化。这次，`get_TotalCost`
+    方法将继续进行求和，并在到达未能创建的小部件时执行越界数组访问。
 - en: Oops.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 糟糕。
 - en: This particular problem boils down to leaving a partially-initialized `m_widgets`
     if the lazy initialization fails. To avoid this problem, we should create the
     vector in a local variable and transfer it to the member variable only after we
     are sure all of the widgets were created successfully.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个特定问题归结为在惰性初始化失败时留下了一个部分初始化的`m_widgets`。为了避免这个问题，我们应该在一个局部变量中创建向量，并且只有在确保所有小部件都成功创建后才将其传输到成员变量中。
 - en: '[PRE5]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This ensures that the `m_widgets` is either totally empty or totally initialized.
     It is never in a half-initialized state.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这确保了`m_widgets`要么完全为空，要么完全初始化。它永远不处于半初始化状态。
 - en: 'While we’re at it, we probably should convert the loop in `get_TotalCost` into
     a ranged `for` loop. Right now, `get_<wbr>Total­Cost` has a hidden dependency
     on `Lazy­Initialize­Widgets`: It assumes that `Lazy­Initialize­Widgets` always
@@ -125,74 +188,105 @@
     update `get_<wbr>Total­Cost` to account for suppressed widgets, you will have
     an out-of-bounds index. All the logic to decide which widgets are standard should
     be local to `Lazy­Initialize­Widgets`.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一下，我们可能应该将`get_TotalCost`中的循环转换为一个范围`for`循环。现在，`get_<wbr>Total­Cost`对`Lazy­Initialize­Widgets`有一个隐藏的依赖性：它假设`Lazy­Initialize­Widgets`总是创建与`standard­Widget­Names`中的小部件数量完全相同的小部件。也许在将来，你可能想根据某些配置设置抑制一些标准小部件。如果你添加了该配置设置并忘记更新`get_<wbr>Total­Cost`以考虑被抑制的小部件，你将会有一个超出界限的索引。决定哪些小部件是标准的所有逻辑应该局限于`Lazy­Initialize­Widgets`。
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Or if you want to get fancy,
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者如果你想搞酷一点，
 - en: '[PRE7]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Okay, but back to the crash. I think I’ve added enough filler to give you time
     to consider what is happening.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，但回到崩溃。我认为我添加了足够的填充内容让你有时间考虑发生了什么。
 - en: When I looked at this crash, I noticed that the class is implemented with [the
     `Microsoft::<wbr>WRL::<wbr>RuntimeClass` template class](https://learn.microsoft.com/en-us/cpp/cppcx/wrl/runtimeclass-class?view=msvc-170),
     and the implementation explicitly listed `FtmBase` as a template parameter, marking
     this class as free-threaded (also known as “agile”), which means that it can be
     used from multiple threads simultaneously.¹
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我查看这个崩溃时，我注意到该类是使用[Microsoft::<wbr>WRL::<wbr>RuntimeClass`模板类](https://learn.microsoft.com/en-us/cpp/cppcx/wrl/runtimeclass-class?view=msvc-170)实现的，并且实现明确将`FtmBase`列为模板参数，将此类标记为自由线程（也称为“灵活”），这意味着它可以同时从多个线程使用。¹
 - en: The object is eligible for multithreaded use, but there are no mutexes to protect
     two threads from modifying `m_widgets` at the same time. I suspected a race condition.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象可以用于多线程使用，但没有互斥锁来保护两个线程同时修改`m_widgets`。我怀疑是竞争条件。
 - en: You can also observe that the class is being used in a free-threaded manner
     because the stack trace that leads to the crash says that it’s running on a thread
     pool thread (`TppWorkerThread`), and thread pool threads default to the multi-threaded
     apartment.² The only code on the stack between `TppWorkerThread` and the application
     code is all COM and RPC, so no application code snuck in and initialized the thread
     into single-threaded apartment mode.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以观察到该类正在以自由线程方式使用，因为导致崩溃的堆栈跟踪表明它正在一个线程池线程（`TppWorkerThread`）上运行，而线程池线程默认为多线程公寓。²
+    在`TppWorkerThread`和应用程序代码之间的堆栈上的唯一代码都是COM和RPC，因此没有应用程序代码潜入并将线程初始化为单线程公寓模式。
 - en: 'And when I looked at the crash dump, I caught the code red-handed: There was
     another thread also calling into this code.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我查看崩溃转储时，我抓住了代码的犯罪现场：还有另一个线程也在调用此代码。
 - en: '[PRE8]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Notice that the `this` pointer is the same for both threads, so we have proof
     that this object is being used from multiple threads simultaneously.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意`this`指针对于两个线程是相同的，所以我们可以证明这个对象正在同时被多个线程使用。
 - en: The fix for the multithreading issue is to ensure that only one thread tries
     to initialize the widget vector at a time. We can do this by adding a mutex, but
     I’m going to go even further and use the `std::once_flag`, whose purpose in life
     is to be used in conjunction with `std::<wbr>call_once` to perform thread-safe
     one-time initialization, which is exactly what we want.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 修复多线程问题的方法是确保只有一个线程尝试一次性初始化小部件向量。我们可以通过添加互斥锁来实现这一点，但我将进一步使用`std::once_flag`，其生命周期的目的是与`std::<wbr>call_once`一起使用以执行线程安全的一次性初始化，这正是我们想要的。
 - en: '[PRE9]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**Update**: We had to change the `RETURN_<wbr>IF_<wbr>FAILED` to `THROW_<wbr>IF_<wbr>FAILED`
     because (1) without the change, the compiler will complain that not all code paths
     return a value, because the lambda also falls off the end, and more importantly,
     (2) `call_once` doesn’t care about the lambda return value; it uses exceptions
     to detect errors. **End Update**.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '**更新**：我们不得不将`RETURN_<wbr>IF_<wbr>FAILED`更改为`THROW_<wbr>IF_<wbr>FAILED`，因为（1）没有进行更改，编译器会抱怨不是所有代码路径都返回值，因为lambda也会在结尾处结束，更重要的是，（2）`call_once`不关心lambda的返回值；它使用异常来检测错误。**更新结束**。'
 - en: This version also deals with the edge case where there are no standard widgets
     at all. The original code would continuously try to reinitialize the vector since
     it couldn’t tell whether an empty vector means “Not yet initialized” or “Successfully
     initialized (and it’s empty)”.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个版本还处理了一个极端情况，即根本没有标准小部件的情况。原始代码会不断尝试重新初始化向量，因为它无法确定空向量是“尚未初始化”还是“成功初始化（且为空）”。
 - en: '**Bonus chatter**: How did this multithreaded race condition lead to a vector
     with a ridiculous size? Well, we saw some time ago that [the internal structure
     of a `std::vector`](https://devblogs.microsoft.com/oldnewthing/20230802-00/?p=108524
@@ -203,38 +297,61 @@
     pointer that points to the data allocated by the first thread, but an “end” pointer
     that points to the data allocated by the second thread, resulting in a vector
     of unusual size.'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**额外的闲聊**：这个多线程竞争条件是如何导致一个大小荒谬的向量的呢？好吧，我们有些时候看到过，[`std::vector`的内部结构](https://devblogs.microsoft.com/oldnewthing/20230802-00/?p=108524
+    "STL内幕：vector")是三个指针，一个用于向量数据的起始位置，一个用于有效数据的结束位置，一个用于分配数据的结束位置。如果两个线程同时调用`reserve()`，它们都将分配新数据，然后它们会竞争更新这三个指针。你可能会得到一个“起始”指针，它指向第一个线程分配的数据，但“结束”指针指向第二个线程分配的数据，从而得到一个异常大小的向量。'
 - en: ¹ It was actually convenient that the implementation lists `FtmBase` explicitly,
     since the default behavior varies depending on whether `__WRL_<wbr>CONFIGURATION_<wbr>LEGACY__`
     is set.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: ¹ 实际上，实现中明确列出了`FtmBase`是很方便的，因为默认行为取决于是否设置了`__WRL_<wbr>CONFIGURATION_<wbr>LEGACY__`。
 - en: '| Template parameter | Standard mode | Legacy mode |'
+  id: totrans-46
   prefs: []
   type: TYPE_TB
+  zh: '| 模板参数 | 标准模式 | 传统模式 |'
 - en: '| Nothing specified | Free-threaded | Not free-threaded |'
+  id: totrans-47
   prefs: []
   type: TYPE_TB
+  zh: '| 未指定任何内容 | 自由线程 | 非自由线程 |'
 - en: '| `FtmBase` | Free-threaded |'
+  id: totrans-48
   prefs: []
   type: TYPE_TB
+  zh: '| `FtmBase` | 自由线程 |'
 - en: '| `InhibitFtmBase` | Not free-threaded |'
+  id: totrans-49
   prefs: []
   type: TYPE_TB
+  zh: '| `InhibitFtmBase` | 非自由线程 |'
 - en: '| `InhibitFtmBase` + `FtmBase` | Not free-threaded |'
+  id: totrans-50
   prefs: []
   type: TYPE_TB
+  zh: '| `InhibitFtmBase` + `FtmBase` | 非自由线程 |'
 - en: 'In pseudocode:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 伪代码中：
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The explicitly inclusion of `FtmBase` saved me the trouble of looking up what
     mode the customer’s project is using.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 明确包含`FtmBase`省去了我查找客户项目使用的模式的麻烦。
 - en: ² Assuming the multi-threaded apartment exists at all.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: ² 假设多线程公寓真的存在。
