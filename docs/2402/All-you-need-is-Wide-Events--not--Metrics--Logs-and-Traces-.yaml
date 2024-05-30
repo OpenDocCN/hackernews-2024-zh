@@ -258,33 +258,41 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候 UI/可视化方面没有得到足够的关注，可观测性系统提供了一些查询语言——无论是专有的（不好、不好、不好）还是 SQL（稍微好一点，但仍然不好）。这样的接口使得进行类似的调查几乎不可能。Scuba
+    的一个重要方面是所有字段——函数、过滤器、分组等——都是*可探索*的。这意味着有一种简单的方法可以看到我们可以选择哪种值。当某个字段的所有者不懒惰时，他们甚至会包含有关给定字段的详细描述以及相关链接等。这是巨大的。我自己成功地调查了许多事件，而我对整个系统或此数据集中可用数据的理解并不充分。在这些调查过程中，我通过与
+    Scuba 玩耍简单地了解了系统，这太神奇了。这是可观测性的天堂。
 - en: Now imagine my level of confusion and disbelief when I left Meta and got to
     know the state of observability systems outside.
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在想象一下当我离开 Meta 并了解到外部可观测系统的状态时，我的困惑和怀疑程度。
 - en: Logs? Traces? Metrics? What the hell? Wide Events, anyone? Can I please not
     learn that 60 terms from the Glossary and just … explore stuff?
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 日志？追踪？度量？什么鬼？宽事件，有人了解吗？我能不能不学习词汇表中的 60 个术语，只是…… 探索一下？
 - en: 'It took me quite a while to map my Scuba-based mental model to Open Telemetry
     mental model. I realised that Open Telemetry’s Span is, in fact, the Wide Event.
     Actually, I’m still not quite sure I got it right:'
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我花了很长时间将基于 Scuba 的心理模型映射到 Open Telemetry 的心理模型上。我意识到 Open Telemetry 的 Span 实际上就是宽事件。实际上，我仍然不太确定我是否理解正确：
 - en: 'If we take AdImpression example, this impression is not really an operation,
     it’s just some fact we want to record… To be fair, there is some notion of Event
     in Open Telemetry:'
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们以 AdImpression 为例，这个印象实际上不是一个操作，它只是我们想要记录的一些事实…… 公平地说，Open Telemetry 中有一些关于事件的概念：
 - en: But if we follow the links to dig deeper, we again find out that Event is in
     fact one of Traces, Metrics or Logs 🤷
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果我们跟随链接深入挖掘，我们又会发现事件实际上是追踪、度量或日志之一 🤷
 - en: 'But anyway, Span is the closest concept to Wide Event. The thing is - it’s
     extremely hard to advocate for this mental model when the one suggested by Open
     Telemetry is already learned. Which is really upsetting, because Traces, Metrics
@@ -292,6 +300,7 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 但无论如何，Span 是宽事件最接近的概念。问题是——当已经学会了由 Open Telemetry 建议的模型时，要为这种心理模型辩护是极其困难的。这真的很令人沮丧，因为追踪、度量和日志实际上都只是宽事件的特例：
 - en: '**Traces and Spans:** These are just wide events having **SpanId, TraceId and
     ParentSpanId** fields. So we can filter all spans with a given TraceId, topologically
     sort them using SpanId → ParentSpanId relation, and draw that distributed tracing
@@ -300,6 +309,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**追踪和跨度：** 这些只是具有 **SpanId、TraceId 和 ParentSpanId** 字段的宽事件。因此，我们可以根据给定的 TraceId
+    过滤所有跨度，使用 SpanId → ParentSpanId 关系对它们进行拓扑排序，并绘制出每个人都喜欢的分布式跟踪视图。'
 - en: '**Logs:** Honestly, I’m really confused what Open Telemetry means by Logs.
     Looks like [a lot of things](https://opentelemetry.io/docs/specs/otel/glossary/#logs),
     and one of them is Structured Log which is pretty much the Wide Event. Great!
@@ -316,6 +327,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**日志：** 老实说，我真的不明白 Open Telemetry 所谓的日志是什么意思。看起来有 [很多东西](https://opentelemetry.io/docs/specs/otel/glossary/#logs)，其中之一就是结构化日志，这几乎就是宽事件。太好了！然而，问题是，“日志”是一个相当明确定义的概念，通常人们指的是那些由
+    `logger.info(…)` 调用产生的内容。无论如何，不管是什么意思，日志都可以很容易地映射到宽事件，当然了。在最简单的情况下，我们可以获取日志消息，将其放入“log_message”字段中，添加一些元数据，然后就可以了。在更复杂的情况下，我们可以尝试通过删除看起来像是
+    ID 的标记自动从日志消息中提取模板，并获取此模板的哈希值。这可以通过按此哈希值进行分组快速获得最频繁的错误，例如。Meta 就有这样一个系统，而且非常酷。'
 - en: '**Metrics:** Metrics can be easily mapped, too. We just need to emit a Wide
     Event once per some interval containing the state of the system (system metrics
     like cpu, various counters,…). Prometheus, by the way, does exactly that with
@@ -326,6 +340,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**度量：** 度量也可以很容易地映射。我们只需要每隔一段时间发出一个宽事件，其中包含系统的状态（诸如 cpu、各种计数器等的系统指标）。顺便说一句，Prometheus
+    就是这样做的——采用抓取方法定期获取系统的快照。然而，与 Prometheus 不同的是，采用宽事件方法，我们不需要担心基数。'
 - en: But Wide Events can offer much much more than these “3 pillars”. The aforementioned
     debugging session is already a case which is not really covered by Traces, Logs
     and Metrics - not naturally, at least. There could be other use cases, too - for
