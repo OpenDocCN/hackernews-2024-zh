@@ -1,68 +1,102 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:55:41'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:55:41'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: SQLite or PostgreSQL? It's Complicated! | Twilio
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SQLite 还是 PostgreSQL？这很复杂！| Twilio
 - en: 来源：[https://www.twilio.com/blog/sqlite-postgresql-complicated](https://www.twilio.com/blog/sqlite-postgresql-complicated)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.twilio.com/blog/sqlite-postgresql-complicated](https://www.twilio.com/blog/sqlite-postgresql-complicated)
 - en: The `run_test()` function launches one or more threads, according to the `num_threads`
     argument. All the threads are configured to run the `test()` function in parallel.
     This simulates load coming from multiple concurrent clients, each going through
     the list of URLs in their own random order, to create some unpredictability.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '`run_test()` 函数启动一个或多个线程，根据 `num_threads` 参数。所有线程都配置为并行运行 `test()` 函数。这模拟了来自多个并发客户端的负载，每个客户端都按照自己的随机顺序遍历
+    URL 列表，以创建一些不可预测性。'
 - en: After all the threads have ended, `run_test()` prints the average request time
     for each request URL, and also an average of all the queries combined, which is
     the metric I decided to use for my analysis.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有线程结束后，`run_test()` 打印每个请求 URL 的平均请求时间，以及所有查询的平均值，这是我决定用于分析的度量标准。
 - en: The command-line arguments allow me to pass the server root, the API key and
     the start and end dates to query and the concurrency. With these controls I have
     the ability to test a variety of scenarios.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 命令行参数允许我传递服务器根目录、API 密钥以及查询的起始日期和结束日期，以及并发量。有了这些控制，我有能力测试各种场景。
 - en: The test script is now ready, so it’s time to get some metrics!
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试脚本现在已经准备好了，所以是时候获得一些指标了！
 - en: The development system that I work on is a Mac laptop with 6 hyperthreaded cores
     and 16GB of RAM. The production environment for this dashboard is a Linode virtual
     server with 1 vCPU and 2GB RAM.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我工作的开发系统是一台具有 6 个超线程核心和 16GB RAM 的 Mac 笔记本电脑。这个仪表板的生产环境是一个 Linode 虚拟服务器，具有 1
+    个 vCPU 和 2GB RAM。
 - en: From past experiences with benchmarking, I know that results from a fast system
     are not always the same as a slower one, so my end goal is to test the production
     system and make decisions based on the results I get on that platform.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过以往的基准测试经验，我知道快速系统的结果并不总是与较慢系统相同，所以我的最终目标是测试生产系统，并根据我在该平台上获得的结果做出决策。
 - en: But before doing that, I wanted to do a first round of “practice” tests on my
     laptop, both as a way to ensure that the test script was working correctly, and
     also, why not admit it, because I was curious about how these two databases perform
     on a fairly powerful platform.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在这之前，我想在我的笔记本电脑上进行第一轮“练习”测试，既是为了确保测试脚本正常工作，也是因为我对这两个数据库在一个相当强大的平台上的性能表现感到好奇。
 - en: 'The testing methodology that I decided to use is as follows: I would test the
     system running under the two databases, for queries with periods of a week, a
     month, a quarter and a year, with all queries having 2021-01-01 as the start date.
     I would also repeat the tests with 1, 2 and 4 concurrent clients. For each individual
     test I would run the script three times, and record the best run of the three.
     The metric I would use is the total average of all queries.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我决定使用的测试方法如下：我将测试在两个数据库下运行的系统，查询周期为一周、一个月、一个季度和一年，所有查询的起始日期都为 2021-01-01。我还将使用
+    1、2 和 4 个并发客户端重复测试。对于每个单独的测试，我将运行脚本三次，并记录三次中的最佳运行结果。我将使用的度量标准是所有查询的总平均值。
 - en: With this plan I ended up with 24 data points (2 databases x 4 query periods
     x 3 concurrency levels). The following chart shows the response time for PostgreSQL
     (blue) and SQLite (red), with a single client.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 依据这个计划，我得到了 24 个数据点（2 个数据库 × 4 个查询周期 × 3 个并发级别）。下图显示了在单个客户端下，PostgreSQL（蓝色）和
+    SQLite（红色）的响应时间。
