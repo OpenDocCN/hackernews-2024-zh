@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:04:28'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Chris''s Wiki :: blog/linux/ZFSGlobalZILInformation'
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation](https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -28,6 +34,7 @@
     the kernel. On Linux, [OpenZFS](https://openzfs.org/) exposes global information
     about the ZIL in `/proc/spl/kstat/zfs/zil`, but this information can be hard to
     interpret without some knowledge of ZIL internals.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: (In OpenZFS 2.2 and later, each dataset also has per-dataset ZIL information
@@ -35,25 +42,30 @@
     '0xXXX'. There's no overall per-pool ZIL information the way there is a global
     one, but for most purposes you can sum up the ZIL information from all of the
     pool's datasets.)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: The basic background here is [the flow of activity in the ZIL](/~cks/space/blog/solaris/ZFSZILActivityFlow)
     and also the comments in [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h)
     about the members of the `zil_stats` struct.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'The (ZIL) data you can find in the "`zil`" file (and the per-dataset kstats
     in OpenZFS 2.2 and later) is as follows:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: '`zil_commit_count` counts how many times a ZIL commit has been requested through
     things like `fsync()`.'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`zil_commit_writer_count` counts how many times the ZIL has actually committed.
     More than one commit request can be merged into the same ZIL commit, if two people
     `fsync()` more or less at the same time.'
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -61,6 +73,7 @@
     as part of ZIL commits. Each separate operation (such as a `write()` or a file
     rename) gets its own separate transaction; these are aggregated together into
     *log write blocks* (lwbs) when a ZIL commit happens.'
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -76,14 +89,17 @@
     regular dirty data, and if a ZIL commit happens that needs that data, the process
     of adding its itx to the log write block will fetch the data from RAM and add
     it to the itx (or at least the lwb).
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are ZIL metrics about this:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '`zil_itx_indirect_count` and `zil_itx_indirect_bytes` count how many indirect
     writes have been part of ZIL commits, and the total size of the indirect writes
     of file data (not of the ''itx'' records themselves, per the comments in [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h)).'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -92,115 +108,166 @@
     unlike other ZIL data, the data written here would have been written even without
     a ZIL commit, as part of ZFS's regular transaction group commit process. A ZIL
     commit merely writes it out earlier than it otherwise would have been.
+  id: totrans-16
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '`zil_itx_copied_count` and `zil_itx_copied_bytes` count how many ''copied''
     writes have been part of ZIL commits and the total size of the file data written
     (and thus committed) this way.'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_copied_count` 和 `zil_itx_copied_bytes` 统计了多少 ''copied'' 写入已经成为 ZIL
+    提交的一部分，以及以这种方式写入的文件数据的总大小（因此已提交）。'
 - en: '`zil_itx_needcopy_count` and `zil_itx_needcopy_bytes` count how many ''needcopy''
     writes have been part of ZIL commits and the total size of the file data written
     (and thus committed) this way.'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_needcopy_count` 和 `zil_itx_needcopy_bytes` 统计了多少 ''needcopy'' 写入已经成为
+    ZIL 提交的一部分，以及以这种方式写入的文件数据的总大小（因此已提交）。'
 - en: A regular system using ZFS may have little or no 'copied' activity. Our NFS
     servers all have significant amounts of it, presumably because some NFS data writes
     are done synchronously and so this trickles through to the ZFS stats.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个使用 ZFS 的普通系统可能几乎没有 'copied' 活动。我们的 NFS 服务器都有大量这样的活动，可能是因为一些 NFS 数据写入是同步进行的，因此这些活动会反映到
+    ZFS 统计数据中。
 - en: In a given pool, the ZIL can potentially be written to either the main pool's
     disks or to a separate log device (a *slog*, which can also be mirrored). The
     ZIL metrics have a collection of `zil_itx_metaslab_*` metrics about data actually
     written to the ZIL in either the main pool ('normal' metrics) or to a slog (the
     'slog' metrics).
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在给定的存储池中，ZIL 可以潜在地被写入到主存储池的磁盘或独立的日志设备（一个 *slog*，也可以是镜像的）。ZIL 指标有一组关于实际写入到主存储池的
+    ZIL 或 slog（'slog' 指标）中的数据的 `zil_itx_metaslab_*` 指标。
 - en: '`zil_itx_metaslab_normal_count` counts how many ZIL *log write blocks* (not
     ZIL records, itxs) have been committed to the ZIL in the main pool. There''s a
     corresponding ''slog'' version of this and all further zil_itx_metaslab metrics,
     with the same meaning.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_metaslab_normal_count` 统计了已经提交到主存储池的 ZIL *日志写入块*（而不是 ZIL 记录，itxs）的数量。这个指标和所有后续的
+    zil_itx_metaslab 指标都有一个对应的 ''slog'' 版本，意思相同。'
 - en: '`zil_itx_metaslab_normal_bytes` counts how many bytes have been ''used'' in
     ZIL log write blocks (for ZIL commits in the main pool). This is a rough representation
     of how much space the ZIL log actually needed, but it doesn''t necessarily represent
     either the actual IO performed or the space allocated for ZIL commits.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_metaslab_normal_bytes` 统计了在 ZIL 日志写入块中已经被 ''使用'' 的字节数（用于主存储池的 ZIL
+    提交）。这是 ZIL 日志实际上所需空间的粗略表示，但它不一定代表执行的实际 IO 或为 ZIL 提交分配的空间。'
 - en: As I understand things, this size includes the size of the intent transaction
     records themselves and also the size of the associated data for 'copied' and 'needcopy'
     data writes (because these are written into the ZIL as part of ZIL commits, and
     so use space in log write blocks). It doesn't include the data written directly
     to the pool as 'indirect' data writes.
+  id: totrans-23
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 据我所知，此大小包括意图事务记录本身的大小，以及 'copied' 和 'needcopy' 数据写入的相关数据的大小（因为这些写入作为 ZIL 提交的一部分写入到
+    ZIL 中，因此在日志写入块中使用空间）。它不包括直接写入到存储池的作为 'indirect' 数据写入的数据。
 - en: If you don't use a slog in any of your pools, the 'slog' versions of these metrics
     will all be zero. I think that if you have only slogs, the 'normal' versions of
     these metrics will all be zero.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在任何一个存储池中都没有使用 slog，那么这些指标的 'slog' 版本都将为零。我认为，如果您只有 slog，那么这些指标的 'normal'
+    版本都将为零。
 - en: 'In ZFS 2.2 and later, there are two additional statistics for both normal and
     slog ZIL commits:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 ZFS 2.2 及更高版本中，正常和 slog ZIL 提交都有两个额外的统计信息：
 - en: '`zil_itx_metaslab_normal_write` counts how many bytes have actually been written
     in ZIL log write blocks. My understanding is that this includes padding and unused
     space at the end of a log write block that can''t fit another record.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_metaslab_normal_write` 统计了在 ZIL 日志写入块中实际写入了多少字节。我的理解是，这包括填充和未使用空间，在一个日志写入块的末尾不能容纳另一个记录的情况下。'
 - en: '`zil_itx_metaslab_normal_alloc` counts how many bytes of space have been ''allocated''
     for ZIL log write blocks, including any rounding up to block sizes, alignments,
     and so on. I think this may also be the logical size before any compression done
     as part of IO, although I''m not sure if ZIL log write blocks are compressed.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_metaslab_normal_alloc` 统计了已经为 ZIL 日志写入块 ''分配'' 的字节数，包括任何舍入到块大小、对齐等的操作。我认为，这也可能是在
+    IO 的任何压缩之前逻辑大小，尽管我不确定 ZIL 日志写入块是否被压缩。'
 - en: You can see some additional commentary on these new stats (and the code) in
     [the pull request](https://github.com/openzfs/zfs/pull/14863) and [the commit
     itself](https://github.com/openzfs/zfs/commit/b6fbe61fa6a75747d9b65082ad4dbec05305d496).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在[拉取请求](https://github.com/openzfs/zfs/pull/14863)和[提交本身](https://github.com/openzfs/zfs/commit/b6fbe61fa6a75747d9b65082ad4dbec05305d496)中看到关于这些新统计信息（和代码）的一些额外评论。
 - en: 'PS: OpenZFS 2.2 and later has a currently undocumented ''`zilstat`'' command,
     and its ''zilstat -v'' output may provide some guidance on what ratios of these
     metrics the ZFS developers consider interesting. In its current state it will
     only work on 2.2 and later because it requires the two new stats listed above.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 附注：OpenZFS 2.2 及更高版本具有当前未记录的 '`zilstat`' 命令，其 'zilstat -v' 输出可能提供一些关于这些指标比率的有关信息，这些指标被
+    ZFS 开发人员认为很有趣。在目前的状态下，它只能在 2.2 及更高版本上运行，因为它需要上述两个新的统计信息。
 - en: 'Sidebar: Some typical numbers'
+  id: totrans-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 侧边栏：一些典型数字
 - en: 'Here is the "zil" file from [my office desktop](/~cks/space/blog/linux/WorkMachine2017),
     which has been up for long enough to make it interesting:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是来自[我的办公桌面](/~cks/space/blog/linux/WorkMachine2017)的“zil”文件，它已经运行了足够长的时间，使其变得有趣：
 - en: '[PRE0]'
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: With these numbers we can see interesting things, such as that the average number
     of ZIL transactions per commit is about 18 and that my machine has never done
     any synchronous data writes.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这些数字，我们可以看到一些有趣的事情，比如每次提交的 ZIL 事务的平均数约为 18，而且我的机器从未执行过任何同步数据写入。
 - en: 'Here''s an excerpt from one of [our Ubuntu 22.04 ZFS fileservers](/~cks/space/blog/linux/ZFSFileserverSetupIII):'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是我们的一台[Ubuntu 22.04 ZFS 文件服务器](/~cks/space/blog/linux/ZFSFileserverSetupIII)的摘录：
 - en: '[PRE1]'
+  id: totrans-35
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Here we can see the drastic impact of NFS synchronous writes (the significant
     'copied' numbers), and also of large NFS writes in general (the high 'indirect'
     numbers). This machine has written many times more data in ZIL commits as 'indirect'
     writes as it has written to the actual ZIL.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里我们可以看到NFS同步写入（显著的'copied'数字）的巨大影响，以及大型NFS写入（高'indirect'数字）的影响。这台机器在ZIL提交中写入的数据量远远超过了实际ZIL的写入量。
