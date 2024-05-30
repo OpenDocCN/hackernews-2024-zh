@@ -129,6 +129,7 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 两篇文档对于如果变长参数存在但为空（如 `printfln("Hello",)`）发生什么存在矛盾。在实践中，第一篇文档是正确的；如果变长参数存在但为空，逗号会被保留。
 - en: 'The *nor does it happen if the token preceding `##` is anything other than
     a comma* phrase from the 1^(st) piece of documentation is interesting, as it turns
     out this is a slightly dynamic property: comma deletion can happen for things
@@ -139,48 +140,61 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '第一段文档中的 *即使 `##` 前的标记不是逗号也不会发生粘贴* 这句话很有意思，实际上这是一个稍微动态的属性：例如对于 `x` 扩展为空的情况，逗号删除可以发生在形如
+    `, ## x ## __VA_ARGS__` 的情况下。当 `x` 扩展为空时，clang还会删除 `, x ## __VA_ARGS__` 中的逗号。如果紧接着
+    `, ## __VA_ARGS__` 跟随更多的粘贴，情况似乎也会变得有点奇怪。例如：'
 - en: '| `#define F(x, ...)` as | `F()` | `F(1)` | `F(,)` | `F(1,)` | `F(1,2)` |'
   id: totrans-19
   prefs: []
   type: TYPE_TB
+  zh: '| `#define F(x, ...)` 为 | `F()` | `F(1)` | `F(,)` | `F(1,)` | `F(1,2)` |'
 - en: '| `,##__VA_ARGS__` | empty | empty | `,` | `,` | `,2` |'
   id: totrans-20
   prefs: []
   type: TYPE_TB
+  zh: '| `,##__VA_ARGS__` | 空 | 空 | `,` | `,` | `,2` |'
 - en: '| `,##__VA_ARGS__ x` | empty | `1` | `,` | `,1` | `,2 1` |'
   id: totrans-21
   prefs: []
   type: TYPE_TB
+  zh: '| `,##__VA_ARGS__ x` | 空 | `1` | `,` | `,1` | `,2 1` |'
 - en: '| `,##__VA_ARGS__##x` | `,` | error | `,` | error | error† or `,21`‡ |'
   id: totrans-22
   prefs: []
   type: TYPE_TB
+  zh: '| `,##__VA_ARGS__##x` | `,` | 错误 | `,` | 错误 | 错误† 或 `,21`‡ |'
 - en: '| `,##x##__VA_ARGS__` | empty | error | `,` | error | error |'
   id: totrans-23
   prefs: []
   type: TYPE_TB
+  zh: '| `,##x##__VA_ARGS__` | 空 | 错误 | `,` | 错误 | 错误 |'
 - en: '| `,x##__VA_ARGS__` | `,`† or empty ‡ | `,1` | `,` | `,1` | `,12` |'
   id: totrans-24
   prefs: []
   type: TYPE_TB
+  zh: '| `,x##__VA_ARGS__` | `,`† 或 空 ‡ | `,1` | `,` | `,1` | `,12` |'
 - en: † According to gcc 13.2.
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: † 根据 gcc 13.2。
 - en: ‡ According to clang 17.0.1.
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: ‡ 根据 clang 17.0.1。
 - en: In the cases where gcc and clang differ, who is to say which is correct? After
     all, there is no standard documenting the desired behaviour for non-standard language
     extensions.
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在gcc和clang产生差异的情况下，谁能说哪个是正确的呢？毕竟，没有标准文件记录非标准语言扩展的期望行为。
 - en: '**Enter `__VA_OPT__`**'
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入 `__VA_OPT__`**'
 - en: 'Rather than standardise this mess, the [C](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3033.htm)
     and [C++](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0306r4.html)
     languages adopted a different solution, namely `__VA_OPT__`. With `__VA_OPT__`,
@@ -188,6 +202,9 @@
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 与标准化这一混乱不同，[C](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3033.htm) 和
+    [C++](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0306r4.html) 语言采用了一种不同的解决方案，即
+    `__VA_OPT__`。使用 `__VA_OPT__`，我们的示例看起来像这样：
 - en: '[PRE2]'
   id: totrans-30
   prefs: []
@@ -202,12 +219,17 @@
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此情况下，如果变长参数不存在或为空，或者在宏扩展后变为空，`__VA_OPT__(,)` 扩展为空；否则扩展为 `,`。这里并没有标记粘贴，所以 `printfln("Wrote
+    %d chars", printfln("Hello"))` 现在可行。另一个行为上的差异是看起来奇怪的 `printfln("Hello",)` 现在扩展为有效的
+    `printf("Hello" "\n")`，`printfln("Hello", EMPTY)` 在 `#define EMPTY /*nothing*/`
+    的上下文中也是如此。
 - en: 'The standard didn''t stop there though; there can be more than just a `,` within
     `__VA_OPT__`. Any `(`-`)`-balanced token sequence is allowed, and it can even
     access the arguments of the macro invocation, so for example it is valid to have:'
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准并没有止步于此；在 `__VA_OPT__` 中不仅可以有一个逗号，而且还允许出现一个 `(`-`)` 平衡的标记序列，并且还可以访问宏调用的参数，因此例如以下也是合法的：
 - en: '[PRE3]'
   id: totrans-33
   prefs: []
@@ -217,15 +239,18 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么 `M(1)` 扩展为 `(0)`，`M(1,2)` 扩展为 `(0 - (1))`。
 - en: '**What about whitespace?**'
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '**那么空格呢？**'
 - en: 'Compilers seem to disagree on the behaviour of whitespace just after `__VA_OPT(`
     or just before the matching `)`. Consider:'
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器在`__VA_OPT(`后或匹配`)`前的空格行为上似乎存在分歧。请考虑：
 - en: '[PRE4]'
   id: totrans-37
   prefs: []
@@ -235,24 +260,30 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 观察得出的结果是：
 - en: '|  | gcc 13.2 | clang 17.0.1 |'
   id: totrans-39
   prefs: []
   type: TYPE_TB
+  zh: '|  | gcc 13.2 | clang 17.0.1 |'
 - en: '| s | `"~~"` | `"~ ~"` |'
   id: totrans-40
   prefs: []
   type: TYPE_TB
+  zh: '| s | `"~~"` | `"~ ~"` |'
 - en: '| sa | `"~~~"` | `"~ ~ ~"` |'
   id: totrans-41
   prefs: []
   type: TYPE_TB
+  zh: '| sa | `"~~~"` | `"~ ~ ~"` |'
 - en: 'One interpretation is that gcc is correct, based on this paragraph from the
     standard: ([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
     6.10.4.1¶7)'
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种解释是，根据标准中的这段文字，gcc是正确的：([N3096](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf)
+    6.10.4.1¶7)
 - en: The preprocessing token sequence for [...] a va-opt-replacement [...] consists
     of the results of the expansion of the contained pp-tokens as the replacement
     list of the current function-like macro before removal of placemarker tokens,
