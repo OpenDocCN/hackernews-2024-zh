@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:01:50'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:01:50
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Bloom Filters
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 布隆过滤器
 - en: 来源：[https://samwho.dev/bloom-filters/](https://samwho.dev/bloom-filters/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://samwho.dev/bloom-filters/](https://samwho.dev/bloom-filters/)
 - en: Everyone has a set of tools they use to solve problems. Growing this set helps
     you to solve ever more difficult problems. In this post, I'm going to teach you
     about a tool you may not have heard of before. It's a niche tool that won't apply
@@ -32,6 +38,8 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个人都有一套工具来解决问题。 扩展这套工具可以帮助您解决越来越困难的问题。 在这篇文章中，我将教你一个你以前可能没有听说过的工具。 这是一个不适用于许多问题的专业工具，但是当它使用时，您会发现它是无价的。
+    它被称为“布隆过滤器”。
 - en: <s-dog name="sage" mode="warning">**Before you continue!** This post assumes
     you know what a **hash function** is, and if you don't it's going to be tricky
     to understand. Sam has written a post about hash functions, and recommendeds that
@@ -39,17 +47,22 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-dog name="sage" mode="warning">**在你继续之前！** 本文假设您知道什么是**哈希函数**，如果您不知道，理解起来将会很困难。
+    Sam已经写了一篇关于哈希函数的文章，并建议您先**[阅读这篇文章](/hashing)**。</s-dog>
 - en: '[#](#what-bloom-filters-can-do) What bloom filters can do'
   id: totrans-8
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#布隆过滤器能做什么) 布隆过滤器能做什么'
 - en: 'Bloom filters are similar to the `Set` data structure. You can add items to
     them, and check if an item is present. Here''s what it might look like to use
     a bloom filter in JavaScript, using a made-up `BloomFilter` class:'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 布隆过滤器类似于 `Set` 数据结构。 您可以向其中添加项目，并检查项目是否存在。 这是使用 JavaScript 中的布隆过滤器可能的样子，使用了一个虚构的
+    `BloomFilter` 类：
 - en: '[PRE0]'
   id: totrans-10
   prefs: []
@@ -63,6 +76,8 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这几乎与 `Set` 相同，但存在一些关键区别。 布隆过滤器被称为**概率数据结构**。 当您调用 `contains` 时，`Set` 可以给出一个明确的“是”或“否”的答案，而布隆过滤器不能。
+    布隆过滤器可以给出确定的“否”，但不能确定“是”。
 - en: 'In the example above, when we ask `bf` if it contains `"Ant"` and `"Rhino"`,
     the `true` that it returns isn''t a guarantee that they''re present. We know that
     they''re present because we added them just a couple of lines before, but it would
@@ -70,6 +85,7 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的示例中，当我们询问 `bf` 是否包含 `"Ant"` 和 `"Rhino"` 时，它返回的 `true` 不是它们存在的保证。 我们知道它们存在，因为我们刚在几行前添加了它们，但是这种情况是可能发生的：
 - en: '[PRE1]'
   id: totrans-13
   prefs: []
@@ -81,27 +97,32 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在本文中*说明*为什么。 现在，我们将说当布隆过滤器返回 `true` 时，它并不意味着“是”，而是意味着“可能”。 当这种情况发生时，而该项以前从未被添加过，这就被称为**假阳性**。
 - en: The opposite, claiming "no" when the answer is "yes," is called a **false-negative**.
     A bloom filter will *never* give a false-negative, and this is what makes them
     useful.
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反地，当答案是“是”时声称“否”被称为**假阴性**。 布隆过滤器 *永远不会* 提供假阴性，这就是它们有用的原因。
 - en: <s-dog name="haskie" mode="confused">A data structure that lies to you?! How
     could that possibly be useful?</s-dog>
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: <s-dog name="haskie" mode="confused">一个会对你撒谎的数据结构？！ 这怎么可能有用？</s-dog>
 - en: It's not strictly lying, it's just not giving you a definite answer. Let's look
     at an example where we can use this property to our advantage.
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 它不是严格的谎言，它只是不给出明确的答案。 让我们看一个我们可以利用这个属性的示例。
 - en: '[#](#when-bloom-filters-are-useful) When bloom filters are useful'
   id: totrans-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#什么时候使用布隆过滤器) 什么时候使用布隆过滤器'
 - en: Imagine you're building a web browser, and you want to protect users from malicious
     links. You could build and maintain a list of all known malicious links and check
     the list every time a user navigates the browser. If the link they're trying to
@@ -110,6 +131,7 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下你正在构建一个网络浏览器，并且希望保护用户免受恶意链接的侵害。 您可以构建和维护所有已知恶意链接的列表，并在用户导航浏览器时检查该列表。 如果他们试图访问的链接在列表中，则警告用户可能即将访问恶意网站。
 - en: If we assume there are, say, 1,000,000 malicious links on the Internet, and
     each link is 20 characters long, then the list of malicious links would be 20MB
     in size. This isn't a huge amount of data, but it's not small either. If you have
@@ -117,6 +139,7 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们假设互联网上有100万个恶意链接，并且每个链接长度为20个字符，则恶意链接列表的大小将为20MB。 这并不是一大堆数据，但也不算小。 如果您有大量用户并希望保持此列表最新，带宽可能会累积。
 - en: However, if you're happy to accept being wrong 0.0001% of the time (1 in a million),
     you could use a bloom filter which can store the same data in 3.59MB. That's an
     82% reduction in size, and all it costs you is showing the user an incorrect warning
@@ -126,6 +149,8 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果你愿意接受错误率为0.0001%（百万分之一），你可以使用一个可以将相同数据存储在3.59MB中的布隆过滤器。 这是大小的82％减少，而且唯一的代价是在每百万次访问中向用户显示一个错误警告。
+    如果你想走得更远，而且你愿意接受0.1％的错误率（千分之一），布隆过滤器只需1.8MB。
 - en: This use-case isn't hypothetical, either. Google Chrome used a bloom filter
     for this exact purpose until 2012\. If you were worried about showing a warning
     when it wasn't needed, you could always make an API that has the full list of
@@ -136,6 +161,8 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种用例并不是假设的情况。 谷歌 Chrome 曾经使用布隆过滤器来实现这一目的，直到 2012 年。 如果您担心在不需要时显示警告，您总是可以创建一个具有完整恶意链接列表的
+    API。 当布隆过滤器说“可能”时，然后您将调用 API 来检查完整列表以确保。 不再有虚假警告，并且布隆过滤器将使您无需为每个访问的链接调用 API。
 - en: '[#](#how-bloom-filters-work) How bloom filters work'
   id: totrans-23
   prefs:
