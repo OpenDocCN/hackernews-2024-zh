@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:27:16'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:27:16'
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: We Could Fix Everything, We Just Don't
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我们本可以解决一切，只是我们没有这么做
 - en: 来源：[https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/](https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/](https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/)
 - en: 'I remember growing up with that same old adage of how you could be the next
     scientist to invent a cure for cancer, or a solution to climate change, or whatever.
     What they don’t tell you is that we already have solutions for a **lot** of problems,
@@ -34,6 +40,7 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还记得小时候常听到的那句老话，说你可能会成为下一个发明治愈癌症或解决气候变化等问题的科学家。但他们没有告诉你的是，我们已经有了许多问题的解决方案，只是我们没有使用它们。有时候这是因为解决方案太昂贵，但通常是因为竞争利益造成了一场共同悲剧。现代时代的大多数问题不是复杂的工程问题，它们都是同一个问题：协调失败。
 - en: 'It was recently unveiled that basically every single UEFI SecureBoot implementation
     ever made [can be bypassed with a ***malicious image file***](https://binarly.io/posts/finding_logofail_the_dangers_of_image_parsing_during_system_boot/index.html).
     This means that any manufacturer that allows the user to customize the boot image
@@ -43,6 +50,8 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近曝光的事实显示，基本上每个 UEFI SecureBoot 实现版本都可以通过***恶意图像文件***进行绕过。这意味着任何允许用户自定义启动图像的制造商现在都容易受到完全绕过
+    SecureBoot *和* Intel Boot Guard 的攻击。幸运的是，解决这个问题非常简单：不要使标志可定制化。但是，为什么会发生这种荒谬的事情呢？
 - en: The results from our fuzzing and subsequent bug triaging unequivocally say that
     none of these image parsers were ever tested by IBVs or OEMs. We can confidently
     say this because we found crashes in almost every parser we tested. Moreover,
@@ -53,6 +62,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我们进行的模糊测试及随后的漏洞分类结果清楚地表明，这些图像解析器从未被 IBV 或 OEM 进行过测试。我们可以自信地说这一点，因为我们发现几乎每个我们测试的解析器都存在崩溃问题。此外，模糊测试器在运行几秒钟后就能找到第一个崩溃，更糟糕的是，某些解析器在互联网上发现的有效图像上也会崩溃。
+    — [binarly.io](https://binarly.io/posts/finding_logofail_the_dangers_of_image_parsing_during_system_boot/index.html)
 - en: It’s pretty obvious what happened, actually. The image parsers were written
     with the assumption they’d only ever need to load an image file provided by the
     manufacturer. When this assumption was violated, all hell broke loose, because
@@ -67,6 +78,7 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上发生的事情非常明显。图像解析器是根据一种假设编写的，即它们只会加载由制造商提供的图像文件。当这个假设被打破时，一切都乱了套，因为[我们不再测试软件了](https://davidkcaudill.medium.com/maybe-getting-rid-of-your-qa-team-was-bad-actually-52c408bd048b)。这一切都不是因为工程很难。这一切也不是因为某种棘手的、微妙的错误。发生这一切只是因为编写图像解析器的人犯了一个极其愚蠢的错误，然后根本没打算测试它，因为软件行业已经不再关心质量保证了。因此，没有[瑞士奶酪模型](https://en.wikipedia.org/wiki/Swiss_cheese_model)。只有一块有一个大洞的奶酪片，因为结果表明，一些制造商决定让用户定制他们的启动图像，认为这是无害的，这本身就足以造成严重破坏。
 - en: Every layer of this problem is a different flavor of coordination failure. No
     one on the team who implemented this either thought that there might need to be
     a warning about untrusted images, or whoever did bring it up was ignored because
@@ -77,6 +89,7 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题的每一层都是协调失败的不同形式。实施这个的团队中没有人认为可能需要对不受信任的图像进行警告，或者提出这个问题的人被忽视了，因为应该由另一个团队处理。除非应该提出警告的人没有被告知，或者把它埋在了没有人读的技术文档中。决定实施用户可定制启动标志的供应商没有问过这是否会成为问题，或者没有被告知这个问题。
 - en: And *nobody*, not a single layer in this clown train, [implemented a proper
     QA or pentesting process](https://davidkcaudill.medium.com/maybe-getting-rid-of-your-qa-team-was-bad-actually-52c408bd048b#5a65)
     that could have caught this bug, because we just don’t bother testing anything
@@ -87,6 +100,7 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且，*没有任何人*，在这个小丑列车的任何一层中，[实施了正确的质量保证或渗透测试过程](https://davidkcaudill.medium.com/maybe-getting-rid-of-your-qa-team-was-bad-actually-52c408bd048b#5a65)来捕捉这个漏洞，因为我们根本就不再测试任何东西。我们的经济激励已经成功地激励人们构建了技术上还能工作的最糟糕的东西。我们知道如何避免这种情况。我们有几十年的建立深入的质量保证流程的经验，但我们只是选择忽视它。**我们可以解决这个问题，只是我们不这样做**。
 - en: This is not exclusive to software, as this [fantastic video about the popcorn
     button](https://www.youtube.com/watch?v=Limpr1L8Pss) explains. Our economic race
     to the bottom has been sabotaging almost every aspect of engineering in our society.
@@ -100,6 +114,7 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不仅限于软件，正如这个关于[爆米花按钮的精彩视频](https://www.youtube.com/watch?v=Limpr1L8Pss)所解释的那样。我们经济上的竞争已经在破坏我们社会的几乎每个工程方面。为了每台微波炉省下几分钱，廉价的微波炉不包含湿度传感器，然后说谎说有爆米花按钮，当它实际上不能正常工作时，这导致每个人都说“不要使用爆米花按钮”，现在甚至在**实际上具有湿度传感器和可以正常工作的爆米花按钮的微波炉上也没有人使用爆米花按钮**。吝啬鬼现在控制着供应链。他们在比喻性的池子里撒尿，如果这听起来很熟悉，那是因为这是[公地悲剧](https://en.wikipedia.org/wiki/Tragedy_of_the_commons)的一个经典例子。
 - en: Except, that’s not an excuse. What’s truly absurd is that the tragedy of the
     commons *isn’t inevitable*. We *know* this because ancient human tribes managed
     to navigate responsible utilization of common resources [all the time](https://en.wikipedia.org/wiki/Tragedy_of_the_commons#Non-governmental_solution).
@@ -109,6 +124,7 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，这不是借口。真正荒谬的是，[公地悲剧并不是必然发生的](https://en.wikipedia.org/wiki/Tragedy_of_the_commons#Non-governmental_solution)。我们*知道*这一点，因为古代人类部落经常能够负责任地利用共同资源。它根本没有任何历史根据。只有在集体行动彻底失败时，公地悲剧才会发生。这是社会恶化的原始症状。
 - en: '[...] many nomadic pastoralist societies of Africa and the Middle East in fact
     "balanced local stocking ratios against seasonal rangeland conditions in ways
     that were ecologically sound", reflecting a desire for lower risk rather than
@@ -117,6 +133,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[...] 非洲和中东许多游牧民族社会事实上“根据季节性草地条件平衡地方存栏比率，以一种生态上合理的方式”，反映出对低风险而不是高利润的渴望...'
 - en: We actually have a cure for blood cancer now, by the way. Like, [we’ve done
     it](https://www.pennmedicine.org/news/news-releases/2023/august/an-immunotherapy-strategy-against-all-blood-cancers).
     It’s likely that a similar form of immunotherapy will generalize to most forms
@@ -165,6 +182,7 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对这些问题*有*解决方案。我们只是不去使用它们。我们*可以*为每个美国家庭铺设光纤电缆，而且我们甚至知道它会花费多少。我们之所以不这样做，是因为我们把钱给了企业，然后[他们一个都没用，反而给自己发了巨额奖金](https://www.reddit.com/r/explainlikeimfive/comments/6c5e97/comment/dhsxq6k/)。我们*知道*自动化正在侵蚀低技能工作，这意味着我们的劳动力需要更好的教育，向每个人提供免费大学教育是个好主意，我们只是不这样做。我们知道如何建设州际高速通勤铁路，我们只是不这样做（尽管[拜登正在尝试](https://www.whitehouse.gov/briefing-room/statements-releases/2023/12/08/fact-sheet-president-biden-announces-billions-to-deliver-world-class-high-speed-rail-and-launch-new-passenger-rail-corridors-across-the-country/)）。**我们可以解决一切，只是不这样做**。
 - en: We have no excuses anymore. None of these are novel or difficult problems, not
     even the tragedy of the commons. We can do better. We don’t need AI to fix things.
     We don’t need new technology to solve these problems. We *already know how to
@@ -175,6 +193,7 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们再也没有任何借口了。这些问题都不是新鲜或困难的问题，甚至连“公地悲剧”也不例外。我们可以做得更好。我们不需要人工智能来解决问题。我们不需要新技术来解决这些问题。我们*已经知道如何做得更好*，我们只是让自己陷入了一个合作低谷，以至于我们甚至无法实施*我们已经知道的*解决方案，更别提发明新的了。我们之所以陷入困境，仅仅是因为社会是由被激励以牺牲合作为代价获利的人所掌控。就是这样。
 - en: It’s January 1st of the new year, and with all these people wishing each other
     a “better year”, I am here to remind you that **it will only get worse** unless
     we *do something*. Society getting worse is [not something you are hallucinating](https://www.youtube.com/watch?v=q118B_QdP2k).
@@ -185,6 +204,7 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天是新年的1月1日，而有这么多人互相祝愿“新的一年更好”，我在这里提醒你，**除非我们采取行动**，否则*情况只会变得更糟*。社会变得更糟[不是你在幻觉中](https://www.youtube.com/watch?v=q118B_QdP2k)。你骑自行车上班或者中了彩票都无法解决问题。我们正在依赖过去100年的狂野技术进步的尾气，而我们无法建立能够合作的社会系统将摧毁我们所知的文明，除非我们**采取行动**。
 - en: We live in what is perhaps the most critical turning point in all of human history,
     and we’re on a ship that has drifted far off course. The rapid current of technology
     means that we are swept along faster and faster, making it exponentially harder
@@ -194,9 +214,11 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们生活在或许是人类历史上最关键的转折点上，而我们的船已偏离了航线。技术的迅猛发展意味着我们被迅速卷入，越来越快地前行，使我们越来越难以摆脱前方的冰山。我们***必须***解决我们的协调失败。我们***必须***建立促进更好合作的系统，否则本世纪对于人类来说不会是一个转折点，而将是人类的终结。
 - en: '"All that would remain of us would be a thin layer in some future rock face.
     This is the future we must avoid at all costs." — [John D. Boswell (melodysheep)](https://www.youtube.com/watch?v=o48X3_XQ9to&t=725s)'
   id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '"我们留下的一切将只是未来某个岩石表面的薄层。这是我们必须以一切代价避免的未来。" — [约翰·D·博斯韦尔（melodysheep）](https://www.youtube.com/watch?v=o48X3_XQ9to&t=725s)'
