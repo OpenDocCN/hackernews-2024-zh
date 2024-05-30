@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:43:05'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Are You Sure You Want to Use MMAP in Your DBMS?
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.symas.com/post/are-you-sure-you-want-to-use-mmap-in-your-dbms](https://www.symas.com/post/are-you-sure-you-want-to-use-mmap-in-your-dbms)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,14 +29,17 @@
     longer responses on their blogs, we never wrote a long form response before. But
     since the paper keeps resurfacing from time to time, it seemed like a good idea
     to address it in depth, once and for all.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'The paper''s abstract gets off to a strident start:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: There are, however, severe correctness and performance issues with mmap that
     are not immediately apparent. Such problems make it difficult, if not impossible,
     to use mmap correctly and efficiently in a modern DBMS.
+  id: totrans-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -41,9 +50,11 @@
     have perfectly correct crash-resistance, while other DB engines using more traditional
     buffer pool management schemes have shown a variety of failure/corruption cases.
     As such, their paper's thesis is immediately invalidated.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'In section 1 the paper''s introduction again makes some ridiculous claims:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Unfortunately, mmap has a hidden dark side with many sordid problems that make
@@ -53,6 +64,7 @@
     working with mmap. For these reasons, we believe that mmap adds too much complexity
     with no commensurate performance benefit and strongly urge DBMS developers to
     avoid using mmap as a replacement for a traditional buffer pool.
+  id: totrans-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -60,6 +72,7 @@
     use mmap are more complex than all DBMSs using a traditional buffer pool. They
     would also have to demonstrate that all DBMSs using mmap are less reliable and
     less performant than all DBMSs using a traditional buffer pool.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: But they clearly can't demonstrate that, since LMDB safely addresses all concerns
@@ -68,6 +81,7 @@
     you [DB engines](http://www.lmdb.tech/bench/inmem/) that require orders of magnitude
     more code just to attempt to be correct, but still failing. Their assessment of
     complexity and correctness is completely wrong.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: In section 2 their overview of mmap is basically correct. In 2.3 "MMAP Gone
@@ -77,6 +91,7 @@
     to take seriously; they claim it's nearly impossible to get it right and then
     give a list of projects that got it right. The ones who got it wrong are irrelevant,
     because simple and correct solutions clearly exist for all the potential problems.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: In section 3 "Problems with mmap" we should be getting to the heart of the matter,
@@ -86,21 +101,28 @@
     partial updates and msync doesn't even apply. These aspects of LMDB's behavior
     are well documented, so the fact they get this wrong reflects poorly on their
     research efforts.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第
 - en: In section 3.2 "I/O stalls" is again a non-issue; no matter how your DBMS handles
     I/O internally, synchronously or asynchronously, the calling application can't
     make any progress until the I/O completes, and if the data isn't already in memory
     then the application must wait.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第 3.2 节 "I/O stalls" 中再次提到是一个非问题；无论你的数据库管理系统如何在内部处理 I/O，同步地还是异步地，调用应用程序都无法在
+    I/O 完成之前取得任何进展，如果数据不在内存中，则应用程序必须等待。
 - en: In section 3.3 "Error handling" they correctly note "pointer errors might corrupt
     pages in memory" but that's why LMDB uses a read-only mmap by default. So again,
     non-issue. These problems are obvious to anyone contemplating such a design, and
     the solution is trivial, quite the opposite of the insurmountable, near-impossibility
     they claim.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第 3.3 节 "错误处理" 中，他们正确地指出 "指针错误可能会损坏内存中的页面"，但这就是为什么 LMDB 默认使用只读 mmap。因此，又是一个非问题。对于任何考虑这样设计的人来说，这些问题都是显而易见的，解决方案是微不足道的，与他们声称的不可逾越的、几乎不可能的相反。
 - en: In section 3.4 "Performance issues" - every benchmark shows that LMDB always
     massively outperforms every other DB engine on reads, so there's really nothing
     of substance here either. Page eviction is explicitly not an issue since LMDB
@@ -108,8 +130,12 @@
     pressure causes the OS to need to reclaim a page it can just do so immediately
     without having to evict/flush a page out. (Also the RavenDB blog post directly
     addressed the other points so I won't re-tread that ground.)
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第 3.4 节 "性能问题" 中 - 每个基准测试都显示 LMDB 在读取方面总是大大优于其他任何数据库引擎，所以这里也没有什么实质性的内容。页面逐出显式地不是问题，因为
+    LMDB 使用只读 mmap。这意味着所有映射页面都是干净的；每当内存压力导致操作系统需要回收页面时，它可以立即这样做，而无需逐出/刷新页面。 （此外，RavenDB
+    博客文章已直接解决了其他问题，因此我不会重复讨论这个问题。）
 - en: Section 4 "Experimental Analysis" really takes the cake - they test using fio,
     a filesystem benchmarking tool. They don't actually compare DBMS implementations,
     so none of their analysis takes into account the complexity and performance costs
@@ -119,63 +145,89 @@
     its comparisons are completely invalid, doing nothing to address their initial
     claims. This reason alone should have been enough to make the paper fail peer
     review; none of the work they did proves their thesis.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 第 4 节 "实验分析" 确实是太过分了 - 他们使用 fio 进行测试，这是一个文件系统基准测试工具。他们实际上没有比较数据库管理系统的实现，因此他们的分析没有考虑到一个数据库管理系统为什么不使用
+    mmap 所带来的复杂性和性能成本。他们从未证明基于 mmap 的任何数据库管理系统比每个使用传统缓冲池的数据库管理系统更复杂，或者它们都不如其他数据库管理系统可靠或性能更低。这是他们论文的核心，它的比较完全无效，完全没有解决他们最初的论点。仅仅这个原因就足以使论文未能通过同行评审；他们所做的所有工作都不能证明他们的论点。
 - en: 'Section 6 Conclusion is just completely wrong:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 结论部分第 6 节完全错误：
 - en: '"When you should not use mmap:"'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '"当你不应该使用 mmap 时："'
 - en: '"you need to perform updates in a transactionally safe fashion" - LMDB''s ACID
     transactions are 100% perfectly safe.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你需要以事务安全的方式执行更新" - LMDB 的 ACID 事务是 100% 完全安全的。'
 - en: '"you need explicit control over what data is in memory" - on a machine with
     virtual memory, i.e., all modern operating systems, you never have this at application
     level.'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你需要明确控制哪些数据在内存中" - 在具有虚拟内存的计算机上，即所有现代操作系统，你从应用程序层面永远不会有这种情况。'
 - en: '"You care about error handling and need to return correct results" - LMDB always
     returns correct results.'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你关心错误处理并且需要返回正确的结果" - LMDB 总是返回正确的结果。'
 - en: '"You require high throughput on fast persistent storage devices" - nothing
     beats LMDB on fast persistent storage devices [http://www.lmdb.tech/bench/optanessd/](http://www.lmdb.tech/bench/optanessd/)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你需要在快速持久存储设备上获得高吞吐量" - 没有什么比 LMDB 在快速持久存储设备上更胜一筹了 [http://www.lmdb.tech/bench/optanessd/](http://www.lmdb.tech/bench/optanessd/)'
 - en: '"When you should maybe use mmap in your DBMS"'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '"在你的数据库管理系统中可能应该使用 mmap 时"'
 - en: '"Your working set (or the entire database) fits in memory and the workload
     is read-only" - LMDB beats others for DBs much larger than memory, on read/write
     workloads [http://www.lmdb.tech/bench/ondisk/](http://www.lmdb.tech/bench/ondisk/)'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你的工作集（或整个数据库）适合内存，并且工作负载是只读的" - LMDB 在比内存大得多的数据库上，在读/写工作负载上击败了其他数据库 [http://www.lmdb.tech/bench/ondisk/](http://www.lmdb.tech/bench/ondisk/)'
 - en: '"You need to rush a product to the market and do not care about  data consistency
     or long-term engineering headaches." LMDB is an open source project, we don''t
     care about the market because we don''t have to pay back any vulture capitalists.
     We took the time to do things right - which actually was a lot faster than doing
     things the traditional way.'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"你需要匆忙推出一个产品到市场上，不在乎数据一致性或长期的工程问题。" LMDB 是一个开源项目，我们不关心市场，因为我们不需要偿还任何秃鹰资本家。我们花时间把事情做对了
+    - 实际上比传统方式做事要快得多。'
 - en: '"Otherwise, never." LOL.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"否则，永远不要。" 哈哈。'
 - en: Aside from the tremendous advantage in simplicity and robustness LMDB enjoys,
     there are other benefits not even touched on here, such as the fact that mmap
     solely uses the filesystem page cache means you can easily support multi-process
     concurrency, as well as multi-thread concurrency, without any additional memory
     overhead. No other DBMS engine can do that.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了LMDB在简单性和健壮性方面享受的巨大优势之外，还有其他好处，甚至没有在这里触及到，比如mmap只使用文件系统页面缓存意味着您可以轻松支持多进程并发，以及多线程并发，而无需额外的内存开销。没有其他DBMS引擎可以做到这一点。
 - en: For as long as operating systems and database management systems have existed,
     there has been a rivalry between OS and DBMS developers. The DBMS guys always
     claim that because they have more intimate knowledge of the intricacies of the
@@ -191,8 +243,10 @@
     level. When you're sharing a machine with multiple other tasks, only the OS can
     ever truly know what's going on in the I/O susbsystem, in memory pressure, etc.
     etc.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 自操作系统和数据库管理系统存在以来，操作系统和数据库管理系统开发人员之间一直存在着竞争。DBMS的人总是声称，因为他们对应用程序工作负载的微妙之处有更多的了解，所以他们可以进行微调以提供更好的性能。但所有这些微调都伴随着巨大的复杂性成本，事实是，在多用户机器上，他们是错误的。即使在专用单用户机器上，要收集正确地剖析其工作负载所需的所有测量和统计数据，比在内核内部收集这些信息复杂得多，也更昂贵。但在共享机器上，DBMS与其他进程和其他应用程序共享该机器是不可能的。没有单个进程能够准确地获得系统资源使用和需求的全面视图；事实上，操作系统的职责是从应用程序级别*隐藏*这些细节。当您与多个其他任务共享一台机器时，只有操作系统才能真正了解I/O子系统、内存压力等等发生了什么。
 - en: The DBMS folks claim that knowing the intimate details of the workload can allow
     them to do more efficient caching. With a great deal of work that could be true
     on a dedicated machine, but on a shared machine, where all of your carefully managed
@@ -206,12 +260,17 @@
     application doesn't need to care about which tables are used more frequently than
     others. They all start from the root of the LMDB B+tree, and an LRU mechanism
     will naturally sort their accesses out in order of recency.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: DBMS的人声称，知道工作负载的细节可以让他们进行更有效的缓存。在专用机器上可能会是事实，但在共享机器上，您精心管理的所有缓冲区可能随时被页面出来以满足其他需求，这个论点是荒谬的。而且，实际上并没有很多方法可以击败最近最少使用（LRU）缓存策略。有更高效的实现方式（例如时钟），但整体策略仍然是一样的。而且，LMDB再次利用所有这一切，而无需额外的努力，因为它的B+树设计在LRU缓存下天然是最优的。即使与多个表一起使用，用于单独索引和其他元数据，因为LMDB将多个表处理为一组树，这意味着应用程序不需要关心哪些表比其他表使用频繁。它们都从LMDB
+    B+树的根节点开始，并且LRU机制将自然地按照最近的顺序排序它们的访问。
 - en: Ultimately, the answer to the question "are you sure you want to use mmap in
     your DBMS?" should be rephrased - do you really want to reimplement everything
     the OS already does for you? Do you really believe you can do it correctly, better
     than the OS already does? The DBMS world is littered with projects whose authors
     believed, incorrectly, that they could.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终，对问题“您确定要在您的DBMS中使用mmap吗？”的答案应该被重新表述 - 你真的想重新实现操作系统已经为您实现的一切吗？您真的相信您可以比操作系统做得更好地完成吗？DBMS世界充斥着那些作者错误地认为他们可以做到的项目。
