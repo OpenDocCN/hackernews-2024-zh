@@ -1,23 +1,35 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:28:12'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:28:12
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Big Post About Big Context - by Grigory Sapunov - Gonzo ML
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 大上下文的大文章 - 格里高利·萨普诺夫（Grigory Sapunov）- Gonzo ML
 - en: 来源：[https://gonzoml.substack.com/p/big-post-about-big-context](https://gonzoml.substack.com/p/big-post-about-big-context)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://gonzoml.substack.com/p/big-post-about-big-context](https://gonzoml.substack.com/p/big-post-about-big-context)
 - en: The context size in modern LLMs (that is, the maximum number of tokens they
     can process at once) is steadily increasing. Initially, moving from two or four
     thousand tokens to eight thousand seemed like a big achievement. Then came models
@@ -30,81 +42,121 @@
     A breakthrough appeared with [Gemini 1.5](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/),
     which by default has the now typical 128k, but there's a non-public version with
     1M tokens, and a research version with 10M.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代 LLMs 中的上下文大小（即，它们一次能处理的最大标记数）正在稳步增加。最初，从两千或四千个标记增加到八千个标记似乎是一个重大突破。然后出现了具有多达
+    32k 标记的模型，但它们在很长一段时间内供应不足。到它们成为广泛可用的时候，它们已经希望渺茫，因为行业领导者之一，Anthropic，已经有了具有 100k
+    标记的模型。现在，公共模型的限制范围从 128k（GPT-4 Turbo）到 200k（Anthropic）不等。谷歌在这场竞赛中落后，其公共模型的最大覆盖范围为
+    32k（PaLM 2 的特殊版本和[Gemini 1.0](https://gonzoml.substack.com/p/google-gemini-a-family-of-highly)的所有版本）。[Gemini
+    1.5](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/)
+    的出现是一个突破，它默认拥有现在典型的 128k，但有一个非公开版本带有 1M 标记，以及一个带有 10M 标记的研究版本。
 - en: An interesting question is how exactly such a large context was achieved, and
     moreover, how it works efficiently. There are various fresh approaches from different
     angles, for example, [LongRoPE](https://arxiv.org/abs/2402.13753), [LongNet](https://arxiv.org/abs/2307.02486)
     with dilated attention, [RingAttention](https://arxiv.org/abs/2310.01889), or,
     say, [RMT-R](https://arxiv.org/abs/2402.10790). It's intriguing what exactly Google
     did.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个有趣的问题是如何实现如此大的上下文，而且更重要的是，它如何高效运作。有各种各样的新方法从不同的角度来看待这个问题，例如，[LongRoPE](https://arxiv.org/abs/2402.13753)，[LongNet](https://arxiv.org/abs/2307.02486)
+    与扩展注意力，[RingAttention](https://arxiv.org/abs/2310.01889)，或者说，[RMT-R](https://arxiv.org/abs/2402.10790)。谷歌到底做了什么，这是一个耐人寻味的问题。
 - en: These new limits will likely significantly change how we work with models. Let's
     speculate a bit about this near future.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些新的限制可能会显著改变我们与模型合作的方式。让我们稍微推测一下这个不远的未来。
 - en: '* * *'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '**1) First, old techniques like RAG, partly designed to circumvent the limitations
     of a small context window when working with long documents, should die out.**
     Or at least remain only for special cases, such as the need to pull in fresh or
     particularly relevant materials.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**1) 首先，像 RAG 这样的老技术，部分设计用于规避在处理长文档时的小上下文窗口的限制，应该消失。** 或者至少只保留在特殊情况下，例如需要引入新鲜或特别相关的材料的情况下。'
 - en: Tools like [langchain's splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/),
     which mainly cut based on length (considering more suitable cutting points in
     some cases), were already problematic -- looking at those chopped paragraphs was
     hard, though somehow it worked.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 像[langchain 的拆分器](https://python.langchain.com/docs/modules/data_connection/document_transformers/)这样的工具，主要基于长度进行切割（在某些情况下考虑更合适的切割点），已经是有问题的了
+    -- 看着那些被切割的段落很难，尽管它们某种程度上是有效的。
 - en: Even with the ability to properly segment into reasonable pieces, all the different
     wrappers that match and select more suitable pieces, aggregate results, etc.,
     are needed. Now, potentially, there's no need to bother with this stuff, which
     is good.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使能够将内容正确分割成合理的片段，所有不同的包装器，匹配和选择更合适的片段，聚合结果等等，都是必需的。现在，潜在地，没有必要去烦恼这些事情，这是好事。
 - en: In some cases, of course, it's still necessary and can improve solution quality,
     but that needs to be evaluated. I generally believe in end-to-end solutions and
     the eventual displacement of most of these workarounds.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些情况下，当然，它仍然是必要的，并且可以提高解决方案的质量，但这需要评估。我一般相信端到端的解决方案，并且最终会取代大多数这些变通方法。
 - en: It’s not that I’m against RAG or any other program-controlled LLMs. In fact,
     I’m a strong proponent of the [LLM Programs](https://gonzoml.substack.com/p/large-language-model-programs)
     approach (I wrote on it [here](https://gonzoml.substack.com/p/mindstorms-in-natural-language-based)
     and [there](https://gonzoml.substack.com/p/chain-of-thought-tree-of-thought)).
     My point is that these old-school and dumb RAG approaches are just poor man’s
     things. They must change.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我并不反对 RAG 或任何其他程序控制的 LLMs。事实上，我是[LLM 计划](https://gonzoml.substack.com/p/large-language-model-programs)方法的坚定支持者（我在[这里](https://gonzoml.substack.com/p/mindstorms-in-natural-language-based)和[那里](https://gonzoml.substack.com/p/chain-of-thought-tree-of-thought)都写过）。我要说的是，这些老派而愚蠢的
+    RAG 方法只是穷人的玩意儿。它们必须改变。
 - en: '**2) 1M tokens is really a lot;** now, you can fit many articles, entire code
     repositories, or large books into the context. Considering the multimodality and
     the ability of modern models to also process images, videos, and audio (by converting
     them into special non-text tokens), you can load hours of video or audio recordings.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '**2) 1M 标记确实很多；** 现在，你可以把很多文章、整个代码库或大型书籍放入上下文中。考虑到现代模型的多模态性以及处理图像、视频和音频的能力（通过将它们转换为特殊的非文本标记），你可以加载几小时的视频或音频录音。'
 - en: Given that models perform well on [Needle In A Haystack tests](https://github.com/gkamradt/LLMTest_NeedleInAHaystack),
     you can get quite relevant answers when working with such lengths.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于模型在[Needle In A Haystack 测试](https://github.com/gkamradt/LLMTest_NeedleInAHaystack)上表现良好，当处理这样长度的内容时，你可以得到相当相关的答案。
 - en: 'It''s really possible to find a specific frame in a video:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在视频中找到一个特定的框架确实是可能的：
 - en: 'or a moment in a book:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者是书中的某个瞬间：
 - en: Or solve entirely new classes of problems. [For example](https://www.facebook.com/DynamicWebPaige/videos/1422440318698615),
     cases where models were fed a video of a task solution (like house hunting on
     Zillow) and asked to generate Selenium code for solving the same task impress
     me. Or translating to/from the Kalamang language using a large grammar (not parallel
     sentences!) textbook. Jeff Dean also [wrote about this case](https://twitter.com/JeffDean/status/1758149033473020081).
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 或解决全新类别的问题。[例如](https://www.facebook.com/DynamicWebPaige/videos/1422440318698615)，例如，模型被提供了一个任务解决的视频（如在
+    Zillow 上找房子），并要求生成 Selenium 代码以解决相同的任务，这让我印象深刻。或者使用大量语法（而不是平行句子！）的教科书进行 Kalamang
+    语言的翻译。 Jeff Dean 也[写过这个案例](https://twitter.com/JeffDean/status/1758149033473020081)。
 - en: Yes, there's also a dictionary and 400 parallel sentences, but still, in-context
     language learning is very cool. As are answers to questions about a long document.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，还有字典和 400 个平行句子，但是，在上下文语言学习中，答案与长文档的问题一样很酷。
 - en: Current models like GPT are still purely neural network-based, operating in
     a stimulus-response mode, without any clear place for System 2-like reasoning.
     The approaches [that exist](https://gonzoml.substack.com/p/system-2-attention-is-something-you)
@@ -115,8 +167,12 @@
     Even in the current mode, in-context learning of a new task from a textbook looks
     insanely cool (if it works). With full-fledged "System 2-like" capabilities, this
     could be a game-changer. One of the frontiers lies somewhere here.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前的模型，如 GPT，仍然是纯粹基于神经网络的，以刺激-响应模式运行，没有明确的 System 2 类推理的地方。 [已经存在的方法](https://gonzoml.substack.com/p/system-2-attention-is-something-you)
+    大多都相当基础。但是现在，各种混合模型，包括神经符号混合模型或带有规划元素的模型正在开发中。对于这些领域的秘密 Q*（https://www.technologyreview.com/2023/11/27/1083886/unpacking-the-hype-around-openais-rumored-new-q-model/）或[其他新方法](https://arxiv.org/abs/2402.14083)
+    说“你好”。即使在当前模式下，从教科书中学习新任务的上下文学习看起来非常酷（如果它有效）。具有完整的“System 2 类似”功能，这可能会改变游戏规则。前沿之一就在这里。
 - en: '**3) An interesting question arises regarding the cost of such intelligence.**
     Existing [pricing for Gemini 1.0 Pro](https://ai.google.dev/pricing) (0.125$ per
     1M symbols) is significantly better than [OpenAI''s pricing](https://openai.com/pricing)
@@ -125,21 +181,31 @@
     ($8/1M). [*] This discussion is about input tokens; output tokens are more expensive,
     but we usually don''t need to generate millions on the output, this is primarily
     important for tasks with a large input.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '**3) 关于这种智能的成本，一个有趣的问题出现了。** 现有的[Gemini 1.0 Pro 定价](https://ai.google.dev/pricing)（每
+    100 万个符号 0.125 美元）比[OpenAI 的定价](https://openai.com/pricing)要好得多，GPT-4 Turbo（每
+    100 万个符号 10 美元）、GPT-4（每 100 万个符号 30 美元）和 GPT-3.5 Turbo（每 100 万个符号 0.5 美元）。也比[Anthropic''s
+    Claude 2.1](https://www-cdn.anthropic.com/31021aea87c30ccaecbd2e966e49a03834bfd1d2/pricing.pdf)（每
+    100 万个符号 8 美元）要好得多。[*] 这次讨论是关于输入符号；输出符号更昂贵，但我们通常不需要在输出上生成数百万个符号，这主要对于大输入任务来说很重要。'
 - en: If Gemini 1.5 Pro had the same pricing as 1.0, would you be willing to pay ten
     cents for an answer about a book? Or for generating code to automate a task you
     recorded on video?
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 Gemini 1.5 Pro 的定价与 1.0 相同，您是否愿意为一本书的答案支付十美分？或为您在视频中记录的任务生成代码而支付？
 - en: My personal answer to the second question is yes, but to the first -- it depends.
     If you need to ask dozens of questions, it adds up to a few dollars. For analyzing
     a legal document or for a one-time book summary, okay, but if you need to do this
     regularly, it's a question. The economics need to be calculated. Services providing
     solutions based on such models need to explicitly account for usage to avoid going
     bankrupt.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对第二个问题的个人回答是肯定的，但对第一个问题是取决于情况的。如果您需要问数十个问题，这就增加了几美元。对于分析法律文件或进行一次性书籍摘要来说，可以，但如果您需要定期执行此操作，那就是一个问题。经济学需要进行计算。基于这些模型提供解决方案的服务需要明确考虑使用情况，以避免破产。
 - en: '**4) Regardless of the economics, there must be ways to save and cache results.**
     If you need to ask a bunch of questions about the same set of documents, it''s
     strange to do it from scratch each time. If the prompt structure looks like {large
@@ -150,20 +216,27 @@
     addition, saving a lot of resources. But there''s no infrastructure for this yet
     (or I missed it), and even if you deploy the model yourself, you can''t do this
     right away; it requires programming.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**4) 无论经济如何，都必须有办法保存和缓存结果。** 如果您需要问一堆关于相同文档集的问题，每次从头开始做就很奇怪。如果提示结构看起来像 {大文本}
+    + {问题}，或者 {大语法书} + {要翻译的句子}，那么在某种程度上缓存第一部分是有意义的，因为它是恒定的。在技术上，在一个变压器内，由多层网络计算的这些输入嵌入可能被保存在某个地方，对于一个新问题，只计算这个新添加部分，从而节省了大量资源。但目前还没有这样的基础设施（或者我错过了），即使您自己部署模型，也无法立即做到这一点；它需要编程。'
 - en: I expect something like this to appear both at the API level and infrastructure-wise
     for caching results of local models. Possibly, some convenient and lightweight
     integration with a vector database (startup founders, you get the idea).
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我期待在 API 级别和基础设施方面出现类似这样的东西，以缓存本地模型的结果。可能会与矢量数据库（创业者们，你们明白我的意思）进行方便而轻量级的集成。
 - en: '**5) When used correctly, this can significantly increase productivity in many
     tasks.** I personally wouldn''t be surprised if some individuals become 10 or
     100 times more productive, which is insanely cool. Obviously, this isn''t a panacea
     and won''t solve all problems, plus issues with confabulations (a better term
     than hallucinations). Result verification remains a highly relevant task.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**5) 当正确使用时，这可以显著提高许多任务的生产力。** 我个人不会感到惊讶，如果有些人的生产力提高了 10 或 100 倍，那简直太酷了。显然，这并不是万能药，不能解决所有问题，还有与错觉有关的问题（比幻觉这个词更合适）。结果验证仍然是一个非常相关的任务。'
 - en: There are likely classes of tasks where verification is much cheaper than solving
     the task independently (we can jokingly call this class ***"cognitive NP"*** tasks),
     and there are definitely many of them -- writing letters or blog posts clearly
@@ -173,34 +246,46 @@
     Turbo often produces text that requires no changes at all. Sometimes -- one or
     two edits. I've never needed to rewrite not just the entire text, but even a single
     paragraph.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 有可能有一类任务，其中验证的成本远远低于独立解决任务的成本（我们可以开玩笑地称之为***“认知NP”***任务），而且肯定有许多这样的任务--写信或博客文章明显属于此类。我一直在一个英文博客上通过GPT的直接翻译整个文本并进行后续编辑来写作，这比我自己从头开始写作快得多。我注意到错误相对较少，GPT-4
+    Turbo通常会产生根本不需要更改的文本。有时候--只需一两次编辑。我从来没有需要重写整个文本，甚至是一个段落。
 - en: And these are just the surface-level tasks. If we dig deeper, there should be
     very many. I'm almost certain we'll see [Jevons paradox](https://en.wikipedia.org/wiki/Jevons_paradox)
     in full force here, with the use of all these models only increasing.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 而这些只是表面任务。如果我们深入挖掘，应该会有很多任务。我几乎可以肯定，我们将在这里充分体验到[Jevons悖论](https://en.wikipedia.org/wiki/Jevons_paradox)的力量，使用所有这些模型只会增加。
 - en: '**6) A very important and at the same time difficult class of solutions is
     model output validation.** As we can’t always rely on a model, and there is a
     risk of confabulations (which may sometimes be costly, see the [recent case with
     Air Canada chatbot](https://www.theguardian.com/world/2024/feb/16/air-canada-chatbot-lawsuit)
     or an older [court case with ChatGPT inventions](http://forbes.com/sites/mollybohannon/2023/06/08/lawyer-used-chatgpt-in-court-and-cited-fake-cases-a-judge-is-considering-sanctions/)),
     we need to lower such risks.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**6) 一类非常重要且同时也很难的解决方案是模型输出验证。** 因为我们不能总是依赖于一个模型，存在错觉的风险（有时可能会很昂贵，参见[最近加拿大航空聊天机器人的案例](https://www.theguardian.com/world/2024/feb/16/air-canada-chatbot-lawsuit)或较旧的[关于
+    ChatGPT 发明的法院案件](http://forbes.com/sites/mollybohannon/2023/06/08/lawyer-used-chatgpt-in-court-and-cited-fake-cases-a-judge-is-considering-sanctions/)），我们需要降低这些风险。'
 - en: In a similar and narrower field of machine translation (MT) there is a set of
     solutions called Machine translation quality estimation (MTQE), to estimate risk
     of bad translations, predict quality scores, detect specific types of errors,
     etc (the exact objective may vary). They are not perfect, and may not solve your
     particular task if it differs from the original objective, though they may help.
     We need something similar for LLMs, say LLMQE.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在类似且更窄的机器翻译（MT）领域中，有一组解决方案称为机器翻译质量估计（MTQE），用于估计糟糕翻译的风险，预测质量分数，检测特定类型的错误等（确切的目标可能会有所不同）。它们并不完美，如果任务与原始目标不同，则可能无法解决您的特定任务，尽管它们可能会有所帮助。我们需要类似的东西来应对LLM，比如LLMQE。
 - en: There will be solutions for which many companies will be willing to pay. There
     will be many different solutions suited for different cases. But reliably creating
     such solutions won't be easy. You all get this too.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 将会有许多公司愿意支付的解决方案。将会有许多不同的解决方案适用于不同的情况。但可靠地创建这样的解决方案并不容易。你们也都明白这一点。
 - en: '**7) It''s really unclear how the work for entry positions (juniors) will change
     in the near future.** And whether there will be any work for them at all. And
     if not, where the middles and seniors will come from. Not only and not so much
@@ -210,8 +295,10 @@
     their activities will shift. But this is not certain. I expect a significant change
     in the nature of work and the emergence of entirely new tools, which do not yet
     exist (probably this is already being worked on by the likes of JetBrains).'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**7) 真的很难说入门级（初级）工作在不久的将来会如何改变。** 以及是否他们将来会有任何工作。如果没有，那么中级和高级人员会从哪里来。不仅仅是在编程方面，而且在其他领域也是如此。在内容创作方面，许多任务中，模型将超越他们，或者将是一种明显更便宜和更快速的替代方案。剩下的是技术复杂的内容验证领域--可能是他们活动的重点所在。但这并不确定。我预计工作性质将发生重大变化，并出现全新的工具，目前还不存在（也许像JetBrains这样的公司已经在研究）。'
 - en: I don't know how much time OpenAI has until the creation of AGI, when they supposedly
     need to reconsider their relationship with Microsoft (*[“Such a system is excluded
     from IP licenses and other commercial terms with Microsoft, which only apply to
@@ -220,19 +307,30 @@
     acting as sellers of intelligence by the pound. It's unclear what will happen
     to the world next, but as some countries surged ahead of others during the industrial
     revolution, the same will happen here, but even faster.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不知道OpenAI在创造AGI之前还有多少时间，他们据说需要重新考虑与Microsoft的关系（*[“这样的系统不在与Microsoft的知识产权许可和其他商业条款之内，这些条款仅适用于AGI技术之前。”](https://openai.com/our-structure)*），并且一般决定如何正确地进行货币化。但即使没有那样，他们和谷歌已经开始充当智能的买卖者。不清楚世界接下来会发生什么，但是就像一些国家在工业革命期间超越了其他国家一样，这里也会发生同样的事情，而且速度会更快。
 - en: What a time to be alive!
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 活着真是个好时代！
 - en: '* * *'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Changelog
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 更改日志
 - en: 02/03/2024 — added some clarifications based on questions and discussions at
     [HackerNews](https://news.ycombinator.com/item?id=39552705). Mostly in pp. 1 (LLM
     Programs) and 6 (MTQE).
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 02/03/2024 — 根据[HackerNews](https://news.ycombinator.com/item?id=39552705)上的问题和讨论增加了一些澄清。
+    主要位于第1页（LLM Programs）和第6页（MTQE）。

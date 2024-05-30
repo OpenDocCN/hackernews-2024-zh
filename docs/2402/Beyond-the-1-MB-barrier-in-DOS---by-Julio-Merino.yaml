@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:39:59'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:39:59'
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Beyond the 1 MB barrier in DOS - by Julio Merino
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: DOS 中的 1 MB 屏障之外 - 由 Julio Merino
 - en: 来源：[https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos](https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos](https://blogsystem5.substack.com/p/beyond-the-1-mb-barrier-in-dos)
 - en: In [“From 0 to 1 MB in DOS”](https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos),
     I presented an overview of all the ways in which DOS and its applications tried
     to maximize the use of the 1 MB address space inherited from the 8086—even after
@@ -32,6 +38,9 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[《从 0 到 1 MB 在 DOS 中》](https://blogsystem5.substack.com/p/from-0-to-1-mb-in-dos)中，我概述了
+    DOS 及其应用程序尝试最大化从 8086 继承的 1 MB 地址空间的所有方法——即使在 80286 引入对 16 MB 内存的支持之后，80386 打开了
+    4 GB 的大门。
 - en: 'I know I promised that this follow-up article would be about DJGPP, but before
     getting into *that* review, I realized I had to take another detour to cover three
     more topics. Namely: *unreal mode*, which I intentionally ignored to not derail
@@ -41,6 +50,8 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我知道我答应过这篇后续文章将是关于 DJGPP 的，但在进行 *那篇* 评论之前，我意识到我必须再次绕个弯，涵盖另外三个主题。即：*虚拟模式*，我故意忽略以免误导文章；*LOADALL*，直到你读者提到它我才知道；以及
+    *DOS 扩展器*，我打算在 DJGPP 文章中描述它们，但它们更适合这篇文章。
 - en: So… strap your seat belts on and dive right in for another tour through the
     ancient techniques that DOS had to pull off to peek into the memory address space
     above the first MB. And get your hands ready because we’ll go over assembly code
@@ -48,6 +59,7 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么……系好安全带，立即潜入另一次对 DOS 必须执行的古老技巧的旅程，以窥视第一 MB 以上的内存地址空间。并准备好动手，因为我们将逐步介绍进入虚拟模式的汇编代码。
 - en: Having read the preceding post, you should know by now what the real, protected,
     and VM86 modes of the x86 processors are. But there is one extra unofficial mode
     I did not talk about, and that is the *unreal mode*. The mode with the coolest
@@ -55,6 +67,7 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读完前文后，你现在应该知道 x86 处理器的实际、受保护和 VM86 模式是什么了。但有一个额外的非官方模式我没有谈论，那就是 *虚拟模式*。如果你问我的话，这是最酷的名字的模式。
 - en: Unreal mode is a special state of the processor in which the CPU acts as if
     it was in real mode… but with segment descriptors that allow it to reference memory
     above the 1 MB limit. These segments are impossible to define in real mode but,
@@ -62,54 +75,65 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 虚拟模式是处理器的一种特殊状态，在这种状态下，CPU 表现得好像处于实模式下……但具有允许其引用 1 MB 限制以上内存的段描述符。这些段在实模式下是不可能定义的，但是，通过针对
+    80286 和 80386 的不同技巧，它们成为了可能。
 - en: 'To understand how unreal mode works, we need to go back to the diagram I presented
     earlier describing the address resolution process that the 80286’s MMU executes
     on every memory access:'
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解虚拟模式的工作原理，我们需要回到我之前提到的描述 80286 MMU 在每次内存访问时执行的地址解析过程的图表：
 - en: Diagram representing the operations that the 80286 does, in hardware, to resolve
     a segment:address memory reference.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示 80286 如何在硬件中解析段:地址内存引用的操作的图表。
 - en: 'As you can see in the diagram, for every memory access of the form `segment:offset`,
     the MMU:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如图所示，对于形式为 `segment:offset` 的每次内存访问，MMU：
 - en: decodes the segment selector specified by `segment` to determine whether to
     query the GDT or LDT and which segment descriptor to read,
   id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码指定为 `segment` 的段选择器，以确定是查询 GDT 还是 LDT 以及要读取哪个段描述符，
 - en: reads the determined segment descriptor by indexing into the GDT or LDT tables,
   id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过对 GDT 或 LDT 表进行索引，读取确定的段描述符，
 - en: decodes the segments’ base address and limit as stored in the descriptor,
   id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码存储在描述符中的段基址和限制，
 - en: checks the privileges of the executing code against the protections recorded
     in the descriptor,
   id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 检查正在执行的代码的权限与描述符中记录的保护之间的关系，
 - en: and ensures the `offset` is within the segment limit defined in the descriptor.
   id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 并确保 `offset` 在描述符中定义的段限制内。
 - en: Only after these steps complete successfully, the memory access is allowed;
     otherwise, the processor raises a General Protection Fault exception.
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有在这些步骤成功完成后，才允许内存访问；否则，处理器会引发通用保护故障异常。
 - en: This is all conceptually good until you realize that the GDT and LDT live in
     main memory… and main memory is slow—*excruciatingly* so in processor time. Having
     to read from main memory to resolve *every* memory access, even with a good L1
@@ -117,6 +141,7 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在概念上都很好，直到你意识到 GDT 和 LDT 存储在主内存中……而主内存很慢——*在处理器时间方面甚至令人痛苦*。即使有很好的 L1 或 L2 缓存，每次内存访问都必须从主内存中读取，这对大多数应用程序都会产生很大的性能影响。
 - en: To resolve this inefficiency, the processor has a cache of segment descriptors.
     Instructions that update the segment registers, such as `MOV DS, AX`, fetch descriptors
     from the GDT or LDT tables and store them in the cache. Instructions that reference
@@ -125,6 +150,8 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这种低效率，处理器具有段描述符的缓存。更新段寄存器的指令，例如 `MOV DS, AX`，会从 GDT 或 LDT 表中提取描述符并将其存储在缓存中。引用内存的指令，例如
+    `MOV AX, DS:1234h`，会从缓存中读取描述符，而不会直接访问主内存。
 - en: Diagram representing how the instructions used to load a register like DS are
     decoupled from the instructions that later consume the details about DS. It is
     crucial to note how the segment descriptor cache completely shields the second
@@ -132,6 +159,7 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 表示用于加载像 DS 这样的寄存器的指令如何与后来使用 DS 的详细信息的指令解耦的图表。请注意，段描述符缓存如何完全屏蔽了第二个指令，使其无需访问主内存即可解析地址。
 - en: 'So far so good, but let’s add another twist. The diagram I presented earlier
     showing how the 80286 resolves a memory address does not only apply to protected
     mode: it applies to real mode too. In both modes, the processor accesses the descriptor
