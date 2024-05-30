@@ -2,28 +2,34 @@
   id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 15:04:28'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:04:28
 - en: -->
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/linux/ZFSGlobalZILInformation'
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: blog/linux/ZFSGlobalZILInformation'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation](https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation)
   id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation](https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSGlobalZILInformation)
 - en: The [ZFS Intent Log (ZIL)](/~cks/space/blog/solaris/ZFSTXGsAndZILs) is effectively
     ZFS's version of a filesystem journal, writing out hopefully brief records of
     filesystem activity to make them durable on disk before their full version is
@@ -37,6 +43,10 @@
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '[ZFS Intent Log (ZIL)](/~cks/space/blog/solaris/ZFSTXGsAndZILs) 实际上是 ZFS 版本的文件系统日志，它写出希望简短记录的文件系统活动记录，以便在其完整版本提交到
+    ZFS 池之前将其持久化在磁盘上。 ZIL 正在做什么以及其表现如何对于 ZFS 文件系统上的各种操作的延迟（因此对于响应性）可能很重要，因为对于重要文件的操作（如
+    `fsync()`）必须等待 ZIL 写出其信息（*提交*）才能从内核返回。 在 Linux 上，[OpenZFS](https://openzfs.org/)
+    在 `/proc/spl/kstat/zfs/zil` 中公开了有关 ZIL 的全局信息，但是没有一些关于 ZIL 内部的知识很难解释这些信息。'
 - en: (In OpenZFS 2.2 and later, each dataset also has per-dataset ZIL information
     in its kstat file, /proc/spl/kstat/zfs/<pool>/objset-0xXXX, for some hexadecimal
     '0xXXX'. There's no overall per-pool ZIL information the way there is a global
@@ -45,23 +55,29 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: （在 OpenZFS 2.2 及更高版本中，每个数据集在其 kstat 文件（/proc/spl/kstat/zfs/<pool>/objset-0xXXX，其中的十六进制
+    '0xXXX'）中也有每个数据集的 ZIL 信息。没有像全局一样的每个池的 ZIL 信息，但是对于大多数目的，您可以将所有池数据集的 ZIL 信息求和。）
 - en: The basic background here is [the flow of activity in the ZIL](/~cks/space/blog/solaris/ZFSZILActivityFlow)
     and also the comments in [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h)
     about the members of the `zil_stats` struct.
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的基本背景是 [ZIL 中的活动流](/~cks/space/blog/solaris/ZFSZILActivityFlow) 以及 [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h)
+    中关于 `zil_stats` 结构成员的注释。
 - en: 'The (ZIL) data you can find in the "`zil`" file (and the per-dataset kstats
     in OpenZFS 2.2 and later) is as follows:'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在 "`zil`" 文件中（以及 OpenZFS 2.2 及更高版本中的每个数据集 kstats 中）找到的（ZIL）数据如下：
 - en: '`zil_commit_count` counts how many times a ZIL commit has been requested through
     things like `fsync()`.'
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_commit_count` 统计了通过 `fsync()` 等方式请求 ZIL 提交的次数。'
 - en: '`zil_commit_writer_count` counts how many times the ZIL has actually committed.
     More than one commit request can be merged into the same ZIL commit, if two people
     `fsync()` more or less at the same time.'
@@ -69,6 +85,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_commit_writer_count` 记录了 ZIL 实际提交的次数。如果两个人几乎同时 `fsync()`，则多个提交请求可以合并到同一个
+    ZIL 提交中。'
 - en: '`zil_itx_count` counts how many *intent transactions* (itxs) have been written
     as part of ZIL commits. Each separate operation (such as a `write()` or a file
     rename) gets its own separate transaction; these are aggregated together into
@@ -77,6 +95,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_count` 记录了作为 ZIL 提交的一部分写入的 *intent transactions*（itxs）的数量。每个单独的操作（例如
+    `write()` 或文件重命名）都会得到自己单独的事务；当进行 ZIL 提交时，这些事务将被聚合到 *log write blocks*（lwbs）中。'
 - en: When ZFS needs to record file data into the ZIL, it has three options, which
     it calls '`indirect`', '`copied`', and '`needcopy`' in ZIL metrics. Large enough
     amounts of file data are handled with an *indirect* write, [which writes the data
@@ -92,10 +112,16 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 ZFS 需要将文件数据记录到 ZIL 时，它有三个选项，它在 ZIL 指标中称之为 '`indirect`'、'`copied`' 和 '`needcopy`'。足够大量的文件数据通过
+    *间接写入* 处理，[将数据写入到正常池中的最终位置](/~cks/space/blog/solaris/ZFSWritesAndZIL)；ZIL 事务仅记录其位置，因此称为
+    'indirect'。在 *copied* 写入中，数据直接并立即放入 ZIL 事务（itx），甚至在其成为 ZIL 提交的一部分之前就完成了；如果 ZFS
+    知道数据正在同步写入，并且数据不足以触发间接写入，则会执行此操作。在 *needcopy* 写入中，数据只是作为 ZFS 的常规脏数据留存在 RAM 中，如果需要该数据的
+    ZIL 提交，则将该数据从 RAM 中提取并将其添加到 itx（或至少是 lwb）的日志写入块的过程中。
 - en: 'There are ZIL metrics about this:'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关此的 ZIL 指标：
 - en: '`zil_itx_indirect_count` and `zil_itx_indirect_bytes` count how many indirect
     writes have been part of ZIL commits, and the total size of the indirect writes
     of file data (not of the ''itx'' records themselves, per the comments in [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h)).'
@@ -103,6 +129,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`zil_itx_indirect_count` 和 `zil_itx_indirect_bytes` 记录了多少个间接写入已经成为 ZIL 提交的一部分，以及文件数据的间接写入总大小（与
+    [zil.h](https://github.com/openzfs/zfs/blob/master/include/sys/zil.h) 中的注释不同，这里不是
+    ''itx'' 记录本身）。'
 - en: Since these are indirect writes, the data written is not part of the ZIL (it's
     regular data blocks), although it is put on disk as part of a ZIL commit. However,
     unlike other ZIL data, the data written here would have been written even without
@@ -112,6 +141,8 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 由于这些是间接写入，所以写入的数据不是 ZIL 的一部分（它是常规数据块），尽管它作为 ZIL 提交的一部分被写入磁盘。但是，与其他 ZIL 数据不同，此处写入的数据即使没有
+    ZIL 提交，也将作为 ZFS 的常规事务组提交过程的一部分写入。 ZIL 提交仅比预期更早地写出它。
 - en: '`zil_itx_copied_count` and `zil_itx_copied_bytes` count how many ''copied''
     writes have been part of ZIL commits and the total size of the file data written
     (and thus committed) this way.'
