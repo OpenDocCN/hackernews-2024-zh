@@ -1,87 +1,123 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:29:51'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:29:51'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: terminal smooth scrolling
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 终端平滑滚动
 - en: 来源：[https://flak.tedunangst.com/post/terminal-smooth-scrolling](https://flak.tedunangst.com/post/terminal-smooth-scrolling)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://flak.tedunangst.com/post/terminal-smooth-scrolling](https://flak.tedunangst.com/post/terminal-smooth-scrolling)
 - en: I didn’t realize I needed this until I implemented it, and now, oh wow, can’t
     imagine life without it.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我之前并没有意识到我需要这个功能，直到我实现了它，现在，哇，不能想象没有它的生活了。
 - en: Normally, a terminal draws lines of text at fixed intervals. Line 1 starting
     at pixel 0, then line 2 at 24 pixels, etc. When the text scrolls, line 2 immediately
     becomes line 1 and gets drawn at pixel 0\. These sudden jumps are incompatible
     with how your eyes track motion, however. The result is a blurry mess that’s hard
     to read.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，终端以固定的间隔绘制文本行。第一行从像素0开始，然后第二行从24像素开始，依此类推。当文本滚动时，第二行立即变成第一行，并在像素0处绘制。然而，这种突然的跳跃与您的眼睛跟踪运动的方式不兼容。结果是一片模糊不清的混乱，很难阅读。
 - en: Long ago, hardware terminals had the option for smooth scrolling, incrementally
     shifting each line of text up over several frames, but such wizardry has been
     lost to the ravages of time. I thought it would be fun to implement, and maybe
     a cool trick to show off, but before seeing the result figured it would be mostly
     a gimmick. Instead, it’s entirely changed how I scroll through text.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 很久以前，硬件终端有平滑滚动的选项，每行文字逐帧向上移动，但这种魔法已经随着时间的流逝而失传。我觉得实现这个功能会很有趣，也许是一个炫酷的技巧可以炫耀一下，但在看到结果之前，我认为这主要是个噱头。然而，这完全改变了我浏览文本的方式。
 - en: results
+  id: totrans-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: results
 - en: Figure we can just start with a video showing before and after. Scrolling through
     the *ls* man page. About half way through, the terminal switches to smooth scrolling.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我觉得我们可以从一个视频开始，展示前后的效果。通过*ls*手册进行滚动。在一半左右，终端切换到平滑滚动。
 - en: </images/scrollcap.mp4>
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: </images/scrollcap.mp4>
 - en: I can’t quite read fast enough to keep up with the scroll rate, not every word
     anyway, but I can skim the text as it passes by until I find the section I’m looking
     for. Very helpful for reading code or documentation when I’m not entirely sure
     what that is.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我无法以足够快的速度阅读跟得上滚动速度，至少不是每个单词，但我可以在文字经过时快速浏览，直到找到我要找的部分。在阅读代码或文档时非常有帮助，当我不确定那是什么时。
 - en: I find that scrolling like this is ultimately more effective than paging one
     screen at a time, then trying to skim the whole screen. I always miss something
     when doing that.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我发现像这样滚动最终比一页一页翻页，然后试图快速浏览整个屏幕更有效。我总是在这样做时错过一些东西。
 - en: implementation
+  id: totrans-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: implementation
 - en: There’s an open issue requesting smooth scrolling for just about every terminal
     I looked at, but none implemented. Usually the discussion gets bogged down in
     trivialities. I found it’s not hard to do something, and the result is quite pleasing.
     I guess it helps to only worry about one user.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎我所看过的每一个终端都有一个开放的问题请求平滑滚动，但没有一个实现了。通常，讨论会陷入琐碎之中。我发现做一些事情并不难，而且结果相当令人满意。我想这可能有助于只关心一个用户。
 - en: The first big issue is oh, no, it makes things slow. Only when enabled. There’s
     a terminal mode sequence to turn it on and off. I did find it slightly distracting
     for regular shell work, like running *ls*, so only enable it for commands as necessary.
     And the scrolling speed can be ramped up by the amount to scroll. I picked ten
     frames as target, although it takes a bit longer than that as it decelerates towards
     the end.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个大问题是哦，不，这会使事情变慢。只有在启用时才会。有一个终端模式序列来启用和禁用它。我发现对于像运行*ls*这样的常规shell工作来说，它稍微分散了注意力，因此只在必要时启用它。滚动速度可以根据滚动量加快。我选了十帧作为目标，尽管它花的时间比那更长，因为它朝着结束减速。
 - en: The second big issue relates to the scrolling region. Programs like *vi* scroll
     most lines on the screen, but they leave the status bar on the bottom alone. Indeed,
     it looks funny to scroll that. But this is easily resolved by only applying the
     smooth scrolling effect to the part of the screen that scrolled.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个大问题与滚动区域有关。像*vi*这样的程序滚动屏幕上的大多数行，但它们会将底部的状态栏保留下来。的确，滚动它看起来很滑稽。但这很容易通过仅将平滑滚动效果应用于已滚动部分的屏幕来解决。
 - en: Finally, there’s the question of what to do with the scrolled off content. When
     a line disappears off the alternate screen, there’s no backlog to send it to.
     It ceases to exist. So what to draw in that space before the next line finishes
@@ -89,66 +125,94 @@
     at the top (or bottom) of screen. The new content, the stuff I’m focused on, is
     appearing at the other side. I’m not watching the disappearing lines; I’m watching
     the appearing lines.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，还有一个问题，那就是滚动消失的内容该怎么处理。当一行消失在备用屏幕上时，没有后备可以将其发送到。它就消失了。那么在下一行完成滚动到位之前，在那个空间内画什么呢？答案是什么也不画。你可以在屏幕顶部（或底部）留下一行或两行空白。新的内容，也就是我关注的内容，出现在另一边。我不是在看消失的行；我在看出现的行。
 - en: As for actual implementation, every cell on the screen is drawn with some vertices.
     If we’re smooth scrolling, we offset those vertices in the opposite direction.
     If the text on the screen just moved up, we push every vertex down, so it appears
     in the same position as previously. Then we decay the offset each frame, so that
     the text slides into position.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于实际实现，屏幕上的每个单元格都是用一些顶点绘制的。如果我们正在平滑滚动，我们会将这些顶点向相反方向偏移。如果屏幕上的文本只是向上移动了，我们就会将每个顶点向下推，这样它们就会出现在之前的相同位置。然后我们会在每一帧中衰减偏移量，这样文本就会滑入位置。
 - en: The main part of the code is about 25 lines, plus a few miscellaneous lines
     here and there.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码的主要部分大约有25行，加上几行零零散散的。
 - en: misc details
+  id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 杂项细节
 - en: The proof of concept was very quick to get going, but it did require some experimentation
     and tuning. If we start too slow, we fall behind the input. If we accelerate too
     fast, the result looks jerky. Too many derivatives.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 概念验证很快就开始了，但确实需要一些实验和调整。如果我们开始得太慢，就会落后于输入。如果我们加速得太快，结果看起来会很颠簸。导数太多。
 - en: Current approach is to pick a velocity of distance divided by 10\. Then we use
     a weighted average with previous velocity to smooth the smoothing. If we’re more
     than ten lines behind, which happens rarely but can happen if the whole screen
     is redrawn, then do a jump scroll.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前的方法是选择一个距离除以10的速度。然后我们使用前一个速度的加权平均值来平滑平滑。如果我们落后十行以上，这种情况很少发生，但如果整个屏幕被重新绘制则可能发生，那么就会执行一个跳跃滚动。
 - en: The region to smooth scroll is determined by the scrolling region at the time
     of scrolling, not painting. *vim* for instance will set the scroll region to 1;23
     to adjust the file contents displayed, then immediately switch back to 1;24 to
     update the status line. Since we don’t want to scroll the status bar, we want
     to apply the effect to the 1;23 region previously set.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 平滑滚动的区域由滚动时的滚动区域确定，而不是绘制时确定。例如，*vim*会将滚动区域设置为1;23以调整显示的文件内容，然后立即切换回1;24以更新状态栏。由于我们不想滚动状态栏，我们希望将效果应用于先前设置的1;23区域。
 - en: For now, we scroll interior lines as well, such as for cut and paste operations.
     This is somewhere between distracting and helpful. The motion turns out to be
     a helpful hint of what changed, and it’s fast enough it doesn’t get in the way.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们也会滚动内部行，例如剪切和粘贴操作。这介于干扰和有用之间。这种运动事实证明是一个有用的提示，显示了发生了什么变化，而且速度足够快，不会妨碍操作。
 - en: If an offscreen tab scrolls, the smooth effect is applied when the user switches
     back. This doesn’t usually happen (unless smooth scrolling is enabled at the shell)
     but I think it can be a helpful indicator that something changed. This is *new*
     compiler output.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个屏幕外的选项卡滚动，当用户切换回来时会应用平滑效果。这通常不会发生（除非在shell中启用了平滑滚动），但我认为它可以作为某种变化的有用指示器。这是*新*的编译器输出。
 - en: Drawing the screen ten times for each scroll obviously uses ten times more CPU
     power.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次滚动绘制屏幕十次显然会使用十倍的CPU功率。
 - en: usage
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 用法
 - en: Smooth scrolling is enabled by the standard “\e[4?h” control sequence.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 平滑滚动是通过标准的“\e[4?h”控制序列启用的。
 - en: 'Helpful .vimrc:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 有用的 .vimrc：
 - en: '[PRE0]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
