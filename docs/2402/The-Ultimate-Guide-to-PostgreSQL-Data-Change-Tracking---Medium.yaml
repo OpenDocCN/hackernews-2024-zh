@@ -1,33 +1,42 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:21:12'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The Ultimate Guide to PostgreSQL Data Change Tracking | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://exaspark.medium.com/the-ultimate-guide-to-postgresql-data-change-tracking-c3fa88779572](https://exaspark.medium.com/the-ultimate-guide-to-postgresql-data-change-tracking-c3fa88779572)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**The Ultimate Guide to PostgreSQL Data Change Tracking**'
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: PostgreSQL, one of the most popular databases, was named DBMS of the Year 2023
     by [DB-Engines Ranking](https://db-engines.com/en/blog_post/106) and is used more
     than any other database among startups according to [HN Hiring Trends](https://www.hntrends.com/2024/january.html?compare=SQL+Server).
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: PostgreSQL is the most popular database among startups
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The SQL standard has included features related to [temporal databases](https://en.wikipedia.org/wiki/Temporal_database)
@@ -36,54 +45,67 @@
     In the case of PostgreSQL, it doesn’t support these features, even though there
     has been a submitted [patch](https://www.postgresql.org/message-id/flat/CALAY4q-cXCD0r4OybD%3Dw7Hr7F026ZUY6%3DLMsVPUe6yw_PJpTKQ%40mail.gmail.com)
     with some discussions.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: There are PostgreSQL extensions like [periods](https://github.com/xocolatl/periods)
     and [temporal_tables](https://github.com/arkhipov/temporal_tables) that add support
     for temporal tables. Unfortunately, cloud providers such as AWS, Azure, and GCP
     don’t allow running custom C extensions with managed databases.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s explore five alternative methods of data change tracking in PostgreSQL
     available to us in 2024.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Triggers and Audit Table
+  id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: A PostgreSQL trigger with an audit table
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: PostgreSQL allows adding triggers with custom procedural SQL code performed
     on row changes with `INSERT`, `UPDATE`, and `DELETE` queries. The official PostgreSQL
     wiki describes a generic [audit trigger function](https://wiki.postgresql.org/wiki/Audit_trigger).
     Let’s have a quick look at a simplified example.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, create a table called `logged_actions` in a separate schema called `audit`:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'Next, create a function to insert audit records and establish a trigger on
     a table you wish to track, such as `my_table`:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'Once it’s done, row changes made in `my_table` will create records in `audit.logged_actions`:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: If you want to further improve this solution by using JSONB columns instead
     of TEXT, ignoring changes in certain columns, pausing auditing a table, and so
     on, check out the SQL example in this [audit-trigger](https://github.com/2ndQuadrant/audit-trigger)
     repo and its forks.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Another alternative is the [temporal_tables](https://github.com/nearform/temporal_tables)
@@ -92,91 +114,111 @@
     not just an initial timestamp when a change was recorded. This makes it easier
     to perform time travel queries by selecting records that were valid at a specific
     point in time.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Downsides
+  id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Performance. Triggers add performance overhead by inserting additional records
     synchronously on every `INSERT`, `UPDATE`, and `DELETE` operation.
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Security. Anyone with superuser access can modify the triggers and make unnoticed
     data changes. It is also recommended to make sure that records in the audit table
     cannot be modified or removed.
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Maintenance. Managing complex triggers across many constantly changing tables
     can become cumbersome. Making a small mistake in an SQL script can break queries
     or data change tracking functionality.
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Triggers and Notify/Listen
+  id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: A PostgreSQL trigger with Notify
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'This approach is similar to the previous one but instead of writing data changes
     in the audit table directly, we pass them through a pub/sub mechanism through
     a trigger to another system dedicated to reading and storing these data changes:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'Now it’s possible to run a separate process running as a worker that listens
     to messages containing data changes and stores them separately:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: Downsides
+  id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: “At most once” delivery**.** Listen/notify notifications are not persisted meaning
     if a listener disconnects, it may miss updates that happened before it reconnected
     again.
+  id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Payload size limit. Listen/notify messages have a maximum payload size of 8000
     bytes by default. For larger payloads, it is recommended to store them in the
     DB audit table and send only references of the records.
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Debugging. Troubleshooting issues related to triggers and listen/notify in a
     production environment can be challenging due to their asynchronous and distributed
     nature.
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Application-Level Tracking
+  id: totrans-split-37
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Application-level tracking with a PostgreSQL audit table
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you have control over the codebase that connects and makes data changes
     in a PostgreSQL database, then one of the following options is also available
     to you:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Manually record all data changes when issuing `INSERT`, `UPDATE`, and `DELETE`
     queries
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Use existing open-source libraries that integrate with popular ORMs
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -184,17 +226,21 @@
     for Ruby on Rails with ActiveRecord and [django-simple-history](https://github.com/jazzband/django-simple-history)
     for Django. At a high level, they use callbacks or middlewares to insert additional
     records into an audit table. Here is a simplified example written in Ruby:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: On the application level, [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)
     can also be implemented with an append-only log as the source of truth. But it’s
     a separate, big, and exciting topic that deserves a separate blog post.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Downsides
+  id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -203,21 +249,25 @@
     developers may accidentally skip callbacks, or there could be data inconsistencies
     if a query changing the data has succeeded but a query inserting an audit record
     failed.
+  id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Performance. Manually capturing changes and inserting them in the database via
     callbacks leads to both runtime application and database overhead.
+  id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Scalability. These audit tables are usually stored in the same database and
     can quickly become unmanageable, which can require separating the storage, implementing
     declarative partitioning, and continuous archiving.
+  id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Change Data Capture
+  id: totrans-split-49
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -225,154 +275,190 @@
     is a pattern of identifying and capturing changes made to data in a database and
     sending those changes to a downstream system. Most often it is used for [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)
     to send data to a data warehouse for analytical purposes.'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: There are multiple approaches to implementing CDC. One of them, which doesn’t
     intersect with what we have already discussed, is a log-based CDC. With PostgreSQL,
     it is possible to connect to the [Write-Ahead Log](https://www.postgresql.org/docs/current/wal-intro.html)
     (WAL) that is used for data durability, recovery, and replication to other instances.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: CDC with PostgreSQL logical replication
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'PostgreSQL supports two types of replications: physical replication and logical
     replication. The latter allows decoding WAL changes on a row level and filtering
     them out, for example, by table name. This is exactly what we need to implement
     data change tracking with CDC.'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are the basic steps necessary for retrieving data changes by using logical
     replication:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. Set `wal_level` to `logical` in `postgresql.conf` and restart the database.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '2\. Create a publication like a “pub/sub channel” for receiving data changes:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: '3\. Create a logical replication slot like a “cursor position” in the WAL:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: '4\. Fetch the latest unread changes:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: To implement log-based CDC with PostgreSQL, I would recommend using the existing
     open-source solutions. The most popular one is [Debezium](https://github.com/debezium/debezium).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: Downsides
+  id: totrans-split-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Limited context. PostgreSQL WAL contains only low-level information about row
     changes and doesn’t include information about an SQL query that triggered the
     change, information about a user, or any application-specific context.
+  id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Complexity. Implementing CDC adds a lot of system complexity. This involves
     running a server that connects to PostgreSQL as a replica, consumes data changes,
     and stores them somewhere.
+  id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Tuning. Running it in a production environment may require a deeper understanding
     of PostgreSQL internals and properly configuring the system. For example, periodically
     flushing the position for a replication slot to reclaim WAL disk space.
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Integrated Change Data Capture
+  id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Integrated CDC with application context
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: To overcome the challenge of limited information about data changes stored in
     the WAL, we can use a clever approach of passing additional context to the WAL
     directly.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is a simple example of passing additional context on row changes:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: Notice the `pg_logical_emit_message` function that was added to PostgreSQL as
     an internal function for plugins. It allows namespacing and emitting messages
     that will be stored in the WAL. Reading these messages became possible with the
     standard logical decoding plugin `pgoutput` since PostgreSQL v14.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: There is an open-source project called [Bemi](https://github.com/BemiHQ/bemi)
     which allows tracking not only low-level data changes but also reading any custom
     context with CDC and stitching everything together. Full disclaimer, I’m one of
     the core contributors.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, it can integrate with popular ORMs and adapters to pass application-specific
     context with all data changes:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: Downsides
+  id: totrans-split-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Complexity and tuning related to implementing CDC.
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If you need a ready-to-use cloud solution that can be integrated and connected
     to PostgreSQL in a few minutes, check out [bemi.io](https://bemi.io/).
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-79
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: PostgreSQL data change tracking approach comparison
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: If you need basic data change tracking, **triggers with an audit table** are
     a great initial solution.
+  id: totrans-split-81
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '**Triggers with listen/notify** are a good option for simple testing in a development
     environment.'
+  id: totrans-split-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If you value application-specific context (information about a user, API endpoint,
     etc.) over reliability, you can use **application-level tracking**.
+  id: totrans-split-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '**Change Data Capture** is a good option if you prioritize reliability and
     scalability as a unified solution that can be reused, for example, across many
     databases.'
+  id: totrans-split-84
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Finally, **integrated Change Data Capture** is your best bet if you need a robust
     data change tracking system that can also be integrated into your application.
     Go with [bemi.io](https://bemi.io/) if you need a cloud-managed solution.
+  id: totrans-split-85
   prefs:
   - PREF_OL
   type: TYPE_NORMAL

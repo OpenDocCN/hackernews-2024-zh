@@ -1,32 +1,41 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:56:42'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: So you think you understand IP fragmentation? [LWN.net]
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lwn.net/Articles/960913/](https://lwn.net/Articles/960913/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '| **LWN.net needs you!**Without subscribers, LWN would simply not exist. Please
     consider [signing up for a subscription](/subscribe/) and helping to keep LWN
     publishing |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: February 7, 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: This article was contributed by Valerie Aurora
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: What is IP fragmentation, why is it important, and do people understand it?
@@ -38,9 +47,11 @@
     close to perfect. In addition, I will describe a new algorithm for fragmentation
     avoidance, which some colleagues and I developed, that helped motivate development
     of fragquiz.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Why care?
+  id: totrans-split-10
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -51,6 +62,7 @@
     I had to implement an algorithm for a VPN. That's when I learned that, like me,
     a lot of other networking experts are quite bad at predicting when a packet would
     be split into pieces. To explain why, we start with what IP fragmentation is.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'An IP packet is a building block of the internet: a little chunk of application
@@ -59,12 +71,14 @@
     the source and destination host reads the IP header, changes it slightly, consults
     the routing tables, and (hopefully) sends the packet on to the next router in
     the path.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Each network link has a maximum size of IP packet that can be sent over it:
     the Maximum Transmission Unit (MTU). The path MTU (PMTU) is the minimum of all
     of the MTUs on the path between two hosts. The path can change over time, however,
     based on congestion, outages, and other network changes.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: IP fragmentation happens when IP packets get split up into smaller IP packets,
@@ -72,6 +86,7 @@
     In IPv4 and IPv6, fragmentation can occur at the source, the computer where the
     packet is coming from. In IPv4, packets can also be fragmented by any router on
     the path between the source and the destination.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Generally speaking, IP fragmentation is bad for performance in just about every
@@ -80,6 +95,7 @@
     of data that has been fragmented into packets that each contain only eight bytes
     or fewer of data for a total of 1480/8 = 185 packets. (This is possible but unlikely
     to ever happen in reality; usually packets are only split into two pieces.)'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: To send 1480 bytes of data in eight-byte fragments, the source must send 185*20 = 3700
@@ -90,6 +106,7 @@
     of 185 packets. The destination must also reserve memory for assembling the fragmented
     packet, which it will throw away if it does not receive even one of the fragments
     after waiting for a reasonable time.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Worse, fragments are more likely to be lost. Many routers and firewalls treat
@@ -97,6 +114,7 @@
     protocols like TCP or UDP and can't be filtered based on port, so they drop all
     IP fragments. Also, load-balancing systems might route fragments to different
     hosts, where they can never be reassembled.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Even when an IP packet is only split into two pieces, it usually causes a noticeable
@@ -105,9 +123,11 @@
     to drop fragments. The small packets that initiate a connection get through, but
     the larger packets containing the data are fragmented, so they are all dropped.
     This is why network programmers really *really* want to prevent IP fragmentation.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Prevention
+  id: totrans-split-19
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -118,39 +138,48 @@
     reliable way to find the path MTU is to send IP packets of a known size that are
     not allowed to be fragmented. If the source gets confirmation that a packet arrived
     at the destination, then the path MTU is at least as large as that packet.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, to prevent IP fragmentation, you must understand IP fragmentation well
     enough to predict two things: the size of the IP packet as sent by the source
     host, and whether any intermediate routers are permitted to fragment the packet
     into smaller pieces. This depends on, among other things:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: the MTU of the local interface
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: the IP version (IPv4 or IPv6)
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: the options in the IP packet header
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: the protocol (TCP/UDP/ICMP/etc.)
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: the socket options
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: any system-wide PMTUD-related settings
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: any relevant PMTU-cache entries
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -161,9 +190,11 @@
     router, depending on the packet type and options.) When I say that someone "understands
     IP fragmentation", I mean that they can predict which of those things might happen
     to a given packet.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Well-understood?
+  id: totrans-split-30
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -172,6 +203,7 @@
     Then I had to implement [DPLPMTUD](https://datatracker.ietf.org/doc/html/rfc8899)
     for a VPN. (Yes, that's a real acronym, for real software, from a real RFC. It
     stands for Datagram Packetization Layer Path Maximum Transmission Unit Discovery.)
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Initially, it seemed like it would be easy. My colleagues were networking experts
@@ -181,6 +213,7 @@
     couldn't be fragmented, so all we had to do is send the right size of probe packets,
     using a built-in ping feature, and record the response. Imagine our surprise when
     the packet captures turned out to be full of fragmented packets.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: As I searched for ways to disable IP fragmentation, I found a lot of misleading
@@ -190,15 +223,18 @@
     set on Linux, but it took a few weeks to realize that we actually wanted `IP_PMTUDISC_PROBE`.
     Eventually I figured out all the correct settings for Linux and macOS, but it
     took much longer than it should have.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'I wanted to share what I learned with other people, but now I faced an even
     harder problem: How do you teach people something they think they already know?
     People were confidently wrong about IP fragmentation everywhere I looked, including
     in the mirror. Also, let''s face it, IP fragmentation is kind of boring.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing fragquiz
+  id: totrans-split-35
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -212,26 +248,32 @@
     make the user guess what would happen. At the end, it would tell them their score
     and encourage them to send their score and a link to the program to someone else,
     Wordle-style.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'I had a few requirements:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Works on macOS and Linux
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Easy to run (no superuser, no separate server, no configuration)
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: No virtualization, tunnels, or loopback interface since they often have bugs
     related to MTU
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: No host packet tracing because fragmentation/reassembly often happens on the
     network interface
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -243,6 +285,7 @@
     source. Traceroute then reads the IP address of the sending router from the Time
     Exceeded message and prints that out. It continues sending packets with increasing
     TTLs to find the IP address of routers that are increasingly close to the destination.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Fragquiz uses the same TTL technique, sending each packet with a small TTL,
@@ -251,9 +294,11 @@
     the packet size and fragmentation status. On macOS and Linux, an unprivileged
     user can read (and send) a restricted subset of ICMP messages using the unprivileged
     ICMP socket type.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: It worked, but there were a few surprises along the way.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Initially, I assumed that routers would not reassemble a packet with a TTL of
@@ -267,6 +312,7 @@
     TTL is one or two; the largest TTL I've seen in practice is six, meaning that
     routers one through five all reassembled fragments before sending Time Exceeded
     responses.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Some networks simply don't send Time Exceeded messages. I found this out the
@@ -274,6 +320,7 @@
     trying to figure out how I'd broken the code. Then I realized that turning off
     my VPN made fragquiz work again. In my experience, it is rare for a network to
     correctly generate Time Exceeded messages for both IPv4 and IPv6\.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: While the unprivileged ICMP listener allowed non-superusers to read Time Exceeded
@@ -282,6 +329,7 @@
     ICMP sockets, an ICMP Time Exceeded message can only be read by an unprivileged
     user using `IP_RECVERR` on the sending socket. I didn't implement that, so currently
     the Linux version only works as root.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Both macOS and Linux keep a cache of path MTUs discovered by the operating system.
@@ -290,6 +338,7 @@
     like to add an option to clear the path MTU cache in the future. Also, note that
     the prototype version has a kind of placeholder license, for now, but I plan to
     release a version with an open license in the future.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: I [presented fragquiz at RIPE 87](https://ripe87.ripe.net/archives/video/1252/),
@@ -299,14 +348,17 @@
     score was just below 80%. That means an audience full of professional network
     engineers and researchers working together didn't even get a "B" on the assignment.
     I think we can safely conclude that understanding IP fragmentation is hard.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: A novel (?) algorithm
+  id: totrans-split-50
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Finally, I promised to explain the new algorithm, which I co-created with Salman
     Aljammaz and James Tucker.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'Most path MTU discovery algorithms test one path MTU at a time. They send a
@@ -314,6 +366,7 @@
     next: send a bigger packet, send a smaller packet, or decide that the current
     estimate of the path MTU is good enough and terminate the search algorithm. This
     can take several round trips to find the best path MTU.'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'Our first insight was that, [as shown by Custura, et al.](https://aura.abdn.ac.uk/bitstream/handle/2164/11693/tma2018_paper57.pdf),
@@ -321,6 +374,7 @@
     We aren''t the first to realize that; in fact, [RFC 8899](https://datatracker.ietf.org/doc/html/rfc8899#name-selection-of-probe-sizes)
     says: "<q>Implementations could optimize the search procedure by selecting step
     sizes from a table of common PMTU sizes.</q>"'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'What we did differently is this: we sent ALL of the possible packet sizes at
@@ -329,6 +383,7 @@
     sends an acknowledgment for every packet it sees. Then we set the path MTU to
     the largest packet size that was acknowledged. It''s okay if it''s off by a few
     bytes; most PMTU search algorithms stop probing when they get "close enough."'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Every ten minutes, we reprobe the path MTU by sending a packet that is the next
@@ -337,15 +392,18 @@
     that and smaller than the local MTU. Otherwise we use the current path MTU for
     another ten minutes. If we start losing packets for any reason, including the
     path MTU shrinking, we renegotiate the connection from scratch.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'This algorithm has a latency of one RTT (round trip time) and is extremely
     simple: one timer, one static table, and one variable to hold the current path
     MTU. The downside is that it might use more bandwidth than other path MTU search
     algorithms if they can find the path MTU with fewer packets.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Reader challenge
+  id: totrans-split-57
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -355,28 +413,36 @@
     (If you''ve made a TCP connection to bing.com in the last 10 minutes, replace
     it with a domain you haven''t connected to recently. If you''re on macOS, you
     don''t need the sudo.)'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'Do you get the same answer on the first and third command? Why or why not?
     Hint: consult the Linux ip(7) man page linked above.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[ [Valerie Aurora](https://valerieaurora.org/) is a software consultant who
     enjoys writing ridiculous hacks and solving difficult systems problems. ]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: (
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/960913/)'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: to post comments)
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL

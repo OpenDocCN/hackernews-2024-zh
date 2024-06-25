@@ -1,45 +1,57 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:00:54'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Serving a Website From a Git Repo Without Cloning It - mediocregopher's lil
     web corner
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://mediocregopher.com/posts/git-proxy](https://mediocregopher.com/posts/git-proxy)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-6
   prefs: []
   type: TYPE_PRE
 - en: '**mediocregopher**''s lil web corner'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[Home](/)  //  [Posts](/posts/)  /  [Follow](/follow)  /  [RSS](/feed.xml)
      //  [Source](https://dev.mediocregopher.com/mediocre-blog/)  /  [License](/static/wtfpl.txt)'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Serving a Website From a Git Repo Without Cloning It
+  id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: It's fairly common to use git repositories as a vehicle for serving websites.
     The webdev pushes their changes to some branch of a publicly available git repository,
     and some web server somewhere serves the current tip of that branch as the website.
     Github Pages would be the most famous example of this.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The domani reverse proxy also supports serving a website from a git repository.
@@ -48,12 +60,15 @@
     further such that no local state is required except the current hash of the desired
     branch. This post is going to explain how this can be done by first guiding you
     through git's internals a bit.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[Domani](https://code.betamike.com/micropelago/domani)'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git Branches: What Are They?'
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -63,52 +78,63 @@
     can easily inspect the refs of a git project, even without the git tool itself.
     For example, the current tip of the `main` branch can be found in the `.git/refs/heads/main`
     file:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: Ref files, and therefore branch files, are just plaintext files containing a
     single object hash. When the current tip of a branch is changed the only real
     change which takes place on the filesystem is to change the content of its ref
     file. At its core, git is actually quite a simple tool.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git Objects: Friend or Foe?'
+  id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We've established that a git branch points to a git object via the hash of that
     object, but what does that really mean?
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are four kinds of git object: blob, tree, commit, and tag. Regardless
     of the object''s kind, it is stored in a file named after the SHA1 of the object
     within the `.git/objects` directory. Objects are always stored compressed using
     zlib, but it is their uncompressed form which is used for hashing.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: This example computes the hash of the object pointed to from our previous example.
     You can see the output SHA1 is the same as the object's file name (with the first
     two characters used for a directory name, otherwise the `objects` directory would
     get too big.) Note the usage of `pigz -d`, which does the zlib decompression.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: 'The body of a git commit object is more or less plaintext, save for a single
     null byte which separates a header string from the object''s contents, so we can
     just look at it directly:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: As we can see from the header, the object in question is a commit (but we knew
     that). The `264` denotes the size of the rest of the file after the header. Following
     the `264` would be a null byte, except that the null byte was replaced with a
     newline by the `tr '\0' '\n'`.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Most of the rest of the file should be familiar. The author is listed, along
@@ -116,6 +142,7 @@
     refers to the previous commit in the chain by its object hash. The tree is perhaps
     unfamiliar, unless you've dove into git's internals before, but it is the most
     interesting bit for our purposes.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Contrary to how git usually presents commits to its users, git commits do not
@@ -124,30 +151,37 @@
     the state of the repository's files at that commit. What you see when you do something
     like `git show` is actually a diff generated in real-time between the previous
     and current trees.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'As mentioned, trees are themselves another kind of git object, and so are referenced
     and queried just like commits. Let''s look at the tree for our commit:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: 'Welp, it looks like trees aren''t so simple to look at as commits. Luckily
     git ships with a handy utility, `cat-file`, for directly viewing objects and pretty-printing
     their contents:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'Much better. We can see that the tree contains a list of entries, where each
     entry denotes a file (blob) or sub-directory (tree), along with the permissions
     and name of the file/sub-directory. Looking at the contents of the `static` sub-directory''s
     object we find yet another tree:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: We can see from this how git trees are used to describe the full contents of
@@ -158,40 +192,50 @@
     and so on. The change propagates all the way upward to the root tree object and
     its hash. This hash is then stored in a commit, which allows each commit to easily
     denote the entire state of the repository.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: (This pattern of using a recursively hashed tree to uniquely identify an arbitrarily
     large amount of hierarchical data is called a Merkle tree.)
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'Anyway, let''s get to the goods: how do we view the files themselves? Each
     file stored as a blob object. Let''s check out the `foo.html` blob we found in
     our last example:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: Blob objects are like commit objects, nice and easy to parse; just a header,
     a null byte, and then the content of the file as-is.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: That's all there really is to git objects (ignoring tags, we don't need them
     today). Armed with this knowledge we can continue on towards our ultimate goal.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Remote Repositories
+  id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'When cloning a git repository you''ve probably done something like:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: Git then went and did a bunch of magical stuff, and afterwards the repo was
     fully cloned locally. But how did your git tool do that, given just a URL?
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'The answer is: it''s complicated. There are actually two different protocols
@@ -200,9 +244,11 @@
     in order to work. The dumb protocol is slower than the smart one, but it does
     not require a special HTTP client; it just serves files as they are without any
     special logic.'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: We're going to use the dumb protocol.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s return to the beginning and remember our actual goal here: we want to
@@ -210,32 +256,40 @@
     of the tip of a specific branch of a git repository. To do this we need to know
     which commit is currently being pointed to by that branch. We can discover this
     by making a simple GET request:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'This repo only has a single branch (and no tags), so only a single line is
     returned. And would you look at that, it''s the same commit hash as we saw in
     our local copy! Let''s now query that commit object, and see how objects are queried
     in general:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'As you can see objects are returned in the exact same way they are stored locally.
     No surprises. While trees are difficult to look at without the `git cat-file`
     tool (which won''t work for remote objects), blobs are still easy:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: It works exactly like the local git repo.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Putting It All Together
+  id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -243,6 +297,7 @@
     Well, first it would need to query the repository server for the commit (using
     `/info/refs`), and then fetch the commit object in order to pull out the root
     tree hash, and then fetch the root tree object.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: From there the server would need to look in the root tree object and check that
@@ -250,6 +305,7 @@
     then check `static`'s tree object for a blob entry called `foo.html`, and finally
     it would fetch that blob, passing its contents back as the response to the original
     request (after stripping off the git object header).
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: This sounds like a lot of steps to serve a single file, but there's two key
@@ -258,6 +314,7 @@
     only change when the latest commit of the branch changes, so it's enough to cache
     it in memory and have a separate background process periodically re-check the
     latest commit.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: The second optimization is to cache tree objects in-memory using their hash
@@ -265,42 +322,53 @@
     to manage, and by caching the tree objects in memory (perhaps with an LRU cache
     if memory usage is a concern) all round-trips to the remote server can be eliminated,
     save for the final round-trip for the file itself.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you''d like to see an example implementation of this idea you can check
     out my rust implementation for Domani:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[git.rs](https://code.betamike.com/micropelago/domani/src/commit/e416a766682af3b78538854da09eee62baaf3762/src/origin/git.rs)'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Note that I was able to take advantage of the excellent gix crate to help me
     with decoding git objects. If your language of choice doesn't have a git object
     parsing library available you'll have to parse the objects manually, but honestly
     it shouldn't be too difficult anyway.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, here''s a sample website being served using this technique:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[Link](https://test.domani.micropelago.net/)'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: That's it! Even if this is a pretty niche use-case and doesn't change the world,
     I hope you still found it useful as an introduction to git's internals, and perhaps
     as a jumping off point for your own ideas of how git can be abused to do interesting
     things.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '*Published 2024-02-17*'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'This site can also be accessed via the gemini protocol: [gemini://mediocregopher.com/](gemini://mediocregopher.com/)'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[What is gemini?](/posts/gemspace-tour)'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL

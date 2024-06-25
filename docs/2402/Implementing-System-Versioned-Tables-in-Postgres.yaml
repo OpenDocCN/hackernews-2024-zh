@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:41:05'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing System-Versioned Tables in Postgres
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://hypirion.com/musings/implementing-system-versioned-tables-in-postgres](https://hypirion.com/musings/implementing-system-versioned-tables-in-postgres)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,12 +31,14 @@
     in length at the [postgreqsl-hackers’ mailing list](https://www.postgresql.org/message-id/flat/CALAY4q-cXCD0r4OybD%3Dw7Hr7F026ZUY6%3DLMsVPUe6yw_PJpTKQ%40mail.gmail.com),
     it seems like the discussion and implementation efforts have been silent in all
     of 2023.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Now, there are extensions out there that implement versioning – [`temporal_tables`](https://clarkdave.net/2015/02/historical-records-with-postgresql-and-temporal-tables-and-sql-2011/)
     being the most popular I think – but none are supported for managed Postgres instances
     on e.g. Azure or AWS. This means that if we want system-versioned tables, we’re
     forced to make it ourselves.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I’m not going to spend paragraph after paragraph explaining why I want temporal
@@ -40,6 +48,7 @@
     have time series, want to do event sourcing or online analytical processing, you
     should probably pick some technology suited for that task instead of throwing
     temporal tables at it.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re only after the end result, feel free to go to my GitHub repository
@@ -47,15 +56,18 @@
     It is a todo list app with time-travelling capabilities, using the implementation
     described here. There you’ll have information on how to use it yourself, how to
     query the past, as well as gotchas and common pitfalls.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The Implementation
+  id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The implementation I’ve decided on consists of two tables for every table I
     want version controlled: A snapshot table for the current state, and a history
     table.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116.798 35.169"><text xml:space="preserve"
@@ -66,18 +78,22 @@
     xml:space="preserve" x="69.26" y="33.634" transform="translate(-19.358 -27.08)"><tspan
     x="69.26" y="33.634">Inserts</tspan><tspan x="69.26" y="37.603">Updates</tspan><tspan
     x="69.26" y="41.572">Deletes</tspan></text></svg>
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'The snapshot table is the one used for the current state of the world and is
     the one you’ll usually work with: This works exactly like any other mutable in-place
     table you’re familiar with. The history table is the one you’ll use when you want
     to query through history.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'First off, we define the tables:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: The history table contains the exact same fields as the snapshot table, but
@@ -86,39 +102,48 @@
     was initially stored, and `upper(systime)` is when this record was no longer valid.
     When `upper(systime)` is infinity, the record has not yet been deleted. The interval
     can’t be empty obviously, as that wouldn’t match any time interval.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we have a GiST index, which prevents us from having overlapping time intervals
     for the same primary key, and also speeds up queries on the history. You may want
     to add some more indices on the history table, depending on what kind of queries
     you want to do on it.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then we set up triggers for insert, update and delete:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: This is… long, to put it mildly, so let’s go through some common tricks all
     the three triggers (ab)use, and then go over some design decisions I’ve decided
     on for updates and deletes. We’ll get around to shortening it at the end.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Column Order Matters
+  id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Whenever we insert new data into the history table, it will always be on this
     form:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: 'There are two parts of Postgres we abuse here. If we look at [the docs for
     INSERT](https://www.postgresql.org/docs/16/sql-insert.html), we’ll see the following
     paragraph:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The target column names can be listed in any order. If no list of column names
@@ -126,47 +151,58 @@
     order; or the first ***N*** column names, if there are only ***N*** columns supplied
     by the `VALUES` clause or ***`query`***. The values supplied by the `VALUES` clause
     or ***`query`*** are associated with the explicit or implicit column list left-to-right.
+  id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'The other is that `NEW.*` expands in the exact same order. In our case, `NEW.*`
     will expand into `NEW.mytable_id, NEW.data`, and that means it fits perfectly
     with the rows of `mytable_history`:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'This is pretty clever, but it’s also hacky. For this to work, there are two
     things you have to get right:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Column order MUST be identical after the `history_id` and `systime` columns.
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Whenever you add new columns, you MUST add them in the same order to both tables.
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If you don’t do so, you will end up with broken inserts in the history table.
     Those will at best give you an error, but they can also silently corrupt your
     data.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t like that, but there’s a reason why I don’t do
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: and that’s because it creates **a lot** of effort when you want to remove, rename
     or add a new column to the table. By omitting the list of target column names
     and expanding `NEW.*`, the query will automatically work whenever I decide to
     add, update or remove columns – provided I do it for both tables.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: On System Time
+  id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -176,51 +212,63 @@
     which should cover essentially everything related to them. I don’t use much of
     it though, so since I guess you don’t want to go through it all, I’ll just list
     up what the different parts do.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: The expression
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'creates the timestamptz range `[a, b)`: from *a*, up to and excluding *b*.
     If either *a* or *b* are `NULL`, then they are infinitely far in the past or future,
     respectively.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '`lower(x)` returns the lower bound of the range, and `upper_inf(x)` returns
     true if the upper bound is infinite.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, `systime @> NOW()` checks if `systime` contains `NOW()` – you can think
     of it as `a <= NOW() AND NOW() < b`.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: The reason for using ranges isn’t primarily because I want to use these functions,
     but rather because the GiST index ensures no overlap and makes me less worried
     that my queries will be super slow by accident.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Inserts
+  id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'With those two things described, inserts are more or less described in their
     entirety: We insert the row into the history table, saying it’s valid from the
     transaction start time until forever.'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Updates
+  id: totrans-split-44
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The update trigger looks like this:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: It is set up so that multiple updates in the same transaction will only produce
     a single history row. That’s intentional, because otherwise ordering would be
     harder to implement.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: If you need multiple versions in the same transaction, you’ll have to replace
@@ -229,77 +277,94 @@
     have to handle identical states at a single timestamp, as multiple records can
     get the `[NOW(), NOW()]` interval. If the ordering matters in that case, you’ll
     have to add another ordering ID to get rows back in the inserted order.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t need that, it’s complicated, and I don’t think it makes sense to have
     multiple states at a single point in time anyway. If you need that, you’re probably
     interested in an event table or something else instead.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Deletions
+  id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: When it comes to atomicity, deletions are somewhat of an outlier. If you update
     and then delete something in the same transaction, what should you do? And uh..
     why would you do that in the first place?
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '“Update and delete” seems quite handy if you want to write down who deleted
     the object, in which case the deletion will look like this:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: '… however, it leaves you with an annoying record: The “delete” record, which
     isn’t really part of the history, but only contains some information about the
     deletion itself.'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'I think it’s better to make a little bit of effort for these, even if you don’t
     have an immediate need for a changelog/audit log: Store the deletion information
     in a table. You could create one for all tables, or just one for everything depending
     on how lazy you are:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: I can’t make a trigger out of this easily (or maybe not at all), because `deleted_by`
     is information we’ll have to pass down into the database somehow.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Annoying Conflicts
+  id: totrans-split-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'While the triggers themselves don’t impact what you can and cannot do, the
     GiST index will blow up most attempts at concurrently updating the same item:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: This will even fail if you do `SELECT .. FOR UPDATE`. When you have two transactions
     A and B coming in, if the transaction with the most recent `NOW()` timestamp gets
     the lock first, the second transaction will fail because `systime` ends up as
     an empty interval.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: It’s annoying, but not a big deal for me at least. The tables where I need history
     usually never need write concurrency on the same ID. And if they do, it’s not
     hard to add a retry loop around the writes… though of course, it adds a pitfall
     you need to be aware of.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'Trying to fix this by using `CLOCK_TIMESTAMP()` instead of `NOW()` will only
     make things worse in my opinion. If you desire to insert multiple items at the
     same time, usually none of them will have the same timestamp. That makes certain
     queries on the history table technically wrong:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'Imagine you have a list and list element table, and a user creates a new list
@@ -312,23 +377,28 @@
     past may end up with partial/corrupt results. For that reason, I highly recommend
     avoiding this, and rather using some other method to persist history if you really
     need it.'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Alternatives
+  id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A trigger-based model seems to me like the best one if you have to use Postgres,
     but there are some alternatives you may want to consider.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Do You Need The History?
+  id: totrans-split-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'There is added complexity here, and there is an increased chance of transactions
     failing because of overlapping timestamps that you can’t really prevent. That
     begs the question: Do you really need the history?'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'My “controversial” opinion is that, in this day and age, I feel the true question
@@ -339,16 +409,19 @@
     identical to what you’re used to. If you really don’t like the potential GiST
     conflicts, you can relax the constraints to get identical behaviour to what you’re
     used to. In that case, the only difference is the insert/delete/update performance.'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Yes, there are many cases where it’s clearly bonkers to retain the history,
     but I also think many people assume storing the history is costlier than it actually
     is^(. If you’re not sure, try it and see how it goes. Since your original table
     will be untouched, it’s not hard to roll back.)
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'For me, there are two reasons I think you should consider it, even if you have
     no immediate plans to expose this to your users:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: First, there will be a time when a specific customer needs their data rolled
@@ -356,9 +429,11 @@
     rogue actors, or even a bad deployment that corrupted data for certain customers.
     While this doesn’t replace backups by a long shot, it’s a lot faster and easier
     to do
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: It will of course end up being a little more complex than that in practice,
@@ -366,10 +441,12 @@
     effort than setting up the backup server, bridging it with a foreign data wrapper,
     and then finally doing the inserts in exactly the same manner as above, before
     cleaning up the backup server afterwards.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: There are other cases too, like debugging a transient issue one of your users
     had. I could go on, but it feels like repeating the sales pitch for [Datomic](https://www.datomic.com/).
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'The second reason relates to the gut reaction of saying “We don’t need it”:
@@ -378,30 +455,37 @@
     new functionality for your customers. At the risk of sounding like a techbro:
     I think it stifles innovation. Do you *really* think there’s no value for it somewhere
     in your system in the future?'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: Yeah, yeah, this sounds a lot like future-proofing. To be clear, YAGNI isn’t
     wrong, but I only think it only applies when there’s either
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: significant overhead (either in terms of implementation complexity or system
     performance)
+  id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: something that can be retroactively implemented (i.e. no data loss)
+  id: totrans-split-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: and system-versioned tables are neither.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '… well, uh, let me clarify here. The current implementation I’ve shown you
     requires a lot of work when you make new tables. Which is a good transition to
     my next point:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Use a Database Suited for the Task
+  id: totrans-split-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -409,43 +493,52 @@
     it is a bit stupid. If you want an open-source alternative, perhaps MariaDB isn’t
     too bad? It supports [SQL:2011](https://mariadb.com/kb/en/system-versioned-tables/)
     and even has support for bitemporality if you want to go even further.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, I’d be amiss if I didn’t mention [Datomic](https://www.datomic.com/).
     It is a great database, although not open-source, and language support is rather
     limited (only Java/Clojure officially). For the ones in Microsoft land, [SQL Server](https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal-tables?view=sql-server-ver16)
     has great support for SQL:2011 as well, from what I gather.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: As mentioned, this is aimed at user data generated by someone clicking or typing
     around on a webpage, mutating some content of theirs. But for IoT data, you’d
     like some other tool than temporal tables, and if you’re big enough, you probably
     want to use an OLAP database for OLAP stuff.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Sloppy-Paste or Eldritch Horrors
+  id: totrans-split-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I am stuck with Postgres, both because that’s what I already got, but also because
     I heavily use PostGIS. Migrating away is simply not an option, so I have to make
     do with what I have.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: What I like about the trigger solution is that it is – aside from the column
     expansion hack – not terribly hard to understand. The problem is that it’s very
     verbose, and after being burnt from a couple of copy-paste mistakes in the past,
     I’d rather have a single trigger for every table if possible.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: 'It is possible… though it does not look pretty. Here’s what the update trigger
     looks like after we make the history table and ID field into input parameters:'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: (The insert and update triggers are similar, so I won’t go over them here.)
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'To factor out the history table and ID field, we have to use [`EXECUTE`](https://www.postgresql.org/docs/16/plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN),
@@ -454,19 +547,23 @@
     it may feel outright eldritch. However, I think this is better than the first
     attempt at the trigger implementation for one big reason. And that is best shown
     by using it in practice:'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-94
   prefs: []
   type: TYPE_PRE
 - en: This is much less verbose to use if you want to retain history for multiple
     tables!
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: While it’s true that the query can’t be type-checked ahead of time, the original
     trigger won’t be either. *We have to run them to verify that they don’t refer
     to wrong tables or ids*. If that’s the case, then we should pick the alternative
     that reduces the chance of a sloppy search-replace.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'And this new implementation does that! This trigger has the history table and
@@ -474,25 +571,30 @@
     trigger implementation had them spread out all around in 7 different locations.
     Also, let’s face it: copy-pasting some big triggers for every single table we
     want system versioned just wouldn’t feel right.'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-split-98
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The full implementation is over in the [time-travelling-todo-lists-in-postgres](https://github.com/hypirion/time-travelling-todo-lists-in-postgres)
     repository, and the triggers are in the migration file [`migrations/001_history_triggers.up.sql`](https://github.com/hypirion/time-travelling-todo-lists-in-postgres/blob/main/migrations/001_history_triggers.up.sql).
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: 'As I mentioned, this isn’t perfect: You have some big pitfalls related to table
     modifications, it adds a risk of having concurrent updates break, and other databases
     should have a much better implementation than my three triggers. It’s probably
     not suitable for large databases either.'
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: But if you’re stuck with Postgres, I think this is fine. However, I think you
     should be aware of how the implementation works in detail, as there are a couple
     of ways to shoot yourself in the foot. And if you’ve come this far down, you hopefully
     do!
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL

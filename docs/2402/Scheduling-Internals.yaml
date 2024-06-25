@@ -1,115 +1,145 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:29:40'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Scheduling Internals
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://tontinton.com/posts/scheduling-internals/](https://tontinton.com/posts/scheduling-internals/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: A sneak peek to what's coming!
+  id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I remember when I first learned that you can write a server handling millions
     of clients running on just a single thread, my mind was simply blown away 🤯
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I used Node.js while knowing it is single threaded, I used `async` / `await`
     in Python, and I used threads, but never asked myself *"How is any of this possible?"*.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: This post is written to spread the genius of concurrency and hopefully getting
     you excited about it too.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: My goal is for you to want to send a link to this post to an engineer in your
     team asking out loud *"Wait, but how does async even work?"*.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Questions I''m going to answer:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Why not create a thread per client?
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to sleep when waiting on I/O?
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How does Node.js achieve concurrency?
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What's concurrency? What's parallelism?
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What are coroutines?
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: With an implementation we'll build piece by piece.
+  id: totrans-split-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: What are preemptive and non-preemptive schedulers?
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How does Go and Rust implement concurrency in the language (stackful vs stackless)?
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What scheduling algorithms are used by linux, Go and Rust's tokio?
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: I assume proficiency in reading code and OS internals at an intermediate level,
     but don't stress over details you don't understand, try to get the bigger picture!
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: With all of that out of the way, let us begin.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Just create a thread, bro
+  id: totrans-split-23
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Let''s try to write a simple echo server (whatever we receive, we send back)
     in C code, we''ll call it `echod`:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: Cool, now what should we do if want to handle multiple clients concurrently?
     While one client is being handled, another tries to `connect` to our server, without
     ever succeeding, as our server reaches the `accept` call only once it is done
     handling the current client.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: How can we fix that?
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'The first thing most people will think is *"Can''t you just create a thread
     for each client?"*, something that looks like this:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: The first problem with threads is how the OS allocates a stack for a new thread.
@@ -121,54 +151,66 @@
     won't fix the problem, you still must provide a value that is a multiple of a
     page size. A page might be a lot more that what you actually use, depending on
     the application.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: I also think that relying on overcommitment of memory is pretty annoying. We
     are getting killed by the OOM killer instead of having an opportunity cleaning
     up resources when an allocation fails indicating we are out of memory.
+  id: totrans-split-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'The second problem we need to fix when creating a bunch of OS threads is to
     change all the relevant limits:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: Just the files I showed you might not be enough for your system, for example
     `systemd` also sets maximums.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: The third problem is performance. Context switching between kernel and user
     mode is expensive in terms of CPU cycles. A single context switch isn't that expensive
     on its own, but doing a lot of them adds up.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The fourth problem is that the stack allocation is static, we can't modify the
     stack size (grow) or free up commited physical pages in the stack once they are
     unused (shrink).
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Because of all these problems, threads should not be your go-to solution for
     running a lot of tasks concurrently (especially for I/O bound tasks like in `echod`).
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: How else can we make `echod` serve millions of clients concurrently?
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Async I/O
+  id: totrans-split-39
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Why block an entire thread from running, when calling `read` / `write` / `accept`?
     If you think about it, we waste a precious resource (CPU) from doing anything
     while the application waits for I/O.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: When calling `read` for example, the kernel waits for a network packet to be
     received from the network interface card or `NIC`. The CPU is free to run something
     else meanwhile.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: In linux, you can mark a socket as non-blocking by either using `ioctl(fd, FIONBIO)`
@@ -176,26 +218,32 @@
     immediately. If there's a packet written by the `NIC` we haven't read yet, `read`
     will copy the buffer like usual, otherwise it will return an error, with `errno`
     equal to `EWOULDBLOCK`.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s patch `echod` to be single threaded again, but this time, supporting
     multiple concurrent clients using non-blocking sockets:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: A bit lengthy, don't try to understand everything, just that we are dealing
     with a lot of different tasks "at once". For a compilable version, click [here](https://github.com/tontinton/echod-hog/blob/master/main.c).
+  id: totrans-split-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The main problem with this solution is that we are now always busy doing something,
     the CPU runs at 100%, even when most loop iterations will result in `EWOULDBLOCK`.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Another problem is code complexity, we are now prohibited from running code
     that will block, to not block our entire server application.
+  id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -203,87 +251,105 @@
     there is no client waiting to connect, no client has sent any packet and we can't
     yet send a packet to the client for whatever reason (maybe the client is busy
     doing something of its own).
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: 'The reasons we want this are:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: To be good neighbours to other applications running on the same machine, and
     not take CPU cycles they might want to utilize.
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The more the CPU runs, the more energy it takes:'
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Worse battery life.
+  id: totrans-split-52
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: More expensive.
+  id: totrans-split-53
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Less environmental friendly 🌲🌳🌿
+  id: totrans-split-54
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Good news though, most operating systems provide an API to do just that. Maybe
     even too many APIs:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '**select(2)** - A posix API. The man page is excellent, so let''s copy the
     important bits:'
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: Main takeaway is that select is limited to `FD_SETSIZE` number of fds to monitor,
     which is usually 1024 (glibc). Another thing to note is that when a FD becomes
     ready, it scans all its registered FDs (`O(n)`), so when you have a lot of FDs,
     you can spend a lot of time just on this.
+  id: totrans-split-58
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**poll(2)** - A posix API. Not limited to `FD_SETSIZE` but still `O(n)` like
     `select`.'
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**epoll(7)** - A linux API. A non portable `poll` but at least it scales better
     as it''s `O(1)`.'
+  id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**aio(7)** - A linux API. Unlike previous APIs, it supports both sockets and
     files, but with some major disadvantages:'
+  id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Supports only files opened with `O_DIRECT`, which are complex to work with.
+  id: totrans-split-62
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Blocks if file metadata isn't available until it becomes available.
+  id: totrans-split-63
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Blocks when the storage device is out of request slots (each storage device
     has a fixed number of slots).
+  id: totrans-split-64
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Each IO submission copies 72 bytes and each completion copies 32 bytes. 104
     bytes copied for each IO operation using 2 syscalls.
+  id: totrans-split-65
   prefs:
   - PREF_IND
   - PREF_UL
@@ -294,26 +360,26 @@
     and kernel space), one for submission of I/O operations, the other is populated
     with the results of the I/O operations once they are ready. For more info head
     over to ["What is io_uring?"](https://unixism.net/loti/what_is_io_uring.html).'
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ScyllaDB` have successfully implemented their database using `aio` in [seastar](https://seastar.io/),
     you can read more on async disk I/O on [their blog](https://scylladb.com/2017/10/05/io-access-methods-scylla/).'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-67
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: If you're interested about platforms other than linux, windows has [I/O Completion
     Ports](https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports),
     with FreeBSD and MacOS both using [kqueue](https://man.freebsd.org/cgi/man.cgi?kqueue).
+  id: totrans-split-68
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Prior to `io_uring`, async I/O abstraction libraries used a thread pool to run
     disk I/O in a non-blocking manner.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: There are libraries like [libuv](https://libuv.org/) (what powers Node.js) that
@@ -321,111 +387,139 @@
     (they finally changed it to [use io_uring](https://github.com/libuv/libuv/pull/3952)).
     These kind of libraries are often called `Event Loops`, let's talk about them
     a bit.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Event Loop
+  id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'At its essence an event loop (also sometimes called [reactor pattern](https://en.wikipedia.org/wiki/Reactor_pattern))
     is basically this:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: 'Yeah, that''s it, just look at `libuv`''s `uv_run`:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: 'And here''s `uv__run_pending` without omitting any details:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: Pretty awesome huh? This is what all Node.js applications are running on.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: What if you need to call a blocking 3rd party library function? For that, most
     event loop libraries have a thread pool you can run arbitrary code on, for example
     in `libuv`, you can use [uv_queue_work()](https://docs.libuv.org/en/v1.x/threadpool.html).
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'Pop quiz: how would something like `setTimeout` be implemented in an event
     loop? If nothing comes to mind, try cloning `libuv` and reading the implementation
     of `uv__run_timers` in `src/timer.c`.'
+  id: totrans-split-80
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Event Driven Development
+  id: totrans-split-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The programming model when using an event loop is inherently event driven, with
     each registered event having a callback to execute once it is ready.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s see how `echod` would look like using an imaginary event loop library
     instead (start with `serve` from the bottom):'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-84
   prefs: []
   type: TYPE_PRE
 - en: If you worked with javascript before, this should look familiar to you.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'The code will be very lightweight in terms of performance, and highly concurrent,
     but is often criticized for being:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '**Not intuitive** - Complex for most programmers who are used to reading and
     writing synchronous code, see ["Callback Hell"](http://callbackhell.com).'
+  id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Hard to debug** - The call stack is very short and will not show you the
     flow of how you got to a specific breakpoint. The caller of each callback will
     always be `uv_run` in `libuv`, or `run_event_loop` in our example.'
+  id: totrans-split-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A lot of modern programming languages and runtimes try to solve these problems
     by letting you write code that looks synchronous while being fully asynchronous.
     In the next chapter, we're gonna learn how.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Preemption
+  id: totrans-split-90
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Have you ever wondered how is it that you can run more than 1 thread on a computer
     with just a single CPU core?
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: In this section, we'll go over the secret technique that enables this magic,
     called **preemption**.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s say we have the following two tasks we would like to execute concurrently:'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-94
   prefs: []
   type: TYPE_PRE
 - en: What should `run_all` do to make sure that both tasks run **concurrently**?
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: If we had 2 CPU cores, we could have simply run 1 task on 1 core, which would
     mean we would run the two tasks **parallelly**, or in other words the two tasks
     run at the same time in the *real* world (at least the one we base physics on).
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: A **concurrent** program deals with running multiple things at once, just not
     at the same time, thus they may seem **parallel** even if they're really not.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: One way `run_all` can achieve **concurrency** is by running 1 task for some
@@ -433,28 +527,34 @@
     until all tasks exit for example. To magically make it appear as if it's **parallel**,
     you simply need to configure the amount of time before pausing to be really small
     relative to the human experience (e.g. 100μs?).
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-99
   prefs: []
   type: TYPE_PRE
 - en: But how do you pause and resume execution of code?
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: The answer lies in programs being deterministic state machines, as long as you
     give a program's executor (e.g. CPU for native code) the same inputs (e.g. registers,
     memory, etc...), it doesn't matter if it executes today or in a few years, the
     output will be the same.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: Basically, pausing a task can be implemented as copying the current state of
     the program, and resuming a task can be implemented by loading that saved state.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: It doesn't matter if the program runs on a real CPU or a virtual one like in
     `python`'s bytecode or on the `JVM` for example, they are all deterministic state
     machines. As long as you copy all the necessary state, the task will resume as
     if it was never even paused.
+  id: totrans-split-103
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -462,34 +562,43 @@
     loading of program state), let's look at `setjmp.h`, which implements saving and
     loading program state in a lot of different CPU architectures, and is part of
     `libc`.
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: 'See the following example (copied directly from [wikipedia](https://en.wikipedia.org/wiki/Setjmp.h)):'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-106
   prefs: []
   type: TYPE_PRE
 - en: 'Running it will output:'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: '`setjmp` saves the program state (in `buf`), and `longjmp` loads whatever is
     in `buf` to the CPU.'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s look behind the curtains, the following is the `x86_64` assembly code
     for `setjmp` and `longjmp` in [musl](https://musl.libc.org/) (a popular `libc`
     implementation):'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-111
   prefs: []
   type: TYPE_PRE
 - en: Don't stress it if you don't understand assembly. The point is that saving and
     loading program state is pretty short and simple.
+  id: totrans-split-112
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -497,88 +606,112 @@
     are registers used to hold long-lived values that should be preserved across function
     calls. `longjmp` restores the callee-saved registers stored inside a `jmp_buf`
     directly to the CPU registers.'
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: To the curious, the reason caller-saved registers (like `rcx` for example) are
     not saved, is because to the compiler `setjmp` is just another function call,
     meaning it will not use caller-saved registers to hold state. It assumes just
     like with any function call, that these registers might be changed.
+  id: totrans-split-114
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Non-Preemptive Schedulers
+  id: totrans-split-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Already, we have a solid foundation to start running multiple tasks concurrently.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: 'Instead of relying on time to pause execution of a running task, we can instead
     assume the programmer manually inserts calls to `longjmp`, see example (this time
     in C for `setjmp.h`):'
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-118
   prefs: []
   type: TYPE_PRE
 - en: 'Let''s run it:'
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-120
   prefs: []
   type: TYPE_PRE
 - en: Cool, but... There's actually a hidden bug (can you find it?).
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s change `task_0` to hold some state on the stack:'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-123
   prefs: []
   type: TYPE_PRE
 - en: 'Run it again:'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-125
   prefs: []
   type: TYPE_PRE
 - en: 'Whoops... Because all our tasks share the same stack, each task (including
     our `main` function) may overwrite whatever is in the stack. See the following
     illustration:'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-127
   prefs: []
   type: TYPE_PRE
 - en: '[PRE19]'
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
 - en: '[PRE20]'
+  id: totrans-split-129
   prefs: []
   type: TYPE_PRE
 - en: '[PRE21]'
+  id: totrans-split-130
   prefs: []
   type: TYPE_PRE
 - en: 'The fix is to create a stack for each task, and switch to it right before calling
     the task function:'
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-132
   prefs: []
   type: TYPE_PRE
 - en: The reason for saving the task function in the register `rax`, was to not lookup
     `tasks[i]` inside the stack, as we just changed the stack to some other memory
     location. The `asm` syntax is fully documented [here](https://gcc.gnu.org/onlinedocs/gcc/extensions-to-the-c-language-family/how-to-use-inline-assembly-language-in-c-code.html).
+  id: totrans-split-133
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Run it one last time:'
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-135
   prefs: []
   type: TYPE_PRE
 - en: We have successfully implemented a user mode non-preemptive scheduler!
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: In real non-preemptive (also called cooperative) systems, the runtime should
@@ -588,20 +721,24 @@
     from running). Once there's I/O, they move the task from the blocked queue back
     to the regular queue for execution. This can be done for example by integrating
     with an event loop.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are some examples of non-preemptive schedulers in popular mainstream runtimes:'
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: '**Rust''s [tokio](https://tokio.rs/)** - To yield, you either call `tokio::task::yield_now()`,
     or run until blocking (e.g. waiting on I/O or `tokio::time::sleep()`). In version
     0.3.1 they introduced an [automatic yield](https://tokio.rs/blog/2020-04-preemption).'
+  id: totrans-split-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Go (prior to 1.14)** - At release (version 1.0), to yield, you would either
     call `runtime.Gosched()`, or run until blocking. In version 1.2 the scheduler
     is also invoked occasionally upon entry to a function.'
+  id: totrans-split-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -610,59 +747,72 @@
     loop constructs than recursion and list comprehensions, there is no way to loop
     forever without doing a function call. You can cheat though by running native
     C code using a `NIF` (native implemented function).'
+  id: totrans-split-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Non-preemptive schedulers are risky, as we assume developers remember to put
     `yield` calls when doing long computations:'
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-143
   prefs: []
   type: TYPE_PRE
 - en: Preemptive Schedulers
+  id: totrans-split-144
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A preemptive scheduler context switches (yields) once in a while, even without
     a developer inserting yield calls.
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: Most modern operating systems utilize timer interrupts. The CPU receives an
     interrupt once every X amount of time is passed. The interrupt stops execution
     of whatever is currently running, and the interrupt handler calls the scheduler
     which decides whether to context switch.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: That's cool and all, but user mode applications can't register to interrupts,
     so what can we do if we want to implement a preemptive scheduler in user mode?
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: One simple solution would be to utilize the kernel's preemptive scheduler. Create
     a thread that periodically sends a signal to threads running our scheduler.
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: This is exactly how Go made their scheduler preemptive in version 1.14\. By
     periodically sending signals from their monitoring thread ([runtime.sysmon](https://sobyte.net/post/2021-12/golang-sysmon/))
     to the scheduler threads running goroutines.
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: 'For more info on their solution, I recommend you watch ["Pardon the Interruption:
     Loop Preemption in Go 1.14"](https://youtube.com/watch?v=1I1WmeSjRSw).'
+  id: totrans-split-150
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Stackful vs Stackless
+  id: totrans-split-151
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Up until now, I have been calling them tasks to not confuse you, but they have
     many different names like fibers, greenlets, user mode threads, green threads,
     virtual threads, coroutines and goroutines.
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: When people say threads, they usually mean OS threads (managed by the kernel
     scheduler).
+  id: totrans-split-153
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -670,10 +820,12 @@
     two ways to implement them: either you allocate a stack for each coroutine (stackful),
     or you make each function marked as `async` return an object that can hold all
     the state needed to pause and resume that function (stackless).'
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stackful and stackless impact the API greatly, each with its own advantages
     and disadvantages. Here''s an overview:'
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: '**Stackful** - Coroutines have the exact same API and semantics as OS threads,
@@ -686,10 +838,12 @@
     like the stack can grow dynamically, it can also shrink if needed. The real beauty
     is that you can choose to run any function either synchronously or asynchronously
     in the background, without affecting the code around it:'
+  id: totrans-split-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-157
   prefs: []
   type: TYPE_PRE
 - en: '**Stackless** - If you have ever used a language with `async` & `await`, you
@@ -700,52 +854,64 @@
     is allocated exactly as needed, which served well for Rust''s embedded use case
     as well. The main problem with this approach is "function coloring". An `async`
     function can only be called inside another `async` function:'
+  id: totrans-split-158
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-159
   prefs: []
   type: TYPE_PRE
 - en: 'Rust started with stackful prior to release, but ultimately ended up switching
     to stackless: ["Why async rust?"](https://without.boats/blog/why-async-rust/).'
+  id: totrans-split-160
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Scheduler Algorithms
+  id: totrans-split-161
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: A scheduler is also responsible for deciding which task it should run next once
     one finishes.
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
 - en: One of the simplest methods is one we have already seen before in the event
     loop section, and that is to run tasks in the order that they are added to the
     task queue.
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
 - en: 'Linux''s `SCHED_FIFO` scheduler does exactly this:'
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: Each circle is a task. The white progress circle around tasks is the time left
     to run until the task is blocked.
+  id: totrans-split-165
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Purple box** - The queue holding tasks ready to run.'
+  id: totrans-split-166
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Green box** - The CPU.'
+  id: totrans-split-167
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Gray box** - Tasks blocked on something (e.g. I/O).'
+  id: totrans-split-168
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Taking `SCHED_FIFO` and adding a task runtime limit is what `SCHED_RR` does,
     allowing the CPU to be shared in a more uniform manner:'
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
 - en: What if you have a task that *must* run once every 5ms, even if for a really
@@ -753,39 +919,42 @@
     with a signal in time (e.g. `sin(x)`) that the audio device reads from at some
     interval. Missing out on filling this buffer, will result in a random signal which
     sounds like crackling noise, potentially ruining a recording of an entire orchestra.
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: These kind of programs are usually called soft real time programs. Hard real
     time means missing a deadline will result in the whole system failing, for example
     autopilot and spacecrafts.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: 'Linux has a nice answer for soft real time systems called `SCHED_DEADLINE`,
     where each thread sets the amount of time until their deadline, and the scheduler
     always runs the task that is closest to reaching the deadline:'
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: The **green** progress circle is how much time is left until the deadline.
+  id: totrans-split-173
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Follow the **pink** circle, it has a short deadline, making it run a lot more
     than others.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-174
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '`SCHED_FIFO` and `SCHED_RR` can also be used in soft real time systems because
     of their deterministic nature, depending on the problem you need to solve.'
+  id: totrans-split-175
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: To guarantee all tasks are able to run according to their configured deadline,
     `SCHED_DEADLINE` calculates and rejects threads with a configuration that will
     steal too much run time. You can learn more about it on lwn's ["Deadline scheduling"](https://lwn.net/Articles/743740/).
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: For general purpose workloads, like a laptop running arbitrary processes, you
@@ -795,62 +964,76 @@
     as `CFS` (Completely Fair Scheduler), does exactly this. You can also configure
     priorities to processes by setting a `nice` value, where processes with a lower
     `nice` value will be scheduled more.
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: '`CFS` has served well for the last 26 years, but in v6.6, the new default scheduling
     algorithm is [EEVDF](https://lwn.net/Articles/925371/).'
+  id: totrans-split-178
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Multi-Core
+  id: totrans-split-179
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: So far, I have pretty much ignored the fact that modern machines have more than
     1 CPU core.
+  id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
 - en: 'The simplest way to achieve multi-core scheduling, is to do exactly as before.
     Having a global queue of tasks that are ready to run, and run them once a core
     is ready:'
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
 - en: You just need to ensure that the task queue is thread-safe for `MPMC` operations
     (multi-producer multi-consumer), by using atomics or locks.
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: '`MPMC` queues are a lot slower than the more restrictive `SPMC` (single-producer
     multi-consumer) queues, which is why Go decided to have a fixed size `SPMC` queue
     for each scheduler (Go runs a scheduler per core configured by `GOMAXPROCS`),
     with a global `MPSC` queue to push to when the `SPMC` queue is full.'
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: To ensure all cores are fully utilized, when a core is free to run but has nothing
     in its local queue and there are no tasks in the global queue, it **steals** tasks
     from other local queues (which is why they are multi-consumer).
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: 'Go''s solution is so good, tokio borrowed a lot from it. I highly recommend
     reading it on their blog: ["Making the Tokio scheduler 10x faster"](https://tokio.rs/blog/2019-10-scheduler).'
+  id: totrans-split-185
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-186
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Congratulations 🥳! You are a real hero reaching the end, hopefully you have
     learned a thing or two.
+  id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
 - en: The topic has a lot more to cover, the links left throughout this post are a
     great place to start exploring the endless rabbit hole of concurrency and parallelism.
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to play around with the animations yourself, here's a link to the
     [code](https://github.com/tontinton/sched_animation).
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: Click here to scroll back to the animation at the top.
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL

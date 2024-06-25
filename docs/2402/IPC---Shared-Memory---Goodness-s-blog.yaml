@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:31:08'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: IPC - Shared Memory | Goodness’s blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://goodyduru.github.io/os/2024/01/31/ipc-shared-memory.html](https://goodyduru.github.io/os/2024/01/31/ipc-shared-memory.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: In the previous article, we covered the [Message Queues](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html)
     IPC mechanism. This article will cover another one called Shared Memory.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Before discussing shared memory and how it can be used for IPC, we must know
@@ -27,9 +34,11 @@
     share the RAM they should be sharing memory. The thing is, they share and don’t
     share. This admittedly contradictory event is due to the magic of memory addressing.
     Let’s talk about that for a bit.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Memory Addressing
+  id: totrans-split-8
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -38,6 +47,7 @@
     the CPU gets it from the same address in RAM and hands it over to the process.
     Ditto for writes. Physical addressing was the only way to access the RAM in early
     microprocessors and is still used in many embedded computers.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Physical addressing is fine when only one process is expected to run on the
@@ -45,6 +55,7 @@
     processes, A and B, are up simultaneously, A could write to a memory address B
     also reads from. Even worse, A could write to a memory address containing part
     of B’s executable code even if B is the kernel process.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The above issue is one of the reasons why virtual addressing is the memory address
@@ -53,12 +64,14 @@
     memory address is translated to a physical address by the [MMU](https://en.wikipedia.org/wiki/Memory_management_unit),
     and the data stored at that physical address is fetched from and handed over to
     the process. This is done without the knowledge of the process.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: This address translation is done using the help of a [**Page Table**](https://en.wikipedia.org/wiki/Page_table).
     The Page Table stores the mapping between virtual and physical addresses in [page](https://en.wikipedia.org/wiki/Page_(computer_memory))^([[3]](#footer-note-3))
     units. Every process has its page table and allows the process to reference **almost^([[4]](#footer-note-4))**
     all the addresses up to the table’s maximum address^([[5]](#footer-note-5))
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Virtual addressing allows multiple processes to co-exist without stepping on
@@ -66,13 +79,16 @@
     same memory address, that address will point to two different addresses in the
     RAM. So, memory address 4523 could translate to 9619 for A and 86443 for B. This
     means they don’t share virtual memory but share physical memory.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: If processes can only use virtual memory, which cannot be shared, how can they
     communicate using Shared Memory? Let’s look at that.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Shared Memory
+  id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -82,11 +98,13 @@
     other segments. Any data written to this segment is visible to other participating
     processes. The segment’s virtual address could differ for each participating process,
     though it has only one physical address.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: As with [Message Queues](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html#message-queues),
     there are two kinds of Shared Memory - System V and POSIX. This article will focus
     on System V.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Creating or accessing a Shared Memory segment requires a unique integer key.
@@ -103,6 +121,7 @@
     need to do is call the `ftok` function with the same file path and integer which
     will generate the same key. Extra security steps could include ensuring that the
     file is only accessible to the participating processes.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once a key is generated, a process can use it to get or create a shared memory
@@ -115,6 +134,7 @@
     segment is returned even if the flag has its **IPC_CREAT** bit set. Errors can
     happen for several reasons which, the man page covers. Permissions can be defined
     in the flag using the same format as [file permissions](https://www.multacom.com/faq/password_protection/file_permissions.htm).'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'After successfully getting the shared memory id, the virtual memory address
@@ -123,12 +143,14 @@
     `shmget`, the virtual memory address the process would like the segment to be
     mapped, and a flag. The OS will pick an address if the address parameter is set
     to zero. A memory address is returned on successful execution of the function.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: After a memory address is returned, a process can communicate with other processes
     by just reading and writing to the address. There are no special functions for
     reading and writing to the address. These are done using the same methods as reading
     and writing to other addresses.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: When a process has finished communicating, it can detach the segment from its
@@ -136,13 +158,16 @@
     function. The function accepts only one parameter, the virtual memory address
     obtained from `shmat`. Once this function is called, the address becomes invalid,
     and interacting with it could cause a Segmentation Fault.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Detaching the segment does not destroy it, even if all the participating processes
     detach from it. Destroying it is done by calling
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: shmctl(id, IPC_RMID, NULL);
+  id: totrans-split-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -150,16 +175,20 @@
     The `IPC_RMID` is a constant, meaning the removal of the segment. In addition
     to destroying a segment, [`shmctl`](https://man7.org/linux/man-pages/man3/shmctl.3p.html)
     can also be used to configure a segment.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: A list of all the shared memory segments on a system can be gotten by this command
     `ipcs -m`.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Enough talk. Let’s take a look at an example in Python.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Show me the code
+  id: totrans-split-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -167,12 +196,15 @@
     in Python. Python does not provide out-of-the-box shared memory support. Instead,
     I made use of the excellent [sysv-ipc](https://semanchuk.com/philip/sysv_ipc/#shared_memory)
     library. You can find the pip package [here](https://pypi.org/project/sysv-ipc/).
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s the client code:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: A temp file is (optionally) created to ensure that it exists. The ftok function
@@ -185,16 +217,20 @@
     form of communication synchronization. The message received is decoded and printed,
     and then the loop continues. The loop is ended when *ROUNDS* messages are sent.
     Afterward, an *end* message is sent to signify that the client is done.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Messages sent and received are byte strings, not regular strings, and thus have
     to be encoded and decoded accordingly.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Here’s the server code
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: The server code sets up the shared memory segment similarly to the client code.
@@ -205,13 +241,16 @@
     equal to *e* which signifies that *end* wasn’t received. Inside this loop, the
     received message is printed, and a different message is sent. Once sent, another
     message check runs as a while loop. The message is then received and decoded.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: The loop stops once the *end* message is received. The file for generating the
     key and the shared memory segment are deleted. The program then exits.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Performance
+  id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -219,21 +258,26 @@
     fastest IPC mechanism (mmap). [IPC-Bench](https://github.com/goldsborough/ipc-bench#benchmarked-on-intelr-coretm-i5-4590s-cpu--300ghz-running-ubuntu-20041-lts)
     benchmarked 1,659,291 1KB messages per second on an Intel(R) Core(TM) i5-4590S
     CPU @ 3.00GHz running Ubuntu 20.04.1 LTS. That’s super fast.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Due to its blazing-fast speed and its similarity to the standard reading and
     writing to memory addresses, you’d need to include some form of synchronization
     mechanism when using Shared Memory just as the code snippets above show.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Demo Code
+  id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: You can find my code that demonstrates Shared Memory on [GitHub](https://github.com/goodyduru/ipc-demos).
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -241,13 +285,16 @@
     for sending and receiving messages. Even then, using it comes with the complexity
     of including a synchronization mechanism. But once you get that right, its speed
     makes it worth it.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: The next article will cover another blazing-fast and familiar IPC mechanism
     called [Memory-Mapped Files](https://goodyduru.github.io/os/2024/03/18/ipc-mmap.html).
     Till then, take care of yourself and stay hydrated! ✌🏾
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL

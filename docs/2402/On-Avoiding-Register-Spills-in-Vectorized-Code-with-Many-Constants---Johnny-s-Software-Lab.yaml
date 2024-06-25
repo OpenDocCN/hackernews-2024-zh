@@ -1,41 +1,52 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:36:08'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: On Avoiding Register Spills in Vectorized Code with Many Constants - Johnny's
     Software Lab
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/](https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*We at **Johnny’s Software Lab LLC** are experts in performance. If performance
     is in any way concern in your software project, feel free to [contact us](https://johnnysswlab.com/contact/).*'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Consider the following code that calculates *cosine* using numerical methods:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: 'In this code, there is total of six constants: (1) 1\. / (2\. * M_PI), (2)
     0.25, (3) 16.0, (4) 0.5, (5) 0.225 and (6) 1.0\. When vectorizing this code, the
     straightforward approach is to store the constants to vector variables outside
     of the loop:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: In many cases this can be a good approach, but not in all of them. This kind
@@ -44,6 +55,7 @@
     on NEON and AVX512, where the number of registers is 32\. But, in many scientific
     applications, codes with many constants are quite common so the number of constants
     easily exceeds the number of available registers.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: When the compiler doesn’t have enough registers to generate efficient assembly,
@@ -51,23 +63,28 @@
     and later reloads the data to the registers when they are again needed. Spilling
     can be done outside of the loop, but reloading needs to be done within the loop.
     In our case, reloading constants will be done in each iteration of the loop.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: With regards to reloading, reloading is a simple load instruction, but loads
     on AVX have a latency of 4 cycles, and similar number is for NEON. And constants
     are first candidates for the compiler to spill, since they are typically used
     only once or twice in each iteration of the loop.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '*Like what you are reading? Follow us on [LinkedIn](https://www.linkedin.com/company/johnysswlab)
     , [Twitter](https://twitter.com/johnnysswlab) or [Mastodon](https://mastodon.online/@johnnysswlab)
     and get notified as soon as new content becomes available.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Need help with software performance? [Contact us](https://johnnysswlab.com/contact/)!*
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Avoiding Register Spills
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -77,31 +94,38 @@
     the constant inside the loop much quicker than with reloading. So, from our previous
     example, we store value tp in lane 0, 0.25 in lane 1, 16.0 in lane 2 and 0.5 in
     lane 3\. The code looks like this
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: We have stored constants like this, but most instructions don’t work with single
     lanes. We need to rematerialize the constants. By rematerializing, we mean loading
     the constant into all lanes of an available vector register to be used by subsequent
     intrinsics.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: When in it comes to storing constants, notice that for AVX, the values are repeated,
     i.e. lane 0 and 4 have the same value, as well as lane 1 and 5, 2 and 6, and 3
     and 7\. We will explain later why this is the case.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Rematerialization on AVX
+  id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'On AVX, we use the fast `_mm256_shuffle_ps` intrinsic to rematerialize the
     constant, like this:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: Materialization of value in lane X is performed using `_mm256_shuffle_ps(constant,
@@ -110,6 +134,7 @@
     lane X from register `constant` to all the lanes of the output register. Its latency
     is 1 cycle and throughput 0.5 cycles and it is faster than using loads to rematerialize
     constants.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: A question you might be asking yourselves is why don’t we store 8 different
@@ -119,21 +144,26 @@
     two copies of the same value, one in the lower 128 bit part, and another in the
     higher 128 bit part. And that’s why we use intrinsics that don’t cross 128 bit
     boundaries.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Rematerialization on NEON
+  id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'On NEON, materialization is performed using `vdupq_laneq_f32` intrinsic like
     this:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: Rematerialization of lane X is performed using `vdupq_laneq_f32(constant, X)`.
     Again, this instruction has a lower latency than loading data from memory.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'This code, however, is not optimal. On NEON, multiply (`vmul_XX`) and multiply-accumulate
@@ -141,16 +171,20 @@
     from register `a` with lane X from register `b`. So, instead of using `vdupq_laneq_f32`
     to rematerialize the value and multiplying it with `vmulq_f32`, we can omit rematerialization
     and use `vmulq_laneq_f32`, like this:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: Intrinsic `vmulq_f32(x, c0, 0)` multiplies each lane of register `x` with lane
     0 from register `c0`.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -158,6 +192,7 @@
     the number of needed registers, because rematerialization adds a small performance
     penalty. But, in case of complex loops, this approach yields better performance
     since rematerialization is faster.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Being aware of constants and register spills is especially important if you
@@ -167,13 +202,16 @@
     will help lower the register pressure and allow the compiler to emit more efficient
     assembly. You should optionally consult the [compiler optimization report](https://johnnysswlab.com/loop-optimizations-interpreting-the-compiler-optimization-report/)
     to check if the spilling actually happens.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '*Like what you are reading? Follow us on [LinkedIn](https://www.linkedin.com/company/johnysswlab)
     , [Twitter](https://twitter.com/johnnysswlab) or [Mastodon](https://mastodon.online/@johnnysswlab)
     and get notified as soon as new content becomes available.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Need help with software performance? [Contact us](https://johnnysswlab.com/contact/)!*
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL

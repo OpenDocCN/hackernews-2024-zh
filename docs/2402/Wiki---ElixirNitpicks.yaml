@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:40:43'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Wiki - ElixirNitpicks
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://wiki.alopex.li/ElixirNitpicks](https://wiki.alopex.li/ElixirNitpicks)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,18 +29,22 @@
     This is my list of gotchas and weirdnesses that I ran into with the language.
     This is primarily comparing vs. Rust since that’s what I consider my tool of choice
     these days, and this is all using Elixir 1.14.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Last updated in April 2024.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Error handling
+  id: totrans-split-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Elixir’s error handling is basically the combination of two different worlds:
     exception-style “raised” errors, and Rust-style returned tuples of `{:ok, val}`
     or `{:error, e}`. The problem is where these things intersect.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Most functions that can fail return the tuple `{:ok, val}` or `{:error, thing}`.
@@ -47,6 +57,7 @@
     `try do thing!() rescue e -> {:error, e} end` to convert a raised error into a
     returned one, and you can always do `{:ok, val} = thing()` as a somewhat quick-and-dirty
     way to raise a pattern-match error if an error occurs.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'The problem is sequencing and chaining these things, which Rust just has far
@@ -60,27 +71,34 @@
     failed in your error handling. [https://dev.to/martinthenth/using-elixirs-with-statement-5e36](https://dev.to/martinthenth/using-elixirs-with-statement-5e36)
     has a fairly clever solution in the section titled “Differentiating non-matching
     clauses”, where you have something like this:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: 'and handle it by instead writing something like this:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: 'This turns calls two functions in series that each return a `bool` indicating
     success or error, and turns them into two different return types that you can
     distinguish in a pattern match. That’s honestly not terrible, but feels wonky
     and fragile. Not certain I’d consider it anywhere near as good as:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: It just feels like a lot of ceremony for something that should be common.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Also a function might return `{:ok, thing}`, or if it has no value to return
@@ -92,6 +110,7 @@
     hard to deal with every possible tuple length. Just return `{:ok, {thing1, thing2}}`
     and move on with life, which makes more sense anyway when you think about it but
     also isn’t as obvious.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Another error nitpick I’ve found, “Let it fail” doesn’t work when validating
@@ -100,9 +119,11 @@
     of code that have to explicitly handle errors, and some other adjacent deep call-chains
     that are fine just logging something and dying.. (Hmmm, it would be much easier
     if validation did always happen at the edge, that may be part of my problem…)
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: State management
+  id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -111,21 +132,26 @@
     unlike Rust where you almost always have to pass `&mut something` into functions.
     For a purely immutable functional language, Elixir programs sure have *lots* of
     global mutable state in them, too.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The common idiom in general is to hide your mutable state in a process, and
     then instead of sending messages directly to it you write wrapper functions to
     do it for you. A great example is a database connection. In Rust you tend to have
     something like this:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: 'In Elixir you have:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: There’s a global process registry, you can attach arbitrary names to them, and
@@ -134,27 +160,33 @@
     Sure the state is all encapsulated into processes, but then those processes are
     hidden behind an abstraction layer that makes them invisible, so really you’re
     just touching global variables.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Imports
+  id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'There’s just too many heckin’ ways to import a module. You can:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Not import it, and refer to its contents through fully-qualified names, `Foo.Util.frobnosticate()`
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import` it, which stuffs all its symbols into the local namespace. So doing
     `import Foo` lets you call `Util.frobnosticate()`, while `import Foo.Util` lets
     you call `frobnosticate()`'
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`alias` it, which lets you rename some module path to some other, presumably
     shorter, module path. So doing `alias Foo.Util, as: U` lets you call `U.frobnosticate()`.'
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -163,36 +195,44 @@
     Foo.Util`, after which you can call it as `Foo.Util.frob_macro()`. Though apparently
     if you do `import Foo.Util` you also can call `frob_macro()` directly, so there’s
     overlapping behavior there that I apparently don’t fully understand.'
+  id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`use` it, which which calls a callback in it which may be a macro that generates
     code. So if you do `use Foo.Util` it is the equivalent of calling `require Foo.Util;
     Foo.Util.__using__()` and splicing whatever code it returns into the current module.'
+  id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Contrast Rust, which makes `use` do all these things:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: No imports result in no imports, and like Elixir you can refer to a thing through
     fully-qualified names.
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import Foo` is done with `use foo;`'
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import Foo.Util` is done with `use foo::util::*;`'
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`alias Foo.Util, as: U` is done with `use foo::util as u;`'
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The more common `alias Foo.Util, as: Util` is just `use foo::util;`'
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -201,39 +241,47 @@
     to imports. Rust visually distinguishes its macros with a trailing `!` so there’s
     no risk of calling something and having it sneakily turn out to be a macro that
     does something unexpected.'
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`use Foo.Util` is the only one that no real equivalent; the closest thing you
     have is a procedural macro… which is treated the same way by the language as any
     other macro.'
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`use` is weird enough that it’s pretty easy to distinguish from the others,
     but the exact differences between `import`, `alias` and `require` are a *constant*
     headache to try to remember. You could just have one thing do all of these:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '`import Foo` -> you can call `Util.whatever()`'
+  id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import Foo.Util` -> you can call `whatever()`'
+  id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import Foo.Util, as: U` -> you can call `U.whatever()`'
+  id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`import Foo.Util, macros: true` -> you can call `whatever_macro()` (can combine
     with `all:` or `as:` keywords).'
+  id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Leave `use` the way it is, it’s an odd enough special case it deserves to be
     different.
+  id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -242,6 +290,7 @@
     make this macro exist, you have to start each module with `require CoolMacro`!
     Argh! The requirement for `require` is honestly pretty difficult to paper over
     without changing how the language works, I think.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: I considered suggesting making some explicit macro import unnecessary, which
@@ -259,25 +308,31 @@
     code generation, when what you *really* want is either a way to write pure functions
     that can be used as pattern guards, or a way to visually distinguish functions
     from macros a la Rust’s sigils so that it’s more obvious what is going on.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Mixed messages
+  id: totrans-split-50
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'The common lore I’ve seen disbursed to newbies in the Elixir Discord chat includes:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Don’t use umbrella projects if you can avoid it
+  id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Don’t use live upgrade of code if you can avoid it – ie prefer to upgrade by
     restarting nodes, rather than hot-reloading new code while migrating state
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Don’t use macros if you can avoid it
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -286,6 +341,7 @@
     with the Erlang runtime, but still relevant. I’ve also heard of Mnesia being used
     as a control-plane/config database rather than a user-data DB, which it is also
     probably pretty good at.
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -296,16 +352,20 @@
     there figuring out how umbrella projects work instead of doing something useful.
     Even heckin’ *describing* what an umbrella project is and saying “most projects
     except for the largest don’t need this” would help.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Unit tests are more of a pain
+  id: totrans-split-57
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: …though I really have a hard time expressing why.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Domain Specific Languages
+  id: totrans-split-59
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -315,19 +375,24 @@
     follow the idioms that those core libraries teach. Basically those libs have lots
     of new syntax that they build out of macros, which suffers the same problems as
     macro DSL’s *always* suffer, which is poorly defined semantics.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, using Phoenix I have a slightly weird issue with a component that
     has a couple private subcomponents implemented as functions… Basically I have:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: 'and everything works fine, but I get warnings for the navitem function:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: But I don’t get those for the rnavitem function, and everything actually renders
@@ -339,14 +404,17 @@
     my fault for not reading the docs, but it’s also non-obvious to me at the time
     since Phoenix has lots of other macro DSL’s that *do* just slot into the module
     enclosing them and treat things magically, like `plug`, `pipeline` and `embed_templates`.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '“Let’s just create a declarative DSL out of macros to make life easier, what
     could go wrong?” It’s not actually declarative and involves implicit assumptions
     about how the code is structured, that’s what. You COULD write the code like this:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: And it would be *just fine*. And also make clear that `attr` is associated with
@@ -356,9 +424,11 @@
     is kinda overly-magical in my opinion anyway. Assigns are there for good reasons
     but I have issues trying to juggle Elixir, HEEx templates, and the various DSL
     fragments associated with them all at once.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: Misc
+  id: totrans-split-69
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -374,6 +444,7 @@
     as I can tell with my limited database experience tends to guide you towards good
     design patterns. Its query DSL is one of the few times that learning the DSL has
     been totally worth it and has been a very useful and low-leakage abstraction.
+  id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -382,6 +453,7 @@
     will take a few seconds, some errors will be fixed when the system automatically
     reloads the file and some won’t. It’s a bit of a nuisance. Monitoring files for
     changes in general is harder than it looks, but I do wish it was better.
+  id: totrans-split-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -396,6 +468,7 @@
     `systemd` and Unix process trees are really just a weaksauce and poorly-implemented
     version of OTP’s supervisor trees, and now that I’ve used it for real a little
     that has proven to be spot on. So far anyway.
+  id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -412,6 +485,7 @@
     hold any grudges anymore and the languages and communities seem to cohabitate
     well. It’s just annoying having two different, mostly-incompatible build tools
     when they proceed to build 100% compatible artifacts.
+  id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -434,14 +508,17 @@
     targets itself more towards fairly mainstream web-tech, while most other things
     I’m interested in (programming languages, graphics, robotics, gamedev) are rather
     more niche?
+  id: totrans-split-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Positive notes
+  id: totrans-split-75
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Things that surprised me in good ways:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: So, Elixir is dynamically typed everywhere. There’s a program called Dialyzer
@@ -455,6 +532,7 @@
     very much worth using from day one. (Erlang/Elixir+Dialyzer is a fascinating point
     of reference to contrast with other gradually-typed languages like Typescript
     or Python, I could go on about it far too long.)
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -469,6 +547,7 @@
     are basically always correct and seldom miss anything, so in reality you just
     treat Elixir’s warnings the way you’d treat `rustc`’s errors and everything is
     fine.
+  id: totrans-split-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -482,29 +561,35 @@
     own sub-tree of processes for parallelism or error-isolation. With Phoenix at
     least, your program can get pretty big before you actually need to consider splitting
     it apart into different processes, because a lot of that is already done.
+  id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Conclusions
+  id: totrans-split-80
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Elixir is pretty darn cool. You should use it.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Phoenix scourges my soul a little bit but its heart is in the right place, and
     it works well in practice. It just suffers from Web-Framework-Itis where it tries
     to make simple things too simple and ends up making complicated things too complicated.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Ecto is an extremely nice query-builder that makes lots of the PITA parts of
     SQL actually less painful without introducing more sharp edges. I do wish migrations
     were just generated from schemas though, a la Django.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: There’s lots of other great tools in the ecosystem; Oban, Mix, Telemetry/Logger,
     and most of the Erlang stdlib are all on the “10/10, would use again” list. Lots
     of the more niche ones are a little short of polish but do the basics very well.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Lots of other tools are a bit short of the “first-class” level of polish; Image/Vix,
@@ -512,6 +597,7 @@
     API surface banged on as much or as hard, so if you’re getting started in an unfamiliar
     space or doing something odd they can take a little more wrestling than maybe
     they should to do what you want them to.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: I avoided Phoenix LiveView with a passion, but I probably shouldn’t; it seems
@@ -519,15 +605,19 @@
     [HTMX](https://htmx.org/). It just triggers my buzzword-avoidance and Shiny Webtech
     Phobia real damn good. Maybe someday I’ll write “liveview for cynical curmudgeons”.
     Not sure that’s a brand I should especially pursue though…
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: I need to write a video game using Elixir. Someday!
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: References
+  id: totrans-split-88
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Minor things and conversations that follow similar trends.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL

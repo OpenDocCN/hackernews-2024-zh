@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:04:14'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: TCP Puzzlers | Triton DataCenter
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.tritondatacenter.com/blog/tcp-puzzlers](https://www.tritondatacenter.com/blog/tcp-puzzlers)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -28,26 +34,31 @@
     the best of those puzzlers, these are questions that are very simple to articulate,
     but the solutions are often surprising. And rather than focusing on arcane details,
     they hopefully elucidate some deep principles about how TCP works.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Prerequisites
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'These puzzlers assume some basic knowledge about working with TCP on Unix-like
     systems, but you don''t have to have mastered any of this before diving in. As
     a refresher:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: TCP states, the three-way handshake used to establish a connection, and the
     way connections are terminated are described pretty concisely on the [TCP Wikipedia
     page](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#Protocol_operation).
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Programs typically interact with sockets using `read`, `write`, `connect`, `bind`,
     `listen`, and `accept`. There's also `send` and `recv`, but for our purposes,
     these work the same way as `read` and `write`.
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -57,6 +68,7 @@
     instead of any of these mechanisms: once you understand how TCP failure modes
     affect poll, it''s pretty easy to understand how it affects blocking operations
     as well.'
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -67,18 +79,22 @@
     tool to trace system calls and to get some coarse timing information. You may
     be able to get similar information using [dtruss(1m)](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/dtruss.1m.html)
     on OS X or [strace(1)](http://linux.die.net/man/1/strace) on GNU/Linux.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '`nc(1)` is a pretty simple tool. We''ll use it in two modes:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: As a server. In this mode, `nc` will set up a listening socket, call `accept`,
     and block until a connection is received.
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: As a client. In this mode, `nc` will create a socket and establish a connection
     to a remote server.
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -86,156 +102,197 @@
     or the connected socket to have data ready to be read. Incoming data is printed
     to the terminal. Data you type into the terminal is sent over the socket. Upon
     CTRL-C, the socket is closed and the process exits.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: In these examples, my client is called `kang` and my server is called `kodos`.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Warmup: Normal TCP teardown'
+  id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This one demonstrates a very basic case just to get the ball rolling. Suppose
     we set up a server on `kodos`:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: (Remember, in these examples, I'm using `truss` to print out the system calls
     that `nc` makes. The `-d` flag prints a relative timestamp and the `-t` flag selects
     which system calls we want to see.)
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now on `kang`, I establish a connection:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'Over on kodos, we see:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: 'At this point, the TCP connections are in state ESTABLISHED and both processes
     are in `poll`. We can see this using the `netstat` tool on each system:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: The question is, **when we shut down one of these processes, what happens in
     the other process?** Does it find out? How? Try to predict the specific syscall
     behavior and explain why each system call does what it does.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s try it. I''ll CTRL-C the server on kodos:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: 'Here''s what we see on `kang`:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'What happened here? Let''s be specific:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: We sent SIGINT to the server, causing the process to exit. Upon exit, file descriptors
     are closed.
+  id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: When the last file descriptor for an `ESTABLISHED` socket is closed, the TCP
     stack on kodos sends a FIN over the connection and enters the `FIN_WAIT_1` state.
+  id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The TCP stack on kang receives the FIN packet, transitions its own connection
     to `CLOSE_WAIT`, and sends an ACK back. Since the `nc` client is blocked on this
     socket being ready to read, the kernel wakes this thread with the event `POLLIN`.
+  id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The `nc` client sees `POLLIN` for the socket and calls `read`, which returns
     0 immediately. This indicates end-of-stream. `nc` presumes that we're done with
     this socket and closes it.
+  id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Meanwhile, the TCP stack on kodos receives the ACK and enters `FIN_WAIT_2`.
+  id: totrans-split-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Since the `nc` client on kang closed its socket, the TCP stack on kang sent
     a FIN to `kodos`. The connection on kang enters `LAST_ACK`.
+  id: totrans-split-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The TCP stack on kodos receives the FIN, the connection enters `TIME_WAIT`,
     and the stack on kodos acknowledges the FIN.
+  id: totrans-split-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The TCP stack on kang receives the ACK for the FIN and removes the connection
     entirely.
+  id: totrans-split-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Two minutes later, the TCP connection on kodos is closed and the stack removes
     the connection entirely.
+  id: totrans-split-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: (It's possible for steps to be slightly reordered and for kang to transition
     through `CLOSING` instead of `FIN_WAIT_2`.)
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s the final state according to netstat:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: There's no output for this connection at all on kang.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: The intermediate states transition very quickly, but you could see them using
     the [DTrace TCP provider](http://dtracebook.com/index.php/Network_Lower_Level_Protocols:tcpstate.d).
     You can see the packet flow using [snoop(1m)](http://illumos.org/man/snoop) or
     [tcpdump(1)](http://www.tcpdump.org/tcpdump_man.html).
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '**Conclusions:** We''ve seen the normal path of system calls for connection
@@ -244,14 +301,17 @@
     indicate end-of-stream. At that point, kang *elected* to close its socket, which
     cleaned up the connection state on kodos. We''ll revisit this later to see how
     the results can differ if kang doesn''t close its socket here.'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'Puzzler 1: Power cycling'
+  id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '**What happens to an established, idle TCP connection if one system is power
     cycled?**'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Since most processes go through normal exit as part of a graceful reboot (e.g.,
@@ -259,35 +319,45 @@
     "reboot" on kodos instead of killing the server with CTRL-C. But what would happen
     if we'd power-cycled kodos in the previous example? Surely kang will eventually
     find out, right?
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s try it. Set up the connection:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: Now I'll use VMware's "reboot" function to power-cycle the system. It's important
     that this be an actual power cycle (or OS panic) — anything that causes a graceful
     shut down will look more like the first case above.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '20 minutes later, kang is still sitting in the same place:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: 'We tend to believe that TCP''s job is to maintain a consistent abstraction
@@ -295,28 +365,36 @@
     cases where the abstraction is broken like this. And lest you think this is some
     nc(1) issue, it''s not. "netstat" on kodos shows no connection to kang, but kang
     shows a perfectly healthy connection to kodos:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: We can leave this forever without touching it and kang will *never* figure out
     that kodos rebooted.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '**Now, suppose at this point, kang tries to send data to kodos. What happens?**'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s try it:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: 'When I type the message and hit enter, kodos gets woken up, reads the message
@@ -325,21 +403,26 @@
     socket can be read without blocking, and then calls `read`. This time, `read`
     fails with `ECONNRESET`. What does this mean? [POSIX''s definition of read(2)](http://pubs.opengroup.org/onlinepubs/009695399/functions/read.html)
     says that this means:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: 'The [illumos read(2) man page](http://illumos.org/man/read.2) provides a little
     more context:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: This error doesn't mean that something specific to the `read` call went wrong,
     but rather that the socket itself is disconnected. Most other socket operations
     would fail the same way at that point.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: So what happened here? At the point when the `nc` on kang tried to send data,
@@ -348,14 +431,17 @@
     the connection. kang saw the RST and tore down its connection. It cannot close
     the socket file descriptor — that's not how file descriptors work — but subsequent
     operations fail with ECONNRESET until nc does close the fd.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '**Conclusions:**'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: A hard power-cycle is very different than a graceful shutdown. When testing
     distributed systems, this case needs to be specifically tested. You can't just
     kill a process and expect it to test the same thing.
+  id: totrans-split-85
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -363,59 +449,75 @@
     but the other side does not, and where this situation will never be automatically
     resolved.** It''s possible to manage this problem using TCP or application-level
     keep-alive.'
+  id: totrans-split-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'The only reason that kang eventually found out that the remote side had disappeared
     was that it took action: it sent data and received a response indicating the connection
     was gone.'
+  id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'That raises the question: what if kodos had not responded to the data message
     for some reason?'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'Puzzler 2: Power off'
+  id: totrans-split-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '**What happens if one endpoint of a TCP connection is powered off for a while?**
     Does the other endpoint ever discover this? If so, how? And when?'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once again, I''ll set up the connection with `nc`:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-93
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-95
   prefs: []
   type: TYPE_PRE
 - en: 'Now, I''ll cut power to kodos abruptly and attempt to send data from kang:'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-98
   prefs: []
   type: TYPE_PRE
 - en: 'The `write` completes normally, and I don''t see anything for quite a while.
     Just over 5 minutes later, I see this:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-101
   prefs: []
   type: TYPE_PRE
 - en: 'This looks similar to the case where the system was power-cycled instead of
@@ -427,24 +529,29 @@
     connection has timed out. The specific reason for this is that the remote side
     failed to acknowledge a data packet for too long — 5 minutes, as configured on
     this system.'
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: '**Conclusions:**'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: When the remote system is powered off instead of power cycled, again, the first
     system only finds out if it's trying to send data. If it doesn't send packets,
     it will never find out about the terminated connections.
+  id: totrans-split-104
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: When the system has been attempting to send data for long enough without receiving
     acknowledgments from the remote side, the TCP connection will be terminated and
     a socket operation on them will fail with ETIMEDOUT.
+  id: totrans-split-105
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Puzzler 3: Broken connection with no failure'
+  id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -456,6 +563,7 @@
     this will not resolve itself) and even if there''s been no power off, no power
     cycle, and no other failure of the operating system on kodos and no failure of
     networking equipment?**'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s a hint: consider the case above where a connection is stuck in `ESTABLISHED`.
@@ -463,6 +571,7 @@
     deal with the problem, since by definition it still has the socket open and could
     find out by sending data, at which point the connection will eventually be terminated.
     But what if the application didn''t have the socket open any more?'
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: In the Warmup, we looked at the case where kodos's `nc` closed its socket, and
@@ -471,6 +580,7 @@
     read from it. But there's nothing about TCP that says you can't send more data
     to the other side that has sent you a FIN. **FIN only means end-of-data-stream
     in the direction that the FIN was sent.**
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: In order to demonstrate this, we can't use `nc` on kang because it automatically
@@ -478,70 +588,92 @@
     [dnc](https://github.com/davepacheco/experiment-dnc), which simply skips this
     behavior. It also prints out explicitly which system calls it's making. This will
     give us a chance to observe the TCP states.
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, we''ll set up the connections as usual:'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-113
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-115
   prefs: []
   type: TYPE_PRE
 - en: 'Now let''s verify the connections are in the `ESTABLISHED` state we expect
     on both sides:'
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-118
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-120
   prefs: []
   type: TYPE_PRE
 - en: 'Now, let''s CTRL-C the `nc` process on kodos:'
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-123
   prefs: []
   type: TYPE_PRE
 - en: 'We immediately see this on kang:'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-126
   prefs: []
   type: TYPE_PRE
 - en: 'Now let''s look at the TCP connection states:'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: Server
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-129
   prefs: []
   type: TYPE_PRE
 - en: Client
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-131
   prefs: []
   type: TYPE_PRE
 - en: 'This makes sense: kodos sent a FIN to kang. `FIN_WAIT_2` indicates that kodos
@@ -551,16 +683,20 @@
     had sent a request to kang and was not planning to send any more requests; kang
     could happily send data in response for hours, and this would work. Only in our
     case, kodos *has* actually closed the socket.'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s wait a minute and check the TCP connection states again. A minute later,
     the connection is completely missing from kodos, but it''s still present on kang:'
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-135
   prefs: []
   type: TYPE_PRE
 - en: 'What happened here? We hit a lesser-known special case in the TCP stack: when
@@ -573,30 +709,37 @@
     no other component that could deal with the problem. As a result, the TCP stack
     waits a fixed period of time and then tears down the connection (without sending
     anything to the other side).'
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: 'Follow-up question: **what happens if kang sends data to kodos at this point?**
     Remember, kang still thinks the connection is open, but it''s been torn down on
     kodos.'
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Client
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-139
   prefs: []
   type: TYPE_PRE
 - en: 'This is the same as we saw in case Puzzler 1: the `write()` actually succeeds,
     since the TCP stack doesn''t know that the connection is closed yet. But it does
     get a RST, which wakes up the thread in `poll()`, and the subsequent `read()`
     returns ECONNRESET.'
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: '**Conclusions:**'
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: It's possible for two sides to disagree about the state of the connection *even
     when there's been no OS, network, or hardware failure at all*.
+  id: totrans-split-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -605,10 +748,12 @@
     the socket and isn't listening (at least, not without sending a packet). For this
     reason, maybe it's not a great idea to design a system that uses sockets in these
     half-open states for an extended period of time under normal operation.
+  id: totrans-split-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Conclusions
+  id: totrans-split-144
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -617,15 +762,18 @@
     types of network and software problems, connections will fail, but it''s not always
     obvious that there are cases where the *abstraction* fails, in that the two systems
     disagree about the state of the connection. Specifically:'
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: It's possible for one system to think it has a working, established TCP connection
     to a remote system, while the remote system knows nothing about that connection.
+  id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: This is possible even when there has been no failure of the network, hardware,
     or operating system.
+  id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -635,6 +783,7 @@
     instead of using TCP, the presence of these cases might well remind us how complex
     the underlying problems are. These are intrinsic problems with distributed systems,
     and a TCP connection is fundamentally a distributed system.
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: That said, the single most important lesson in all of this is that **the notion
@@ -643,6 +792,7 @@
     that operate simultaneously to try to maintain a consistent view of the connection.
     It's the responsibility of the application to handle the cases where these differ
     (often using a keep-alive mechanism).
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: Furthermore, there's a disconnect between the application's file descriptor
@@ -650,15 +800,18 @@
     to closing) even after an application has closed the file descriptor, and a file
     descriptor can be open when the underlying TCP connection has been closed as a
     result of a failure.
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: 'Other lessons to keep in mind:'
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: Ungraceful reboot of a system (as happens when the OS crashes) is not the same
     as a userland process exiting or closing its socket. It's important to test this
     case specifically. Reboot, when the remote system comes back online before the
     connection times out, is also different than power-off.
+  id: totrans-split-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -666,14 +819,17 @@
     down. You only find this out when you call `read()`, `write()`, or some other
     socket operation on the socket file descriptor. If your program doesn't do this
     for some reason, you'll never find out about the connection failure.
+  id: totrans-split-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Some related notes that I''ve found aren''t so commonly known:'
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: '`ECONNRESET` is a socket error you can see from `read()`, `write()`, and other
     operations that indicates that the remote peer has sent a RST.'
+  id: totrans-split-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -682,18 +838,22 @@
     elapsed. The cases I''ve seen most are when the remote side did not acknowledge
     some packet for too long. These are usually either data packets, a FIN packet,
     or a KeepAlive probe.'
+  id: totrans-split-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Importantly, neither of these errors means that there was anything wrong with
     the read or write operation that you tried to do — just that the socket itself
     is closed.
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: If you made it this far, and this sort of problem sounds interesting to you,
     [we're hiring](https://www.joyent.com/about/careers)!
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: '*Post written by Dave Pacheco*'
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL

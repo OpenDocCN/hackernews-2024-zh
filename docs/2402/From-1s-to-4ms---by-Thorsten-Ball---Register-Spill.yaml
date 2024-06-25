@@ -1,76 +1,96 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:58:35'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: From 1s to 4ms - by Thorsten Ball - Register Spill
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://registerspill.thorstenball.com/p/from-1s-to-4ms](https://registerspill.thorstenball.com/p/from-1s-to-4ms)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: When Zed was open-sourced, someone on HackerNews [commented](https://news.ycombinator.com/item?id=39122280)
     that Sublime Text is faster when searching for all occurrences of the current
     word in a buffer. Zed takes 1s and Sublime somewhere around 200ms.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Searching all occurrences means: you position your cursor over a word, you
     hit `cmd-shift-l` and all occurrences of that word in the current buffer are selected
     and you get a cursor at each occurrence, ready to play some multi-cursor rock’n’roll.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here, watch this:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: So, Sublime does this in 200ms and Zed takes 1s? Huh.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[Antonio](https://twitter.com/as__cii), one of Zed’s co-founders, immediately
     and confidently said “we can make this faster.” My not-yet-too-familiar-with-the-codebase
     mind silently asked “can we?” before we dove in. Little did my mind know.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'We looked at [the code in question](https://github.com/zed-industries/zed/blob/8cc7a023906a283b91b84bd790106500497779aa/crates/editor/src/editor.rs#L6065-L6087).
     Here it is, in its original, takes-1s form:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: 'Ignore the details. What’s important is that keyword right in the middle: `loop`.
     The code is probably what many people would naturally do to implement a `select_all_matches`
     method: use the `select_next_match` in a loop until there’s no more matches to
     select. Voilà, all matches selected.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'When looking at it with Antonio, I knew this code as well as you do right now,
     but he knew what’s going on under the hood. His idea: optimize it by inlining
     what `select_next_match_internal` does and then do it in batches.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'It’s similar to how you’d optimize an N+1 query in a web application. Instead
     of doing something like this in your request path:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'you would do this:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: Or something like that. You get the idea.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'And that’s what we did with that piece of code from above. I’m going to show
@@ -79,67 +99,82 @@
     the details! Just read the code like you’d read instructions for a new toothbrush:
     confident you don’t need know the line-by-line, but curious nonetheless (because,
     hey, maybe you’ve done it wrong all your life):'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: '70 lines of code on an empty stomach without syntax highlighting — I’m sorry.
     But even if you’ve never seen code that’s similar to this bit here, I’m pretty
     sure you understood what’s happening:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Check whether we even have a next selection, return if not.
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Get all current selections in the buffer (`let mut new_selections = …`)
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Find all matches in the current buffer (`select_next_state.query.stream_find_iter`)
+  id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'For each match: add it to `new_selections`, modulo some word-boundary checks.'
+  id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Sort the selections and remove overlapping ones.
+  id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Unfold code that contains selections.
+  id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Change the selections in the editor to the ones we just constructed (`self.change_selections`),
     which causes them to be rendered.
+  id: totrans-split-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Except for that `while`-loop in the middle that does some wicked `plus-1`-ing
     (that I surely would’ve messed up but Antonio didn’t) — it’s pretty high-level,
     right?
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'It doesn’t even look optimized. There’s none of the scars that optimized code
     usually wears: no secondary data structures to save another loop, no falling-down
     to raw pointers carnage, no SIMD, no fancy data structures introduced. None of
     that.'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Here’s the thing, though. Here’s why I’m showing you this and why I’ve thought
     about this code for the last three weeks.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: When we ran the optimized code for the first time the runtime went from 1s *down
     to 4ms*. 4 milliseconds!
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: I couldn’t believe it. 4ms! With code that’s still this high-level! With the
     `unfold_ranges` call, with finding all the matches, with checking word boundaries,
     with extending and sorting and possibly dropping and rendering selections — 4ms!
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re reading this and shrugging it off with “so what, 4ms is an eternity
@@ -149,19 +184,23 @@
     that kind of stuff and in that world basically *nothing* takes 4ms. If it takes
     me 10ms to ping the closest data center in Frankfurt, how can I deliver something
     to you over the wire in less than that?
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'So there I was, staring at the 4ms and wondering: is this what the Rust enthusiasts
     mean when they say zero-cost abstractions? Yes, we’ve all heard that claim before
     (and yes: maybe too many times) and I’ve also written Rust for years now, so the
     idea that Rust is fast wasn’t new to me.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: But seeing high-level code like this find [2351 occurrences of](https://github.com/zed-industries/zed/issues/6440)
     `<span` [in a 5184 lines XML file that contains the collected poetry of Edgar
     Allan Poe](https://github.com/zed-industries/zed/issues/6440)  *in 4ms*?
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t know, man. I think it might have changed me.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL

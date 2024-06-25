@@ -1,182 +1,232 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:28:28'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Make Invalid States Unrepresentable - Andrew Watson
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.awwsmm.com/blog/make-invalid-states-unrepresentable](https://www.awwsmm.com/blog/make-invalid-states-unrepresentable)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[[edit history]](https://github.com/awwsmm/awwsmm.com/commits/master/blog/make-invalid-states-unrepresentable.md)'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Suppose you have a `Person` class in your program, and that a `Person` has an
     `age`. What type should the `age` be?
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '`age` as a `String`'
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: '"Of course it shouldn''t be a `String`" you might think. But why? The reason
     is that we can then end up with code like'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: 'If we ever wanted to *do* anything with an `age: String`, we would need to
     validate it everywhere'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: This is cumbersome for the programmer *writing* the code, and makes it difficult
     for any programmer *reading* the code, as well.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: We could move this validation to a separate method
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: '...but this is still not ideal. The code is a bit cleaner, but we still need
     to parse a `String` into an `Int` every time we want to do anything numeric (comparison,
     arithmetic, etc.) with the `age`. This is often called ["stringly-typed" data](https://en.wiktionary.org/wiki/stringly-typed).'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: This can also move the program into an illegal state by throwing an `Exception`.
     If we're going to fail anyway, we should [fail fast](https://www.martinfowler.com/ieeeSoftware/failFast.pdf).
     We can do better.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '`age` as an `Int`'
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Your first instinct might have been to make `age` an `Int`, rather than a `String`
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'If so, you have good instincts. An `age: Int` is much nicer to work with'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: This
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: is easier to write
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: is easier to read
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: fails fast
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You *cannot construct* an instance of the `Person` class with a `String` `age`
     now. That is an invalid state. We have [made it unrepresentable](https://www.cs.rice.edu/~javaplt/411/23-spring/NewReadings/functional_programming_on_Wall_Street.pdf),
     using the type system. The compiler will not allow this program to compile.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Problem solved, right?
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: This is clearly an invalid state as well. A person cannot have a negative age.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: This is also invalid -- it looks like someone accidentally entered their [ZIP
     code](https://en.wikipedia.org/wiki/Beverly_Hills,_California) instead of their
     age.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: So how can we constrain this type even further? How can we make even more invalid
     states unrepresentable?
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '`age` as an `Int` with constraints'
+  id: totrans-split-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: at runtime
+  id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: We can enforce *runtime constraints* in any statically-typed language
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: In Scala, `assert` will throw a `java.lang.AssertionError` if the assertion
     fails.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Now we can be sure that the `age` for any `Person` will always be within the
     range `[0, 150)`. Both
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: and
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: will now fail. But they will fail at runtime, halting the execution of our program.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: This is similar to what we saw in "`age` as a `String`", above. This is still
     not ideal. Is there a better way?
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: at compile time
+  id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Many languages allow *compile-time* constraints, as well. Usually this is accomplished
     through macros, which inspect the source code during a compilation phase. These
     are often referred to as [refined types](https://en.wikipedia.org/wiki/Refinement_type).
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Scala has [quite good](https://blog.rockthejvm.com/refined-types/) support for
     [refined types](https://github.com/Iltotore/iron) across multiple libraries. A
     solution using the [`refined` library](https://github.com/fthomas/refined) might
     look something like
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: A limitation of this approach is that the field(s) to be constrained at compile-time
@@ -185,29 +235,36 @@
     by a user. By that point, the program has already been compiled. In this case,
     we can always fall back to runtime constraints, which is often what these libraries
     do.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: For now, we'll continue with runtime constraints only, since often that's the
     best we can do.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '`age` as an `Age` with constraints'
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: From simplest to most complex implementation, we moved left to right in the
     diagram below
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: This increase in complexity directly correlates with the *accuracy* with which
     we're modelling this data
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '"The problems tackled have inherent complexity, and it takes some effort to
     model them appropriately." [[source]](https://fasterthanli.me/articles/i-want-off-mr-golangs-wild-ride)'
+  id: totrans-split-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -219,123 +276,153 @@
     as important as avoiding [premature generalization](https://www.codewithjason.com/premature-generalization),
     though it''s ***always easier* to move from more specific types to less specific
     types**, so prefer specificity over generalization.'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Every bit of data has a *context*, as well. There is no such thing as a "pure"
     `Int` value floating around in the universe. An age can be modelled as an `Int`,
     but it's different from a weight, which could also be modelled as an Int. The
     labels we attach to these raw values are the *context*
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: There is one more problem for us to solve here. Suppose I'm 81kg and 33 years
     old
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: That compiles, but... it shouldn't. I swapped my weight and age!
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: An easy way to avoid this confusion is to define some more types. In this case,
     [*newtypes*](https://doc.rust-lang.org/rust-by-example/generics/new_types.html)
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: The name *newtype* for this pattern [comes from Haskell](https://wiki.haskell.org/Newtype).
     This is a simple way to ensure that we don't accidentally swap values with the
     same underlying type. The following, for example, will not compile
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: We could also use [*tagged types*](https://medium.com/iterators/to-tag-a-type-88dc344bb66c).
     In Scala, the simplest possible example of this looks something like
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: This makes use of the fact that function application `f()` is syntactic sugar
     in Scala for an `apply()` method. So `f()` is equivalent to `f.apply()`.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: This approach allows us to model the idea that an `Age` / a `Weight` is an `Int`,
     but an `Int` is not an `Age` / a `Weight`. This means we can treat an `Age` /
     a `Weight` *as* an `Int` and add, subtract, or do whatever other `Int`-like things
     we want to do.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Mixing these two approaches in one example, you can see the difference between
     newtypes and tagged types. You must extract the "raw value" from a newtype. You
     do not need to do this with a tagged type
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: In some languages, the "unwrapping" of newtypes can be done automatically. This
     can make newtypes as ergonomic as tagged types. For example, in Scala, this could
     be done with an *implicit conversion*
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: Further refinements
+  id: totrans-split-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The important point of the above discussion is that, as much as possible, we
     want to *make invalid states unrepresentable*.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '"Jeff" is an invalid age. Age isn''t a string, it is a number.'
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: -1 is an invalid age. Age cannot be negative, it should be 0 or positive, and
     probably less than about 150.
+  id: totrans-split-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: My age is not 88\. An age should be easily distinguishable from other integral
     values, like weight.
+  id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Everything discussed above implemented these refinements on the concept of "age",
     one at a time.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: We can make further refinements if there is a need for those refinements.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: For example, suppose we want to send a "Happy Birthday!" email to a `Person`
     on their birthday. Rather than an `Age`, we now need a date of birth.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: The amount of information provided by `dateOfBirth` is strictly greater than
     the amount of information provided by `Age`. We can calculate someone's age from
     their date of birth, but we cannot do the opposite.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: The above implementation leaves much to be desired, though -- there are lots
     of invalid states. A better way to implement this would be for `Month` to be an
     enum, and for `Day` validity to depend on the `Month` (February never has 30 days,
     for example)
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: Always prefer low-cardinality types to [high-cardinality types](https://www.seas.upenn.edu/~sweirich/types/archive/1999-2003/msg01233.html),
@@ -343,13 +430,16 @@
     `enum`s are the way to go here (in Scala 2, an `enum` can be modelled using a
     `sealed trait`, as shown above). But there are still invalid states hiding above.
     Can you find them?
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: In some cases, stringly-typed data validated using regular expressions can be
     replaced entirely by `enum`s. Could you model [Canadian postal codes](https://www150.statcan.gc.ca/n1/pub/92-153-g/2011002/tech-eng.htm)
     such that it's impossible to construct an invalid one?
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Use the above knowledge to go forth and *make invalid states unrepresentable*.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL

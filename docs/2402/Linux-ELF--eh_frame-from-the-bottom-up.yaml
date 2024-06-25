@@ -1,115 +1,149 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:55:55'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Linux/ELF .eh_frame from the bottom up
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.corsix.org/content/elf-eh-frame](https://www.corsix.org/content/elf-eh-frame)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Problem statement**'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Given the current register state for a thread, and read-only access to memory,
     what would the register state hypothetically become if the current function was
     to immediately return and execution was to resume in its caller?
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Notably, the register state includes (amongst other things) an instruction pointer
     and a stack pointer, so this operation can be iterated to generate a backtrace.
     With some extensions to support calling destructors and catching exceptions, this
     operation can also be the basis of throwing exceptions.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: This operation is typically called *unwinding* (as in "unwinding a call frame"
     or "unwinding the stack").
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: If certain registers are always undefined immediately after a function return
     (because they are volatile in the ABI), then we needn't care about their state.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**Portability**'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'The size and contents of the register state depends on the architecture being
     used. We''ll paper over this slightly by refering to registers by ordinal rather
     than by name, and rely on DWARF register number mappings to go between ordinal
     and name, for example:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '| Ordinal | x86 name | x86_64 name | aarch64 name |'
+  id: totrans-split-13
   prefs: []
   type: TYPE_TB
 - en: '| 0 | eax | rax | X0 |'
+  id: totrans-split-14
   prefs: []
   type: TYPE_TB
 - en: '| 1 | ecx | rdx | X1 |'
+  id: totrans-split-15
   prefs: []
   type: TYPE_TB
 - en: '| 2 | edx | rcx | X2 |'
+  id: totrans-split-16
   prefs: []
   type: TYPE_TB
 - en: '| 3 | ebx | rbx | X3 |'
+  id: totrans-split-17
   prefs: []
   type: TYPE_TB
 - en: '| 4 | esp | rsi | X4 |'
+  id: totrans-split-18
   prefs: []
   type: TYPE_TB
 - en: '| 5 | ebp | rdi | X5 |'
+  id: totrans-split-19
   prefs: []
   type: TYPE_TB
 - en: '| 6 | esi | rbp | X6 |'
+  id: totrans-split-20
   prefs: []
   type: TYPE_TB
 - en: '| 7 | edi | rsp | X7 |'
+  id: totrans-split-21
   prefs: []
   type: TYPE_TB
 - en: '| 8 |  | r8 | X8 |'
+  id: totrans-split-22
   prefs: []
   type: TYPE_TB
 - en: '| 9 |  | r9 | X9 |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '| 10 |  | r10 | X10 |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: '| 11 |  | r11 | X11 |'
+  id: totrans-split-25
   prefs: []
   type: TYPE_TB
 - en: '| 12 |  | r12 | X12 |'
+  id: totrans-split-26
   prefs: []
   type: TYPE_TB
 - en: '| 13 |  | r13 | X13 |'
+  id: totrans-split-27
   prefs: []
   type: TYPE_TB
 - en: '| 14 |  | r14 | X14 |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: '| 15 |  | r15 | X15 |'
+  id: totrans-split-29
   prefs: []
   type: TYPE_TB
 - en: '| 16 |  |  | X16 |'
+  id: totrans-split-30
   prefs: []
   type: TYPE_TB
 - en: '| ⋮ |  |  | ⋮ |'
+  id: totrans-split-31
   prefs: []
   type: TYPE_TB
 - en: '| 30 |  |  | X30 (LR) |'
+  id: totrans-split-32
   prefs: []
   type: TYPE_TB
 - en: '| 31 |  |  | SP |'
+  id: totrans-split-33
   prefs: []
   type: TYPE_TB
 - en: 'Because everyone loves special cases, the instruction pointer register (e.g.
@@ -120,13 +154,16 @@
     For these, we''ll invent a fake register (typically ordinal 8 on x86, ordinal
     16 on x86_64), *pretend* that it contains the return address, and use it to represent
     the instruction pointer.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Floating-point and vector registers are generally volatile in Linux ABIs, so
     we needn't worry about them too much.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '**Start small: unwinding just the stack pointer**'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'In most cases, the hypothetical stack pointer after function return can be
@@ -135,9 +172,11 @@
     ULEB128 to specify which register to start with (often the current stack pointer),
     then one ULEB128 to specify the amount to add. As foreshadowing, we''ll call this
     `DW_CFA_def_cfa`.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '**Unwinding other registers**'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'In most cases, if a function modifies a non-volatile register, it''ll save
@@ -153,125 +192,158 @@
     also has the convenient side-effect of making the ULEB smaller. As foreshadowing,
     we''ll call this `DW_CFA_offset_extended`. When the 1^(st) ULEB is less than 64,
     we might also call this `DW_CFA_offset`.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '**More ways to unwind other registers**'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'So far we''ve described forming the address of a stack slot, and then loading
     from it. There''s a natural variation that skips the 2^(nd) part: form the address
     of a stack slot, then set the value of a register to be that address.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'There''s another common variant: unwind register X by taking the value from
     register Y (when X equals Y, this means that said register was unchanged).'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: For when these common variants aren't sufficient, we'll [later describe](#dw_op_)
     a little expression language and associated bytecode VM capable of describing
     all sorts of complicated mechanisms.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'This leads to the following definitions to describe how to unwind registers:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'With the associated unwind logic being:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'A little bytecode VM is defined to populate an instance of `UnwindActions`:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
+  id: totrans-split-49
   prefs: []
   type: TYPE_TB
 - en: '| `0x0c` | DW_CFA_def_cfa(uleb128 Reg, uleb128 Off) | `ua->sp = RegOffset(Reg,
     Off)` |'
+  id: totrans-split-50
   prefs: []
   type: TYPE_TB
 - en: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 Reg, sleb128 Off) | `ua->sp = RegOffset(Reg,
     Off * data_align)` |'
+  id: totrans-split-51
   prefs: []
   type: TYPE_TB
 - en: '| `0x0f` | DW_CFA_def_cfa_expression(uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->sp = ExprResult(DwOpBytecode)` |'
+  id: totrans-split-52
   prefs: []
   type: TYPE_TB
 - en: '| `0x80 + Reg` | DW_CFA_offset(uleb128 Off) | `ua->reg[Reg] = LoadFromStackSlot(Off
     * data_align)` |'
+  id: totrans-split-53
   prefs: []
   type: TYPE_TB
 - en: '| `0x05` | DW_CFA_offset_extended(uleb128 Reg, uleb128 Off) | `ua->reg[Reg]
     = LoadFromStackSlot(Off * data_align)` |'
+  id: totrans-split-54
   prefs: []
   type: TYPE_TB
 - en: '| `0x11` | DW_CFA_offset_extended_sf(uleb128 Reg, sleb128 Off) | `ua->reg[Reg]
     = LoadFromStackSlot(Off * data_align)` |'
+  id: totrans-split-55
   prefs: []
   type: TYPE_TB
 - en: '| `0x2f` | DW_CFA_GNU_negative_offset_extended(uleb128 Reg, uleb128 Off) |
     `ua->reg[Reg] = LoadFromStackSlot(-(Off * data_align))` |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '| `0x14` | DW_CFA_val_offset(uleb128 Reg, uleb128 Off) | `ua->reg[Reg] = AddressOfStackSlot(Off
     * data_align)` |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| `0x15` | DW_CFA_val_offset_sf(uleb128 Reg, sleb128 Off) | `ua->reg[Reg] =
     AddressOfStackSlot(Off * data_align)` |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '| `0xc0 + Reg` | DW_CFA_restore | `ua->reg[Reg] = CopyFromRegister(Reg)` †
     |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '| `0x06` | DW_CFA_restore_extended(uleb128 Reg) | `ua->reg[Reg] = CopyFromRegister(Reg)`
     † |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: '| `0x08` | DW_CFA_same_value(uleb128 Reg) | `ua->reg[Reg] = CopyFromRegister(Reg)`
     |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '| `0x09` | DW_CFA_register(uleb128 Reg, uleb128 Src) | `ua->reg[Reg] = CopyFromRegister(Src)`
     |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: '| `0x07` | DW_CFA_undefined(uleb128 Reg) | `ua->reg[Reg] = Undefined` |'
+  id: totrans-split-63
   prefs: []
   type: TYPE_TB
 - en: '| `0x10` | DW_CFA_expression(uleb128 Reg, uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->reg[Reg] = LoadFromExprResult(DwOpBytecode)` |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '| `0x16` | DW_CFA_val_expression(uleb128 Reg, uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->reg[Reg] = ExprResult(DwOpBytecode)` |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '| `0x00` | DW_CFA_nop | No-op |'
+  id: totrans-split-66
   prefs: []
   type: TYPE_TB
 - en: † This differs from the usual DWARF semantics. To avoid confusion, use DW_CFA_same_value
     instead of DW_CFA_restore.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: If the bytecode does not initialise `sp`, its value is `Undefined`. If the bytecode
     does not initialise `reg[i]`, its value is `CopyFromRegister(i)`.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '**Putting it together in a CIE**'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'The aforementioned bytecode gets wrapped up in something called a CIE, which
     also includes a bunch of other fields:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: 'The `aug_string` field is a NUL-terminated ASCII string. Conceptually it is
@@ -279,34 +351,44 @@
     rather than by a single bit. If the flag has associated operand(s), they are read
     out of the `aug_operands` field, in the same order as characters appear in `aug_string`.
     The recognised flags are:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '| Char(s) | Operand(s) | Notes |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '| `"eh"` | `void* eh_ptr` | Operand not part of `aug_operands` |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '| `"z"` | `uleb128 length` | In bytes, of subsequent `aug_operands` |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '| `"R"` | `uint8_t fde_ptr_encoding` | [Foreshadowing](#fde) |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '| `"P"` | `uint8_t ptr_encoding` `uint8_t personality_ptr[]` | [Foreshadowing](#lsda)
     |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '| `"L"` | `uint8_t lsda_ptr_encoding` | [Foreshadowing](#lsda) |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: '| `"S"` | None | Signal handler frame |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: '| `"B"` | None | aarch64 ptrauth uses B key |'
+  id: totrans-split-80
   prefs: []
   type: TYPE_TB
 - en: '| `"\0"` | None | End of `aug_string` |'
+  id: totrans-split-81
   prefs: []
   type: TYPE_TB
 - en: '`"eh"`, if it appears, must be first. In practice, it is never present, except
@@ -315,6 +397,7 @@
     in any order, though if `"R"` is present, and `"S"` and/or `"B"` are also present,
     then `"R"` must appear before `"S"` and before `"B"` (to work around bugs in [`get_cie_encoding`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L335-L392),
     as compared to the correct [`extract_cie_info`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2.c#L412-L517)).'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: 'The whole `struct cie` must have a length which is a multiple of `sizeof(uintptr_t)`
@@ -327,9 +410,11 @@
     on the contents of `aug_string`, and there may be characters in `aug_string` which
     we do not recognise. This is where `"z"` comes in: once we''ve decoded its operand,
     it tells us the remaining length of `aug_operands`.'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '**From one location to many**'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Obtaining the `UnwindActions` applicable to one instruction pointer value is
@@ -337,133 +422,167 @@
     value across an entire program. One relevant observation is that the `UnwindActions`
     applicable to an instruction pointer X are *usually* very similar (or even identical
     to) those applicable to an instruction pointer value of X+1.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: (*) Assuming `-fasynchronous-unwind-tables`. Less coverage is required if only
     `-fnon-call-exceptions` is used, and less still is required if neither is used.
     Note that `-fasynchronous-unwind-tables` is enabled by default on some architectures.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'With this observation in mind, we can borrow a trick from video compression:
     use a keyframe to describe the `UnwindActions` applicable at the *start* of every
     function, and then use delta frames to describe the differences as the instruction
     pointer progresses through the function.'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: 'This motivates a bunch of new VM opcodes, along with two pieces of VM state:
     set `target` to the instruction pointer that you want `UnwindActions` for, set
     `fpc` to the instruction pointer of the start of the function, and execute VM
     instructions either until you run out of VM instructions, or until `fpc >= target`:'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '| Opcode | Name and operands | Semantics |'
+  id: totrans-split-89
   prefs: []
   type: TYPE_TB
 - en: '| `0x40 + Off` | DW_CFA_advance_loc | `fpc += Off * code_align; if (fpc >=
     target) break;` |'
+  id: totrans-split-90
   prefs: []
   type: TYPE_TB
 - en: '| `0x02` | DW_CFA_advance_loc1(uint8_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
+  id: totrans-split-91
   prefs: []
   type: TYPE_TB
 - en: '| `0x03` | DW_CFA_advance_loc2(uint16_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
+  id: totrans-split-92
   prefs: []
   type: TYPE_TB
 - en: '| `0x04` | DW_CFA_advance_loc4(uint32_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: '| `0x01` | DW_CFA_set_loc(uint8_t Ptr[]) | `fpc = DecodePtr(fde_encoding from
     CIE, Ptr); if (fpc >= target) break;` |'
+  id: totrans-split-94
   prefs: []
   type: TYPE_TB
 - en: 'It also motivates two pieces of VM state called `spReg` and `spOff`, along
     with revisements to DW_CFA_def_cfa / DW_CFA_def_cfa_sf, and new opcodes which
     perform only one half of DW_CFA_def_cfa / DW_CFA_def_cfa_sf:'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
+  id: totrans-split-96
   prefs: []
   type: TYPE_TB
 - en: '| `0x0c` | DW_CFA_def_cfa(uleb128 Reg, uleb128 Off) | `ua->sp = RegOffset(spReg
     = Reg, spOff = Off)` |'
+  id: totrans-split-97
   prefs: []
   type: TYPE_TB
 - en: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 Reg, sleb128 Off) | `ua->sp = RegOffset(spReg
     = Reg, spOff = Off * data_align)` |'
+  id: totrans-split-98
   prefs: []
   type: TYPE_TB
 - en: '| `0x0d` | DW_CFA_def_cfa_register(uleb128 Reg) | `spReg = Reg; ua->sp = RegOffset(spReg,
     spOff)` |'
+  id: totrans-split-99
   prefs: []
   type: TYPE_TB
 - en: '| `0x0e` | DW_CFA_def_cfa_offset(uleb128 Off) | `spOff = Off; if (ua->sp is
     RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
+  id: totrans-split-100
   prefs: []
   type: TYPE_TB
 - en: '| `0x13` | DW_CFA_def_cfa_offset_sf(sleb128 Off) | `spOff = Off * data_align;
     if (ua->sp is RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
+  id: totrans-split-101
   prefs: []
   type: TYPE_TB
 - en: 'Finally, it motivates adding a `Stack<UnwindActions>` to the VM, along with
     some opcodes to manipulate it:'
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
+  id: totrans-split-103
   prefs: []
   type: TYPE_TB
 - en: '| `0x0a` | DW_CFA_remember_state | `Push(*ua)` (note that `ua` not modified)
     |'
+  id: totrans-split-104
   prefs: []
   type: TYPE_TB
 - en: '| `0x0b` | DW_CFA_restore_state | `*ua = Pop()` |'
+  id: totrans-split-105
   prefs: []
   type: TYPE_TB
 - en: '**From one function to many**'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: 'We could happily have one CIE per function, but there would be quite a lot
     of repetition between CIEs. To resolve this, we introduce the concept of an FDE,
     which is essentially a stripped down CIE:'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: 'The `cie_offset` field points to a CIE, and the FDE inherits everything from
     the pointed-to CIE. For inheritance of `aug_string`, each flag therein sometimes
     has operand(s) in the CIE''s `aug_operands`, sometimes in the FDE''s `aug_operands`,
     and sometimes in both. The FDE `aug_operands` has:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '| Char(s) | Operand(s) | Notes |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: '| `"eh"` | None |  |'
+  id: totrans-split-111
   prefs: []
   type: TYPE_TB
 - en: '| `"z"` | `uleb128 length` | In bytes, of subsequent `aug_operands` |'
+  id: totrans-split-112
   prefs: []
   type: TYPE_TB
 - en: '| `"R"` | None |  |'
+  id: totrans-split-113
   prefs: []
   type: TYPE_TB
 - en: '| `"P"` | None |  |'
+  id: totrans-split-114
   prefs: []
   type: TYPE_TB
 - en: '| `"L"` | `uint8_t lsda_ptr[]` | Encoded using `lsda_ptr_encoding` from CIE
     |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: '| `"S"` | None |  |'
+  id: totrans-split-116
   prefs: []
   type: TYPE_TB
 - en: '| `"B"` | None |  |'
+  id: totrans-split-117
   prefs: []
   type: TYPE_TB
 - en: '| `"\0"` | None | End of `aug_string` |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: 'The `dw_cfa_bytecode` field is inherited by concatenation: executing the bytecode
@@ -471,6 +590,7 @@
     state is carried over from the end of the CIE bytecode to the start of the FDE
     bytecode, thoough if using DW_CFA_remember_state / DW_CFA_restore_state then the
     stack is emptied as part of switching from the CIE to the FDE.'
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: That leaves `func_start`, which is a variable length pointer, and `func_length`,
@@ -480,9 +600,11 @@
     and interpretation of `func_start`, meanwhile `fde_ptr_encoding & 0xF` describes
     the size and interpretation of `func_length`. That's the segue to talking about
     pointer encodings.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '**Pointer encodings**'
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: 'Depending on the context, it can be desirable to encode a pointer in different
@@ -490,145 +612,190 @@
     `int32_t` offset from the start of the current function is desirable. To allow
     flexibility, various places allow a `uint8_t` to describe the pointer encoding
     being used. These places are:'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '| Encoding field | Associated pointer field |'
+  id: totrans-split-123
   prefs: []
   type: TYPE_TB
 - en: '| `cie::fde_ptr_encoding` | `fde::func_start` |'
+  id: totrans-split-124
   prefs: []
   type: TYPE_TB
 - en: '| `cie::fde_ptr_encoding & 0xF` | `fde::func_length` |'
+  id: totrans-split-125
   prefs: []
   type: TYPE_TB
 - en: '| `cie::fde_ptr_encoding` | `DW_CFA_set_loc` operand |'
+  id: totrans-split-126
   prefs: []
   type: TYPE_TB
 - en: '| `cie::aug_string` `"P"` `ptr_encoding` | `cie::aug_string` `"P"` `personality_ptr`
     |'
+  id: totrans-split-127
   prefs: []
   type: TYPE_TB
 - en: '| `cie::aug_string` `"L"` | `fde::aug_string` `"L"` (LSDA pointer) |'
+  id: totrans-split-128
   prefs: []
   type: TYPE_TB
 - en: '| `eh_frame_hdr::eh_frame_ptr_enc` | `eh_frame_hdr::eh_frame_ptr` † |'
+  id: totrans-split-129
   prefs: []
   type: TYPE_TB
 - en: '| `eh_frame_hdr::fde_count_enc` | `eh_frame_hdr::fde_count` † |'
+  id: totrans-split-130
   prefs: []
   type: TYPE_TB
 - en: '| `eh_frame_hdr::table_enc` | `eh_frame_hdr::sorted_table` † |'
+  id: totrans-split-131
   prefs: []
   type: TYPE_TB
 - en: '| DW_OP_GNU_encoded_addr | DW_OP_GNU_encoded_addr ‡ |'
+  id: totrans-split-132
   prefs: []
   type: TYPE_TB
 - en: † [Foreshadowing](#eh_frame_hdr).
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: ‡ [More foreshadowing](#dw_op_).
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two special cases for this `uint8_t`:'
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: '| Encoding | Meaning |'
+  id: totrans-split-136
   prefs: []
   type: TYPE_TB
 - en: '| `0xff` | Encoded value is absent/empty, decode as NULL. |'
+  id: totrans-split-137
   prefs: []
   type: TYPE_TB
 - en: '| `0x50` | Encode a `uintptr_t`, but precede with padding to align it. |'
+  id: totrans-split-138
   prefs: []
   type: TYPE_TB
 - en: 'Once the two special cases are excluded, the remaining cases split the byte
     into a four bit field, a three bit field, and a one bit field. The low four bits
     denote the data type:'
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: '| Encoding & 0xF | Data type | Size in bytes |'
+  id: totrans-split-140
   prefs: []
   type: TYPE_TB
 - en: '| `0x0` | `uintptr_t` | Typically either 4 or 8 |'
+  id: totrans-split-141
   prefs: []
   type: TYPE_TB
 - en: '| `0x1` ‡ | `uleb128` | Varies (≥ 1) |'
+  id: totrans-split-142
   prefs: []
   type: TYPE_TB
 - en: '| `0x2` | `uint16_t` | 2 |'
+  id: totrans-split-143
   prefs: []
   type: TYPE_TB
 - en: '| `0x3` | `uint32_t` | 4 |'
+  id: totrans-split-144
   prefs: []
   type: TYPE_TB
 - en: '| `0x4` | `uint64_t` | 8 |'
+  id: totrans-split-145
   prefs: []
   type: TYPE_TB
 - en: '| `0x9` ‡ | `sleb128` | Varies (≥ 1) |'
+  id: totrans-split-146
   prefs: []
   type: TYPE_TB
 - en: '| `0xA` | `int16_t` | 2 |'
+  id: totrans-split-147
   prefs: []
   type: TYPE_TB
 - en: '| `0xB` | `int32_t` | 4 |'
+  id: totrans-split-148
   prefs: []
   type: TYPE_TB
 - en: '| `0xC` | `int64_t` | 8 |'
+  id: totrans-split-149
   prefs: []
   type: TYPE_TB
 - en: ‡ Cannot be used for `fde_ptr_encoding`.
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next three bits denote a base value to be added to non-NULL values:'
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: '| Encoding & 0x70 | Base value |'
+  id: totrans-split-152
   prefs: []
   type: TYPE_TB
 - en: '| `0x00` | NULL |'
+  id: totrans-split-153
   prefs: []
   type: TYPE_TB
 - en: '| `0x10` (pcrel) | Address of first byte of encoded pointer |'
+  id: totrans-split-154
   prefs: []
   type: TYPE_TB
 - en: '| `0x20` (textrel) | Start of .text (in theory), but usually NULL in practice
     |'
+  id: totrans-split-155
   prefs: []
   type: TYPE_TB
 - en: '| `0x30` (datarel) | Start of .got (x86) or NULL (most other architectures)
     † |'
+  id: totrans-split-156
   prefs: []
   type: TYPE_TB
 - en: '| `0x40` (funcrel) ‡ | `fde::func_start` (after decoding) |'
+  id: totrans-split-157
   prefs: []
   type: TYPE_TB
 - en: † Except in `eh_frame_hdr::table_enc`, where it means start of .eh_frame_hdr.
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: ‡ Cannot be used for `fde_ptr_encoding`, or in `eh_frame_hdr`.
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
 - en: 'The final top bit controls an optional dereference:'
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: '| Encoding & 0x80 | Semantics |'
+  id: totrans-split-161
   prefs: []
   type: TYPE_TB
 - en: '| `0x00` | Treat value as `void*` |'
+  id: totrans-split-162
   prefs: []
   type: TYPE_TB
 - en: '| `0x80` | Treat value as `void**`, dereference it to get `void*` |'
+  id: totrans-split-163
   prefs: []
   type: TYPE_TB
 - en: If an integer is desired rather than a pointer (as is the case for `func_length`
     and `fde_count_enc`), then the `void*` is reinterpreted as `uintptr_t`.
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: '**Finding all the FDEs**'
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: The various CIE and FDE structures are concatenated together, and then placed
     in the ELF `.eh_frame` section.
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: Traditionally, the compiler would insert a call to [`__register_frame`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L151-L162)
@@ -642,6 +809,7 @@
     / [`__register_frame_info_table_bases`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L168-L197)
     can be used instead, which take a pointer to a NULL-terminated list of pointers
     to `.eh_frame` sections.
+  id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
 - en: 'A more modern approach is to add an ELF `.eh_frame_hdr` section, and use either
@@ -649,9 +817,11 @@
     or [`dl_iterate_phdr`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde-dip.c#L570)
     to find the appropriate `.eh_frame_hdr` section. Once found, the section contains
     a sorted table of FDE pointers:'
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-169
   prefs: []
   type: TYPE_PRE
 - en: The combined size of the `eh_frame_ptr` and `fde_count` fields must be a multiple
@@ -663,9 +833,11 @@
     and the only supported encoding is datarel int32_t. The table is sorted in ascending
     `func_start` order, and the `func_start` value therein overrides the `func_start`
     from the referenced FDE (though in practice they should be identical).
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: '**Personality pointers and LSDA pointers**'
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: 'To support calling destructors during unwinding, and to support catching exceptions
@@ -674,228 +846,296 @@
     get called as part of unwinding (unless only generating a backtrace). I won''t
     get into the specifics of the interface, though the personality function can query
     various parts of the unwind state:'
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: '`_Unwind_GetLanguageSpecificData` returns `lsda_ptr` from the FDE.'
+  id: totrans-split-173
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`_Unwind_GetRegionStart` returns `func_start` from the FDE.'
+  id: totrans-split-174
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Very old versions of g++ use `eh_ptr` instead of personality functions and LSDA
     pointers. Unless you are implementing [`__frame_state_for`](https://github.com/gcc-mirror/gcc/blob/39d989022dd0eacf1a7b95b7b20621acbe717d70/libgcc/unwind-dw2.c#L1072-L1120),
     you shouldn't need to worry about `eh_ptr`.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: '**Expression bytecode**'
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `UnwindOneFrame` function from earlier included calls to `EvalExpr` to
     handle complex cases. The outline of `EvalExpr` is:'
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-178
   prefs: []
   type: TYPE_PRE
 - en: 'With the various supported opcodes being:'
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: '| Opcode | Name and operands | Semantics (assuming stack for `Push`, `Pop`,
     `At`) |'
+  id: totrans-split-180
   prefs: []
   type: TYPE_TB
 - en: '| `0x03` | DW_OP_addr(uintptr_t Lit) | `Push(Lit)` |'
+  id: totrans-split-181
   prefs: []
   type: TYPE_TB
 - en: '| `0x08` | DW_OP_const1u(uint8_t Lit) | `Push(Lit)` |'
+  id: totrans-split-182
   prefs: []
   type: TYPE_TB
 - en: '| `0x09` | DW_OP_const1s(int8_t Lit) | `Push(Lit)` |'
+  id: totrans-split-183
   prefs: []
   type: TYPE_TB
 - en: '| `0x0A` | DW_OP_const2u(uint16_t Lit) | `Push(Lit)` |'
+  id: totrans-split-184
   prefs: []
   type: TYPE_TB
 - en: '| `0x0B` | DW_OP_const2s(int16_t Lit) | `Push(Lit)` |'
+  id: totrans-split-185
   prefs: []
   type: TYPE_TB
 - en: '| `0x0C` | DW_OP_const4u(uint32_t Lit) | `Push(Lit)` |'
+  id: totrans-split-186
   prefs: []
   type: TYPE_TB
 - en: '| `0x0D` | DW_OP_const4s(int32_t Lit) | `Push(Lit)` |'
+  id: totrans-split-187
   prefs: []
   type: TYPE_TB
 - en: '| `0x0E` | DW_OP_const8u(uint64_t Lit) | `Push(Lit)` |'
+  id: totrans-split-188
   prefs: []
   type: TYPE_TB
 - en: '| `0x0F` | DW_OP_const8s(int64_t Lit) | `Push(Lit)` |'
+  id: totrans-split-189
   prefs: []
   type: TYPE_TB
 - en: '| `0x10` | DW_OP_constu(uleb128 Lit) | `Push(Lit)` |'
+  id: totrans-split-190
   prefs: []
   type: TYPE_TB
 - en: '| `0x11` | DW_OP_consts(sleb128 Lit) | `Push(Lit)` |'
+  id: totrans-split-191
   prefs: []
   type: TYPE_TB
 - en: '| `0x12` | DW_OP_dup | `Push(At(-1))` (duplicate top element) |'
+  id: totrans-split-192
   prefs: []
   type: TYPE_TB
 - en: '| `0x14` | DW_OP_over | `Push(At(-2))` (duplicate penultimate element) |'
+  id: totrans-split-193
   prefs: []
   type: TYPE_TB
 - en: '| `0x15` | DW_OP_pick(uint8_t Idx) | `Push(At(-1-Idx))` |'
+  id: totrans-split-194
   prefs: []
   type: TYPE_TB
 - en: '| `0x13` | DW_OP_drop | `Pop()` |'
+  id: totrans-split-195
   prefs: []
   type: TYPE_TB
 - en: '| `0x16` | DW_OP_swap | `a = Pop(); b = Pop(); Push(a); Push(b)` |'
+  id: totrans-split-196
   prefs: []
   type: TYPE_TB
 - en: '| `0x17` | DW_OP_rot | `a = Pop(); b = Pop(); c = Pop(); Push(a); Push(c);
     Push(b)` |'
+  id: totrans-split-197
   prefs: []
   type: TYPE_TB
 - en: '| `0x06` | DW_OP_deref | `Push(*(uintptr_t*)Pop())` |'
+  id: totrans-split-198
   prefs: []
   type: TYPE_TB
 - en: '| `0x94` `0x01` | DW_OP_deref_size | `Push(*(uint8_t*)Pop())` |'
+  id: totrans-split-199
   prefs: []
   type: TYPE_TB
 - en: '| `0x94` `0x02` | DW_OP_deref_size | `Push(*(uint16_t*)Pop())` |'
+  id: totrans-split-200
   prefs: []
   type: TYPE_TB
 - en: '| `0x94` `0x04` | DW_OP_deref_size | `Push(*(uint32_t*)Pop())` |'
+  id: totrans-split-201
   prefs: []
   type: TYPE_TB
 - en: '| `0x94` `0x08` | DW_OP_deref_size | `Push(*(uint64_t*)Pop())` |'
+  id: totrans-split-202
   prefs: []
   type: TYPE_TB
 - en: '| `0x19` | DW_OP_abs | `a = Pop(); Push((intptr_t)a < 0 ? -a : a)` |'
+  id: totrans-split-203
   prefs: []
   type: TYPE_TB
 - en: '| `0x1f` | DW_OP_neg | `a = Pop(); Push(-a)` |'
+  id: totrans-split-204
   prefs: []
   type: TYPE_TB
 - en: '| `0x20` | DW_OP_not | `a = Pop(); Push(~a)` |'
+  id: totrans-split-205
   prefs: []
   type: TYPE_TB
 - en: '| `0x23` | DW_OP_plus_uconst(uleb128 Lit) | `a = Pop(); Push(a + Lit)` |'
+  id: totrans-split-206
   prefs: []
   type: TYPE_TB
 - en: '| `0x1a` | DW_OP_and | `rhs = Pop(); lhs = Pop(); Push(lhs & rhs)` |'
+  id: totrans-split-207
   prefs: []
   type: TYPE_TB
 - en: '| `0x1b` | DW_OP_div | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs / (intptr_t)rhs)`
     |'
+  id: totrans-split-208
   prefs: []
   type: TYPE_TB
 - en: '| `0x1c` | DW_OP_minus | `rhs = Pop(); lhs = Pop(); Push(lhs - rhs)` |'
+  id: totrans-split-209
   prefs: []
   type: TYPE_TB
 - en: '| `0x1d` | DW_OP_mod | `rhs = Pop(); lhs = Pop(); Push(lhs % rhs)` |'
+  id: totrans-split-210
   prefs: []
   type: TYPE_TB
 - en: '| `0x1e` | DW_OP_mul | `rhs = Pop(); lhs = Pop(); Push(lhs * rhs)` |'
+  id: totrans-split-211
   prefs: []
   type: TYPE_TB
 - en: '| `0x21` | DW_OP_or | `rhs = Pop(); lhs = Pop(); Push(lhs &#124; rhs)` |'
+  id: totrans-split-212
   prefs: []
   type: TYPE_TB
 - en: '| `0x22` | DW_OP_plus | `rhs = Pop(); lhs = Pop(); Push(lhs + rhs)` |'
+  id: totrans-split-213
   prefs: []
   type: TYPE_TB
 - en: '| `0x24` | DW_OP_shl | `rhs = Pop(); lhs = Pop(); Push(lhs << rhs)` |'
+  id: totrans-split-214
   prefs: []
   type: TYPE_TB
 - en: '| `0x25` | DW_OP_shr | `rhs = Pop(); lhs = Pop(); Push(lhs >> rhs)` |'
+  id: totrans-split-215
   prefs: []
   type: TYPE_TB
 - en: '| `0x26` | DW_OP_shra | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >> rhs)`
     |'
+  id: totrans-split-216
   prefs: []
   type: TYPE_TB
 - en: '| `0x27` | DW_OP_xor | `rhs = Pop(); lhs = Pop(); Push(lhs ^ rhs)` |'
+  id: totrans-split-217
   prefs: []
   type: TYPE_TB
 - en: '| `0x29` | DW_OP_eq | `rhs = Pop(); lhs = Pop(); Push(lhs == rhs)` |'
+  id: totrans-split-218
   prefs: []
   type: TYPE_TB
 - en: '| `0x2e` | DW_OP_ne | `rhs = Pop(); lhs = Pop(); Push(lhs != rhs)` |'
+  id: totrans-split-219
   prefs: []
   type: TYPE_TB
 - en: '| `0x2a` | DW_OP_ge | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >= (intptr_t)rhs)`
     |'
+  id: totrans-split-220
   prefs: []
   type: TYPE_TB
 - en: '| `0x2b` | DW_OP_gt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs > (intptr_t)rhs)`
     |'
+  id: totrans-split-221
   prefs: []
   type: TYPE_TB
 - en: '| `0x2c` | DW_OP_le | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs <= (intptr_t)rhs)`
     |'
+  id: totrans-split-222
   prefs: []
   type: TYPE_TB
 - en: '| `0x2d` | DW_OP_lt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs < (intptr_t)rhs)`
     |'
+  id: totrans-split-223
   prefs: []
   type: TYPE_TB
 - en: '| `0x2f` | DW_OP_skip(int16_t Delta) | `bpc += Delta` |'
+  id: totrans-split-224
   prefs: []
   type: TYPE_TB
 - en: '| `0x28` | DW_OP_bra(int16_t Delta) | `if (Pop() != 0) bpc += Delta` |'
+  id: totrans-split-225
   prefs: []
   type: TYPE_TB
 - en: '| `0x30 + Lit` | DW_OP_lit | `Push(Lit)` |'
+  id: totrans-split-226
   prefs: []
   type: TYPE_TB
 - en: '| `0x50 + Reg` | DW_OP_reg | `Push(original->value[Reg])` |'
+  id: totrans-split-227
   prefs: []
   type: TYPE_TB
 - en: '| `0x70 + Reg` | DW_OP_breg(sleb128 Lit) | `Push(original->value[Reg] + Lit)`
     |'
+  id: totrans-split-228
   prefs: []
   type: TYPE_TB
 - en: '| `0x90` | DW_OP_regx(uleb128 Reg) | `Push(original->value[Reg])` |'
+  id: totrans-split-229
   prefs: []
   type: TYPE_TB
 - en: '| `0x92` | DW_OP_bregx(uleb128 Reg, sleb128 Lit) | `Push(original->value[Reg]
     + Lit)` |'
+  id: totrans-split-230
   prefs: []
   type: TYPE_TB
 - en: '| `0x96` | DW_OP_nop | No-op |'
+  id: totrans-split-231
   prefs: []
   type: TYPE_TB
 - en: '| `0xf1` | DW_OP_GNU_encoded_addr(uint8_t PtrEncoding, uint8_t Ptr[]) | `Push(DecodePtr(PtrEncoding,
     Ptr))` |'
+  id: totrans-split-232
   prefs: []
   type: TYPE_TB
 - en: The gcc implementation of `EvalExpr` assumes that the stack never holds more
     than 64 elements. Bad things will happen if the stack exceeds this size.
+  id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
 - en: 'By far the most common usage of this expression language is to allow a single
     FDE to succinctly describe an arbitrary number of PLT entries. The serialised
     bytecode in this case will be something like:'
+  id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-235
   prefs: []
   type: TYPE_PRE
 - en: 'Which encodes the expression:'
+  id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-237
   prefs: []
   type: TYPE_PRE
 - en: 'In other words, each 16-byte PLT entry is split into two pieces: the 1^(st)
     being 11 bytes long, and the 2^(nd) being 5 bytes long. If in the 1^(st) piece,
     the expression gives `rsp + 8`, whereas in the 2^(nd) piece it gives `rsp + 16`.'
+  id: totrans-split-238
   prefs: []
   type: TYPE_NORMAL
 - en: '**References**'
+  id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
 - en: 'The [DWARF Standard](https://dwarfstd.org/doc/DWARF5.pdf) is documented, though
@@ -905,17 +1145,21 @@
     The [LSB has a pointer encoding specification](https://refspecs.linuxbase.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/dwarfext.html),
     though it is incomplete. The only true reference is the gcc source code, some
     relevant entry points into which are:'
+  id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
 - en: '**See also**'
+  id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
 - en: For a completely different take on the same problem, consider [ARM64 unwinding
     on Windows](/content/windows-arm64-unwind-codes). An `.xdata` record therein is
     roughly equivalent to an FDE, and it has a bytecode interpreter similar in purpose
     (but very different in style) to the DW_CFA_ bytecode.
+  id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some examples of complete `.eh_frame` sections are available in LuaJIT:'
+  id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL

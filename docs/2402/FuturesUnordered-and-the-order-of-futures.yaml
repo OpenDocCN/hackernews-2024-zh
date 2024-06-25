@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:58:21'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: FuturesUnordered and the order of futures
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://without.boats/blog/futures-unordered/](https://without.boats/blog/futures-unordered/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,6 +28,7 @@
     between “multi-task” and “intra-task” concurrency in async Rust. I want to open
     this post by considering a common pattern that users encounter, and how they might
     implement a solution using each technique.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s call this “sub-tasking.” You have a unit of work that you need to perform,
@@ -30,12 +37,14 @@
     program of any significance contains an instance of this pattern at least once
     (often many times), and the best solution will depend on the kind of work being
     done, how much work there is, the arity of concurrency, and so on.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Using **multi-task concurrency**, each smaller of work would be its own task.
     The user would spawn each of these tasks onto an executor. The results of the
     task would be collected with a synchronization primitive like a [channel](https://tokio.rs/tokio/tutorial/channels),
     or the tasks would be awaited together with a [JoinSet](https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html).
+  id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -44,6 +53,7 @@
     a concurrency primitive like [join!](https://docs.rs/tokio/latest/tokio/macro.join.html)
     or [select!](https://docs.rs/tokio/latest/tokio/macro.select.html) to combine
     them into a single future, depending on the exact access pattern.
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -55,6 +65,7 @@
     shared ownership,   (I’d love to see this change! Cheap shared ownership constructs
     like `Arc` and `Rc` should have non-affine semantics so you don’t have to call
     clone on them.)
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: When you join multiple futures, they *can* borrow from state outside of them
@@ -62,6 +73,7 @@
     static number of futures. Users that don’t want to deal with shared ownership
     but have a dynamic number of sub-tasks they need to execute are left searching
     for another solution. Enter [FuturesUnordered](https://docs.rs/futures/latest/futures/stream/struct.FuturesUnordered.html).
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '`FuturesUnordered` is an odd duck of an abstraction from the futures library,
@@ -74,6 +86,7 @@
     is what polls each of these futures, they don’t execute independently and they
     don’t need to be `''static`. They can borrow surrounding state as long as the
     `FuturesUnordered` doesn’t outlive that state.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'In a sense, `FuturesUnordered` is a sort of hybrid between intra-task concurrency
@@ -84,13 +97,16 @@
     a culprit in some of the more frustrating bugs that users encounter when writing
     async Rust. In the rest of this post, I want to investigate the reasons why that
     is.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Two patterns with `FuturesUnordered`
+  id: totrans-split-14
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: The kind of bugs you can get with `FuturesUnordered` depend on how you use it.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'The simplest way to use `FuturesUnordered` is to fill the collection with futures
@@ -99,10 +115,12 @@
     while your awaiting all of those futures: on the one hand you want to be be able
     to push more work into the `FuturesUnordered`, and on the other hand you want
     to process each result as it comes in rather than waiting for all of them to finish.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two main patterns for providing those additional affordances on top
     of `FuturesUnordered`:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '**The “buffered stream” pattern:** Here, you represent your work to be done
@@ -110,6 +128,7 @@
     adapter on `StreamExt`. More work can get pushed into the `FuturesUnordered` as
     there is more work to be done and as space becomes available, and each result
     can be processed as it becomes ready.'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -119,6 +138,7 @@
     You are free to spawn more tasks from any of those spawned tasks. If you want
     to process the result of any of those tasks, you await its join handle or transfer
     that data to another task using a synchronization primitive.'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -127,6 +147,7 @@
     some way of applying backpressure if another component of the system produces
     more work than this component can handle. Otherwise, work will continue to build
     until this component becomes hopeless behind or becomes overwhelmed and crashes.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'The buffered stream API enables backpressure by encouraging the user to limiting
@@ -140,6 +161,7 @@
     to spawn the task. But I don’t know of any library that does this; when using
     a spawn-like API users are expected to introduce backpressure via some other mechanism,
     such as bounding the length of a channel.'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another difference is how each pattern handles processing the results of the
@@ -148,6 +170,7 @@
     tasks on the other hand have no particular organization in how the results of
     the sub-tasks are processed: the user is required to “link” sub-tasks together
     by awaiting their `JoinHandle`s.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'The result of this is that the buffered stream approach imposes a particular
@@ -160,14 +183,17 @@
     the first sequencing point: the entire purpose of that sequencing point is to
     apply backpressure. Without the `poll_progress` change, the sequencing of buffered
     streams looks like this:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: Each phase of this process is interspersed with the others, but they are not
     fully concurrent. When one phase is executing, even if it has no more work to
     do, the other phases cannot proceed.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'The scoped task approach on the other hand does not in itself introduce any
@@ -176,15 +202,18 @@
     For example, imagine a scenario in which a user using the scope task pattern spawns
     two sub-tasks and joins them, one of which also spawns another sub-task and awaits
     it. That would look like this:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: Tasks within the scoped task set can proceed independently by default. The ordering
     is imposed by the user in how they relate them to one another using the same concurrency
     primitives they would use with other parts of async Rust. Another usage pattern
     would have a completely different set of relationships between the tasks.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some users report experiencing achieving less concurrency than they expected
@@ -193,9 +222,11 @@
     The worst sort of issue that can arise as a result of this sequencing is a deadlock,
     in which no future within the task can make progress because they are all waiting
     on one another.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Deadlocks
+  id: totrans-split-30
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -203,28 +234,33 @@
     as the “Coffman conditions,” after Edward G. Coffman, who wrote a definitive [article](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)
     on deadlock in 1971. The original paper expressed the requirements more crisply
     than I ever could (emphasis is mine):'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Tasks claim exclusive control of the resources they require (**“mutual exclusion”**
     condition).
+  id: totrans-split-32
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
 - en: Tasks hold resources already allocated to them while waiting for additional
     resources (**“wait for”** condition).
+  id: totrans-split-33
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
 - en: Resources cannot be forcibly removed from the tasks holding them until the resources
     are used to completion (**“no preemption”** condition).
+  id: totrans-split-34
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
 - en: A circular chain of tasks exists, such that each task holds one or more resources
     that are being requested by the next task in the chain (**“circular wait”** condition).
+  id: totrans-split-35
   prefs:
   - PREF_BQ
   - PREF_OL
@@ -233,6 +269,7 @@
     simpler example of an async iterator, which doesn’t use buffered streams or `FuturesUnordered`
     at all. I’m going to use async generator syntax to define my iterator, but this
     is only for convenience and has no bearing on the deadlock.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: We shall have one unit of work (the async generator) which yields two values
@@ -242,9 +279,11 @@
     a more complicated example in which the algorithm for the production and consumption
     of these values both require exclusive access to that resource protected by the
     `Mutex`.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: 'This code will result in a deadlock. First, the generator will take a lock
@@ -256,6 +295,7 @@
     And note that `poll_progress` is no help here: the generator cannot make progress
     except by yielding the second value, which it cannot do until the `for` loop is
     done consuming the first.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: This is a classic “circular wait” scenario in which the iterator is waiting
@@ -263,6 +303,7 @@
     interesting about this scenario is that there is only one lock. We are left to
     ask, what is the second shared resource in this deadlock scenario? The iterator
     holds the `Mutex`, but what does the `for` loop hold?
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: The second resource is control of the execution of code itself. In a single
@@ -270,9 +311,11 @@
     itself is an implicit shared resource that different sub-units of the task need
     exclusive access to to make progress. In our example, the iterator is holding
     the lock on the `Mutex`, whereas the `for` loop is holding the lock on the task.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'A note before we proceed: this problem is not the result of anything particular
@@ -283,6 +326,7 @@
     to process that item, and your system will deadlock. It doesn’t matter if you
     represent a slice of compute time with futures or threads, if code execution proceeds
     “one damn thing after another,” this algorithm will deadlock.'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'The only way to prevent this deadlock would be able to preempt the exclusive
@@ -295,6 +339,7 @@
     between these operations doesn’t matter; in other words, that they are concurrent.
     Async Rust provides several facilities for doing that, but this code does not
     take advantage of them.'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'On the other hand, it is also possible to preempt the `Mutex` with a lock that
@@ -309,9 +354,11 @@
     of the iterator, using a re-entrant `Mutex` would upgrade that deadlock into a
     subtle logic bug with potentially disastrous results. That is to say, this is
     in most cases no solution at all.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Buffer data, not code?
+  id: totrans-split-46
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -323,6 +370,7 @@
     point, but the other sequencing point that is used to apply backpressure remains:
     if the underlying stream of futures took a lock, and then the futures being buffered
     also try to take that lock (or the `for` loop does), a similar deadlock will occur.'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: One user reported just such a [bug](https://blog.polybdenum.com/2022/07/24/fixing-the-next-thousand-deadlocks-why-buffered-streams-are-broken-and-how-to-make-them-safer.html)
@@ -334,6 +382,7 @@
     number of futures that borrow from the surrounding scope. The functionally equivalent
     recommendation would be to avoid `FuturesUnordered` entirely, but I don’t think
     that’s necessary or sufficient to prevent deadlocks.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: I want to consider another deadlock, this time using the scoped task pattern
@@ -341,6 +390,7 @@
     ordinary tasks on an executor - it doesn’t depend on anything particular to the
     semantics of `FuturesUnordered`. We’ll implement basically the same algorithm
     as before, and have a deadlock for basically the same reason.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: This code will spawn two sub-tasks which communicate via a channel. The first
@@ -351,21 +401,26 @@
     received on the other side of the channel, as in std’s [sync_channel](https://doc.rust-lang.org/std/sync/mpsc/fn.sync_channel.html)
     API. (tokio channels don’t support this behavior because they consider it to have
     risks around cancellation).
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 'Here, exactly the same deadlock emerges again because the channel does not
     have enough capacity to hold the data being sent into the channel while waiting
     for the other task to process it. It is the same circular wait pattern, but control
     of the task has been replaced with space in the channel:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: There are two conclusions we could reach from this consideration.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'The first, and more appealing, would be to say that circular dependencies with
@@ -376,6 +431,7 @@
     users can analyze the code more easily. This is because there is no implicit shared
     resource among the concurrent units: all dependencies are made more obvious by
     way of the use of synchronization primitives.'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'In other words, **buffer data, not code**. The practical implication of this
@@ -383,6 +439,7 @@
     and prefer the scoped task pattern. As I said this is appealing: it results in
     a straightforward practical rule that users can apply to reduce their risk of
     deadlock.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: The alternative conclusion is not as nice, but should be taken seriously. Consider
@@ -392,6 +449,7 @@
     to achieve backpressure in your system. But if you have a cyclic dependency which
     is bounded in both directions, deadlock will occur if all of those queues in the
     cycle fill up completely.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'If its *impossible* for a queue to fill up, deadlock can be prevented. For
@@ -401,6 +459,7 @@
     dependency exists, it is possible to cause deadlock whatever the queue size. It
     becomes a question of how frequently that will occur: if it is very rare for the
     queue to be full, deadlocks will be very improbable but not impossible.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: In my experience, users usually set the bound on their channel to a relatively
@@ -413,6 +472,7 @@
     lurk in your code waiting to be encountered in production. Maybe there really
     is no difference between buffered streams and channels except the queue size users
     tend to select?
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: For some use cases, highly improbably deadlocks are fine; the service degradation
@@ -424,9 +484,11 @@
     channels (to ensure that even if your performance is degraded, the system still
     continues to make progress) while using buffered channels in production as a performance
     enhancement to enable to you to do more work the same amount of compute time.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Synchronization & the borrow checker
+  id: totrans-split-61
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -439,6 +501,7 @@
     control of the current task, and without multiple resources it is not possible
     to enter into a “circular wait.” Instead of a deadlock, you’ll get a borrow checker
     error.'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: This doesn’t mean users should avoid synchronization primitives entirely, just
@@ -448,6 +511,7 @@
     is also a shared resource, and alert to multiple uses of a synchronization primitive
     in non-concurrent components of a single task. If buffered streams makes that
     non-concurrent control flow too opaque, that particular pattern should be discouraged.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling users to often avoid synchronization and shared ownership - and therefore
@@ -460,5 +524,6 @@
     - that is, if `JoinSet` could spawn tasks that are not `'static`, but instead
     allow borrowing from the surrounding context. To achieve that would require some
     resolution to the [scoped task trilemma](/blog/the-scoped-task-trilemma).
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL

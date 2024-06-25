@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:31:05'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Post-quantum Cryptography for the Go Ecosystem
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://words.filippo.io/dispatches/mlkem768/](https://words.filippo.io/dispatches/mlkem768/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,6 +30,7 @@
     a [post-quantum](https://en.wikipedia.org/wiki/Post-quantum_cryptography?ref=words.filippo.io)
     key exchange mechanism in the process of being standardized by NIST and adopted
     by most of the industry.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: The package amounts to [~500 lines of code](https://github.com/FiloSottile/mlkem768/blob/main/mlkem768.go?ref=words.filippo.io),
@@ -32,16 +39,19 @@
     into the Go standard library (initially as an internal-only package used in an
     opt-in crypto/tls experiment) and was designed to provide high security assurance
     through ease of review, simplicity, and thorough testing.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I livecoded part of its development [on Twitch](https://twitch.tv/filosottile?ref=words.filippo.io),
     and you can watch [the replay on YouTube](https://www.youtube.com/watch?v=MyB7A93C-V0&ref=words.filippo.io).
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Unlike most other implementations, this code was not ported from the reference
     pq-crystals library, but written from scratch not having ever closely read other
     codebases. This was an intentional exercise in spec validation, to show it is
     possible to produce an interoperable implementation from the specification alone.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'The [FIPS 203 document](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf?ref=words.filippo.io)
@@ -51,32 +61,39 @@
     them and denote them!) To make the code both easier to review and better as a
     learning resource, function and variable names, and even operation ordering, are
     carefully picked to mirror the FIPS specification.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The specification actually requires fairly limited math background, but to facilitate
     the work of implementers, I wrote up [Enough Polynomials and Linear Algebra to
     Implement Kyber](https://words.filippo.io/dispatches/kyber-math/).
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Beyond that, the only parts left as an exercise to the reader were
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: implementing arithmetic modulo the prime 3329;
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: concretely implementing the compress and decompress functions mapping values
     [0, 3329) to and from [0, 2ᵈ); and
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: ensuring constant time operations.
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Modulo arithmetic was reasonably easy, as we all collectively learned a lot
     about finite field arithmetic through years of RSA and elliptic curve implementations.
     The small prime actually makes the task feel unnaturally simple.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[Compression and decompression](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf?ref=words.filippo.io#equation.4.5)
@@ -91,10 +108,12 @@
     which is variable-time even when the divisor is fixed. This package was unaffected,
     because it used [Barrett reduction](https://www.nayuki.io/page/barrett-reduction-algorithm?ref=words.filippo.io)
     from the start, like BoringSSL.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: You can read [the rest of my formal public comments](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/n8dsN_aMsa8/m/NHO2lNyWAAAJ?ref=words.filippo.io)
     on the pqc-forum mailing list.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Readability was a major goal of the implementation, and it was pursued ~~even~~
@@ -108,6 +127,7 @@
     subjective, but I believe this to be the most understandable public ML-KEM/Kyber
     implementation. Compare for example [our compression/decompression functions](https://github.com/FiloSottile/mlkem768/blob/344d5ee2c575ca84613bbb119c1d8b1ef6699ea5/mlkem768.go?ref=words.filippo.io#L394-L442)
     with [the reference implementation](https://github.com/pq-crystals/kyber/blob/11d00ff1f20cfca1f72d819e5a45165c1e0a2816/ref/poly.c?ref=words.filippo.io#L9-L112).'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Sometimes improving readability and reviewability means making code longer
@@ -117,6 +137,7 @@
     are actually pretty easy to write a dedicated encoder/decoder for. This is why
     we have `ringCompressAndEncode1/4/10` etc. instead of a single universal function.
     This also made it easy to work some special required checks into the 12-bit decoder.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'This, by the way, was only possible because we targeted ML-KEM-768 specifically,
@@ -129,43 +150,52 @@
     only that improves not only readability, but also security (because there are
     fewer moving parts), and performance (because we can optimize allocation sizes,
     iteration counts, and encoding algorithms) at little to no cost.'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: After readability, testing is the main component in this package’s high security
     assurance strategy. Besides checking that key generation, encapsulation, and decapsulation
     round-trip correctly, and maintaining a test coverage of 95%+, we
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: ensure interoperability with [test vectors obtained from NIST and other implementations](https://github.com/FiloSottile/mlkem768/blob/344d5ee2c575ca84613bbb119c1d8b1ef6699ea5/testdata/vectors.json?ref=words.filippo.io);
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: exhaustively test every input combination for base field arithmetic operations
     (addition, subtraction, and multiplication modulo 3329) against expected values
     computed trivially with variable-time operations;
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: exhaustively test compression and decompression against math/big.Rat (contributed
     by David Buchanan);
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: test that pre-computed constants match their definition;
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: check that incorrect lengths (both long and short) cause the appropriate error
     for every input of every function;
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: run an extensive set of reusable test vectors we developed (see below);
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: run test vectors [provided by Sophie Schmieg](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/aCAX-2QrUFw/m/hy5gwcESAAAJ?ref=words.filippo.io)
     which will be eventually included in [Wycheproof](https://github.com/google/wycheproof?ref=words.filippo.io).
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -175,6 +205,7 @@
     for testing and debugging each intermediate step and partial algorithm, which
     we used during development. There are different sets of tests vectors, each designed
     to reach different edge cases.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[Negative test vectors](https://github.com/C2SP/CCTV/blob/main/ML-KEM/README.md?ref=words.filippo.io#bad-encapsulation-keys)
@@ -183,6 +214,7 @@
     teams are for regular, correct inputs. These vectors individually test every value
     from 3329 to 2¹²-1 and every coefficient location, sharing the remaining coefficients
     so they compress from 1–3 MiB down to 12–28 KiB.'
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -195,12 +227,14 @@
     public keys and require reading more than 575 bytes from the SHAKE-128 XOF in
     SampleNTT, which would ordinarily happen with probability 2⁻³⁸. Sophie’s vectors
     were bruteforced further, and require up to 591 bytes.'
+  id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: At this point I would like to thank our detection and response team for not
     killing my job(s) hashing vast amounts of random seeds and looking for zeroes
     in the output. — Sophie Schmieg
+  id: totrans-split-33
   prefs:
   - PREF_IND
   - PREF_BQ
@@ -212,6 +246,7 @@
     the comparison early. This one I hope is going to sit as a silent trap for years—who
     would use `strcmp()` in cryptographic code—and then ruthlessly kill a vulnerability,
     because of course someone will.
+  id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -224,6 +259,7 @@
     our tests from the deterministic RNG (SHAKE-128 with an empty input) and check
     they hash to an expected value. We can even take it further, and produce hashes
     for a million random tests, beyond the 10k they generate.'
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -231,6 +267,7 @@
     of the implementation, identified any issues in filippo.io/mlkem768\. There is
     [at least one reported instance](https://github.com/C2SP/CCTV/issues/7?ref=words.filippo.io)
     of the negative vectors identifying a defect in a major implementation, though.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Performance is not a primary goal (neither of this package nor of [the Go cryptography
@@ -238,6 +275,7 @@
     but the package needs to be fast enough to be useful. Thankfully, ML-KEM is pretty
     fast, to the point that this simple implementation is competitive with our assembly-optimized
     P-256 and X25519 implementations.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compare apples to apples, note that we need to compare the whole operation
@@ -245,6 +283,7 @@
     (one of them by the fixed base point); for KEMs, key generation and decapsulation
     on one side, and encapsulation on the other. ECDH is symmetrical, ML-KEM key establishment
     is not.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'The ECDH benchmarks below already include the two scalar multiplications, while
@@ -253,15 +292,18 @@
     (to check the resulting ciphertext matches the input), Alice takes a lot longer
     than Bob: the latter does an encryption, while the former does an encryption,
     a decryption, and a key generation.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: All in all, “Bob” is as fast as our X25519 or P-256, while “Alice” takes less
     than twice. Compared to some of the fastest ML-KEM implementations out there (BoringSSL
     and libcrux), this package takes approximately double the time. For such a simple
     and unoptimized implementation, this is more than satisfactory.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: The performance wasn’t entirely free. In general, I followed high-performance
@@ -272,15 +314,18 @@
     I haven’t merged those changes yet and they are not included in the benchmarks
     above, because they have a negative effect on Apple M2 processors. No idea why
     yet.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: The one successful optimization was complaining about the confusing result above
     on the Gophers Slack `#performance` channel, which sniped Josh Bleecher Snyder
     into contributing [a couple changes](https://github.com/FiloSottile/mlkem768/pulls?q=is%3Apr+author%3Ajosharian&ref=words.filippo.io)
     :)
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'There is some low hanging fruit still: key generation and decapsulation both
@@ -288,26 +333,32 @@
     on the Alice side, the matrix could be stored saving around 10% time. There might
     be an opportunity to save a copy in the sha3 read path, too. After that, it’s
     a matter of optimizing the field implementation.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: If you got this far, you might want to follow me on Bluesky at [@filippo.abyssdomain.expert](https://bsky.app/profile/filippo.abyssdomain.expert?ref=words.filippo.io)
     or on Mastodon at [@filippo@abyssdomain.expert](https://abyssdomain.expert/@filippo?ref=words.filippo.io).
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'Bonus track: using a ML-KEM implementation as Kyber v3'
+  id: totrans-split-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: NIST made a few small changes to the Round 3 submission of Kyber. They are summarized
     in Section 1.3 of the FIPS draft.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: However, there are a few experimental protocols defined in terms of Kyber v3
     (or “draft00”), including the main deployed PQ TLS key exchange. Do we have to
     make a separate package to support them?
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Luckily, no we don’t.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: One change adds some validation for an edge case (non-canonical coefficient
@@ -315,10 +366,12 @@
     will not produce such keys, so we can reject them as specified in the FIPS draft.
     It will make it possible to fingerprint our implementation as Kyber-on-ML-KEM
     but will be otherwise harmless.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: One change removed a hashing step applied to CSPRNG input. Since those bytes
     are random, it’s impossible for any party to tell the difference.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: The final change is the major one, and the trickiest. The ciphertext used to
@@ -326,12 +379,15 @@
     However, the mixing happens as an additional key derivation, which was entirely
     removed in ML-KEM, which instead returns the value K as-is. This means we can
     run ML-KEM to generate the shared secret K and then apply
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: to generate the Kyber shared secret. No need to break the ML-KEM abstraction.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'There’s one wrinkle: both Kyber and ML-KEM perform implicit rejection in Decapsulate
@@ -339,9 +395,11 @@
     If we do the key derivation above on top of ML-KEM, we’ll hash the ciphertext
     twice for implicit rejections. That’s ok, because the output of implicit rejection
     is unpredictable by design, not an interoperation target.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: The picture
+  id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -352,10 +410,12 @@
     runway?") Fun fact, in 2010 a single-engine plane forgot to switch fuel tank and
     did an emergency landing on 27L. Closed runways are the best bad places to land,
     after all.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '![A cement taxiway pictured at sunset, from the middle of the yellow centreline.
     The airport terminal is visible on the horizon, and a patch of grass on the left.](img/0154902025ef34d014567ae278a1e7e9.png)'
+  id: totrans-split-59
   prefs: []
   type: TYPE_IMG
 - en: This work was funded by a Google [Open Source Security Subsidy](https://bughunters.google.com/about/rules/5891381450768384/open-source-security-subsidies-rules?ref=words.filippo.io)
@@ -365,9 +425,11 @@
     [Teleport](https://goteleport.com/?ref=words.filippo.io), and [Tailscale](https://tailscale.com/?ref=words.filippo.io)—who,
     through our retainer contracts, get face time and unlimited access to advice on
     Go and cryptography.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Here are a few words from some of them!
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Latacora — [We wrote about password hashing with delegation](https://www.latacora.com/blog/2023/12/22/case-for-password-hashing/?ref=words.filippo.io),
@@ -375,6 +437,7 @@
     property, that allows offloading hashing computation to a potentially untrusted
     server. In this blog post, we describe this primitive and discuss its applicability
     in the context of End-to-End Encrypted (E2EE) backup systems.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: Teleport — For the past five years, attacks and compromises have been shifting
@@ -384,6 +447,7 @@
     is designed to eliminate weak access patterns through access monitoring, minimize
     attack surface with access requests, and purge unused permissions via mandatory
     access reviews.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Ava Labs — We at [Ava Labs](https://www.avalabs.org/?ref=words.filippo.io),
@@ -393,5 +457,6 @@
     protocols is critical to the broad adoption of blockchain technology. We are proud
     to support this necessary and impactful work through our ongoing sponsorship of
     Filippo and his team.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL

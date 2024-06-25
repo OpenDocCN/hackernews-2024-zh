@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:27:37'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Universal domain types
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://mmapped.blog/posts/25-domain-types.html](https://mmapped.blog/posts/25-domain-types.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,36 +28,44 @@
     definitions create a new distinct type sharing representation with a chosen underlying
     type (e.g., a 64-bit integer). The semantics of such definitions vary across languages,
     but they usually fall into one of two categories: *newtypes* and *typedefs*.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Newtypes wrap an existing type, allow the programmer to inherit some of the
     operations from the underlying type, and add new operations. Newtypes are flexible
     but may need boilerplate code to implement all features required in a real-world
     application.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: An example of using the newtype idiom in Rust. Inheriting basic operations,
     such as comparison and hashing, is easy, but arithmetic operations require a lot
     of boilerplate code. Some third-party packages, such as [`derive_more`](https://crates.io/crates/derive_more),
     make this task easier.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: '[Haskell](https://wiki.haskell.org/Newtype) and [Rust](https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-newtype-pattern-for-type-safety-and-abstraction)
     are examples of languages supporting newtypes.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Typedefs introduce a new name for an existing type, inheriting all underlying
     type operations.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: An example of using typedefs in Go. Typedefs inherit all operations from the
     underlying type, even those meaningless for the new type.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: '[Go](https://go.dev/ref/spec#Type_definitions), [D](https://dlang.org/library/std/typecons/typedef.html)
@@ -61,25 +75,31 @@
     as a library (C’s [typedef declarations](https://en.cppreference.com/w/c/language/typedef)
     are <q>weak typedefs</q>: they introduce an alias for an existing type, not a
     new type).'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Newtypes and typedefs are versatile and practical, but they approach the problem
     in a way that’s too simplistic and mechanical. There is a more systematic way
     to think about domain types.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Over the years, I found that specific classes of domain types appear repeatedly
     in most applications I work on. This section is an overview of these categories.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: I use pseudo-Rust syntax to illustrate the concepts, but the ideas should easily
     translate to any statically typed language.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The interface shared by all universal domain types in this article.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: The code snippets present *minimal* interfaces for each type class. Practical
@@ -87,74 +107,90 @@
     as keys in a dictionary requires exposing a hash function (for hash maps) or imposing
     an ordering (for search trees), and serializing values requires accessing their
     internal representation.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: One of the most common uses of domain types is a transparent handle for an entity
     or an asset in the real world, such as a customer identifier in an online store
     or an employee number in a payroll application. I call these types *identifiers*.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Identifiers have no structure, i.e., we don’t care about their internal representation.
     The only fundamental requirement is the ability to compare values of those types
     for equality. This lack of structure suggests an appropriate mathematical model
     for such types: a *set*, a collection of distinct objects.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: The minimal interface for identifiers.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: '[Newtypes](#newtypes) are a perfect fit for identifiers thanks to their ability
     to hide structure. [Typedefs](#typdefs), on the other hand, impose too much structure,
     allowing the programmer to add and subtract numeric identifiers accidentally.
     But given the choice, typedefs are safer than raw integers or strings.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Another typical use of domain types is representing quantities, such as the
     amount of money in usd on a bank account or the file size in bytes. Being able
     to compare, add, and subtract amounts is essential.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Generally, we cannot multiply or divide two compatible amounts and expect to
     get the amount of the same type back
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Multiplying amounts by a dimensionless number, however, is meaningful. There
     is nothing wrong with a banking app increasing a dollar amount by ten percent
     or a disk utility dividing the total number of allocated bytes by the file count.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'The appropriate mathematical abstraction for amounts is [vector spaces](https://en.wikipedia.org/wiki/Vector_space).
     Vector space is a set with additional operations defined on the elements of this
     set: addition, subtraction, and scalar multiplication, such that behaviors of
     these operations satisfy a few natural [axioms](https://en.wikipedia.org/wiki/Vector_space#Definition_and_basic_properties).'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The minimal interface for amounts.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: '[Newtypes](#newtypes) allow us to implement amounts, but they might need some
     tedious code to get the multiplication and division right. [Typedefs](#typdefs)
     are handy, but get multiplication and division wrong, confusing dollars and dollars
     squared.'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Working with space-like structures, such as time and space, poses an interesting
     challenge. Spaces have two types of values: absolute positions and relative distances.'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Positions refer to points in space, such as timestamps or geographical coordinates.
     Distances represent a difference between two such points.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Some natural languages acknowledge the distinction and offer different words
     for these concepts, such as <q>o’clock</q> vs. <q>hours</q> in English or <q>Uhr</q>
     vs. <q>Stunden</q> in German.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: While distances behave the same way as [amounts](#amounts), positions are trickier.
@@ -162,6 +198,7 @@
     For example, subtracting 5 am on Friday from 3 am on Saturday gives us twenty-two
     hours. Adding or multiplying these dates makes no sense, however. This semantic
     demands a new class of types, *loci* (plural of *locus*).
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: One example of the locus/distance dichotomy coming from system programming is
@@ -170,16 +207,20 @@
     language, the `void*` type represents a memory address, and the `ptrdiff_t` type
     represents an offset. Subtracting two pointers gives an offset, but adding or
     multiplying pointers is meaningless.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: We can view each position as a distance from a fixed origin point. Changing
     the origin or the distance type calls for a new locus type.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: The minimal interface for loci.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Timestamps offer an excellent demonstration of the <q>distance type + the origin</q>
@@ -192,11 +233,13 @@
     (midnight of January 1st, 2000) as its origin point. Changing the distance type
     (e.g., seconds to nanoseconds) or the origin (e.g., unix epoch to the millennium)
     calls for a different timestamp type.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The Go standard library employs the locus type design for its [`time`](https://pkg.go.dev/time)
     package, differentiating the time instant ([`time.Time`](https://pkg.go.dev/time#Time))
     and time duration ([`time.Duration`](https://pkg.go.dev/time#Duration)).
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The Rust standard module [`std::time`](https://doc.rust-lang.org/std/time/index.html)
@@ -206,6 +249,7 @@
     clocks (the origin is <q>some unspecified point in the past</q>, usually the system
     boot time), and the [`Duration`](https://doc.rust-lang.org/std/time/struct.Duration.html)
     type for distances between two clock measurements.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: So far, we considered applications where domain types barely interact with one
@@ -214,6 +258,7 @@
     by a velocity to compute the distance travelled. A financial application might
     need to multiply the dollar amount by the conversion rate to get an amount in
     euros.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: We can model complex type interactions using methods of [dimensional analysis](https://en.wikipedia.org/wiki/Dimensional_analysis).
@@ -223,28 +268,34 @@
     would have label (distance × time^(-2)), and the usd/eur [pair](https://en.wikipedia.org/wiki/Currency_pair)
     exchange rate would have label (eur × usd^(-1)). I call types with such rich label
     structure *quantities*.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Quantities are a proper extension of amounts: addition, subtraction, and scalar
     multiplication work the same way, leaving the label structure untouched. The additional
     label structure gives meaning to multiplication and division.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: The result of multiplication will have a base unit vector with the component-wise
     *sum* of the power vectors of the unit factors. For example, car fuel consumption
     computation could use an expression like 2 (km) × 0.05 (liter × km^(-1)) = 0.1
     (liter).
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Dividing values produces a label that’s a component-wise *difference* between
     the dividend and divisor power vectors. For example, running pace computation
     could use an expression like 10 (min) / 2 (km) = 5 (min × km^(-1)).
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: The minimal interface for quantities.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: Quantities require complex type-level machinery, which makes them hard to implement
@@ -253,11 +304,13 @@
     types in C++. Rust ecosystem offers the [dimensioned](https://crates.io/crates/dimensioned)
     package. The [units](https://hackage.haskell.org/package/units) package is a popular
     choice in the Haskell ecosystem.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: If your language doesn’t support advanced type-level programming or using rigid
     types is impractical in your application, you can do unit checks at runtime. Python’s
     [quantities](https://github.com/python-quantities/python-quantities) package is
     an example of this approach.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL

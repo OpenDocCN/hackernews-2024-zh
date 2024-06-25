@@ -1,51 +1,65 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:20:31'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Iterating over Bit Sets quickly
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://alexharri.com/blog/bit-set-iteration](https://alexharri.com/blog/bit-set-iteration)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main class="css-fkkl8v">
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Iterating over Bit Sets quickly
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: January 6, 2024
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Welcome to part 2 of my 2-part series on bit sets! If you''re not very familiar
     with bit manipulation — or don''t know what bit sets are — I recommend reading
     part 1 first: [Bit Sets: An introduction to bit manipulation](/blog/bit-sets).'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: If you know your bit manipulation, then you can freely skip part 1.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[Bit sets](https://en.wikipedia.org/wiki/Bit_array) — also known as bit arrays
     or bit vectors — are a highly compact data structure that stores a list of bits.
     They are often used to represent a set of integers or an array of booleans.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'In [part 1](/blog/bit-sets) we started writing a `BitSet` class, and implemented
     a few basic methods:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: The bits of our bit set are stored in a `number[]` called `words`. Since JavaScript
@@ -53,271 +67,352 @@
     each [word](https://en.wikipedia.org/wiki/Word_(computer_architecture)) stores
     32 bits (the first word stores bits 1-32, the second word stores bits 33-64, and
     so on).
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: In this post, we'll tackle `BitSet.forEach`. We'll start off implementing the
     naive approach where we iterate over the bits and see how far we can optimize
     that approach.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: We'll then learn about [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
     and [Hamming weights](https://en.wikipedia.org/wiki/Hamming_weight), and how exploiting
     those lets us iterate over bit sets *really* quickly.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing BitSet.forEach
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The `BitSet.forEach` method should invoke a callback for every bit that is set
     to 1, with the index of that bit.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'To start, we''ll iterate over every word in `words`:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'For each word, we''ll run through the bits in ascending order:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: '`WORD_LEN` is set to 32: the number of bits in each `word`'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can check whether the bit is set via `(word & (1 << i)) !== 0`:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'If the bit is non-zero, we''ll want to invoke `callback` with the index of
     the bit:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: 'We can compute the bit''s `index` in the bit set like so:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: '`WORD_LOG` is set to 5: the base 2 logarithm of 32'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: The expression `wordIndex << WORD_LOG` is equivalent to `wordIndex * WORD_LEN`
     because left shifting by one is equivalent to multiplying by 2 (and `2 ** WORD_LOG`
     equals `WORD_LEN`).
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: And so, we have a basic implementation.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: Optimizing `BitSet.forEach`
+  id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We've now got a working implementation for `BitSet.forEach`. Can we optimize
     it further?
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: The first thing that pops out to me is that we always iterate over every bit
     in every word. We can skip words with no set bits with a cheap `word === 0` check.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: This won't do much for dense sets where most words have some bits set, but this
     skips a lot of work for sparse sets.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: But how significant are the performance gains from this optimization? Let's
     figure it out by running some benchmarks.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''ll run our benchmarks for bit sets with various densities:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: For each density, we'll create a bit set with 100 million bits.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: 'The `makeBitSet` method is implemented like so:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: Now that we've created our bit sets, we'll run the `forEach` method for each
     of them and log out how long it takes.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: 'For the unoptimized version, we get:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: 'With the `ìf (word === 0) continue;` optimization, we get:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'Let''s put this into a table and compare the performance:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | Unoptimized (baseline) | Skip 0s |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '| Density | Runtime | Speed ^* | Runtime | Speed ^* |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| 100.0% | 95.2 ms | 1.0x | 95.4 ms | 1.0x |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '| 75.0% | 250.7 ms | 1.0x | 245.5 ms | 1.0x |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '| 50.0% | 343.3 ms | 1.0x | 336.3 ms | 1.0x |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: '| 25.0% | 221.8 ms | 1.0x | 213.9 ms | 1.0x |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '| 10.0% | 141.6 ms | 1.0x | 132.4 ms | 1.0x |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: '| 5.0% | 114.5 ms | 1.0x | 95.9 ms | 1.2x |'
+  id: totrans-split-63
   prefs: []
   type: TYPE_TB
 - en: '| 1.0% | 78.5 ms | 1.0x | 34.6 ms | 2.3x |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '| 0.1% | 66.7 ms | 1.0x | 5.6 ms | 11.9x |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '* Speed compared to baseline'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: 'We observe no significant difference in performance for densities above 10%,
     but once we reach densities of ≤5% we start to see significant performance improvements:
     **>2x faster** at 1% density and **>10x faster** at 0.1% density.'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Skipping halves
+  id: totrans-split-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'We can take this method of optimization further by skipping *each half* of
     a word if it''s all 0s. We''ll create bitmasks for each half of a word:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: Using them, we want to
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: only iterate over bits 1-16 if there are any set bits in the first half, and
+  id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: only iterate over bits 17-32 if there are any set bits in the latter half.
+  id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'We can determine whether to iterate over the halves like so:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: 'Which we use to determine the range of bits we iterate over:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: 'Let''s see the difference this makes:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | Unoptimized (baseline) | Skip 0s | Skip 0s and halves |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: '| Density | Runtime | Speed ^* | Runtime | Speed ^* | Runtime | Speed ^* |'
+  id: totrans-split-80
   prefs: []
   type: TYPE_TB
 - en: '| 100.0% | 95.2 ms | 1.0x | 95.4 ms | 1.0x | 99.2 ms | 1.0x |'
+  id: totrans-split-81
   prefs: []
   type: TYPE_TB
 - en: '| 75.0% | 250.7 ms | 1.0x | 245.5 ms | 1.0x | 246.3 ms | 1.0x |'
+  id: totrans-split-82
   prefs: []
   type: TYPE_TB
 - en: '| 50.0% | 343.3 ms | 1.0x | 336.3 ms | 1.0x | 346.3 ms | 1.0x |'
+  id: totrans-split-83
   prefs: []
   type: TYPE_TB
 - en: '| 25.0% | 221.8 ms | 1.0x | 213.9 ms | 1.0x | 215.5 ms | 1.0x |'
+  id: totrans-split-84
   prefs: []
   type: TYPE_TB
 - en: '| 10.0% | 141.6 ms | 1.0x | 132.4 ms | 1.0x | 133.6 ms | 1.1x |'
+  id: totrans-split-85
   prefs: []
   type: TYPE_TB
 - en: '| 5.0% | 114.5 ms | 1.0x | 95.9 ms | 1.2x | 93.7 ms | 1.2x |'
+  id: totrans-split-86
   prefs: []
   type: TYPE_TB
 - en: '| 1.0% | 78.5 ms | 1.0x | 34.6 ms | 2.3x | 28.5 ms | 2.8x |'
+  id: totrans-split-87
   prefs: []
   type: TYPE_TB
 - en: '| 0.1% | 66.7 ms | 1.0x | 5.6 ms | 11.9x | 5.7 ms | 11.7x |'
+  id: totrans-split-88
   prefs: []
   type: TYPE_TB
 - en: '* Speed compared to baseline'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: We receive a tiny performance penalty for high-density sets, but we see a slight
     performance boost for sets at a sweet spot of roughly 1% density.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: This optimization may or may not be worth it depending on your average set density,
     but it doesn't move the needle all that much.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: It was at this point in my bit set journey that I discovered a different approach
     for iterating over bits that yields significantly better results across all set
     densities.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: Two's complement
+  id: totrans-split-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -325,173 +420,216 @@
     each iteration to check whether to invoke the callback or not. This `if` statement
     creates a [branch](https://johnnysswlab.com/how-branches-influence-the-performance-of-your-code-and-what-can-you-do-about-it/)
     that further degrades performance.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: If we were able to somehow "jump" to the next set bit, we would eliminate the
     need to iterate over 0 bits and perform a bunch of `if` statements.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'As it turns out, there''s a very cheap method to find the least significant
     bit set to 1, which looks like so:'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: 'When I first saw this, it made no sense to me. I thought:'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: '*“Doesn''t making a number negative just set the sign bit to 1?*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-99
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*If so, then `x & -x` just yields `x`.”*'
+  id: totrans-split-100
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: That would be true if signed integers were represented using [sign-magnitude](https://en.wikipedia.org/wiki/Signed_number_representations#Sign%E2%80%93magnitude),
     where the leftmost bit is the sign bit and the rest of the bits denote the value
     (magnitude).
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '| Numbers represented using sign-magnitude |'
+  id: totrans-split-102
   prefs: []
   type: TYPE_TB
 - en: '| Positive | Negative |'
+  id: totrans-split-103
   prefs: []
   type: TYPE_TB
 - en: '| Bits | Value | Bits | Value |'
+  id: totrans-split-104
   prefs: []
   type: TYPE_TB
 - en: '| 00000000 | 0 | 10000000 | -0 |'
+  id: totrans-split-105
   prefs: []
   type: TYPE_TB
 - en: '| 00000001 | 1 | 10000001 | -1 |'
+  id: totrans-split-106
   prefs: []
   type: TYPE_TB
 - en: '| 00000010 | 2 | 10000010 | -2 |'
+  id: totrans-split-107
   prefs: []
   type: TYPE_TB
 - en: '| 00000011 | 3 | 10000011 | -3 |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '| 00001001 | 9 | 10001001 | -9 |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '| 01111111 | 127 | 11111111 | −127 |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: But as I learned, signed integers are most commonly represented using [two's
     complement](https://en.wikipedia.org/wiki/Two%27s_complement).
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Two's complement is different from sign-magnitude (and [one's complement](https://en.wikipedia.org/wiki/Signed_number_representations#Ones'_complement))
     in that it only has one representation for 0 (there's no -0).
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: '| Numbers represented using two''s complement |'
+  id: totrans-split-113
   prefs: []
   type: TYPE_TB
 - en: '| Positive | Negative |'
+  id: totrans-split-114
   prefs: []
   type: TYPE_TB
 - en: '| Bits | Value | Bits | Value |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: '| 00000000 | 0 |  |  |'
+  id: totrans-split-116
   prefs: []
   type: TYPE_TB
 - en: '| 00000001 | 1 | 11111111 | -1 |'
+  id: totrans-split-117
   prefs: []
   type: TYPE_TB
 - en: '| 00000010 | 2 | 11111110 | -2 |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: '| 00000011 | 3 | 11111101 | -3 |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '| 00001001 | 9 | 11110111 | -9 |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: '| 01111111 | 127 | 10000001 | −127 |'
+  id: totrans-split-121
   prefs: []
   type: TYPE_TB
 - en: '|  |  | 10000000 | −128 |'
+  id: totrans-split-122
   prefs: []
   type: TYPE_TB
 - en: 'The two''s complement of an integer is computed by:'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: inverting the bits (including the sign bit), and
+  id: totrans-split-124
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: adding 1 to the number.
+  id: totrans-split-125
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-126
   prefs: []
   type: TYPE_PRE
 - en: 'Note: This also works in the opposite direction (from negative to positive)'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: The binary representation of `19` has a 1 as the least-significant bit. Inverting
     makes the least significant bit become 0, so adding one will always make the first
     bit 1\. This makes `x & -x` yield the 1st set bit for any number where the least-significant
     bit is 1.
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s take a look at a number with some leading 0s:'
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-130
   prefs: []
   type: TYPE_PRE
 - en: Here we observe that all the bits before the least-significant set bit become
     1 when inverted. When 1 is added to the number, the 1s are carried until they
     reach the least-significant 0 (which was the least-significant 1 pre-inversion).
     This makes `x & -x` yield the 1st set bit for any number with leading 0s.
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: 'So when iterating over the bits of a word, we can always find the least significant
     set bit via `word & -word`. What''s neat is that we can then use bitwise XOR to
     unset the bit:'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-133
   prefs: []
   type: TYPE_PRE
 - en: We can now iterate over the set bits of a word, but we've got a small problem.
     We want to invoke the callback with the *index of* the set bits, not the set bits
     themselves.
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: We'll find the index of the set bit through the use of [Hamming weights](https://en.wikipedia.org/wiki/Hamming_weight).
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: Hamming weight
+  id: totrans-split-136
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Given an integer with one set bit, we want to be able to quickly find the index
     of said bit:'
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-138
   prefs: []
   type: TYPE_PRE
 - en: The brute-force approach would be to walk over the bits one by one, but then
     we're back to iterating over bits. That's a no-go.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: One observation to make is that the index of the set bit is equal to the number
     of leading 0s.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: Consider what happens when we subtract 1\. The leading 0s turn into 1s, and
     the set bit becomes unset.
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: 'This transforms the problem from finding the index of the set bit in `x` into
@@ -499,103 +637,134 @@
     as the [Hamming weight](https://en.wikipedia.org/wiki/Hamming_weight), and it
     turns out that we can [compute the Hamming weight](https://en.wikipedia.org/wiki/Hamming_weight#Efficient_implementation)
     of an integer very cheaply:'
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-143
   prefs: []
   type: TYPE_PRE
 - en: How this works, precisely, is something that we won't get into. We'll just trust
     that this works.
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: We now have all the pieces we need.
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: Making BitSet.forEach go fast
+  id: totrans-split-146
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'As before, we iterate over each word:'
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-148
   prefs: []
   type: TYPE_PRE
 - en: 'While `word` is non-zero, we find the least-significant bit `lsb`:'
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-150
   prefs: []
   type: TYPE_PRE
 - en: 'Using `lsb` we can compute the index using the hamming weight of `lsb - 1`:'
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-152
   prefs: []
   type: TYPE_PRE
 - en: 'Before the next iteration, we unset the least significant bit via `word XOR
     lsb`, making `word` ready for the next iteration:'
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: 'The full implementation looks like so:'
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-155
   prefs: []
   type: TYPE_PRE
 - en: But how fast is this optimized version? Let's run our benchmark and compare.
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | Unoptimized (baseline) | Skip 0s | Optimized |'
+  id: totrans-split-157
   prefs: []
   type: TYPE_TB
 - en: '| Density | Runtime | Speed ^* | Runtime | Speed ^* | Runtime | Speed ^* |'
+  id: totrans-split-158
   prefs: []
   type: TYPE_TB
 - en: '| 100.0% | 95.2 ms | 1.0x | 95.4 ms | 1.0x | 53.4 ms | 1.8x |'
+  id: totrans-split-159
   prefs: []
   type: TYPE_TB
 - en: '| 75.0% | 250.7 ms | 1.0x | 245.5 ms | 1.0x | 91.9 ms | 2.7x |'
+  id: totrans-split-160
   prefs: []
   type: TYPE_TB
 - en: '| 50.0% | 343.3 ms | 1.0x | 336.3 ms | 1.0x | 68.4 ms | 5.0x |'
+  id: totrans-split-161
   prefs: []
   type: TYPE_TB
 - en: '| 25.0% | 221.8 ms | 1.0x | 213.9 ms | 1.0x | 44.4 ms | 5.0x |'
+  id: totrans-split-162
   prefs: []
   type: TYPE_TB
 - en: '| 10.0% | 141.6 ms | 1.0x | 132.4 ms | 1.0x | 30.1 ms | 4.7x |'
+  id: totrans-split-163
   prefs: []
   type: TYPE_TB
 - en: '| 5.0% | 114.5 ms | 1.0x | 95.9 ms | 1.2x | 24.8 ms | 4.6x |'
+  id: totrans-split-164
   prefs: []
   type: TYPE_TB
 - en: '| 1.0% | 78.5 ms | 1.0x | 34.6 ms | 2.3x | 10.0 ms | 7.8x |'
+  id: totrans-split-165
   prefs: []
   type: TYPE_TB
 - en: '| 0.1% | 66.7 ms | 1.0x | 5.6 ms | 11.9x | 4.0 ms | 16.7x |'
+  id: totrans-split-166
   prefs: []
   type: TYPE_TB
 - en: '* Speed compared to baseline'
+  id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
 - en: For densities of 5-50%, we receive a **~5x increase in performance**. Higher
     densities of 75% and above receive a notable speedup of >2x, while the densities
     below 5% see a **5-17x increase in performance**.
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: A full BitSet implementation
+  id: totrans-split-169
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I've recently published a performant and feature-complete `BitSet` package [on
     npm](https://www.npmjs.com/package/bitset-mut).
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to explore the full implementation, take a look at the [GitHub repo](https://github.com/alexharri/bitset-mut).
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: Further reading
+  id: totrans-split-172
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -604,36 +773,45 @@
     about bit sets. His [`FastBitSet` implementation](https://github.com/lemire/FastBitSet.js)
     is where I discovered this trick for optimizing over set bits. If you''re into
     software performance, he''s written *a lot* on that topic.'
+  id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
 - en: Parting thoughts
+  id: totrans-split-174
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Any given piece of code can be optimized, but taking a different approach will
     often outperform those local optimizations.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: Different algorithms will often favor some inputs over others, as we saw with
     low vs high-density sets in this post. It's useful to keep these sorts of trade-offs
     in mind when considering which way to go. Benchmark when possible!
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: 'Anyway, thanks for reading this short series on bit set! If you haven''t read
     part 1 yet, you can find it here: [Bit Sets: An introduction to bit manipulation](/blog/bit-sets).'
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
 - en: I may write a part 3, taking an in-depth look at bit set performance for boolean
     operations (and, or, xor, andNot, etc), but I've thought about bit sets quite
     enough for now.
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: — Alex Harri
+  id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL

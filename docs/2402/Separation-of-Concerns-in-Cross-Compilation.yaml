@@ -1,34 +1,44 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:28:33'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Separation of Concerns in Cross-Compilation
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://nixcademy.com/2024/01/30/cross-compilation-with-nix/](https://nixcademy.com/2024/01/30/cross-compilation-with-nix/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Separation of Concerns in Cross-Compilation
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '![title image of blog post \](img/6473a66ae1d8e85f6512f9ae6f1f520d.png)'
+  id: totrans-split-7
   prefs: []
   type: TYPE_IMG
 - en: 📆
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: January 30, 2024 by Jacek Galowicz
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Managing complex C++ projects across multiple platforms often ends up being
@@ -38,6 +48,7 @@
     and less cumbersome. I have noticed in several past friendly discussions with
     other engineers that many are not at all familiar with the type of Separation
     of Concerns that Nix didn’t invent but also uses.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'The earlier article [*C++ with Nix in 2023, Part 2: Package Generation and
@@ -47,60 +58,73 @@
     bit higher level at how cross-compilation is handled so elegantly in Nix, that
     it can improve overall project health and development pace and at the same time
     reduce costs.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: What makes Cross-Compilation Hard?
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Cross-compilation should in general not be hard: We just need a compiler whose
     backend generates code for the target architecture and let it link the compiled
     code against libraries that are also compiled for that target architecture.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: So why does it turn out to be hard whenever it’s being done for huge real-life
     projects?
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'It typically goes downhill in steps that have less to do with cross-compilation
     itself but more with managing dependencies:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '**Product**: We assume a project that is already huge and has a complicated
     build system'
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Cross-compiler**: We need one'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**External libraries**: We need cross-compiled variants of them'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Distribution**: If we use shared libraries, we will need to provide a way
     to package those along with the app. Alternatively, we use static linking to get
     one big binary that’s easier to distribute.'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The steps are then:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'The cross-compiler is now obtained in one of two ways:'
+  id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Someone creates a compiler bootstrap script that aims to be Linux-distro independent.
     This script will go into a [Dockerfile](https://docs.docker.com/engine/reference/builder/)
     or right into the build system.
+  id: totrans-split-22
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: A cross-compiler package is used. As this ties the project to a certain package
     distribution, we are now forced to this distro or use Docker.
+  id: totrans-split-23
   prefs:
   - PREF_IND
   - PREF_OL
@@ -108,15 +132,18 @@
 - en: 'The package manager doesn’t let us install native and foreign-target libraries
     on the same system. And developers also use different package managers. So we
     typically end up building external libraries for the target platform ourselves:'
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: These go into the same Docker image.
+  id: totrans-split-25
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: Or the project build system also builds them for us.
+  id: totrans-split-26
   prefs:
   - PREF_IND
   - PREF_OL
@@ -124,45 +151,54 @@
 - en: As we do not have package distribution infrastructure, we typically go the static
     building route and end up also fiddling static linkage into our project build
     system.
+  id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'The result is then one of these two:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: A huge, complicated, monolithic build system that manages not only the build
     of our actual project, but also the build of the compiler and all the libraries.
+  id: totrans-split-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: It’s painful to set up and the code takes forever to compile.
+  id: totrans-split-30
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Only senior developers are allowed to touch the fragile parts.
+  id: totrans-split-31
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Complicated upgrading.
+  id: totrans-split-32
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: A Docker image that nicely abstracts the parts away that are different from
     normal non-cross-compilation.
+  id: totrans-split-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Variant *B* seems to be the cleanest, but a clean execution of it seems to be
     rare in the industry. At least in my experience, development teams end up creating
     a huge pile of complexity in the form of Variant *A*.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Especially in combination with static linking, developers often decide that
     the build system should only build static binaries, because maintaining both dynamic
     and static linking at the same time makes the build system too complex.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[CMake](https://cmake.org/) and [meson](https://mesonbuild.com/) can generally
@@ -170,27 +206,33 @@
     method and then simply select the method with command line parameters. However,
     I have not seen many big commercial real-life projects where this was still possible
     without much hassle.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'I often asked myself “Why do these build systems do everything completely differently
     than suggested in the official documentation and tutorials of the build systems?”
     With my experience of today, I think the answer is simple:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Separation of Concerns.
+  id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '**Build systems are not designed to manage dependencies.** Not knowing it better,
     developers try to do it anyway. The result is hard to change, extend, maintain,
     and upgrade.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: As promised in the introduction, we will have a look at how Nix makes it easy
     to change this for the better.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: The Example App
+  id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -200,72 +242,90 @@
     hash. We use the boost dependency to stop the time - the [C++ STL](https://en.cppreference.com/w/cpp/chrono)
     could have done that for us, too, but then we wouldn’t have another nice dependency
     on a huge external lib.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'The program is roughly 60 LOC short/long. I uploaded the code to this GitHub
     repository: [https://github.com/tfc/cpp-cross-compilation-example](https://github.com/tfc/cpp-cross-compilation-example)'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s call this app `minisha256sum` and write a [`CMakeLists.txt`](https://cmake.org/)
     file for it:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: CMake provides good [standard facilities for finding external libraries](https://cmake.org/cmake/help/latest/command/find_package.html).
     This way, the build system may remain simple (it still looks relatively noisy
     compared to other language ecosystems because that’s how C++ build systems look
     like).
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'This project can now be built via the typical CMake dance:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'Let’s check if it works:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: It provides the same hash as the [`sha256sum` app from GNU `coreutils`](https://www.gnu.org/software/coreutils/),
     which should be good enough. The app is not really optimized but that will not
     be a matter for the rest of this article.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Packaging it with Nix
+  id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'To get a nice `nix build` and `nix run` workflow, we need to provide a few
     nix expressions. Let’s start with a `package.nix` that already reflects our dependency
     structure:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'When cross-compiling this application, we need:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: A compiler that runs on the build host but compiles for the target
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: CMake which runs on the host
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Boost and OpenSSL, but built for the target
+  id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`nativeBuildInputs` means *“compile-time dependency on the building host”*
     and `buildInputs` means *“run-time dependency on the target”*. The [`nixpkgs`
     documentation describes this in more detail](https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies).'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'To create a buildable, installable, and runnable package from this expression,
@@ -274,9 +334,11 @@
     It automatically fills out all the function parameters from what’s available in
     `pkgs` that we can see in the first line of `package.nix`, which happen to be
     our dependencies.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: 'In the project’s `flake.nix` file, we [make this call in this line](https://github.com/tfc/cpp-cross-compilation-example/blob/main/flake.nix#L14).
@@ -284,48 +346,60 @@
     (I’m not hiding code here: `mkDerivation` generally knows how to build CMake projects
     when CMake was mentioned as a dependency). After pushing it to a repository, we
     can even do this from a different computer without cloning the repo first:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: Cross-Compilation
+  id: totrans-split-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This is a quick one:'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'Assuming, we’re on a 64bit Intel PC, we can create multiple static/dynamic
     cross-compiled packages like this:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: The attributes `pkgs.pkgsStatic` and `pkgs.pkgsCross.aarch64-multiplatform`
     contain their own version of `callPackage`, but they come with the whole `pkgs`
     package list adapted for the selected target platform.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: There’s also `pkgs.pkgsCross.mingwW64`, which compiles binaries for [Microsoft
     Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) using the [minimalist
     GNU environment for Windows `mingw`](https://www.mingw-w64.org/).
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'Whenever we use one of those specialized `callPackage` implementations to call
     our `package.nix` function, this happens:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '![pkgs.callPackage can dissect the different kinds of dependencies](img/463b6e0a3b2c467ff9bcc92f2b2532b9.png)'
+  id: totrans-split-71
   prefs: []
   type: TYPE_IMG
 - en: '`pkgs.callPackage` can dissect the different kinds of dependencies'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Because we structurally split the dependencies between compile-time dependencies
     and run-time dependencies, the cross-`callPackage` function can now fill the package
     dependencies with the right versions of each.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'This way, the build system does not need to be educated a lot about what happens:
@@ -336,37 +410,47 @@
     environment variables (that have been set by Nix), and builds the project. (It
     also works with build system combinations like [GNU Automake/Autoconf](https://www.gnu.org/software/automake/)
     and [GNUMake](https://www.gnu.org/software/make/) and others)'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'I tested this example with the following combinations:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '| `x86_64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '| `aarch64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '| `x86_64-darwin` | ✅ | ✅ | ✅ | ❌ | ✅ |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: '| `aarch64-darwin` | ✅ | ✅ | ✅ | ✅ | ✅ |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: Interestingly, if we “cross-compile” from the same architecture to the same
     architecture on Linux, we get exactly the same package like for the native `pkgs.callPackage`
     version, so Nix doesn’t even bother to rebuild it.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: The symbol ✅ includes static/dynamic linkage in all cases but not for Windows.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: The entries with the ❌ symbol in the table are not implemented in the Nixpkgs
     repository. This could be done if needed. Typically, companies either implement
     functionality and upstream it or provide funding to make it happen.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-split-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -375,45 +459,55 @@
     have never thought about this separation. The reason might be simple: Because
     it’s not easy to implement without a good technology for dependency management.
     I feel like Docker has more of a place in deployment than in development.'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'The advantages of this separation are huge:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: A simpler build system that is easy to extend even for non-seniors
+  id: totrans-split-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Free choice between dynamic and static linking per build system parameter
+  id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Wide support for compiling from/to different host architectures and operating
     systems
+  id: totrans-split-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Not managing compiler, deps, and project in one build system makes everything
     *modular*:'
+  id: totrans-split-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Less work with updates
+  id: totrans-split-90
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Faster setup time per developer
+  id: totrans-split-91
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Cacheable dependencies
+  id: totrans-split-92
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Easier reuse of individual modules in other projects
+  id: totrans-split-93
   prefs:
   - PREF_IND
   - PREF_UL
@@ -421,11 +515,13 @@
 - en: We only built binaries this time, no [container images](../../../../2023/09/04/nixos-multi-php-version-container/),
     [`systemd-nspawn` images](../../../../2023/08/29/nixos-nspawn/), VMs, or disk
     images. This is however simple to add on top.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to evaluate Nix or even use it in your real projects, don’t hesitate
     to [give us a call](../../../../meet.html)! We have a lot of experience, especially
     with low-level C++ projects. Contact us and see how the complexity of your projects
     can be simplified.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL

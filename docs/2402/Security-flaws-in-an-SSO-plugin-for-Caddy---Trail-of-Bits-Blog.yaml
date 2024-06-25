@@ -1,36 +1,45 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:50:22'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Security flaws in an SSO plugin for Caddy | Trail of Bits Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/](https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*By Maciej Domanski, Travis Peters, and David Pokora*'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: We identified 10 security vulnerabilities within the [caddy-security plugin](https://github.com/greenpau/caddy-security)
     for the [Caddy](https://github.com/caddyserver/caddy) web server that could enable
     a variety of high-severity attacks in web applications, including client-side
     code execution, OAuth replay attacks, and unauthorized access to resources.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: During our evaluation, Caddy was deployed as a reverse proxy to provide access
     to several of our internal services. We explored a plugin configuration that would
     allow us to handle authentication and authorization with our Google SSO so that
     we didn’t have to implement this on a per-app basis.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: In this blog post, we will briefly explore the security vulnerabilities we identified
@@ -38,15 +47,18 @@
     security assessments, for each issue we identified, we present a recommendation
     for immediately fixing the issue, as well as long-term, more strategic advice
     for preventing similar issues and improving the overall security posture.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: As security experts, our goal is not only to identify vulnerabilities in specific
     software but also to contribute to the larger community by sharing our recommendations
     for fixing these problems. We believe that these recommendations can help developers
     overcome similar challenges in other SSO systems and improve their security.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Caddy Background
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -55,6 +67,7 @@
     highly configurable. Caddy is built to streamline the process of hosting web applications
     while prioritizing security and performance. It aims to reduce the complexity
     associated with configuring and deploying web servers.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: The caddy-security plugin is a middleware plugin for the Caddy web server. It
@@ -63,17 +76,21 @@
     plugin include an authentication plugin for implementing Form-Based, Basic, Local,
     LDAP, OpenID Connect, OAuth 2.0, SAML Authentication, and an authorization plugin
     for HTTP request authorization based on JWT/PASETO tokens.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Findings
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Issue #1: Reflected Cross-Site Scripting (XSS)'
+  id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: High*'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Reflected XSS occurs when an application includes untrusted data in the HTML
@@ -82,20 +99,24 @@
     trigger an alert. An attacker can exploit this vulnerability to execute arbitrary
     JavaScript code within the target user’s browser, potentially leading to further
     attacks such as session hijacking.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: To immediately address this issue, strategically treat all string values as
     potentially untrustworthy, regardless of their source, and escape them properly
     (using the `safehtml/template` package that generates output-safe HTML).
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition to that remediation, we also suggest a few different ways to improve
     defense in depth:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Extend unit tests with potentially malicious XSS payloads. Refer to the [Cross-site
     scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
     for various attack vectors.
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -103,20 +124,24 @@
     environment for all API calls. Additionally, use the [scanning with a live task](https://portswigger.net/burp/documentation/desktop/automated-scanning/live-tasks)
     strategy to have underlying requests scanned automatically when interacting with
     the web interface.
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Expand the caddy-security documentation to promote security headers—especially
     the Content Security Policy (CSP) header that controls which resources can be
     loaded by the browser, limiting the impact of potential XSS attacks.
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Issue #2: Insecure Randomness'
+  id: totrans-split-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: High*'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The caddy-security plugin uses the `math/rand` Golang library with a seed based
@@ -126,19 +151,23 @@
     purposes in the OAuth flow to conduct OAuth replay attacks. In addition, insecure
     randomness is used while generating multifactor authentication (MFA) secrets and
     creating API keys in the database package.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: To immediately mitigate this vulnerability, use a cryptographically secure random
     number generator for generating the random strings. Golang’s library `crypto/rand`
     is designed for secure random number generation.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition to that fix, we recommend considering the following long-term recommendations:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Review the application for other instances where the `math/rand` package is
     used for secure context. Create secure wrapping functions and use them throughout
     the code to serve a cryptographically secure string with the requested length.
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -146,30 +175,36 @@
     rather than multiple duplicate functions makes it easier to audit and verify the
     system’s security. It also prevents future changes to the codebase from reintroducing
     issues.
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implement Semgrep in the CI/CD. The `math-random-used` Semgrep rule will catch
     instances where `math/rand` is used. Refer to our [Testing Handbook on Semgrep](https://appsec.guide/docs/static-analysis/semgrep/)
     for more information.
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Read textbooks such as *Real World Cryptography*, as it is a great resource
     for practical cryptographic considerations.
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Issue #3: IP Spoofing via X-Forwarded-For Header'
+  id: totrans-split-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Medium*'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: By manipulating the `X-Forwarded-For` header, an attacker can spoof an IP address
     used in the user `identity` module (`/whoami` API endpoint). This could lead to
     unauthorized access if the system trusts this spoofed IP address.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: To resolve this vulnerability, reimplement the application to not rely on user-provided
@@ -178,39 +213,47 @@
     validated (i.e., the value is consistent with IP address format through regular
     expression) or sanitized (to avoid [CRLF log injection attacks](https://owasp.org/www-community/vulnerabilities/CRLF_Injection),
     for example).
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition to this immediate fix, we recommend considering these long-term
     recommendations:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Implement appropriate checks for potential IP spoofing and `X-` headers on the
     unit testing level. Consider [other headers that can rewrite IP sources](https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers#headers-to-change-location).
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Cover the IP spoofing scenarios and user-provided header processing in Golang’s
     native fuzz tests.
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Use the dynamic testing approach with Burp Suite Professional and the [Param
     Miner](https://portswigger.net/bappstore/17d2949a985c4b7ca092728dba871943) extension
     to identify the processing of hidden headers.
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Expand the caddy-security documentation to increase user awareness of this type
     of threat; show an example of misconfiguration, how to resolve, and how to test
     it.
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Issue #4: Referer-Based Header XSS'
+  id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Medium*'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: An XSS vulnerability can be triggered by rewriting the `Referer` header. Although
@@ -220,16 +263,20 @@
     payload). Exploiting this vulnerability may not be trivial, but it could lead
     to the execution of malicious scripts in the context of the target user’s browser,
     compromising user sessions.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'The mitigation for this issue is identical to issue #1.'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'Issue #5: Open Redirection Vulnerability'
+  id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Medium*'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: When a logged-in user clicks on a specially crafted link with a `redirect_url`
@@ -237,43 +284,52 @@
     an action, such as clicking on a portal button or using the browser’s back button,
     to trigger the redirection. This could lead to phishing attacks, where an attacker
     tricks users into visiting a malicious website by crafting a convincing URL.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: To mitigate this vulnerability, perform proper `redirect_url` parameter validation
     to ensure that the redirection URLs are allowed only within the same domain or
     from trusted sources.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition, we also recommend the following long-term fixes:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Implement robust unit tests with different bypassing scenarios of `redirect_url`
     parameter validation. Refer to the potential [URL Format Bypasses](https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/url-format-bypass).
     Keep in mind that different components can use different URI parsers, which can
     lead to [parsing confusion](https://snyk.io/blog/url-confusion-vulnerabilities/).
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Use Burp Suite Professional with a scanner with both these settings enabled:'
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Audit coverage – maximum: to use the most extensive set of payload variations
     and insertion point options'
+  id: totrans-split-52
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Audit coverage – thorough: to try more payload variations'
+  id: totrans-split-53
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Issue #6: X-Forwarded-Host Header Manipulation'
+  id: totrans-split-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Medium*'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: The caddy-security plugin processes the `X-Forwarded-Host` header, which could
@@ -281,52 +337,64 @@
     flaws, routing-based server-side request forgery [SSRF], and classic server-side
     vulnerabilities). Additionally, the caddy-security plugin generates QR codes based
     on this header, which extends the attack surface.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: To mitigate this issue, do not rely on the `Host` and `X-Forwarded-Host` headers
     in the caddy-security plugin logic. Instead, use the current domain manually specified
     in the configuration file to generate a QR code.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition, we recommend the following:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Use Burp Suite Professional with the Param Miner extension to identify the processing
     of hidden headers.
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Extend the caddy-security documentation to increase user awareness of the [HTTP
     `Host` header attacks](https://portswigger.net/web-security/host-header/exploiting).
+  id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Issue #7: X-Forwarded-Proto Header Manipulation'
+  id: totrans-split-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Low*'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: The processing of the `X-Forwarded-Proto` header results in redirection to the
     injected protocol. While this scenario may have limited impact, improper handling
     of such headers could result in unpredictable security risks, such as bypass of
     security mechanisms or confusion in handling TLS.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: To address this issue, do not rely on the `X-Forwarded-Proto` header. If it
     is required, validate the value of the `X-Forwarded-Proto` header against an allowlist
     of accepted protocols (e.g., HTTP/HTTPS) and reject unexpected values.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition, consider the long-term recommendations from issue #3.'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'Issue #8: 2FA Bypass by Brute-Forcing Verification Codes'
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Low*'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: The current implementation of the application’s two-factor authentication (2FA)
@@ -334,6 +402,7 @@
     blocks the user after several failed attempts to provide 2FA codes, attackers
     can bypass this blocking mechanism by automating the application’s full multistep
     2FA process.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: To address this issue effectively, enforce a minimum six-digit code length in
@@ -346,13 +415,16 @@
     if the user has logged in within the last 10 minutes. Check out [Getting 2FA Right
     in 2019](https://blog.trailofbits.com/2019/06/20/getting-2fa-right-in-2019/) at
     the Trail of Bits Blog for more information.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'Issue #9: Lack of User Session Invalidation on Logout'
+  id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Low*'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: The caddy-security plugin lacks proper user session invalidation upon clicking
@@ -360,23 +432,28 @@
     to `/logout` and `/oauth2/google/logout`. Attackers who gain access to an active
     but supposedly logged-out session can perform unauthorized actions on behalf of
     the user.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: To address this issue, review the sign-out process to identify the cause of
     the unexpected behavior. Ensure that the `/oauth2/google/logout` endpoint correctly
     terminates the user session and invalidates the associated tokens.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: For more defense in depth, use the [OWASP Application Security Verification
     Standard (V3 Session Management)](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x12-V3-Session-management.md#v3-session-management)
     to check whether the implementation handles sessions securely.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'Issue #10: Multiple Panics when Parsing Caddyfile'
+  id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Severity: Low*'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Multiple parsing functions do not validate whether their input values are `nil`
@@ -385,17 +462,21 @@
     immediate vulnerabilities, but they could indicate improperly enforced security
     controls (e.g., insufficient data validation), which could lead to issues in other
     code paths.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: To address these issues, integrate `nil` checks for input values before element
     access across all relevant functions.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: To prevent similar issues of this type, add Golang’s native fuzz tests for Caddyfile
     parsing functions.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Golang Security for the Community
+  id: totrans-split-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -405,51 +486,62 @@
     posts](https://blog.trailofbits.com/?s=go&submit=Search) and look forward to any
     opportunity to take on pet audits (like this) and [client projects](https://github.com/trailofbits/publications#security-reviews)
     where we examine Golang codebases.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Our aim in publishing our findings is to help protect others who may consider
     implementing a solution similar to the one we explored and to help them make informed
     decisions about their security infrastructure.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re actively implementing a codebase in Golang or have questions, concerns,
     or other recommendations on open-source software you think we should look at,
     please [contact us](https://www.trailofbits.com/contact/).
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Coordinated Disclosure Timeline
+  id: totrans-split-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'As part of the disclosure process, we reported the vulnerabilities to the caddy-security
     plugin maintainers first. The timeline of disclosure is provided below:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'August 7, 2023: We reported our findings to the caddy-security plugin maintainers.'
+  id: totrans-split-86
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'August 23, 2023: The caddy-security plugin maintainers confirmed that there
     were no near-term plans to act on the reported vulnerabilities.'
+  id: totrans-split-87
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'September 18, 2023: The disclosure blog post was released and issues were filed
     with the original project repository.'
+  id: totrans-split-88
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Like this:'
+  id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Like Loading...
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '*Related*'
+  id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL

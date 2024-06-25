@@ -1,61 +1,77 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:51:44'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How to Summarize Youtube Video using ChatGPT Api and Node.js
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://implementing.substack.com/p/how-to-summarize-youtube-video-using](https://implementing.substack.com/p/how-to-summarize-youtube-video-using)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Hey, I'm [Marco](https://www.linkedin.com/in/marco-moauro-b49489162/) and welcome
     to my newsletter!
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: As a software engineer, I created this newsletter to share my first-hand knowledge
     of the development world. Each topic we will explore will provide valuable insights,
     with the goal of inspiring and helping all of you on your journey.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In this episode I want to bring you the first tutorial, on how to make a system
     in Node.js that starting from a youtube video link generates a summary using OpenAI's
     [completions api](https://platform.openai.com/docs/guides/text-generation/chat-completions-api),
     the same api on which the ChatGPT system is based.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can download all the code shown directly from my Github repository: [https://github.com/marcomoauro/youtube-summarizer](https://github.com/marcomoauro/youtube-summarizer)'
+  id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[Subscribe to Implementing ✨](https://implementing.substack.com/subscribe)'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'The system architecture primarily comprises:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Extracting text from YouTube videos
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Generating text summaries
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'This process involves extracting text from the video and utilizing it for summary
     generation. Various options were considered, including:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: The chosen solution involves scraping, which is the most challenging among the
@@ -63,10 +79,12 @@
     incurs no costs associated with third-party APIs for text extraction. Additionally,
     as a genuine enthusiast, I prefer this approach, given that most of my personal
     projects are founded on this technique.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: If you are interested in finding out what are the best practices for web scraping
     sign up for the newsletter, I will be publishing a post about it soon.
+  id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -74,36 +92,45 @@
     was the limit on the maximum size of the text that the completions API can handle.
     This limit depends on the model used; for the 3.5 turbo model, it's specifically
     set at 4.000 tokens.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: To overcome this limitation, I adopted a recursive approach. The text is divided
     into smaller parts, which are merged into groups and summarized independently;
     this process is repeated until a single output text is generated, corresponding
     to the final summary generated from the intermediate summaries.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[Subscribe to Implementing ✨](https://implementing.substack.com/subscribe)'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: For this tutorial you need to have Yarn and Node.js installed, specifically
     I used the LTS version 20.9.0\. If you don't have Node.js on your machine you
     can install it from the [official website](https://nodejs.org/en).
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Starting from my workspaces folder I have created the project folder and the
     npm package:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: 'add the clause “type: module” to use ES6 syntax:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: The libraries we need are **Axios**, a library for making HTTP calls, we will
@@ -111,87 +138,111 @@
     the HTML, **p-queue** for handle a queue for the promises in order to call OpenAI
     with max X calls in the same moment and **yargs** to build interactive command
     line tools.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can install it typing:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: 'Create the file **getSubtitleFromVideo.js**:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: The initial function we'll create is designed to use web scraping to fetch the
     HTML content of a YouTube video page. Let's name this function **getHTML**.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: 'Once we get the html we can retrieve the subtitles via this **getSubtitle**
     function:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: => Inside the video's HTML, there's a YouTube link directing to their timedtext
     API, where an XML file containing automatic captioning can be found (an example
     is provided [here](https://www.youtube.com/api/timedtext?v=ULDCt13hetw&ei=c5GOZcmyFea26dsP0-ydqAQ&caps=asr&opi=112496729&xoaf=5&hl=it&ip=0.0.0.0&ipbits=0&expire=1703867363&sparams=ip,ipbits,expire,v,ei,caps,opi,xoaf&signature=75063412BCC19F57C0FACAD8F931B04B33607678.3E55E91F52C40D16D66F8420C614830C702CAAB2&key=yt8&kind=asr&lang=en)).
     This XML data is what we extract to generate the summary.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '**getSubtitleFromVideo.js** file will export the **getSubtitleFromVideo** function.
     This function can be called externally, taking the video link as input and returning
     the corresponding subtitles.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: This is the contents of the file **getSubtitleFromVideo.js:**
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: '[Subscribe to Implementing ✨](https://implementing.substack.com/subscribe)'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: After getting the subtitles, the goal is to arrange them in chunks of text and
     then summarize. As mentioned earlier, different models have various maximum context
     limits; for the 3.5 turbo model, it's 4,000 tokens, I made the assumption that
     1 token equals 1 character.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'So let''s go ahead and create the **splitInChunks.js** file:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: 'In this file we are going to export a function with the same name splitInChunks
     that takes care of grouping the individual subtitles of the video frames into
     chunks of up to 4000 words, here is the implementation:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: At this point we have the chunks and we can proceed with the summary step.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Create a new file **summarizeChunks.js:**
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'we first define the method for calling the OpenAI api:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: We submit a prompt to the completions API, comprising a "system" message instructing
@@ -199,27 +250,33 @@
     important to create an API key on the OpenAI developer portal, just follow this
     [link](https://openai.com/blog/openai-api). Once created, simply insert the key
     into the constant `OPEN_AI_API_KEY`.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: I've named this function with the underscore (_) prefix because we'll define
     a new function called computeSummaryByAI, which serves as the entry point to OpenAI.
     This function utilizes the p-queue library to manage a maximum number of Promises
     running concurrently, preventing rate-limiting issues and slower response times.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'With `concurrency: 5` it means that there can be at most 5 calls running to
     OpenAI, all because we will launch calls in "parallel" via the **Promise.all**
     construct.'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'We now come to the core part of the summary mechanism, the function that will
     export the file will be:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: This function is responsible for generating an initial summary for each chunk
@@ -227,15 +284,19 @@
     generated by YouTube. After calculating the summary, if we have only one chunk,
     the process is complete, and the result is ready. Otherwise, we need to proceed
     with the recursive algorithm.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'We now define the recursive function:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'The behavior is as follows:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: If there are fewer than 5 pieces, proceed to the summary by combining the pieces
@@ -244,89 +305,111 @@
     in experimenting, I have noticed that these limits specified in the OpenAI prompt
     are often not met. As a result, I opted for lower thresholds to ensure proper
     operation without running into errors due to too large context.
+  id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If we have more than 5 chunks, we group them into groups of 5, for each we merge
     them into a single text and summarize them. Calls for summaries are executed in
     parallel.
+  id: totrans-split-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Finally, the function relaunches itself by passing the result of the recursive
     step.
+  id: totrans-split-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'All the code shown can be found here: [https://github.com/marcomoauro/youtube-summarizer](https://github.com/marcomoauro/youtube-summarizer)'
+  id: totrans-split-64
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'I created a CLI through which you can summarize the videos you want by passing
     the YouTube video link and the language code in which you want the summary, here
     is an example of how to launch it:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: '*requires that you are in the root of the project and have properly installed
     the dependencies with:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: '* * *'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: I have integrated this functionality into my [quickview.email](https://quickview.email/try-summary)
     website. Simply provide the email with which you want to receive the summary,
     the link to the youtube video and the language in which you want to read it.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[Subscribe to Implementing ✨](https://implementing.substack.com/subscribe)'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: This same mechanism is the driving force behind my crypto newsletter, are you
     interested in the world of cryptocurrencies but don't have time to stay up-to-date?
     Sign up now to receive daily video summaries!
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'And that’s it for today! If you are finding this newsletter valuable, consider
     doing any of these:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 🍻 **Read with your friends** — Implementing lives thanks to word of mouth. Share
     the article with someone who would like it.
+  id: totrans-split-77
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Share](https://implementing.substack.com/p/how-to-summarize-youtube-video-using?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
+  id: totrans-split-78
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 📣 **Provide your feedback** - We welcome your thoughts! Please share your opinions
     or suggestions for improving the newsletter, your input helps us adapt the content
     to your tastes.
+  id: totrans-split-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Leave a comment](https://implementing.substack.com/p/why-i-moved-from-rails-to-nodejs/comments)'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: I wish you a great day! ☀️
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Marco
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL

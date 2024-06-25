@@ -1,34 +1,43 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:56:04'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: My Notes on GitLab Postgres Schema Design – Shekhar Gulati
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/](https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I spent some time going over the Postgres schema of Gitlab. GitLab is an alternative
     to Github. You can self host GitLab since it is an open source DevOps platform.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: My motivation to understand the schema of a big project like Gitlab was to compare
     it against schemas I am designing and learn some best practices from their schema
     definition. I can surely say I learnt a lot.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I am aware that best practices are sometimes context dependent so you should
     not apply them blindly.
+  id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -37,6 +46,7 @@
     migration is using the `schema.rb` file. The reason the Gitlab team decided to
     adopt `structure.sql` instead is mentioned in on of their issues [2] in their
     issue tracker.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Now what keeps us from using those features is the use of `schema.rb`. This
@@ -45,88 +55,98 @@
     in turn means we are not able to use extended PostgreSQL features that are reflected
     in schema. Some examples include triggers, postgres partitioning, materialized
     views and many other great features.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: In order to leverage those features, we should consider using a plain SQL schema
     file (`structure.sql`) instead of a ruby/rails standard schema `schema.rb`.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The change would entail switching `config.active_record.schema_format = :sql`
     and regenerate the schema in SQL. Possibly, some build steps would have to be
     adjusted, too.
+  id: totrans-split-12
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Now, let’s go over the things I learnt from Gitlab Postgres schema.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Below are some of the tweets from people on this article. If you find this article
     useful please share and tag me [@shekhargulati](https://twitter.com/shekhargulati)
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '## 1\. Using the right primary key type for a table'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: In my work I have made the mistake of standardizing on primary key types. This
     means standardizing on either `bigint` or `uuid` so all tables will have the same
     type irrespective of their structure, access patterns, and growth rate.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: When your database is small this does not have any visible impact but as you
     grow primary keys have a visible impact on storage space, write speed, and read
     speed. So, we should give a proper thought process on choosing the right primary
     key type for a table.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: As I discussed in an earlier post[3] when you use Postgres native UUID v4 type
     instead of bigserial table size grows by 25% and insert rate drops to 25% of bigserial.
     This is a big difference. I also compared against ULID but it also performed poorly.
     One reason could be the ULID implementation.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Given this context I was interested to learn how Gitlab chooses primary key
     types.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Out of the 573 tables, 380 tables have bigserial primary key type, 170 have
     serial4 primary key type, and remaining 23 had composite primary keys.They had
     no table that used uuid v4 primary key or any other esoteric key type like ULID.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '| Name | Description | Range | Text |'
+  id: totrans-split-21
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-22
   prefs: []
   type: TYPE_TB
 - en: '| `serial` | 4 bytes | 1 to 2147483647 | ~2.1 billion |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '| `bigserial` | 8 bytes | 1 to 9223372036854775807 | ~9.2 quintillion |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: 1 quintillion is equal to 1000000000 billions
+  id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The decision to choose serial or bigserial is dependent on the number of records
     in that table.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Tables like `application_settings`, `badges`, `chat_teams`, `notification_settings`,
     `project_settings` use serial type. For some tables like `issues`, `web_hooks`,
     `merge_requests`, `projects` I was surprised to see that they had used the `serial`
     type.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The serial type might work for self-hosted community or enterprise versions
@@ -135,57 +155,73 @@
     will cross the serial range. Also changing the type of the table is expensive.
     The table has to be rewritten, and you will have to wait. This will also be a
     problem if you have to shard the table.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: I performed a quick experiment that showed that for my table with two columns
     and 10million records it takes 11 seconds to change the data type from integer
     to bigint.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: Insert 10million records
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: Change column type from integer to bigint.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: '[PRE3]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: You will also have to alter the sequence to change its type as well. This operation
     is quick.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: This finished in 4ms
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: All the bigserial sequences start from 1 and go till the max value of bigint.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: 2\. Use of internal and external ids
+  id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: It is generally a good practice to not expose your primary keys to the external
     world. This is especially important when you use sequential auto-incrementing
     identifiers with type integer or bigint since they are guessable.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: So, I was curious to know what happens when you create a Gitlab issue. Do we
@@ -193,6 +229,7 @@
     you expose the `issues` table primary key id then when you create an issue in
     your project it will not start with 1 and you can easily guess how many issues
     exist in the GitLab. This is both unsafe and poor user experience.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: To avoid exposing your primary keys to the end user the common solution is use
@@ -201,15 +238,18 @@
     external world. In my past experience I have used UUID v4 as the external id.
     As we discussed in the previous point there is a storage cost involved with using
     UUID.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: GitLab also uses internal and external ids in tables where ids have to be shared
     with the external world. Tables like `issues`, `ci_pipelines`, `deployments`,
     `epics`, and a few others have two ids – `id` and `iid`. Below is the part of
     the issue schema. As shown below `iid` has integer data type.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: As you can see there are `id` and `iid` columns. The value of the `iid` column
@@ -219,206 +259,260 @@
     of the repositories then they both need to have a visible id of 1 as shown in
     the example below. Both the `sg` and `sg2` projects start with issue id 1\. This
     is achieved using `iid`.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: They have a unique index on `project_id` and `iid` to quickly and efficiently
     fetch an issue.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 3\. Using `text` character type with check constraints
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Postgres has three character types as described in their documentation[5].
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '| Name | Description |'
+  id: totrans-split-54
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-split-55
   prefs: []
   type: TYPE_TB
 - en: '| `character varying(n)`, `varchar(n)` | variable-length with limit |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '| `character(n)`, `char(n)` | fixed-length, blank padded |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| `text` | variable unlimited length |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: I have mostly used `character varying(n)` or `varchar(n)` to store String values.
     Gitlab schema uses both `character varying(n)` and `text` but more often they
     use `text` type. One such example table is shown below.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: You can see that apart from `entity_type` all other columns have `text` type.
     They have used `CHECK` to define length constraints.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: As mentioned in multiple posts[6,7] on the web there is not much performance
     difference between the two types. They both use `varlena` type under the hood.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: The problem with `varchar(n)` is that if n becomes more restrictive then it
     will require an exclusive lock. This can cause performance issues depending on
     the size of the table.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: The `text` column with `CHECK` constraint on the other hand does not have this
     issue. But it does cost a little during writes.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s do a quick experiment to prove it. We will start by creating a simple
     table
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: Insert 10million records
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: If we increase the length of s from 200 to 300 then it is instantaneous
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: '[PRE14]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: But if we reduce the length of `s` from 300 to 100 then it does take considerable
     time.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: '[PRE16]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: As you can see it took 36 seconds.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s do the same with the text column.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: Insert 10 million records
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: There is no alter constraint in Postgres. You have to drop the constraint and
     then add a new constraint.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: Now, add again
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: '[PRE21]'
+  id: totrans-split-84
   prefs: []
   type: TYPE_PRE
 - en: So, as you can see, the `text` type with `CHECK` constraint allows you to evolve
     the schema easily compared to `character varying` or `varchar(n)` when you have
     length checks.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: I also noticed that they used `character varying` where length checks are not
     required like as shown below.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-87
   prefs: []
   type: TYPE_PRE
 - en: 4\. Naming conventions
+  id: totrans-split-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The naming follows the following convention.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: All tables use plural forms. For example `issues`, `projects`, `audit_events`,
     `abuse_reports`, `approvers`, etc.
+  id: totrans-split-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Tables use module name prefix to provide a namespace. For example, all tables
     belonging to merge request functionality start with `merge_request` prefix as
     shown in the listing below.
+  id: totrans-split-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: merge_request_assignees
+  id: totrans-split-92
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: merge_request_blocks
+  id: totrans-split-93
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: merge_request_cleanup_schedules
+  id: totrans-split-94
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: merge_request_context_commit_diff_files
+  id: totrans-split-95
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: merge_request_context_commits
+  id: totrans-split-96
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: etc..
+  id: totrans-split-97
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Names of tables and columns follow snake_case convention. The underscore is
     used to combine two or more words. For example, `title`, `created_at`, `is_active`.
+  id: totrans-split-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Columns expressing boolean follow either of the three naming convention depending
     on their purpose
+  id: totrans-split-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Feature toggles. For example `create_issue`, `send_email`, `packages_enabled`,
     `merge_requests_rebase_enabled`, etc
+  id: totrans-split-100
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Entity State: Examples, `deployed`, `onboarding_complete`, `archived`, `hidden`,
     etc.'
+  id: totrans-split-101
   prefs:
   - PREF_IND
   - PREF_UL
@@ -426,20 +520,24 @@
 - en: Qualifiers – They start with `is_xxx` or `has_xxx`. For example, `is_active`,
     `is_sample`, `has_confluence`, etc. I think these can be expressed using the above
     two.
+  id: totrans-split-102
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Indexes follow the convention `index_#{table_name}_on_#{column_1}_and_#{column_2}_#{condition}`.
     For example, `index_services_on_type_and_id_and_template_when_active`, `index_projects_on_id_service_desk_enabled`.
+  id: totrans-split-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 5\. Timestamp with timezone and without timezone
+  id: totrans-split-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: GitLab uses both `timestamp with timezone` and `timestamp without timezone`.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: My understanding is that the data type `timestamp without timezone` is used
@@ -447,9 +545,11 @@
     used for user actions. For example, in the SQL shown below `created_at` and `updated_at`
     does use `timestamp without time zone` whereas `closed_at` uses `timestamp with
     time zone`.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-107
   prefs: []
   type: TYPE_PRE
 - en: Another example is `merge_request_metrics` where `latest_closed_at`, `first_comment_at`,
@@ -458,17 +558,21 @@
     `timestamp without timezone`. You might wonder why `merge_at` does not use a timezone.
     I think it is because the system can merge the request based on certain conditions
     or checks.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-109
   prefs: []
   type: TYPE_PRE
 - en: 6\. Foreign key constraints
+  id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A foreign key constraint is a logical association of rows between two tables.
     You typically use foreign keys to join tables in queries.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: A **FOREIGN KEY** constraint is a database construct, an implementation that
@@ -476,12 +580,14 @@
     it ensures that a child table can only reference a parent table when the appropriate
     row *exists* in the parent table. A constraint also prevents the existence of
     “orphaned rows” in different methods. – [Link](https://docs.planetscale.com/learn/operating-without-foreign-key-constraints)
+  id: totrans-split-112
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I have consulted in multiple projects in the last couple of years where team/architects
     decided not to use foreign key constraints. They mainly cite performance as the
     reason to not use foreign key constraints.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: One reason performance can degrade when you create foreign key is when you create
@@ -491,52 +597,63 @@
     to be deleted but you might end up deleting hundred or thousand or more child
     table rows as well. But, this will be an issue only when one parent row is linked
     with a large number of child table rows.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two other reasons teams don’t use foreign key constraints. These
     are:'
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: They don’t work well with online DDL schema migration operations especially
     in MySQL
+  id: totrans-split-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It is difficult to maintain foreign key constraints once you shard your data
     into multiple database servers
+  id: totrans-split-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: MySQL compatible serverless database like PlanetScale(based on open source Vitess
     database) does not support foriegn keys.
+  id: totrans-split-118
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: So, I was curious to learn if GitLab uses Foreign key constraints or not.
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: 'GitLab uses foriegn key constraints in most tables except in a few tables like
     `audit_events` , `abuse_reports`, `web_hooks_logs`, `spam_logs`. I think there
     are two main reasons why they don’t use foreign key constraints in `audit_events`
     , `abuse_reports`, `web_hooks_logs`, `spam_logs`. These are:'
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: These tables are immutable in nature. You don’t want to change them once entries
     are written to them
+  id: totrans-split-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: These tables can grow to millions(or more) of rows so even a small performance
     hit could have a big impact
+  id: totrans-split-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The rest of the tables where GitLab uses foreign keys use both `ON DELETE CASCADE`
     , `ON DELETE RESTRICT` , and `ON DELETE SET NULL` actions. An example of each
     of them is shown below.
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-124
   prefs: []
   type: TYPE_PRE
 - en: '`ON DELETE SET NULL` will set the referencing column on the child table to
@@ -544,36 +661,43 @@
     them because of NULL. In this action also, a single row deletion can lead to multiple
     rows getting updated in the child table. This may cause large transactions, excessive
     locking, and replication lag.'
+  id: totrans-split-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ON DELETE RESTRICT` prevents deletion of referenced child rows. This does
     not cause orphaned childs as you can’t delete a parent row if there are child
     rows that references it. You get exceptions like as shown below.'
+  id: totrans-split-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-127
   prefs: []
   type: TYPE_PRE
 - en: 7\. Partitioning big tables
+  id: totrans-split-128
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: GitLab uses partitioning to partition tables that can grow to a huge size. This
     is done to improve query performance.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: 'PARTITION BY RANGE: This partitioning strategy works by partitioning table
     data based on the chosen range. This strategy is commonly used when you need to
     partition time-series data. The tables `audit_events` and `web_hook_logs` use
     this strategy.'
+  id: totrans-split-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'PARTITION BY LIST: This partitioning strategy works by partitioning table data
     based on discrete values of a column. The table `loose_foreign_keys_deleted_records`
     uses this strategy.'
+  id: totrans-split-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -582,22 +706,27 @@
     hash value of the partition key divided by the specified modulus will produce
     the specified remainder. The table `product_analytics_events_experimental` uses
     this strategy.'
+  id: totrans-split-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You can read more about Postgres partitioning in Postgres [documentation](https://www.postgresql.org/docs/current/ddl-partitioning.html).
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: 8\. Supporting LIKE search use cases with Trigrams and `gin_trgm_ops`
+  id: totrans-split-134
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: GitLab uses GIN(Generalized Inverted Index) indexes to perform efficient searches.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: The GIN index type was designed to deal with data types that are subdividable
     and you want to search for individual component values (array elements, lexemes
     in a text document, etc)” – [Tom Lane](https://www.postgresql.org/message-id/flat/26038.1559516834%40sss.pgh.pa.us#ccb004aefc151d913e7a274a9b30c631)
+  id: totrans-split-136
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -605,116 +734,150 @@
     this is fundamentally hard to index. One such example is the issues table where
     you might want to do something like search on title and description fields. So,
     we use the pg_trgm extension to create an index that works on trigrams.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-138
   prefs: []
   type: TYPE_PRE
 - en: The GIN index makes searches performant. Let’s see that in action.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: We will create a simple table as shown below.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-141
   prefs: []
   type: TYPE_PRE
 - en: Let’s insert some data. I pulled an English word list in CSV format from this
     [link](https://www.bragitoff.com/2016/03/english-dictionary-in-csv-format/).
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-split-143
   prefs: []
   type: TYPE_PRE
 - en: '[PRE30]'
+  id: totrans-split-144
   prefs: []
   type: TYPE_PRE
 - en: '[PRE31]'
+  id: totrans-split-145
   prefs: []
   type: TYPE_PRE
 - en: We will create a btree index on the word column and later we will use the gin
     index to show its efficiency.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-split-147
   prefs: []
   type: TYPE_PRE
 - en: Let’s run the explain plan query.
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-split-149
   prefs: []
   type: TYPE_PRE
 - en: '[PRE34]'
+  id: totrans-split-150
   prefs: []
   type: TYPE_PRE
 - en: Now, let’s drop btree index;
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: Install the `pg_trm` extension
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-split-153
   prefs: []
   type: TYPE_PRE
 - en: Create the index.
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-split-155
   prefs: []
   type: TYPE_PRE
 - en: Now, let;s run explain
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-split-157
   prefs: []
   type: TYPE_PRE
 - en: '[PRE38]'
+  id: totrans-split-158
   prefs: []
   type: TYPE_PRE
 - en: GitLab also makes use of `tsvector` to support complete full text search.
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
 - en: 'The advantages of doing text seach in your primary datastore are:'
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: Real time indexes. No lag to create index
+  id: totrans-split-161
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Access to the complete data
+  id: totrans-split-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Less complexity in your architecture
+  id: totrans-split-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 9\. Use of `jsonb`
+  id: totrans-split-164
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'As I discussed an earlier [post](https://shekhargulati.com/2022/01/08/when-to-use-json-data-type-in-database-schema-design/)
     I use json data type in schema design for following use cases:'
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: Dump request data that will be processed later
+  id: totrans-split-166
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Support extra fields
+  id: totrans-split-167
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: One To Many Relationship where many side will not have to its own identity
+  id: totrans-split-168
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Key Value use case
+  id: totrans-split-169
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Simpler EAV design
+  id: totrans-split-170
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -722,42 +885,53 @@
     it mainly for 1 and 2 use cases in my list above. The advantage of using jsonb
     over storing in plain text is the efficient querying supported by Postgres on
     `jsonb` data type.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: The table `error_tracking_error_events` stores payload in jsonb data type. This
     is an example of dump request data that will be processed in a later use case.
     I covered a similar use case in my blog post so do read that for more information.
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-split-173
   prefs: []
   type: TYPE_PRE
 - en: You can use a JSON schema to validate the structure of a JSON document.
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: Another example is the `operations_strategies` table shown below. You don’t
     know how many parameters you might receive so you need a flexible data type like
     `jsonb`.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-split-176
   prefs: []
   type: TYPE_PRE
 - en: An example of supporting extra fields use cases is shown below.
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-split-178
   prefs: []
   type: TYPE_PRE
 - en: They also use jsonb for storing data that is already in JSON format. For example,
     in the table `vulnerability_finding_evidences` report data is already JSON so
     they saved it as is in `jsonb` data type.
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE42]'
+  id: totrans-split-180
   prefs: []
   type: TYPE_PRE
 - en: 10\. Other tidbits
+  id: totrans-split-181
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -765,25 +939,31 @@
     be modified. For example `issues` has an `updated_at` column. For append-only
     immutable log tables like `audit_events` do not have an `updated_at` column as
     shown below in the code snippets. `issues` table with `updated_at` column
+  id: totrans-split-182
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE43]'
+  id: totrans-split-183
   prefs: []
   type: TYPE_PRE
 - en: '`audit_events` table with no `updated_at` column.'
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE44]'
+  id: totrans-split-185
   prefs: []
   type: TYPE_PRE
 - en: Enums are stored as smallint rather than `character varying`. It saves space.
     The only problem is you can’t change the order of enum values. In the example
     shown below `reason` and `severity_level` are enums
+  id: totrans-split-186
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE45]'
+  id: totrans-split-187
   prefs: []
   type: TYPE_PRE
 - en: Optimistic locking is used in a few(8) tables like `issues` and `ci_builds`
@@ -794,103 +974,131 @@
     the `lock_version` column and the locking facilities ensure that records instantiated
     twice will let the last one saved raise a `StaleObjectError` if the first was
     also updated. The `ci_builds` table shown below uses the ‘lock_version` column.
+  id: totrans-split-188
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE46]'
+  id: totrans-split-189
   prefs: []
   type: TYPE_PRE
 - en: Using inet for storing ip addresses. I was not aware of the `inet` type. They
     have used inet in `audit_events` and `authentication_events` tables
+  id: totrans-split-190
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE47]'
+  id: totrans-split-191
   prefs: []
   type: TYPE_PRE
 - en: GitLab has not used inet in all the tables that store `ip_address`. For example,
     in tables `ci_runners` and `user_agent_details`, they have stored it as `character
     varying`. I am not sure why they have not used the same type in all the tables
     that store ip addresses.
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
 - en: You should prefer `inet` over storing an ip address as a plain text type as
     these types offer input error handling and specialized functions.
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s quickly see it in action. We will start by creating a table with two fields
     – id, and `ip_addr`
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE48]'
+  id: totrans-split-195
   prefs: []
   type: TYPE_PRE
 - en: We can insert a valid record like shown below.
+  id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE49]'
+  id: totrans-split-197
   prefs: []
   type: TYPE_PRE
 - en: We can also insert the record with a mask as shown below.
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE50]'
+  id: totrans-split-199
   prefs: []
   type: TYPE_PRE
 - en: Both these records will get inserted
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE51]'
+  id: totrans-split-201
   prefs: []
   type: TYPE_PRE
 - en: '[PRE52]'
+  id: totrans-split-202
   prefs: []
   type: TYPE_PRE
 - en: If we try to save invalid data then insert will fail.
+  id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE53]'
+  id: totrans-split-204
   prefs: []
   type: TYPE_PRE
 - en: '[PRE54]'
+  id: totrans-split-205
   prefs: []
   type: TYPE_PRE
 - en: You can inet operators supported by Postgres to check if an ip address is contained
     by subnet as shown below.
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE55]'
+  id: totrans-split-207
   prefs: []
   type: TYPE_PRE
 - en: '[PRE56]'
+  id: totrans-split-208
   prefs: []
   type: TYPE_PRE
 - en: If we want to check if subnet is contained or equal then we do following
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE57]'
+  id: totrans-split-210
   prefs: []
   type: TYPE_PRE
 - en: '[PRE58]'
+  id: totrans-split-211
   prefs: []
   type: TYPE_PRE
 - en: There are many other operators and functions supported by Postgres. You can
     read them in the Postgres [docs](https://www.postgresql.org/docs/current/functions-net.html).
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
 - en: Postgres ‘bytea`data type is used to store`SHA` , encrypted tokens, encrypted
     keys, encrypted password, fingerprints, etc.
+  id: totrans-split-213
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Postgres array types are used for storing columns with multiple values as shown
     below.
+  id: totrans-split-214
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Arrays are to be used when you are absolutely sure you don’t need to create
     any relationship between the items in the array with any other table. It should
     be used for a tightly coupled one to many relationship. – [Link](https://stackoverflow.com/a/56298555)
+  id: totrans-split-215
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -899,56 +1107,70 @@
     You don’t know how many users and projects will be mentioned so it will be wasteful
     to create columns like `mentioned_user_id1` , `mentioned_user_id2`, `mentioned_user_id3`
     and so on.
+  id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE59]'
+  id: totrans-split-217
   prefs: []
   type: TYPE_PRE
 - en: Another common use case of Postgres array is to store fields like hosts, tags,
     urls.
+  id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE60]'
+  id: totrans-split-219
   prefs: []
   type: TYPE_PRE
 - en: Conclusion
+  id: totrans-split-220
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I learnt a lot from the GitLab schema. They don’t blindly apply the same practices
     to all the table designs. Each table makes the best decision based on its purpose,
     the kind of data it stores, and its rate of growth.
+  id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
 - en: References
+  id: totrans-split-222
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Gitlab schema `structure.sql` – [Link](https://gitlab.com/gitlab-org/gitlab/-/blob/master/db/structure.sql)
+  id: totrans-split-223
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Issue 29465: Use structure.sql instead of schema.rb – [Link](https://gitlab.com/gitlab-org/gitlab/-/issues/29465)'
+  id: totrans-split-224
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Choosing Primary Key Type in Postgres – [Link](https://shekhargulati.com/2022/06/23/choosing-a-primary-key-type-in-postgres/)
+  id: totrans-split-225
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Github’s Path to 128M public repositories – [Link](https://towardsdatascience.com/githubs-path-to-128m-public-repositories-f6f656ab56b1#:~:text=There%20are%20over%20128%20million%20public%20repositories%20on%20GitHub.)
+  id: totrans-split-226
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Postgres Character Types Documentation – [Link](https://www.postgresql.org/docs/current/datatype-character.html)
+  id: totrans-split-227
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Difference between text and varchar (character varying) – [Link](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
+  id: totrans-split-228
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: CHAR(x) vs. VARCHAR(x) vs. VARCHAR vs. TEXT – [Link](https://www.depesz.com/2010/03/02/charx-vs-varcharx-vs-varchar-vs-text/)
+  id: totrans-split-229
   prefs:
   - PREF_OL
   type: TYPE_NORMAL

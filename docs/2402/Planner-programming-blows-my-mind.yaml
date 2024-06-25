@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:01:06'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Planner programming blows my mind
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.hillelwayne.com/post/picat/](https://www.hillelwayne.com/post/picat/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,21 +29,25 @@
     I originally learned it to help with vacation scheduling but soon discovered its
     `planner` module, which is one of the most fascinating programming models I’ve
     ever seen.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, a brief explanation of <dfn>logic programming</dfn> (LP). In imperative
     and functional programming, we take inputs and write algorithms that produce outputs.
     In LP and constraint solving, we instead provide a set of equations and find assignments
     that satisfy those relationships. For example:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: Non-function identifiers that start with lowercase letters are “atoms”, or unique
     tokens. Identifiers that start with uppercase letters are variables. So `[a, b,
     c, a]` is a list of four atoms, while `Arr` and `X` are variables. So `Member(X,
     Arr)` returns true as you’d expect.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The interesting thing is `Member(Y, Arr)`. Y wasn’t defined yet! So Picat finds
@@ -45,17 +55,21 @@
     Then the line after that makes it impossible for `Y` to be `a`, so this prints
     either `ab` or `ac`. Picat can even handle expressions like `member(a, Z)`, instantiating
     Z as a list!
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '<dfn>Planning</dfn> pushes this all one step further: instead of finding variable
     assignments that satisfy equations, we find variable *mutations* that reach a
     certain end state. And this opens up some really cool possibilities.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: To showcase this, we’ll use Picat to solve a pathing problem.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: The problem
+  id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -63,255 +77,323 @@
     coordinate as the *goal*. At each step we can move one step in any cardinal direction,
     but cannot go off the boundaries of the grid. The program is successful when the
     marker is at the goal coordinate. As a small example:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: One solution would be to move to (1, 0) and then to (1, 1).
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'To solve this with planning, we need to provide three things:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: A starting state `Start`, which contains both the origin and goal coordinates.
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'A set of <dfn>action</dfn> functions that represent state transitions. In Picat
     these functions *must* all be named `action` and take four parameters: a current
     state, a next state, an action name, and a cost. We’ll see that all below.'
+  id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: A function named `final(S)` that determines if S is a final state.
+  id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Once we define all of these, we can call the builtin `best_plan(Start, Plan)`
     which will assign `Plan` to the shortest sequence of steps needed to reach a final
     state.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Our first implementation
+  id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: <details><summary>Explanation</summary>
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '`main` is the default entry point into a Picat program. Here we’re just setting
     up the initial state, calling `best_plan`, and printing `Plan`. `{a, b}` is the
     syntax for a Picat array, which is basically a tuple.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Every expression in a Picat body must be followed by a comma *except* the last
     clause, which must be followed with a period. This makes moving lines around *really
     annoying*. Writing it in that “bullet point” style helps a little.</details>
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since `final` takes just one argument, we’ll need to store both the current
     position and the goal into said argument. Picat has great pattern matching so
     we can just write it like this:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: <details><summary>Explanation</summary>
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'Without the pattern matching, we’d have to write it like this:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: If we write a second `final` predicate, the plan succeeds if *either* `final`
     returns true.</details>
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, we need to define the actions which the planner can take. We only need
     one action here.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: <details><summary>Explanation</summary>
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '`From` is the initial state, `To` is the next state, `Action` is the name of
     the action— in this case, `move`. You can store metadata in the action, which
     we use to store the new coordinates.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Writing `action ?=>` instead of `action =>` makes `action` backtrackable, which
     I’ll admit I don’t *fully* understand? I’m *pretty sure* it means that if *this*
     definition of `action` pattern-matches but doesn’t lead to a viable plan, then
     Picat can try *other* definitions of action. This’ll matter more for later versions.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: As with the introductory example up top, we’re using `member` to both *find*
     values (on line `(a)`) and *test values* (on lines `(b)`). Picat also has a non-assigning
     predicate, `membchk`, which just does testing. If I wasn’t trying to showcase
     Picat I could instead have use `membchk` for the testing part, which cannot assign.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '`Cost` is the “cost” of the action. `best_plan` tries to minimize the total
     cost. Leaving it at 1 means the cost of a plan is the total number of steps.</details>'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'And that’s it, we’re done with the program. Here’s the output:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: That’s a little tough to read, so I had Picat output structured data that I
     could process into a picture.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: 'I used a [Raku script](src/format_path.raku) to visualize it. Here’s what we
     now get:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'To show that the planner can route around an “obstacle”, I’ll add a rule that
     the state *cannot* be a certain value:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: '[PRE10]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'Let’s comment that out for now, leaving this as our current version of the
     code:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: <details><summary>Code</summary>
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]</details>'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Adding multiple goals
+  id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Next I’ll add multiple goals. In order to succeed, the planner needs to reach
     every single goal in order. We start with one change to `main`:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: Goal now represents a “queue” of goals to reach, in order. Then we add a *new*
     action which removes a goal from our queue once we’ve reached it.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: <details><summary>Explanation</summary>
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '`[Head|Tail]` splits a list into the first element and the rest. Since `Pos`
     was defined in the line before, `Goal = [Pos|Rest]` is *only* true if the first
     goal on the list is equal to `Pos`. Then we drop that goal from our new state
     by declaring the new goal state to just be `Rest`.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '(This is where backtracking with `?=>` becomes important: if we didn’t make
     the actions backtrackable, Picat would match on the `move` first and never `mark`.)</details>'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since we’re now destructively removing goals from our list when we reach them,
     `final` needs to be adjusted:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: And that’s it. We didn’t even have to update our first action!
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: <details><summary>Code</summary>
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]</details>'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Cost minimization
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Going through the goals in order doesn’t always lead to the shortest *total*
     path.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: '[PRE18]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: 'What if we didn’t care about the order of the goals and just wanted to find
     the shortest path? Then we only need to change two lines:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: Now the planner can delete any goal it’s passing over regardless of where it
     is in the `Goal` list. So Picat can “choose” which goal it moves to next so as
     to minimize the overall path length.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: 'Final code:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: <details><summary>Code</summary>
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]</details>'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Other variations
+  id: totrans-split-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Picat supports a lot more variations on planning:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '`best_plan(S, Limit, Plan)` caps the maximum cost at `Limit`— good for failing
     early.'
+  id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For each `best_plan`, there’s a `best_plan_nondet` that finds every possible
     best plan.
+  id: totrans-split-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sequence(P, Action)` restricts the possible actions based on the current partial
     plan, so we can add restrictions like “you have to move twice before you turn”.'
+  id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -320,37 +402,47 @@
     solving. The <dfn>partition problem</dfn> is an NP-complete problem where you
     partition a list of numbers into two equal sums. This program takes a list of
     numbers and finds the sublist with the largest possible equal partitioning:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: <details><summary>Code</summary>
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]</details>'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-85
   prefs: []
   type: TYPE_PRE
 - en: This is all so mindblowing to me. It’s almost like a metaconstraint solver,
     allowing me to express constraints *on the valid constraints*.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Should I use Picat?
+  id: totrans-split-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Depends?
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'I would not recommend using Picat in production. It’s a research language and
     doesn’t have a lot of affordances, like good documentation or clear error messages.
     Here’s what you get when there’s no plan that solves the problem:'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: But hey it runs on Windows, which is better than 99% of research languages.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Picat seems more useful as a “toolkit” language, one you learn to solve a specific
@@ -358,9 +450,11 @@
     share the code afterwards. But it’s really good in that niche! There’s a handful
     of problems I struggled to do with regular programming languages and constraint
     solvers. Picat solves a lot of them quite elegantly.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'Appendix: Other planning languages'
+  id: totrans-split-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -369,16 +463,19 @@
     Usually it’s built as libraries on top of other languages, or implemented as a
     [custom search strategy](https://artint.info/3e/html/ArtInt3e.Ch3.html). You can
     read more about GOAP [here](https://web.archive.org/web/20140613121607/http://alumni.media.mit.edu/~jorkin/goap.html).
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: There is also [PDDL](https://planning.wiki/guide/whatis/pddl), a planning description
     language that independent planners take as input, in the same way that DIMACS
     is a description format for [SAT](https://www.hillelwayne.com/post/sudoku/).
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: '*Thanks to [Predrag Gruevski](https://predr.ag/) for feedback. I first shared
     [my thoughts on Picat](https://buttondown.email/hillelwayne/archive/picat-is-my-favorite-new-toolbox-language/)
     on [my newsletter](https://buttondown.email/hillelwayne/). I write new newsletter
     posts weekly.*'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL

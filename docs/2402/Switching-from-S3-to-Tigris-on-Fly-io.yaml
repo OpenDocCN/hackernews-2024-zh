@@ -1,39 +1,49 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:48:54'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Switching from S3 to Tigris on Fly.io
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://benhoyt.com/writings/flyio-and-tigris/](https://benhoyt.com/writings/flyio-and-tigris/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Switching from S3 to Tigris on Fly.io
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: February 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '**Go to:** [Buckets](#creating-a-bucket) | [Endpoint](#endpoint-change) | [Caching](#caching-differences)
     | [Auth](#authentication-differences) | [Copying](#copying-files-and-shadow-buckets)
     | [DB migration](#database-migration) | [Final thoughts](#final-thoughts)'
+  id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: A year ago I switched my [GiftyWeddings.com](https://giftyweddings.com/) side
     project from being hosted on Amazon EC2 to using [Fly.io](https://fly.io/). I
     had [fun doing it](/writings/flyio/) and saved a few bucks a month.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Last week someone from [Tigris](https://www.tigrisdata.com/) contacted me, asking
@@ -41,66 +51,80 @@
     built on top of Fly.io infrastructure and have integrated with the `fly` CLI.
     (Tigris paid me a small amount to try their beta and write about it, but they
     didn’t have a say in the content.)
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: I hadn’t actually heard of Tigris, but this piqued my interest – I’ve had a
     good experience with Fly.io, and I think it’s great that more small companies
     are competing with the AWS Bezomoth.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'I already use Fly.io to run the Gifty server (written in Go), but before a
     couple of days ago I still used Amazon S3 for file storage: user-uploaded images
     and SQLite backups.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'It was straight-forward to switch: copy the files over, update the server’s
     config to point to the Tigris endpoint instead of S3, and `fly deploy`. I had
     to do a minor code change due to Tigris handling authentication and caching differently,
     and I ran into a couple of quirks, but overall it was very smooth.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a bucket
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The first step was to create a test bucket for user-uploaded images. I went
     straight in with a `fly storage create` command:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: It surprised me that just creating a bucket automatically set a bunch of environment
     variables and re-deployed my app. It did this because I was in the app directory
     where the app’s `fly.toml` config file lives, however, this behaviour seems unexpected
     and too magical – after all, I was creating a test bucket for local development.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is [documented](https://fly.io/docs/reference/tigris/#create-and-manage-a-tigris-storage-bucket),
     so it’s kind of my fault for not reading that bit – though they probably should
     add “and re-deploy”:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Running the following command in a Fly.io app context – inside an app directory
     or specifying `-a yourapp` – will automatically set secrets on your app.
+  id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: This feature could potentially be downtime-inducing, so I think it should be
     opt-in, for example an `--update-app` or `--add-secrets` command line option.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'There’s also no easy way to access the value of those automatically-set secrets.
     This is for security and by design, but it meant I had to create a new test bucket
     (outside the app directory) to get the credential for local testing:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: Okay, that’s better. Then I updated my local app config with that access key
     and secret, and it worked … mostly. I first had to iron out a few wrinkles, described
     below.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'One other quirk when creating buckets – in case the `fly` CLI devs are reading
@@ -109,42 +133,52 @@
     `BUCKET_NAME` is printed first; in the second, `AWS_REGION` comes first. It’s
     not a problem, but it is a bit weird, and I did a double-take to determine it
     was printing out the same keys both times.'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Endpoint change
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'It’s probably obvious that I needed to start using the new Tigris API endpoint
     rather than the default AWS one. When creating the S3 client, I do the following:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'To use the correct endpoint, I added these lines:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Note that I’m still using v1 of the AWS SDK for Go. This works a bit [differently
     in v2](https://www.tigrisdata.com/docs/sdks/s3/aws-go-sdk/).
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Caching differences
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When I used Amazon S3, and a user uploaded a new image for their wedding registry,
     I found I could get away with just uploading to the same filename (key). When
     the page reloaded and the image was re-fetched, the new image would appear.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: I’m not sure this was a good idea even using S3, because originally S3 was only
     [eventually consistent](https://en.wikipedia.org/wiki/Eventual_consistency). However,
     in 2020 they switched to [strong read-after-write consistency](https://aws.amazon.com/blogs/aws/amazon-s3-update-strong-read-after-write-consistency/),
     so all GETs to a file after a PUT would give you the updated content right away.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'When I starting using Tigris, and re-uploaded an image, I had to do a Ctrl-Shift-R
@@ -152,35 +186,43 @@
     aggressive caching: looking at the response headers from an image uploaded to
     Tigris, it sends a `Cache-Control: max-age=3600` header by default, even though
     I’m not setting the header.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: I’m not sure this is a good default, but because they’re trying to be a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network)
     as well as a storage system, I can see why they chose that. It forces people to
     use caching techniques like [content-based filenames](https://github.com/benhoyt/cdnupload),
     which are a good thing.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '*Update: After reading this article, Tigris added a nice [page about caching](https://www.tigrisdata.com/docs/caching/)
     that documents this behaviour and their intention on this point.*'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'In any case, it was a chance for me to improve Gifty’s handling of uploads.
     I changed the code to add a short content-based hash to the filename: instead
     of using `{registryID}.jpg` as the key, I use `{registryID}-{contentHash}.jpg`,
     and it fixes the caching problem:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: 'I also changed the full image URL from hard-coding `amazonaws.com` and made
     the URL format configurable:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Authentication differences
+  id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -188,73 +230,90 @@
     – and they both use the same AWS key and secret for authentication. This is probably
     not great (I probably should have used a different credential for backups), but
     in my experience it’s also fairly typical for small sites to have a single key.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: When using Tigris, you get a new key and secret for each bucket you create.
     So I had to make a minor code change to add two new S3-related environment variables.
     A few lines of code later, backups were working.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Copying files, and “shadow buckets”
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that everything was working in my test environment, I wanted to switch the
     production site over.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: For migrating from S3, Tigris has this cool feature called [shadow buckets](https://www.tigrisdata.com/docs/migration/),
     which allows you to point your Tigris bucket at the original S3 bucket, and it
     will seamlessly pull from the “shadow bucket” if the file is missing from the
     Tigris bucket (and copy it there so it’s available from Tigris for future requests).
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: I probably should have tried this feature, but I decided not to, as I only have
     a few hundred files in my largest bucket, and I wanted to do a clean switchover
     and avoid the dependency on S3 entirely when I was done.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: So I used the `aws s3 sync` command to copy the files from S3 to my local drive,
     and then copy them from there to the new Tigris bucket. My site is very small
     scale, so the likelihood of missing any during the few minutes of switchover was
     extremely low.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: I created two `aws` CLI profiles with the credentials for the new Tigris buckets,
     called `gifty-registry-images` and `gifty-backup`. The default profile still points
     to Amazon S3.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are the commands I used to copy from S3 to Tigris (I used the handy `--dryrun`
     option first):'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: Database migration
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: As long as I keep paying AWS, the existing S3 URLs will keep working fine. However,
     as mentioned, I wanted to remove the dependency on S3.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'I store the full image URL in the site’s SQLite database. So after copying
     the files, I updated the image URLs in the database using a simple SQLite query:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: After that, the site was fully on Tigris and Fly.io, and 100% AWS-free!
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Final thoughts
+  id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Performance
+  id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -262,14 +321,17 @@
     from the old AWS bucket versus the new Tigris one. Tigris buckets are “global
     by default”, so they can use the nearest Fly.io region (Sydney), which is much
     closer to New Zealand than the `us-west-1` region the AWS bucket was in.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'As expected, I saw significantly faster download times from Tigris: for a small
     image, about 1s on AWS compared to 300ms on Tigris. For medium-sized images, I
     was seeing more like 1.3s on AWS compared to 600ms on Tigris.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Pricing
+  id: totrans-split-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -277,30 +339,36 @@
     cents per month. I’m sure I cost them more in admin overhead than what I actually
     paid them. So pricing was not a concern for me, but still, Tigris pricing is similar
     to S3’s:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[Tigris](https://www.tigrisdata.com/docs/pricing/): storage is $0.02 per GB
     per month, GET requests are $0.0005 per 1000.'
+  id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[S3](https://aws.amazon.com/s3/pricing/): storage is $0.023 per GB per month,
     GET requests are $0.0004 per 1000.'
+  id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Either way, Tigris gave me $150 free credit as part of the beta sign-up process.
     That’s 7500 GB-months or 300 million GET requests – almost certainly more than
     my small website will use in my lifetime.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Disclaimer and durability
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'One thing you might want to know: when I signed up for their [**early access
     beta**](https://hello.tigrisdata.com/forms/early-access/), Tigris sent me an email
     saying, “Please avoid using this service for production workloads during the beta!”'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: I asked if this was just a disclaimer to cover their backsides, or if it was
@@ -308,6 +376,7 @@
     the beta”. They said it’s more of a disclaimer, and that both Fly.io and Tigris
     are treating this as a production platform. Obviously there’s a risk there, but
     I was happy with that, and they’ll be out of beta soon.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: I also wondered about Tigris’s durability compared to S3, who advertise their
@@ -316,9 +385,11 @@
     lot, but I wonder if it’s possible to measure their durability and compare to
     [S3’s insane numbers](https://aws.amazon.com/blogs/aws/new-amazon-s3-reduced-redundancy-storage-rrs/)?
     Then again, is S3’s eleven 9s number [actually meaningful](https://stackoverflow.com/a/4188501/68707)?
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: The end
+  id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -326,5 +397,6 @@
     yet had any problems – but I’m sure time will tell! I hope both Tigris and Fly.io
     continue to do well, and introduce some much-needed competition for the big cloud
     companies.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL

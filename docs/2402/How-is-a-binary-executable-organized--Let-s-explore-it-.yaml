@@ -1,26 +1,33 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:32:17'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How is a binary executable organized? Let's explore it!
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/](https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I used to think that executables were totally impenetrable. I’d compile a C
     program, and then that was it! I had a Magical Binary Executable that I could
     no longer read.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: It is not so! Executable file formats are regular file formats that you can
@@ -28,235 +35,306 @@
     with ELF binaries. (binaries are kind of the definition of platform-specific,
     so this is all platform-specific.) We’ll be using C, but you could just as easily
     look at output from any compiled language.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s write a simple C program, `hello.c`:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: 'Then we compile it (`gcc -o hello hello.c`), and we have a binary called `hello`.
     This originally seems impenetrable (how do we even binary?!), but let’s see how
     we can investigate it! We’re going to learn what **symbols**, **sections**, and
     **segments** are. At a high level:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**symbols** are like function names, and are used to answer “If I call `printf`
     and it’s defined somewhere else, how do I find it?”'
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: symbols are organized into **sections** – code lives in one section (`.text`),
     and data in another (`.data`, `.rodata`)
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: sections are organized into **segments**
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Throughout we’ll use a tool called `readelf` to look at these.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: So, let’s dive into our binary!
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Step 1: open it in a text editor!'
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This is most naive possible way to view a binary. If run `cat hello`, I get
     something like this:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]H��k����H���5 H�[]�fff.�H�=p'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: UH��t�H��]�H`��]Ð�UH����@�����]Ð�����������H�l$�L�d$�H�- L�%
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: L�l$�L�t$�L�|$�H�\$�H��8L)�A��I��H��I���s���H��t1@L��L��D��A��H��H9�u�H�\H�l$L�d$L�l$
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: L�t$(L�|$0H��8��Ð�������������UH��SH�H�
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: H���t�(`DH���H�H���u�H�[]Ð�H��o���H��Penguin!;,����H
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: $ readelf --symbols hello
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'Num:    Value          Size Type    Bind   Vis      Ndx Name'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '48: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@@GLIBC_2.2.5'
+  id: totrans-split-26
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '59: 0000000000400410     0 FUNC    GLOBAL DEFAULT   13 _start'
+  id: totrans-split-27
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '61: 00000000004004f4    16 FUNC    GLOBAL DEFAULT   13 main'
+  id: totrans-split-28
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: $ objdump -s hello
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'Contents of section .text:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Contents of section .interp:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 400238 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 400248 7838362d 36342e73 6f2e3200           x86-64.so.2\.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Contents of section .rodata:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 4005f8 01000200 50656e67 75696e21 00        ....Penguin!.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: $ readelf --sections hello
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Section Headers:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[Nr] Name              Type             Address           Offset'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Size              EntSize          Flags  Link  Info  Align
+  id: totrans-split-44
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[13] .text             PROGBITS         0000000000400410  00000410'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 00000000000001d8  0000000000000000  AX       0     0     16
+  id: totrans-split-46
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[15] .rodata           PROGBITS         00000000004005f8  000005f8'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 000000000000000b  0000000000000000   A       0     0     4
+  id: totrans-split-48
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[24] .data             PROGBITS         0000000000601010  00001010'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 0000000000000010  0000000000000000  WA       0     0     8
+  id: totrans-split-50
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[25] .bss              NOBITS           0000000000601020  00001020'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 0000000000000010  0000000000000000  WA       0     0     8
+  id: totrans-split-52
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[26] .comment          PROGBITS         0000000000000000  00001020'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 000000000000002a  0000000000000001  MS       0     0     1
+  id: totrans-split-54
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'Key to Flags:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: W (write), A (alloc), X (execute), M (merge), S (strings), l (large)
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: O (extra OS processing required) o (OS specific), p (processor specific)
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'Contents of section .text:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: $ objdump -d ./hello
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'Disassembly of section .text:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '0000000000400410 <_start>:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '400410:       31 ed                   xor    %ebp,%ebp'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '400412:       49 89 d1                mov    %rdx,%r9'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '400415:       5e                      pop    %rsi'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '400416:       48 89 e2                mov    %rsp,%rdx'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '400419:       48 83 e4 f0             and    $0xfffffffffffffff0,%rsp'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: 'Program Headers:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[... removed ...]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: INTERP         0x0000000000000238 0x0000000000400238 0x0000000000400238
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 0x000000000000001c 0x000000000000001c  R      1
+  id: totrans-split-77
   prefs:
   - PREF_IND
   - PREF_IND
@@ -264,13 +342,16 @@
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]'
+  id: totrans-split-78
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 0x00000000000006d4 0x00000000000006d4  R E    200000
+  id: totrans-split-80
   prefs:
   - PREF_IND
   - PREF_IND
@@ -278,9 +359,11 @@
   - PREF_IND
   type: TYPE_NORMAL
 - en: LOAD           0x0000000000000e28 0x0000000000600e28 0x0000000000600e28
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: 0x00000000000001f8 0x0000000000000208  RW     200000
+  id: totrans-split-82
   prefs:
   - PREF_IND
   - PREF_IND
@@ -288,50 +371,65 @@
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[... removed ...]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'Section to Segment mapping:'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Segment Sections...
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '00'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 01     .interp
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: 02 .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt
+  id: totrans-split-89
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: .text .fini .rodata .eh_frame_hdr .eh_frame
+  id: totrans-split-90
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 03     .ctors .dtors .jcr .dynamic .got .got.plt .data .bss
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: 04     .dynamic
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 05     .note.ABI-tag .note.gnu.build-id
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: 06     .eh_frame_hdr
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: '07'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: 08     .ctors .dtors .jcr .dynamic .got
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: '```'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: Segments are used to determine how to separate different parts of the program
@@ -339,20 +437,25 @@
     is `RW` (read/write). `.text` is in the first segment (we want to read it but
     never write to it), and `.data`, `.bss` are in the second (we need to write to
     them, but not execute them).
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Not magic!
+  id: totrans-split-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Executables aren’t magic. ELF is a file format like any other! You can use `readelf`,
     `nm`, and `objdump` to inspect your Linux binaries. Try it out! Have fun.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'Other resources:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks very much to the amazing [Allison Kaptur](http://akaptur.github.io) and
     [Dan Luu](http://danluu.com) for reading a draft of this.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL

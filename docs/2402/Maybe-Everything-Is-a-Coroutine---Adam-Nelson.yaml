@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:49:33'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Maybe Everything Is a Coroutine - Adam Nelson
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/](https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,42 +29,51 @@
     and this is used to express asynchronicity: async functions can yield a type called
     `Pending` when awaiting some async action, while pure, synchronous functions can
     yield `Never`, indicating that they never yield at all.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'The more I thought about this, the more I realized that a strongly-typed language
     in which *every function is a coroutine* could actually have a lot of nice properties.
     I''ve come up with a design with several cool features, including:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: A type system in which coroutines are basically state machines
+  id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A typed (algebraic) effect system based on coroutines
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Functions can be generic over effects and purity
+  id: totrans-split-10
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Effects can be "intercepted" by a caller and faked
+  id: totrans-split-11
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: A powerful exception system based on simple sum types
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An exception pass-through system that feels like a saner, generic version of
     checked exceptions
+  id: totrans-split-13
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Common Lisp-style resumable conditions
+  id: totrans-split-14
   prefs:
   - PREF_IND
   - PREF_UL
@@ -66,84 +81,104 @@
 - en: Immutable data structures and pure-by-default functions, but with the ability
     to use mutation in algorithms, by keeping all mutation in a function's scope and
     using coroutines to control state
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'How does it work? There are three key features: *sequence types*, the *coroutine
     for loop*, and the *pass operator*.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Sequence Types
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Ordinary functions have *argument types* and a *return type*:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: In this everything-is-a-coroutine language, instead of a return type, every
     function has a *sequence type*. This is a sum type describing every type that
     the function can yield and every type that it can be resumed with after a yield.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, a coroutine version of `fib` that, instead of returning the `n`th
     Fibonacci number, yields an infinite sequence of the Fibonacci numbers:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: The `()` means that, after the coroutine yields an `Int`, it can be *resumed*
     with no arguments. Because there is no base case (no branch that cannot be resumed),
     this coroutine must be infinite; it continues until the caller chooses not to
     resume it.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'Consider instead a coroutine that yields a *finite* sequence of `Int`s:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'This sequence type has two *cases*: either it emits an `Int` and can be resumed
     with no arguments, or it emits nothing and cannot be resumed.'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Notice the syntax of `Void`: a type with no parentheses is a valid sequence
     type. This means that the ordinary function `fib(n: Int) -> Int` is a valid coroutine
     as well—it yields `Int` once, then cannot be resumed. Pure functions are a subset
     of coroutines!'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'These strongly-typed coroutines are essentially state machines. Let''s define
     an additional piece of syntax: a *symbol* `:foo` is a unique singleton object
     whose type is also `:foo`. Using symbols, we can define a simple state machine
     for a door:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Each state accepts only a specific set of actions. An open door can only be
     closed; a locked door can only be unlocked; a closed door can be opened or locked.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Coroutine For Loop
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: But how do we *use* these coroutines? The syntax for basic function calls remains
     the same; if a coroutine has only no-resume types in its sequence type, then it
     can be used directly as an argument or assigned to a variable.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'For more complex coroutines, there is a for loop syntax. Consider the door
     state machine from before; this is an example of a for loop that uses it:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'This loop pattern-matches on the values yielded by `door`. The branches use
@@ -151,6 +186,7 @@
     it resumes `for`''s coroutine with new arguments, which must match the argument
     type of the current branch of the sequence type. The loop does not end until it
     encounters a `break`.'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: We can add some conveniences for the common case of coroutines that yield a
@@ -158,74 +194,91 @@
     of blocks whose resume type is `()`, `break` is inferred at the end of blocks
     with no resume type, `Void` branches can be omitted, and wildcard matches are
     assumed to not match `Void`.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: The Pass Operator
+  id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Extending this coroutine syntax to support algebraic effects and error handling
     is straightforward. Errors can be yielded as ordinary values, which usually do
     not resume:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Algebraic effects can be yielded, presumably all the way up to the main function,
     which will then resume with a response to the given effect. These get complex,
     but I'll introduce syntax sugar to deal with these huge signatures later.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'But actually *using* effects and errors with the mechanisms we already have
     (for loops and `yield`) would be extremely cumbersome. It would look a lot like
     Go: manually checking for error states or effects everywhere, just to `yield`
     them to the next level in the stack.'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'The common pattern here is `a -> continue(yield a)` (for branches that resume)
     and `e -> yield e` (for branches that don''t). This pattern is so common in this
     style of code that it deserves its own piece of syntax sugar: the *pass operator*,
     `^`.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Placing `^` before an expression causes any value yielded by that expression
     that can be directly yielded (as `continue (yield a)` or just `yield a`) to be
     yielded. In other words, it causes any types contained in the function's sequence
     type to be *passed through* from this expression to the caller.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'This greatly simplifies the example function:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'The sequence type is still a mess, though. And there''s another problem: what
     if a function yields a bunch of effect types, but also a type that you want to
     capture in a variable... that also happens to be in your function''s sequence
     type?'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are some changes that solve these problems:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: The keyword `infer Type` can be used in any branch of the sequence type; its
     type is inferred as all subtypes of `Type` that are yielded by the function. Values
     passed through by the `^` operator are included in this inference.
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`infer Type(*)` also infers the resume arguments; this can infer multiple branches.'
+  id: totrans-split-52
   prefs:
   - PREF_IND
   - PREF_UL
@@ -233,23 +286,28 @@
 - en: The `^` operator can occur in front of sequence type branches. This causes `^`
     in the function body to only pass through types that also have a `^` in front
     of them in the sequence type.
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A block or keyword, like `nopass`, could prevent a type from being passed through;
     this would work like a catch block, ensuring the function can handle a specific
     yielded type.
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: With these changes, and assuming that supertypes `FileIO` and `Error` exist,
     the function becomes even simpler!
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: Putting it All Together
+  id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -257,10 +315,12 @@
     they aren''t a full language on their own. They could fit into several different
     language designs, but, in my opinion, the ideal language built on this foundation
     would have:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Strict functional purity outside of algebraic effects and mutable local variables.
     You can only perform side effects by yielding effect objects from `main`.
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -270,22 +330,26 @@
     arrays can then be manipulated by passing a coroutine into a function, then using
     actions yielded by that coroutine to manipulate the arrays defined in that function's
     scope.
+  id: totrans-split-60
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Immutable, nominally-typed structs with subtyping.
+  id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A generic tuple type, allowing for tuples-with-symbols message passing a la
     Erlang, but strongly typed.
+  id: totrans-split-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Full higher-order generics. This allows functions to be generic over purity
     and generic over checked exceptions, two qualities that are very rarely found
     in type systems.
+  id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -293,6 +357,7 @@
     for this would likely use `(*)`. For example, you can define `type Ints -> Int()
     | Void`—the `->` indicates that it''s a sequence type—and then use it like this:
     `someFunction() -> Ints(*)`.'
+  id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -300,6 +365,7 @@
     -> Ints(*)) -> Int` is a sum function over a finite sequence of `Int`. It can
     be called with `sum(someFunction())`, and the *entire sequence* returned by `someFunction`
     will be passed in to `sum`.
+  id: totrans-split-65
   prefs:
   - PREF_IND
   - PREF_UL
@@ -308,12 +374,14 @@
     equivalent of an [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE).
     For example, `-> { yield 1 }` would be a sequence of type `-> Int` by default,
     but could also be explicitly typed: `-> Int() | Void { yield 1 }`.'
+  id: totrans-split-66
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Sequence literals could be written with square brackets: `[1, 2, 3]` would
     be syntax sugar for `-> Int() | Void { yield 1; yield 2; yield 3 }`.'
+  id: totrans-split-67
   prefs:
   - PREF_IND
   - PREF_UL
@@ -321,5 +389,6 @@
 - en: I have no idea when I'll find the time to actually work on this, but I'd like
     to see this language come together. I feel like this everything-is-a-coroutine
     type system has a lot of potential as a new architecture for functional programming.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL

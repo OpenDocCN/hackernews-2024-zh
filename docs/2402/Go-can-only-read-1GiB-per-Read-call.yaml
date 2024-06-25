@@ -1,30 +1,38 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:45:26'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Go can only read 1GiB per Read call
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://kgrz.io/go-file-read-max-size-buffer.html](https://kgrz.io/go-file-read-max-size-buffer.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main class="post">
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'UPDATE: I don’t mean to say that this is a bad choice, or that it’s a bug,
     or even a performance implication. It’s just a choice that was made which seemed
     a bit opaque without doing all the history spelunking I did here, and it’s interesting
     to see the reasoning behind it.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'There’s a 1GiB limit for a single `Read` call for an `os.File` entity (object?
@@ -34,20 +42,25 @@
     was spending way too much time in the `syscall` module. That in this context can
     only mean one thing: way too many `read` syscalls were getting called. Something
     like this would show this behaviour:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: 'That, on a 2.5G file would output something like:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: 'Even though the initialised buffer size is 2GiB, only 1GiB is read into the
     buffer per iteration. Upon digging into the source code, it looks like this is
     a deliberate choice. The main change logs from the history point to the following:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://codereview.appspot.com/89900044](https://codereview.appspot.com/89900044)
@@ -55,6 +68,7 @@
     had a fix for failing reads on file sizes greater than or equal to 2GiB on macos
     and freebsd by capping each `read` syscall to only read a 2GiB-1 bytes. For the
     rest of operating systems, at this point, there was no cap.'
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -62,14 +76,17 @@
     as a followup of 1, where the limit was decreased without any OS checks to 1GiB,
     with an explanation that at least it would allow for aligned reads from disk,
     as opposed to an odd number that might miss page caches (my understanding).'
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Note that a lot has changed since that changeset, and the current file reference
     for that `_unix.go` file in the changeset is [src/internal/poll/fd_unix.go](https://github.com/golang/go/blob/release-branch.go1.22/src/internal/poll/fd_unix.go#L132-L137).
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Aside: System limits'
+  id: totrans-split-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -78,22 +95,28 @@
     rudimentary scripts in Rust and C. The Rust program is taken verbatim from the
     example for [`read_to_end()`](https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_end).
     Running that under `strace` has the following output (truncated here):'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'And a similar, simple C program results in similar output, when using the `read`
     syscall in a loop until the file is read:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: Although that’s neither here nor there, it’s still interesting that Go’s choice
     has been to pick 2GiB-1 and then 1GiB justifying the odd buffer size in the former.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL

@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:41:18'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The Leadership Myth in Replicated Databases | mahesh’s blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html](https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I’ve heard multiple times that a strong notion of leadership somehow simplifies
     replication. I don’t think this is true. I explain why in this post.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In a prior [post](https://maheshba.bitbucket.io/blog/2021/11/20/MultiPaxos.html),
@@ -28,6 +35,7 @@
     we described how SMR can be implemented either directly using RPC (e.g., as in
     Raft or Viewstamped Replication) or via intermediate abstractions like a shared
     log or a process group.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: To start with, consider a system that’s implementing the SMR API. In such a
@@ -35,6 +43,7 @@
     or database servers) storing replicated state. When a server wants to update the
     replicated state, it proposes a new command to the SMR layer. The SMR layer continuously
     applies new commands to each server.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: For now, let’s ignore how the SMR layer is implemented (i.e., via some custom
@@ -42,16 +51,20 @@
     log). Without loss of generality, I’ll use the terms ‘log’ or ‘shared log’ to
     mean ‘SMR total order’, regardless of whether the SMR layer constructs this total
     order via an actual shared log or some protocol like Raft or MultiPaxos.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'In such a system, there are two key questions:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**What** is proposed to the shared log?'
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Who** is allowed to propose to the shared log?'
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -62,6 +75,7 @@
     might be “x++”; or “if(x<5) y++;” Each server is provided the same total order
     of commands by the SMR layer and executes the new commands on its local state
     as it receives them via the apply upcall.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'This simple protocol results in a strong invariant: the local state at any
@@ -70,6 +84,7 @@
     the position in the total order at which it should resume applying new commands.
     Ideally, local state is stored in some persistent store that has failure atomicity
     (e.g., RocksDB), so that the state can never reflect a half-applied command.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'In classical SMR, the answer to *who* is also simple: any server can propose
@@ -79,10 +94,12 @@
     / strictly serializable response. The replicated database is trivially serializable
     since its state corresponds to the serial execution of the commands in the SMR
     total order.'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'There is **no notion of leadership** is classical SMR: systems are multi-primary
     by default.'
+  id: totrans-split-16
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -91,6 +108,7 @@
     such a property. If active-active systems are this easy to build, why do systems
     even bother with electing leaders? The reasons lie on either side of the SMR API;
     let’s start first with life above the API.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '**Leadership above the Log**: One reason for introducing leadership above the
@@ -102,12 +120,14 @@
     during execution (e.g., a disk out-of-space error). In a sense, the complexity
     in the system moves away from reasoning about leadership changes (since there
     is no leader) and towards ensuring determinism.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: In contrast, if the total order contains the output produced by an executed
     command (e.g., a write-set of keys updated by the command), we are no longer executing
     arbitrary code on multiple machines, so the burden of determinism is lower. Instead
     of “x++”, the command would simply say “x=1”.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: If the log contains outputs, then we can no longer blindly apply commands proposed
@@ -117,6 +137,7 @@
     and produce a new value (e.g., “x=1”) to propose. In effect, the replicated database
     no longer behaves as if it’s executing commands in a total order; as a result,
     it is no longer strictly serializable.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: To re-introduce serializability, we could somehow ensure that there is only
@@ -126,6 +147,7 @@
     is an easier option if the log itself has a leader under the SMR API, as we discuss
     shortly; but exploiting that property can constrain the database to running over
     a specific log implementation.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, there’s an easier option that’s agnostic to the log implementation:
@@ -137,6 +159,7 @@
     that command would then ask the question: “would I get the same output as the
     proposer if I had executed the original command now?” or equivalently “has the
     state seen by the command changed since the command was executed at the proposer?”.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note that the speculation could also be on the identity of the proposer: “if(proposer==primary)
@@ -145,11 +168,13 @@
     the SMR API. All we have to do is propose a ‘takeover’ command to the log saying
     “I am the designated proposer now; from this point, ignore commands (except takeovers)
     in the log from any other proposer”.'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: To switch between multi-primary and single-primary, we simply decide whether
     we want to store **inputs or outputs** in the log; and elect a **designated proposer**
     via the log.
+  id: totrans-split-24
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -162,6 +187,7 @@
     requires a real-time lease (new primaries have to wait for some time period after
     proposing the ‘takeover’ command), but such a real-time lease is fundamentally
     required for this optimization in any consensus-based system.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '**Leadership below the Log:** Note that so far we said absolutely nothing about
@@ -170,6 +196,7 @@
     at a leader) have to do with the design of the database state machine above the
     SMR API; and absolutely nothing to do with the consensus protocol used to implement
     the SMR API.'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Internally, the SMR layer could be implemented in any of the five ways we discussed
@@ -179,10 +206,12 @@
     and latency optimization. Raft has a strong notion of a leader (e.g., the leader
     sees all I/O); Corfu has a weak notion of a leader (i.e., a sequencer that hands
     out timestamps but does not see all I/O).
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The leader **above the log** – i.e., the database primary; the designated proposer
     – does not have to be the leader **below the log**.
+  id: totrans-split-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -193,6 +222,7 @@
     single machine play the role of the leader above and below the SMR API. Over time,
     implementations began to fuse these roles, blurring the distinction between leadership
     above and below the log.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: However, understanding the difference between these two different leadership
@@ -202,9 +232,11 @@
     change your consensus protocol to be leaderless without disturbing your database
     layer, and so on. For a more technical description of these ideas, see the Delos
     papers from Meta.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: (This post is informed by several discussions over the years with various collaborators
     at Confluent and Meta; as well as Ben Reed and Allen Clement)
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL

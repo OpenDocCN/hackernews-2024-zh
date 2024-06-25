@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:02:25'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Rust and C filesystem APIs [LWN.net]
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lwn.net/Articles/958072/](https://lwn.net/Articles/958072/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,46 +28,57 @@
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
     articles possible. |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: By **Jonathan Corbet**
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: January 15, 2024
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: As the
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[Rust-for-Linux project](https://rust-for-linux.com/)'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: advances, the kernel is gradually accumulating abstraction layers that enable
     Rust code to interface with the existing C code. As the discussion around the
     set of
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[filesystem abstractions](/ml/linux-fsdevel/20231018122518.128049-1-wedsonaf@gmail.com/)'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: posted by Wedson Almeida Filho in December shows, though, there is some tension
     between two approaches to the design of those abstractions. The approach favored
     by most of the kernel's C programmers looks set to win out, but this is a discussion
     that is likely to return as the use of Rust in the kernel grows.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'If a Rust developer wants to implement a filesystem using the posted abstractions,
     their job will be to put together an implementation that looks like this example
     taken from the cover letter:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: 'The functions defined here perform the tasks that the kernel might ask of a
     filesystem implementation: `read_dir()` to read directory contents, for example,
     or `lookup()` to look up a file name within a directory. All of these operations
     are defined as part of a single trait called `FileSystem`.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: This organization differs from how the API is defined for C code, where file
@@ -77,12 +94,14 @@
     [`file_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1916)),
     and address spaces ([`address_space`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L448),
     [`address_space_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L404)).
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: As an example of how the object model works on the C side, consider that `lookup()`
     is an inode operation, `iterate_shared()` (used to implement the `read_dir()`
     function defined in the Rust trait) is a file operation, and `read_folio()` is
     an address-space operation.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Matthew Wilcox [had a couple of questions](/ml/linux-fsdevel/ZT7BPUAxsHQ%2FH%2FHm@casper.infradead.org/)
@@ -92,6 +111,7 @@
     There is little in the way of type safety here; a function cannot know that it
     was actually passed a pointer to the right sort of inode. In Rust, it seems, it
     should be possible to do better.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Almeida [answered](/ml/linux-fsdevel/CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com/)
@@ -99,13 +119,16 @@
     is `&INode<Self>`, which ties the actual type of that parameter to the filesystem
     type; it is not possible to pass the wrong type of inode to those functions without
     running into compilation errors.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Wilcox''s other question proved harder to answer, though. The file operation
     used (in C code) to read a directory is:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: 'The equivalent in the Rust code (`read_dir()`, above) takes an inode reference
@@ -117,10 +140,12 @@
     file`; he added: "<q>Passing a `file` to `read_dir` would require us to introduce
     an unnecessary abstraction that no one uses, which we''ve been told not to do</q>".
     But, he said, the interface could be changed if and when it becomes necessary.'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'Wilcox [responded](/ml/linux-fsdevel/ZZWhQGkl0xPiBD5%2F@casper.infradead.org/)
     in fairly strong terms:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Then we shouldn't merge any of this, or even send it out for review again until
@@ -128,6 +153,7 @@
     orientation we've already defined (ie separate aops, iops, fops, ... with substantially
     similar arguments) or propose changes to the ones we have in C. Dealing only with
     toy filesystems is leading you to bad architecture.
+  id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -140,6 +166,7 @@
     that the existing set of objects and operations needed to be treated "<q>as externally
     given</q>"; they can be changed with good reason, he said, but no such reason
     exists here.'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Kent Overstreet, instead, [argued](/ml/linux-fsdevel/ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5/)
@@ -147,12 +174,14 @@
     interface should not need to match the C API. Cleaning up the latter is "<q>a
     giant hassle</q>" due to the need to change all existing filesystems at the same
     time, while creating something better in Rust is relatively easy.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: So instead, it would seem easier to me to do the cleaner version on the Rust
     side, and then once we know what that looks like, maybe we update the C version
     to match - or maybe we light it all on fire and continue with rewriting everything
     in Rust.
+  id: totrans-split-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -169,6 +198,7 @@
     that this problem is exactly why he has been suggesting that the Rust developers
     reimplement ext2, since that filesystem, while being relatively simple, uses most
     of the core filesystem API.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Eventually, Almeida [gave in](/ml/linux-fsdevel/CANeycqrubugocT0ZEhcUY4H+kytzhm-E4-PoWtvNobYr32auDA@mail.gmail.com/),
@@ -176,6 +206,7 @@
     inode, and address-space traits; `read_dir()` will be updated to take a `File<T>`
     reference instead. Wilcox [agreed](/ml/linux-fsdevel/ZZ6T6aBjOf+vA9sB@casper.infradead.org/)
     that this approach seemed like the right way forward.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: So this particular discussion appears to have come to a resolution. But implementing
@@ -187,6 +218,7 @@
     maintenance and future development harder, so there will continue to be strong
     resistance to the idea of creating APIs on the Rust side that differ from what
     is done on the C side.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: One answer, as was also [discussed](/Articles/952029/) at the 2023 Maintainers
@@ -197,6 +229,7 @@
     acceptance for the changes will not be a task for the faint of heart. Such a policy
     would undoubtedly impede the development of better interfaces on the Rust side;
     the result would be more maintainability, but that comes at a real cost.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'What seems likely to happen at some point was alluded to by Overstreet above:
@@ -207,23 +240,29 @@
     code with Rust implementations at some point, and the resistance to doing so will
     be fierce. Even in this discussion, David Howells [made it clear](/ml/linux-fsdevel/1080086.1704413050@warthog.procyon.org.uk/)
     that he didn''t want to see Rust anywhere near the core kernel.'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: That, though, is a discussion for a future time; Rust will have to prove itself
     at the edges of the kernel first. But once the camel's nose (or the crab's) is
     in the tent, the rest seems likely to want to follow. Stay tuned, it is going
     to be interesting.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: (
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/958072/)'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: to post comments)
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL

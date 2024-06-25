@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:44:18'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: What’s new in the Postgres 16 query planner / optimizer
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/](https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: PostgreSQL 16 introduces quite a few improvements to the query planner and makes
     many SQL queries run faster than they did on previous versions of PostgreSQL.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: If you look at the [PG16 release notes](https://www.postgresql.org/docs/16/release-16.html),
@@ -27,6 +34,7 @@
     made in each PostgreSQL release, it’s not possible to provide enough detail about
     each and every change. So maybe you might need a bit more detail to know what
     the change is about—before you understand if it’s relevant to you.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In this blog post, assuming you’ve already got a handle on the [basics of EXPLAIN](https://www.postgresql.org/docs/16/using-explain.html#USING-EXPLAIN-BASICS),
@@ -35,48 +43,60 @@
     called an optimizer in other relational databases), you’ll also get comparisons
     between PG15 and PG16 planner output—plus examples of what changed, in the form
     of a self-contained test you can try for yourself.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s dive into these 10 improvements to the PostgreSQL planner in PG16:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[Incremental sorts for DISTINCT queries](#distinct-queries)'
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Faster ORDER BY / DISTINCT aggregates](#faster-orderby-distinct)'
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Memoize for UNION ALL queries](#union-all)'
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Support Right Anti Join](#right-anti-join)'
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Parallel Hash Full and Right Joins](#parallel-hashfull-rightjoin)'
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Optimize window function frame clauses](#frame-clauses)'
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Optimize various window functions](#window-functions)'
+  id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[JOIN removals for partitioned tables](#join-removals)'
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Short circuit trivial DISTINCT queries](#short-circuit)'
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Incremental Sort after Merge Join, in more cases](#merge-joins)'
+  id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -85,6 +105,7 @@
     required to get sorted results. How? By exploiting the knowledge that some given
     result set is already sorted by 1 or more leading columns—and only performing
     a sort on the remaining columns.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: For example, if there’s a btree index on column `a` and we need the rows ordered
@@ -92,29 +113,36 @@
     on column `a`) and sort the rows seen so far only when the value of `a` changes.
     With the quicksort algorithm used by PostgreSQL, sorting many smaller groups is
     more efficient than sorting one large group.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner now considers performing incremental sorts for
     `SELECT DISTINCT` queries. Prior to PG16, when the sorting method was chosen for
     `SELECT DISTINCT` queries, the planner only considered performing a full sort
     (which is more expensive than an incremental sort.)
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'In the PostgreSQL 16 `EXPLAIN` output above, you can see the planner chose
@@ -123,12 +151,14 @@
     Key: a` indicates this. Because the `INSERT` statements above only added a single
     value of `b` for each value of `a`, each batch of tuples sorted by incremental
     sort only contains a single row.'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: The `EXPLAIN` output for PostgreSQL 16 above shows that the `Peak Memory` for
     the `Incremental Sort` was just 26 kilobytes, whereas the hashing method used
     by PostgreSQL 15 needed much memory, so much so that it needed to spill about
     30 megabytes of data to disk. **The query executed 63% faster on PostgreSQL 16**.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: In PostgreSQL 15 and earlier, aggregate functions containing an `ORDER BY` or
@@ -136,35 +166,43 @@
     the `Aggregate` node of the plan. Because the sort was always performed, the planner
     would never try to form a plan to provide presorted input to aggregate the rows
     in order.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner now tries to form a plan which feeds the rows
     to the plan’s `Aggregate` node in the correct order. And the executor is now smart
     enough to recognize this and forego performing the sort itself when the rows are
     already pre-sorted in the correct order.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Aside from PostgreSQL 16 executing the query over twice as fast as in PG15,
     the only indication of this change in the `EXPLAIN ANALYZE` output above is from
     the `temp read=4540 written=4560` that’s not present in the PostgreSQL 16 output.
     In PG15, this is caused by the implicit sort spilling to disk.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '`Memoize` plan nodes were first introduced in PostgreSQL 14\. The `Memoize`
@@ -172,27 +210,34 @@
     Nested Loop’s inner side. When the same value needs to be looked up several times,
     Memoize can give a nice performance boost as it can skip executing its subnode
     when the required rows have been queried already and are cached.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner will now consider using `Memoize` when a `UNION
     ALL` query appears on the inner side of a parameterized `Nested Loop`.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: In the PostgreSQL 16 EXPLAIN output above, you can see the `Memoize` node is
@@ -200,6 +245,7 @@
     in the `Append` from 1 million in PG15 down to 10 in PG16\. Each time the `Memoize`
     node has a cache hit, there’s no need to execute the `Append` to fetch records.
     This results in the **query running around 6 times faster on PostgreSQL 16**.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: When performing a `Hash Join` for an `INNER JOIN`, PostgreSQL prefers to build
@@ -207,6 +253,7 @@
     as it’s less work to build them. Smaller tables are also better as they’re more
     cache-friendly for the CPU, and it’s less likely that the CPU will stall while
     waiting for data to arrive from main memory.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: In PostgreSQL versions before 16, an `Anti Join`—as you might see if you use
@@ -214,65 +261,81 @@
     EXISTS` part on the inner side of the join. This meant there was no flexibility
     to hash the smaller of the two tables, resulting in possibly having to build a
     hash table on the larger table.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner can now choose to hash the smaller of the two
     tables. This can now be done because PostgreSQL 16 supports `Right Anti Join`.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: You can see from the `EXPLAIN ANALYZE` output above that due to PG16’s planner
     opting to use a `Hash Right Anti Join`, the `Memory Usage` in PostgreSQL 16 was
     much less than in PostgreSQL 15 and the `Execution Time` was almost halved.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: PostgreSQL 11 saw the introduction of `Parallel Hash Join`. This allows multiple
     parallel workers in a parallel query to assist in the building of a single hash
     table. In versions prior to 11, each worker would have built its own identical
     hash table, resulting in additional memory overheads.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: In PostgreSQL 16, `Parallel Hash Join` has been improved and now supports `FULL`
     and `RIGHT` join types. This allows queries that have a `FULL OUTER JOIN` to be
     executed in parallel and also allows `Right Joins` plans to execute in parallel.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: The `EXPLAIN` output shows that PostgreSQL 16 was able to perform the join in
     parallel and this resulted in a significant reduction in the query’s `Execution
     Time`.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: When a query contains a window function such as `row_number()`, `rank()`, `dense_rank()`,
@@ -285,6 +348,7 @@
     records which have many rows which sort equally according to the window clause’s
     `ORDER BY` clause, the additional processing to identify these peer rows could
     be costly.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: The window functions mentioned above don’t behave any differently whether `ROWS`
@@ -292,32 +356,40 @@
     PostgreSQL versions prior to 16 didn’t know that, and because **some** window
     functions do care about the `ROWS`/`RANGE` option, the executor had to perform
     checks for peer rows in all cases.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner knows which window functions care about the
     `ROWS`/`RANGE` option and it passes this information along to the executor so
     that it can skip the needless additional processing.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: This optimization works particularly well when `row_number()` is being used
     to limit the number of results in the query as shown in the example below.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: The `Index Scan` node in the `EXPLAIN` output for PG15 above shows that 50410
@@ -326,39 +398,48 @@
     the row_number got to 11, there’d be no more rows matching the `<= 10` condition.
     Both this and the executor using the `ROWS` window clause option led to this query
     running over 500 times faster on PostgreSQL 16.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: This change expands on work done in PostgreSQL 15\. In PG15 the query planner
     was modified to allow the executor to stop processing `WindowAgg` executor nodes
     early. This can be done when an item in the `WHERE` clause filters a window function
     in a way that once the condition becomes false, it will never be true again.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '`row_number()` is an example of a function which can offer such guarantees
     as it’s a monotonically increasing function, i.e. subsequent rows in the same
     partition will never have a row_number lower than the previous row.'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner expands the coverage of this optimization to
     also cover `ntile()`, `cume_dist()` and `percent_rank()`. In PostgreSQL 15, this
     only worked for `row_number()`, `rank()`, `dense_rank()`, `count()` and `count(*)`.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-80
   prefs: []
   type: TYPE_PRE
 - en: From the PostgreSQL 16 `EXPLAIN` output above, you can see that the planner
@@ -367,69 +448,86 @@
     run condition was used to abort the execution of the `WindowAgg` node early. This
     resulted in the `Execution Time` in PG16 being more than 4 times faster than in
     PG15.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: For a long time now, PostgreSQL has been able to remove a `LEFT JOIN` where
     no column from the left joined table was required in the query and the join could
     not possibly duplicate any rows.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: However, in versions prior to PostgreSQL 16, there was no support for left join
     removals on partitioned tables. Why? Because the proofs that the planner uses
     to determine if there’s any possibility any inner-side row could duplicate any
     outer-side row were not present for partitioned tables.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner now allows the `LEFT JOIN` removal optimization
     with partitioned tables.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: This join elimination optimization is more likely to help with views, as it’s
     common that not all columns that exist in a view will always be queried.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: The important thing to notice here is that the PostgreSQL 16 plan does not include
     a join to `part_tab` meaning all there is to do is scan `normal_table`.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL query planner is able to avoid including plan nodes to de-duplicate
     the results when it can detect that all rows contain the same value. Detecting
     this is trivial and when the optimization can be applied it can result in huge
     performance gains.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-93
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-95
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-97
   prefs: []
   type: TYPE_PRE
 - en: If you look carefully at the SQL query, you’ll notice that each column in the
@@ -440,6 +538,7 @@
     result by reading the entire results and using the `Unique` operator to reduce
     all the rows down to a single row. The `Execution Time` for PostgreSQL 16 was
     more than 1200 times faster than PostgreSQL 15.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Before PostgreSQL 16, when the query planner considered performing a `Merge
@@ -449,6 +548,7 @@
     was a little outdated as `Incremental Sorts` can be used for these upper-level
     operations and incremental sorts can take advantage of results that are presorted
     by only some of the leading columns that the results need to be sorted by.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: The PostgreSQL 16 query planner adjusted the rule used when considering `Merge
@@ -459,32 +559,40 @@
     require less work than a complete sort as incremental sorts are able to exploit
     partially sorted inputs and perform sorts in smaller batches, resulting in less
     memory consumption and fewer sort comparisons overall.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-101
   prefs: []
   type: TYPE_PRE
 - en: PG15 EXPLAIN output
+  id: totrans-split-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-103
   prefs: []
   type: TYPE_PRE
 - en: PG16 EXPLAIN output
+  id: totrans-split-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
 - en: In the PG16 EXPLAIN output above, you can see that an `Incremental Sort` was
     used (compared to PG15 which instead used a `Sort`) and that resulted in a small
     reduction of the query’s `Execution Time` in PG16 and a large reduction in the
     memory used to perform the sort.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -492,12 +600,14 @@
     by many engineers from all around the world. I’d like to thank all the people
     who helped by reviewing the pieces that I worked on and all the people who gave
     feedback on the changes.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Each of the 10 improvements to the PostgreSQL 16 planner above are enabled by
     default—and are either applied in all cases where the optimization is possible,
     or are selectively applied by the query planner when it thinks the optimization
     will help.
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re running an older version of PostgreSQL, I encourage you to try your
@@ -506,14 +616,17 @@
     mailing list—you don’t have to just file issues, you can always share the positive
     experiences too. So please drop us a line about your experience with the PostgreSQL
     16 planner.
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: Enjoy what you’re reading?
+  id: totrans-split-111
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If you want to read more posts from our Citus database and Postgres teams, sign
     up for our monthly newsletter and get the latest content delivered straight to
     your inbox.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL

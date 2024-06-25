@@ -1,40 +1,51 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:24:42'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: programming - Does this 8088 code in the Leisure Suit Larry 2 game actually
     do anything? - Retrocomputing Stack Exchange
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything](https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: It's most definitely not a program 'written' by a programmer, but rather a listing
     of some random program segment using the disassembly command of a [debugger](https://en.wikipedia.org/wiki/Debugger).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Have you tried to find that code within the program?
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Let's See What We Got
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Hard to say anything definitive with only this (incomplete) section. A few
     details visible are:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: '*1 - Since the second INT 21h (L:04), made when an error is returned, asks
@@ -42,21 +53,26 @@
     the previous DOS call (L:01) was most likely an [EXEC call](https://fd.lod.bz/rbil/interrup/dos_kernel/214b.html)
     to run a different program as child process. Using this function also tells that
     the program was written/compiled for MS-DOS 2.0 or later.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '*2 - A hint that the debugger used was most likely the one supplied with MS-DOS.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '*3 - Line 08 might be a target from a previous branch, one like the one on
     L:02\. Such would be a typical compiler structure to continue from a branch to
     a destination more than 128 bytes away.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '*4 - An entry point, like *2, except here operation continues'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '*5 - Using an IRET here is a strong indicator that the program may be a .COM
     program and this being used to terminate it.'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: DOS prepares the memory of a COM program much like CP/M, including a way that
@@ -64,6 +80,7 @@
     [termination interrupt](https://fd.lod.bz/rbil/interrup/dos_kernel/20.html) INT
     20h at the start of the PSP - which is at CS:0 for COM programs - and pushing
     a word of 0000h onto the stack.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Now a simple RET NEAR can be used to terminate. This of course only works if
@@ -73,17 +90,20 @@
     CS and another word of 0000h onto the stack. Now a RETF could used, no matter
     what content CS had at the moment (and as long as all stack levels were cleaned
     up).
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: EXE programs added a little issue as their initial CS is not pointing to the
     PSP. But DS is loaded in both types with the PSP address, so pushing DS instead
     of CS would make the code usable for both types of program.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Since that 'trick' would leave a a single word on stack (the one provided by
     DOS to start with), it became common to use an IRET instead of a RET FAR, which
     does take that word as well off the stack. Not that it made a difference, but
     it felt better :))
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '*6 - It''s extreme hard to do any guess without knowing the address that code
@@ -93,6 +113,7 @@
     IRET is a single byte instruction, it could quite well be that it''s address is
     014Fh. But then again the previous JZ wont make much sense, as either way would
     lead to taking the IRET.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '*7 - Checking AH after DOS functions is rare, as the standard return code is
@@ -101,19 +122,24 @@
     reason. Here 00h/01h are regular termination reasons, while 02h is a critical
     error abort. Checking for above 01h would make sense if the previous INT 21h was
     as well an EXEC call.'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '*7 - Note this being he same target as used on line 02, which seems to be the
     default good exit.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '*8 - Note this being he same target as used on line 14'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusions From Code
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -121,16 +147,19 @@
     program and checks if the execution went well and continues afterwards. It might
     thus be some menu system/framework starting overlay modules for different tasks
     (game sections??). It seems to be written in some High level language.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Also, it's most likely not from DOS or any OS level software, but user space,
     as it used INT 21h functions.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Using the IRET termination hints to some really old code with DOS 1.x origin,
     or a compiler using that trick to save code size if here are multiple termination
     points. It must be an older one, as MS discouraged use of returning via PSP:0
     and INT 20h in general with DOS 3
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Taking into account that the target for 'good' execution (L:02/L:17) points
@@ -140,23 +169,28 @@
     to decide how to continue, I could imagine this being a loader for a larger program,
     whose only job is to reload that program whenever it got normally terminated,
     unless some flags have been set by the child before termination.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: A program like this could be a simple solution to catch certain errors without
     adding lots of error checking code within the application. Any error detection
     would just exit the child, which then gets restarted from above code.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note: These are all wild guesses, not necessary true. There is no way to tell
     where it''s originated, unless one finds exactly that code in some program.'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Now, What is It?
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Nothing. I'd say they just started up their debugger, loaded some program, dumped
     a random section of 21 lines and copied them into the game text. Could be from
     the game or any other program.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL

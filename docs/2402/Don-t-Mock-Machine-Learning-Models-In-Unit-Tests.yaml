@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 13:27:39'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Don't Mock Machine Learning Models In Unit Tests
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://eugeneyan.com/writing/unit-testing-ml/](https://eugeneyan.com/writing/unit-testing-ml/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,9 +30,11 @@
     are blobs of logic learned from data, and machine learning code is the logic to
     learn and use these derived blobs of logic. This difference makes it necessary
     to rethink how we unit test machine learning code.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: How ML code differs from regular software
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -35,11 +43,13 @@
     data + handcrafted logic into expected output. We can then test these outputs
     against asserts. In contrast, machine learning code transforms input data + expected
     output into learned logic (i.e., a model).'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '\[\text{Software}: \text{Input Data} + Handcrafted \text{ Logic} = \text{Expected
     Output}\] \[\text{Machine Learning}: \text{Input Data} + \text{Expected Output}
     = Learned \text{ Logic}\]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Thus, in machine learning, instead of writing code that contains logic, we write
@@ -48,6 +58,7 @@
     Because the logic that acts on the input data is embedded within the model, if
     we want to test the learned logic, we’ll need to load the model, perform inference
     on some sample output, and then assert if the output matches the expected input.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**In software, we typically mock dependencies like APIs; in ML, we want to
@@ -55,6 +66,7 @@
     to mock database calls, filesystem access, sending emails/push notifications,
     etc. However, in ML, there are scenarios where we’ll want to test against the
     actual model.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, we want to test that loss decreases with each batch and the model
@@ -63,6 +75,7 @@
     may have different output classes: [Google’s T5 NLI model](https://huggingface.co/google/t5_11b_trueteacher_and_anli)
     classifies factual consistency with class = 1 while [Meta’s BART NLI model](https://huggingface.co/facebook/bart-large-mnli)
     classifies it with class = 2!'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '**Machine learning / language models can be large and unwieldy.** Some neural
@@ -70,39 +83,48 @@
     dev environment can load. And even if we have the memory for smaller models, they
     are slow to load and perform inference on, testing our patience as we unit test
     while coding.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Some guidelines for unit testing ML code & models
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: (These are a work in progress and my thinking’s still evolving—all feedback
     welcome!)
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '**Use small, simple data samples.** Avoid loading CSVs or Parquet files as
     sample data. (It’s fine for integration tests and evals but not unit tests.) Define
     sample data directly in unit test code—so that the test is self-contained—to test
     key functionality such as:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Splitting into train/test tests when you have custom logic
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Custom implementations, such as Cosine or Euclidean distance in Java
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Preprocessing such as data augmentation or encoding
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Postprocessing such as diversification or filtering recommendations
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Error handling for empty or malformed input
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -110,48 +132,60 @@
     initialize a model configuration with random weights to test output shape and
     device movement (from CPU to GPU and back). Here’s an example of how to initialize
     a model without having to download the weights and then assert the output shape:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: 'The accelerate library also has [an example of initializing a model with empty
     weights](https://github.com/huggingface/accelerate/blob/main/tests/test_big_modeling.py#L955):'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: '**Write critical tests against the actual model.** If they take a while to
     run, [mark them as slow](https://docs.pytest.org/en/latest/how-to/mark.html#registering-marks)
     and run only when needed (e.g., pre-commit and pre-merge). Some essentials include:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Verify training is done correctly, such as loss going down, model overfitting,
     and training till convergence on a small sample of data
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Verify model outputs match expectation, such as 0.99 = unsafe instead of safe
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Verify model server can start, take batch input, and return the expected output
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Don’t test external libraries.** We can assume that external libraries work.
     Thus, no need to test data loaders, tokenizers, optimizers, etc.'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: • • •
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: What are your best practices for unit testing machine learning code and models?
     I would love to hear from you. [Please reach out!](https://twitter.com/eugeneyan)
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Further reading
+  id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -159,6 +193,7 @@
     fails on integration. The mocks are a pristine place where your library unit test
     works like a champ. Bad mocks or bad library? Or both. Developers are then sent
     to debug the unit test… overhead.
+  id: totrans-split-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -167,15 +202,13 @@
     while if you loosen your assertions your tests aren’t really asserting anything
     any more. And there isn’t a happy balance: if you go somewhere in the middle,
     you end up having both problems.'
+  id: totrans-split-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: How does it matter whether I inline my test data inside the unit test code,
     or have my unit test code load that same data from a checked-in file instead?
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -184,29 +217,36 @@
     csv file. As a rule of thumb, I also only assert on input/output values that are
     explicitly defined as part of the test body. Saves a ton of time chasing down
     fixture definitions.
+  id: totrans-split-37
   prefs:
   - PREF_BQ
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I was expecting an article about side effects of hurting an LLM’s feelings in
     tests.
+  id: totrans-split-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'If you found this useful, please cite this write-up as:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Yan, Ziyou. (Feb 2024). Don't Mock Machine Learning Models In Unit Tests. eugeneyan.com.
     https://eugeneyan.com/writing/unit-testing-ml/.
+  id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: or
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'Share on:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL

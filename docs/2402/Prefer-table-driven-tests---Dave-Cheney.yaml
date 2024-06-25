@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:31:24'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Prefer table driven tests | Dave Cheney
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://dave.cheney.net/2019/05/07/prefer-table-driven-tests](https://dave.cheney.net/2019/05/07/prefer-table-driven-tests)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,100 +28,126 @@
     and TDD ([done correctly](https://www.youtube.com/watch?v=EZ05e7EMOLM), of course).
     A practice that has grown around Go projects is the idea of a table driven test.
     This post explores the how and why of writing a table driven test.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s say we have a function that splits strings:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: In Go, unit tests are just regular Go functions (with a few rules) so we write
     a unit test for this function starting with a file in the same directory, with
     the same package name, `strings`.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: 'Tests are just regular Go functions with a few rules:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The name of the test function must start with `Test`.
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The test function must take one argument of type `*testing.T`. A `*testing.T` is
     a type injected by the testing package itself, to provide ways to print, skip,
     and fail the test.
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: In our test we call `Split` with some inputs, then compare it to the result
     we expected.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Code coverage
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The next question is, what is the coverage of this package? Luckily the go
     tool has a built in branch coverage. We can invoke it like this:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: Which tells us we have 100% branch coverage, which isn’t really surprising,
     there’s only one branch in this code.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we want to dig in to the coverage report the go tool has several options
     to print the coverage report. We can use `go tool cover -func` to break down the
     coverage per function:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: Which isn’t that exciting as we only have one function in this package, but
     I’m sure you’ll find more exciting packages to test.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Spray some .bashrc on that
+  id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'This pair of commands is so useful for me I have a shell alias which runs the
     test coverage and the report in one command:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: Going beyond 100% coverage
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: So, we wrote one test case, got 100% coverage, but this isn’t really the end
     of the story. We have good branch coverage but we probably need to test some of
     the boundary conditions. For example, what happens if we try to split it on comma?
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: Or, what happens if there are no separators in the source string?
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: We’re starting build a set of test cases that exercise boundary conditions.
     This is good.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing table driven tests
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -124,65 +156,82 @@
     is boilerplate. What we’d like to to set up all the inputs and expected outputs
     and feel them to a single test harness. This is a great time to introduce table
     driven testing.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: We declare a structure to hold our test inputs and expected outputs. This is
     our table. The `tests` structure is usually a local declaration because we want
     to reuse this name for other tests in this package.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'In fact, we don’t even need to give the type a name, we can use an anonymous
     struct literal to reduce the boilerplate like this:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Now, adding a new test is a straight forward matter; simply add another line
     the `tests` structure. For example, what will happen if our input string has a
     trailing separator?
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: But, when we run `go test`, we get
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Putting aside the test failure, there are a few problems to talk about.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The first is by rewriting each test from a function to a row in a table we’ve
     lost the name of the failing test. We added a comment in the test file to call
     out this case, but we don’t have access to that comment in the `go test` output.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: There are a few ways to resolve this. You’ll see a mix of styles in use in Go
     code bases because the table testing idiom is evolving as people continue to experiment
     with the form.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Enumerating test cases
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'As tests are stored in a slice we can print out the index of the test case
     in the failure message:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: Now when we run `go test` we get this
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: Which is a little better. Now we know that the fourth test is failing, although
@@ -191,133 +240,166 @@
     base reporting and others use one based, it’s going to be confusing. And, if the
     list of test cases is long, it could be difficult to count braces to figure out
     exactly which fixture constitutes test case number four.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Give your test cases names
+  id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Another common pattern is to include a name field in the test fixture.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: Now when the test fails we have a descriptive name for what the test was doing.
     We no longer have to try to figure it out from the output—​also, now have a string
     we can search on.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'We can dry this up even more using a map literal syntax:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: Using a map literal syntax we define our test cases not as a slice of structs,
     but as map of test names to test fixtures. There’s also a side benefit of using
     a map that is going to potentially improve the utility of our tests.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Map iteration order is *undefined* This means each time we run `go test`, our
     tests are going to be potentially run in a different order.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: This is super useful for spotting conditions where test pass when run in statement
     order, but not otherwise. If you find that happens you probably have some global
     state that is being mutated by one test with subsequent tests depending on that
     modification.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing sub tests
+  id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Before we fix the failing test there are a few other issues to address in our
     table driven test harness.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: The first is we’re calling `t.Fatalf` when one of the test cases fails. This
     means after the first failing test case we stop testing the other cases. Because
     test cases are run in an undefined order, if there is a test failure, it would
     be nice to know if it was the only failure or just the first.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: The testing package would do this for us if we go to the effort to write out
     each test case as its own function, but that’s quite verbose. The good news is
     since Go 1.7 a new feature was added that lets us do this easily for table driven
     tests. They’re called [sub tests](https://blog.golang.org/subtests).
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: As each sub test now has a name we get that name automatically printed out in
     any test runs.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: Each subtest is its own anonymous function, therefore we can use `t.Fatalf`, `t.Skipf`,
     and all the other `testing.T`helpers, while retaining the compactness of a table
     driven test.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Individual sub test cases can be executed directly
+  id: totrans-split-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Because sub tests have a name, you can run a selection of sub tests by name
     using the `go test -run` flag.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: Comparing what we got with what we wanted
+  id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now we’re ready to fix the test case. Let’s look at the error.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: Can you spot the problem? Clearly the slices are different, that’s what `reflect.DeepEqual` is
     upset about. But spotting the actual difference isn’t easy, you have to spot that
     extra space after `c`. This might look simple in this simple example, but it is
     any thing but when you’re comparing two complicated deeply nested gRPC structures.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can improve the output if we switch to the `%#v` syntax to view the value
     as a Go(ish) declaration:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: Now when we run our test it’s clear that the problem is there is an extra blank
     element in the slice.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: But before we go to fix our test failure I want to talk a little bit more about
     choosing the right way to present test failures. Our `Split` function is simple,
     it takes a primitive string and returns a slice of strings, but what if it worked
     with structs, or worse, pointers to structs?
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is an example where `%#v` does not work as well:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: The first `fmt.Printf`prints the unhelpful, but expected slice of addresses;
@@ -326,53 +408,67 @@
     cast to `*main.T`;`[]*main.T{(*main.T)(0xc000096000), (*main.T)(0xc000096008),
     (*main.T)(0xc000096010)} []*main.T{(*main.T)(0xc000096018), (*main.T)(0xc000096020),
     (*main.T)(0xc000096028)}`
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Because of the limitations in using any `fmt.Printf` verb, I want to introduce
     the [go-cmp](https://github.com/google/go-cmp) library from Google.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'The goal of the cmp library is it is specifically to compare two values. This
     is similar to `reflect.DeepEqual`, but it has more capabilities. Using the cmp
     pacakge you can, of course, write:'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-85
   prefs: []
   type: TYPE_PRE
 - en: But far more useful for us with our test function is the `cmp.Diff` function
     which will produce a textual description of what is different between the two
     values, recursively.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-87
   prefs: []
   type: TYPE_PRE
 - en: 'Which instead produces:'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-89
   prefs: []
   type: TYPE_PRE
 - en: Telling us that at element 2 of the slice of `T`s the `I`field was expected
     to be 3, but was actually 4.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: Putting this all together we have our table driven go-cmp test
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-92
   prefs: []
   type: TYPE_PRE
 - en: Running this we get
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-94
   prefs: []
   type: TYPE_PRE
 - en: Using `cmp.Diff` our test harness isn’t just telling us that what we got and
     what we wanted were different. Our test is telling us that the strings are different
     lengths, the third index in the fixture shouldn’t exist, but the actual output
     we got an empty string, “”. From here fixing the test failure is straight forward.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL

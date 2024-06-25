@@ -1,30 +1,38 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:33:29'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why Postgres RDS didn’t work for us (and why it won’t work for you if you’re
     implementing a big data solution) | by Max Kremer | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/@mkremer_75412/why-postgres-rds-didnt-work-for-us-and-why-it-won-t-work-for-you-if-you-re-implementing-a-big-6c4fff5a8644](https://medium.com/@mkremer_75412/why-postgres-rds-didnt-work-for-us-and-why-it-won-t-work-for-you-if-you-re-implementing-a-big-6c4fff5a8644)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Why Postgres RDS didn’t work for us (and why it won’t work for you if you’re
     implementing a big data solution)
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Background
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -36,9 +44,11 @@
     SAAS application, so data was being ingested and stored per tenant across hundreds
     of tenants. It needed to be scalable and performant. We started with AWS RDS managed
     postgreSQL.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'The big problem is with EBS: throughput opacity'
+  id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -48,9 +58,11 @@
     of the table on disk is 10GB and you want to scan the table (for whatever reason
     — say a sequential scan) then you need an accurate measure of throughput to understand
     how long it will take to scan the data from disk.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Bursting and throttled IOPS — the slippery slope
+  id: totrans-split-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -59,21 +71,26 @@
     of 10000 IOPS from the measly 3000 you get with smaller volumes. But then backup
     costs increase because you’re paying for the entire volume, not just what’s used.
     Costs increase, performance doesn’t get much better — it snowballs from there.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: We also kept uping our instance size to get more memory for caching. It’s easy
     to make the DB fast if it can fit it all in memory. There was also the promise
     of greater parallelization that came with PG v10, but sadly that brought us very
     little benefit due to the IO throttling.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'The problems with measuring throughput are described in more detail here:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://www.datadoghq.com/blog/aws-ebs-latency-and-iops-the-surprising-truth/](https://www.datadoghq.com/blog/aws-ebs-latency-and-iops-the-surprising-truth/)'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Aurora
+  id: totrans-split-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -83,18 +100,22 @@
     have an OLTP system and want to measure the speed (or latency) of transactions
     with a large number of parallel clients but is not a good performance indicator
     for large data-sets and data-mining operations.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Costs went up instead of down.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: This thread covers IOPS and billable IOPS [https://forums.aws.amazon.com/message.jspa?messageID=835303#835303](https://forums.aws.amazon.com/message.jspa?messageID=835303#835303)
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Again the biggest frustration was getting accurate measurements of throughput.
     Simply dividing the amount of data scanned by the time it took (using tack_io_timing)
     we saw that performance for a large dataset was nowhere near SSD speeds, more
     like magnetic disks.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Adding to the frustration was the endless hours dealing with support. While
@@ -102,47 +123,59 @@
     down to tuning the query or tuning the DB. Again this came down to throughput
     — I would’ve loved to hear something along the lines of “This service is not a
     good choice given your workloads”. But eventually we figured that out for ourselves.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The Solution: Roll your own'
+  id: totrans-split-22
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'For us the solution was fairly simple: don’t use a managed database services
     and roll our own infrastructure on EC2.'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: We did this using relatively low-grade EC2 instances (We were running 4XL on
     RDS) xl and 2xls.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The key was to separate READ and WRITE workloads between a master and standby
     replica that was kept up to date using WAL-G ([https://github.com/wal-g/wal-g](https://github.com/wal-g/wal-g))
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: The WRITE node could be slow, it’s only ingesting data, so EBS was good enough
     but we were able to **DOUBLE** EBS throughput using ZFS with compression.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: For the READ node we had a setup with ephemeral NVMe drives, and again ZFS to
     boost performance.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'The results speak for themselves:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: $11K bill down to a $2100 (projected for September which will the first full
     month we’re clear of any RDS baggage)
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Queries that would take hours or timeout altogether run in **seconds**.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: We are able to measure actual throughput using command line tools on the unix
     instances (zpool iostat)
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -152,5 +185,6 @@
     metal, and if you can’t use bare metal then the next best thing is EC2 with NVMe
     drives. Read [part two](/p/748c391fce51) where I provide the recipe for how to
     spin up your own Postgres Cluster on AWS using instances with NVMe drives.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL

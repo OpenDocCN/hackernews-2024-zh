@@ -1,68 +1,86 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:44:47'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Extending Rust's Effect System
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.yoshuawuyts.com/extending-rusts-effect-system/](https://blog.yoshuawuyts.com/extending-rusts-effect-system/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Extending Rust's Effect System
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: — 2024-02-09
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[introduction](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#introduction)'
+  id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[rust without generics](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#rust-without-generics)'
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[why effect generics?](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#why-effect-generics)'
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[stage i: effect-generic trait definitions](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-i-effect-generic-trait-definitions)'
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[stage ii: effect-generic bounds, impls, and types](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-ii-effect-generic-bounds-impls-and-types)'
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[what are effects?](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#what-are-effects)'
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[stage iii: more effects](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-iii-more-effects)'
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[outro](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#outro)'
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '*This is the transcript of my RustConf 2023 talk: "Extending Rust''s Effect
     System", presented on September 13th 2023 in Albuquerque, New Mexico and streamed
     online.*'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Introduction
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -71,24 +89,29 @@
     types (GATs), and of course: `async/.await`. Out of those four features, three
     are what can be considered to be "effects". And though we''ve been working on
     them for a long time, they are all still very much in-progress.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Hello, my name is Yosh and I work as a Developer Advocate for Rust at Microsoft.
     I've been working on Rust itself for the past five years, and I'm among other
     things a member of the Rust Async WG, and the co-lead of the Rust Effects Initiative.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The thesis of this talk is that we've unknowingly shipped an effect system as
     part of the language in since Rust 1.0\. We've since begun adding a number of
     new effects, and in order to finish integrating them into the language we need
     support for *effect generics*.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: In this talk I'll explain what effects are, what makes them challenging to integrate
     into the language, and how we can overcome those challenges.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Rust Without Generics
+  id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -97,12 +120,14 @@
     myself mostly writing functions which operated on *concrete types*. I remember
     my code felt pretty clumsy, and it wasn't a great experience. Not compared to,
     say, the code the stdlib provides.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: An example of a generic stdlib function is the `io::copy` function. It reads
     bytes from a reader, and copies them into a writer. We can give it a file, a socket,
     or any combination of the two, and it will happily copy bytes from one into the
     other. This all works as long as we give it the right types.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: But what if Rust actually didn't have generics? What if the Rust I used to write
@@ -110,6 +135,7 @@
     Well, given we're trying to copy bytes between sockets and file types, we could
     probably hand-code individual functions for these. For our two types here we could
     write four unique functions.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: But unfortunately for us that would only solve the problem right in front of
@@ -118,6 +144,7 @@
     we wanted to cover the entire API space of the stdlib, we’d need 486 functions
     in total. And if that was the only way we could implement `io::copy`, that would
     make for a pretty bad language.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Now luckily Rust does have generics, and all we ever need is the one `copy`
@@ -125,9 +152,11 @@
     having to worry about implementing more functions. We just have the one `copy`
     function, and the compiler will take care of generating the right code for any
     types we give it.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Why effect generics?
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -136,9 +165,11 @@
     well as "value generics" which allow functions to be generic over different values.
     This is how we can write functions which can take different values - which is
     a feature present in most programming languages.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: But not everything that can lead to API duplication are things we can be generic
@@ -147,6 +178,7 @@
     We also often create duplicate APIs for constant values and for runtime values.
     As well as create duplicate structures depending on whether the API needs to be
     thread-safe or not.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: But out of everything which can lead to API duplication, effects are probably
@@ -154,32 +186,38 @@
     keywords such as `async/.await` and `const`; but also `?`, and types such as `Result`,
     and `Option`. All of these have a deep, semantic connection to the language, and
     changes the meaning of our code in ways that other keywords and types don't.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Sometimes we'll write code which doesn't have the right effects, leading to
     *effect mismatches*. This is also known as the *function coloring problem*, as
     described by Robert Nystrom. Once you become aware of *effect mismatches* you
     start seeing them all over the place, not just in Rust either.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: The result of these effect mismatches is that using effects in Rust essentially
     drops you into a second-rate experience. Whether you're using const, async, Result,
     or Error - almost certainly somewhere along the line you'll run into a compatibility
     issue.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: Take for example the `Option::filter` API. It takes a type by reference and
     returns a bool. If we try and use the `?` operator inside of it we get an error,
     because the function doesn't return `Result` or `Option`. Not being able to use
     `?` inside of arbitrary closures is an example of an effect mismatch.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: But simple functions like that only scratch the surface. Effect mismatches are
     present in almost every single trait in the stdlib too. Take for example something
     common like the `Debug` trait which is implemented on almost every type in Rust.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: We could implement the `Debug` trait for our made-up type `Cat`. The parameter
@@ -188,17 +226,20 @@
     wanted to write bytes asynchronously into, say, an async socket. Well, we can't
     do that. `fn fmt` is not an async function, which means we can't await inside
     of it.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: One way out of this could be to create some kind of intermediate buffer, and
     synchronously write data into it. We could then write data out of that buffer
     asynchronously. But that would involve extra copies we didn't have before.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: If we wanted to make it identical to what we did before, the solution would
     be to create a *new* `AsyncDebug` trait which *can* write data asynchronously
     into the stream. But we now have duplicate traits, and that's exactly the problem
     we're trying to prevent.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: It's tempting to say that maybe we should just add the `AsyncDebug` trait and
@@ -209,6 +250,7 @@
     structural, and duplicating the API surface for every effect mismatch leads to
     an exponential explosion of APIs. Which is similar to what we've seen with data
     type generics earlier on.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let me try and illustrate this for a second. Say we took the existing family
@@ -216,6 +258,7 @@
     work with `unsafe` , `async`, `try`, `const`, and generators. With one effect
     we''re up to six unique traits. With two effects we''re up to twelve. With all
     five we''re suddenly looking at 96 different traits.'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The problem space in the stdlib is really broad. From analyzing the Rust 1.70
@@ -224,6 +267,7 @@
     with the try effect. The exact numbers are imprecise because parts of the various
     effects are still in-progress. How much this will result in practice, very much
     will depend on how we end up designing the language.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: If you compare the numbers then it appears that close to 100% of the stdlib
@@ -232,9 +276,11 @@
     they can lead to exponential blowup, this should warn us that clever one-off solutions
     won't cut it. I believe that the best way to deal with this is to instead allow
     Rust to enable items to be generic over effects.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stage I: Effect-Generic Trait Definitions'
+  id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -243,17 +289,21 @@
     unsurprisingly, is to introduce effect generics into the language. To cover all
     uses will take a few steps, so let''s start with the first, and arguably most
     important one: effect-generic trait definitions.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: This is important because it would allow us to introduce effectful traits as
     part of the stdlib. Which would among other things would help standardize the
     various async ecosystems around the stdlib.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: '[PRE3]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'Let''s use a simple example here: the `Into` trait. The `Into` trait is used
@@ -261,18 +311,22 @@
     one function "into" which consumes `Self` and returns the type `T`. Say we have
     a type cat which when it takes a nap turns into a cute little loaf. We can implement
     `Into<Loaf>` for `Cat` by calling `self.nap` in the function body.'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: '[PRE5]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: But what if the cat doesn't take a nap straight away? Maybe `nap` should actually
     be an async function. In order to `await` nap inside the trait impl, the `into`
     method would need to be async. If we were writing an async trait from scratch,
     we could do this by exposing a new `AsyncInto` trait with an async `into` method.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: But we don't just want to add a new trait to the stdlib, instead we want to
@@ -280,9 +334,11 @@
     extend the `Into` trait with the `async` effect is by making the async effect
     *optional*. Rather than requiring that the trait is always sync or async, implementors
     should be able to choose which version of the trait they want to implement.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'The way this would work is by adding a new notation on the trait: "maybe async".
@@ -290,12 +346,15 @@
     we''ll be using attributes. The way the "maybe async" notation works is that we
     mark all methods which we want to be "maybe async" as such. And then mark our
     trait itself as "maybe async" too.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: '[PRE8]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: Implementors then get to choose whether they want to implement the sync or async
@@ -304,33 +363,41 @@
     because implementing the sync version of `Into` would remain the same as it is
     today. But people who want to implement the async version would be able to, just
     by adding a few extra `async` keywords to the impl.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: '[PRE10]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: Under the hood the implementations desugars to regular Rust code we can already
     write today. The sync implementation of the type returns a type `T`. But the async
     impl returns an `impl Future` of `T`. Under the hood it is just a single const
     bool and some associated types.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: good diagnostics
+  id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: gradual stabilization,
+  id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: backwards-compatibility
+  id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: clear inference rules
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -339,30 +406,37 @@
     and we want to make sure effect generics feel like part of the language. That
     not only means that we want to tightly control the diagnostics. We also want to
     enable them to be gradually introduced, have clear language rules, and be backwards-compatible.'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: But if you keep all that in mind, it's probably okay to think of effect generics
     as mostly syntactic sugar for const bools + associated types.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stage II: Effect-Generic Bounds, Impls, and Types'
+  id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Being able to declare effect-generic traits is only the beginning. The stdlib
     not only exposes traits, it also exposes various types and functions. And effect-generic
     traits don't directly help with that.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: Let's take our earlier `io::copy` example again. As we've said `copy` takes
     a reader and writer, and then copies bytes from the reader to the writer. We've
     seen this.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: Now what would it look like if we tried adding an async version of this to the
@@ -370,9 +444,11 @@
     conflict with the existing `copy` function. The same goes for the trait bounds
     as well, so instead of taking `Read` and `Write`, this function would take `AsyncRead`
     and `AsyncWrite.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: Now things get a little better once we have effect-generic trait definitions.
@@ -380,9 +456,11 @@
     the function can instead choose the async versions of the existing `Read` and
     `Write` traits. That's already better, but it still means we have two versions
     of the `copy` function.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: Instead the ideal solution would be to allow `copy` itself to be generic over
@@ -390,9 +468,11 @@
     we want. These are what we call "effect-generic bounds". The effect of the function
     and the effect of the bounds it takes all become the same. In literature this
     is also known as "row-polymorphism".
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: 'Because the function itself is now generic over the async effect, we need to
@@ -404,9 +484,11 @@
     we guess wrong, so for that reason we want to provide an escape hatch by enabling
     program authors to force the variant. We don''t know the exact syntax for this
     yet, but we assume this would likely be using the turbofish notation.'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: But effect-generics aren't just needed for functions. If we want to make the
@@ -415,13 +497,16 @@
     But for example files on Windows need to be initialized as either sync or async.
     Which means that whether they're async or not isn't just a property of the functions,
     it's a property of the type.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s use the stdlib''s `File` type as our example here. For simplicity let''s
     assume it has a single method: `open` which returns either an error or a file.'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-84
   prefs: []
   type: TYPE_PRE
 - en: 'If we wanted to provide an async version of `File`, we again would need to
@@ -429,17 +514,21 @@
     method `open`, which takes an async version of `Path` as an argument. And `Path`
     needs to be async because it itself has async filesystem methods on it. As I''ve
     said before: once you start looking you notice effects popping up everywhere.'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: Instead of creating a second `AsyncFile` type, with effect generics on types
     we'd be able to open `File` as async instead. Allowing us to keep just the one
     `File` definition for both sync and async variants.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: Now I've sort of hand-waved away the internal implementations of both the `copy`
@@ -448,13 +537,16 @@
     and non-async variants would be identical. If the function is compiled as async,
     everything works as written. But if the function compiles as sync, then we just
     remove the `.await`s and the function should compile as expected.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: As a result of this "maybe-async" functions can only call sync or other "maybe-async"
     functions. But that should be fine for most cases.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: Concrete types like `File` are a little trickier. They often want to run different
@@ -463,15 +555,18 @@
     shouldn't be too big of a jump. The key thing we need is a way to detect in the
     function body whether code is being compiled as async or not - basically a fancy
     bool.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: We can already do this for the const effect using the `const_eval_select` intrinsic.
     It's currently unstable and a little verbose, but it works reliably. We should
     be able to easily adapt it to something similar for async and the rest of the
     effects too.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: What are effects?
+  id: totrans-split-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -480,28 +575,34 @@
     in PL spheres with research languages such as Koka, Eff, and Frank showing how
     effects can be useful. And languages such as Scala, and to a lesser extent Swift,
     adopting effect features.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'When people talk about effects they will broadly refer to one of two things:'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: '**Algebraic Effect Types:** which are semantic notations on functions and contexts
     that grant a permission to *do* something.'
+  id: totrans-split-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Algebraic Effect Handlers:** which are a kind of typed control-flow primitive
     which allows people to define their own versions of `async/.await`, `try..catch`,
     and `yield`.'
+  id: totrans-split-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A lot of languages which have effects provide both effect types and effect handlers.
     These can be used together, but they are in fact distinct features. In this talk
     we'll only be discussing effect types.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-100
   prefs: []
   type: TYPE_PRE
 - en: What we've been calling "effects" in this talk so far have in fact been *effect
@@ -509,15 +610,18 @@
     why effect generics weren't on our radar until recently. But it turns out that
     reinterpreting some of our keywords as effect types actually makes perfect sense,
     and provides us with a strong theoretical framework for how to reason about them.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: We also have `unsafe` which allows you to call `unsafe` functions. The unstable
     try-block feature which doesn't require you to `Ok`-wrap return types. The unstable
     generator closure syntax which gives you access to the `yield` keyword. And of
     course the `const` keyword which allows you evaluate code at compile-time.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-103
   prefs: []
   type: TYPE_PRE
 - en: 'In Rust we currently have five different effects: `async`, `unsafe`, `const`,
@@ -526,11 +630,13 @@
     doesn''t have access to traits yet. Unsafe functions can''t be lowered to `Fn`
     traits. Try does have the `?` operator, but try blocks are unstable. And generators
     are entirely unstable; we only have the `Iterator` trait.'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: Some of these effects are what folks on the lang team have started calling "carried".
     Those are effects which will desugar to an actual type in the type system. For
     example when you write `async fn`, the return type will desugar to an `impl Future`.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some other effects are what we''re calling: *"uncarried"*. These effects don''t
@@ -538,18 +644,22 @@
     information back to the compiler. This is for example `const` or `unsafe`. While
     we do check that the effects are used correctly, they don''t end up being lowered
     to actual types.'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-107
   prefs: []
   type: TYPE_PRE
 - en: '[PRE24]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: When we talk about carried effects, effect composition becomes important. Take
     for example "async" and "try" together. If we have a function which has both?
     What should the resulting type be? A future of Result? Or a Result containing
     a Future?
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: Effects on functions are order-independent *sets*. While Rust currently does
@@ -558,14 +668,17 @@
     if an async function returned a Result, that should always return an `impl Future`
     of `Result`. And because effects are *sets* and not dependent on ordering, we
     can define the way carried effects should compose as part of the language.
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: People can still opt-out from the built-in composition rules by manually writing
     function signatures. But this is rare, and for the overwhelming majority of uses
     the built-in composition rules will be the right choice.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: The `const` effect is a bit different from the other effects. `const` blocks
@@ -574,44 +687,54 @@
     too. This means that when we write `const fn`, we're already writing effect-generics.
     This mechanism is the reason why we've gradually been able to introduce const
     into the stdlib in a backwards-compatible way.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: Const is also a bit strange in that among other things it disallows access to
     the host runtime, it can't allocate, and it can't access globals. This feels different
     from effects like say, `async`, which only allow you to do more things.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '| effect set | can access | cannot access |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-116
   prefs: []
   type: TYPE_TB
 - en: '| std rust | non-termination, unwinding, non-determinism, statics, runtime
     heap, host APIs | N/A |'
+  id: totrans-split-117
   prefs: []
   type: TYPE_TB
 - en: '| alloc | non-termination, unwinding, non-determinism, globals, runtime heap
     | host APIs |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: '| core | non-termination, unwinding, non-determinism, globals | runtime heap,
     host APIs |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '| const | non-termination, unwinding | non-determinism, globals, runtime heap,
     host APIs |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: What's missing from this picture is that all functions in Rust carry an implicit
     set of effects. Including some effects we can't directly name yet. When we write
     `const` functions, our functions have a different set of effects, than if we write
     `no_std` functions, which again are different from regular "std" rust functions.
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: The right way of thinking about const, std, etc. is as adding a different effects
     to the empty set of effects. If we start from zero, then all effects are merely
     additive. They just add up to different numbers.
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: 'Unfortunately in Rust we can''t yet name the empty set of effects. In effect
@@ -619,9 +742,11 @@
     the "total" effect. In fact, Koka''s lead developer has estimated that around
     70% of a typical Koka program can be total. Which begs the question: if we could
     express the total effect in Rust, could we see similar numbers?'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stage III: More Effects'
+  id: totrans-split-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -629,6 +754,7 @@
     such as `const` and `async`. But one nice thing of effect generics is that they
     would not only allow us to finish our ongoing effects work. It would also lower
     the cost of introducing *new* effects to the language.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: 'Which opens up the question: if we could add more effects, which effects might
@@ -636,61 +762,73 @@
     generator functions. But beyond that, there are some interesting effects we could
     explore. For brevity I''ll only discuss what these features are, and not show
     code examples.'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '**no-divergence**: guarantees that a function cannot loop indefinitely, opening
     up the ability to perform static runtime-cost analysis.'
+  id: totrans-split-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**no-panic**: guarantees a function will never produce a panic, causing the
     function to unwind.'
+  id: totrans-split-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**parametricity**: guarantees that a function only operates on its arguments.
     That means no implicit access to statics, no global filesystem, no thread-locals.'
+  id: totrans-split-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**capability-safety**: guarantees that a function is not only parametric, but
     can''t downcast abstract types either. Say if you get an `impl Read`, you can''t
     reverse it to obtain a `File`.'
+  id: totrans-split-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**destructor linearity**: guarantees that `Drop` will *always* be called, making
     it a safety guarantee.'
+  id: totrans-split-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**pattern types**: enables functions to operate directly on variants of enums
     and numbers'
+  id: totrans-split-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**must-not-move types**: would be a generalization of pinning and the pin-project
     system, making it a first-class language feature'
+  id: totrans-split-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Though there's nothing inherently stopping us from adding any of these features
     into Rust today, in order to integrate them into the stdlib without breaking backwards-compatibility
     we need effect generics first.
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-135
   prefs: []
   type: TYPE_PRE
 - en: 'This brings us to the final part of the design space: effect aliases. If we
     keep adding effects it''s very easy to eventually reach into a situation where
     we have our own version of "public static void main".'
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: In order to mitigate that it would instead be great if we could name specific
     sets of effects. In a way we've already done that, where `const` represents "may
     loop forever" and "may panic". If we actually had "may loop forever" and "may
     panic" as built-in effects, then we could redefine `const` as an alias to those.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Fundamentally this doesn't change anything we've talked about so far. It's just
@@ -698,9 +836,11 @@
     reach a state where we have effect generics and we want notice we maybe have one
     too many notation in front of our functions, it may be time for us to start looking
     into this more seriously.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: Outro
+  id: totrans-split-139
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -710,6 +850,7 @@
     which feels incredibly rough once you start using effects. Effect generics provide
     us with a way to be generic over effects, and we've shown they can be implemented
     today as mostly as syntax sugar over const-generics.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: We're currently in the process of formalizing the effect generic work via the
@@ -717,6 +858,7 @@
     Because effect generics are relatively straight forward but have far-reaching
     consequences for the type system, it is an ideal candidate to test as part of
     the formal model.
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: In parallel the const WG has also begun refactoring the way const functions
@@ -724,34 +866,42 @@
     borrow checking at the MIR level. In the new system const-checking will happen
     much sooner, at the HIR level. This will not only make the code more maintainable,
     it will also be generalizable to more effects if needed.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: Once both the formal modeling and compiler refactorings conclude, we'll begin
     drafting an RFC for effect-generic trait definitions. We expect this to happen
     sometime in 2024.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: 'And that''s the end of this talk. Thank you so much for being with me all the
     way to the end. None of the work in this talk would have been possible without
     the following people:'
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: Oliver Scherer (AWS)
+  id: totrans-split-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Eric Holk (Microsoft)
+  id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Niko Matsakis (AWS)
+  id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Daan Leijen (Microsoft)
+  id: totrans-split-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Thank you!
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL

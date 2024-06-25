@@ -1,56 +1,70 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:33:50'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The Engineering behind Figma's Vector Networks
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://alexharri.com/blog/vector-networks](https://alexharri.com/blog/vector-networks)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main class="css-fkkl8v">
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: The Engineering behind Figma's Vector Networks
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: November 24, 2019
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Adobe Illustrator introduced the pen tool back in [1987](https://www.youtube.com/watch?v=sT8Y7o-zsVw)
     as a tool for creating and modifying paths. Since then the pen tool has become
     incredibly widespread, so much so that is has become the de facto icon of the
     graphic design industry.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The pen tool's functionality hasn't changed significantly in the 30 years since
     its introduction. Just click and drag to create smooth curves. Designers have
     learned to work with it, and around its idiosyncrasies.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The pen tool
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: But Figma felt like they could improve some aspects of how the pen tool worked,
     so they had a go at redesigning it. Instead of it being used to work with traditional
     paths, they improved the pen tool by creating what they call Vector Networks.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: In this post we will go through what Vector Networks are and what problems they
     try to solve. After we've defined what Vector Networks are, we will take a look
     at some of the engineering challenges you would face if you were to take a stab
     at implementing them.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: This post can be thought of as an introduction to a really interesting problem
@@ -58,1502 +72,1901 @@
     of Vector Networks for future applications. I hope it succeeds in providing value
     to both developers being introduced to new concepts and ideas, and to designers
     interesting in learning more about the tool they know and love.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: I will start off by laying out the core concepts behind the pen tool, and from
     there we will move onto Figma's Vector Networks.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Paths
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The pen tool is used to create and manipulate paths.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: If you've every worked with graphics software like [Illustrator](https://www.adobe.com/products/illustrator.html)
     before, you've worked with paths. Paths are a series of lines and curves that
     may or may not form a loop.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Some paths
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The path to the left loops, while the path to the right doesn't. Both of these
     are valid paths.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: The main characteristic of paths is that they form a single continuous unbroken
     chain. This means that each node can only be connected to one or two other nodes.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Not valid paths
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: However, you could construct these shapes from multiple paths if you position
     them correctly together.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Multiple paths are used to create more complex shapes
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: From a combination of paths, you can create any shape imaginable.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: This beer glass, for example, is just a combination of five different paths
     positioned and scaled a certain way.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: The building blocks of paths
+  id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: A path is made up of two things, points and lines.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Points and lines
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The points are known as **nodes** (or vertices) and the lines are called **edges**.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Together, they make a path
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Any path can be described as a list of nodes and edges.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: This path can be described as the series of nodes `(0, 1, 2, 3, 4)`. It could
     also be thought of as the series of the edges that composed it. That list of edges
     would be `(0, 1)`, `(1, 2)`, `(2, 3)`, `(3, 4)`, `(4, 0)`.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can think of this like the [dot to dot puzzles](https://www.google.com/search?q=dot+to+dot+for+kids&tbm=isch)
     that you used to do as a kid: Draw the edges of the path in the order that the
     points lay out.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: But instead of a kid drawing lines between numbered points on a paper, a cold
     calculating machine does it along the cartesian coordinate system.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Edges
+  id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: An edge is a connection between a pair of nodes. Visually, edges are a line
     from node `a` to node `b`.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: But that line can be drawn in a lot of different ways. How do you describe those
     different types of lines?
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Edges fall into two categories, straight and curvy.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Straight edges are as simple as they seem, just a line from `a` to `b`. But
     how are those curvy edges defined?
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Bezier curves
+  id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Curvy edges are [bezier curves](https://en.wikipedia.org/wiki/B%C3%A9zier_curve).
     Bezier curves are a special type of curve defined by four points.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The positions of the two nodes in our edge make up the start and end points
     of the curve. Each of the two nodes has a *control point*.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: In most applications, these control points are shown as *handles* that extend
     from their respective node. These handles are used to control the shape of the
     curve.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Bezier curves can be chained to make more complex shapes that a single curve
     can't draw on its own. They can also be combined with straight lines to make some
     cool designs.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: But what exactly are the handles doing? How do the handles tell the computer
     to draw the curve like it does?
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Computers draw curves by splitting them into straight lines and drawing the
     individual lines.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The more lines you split a curve into, the smoother the curve becomes.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: So to draw the curve we need to know how to get the different points that make
     up the curve. If we compute enough of them, we get a smooth curve.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Computing a point on a bezier curve
+  id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Let's compute the point at 25% point of the curve. We can start by connecting
     the control points with a third blue line.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Then for each blue line, we draw a blue dot at the 25% point of the line.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Next, draw two green lines between the three blue dots.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: And we repeat the same step as we did with the blue dots. Draw green points
     at the 25% points of the green lines.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: And then one more red line between the newly created green points.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Then we add a red point at the 25% point of the red line.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: And just like that, we've computed the point at the 25% point of the curve.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: From now on we'll refer to points on curves through a `t` value, where `t` is
     a number from `0` to `1`. In the above example, the point would be at `t=0.25`
     (25%).
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: t=0.25, t=0.5 and t=0.75
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: This way of computing the point at `t` is called [De Casteljau's algorithm](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm)
     and can also be used to subdivide a bezier curve. Using the points we created
     along the way, we can also subdivide the bezier curve into two smaller bezier
     curves.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Bezier curves are pretty amazing things. Shaping the curve by adjusting the
     handles feels surprisingly natural, and chaining them together allows you to create
     detailed and complex shapes.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: And for computers, they're stable and inexpensive to compute. For this reason
     they're used for everything from [vector graphics](https://helpx.adobe.com/illustrator/using/drawing-pen-curvature-or-pencil.html#draw_curves_with_the_pen_tool)
     to [animation curves](https://www.austinsaylor.com/blog/2015/3/20/4-after-effects-graph-editor-basics-you-need-to-know)
     and [automobile bodies](https://en.wikipedia.org/wiki/Pierre_B%C3%A9zier#B%C3%A9zier_curve).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: You can see an interactive demo of bezier curves at [Jason Davies' site](https://www.jasondavies.com/animated-bezier/).
     It's fascinating to watch a series of straight lines trace out a smooth curve.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: From [https://jasondavies.com/animated-bezier](https://jasondavies.com/animated-bezier)
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: The creative constraints of paths
+  id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Earlier in this post, paths were defined as a continuous series of lines and
     curves that may or may not form a loop.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: The fact that paths are a single continuous chain is a pretty big limitation.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: It means three way intersections are not possible using a single path. To create
     a three way intersection, two or more paths will have to be used. This means dealing
     with positioning and grouping different paths together. It also means that changes
     to a single path can lead to changes to multiple other paths.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: But that's simply the routine. Seasoned designers know how paths behave, they
     can plan around it without really thinking about it. For a static design it doesn't
     really matter how many paths and layers you have to create if the piece is planned
     properly upfront.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: But for some situations the constraints that paths impose cause a lot of friction.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Vector Networks
+  id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In 2016, Figma [introduced Vector Networks](https://www.figma.com/blog/introducing-vector-networks/).
     They lift the “single continuous” limitation by allowing any two nodes to be joined
     together without restrictions.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: “A vector network improves on the path model by allowing lines and curves between
     any two points instead of requiring that they all join up to form a single chain.”
+  id: totrans-split-73
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Source: [https://www.figma.com/blog/introducing-vector-networks/](https://www.figma.com/blog/introducing-vector-networks/)'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: The cube is the quintessential example for demonstrating Vector Networks.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Via traditional paths, you would have to create at minimum 3 different paths
     to describe this shape.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: This creates a lot of friction for a seemingly simple and common shape. To modify
     the cube, you would have to modify two or three different paths. But with Vector
     Networks you can simply grab an edge and move it around, and the shape behaves
     like you would expect.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: So if you would want to increase the extrusion of the cube, you could just grab
     the two appropriate edges and move them together.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: This is the big selling point for Figma's Vector Networks. Ease of use.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Vector Networks don't enable you to create something that you couldn't create
     with other tools, but it does remove a lot of the friction in the process of creating
     things.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: And you can take this even further. Say you want to add a hole to the side of
     the cube.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Just start off by selecting and copying the sides of the cube. You can then
     duplicate those edges and scale them to the size you want them to be.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: And just like that, you have a cube with a hole.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: And to make this hole believable, you just need the inner edge.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Again, Vector Networks may not allow you to create something you couldn't otherwise.
     Instead, they enable workflows that weren't previously possible.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: Creating Vector Networks
+  id: totrans-split-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: With an understanding of what Vector Networks are, we can now take a look at
     how we would go about implementing them.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Graph
+  id: totrans-split-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The main data structure behind Vector Networks is a graph. A graph can be thought
     of as a collection of nodes and edges.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: A graph
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: Nodes
+  id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: A graph may have any number of nodes. For our purposes nodes have two properties,
     a unique `id` and a `position`.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Edges
+  id: totrans-split-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Edges are the connection between two nodes. Each edge is a composed of two *edge
     parts*. An edge part contains a node's id and an optional control point.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: The labels `n0` and `n1` will be used to refer to the nodes at the start and
     end of an edge, respectively. The control points will be labeled `cp0` and `cp1`.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: If the control points of the edge are omitted, the edge becomes a straight line.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: Filling the holes
+  id: totrans-split-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Source: [https://www.figma.com/blog/introducing-vector-networks/](https://www.figma.com/blog/introducing-vector-networks/)'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: When working with vector networks, the Fill tool allows you to “toggle” the
     fill of different “areas” of the graph.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: These areas can be defined as a sequence of node `id`s that go in a circle,
     a loop, if you will.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: This loopy sequence is referred to as a *cycle*. In the above example, the cycle
     would consist of the nodes `n0`, `n1`, `n3`, `n4`, `n5`, `n6` and `n7`. These
     cycles will be written like `(0, 1, 3, 4, 5, 6, 7)`.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: If you were to count the different visually distinct “areas” of the cycle your
     answer would probably be three, but you could easily find more than three cycles.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: What makes this correct or incorrect?
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: The sequence `(0, 1, 2, 3, 4, 5, 6, 7)` is a cycle and it loops, but it is not
     what we're looking for. The problem can be illustrated with the “how many triangles”
     puzzle you might have seen on Facebook.
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: How many triangles are in this image?
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: You should be able to count 24 different triangles depending on which areas
     you choose to include.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: But that's not what we want. What we need to find are the 16 small areas.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: We need a way to find the *“small cycles”* in the graph.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Minimal cycle basis
+  id: totrans-split-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This [paper on Minimal Cycle Basis](https://www.geometrictools.com/Documentation/MinimalCycleBasis.pdf)
     is a bit less dense than most others academic papers (and it has pictures!). Its
     goal is:'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: …to compute a minimal number of cycles that form a cycle basis for the graph.
+  id: totrans-split-111
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: What does “Minimal Cycle Basis” mean?
+  id: totrans-split-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: It's just a fancy way to refer to all of the “small areas” of a graph. You can
     think of these as the “visually distinct” areas of a graph. Enclosed areas.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: Left or right?
+  id: totrans-split-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The main tool for finding the “minimal cycle basis” will be determining which
     edge to choose based on left- or rightness.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: Should we go to `a` or `b`?
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: We'll think of this in terms of clockwise and counter clockwise.
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '`curr` for current, `prev` for previous'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: When traveling left, we choose the counter clockwise most edge (CCW) relative
     to the previous one.
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: CCW
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: When traveling right, we choose the clockwise most edge (CW) relative to the
     previous one.
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: CW
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: The algorithm
+  id: totrans-split-123
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: We will be finding the minimal cycle basis for the graph we saw earlier.
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: The first step is choosing the leftmost node in the graph.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: When traveling from the first node, we want to go clockwise (CW). But relative
     to which edge?
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: For the first node, we imagine that the previous edge is “below” the current
     one. We then pick the CW edge relative to that.
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: In this case `a` is more CW relative to `prev` than `b`, so we'll walk to `a`.
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: After the first walk, we start picking the CCW edge.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: In this case, that's `b`. We repeat the previous step and keep selecting the
     CCW edge until we reach the original node.
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: When we reach the original node again, a cycle is found.
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: We now have the first small cycle in the graph.
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: When a cycle has been found, the first edge of the cycle is then removed from
     the graph.
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: The first edge, `(n0 n1)`, is removed
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: Then, the *filaments* of the first two nodes in the cycle are removed.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: In this case, we only have a single filament
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: Filaments are nodes that only have one adjacent edge. Think of these as dead
     ends. When a filament is found, we also check whether or not the single adjacent
     node is a filament. This ensures that the first node of the next cycle has two
     adjacent nodes. We'll see an example of this later.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Now we pick the first node in the next cycle. In our graph, there are two equally
     left most nodes.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: When this happens, we pick the bottom node, `n1` in this case.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: We then repeat the process from before. CW from the bottom for the first node,
     then CCW from the previous node until we find the first node.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: We find the cycle `(1, 2, 3)`.
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: Now we have the cycles `(0, 1, 3, 4, 5, 6, 7)` and `(1, 2, 3)`.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: Then we remove the first edge of the cycle and filaments like before. We start
     by removing the filaments connected to the first two nodes of the cycle.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: We keep going until there aren't any filaments left.
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: Finding the next cycle is pretty obvious.
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: CW then CCW
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: We now have all the cycles of the graph.
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: This is the minimal cycle basis of our graph! Now we can toggle the fills of
     these cycles as we please.
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: The math
+  id: totrans-split-149
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I want to dig into how the clockwise-ness of an edge relative to another edge
     is determined.
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: The only prerequisite for understanding this section are [vectors](https://www.mathsisfun.com/algebra/vectors.html);
     arrows pointing from one point of a 2D coordinate system to another.
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: i = (1, 0), j = (0, 1)
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: With two vectors sitting at the origin, `i` and `j`, we can create a square
     like so.
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: For the unit vectors `(1, 0)` and `(0, 1)` the square has an area of 1.
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: We can do this with any two vectors.
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: This shape is called a *parallelogram*. Parallelograms have one property that
     we care about, which is that their area is equal to the absolute value of their
     determinant.
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
 - en: That may sound like jargon, but the determinant happens to be really useful
     for us. Take a look at what happens when we move the vectors of the one-by-one
     square closer together.
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: When the vectors get closer, their area gets smaller. And when the vectors are
     parallel, the determinant and area become 0.
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: At this point the natural question to ask is what happens when we keep going
     and the blue arrow is to the right of the green arrow?
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
 - en: The determinant becomes negative!
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: When the blue vector `j` is to the left of the green vector `i` the determinant
     of the parallelogram becomes negative. When the opposite is true it becomes positive.
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: The implication for our use case is that we can check whether the determinant
     of two vectors is positive or negative to determine whether or not a vector is
     to the left or right of another vector.
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
 - en: And we can do this no matter the direction because the area of a parallelogram
     does not change depending on the orientation of the vectors that create it.
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
 - en: The determinant changes when the orientation of the vectors change **relative
     to each other**.
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: With this knowledge as our weapon, we can create a function, `det(i, j)`, that
     takes in two vectors and returns the determinant.
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: The function will return a positive value when `j` is to the left (CCW) of `i`.
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: Applying the math
+  id: totrans-split-167
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Say we're in the middle of the finding a cycle and we're deciding whether or
     not to move to `n0` or `n1`.
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: Let's move this into the coordinate system.
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
 - en: We'll start off with `a`.
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: We want to get the vector from `curr` to `a`, which we do by subtracting `curr`
     from `a`. We'll call this new vector `da`.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: We can do the same for `curr` using `prev`.
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: Now we can determine whether `a` is left of `curr` by computing the determinant
     of the parallelogram that `da` and `dcurr` form.
+  id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
 - en: Note that the order is important. If we use `da` as `i` the area is negative.
     If we use it as `j` it becomes positive.
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: We can do the same with `b`.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: With this information as our weapon, we know whether or not `a`, `b` and `curr`
     are left or right of each other.
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: What do we do with this information?
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: The green zone
+  id: totrans-split-178
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We will be focusing on determining whether `da` is more CCW than `db` relative
     to `curr`. Simply put, is `da` left of `db`?
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: If `da` is more CCW than `db` relative to `dcurr`, `da` can be said to be *better*
     than `db`.
+  id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
 - en: The first step is to determine whether the angle between `dcurr` and `db` is
     convex.
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
 - en: 'This “convexity” can more easily visualized by shifting `dcurr` back and imagining
     an arc like so:'
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: The angle is convex
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: If the angle is convex, we we use the following expression to check whether
     `da` is better than `db`.
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: The ∨ symbol represents the logical OR operator in math.
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a look at the individual parts of this expression.
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
 - en: Is `da` CCW of `dcurr`?
+  id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
 - en: Is `da` CCW of `db`?
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
 - en: I find that it's pretty hard to visualize this mentally, so I think of the two
     different expressions creating a “green zone” where `da` is better than `db`.
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: For the first part of the expression (is `da` left of `dcurr`), the green area
     looks like so.
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
 - en: The second part of the expression asks if `da` is left of `db`. The green area
     look looks like so.
+  id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
 - en: 'And since it''s an OR expression, either of these sub-expressions being true
     would result in `a` being better than `b`. Thus, the green area looks like this:'
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
 - en: Is `a` better than `b`?
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: We use this to determine the better-ness of `a` when the angle is convex.
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: But what if the angle from `dcurr` to `db` is concave?
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then the expression looks like so:'
+  id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
 - en: The only thing that changed here is that the logical OR operator (∨) changed
     to the logical AND operator (∧).
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a look at what happens with the green zones using this expression.
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
 - en: Is `da` left of `dcurr`?
+  id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
 - en: Is `da` left of `db`?
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
 - en: 'And since these sub-expressions are joined by logical AND, the green zone looks
     like so:'
+  id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
 - en: Using this method, we can always get the CCW or CW most node. And the great
     thing is that this method is independent of rotation and really cheap to compute.
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
 - en: Computing the determinant
+  id: totrans-split-203
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Given two vectors, the [determinant](https://en.wikipedia.org/wiki/Determinant)
     can be computed with this formula:'
+  id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
 - en: Intersections in the graph
+  id: totrans-split-205
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's go back to our graph for a bit.
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
 - en: This graph is the simplest, most optimistic case. This graph only has straight
     lines, and no two lines cross each other.
+  id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
 - en: This box shape has an intersection. The edge `(0, 2)` crosses the edge `(1,
     3)`.
+  id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
 - en: With the intersection, the above area looks fillable. But defining the “filled
     area” is pretty difficult.
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: What makes defining this area so difficult? Consider this rectangle and line.
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
 - en: There are two intersections with the edge `(4, 5)` intersecting `(0, 1)` and
     `(2, 3)`.
+  id: totrans-split-211
   prefs: []
   type: TYPE_NORMAL
 - en: Say the area left of the line is filled. What happens if we move the line left?
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
 - en: Obviously the area shrinks, but what if we keep going and move the line outside
     of the rectangle? Which of these outcomes below should be the result, and why?
+  id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
 - en: In this case kinda feels like the rectangle should be empty. But what if we
     move the line right?
+  id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
 - en: Should it then be filled? Sure, but what if we move the line up or down instead?
     Should the rectangle fill or empty when the line is no longer separating the two
     sections?
+  id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
 - en: Expanding the graph
+  id: totrans-split-216
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This is how I believe Figma solves this problem. I call it “expanding the graph”,
     but the engineers at Figma probably use a different vocabulary to describe it.
+  id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL
 - en: Expanding the graph means taking each intersection, creating a node at the point
     of the intersections, and then splitting the edges that intersected each other
     at that point.
+  id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is the original graph:'
+  id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
 - en: 'The edge `(0, 2)` intersects the edge `(1, 3)`. When expanded, the graph would
     look like so:'
+  id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
 - en: A new node, `5` would be added at the point of the intersection.
+  id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
 - en: The edges `(0, 2)` and `(1, 3)` have been removed and replaced by the edges
     `(0, 5)`, `(5, 2)`, `(1, 5)`, and `(5, 3)`.
+  id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
 - en: The structure of the graph has been changed
+  id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
 - en: Here's a graphic that should illustrate this a bit more clearly.
+  id: totrans-split-224
   prefs: []
   type: TYPE_NORMAL
 - en: Expanding an intersection
+  id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
 - en: Multiple intersections
+  id: totrans-split-226
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: These steps are pretty simple for line edges with a single intersections. But
     each edge can have multiple other edges intersecting it, and two cubic bezier
     curves can create 9 intersections.
+  id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
 - en: This complicates things a bit. Let's take a look at a bezier-line intersection.
+  id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
 - en: The best way to go about this is to treat the intersections for an edge as separate
     from the edge that intersected it.
+  id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
 - en: The `t` values go from 0 at the start of the curve to 1 at the end of it
+  id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
 - en: The line has two intersections at `t = 0.3` and `t = 0.7`. The bezier has two
     intersections, but at `t = 0.25` and `t = 0.75`.
+  id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
 - en: Before we move on with this example, I want to introduce a different way of
     thinking about edges since I believe it will help with the overall understanding
     of the problem.
+  id: totrans-split-232
   prefs: []
   type: TYPE_NORMAL
 - en: Duplicate edges
+  id: totrans-split-233
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Two nodes may be connected multiple times by different edges.
+  id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
 - en: In this graph, an edge represented by the node pair `(2, 3)` could represent
     either of the two edges that connect `n2` and `n3`.
+  id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
 - en: To get around this problem, we will give each edge a unique `id`.
+  id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
 - en: For most future examples, I will still refer to edges by the nodes they connect
     since I feel it's easier to think about. But for the next example it's better
     to separate nodes and edges.
+  id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
 - en: Intersection map
+  id: totrans-split-238
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'We can structure the data for the intersections of the edges like so:'
+  id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
 - en: Creating nodes at the intersection points of edges
+  id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
 - en: When we encounter an intersection, we create a node whose position is at the
     intersection. We then add intersections to an *intersection map* that will contain
     the intersections for each edge with a corresponding `t` value and a `nodeId`.
     These intersections are sorted by the `t` value.
+  id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
 - en: For the intersection with the lowest `t` value, we create an edge with the first
     *edge part* having the `nodeId` of the first edge part of the original edge. The
     second edge part should contain the `nodeId` of the intersection. This creates
     the edge `(2, 4)`.
+  id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
 - en: Subsequent edges will have the first edge part's `nodeId` be the `nodeId` of
     the previous intersection and the second `nodeId` be the `nodeId` of the current
     intersection. In this example, that edge is `(4, 5)`.
+  id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL
 - en: One additional edge will be created for each edge with any intersections.
+  id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
 - en: The first edge part's `nodeId` will be the `nodeId` of the last intersection
     and the second edge part's `nodeId` will be the `nodeId` of the second edge part
     of the original edge.
+  id: totrans-split-245
   prefs: []
   type: TYPE_NORMAL
 - en: This was a bit of a mouthful, so hopefully this graphic helps a bit with understanding
     that alphabet soup.
+  id: totrans-split-246
   prefs: []
   type: TYPE_NORMAL
 - en: Separating the intersections of an edge from the edges that created those intersections
     makes it easier to think about. It alleviates some of the complexity that might
     arise from multiple edges intersecting with each other.
+  id: totrans-split-247
   prefs: []
   type: TYPE_NORMAL
 - en: Self-intersection
+  id: totrans-split-248
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Cubic beziers can self-intersect.
+  id: totrans-split-249
   prefs: []
   type: TYPE_NORMAL
 - en: This, unfortunately, means that every single cubic bezier edge has to be checked
     for self-intersection. It's an interesting problem that involves finding the two
     different `t` values that the bezier intersects itself at, but I won't be covering
     how to find those values here.
+  id: totrans-split-250
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once you have the `t` values, a self-intersecting bezier can be expanded like
     so:'
+  id: totrans-split-251
   prefs: []
   type: TYPE_NORMAL
 - en: The blue node should be invisible to the user
+  id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
 - en: We insert `n3` since having a node with an edge that has itself on both ends
     of the edge is problematic, but it should be hidden from the user.
+  id: totrans-split-253
   prefs: []
   type: TYPE_NORMAL
 - en: Intersecting the loop of a self-intersecting bezier
+  id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
 - en: Removing n3 at the first opportunity
+  id: totrans-split-255
   prefs: []
   type: TYPE_NORMAL
 - en: Curvy edges
+  id: totrans-split-256
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Earlier we covered the CW - CCW graph traversal algorithm to find the minimal
     cycle basis (small areas).
+  id: totrans-split-257
   prefs: []
   type: TYPE_NORMAL
 - en: Finding the better (counter clockwise most) point adjacent to `curr`
+  id: totrans-split-258
   prefs: []
   type: TYPE_NORMAL
 - en: But the algorithm described in the paper was designed to work with nodes connected
     by straight lines that don't intersect. Introducing edges defined by cubic beziers
     introduces significant complexity.
+  id: totrans-split-259
   prefs: []
   type: TYPE_NORMAL
 - en: Which edge to choose, blue or green?
+  id: totrans-split-260
   prefs: []
   type: TYPE_NORMAL
 - en: In the example above, we can find out that the blue edge is better than the
     green one by using the determinant. We are stilling defining better to mean the
     CCW most edge.
+  id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL
 - en: When working with cubic bezier curves, the naive solution would be to just convert
     the bezier to a line defined by the points at the start and end of the curve.
+  id: totrans-split-262
   prefs: []
   type: TYPE_NORMAL
 - en: But that idea breaks down as soon as one edge curves over the other.
+  id: totrans-split-263
   prefs: []
   type: TYPE_NORMAL
 - en: Oops
+  id: totrans-split-264
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a fresh look at a bezier curves and try to work from there.
+  id: totrans-split-265
   prefs: []
   type: TYPE_NORMAL
 - en: Looking at this, we notice that the tangent at the start of the curve, `n0`,
     is parallel to the line from `n0` to `cp0`. So to get the direction at the start
     of the edge we can use the line `(n0, cp0)`.
+  id: totrans-split-266
   prefs: []
   type: TYPE_NORMAL
 - en: For clarity, the start of our edge, `n0`, is the same node as `curr`.
+  id: totrans-split-267
   prefs: []
   type: TYPE_NORMAL
 - en: So by converting edges defined by cubic beziers into a line defined by `(n0,
     cp0)`, we get the *initial* angle of the curve.
+  id: totrans-split-268
   prefs: []
   type: TYPE_NORMAL
 - en: This seems like a good solution when looking at the “curve around” case.
+  id: totrans-split-269
   prefs: []
   type: TYPE_NORMAL
 - en: Looks like we've solved the problem. Right?
+  id: totrans-split-270
   prefs: []
   type: TYPE_NORMAL
 - en: No intersections
+  id: totrans-split-271
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Before we move on to further edge cases, it helps to understand that any solutions
     assume that no two edges may intersect when deciding which edge to travel.
+  id: totrans-split-272
   prefs: []
   type: TYPE_NORMAL
 - en: This is not allowed
+  id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
 - en: The edges of the graph we're traversing must not have any intersections when
     we compute the cycles (minimal cycle basis) of the graph.
+  id: totrans-split-274
   prefs: []
   type: TYPE_NORMAL
 - en: We can only operate on an *expanded graph*.
+  id: totrans-split-275
   prefs: []
   type: TYPE_NORMAL
 - en: Like we covered earlier, an expanded graph is a graph that has replaced all
     intersections with new nodes and edges. So if the original, user-defined graph
     has any intersections, they would have to be expanded before we can find the graph's
     cycles.
+  id: totrans-split-276
   prefs: []
   type: TYPE_NORMAL
 - en: The same edges as above, but expanded
+  id: totrans-split-277
   prefs: []
   type: TYPE_NORMAL
 - en: Parallel edges
+  id: totrans-split-278
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The next edge case is two edges being parallel (pointing in the same direction).
+  id: totrans-split-279
   prefs: []
   type: TYPE_NORMAL
 - en: If the lines go in the same direction, determining which is better is impossible
     without more information.
+  id: totrans-split-280
   prefs: []
   type: TYPE_NORMAL
 - en: Here are a few possible solutions for the cases where the control points of
     the curves are parallel.
+  id: totrans-split-281
   prefs: []
   type: TYPE_NORMAL
 - en: Point at `t`
+  id: totrans-split-282
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: What if we just take the point on the curve at, for example, `t = 0.1`?
+  id: totrans-split-283
   prefs: []
   type: TYPE_NORMAL
 - en: This produces the correct result for curves of a similar length, but we can
     easily break this with one curve being significantly bigger than the other.
+  id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
 - en: This is effectively the same problem as the “curve around” case we saw earlier.
+  id: totrans-split-285
   prefs: []
   type: TYPE_NORMAL
 - en: Point at length
+  id: totrans-split-286
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Instead of taking a point at a fixed `t` value, we could take a point at some
     length along the curve. The length would be determined by some point on the smaller
     curve, e.g. at `t=0.1`.
+  id: totrans-split-287
   prefs: []
   type: TYPE_NORMAL
 - en: I have not tried implementing this since I have another working solution, but
     this could possibly be a viable and performant solution if it works for all edge
     cases.
+  id: totrans-split-288
   prefs: []
   type: TYPE_NORMAL
 - en: Lasers!
+  id: totrans-split-289
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The next solution is a bit esoteric but produces the correct result. This is
     the solution I'm currently using.
+  id: totrans-split-290
   prefs: []
   type: TYPE_NORMAL
 - en: We begin by splitting each bezier at `t = 0.05` (image above is exaggerated).
     We then tesselate each part into n points.
+  id: totrans-split-291
   prefs: []
   type: TYPE_NORMAL
 - en: Then, for each point of the tesselated bezier, we check whether a line from
     `n0` to that point intersects the other edge.
+  id: totrans-split-292
   prefs: []
   type: TYPE_NORMAL
 - en: It's pretty hard to see what's going on at this scale, so let's zoom in a bit.
+  id: totrans-split-293
   prefs: []
   type: TYPE_NORMAL
 - en: When a point intersects the other edge, we use the point before it.
+  id: totrans-split-294
   prefs: []
   type: TYPE_NORMAL
 - en: Found an intersection
+  id: totrans-split-295
   prefs: []
   type: TYPE_NORMAL
 - en: Let's zoom in a bit.
+  id: totrans-split-296
   prefs: []
   type: TYPE_NORMAL
 - en: The intersection close up
+  id: totrans-split-297
   prefs: []
   type: TYPE_NORMAL
 - en: For the other edge, we have no intersection.
+  id: totrans-split-298
   prefs: []
   type: TYPE_NORMAL
 - en: In that case, we just use the end of the edge as the direction line.
+  id: totrans-split-299
   prefs: []
   type: TYPE_NORMAL
 - en: With this method we've produced lines that seem to represent their respective
     curves.
+  id: totrans-split-300
   prefs: []
   type: TYPE_NORMAL
 - en: And this also works for the “curve around” case.
+  id: totrans-split-301
   prefs: []
   type: TYPE_NORMAL
 - en: But it fails for a “curve behind” case.
+  id: totrans-split-302
   prefs: []
   type: TYPE_NORMAL
 - en: This would produce the green edge as the more CCW edge, which is wrong.
+  id: totrans-split-303
   prefs: []
   type: TYPE_NORMAL
 - en: My solution to this problem is to shoot an infinite laser in the direction of
     the previous edge.
+  id: totrans-split-304
   prefs: []
   type: TYPE_NORMAL
 - en: We then check whether the points of the tesselated bezier intersect this laser.
+  id: totrans-split-305
   prefs: []
   type: TYPE_NORMAL
 - en: But a line from `n0` to the points would never intersect the laser.
+  id: totrans-split-306
   prefs: []
   type: TYPE_NORMAL
 - en: Passes right through
+  id: totrans-split-307
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, we can create a line from the current point to the previous point and
     use that for the intersection test.
+  id: totrans-split-308
   prefs: []
   type: TYPE_NORMAL
 - en: When we intersect the laser, we use the previous point. The previous point will
     always be on the correct side of the laser.
+  id: totrans-split-309
   prefs: []
   type: TYPE_NORMAL
 - en: The point we use
+  id: totrans-split-310
   prefs: []
   type: TYPE_NORMAL
 - en: And like that, we have a solution.
+  id: totrans-split-311
   prefs: []
   type: TYPE_NORMAL
 - en: Parallel, but in reverse!
+  id: totrans-split-312
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: It could also be the case that the blue or green edges, `a` and `b` respectively,
     could be parallel to the edge from `curr` to `prev`.
+  id: totrans-split-313
   prefs: []
   type: TYPE_NORMAL
 - en: '`a` is parallel to `prev`'
+  id: totrans-split-314
   prefs: []
   type: TYPE_NORMAL
 - en: The process for finding the better edge follows a process similar to the one
     described above so we will cover this very quickly.
+  id: totrans-split-315
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two cases:'
+  id: totrans-split-316
   prefs: []
   type: TYPE_NORMAL
 - en: A or B are parallel to `Prev` , but not both
+  id: totrans-split-317
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If either `a` or `b`, but not both, are parallel to `prev`, we can simply compare
     the parallel edge to `prev`.
+  id: totrans-split-318
   prefs: []
   type: TYPE_NORMAL
 - en: If the parallel edge is CW of `prev`, the parallel edge is better.
+  id: totrans-split-319
   prefs: []
   type: TYPE_NORMAL
 - en: If the parallel edge is CCW of `prev`, the other edge is better.
+  id: totrans-split-320
   prefs: []
   type: TYPE_NORMAL
 - en: Think a bit about why this is true.
+  id: totrans-split-321
   prefs: []
   type: TYPE_NORMAL
 - en: If one edge is parallel to `prev` and curves CW, and the other is not parallel
     to `prev`, then the parallel edge is as CCW as can be. This means that the green
     zone for the other edge is completely empty.
+  id: totrans-split-322
   prefs: []
   type: TYPE_NORMAL
 - en: The reverse is true if the parallel edge curves CCW, since it would be as CW
     as possible. This means that the green zone for the other edge is the whole circle.
+  id: totrans-split-323
   prefs: []
   type: TYPE_NORMAL
 - en: Both A and B are parallel to Prev
+  id: totrans-split-324
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Using the same laser solution as before, this case is covered.
+  id: totrans-split-325
   prefs: []
   type: TYPE_NORMAL
 - en: Cycles inside of cycles
+  id: totrans-split-326
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now we're going to look at fills for a bit.
+  id: totrans-split-327
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a look at a basic example of a graph with a cycle inside of another
     cycle.
+  id: totrans-split-328
   prefs: []
   type: TYPE_NORMAL
 - en: 'You would expect the graph''s areas to be defined like so:'
+  id: totrans-split-329
   prefs: []
   type: TYPE_NORMAL
 - en: But as it stands, if you hover over the outer area you get a different, unsatisfactory
     result.
+  id: totrans-split-330
   prefs: []
   type: TYPE_NORMAL
 - en: But this makes sense. Let's take a look at the nodes of the graph.
+  id: totrans-split-331
   prefs: []
   type: TYPE_NORMAL
 - en: The cycle `(0, 1, 2, 3)` describes the outer boundary of the area we want, but
     we aren't describing the “inner boundary” of the area yet.
+  id: totrans-split-332
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a look at how we can do that.
+  id: totrans-split-333
   prefs: []
   type: TYPE_NORMAL
 - en: Even-odd rule
+  id: totrans-split-334
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Telling a computer to draw the outline of a 2D shape is simple enough. But if
     you want to fill that shape, how do you tell the computer what is “inside” and
     what is “outside”?
+  id: totrans-split-335
   prefs: []
   type: TYPE_NORMAL
 - en: One way of finding out whether a point is inside a shape or not is by shooting
     an infinite laser in any direction from that point and counting how many “walls”
     it passes through.
+  id: totrans-split-336
   prefs: []
   type: TYPE_NORMAL
 - en: If the laser intersects an odd number of walls, it's inside of the shape. Otherwise
     it is outside of the shape.
+  id: totrans-split-337
   prefs: []
   type: TYPE_NORMAL
 - en: Intersects 1 wall, we're inside of the shape
+  id: totrans-split-338
   prefs: []
   type: TYPE_NORMAL
 - en: Intersects 4 walls, we're outside of the shape
+  id: totrans-split-339
   prefs: []
   type: TYPE_NORMAL
 - en: This works for any 2D shape, no matter which point you choose and which direction
     you shoot the laser in.
+  id: totrans-split-340
   prefs: []
   type: TYPE_NORMAL
 - en: This also helps in the case of nested paths.
+  id: totrans-split-341
   prefs: []
   type: TYPE_NORMAL
 - en: This gives us an idea for how we can define the “inner boundary” of a shape.
+  id: totrans-split-342
   prefs: []
   type: TYPE_NORMAL
 - en: Reducing closed walks
+  id: totrans-split-343
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Let's look at a graph with a cycle nested inside of another cycle, but with
     an edge connecting two nodes of the cycles.
+  id: totrans-split-344
   prefs: []
   type: TYPE_NORMAL
 - en: This will lead back to how we can think about nested cycles and give us a deeper
     understanding on how to think about them.
+  id: totrans-split-345
   prefs: []
   type: TYPE_NORMAL
 - en: Let's find the cycles. We use the same CW-CCW method as usual.
+  id: totrans-split-346
   prefs: []
   type: TYPE_NORMAL
 - en: With this method, we go on what looks like a small detour around the inner cycle.
+  id: totrans-split-347
   prefs: []
   type: TYPE_NORMAL
 - en: When we reach the node we started at, this is what the cycle looks like.
+  id: totrans-split-348
   prefs: []
   type: TYPE_NORMAL
 - en: This is the first cycle we've seen where we cross a node twice (both `n3` and
     `n4`). Something interesting appears when we take a look at the direction that
     the cycle takes throughout the graph.
+  id: totrans-split-349
   prefs: []
   type: TYPE_NORMAL
 - en: We start off traveling CCW, but when we cross the edge from the outer cycle
     to the inner cycle the orientation we travel seems to flip.
+  id: totrans-split-350
   prefs: []
   type: TYPE_NORMAL
 - en: I will state for now that we want to separate the outer cycle from the inner
     cycle and treat the edge between them as if it didn't exist. I will go into the
     *why* later and explain the *how* here.
+  id: totrans-split-351
   prefs: []
   type: TYPE_NORMAL
 - en: We take all repeated nodes, in this case `n3`, and remove them from the cycle.
     We also remove any nodes that are between the two repeated nodes.
+  id: totrans-split-352
   prefs: []
   type: TYPE_NORMAL
 - en: You might notice that `n4` is also repeated, but since it's “inside” of the
     part of the cycle that `n3` removes, we can ignore it.
+  id: totrans-split-353
   prefs: []
   type: TYPE_NORMAL
 - en: We leave one instance of the repeated node, and then we have the cycle that
     would have been found if the *crossing* didn't exist.
+  id: totrans-split-354
   prefs: []
   type: TYPE_NORMAL
 - en: We then mark the edge that connected the outer cycle from the inner cycle. I
     call these marked edges *crossings*.
+  id: totrans-split-355
   prefs: []
   type: TYPE_NORMAL
 - en: It could also be the case that an outer-inner cycle combo has multiple crossings.
+  id: totrans-split-356
   prefs: []
   type: TYPE_NORMAL
 - en: In that case, we mark all edges adjacent to the node connected to the outer
     cycle as a crossing.
+  id: totrans-split-357
   prefs: []
   type: TYPE_NORMAL
 - en: 'And after all this is done, our cycles look like so:'
+  id: totrans-split-358
   prefs: []
   type: TYPE_NORMAL
 - en: Subcycles
+  id: totrans-split-359
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Instead of referring to “inner” and “outer” cycles, I will refer to subcycles
     and parent cycles. This will make it easier to think about multiple cycles relative
     to each other.
+  id: totrans-split-360
   prefs: []
   type: TYPE_NORMAL
 - en: Having said that, let's introduce a third cycle.
+  id: totrans-split-361
   prefs: []
   type: TYPE_NORMAL
 - en: When we hover over the outermost cycle, what do you expect to happen?
+  id: totrans-split-362
   prefs: []
   type: TYPE_NORMAL
 - en: Because of the even-odd rule, the innermost cycle is filled too!
+  id: totrans-split-363
   prefs: []
   type: TYPE_NORMAL
 - en: To fix this, we can introduce the concept of *direct subcycles*.
+  id: totrans-split-364
   prefs: []
   type: TYPE_NORMAL
 - en: Parent cycles (blue) and their direct subcycles (green)
+  id: totrans-split-365
   prefs: []
   type: TYPE_NORMAL
 - en: A parent cycle may have multiple direct subcycles. But due to the non-intersection
     rule, a subcycle may only have a single parent cycle.
+  id: totrans-split-366
   prefs: []
   type: TYPE_NORMAL
 - en: Let's take a look at how this works.
+  id: totrans-split-367
   prefs: []
   type: TYPE_NORMAL
 - en: 'This graph has a a rectangle, our outermost cycle, which has two direct subcycles:
     a diamond and an hourglass. The diamond has two direct subcycles of its own, and
     the hourglass has three direct subcycles.'
+  id: totrans-split-368
   prefs: []
   type: TYPE_NORMAL
 - en: We will begin with the rectangle and its direct subcycles. We will name them,
     `c0`, `c1` and `c2`.
+  id: totrans-split-369
   prefs: []
   type: TYPE_NORMAL
 - en: The user has decided to fill some of these cycles, and leave some of them empty.
+  id: totrans-split-370
   prefs: []
   type: TYPE_NORMAL
 - en: '`c0` and `c1` are filled, and `c2` is empty'
+  id: totrans-split-371
   prefs: []
   type: TYPE_NORMAL
 - en: Let's draw the graph without a stroke and with a gray fill. When drawing this
     graph we start with the outermost cycle, `c0`.
+  id: totrans-split-372
   prefs: []
   type: TYPE_NORMAL
 - en: The graph to the left with the render to the right
+  id: totrans-split-373
   prefs: []
   type: TYPE_NORMAL
 - en: Since `c0` is filled, we draw it. If it were not filled we could skip drawing
     it. We can shoot a laser out of the rectangle and see that it intersects the walls
     of the rectangle once, so we can expect it to be filled considering the even-odd
     rule.
+  id: totrans-split-374
   prefs: []
   type: TYPE_NORMAL
 - en: This may seem really obvious, but it's good to have the rules of the game laid
     out clearly before we move on.
+  id: totrans-split-375
   prefs: []
   type: TYPE_NORMAL
 - en: Next we want to draw `c1`, the diamond in our graph. It was filled, just like
     the rectangle so we should draw it as well. But if we try to draw the diamond
     as well, we get the wrong result.
+  id: totrans-split-376
   prefs: []
   type: TYPE_NORMAL
 - en: Our laser is intersecting two walls as a result of drawing both of the shapes
     when the have the same fill setting.
+  id: totrans-split-377
   prefs: []
   type: TYPE_NORMAL
 - en: We intersect an even number of walls, so we're “outside” of the shape
+  id: totrans-split-378
   prefs: []
   type: TYPE_NORMAL
 - en: So to draw the image the user wanted we can simply skip drawing the diamond
     since the parent cycle implicitly draws direct subcycles with the same fill setting.
+  id: totrans-split-379
   prefs: []
   type: TYPE_NORMAL
 - en: The hourglass, `c2`, is supposed to be empty. With that being the case, just
     not drawing it seems like a reasonable conclusion. But since the parent cycle
     (rectangle) has already drawn the hourglass as if it were filled we need to “flip”
     the fill by drawing the hourglass.
+  id: totrans-split-380
   prefs: []
   type: TYPE_NORMAL
 - en: And again, if we try to use the laser intersection method we see that the number
     of intersections is 2, an even number. And with the even-odd rule, an even number
     of walls means you're “outside” of the shape.
+  id: totrans-split-381
   prefs: []
   type: TYPE_NORMAL
 - en: Now that we've drawn the rectangle and its direct subcycles, we can move onto
     the direct subcycles of those.
+  id: totrans-split-382
   prefs: []
   type: TYPE_NORMAL
 - en: When working with `c3` and `c4`, the direct subcycles of `c1`, we can treat
     them as if they're direct subcycles of `c0` since `c1` had the same fill setting.
+  id: totrans-split-383
   prefs: []
   type: TYPE_NORMAL
 - en: For `c3`, we want to “flip” the fill setting so we draw it. But `c4` has the
     same fill setting as its parent cycle so we don't draw it.
+  id: totrans-split-384
   prefs: []
   type: TYPE_NORMAL
 - en: Even number of intersections so we're outside of the shape
+  id: totrans-split-385
   prefs: []
   type: TYPE_NORMAL
 - en: And we can think of `c5`, `c6` and `c7` in the same way. We don't care whether
     they're filled or empty when rendering them. We care whether or not they have
     the same fill as their parent cycle.
+  id: totrans-split-386
   prefs: []
   type: TYPE_NORMAL
 - en: We only need to draw cycles if their parent cycle has the opposite “fill setting”
     as themselves. If they have the same fill setting, we don't have to draw them.
+  id: totrans-split-387
   prefs: []
   type: TYPE_NORMAL
 - en: This means that when drawing cycles, start by drawing the outermost “filled”
     cycle and then look at that cycle's subcycles. If a subcycle has the same fill
     setting as its parent cycle, it should not be drawn.
+  id: totrans-split-388
   prefs: []
   type: TYPE_NORMAL
 - en: Contiguous cycles
+  id: totrans-split-389
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A graph may have multiple “clusters” of cycles.
+  id: totrans-split-390
   prefs: []
   type: TYPE_NORMAL
 - en: I use the phrase *contiguous cycles* to describe the “togetherness” of the cycles,
     if you will. I often think of these contiguous groups of cycles as being in different
     colors.
+  id: totrans-split-391
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finding these contiguous cycles can be done with a depth-first traversal:'
+  id: totrans-split-392
   prefs: []
   type: TYPE_NORMAL
 - en: Start at the first node of the cycle
+  id: totrans-split-393
   prefs: []
   type: TYPE_NORMAL
 - en: Color each node you find
+  id: totrans-split-394
   prefs: []
   type: TYPE_NORMAL
 - en: But remember the *crossings*? In the search, you may not crawl to adjacent nodes
     by edges marked as crossings.
+  id: totrans-split-395
   prefs: []
   type: TYPE_NORMAL
 - en: 'So in the end, our colors actually look like this:'
+  id: totrans-split-396
   prefs: []
   type: TYPE_NORMAL
 - en: 'Take this group of contiguous cycles nested inside another group of contiguous
     cycles:'
+  id: totrans-split-397
   prefs: []
   type: TYPE_NORMAL
 - en: Because of the non-intersection rule we know that if one of the nodes in a group
     of contiguous cycles is inside of a cycle not in the group, all of them are.
+  id: totrans-split-398
   prefs: []
   type: TYPE_NORMAL
 - en: This “contiguous cycles” idea is maybe not the most interesting part of this
     post on the surface, but I've found it to be useful when working on Vector Networks.
+  id: totrans-split-399
   prefs: []
   type: TYPE_NORMAL
 - en: Partial expansion
+  id: totrans-split-400
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When hovering an area defined by intersections, we are showing a cycle of the
     expanded graph.
+  id: totrans-split-401
   prefs: []
   type: TYPE_NORMAL
 - en: Take this triangle as an example.
+  id: totrans-split-402
   prefs: []
   type: TYPE_NORMAL
 - en: If we hover over one of its areas, we see an area defined by nodes that don't
     exist yet.
+  id: totrans-split-403
   prefs: []
   type: TYPE_NORMAL
 - en: What the blue striped area represents is the area whose fill state would be
     “toggled” if the user clicks the left mouse button. This area does not exist on
     the graph as the user defined it. It exists as a cycle on the expanded version
     of the original graph.
+  id: totrans-split-404
   prefs: []
   type: TYPE_NORMAL
 - en: The expanded graph
+  id: totrans-split-405
   prefs: []
   type: TYPE_NORMAL
 - en: When the user clicks to toggle the fill state of the area, we would first have
     to expand the graph for the nodes and edges that make up that area to exist.
+  id: totrans-split-406
   prefs: []
   type: TYPE_NORMAL
 - en: The expanded graph
+  id: totrans-split-407
   prefs: []
   type: TYPE_NORMAL
 - en: But by doing that we've expanded two intersections that we didn't need to expand
     to be able to describe the area. These expansions are destructive in nature and
     should be avoided when possible.
+  id: totrans-split-408
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, we can *partially expand* the graph by only expanding the intersections
     that define the selected cycle.
+  id: totrans-split-409
   prefs: []
   type: TYPE_NORMAL
 - en: Partially expanded graph
+  id: totrans-split-410
   prefs: []
   type: TYPE_NORMAL
 - en: This allows us to maintain as much of the original graph as possible while still
     being able to define the fill.
+  id: totrans-split-411
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing partial expansions
+  id: totrans-split-412
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -1561,69 +1974,86 @@
     graph, just add a little metadata to each expanded node that tells you which two
     edges of the original graph were used to create it and at what `t` values those
     intersections occurred.
+  id: totrans-split-413
   prefs: []
   type: TYPE_NORMAL
 - en: Then when the cycle is clicked, iterate over each node. If the node exists in
     the expanded graph but not the original graph, add it to a new partially expanded
     graph.
+  id: totrans-split-414
   prefs: []
   type: TYPE_NORMAL
 - en: There are edge cases, but I will not be covering them here.
+  id: totrans-split-415
   prefs: []
   type: TYPE_NORMAL
 - en: Omitted topics
+  id: totrans-split-416
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Here are some of the topics that I decided to omit for this post. Go have a
     stab at them yourself!
+  id: totrans-split-417
   prefs: []
   type: TYPE_NORMAL
 - en: Joins
+  id: totrans-split-418
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Figma offers three types of joins. Round, pointy and square. How could these
     different types of joins be implemented?
+  id: totrans-split-419
   prefs: []
   type: TYPE_NORMAL
 - en: Stroke align
+  id: totrans-split-420
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Figma also offers three ways to align the stroke of a graph: center, inside
     and outside.'
+  id: totrans-split-421
   prefs: []
   type: TYPE_NORMAL
 - en: How do you determine inside- or outside-ness and what happens when the graph
     has no cycles?
+  id: totrans-split-422
   prefs: []
   type: TYPE_NORMAL
 - en: Boolean operations
+  id: totrans-split-423
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Figma, like most vector graphics tools, offers [boolean operations](https://help.figma.com/article/65-boolean-operations).
     How could those be implemented?
+  id: totrans-split-424
   prefs: []
   type: TYPE_NORMAL
 - en: '[Paper.js](http://paperjs.org/) is open source and has boolean operations for
     paths, maybe you can start there?'
+  id: totrans-split-425
   prefs: []
   type: TYPE_NORMAL
 - en: Future topics
+  id: totrans-split-426
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: These are some of the more open-ended features and ideas I want to explore in
     the future.
+  id: totrans-split-427
   prefs: []
   type: TYPE_NORMAL
 - en: A different way of working with fills
+  id: totrans-split-428
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: There are alternatives to how Figma allows the user to work with fills.
+  id: totrans-split-429
   prefs: []
   type: TYPE_NORMAL
 - en: One possible solution I'm interested in exploring is multiple different “fill
@@ -1631,26 +2061,32 @@
     graph, multiple colors](https://spectrum.chat/figma/feature-requests/paint-bucket-tool-with-multiple-colors~1b55179b-f911-468b-9355-fd361564fda0)”
     problem without having to duplicate the layer and keep multiple vector objects
     in sync if you want to make changes later on.
+  id: totrans-split-430
   prefs: []
   type: TYPE_NORMAL
 - en: Animating the graph
+  id: totrans-split-431
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Given an [expression](https://helpx.adobe.com/after-effects/using/expression-basics.html)
     and reference based system similar to After Effects, what could you achieve when
     you combine it with Vector Networks?
+  id: totrans-split-432
   prefs: []
   type: TYPE_NORMAL
 - en: Or maybe we could make use of a node editor similar to [Blender's shader editor](https://docs.blender.org/manual/en/latest/editors/shader_editor/index.html)
     or [Fusion's node based workflow](https://www.blackmagicdesign.com/products/fusion/visualeffects)?
+  id: totrans-split-433
   prefs: []
   type: TYPE_NORMAL
 - en: There's a lot of exploration to be done here and I'm really excited to dive
     into this topic.
+  id: totrans-split-434
   prefs: []
   type: TYPE_NORMAL
 - en: In closing
+  id: totrans-split-435
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1659,30 +2095,36 @@
     alongside school and work for a good while. It's part of an animation editor plus
     runtime for the web I'm working on. I intend for a modified version of Vector
     Networks to be the core of a few features.
+  id: totrans-split-436
   prefs: []
   type: TYPE_NORMAL
 - en: I've been working on implementing Vector Networks for a bit over half a year
     now. The vector editor is pretty robust when it comes to creating, modifying and
     expanding the graph. But the edge cases when modifying the fill state have been
     stumping me for quite a while now.
+  id: totrans-split-437
   prefs: []
   type: TYPE_NORMAL
 - en: I wanted to have a fully working demo before publishing this post, but it's
     going to be a few months until it's stable enough for it to be usable for people
     that are not me.
+  id: totrans-split-438
   prefs: []
   type: TYPE_NORMAL
 - en: The big idea behind the project is to be a piece of animation software that's
     tailor-made for creating and running dynamic animations on the web. I'll share
     more about this project at a later date.
+  id: totrans-split-439
   prefs: []
   type: TYPE_NORMAL
 - en: I also just think that Figma's Vector Networks are super cool and it's really
     hard to find material about it online. I hope this post helps fix the lack of
     information that I encountered when attempting to find information about Vector
     Networks.
+  id: totrans-split-440
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-441
   prefs: []
   type: TYPE_NORMAL

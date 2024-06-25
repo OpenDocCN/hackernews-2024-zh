@@ -1,29 +1,37 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:37:12'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How does Sidekiq really work? | Dan Svetlov’s blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://dansvetlov.me/sidekiq-internals/](https://dansvetlov.me/sidekiq-internals/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Since its publication, [this post was endorsed by Mike Perham](https://www.mikeperham.com/2024/02/22/how-does-sidekiq-work/),
     the creator of Sidekiq.
+  id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[Hacker News discussion](https://news.ycombinator.com/item?id=39257174)'
+  id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -32,6 +40,7 @@
     on and off Rails, it needs no introduction. Sidekiq has a 10+ year track record
     of being an efficient, battle-tested and simple-to-use solution for offloading
     the execution of application logic into the background.)'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: It utilizes a threaded model for job processing, uses Redis as a backend and
@@ -39,17 +48,20 @@
     a caveat) in a free open-source version. Sidekiq also offers 2 additional paid
     versions - Pro and Enterprise, each of them introducing additional features and
     extensions. For obvious reasons, I will not go into the details of these versions.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: This article will delve into the internals of Sidekiq to highlight its key aspects,
     as well as design and implementation decisions that I personally find interesting
     or peculiar, by diving directly into the source code and following a job through
     its full lifecycle.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: I will not cover the user-facing API and general “how-to’s” of Sidekiq. Its
     [wiki](https://github.com/sidekiq/sidekiq/wiki/Getting-Started) provides a better
     resource for this. Basic acquaintance with the library, as well as Ruby, is expected.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The code examined in this article was sourced from Sidekiq version 7.2 and Ruby
@@ -59,14 +71,17 @@
     become outdated. Nonetheless, the article could serve as a valuable resource for
     anyone looking to practice their systems programming skills by building a job
     processor.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: It’s worth noting that I’m neither a maintainer nor a contributor of Sidekiq.
     All of my observations and conclusions stem from reading the source code, comments,
     and discussions from issues and pull requests sourced via `git blame`.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Booting up
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -75,11 +90,13 @@
     as a separate process. `bin/sidekiq` is the script that is used to initiate this
     process, with its primary responsibility being the instantiation of the `Sidekiq::CLI`
     singleton class.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: The `CLI` object parses the configuration passed to the process as command line
     arguments via Ruby’s [`OptionParser`](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/cli.rb#L26-L32),
     and initialises the [global default `Sidekiq::Config`](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/config.rb#L11-L35).
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: If a valid path to a YAML config is passed via `--config/-C` CLI argument, it
@@ -88,6 +105,7 @@
     `--require/-R` argument that is supposed to point to the root directory of an
     application where the job classes are located. Configuration in that case would
     be sourced from `<path-specified-by-require>/config`.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: If the configuration file exists, Sidekiq will evaluate it using `ERB`. This
@@ -95,12 +113,14 @@
     that this file will be evaluated before the Rails application or a file specified
     via `--require` is required, which makes referencing constants defined in the
     application code impossible.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Then, `queues` and `concurrency` configuration options are [populated](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/cli.rb#L275-L277)
     if their values were not explicitly set. With default values, Sidekiq will process
     only the `default` queue and set its `concurrency` to the value of the `RAILS_MAX_THREADS`
     environment variable if Sidekiq is being used with a Rails application.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: As a penultimate step in the configuration process, both the `queues` and `concurrency`
@@ -109,45 +129,54 @@
     of configuration options. In a basic Sidekiq setup, capsules are not exposed to
     the user; however, a default capsule is implicitly used. It is possible to define
     custom capsules in the configuration YAML file and via `Sidekiq.configure_server`.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, `CLI` instance validates that the `--require` argument points to an
     existing file, or, in case it points to a directory, that `config/application.rb`
     exists. It also checks that `concurrency` and `timeout` are positive integer numbers.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Entering the main loop
+  id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: After loading and validating the configuration, the `bin/sidekiq` executable
     calls `run` on the CLI instance. At this point, the application gets loaded.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: If the path in the `require` config param is a directory, which is `.` by default
     unless explicitly configured, Sidekiq assumes that it’s being [used in a Rails
     application](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/cli.rb#L294-L308)
     and requires `rails` and `sidekiq/rails`, followed by a `require File.expand_path("#{@config[:require]}/config/environment.rb")`.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Otherwise, if `require` points to a file, that file gets required. This means
     that the `require` config param always has to be explicitly supplied and point
     to an entry point that loads the application code if used in a non-Rails application.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Calls to `Sidekiq.configure_server` and `Sidekiq.configure_client` also get
     evaluated during the application boot since they’re typically part of the eagerly
     loadable application code. This setup most commonly occurs in a `config/initializers/sidekiq.rb`
     Rails initializer.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Signal handling
+  id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Before proceeding to the next step in the `run` method, it might be worth refreshing
     our memory on what [signals](https://man7.org/linux/man-pages/man7/signal.7.html)
     are.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: In essence, signals can be considered a type of inter-process communication.
@@ -158,12 +187,15 @@
     cleanup, which is relevant for a job processor like Sidekiq. Most modern orchestration
     tools and hosting platforms support graceful termination by sending either a SIGINT
     or SIGTERM to running processes.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'With theory out of the way, let’s see how Sidekiq interacts with signals [here](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/cli.rb#L49-L74):'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'The first interesting thing to note is the creation of an unnamed pipe using
@@ -171,9 +203,11 @@
     is a 2-member array of `IO` instances wrapping the file descriptors returned by
     the underlying system call ([`pipe2` or `pipe`](https://man7.org/linux/man-pages/man2/pipe.2.html)
     on most UNIX-like systems):'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: Unnamed pipes are extremely handy in forking environments since they can be
@@ -182,30 +216,37 @@
     free OS version) and instead utilizes threads extensively, which all share the
     process’s memory. So why use a pipe? Before we answer this question, let’s examine
     what happens in Sidekiq’s signal handlers.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'As evident from the Ruby snippet above, Sidekiq sets up handlers for SIGINT,
     SIGTERM, SIGTTIN, and SIGTSTP. Each handler is defined sequentially using `Signal.trap`,
     which, on UNIX-like systems, internally constructs a handler and invokes the [`sigaction`](https://man7.org/linux/man-pages/man2/sigaction.2.html)
     system call:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: As observed, this function returns an instance of a handler previously registered
     for the same signal.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s revisit the signal registration in `Sidekiq::CLI`:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: 'This code might appear confusing at first glance - how is `old_handler` being
     called from within a block when `old_handler` itself is the return value of the
     said block? To unravel this little Inception moment, consider the following facts:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: As we have seen, `Signal.trap` returns the handler that was previously registered
@@ -213,12 +254,14 @@
     be an instance of `Proc` or a string. For possible string return values, you can
     refer to [this part of the `trap` function](https://github.com/ruby/ruby/blob/a7335e11e354d1ee2e15233f32f087230069ad5c/signal.c#L1310-L1323),
     which is responsible for returning the old handler to the Ruby land.
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The block passed to `Signal.trap` is not evaluated instantly; instead, it is
     called only when the corresponding signal is received by the process. The proc
     object is [stored in the global `vm->trap_list` struct](https://github.com/ruby/ruby/blob/a7335e11e354d1ee2e15233f32f087230069ad5c/signal.c#L1325).
+  id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -226,6 +269,7 @@
     work in Ruby; `old_handler` is simply inherited by the inner scope of the block.
     This behavior is akin to how it’s possible to reference local variables in a rescue
     block even if an exception is raised before they are defined.
+  id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -238,6 +282,7 @@
     since it cannot make assumptions about the environment it is running in. It’s
     possible that a developer or another library already declared a signal handler
     that is expected to be called.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: However, the trap context ends with the signal name being written to the unnamed
@@ -246,6 +291,7 @@
     as a hint as to why the handler logic is not being evaluated directly. For the
     exact reason why this happens and for the actual behavior of SIGINT, SIGTERM,
     and other handlers, read on.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The rest of `run`’s method execution is spent on eagerly loading resources,
@@ -258,24 +304,29 @@
     were lazily loadable, its accessor would have to be wrapped in a synchronization
     primitive such as a mutex, which would incur performance penalties for every happy
     path triggered, where the resource is already allocated and just has to be referenced.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, `run` calls `launch` and passes the reader end of the pipe as an argument.
     `launch` is the method where the main thread will spend the rest of its time while
     the Sidekiq process is running:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: A `Sidekiq::Launcher` instance is created, and `run` is called on it. The block
     where this happens is wrapped in a `rescue Interrupt`.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: By default, `Interrupt` is raised only when the process [does not have a custom
     `SIGINT` handler registered](https://github.com/ruby/ruby/blob/a7335e11e354d1ee2e15233f32f087230069ad5c/signal.c#L1105-L1109),
     which is not the case here as `Signal.trap` was already explicitly called with
     SIGINT. In that case, let’s see where it might be getting raised from.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'After the launcher gets commanded to run, the main thread enters an endless
@@ -285,25 +336,30 @@
     sent to the process, it will eventually be written to the writer end of the pipe
     and get read here. `handle_signal` will call a corresponding handler [defined
     in the `Sidekiq::CLI::SIGNAL_HANDLERS` hash](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/cli.rb#L190-L217):'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: The key signal handlers to note are SIGINT, SIGTERM, and SIGTSTP. ^(The former
     two handlers consist only of a `raise Interrupt`, which will be rescued in the
     `CLI.launch` loop we looked at previously. SIGTSTP is a bit different - it calls
     `quiet` on the `Sidekiq::Launcher` instance.)
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: Before we dive deeper into the launcher, let’s first answer why the signal handlers
     are not being executed directly from trap contexts and instead get sent to a pipe
     and processed in a main thread loop.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Any code invoked from a trap context must be reentrant. What this means in practice
     is that a handful of Ruby constructs and methods cannot be used inside `Signal.trap`
     blocks, most notably `Mutex`.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'The reason why such operations are not permitted in the trap context is simple:
@@ -312,27 +368,33 @@
     code, which may be considered ‘correct’ when executed concurrently, will encounter
     deadlocks if the signal trap code accesses any synchronization resources shared
     not only by other threads, but also by the main thread itself.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'None of the Sidekiq signal handlers reference a mutex directly. However, almost
     all of them emit messages using `Sidekiq.logger`, which by default is a subclass
     of the plain Ruby `Logger` class. `Logger`, in turn, [uses a mutex](https://github.com/ruby/ruby/blob/a7335e11e354d1ee2e15233f32f087230069ad5c/lib/logger/log_device.rb#L33-L45)
     to synchronize writes internally:'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: This means that it’s possible for the signal handler, which accesses the same
     logger instance, to be called while the main thread owns the mutex during logging.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Keeping the signal traps short and deferring the actual logic by notifying the
     main thread through a pipe allows for lifting restrictions that are usually applied
     to signal handlers.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Managing the lifecycle
+  id: totrans-split-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -341,12 +403,15 @@
     waiting for incoming signals. SIGINT and SIGTERM call `stop`, and SIGTSTP calls
     `quiet` on the launcher instance, and so far that’s the extent of our knowledge
     of the launcher. Let’s dissect it.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'It’s worth to note the creation of managers during initialization of a launcher:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: Here’s where the capsules come fully into the spotlight. Their configuration
@@ -354,68 +419,84 @@
     instances of `Sidekiq::Manager`. Capsules can be thought of as compartments inside
     a Sidekiq process. They are represented as Ruby objects containing individual
     `concurrency` and `queues` configuration parameters.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Without custom configuration, Sidekiq uses a single ‘default’ capsule implicitly,
     and it’s possible to define custom capsules if the need arises.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Before we proceed to researching the launcher lifecycle methods, let’s first
     go deeper down the stack for a moment and examine the key components relevant
     to the main processing loop.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Each capsule is manifested as a manager, serving as a container that oversees
     the lifecycle of a set of processors. The number of processors is determined by
     the `concurrency` setting. Managers provide control over their processors through
     publicly exposed methods such as `start`, `quiet`, and `stop`.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: A processor serves as the unit of execution within Sidekiq, responsible for
     performing jobs. Its public API includes methods such as `terminate`, `kill`,
     and `start`, providing control over its execution lifecycle to its manager.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Starting up
+  id: totrans-split-70
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'Let’s now return to the launcher. The following is its simplified [`run`](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/launcher.rb#L38-L44)
     method:'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: It initially starts a heartbeat thread that dumps some stats into Redis every
     10 seconds.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '`safe_thread` is essentially a helper method provided by Sidekiq, which wraps
     the passed proc in a rescue block, calling the internal exception handler via
     `Config#handle_exception`. By default, this handler simply logs the exception
     without re-raising it.'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'Manager’s `start` method looks like this:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: '`@workers` contains instances of the `Processor` class.'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'Digging one stack frame deeper, here’s the processor’s `start` method:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: In a similar fashion to the launcher, a processor starts a thread that executes
     the `Processor#run` method. For now, let’s consider it as a black box and just
     assume that it starts an endless loop that picks jobs from the queue and executes
     them.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, the Sidekiq process actually starts performing enqueued jobs.
@@ -423,64 +504,80 @@
     of every process lifecycle. Handling them gracefully in a job processor such as
     Sidekiq is arguably even more important than it is in web servers, and the reasons
     for this will be covered in the following sections.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Quieting down
+  id: totrans-split-82
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: As we have seen already, certain signals translate into calls to the launcher
     - namely `quiet` and `stop`. Let’s start with `quiet` first as it usually should
     precede `stop`.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s a trimmed version of `Launcher#quiet`:'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-85
   prefs: []
   type: TYPE_PRE
 - en: The early return is there in order to handle a case where the process receives
     several extra SIGTSTP signals.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '`Manager#quiet` takes the same precaution:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: 'And this is how processors handle `terminate`:'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: 'That’s it. Despite its name, the method doesn’t perform anything more drastic
     than setting an instance variable. This is where we pull the curtain on the `Processor#run`
     method:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-92
   prefs: []
   type: TYPE_PRE
 - en: 'This aligns with our previous assumption: the `run` method is executed within
     a thread spawned by the processor in its `start` method, and it enters a loop
     where the break condition is the `@done` instance variable being false.'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: It’s important to realize that invoking terminate does not immediately stop
     the processor from processing the current job. Instead, it will continue processing
     the current job until it completes.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: So, when `terminate` is called, the `run` method will exit the loop after finishing
     the current job. At this point, a `@callback` is invoked. This callback is actually
     a `Method` instance that wraps `Manager#processor_result`, which is passed by
     the manager during the initialization of each processor.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-96
   prefs: []
   type: TYPE_PRE
 - en: Reading through the source code of `processor_result`, it becomes clear that
@@ -489,6 +586,7 @@
     exception, it will remove itself from the set, create a new processor in a similar
     manner to how it’s done in `Manager#initialize`, add that processor to the set,
     and call `start` on it.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: However, in the code path we’re examining, which follows a call to `quiet`,
@@ -497,6 +595,7 @@
     the worker set will become empty. As we’ve already noticed, the jobs currently
     being executed by processors will not be abruptly halted; instead, they will continue
     until completion naturally.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: This makes the SIGTSTP signal the perfect candidate to be sent some time before
@@ -504,18 +603,22 @@
     should avoid picking up new jobs after they finish processing their current ones,
     as the process is about to be terminated. This minimizes the need for intrusive
     actions when a process needs to fully stop.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Stopping
+  id: totrans-split-100
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'The `Launcher#stop` method begins with a calculation of a deadline utilizing
     POSIX `clock_gettime`. `CLOCK_MONOTONIC` is employed to acquire the current absolute
     elapsed time rather than wall clock time, which can vary unpredictably:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: The default `timeout` config is set to 25 seconds and this number is not picked
@@ -523,15 +626,18 @@
     using a 30 second grace period for processes to react to SIGTERM gracefully. Sidekiq
     makes this timeout a bit lower in order to have better chances at finishing the
     required cleanup work.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '`quiet` gets called as the first step in the `stop` method in order to minimize
     work that will have to be waited on in the next step. Another purpose of calling
     `quiet` here is to ensure that processors stop picking up new jobs in case SIGTSTP
     was not explicitly sent prior to SIGINT or SIGTERM:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
 - en: In case processors manage to finish their current work in time, they will remove
@@ -539,6 +645,7 @@
     job. The 2 conditionals in `stop` are there to handle the happy path by preemptively
     terminating execution without additional unnecessary work in such cases. This
     is why it’s important to make sure that `quiet` gets called first.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: 'If the manager sees that there are any processors that couldn’t finish immediately
@@ -546,49 +653,60 @@
     `stop` method. Remember that the deadline, set to 25 seconds by default, is passed
     down from the launcher. The `wait_for` method executes the block in a loop until
     the block’s return value is truthy:'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: 'If there are still active processors lingering after the deadline, `hard_shutdown`
     is called. Here’s the [body of this method](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/manager.rb#L87-L119)
     with the original comments preserved:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-110
   prefs: []
   type: TYPE_PRE
 - en: We won’t explore the functionality of `capsule.fetcher.bulk_requeue` at this
     point. This is one of the most critical pieces of logic in Sidekiq and for now,
     let’s assume that, as the method’s name implies, it requeues jobs.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: 'Every processor that did not check itself out of the `@workers` array by the
     time `hard_shutdown` was invoked gets killed. Here’s what [`Processor#kill`](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/processor.rb#L49-L59)
     does:'
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-113
   prefs: []
   type: TYPE_PRE
 - en: It’s similar to `quiet`, but it additionally raises a `Sidekiq::Shutdown`, a
     subclass of `Interrupt`, on the processor thread.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: This exception being raised, however, does not impose an upper time bound on
     when the thread will be truly finished. That’s why right after every process has
     been killed, the manager waits 3 seconds to give them an opportunity to terminate
     gracefully. We’ll get to what this graceful termination consists of later.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: We’ve explored how Sidekiq establishes the necessary class hierarchy to ensure
     the smooth handling of the process lifecycle. The launcher oversees managers,
     which in turn manage processors responsible for fetching and processing jobs.
     Let’s now look at how the processors obtain jobs to execute.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Queue processing
+  id: totrans-split-117
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -599,20 +717,24 @@
     or `Sidekiq.configure_server`. This configuration populates the `queues` parameter
     of the `default` capsule, unless specific configuration was provided for a particular
     capsule in the config file or server configuration.
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: 'Eventually, all provided queue lists end up in the `Capsule#queues=` setter
     method, which is crucial for the queue processing logic. Here’s [its contents](https://github.com/sidekiq/sidekiq/blob/4ec059d53dbf1de67e41e3bd1687c7d90c12d580/lib/sidekiq/capsule.rb#L48-L70)
     copied verbatim with the original comment:'
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-120
   prefs: []
   type: TYPE_PRE
 - en: There are three options for how queues are polled. If none of the queues have
     a weight defined (using the `default,10` notation), the mode is set to `strict`.
     If all of the queues have their weights set to 1 explicitly, the mode is set to
     `random`. In any other case, the mode is set to `weighted`.
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: One peculiar thing to note is that the `@queues` array will contain `m` copies
@@ -620,58 +742,71 @@
     in a weighted manner with `default,10 queue_one,5 queue_two,3`, `@queues` will
     consist of 10 `:default` elements, 5 `:queue_one` elements, and 3 `:queue_two`
     elements.
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s come back over to `Processor#run`. As we have already seen, this method
     makes the processor enter a loop that calls `Processor#process_one` until `terminate`
     or `kill` is called:'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-124
   prefs: []
   type: TYPE_PRE
 - en: The conditional branch is there in case Sidekiq recovers from a backoff initiated
     by `handle_fetch_exception` in the rescue block. That method simply `sleep`s for
     1 second if there’s a transient connectivity issue when contacting Redis.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: '`Sidekiq::Shutdown` is muted here to reduce noise created by the error handler
     invoked from `handle_fetch_exception`. Processing of new jobs stops regardless
     since `@done` ivar is set to `false` at this point.'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `fetcher` method in the `Capsule` class extracts the fetcher object. Here’s
     its implementation:'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
 - en: The OS version of Sidekiq comes with a single fetcher option, `BasicFetch`.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: The Pro version includes [`SuperFetch`](https://github.com/sidekiq/sidekiq/wiki/Reliability#using-super_fetch),
     which offers a more robust durability guarantee for Sidekiq jobs. However, the
     specifics of this fetcher are not covered in this article.
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s examine the internals of `BasicFetch`. Here are the relevant methods,
     with original comments preserved:'
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-132
   prefs: []
   type: TYPE_PRE
 - en: 'True to its name, the logic in this class is straightforward: construct an
     array of queues (keep in mind that queue weights result in duplicate entries in
     the `@queues` array), shuffle it if there’s no strict ordering, and then pass
     it to Redis’ `BRPOP` command.'
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: It might seem counterintuitive to call `#uniq!` on the resulting array when
     there are weighted queues, but it’s not. The more identical entries there are
     in the array, the higher the chance that one of these entries will appear at the
     head of the array. `uniq!` preserves the ordering of elements.
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[`BRPOP`](https://redis.io/commands/brpop/) takes multiple [list](https://redis.io/docs/data-types/lists/)
@@ -680,10 +815,12 @@
     An important detail here is the timeout. As the comment above the `TIMEOUT` constant
     suggests, Sidekiq wants these operations to time out regularly so that a process
     can check if `terminate` or `kill` was called in the meantime.'
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: If the command successfully fetches a job from the list, the return values are
     wrapped in a `UnitOfWork` DTO.
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: 'The critical aspect of `BasicFetch` is that `BRPOP` removes the job from the
@@ -691,6 +828,7 @@
     failure scenarios, this has a significant implication: jobs can be lost. We’ll
     explore some of the scenarios where this might occur and how Sidekiq attempts
     to mitigate them in a later section.'
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: As you have probably noticed, the `acknowledge` method is empty for a `BasicFetch`
@@ -702,50 +840,60 @@
     being successfully processed. `SuperFetch`’s `acknowledge` most likely does exactly
     that. We will encounter situations where the `acknowledge` method becomes relevant
     as we dive deeper.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: Back in `Processor#process_one`, if the fetch was successful, `Processor#process`
     is invoked. Since this method is lengthy, we’ll examine modified smaller segments
     at a time.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-140
   prefs: []
   type: TYPE_PRE
 - en: The job fetched from Redis is a JSON payload represented as a string, so it
     needs to be parsed first. Here, we encounter the concept of the morgue and dead
     jobs. Trying to process a malformed job won’t yield positive results no matter
     how many times it is retried, so marking the job as ‘dead’ is a practical approach.
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: This is achieved by the [`ZADD`](https://redis.io/commands/zadd/) command, which
     adds a member to a [sorted set](https://redis.io/docs/data-types/sorted-sets/),
     where sorting key is the time at which the job was pronounced dead.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: The next 2 commands are there to remove dead jobs that surpassed the allowed
     time in the morgue, which is 6 months by default, and preserve only the latest
     10000 jobs in the set. All of this is done in a Redis transaction using the [`MULTI`](https://redis.io/commands/multi/)
     command.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: 'After the job payload gets parsed successfully, it needs to be executed. The
     rest of the `#process` method does exactly that (comments are preserved):'
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-145
   prefs: []
   type: TYPE_PRE
 - en: First thing that stands out is the use of `Thread.handle_interrupt`. In short,
     it allows to alter the handling of internal Ruby asynchronous events such as `Thread#raise`
     and `Thread#kill` - the former is exactly what is being used by `Processor#kill`
     as we have already seen.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: In this particular case, first `handle_interrupt` is called with `Sidekiq::Shutdown
     => :never` and wraps the `ensure` block that calls `#acknowledge` on the unit
     of work. The second call is nested directly after the first one, and it resets
     the behaviour back to `:immediate`.
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: 'This achieves the following: if a processor is killed (using `Thread#raise(Sidekiq::Shutdown)`)
@@ -754,11 +902,13 @@
     an acknowledgment would be missed in such case. The inner block resets it back
     to `:immediate` immediately afterward because this is the desired behavior - `Sidekiq::Shutdown`
     should interrupt the execution of the job’s code.'
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: This is not that relevant in the OS version since `BasicFetch`’s `UnitOfWork#acknowledge`
     is a no op, but it’s important for `SuperFetch`, since its version of `acknowledge`
     most likely removes the job from Redis in order to mark it as processed.
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: The rescue blocks are self-explanatory thanks to the comments. One noteworthy
@@ -768,17 +918,21 @@
     which deletes the processor and creates a new one. As a result, job retries will
     force the processor to be recreated, spawning a new Ruby thread in place of the
     original.
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s unwrap the `Processor#dispatch` and `Processor#execute_job` methods:'
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-152
   prefs: []
   type: TYPE_PRE
 - en: The `@job_logger` variable is an instance of `Sidekiq::JobLogger`. Its `prepare`
     method is responsible for putting job metadata into thread-local context, ensuring
     that logs emitted further down the stack contain useful correlation information.
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: Another crucial step in this pipeline is the `@reloader.call` invocation. This
@@ -787,6 +941,7 @@
     jobs typically reside in the `app/` directory of a Rails application, which should
     be reloadable. Additionally, the reloader handles [ActiveRecord connection cleanup](https://github.com/rails/rails/blob/a255742b2eb711baa8fd7a8937852851ddc8a679/activerecord/lib/active_record/railtie.rb#L326-L331)
     and other related concerns.
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: Sidekiq extracts the job class via `Object.const_get(job_hash["class"])` and
@@ -797,34 +952,42 @@
     libraries like [Sentry](https://github.com/getsentry/sentry-ruby/blob/master/sentry-sidekiq/lib/sentry/sidekiq/sentry_context_middleware.rb),
     [Datadog](https://github.com/DataDog/dd-trace-rb/blob/e4498741b7e85b7f886a8feb72ec62e64f86ad25/lib/datadog/tracing/contrib/sidekiq/server_tracer.rb)
     and others do.
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: Handling exceptions
+  id: totrans-split-156
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Naturally, application code called from within jobs can raise exceptions. Sidekiq
     provides several ways to handle them, with the default behavior being to retry
     failed jobs up to 25 times with an exponential backoff.
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s examine the `#local` method of `Processor`’s `@retrier` ivar, an instance
     of `Sidekiq::JobRetry` which wraps the `#perform` method of every job class:'
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-159
   prefs: []
   type: TYPE_PRE
 - en: This method is called “local” since it can be directly correlated to a particular
     instantiated job instance. We will see why it’s relevant once we get to `#process_retry`.
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: '`Sidekiq::Shutdown` is re-raised because it should bypass the retry system,
     and `Handled` is being re-raised as well in case a developer decides to manually
     raise it from within a job.'
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: Rescuing `Exception` (i.e. all exceptions) is the interesting part.
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
 - en: First of all, Sidekiq detects if an exception was raised due to the thread receiving
@@ -835,32 +998,39 @@
     the internals of `#exception_caused_by_shutdown?` for brevity, only mentioning
     that its secret sauce is Ruby’s [`exception#cause`](https://rubyapi.org/3.3/o/exception#method-i-cause)
     method.
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
 - en: Next, Sidekiq checks if the job was explicitly configured without retries -
     it simply re-raises the exception if that’s the case. By default, every Sidekiq
     job is retried up to 25 times.
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before we proceed to `#process_retry`, we need to look at the final line: `raise
     Skip`. Instead of re-raising the original exception, Sidekiq raises a subclass
     of `JobRetry::Handled`. We’ll see how it relates to the `#global` method once
     we get to it.'
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: 'The original `#process_retry` method handles metadata management and formatting;
     the following snippet is a trimmed-down version of it:'
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-split-167
   prefs: []
   type: TYPE_PRE
 - en: First, note that Sidekiq provides an ability to reroute the job into a different
     queue if it fails; this is what the second line of code is responsible for.
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: Immediately after, `#retries_exhausted` is called if the job exceeds its maximum
     retry count, or if the time frame during which it should be retried has passed.
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
 - en: If Sidekiq should attempt to retry the job, it calls `#delay_for`. This method
@@ -868,24 +1038,29 @@
     comes from, but for now, understand that a job can be either `discard`ed or `kill`ed,
     with the former causing Sidekiq to completely forget about the job instead of
     retrying it.
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: In case the job should actually be retried, the timestamp at which it should
     happen is calculated based on the obtained delay. Jitter is applied to this value
     to avoid the thundering herd problem, where a bunch of jobs are scheduled for
     a retry at the same second.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, the job is added to a `retry` sorted set using `ZADD`, following a
     simillar process to dead jobs.
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-split-173
   prefs: []
   type: TYPE_PRE
 - en: '`#delay_for` sources the `strategy` from an optional `sidekiq_retry_in_block`
     block defined on the job class by a developer. It can either return a symbol representing
     the strategy or an integer value representing the number of seconds for a delay.'
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: If the delay value was not provided by a developer, it gets calculated with
@@ -893,18 +1068,22 @@
     conducted. With the default max retry count being 25, this means that a job (without
     a custom `sidekiq_retry_in_block` defined) will be retried 25 times over approximately
     20 days.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s what happens in the `#retries_exhausted` method:'
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-split-177
   prefs: []
   type: TYPE_PRE
 - en: Another optional user-supplied job-level configuration being used here is `sidekiq_retries_exhausted_block`,
     which allows discarding a job once its retries are exhausted. If it’s not provided,
     a job gets sent to the morgue in the exact same fashion as in `Processor#process`
     when a job payload is malformed.
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
 - en: 'The last relevant method in the retrier is `#global`. It’s worth remembering
@@ -914,15 +1093,18 @@
     not raised from within application code, on a best-effort basis. Its only difference
     from `#local` is that it discards the job if it doesn’t have a `retry` attribute
     set, or if this attribute is set to `false` on the job class:'
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-split-180
   prefs: []
   type: TYPE_PRE
 - en: You might notice that similarly to `#local`, this method also rescues `JobRetry::Handled`
     and does not retry in such cases, since these exceptions are already handled in
     the `#local` rescue block that raises a `JobRetry::Skip` - a subclass of `Handled`.
     This avoids duplicate retry processing.
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
 - en: We have now explored the primary process of how Sidekiq handles job processing
@@ -930,9 +1112,11 @@
     Sidekiq offer a mechanism for delaying the execution of jobs until a specified
     time in the future? We will learn how Sidekiq handles these in the section following
     the next one.
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: Enqueueing jobs
+  id: totrans-split-183
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -940,6 +1124,7 @@
     and `Processor` constructs, which operate within a background process responsible
     for job processing. Now, let’s explore how jobs make their way into the queues,
     which leads us to `Sidekiq::Client`.'
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: 'Although most Sidekiq users typically don’t interact directly with `Sidekiq::Client`,
@@ -947,29 +1132,36 @@
     all the convenience methods provided by this module rely on fundamental building
     blocks: `Client#push` and `Client#push_bulk`, which accept different combinations
     of arguments.'
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s see what `Client#push` does:'
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-split-187
   prefs: []
   type: TYPE_PRE
 - en: '`normalize_item` performs several operations on the payload, including argument
     validation and generation of a unique job identifier.'
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
 - en: Subsequently, the payload undergoes processing through the client middleware
     chain, mirroring the way `Processor` sends job payloads through server middlewares.
     This enables external integrations to enhance the job payload with extra attributes
     and implement custom logic around job dispatches.
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: '`verify_json` might not need additional explanation as it does exactly what
     its name suggests, but it’s how it does it that makes it worthwhile to look into:'
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE34]'
+  id: totrans-split-191
   prefs: []
   type: TYPE_PRE
 - en: 'Boiled down, the `verify_json` method validates job arguments expected by the
@@ -978,6 +1170,7 @@
     if the arguments remained unchanged after being dumped and parsed as JSON: `JSON.parse(JSON.dump(item["args"]))
     == item["args"]`. However, this approach, involving the dumping and parsing of
     potentially large arguments for each job, clearly warranted performance enhancements.'
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
 - en: To address this, the `RECURSIVE_JSON_UNSAFE` constant was introduced. Additional
@@ -986,6 +1179,7 @@
     resulting in a faster process. Extracting a static `object_id` that remains unchanged
     during an object’s lifetime, albeit recursively, is much faster than going through
     2 iterations of JSON processing.
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: In this new version, every Ruby class known to be ‘JSON-safe’ returns a proc
@@ -994,26 +1188,32 @@
     contains an object of any other class not declared as a key in the hash, the arguments
     are deemed unsafe, and an appropriate action will be taken, with the default being
     to raise an error.
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: '`raw_push` is the place where job gets put into Redis:'
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-split-196
   prefs: []
   type: TYPE_PRE
 - en: This method accepts an array of payloads to support `#push_bulk`. `#push` passes
     a single array element as an argument.
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
 - en: The rescue is included to handle Redis failovers that necessitate reopening
     the connection socket, attempting one transparent retry.
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
 - en: Subsequently, the Redis commands called by `atomic_push` are [pipelined](https://redis.io/docs/manual/pipelining/),
     reducing the round-trip time (RTT). Note that when jobs are pushed in a batch,
     all of them are submitted using a single `LPUSH` command, so pipelining here is
     not as critical as it could have been.
+  id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
 - en: '`atomic_push` has 2 branches. The second branch is for immediate dispatches
@@ -1024,6 +1224,7 @@
     a `Processor` instance on the server side, which we have already covered. An important
     detail is that `LPUSH` adds the elements to the front of the list - `BasicFetch#retrieve_work`
     pops the element from the tail, making Sidekiq queues employ a FIFO model.'
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
 - en: It must be strongly emphasized here that despite the first-come first-serve
@@ -1037,15 +1238,18 @@
     is lost. We will explore when the latter case can happen in the following section.
     In any case, if strict ordering of jobs is truly needed, Sidekiq is not the best
     option.
+  id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
 - en: The first branch of `atomic_push` accommodates scheduled jobs, which we haven’t
     touched until now. Scheduled jobs enable users to defer their job’s execution
     until a specific time in the future. In order to achieve this, `ZADD` is used
     again with a sorted set, similar to `dead` and `retry` sets.
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
 - en: Retrying & scheduling
+  id: totrans-split-203
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1055,18 +1259,22 @@
     component that enables the processing of scheduled jobs and jobs that need to
     be retried. We noted that both types of jobs get added into corresponding sorted
     sets using `ZADD`, but how do they get processed?
+  id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
 - en: When we previously examined the `Launcher`, we intentionally glossed over `Sidekiq::Scheduled::Poller`.
     Whenever a Sidekiq process boots, it calls `Launcher#run`, which in turn initiates
     the poller thread.
+  id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-split-206
   prefs: []
   type: TYPE_PRE
 - en: Its main loop is extremely similar to that of `Processor`, so I won’t cover
     where `@done` is set.
+  id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
 - en: Before we delve into the details of the `initial_wait`, `enqueue`, and `wait`
@@ -1076,6 +1284,7 @@
     each sharing the same set of queues, to increase throughput and availability.
     These processes simply attempt to `BRPOP` jobs from queue lists atomically, and
     each processor gets its share of work.
+  id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
 - en: However, the `scheduled` and `retry` sets operate differently. Jobs in these
@@ -1090,14 +1299,17 @@
     Therefore, the pollers must either coordinate to ensure that only one runs at
     a time, or their executions must be artificially spread out. Sidekiq opts for
     the latter option, and we’ll explore how it achieves that.
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: '`Sidekiq::Scheduled` is one of the most commented modules in Sidekiq, so all
     of the original comments are preserved in following snippets. Here’s `#initial_wait`
     that gets called once per Sidekiq process:'
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-split-211
   prefs: []
   type: TYPE_PRE
 - en: Heartbeat is mentioned in the first comment - similar to a poller, it’s another
@@ -1105,40 +1317,49 @@
     thing relevant to the poller is the updating of the `processes` set, which contains
     unique identifiers of each Sidekiq process; we will see how it exactly comes into
     play shortly.
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
 - en: '`@sleeper.pop(total)` simply makes the thread wait for a specified amount of
     time.'
+  id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE38]'
+  id: totrans-split-214
   prefs: []
   type: TYPE_PRE
 - en: As can be seen, the poller is responsible for cleaning out dead processes’ metadata
     from Redis. Despite what the comment in `#initial_wait` says, this only happens
     once a poller starts, and, under normal circumstances, it starts only when a process
     boots up.
+  id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
 - en: 'Why exactly this is necessary can be seen in the `#wait` method, which is being
     called in a loop after every `#enqueue`:'
+  id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-split-217
   prefs: []
   type: TYPE_PRE
 - en: Poll interval logic is explained in detail thanks to the comprehensive comments.
     The amount of active Sidekiq processes consuming jobs from the same Redis installation
     is taken into consideration when calculating an interval with which pollers should
     contact Redis. It all boils down to minimizing concurrent poller operations.
+  id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, let’s see what all of this effort is for. `Poller#enqueue` instantiates
     `Sidekiq::Scheduled::Enq`, which encapsulates scheduled dequeue logic and calls
     `#enqueue_jobs` on it:'
+  id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-split-220
   prefs: []
   type: TYPE_PRE
 - en: First thing to note is the `LUA_ZPOPBYSCORE` string, along with [`SCRIPT`](https://redis.io/commands/script-load/)
@@ -1147,26 +1368,31 @@
     that allows execution of atomic Lua scripts on the server. The script is preloaded
     and cached in Redis using `conn.script` so that subsequent commands utilizing
     it can benefit from increased performance.
+  id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
 - en: The script itself takes an array of sets (`retry` and `schedule`) and a current
     timestamp (note that Lua array indexing starts with 1). It then calls [`ZRANGE`](https://redis.io/commands/zrange/),
     which returns a single job with the lowest timestamp that should be dispatched
     to the queue. The job element is then removed from the set using [`ZREM`](https://redis.io/commands/zrem/).
+  id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
 - en: The complexity of `ZRANGE` is O(log(N) + M), where N is the total number of
     elements in the set and M is the number of elements returned. However, Sidekiq
     dequeues one scheduled or to-be-retried job at a time to be safe, as the comment
     suggests, meaning that the overall complexity will be O(M * log(N)).
+  id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
 - en: '`ZREM` itself is already O(M * log(N)), so the overall complexity doesn’t change
     by the fact that the whole script is called for every relevant job.'
+  id: totrans-split-224
   prefs: []
   type: TYPE_NORMAL
 - en: For every successfully dequeued job, `Client#push` is called to dispatch the
     job to its target queue.
+  id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
 - en: This, along with the fact that Redis is mostly single-threaded, makes it clear
@@ -1174,14 +1400,17 @@
     and a large enough retry or scheduled set (and in my experience, retry set sizes
     can easily be in the order of thousands, if not more), executing this logic concurrently
     can significantly impair Redis’s performance or even grind it to a halt.
+  id: totrans-split-226
   prefs: []
   type: TYPE_NORMAL
 - en: Job loss potential
+  id: totrans-split-227
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that we’ve explored the complete lifecycle of a job as it’s processed by
     the server, let’s examine potential scenarios where a job might become lost.
+  id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
 - en: We know that the OS version of Sidekiq only provides `BasicFetch` as a means
@@ -1191,17 +1420,21 @@
     if the process exhausts its memory, prompting Kubernetes to forcefully terminate
     the pod with a `kill -9` command, or if other orchestrators and hosting providers
     take similar actions.
+  id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
 - en: But how does Sidekiq manage hanging, long-running, or simply in-progress jobs
     during a graceful termination?
+  id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s revisit `Manager#hard_shutdown`, which is called when a Sidekiq process
     receives a SIGTERM or SIGINT:'
+  id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-split-232
   prefs: []
   type: TYPE_PRE
 - en: '`capsule.fetcher.bulk_requeue(jobs)` is called before processor threads are
@@ -1209,18 +1442,22 @@
     exception and gracefully exit is not feasible. ^(Therefore, the best option is
     to requeue all jobs that are in progress, even though it means that some jobs
     that finish just before the process exits will also be requeued.)'
+  id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
 - en: '`BasicFetch#bulk_requeue` simply takes the job payloads extracted from active
     processors and puts them back into the corresponding Redis lists:'
+  id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE42]'
+  id: totrans-split-235
   prefs: []
   type: TYPE_PRE
 - en: '`BasicFetch`’s requeue logic is a potential scenario where job loss can occur.
     Redis might run out of memory while a job is being processed, making it impossible
     to put the job back into the queue. This is also a concern for ordinary retries.'
+  id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
 - en: Additionally, although not directly related to Sidekiq, jobs can be lost due
@@ -1232,6 +1469,7 @@
     configurations. This situation can lead to Sidekiq clients incorrectly assuming
     that a job will be processed after a successful push, when in fact it may not
     reach the Sidekiq server at all.
+  id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
 - en: It is also possible for the SIGTERM or SIGINT handler not to be executed within
@@ -1241,11 +1479,13 @@
     impede the Sidekiq process during this crucial task, but I personally have never
     encountered, nor have I heard of, such cases where a Ruby program is stalled for
     25 seconds.
+  id: totrans-split-238
   prefs: []
   type: TYPE_NORMAL
 - en: It goes without saying that killing the Sidekiq process with SIGKILL without
     having sent SIGINT or SIGTERM prior will result in all of the in-progress jobs
     being lost.
+  id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
 - en: It should be noted that the decision to design `BasicFetch` in its current manner
@@ -1257,6 +1497,7 @@
     to include a liveness component, such as a recurring cron job, that would attempt
     to ensure the completion of a specific workflow by repeatedly enqueuing a job
     until the desired final state is achieved.
+  id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
 - en: This makes Sidekiq employ an ‘at least once’ delivery semantic, with the possibility
@@ -1264,6 +1505,7 @@
     Pro version ensures that job loss is impossible, as jobs never leave Redis until
     they are acknowledged with `SuperFetch` enabled, effectively making it truly ‘at
     least once’ without any caveats.
+  id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
 - en: Sidekiq leverages simple Redis data structures like lists with constant-time
@@ -1278,5 +1520,6 @@
     job ordering within queues isn’t supported. Nevertheless, employing a single processor
     per queue could provide a rudimentary form of ordering, which may suffice depending
     on your application’s requirements.
+  id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL

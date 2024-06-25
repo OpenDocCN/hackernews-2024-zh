@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:44:00'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: debugging tokio instrumentation - hēg denu - Hayden Stainsby
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://hegdenu.net/posts/debugging-tokio-instrumentation/](https://hegdenu.net/posts/debugging-tokio-instrumentation/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     console with the "raw" [`tracing`](https://docs.rs/tracing) output that comes
     from Tokio. However, this is pretty hard to read and doesn't actually contain
     all the information that I need.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: There are a couple of things that I'd like to have. Firstly (and most importantly),
@@ -31,52 +38,64 @@
     (and underlying Layer) don't support. And rightly so - it's internal information.
     But it's used heavily in the instrumentation in Tokio and to debug, I really need
     to have it available.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Normally, to get this information I use a patched version of the `tracing-subscriber`
     crate. But this is something that can't be checked into the console project, and
     setting it up each time is a bit tedious.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Secondly, I'd like to be able to visually differentiate the specific spans and
     events used in Tokio's instrumentation. Unlike the internal span ID, this is entirely
     domain specific, and has no use outside of this specific use case.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Here's a snippet of output from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     outputting some of Tokio's instrumentation.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: There is a lot of information here, and distinguishing different spans types
     can be complicated (especially when you're scanning through dozens or even hundreds
     of lines). Additionally, the [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)
     is completely absent.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Compare this to the output of the same section of logs coloured and including
     the [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) right
     after the span name.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: Having now justified something I wanted to do anyway, let's build our own custom
     tracing subscriber!
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: (actually, it's going to mostly be a `Layer`)
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'aside: tracing subscribers and layers'
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: If you're already familiar with `tracing`, you may wish to skip this section
     and go straight to [ari-subscriber](https://hegdenu.net/posts/debugging-tokio-instrumentation/#ari-subscriber).
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: In the tracing ecosystem, you need a subscriber to actually do anything other
@@ -85,6 +104,7 @@
     A subscriber can take the traces and do what it wishes. Write them to `stdout`,
     to a file, collect them and perform aggregation, send them to another service
     (maybe via Open Telemetry).
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The [`tracing-subscriber`](https://docs.rs/tracing-subscriber) crate provides
@@ -93,6 +113,7 @@
     is the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html).
     The registry is a subscriber which implements a span store and allows multiple
     layers to connect to it.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: What is a [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)?
@@ -102,6 +123,7 @@
     It's also confusing because layers don't feed into other layers the way that [`tower`](https://docs.rs/tower)
     layers do (which are like middleware, in that what one layer does affects what
     the next layer receives).
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, think of layers as mini-subscribers. They can take action on some methods
@@ -109,15 +131,18 @@
     trait, but can fall back to the default implementation for things that they're
     not interested in. And [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)
     has a default implementation for everything.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Most layers need to store information about spans, this is where the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html)
     comes in (specifically via the [`LookupSpan`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.LookupSpan.html)
     trait). Layers can store their own data in the registry in the form of span [extensions](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.SpanData.html#tymethod.extensions).
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: The reason why storing this data in the registry is important may not be immediately
     obvious.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: It's because [`tracing`](https://docs.rs/tracing) itself **doesn't** store this
@@ -125,6 +150,7 @@
     data and therefore be used in [`no_std`](https://docs.rust-embedded.org/book/intro/no-std.html)
     environments as well as the giant servers and beefy development machines that
     many of us are accustomed to.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Here's an example for clarity. When a span is created, a [`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html)
@@ -133,27 +159,33 @@
     which gives the subscriber access to all the information about that span. Its
     metadata, field names, and also the values of any fields that were set at the
     time of creation.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: This is great, it's everything we could need!
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Now let's look at the method that gets called when a span is entered (becomes
     active), this is called [`enter()`] and all it comes with is... a [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html).
     No metadata, no field names, and certainly no field values. And this pattern repeats
     on the trait methods called when a span exits or is closed.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Using the registry to store whatever data a layer might need about a span later
     on is the solution. This allows the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     to print out the full data for each span in an event's ancestry.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Now that we understand a bit about what subscribers and layers are, let’s get
     into implementing some of it!
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: ari-subscriber
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -161,26 +193,33 @@
     crate. It's currently at version 0.0.1, which indicates that it's probably a bit
     rough, but so far it's already helped me quickly narrow down the version of Tokio
     after which `yield_now()` [doesn't get detected as a self wake by Tokio Console](https://github.com/tokio-rs/console/issues/512).
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: The “ari” in ari-subscriber is for “async runtime instrumentation”.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'The interface is simple, you pass an `ari-subscriber` layer to the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html):'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: This will write output to `stdout` (currently not configurable). And the output
     will have pretty colours!
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s look at a simple example of how we can use `ari-subscriber`. Here''s
     the Rust code we''ll be using:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: We start in an async context (using the `#[tokio::main]` attribute). First we
@@ -188,88 +227,108 @@
     wait for it to complete. The task emits a tracing event and then returns control
     to the runtime by calling the [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     function from Tokio. After that it ends
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: If you've been watching closely (and following all the links I've been sprinkling
     around), you may have realised that I'm looking at the case described in the issue
     [console#512](https://github.com/tokio-rs/console/issues/512). What we want to
     look at is where the wake operation occurs.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''re going to fix our version of Tokio to an old one, where we know that
     Tokio Console detects awaiting on [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     as a self-wake. So let''s specify the following in our `Cargo.toml`:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: We set the version of Tokio to `=1.22.0`, this indicates that we want exactly
     this version. By default, `cargo` would take any `1.x` version where `x` is greater
     than or equal to 22.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Now let's look at the output (truncated a little bit to remove things that we
     won't be focusing on).
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: Unfortunately it's way to wide to visualise nicely on this web-site. But let's
     walk through it.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: The date and time and log level is pretty straight forward. I took the log level
     colours from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html),
     so those should be familiar.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: trace types
+  id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: All the lines in the output are prefixed with a span named `runtime.spawn`.
     Spans with this name instrument tasks, `ari-subscriber` colours them green. There
     are district types of instrumentation in Tokio, and they each get their own colour.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: runtime.spawn spans (green) instrument tasks
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime.resource spans (red) instrument resources
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime.resource.async_op spans (blue) instrument async operations
+  id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime.resource.async_op.poll spans (yellow) instrument the individual polls
     on async operations
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: tokio::task::waker events (purple) represent discrete waker operations
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime::resource::poll_op events (orange) represent poll state changes
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime::resource::state_update events (pink) represent resource state changes
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: runtime::resource::async_op::state_update events (turquoise) represent async
     operation state changes
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: In the case of spans, the value given above is the span name, for events it
     is the target.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Describing how each of these traces is used within Tokio and how to interpret
@@ -277,9 +336,11 @@
     here. I already wrote a post on the instrumentation for tasks, which covers the
     `runtime.spawn` spans and the `tokio::task::waker` events. Go read [tracing tokio
     tasks](https://hegdenu.net/posts/tracing-tokio-tasks/) to learn about those!
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: span events
+  id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -288,6 +349,7 @@
     span. There are equivalent lines for `enter`, `exit`, and `close`; all parts of
     the span lifecycle. See the [span lifecycle](https://hegdenu.net/posts/tracing-tokio-tasks/#span-lifecycle)
     section of the post I linked above for a refresher on the lifecycle.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: By default, the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
@@ -296,18 +358,22 @@
     method on the builder. Currently `ari-subscriber` always emits these span events,
     but I may wish to make this configurable in the future to reduce the amount of
     output.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: analysing wakes
+  id: totrans-split-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Let's find our wake operation. You'll notice that there is exactly one line
     at INFO level. This is the one that we added to our spawned task ourselves. After
     the `runtime.spawn` span we see the text
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: 'The first bit (`debugging_tokio_instrumentation`) is the target, which by default
@@ -316,11 +382,13 @@
     (`pre-yield`). An event''s message is actually just a specially handled field
     with the name `message`. This event isn''t coloured because it isn''t part of
     the instrumentation that `ari-subscriber` knows about.'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: The next line is the wake operation (it's purple!). We can see that its target
     is `tokio::task::waker` and then it has 2 fields and no message. The fields are
     `op="waker.wake_by_ref"` and `task.id=1`.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Let's start with the second field, `task.id=1`. This gives the **instrumentation
@@ -333,38 +401,47 @@
     refers to the Tokio task ID. The important point here is that our span IDs match
     (both 1), so this operation is being performed from within the task that it is
     affecting.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: The operation `wake_by_ref` indicates that the task is being woken using a reference
     to the waker. This operation doesn't consume the waker - which is important when
     Tokio Console counts the number of wakers for a given task to make sure that it
     hasn't lost all its wakers.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: With this information, we can now manually ascertain that this is a self-wake
     operation. We are waking a task while running within that task.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: what happens next
+  id: totrans-split-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Let's change our version of Tokio to the latest (at the time of writing), 1.35.1.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: And now run exactly the same example. The output is below (truncated in the
     same way as before).
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: It might not be immediately obvious, but that output is one line longer than
     the previous one. What jumps out is probably that we can now see a wake operation
     without scrolling to the right. But first, let's check what happens above that.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Directly below our own `fun=true pre-yield` event line, we see that there is
@@ -372,6 +449,7 @@
     (and the same task that we are currently inside), the one with the task instrumentation
     ID of 1\. However, this isn't a wake operation, instead it has the field value
     `op=waker.clone`. Somewhere, the waker for that task is being cloned.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: Straight afterwards we see that the span exits - which means that the call to
@@ -381,13 +459,16 @@
     than all of that though, is that this wake operation isn't inside the `runtime.spawn`
     span for that task, in fact it isn't inside any spans at all, `runtime.spawn`
     or otherwise.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: This confirms what could be observed in Tokio Console, the instrumentation indicates
     that this is not a self wake!
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: what changed?
+  id: totrans-split-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -399,54 +480,66 @@
     involving the LIFO slot). However the scheduler won't necessarily poll the resource
     drivers, this means that a task that is always ready may starve the resource drivers
     despite doing its best to be well behaved by yielding regularly to the runtime.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: The PR changes the behaviour to defer waking tasks which call [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     until after polling the resource drivers, avoiding the starvation issue.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: After some discussion on [console#512](https://github.com/tokio-rs/console/issues/512),
     we decided that it's OK that Tokio Console can't detect this specific case of
     self wakes, since the PR on Tokio made them much less likely to result in some
     performance issue - something which may still occur from other futures self waking.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: And that's how I managed to use my very basic subscriber crate to answer a question
     quicker thanks to pretty colours.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: should I use `ari-subscriber`?
+  id: totrans-split-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that we've had a bit of a look at `ari-subscriber`, the big question is,
     should anyone be using it?
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: The answer is **no**.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Aside from missing a bunch of useful features, `ari-subscriber` currently does
     a lot of things "the easy way", which is not very performant. I know how to make
     it more performant, but I promised myself I'd write this post before doing any
     more work on the crate.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Unless you too are trying to debug the instrumentation built into Tokio, you're
     much better off using the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     from the `tracing-subscriber` crate.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: If you **are** debugging that instrumentation, please [come and say hi](https://hegdenu.net/about/#contact)!
     I'd be really interested to hear what you're doing and I might even be able to
     help.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: thanks
+  id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Thanks to [Luca Palmieri](https://lpalmieri.com/) and [One](https://github.com/c-git)
     for feedback on the post!
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL

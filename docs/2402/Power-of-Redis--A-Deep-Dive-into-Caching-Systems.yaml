@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:51:49'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Power of Redis: A Deep Dive into Caching Systems'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://nintyzeros.substack.com/p/power-of-redis-a-deep-dive-into-caching](https://nintyzeros.substack.com/p/power-of-redis-a-deep-dive-into-caching)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,285 +28,350 @@
     full issue of the The ZenMode Engineer Newsletter. In every issue, I cover one
     topic explained in a simpler terms in areas related to computer technologies and
     beyond.*'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In the realm of high-performance applications, caching systems like Redis stand
     as guardians of speed and efficiency.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: They act as intermediaries, intercepting data requests and serving up frequently
     accessed information with lightning-fast speed, all while shielding your primary
     data source from excessive load.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: But how do these systems work their magic? Buckle up, as we delve into understanding
     Redis and its caching techniques.(***Detailed architecture and Use cases (Paid))***
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: But before that… What is actually caching and why do we even need it?
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine you're walking to your own cafe(for work ofcourse!).
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: There is a demand for specific coffee bean ☕everyday in the morning.☀
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: What do you do ?
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Instead of searching the whole pantry every morning, you keep a jar of instant
     coffee readily available for quick brews.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'That''s the essence of ***caching***:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Storing frequently used data in a readily accessible location for faster retrieval.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: In the digital world, data often resides on hard drives, which are slower than
     your computer's memory (RAM).
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Accessing data from a hard drive is like walking to the pantry, whereas accessing
     data in RAM is like grabbing the instant coffee from the jar.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'So caching is basically needed if you demand:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '**Speed:** It dramatically improves response times. Just like you get your
     coffee faster with instant coffee, your applications and websites load quicker
     with cached data.⚡⚡'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Reduced Load:** Frequent database access can overload it, impacting performance.
     Caching reduces the burden on the database, ensuring smooth operation.🔃'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Cost-Effectiveness:** By minimizing database usage, caching can lead to lower
     server costs, especially for high-traffic applications. 💲💲💲'
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: While there are different types of caching. You can optimize it based on your
     requirements
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '**Browser Caching:** Stores website data on your device for faster future visits.'
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Application Caching:** Specific applications implement their own caching
     mechanisms.'
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Content Delivery Networks (CDNs):** Distribute cached content across geographically
     dispersed servers for faster global access.'
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: okay, lets get back to Redis!
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[Redis](https://redis.io/?ref=architecturenotes.co) (“***RE***mote ***DI***ctionary
     ***S***ervice”) is an open-source key-value database server.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The most accurate description of Redis is that it's a data structure server.
     This specific nature of Redis has led to much of its popularity and adoption amongst
     developers.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine a library where the most popular books are readily available on a dedicated
     shelf instead of tucked away in the stacks.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: That's the key principle behind Redis - it stores frequently accessed data **in
     memory (RAM)**, which is significantly faster than traditional disk-based storage.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: This translates to lightning-fast data retrieval, a stark contrast to the sluggishness
     of accessing data from databases.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: But speed isn't everything.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Caching systems also embrace the power of key-value stores.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Think of them as digital dictionaries where each data item is associated with
     a unique key.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: This allows for quick lookups and retrieval, eliminating the need to scan through
     vast amounts of data to find what you need based on below key concepts.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '**Hashing:** Used for mapping keys to data locations in memory. Redis employs
     its own hashing function (MurmurHash) for efficient key distribution and retrieval.'
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Skip Lists:** Used in Sorted Sets for efficiently maintaining ordered elements
     based on scores. Skip lists offer logarithmic time complexity for insertion, deletion,
     and retrieval operations.'
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Pub/Sub:** Leverages a publish-subscribe pattern for real-time data updates.
     Channels act as topics, and subscribers are notified of new messages published
     to relevant channels.'
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'It boasts a diverse set of data structures that cater to various needs:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s delve into each Redis data structure with some concrete examples to
     illustrate their use cases:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '**Simple Strings types:**'
+  id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Consider Caching frequently accessed user profiles, storing website configuration
     settings, or keeping track of simple counters.
+  id: totrans-split-44
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Storing a user's name under the key "username:JohnDoe" with the value "John
     Smith".
+  id: totrans-split-45
   prefs:
   - PREF_IND
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Hashes types:**'
+  id: totrans-split-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Storing user profiles with multiple attributes, product information with various
     details, or shopping cart contents with item IDs and quantities.
+  id: totrans-split-47
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Storing a user's profile information under the key "user:123" with fields like
     "name", "email", and "age".
+  id: totrans-split-48
   prefs:
   - PREF_IND
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Lists:**'
+  id: totrans-split-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Implementing task queues, managing chat message history, or creating a to-do
     list application.
+  id: totrans-split-50
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Using a list called "todo:JohnDoe" to store tasks like "Buy groceries", "Finish
     report", and "Call mom".
+  id: totrans-split-51
   prefs:
   - PREF_IND
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Sets:**'
+  id: totrans-split-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Filtering duplicate entries, checking user membership in groups, or implementing
     real-time chat room member lists.
+  id: totrans-split-53
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Using a set called "unique_users" to store unique user IDs for website analytics.
+  id: totrans-split-54
   prefs:
   - PREF_IND
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Sorted Sets:**'
+  id: totrans-split-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Creating leaderboards for games or competitions, prioritizing tasks based on
     importance, or implementing real-time trending topics.
+  id: totrans-split-56
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Using a sorted set called "leaderboard" to rank users based on their scores
     in a game, with the highest score at the top.
+  id: totrans-split-57
   prefs:
   - PREF_IND
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Additionally, it also supports:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '**Redis Streams:** Imagine a social media platform like Twitter using Redis
     Streams to process and store a high volume of tweets in real-time.'
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Redis Pub/Sub:** A news website could use Redis Pub/Sub to broadcast breaking
     news updates to all subscribed users instantly.'
+  id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Redis Lua Scripting:** An e-commerce platform might use Lua scripting to
     conditionally update product prices based on specific criteria within Redis.'
+  id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: This flexibility allows Redis to adapt to a wide range of use cases, from caching
     frequently accessed website content to powering real-time chat applications.
+  id: totrans-split-62
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Remember, the choice of data structure depends on your specific needs and the
     type of data you're working with.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: By understanding these diverse options, you can leverage Redis to its full potential
     and build efficient, scalable applications.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '**So, how does the magic happen?**'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine your web browser wants to display a website. *It first asks Redis, "Hey,
     do you have the content for this page?"*
+  id: totrans-split-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Redis acts like a super-fast librarian. It checks its "memory shelves" (RAM)
     to see if the requested data is there.
+  id: totrans-split-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This check happens in microseconds, much faster than searching a traditional
     database on a hard drive.
+  id: totrans-split-68
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: If Redis finds the data (a **cache hit**!), it's like finding the book right
     away on the shelf. It sends the data to the browser instantly, resulting in a
     blazing-fast page load.
+  id: totrans-split-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If the data isn't in the cache (a **cache miss**), it's like the book being
     checked out or misplaced. Redis then goes to the slower "main library" (database)
     to retrieve the data.
+  id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -308,137 +379,164 @@
     adds it to its own "memory shelves" for future requests. This way, if someone
     else wants the same page, it's readily available in the cache, saving another
     trip to the database.
+  id: totrans-split-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Like a library backing up its collection, Redis can optionally write the cached
     data to disk (RDB or AOF) in case of power outages or restarts. This ensures data
     isn't lost, but it's slower than keeping it purely in memory.
+  id: totrans-split-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '**key Insights:**'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: Redis has various "data structures" like strings, lists, and sets, each suited
     for different types of information. Imagine different sections in the library
     for different content formats.
+  id: totrans-split-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Caching doesn't have to be perfect. Sometimes, data in the cache might be slightly
     outdated, but the trade-off for speed is often worth it.
+  id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Redis can also be used for real-time data processing, leaderboards, and more,
     not just caching. It's a versatile tool for many data needs.
+  id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '*But you might think how Redis is so fast ryt ?*'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'The blazing speed of Redis compared to traditional databases boils down to
     two key factors: **in-memory storage** and **optimized data structures**.'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: But additional to these factors its much faster because of
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '**Reduced I/O Operations:** Accessing data in RAM bypasses disk I/O operations,
     eliminating bottlenecks and delays associated with hard drives.'
+  id: totrans-split-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Single-Threaded Architecture:** Unlike databases with complex multi-threaded
     processing, Redis uses a single-threaded model, simplifying operations and minimizing
     overhead.'
+  id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Event-Driven Design:** Redis reacts to requests efficiently with its event-driven
     architecture, handling multiple clients without context switching delays.'
+  id: totrans-split-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: But even with this advantages there is a few limitation to it.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '**Limited Capacity:** RAM is smaller than hard drives, so Redis can''t store
     massive datasets.'
+  id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Data Persistence:** By default, Redis data is volatile and lost upon restarts.
     Persistence options (RDB/AOF) exist but come with performance trade-offs.'
+  id: totrans-split-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**RDB (Snapshotting):** Periodically takes snapshots of the entire dataset
     and stores them on disk. Offers durability but incurs performance overhead.'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-86
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**AOF (Append-Only File):** Logs every write operation sequentially. Ensures
     data durability but can be slower than RDB.'
+  id: totrans-split-87
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Choosing the Right Caching System is a balancing act**'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'The decision to adopt a caching system like Redis depends on several factors:'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '**Data Size and Access Patterns:** In-memory caches excel with frequent accesses
     to smaller datasets.'
+  id: totrans-split-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Consistency Requirements:** Decide between eventual consistency (cache updates
     eventually reflect changes) or strong consistency (instantaneous cache updates).'
+  id: totrans-split-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Fault Tolerance:** Consider clustering and data persistence for high availability
     and data durability.'
+  id: totrans-split-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Thank you for reading The ZenMode. This post is public so feel free to share
     it.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[Share](https://nintyzeros.substack.com/p/power-of-redis-a-deep-dive-into-caching?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: let's discuss the various Redis deployments and their trade-offs.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'We will be focusing mainly on these configurations:'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: Single Redis Instance
+  id: totrans-split-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Redis HA
+  id: totrans-split-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Redis Sentinel
+  id: totrans-split-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Redis Cluster
+  id: totrans-split-100
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Depending on your use case and scale, you can decide to use one setup or another.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL

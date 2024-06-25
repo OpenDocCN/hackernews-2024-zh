@@ -1,44 +1,55 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:58:06'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Improving LoRA: Implementing Weight-Decomposed Low-Rank Adaptation (DoRA) from
     Scratch'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://magazine.sebastianraschka.com/p/lora-and-dora-from-scratch](https://magazine.sebastianraschka.com/p/lora-and-dora-from-scratch)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Low-rank adaptation (LoRA) is a machine learning technique that modifies a pretrained
     model (for example, an LLM or vision transformer) to better suit a specific, often
     smaller, dataset by adjusting only a small, low-rank subset of the model's parameters.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: This approach is important because it allows for efficient finetuning of large
     models on task-specific data, significantly reducing the computational cost and
     time required for finetuning.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Last week, researchers proposed [DoRA: Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353),
     a new alternative to LoRA, which may outperform LoRA by a large margin.'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: To understand how these methods work, we will implement both LoRA and DoRA in
     PyTorch from scratch in this article!
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Before we dive into DoRA, here's a brief recap of how [LoRA](https://arxiv.org/abs/2106.09685)
     works.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Since LLMs are large, updating all model weights during training can be expensive
@@ -46,31 +57,39 @@
     a given layer. During backpropagation, we learn a ***ΔW*** matrix, which contains
     information on how much we want to update the original weights to minimize the
     loss function during training.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'In regular training and finetuning, the weight update is defined as follows:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '***W[updated] = W + ΔW***'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'The LoRA method proposed by [Hu](https://arxiv.org/abs/2106.09685) *[et al.](https://arxiv.org/abs/2106.09685)*
     offers a more efficient alternative to computing the weight updates ***ΔW*** by
     learning an approximation of it, ***ΔW ≈ AB***. In other words, in LoRA, we have
     the following, where ***A*** and ***B*** are two small weight matrices:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '***W[updated] = W + A.B***'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: (The "**.**" in "***A.B***" stands for matrix multiplication.)
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: The figure below illustrates these formulas for full finetuning and LoRA side
     by side.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '*Figure: An illustration of regular finetuning (left) and LoRA finetuning (right).*'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: How does LoRA save GPU memory? If a pretrained weight matrix ***W*** is a 1,000×1,000
@@ -79,6 +98,7 @@
     a LoRA rank of 2, then ***A*** is a 1000×2 matrix, and ***B*** is a 2×1000 matrix,
     and we only have 2×2×1,000 = 4,000 parameters that we need to update when using
     LoRA. In the previous example, with a rank of 2, that's 250 times fewer parameters.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, ***A*** and ***B*** can't capture all the information that ***ΔW***
@@ -88,6 +108,7 @@
     update all the weights and capture the core information for the adaptation in
     a smaller number of weights than ***ΔW*** would; hence, we have the low-rank updates
     via ***AB***.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you paid close attention, the full finetuning and LoRA depictions in the
@@ -95,15 +116,19 @@
     due to the distributive law of matrix multiplication: we don''t have to add the
     weights with the updated weights but can keep them separate. For instance, if
     ***x*** is the input data, then we can write the following for regular finetuning:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '***x.(W+ΔW) = x.W + x.ΔW***'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Similarly, we can write the following for LoRA:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '***x.(W+A.B)** = **x.W + x.A.B***'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The fact that we can keep the LoRA weight matrices separate makes LoRA especially
@@ -112,31 +137,38 @@
     is especially useful if you are considering hosting a model for multiple customers.
     Instead of having to save the large updated models for each customer, you only
     have to save a small set of LoRA weights alongside the original pretrained model.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: To make this less abstract and to provide additional intuition, we will implement
     LoRA in code from scratch in the next section.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: We begin by initializing a `LoRALayer` that creates the matrices A and B, along
     with the alpha scaling hyperparameter and the rank hyperparameters. This layer
     can accept an input and compute the corresponding output, as illustrated in the
     figure below.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Illustration of the LoRA matrices A and B with rank *r*.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'In code, this LoRA layer depicted in the figure above looks like as follows:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: In the code above, `rank` is a hyperparameter that controls the inner dimension
     of the matrices *A* and *B*. In other words, this parameter controls the number
     of additional parameters introduced by LoRA and is a key factor in determining
     the balance between model adaptability and parameter efficiency.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: The second hyperparameter, `alpha`, is a scaling hyperparameter applied to the
@@ -144,233 +176,292 @@
     the adapted layer's output is allowed to influence the original output of the
     layer being adapted. This can be seen as a way to regulate the impact of the low-rank
     adaptation on the layer's output.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'So far, the `LoRALayer` class we implemented above allows us to transform the
     layer inputs `x`. However, in LoRA, we are usually interested in replacing existing
     `Linea`r layers so that the weight update is applied to the existing pretrained
     weights, as shown in the figure below:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '*LoRA applied to an existing linear layer*'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'To incorporate the original Linear layer weights as shown in the figure above,
     we will implement a `LinearWithLoRA` layer that uses the previously implemented
     `LoRALayer` and can be used to replace existing `Linea`r layers in a neural network,
     for example, the self-attention module or feed forward modules in an LLM:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Note that since we initialize the weight matrix B (`self.B` in `LoraLayer`)
     with zero values in the LoRA layer, the matrix multiplication between *A* and
     *B* results in a matrix consisting of 0's and doesn't affect the original weights
     (since adding 0 to the original weights does not modify them).
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s try out LoRA on a small neural network layer represented by a single
     `Linear` layer:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'Now, applying LoRA to the `Linea`r layer, we see that the results are the same
     since we haven''t trained the LoRA weights yet. In other words, everything works
     as expected:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'Earlier, I mentioned the distributive law of matrix multiplication:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '***x.(W+A.B)** = **x.W + x.A.B***.'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here, this means that we can also combine or merge the LoRA matrices and original
     weights, which should result in an equivalent implementation. In code, this alternative
     implementation to the `LinearWithLoRA` layer looks as follows:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: In short, `LinearWithLoRAMerged` computes the left side of the equation ***x.(W+A.B)**
     = **x.W + x.A.B*** whereas `LinearWithLoRA` computes the right side -- both are
     equivalent.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can verify that this results in the same outputs as before via the following
     code:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: Now that we have a working LoRA implementation let's see how we can apply it
     to a neural network in the next section.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Why did we implement LoRA in the manner described above using PyTorch modules?
     This approach enables us to easily replace a `Linear` layer in an existing neural
     network (for example, the feed forward or attention modules of a Large Language
     Model) with our new `LinearWithLoRA` (or `LinearWithLoRAMerged`) layers.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'For simplicity, let''s focus on a small 3-layer multilayer perceptron instead
     of an LLM for now, which is illustrated in the figure below:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: A simple 3-layer multilayer perceptron
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'In code, we can implement the multilayer perceptron, shown above, as follows:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: 'Using `LinearWithLora`, we can then add the LoRA layers by replacing the original
     `Linear` layers in the multilayer perceptron model:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: 'Then, we can freeze the original `Linear` layers and only make the `LoRALaye`r
     layers trainable, as follows:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: Based on the `True` and `False` values above, we can visually confirm that only
     the LoRA layers are trainable now (`True` means trainable, `False` means frozen).
     In practice, we would then train the network with this LoRA configuration on a
     new dataset or task.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'To avoid making this a very long article, I am skipping over the boilerplate
     code to train this model. But if you are interested in the full code, you can
     find a standalone code notebook here: [https://github.com/rasbt/dora-from-scratch](https://github.com/rasbt/dora-from-scratch).'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: Furthermore, if you are interested in a LoRA from scratch explanation and application
     to an LLM, also check out my Lightning Studio [LoRA From Scratch – Implement Low-Rank
     Adaptation for LLMs in PyTorch](https://lightning.ai/lightning-ai/studios/code-lora-from-scratch).
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: You may have noticed that we spent a lot of time implementing and talking about
     LoRA. That's because DoRA ([Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353))
     can be seen as an improvement or extension of LoRA that is built on top of it,
     and we can now easily adapt some of our previous code to implement DoRA.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: DoRA can be described in two steps, where the first step is to decompose a pretrained
     weight matrix into a magnitude vector (***m***) and a directional matrix (***V***).
     The second step is applying LoRA to the directional matrix ***V*** and training
     the magnitude vector ***m*** separately.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: The decomposition into magnitude and directional components is inspired by the
     mathematical principle that any vector can be represented as the product of its
     magnitude (a scalar value indicating its length) and its direction (a unit vector
     indicating its orientation in space).
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Illustration of the direction and magnitude of a single vector. For example,
     if have a 2D vector [1, 2], we can decompose it into a magnitude 2.24 and a directional
     vector [0.447, 0.894]. Then 2.24 * [0.447, 0.894] = [1, 2].
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: In DoRA, we apply the decomposition into magnitude and directional components
     to a whole pretrained weight matrix ***W*** instead of a vector, where each column
     (vector) of the weight matrix corresponds to the weights connecting all inputs
     to a particular output neuron.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: So, the result of decomposing ***W*** is a magnitude vector ***m*** that represents
     the scale or length of each column vector in the weight matrix, as illustrated
     in the figure below.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: Illustration of the weight matrix decomposition in DoRA
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then, DoRA takes the directional matrix ***V*** and applies standard LoRA,
     for instance:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '***W'' = m (V + ΔV)/norm = m (W + AB)/norm***'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'The normalization, which I abbreviated as "norm" to not further complicate
     things in this overview, is based on the weight normalization method proposed
     in Saliman''s and Kingma''s 2016 [Weight Normalization: A Simple Reparameterization
     to Accelerate Training of Deep Neural Networks paper](https://arxiv.org/abs/1602.07868).'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: The DoRA two-step process (decomposing a pretrained weight matrix and applying
     LoRA to the directional matrix) is further illustrated in the figure from the
     DoRA paper below.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: The motivation for developing DoRA is based on analyzing and comparing the LoRA
@@ -379,11 +470,13 @@
     to lack the capability to make only subtle directional changes as found in full
     finetuning. Hence, the researchers propose the decoupling of magnitude and directional
     components.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: In other words, their DoRA method aims to apply LoRA only to the directional
     component, ***V***, while also allowing the magnitude component, ***m***, to be
     trained separately.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing the magnitude vector m adds 0.01% more parameters if DoRA is compared
@@ -391,6 +484,7 @@
     that DoRA even outperforms LoRA if the DoRA rank is halved, for instance, when
     DoRA only uses half the parameters of regular LoRA, as shown in the performance
     comparison below.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: 'As I wrote in another article a few months ago, LoRA requires careful tuning
@@ -398,70 +492,87 @@
     LoRA (Low-Rank Adaptation](https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms)). However,
     DoRA seems to be much more robust to changes in rank, as shown in the comparison
     below.'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: The possibility to successfully use DoRA with relatively small ranks makes this
     method even more parameter-efficient than LoRA.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: Overall, I am quite impressed by the results, and it should not be too big of
     a lift to upgrade a LoRA implementation to DoRA, which we will do in the next
     section.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this section, we will see what DoRA looks like in code. Previously, we said
     that we can initialize a pretrained weight ***W[0]*** with magnitude ***m*** and
     directional component ***V***. For instance, we have the following equation:'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: \(W_0 = m \frac{V}{||V||_c} \)
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: 'where ||***V***||[c] is the vector-wise norm of ***V***. Then we can write
     DoRA including the LoRA weight update ***BA*** as shown below:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: \(W^{\prime}=m \frac{V+BA}{\|V+BA\|_c}\)
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, in the DoRA paper, the authors formulate DoRA as follows, where they use
     the initial pretrained weights *W[0]* as the directional component directly and
     learn magnitude vector ***m*** during training:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: \(W^{\prime}={m} \frac{V+\Delta V}{\|V+\Delta V\|_c}={m} \frac{W_0+{B A}}{\left\|W_0+{B
     A}\right\|_c}\)
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Here, ***ΔV*** is the update to the directional component, matrix ***V***.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: While the original authors haven't released the official implementation yet,
     you can find an independent implementation [here](https://github.com/catid/dora/blob/main/dora.py),
     which loosely inspired my implementation below
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: 'Taking our previous `LinearWithLoRAMerged` implementation, we can upgrade it
     to DoRA as follows:'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-106
   prefs: []
   type: TYPE_PRE
 - en: The `LinearWithDoRAMerged` class is different from our previous `LinearWithLoRAMerged`
     class in several key aspects, primarily in how it modifies and applies the weights
     of the Linear layer. However, both classes integrate a `LoRALayer` to augment
     the original linear layer's weights, but DoRA adds weight normalization and adjustment.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: 'The figure below shows a file-diff of both classes side by side:'
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: File-diff between `LinearWithLoRAMerged` and `LinearWithDoRAMerged`
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: As we can see in the figure above, `LinearWithDoRAMerged` introduces an additional
     step involving dynamic normalization of the augmented weights.
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: After combining the original weights with the LoRA-adjusted weights (`self.linear.weight
@@ -470,6 +581,7 @@
     them by their norms (`V = combined_weight / column_norm`). This step ensures that
     each column of the combined weight matrix has a unit norm, which can help stabilize
     the learning process by maintaining the scale of weight updates.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: DoRA also introduces a learnable vector `self.m`, which represents the magnitude
@@ -477,51 +589,65 @@
     to dynamically adjust the scale of each weight vector in the combined weight matrix
     during training. This additional flexibility can help the model better capture
     the importance of different features.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: In summary, `LinearWithDoRAMerged` extends the concept of `LinearWithLoRAMerged`
     by incorporating dynamic weight normalization and scaling to improve the training
     performance.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: 'In practice, considering the multilayer perceptron from earlier, we can simply
     swap existing Linear layers with our `LinearWithDoRAMerged` layers as follows:'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-116
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-118
   prefs: []
   type: TYPE_PRE
 - en: 'Before we finetune the model, we can reuse the `freeze_linear_layers` function
     we implemented earlier to only make the LoRA weights and magnitude vectors trainable:'
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: '**In:**'
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
 - en: '**Out:**'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-123
   prefs: []
   type: TYPE_PRE
 - en: '**The full code example, including model training, is available in my GitHub
     repo here: [https://github.com/rasbt/dora-from-scratch](https://github.com/rasbt/dora-from-scratch).**'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: In my opinion, DoRA seems like a logical, effective, and promising extension
     of LoRA, and I am excited to try it in real-world LLM finetuning contexts.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: In the meantime, I also added the DoRA implementation above to the [LoRA From
@@ -529,17 +655,21 @@
     Lightning Studio to finetune a DistilBERT language model (see `bonus_02_finetune-with-dora.ipynb`).
     Even without hyperparameter tuning, I already saw a >1% prediction accuracy improvement
     over LoRA.
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: '*This magazine is personal passion project that does not offer direct compensation.
     However, for those who wish to support me, please consider purchasing a copy of
     [one of my books](https://sebastianraschka.com/books). If you find them insightful
     and beneficial, please feel free to recommend them to your friends and colleagues.*'
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: '**Your support means a great deal! Thank you!**'
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL

@@ -1,21 +1,27 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:40:20'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Modular: Community Spotlight: Outperforming Rust ⚙️ DNA sequence parsing benchmarks
     by 50% with Mojo 🔥'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.modular.com/blog/outperforming-rust-benchmarks-with-mojo](https://www.modular.com/blog/outperforming-rust-benchmarks-with-mojo)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,10 +31,12 @@
     over the fastest implementation in Rust. He quickly learned the language, and
     it took only 200 lines of code for the first implementation. Read on for details
     about the extra optimizations he applied, to beat the fastest existing benchmarks!
+  id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The era of big-data in bioinformatics
+  id: totrans-split-7
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -37,6 +45,7 @@
     non-stop in all fields of biotechnology, medicine, and biomedical research. The
     annual sequencing data size is expected to be up to [40 exabytes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4494865/)
     of raw sequences by 2025\. That's **20x** the data uploaded to YouTube every year.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: While most of the final analysis is carried out in high-level languages like
@@ -49,9 +58,11 @@
     along with the analysis logic itself. It's becoming increasingly complex and frustrating
     for new and experienced bioinformaticians. This is the same issue that the AI community
     is facing.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Mojo 🔥 one tool to rule them all
+  id: totrans-split-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -64,35 +75,44 @@
     is a basic format for most DNA sequencing operations, incorporating both the genomic
     sequence and confidence scores of the machine in each base call. It is a simple
     format to parse, with most records looking like this:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: FASTQ
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '@SEQ_ID # New read head + read_id GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAA...
     # DNA sequence + # Quality header + id (optional) !''''*((((***+))%%%++)(%%%%).1***-+*'''')...
     # Phred quality score'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: However, typical uncompressed file sizes are 1-50 GB, an average sequence-heavy
     study could generate north of 1 TB for a single file. Performance is critical
     in parsing and data manipulation.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'I tried to write a simple parser that would:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. Read a chunk of the file as a *String*.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Split the string on the newline *\n* separator.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. Take each 4 lines, validate that they are a consistent and correct FASTQ
     record, and return it.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 4\. Rinse and repeat until reaching *EOF*.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: On the [first try](https://github.com/MoSafi2/MojoFastTrim/tree/v0.1), *MojoFastTrim
@@ -103,9 +123,11 @@
     read, it achieved 50%-80% of the industry standard tool [Cutadapt](https://github.com/marcelm/cutadapt).
     This was a surprising level of performance for development time I put into the
     project.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Going down the optimization rabbit hole
+  id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -115,25 +137,31 @@
     support of *SIMD* vectorization was really helpful and surprisingly intuitive.
     Here is the implementation of the vectorized version of a function to find the
     index of the newline separator in Mojo:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Iterative
+  id: totrans-split-23
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
 - en: Mojo
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '@always_inline fn find_chr_next_occurance_iter[ T: DType ](in_tensor: Tensor[T],
     chr: Int = 10, start: Int = 0) -> Int: for i in range(start, in_tensor.num_elements()):
     if in_tensor[i] == chr: return i return -1'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: SIMD Vectorized
+  id: totrans-split-26
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
 - en: Mojo
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '@always_inline fn find_chr_next_occurance_simd[ T: DType ](in_tensor: Tensor[T],
@@ -142,23 +170,28 @@
     simd_width) for s in range(start, aligned, simd_width): let v = in_tensor.simd_load[simd_width](s)
     let mask = v == chr if mask.reduce_or(): return s + arg_true(mask) # Handling
     other elements iteratively return -1'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: The vectorized version loads 32-elements of *Int8* and checks the presence of
     a new-line separator using fewer operations.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: In the following graph, you can see the effect of SIMD vectorization. It provides
     up to **4x** speed up, with average speed up of **3.2x**. Similarly, *SIMD* storing
     and loading from tensors providers substantial performance gains.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'In addition, I explored optimizations from C/C++ implementations. I was concerned
     that no explicit memory buffer was allocated for the loaded chunks, but the Mojo
     compiler was already taking care of that and avoiding new memory allocations:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Mojo
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'fn test_chunk_ptr_index() raises: let f = open("large_fastq_file.fastq", "r")
@@ -167,6 +200,7 @@
     # memory adddress of chunk 0 : 139711892942912 # memory adddress of chunk 1 :
     139711892942912 # memory adddress of chunk 2 : 139711892942912 # memory adddress
     of chunk 3 : 139711892942912 # memory adddress of chunk 4 : 139711892942912'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing those optimizations resulted in an extra **3x** speedup, and *MojoFastTrim
@@ -179,12 +213,15 @@
     faster than the Rust implementation on Apple Silicon, and **100x** faster than
     *SeqIO*. In quality trimming, *MojoFastTrim 🔥* was on average **2x** faster than
     the highly-optimized Python/Cython *Cutadapt*.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: This benchmark can be reproduced by [following the instructions here.](https://github.com/MoSafi2/MojoFastTrim?tab=readme-ov-file#setup)
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Final thoughts
+  id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -193,13 +230,16 @@
     growing, I had to use print debugging to gain insight into the bugs I was encountering.
     The debugger is still in preview and undocumented, although they tell me it will
     be officially launching soon!
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: In conclusion, I think that Mojo can be a radical change for a wide range of
     Python trained scientists and researchers across many fields. It can enable them
     to have a level of performance and control, that was previously unachievable.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks for reading!
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL

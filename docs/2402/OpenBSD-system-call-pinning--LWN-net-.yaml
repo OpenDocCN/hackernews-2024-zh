@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:32:03'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: OpenBSD system-call pinning [LWN.net]
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/](https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,12 +28,15 @@
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
     articles possible. |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: By **Daroc Alden**
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: January 31, 2024
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[Return-oriented programming](https://en.wikipedia.org/wiki/Return-oriented_programming)
@@ -39,6 +48,7 @@
     attacks. In his announcement message, Theo de Raadt said that this work "<q>makes
     some specific low-level attack methods unfeasable on OpenBSD, which will force
     the use of other methods.</q>"'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Return-oriented programming is one of a family of techniques that use indirect
@@ -47,6 +57,7 @@
     with carefully chosen addresses so that a function would "return" to a new location.
     Since the original discovery, other related attacks that use jumps through function
     pointers, signals, and other indirect jumps have been developed.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: In December, De Raadt sent a [patch](/Articles/959664/) to the OpenBSD mailing
@@ -59,9 +70,11 @@
     C library for a stable interface), the new sections will not need to be explicitly
     added to most binary programs. Now that patch has [been merged](/Articles/959883/),
     finishing a process which De Raadt said has taken five years.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Background
+  id: totrans-split-12
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -73,6 +86,7 @@
     in the text of `ld.so` (the dynamic linker, that needs to make system calls to
     set up the process''s address space), and in the text of `libc.so` (where the
     OpenBSD system call stubs live).'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: This code relied on a new [`msyscall()`](https://man.openbsd.org/msyscall) system
@@ -83,13 +97,16 @@
     used to say where in the binary a process is allowed to call [`execve()`](https://man.openbsd.org/execve.2).
     Both of these system calls can only be invoked once by a given process, which
     is done by the dynamic linker.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: Despite its more generic signature, `pinsyscall()` only supports specifying
     a location for `execve()` calls.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: These mechanisms were also intended to make it harder for ROP attacks to gain
@@ -100,23 +117,28 @@
     intended to make it harder for an attack to figure out where to make a call from,
     since calling `execve()` to execute an attacker-controlled program is a common
     stepping stone in an attack.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The new work obsoletes both of these mechanisms, with De Raadt [suggesting](/Articles/959666)
     that once the new code had been adopted for a release or two, they could "<q>turn
     msyscall() and the less powerful pinsyscall(2) into NOPs, and eventually remove
     them</q>".
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: The patch
+  id: totrans-split-19
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'The new work adds a new [`pinsyscalls()`](https://man.openbsd.org/pinsyscalls.2)
     system call:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: '`pinsyscalls()` sends a "pintable" specifying from where in the process''s
@@ -129,6 +151,7 @@
     in the C library that has been added to the allowlist for that call, not another
     stub or the middle of an unrelated instruction which simply happens to decode
     as a system call instruction.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'When setting up a new process, the dynamic linker uses `pinsyscalls()` to inform
@@ -141,6 +164,7 @@
     from the new protection immediately, without requiring changes to their build
     process. Unlike Linux, OpenBSD develops the kernel and user-space together, so
     the user-space components of this work are already in place.'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Security researchers have expressed doubt about how useful this check is at
@@ -153,6 +177,7 @@
     'applications should specify which system calls they use' which is literally just
     what pledge does and it’s enforced by the kernel and not in some weird ad-hoc
     IP to syscall number lookup scheme</q>".
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: OpenBSD does have existing mitigations designed to make it difficult for ROP
@@ -170,6 +195,7 @@
     (with [slides](https://www.openbsd.org/papers/csw2023.pdf)) about ROP mitigations
     in OpenBSD at CanSecWest in 2023, including several other protections designed
     to make leaking information about the contents of a program harder.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Unlike `pledge()`, this patch has the advantage of securing an application even
@@ -179,6 +205,7 @@
     in their address space. `pledge()` also permits dropping unnecessary permissions
     after startup, which allows applications to use a more restrictive set of permissions
     than a static defense like `pinsyscalls()` can permit.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'This work was difficult to bring to completion. One of the largest obstacles
@@ -187,6 +214,7 @@
     only go, noone else in the history of the unix software does this) provided the
     biggest resistance against this effort</q>". He thanked Joel Sing specifically
     for his work to make the Go ecosystem compatible with the changes.'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Since Linux permits programs to make system calls directly, without going through
@@ -196,9 +224,11 @@
     but others make system calls directly in order to use new features which have
     not yet been wrapped by the system's C library; OpenBSD doesn't have this problem
     since its C library and kernel are developed in lockstep.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-29
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -209,17 +239,22 @@
     barrier to constructing a ROP attack on OpenBSD, however, and seems especially
     beneficial for statically linked programs that use only a few system calls and
     have not yet made use of pledge.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: (
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/959562/)'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: to post comments)
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
