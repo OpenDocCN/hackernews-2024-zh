@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:27:39'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:27:39'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Don't Mock Machine Learning Models In Unit Tests
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 不要在单元测试中嘲笑机器学习模型
 - en: 来源：[https://eugeneyan.com/writing/unit-testing-ml/](https://eugeneyan.com/writing/unit-testing-ml/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://eugeneyan.com/writing/unit-testing-ml/](https://eugeneyan.com/writing/unit-testing-ml/)
 - en: I’ve been applying typical unit testing practices to machine learning code and
     it hasn’t been straightforward. In software, units are small, isolated pieces
     of logic that we can test independently and quickly. In machine learning, models
@@ -33,11 +39,13 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我一直在将典型的单元测试实践应用于机器学习代码，但并不简单。在软件中，单元是小的、孤立的逻辑片段，我们可以独立快速地测试。而在机器学习中，模型是从数据中学习到的逻辑块，机器学习代码是用来学习和使用这些派生逻辑块的逻辑。这种差异使得有必要重新思考我们如何对机器学习代码进行单元测试。
 - en: How ML code differs from regular software
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机器学习代码与常规软件的区别
 - en: '**In software, we write code that *contains* logic; in ML, we write code that
     *learns* logic and then uses that learned logic.** Software code transforms input
     data + handcrafted logic into expected output. We can then test these outputs
@@ -46,12 +54,16 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在软件中，我们编写包含逻辑的代码；在机器学习中，我们编写学习逻辑并使用该学习逻辑的代码。** 软件代码将输入数据 + 手工逻辑转换为预期输出。然后，我们可以根据断言测试这些输出。相反，机器学习代码将输入数据
+    + 预期输出转换为学习到的逻辑（即模型）。'
 - en: '\[\text{Software}: \text{Input Data} + Handcrafted \text{ Logic} = \text{Expected
     Output}\] \[\text{Machine Learning}: \text{Input Data} + \text{Expected Output}
     = Learned \text{ Logic}\]'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '\[\text{软件}: \text{输入数据} + 手工逻辑 = \text{预期输出}\] \[\text{机器学习}: \text{输入数据}
+    + \text{预期输出} = 学习到的逻辑\]'
 - en: Thus, in machine learning, instead of writing code that contains logic, we write
     code to learn logic, such as via [building a decision tree](https://github.com/eugeneyan/testing-ml/blob/master/src/tree/decision_tree.py#L149)
     or [finetuning a hallucination classifier](https://github.com/eugeneyan/visualizing-finetunes/blob/main/3_ft_usb_then_fib.ipynb).
@@ -61,6 +73,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在机器学习中，我们不是写包含逻辑的代码，而是编写用于学习逻辑的代码，比如通过 [构建决策树](https://github.com/eugeneyan/testing-ml/blob/master/src/tree/decision_tree.py#L149)
+    或 [微调幻觉分类器](https://github.com/eugeneyan/visualizing-finetunes/blob/main/3_ft_usb_then_fib.ipynb)。由于作用于输入数据的逻辑嵌入在模型内部，如果我们要测试学习到的逻辑，我们需要加载模型，在一些样本输出上执行推理，然后断言输出是否符合预期输入。
 - en: '**In software, we typically mock dependencies like APIs; in ML, we want to
     test the actual model (sometimes).** When unit testing software, it’s good practice
     to mock database calls, filesystem access, sending emails/push notifications,
@@ -69,6 +83,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在软件中，我们通常模拟依赖关系如 API；在 ML 中，我们希望测试实际模型（有时）。** 在单元测试软件时，模拟数据库调用、文件系统访问、发送电子邮件/推送通知等是良好的实践。然而，在机器学习中，有些情况下我们希望针对实际模型进行测试。'
 - en: 'For example, we want to test that loss decreases with each batch and the model
     can overfit (before wasting compute on an hopeless run.) If the model is a classifier,
     we want to check that the inference logic is correct. For instance, two models
@@ -78,6 +93,10 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们希望测试每个批次的损失是否减少，以及模型是否可能过拟合（在浪费计算资源之前）。如果模型是一个分类器，我们希望检查推理逻辑是否正确。例如，两个模型可能具有不同的输出类别：[Google
+    的 T5 NLI 模型](https://huggingface.co/google/t5_11b_trueteacher_and_anli) 将事实一致性分类为类别
+    1，而 [Meta 的 BART NLI 模型](https://huggingface.co/facebook/bart-large-mnli) 则分类为类别
+    2！
 - en: '**Machine learning / language models can be large and unwieldy.** Some neural
     networks can be in the billions of parameters, exceeding what a laptop or standard
     dev environment can load. And even if we have the memory for smaller models, they
