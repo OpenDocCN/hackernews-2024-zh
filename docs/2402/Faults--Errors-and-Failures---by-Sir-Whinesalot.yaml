@@ -125,6 +125,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误几乎总是由于故障导致的。除了宇宙射线、硬件问题或应用程序与操作系统之间的非常不寻常的竞态条件之外，如果出现错误，则是*程序员搞砸了*，引入了一个错误。
 - en: Some languages like Rust and Haskell have a reputation that “if the code compiles,
     it works”. They get this reputation because they excel at preventing common faults
     through a combination of a powerful static type system plus a culture of modeling
@@ -132,10 +133,12 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust和Haskell等某些语言以“如果代码编译通过，则代码运行正常”而闻名。它们之所以享有此声誉，是因为通过强大的静态类型系统和尽可能精确地建模函数域和值域的文化，它们擅长防止常见的错误。
 - en: 'Consider the following function declaration (in Rust syntax):'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑以下函数声明（使用Rust语法）：
 - en: '[PRE1]'
   id: totrans-split-25
   prefs: []
@@ -146,6 +149,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 头函数以带符号64位整数向量作为输入，并返回该向量中的第一个整数。
 - en: This function’s domain is the set of all vectors of signed 64-bit integers and
     its codomain is the set of signed 64-bit integers. But this function declaration
     is “lying”, either about its domain, or about its codomain, depending on the point
@@ -153,15 +157,18 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 此函数的域是所有带符号64位整数向量的集合，其值域是带符号64位整数的集合。但这个函数声明是“虚假的”，根据观点不同，要么关于其域，要么关于其值域。
 - en: There is a hidden pre-condition that `v` is not empty. If `v` is empty, the
     function will panic.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 存在一个隐藏的前提条件，即`v`不为空。如果`v`为空，则该函数会发生恐慌。
 - en: 'A “truthful” head function would have a different domain or codomain:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: “真实的”头函数会有不同的域或者值域：
 - en: '[PRE2]'
   id: totrans-split-30
   prefs: []
@@ -174,12 +181,14 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一种情况下，我们限制了域，在第二种情况下我们放宽了值域。无论哪种方式，都使得函数更不容易出现错误——通过提醒程序员考虑他们必须考虑的特殊情况——但代价是使其更难使用。
 - en: In the first case the caller must prove they have a NonEmptyVec by calling some
     explicit conversion function, while in the latter case the caller must always
     handle the “None” case even if they know for a fact that the vector is not empty.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一种情况下，调用者必须通过调用某些显式转换函数来证明他们拥有一个非空向量，而在后一种情况下，即使他们确切知道向量不为空，调用者也必须始终处理“None”情况。
 - en: If multiple properties are desired at the same time (e.g., expecting a non-empty
     even-length vector) the “truthful domain” approach quickly collapses without access
     to much more powerful type system features like [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
@@ -189,6 +198,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果同时需要多个属性（例如，期望一个非空的偶数长度向量），则“真实的域”方法在没有更强大的类型系统特性支持（如[依赖类型](https://en.wikipedia.org/wiki/Dependent_type)或[精化类型](https://en.wikipedia.org/wiki/Refinement_type)）的情况下迅速崩溃，而这些特性又会给语言增加大量复杂性，而我认为这并不值得。
 - en: 'The codomain can always be loosened with a single additional “invalid input”
     case, and various language facilities can be added to conveniently deal with this
     extra case, making it the better solution most of the time. For example, in C#
@@ -197,24 +207,28 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 值域总是可以通过单个额外的“无效输入”案例放宽，并且可以添加各种语言设施以便捷处理此额外案例，这在大多数情况下是更好的解决方案。例如，在C#中，可空类型具有大量功能，使其尽可能方便使用：
 - en: flow typing, which propagates the result of null checks (i.e. an `int?` variable
     becomes `int` for as long as the result of the check is valid)
   id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 流类型化，其传播空检查的结果（即`int?`变量在检查结果有效的时间内变为`int`）
 - en: null-coalescing (`??` and `??=`) operators that make it convenient to replace
     a null value with an alternative value from the non-nullable type.
   id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 空合并（`??` 和 `??=`）运算符使得用非空类型的替代值替换空值变得更加方便。
 - en: null-conditional (`?.` and `?[]`) operators that allow “[flat-mapping](https://en.wikipedia.org/wiki/Monad_(functional_programming)#Definition)”
     operations from the non-nullable type into the nullable type.
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 空条件（`?.` 和 `?[]`）运算符允许从非空类型到可空类型的“扁平映射”操作。
 - en: The idea is to keep the advantage of truthful codomains (reminding the programmer
     to handle special cases) while mitigating the disadvantages (inconvenience).
   id: totrans-split-38
@@ -303,6 +317,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 观察到故障的最常见反应是抛出异常。异常会解开堆栈，直到它们遇到程序员指定的处理程序（即`try/catch`块）或默认处理程序使程序崩溃，并通常打印出[堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)来帮助调试问题。
 - en: The second most common approach is to abort the program, by sending it a signal
     that more often than not is caught by a default signal-handler, which will terminate
     the program and output a “useful” message like [Segmentation Fault](https://en.wikipedia.org/wiki/Segmentation_fault)
@@ -311,17 +326,20 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二种最常见的方法是通过向程序发送信号来中止程序，这种信号通常被默认信号处理程序捕获，该处理程序将终止程序并输出一个“有用”的消息，比如[分段错误](https://en.wikipedia.org/wiki/Segmentation_fault)（正如上述定义的一种失败，你是否讨厌不一致的命名约定？）
 - en: Rust panics can be set to use an exception-like mechanism, to terminate the
     current thread, or to abort the program (sending it a signal as above).
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust的panic可以设置为使用类似异常的机制，终止当前线程，或者中止程序（如上所述发送信号）。
 - en: 'You’ll notice that all of the possibilities just crash the program by default.
     Before I discuss why, I need to point out that the following is *not* failure
     handling:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有的可能性都默认使程序崩溃。在我讨论原因之前，我需要指出以下内容*并非*故障处理：
 - en: '[PRE3]'
   id: totrans-split-53
   prefs: []
@@ -333,11 +351,13 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，这只是一个看起来奇怪的条件，针对文件构造函数的一个特定“输出值”。文件构造函数的“真实”值域包括作为异常“返回”的其他情况。
 - en: Would you ever write code like the above to handle an array out of bounds situation?
     Right after you tried to index an array? What about division by zero? No, right?
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会写类似上面的代码来处理数组越界的情况吗？就在你尝试索引数组之后？除以零呢？不会吧？
 - en: Forgetting to handle a missing file is a fault, and catching that “output” is
     *not having that fault*. Using exceptions instead of properly modeling the function’s
     codomain has increased the likelihood of a fault and its corresponding failure
@@ -345,35 +365,42 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 忘记处理丢失的文件是一个错误，并且捕捉“输出”*不是没有那个错误*。使用异常而不是正确建模函数的值域，增加了故障发生的可能性及其相应的失败，因为没有提醒程序员处理常见的故障情况。
 - en: I really dislike exceptions for mixing up these unrelated concerns.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我真的不喜欢异常，因为它们混淆了这些无关的问题。
 - en: If you allow encoding different “error types” into your failure handling feature
     you’ve probably already screwed up. Let me explain.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你允许在故障处理功能中编码不同的“错误类型”，那你可能已经搞砸了。让我解释一下。
 - en: 'Let me put it nice and clear:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我说得明白点：
 - en: Handling a failure means returning the program to a known, correct state.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理失败意味着将程序恢复到已知的正确状态。
 - en: 'Remember the pipeline: Fault → Error → Failure. A fault is a bug in the program’s
     source code which causes the program to enter an incorrect unobserved state, which
     can then lead to a failure, which is observed incorrect behavior.'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住管道：故障 → 错误 → 失败。故障是程序源代码中的错误，导致程序进入不正确的未观察状态，然后可能导致失败，这是观察到的不正确行为。
 - en: The job of a failure handler is to *get rid of the error*. Note that it’s not
     handling the error, what is being handled is the failure, the error that caused
     it is unknown. But the goal is, nonetheless, to get rid of the error, somehow.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 故障处理程序的任务是*消除错误*。请注意，它并非处理错误，而是处理失败，造成失败的错误是未知的。但目标无论如何都是消除错误。
 - en: Consider an IndexOutOfBounds exception. If one happens, it’s because there is
     a bug in the program that resulted in some variable being set to an incorrect
     value, which then resulted in the observed incorrect behavior of trying to index
@@ -381,6 +408,7 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个数组越界异常。如果发生了这种情况，那是因为程序中存在一个错误，导致某个变量设置为错误值，进而导致尝试越界访问数组的不正确行为。故障处理程序应该做什么？
 - en: First, a true failure handler won’t be anywhere near the actual index out of
     bounds situation, because if it was, you were just handling one of the possible
     “return values” of the indexing operation (preventing a fault), not actually handling
@@ -467,6 +495,8 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 重启线程（特别是工作线程）是最佳方法之一，如果线程不共享可变状态。Erlang（及其衍生的 Elixir）完全围绕这一思想构建，使用[监督树](https://erlang.org/documentation/doc-4.9.1/doc/design_principles/sup_princ.html)。由于
+    Erlang 设计时考虑了故障处理，因此非常适合高可靠性系统。
 - en: The last case, sending a signal to a program, may sound like it doesn’t leave
     much room for “restarting” but that depends heavily on how the software works.
     If the program backs-up the users work every second to disk, then you can go back
@@ -476,6 +506,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一种情况，向程序发送信号，听起来似乎没有多少“重启”的余地，但这在很大程度上取决于软件的工作方式。如果程序每秒将用户工作备份到磁盘，那么你可以通过重启整个程序并指示其加载用户备份的工作来返回到“已知的正确状态”。你也可以在多进程架构中使用这种方法。
 - en: Another software architecture that works well for restarting is the [Elm Architecture](https://guide.elm-lang.org/architecture/),
     since each “update” step can be cancelled. Alas, Elm itself lacks a nice failure
     handling mechanism to take advantage of this. Trying to avoid failures at all
@@ -483,53 +514,64 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个适合重启的软件架构是[Elm 架构](https://guide.elm-lang.org/architecture/)，因为每个“更新”步骤都可以被取消。可惜的是，Elm
+    本身缺乏良好的故障处理机制来利用这一点。试图以任何代价避免故障会导致[这种胡言乱语](https://github.com/elm/core/issues/1072)。
 - en: In all cases the hope is that the triggering of the fault is an uncommon occurrence,
     otherwise the program will end up in a pointless restart loop.
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有情况下，希望触发故障是不常见的事件，否则程序将陷入无意义的重启循环。
 - en: Unfortunately errors due to logic bugs may not result in a computationally observable
     failure. Think glitched out physics simulations for example. Just gotta wait for
     the user complaints to show up.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，由于逻辑错误，错误可能不会导致计算上可观察的失败。例如，想想那些故障的物理模拟。只能等待用户的投诉出现。
 - en: Faults are bugs in the source code that lead to errors (unobserved invalid states)
     that wreck havoc until they trigger a failure (observed invalid behavior).
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 故障是源代码中导致错误（未观察到的无效状态），直到触发失败（观察到的无效行为）的错误。
 - en: Many faults are easily preventable mistakes while others are too costly or annoying
     to prevent. Languages and tools that avoid or detect such mistakes are good.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多故障是容易预防的错误，而其他一些则太昂贵或令人讨厌以至于无法预防。能够避免或检测到这些错误的语言和工具都是好的。
 - en: You can’t handle errors directly, you can only handle their corresponding failures.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不能直接处理错误，只能处理它们对应的失败。
 - en: Handling a failure always means restarting (part of) the program to get rid
     of the error, otherwise it’s not really handling a failure, it’s just working
     with an extra known “return value” of a function.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理失败总是意味着重启（部分）程序以消除错误，否则这实际上并不是处理失败，而是在函数的额外已知“返回值”上工作。
 - en: You should architect your software in a way that allows for proper failure handling.
     Some languages (like Erlang) have excellent support for this. Others like Elm
     think it isn’t necessary (I disagree).
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该以允许适当故障处理的方式设计软件。一些语言（如 Erlang）对此有很好的支持。而像 Elm 这样的语言则认为这是不必要的（我不同意）。
 - en: Exceptions are used as both a way to model extra “return values” of functions
     and as a failure handling mechanism, leading them to be lousy at both. Exceptions
     suck.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 异常被用作函数的额外“返回值”建模的一种方式，同时也是一种故障处理机制，这使得它们既不擅长前者也不擅长后者。异常糟透了。
 - en: '* * *'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '**Side-Note:** I didn’t mention it within the text because it’s already too
     big and an incoherent mess, but there’s another nice approach to preventing faults
     than expanding a codomain with a “must handle invalid result” case to remind the
@@ -537,6 +579,7 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '**旁注：** 我在文本中没有提到它，因为文本已经太大而且混乱不堪，但有另一种很好的方法来预防故障，而不是通过扩展定义域来“必须处理无效结果”以提醒程序员可能存在的故障。'
 - en: You can also expand the codomain with an extra “harmless” result. A terrible
     idea for a library since it can’t possible know what such a harmless result would
     look like for the caller, but a perfectly valid approach for an application.
