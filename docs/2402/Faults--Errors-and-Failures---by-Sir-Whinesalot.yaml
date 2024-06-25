@@ -87,6 +87,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: There’s a *fault* in the loop stop condition (it should be `i < 5`), which will
     result in an *error* state of `i = 5`, which will trigger a *failure* when used
     to index the vector (throwing an IndexOutOfRange exception).
@@ -139,6 +140,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The head function takes as input a vector of signed 64-bit integers and returns
     the first integer in that vector.
   id: totrans-split-26
@@ -164,6 +166,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In the first case, we tighten the domain, in the second case we loosen the codomain.
     Either way, we’ve made the function less likely to result in faults — by reminding
     the programmer of special cases they must take into account — at the cost of making
@@ -217,24 +220,28 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 思想是保持真实代码域的优势（提醒程序员处理特殊情况），同时减少不便之处。
 - en: Even with as many fault prevention measures in place as possible, errors will
     always happen. Fault prevention amounts to ensuring known pre-and-post-conditions
     are properly handled, it can’t help with unexpected logic errors or lacking requirements.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使尽可能地采取了所有的故障预防措施，错误仍然会发生。故障预防是确保已知的前置和后置条件被正确处理，它无法处理意外的逻辑错误或缺失的需求。
 - en: Unfortunately once an error occurs, it can’t be handled directly. Remember,
     an error is an *unobserved* incorrect state. The moment you *observe* an error,
     it has already turned into a *failure*.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，一旦错误发生，它无法直接处理。记住，错误是*未观察到*的不正确状态。一旦你*观察到*一个错误，它已经变成了一个*故障*。
 - en: Consider for example a set of additions and subtractions applied to a variable
     where intermediate computations result in overflow but the final result does not.
     The intermediate overflowed values are *errors*, but there is no resulting *failure*.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 比如考虑对一个变量进行一系列加法和减法操作，在中间计算中会出现溢出，但最终结果没有。中间溢出的值是*错误*，但没有*故障*产生。
 - en: If you actually checked for overflow each operation, you’d detect the error,
     triggering a *failure* and causing a panic or equivalent. And if, instead, you
     checked all the inputs to make sure they wouldn’t ever overflow, you’d be preventing
@@ -244,18 +251,21 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你确实在每次操作后检查溢出，你将检测到错误，触发一个*故障*并引发恐慌或类似情况。而如果，相反地，你检查所有输入以确保它们永远不会溢出，你将预防一个*故障*。混淆故障和故障，我相信，已经导致了一些真的很糟糕的语言特性，比解决的故障和故障还要多（例如，**异常**，稍后再详细说明）。
 - en: So errors cannot be handled, only failures can, and a failure is an observed
     incorrect behavior of the program. If the program is behaving incorrectly, what
     can you do about it?
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，错误不能被处理，只有故障可以，而故障是程序的观察到的不正确行为。如果程序的行为不正确，你能做什么呢？
 - en: First, how does the program know it is behaving incorrectly? If the program
     can know it is behaving incorrectly, couldn’t the fault be prevented in the first
     place? ***Yes***. But for various reasons the cost of doing so may be too high.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，程序如何知道它的行为不正确？如果程序可以知道它的行为不正确，为什么不在第一次预防出现故障呢？***是的***。但因为各种原因，这样做的成本可能太高。
 - en: An example would be needing to check after every arithmetic operation for overflow.
     I don’t mean the compiler inserting checks and triggering a failure, I mean the
     programmer explicitly checking for overflow after every arithmetic operation and
@@ -263,6 +273,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个例子就是需要在每次算术运算后检查是否溢出。我不是说编译器插入检查并触发一个故障，我是说程序员在每次算术运算后明确检查溢出并处理每一种“特殊情况”。非常令人恼火。
 - en: Alternatively, the overflow-related faults could be prevented by using [arbitrary-precision
     arithmetic](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic), which
     would instead have a computational cost and may result in a different kind of
@@ -270,6 +281,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，可以通过使用[任意精度算术](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic)来防止与溢出相关的故障，这将带来计算成本，并可能导致不同类型的故障（内存不足）。
 - en: Compiler (or programmer) inserted checks are a means of computationally observing
     failures caused by unlikely (but otherwise expected) errors, in turn caused by
     faults that would be excessively costly to prevent. The most common example is
@@ -277,11 +289,13 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器（或者程序员）插入的检查是一种计算方式，用来观察由于不太可能的（但本应预期的）错误导致的故障，这些错误本质上是因为防止其发生的成本过高。最常见的例子是数组边界检查。
 - en: Note that these checks are **not** failure handling, they are a necessary step
     to detect the failure but actually handling it comes afterwards.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意这些检查并不是故障处理，它们是检测故障的必要步骤，实际的处理是在其后进行。
 - en: The most common response to observing a failure is to throw an exception. Exceptions
     unwind the stack until they hit a programmer-specified handler (i.e., a `try/catch`
     block) or a default handler that crashes the program and usually prints out a
@@ -312,6 +326,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: In my opinion this is just a weird looking conditional for one particular “output
     value” of the File constructor. The “truthful” codomain of the File constructor
     includes additional cases that are “returned” as exceptions.
@@ -373,6 +388,7 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，一个真正的故障处理程序不会在实际的索引越界情况附近，因为如果是这样，你只是处理索引操作的可能“返回值”之一（防止故障），而不是真正处理故障。
 - en: In a language with [algebraic effect handlers](https://en.wikipedia.org/wiki/Effect_system),
     the handler for the index out of bounds situation could “fix” the failure by resuming
     the program with a made up value for that index. Terrible idea, essentially replacing
@@ -380,6 +396,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在具有[代数效果处理程序](https://en.wikipedia.org/wiki/Effect_system)的语言中，索引越界情况的处理程序可以通过使用虚构的值恢复程序来“修复”故障。这是个糟糕的主意，本质上是用新错误替换故障。使用异常你甚至不能做到这一点。
 - en: No, a true failure handler is a piece of code that a programmer hopes never
     actually has to run! It’s the last line of defense. All that the failure handler
     knows is that some variable (no idea which) got set to a wrong value at some point
@@ -388,6 +405,7 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 不，一个真正的故障处理程序是程序员希望永远不会真正运行的一段代码！它是最后的防线。故障处理程序只知道某个变量（不知道哪个）在某个时刻（不知道在哪里）被设置为错误值，然后用于错误地索引数组（知道在哪里，但无法做任何处理）。
 - en: Given the above, IndexOutOfBounds might as well have been PoopExplosion9000
     as far as the failure handler is concerned. The information is useful for the
     programmer, as is the stack trace, but it could just as well have been a text
@@ -397,6 +415,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于上述情况，对于故障处理程序而言，IndexOutOfBounds就好像是PoopExplosion9000一样。这些信息对程序员有用，堆栈跟踪也有用，但它本可以作为断言错误消息中的文本字符串。异常的实际类型对于故障处理的目的是完全无用的（对于“贫民区”的情况不适用，但你不应该在第一时间使用异常）。
 - en: While you can only handle failures (because only the failure is observed) getting
     rid of the failure by itself doesn’t do much good, there’s still the unobserved
     invalid state that led to it in the first place. But you can’t do anything about
@@ -405,28 +424,33 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然你只能处理故障（因为只有故障是可观察到的），但仅仅通过消除故障本身并不能有多大帮助，仍然存在导致它的不可观察的无效状态，而且你不能直接处理该无效状态，因为你不知道它是什么或者它来自哪里。
 - en: This is why the default handler for any sort of panic mechanism (exceptions,
     signals, etc.) is a full-on crash that spits out as much information as it can
     for the programmer to debug with. There’s nothing else it can do.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么任何一种恐慌机制（异常、信号等）的默认处理程序都是全面崩溃，尽可能多地为程序员提供调试所需的信息。它无法做其他事情。
 - en: The only thing you can do is turn it off and on again.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你唯一能做的就是把它关掉然后再打开。
 - en: Every failure handler that’s any better than the default is ultimately just
     decreasing the scope of what’s getting restarted or improving the usefulness of
     the info-dump.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 每一个比默认值更好的故障处理程序最终都只是减少了重新启动的范围或者提高了信息转储的有用性。
 - en: The choice of panic mechanism (exceptions, signals, terminating threads) essentially
     dictates the scope of what can be restarted. If restarting wasn’t the goal, then
     there would be no need for any mechanism beyond terminating the program outright.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 恐慌机制的选择（异常、信号、终止线程）基本上决定了可以重新启动的范围。如果重新启动不是目标，那么除了彻底终止程序之外就不需要任何机制了。
 - en: Exceptions let you restart at an arbitrary point in a function. This is less
     useful than it sounds because the error state may have occurred outside the handler’s
     restart point. You can only safely restart pure functions or those that work like
@@ -434,6 +458,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 异常允许你在函数的任意点重新启动。这听起来没那么有用，因为错误状态可能发生在处理程序的重新启动点之外。你只能安全地重新启动纯函数或那些像[事务](https://en.wikipedia.org/wiki/Transaction_processing)一样工作的函数。
 - en: Restarting threads (particularly worker threads) is one of the best approaches
     if the threads don’t share mutable state. Erlang (and by extension Elixir) is
     built entirely around this idea, using [supervision trees](https://erlang.org/documentation/doc-4.9.1/doc/design_principles/sup_princ.html).
@@ -518,6 +543,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以通过额外的“无害”结果扩展函数域。对于库来说是一个可怕的想法，因为它不可能知道对于调用者来说这样一个无害的结果会是什么样子，但对于应用程序来说是一个完全有效的方法。
 - en: For example, lets say your program loads up a bunch of textures at the start.
     Instead of the texture loading function returning an `Option<Texture>` that you
     then need to deal with everywhere, it could return just `Texture`, but use a special
@@ -525,6 +551,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，假设您的程序在开始时加载了一堆纹理。而不是纹理加载函数返回一个 `Option<Texture>`，然后您需要在各个地方处理它，它可以仅返回 `Texture`，但对于加载失败的纹理使用特殊的“缺失纹理”。
 - en: The function would log somewhere which textures were missing, and just let the
     program proceed as normal, still letting the user do some work (if they didn’t
     need those textures). The program can check that errors were logged at some point
@@ -534,3 +561,4 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数应该记录某处缺少的纹理，并且允许程序继续正常运行，仍然让用户完成一些工作（如果他们不需要这些纹理的话）。程序可以检查是否在某个时刻记录了错误，并在一个单独的代码路径中向用户显示这些错误，与此同时，用户可以在其他时间修复缺失的纹理。查看关于此主题的[瑞安·弗卢里的这篇文章](https://www.rfleury.com/p/the-easiest-way-to-handle-errors)。
