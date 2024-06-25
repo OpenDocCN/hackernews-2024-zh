@@ -128,6 +128,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 语言的复杂性在于观察者的眼中。许多GCC开发者主要或专门是C程序员，因此必然会有一个时间段他们的生产力会降低，和/或者他们可能会以一种消除了所有声称的好处的方式使用C++。为了解决这个问题，Taylor希望制定限制开发到C++子集的编码标准。
 - en: The bootstrap problem could be resolved by ensuring that GCC version *N-1* could
     always build GCC version *N*, and that they could link statically against `libstdc++`.
     GCC version *N-1* must be linked against `libstdc++` *N-1* while it is building
@@ -137,6 +138,8 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 引导问题可以通过确保GCC版本*N-1*始终可以构建GCC版本*N*并静态链接到`libstdc++`来解决。GCC版本*N-1*在构建GCC *N*和`libstdc++`
+    *N*时必须链接到`libstdc++` *N-1*；反过来，GCC *N*需要`libstdc++` *N*。静态链接确保每个编译器版本都能与适当版本的库一起运行。
 - en: For many years prior to 2008, there had been general agreement to restrict GCC
     code to a common subset of C and C++, according to Taylor (via email). However,
     there was a great deal of resistance to replacing the C compiler with a C++ compiler.
@@ -150,11 +153,13 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 多年来，直到2008年之前，根据Taylor（通过电子邮件）的说法，大家普遍同意将GCC代码限制在C和C++的共同子集中。然而，用C++编译器取代C编译器遭到了很大的反对。在2008年的GCC峰会上，Taylor进行了一项关于反对程度的投票，大约有40%的人持反对意见。C++的支持者密切关注并解决了C++反对者提出的具体异议（速度、内存使用、开发者经验等），因此，此后每年反对者的规模都显著减少。这些讨论大多发生在GCC峰会和未记录的IRC聊天中。因此，仅有的记录保存在[GCC邮件列表档案](http://gcc.gnu.org/ml/gcc)中。
 - en: First steps
   id: totrans-split-25
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 第一步
 - en: The first step, a proper baby step, was merely to try to compile the existing
     C code base with a C++ compiler. While Taylor was still at the conference, he
     [created a gcc-in-cxx branch](http://gcc.gnu.org/ml/gcc/2008-06/msg00385.html)
@@ -164,6 +169,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步，一个正确的初步行动，仅仅是尝试用C++编译器编译现有的C代码库。在Taylor仍在会议期间，他[创建了一个gcc-in-cxx分支](http://gcc.gnu.org/ml/gcc/2008-06/msg00385.html)，用于尝试用C++编译器构建GCC。开发者们迅速宣布他们的意图参与该项目。最初的构建尝试遇到了许多错误和警告，随后进行了清理。
 - en: In June 2009, almost exactly a year from proposing this switch, Taylor reported
     that phase one was complete. He configured GCC with the switch `enable-build-with-cxx`
     to cause the core compiler to be built with C++. A bootstrap on a single target
@@ -174,6 +180,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 2009年6月，几乎正好一年之后，Taylor报告称第一阶段已经完成。他使用`enable-build-with-cxx`开关配置了GCC，以便用C++构建核心编译器。在单个目标系统上完成了引导。此时左右，独立的cxx分支已经合并到主GCC主干中，人们继续使用`enable-build-with-cxx`开关继续工作。（然而，至少有一次独立分支因实验而复活。）
 - en: In May 2010, there was a [GCC Release Manager Q&A on IRC](http://gcc.gnu.org/wiki/Release%20Manager%20Q%26A?action=AttachFile&do=view&target=rmqa-20100527.txt).
     The conclusion from that meeting was to request permission from the GCC Steering
     Committee to use C++ language features in GCC itself, as opposed to just compiling
@@ -183,6 +190,9 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 2010 年 5 月，[GCC 发布经理在 IRC 上进行了问答](http://gcc.gnu.org/wiki/Release%20Manager%20Q%26A?action=AttachFile&do=view&target=rmqa-20100527.txt)。会议的结论是请求
+    GCC 指导委员会的许可，以在 GCC 本身中使用 C++ 语言特性，而不仅仅是用 C++ 编译器进行编译。许可获得批准，并且自自由软件基金会也表示同意。Mark
+    Mitchell 在 2010 年 5 月 31 日的 GCC 邮件列表中[宣布了这一决定](http://gcc.gnu.org/ml/gcc/2010-05/msg00705.html)。
 - en: In that thread, [Jakub Jelinek](http://gcc.gnu.org/ml/gcc/2010-05/msg00746.html)
     and [Vladimir Makarov](http://gcc.gnu.org/ml/gcc/2010-05/msg00744.html) expressed
     a lack of enthusiasm for the change. However, as Makarov put it, he had no desire
@@ -194,16 +204,22 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在那个帖子中，[Jakub Jelinek](http://gcc.gnu.org/ml/gcc/2010-05/msg00746.html) 和 [Vladimir
+    Makarov](http://gcc.gnu.org/ml/gcc/2010-05/msg00744.html) 对这一变化表达了不太热情的态度。然而，正如
+    Makarov 所说，他并不希望为一个早已做出的决定而引发争论。话虽如此，他最近通过电子邮件分享，他主要的担忧是 GCC 社区会匆忙将 GCC 代码库转换为
+    C++，“而不是致力于为 GCC 用户改进性能、增加新功能等更重要的事情。” 幸运的是，这种情况并未发生。
 - en: 'Richard Guenther was concerned about [creating a tree class hierarchy](http://gcc.gnu.org/ml/gcc/2010-05/msg00745.html):'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Richard Guenther 对[创建一个树类层次结构](http://gcc.gnu.org/ml/gcc/2010-05/msg00745.html)表示关注：
 - en: It's a lot of work (tree extends in all three Frontends, middle-end and backends).
     And my fear is we'll only get a halfway transition - something worse than no transition
     at all.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一项艰巨的工作（树在所有三个前端、中端和后端都有扩展）。我担心我们只会完成一半的过渡 - 这比没有过渡更糟糕。
 - en: The efforts of the proponents to allay concerns, and the "please be careful"
     messages from the opponents give some indication of the other concerns. In addition
     to the issues raised by Taylor at the 2008 presentation, Jelinek mentioned memory
@@ -212,6 +228,8 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持者的努力缓解了担忧，而反对者的“请小心”信息也显示了其他担忧的迹象。除了 Taylor 在 2008 年的演示中提出的问题外，Jelinek 还提到了内存使用情况。其他人时常在其他评论中担心，初学者的
+    C++ 程序员可能会不当使用语言，导致代码难以维护。
 - en: 'There was much discussion about coding standards in the thread. Several argued
     for existing standards, but others pointed out that they needed to define a "safe"
     subset of C++ to use. There was, at first, little agreement about which features
@@ -224,11 +242,15 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 论坛上关于编码标准有很多讨论。有几人主张现有的标准，但也有人指出他们需要定义一个“安全”的 C++ 子集来使用。起初关于哪些 C++ 特性对于初学者来说是安全的意见不一。Taylor
+    提出了一套编码标准。这些被 Lawrence Crowl 和其他人修改后，然后被[采纳](http://gcc.gnu.org/codingconventions.html)。每个要求都有详尽的理由和讨论。然而，在可维护性上的指导原则并不是编码标准，而是一直存在于
+    GCC 中的原则：组件的维护者对于该组件的任何更改都有最终决定权。
 - en: Current status
   id: totrans-split-34
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 当前状态
 - en: Currently, those who supported the changes feel their efforts provided the benefits
     they expected. No one has publicly expressed any dissatisfaction with the effort.
     Makarov was relieved that his fear that the conversion effort would be a drain
