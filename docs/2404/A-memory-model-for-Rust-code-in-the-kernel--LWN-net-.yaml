@@ -1,34 +1,52 @@
 - en: <!--yml
+  id: totrans-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:00:15'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:00:15'
 - en: -->
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A memory model for Rust code in the kernel [LWN.net]
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust代码在内核中的内存模型 [LWN.net]
 - en: 来源：[https://lwn.net/SubscriberLink/967049/0ffb9b9ed8940013/](https://lwn.net/SubscriberLink/967049/0ffb9b9ed8940013/)
+  id: totrans-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lwn.net/SubscriberLink/967049/0ffb9b9ed8940013/](https://lwn.net/SubscriberLink/967049/0ffb9b9ed8940013/)
 - en: '| **Did you know...?**LWN.net is a subscriber-supported publication; we rely
     on subscribers to keep the entire operation going. Please help out by [buying
     a subscription](/subscribe/) and keeping LWN on the net. |'
+  id: totrans-6
   prefs: []
   type: TYPE_TB
+  zh: '| **你知道吗...？**LWN.net是一个由订阅者支持的出版物；我们依靠订阅者来维持整个运营。请通过[订阅](/subscribe/)来帮助我们保持LWN的持续运营。'
 - en: By **Jonathan Corbet**
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者：**Jonathan Corbet**
 - en: April 3, 2024
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年4月3日
 - en: The Rust programming language differs from C in many ways; those differences
     tend to be what users admire in the language. But those differences can also lead
     to an impedance mismatch when Rust code is integrated into a C-dominated system,
@@ -38,12 +56,16 @@
     It is hard to maintain that sort of blissful ignorance while working in the kernel,
     though, so a recent discussion of how to choose a memory model for kernel code
     in Rust is of interest.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust编程语言与C语言在许多方面存在差异；这些差异往往是用户所钦佩的语言特性。但是，这些差异也可能导致当Rust代码集成到以C为主导的系统中时出现阻抗不匹配问题，而在内核中则可能更糟糕，因为内核不是典型的C程序。内存模型就是一个案例。一个编程语言对内存的看法是非常基础且神秘的，以至于许多开发者从未真正了解过它。然而，在内核工作时，很难保持这种愉快的无知状态，因此最近在如何为Rust内核代码选择内存模型的讨论变得非常重要。
 - en: Memory models
+  id: totrans-10
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 内存模型
 - en: It is convenient to view a system's memory as a simple array of bytes that can
     be accessed from any CPU. The reality, though, is more complicated. Memory accesses
     are slow, so a lot of effort goes into minimizing them; modern systems are built
@@ -51,8 +73,10 @@
     would slow to a crawl, severely impacting the production, delivery, and consumption
     of cat videos, phishing spam, and cryptocurrency scams. This prospect is seen
     as a bad thing.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 把系统的内存视为可以从任何CPU访问的简单字节数组是方便的。然而，现实更为复杂。内存访问速度慢，因此很多工作都致力于最小化这些访问；现代系统为此目的构建了多级缓存。如果没有这些缓存，性能将大幅下降，严重影响猫视频、钓鱼垃圾邮件和加密货币诈骗的生产、传输和消费。这一前景被视为一件坏事。
 - en: 'Multi-level caching speeds computation, but it brings a problem of its own:
     it is no longer true that every CPU in the system sees the same memory contents.
     If one CPU has modified some data in a local cache, another CPU reading that data
@@ -61,8 +85,10 @@
     situations, the ordering of events depends on who is observing them. Needless
     to say, this kind of uncertainty also has the potential to create disorder within
     an operating-system kernel.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 多级缓存加速计算，但也带来了自己的问题：系统中不再每个CPU看到相同的内存内容。如果一个CPU在本地缓存中修改了某些数据，另一个读取该数据的CPU可能看不到更改。在一个精心安排的顺序中执行的操作可能在系统的其他地方以不同的顺序出现。正如相对论情况下一样，事件的排序取决于谁在观察它们。不用说，这种不确定性也可能在操作系统内核中创建混乱。
 - en: CPUs have special operations that can ensure that a given memory store is simultaneously
     visible across the system. These operations, though, are slow and need to be used
     with care. Modern CPUs provide a range of "barrier" operations that can be used
@@ -72,77 +98,121 @@
     simplify things (to the extent that they *can* be simplified). A memory model
     combines a specification of how barriers should be used and any interfaces that
     ease that use, describing how to safely access data in concurrent settings.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: CPUs具有特殊操作，可以确保给定的存储同时在整个系统中可见。然而，这些操作速度较慢，需要小心使用。现代CPU提供了一系列“屏障”操作，可用于以较少的开销正确地序列化对数据的访问；请参阅[此文章](/Articles/576486/)以获取其中一些操作的概述。使用这些屏障可能有些复杂（并且与体系结构相关），因此已经创建了一些通用接口来简化事务（只要*可以*简化）。内存模型结合了屏障的使用规范以及任何简化使用的接口，描述如何在并发设置中安全地访问数据。
 - en: '"The majority of the _good_ programmers I know run away screaming from this
     stuff. As was said many, many years ago - understanding'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: “我认识的大多数_优秀_程序员都会从这些东西中逃之夭夭。正如多年前所说的 - 理解
 - en: '`memory-barriers.txt`'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '`memory-barriers.txt`'
 - en: is an -extremely high bar- to set as a basic requirement for being a kernel
     developer."
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 是一个 -非常高的门槛- 作为成为内核开发人员的基本要求。”
 - en: —
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: —
 - en: '[Dave Chinner](/ml/linux-fsdevel/20200716014656.GJ2005@dread.disaster.area/)'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Dave Chinner](/ml/linux-fsdevel/20200716014656.GJ2005@dread.disaster.area/)'
 - en: ', 2020'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: ，2020
 - en: The C11 standard, for example, defines some
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，C11标准定义了一些
 - en: '[atomic types](https://en.cppreference.com/w/c/language/atomic)'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[原子类型](https://en.cppreference.com/w/c/language/atomic)'
 - en: and
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 和
 - en: '[atomic operations](https://en.cppreference.com/w/c/atomic)'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '[原子操作](https://en.cppreference.com/w/c/atomic)'
 - en: . C++ offers
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 。C++提供了
 - en: '[an atomic type](https://en.cppreference.com/w/cpp/atomic/atomic)'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[原子类型](https://en.cppreference.com/w/cpp/atomic/atomic)'
 - en: of its own. While the kernel community has occasionally
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 其自身的问题。虽然内核社区偶尔也会
 - en: '[discussed](/Articles/691128/)'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[讨论](/Articles/691128/)'
 - en: using the C atomic types, that has never happened for a number of reasons, some
     of which will become apparent below. Instead, the kernel defines its own memory
     model, described in the infamous
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用C的原子类型，由于多种原因，从未发生过，其中一些原因将在下面变得显而易见。相反，内核定义了自己的内存模型，在臭名昭著的
 - en: '[memory-barriers.txt](https://www.kernel.org/doc/html/latest/core-api/wrappers/memory-barriers.html)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[memory-barriers.txt](https://www.kernel.org/doc/html/latest/core-api/wrappers/memory-barriers.html)'
 - en: file (and sometimes referred to as "LKMM"). Few kernel developers understand
     this model in detail (and many
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件（有时称为“LKMM”）。很少有内核开发者详细了解这个模型（而许多
 - en: '[find it too subtle](/Articles/827180/)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[发现它过于微妙](/Articles/827180/)'
 - en: to understand deeply), but it governs how memory access works at the lowest
     levels. (See also
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解深入），但它控制着内存访问在最底层是如何工作的。(参见
 - en: '[this article series](/Articles/718628/)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[这个文章系列](/Articles/718628/)'
 - en: for more on the kernel's memory model).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 了解更多关于内核的内存模型）。
 - en: 'One of the early concerns about incorporating Rust into the kernel is that
     the Rust language lacked a memory model of its own. That gap has since been filled;
     the [Rust memory model](https://doc.rust-lang.org/std/sync/atomic/#memory-model-for-atomic-accesses)
@@ -152,12 +222,16 @@
     of the two? He [posted his conclusion](/ml/linux-kernel/20240322233838.868874-1-boqun.feng@gmail.com/)
     to the linux-kernel mailing list: Rust code should adhere to the kernel''s memory
     model. He included an initial patch set showing what that would look like.'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 早期有关将Rust整合到内核中的担忧之一是，Rust语言缺乏自己的内存模型。这个空白已经填补；[Rust内存模型](https://doc.rust-lang.org/std/sync/atomic/#memory-model-for-atomic-accesses)看起来很像C++的模型。帮助维护内核内存模型的冯博群认为，为Rust代码在内核中使用制定一个模型是个好主意。应该使用Rust模型，内核模型，还是两者结合？他[发布了他的结论](/ml/linux-kernel/20240322233838.868874-1-boqun.feng@gmail.com/)到linux-kernel邮件列表上：Rust代码应遵循内核的内存模型。他包括了一个展示这种模型的初始补丁集。
 - en: Using the kernel's model
+  id: totrans-36
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 使用内核的模型
 - en: 'The reasoning behind this conclusion is simple enough: "<q>Because kernel developers
     are more familiar with LKMM and when Rust code interacts with C code, it has to
     use the model that C code uses</q>". Learning one memory model is hard enough;
@@ -166,8 +240,10 @@
     each depending on its respective memory model to ensure proper data ordering.
     So, as long as the kernel has its own memory model, that is what Rust code will
     have to use.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个结论背后的推理很简单：“<q>因为内核开发者更熟悉LKMM，当Rust代码与C代码交互时，它必须使用C代码使用的模型</q>”。学习一个内存模型已经够难了；要求开发者学习两个模型来与内核工作将不会导致好结果。当Rust和C代码互操作时，各自依赖其相应的内存模型来确保适当的数据排序，更可能导致更糟糕的结果。因此，只要内核有自己的内存模型，Rust代码将不得不使用它。
 - en: 'Kent Overstreet [pointed out](/ml/linux-kernel/s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3/)
     a disadvantage of this approach: the kernel will remain incompatible with other
     Rust code and will not be able to incorporate it easily. He suggested that, perhaps,
@@ -175,8 +251,12 @@
     at which point supporting the Rust model would be easier. That seems unlikely
     to happen, though, given the strong opposition from Linus Torvalds to any such
     change.'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Kent Overstreet [指出](/ml/linux-kernel/s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3/)
+    这种方法的一个缺点：内核将无法与其他Rust代码兼容，并且不能轻松地将其整合进来。他建议，也许内核的内存模型可以基于C或C++原子操作重建，那样支持Rust模型会更容易。不过，考虑到Linus
+    Torvalds对任何这种变化的强烈反对，这似乎不太可能发生。
 - en: One of Torvalds's arguments was that [language-based memory models are insufficiently
     reliable](/ml/linux-kernel/CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com/)
     for use in the kernel, and that is not a problem that can be addressed quickly.
@@ -188,16 +268,22 @@
     operations on the same variable, that are important to the kernel. Those uses
     are not addressed (or allowed) in the Rust model. He did suggest that, perhaps,
     a subset of the Rust model could be implemented on top of the kernel's operations.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Torvalds的一个论点是，[基于语言的内存模型在内核中不够可靠](/ml/linux-kernel/CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com/)，而这不是一个可以快速解决的问题。"<q>在另一个十年内，C++内存模型可能会变得可靠。然后再过*那*十年，我们可以放弃对早期不可靠编译器的支持。</q>"
+    因此，他说，"<q>我不明白为什么人们会认为我们不想自己来做</q>"。Feng [补充道](/ml/linux-kernel/Zf4fDJNBeRN5HOYo@boqun-archlinux/)
+    内核的内存模型涵盖了许多用例，例如对同一变量进行混合大小操作，在内核中非常重要。这些用例在Rust模型中没有得到解决（或允许）。他确实建议，也许可以在内核操作的基础上实现Rust模型的一个子集。
 - en: Another reason for the kernel project to implement its own memory model, Torvalds
     [said](/ml/linux-kernel/CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com/),
     is that kernel developers need to be deeply familiar with the architectures they
     are supporting anyway. There is no way to create a kernel without a lot of architecture-specific
     code. Given that, "<q>having the architecture also define things like atomics
     is just a pretty small (and relatively straightforward) detail</q>".
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 内核项目实现其自己的内存模型的另一个原因是，Torvalds [说道](/ml/linux-kernel/CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com/)，因为内核开发人员无论如何都需要对其支持的架构非常熟悉。没有办法创建一个没有大量特定架构代码的内核。鉴于此，"<q>让架构也定义原子操作之类的事情只是一个相对较小（而且相对简单）的细节</q>"。
 - en: 'Torvalds has [another reason](/ml/linux-kernel/CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com/)
     for sticking with the kernel''s memory model, though: he thinks that the C++ model
     is fundamentally misdesigned. A key aspect of that model is that data exposed
@@ -205,8 +291,10 @@
     inserts the right barriers when that data is accessed. Such a model can ensure
     that a developer never forgets to use the proper atomic operations, which is an
     appealing feature. That is, however, not how the kernel''s model works.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，Torvalds 有另一个理由坚持内核的内存模型，他认为 C++ 模型在根本上设计有误。该模型的一个关键方面是，暴露给并发访问的数据被赋予特殊的原子类型，并且当访问该数据时，编译器会自动插入正确的屏障。这样的模型可以确保开发人员永远不会忘记使用适当的原子操作，这是一个吸引人的特性。然而，这并不是内核模型的工作方式。
 - en: In the kernel's memory model, it is not the type of the data that determines
     how it must be accessed, but the context in which that access happens. A simple
     example is data that is protected by a lock; while the lock is held, that data
@@ -214,42 +302,57 @@
     need for expensive atomic operations; instead, a simple barrier when the lock
     is released is sufficient. In other settings, where a lock is not held, atomic
     operations may be needed to access the same data.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在内核的内存模型中，决定如何访问数据的不是数据的类型，而是发生访问的上下文。一个简单的例子是由锁保护的数据；当锁被持有时，该数据不是真正共享的，因为锁持有者具有独占访问权。因此，不需要昂贵的原子操作；相反，在释放锁时简单的屏障就足够了。在其他情况下，如果没有持有锁，则可能需要原子操作来访问相同的数据。
 - en: 'Torvalds argued that the kernel''s approach to shared data makes more sense:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Torvalds 认为内核对共享数据的处理方式更有意义：
 - en: In fact, I personally will argue that it is fundamentally wrong to think that
     the underlying data has to be volatile. A variable may be entirely stable in some
     cases (ie locks held), but not in others.
+  id: totrans-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 实际上，我个人认为认为底层数据必须是volatile是根本错误的。在某些情况下，变量可能是完全稳定的（即保持锁定），但在其他情况下则不是。
 - en: ''
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: So it's not the *variable* (aka "object") that is 'volatile', it's the *context*
     that makes a particular access volatile.
+  id: totrans-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 因此，不是*变量*（又名“对象”）是“volatile”，而是*上下文*使得特定访问变得volatile。
 - en: ''
+  id: totrans-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: That explains why the kernel has basically zero actual volatile objects, and
     99% of all volatile accesses are done through accessor functions that use a cast
     to mark a particular access volatile.
+  id: totrans-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这解释了为什么内核基本上没有真正的volatile对象，而99%的volatile访问都是通过使用强制转换标记特定访问为volatile的访问器函数完成的。
 - en: This approach has been taken in the kernel for a long time; it is described
     in the [volatile-considered-harmful document](https://docs.kernel.org/process/volatile-considered-harmful.html)
     that was first [added to the kernel](https://git.kernel.org/linus/0faa45480261)
     for the 2.6.22 release in 2007.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法在内核中已经采用了很长时间；它在 [volatile-considered-harmful document](https://docs.kernel.org/process/volatile-considered-harmful.html)
+    中有描述，这个文档首次在 2007 年的 2.6.22 版本内核中被 [添加](https://git.kernel.org/linus/0faa45480261)。
 - en: 'The outcome of this discussion is clear enough: Rust code in the kernel will
     have to use the kernel''s memory model for the foreseeable future. The Rust language
     brings with it a number of new ways of doing things, many of which have significant
@@ -259,17 +362,28 @@
     a compromise, but it is different from what other Rust code will do; it will be
     one of the many things Rust developers will have to learn to work in the kernel
     project.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次讨论的结果很明显：未来可预见的时间内，内核中的 Rust 代码将不得不使用内核的内存模型。Rust 语言带来了许多新的做事方式，其中许多都比 C 语言有显著优势。但是，将一门新语言引入到古老、庞大且受特殊要求约束的代码库中总是需要在新语言一侧做出一些妥协。使用内核的内存模型可能实际上并不是一种妥协，但它与其他
+    Rust 代码的做法有所不同；这将是 Rust 开发者在内核项目中学习和应用的众多方面之一。
 - en: '* * *'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: (
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: （
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/967049/)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '[登录](https://lwn.net/Login/?target=/Articles/967049/)'
 - en: to post comments)
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 发表评论）
