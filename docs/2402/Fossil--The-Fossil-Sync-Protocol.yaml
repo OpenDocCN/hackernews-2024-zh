@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:19:42'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:19:42'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Fossil: The Fossil Sync Protocol'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Fossil：Fossil 同步协议
 - en: 来源：[https://fossil-scm.org/home/doc/trunk/www/sync.wiki](https://fossil-scm.org/home/doc/trunk/www/sync.wiki)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://fossil-scm.org/home/doc/trunk/www/sync.wiki](https://fossil-scm.org/home/doc/trunk/www/sync.wiki)
 - en: This document describes the wire protocol used to synchronize content between
     two Fossil repositories.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文描述了用于在两个 Fossil 仓库之间同步内容的传输协议。
 - en: 1.0 Overview
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 1.0 概述
 - en: The global state of a fossil repository consists of an unordered [collection
     of artifacts](https://fossil-scm.org/home/doc/trunk/www/fileformat.wiki). Each
     artifact is identified by a cryptographic hash of its content, expressed as a
@@ -50,6 +58,9 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个 Fossil 仓库的全局状态由一个无序的 [文物集合](https://fossil-scm.org/home/doc/trunk/www/fileformat.wiki)
+    组成。每个文物由其内容的加密哈希标识，以小写十六进制字符串表示。同步是在仓库之间共享文物的过程，以便所有仓库都有所有文物的副本。因为文物是无序的，所以接收文物的顺序不重要。假定文物的哈希名称是唯一的
+    - 每个文物都有不同的哈希。在第一个近似下，同步通过共享可用文物的哈希列表，然后共享连接的一侧或另一侧缺少的文物内容来进行。在实践中，一个仓库可能包含数百万个文物。这么多文物的哈希名称列表可能很大。因此，通常采用一些优化措施来通常减少需要共享的哈希数到几十个。
 - en: Each repository also has local state. The local state determines the web-page
     formatting preferences, authorized users, ticket formats, and similar information
     that varies from one repository to another. The local state is not usually transferred
@@ -60,11 +71,15 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个仓库还具有本地状态。本地状态确定了网页格式化偏好、授权用户、票务格式等各种因仓库而异的信息。通常在同步过程中不传输本地状态。不过，在 [clone](https://fossil-scm.org/home/help?cmd=clone)
+    过程中会传输一些本地状态，以初始化新仓库的本地状态。此外，管理员可以使用 [config push](https://fossil-scm.org/home/help?cmd=configuration)
+    和 [config pull](https://fossil-scm.org/home/help?cmd=configuration) 命令同步本地状态。
 - en: 1.1 Conflict-Free Replicated Datatypes
   id: totrans-split-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1.1 无冲突复制数据类型
 - en: The "bag of artifacts" data model used by Fossil is apparently an implementation
     of a particular [Conflict-Free Replicated Datatype (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
     called a "G-Set" or "Grow-only Set". The academic literature on CRDTs only began
@@ -75,22 +90,28 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Fossil 使用的“文物包”数据模型显然是特定 [无冲突复制数据类型 (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
+    的实现，称为“G-Set”或“Grow-only Set”。关于 CRDT 的学术文献大约在 2011 年左右开始出现，而 Fossil 的研究至少早于此四年。但令人高兴的是，理论家们现在已经证明，Fossil
+    的基础数据模型可以通过仅使用对等通信而不需要任何中央权威来提供强一致性副本。
 - en: If you are already familiar with CRDTs and were wondering if Fossil used them,
     the answer is "yes". We just don't call them by that name.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经熟悉 CRDT 并且想知道 Fossil 是否使用了它们，答案是“是”。我们只是不以那个名称称呼它们。
 - en: 2.0 Transport
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 2.0 传输
 - en: All communication between client and server is via HTTP requests. The server
     is listening for incoming HTTP requests. The client issues one or more HTTP requests
     and receives replies for each request.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端和服务器之间的所有通信都通过 HTTP 请求进行。服务器正在监听传入的 HTTP 请求。客户端发出一个或多个 HTTP 请求，并收到每个请求的回复。
 - en: The server might be running as an independent server using the ["fossil server"
     command](https://fossil-scm.org/home/help?cmd=server), or it might be launched
     from inetd or xinetd using the [/help?cmd=http](https://fossil-scm.org/home/wiki?name=%22fossil+http%22+command).
@@ -103,6 +124,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器可能作为独立服务器运行，使用["fossil server"命令](https://fossil-scm.org/home/help?cmd=server)，或者可能是从inetd或xinetd启动，使用[/help?cmd=http](https://fossil-scm.org/home/wiki?name=%22fossil+http%22+command)。或者服务器可能是从[CGI启动](https://fossil-scm.org/home/doc/trunk/www/server/any/cgi.md)或者从[SCGI启动](https://fossil-scm.org/home/doc/trunk/www/server/any/scgi.md)。（详见"[如何配置Fossil服务器](https://fossil-scm.org/home/doc/trunk/www/server/)"了解详情。）服务器监听传入HTTP请求的具体方式对此协议无关紧要。重要的是服务器正在监听请求，而客户端是请求的发起者。
 - en: A single [push](https://fossil-scm.org/home/help?cmd=push), [pull](https://fossil-scm.org/home/help?cmd=pull),
     or [sync](https://fossil-scm.org/home/help?cmd=sync) might involve multiple HTTP
     requests. The client maintains state between all requests. But on the server side,
@@ -111,6 +133,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 一次 [推送](https://fossil-scm.org/home/help?cmd=push)，[拉取](https://fossil-scm.org/home/help?cmd=pull)，或者
+    [同步](https://fossil-scm.org/home/help?cmd=sync) 可能涉及多个HTTP请求。客户端在所有请求之间保持状态。但在服务器端，每个请求是独立的。服务器不会保留关于客户端的任何信息，从一个请求到下一个请求。
 - en: 'Note: Throughout this article, we use the terms "server" and "client" to represent
     the listener and initiator of the interaction, respectively. Nothing in this protocol
     requires that the server actually be a back-room processor housed in a datacenter,
@@ -120,11 +144,13 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：在本文中，我们使用术语"服务器"和"客户端"分别表示交互的监听器和发起者。此协议并不要求服务器实际上是数据中心中的后台处理器，也不要求客户端是台式机或手持设备。在本文中，"客户端"仅表示启动对话的存储库，"服务器"是响应的存储库。没有其他含义。
 - en: 2.0.1 HTTPS Transport
   id: totrans-split-18
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 2.0.1 HTTPS传输
 - en: HTTPS differs from HTTP only in that the HTTPS protocol is encrypted as it travels
     over the wire. The underlying protocol is the same. This document describes only
     the underlying, unencrypted messages that go client to server and back to client.
@@ -132,16 +158,19 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: HTTPS与HTTP的唯一区别在于HTTPS协议在传输过程中进行了加密。底层协议是相同的。本文档仅描述了客户端和服务器之间以及返回客户端的基础未加密消息。这些消息是否加密在本文档中并不重要。
 - en: Fossil includes built-in [support for HTTPS encryption](https://fossil-scm.org/home/doc/trunk/www/ssl-server.md)
     in both client and server.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Fossil在客户端和服务器中都包含内置的[支持HTTPS加密](https://fossil-scm.org/home/doc/trunk/www/ssl-server.md)。
 - en: 2.0.2 SSH Transport
   id: totrans-split-21
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 2.0.2 SSH传输
 - en: When doing a sync using an "`ssh:…`" URL, the same HTTP transport protocol is
     used. Fossil simply uses [ssh](https://en.wikipedia.org/wiki/Secure_Shell) to
     start an instance of the [fossil test-http](https://fossil-scm.org/home/help?cmd=test-http)
@@ -153,6 +182,9 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 当使用"`ssh:…`" URL进行同步时，使用相同的HTTP传输协议。Fossil仅使用[ssh](https://en.wikipedia.org/wiki/Secure_Shell)在远程机器上启动一个[fossil
+    test-http](https://fossil-scm.org/home/help?cmd=test-http)命令的实例。然后通过SSH连接发送HTTP请求并获取HTTP回复，而不是通过互联网套接字发送和接收。要查看Fossil客户端用于建立连接的具体"ssh"命令，请在"fossil
+    sync"命令行中添加"--httptrace"或"--sshtrace"选项。
 - en: This method is dependent on the remote `PATH` set by the SSH daemon, which may
     not be the same as your interactive shell's `PATH` on that same server. It is
     common to find `$HOME/bin` in the latter but not the former, for instance, leading
@@ -161,30 +193,37 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 此方法依赖于由 SSH 守护进程设置的远程 `PATH`，可能与同一服务器上交互式 shell 的 `PATH` 不同。例如，在后者中常见的 `$HOME/bin`
+    在前者中可能找不到，导致在非标准位置安装 `fossil` 二进制文件时同步 `ssh:…` URL 失败，例如
 - en: '[PRE0]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The simpler of the two solutions to this problem is to install Fossil where
     sshd expects to find it, but when that isn''t an option, you can instead give
     a URL like this:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决此问题的两种较简单的解决方案之一是在 SSH 守护进程期望找到 Fossil 的地方安装 Fossil，但当这不是选项时，您可以给出类似以下的 URL：
 - en: '[PRE1]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: That gives the local Fossil instance the absolute path to the binary on the
     remote machine for use when calling that Fossil instance through the SSH tunnel.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样可以为本地的 Fossil 实例提供远程机器上二进制文件的绝对路径，以便通过 SSH 隧道调用该 Fossil 实例。
 - en: 2.0.3 FILE Transport
   id: totrans-split-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 2.0.3 文件传输
 - en: When doing a sync using a "file:..." URL, the same HTTP protocol is still used.
     But instead of sending each HTTP request over a socket or via SSH, the HTTP request
     is written into a temporary file. The client then invokes the [fossil http](https://fossil-scm.org/home/help?cmd=http)
@@ -196,11 +235,16 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 当使用 "file:..." URL 进行同步时，仍然使用相同的 HTTP 协议。但是，不再通过套接字或 SSH 发送每个 HTTP 请求，而是将 HTTP
+    请求写入临时文件中。然后客户端在子进程中调用 [化石 http](https://fossil-scm.org/home/help?cmd=http) 命令处理请求并生成响应。客户端接着从磁盘上的临时文件读取
+    HTTP 响应，并删除这两个临时文件。若想查看实现 "file:" 传输的具体 "化石 http" 命令，请在 "fossil sync" 命令中添加 "--httptrace"
+    选项。
 - en: 2.1 Server Identification
   id: totrans-split-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2.1 服务器标识
 - en: The server is identified by a URL argument that accompanies the push, pull,
     or sync command on the client. (As a convenience to users, the URL can be omitted
     on the client command and the same URL from the most recent push, pull, or sync
@@ -209,41 +253,50 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器由伴随客户端推送、拉取或同步命令的 URL 参数标识。（为方便用户，客户端命令中可以省略 URL，并重复使用最近一次推送、拉取或同步的相同 URL。在客户端多次同步到同一服务器的常见情况下，这样可以节省输入。）
 - en: The client modifies the URL by appending the method name "**/xfer**" to the
     end. For example, if the URL specified on the client command line is
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端通过在末尾添加方法名 "**/xfer**" 来修改 URL。例如，如果在客户端命令行上指定的 URL 是
 - en: '[PRE2]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Then the URL that is really used to do the synchronization will be:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后用于执行同步的真正 URL 将是：
 - en: '[PRE3]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 2.2 HTTP Request Format
   id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2.2 HTTP 请求格式
 - en: 'The client always sends a POST request to the server. The general format of
     the POST request is as follows:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端始终向服务器发送 POST 请求。POST 请求的一般格式如下：
 - en: '[PRE4]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'In the example above, the pathname given after the POST keyword on the first
     line is a copy of the URL pathname. The Host: parameter is also taken from the
     URL. The content type is always either "application/x-fossil" or "application/x-fossil-debug".
@@ -252,45 +305,56 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述示例中，第一行的 POST 关键字后给出的路径名是 URL 路径名的副本。Host 参数也取自 URL。内容类型始终为 "application/x-fossil"
+    或 "application/x-fossil-debug"。 "x-fossil" 内容类型是默认的。唯一的区别是 "x-fossil" 内容使用 zlib
+    压缩，而 "x-fossil-debug" 则未压缩发送。
 - en: 'A typical reply from the server might look something like this:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器的典型响应可能如下所示：
 - en: '[PRE6]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The content type of the reply is always the same as the content type of the
     request.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 响应的内容类型始终与请求的内容类型相同。
 - en: 3.0 Fossil Synchronization Content
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 3.0 化石同步内容
 - en: A synchronization request between a client and server consists of one or more
     HTTP requests as described in the previous section. This section details the "x-fossil"
     content type.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端和服务器之间的同步请求由一个或多个 HTTP 请求组成，如前一部分所述。本节详细描述了 "x-fossil" 内容类型。
 - en: 3.1 Line-oriented Format
   id: totrans-split-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.1 行定向格式
 - en: The x-fossil content type consists of zero or more "cards". Cards are separated
     by the newline character ("\n"). Leading and trailing whitespace on a card is
     ignored. Blank cards are ignored.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: x-fossil内容类型由零个或多个“卡”组成。卡由换行符（"\n"）分隔。卡上的前导和尾随空白将被忽略。空白卡将被忽略。
 - en: Each card is divided into zero or more space separated tokens. The first token
     on each card is the operator. Subsequent tokens are arguments. The set of operators
     understood by servers is slightly different from the operators understood by clients,
@@ -298,20 +362,24 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 每张卡被分成零个或更多个以空格分隔的标记。每张卡上的第一个标记是操作符。后续标记是参数。服务器理解的操作符集与客户端理解的略有不同，尽管两者非常相似。
 - en: 3.2 Login Cards
   id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.2 登录卡
 - en: 'Every message from client to server begins with one or more login cards. Each
     login card has the following format:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个从客户端到服务器的消息都以一个或多个登录卡开头。每个登录卡的格式如下：
 - en: '[PRE8]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The userid is the name of the user that is requesting service from the server.
     The nonce is the SHA1 hash of the remainder of the message - all text that follows
     the newline character that terminates the login card. The signature is the SHA1
@@ -319,6 +387,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户ID是请求服务器服务的用户名称。Nonce是消息剩余部分的SHA1哈希 - 所有跟随终止登录卡的换行符的文本。签名是Nonce和用户密码连接的SHA1哈希。
 - en: For each login card, the server looks up the user and verifies that the nonce
     matches the SHA1 hash of the remainder of the message. It then checks the signature
     hash to make sure the signature matches. If everything checks out, then the client
@@ -326,16 +395,19 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于每个登录卡，服务器查找用户并验证nonce是否与消息剩余部分的SHA1哈希匹配。然后检查签名哈希以确保签名匹配。如果一切正常，则客户端被授予指定用户的所有权限。
 - en: Privileges are cumulative. There can be multiple successful login cards. The
     session privilege is the union of all privileges from all login cards.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 权限是累积的。可以有多个成功的登录卡。会话权限是所有登录卡中所有权限的并集。
 - en: 3.3 File Cards
   id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.3 文件卡
 - en: Artifacts are transferred using either "file" cards, or "cfile" or "uvfile"
     cards. The name "file" card comes from the fact that most artifacts correspond
     to files that are under version control. The "cfile" name is an abbreviation for
@@ -343,11 +415,13 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过“file”卡、或“cfile”或“uvfile”卡传输工件。名称“file”卡源于大多数工件对应于版本控制下的文件。名称“cfile”是“压缩文件”的缩写。名称“uvfile”是“未版本化文件”的缩写。
 - en: 3.3.1 Ordinary File Cards
   id: totrans-split-58
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.3.1 普通文件卡
 - en: For sync protocols, artifacts are transferred using "file" cards. File cards
     come in two different formats depending on whether the artifact is sent directly
     or as a [delta](https://fossil-scm.org/home/doc/trunk/www/delta_format.wiki) from
@@ -355,16 +429,19 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于同步协议，使用“file”卡传输工件。文件卡有两种不同的格式，取决于工件是直接发送还是作为来自其他工件的[增量](https://fossil-scm.org/home/doc/trunk/www/delta_format.wiki)。
 - en: '[PRE9]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: File cards are followed by in-line "payload" data. The content of the artifact
     or the artifact delta is the first *size* bytes of the x-fossil content that immediately
     follow the newline that terminates the file card.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件卡后面是内联的“有效载荷”数据。工件或工件增量的内容是紧随终止文件卡的换行符后的x-fossil内容的前 *size* 字节。
 - en: The first argument of a file card is the ID of the artifact that is being transferred.
     The artifact ID is the lower-case hexadecimal representation of the name hash
     for the artifact. The last argument of the file card is the number of bytes of
@@ -376,17 +453,20 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件卡的第一个参数是正在传输的工件的ID。工件ID是工件名称哈希的小写十六进制表示。文件卡的最后一个参数是紧随文件卡之后的有效载荷字节数。如果文件卡只有两个参数，这意味着有效载荷是工件的完整内容。如果文件卡有三个参数，则有效载荷是一个[增量](https://fossil-scm.org/home/doc/trunk/www/delta_format.wiki)，第二个参数是另一个工件的ID，它是增量的来源。
 - en: 'File cards are sent in both directions: client to server and server to client.
     A delta might be sent before the source of the delta, so both client and server
     should remember deltas and be able to apply them when their source arrives.'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件卡片在双向发送：客户端到服务器和服务器到客户端。可能会在增量的源之前发送增量，因此客户端和服务器都应该记住增量，并且能够在源到达时应用它们。
 - en: 3.3.2 Compressed File Cards
   id: totrans-split-64
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.3.2 压缩文件卡片
 - en: A client that sends a clone protocol version "3" or greater will receive artifacts
     as "cfile" cards while cloning. This card was introduced to improve the speed
     of the transfer of content by sending the compressed artifact directly from the
@@ -394,6 +474,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 当客户端发送克隆协议版本“3”或更高版本时，将在克隆过程中作为“cfile”卡片接收工件。为了通过直接从服务器数据库向客户端发送压缩工件来提高内容传输速度而引入了这张卡片。
 - en: Compressed File cards are similar to File cards, sharing the same in-line "payload"
     data characteristics and also the same treatment of direct content or delta content.
     Cfile cards come in two different formats depending on whether the artifact is
@@ -401,10 +482,12 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 压缩文件卡片与文件卡片类似，共享相同的内联“payload”数据特性，并且也采用直接内容或增量内容的相同处理方式。Cfile卡片有两种不同的格式，取决于工件是直接发送还是作为其他工件的增量发送。
 - en: '[PRE10]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The first argument of the cfile card is the ID of the artifact that is being
     transferred. The artifact ID is the lower-case hexadecimal representation of the
     name hash for the artifact. The second argument of the cfile card is the original
@@ -417,49 +500,60 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: cfile卡片的第一个参数是正在传输的工件的ID。工件ID是工件名称哈希的小写十六进制表示。cfile卡片的第二个参数是工件的原始大小（以字节为单位）。cfile卡片的最后一个参数是紧随其后的有效负载的压缩字节数。如果cfile卡片只有三个参数，这意味着有效负载是工件的完整内容。如果cfile卡片有四个参数，则有效负载是一个增量，第二个参数是另一个工件的ID，该工件是增量的源，第三个参数是增量工件的原始大小。
 - en: Unlike file cards, cfile cards are only sent in one direction during a clone
     from server to client for clone protocol version "3" or greater.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 与文件卡片不同，克隆协议版本为“3”或更高版本时，cfile卡片仅在服务器到客户端的克隆期间单向发送。
 - en: 3.3.3 Private artifacts
   id: totrans-split-70
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.3.3 私有工件
 - en: '"Private" content consist of artifacts that are not normally synced. However,
     private content will be synced when the the [fossil sync](https://fossil-scm.org/home/help?cmd=sync)
     command includes the "--private" option.'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: “私有”内容包括通常不同步的工件。但是，当 [fossil sync](https://fossil-scm.org/home/help?cmd=sync)
+    命令包含“--private”选项时，私有内容将被同步。
 - en: 'Private content is marked by a "private" card:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 私有内容由“private”卡片标记：
 - en: '[PRE11]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The private card has no arguments and must directly precede a file card that
     contains the private content.
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 私有卡片没有参数，并且必须直接在包含私有内容的文件卡片之前出现。
 - en: 3.3.4 Unversioned File Cards
   id: totrans-split-75
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.3.4 未版本化文件卡片
 - en: 'Unversioned content is sent in both directions (client to server and server
     to client) using "uvfile" cards in the following format:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 未版本化内容在双向（客户端到服务器和服务器到客户端）使用“uvfile”卡片以以下格式发送：
 - en: '[PRE12]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The *name* field is the name of the unversioned file. The *mtime* is the last
     modification time of the file in seconds since 1970\. The *hash* field is the
     hash of the content for the unversioned file, or "**-**" for deleted content.
@@ -472,6 +566,9 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '*name* 字段是未版本化文件的名称。*mtime* 是文件自1970年以来的最后修改时间（秒）。*hash* 字段是未版本化文件内容的哈希值，或者对于删除的内容是
+    "**-**"。*size* 字段是内容的（未压缩）字节大小。*flags* 字段是一个整数，被解释为位数组。*flags* 的0x0004位表示要省略*content*。如果内容太大而无法传输，或者发送方仅想要更新文件的修改时间而不更改文件内容，则可能会省略内容。*content*
+    是文件的（未压缩）内容。'
 - en: The receiver should only accept the uvfile card if the hash and size match the
     content and if the mtime is newer than any existing instance of the same file
     held by the receiver. The sender will not normally transmit a uvfile card unless
@@ -479,22 +576,26 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 接收方只应在哈希和大小与内容匹配且mtime更新于接收方保留的同一文件的任何现有实例时接受uvfile卡片。发送方通常不会传输uvfile卡片，除非所有这些约束条件为真，但接收方应再次检查。
 - en: A server will only accept uvfile cards if the login user has the "y" write-unversioned
     permission.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有登录用户具有"y"写入未版本化权限时，服务器才会接受uvfile卡片。
 - en: Servers send uvfile cards in response to uvgimme cards received from the client.
     Clients send uvfile cards when they determine that the server needs the content
     based on uvigot cards previously received from the server.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器响应从客户端收到的uvgimme卡片而发送uvfile卡片。客户端在根据先前从服务器收到的uvigot卡片确定服务器需要内容时发送uvfile卡片。
 - en: 3.4 Push and Pull Cards
   id: totrans-split-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.4 推送和拉取卡片
 - en: 'Among the first cards in a client-to-server message are the push and pull cards.
     The push card tells the server that the client is pushing content. The pull card
     tells the server that the client wants to pull content. In the event of a sync,
@@ -502,10 +603,12 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端到服务器消息的第一张卡片包括推送和拉取卡片。推送卡片告知服务器客户端正在推送内容。拉取卡片告知服务器客户端希望拉取内容。在同步事件中，这两张卡片都会被发送。格式如下：
 - en: '[PRE13]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: The *servercode* argument is the repository ID for the client. The *projectcode*
     is the identifier of the software project that the client repository contains.
     The projectcode for the client and server must match in order for the transaction
@@ -513,21 +616,25 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '*servercode*参数是客户端的仓库ID。*projectcode*是客户端仓库包含的软件项目的标识符。为了使事务继续进行，客户端和服务器的projectcode必须匹配。'
 - en: The server will also send a push card back to the client during a clone. This
     is how the client determines what project code to put in the new repository it
     is constructing.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在克隆过程中，服务器还会向客户端发送推送卡片。这是客户端确定新建立的仓库中应放置的项目代码的方式。
 - en: The *servercode* argument is currently unused.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '*servercode*参数目前未使用。'
 - en: 3.5 Clone Cards
   id: totrans-split-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.5 克隆卡片
 - en: A clone card works like a pull card in that it is sent from client to server
     in order to tell the server that the client wants to pull content. The clone card
     comes in two formats. Older clients use the no-argument format and newer clients
@@ -535,15 +642,18 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 克隆卡片类似于拉取卡片，以便从客户端发送到服务器，告知服务器客户端希望拉取内容。克隆卡片有两种格式。旧版本客户端使用无参数格式，而新版本客户端使用两参数格式。
 - en: '[PRE14]'
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 3.5.1 Protocol 3
   id: totrans-split-91
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.5.1 协议 3
 - en: The latest clients send a two-argument clone message with a protocol version
     of "3". (Future versions of Fossil might use larger protocol version numbers.)
     Version "3" of the protocol enhanced version "2" by introducing the "cfile" card
@@ -552,47 +662,56 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 最新的客户端发送一个带有协议版本为"3"的两参数克隆消息。（未来版本的Fossil可能会使用更大的协议版本号。）协议版本"3"通过引入旨在加速克隆操作的"cfile"卡片来增强了版本"2"。服务器将发送"cfile"卡片而不是"file"卡片。
 - en: 3.5.2 Protocol 2
   id: totrans-split-93
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.5.2 协议 2
 - en: The sequence-number sent is the number of artifacts received so far. For the
     first clone message, the sequence number is 0\. The server will respond by sending
     file cards for some number of artifacts up to the maximum message size.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 发送的序列号是迄今为止接收到的工件数量。对于第一个克隆消息，序列号为0。服务器将响应并发送文件卡片，数量最多达到最大消息大小。
 - en: The server will also send a single "clone_seqno" card to the client so that
     the client can know where the server left off.
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器还会向客户端发送单个"clone_seqno"卡片，以便客户端知道服务器停止的位置。
 - en: '[PRE15]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The clone message in subsequent HTTP requests for the same clone operation will
     use the sequence-number from the clone_seqno of the previous reply.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 后续HTTP请求中的克隆消息将使用前一回复的clone_seqno的序列号。
 - en: In response to an initial clone message, the server also sends the client a
     push message so that the client can discover the projectcode for this project.
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 响应初始克隆消息时，服务器还向客户端发送推送消息，以便客户端发现此项目的projectcode。
 - en: 3.5.3 Legacy Protocol
   id: totrans-split-99
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.5.3 旧协议
 - en: Older clients send a clone card with no argument. The server responds to a blank
     clone card by sending an "igot" card for every artifact in the repository. The
     client will then issue "gimme" cards to pull down all the content it needs.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 旧版本的客户端发送一个空的克隆卡片。服务器对空的克隆卡片的响应是向仓库中的每个工件发送一个 "igot" 卡片。然后客户端会发出 "gimme" 卡片来拉取其需要的所有内容。
 - en: The legacy protocol works well for smaller repositories (50MB with 50,000 artifacts)
     but is too slow and unwieldy for larger repositories. The version 2 protocol is
     an effort to improve performance. Further performance improvements with higher-numbered
@@ -600,21 +719,26 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 旧协议对于较小的仓库（50MB，含有 50,000 个工件）效果良好，但对于较大的仓库则太慢且笨重。版本 2 协议是为了提高性能而做出的努力。在 Fossil
+    的未来版本中，更高编号的克隆协议可能会进一步提升性能。
 - en: 3.6 Igot Cards
   id: totrans-split-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.6 Igot 卡片
 - en: 'An igot card can be sent from either client to server or from server to client
     in order to indicate that the sender holds a copy of a particular artifact. The
     format is:'
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: igot 卡片可以从客户端发送到服务器，也可以从服务器发送到客户端，以指示发送方持有特定工件的副本。其格式如下：
 - en: '[PRE16]'
   id: totrans-split-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The first argument of the igot card is the ID of the artifact that the sender
     possesses. The receiver of an igot card will typically check to see if it also
     holds the same artifact and if not it will request the artifact using a gimme
@@ -622,30 +746,37 @@
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: igot 卡片的第一个参数是发送方拥有的工件的 ID。接收到 igot 卡片的接收方通常会检查是否也持有相同的工件，如果没有，则会在回复或下一个消息中使用
+    gimme 卡片请求该工件。
 - en: If the second argument exists and is "1", then the artifact identified by the
     first argument is private on the sender and should be ignored unless a "--private"
     [sync](https://fossil-scm.org/home/help?cmd=sync) is occurring.
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果第二个参数存在且为 "1"，则由第一个参数标识的工件在发送方是私有的，并且应该被忽略，除非正在进行 "--private" [同步](https://fossil-scm.org/home/help?cmd=sync)。
 - en: The name "igot" comes from the English slang expression "I got" meaning "I have".
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 名称 "igot" 来自于英语俚语表达 "I got"，意思是 "我有"。
 - en: 3.6.1 Unversioned Igot Cards
   id: totrans-split-108
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.6.1 未版本化的 Igot 卡片
 - en: 'Zero or more "uvigot" cards are sent from server to client when synchronizing
     unversioned content. The format of a uvigot card is as follows:'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 在同步未版本化内容时，服务器向客户端发送零个或多个 "uvigot" 卡片。uvigot 卡片的格式如下：
 - en: '[PRE17]'
   id: totrans-split-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: The *name* argument is the name of an unversioned file. The *mtime* is the last
     modification time of the unversioned file in seconds since 1970. The *hash* is
     the SHA1 or SHA3-256 hash of the unversioned file content, or "**-**" if the file
@@ -653,6 +784,8 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: '*name* 参数是未版本化文件的名称。*mtime* 是自 1970 年以来未版本化文件的最后修改时间（秒）。*hash* 是未版本化文件内容的 SHA1
+    或 SHA3-256 哈希值，如果文件已删除则为 "**-**"。*size* 是文件未压缩的大小（字节）。'
 - en: When the server sees a "pragma uv-hash" card for which the hash does not match,
     it sends uvigot cards for every unversioned file that it holds. The client will
     use this information to figure out which unversioned files need to be synchronized.
@@ -662,6 +795,8 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 当服务器看到 "pragma uv-hash" 卡片的哈希值不匹配时，它会为其持有的每个未版本化文件发送 uvigot 卡片。客户端将使用此信息来确定需要同步哪些未版本化文件。当服务器收到
+    uvgimme 卡片但其回复消息大小已经超出正常的 uvfile 回复大小时，也可能会发送 uvigot 卡片。
 - en: When a client receives a "uvigot" card, it checks to see if the file needs to
     be transferred from client to server or from server to client. If a client-to-server
     transmission is needed, the client schedules that transfer to occur on a subsequent
@@ -670,48 +805,59 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 当客户端收到一个 "uvigot" 卡片时，它会检查文件是否需要从客户端传输到服务器或从服务器传输到客户端。如果需要从客户端到服务器的传输，客户端会安排在后续的
+    HTTP 请求中进行传输。如果需要从服务器到客户端的传输，则客户端会向服务器发送一个 "uvgimme" 卡片以请求文件内容。
 - en: 3.7 Gimme Cards
   id: totrans-split-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.7 Gimme 卡片
 - en: 'A gimme card is sent from either client to server or from server to client.
     The gimme card asks the receiver to send a particular artifact back to the sender.
     The format of a gimme card is this:'
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: gimme 卡片可以从客户端发送到服务器，也可以从服务器发送到客户端。gimme 卡片要求接收方将特定的工件发送回发送方。gimme 卡片的格式如下：
 - en: '[PRE18]'
   id: totrans-split-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: The argument to the gimme card is the ID of the artifact that the sender wants.
     The receiver will typically respond to a gimme card by sending a file card in
     its reply or in the next message.
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: gimme 卡片的参数是发送方想要的工件的 ID。接收方通常会通过其回复或下一条消息中的文件卡片来响应 gimme 卡片。
 - en: The "gimme" name means "give me". The imperative "give me" is pronounced as
     if it were a single word "gimme" in some dialects of English (including the dialect
     spoken by the original author of Fossil).
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '"gimme" 名称意为 "给我"。在一些英语方言（包括 Fossil 的原始作者所使用的方言）中，这个祈使句 "give me" 的发音就像一个单词
+    "gimme"。'
 - en: 3.7.1 Unversioned Gimme Cards
   id: totrans-split-119
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 3.7.1 无版本 Gimme 卡片
 - en: 'Sync synchronizing unversioned content, the client may send "uvgimme" cards
     to the server. A uvgimme card requests that the server send unversioned content
     to the client. The format of a uvgimme card is as follows:'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 同步非版本化内容时，客户端可以向服务器发送 "uvgimme" 卡片。uvgimme 卡片请求服务器向客户端发送非版本化内容。uvgimme 卡片的格式如下：
 - en: '[PRE19]'
   id: totrans-split-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The *name* is the name of the unversioned file found on the server that the
     client would like to have. When a server sees a uvgimme card, it normally responses
     with a uvfile card, though it might also send another uvigot card if the HTTP
@@ -719,11 +865,14 @@
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: '*名称* 是客户端希望获取的服务器上找到的非版本化文件的名称。当服务器看到 uvgimme 卡片时，通常会用 uvfile 卡片回应，尽管如果 HTTP
+    回复已经超出大小限制，也可能发送另一个 uvigot 卡片。'
 - en: 3.8 Cookie Cards
   id: totrans-split-123
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.8 Cookie 卡片
 - en: A cookie card can be used by a server to record a small amount of state information
     on a client. The server sends a cookie to the client. The client sends the same
     cookie back to the server on its next request. The cookie card has a single argument
@@ -731,10 +880,13 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器可以使用 cookie 卡片在客户端上记录少量状态信息。服务器向客户端发送 cookie。客户端在下一次请求时将相同的 cookie 发送回服务器。cookie
+    卡片有一个参数，即其有效载荷。
 - en: '[PRE20]'
   id: totrans-split-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: The client is not required to return the cookie to the server on its next request.
     Or the client might send a cookie from a different server on the next request.
     So the server must not depend on the cookie and the server must structure the
@@ -744,11 +896,14 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端不需要在下一次请求时将 cookie 返回给服务器。或者客户端可能在下一次请求时发送来自另一个服务器的 cookie。因此，服务器不应依赖 cookie，并且服务器必须以这样的方式结构化
+    cookie 负载，以便它可以确定看到的 cookie 是自己的还是来自另一个服务器的。（通常，服务器将其服务器代码嵌入 cookie 的一部分。）
 - en: 3.9 Request-Configuration Cards
   id: totrans-split-127
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.9 请求配置卡片
 - en: A request-configuration or "reqconfig" card is sent from client to server in
     order to request that the server send back "configuration" data. "Configuration"
     data is information about users or website appearance or other administrative
@@ -759,329 +914,397 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 请求配置或者 "reqconfig" 卡片是客户端发送给服务器的请求，以请求服务器返回 "配置" 数据。 "配置" 数据是关于用户或者网站外观或其他管理细节的信息，这些信息不是项目的持久和有版本状态的一部分。例如，项目的
+    "名称"，web 界面的默认层叠样式表（CSS），以及显示在 web 界面上的项目 logo 都属于配置数据元素。
 - en: 'The reqconfig card is normally sent in response to the "fossil configuration
     pull" command. The format is as follows:'
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: reqconfig 卡片通常作为响应 "fossil configuration pull" 命令而发送。格式如下：
 - en: '[PRE21]'
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'As of 2018-06-04, the configuration-name must be one of the following values:'
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 截至 2018-06-04，配置名称必须是以下值之一：
 - en: '|'
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: css
   id: totrans-split-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: css
 - en: header
   id: totrans-split-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: header
 - en: footer
   id: totrans-split-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: footer
 - en: details
   id: totrans-split-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: details
 - en: logo-mimetype
   id: totrans-split-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: logo-mimetype
 - en: logo-image
   id: totrans-split-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: logo-image
 - en: background-mimetype
   id: totrans-split-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: background-mimetype
 - en: background-image
   id: totrans-split-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: background-image
 - en: index-page
   id: totrans-split-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: index-page
 - en: timeline-block-markup
   id: totrans-split-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: timeline-block-markup
 - en: timeline-max-comment
   id: totrans-split-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: timeline-max-comment
 - en: timeline-plaintext
   id: totrans-split-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: timeline-plaintext
 - en: adunit
   id: totrans-split-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: adunit
 - en: adunit-omit-if-admin
   id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: adunit-omit-if-admin
 - en: adunit-omit-if-user
   id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: adunit-omit-if-user
 - en: '|'
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: th1-docs
   id: totrans-split-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: th1-docs
 - en: th1-hooks
   id: totrans-split-150
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: th1-hooks
 - en: th1-setup
   id: totrans-split-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: th1-setup
 - en: tcl
   id: totrans-split-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: tcl
 - en: tcl-setup
   id: totrans-split-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: tcl-setup
 - en: project-name
   id: totrans-split-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: project-name
 - en: short-project-name
   id: totrans-split-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: short-project-name
 - en: project-description
   id: totrans-split-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: project-description
 - en: index-page
   id: totrans-split-157
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: index-page
 - en: manifest
   id: totrans-split-158
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: manifest
 - en: binary-glob
   id: totrans-split-159
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: binary-glob
 - en: clean-glob
   id: totrans-split-160
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: clean-glob
 - en: ignore-glob
   id: totrans-split-161
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ignore-glob
 - en: keep-glob
   id: totrans-split-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: keep-glob
 - en: crlf-glob
   id: totrans-split-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: crlf-glob
 - en: '|'
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: crnl-glob
   id: totrans-split-165
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: crnl-glob
 - en: encoding-glob
   id: totrans-split-166
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: encoding-glob
 - en: empty-dirs
   id: totrans-split-167
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: empty-dirs
 - en: ~~allow-symlinks~~
   id: totrans-split-168
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ~~allow-symlinks~~
 - en: dotfiles
   id: totrans-split-169
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dotfiles
 - en: parent-project-code
   id: totrans-split-170
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: parent-project-code
 - en: parent-projet-name
   id: totrans-split-171
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: parent-projet-name
 - en: hash-policy
   id: totrans-split-172
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: hash-policy
 - en: mv-rm-files
   id: totrans-split-173
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: mv-rm-files
 - en: ticket-table
   id: totrans-split-174
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-table
 - en: ticket-common
   id: totrans-split-175
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-common
 - en: ticket-change
   id: totrans-split-176
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-change
 - en: ticket-newpage
   id: totrans-split-177
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-newpage
 - en: ticket-viewpage
   id: totrans-split-178
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-viewpage
 - en: ticket-editpage
   id: totrans-split-179
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-editpage
 - en: '|'
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: ticket-reportlist
   id: totrans-split-181
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-reportlist
 - en: ticket-report-template
   id: totrans-split-182
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-report-template
 - en: ticket-key-template
   id: totrans-split-183
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-key-template
 - en: ticket-title-expr
   id: totrans-split-184
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-title-expr
 - en: ticket-closed-expr
   id: totrans-split-185
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ticket-closed-expr
 - en: xfer-common-script
   id: totrans-split-186
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: xfer-common-script
 - en: xfer-push-script
   id: totrans-split-187
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: xfer-push-script
 - en: xfer-commit-script
   id: totrans-split-188
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: xfer-commit-script
 - en: xfer-ticket-script
   id: totrans-split-189
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: xfer-ticket-script
 - en: '@reportfmt'
   id: totrans-split-190
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '@reportfmt'
 - en: '@user'
   id: totrans-split-191
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '@user'
 - en: '@concealed'
   id: totrans-split-192
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '@concealed'
 - en: '@shun'
   id: totrans-split-193
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '@shun'
 - en: '|'
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: New configuration-names are likely to be added in future releases of Fossil.
     If the server receives a configuration-name that it does not understand, the entire
     reqconfig card is silently ignored. The reqconfig card might also be ignored if
@@ -1089,6 +1312,8 @@
   id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的配置名称可能会在未来的 Fossil 发布版本中添加。如果服务器收到了它不理解的配置名称，则整个 reqconfig 卡将被静默地忽略。如果用户缺乏足够的权限访问请求的信息，则也可能会忽略
+    reqconfig 卡。
 - en: The configuration-names that begin with an alphabetic character refer to values
     in the "config" table of the server database. For example, the "logo-image" configuration
     item refers to the project logo image that is configured on the Admin page of
@@ -1097,6 +1322,8 @@
   id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
+  zh: 以字母开头的配置名称引用服务器数据库中“config”表中的值。例如，“logo-image”配置项指的是在 [web-interface](https://fossil-scm.org/home/doc/trunk/www/webui.wiki)
+    的管理页面上配置的项目标志图像。配置项的值通过“config”卡返回给客户端。
 - en: If the configuration-name begins with "@", that refers to a class of values
     instead of a single value. The content of these configuration items is returned
     in a "config" card that contains pure SQL text that is intended to be evaluated
@@ -1104,16 +1331,19 @@
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果配置名称以“@”开头，则表示它引用值的一个类别，而不是单个值。这些配置项的内容在包含纯 SQL 文本的“config”卡中返回，供客户端评估。
 - en: The @user and @concealed configuration items contain sensitive information and
     are ignored for clients without sufficient privilege.
   id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
+  zh: '@user 和 @concealed 配置项包含敏感信息，对于没有足够权限的客户端会被忽略。'
 - en: 3.10 Configuration Cards
   id: totrans-split-199
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.10 配置卡
 - en: 'A "config" card is used to send configuration information from client to server
     (in response to a "fossil configuration push" command) or from server to client
     (in response to a "fossil configuration pull" or "fossil clone" command). The
@@ -1121,51 +1351,62 @@
   id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
+  zh: “config” 卡用于从客户端向服务器发送配置信息（响应于“fossil configuration push”命令）或从服务器向客户端发送配置信息（响应于“fossil
+    configuration pull”或“fossil clone”命令）。格式如下：
 - en: '[PRE22]'
   id: totrans-split-201
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: The server will only accept a config card if the user has "Admin" privilege.
     A client will only accept a config card if it had sent a corresponding reqconfig
     card in its request.
   id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有具有“Admin”权限的用户才能接受配置卡。客户端只有在其请求中发送了相应的 reqconfig 卡时，才能接受配置卡。
 - en: The content of the configuration item is used to overwrite the corresponding
     configuration data in the receiver.
   id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 配置项的内容用于覆盖接收方中相应的配置数据。
 - en: 3.11 Pragma Cards
   id: totrans-split-204
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.11 编译指示卡
 - en: 'The client may try to influence the behavior of the server by issuing a pragma
     card:'
   id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端可以通过发出编译指示卡来影响服务器的行为：
 - en: '[PRE23]'
   id: totrans-split-206
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: The "pragma" card has at least one argument which is the pragma name. The pragma
     name defines what the pragma does. A pragma might have zero or more "value" arguments
     depending on the pragma name.
   id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
+  zh: “pragma” 卡至少有一个参数，即编译指示名称。编译指示名称定义编译指示的作用。根据编译指示名称的不同，编译指示可能具有零个或多个“值”参数。
 - en: New pragma names may be added to the protocol from time to time in order to
     enhance the capabilities of Fossil. Unknown pragmas are silently ignored, for
     backwards compatibility.
   id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
+  zh: 不时地可能会向 Fossil 协议中添加新的编译指示符名称，以增强其功能。未知的编译指示符会被静默地忽略，以保持向后兼容性。
 - en: 'The following are the known pragma names as of 2019-06-30:'
   id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
+  zh: 截至 2019-06-30，以下是已知的编译指示名称：
 - en: '**send-private** The send-private pragma instructs the server to send all of
     its private artifacts to the client. The server will only obey this request if
     the user has the "x" or "Private" privilege.'
@@ -1173,6 +1414,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**send-private** 发送私有编译指示指示服务器向客户端发送其所有私有工件。服务器仅在用户拥有“x”或“Private”权限时才会遵循此请求。'
 - en: '**send-catalog** The send-catalog pragma instructs the server to transmit igot
     cards for every known artifact. This can help the client and server to get back
     in synchronization after a prior protocol error. The "--verily" option to the
@@ -1182,6 +1424,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**send-catalog** 发送目录编译指示指示服务器为每个已知工件传输 igot 卡。这可以帮助客户端和服务器在之前的协议错误后重新同步。“--verily”选项可通过
+    [fossil sync](https://fossil-scm.org/home/help?cmd=sync) 命令传输 send-catalog 编译指示。'
 - en: '**uv-hash** *HASH* The uv-hash pragma is sent from client to server to provoke
     a synchronization of unversioned content. The *HASH* is a SHA1 hash of the names,
     modification times, and individual hashes of all unversioned files on the client.
@@ -1197,6 +1441,9 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**uv-hash** *HASH* 客户端向服务器发送`uv-hash` pragma以触发未版本化内容的同步。*HASH* 是客户端所有未版本化文件的名称、修改时间和各自哈希值的SHA1哈希值。如果客户端的未版本化内容哈希与服务器上的未版本化内容哈希不匹配，那么服务器将回复一个"pragma
+    uv-push-ok"或"pragma uv-pull-only"卡片，后跟每个服务器当前持有的未版本化文件的一个"uvigot"卡片。作为对"uv-hash"
+    pragma的响应发送的"uvigot"卡片的集合称为"未版本化目录"。客户端将使用未版本化目录来确定需要在客户端和服务器之间同步的文件（如果有的话），并在下一个HTTP请求中发送适当的"uvfile"或"uvgimme"卡片。'
 - en: If a client sends a uv-hash pragma and does not receive back either a uv-pull-only
     or uv-push-ok pragma, that means that the content on the server exactly matches
     the content on the client and no further synchronization is required.
@@ -1204,6 +1451,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如果客户端发送了一个`uv-hash` pragma，并且没有收到`uv-pull-only`或者`uv-push-ok` pragma的回复，这意味着服务器上的内容与客户端完全匹配，不需要进一步的同步操作。
 - en: '**uv-pull-only** A server sends the uv-pull-only pragma to the client in response
     to a uv-hash pragma with a mismatched content hash argument. This pragma indicates
     that there are differences in unversioned content between the client and server
@@ -1214,6 +1462,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**uv-pull-only** 服务器在响应具有不匹配内容哈希参数的`uv-hash` pragma时向客户端发送`uv-pull-only` pragma。此pragma表示客户端和服务器之间存在未版本化内容的差异，但只能从服务器传输内容到客户端。服务器不愿接受客户端的内容，因为客户端登录缺少"write-unversioned"权限。'
 - en: '**uv-push-ok** A server sends the uv-push-ok pragma to the client in response
     to a uv-hash pragma with a mismatched content hash argument. This pragma indicates
     that there are differences in unversioned content between the client and server
@@ -1224,6 +1473,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**uv-push-ok** 服务器在响应具有不匹配内容哈希参数的`uv-hash` pragma时向客户端发送`uv-push-ok` pragma。此pragma表示客户端和服务器之间存在未版本化内容的差异，并且可以在两个方向上传输内容。服务器愿意接受客户端的内容，因为客户端登录具有"write-unversioned"权限。'
 - en: '**ci-lock** *CHECKIN-HASH CLIENT-ID* A client sends the "ci-lock" pragma to
     the server to indicate that it is about to add a new check-in as a child of the
     CHECKIN-HASH check-in and on the same branch as CHECKIN-HASH. If some other client
@@ -1236,6 +1486,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**ci-lock** *CHECKIN-HASH CLIENT-ID* 客户端向服务器发送"ci-lock" pragma，表示它即将将一个新的检入添加为CHECKIN-HASH检入的子检入，并且与CHECKIN-HASH在同一个分支上。如果其他某个客户端已经指示它也试图对CHECKIN-HASH进行提交，这表示即将发生分叉，服务器将以"ci-lock-fail"
+    pragma回复（见下文）。检入锁定将在检入实际发生后或超时（目前为一分钟，但可能会更改）后自动失效。'
 - en: '**ci-lock-fail** *LOGIN MTIME* When a server receives two or more "ci-lock"
     pragma messages for the same check-in but from different clients, the second a
     subsequent ci-lock will provoke a ci-lock-fail pragma in the reply to let the
@@ -1246,6 +1498,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**ci-lock-fail** *LOGIN MTIME* 当服务器收到两个或更多针对相同检入的"ci-lock" pragma消息，但来自不同的客户端时，第二个及后续的ci-lock将在回复中引发一个"ci-lock-fail"
+    pragma，以告知客户端如果继续进行检入，可能会生成一个分叉。LOGIN和MTIME参数旨在为客户端提供信息，帮助其生成一个更有用的错误消息。'
 - en: '**ci-unlock** *CLIENT-ID* A client sends the "ci-unlock" pragma to the server
     after a successful commit. This instructs the server to release any lock on any
     check-in previously held by that client. The ci-unlock pragma helps to avoid false-positive
@@ -1255,26 +1509,31 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**ci-unlock** *CLIENT-ID* 客户端在成功提交后向服务器发送“ci-unlock”指令。这指示服务器释放该客户端先前持有的任何检查点的锁定。ci-unlock指令有助于避免如果检查点被中止然后在分支上重新启动可能会引发的错误正锁定警告。'
 - en: Any card that begins with "#" (ASCII 0x23) is a comment card and is silently
     ignored.
   id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何以"#"（ASCII 0x23）开头的卡片是注释卡片，会被静默忽略。
 - en: 3.13 Message and Error Cards
   id: totrans-split-220
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.13 消息和错误卡片
 - en: 'If the server discovers anything wrong with a request, it generates an error
     card in its reply. When the client sees the error card, it displays an error message
     to the user and aborts the sync operation. An error card looks like this:'
   id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果服务器发现请求存在问题，它会在回复中生成错误卡片。客户端看到错误卡片时，会向用户显示错误消息并中止同步操作。错误卡片的格式如下：
 - en: '[PRE24]'
   id: totrans-split-222
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: The error message is English text that is encoded in order to be a single token.
     A space (ASCII 0x20) is represented as "\s" (ASCII 0x5C, 0x73). A newline (ASCII
     0x0a) is "\n" (ASCII 0x6C, x6E). A backslash (ASCII 0x5C) is represented as two
@@ -1283,34 +1542,42 @@
   id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误消息是编码为单个令牌的英文文本。空格（ASCII 0x20）表示为"\s"（ASCII 0x5C, 0x73）。换行符（ASCII 0x0a）表示为"\n"（ASCII
+    0x6C, x6E）。反斜杠（ASCII 0x5C）表示为两个反斜杠 "\\"。除了空格和换行符外，错误消息中不允许其他空白字符或不可打印字符。
 - en: 'The server can also send a message card that also prints a message on the client
     console, but which is not an error:'
   id: totrans-split-224
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器还可以发送消息卡片，该卡片在客户端控制台上打印消息，但不是错误：
 - en: '[PRE25]'
   id: totrans-split-225
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: The message-text uses the same format as an error message.
   id: totrans-split-226
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息文本使用与错误消息相同的格式。
 - en: 3.14 Unknown Cards
   id: totrans-split-227
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.14 未知卡片
 - en: If either the client or the server sees a card that is not described above,
     then it generates an error and aborts.
   id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果客户端或服务器看到不符合上述描述的卡片，则会生成错误并中止操作。
 - en: 4.0 Phantoms And Clusters
   id: totrans-split-229
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 4.0 幻影和聚类
 - en: When a repository knows that an artifact exists and knows the ID of that artifact,
     but it does not know the artifact content, then it stores that artifact as a "phantom".
     A repository will typically create a phantom when it receives an igot card for
@@ -1321,12 +1588,14 @@
   id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
+  zh: 当存储库知道某个工件存在并知道该工件的ID，但不知道工件内容时，它将该工件存储为“幻影”。存储库通常在接收到一个不持有的工件的igot卡片或引用不持有的增量源的文件卡片时创建幻影。当服务器生成其回复或客户端生成新请求时，通常会为其持有的每个幻影发送gimme卡片。
 - en: A cluster is a special artifact that tells of the existence of other artifacts.
     Any artifact in the repository that follows the syntactic rules of a cluster is
     considered a cluster.
   id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
+  zh: 聚类是一种特殊的工件，用于说明其他工件的存在。符合聚类的语法规则的存储库中的任何工件都被视为聚类。
 - en: A cluster is line oriented. Each line of a cluster is a card. The cards are
     separated by the newline ("\n") character. Each card consists of a single character
     card type, a space, and a single argument. No extra whitespace and no trailing
@@ -1335,6 +1604,7 @@
   id: totrans-split-232
   prefs: []
   type: TYPE_NORMAL
+  zh: 聚类是以行为单位的。聚类的每一行是一张卡片。卡片之间由换行符（"\n"）分隔。每张卡片由单个字符的卡片类型、一个空格和一个参数组成。不允许额外的空白字符，也不允许尾随或前导空白。所有聚类中的卡片必须严格按字典顺序排列。
 - en: A cluster consists of one or more "M" cards followed by a single "Z" card. Each
     M card holds an argument which is an artifact ID for an artifact in the repository.
     The Z card has a single argument which is the lower-case hexadecimal representation
@@ -1343,6 +1613,7 @@
   id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个聚类包含一个或多个"M"卡片，后跟一个单一的"Z"卡片。每个M卡片包含一个参数，该参数是存储库中工件的工件ID。Z卡片有一个参数，该参数是所有前面的M卡片（包括前面的换行符）的MD5校验和的小写十六进制表示。
 - en: Any artifact that does not match the specifications of a cluster exactly is
     not a cluster. There must be no extra whitespace in the artifact. There must be
     one or more M cards. There must be a single Z card with a correct MD5 checksum.
@@ -1350,11 +1621,13 @@
   id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何不完全符合集群规格的工件都不是集群。工件中不能有额外的空白。必须有一个或多个 M 卡片。必须有一个带有正确 MD5 校验和的单个 Z 卡片。并且所有卡片必须严格按字典顺序排列。
 - en: 4.1 The Unclustered Table
   id: totrans-split-235
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 4.1 未集群表
 - en: Every repository maintains a table named "**unclustered**" which records the
     identity of every artifact and phantom it holds that is not mentioned in a cluster.
     The entries in the unclustered table can be thought of as leaves on a tree of
@@ -1365,47 +1638,56 @@
   id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个存储库维护一个名为“**未集群**”的表，记录其持有但未在集群中提到的每个工件和幻影的身份。未集群表中的条目可以被视为工件树上的叶子。未集群的某些工件将是其他集群。这些集群可能包含其他集群，这些集群可能还包含更多的集群，依此类推。从未集群表中的工件开始，可以跟随集群链找到存储库中的每个工件。
 - en: 5.0 Synchronization Strategies
   id: totrans-split-237
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 5.0 同步策略
 - en: 5.1 Pull
   id: totrans-split-238
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 5.1 拉取
 - en: 'A typical pull operation proceeds as shown below. Details of the actual implementation
     may very slightly but the gist of a pull is captured in the following steps:'
   id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的拉取操作如下所示。实际实现的细节可能会略有不同，但拉取的主要步骤如下所示：
 - en: The client sends login and pull cards.
   id: totrans-split-240
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端发送登录和拉取卡片。
 - en: The client sends a cookie card if it has previously received a cookie.
   id: totrans-split-241
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端如果之前收到过 cookie，就会发送一个 cookie 卡片。
 - en: The client sends gimme cards for every phantom that it holds.
   id: totrans-split-242
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端为其持有的每个幻影发送 gimme 卡片。
 - en: '* * *'
   id: totrans-split-243
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The server checks the login password and rejects the session if the user does
     not have permission to pull.
   id: totrans-split-244
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器检查登录密码，如果用户没有拉取权限，则拒绝会话。
 - en: If the number of entries in the unclustered table on the server is greater than
     100, then the server constructs a new cluster artifact to cover all those unclustered
     entries.
@@ -1413,39 +1695,46 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果服务器未集群表中的条目数大于 100，则服务器会构造一个新的集群工件来覆盖所有这些未集群的条目。
 - en: The server sends file cards for every gimme card it received from the client.
   id: totrans-split-246
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器为从客户端收到的每个 gimme 卡片发送文件卡片。
 - en: The server sends igot cards for every artifact in its unclustered table that
     is not a phantom.
   id: totrans-split-247
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器为其未集群表中的每个非幻影工件发送 igot 卡片。
 - en: '* * *'
   id: totrans-split-248
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The client adds the content of file cards to its repository.
   id: totrans-split-249
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端将文件卡片的内容添加到其存储库中。
 - en: The client creates a phantom for every igot card in the server reply that mentions
     an artifact that the client does not possess.
   id: totrans-split-250
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端为服务器回复中提到但客户端不拥有的工件创建幻影。
 - en: The client creates a phantom for the delta source of file cards when the delta
     source is an artifact that the client does not possess.
   id: totrans-split-251
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当 delta 源是客户端不拥有的工件时，客户端为文件卡片的 delta 源创建一个幻影。
 - en: These ten steps represent a single HTTP round-trip request. The first three
     steps are the processing that occurs on the client to generate the request. The
     middle four steps are processing that occurs on the server to interpret the request
@@ -1454,17 +1743,20 @@
   id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
+  zh: 这十个步骤代表一个单独的 HTTP 往返请求。前三个步骤是客户端生成请求时发生的处理。中间四个步骤是服务器处理请求和生成回复时发生的处理。最后三个步骤是客户端解释回复时发生的处理。
 - en: During a pull, the client will keep sending HTTP requests until it holds all
     artifacts that exist on the server.
   id: totrans-split-253
   prefs: []
   type: TYPE_NORMAL
+  zh: 在拉取过程中，客户端将持续发送 HTTP 请求，直到它拥有服务器上存在的所有工件。
 - en: Note that the server tries to limit the size of its reply message to something
     reasonable (usually about 1MB) so that it might stop sending file cards as described
     in step (6) if the reply becomes too large.
   id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，服务器会尝试将其回复消息的大小限制在一个合理的范围内（通常约为 1MB），以便在回复变得过大时，可能会像第（6）步描述的那样停止发送文件卡片。
 - en: Step (5) is the only way in which new clusters can be created. By only creating
     clusters on the server, we hope to minimize the amount of overlap between clusters
     in the common configuration where there is a single server and many clients. The
@@ -1475,56 +1767,66 @@
   id: totrans-split-255
   prefs: []
   type: TYPE_NORMAL
+  zh: 第（5）步是创建新集群的唯一方法。通过仅在服务器上创建集群，我们希望在单个服务器和多个客户端的常见配置中最小化集群之间的重叠量。即使存在多个服务器或服务器和客户端有时改变角色，相同的同步协议仍将继续工作。这些不寻常安排的唯一负面影响是可能生成多于最小数量的集群。
 - en: 5.2 Push
   id: totrans-split-256
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 5.2 推送
 - en: A typical push operation proceeds roughly as shown below. As with a pull, the
     actual implementation may vary slightly.
   id: totrans-split-257
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的推送操作大致如下所示。与拉取一样，实际实施可能略有不同。
 - en: The client sends login and push cards.
   id: totrans-split-258
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端发送登录和推送卡。
 - en: The client sends file cards for any artifacts that it holds that have never
     before been pushed - artifacts that come from local check-ins.
   id: totrans-split-259
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端为其持有的从本地签入获得的尚未推送过的构件发送文件卡。
 - en: If this is the second or later cycle in a push, then the client sends file cards
     for any gimme cards that the server sent in the previous cycle.
   id: totrans-split-260
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果这是推送中的第二轮或更晚的轮次，则客户端会发送任何服务器在上一个周期发送的送我卡的文件卡。
 - en: The client sends igot cards for every artifact in its unclustered table that
     is not a phantom.
   id: totrans-split-261
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端为其未集群化表中的每个构件发送送我卡，这些构件不是虚拟的。
 - en: '* * *'
   id: totrans-split-262
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The server checks the login and push cards and issues an error if anything is
     amiss.
   id: totrans-split-263
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器检查登录和推送卡，如果有任何问题则发出错误。
 - en: The server accepts file cards from the client and adds those artifacts to its
     repository.
   id: totrans-split-264
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器接受来自客户端的文件卡，并将这些构件添加到其代码库中。
 - en: The server creates phantoms for igot cards that mention artifacts it does not
     possess or for file cards that mention delta source artifacts that it does not
     possess.
@@ -1532,22 +1834,26 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器为提及其不拥有的构件或提及其不拥有的增量源构件的文件卡创建虚拟。
 - en: The server issues gimme cards for all phantoms.
   id: totrans-split-266
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器为所有虚拟发出送我卡。
 - en: '* * *'
   id: totrans-split-267
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The client remembers the gimme cards from the server so that it can generate
     file cards in reply on the next cycle.
   id: totrans-split-268
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端记住了来自服务器的送我卡，以便在下一个周期中可以回复文件卡。
 - en: As with a pull, the steps of a push operation repeat until the server knows
     all artifacts that exist on the client. Also, as with pull, the client attempts
     to keep the size of the request from growing too large by suppressing file cards
@@ -1555,11 +1861,13 @@
   id: totrans-split-269
   prefs: []
   type: TYPE_NORMAL
+  zh: 与拉取一样，推送操作的步骤会重复，直到服务器了解客户端上存在的所有构件。此外，与拉取一样，一旦请求大小达到1MB，客户端会通过抑制文件卡来尝试保持请求的大小不要增长太大。
 - en: 5.3 Sync
   id: totrans-split-270
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 5.3 同步
 - en: A sync is just a pull and a push that happen at the same time. The first three
     steps of a pull are combined with the first five steps of a push. Steps (4) through
     (7) of a pull are combined with steps (5) through (8) of a push. And steps (8)
@@ -1567,11 +1875,13 @@
   id: totrans-split-271
   prefs: []
   type: TYPE_NORMAL
+  zh: 同步只是同时进行的拉取和推送。拉取的前三个步骤与推送的前五个步骤结合在一起。拉取的第（4）到（7）步与推送的第（5）到（8）步结合在一起。拉取的第（8）到（10）步与推送的第（9）步结合在一起。
 - en: 5.4 Unversioned File Sync
   id: totrans-split-272
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 5.4 未版本化文件同步
 - en: '"Unversioned files" are files held in the repository where only the most recent
     version of the file is kept rather than the entire change history. Unversioned
     files are intended to be used to store ephemeral content, such as compiled binaries
@@ -1579,20 +1889,24 @@
   id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
+  zh: '"未版本化文件"是仓库中仅保留文件的最新版本而不是整个更改历史的文件。未版本化文件用于存储临时内容，例如最新发布的编译二进制文件。'
 - en: Unversioned files are identified by name and timestamp (mtime). Only the most
     recent version of each file (the version with the largest mtime value) is retained.
   id: totrans-split-274
   prefs: []
   type: TYPE_NORMAL
+  zh: 未版本化文件由名称和时间戳（mtime）标识。仅保留每个文件的最新版本（具有最大mtime值的版本）。
 - en: Unversioned files are synchronized using the [fossil unversioned sync](https://fossil-scm.org/home/help?cmd=unversioned)
     command.
   id: totrans-split-275
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用[fossil未版本化同步](https://fossil-scm.org/home/help?cmd=unversioned)命令来同步未版本化文件。
 - en: 'A schematic of an unversioned file synchronization is as follows:'
   id: totrans-split-276
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个未版本化文件同步的示意图如下：
 - en: The client sends a "pragma uv-hash" card to the server. The argument to the
     uv-hash pragma is a hash of all filesnames, mtimes, and content hashes for the
     unversioned files held by the client.
@@ -1600,11 +1914,13 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端向服务器发送 "pragma uv-hash" 卡片。uv-hash pragma 的参数是客户端持有的所有未版本化文件的文件名、修改时间和内容哈希的哈希值。
 - en: '* * *'
   id: totrans-split-278
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: If the unversioned content hash from the client matches the unversioned content
     hash on the server, then nothing needs to be done and the server no-ops. But if
     the hashes are different, then the server replies with either a uv-pull-only or
@@ -1614,11 +1930,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果客户端的未版本化内容哈希与服务器上的未版本化内容哈希匹配，则服务器不需要执行任何操作（no-op）。但如果哈希不同，则服务器会回复 uv-pull-only
+    或 uv-push-ok 指令，接着为服务器上所有未版本化文件发送 uvigot 卡片。
 - en: '* * *'
   id: totrans-split-280
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The client examines the uvigot cards received from the server and determines
     which unversioned files need to be exchanged in order to bring the client and
     server into synchronization. The client then sends appropriate "uvgimme" or "uvfile"
@@ -1627,216 +1946,255 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端检查从服务器接收到的 uvigot 卡片，并确定需要交换的未版本化文件，以使客户端和服务器同步。然后客户端将适当的 "uvgimme" 或 "uvfile"
+    卡片发送回服务器。
 - en: '* * *'
   id: totrans-split-282
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The server updates its unversioned file store with received "uvfile" cards and
     answers "uvgimme" cards with "uvfile" cards in its reply.
   id: totrans-split-283
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器通过接收的 "uvfile" 卡片更新其未版本化文件存储，并在回复中的 "uvgimme" 卡片中以 "uvfile" 卡片作答。
 - en: The last two steps might be repeated multiple times if there is more unversioned
     content to be transferred than will fit comfortably in a single HTTP request.
   id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果有更多的未版本化内容需要传输，而一次 HTTP 请求无法轻松完成，则最后两个步骤可能会重复多次。
 - en: 6.0 Summary
   id: totrans-split-285
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 6.0 总结
 - en: 'Here are the key points of the synchronization protocol:'
   id: totrans-split-286
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是同步协议的关键点：
 - en: The client sends one or more PUSH HTTP requests to the server. The request and
     reply content type is "application/x-fossil".
   id: totrans-split-287
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 客户端向服务器发送一个或多个 PUSH HTTP 请求。请求和回复的内容类型为 "application/x-fossil"。
 - en: HTTP request content is compressed using zlib.
   id: totrans-split-288
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: HTTP 请求内容使用 zlib 进行压缩。
 - en: The content of request and reply consists of cards with one card per line.
   id: totrans-split-289
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 请求和回复的内容包含一行一张卡片。
 - en: 'Card formats are:'
   id: totrans-split-290
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 卡片格式为：
 - en: '**login** *userid nonce signature*'
   id: totrans-split-291
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**登录** *userid nonce signature*'
 - en: '**push** *servercode projectcode*'
   id: totrans-split-292
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**推送** *servercode projectcode*'
 - en: '**pull** *servercode projectcode*'
   id: totrans-split-293
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**拉取** *servercode projectcode*'
 - en: '**clone**'
   id: totrans-split-294
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**克隆**'
 - en: '**clone_seqno** *sequence-number*'
   id: totrans-split-295
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**clone_seqno** *sequence-number*'
 - en: '**file** *artifact-id size* **\n** *content*'
   id: totrans-split-296
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**文件** *artifact-id size* **\n** *content*'
 - en: '**file** *artifact-id delta-artifact-id size* **\n** *content*'
   id: totrans-split-297
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**文件** *artifact-id delta-artifact-id size* **\n** *content*'
 - en: '**cfile** *artifact-id size* **\n** *content*'
   id: totrans-split-298
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**cfile** *artifact-id size* **\n** *content*'
 - en: '**cfile** *artifact-id delta-artifact-id size* **\n** *content*'
   id: totrans-split-299
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**cfile** *artifact-id delta-artifact-id size* **\n** *content*'
 - en: '**uvfile** *name mtime hash size flags* **\n** *content*'
   id: totrans-split-300
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**uvfile** *name mtime hash size flags* **\n** *content*'
 - en: '**private**'
   id: totrans-split-301
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**私有**'
 - en: '**igot** *artifact-id* ?*flag*?'
   id: totrans-split-302
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**igot** *artifact-id* ?*flag*?'
 - en: '**uvigot** *name mtime hash size*'
   id: totrans-split-303
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**uvigot** *name mtime hash size*'
 - en: '**gimme** *artifact-id*'
   id: totrans-split-304
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**gimme** *artifact-id*'
 - en: '**uvgimme** *name*'
   id: totrans-split-305
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**uvgimme** *name*'
 - en: '**cookie** *cookie-text*'
   id: totrans-split-306
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**cookie** *cookie-text*'
 - en: '**reqconfig** *parameter-name*'
   id: totrans-split-307
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**reqconfig** *parameter-name*'
 - en: '**config** *parameter-name size* **\n** *content*'
   id: totrans-split-308
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**config** *parameter-name size* **\n** *content*'
 - en: '**pragma** *name* *value...*'
   id: totrans-split-309
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**pragma** *name* *value...*'
 - en: '**error** *error-message*'
   id: totrans-split-310
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**错误** *error-message*'
 - en: '**message** *text-messate*'
   id: totrans-split-311
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**消息** *text-messate*'
 - en: '**#** *arbitrary-text...*'
   id: totrans-split-312
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**#** *arbitrary-text...*'
 - en: Phantoms are artifacts that a repository knows exist but does not possess.
   id: totrans-split-313
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 幻影是仓库知道存在但并未拥有的构件。
 - en: Clusters are artifacts that contain IDs of other artifacts.
   id: totrans-split-314
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 集群是包含其他构件 ID 的构件。
 - en: Clusters are created automatically on the server during a pull.
   id: totrans-split-315
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在拉取期间服务器会自动创建集群。
 - en: Repositories keep track of all artifacts that are not named in any cluster and
     send igot messages for those artifacts.
   id: totrans-split-316
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 仓库跟踪所有未在任何集群中命名的所有构件，并为这些构件发送 igot 消息。
 - en: Repositories keep track of all the phantoms they hold and send gimme messages
     for those artifacts.
   id: totrans-split-317
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 仓库跟踪其持有的所有幻影并为这些构件发送 gimme 消息。
 - en: 7.0 Troubleshooting And Debugging Hints
   id: totrans-split-318
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 7.0 故障排除和调试提示
 - en: 'If you run the [fossil sync](https://fossil-scm.org/home/help?cmd=sync) command
     (or [pull](https://fossil-scm.org/home/help?cmd=pull) or [push](https://fossil-scm.org/home/help?cmd=push)
     or [clone](https://fossil-scm.org/home/help?cmd=clone)) with the --httptrace option,
@@ -1844,16 +2202,21 @@
   id: totrans-split-319
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您运行 [fossil sync](https://fossil-scm.org/home/help?cmd=sync) 命令（或 [pull](https://fossil-scm.org/home/help?cmd=pull)
+    或 [push](https://fossil-scm.org/home/help?cmd=push) 或 [clone](https://fossil-scm.org/home/help?cmd=clone)），并使用
+    --httptrace 选项，Fossil 将在名为的文件中保留每个 HTTP 请求和回复的副本：
 - en: '`http-request-`*N*`.txt`'
   id: totrans-split-320
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`http-request-`*N*`.txt`'
 - en: '`http-reply-`*N*`.txt`'
   id: totrans-split-321
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`http-reply-`*N*`.txt`'
 - en: In the above, *N* is an integer that increments with each round-trip. If you
     are having trouble on the server side, you can run the "[fossil test-http](https://fossil-scm.org/home/help?cmd=test-http)"
     command in a debugger using one the "http-request-N.txt" files as input and single
@@ -1861,32 +2224,41 @@
   id: totrans-split-322
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述情况中，*N* 是一个整数，每次往返增加。如果你在服务器端遇到问题，可以在调试器中使用一个 "http-request-N.txt" 文件运行 "[fossil
+    test-http](https://fossil-scm.org/home/help?cmd=test-http)" 命令，并逐步执行服务器执行的处理。
 - en: 'The "--transport-command CMD" option on [fossil sync](https://fossil-scm.org/home/help?cmd=sync)
     (and similar) causes the external program "CMD" to be used to move the sync message
     to the server and retrieve the sync reply. The CMD is given three arguments:'
   id: totrans-split-323
   prefs: []
   type: TYPE_NORMAL
+  zh: '"--transport-command CMD" 选项在 [fossil sync](https://fossil-scm.org/home/help?cmd=sync)（和类似命令）中导致外部程序
+    "CMD" 用于将同步消息移动到服务器并检索同步回复。CMD 被给予三个参数：'
 - en: The URL of the server
   id: totrans-split-324
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 服务器的 URL
 - en: The name of a temporary file that contains the output-bound sync protocol text,
     with the HTTP headers
   id: totrans-split-325
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个临时文件的名称，其中包含输出绑定的同步协议文本，带有 HTTP 头部
 - en: The name of a temporary file into which the CMD should write the reply sync
     protocol text, again without any HTTP headers
   id: totrans-split-326
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个临时文件的名称，用于 CMD 写入回复的同步协议文本，同样不包含任何 HTTP 头部
 - en: In a complex debugging situation, you can run the command "fossil sync --transport-command
     ./debugging_script" where "debugging_script" is some script of your own that invokes
     the anomolous behavior your are trying to debug.
   id: totrans-split-327
   prefs: []
   type: TYPE_NORMAL
+  zh: 在复杂的调试情况下，你可以运行命令 "fossil sync --transport-command ./debugging_script"，其中 "debugging_script"
+    是你自己的脚本，用于调用你试图调试的异常行为。
